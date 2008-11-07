@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import numpy as N
-from metobs.generic import get_dims
+from metpy.generic import get_dims
 
 def two_three_rot(ui,vi,wi,common=None,return_basis=False,unrotate = False,use_basis=None):
     '''

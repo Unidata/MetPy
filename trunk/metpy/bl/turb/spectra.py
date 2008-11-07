@@ -3,7 +3,7 @@ import numpy as np
 #import scipy as S
 from matplotlib.mlab import csd as csd_welch
 from matplotlib.mlab import cohere as coherence
-from metobs.generic import get_dims
+from metpy.generic import get_dims
 from scipy.integrate import cumtrapz
 
 from matplotlib import cbook

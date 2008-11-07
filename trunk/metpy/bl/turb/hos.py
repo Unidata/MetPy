@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import numpy as N
-from metobs.generic import get_pert
+from metpy.generic import get_pert
 
 def kurtosis(a):
     '''

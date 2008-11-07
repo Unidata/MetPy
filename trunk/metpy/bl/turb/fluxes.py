@@ -1,17 +1,17 @@
 #!/usr/bin/python
 import numpy as N
-from metobs.generic import get_dims
-from metobs.generic import get_pert
+from metpy.generic import get_dims
+from metpy.generic import get_pert
 
 def cs_contrib(a,b,bins,subsamp=10):
-    from metobs.generic import get_dims
+    from metpy.generic import get_dims
     '''
 a,b: raw time series (not perturbations)
 
 Compute the contribution of coherent structures to the total flux of a'b'.
 
 bins: list of arrays that contain N.arange(start_index,stop_index) for CS events
-      the list is returned from metobs.vis.wavelet_plt() as the first member.
+      the list is returned from metpy.vis.wavelet_plt() as the first member.
 
 subsamp: number of samples in original time series for each sample in subsampled
 timeseres (if timeseries was subsampled to calculate wavelet).

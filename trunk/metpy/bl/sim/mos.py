@@ -6,7 +6,7 @@ def u_star(u,v,w):
 Compute the friction velocity, u_star, from the timeseries of the velocity \
 components u, v, and w (an nD array)
     '''
-    from metobs.bl.turb.fluxes import rs as R
+    from metpy.bl.turb.fluxes import rs as R
     rs = R(u,v,w)
     uw = rs[3]
     vw = rs[4]
@@ -20,7 +20,7 @@ def theta_star(u,v,w,T):
 Compute the friction temperature, theta_star, from the timeseries of the velocity \
 components u, v, and w, and temperature (an nD array)
     '''
-    from metobs.bl.turb.fluxes import turb_covar as TC
+    from metpy.bl.turb.fluxes import turb_covar as TC
 
     ts = -TC(w,T)/u_star(u,v,w)
 

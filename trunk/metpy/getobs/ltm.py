@@ -67,7 +67,7 @@ def sonic(filename, L5_fix=True):
           --includes fix for level 5 alignment as default (controlled with keyword
             L5_fix (L5_fix=True default)
     '''
-    from metobs.generic import horizontal_align_fix as haf
+    from metpy.generic import horizontal_align_fix as haf
 #
 #   Determine file type
 #
