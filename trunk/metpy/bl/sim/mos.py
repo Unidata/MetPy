@@ -31,6 +31,7 @@ def obu_length(u,v,w,T):
 Compute the Obukhov Length, L, using the timeseries of the velocity \
 components u, v, and w, and temperature (an nD array)
     '''
-    L = N.power(u_star(u,v,w),2)*N.average(T)/(0.4*9.81*theta_star(u,v,w,T))
+    from metpy.constants import g
+    L = N.power(u_star(u,v,w),2)*N.average(T)/(0.4*g*theta_star(u,v,w,T))
 
     return L
