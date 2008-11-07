@@ -3,8 +3,8 @@ import numpy as N
 
 def u_star(u,v,w):
     '''
-Compute the friction velocity, u_star, from the timeseries of the velocity \
-components u, v, and w (an nD array)
+    Compute the friction velocity, u_star, from the timeseries of the velocity \
+    components u, v, and w (an nD array)
     '''
     from metpy.bl.turb.fluxes import rs as R
     rs = R(u,v,w)
@@ -17,8 +17,8 @@ components u, v, and w (an nD array)
 
 def theta_star(u,v,w,T):
     '''
-Compute the friction temperature, theta_star, from the timeseries of the velocity \
-components u, v, and w, and temperature (an nD array)
+    Compute the friction temperature, theta_star, from the timeseries of the velocity \
+    components u, v, and w, and temperature (an nD array)
     '''
     from metpy.bl.turb.fluxes import turb_covar as TC
 
@@ -28,8 +28,8 @@ components u, v, and w, and temperature (an nD array)
 
 def obu_length(u,v,w,T):
     '''
-Compute the Obukhov Length, L, using the timeseries of the velocity \
-components u, v, and w, and temperature (an nD array)
+    Compute the Obukhov Length, L, using the timeseries of the velocity \
+    components u, v, and w, and temperature (an nD array)
     '''
     from metpy.constants import g
     L = N.power(u_star(u,v,w),2)*N.average(T)/(0.4*g*theta_star(u,v,w,T))
