@@ -36,7 +36,7 @@ def get_mask(wavelet_shape,coi_coef,scales):
 
     return mask.astype(bool)
 
-
+'''
 def SDG(len_wavelet,scales,normalize=True,return_wdu=False,sampf=1):
     """
     Compute the Second Derivative of a Gaussian (SDG) wavelet of length
@@ -78,10 +78,20 @@ def SDG(len_wavelet,scales,normalize=True,return_wdu=False,sampf=1):
         return coi_coef,wdu,mw
     else:
         return coi_coef,mw
+'''
 
-def cwt(x,wavelet, scales,calc_gws = False,gws_valid=False,wavelet_real=True,sampf=1):
+def cwt(x,wavelet,scales,calc_gws=False,gws_valid=False,sampf=1):
+    """
+    cwt: compute the continuous wavelet transform of x using the wavelet `wavelet`.
+        x: signal to be transformed
+        wavelet: wavelet from motherwavelets.py
+        scales: 1D numpy array of scales
+        calc_gws: compute and return the global wavelet specturm (bool)
+        gws_valid: compute gws using only valid data (defined by cone of influence)
+        sampf: sample frequency of x in samples per unit time
+    """
     # get mother wavelets at scale a
-    coi_coef,mw=wavelet(len(x),scales,sampf=sampf)
+    mw=wavelet.coefs(len(x),scales,sampf=sampf)
     # Fourier, baby!
     xf=np.fft.fft(x)
     mwf=np.fft.fft(mw,axis=0)
@@ -93,8 +103,8 @@ def cwt(x,wavelet, scales,calc_gws = False,gws_valid=False,wavelet_real=True,sam
     """
     Compute cone of influence
     """
-    y1=coi_coef*np.arange(0,len(x)/2)
-    y2=-coi_coef*np.arange(0,len(x)/2)+y1[-1]
+    y1=wavelet.coi_coef(sampf)*np.arange(0,len(x)/2)
+    y2=-wavelet.coi_coef(sampf)*np.arange(0,len(x)/2)+y1[-1]
     coi = np.r_[y1,y2] 
 
 
@@ -105,7 +115,7 @@ def cwt(x,wavelet, scales,calc_gws = False,gws_valid=False,wavelet_real=True,sam
         else:
             wt = tmp
     wt=wt.transpose()
-    if wavelet_real:
+    if np.all(np.negative(np.iscomplex(mw))):
         wt=wt.real
 
     if calc_gws is False:
@@ -183,6 +193,7 @@ def cxwt(x1,x2,wavelet,scales):
 
 def test():
     import time
+    import motherwavelets as mw
 #
 #   create signal
 #
@@ -196,11 +207,10 @@ def test():
 #
 #   get wavelet coefficients
 #
-    wt = cwt(y,SDG,1500)
-    wt2=np.real(cwt_fft(y,SDG_mult_scale,np.arange(1,1501)))
+    wt=cwt(y,mw.SDG,np.arange(1,150))
 
 
-    return wt,wt2
+    return wt
 '''
 #
 #   plot
