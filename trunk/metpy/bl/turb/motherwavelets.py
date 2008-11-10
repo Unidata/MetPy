@@ -12,7 +12,7 @@ class MotherWavelet(object):
 
     #add methods for computing cone of influence and mask
 
-class SDG(Wavelet):
+class SDG(MotherWavelet):
     """
     Class for the SDG wavelet
 
