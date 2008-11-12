@@ -31,15 +31,19 @@ def sonics(top_dir,filedate):
         v=data[:,5:10]
         w=data[:,10:15]
         T=data[:,15:20]
-        flags = data[:,20:25].astype(int)
+#        flags = data[:,20:25].astype(int)
 
+#        dt = np.dtype([('u1',np.float,(36000,5)),('v1',np.float,(36000,5)),
+#                       ('w1',np.float,(36000,5)),('T1',np.float,(36000,5)),
+#                       ('flags',np.int,(36000,5))])
         dt = np.dtype([('u1',np.float,(36000,5)),('v1',np.float,(36000,5)),
-                       ('w1',np.float,(36000,5)),('T1',np.float,(36000,5)),
-                       ('flags',np.int,(36000,5))])
+                       ('w1',np.float,(36000,5)),('T1',np.float,(36000,5))])
         if i == 0:
-            rdata1=np.array((u,v,w,T,flags), dtype=dt)
+            rdata1=np.rec.fromarrays([u,v,w,T],names='u,v,w,T')
+#            rdata1=np.array((u,v,w,T), dtype=dt)
         elif i == 1:
-            rdata2=np.array((u,v,w,T,flags), dtype=dt)
+            rdata2=np.rec.fromarrays([u,v,w,T],names='u,v,w,T')
+#            rdata2=np.array((u,v,w,T), dtype=dt)
 
     return (date1,date2,rdata1,rdata2)
 

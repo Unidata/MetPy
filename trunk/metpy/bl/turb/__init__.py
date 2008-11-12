@@ -1,6 +1,7 @@
 import fluxes
 import spectra
 import hos
+import motherwavelets
 import wavelets
 import pca
 

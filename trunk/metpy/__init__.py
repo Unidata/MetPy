@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import bl
-import getobs
+import readers
 import generic
 import mkobsnc
 import vis
