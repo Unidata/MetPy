@@ -88,8 +88,7 @@ def read_mesonet_ts(filename, fields=None, unpack=True):
         variable is a row in the array.  The variables are returned in
         the order given in *fields*.
     '''
-    MISSING = -995
-    FUTURE = -996
+    BAD_DATA_LIMIT = -990
     
     if fields is None:
         cols = None
@@ -99,8 +98,7 @@ def read_mesonet_ts(filename, fields=None, unpack=True):
     data = np.loadtxt(filename, skiprows=3, usecols=cols, unpack=unpack)
 
     #Mask out data that are missing or have not yet been collected
-    mask = (data == MISSING) | (data == FUTURE)
-    return MaskedArray(data, mask=mask)
+    return MaskedArray(data, mask=data < BAD_DATA_LIMIT)
 
 if __name__ == '__main__':
     import datetime
