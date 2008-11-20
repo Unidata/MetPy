@@ -36,7 +36,7 @@ def remote_mesonet_ts(site, date=None, fields=None, unpack=True):
     
     if date is None:
         import datetime
-        datetime.date.today()
+        date = datetime.date.today()
     
     #Create the various parts of the URL and assemble them together
     path = '/mts/%d/%d/%d/' % (date.year, date.month, date.day)
