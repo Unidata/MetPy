@@ -13,21 +13,25 @@ mesonet_vars = ['STID', 'STNM', 'TIME', 'RELH', 'TAIR', 'WSPD', 'WVEC', 'WDIR',
     'WDSD', 'WSSD', 'WMAX', 'RAIN', 'PRES', 'SRAD', 'TA9M', 'WS2M', 'TS10',
     'TB10', 'TS05', 'TB05', 'TS30', 'TR05', 'TR25', 'TR60', 'TR75']
 
-def remote_mesonet_ts(site, date=None, fields=None, unpack=True):
+def remote_mesonet_data(date_time=None, fields=None, site=None, unpack=True):
     '''
-    Reads in Oklahoma Mesonet timeseries data directly from their servers.
+    Reads in Oklahoma Mesonet Datafile (MDF) directly from their servers.
 
-    site : string
-        The station id for the data to be fetched.  This is
-        case-insensitive.
-
-    date : datetime object
-        A python :class:`datetime` object specify that date
-        for which that data should be downloaded.
+    date_time : datetime object
+        A python :class:`datetime` object specify that date and time
+        for which that data should be downloaded.  For a times series
+        data, this only needs to be a date.  For snapshot files, this is
+        the time to the nearest five minutes.
 
     fields : sequence
         A list of the variables which should be returned.  See
         :func:`read_mesonet_ts` for a list of valid fields.
+
+    site : string
+        Optional station id for the data to be fetched.  This is
+        case-insensitive.  If specified, a time series file will be
+        downloaded.  If left blank, a snapshot data file for the whole
+        network is downloaded.
 
     unpack : bool
         If True, the returned array is transposed, so that arguments may be
@@ -40,29 +44,39 @@ def remote_mesonet_ts(site, date=None, fields=None, unpack=True):
         the order given in *fields*.
     '''
     import urllib2
-    
-    if date is None:
+
+    if date_time is None:
         import datetime
-        date = datetime.date.today()
-    
+        date_time = datetime.datetime.utcnow()
+
+    if site is None:
+        data_type = 'mdf'
+        #Put time back to last even 5 minutes
+        date_time = date_time.replace(minute=(dt.minute - dt.minute%5),
+            second=0, microsecond=0)
+        fname = '%s.mdf' % date_time.strftime('%Y%m%d%H%M')
+    else:
+        data_type = 'mts'
+        fname = '%s%s.mts' % (date_time.strftime('%Y%m%d'), site.lower())
+
     #Create the various parts of the URL and assemble them together
-    path = '/mts/%d/%d/%d/' % (date.year, date.month, date.day)
-    fname = '%s%s.mts' % (date.strftime('%Y%m%d'), site.lower())
+    path = '/%s/%d/%d/%d/' % (data_type, date_time.year, date_time.month,
+        date_time.day)
     baseurl='http://www.mesonet.org/public/data/getfile.php?dir=%s&filename=%s'
-    
+
     #Open the remote location
     datafile = urllib2.urlopen(baseurl % (path+fname, fname))
-    
+
     #Read the data 
     #Numpy.loadtxt checks prohibit actually doing this, though there's no
     #reason it can't work.  I'll file a bug.  The next two lines work around it
     from cStringIO import StringIO
     datafile = StringIO(datafile.read())
-    return read_mesonet_ts(datafile, fields, unpack)
+    return read_mesonet_data(datafile, fields, unpack)
 
-def read_mesonet_ts(filename, fields=None, unpack=True):
+def read_mesonet_data(filename, fields=None, unpack=True):
     '''
-    Reads an Oklahoma Mesonet time series file from *filename*.
+    Reads Oklahoma Mesonet data from *filename*.
 
     filename : string or file-like object
         Location of data. Can be anything compatible with
@@ -81,7 +95,6 @@ def read_mesonet_ts(filename, fields=None, unpack=True):
         If True, the returned array is transposed, so that arguments may be
         unpacked using ``x, y, z = read_mesonet_ts(...)``. Defaults to True.
 
-
     Returns : array
         A nfield by ntime masked array.  nfield is the number of fields
         requested and ntime is the number of times in the file.  Each
@@ -96,12 +109,20 @@ def read_mesonet_ts(filename, fields=None, unpack=True):
     data = np.loadtxt(filename, skiprows=3, usecols=cols, unpack=unpack)
 
     #Mask out data that are missing or have not yet been collected
-    return mesonet_mask_bad(data)
-
-def mesonet_mask_bad(data):
-    'Helper function to mask all bad points in data'
     BAD_DATA_LIMIT = -990
     return MaskedArray(data, mask=data < BAD_DATA_LIMIT)
+
+def mesonet_stid_info(info):
+    'Get mesonet station information'
+    names = ['stid', 'lat', 'lon']
+    dtypes = ['S4','f8','f8']
+    sta_table = np.loadtxt('geomeso.csv', skiprows=123, usecols=(1,7,8),
+        dtype=zip(names,dtypes), delimiter=',')
+    return sta_table
+
+#    station_indices = sta_table['stid'].searchsorted(data['stid'])
+#    lat = sta_table[station_indices]['lat']
+#    lon = sta_table[station_indices]['lon']
 
 if __name__ == '__main__':
     import datetime
@@ -124,8 +145,8 @@ if __name__ == '__main__':
     else:
         dt = None
     
-    time, relh, temp, wspd, press = remote_mesonet_ts(opts.site, dt,
-        ['time', 'relh', 'tair', 'wspd', 'pres'])
+    time, relh, temp, wspd, press = remote_mesonet_data(dt,
+        ['time', 'relh', 'tair', 'wspd', 'pres'], opts.site)
     
     meteogram(opts.site, dt, time=time, relh=relh, temp=temp, wspd=wspd,
         press=press)
