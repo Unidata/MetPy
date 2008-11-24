@@ -102,7 +102,7 @@ class SDG(MotherWavelet):
         mw = np.empty((len(self.scales),self.len_wavelet))
 
         for s in range(len(self.scales)):
-            xsd = -xi*xi / (self.scales[s] * self.scales[s])
+            xsd = -xi * xi / (self.scales[s] * self.scales[s])
             mw[s] = c * (1. + xsd) * np.exp(xsd / 2.)
 
         self.coefs = mw

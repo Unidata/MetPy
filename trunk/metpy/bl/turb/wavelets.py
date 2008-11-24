@@ -26,11 +26,12 @@ def cwt(x,wavelet):
     """
     # Transform the signal and motherwavelet into the Fourier domain
     xf=fft(x)
-    mwf=fft(wavelet.coefs,axis=0)
+    mwf=fft(wavelet.coefs,axis=1)
     # Convolve (mult. in Fourier space) and bring back
-    wt_tmp=ifft(mwf*xf[np.newaxis,:],axis=0)
+    #wt_tmp=ifft(mwf*xf[np.newaxis,:],axis=0)
+    wt_tmp=ifft(mwf*xf.reshape(1,-1),axis=1).transpose()
     # Scale by the square root of the scales used in the wavelet transform
-    wt = np.fft.fftshift(wt_tmp,axes=[1])/np.sqrt(wavelet.scales[:,np.newaxis])
+    wt = (np.fft.fftshift(wt_tmp,axes=[0])/np.sqrt(wavelet.scales)).transpose()
     # if motherwavelet was real, only keep real part of transform
     if np.all(np.negative(np.iscomplex(wavelet.coefs))):
         wt=wt.real
