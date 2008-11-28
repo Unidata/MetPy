@@ -535,3 +535,35 @@ def loadtxt(fname, dtype=float, comments='#', delimiter=None, converters=None,
     else:
         return rows
 
+#Taken from a numpy-discussion mailing list post 'Re: adding field to rec array'
+#by Robert Kern
+def append_field(rec, name, arr, dtype=None):
+    """
+    Appends a field to an existing record array.
+
+    Parameters
+    ----------
+    rec : numpy record array
+        Array to which the new field should be appended
+    name : string
+        Name to be given to the new field
+    arr : ndarray
+        Array containing the data for the new field.
+    dtype : data-type or None, optional
+        Data type of the new field.  If this is None, the data type will
+        be obtained from `arr`.
+
+    Returns
+    -------
+    out : numpy record array
+        `rec` with the new field appended.
+    rec = np.asarray(rec, name, arr)
+    """
+    if dtype is None:
+        dtype = arr.dtype
+    newdtype = np.dtype(rec.dtype.descr + [(name, dtype)])
+    newrec = np.empty(rec.shape, dtype=newdtype)
+    for field in rec.dtype.fields:
+        newrec[field] = rec[field]
+    newrec[name] = arr
+    return newrec
