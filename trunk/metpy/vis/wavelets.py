@@ -2,7 +2,7 @@
 
 import numpy as np
 import metpy
-import metobs
+#import metobs
 import matplotlib.pyplot as plt
 import matplotlib
 from matplotlib.colors import Normalize
