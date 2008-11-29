@@ -2,6 +2,7 @@
 
 from operator import itemgetter as _itemgetter
 from keyword import iskeyword as _iskeyword
+import itertools
 import sys as _sys
 
 #The next few are lifted from Matplotlib
@@ -140,36 +141,6 @@ def namedtuple(typename, field_names, verbose=False):
 
     return result
 
-if __name__ == '__main__':
-    # verify that instances can be pickled
-    from cPickle import loads, dumps
-    Point = namedtuple('Point', 'x, y', True)
-    p = Point(x=10, y=20)
-    assert p == loads(dumps(p))
-
-    # test and demonstrate ability to override methods
-    class Point(namedtuple('Point', 'x y')):
-        @property
-        def hypot(self):
-            return (self.x ** 2 + self.y ** 2) ** 0.5
-        def __str__(self):
-            return 'Point: x=%6.3f y=%6.3f hypot=%6.3f' % (self.x, self.y, self.hypot)
-
-    for p in Point(3,4), Point(14,5), Point(9./7,6):
-        print p
-
-    class Point(namedtuple('Point', 'x y')):
-        'Point class with optimized _make() and _replace() without error-checking'
-        _make = classmethod(tuple.__new__)
-        def _replace(self, _map=map, **kwds):
-            return self._make(_map(kwds.get, ('x', 'y'), self))
-
-    print Point(11, 22)._replace(x=100)
-
-    import doctest
-    TestResults = namedtuple('TestResults', 'failed attempted')
-    print TestResults(*doctest.testmod())
-
 # A Least Recently Used (LRU) cache implementation
 
 from collections import deque
@@ -230,6 +201,7 @@ def lru_cache(maxsize):
 #
 # This can be removed once it lands in numpy trunk
 #
+import numpy as np
 
 def _string_like(obj):
     try: obj + ''
