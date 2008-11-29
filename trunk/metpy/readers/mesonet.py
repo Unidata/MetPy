@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 import numpy as np
 from numpy.ma import MaskedArray
+from metpy.cbook import loadtxt, lru_cache #Can go back to numpy once it's updated
 
 #This is a direct copy and paste of the mesonet station data avaiable at
 #http://www.mesonet.org/sites/geomeso.csv
@@ -13,7 +14,10 @@ mesonet_vars = ['STID', 'STNM', 'TIME', 'RELH', 'TAIR', 'WSPD', 'WVEC', 'WDIR',
     'WDSD', 'WSSD', 'WMAX', 'RAIN', 'PRES', 'SRAD', 'TA9M', 'WS2M', 'TS10',
     'TB10', 'TS05', 'TB05', 'TS30', 'TR05', 'TR25', 'TR60', 'TR75']
 
-def remote_mesonet_data(date_time=None, fields=None, site=None, unpack=True):
+#TODO: Modify this so that fields is ignored or refactor so that this decorates
+# a function that only uses date_time and site
+@lru_cache(maxsize=20)
+def remote_mesonet_data(date_time=None, fields=None, site=None):
     '''
     Reads in Oklahoma Mesonet Datafile (MDF) directly from their servers.
 
@@ -32,10 +36,6 @@ def remote_mesonet_data(date_time=None, fields=None, site=None, unpack=True):
         case-insensitive.  If specified, a time series file will be
         downloaded.  If left blank, a snapshot data file for the whole
         network is downloaded.
-
-    unpack : bool
-        If True, the returned array is transposed, so that arguments may be
-        unpacked using ``x, y, z = remote_mesonet_ts(...)``. Defaults to True.
 
     Returns : array
         A nfield by ntime masked array.  nfield is the number of fields
@@ -74,7 +74,7 @@ def remote_mesonet_data(date_time=None, fields=None, site=None, unpack=True):
     datafile = StringIO(datafile.read())
     return read_mesonet_data(datafile, fields, unpack)
 
-def read_mesonet_data(filename, fields=None, unpack=True):
+def read_mesonet_data(filename, fields=None):
     '''
     Reads Oklahoma Mesonet data from *filename*.
 
@@ -91,33 +91,26 @@ def read_mesonet_data(filename, fields=None, unpack=True):
             TS05, TB05, TS30, TR05, TR25, TR60, TR75
         The default is to return all fields.
 
-    unpack : bool
-        If True, the returned array is transposed, so that arguments may be
-        unpacked using ``x, y, z = read_mesonet_ts(...)``. Defaults to True.
-
     Returns : array
         A nfield by ntime masked array.  nfield is the number of fields
         requested and ntime is the number of times in the file.  Each
         variable is a row in the array.  The variables are returned in
         the order given in *fields*.
     '''
-    if fields is None:
-        cols = None
-    else:
-        cols = [mesonet_vars.index(f.upper()) for f in fields]
-
-    data = np.loadtxt(filename, skiprows=3, usecols=cols, unpack=unpack)
+    data = loadtxt(filename, dtype=None, skiprows=2, names=True,
+        usecols=map(str.upper, fields))
 
     #Mask out data that are missing or have not yet been collected
-    BAD_DATA_LIMIT = -990
-    return MaskedArray(data, mask=data < BAD_DATA_LIMIT)
+#    BAD_DATA_LIMIT = -990
+#    return MaskedArray(data, mask=data < BAD_DATA_LIMIT)
+    return data
 
 def mesonet_stid_info(info):
     'Get mesonet station information'
     names = ['stid', 'lat', 'lon']
     dtypes = ['S4','f8','f8']
-    sta_table = np.loadtxt('geomeso.csv', skiprows=123, usecols=(1,7,8),
-        dtype=zip(names,dtypes), delimiter=',')
+    sta_table = loadtxt(StringIO(mesonet_station_table), skiprows=123,
+        usecols=(1,7,8), dtype=zip(names,dtypes), delimiter=',')
     return sta_table
 
 #    station_indices = sta_table['stid'].searchsorted(data['stid'])
@@ -145,10 +138,16 @@ if __name__ == '__main__':
     else:
         dt = None
     
-    time, relh, temp, wspd, press = remote_mesonet_data(dt,
-        ['time', 'relh', 'tair', 'wspd', 'pres'], opts.site)
+#    time, relh, temp, wspd, press = remote_mesonet_data(dt,
+#        ['time', 'relh', 'tair', 'wspd', 'pres'], opts.site)
+    data = remote_mesonet_data(dt,
+        ['stid', 'time', 'relh', 'tair', 'wspd', 'pres'], opts.site)
     
-    meteogram(opts.site, dt, time=time, relh=relh, temp=temp, wspd=wspd,
-        press=press)
+#    meteogram(opts.site, dt, time=time, relh=relh, temp=temp, wspd=wspd,
+#        press=press)
+#    meteogram(opts.site, dt, time=time, relh=relh, temp=temp, wspd=wspd,
+#        press=press)
 
-    plt.show()
+    print data
+    print data.dtype
+#    plt.show()
