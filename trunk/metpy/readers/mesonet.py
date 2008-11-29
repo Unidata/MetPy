@@ -22,9 +22,38 @@ mesonet_var_map = {'temperature':'TAIR', 'relative humidity':'RELH',
 mesonet_inv_var_map = dict(zip(mesonet_var_map.values(),
     mesonet_var_map.keys()))
 
-#TODO: Modify this so that fields is ignored or refactor so that this decorates
-# a function that only uses date_time and site
 @lru_cache(maxsize=20)
+def _fetch_mesonet_data(date_time=None, site=None):
+    '''
+    Helper function for fetching mesonet data from a remote location.
+    Uses an LRU cache.
+    '''
+    import urllib2
+    print 'fetching file'
+    if date_time is None:
+        import datetime
+        date_time = datetime.datetime.utcnow()
+
+    if site is None:
+        data_type = 'mdf'
+        #Put time back to last even 5 minutes
+        date_time = date_time.replace(minute=(dt.minute - dt.minute%5),
+            second=0, microsecond=0)
+        fname = '%s.mdf' % date_time.strftime('%Y%m%d%H%M')
+    else:
+        data_type = 'mts'
+        fname = '%s%s.mts' % (date_time.strftime('%Y%m%d'), site.lower())
+
+    #Create the various parts of the URL and assemble them together
+    path = '/%s/%d/%d/%d/' % (data_type, date_time.year, date_time.month,
+        date_time.day)
+    baseurl='http://www.mesonet.org/public/data/getfile.php?dir=%s&filename=%s'
+
+    #Open the remote location
+    datafile = urllib2.urlopen(baseurl % (path+fname, fname))
+
+    return datafile.read()
+
 def remote_mesonet_data(date_time=None, fields=None, site=None,
     rename_fields=False):
     '''
@@ -56,36 +85,9 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
         variable is a row in the array.  The variables are returned in
         the order given in *fields*.
     '''
-    import urllib2
-
-    if date_time is None:
-        import datetime
-        date_time = datetime.datetime.utcnow()
-
-    if site is None:
-        data_type = 'mdf'
-        #Put time back to last even 5 minutes
-        date_time = date_time.replace(minute=(dt.minute - dt.minute%5),
-            second=0, microsecond=0)
-        fname = '%s.mdf' % date_time.strftime('%Y%m%d%H%M')
-    else:
-        data_type = 'mts'
-        fname = '%s%s.mts' % (date_time.strftime('%Y%m%d'), site.lower())
-
-    #Create the various parts of the URL and assemble them together
-    path = '/%s/%d/%d/%d/' % (data_type, date_time.year, date_time.month,
-        date_time.day)
-    baseurl='http://www.mesonet.org/public/data/getfile.php?dir=%s&filename=%s'
-
-    #Open the remote location
-    datafile = urllib2.urlopen(baseurl % (path+fname, fname))
-
-    #Read the data 
-    #Numpy.loadtxt checks prohibit actually doing this, though there's no
-    #reason it can't work.  I'll file a bug.  The next two lines work around it
     from cStringIO import StringIO
-    datafile = StringIO(datafile.read())
-    return read_mesonet_data(datafile, fields, rename_fields)
+    data = StringIO(_fetch_mesonet_data(date_time, site))
+    return read_mesonet_data(data, fields, rename_fields)
 
 def read_mesonet_data(filename, fields=None, rename_fields=False):
     '''
