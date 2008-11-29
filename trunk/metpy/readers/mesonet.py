@@ -14,10 +14,19 @@ mesonet_vars = ['STID', 'STNM', 'TIME', 'RELH', 'TAIR', 'WSPD', 'WVEC', 'WDIR',
     'WDSD', 'WSSD', 'WMAX', 'RAIN', 'PRES', 'SRAD', 'TA9M', 'WS2M', 'TS10',
     'TB10', 'TS05', 'TB05', 'TS30', 'TR05', 'TR25', 'TR60', 'TR75']
 
+#Map of standard variable names to those use by the mesonet
+mesonet_var_map = {'temperature':'TAIR', 'relative humidity':'RELH',
+    'wind speed':'WSPD', 'wind direction':'WDIR', 'rainfall':'RAIN',
+    'pressure':'PRES'}
+
+mesonet_inv_var_map = dict(zip(mesonet_var_map.values(),
+    mesonet_var_map.keys()))
+
 #TODO: Modify this so that fields is ignored or refactor so that this decorates
 # a function that only uses date_time and site
 @lru_cache(maxsize=20)
-def remote_mesonet_data(date_time=None, fields=None, site=None):
+def remote_mesonet_data(date_time=None, fields=None, site=None,
+    rename_fields=False):
     '''
     Reads in Oklahoma Mesonet Datafile (MDF) directly from their servers.
 
@@ -36,6 +45,10 @@ def remote_mesonet_data(date_time=None, fields=None, site=None):
         case-insensitive.  If specified, a time series file will be
         downloaded.  If left blank, a snapshot data file for the whole
         network is downloaded.
+
+    rename_fields : boolean
+        Flag indicating whether the field names given by the mesonet
+        should be renamed to standard names. Defaults to False.
 
     Returns : array
         A nfield by ntime masked array.  nfield is the number of fields
@@ -72,9 +85,9 @@ def remote_mesonet_data(date_time=None, fields=None, site=None):
     #reason it can't work.  I'll file a bug.  The next two lines work around it
     from cStringIO import StringIO
     datafile = StringIO(datafile.read())
-    return read_mesonet_data(datafile, fields, unpack)
+    return read_mesonet_data(datafile, fields, rename_fields)
 
-def read_mesonet_data(filename, fields=None):
+def read_mesonet_data(filename, fields=None, rename_fields=False):
     '''
     Reads Oklahoma Mesonet data from *filename*.
 
@@ -91,18 +104,30 @@ def read_mesonet_data(filename, fields=None):
             TS05, TB05, TS30, TR05, TR25, TR60, TR75
         The default is to return all fields.
 
+    rename_fields : boolean
+        Flag indicating whether the field names given by the mesonet
+        should be renamed to standard names. Defaults to False.
+
     Returns : array
         A nfield by ntime masked array.  nfield is the number of fields
         requested and ntime is the number of times in the file.  Each
         variable is a row in the array.  The variables are returned in
         the order given in *fields*.
     '''
+    if fields:
+        fields = map(str.upper, fields)
     data = loadtxt(filename, dtype=None, skiprows=2, names=True,
-        usecols=map(str.upper, fields))
+        usecols=fields)
 
     #Mask out data that are missing or have not yet been collected
 #    BAD_DATA_LIMIT = -990
 #    return MaskedArray(data, mask=data < BAD_DATA_LIMIT)
+    
+    if rename_fields:
+        names = data.dtype.names
+        data.dtype.names = [mesonet_inv_var_map.get(n.upper(), n)
+            for n in names]
+
     return data
 
 def mesonet_stid_info(info):
@@ -141,7 +166,7 @@ if __name__ == '__main__':
 #    time, relh, temp, wspd, press = remote_mesonet_data(dt,
 #        ['time', 'relh', 'tair', 'wspd', 'pres'], opts.site)
     data = remote_mesonet_data(dt,
-        ['stid', 'time', 'relh', 'tair', 'wspd', 'pres'], opts.site)
+        ('stid', 'time', 'relh', 'tair', 'wspd', 'pres'), opts.site, True)
     
 #    meteogram(opts.site, dt, time=time, relh=relh, temp=temp, wspd=wspd,
 #        press=press)
