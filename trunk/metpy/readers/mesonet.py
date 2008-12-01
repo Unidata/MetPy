@@ -45,7 +45,7 @@ def _fetch_mesonet_data(date_time=None, site=None):
         fname = '%s%s.mts' % (date_time.strftime('%Y%m%d'), site.lower())
 
     #Create the various parts of the URL and assemble them together
-    path = '/%s/%d/%d/%d/' % (data_type, date_time.year, date_time.month,
+    path = '/%s/%04d/%02d/%02d/' % (data_type, date_time.year, date_time.month,
         date_time.day)
     baseurl='http://www.mesonet.org/public/data/getfile.php?dir=%s&filename=%s'
 
