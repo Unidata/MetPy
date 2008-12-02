@@ -4,6 +4,7 @@ from operator import itemgetter as _itemgetter
 from keyword import iskeyword as _iskeyword
 import itertools
 import sys as _sys
+from numpy import ma
 
 #The next few are lifted from Matplotlib
 def iterable(obj):
