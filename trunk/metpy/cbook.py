@@ -209,11 +209,6 @@ def lru_cache(maxsize):
 #
 import numpy as np
 
-def _string_like(obj):
-    try: obj + ''
-    except (TypeError, ValueError): return False
-    return True
-
 def str2bool(value):
     """
     Tries to transform a string supposed to represent a boolean to a boolean.
@@ -425,7 +420,7 @@ def loadtxt(fname, dtype=float, comments='#', delimiter=None, converters=None,
     else:
         missing = None
 
-    if _string_like(fname):
+    if is_string_like(fname):
         if fname.endswith('.gz'):
             import gzip
             fh = gzip.open(fname)
@@ -496,13 +491,13 @@ def loadtxt(fname, dtype=float, comments='#', delimiter=None, converters=None,
             converters = [StringConverter(dtype, missing) for i in xrange(N)]
 
     # If usecols contains a list of names, convert them to column indices
-    if usecols and _string_like(usecols[0]):
+    if usecols and is_string_like(usecols[0]):
         usecols = [names.index(_) for _ in usecols]
 
     # By preference, use the converters specified by the user
     for i, conv in (user_converters or {}).iteritems():
         # If the converter is specified by column number, convert it to an index
-        if _string_like(i):
+        if is_string_like(i):
             i = names.index(i)
         if usecols:
             try:
