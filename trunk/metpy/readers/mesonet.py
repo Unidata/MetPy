@@ -211,12 +211,17 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
     return mrecords.fromrecords(data, dtype=data.dtype, shape=data.shape,
         mask=mask)
 
-def mesonet_stid_info(info):
+def mesonet_stid_info(info=None):
     'Get mesonet station information'
-    names = ['stid', 'Lat', 'Lon', 'Elev']
-    sta_table = loadtxt(StringIO(mesonet_station_table), skiprows=123,
-        usecols=(1,7,8,9), names=names, delimiter=',')
-    return sta_table
+
+    if info is None:
+        names = ['stid', 'Lat', 'Lon', 'Elev']
+        cols = (1, 7, 8, 9)
+    else:
+        names,cols = zip(*info)
+
+    return loadtxt(StringIO(mesonet_station_table), skiprows=123,
+        usecols=cols, names=names, delimiter=',')
 
 if __name__ == '__main__':
     import datetime
