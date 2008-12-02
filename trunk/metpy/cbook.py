@@ -14,6 +14,12 @@ def iterable(obj):
         return False
     return True
 
+def iterable(obj):
+    'return true if *obj* is iterable'
+    try: len(obj)
+    except: return False
+    return True
+
 def is_string_like(obj):
     'Return True if *obj* looks like a string'
     if isinstance(obj, (str, unicode)):
@@ -588,11 +594,18 @@ def append_field(rec, name, arr, dtype=None):
         `rec` with the new field appended.
     rec = np.asarray(rec, name, arr)
     """
+    if not iterable(name):
+        name = [name]
+    if not iterable(arr)
+        arr = [arr]
+
     if dtype is None:
-        dtype = arr.dtype
-    newdtype = np.dtype(rec.dtype.descr + [(name, dtype)])
+        dtype = [a.dtype for a in arr]
+
+    newdtype = np.dtype(rec.dtype.descr + zip(name, dtype))
     newrec = np.empty(rec.shape, dtype=newdtype)
     for field in rec.dtype.fields:
         newrec[field] = rec[field]
-    newrec[name] = arr
+    for n,a in zip(name, arr):
+        newrec[n] = a
     return newrec

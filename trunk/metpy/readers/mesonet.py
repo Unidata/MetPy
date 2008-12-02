@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 import numpy as np
-from numpy.ma import MaskedArray
-from metpy.cbook import loadtxt, lru_cache #Can go back to numpy once it's updated
-
+from numpy.ma import mrecords
+from metpy.cbook import loadtxt #Can go back to numpy once it's updated
+from metpy.cbook import _string_like, lru_cache
 #This is a direct copy and paste of the mesonet station data avaiable at
 #http://www.mesonet.org/sites/geomeso.csv
 #As of November 20th, 2008
@@ -29,7 +29,7 @@ def _fetch_mesonet_data(date_time=None, site=None):
     Uses an LRU cache.
     '''
     import urllib2
-    print 'fetching file'
+
     if date_time is None:
         import datetime
         date_time = datetime.datetime.utcnow()
@@ -55,7 +55,7 @@ def _fetch_mesonet_data(date_time=None, site=None):
     return datafile.read()
 
 def remote_mesonet_data(date_time=None, fields=None, site=None,
-    rename_fields=False):
+    rename_fields=False, convert_time=True, lookup_stids=True):
     '''
     Reads in Oklahoma Mesonet Datafile (MDF) directly from their servers.
 
@@ -79,6 +79,16 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
         Flag indicating whether the field names given by the mesonet
         should be renamed to standard names. Defaults to False.
 
+    convert_time : boolean
+        Flag indicating whether the time reported in the file, which is
+        in minutes since midnight of the files date, should be converted
+        to a date/time string using the date reported at the top of the
+        file. Defaults to True.
+
+    lookup_stids : boolean
+        Flag indicating whether to lookup the location for the station id
+        and include this information in the returned data. Defaults to True.
+
     Returns : array
         A nfield by ntime masked array.  nfield is the number of fields
         requested and ntime is the number of times in the file.  Each
@@ -89,7 +99,8 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
     data = StringIO(_fetch_mesonet_data(date_time, site))
     return read_mesonet_data(data, fields, rename_fields)
 
-def read_mesonet_data(filename, fields=None, rename_fields=False):
+def read_mesonet_data(filename, fields=None, rename_fields=False,
+    convert_time=True, lookup_stids=True):
     '''
     Reads Oklahoma Mesonet data from *filename*.
 
@@ -110,39 +121,102 @@ def read_mesonet_data(filename, fields=None, rename_fields=False):
         Flag indicating whether the field names given by the mesonet
         should be renamed to standard names. Defaults to False.
 
+    convert_time : boolean
+        Flag indicating whether the time reported in the file, which is
+        in minutes since midnight of the files date, should be converted
+        to a date/time string using the date reported at the top of the
+        file. Defaults to True.
+
+    lookup_stids : boolean
+        Flag indicating whether to lookup the location for the station id
+        and include this information in the returned data. Defaults to True.
+
     Returns : array
         A nfield by ntime masked array.  nfield is the number of fields
         requested and ntime is the number of times in the file.  Each
         variable is a row in the array.  The variables are returned in
         the order given in *fields*.
     '''
+    from datetime import date, timedelta
+
+    if _string_like(filename):
+        if filename.endswith('.gz'):
+            import gzip
+            fh = gzip.open(filename)
+        elif filename.endswith('.bz2'):
+            import bz2
+            fh = bz2.BZ2File(filename)
+        else:
+            fh = file(filename)
+    elif hasattr(filename, 'readline'):
+        fh = filename
+    else:
+        raise ValueError('filename must be a string or file handle')
+
     if fields:
         fields = map(str.upper, fields)
-    data = loadtxt(filename, dtype=None, skiprows=2, names=True,
-        usecols=fields)
 
-    #Mask out data that are missing or have not yet been collected
-#    BAD_DATA_LIMIT = -990
-#    return MaskedArray(data, mask=data < BAD_DATA_LIMIT)
+    #If we're converting the time, we need to read the 2nd line of the file
+    #and parse that into a date object.  We use this object with a timedelta
+    #to make a custom converter.  We also need to then tell the reader to no
+    #longer skip any rows.
+    if convert_time:
+        #Skip first line, read the second for the date
+        fh.readline()
+        info = fh.readline().split()
+        dt = date(*map(int, info[1:4]))
+        skip = 0
+        conv = {'TIME': lambda t: str(dt+ timedelta(minutes=int(t)))}
+    else:
+        skip = 2
+        conv = None
     
+    data = loadtxt(fh, dtype=None, names=True, usecols=fields, skiprows=skip,
+        converters=conv)
+
+    #Use the inverted dictionary to map names in the FILE to their more
+    #descriptive counterparts
     if rename_fields:
         names = data.dtype.names
         data.dtype.names = [mesonet_inv_var_map.get(n.upper(), n)
             for n in names]
 
-    return data
-
-def mesonet_stid_info(info):
-    'Get mesonet station information'
-    names = ['stid', 'lat', 'lon']
-    dtypes = ['S4','f8','f8']
-    sta_table = loadtxt(StringIO(mesonet_station_table), skiprows=123,
-        usecols=(1,7,8), dtype=zip(names,dtypes), delimiter=',')
-    return sta_table
+    #Change converted column name from TIME to DateTime
+    if convert_time:
+        names = list(data.dtype.names)
+        names[names.index('TIME')] = 'DateTime'
+        data.dtype.names = names
+    
+    #Mask out data that are missing or have not yet been collected
+    BAD_DATA_LIMIT = -990
+    if data.dtype.names:
+        field_masks = []
+        for name in data.dtype.names:
+            #If tolist() fails, it's because the field doesn't really make
+            #sense to compare against a bool on an element by element basis
+            #and instead returned a single bool value.  In this case, make
+            #an all False mask for the field.
+            try:
+                field_masks.append((data[name] < BAD_DATA_LIMIT).tolist())
+            except AttributeError:
+                field_masks.append([False]*len(data[name]))
+        mask = zip(*field_masks)
+    else:
+        mask = data < BAD_DATA_LIMIT
 
 #    station_indices = sta_table['stid'].searchsorted(data['stid'])
 #    lat = sta_table[station_indices]['lat']
 #    lon = sta_table[station_indices]['lon']
+
+    return mrecords.fromrecords(data, dtype=data.dtype, shape=data.shape,
+        mask=mask)
+
+def mesonet_stid_info(info):
+    'Get mesonet station information'
+    names = ['stid', 'Lat', 'Lon', 'Elev']
+    sta_table = loadtxt(StringIO(mesonet_station_table), skiprows=123,
+        usecols=(1,7,8,9), names=names, delimiter=',')
+    return sta_table
 
 if __name__ == '__main__':
     import datetime
@@ -165,13 +239,9 @@ if __name__ == '__main__':
     else:
         dt = None
     
-#    time, relh, temp, wspd, press = remote_mesonet_data(dt,
-#        ['time', 'relh', 'tair', 'wspd', 'pres'], opts.site)
     data = remote_mesonet_data(dt,
         ('stid', 'time', 'relh', 'tair', 'wspd', 'pres'), opts.site, True)
     
-#    meteogram(opts.site, dt, time=time, relh=relh, temp=temp, wspd=wspd,
-#        press=press)
 #    meteogram(opts.site, dt, time=time, relh=relh, temp=temp, wspd=wspd,
 #        press=press)
 
