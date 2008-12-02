@@ -15,12 +15,6 @@ def iterable(obj):
         return False
     return True
 
-def iterable(obj):
-    'return true if *obj* is iterable'
-    try: len(obj)
-    except: return False
-    return True
-
 def is_string_like(obj):
     'Return True if *obj* looks like a string'
     if isinstance(obj, (str, unicode)):
