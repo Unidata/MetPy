@@ -1,8 +1,10 @@
 #!/usr/bin/env python
+from cStringIO import StringIO
 import numpy as np
 from numpy.ma import mrecords
 from metpy.cbook import loadtxt #Can go back to numpy once it's updated
-from metpy.cbook import _string_like, lru_cache
+from metpy.cbook import is_string_like, lru_cache, append_field
+
 #This is a direct copy and paste of the mesonet station data avaiable at
 #http://www.mesonet.org/sites/geomeso.csv
 #As of November 20th, 2008
@@ -95,7 +97,6 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
         variable is a row in the array.  The variables are returned in
         the order given in *fields*.
     '''
-    from cStringIO import StringIO
     data = StringIO(_fetch_mesonet_data(date_time, site))
     return read_mesonet_data(data, fields, rename_fields)
 
@@ -139,7 +140,7 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
     '''
     from datetime import date, timedelta
 
-    if _string_like(filename):
+    if is_string_like(filename):
         if filename.endswith('.gz'):
             import gzip
             fh = gzip.open(filename)
@@ -186,27 +187,31 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
         names = list(data.dtype.names)
         names[names.index('TIME')] = 'DateTime'
         data.dtype.names = names
+
+    #Lookup station information so that returned data has latitude and
+    #longitude information
+    if lookup_stids:
+        sta_table = mesonet_stid_info()
+        station_indices = sta_table['stid'].searchsorted(data['STID'])
+        lat = sta_table['Lat'][station_indices]
+        lon = sta_table['Lon'][station_indices]
+        elev = sta_table['Elev'][station_indices]
+        data = append_field(data, ('Latitude', 'Longitude', 'Elevation'),
+            (lat, lon, elev))
     
     #Mask out data that are missing or have not yet been collected
     BAD_DATA_LIMIT = -990
-    if data.dtype.names:
-        field_masks = []
-        for name in data.dtype.names:
-            #If tolist() fails, it's because the field doesn't really make
-            #sense to compare against a bool on an element by element basis
-            #and instead returned a single bool value.  In this case, make
-            #an all False mask for the field.
-            try:
-                field_masks.append((data[name] < BAD_DATA_LIMIT).tolist())
-            except AttributeError:
-                field_masks.append([False]*len(data[name]))
-        mask = zip(*field_masks)
-    else:
-        mask = data < BAD_DATA_LIMIT
-
-#    station_indices = sta_table['stid'].searchsorted(data['stid'])
-#    lat = sta_table[station_indices]['lat']
-#    lon = sta_table[station_indices]['lon']
+    field_masks = []
+    for name in data.dtype.names:
+        #If tolist() fails, it's because the field doesn't really make
+        #sense to compare against a bool on an element by element basis
+        #and instead returned a single bool value.  In this case, make
+        #an all False mask for the field.
+        try:
+            field_masks.append((data[name] < BAD_DATA_LIMIT).tolist())
+        except AttributeError:
+            field_masks.append([False]*len(data[name]))
+    mask = zip(*field_masks)
 
     return mrecords.fromrecords(data, dtype=data.dtype, shape=data.shape,
         mask=mask)
@@ -230,7 +235,7 @@ def mesonet_stid_info(info=None):
     else:
         names,cols = zip(*info)
 
-    return loadtxt(StringIO(mesonet_station_table), skiprows=123,
+    return loadtxt(StringIO(mesonet_station_table), dtype=None, skiprows=123,
         usecols=cols, names=names, delimiter=',')
 
 if __name__ == '__main__':
