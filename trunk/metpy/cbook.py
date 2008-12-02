@@ -536,7 +536,7 @@ def loadtxt(fname, dtype=float, comments='#', delimiter=None, converters=None,
         else:
             if not names:
                 names = ['column%d'%i for i in xrange(N)]
-            elif usecols:
+            elif usecols and len(names)>N:
                 names = [names[i] for i in usecols]
             dtype = np.dtype(zip(names, dtype_types))
     else:
