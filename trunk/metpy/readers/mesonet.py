@@ -167,7 +167,7 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
         info = fh.readline().split()
         dt = date(*map(int, info[1:4]))
         skip = 0
-        conv = {'TIME': lambda t: str(dt+ timedelta(minutes=int(t)))}
+        conv = {'TIME': lambda t: str(dt + timedelta(minutes=int(t)))}
     else:
         skip = 2
         conv = None
