@@ -212,7 +212,17 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
         mask=mask)
 
 def mesonet_stid_info(info=None):
-    'Get mesonet station information'
+    '''
+    Get mesonet station information.
+    
+    info : sequence of tuples
+        Sequence of column name and number pairs, specifying
+        what information to return.  The default of None returns
+        station ID, latitude, longitude, and elevation.
+    
+    Returns : structured array
+        A structured array with the station information.
+    '''
 
     if info is None:
         names = ['stid', 'Lat', 'Lon', 'Elev']
