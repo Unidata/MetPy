@@ -2,7 +2,7 @@
 from cStringIO import StringIO
 import numpy as np
 from numpy.ma import mrecords
-from metpy.cbook import loadtxt #Can go back to numpy once it's updated
+from metpy.cbook import loadtxt, mloadtxt #Can go back to numpy once it's updated
 from metpy.cbook import is_string_like, lru_cache, append_field
 
 #This is a direct copy and paste of the mesonet station data avaiable at
@@ -98,7 +98,8 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
         the order given in *fields*.
     '''
     data = StringIO(_fetch_mesonet_data(date_time, site))
-    return read_mesonet_data(data, fields, rename_fields)
+    return read_mesonet_data(data, fields, rename_fields, convert_time,
+        lookup_stids)
 
 def read_mesonet_data(filename, fields=None, rename_fields=False,
     convert_time=True, lookup_stids=True):
@@ -171,22 +172,26 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
     else:
         skip = 2
         conv = None
-    
-    data = loadtxt(fh, dtype=None, names=True, usecols=fields, skiprows=skip,
-        converters=conv)
+
+    BAD_DATA_LIMIT = -990
+    missing = ','.join(map(str,range(BAD_DATA_LIMIT, BAD_DATA_LIMIT-10, -1)))
+    data = mloadtxt(fh, dtype=None, names=True, usecols=fields, skiprows=skip,
+        converters=conv, missing=missing)
 
     #Use the inverted dictionary to map names in the FILE to their more
     #descriptive counterparts
     if rename_fields:
         names = data.dtype.names
-        data.dtype.names = [mesonet_inv_var_map.get(n.upper(), n)
-            for n in names]
+        new_names = [mesonet_inv_var_map.get(n.upper(), n) for n in names]
+        data.dtype.names = new_names
+        data.mask.dtype.names = new_names
 
     #Change converted column name from TIME to DateTime
     if convert_time:
         names = list(data.dtype.names)
         names[names.index('TIME')] = 'DateTime'
         data.dtype.names = names
+        data.mask.dtype.names = names
 
     #Lookup station information so that returned data has latitude and
     #longitude information
@@ -198,23 +203,8 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
         elev = sta_table['Elev'][station_indices]
         data = append_field(data, ('Latitude', 'Longitude', 'Elevation'),
             (lat, lon, elev))
-    
-    #Mask out data that are missing or have not yet been collected
-    BAD_DATA_LIMIT = -990
-    field_masks = []
-    for name in data.dtype.names:
-        #If tolist() fails, it's because the field doesn't really make
-        #sense to compare against a bool on an element by element basis
-        #and instead returned a single bool value.  In this case, make
-        #an all False mask for the field.
-        try:
-            field_masks.append((data[name] < BAD_DATA_LIMIT).tolist())
-        except AttributeError:
-            field_masks.append([False]*len(data[name]))
-    mask = zip(*field_masks)
 
-    return mrecords.fromrecords(data, dtype=data.dtype, shape=data.shape,
-        mask=mask)
+    return data
 
 def mesonet_stid_info(info=None):
     '''
@@ -260,7 +250,8 @@ if __name__ == '__main__':
         dt = None
     
     data = remote_mesonet_data(dt,
-        ('stid', 'time', 'relh', 'tair', 'wspd', 'pres'), opts.site, True)
+        ('stid', 'time', 'relh', 'tair', 'wspd', 'pres'), opts.site,
+        rename_fields=True)
     
 #    meteogram(opts.site, dt, time=time, relh=relh, temp=temp, wspd=wspd,
 #        press=press)
