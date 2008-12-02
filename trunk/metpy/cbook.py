@@ -594,7 +594,7 @@ def append_field(rec, name, arr, dtype=None):
     """
     if not iterable(name):
         name = [name]
-    if not iterable(arr)
+    if not iterable(arr):
         arr = [arr]
 
     if dtype is None:
