@@ -429,6 +429,9 @@ def loadtxt(fname, dtype=float, comments='#', delimiter=None, converters=None,
         if fname.endswith('.gz'):
             import gzip
             fh = gzip.open(fname)
+        elif fname.endswith('.bz2'):
+            import bz2
+            fh = bz2.BZ2File(fname)
         else:
             fh = file(fname)
     elif hasattr(fname, 'readline'):
