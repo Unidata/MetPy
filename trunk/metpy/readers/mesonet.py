@@ -84,8 +84,8 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
     convert_time : boolean
         Flag indicating whether the time reported in the file, which is
         in minutes since midnight of the files date, should be converted
-        to a date/time string using the date reported at the top of the
-        file. Defaults to True.
+        to a datetime.datetime object using the date reported at the top
+        of the file. Defaults to True.
 
     lookup_stids : boolean
         Flag indicating whether to lookup the location for the station id
@@ -126,8 +126,8 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
     convert_time : boolean
         Flag indicating whether the time reported in the file, which is
         in minutes since midnight of the files date, should be converted
-        to a date/time string using the date reported at the top of the
-        file. Defaults to True.
+        to a datetime.datetime object using the date reported at the top
+        of the file. Defaults to True.
 
     lookup_stids : boolean
         Flag indicating whether to lookup the location for the station id
@@ -139,7 +139,7 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
         variable is a row in the array.  The variables are returned in
         the order given in *fields*.
     '''
-    from datetime import date, timedelta
+    from datetime import datetime, timedelta
 
     if is_string_like(filename):
         if filename.endswith('.gz'):
@@ -166,9 +166,9 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
         #Skip first line, read the second for the date
         fh.readline()
         info = fh.readline().split()
-        dt = date(*map(int, info[1:4]))
+        dt = datetime(*map(int, info[1:4]))
         skip = 0
-        conv = {'TIME': lambda t: str(dt + timedelta(minutes=int(t)))}
+        conv = {'TIME': lambda t: dt + timedelta(minutes=int(t))}
     else:
         skip = 2
         conv = None
@@ -251,7 +251,7 @@ if __name__ == '__main__':
     
     data = remote_mesonet_data(dt,
         ('stid', 'time', 'relh', 'tair', 'wspd', 'pres'), opts.site,
-        rename_fields=True)
+        rename_fields=True, lookup_stids=(opts.site==None))
     
 #    meteogram(opts.site, dt, time=time, relh=relh, temp=temp, wspd=wspd,
 #        press=press)
