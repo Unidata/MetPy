@@ -253,8 +253,9 @@ if __name__ == '__main__':
         dt = None
     
     data = remote_mesonet_data(dt,
-        ('stid', 'time', 'relh', 'tair', 'wspd', 'pres'), opts.site,
-        rename_fields=False, lookup_stids=False)
+        ('stid', 'time', 'relh', 'tair', 'wspd', 'wmax', 'wdir', 'pres', 'srad',
+            'rain'),
+        opts.site, rename_fields=False, lookup_stids=False)
 
     meteogram(data, field_info=mesonet_var_map)
     plt.show()
