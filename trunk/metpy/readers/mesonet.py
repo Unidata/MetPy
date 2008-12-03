@@ -19,7 +19,7 @@ mesonet_vars = ['STID', 'STNM', 'TIME', 'RELH', 'TAIR', 'WSPD', 'WVEC', 'WDIR',
 #Map of standard variable names to those use by the mesonet
 mesonet_var_map = {'temperature':'TAIR', 'relative humidity':'RELH',
     'wind speed':'WSPD', 'wind direction':'WDIR', 'rainfall':'RAIN',
-    'pressure':'PRES'}
+    'pressure':'PRES', 'site':'STID'}
 
 mesonet_inv_var_map = dict(zip(mesonet_var_map.values(),
     mesonet_var_map.keys()))
@@ -186,10 +186,10 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
         data.dtype.names = new_names
         data.mask.dtype.names = new_names
 
-    #Change converted column name from TIME to DateTime
+    #Change converted column name from TIME to datetime
     if convert_time:
         names = list(data.dtype.names)
-        names[names.index('TIME')] = 'DateTime'
+        names[names.index('TIME')] = 'datetime'
         data.dtype.names = names
         data.mask.dtype.names = names
 
@@ -251,11 +251,7 @@ if __name__ == '__main__':
     
     data = remote_mesonet_data(dt,
         ('stid', 'time', 'relh', 'tair', 'wspd', 'pres'), opts.site,
-        rename_fields=True, lookup_stids=(opts.site==None))
-    
-#    meteogram(opts.site, dt, time=time, relh=relh, temp=temp, wspd=wspd,
-#        press=press)
+        rename_fields=False, lookup_stids=False)
 
-    print data
-    print data.dtype
-#    plt.show()
+    meteogram(data, field_info=mesonet_var_map)
+    plt.show()
