@@ -19,10 +19,13 @@ mesonet_vars = ['STID', 'STNM', 'TIME', 'RELH', 'TAIR', 'WSPD', 'WVEC', 'WDIR',
 #Map of standard variable names to those use by the mesonet
 mesonet_var_map = {'temperature':'TAIR', 'relative humidity':'RELH',
     'wind speed':'WSPD', 'wind direction':'WDIR', 'rainfall':'RAIN',
-    'pressure':'PRES', 'site':'STID'}
-
+    'pressure':'PRES', 'site':'STID', 'solar radiation':'SRAD',
+    'wind gusts':'WMAX'}
 mesonet_inv_var_map = dict(zip(mesonet_var_map.values(),
     mesonet_var_map.keys()))
+
+mesonet_units = {'TAIR':'C', 'RELH':'%', 'PRES':'mb', 'WSPD':'m/s',
+    'SRAD':'W/m^2', 'RAIN':'mm', 'WDIR':'deg'}
 
 @lru_cache(maxsize=20)
 def _fetch_mesonet_data(date_time=None, site=None):
