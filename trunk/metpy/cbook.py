@@ -727,6 +727,9 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
         usecols = list(usecols)
     nbcols = len(usecols or first_values)
 
+    #Whether or not we have read the names from the file
+    read_names = False
+
     # Check the names and overwrite the dtype.names if needed
     if dtype is not None:
         dtype = np.dtype(dtype)
@@ -734,6 +737,7 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
     if names is True:
         names = validate_names(first_values)
         first_line =''
+        read_names = True
     elif is_string_like(names):
         names = validate_names([_.strip() for _ in names.split(',')])
     elif names:
@@ -828,6 +832,11 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
     # Convert each value according to the converter:
     for (i, vals) in enumerate(rows):
         rows[i] = tuple([conv(val) for (conv, val) in zip(converters, vals)])
+
+    # If we read the names from the file, we have more names than columns
+    # we want, so we need to filter down to the names we actually want.
+    if usecols and read_names:
+        names = [names[_] for _ in usecols]
 
     # Reset the dtype 
     if dtype is None:
