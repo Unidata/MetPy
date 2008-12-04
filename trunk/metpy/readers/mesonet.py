@@ -25,7 +25,7 @@ mesonet_inv_var_map = dict(zip(mesonet_var_map.values(),
     mesonet_var_map.keys()))
 
 mesonet_units = {'TAIR':'C', 'RELH':'%', 'PRES':'mb', 'WSPD':'m/s',
-    'SRAD':'W/m^2', 'RAIN':'mm', 'WDIR':'deg'}
+    'SRAD':'W/m^2', 'RAIN':'mm', 'WDIR':'deg', 'WMAX':'m/s'}
 
 @lru_cache(maxsize=20)
 def _fetch_mesonet_data(date_time=None, site=None):
@@ -255,7 +255,7 @@ if __name__ == '__main__':
     data = remote_mesonet_data(dt,
         ('stid', 'time', 'relh', 'tair', 'wspd', 'wmax', 'wdir', 'pres', 'srad',
             'rain'),
-        opts.site, rename_fields=False, lookup_stids=False)
+        opts.site, rename_fields=True, lookup_stids=False)
 
-    meteogram(data, field_info=mesonet_var_map)
+    meteogram(data)
     plt.show()
