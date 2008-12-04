@@ -2,7 +2,8 @@
 
 #This should go away once scipy 0.7 is released and can be depended upon
 try:
-    from scipy.constants import pi, day, value, kilo
+    from scipy.constants import (pi, day, value, kilo
+    from scipy.constants import C2F, F2C, K2F, F2K, C2K,K2C
     R = value('molar gas constant')
     del value
 except ImportError:
@@ -10,6 +11,31 @@ except ImportError:
     day = 86400.
     kilo = 1000.0
     R = 8.314472
+    zero_Celsius = 273.15
+
+    def C2K(C):
+        """Convert Celcius to Kelvin"""
+        return C + zero_Celsius
+
+    def K2C(K):
+        """Convert Kelvin to Celcius"""
+        return K - zero_Celsius
+
+    def F2C(F):
+        """Convert Fahrenheit to Celcius"""
+        return (F - 32) / 1.8
+
+    def C2F(C):
+        """Convert Celcius to Fahrenheit"""
+        return 1.8 * C + 32
+
+    def F2K(F):
+        """Convert Fahrenheit to Kelvin"""
+        return C2K(F2C(F))
+
+    def K2F(K):
+        """Convert Kelvin to Fahrenheit"""
+        return C2F(K2C(K))
 
 #Earth
 Re = earth_avg_radious = 6.37e6 # m
