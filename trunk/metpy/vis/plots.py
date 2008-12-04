@@ -13,8 +13,9 @@ from matplotlib.dates import DateFormatter
 #   *add support for specifying data limits
 #   *figure out how to specify x-axis limits in time and allow those
 #       to be set by user
-#   *Update documentation for existing options and documentation for
+#   *Update documentation for existing options aniwd documentation for
 #       new options
+#   *Make xtick format work with x range
 #Elsewhere, need a dewpoint calculation function
 
 def meteogram(data, layout=None, linestyles=None, field_info=None):
@@ -86,7 +87,7 @@ def meteogram(data, layout=None, linestyles=None, field_info=None):
     num_panels = max(layout.keys()) + 1
 
     #Get the date from the first time
-    date = time[0].strftime('%y-%m-%d')
+    date = time[0].strftime('%Y-%m-%d')
 
     axes = []
     for panel in range(num_panels):
