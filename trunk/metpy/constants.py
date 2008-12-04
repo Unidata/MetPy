@@ -2,7 +2,7 @@
 
 #This should go away once scipy 0.7 is released and can be depended upon
 try:
-    from scipy.constants import (pi, day, value, kilo
+    from scipy.constants import pi, day, value, kilo
     from scipy.constants import C2F, F2C, K2F, F2K, C2K,K2C
     R = value('molar gas constant')
     del value
