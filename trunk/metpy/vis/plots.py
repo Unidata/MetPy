@@ -2,7 +2,7 @@ __all__ = ['meteogram']
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import NullFormatter
-from matplotlib.dates import DateFormatter, HourLocator, date2num 
+from matplotlib.dates import DateFormatter, HourLocator, date2num
 
 #WORK IN PROGRESS
 #TODO:
@@ -150,7 +150,7 @@ def meteogram(data, num_panels=5, layout=None, styles=None, limits=None,
         else:
             ax = plt.subplot(num_panels, 1, panel+1)
             ax.set_title('Meteogram for %s on %s' % (site, date))
-        
+
         panel_twinned = False
         for varname in layout[panel]:
             if varname is None:
@@ -221,12 +221,12 @@ def scalar_label(ax, x, y, data, format, loc='C', **kw):
             **kw)
 
 def station_plot(data):
-    import matplotlib.pyplot as plt    
+    import matplotlib.pyplot as plt
     from matplotlib import transforms
     from mpl_toolkits.basemap import Basemap
 
     kts_per_ms = 1.94384
-    
+
     temp = data['temp']
     rh = data['relh']
     es = 6.112 * np.exp(17.67 * temp/(temp + 243.5))
@@ -238,7 +238,7 @@ def station_plot(data):
     wspd = data['wspd']
     wdir = data['wdir']
     mask = (wspd < -900)|(wdir < -900)
-    
+
     wspd = wspd[~mask] * kts_per_ms
     u = ma.array(-wspd * np.sin(wdir * np.pi / 180.), mask=mask)
     v = ma.array(-wspd * np.cos(wdir * np.pi / 180.), mask=mask)
