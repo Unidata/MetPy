@@ -2,23 +2,25 @@ __all__ = ['meteogram']
 
 import matplotlib.pyplot as plt
 from matplotlib.ticker import NullFormatter
-from matplotlib.dates import DateFormatter
+from matplotlib.dates import DateFormatter, HourLocator, date2num 
 
 #WORK IN PROGRESS
 #TODO:
-#   *linestyles should map variable names to dictionary of matplotlib
-#       keywords, plus a keyword 'fill'
-#   *implement support for mesonet style filled plots
-#   *add support for specifying units
-#   *add support for specifying data limits
+#   *cleanup support for mesonet style filled plots
 #   *figure out how to specify x-axis limits in time and allow those
 #       to be set by user
-#   *Update documentation for existing options aniwd documentation for
+#   *Update documentation for existing options and add documentation for
 #       new options
 #   *Make xtick format work with x range
 #Elsewhere, need a dewpoint calculation function
 
-def meteogram(data, layout=None, linestyles=None, field_info=None):
+#Default units for certain variables
+default_units = {'temperature':'C', 'dewpoint':'C', 'relative humidity':'%',
+    'pressure':'mb', 'wind speed':'m/s', 'solar radiation':'$W/m^2$',
+    'rainfall':'mm', 'wind gusts':'m/s'}
+
+def meteogram(data, num_panels=5, layout=None, styles=None, limits=None,
+    units=None, field_info=None):
     '''
     Plots a meteogram (collection of time series) for a data set. This
     is broken down into a series of panels (defaults to 3), each of which
@@ -29,12 +31,32 @@ def meteogram(data, layout=None, linestyles=None, field_info=None):
         A numpy record array containing time series for individual variables
         in each field.
 
+    *num_panels* : int
+        The number of panels to use in the plot.
+
     *layout* : dictionary
         A dictionary that maps panel numbers to lists of variables.
-        The maximum panel number is used as the total number of panels.
+        If a panel is not found in the dictionary, a default (up to panel 5)
+        will be used.  *None* can be included in the list to denote that
+        :func:`pyplot.twinx` should be called, and the remaining variables
+        plotted.
 
-    *linestyles* : dictionary
-        A dictionary that maps variable names to linestyles.
+    *styles* : dictionary
+        A dictionary that maps variable names to dictionary of matplotlib
+        style arguments.  Also, the keyword `fill` can be included, to
+        indicate that a filled plot should be used.  Any variable not
+        specified will use a default (if available).
+
+    *limits* : dictionary
+        A dictionary that maps variable names to plot limits.  These limits
+        are given by tuples with at least two items, which specify the
+        start and end limits.  Either can be *None* which implies using the
+        automatically determined value.  Optional third and fourth values
+        can be given in the tuple, which is a list of tick values and labels,
+        respectively.
+
+    *units* : dictionary
+        A dictionary that maps variable names to unit strings for axis labels.
 
     *field_info* : dictionary
         A dictionary that maps standard names, like 'temperature' or
@@ -48,6 +70,9 @@ def meteogram(data, layout=None, linestyles=None, field_info=None):
 
     def map_field(name):
         return field_info.get(name, name)
+
+    def inv_map_field(name):
+        return inv_field_info.get(name, name)
 
     #List of variables in each panel.  None denotes that at that point, twinx
     #should be called and the remaining variables plotted on the other axis
@@ -63,19 +88,49 @@ def meteogram(data, layout=None, linestyles=None, field_info=None):
         default_layout.update(layout)
     layout = default_layout
 
-    default_linestyles = {map_field('relative humidity'):('green','fill'),
-        map_field('temperature'):('red', 'fill'),
-        map_field('pressure'):('brown', 'fill'),
-        map_field('dewpoint'):('green' 'fill'),
-        map_field('wind speed'):('blue','fill'),
-        map_field('wind gusts'):('lightblue', 'fill'),
-        map_field('wind direction'):('goldenrod', 'o'),
-        map_field('rainfall'):('lightgreen', 'fill'),
-        map_field('solar radiation'):('orange', 'fill')}
+    #Default styles for each variable
+    default_styles = {
+        map_field('relative humidity'):dict(facecolor='green', edgecolor='None',
+            fill=True),
+        map_field('temperature'):dict(facecolor='red', edgecolor='None',
+            fill=True),
+        map_field('pressure'):dict(facecolor='brown', edgecolor='None',
+            fill=True),
+        map_field('dewpoint'):dict(facecolor='green', edgecolor='None',
+            fill=True),
+        map_field('wind speed'):dict(facecolor='blue', edgecolor='None',
+            fill=True),
+        map_field('wind gusts'):dict(facecolor='lightblue', edgecolor='None',
+            fill=True),
+        map_field('wind direction'):dict(markeredgecolor='goldenrod',
+            marker='o', linestyle='', markerfacecolor='None',
+            markeredgewidth=1),
+        map_field('rainfall'):dict(facecolor='lightgreen', edgecolor='None',
+            fill=True),
+        map_field('solar radiation'):dict(facecolor='orange', edgecolor='None',
+            fill=True)}
 
-    if linestyles is not None:
-        default_linestyles.update(linestyles)
-    linestyles = default_linestyles
+    if styles is not None:
+        default_styles.update(styles)
+    styles = default_styles
+
+    #Default data limits
+    default_limits = {
+        map_field('wind direction'):(0, 360, np.arange(0,400,45),
+            ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']),
+        map_field('rainfall'):(0, None),
+        map_field('solar radiation'):(0, 800)
+        }
+
+    if limits is not None:
+        default_limits.update(limits)
+    limits = default_limits
+
+    #Set data units
+    def_units = default_units.copy()
+    if units is not None:
+        def_units.update(units)
+    units = def_units
 
     #Get the time variable, using field info if necessary
     dt = field_info.get('datetime', 'datetime')
@@ -84,7 +139,6 @@ def meteogram(data, layout=None, linestyles=None, field_info=None):
     #Get the station name, using field info if necessary
     site_name = field_info.get('site', 'site')
     site = data[site_name][0]
-    num_panels = max(layout.keys()) + 1
 
     #Get the date from the first time
     date = time[0].strftime('%Y-%m-%d')
@@ -96,30 +150,60 @@ def meteogram(data, layout=None, linestyles=None, field_info=None):
         else:
             ax = plt.subplot(num_panels, 1, panel+1)
             ax.set_title('Meteogram for %s on %s' % (site, date))
+        
+        panel_twinned = False
         for varname in layout[panel]:
             if varname is None:
                 ax = plt.twinx(ax)
+                panel_twinned = True
                 continue
 
             # Get the linestyle for this variable
-            color,style = linestyles.get(varname, ('k', '-'))
-
-            #TODO This needs to be implemented
-            if style == 'fill':
-                style = '-'
+            style = styles.get(varname, dict())
 
             #Get the variable from the data and plot
             var = data[map_field(varname)]
-            ax.plot(time, var, style, color=color)
+
+            if style.pop('fill', False):
+                #Plot the filled area.  Use date2num, because fill_between
+                #doesn't currently support using dates for the x-axis
+                ax.fill_between(date2num(time), var.min(), var,
+                    where=~var.mask, **style)
+            else:
+                ax.plot(time, var, **style)
+
+            #Set special limits if necessary
+            lims = limits.get(varname, (None, None))
+
+            #If then length > 2, then we have ticks and (maybe) labels
+            if len(lims) > 2:
+                other = lims[2:]
+                lims = lims[:2]
+                #Separate out the ticks and perhaps labels
+                if len(other) == 1:
+                    ax.set_yticks(ticks)
+                else:
+                    ticks,labels = other
+                    ax.set_yticks(ticks)
+                    ax.set_yticklabels(labels)
+            ax.set_ylim(*lims)
 
             # Set the label to the title-cased nice-version from the
-            # field info.
-            ax.set_ylabel(inv_field_info[varname].title())
+            # field info with units, if given.
+            if varname in units and units[varname]:
+                unit_str = ' (%s)' % units[varname]
+            else:
+                unit_str = ''
+            ax.set_ylabel(inv_map_field(varname).title() + unit_str)
 
-        # If this is not the last panel, turn off the lower tick labels
+        ax.xaxis.set_major_locator(HourLocator(interval=3))
         ax.xaxis.set_major_formatter(DateFormatter('%H'))
+        if not panel_twinned:
+            ax.yaxis.set_ticks_position('both')
+            for tick in ax.yaxis.get_major_ticks():
+                tick.label2On = True
         axes.append(ax)
-        ax.set_xlabel('Time (UTC)')
+    ax.set_xlabel('Hour (UTC)')
 
     return axes
 
