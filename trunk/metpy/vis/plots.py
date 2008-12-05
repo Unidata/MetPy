@@ -165,10 +165,9 @@ def meteogram(data, num_panels=5, layout=None, styles=None, limits=None,
             var = data[map_field(varname)]
 
             if style.pop('fill', False):
-                #Plot the filled area.  Use date2num, because fill_between
-                #doesn't currently support using dates for the x-axis
-                ax.fill_between(date2num(time), var.min(), var,
-                    where=~var.mask, **style)
+                #Plot the filled area.  Need latest Matplotlib for date support
+                #with fill_betweeen
+                ax.fill_between(time, var.min(), var, where=~var.mask, **style)
             else:
                 ax.plot(time, var, **style)
 
