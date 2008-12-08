@@ -261,6 +261,7 @@ if __name__ == '__main__':
 
     import matplotlib.pyplot as plt
     from metpy.vis import meteogram
+    from metpy.constants import C2F
 
     #Create a command line option parser so we can pass in site and/or date
     parser = OptionParser()
@@ -282,5 +283,10 @@ if __name__ == '__main__':
     data = remote_mesonet_data(dt, fields, opts.site, rename_fields=False,
         lookup_stids=False)
 
-    meteogram(data, field_info=mesonet_var_map)
+    #Convert temperature to Farenheit
+    mod_units = mesonet_units.copy()
+    mod_units['TAIR'] = 'F'
+    data['TAIR'] = C2F(data['TAIR'])
+
+    meteogram(data, field_info=mesonet_var_map, units=mod_units)
     plt.show()
