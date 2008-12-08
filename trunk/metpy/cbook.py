@@ -6,46 +6,7 @@ import itertools
 import sys as _sys
 from numpy import ma
 
-#The next few are lifted from Matplotlib
-def iterable(obj):
-    'return true if *obj* is iterable'
-    try:
-        len(obj)
-    except:
-        return False
-    return True
-
-def is_string_like(obj):
-    'Return True if *obj* looks like a string'
-    if isinstance(obj, (str, unicode)):
-        return True
-    # numpy strings are subclass of str, ma strings are not
-    if ma.isMaskedArray(obj):
-        if obj.ndim == 0 and obj.dtype.kind in 'SU':
-            return True
-        else:
-            return False
-    try:
-        obj + ''
-    except (TypeError, ValueError):
-        return False
-    return True
-
-class Bunch:
-    """
-    Often we want to just collect a bunch of stuff together, naming each
-    item of the bunch; a dictionary's OK for that, but a small do- nothing
-    class is even handier, and prettier to use.  Whenever you want to
-    group a few variables:
-
-      >>> point = Bunch(datum=2, squared=4, coord=12)
-      >>> point.datum
-
-      By: Alex Martelli
-      From: http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/52308
-    """
-    def __init__(self, **kwds):
-        self.__dict__.update(kwds)
+from matplotlib.cbook import iterable, is_string_like, Bunch
 
 #Taken from a cookbook recipe.  Will be available in Python 2.6
 def namedtuple(typename, field_names, verbose=False):
@@ -157,7 +118,7 @@ def lru_cache(maxsize):
         queue = deque()         # order that keys have been accessed
         refcount = {}           # number of times each key is in the access queue
         def wrapper(*args):
-            
+
             # localize variable access (ugly but fast)
             _cache=cache; _len=len; _refcount=refcount; _maxsize=maxsize
             queue_append=queue.append; queue_popleft = queue.popleft
@@ -181,7 +142,7 @@ def lru_cache(maxsize):
                 if not _refcount[k]:
                     del _cache[k]
                     del _refcount[k]
-    
+
             # Periodically compact the queue by duplicate keys
             if _len(queue) > _maxsize * 4:
                 for i in [None] * _len(queue):
@@ -204,53 +165,4 @@ def lru_cache(maxsize):
 #
 
 from genloadtxt import loadtxt, mloadtxt
-
-#Taken from a numpy-discussion mailing list post 'Re: adding field to rec array'
-#by Robert Kern
-def append_field(rec, name, arr, dtype=None):
-    """
-    Appends a field to an existing record array.
-
-    Parameters
-    ----------
-    rec : numpy record array
-        Array to which the new field should be appended
-    name : string
-        Name to be given to the new field
-    arr : ndarray
-        Array containing the data for the new field.
-    dtype : data-type or None, optional
-        Data type of the new field.  If this is None, the data type will
-        be obtained from `arr`.
-
-    Returns
-    -------
-    out : numpy record array
-        `rec` with the new field appended.
-    rec = np.asarray(rec, name, arr)
-    """
-    if not iterable(name):
-        name = [name]
-    if not iterable(arr):
-        arr = [arr]
-
-    if dtype is None:
-        dtype = [a.dtype for a in arr]
-
-    newdtype = np.dtype(rec.dtype.descr + zip(name, dtype))
-    newrec = np.empty(rec.shape, dtype=newdtype).view(type(rec))
-
-    for field in rec.dtype.fields:
-        newrec[field] = rec[field]
-        try:
-            newrec.mask[field] = rec.mask[field]
-        except AttributeError:
-            pass #Not a masked array
-
-    for n,a in zip(name, arr):
-        newrec[n] = a
-        try:
-            newrec.mask[n] = np.array([False]*a.size).reshape(a.shape)
-        except:
-            pass
-    return newrec
+from matplotlib.mlab import rec_append_fields as append_field
