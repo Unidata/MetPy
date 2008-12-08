@@ -28,16 +28,12 @@ mesonet_units = {'TAIR':'C', 'RELH':'%', 'PRES':'mb', 'WSPD':'m/s',
     'SRAD':'W/m^2', 'RAIN':'mm', 'WDIR':'deg', 'WMAX':'m/s'}
 
 @lru_cache(maxsize=20)
-def _fetch_mesonet_data(date_time=None, site=None):
+def _fetch_mesonet_data(date_time, site=None):
     '''
     Helper function for fetching mesonet data from a remote location.
     Uses an LRU cache.
     '''
     import urllib2
-
-    if date_time is None:
-        import datetime
-        date_time = datetime.datetime.utcnow()
 
     if site is None:
         data_type = 'mdf'
@@ -60,7 +56,8 @@ def _fetch_mesonet_data(date_time=None, site=None):
     return datafile.read()
 
 def remote_mesonet_data(date_time=None, fields=None, site=None,
-    rename_fields=False, convert_time=True, lookup_stids=True):
+    rename_fields=False, convert_time=True, lookup_stids=True,
+    full_day_record=True):
     '''
     Reads in Oklahoma Mesonet Datafile (MDF) directly from their servers.
 
@@ -94,15 +91,42 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
         Flag indicating whether to lookup the location for the station id
         and include this information in the returned data. Defaults to True.
 
+    full_day_record : boolean
+        Flag indicating whether to get yesterday's data as well as today's,
+        when datetime is None.  This will give a full 24 hour of data, as
+        opposed to just today's (incomplete) set.
+
     Returns : array
         A nfield by ntime masked array.  nfield is the number of fields
         requested and ntime is the number of times in the file.  Each
         variable is a row in the array.  The variables are returned in
         the order given in *fields*.
     '''
+    #If we don't get a date, and therefore are using today, fetch yesterday's
+    #data too so that we can have a full 24 hour record
+    if dt is None:
+        import datetime
+        dt = datetime.datetime.utcnow()
+        if full_day_record:
+            yest = dt - datetime.timedelta(days=1)
+
+            old_data = StringIO(_fetch_mesonet_data(yest, site))
+            old_data = read_mesonet_data(old_data, fields, rename_fields,
+                convert_time, lookup_stids)
+
+    #Fetch the data and read it in
     data = StringIO(_fetch_mesonet_data(date_time, site))
-    return read_mesonet_data(data, fields, rename_fields, convert_time,
+    data = read_mesonet_data(data, fields, rename_fields, convert_time,
         lookup_stids)
+
+    if full_day_record:
+        # Need to create a new array.  Resizing the old ones will not work.
+        final_data = np.ma.empty(old_data.size + data.size, dtype=data.dtype)
+        final_data[:old_data.size] = old_data
+        final_data[old_data.size:] = data
+        data = final_data
+
+    return data
 
 def read_mesonet_data(filename, fields=None, rename_fields=False,
     convert_time=True, lookup_stids=True):
@@ -252,10 +276,11 @@ if __name__ == '__main__':
     else:
         dt = None
 
-    data = remote_mesonet_data(dt,
-        ('stid', 'time', 'relh', 'tair', 'wspd', 'wmax', 'wdir', 'pres', 'srad',
-            'rain'),
-        opts.site, rename_fields=True, lookup_stids=False)
+    fields = ('stid', 'time', 'relh', 'tair', 'wspd', 'wmax', 'wdir', 'pres',
+        'srad', 'rain')
 
-    meteogram(data)
+    data = remote_mesonet_data(dt, fields, opts.site, rename_fields=False,
+        lookup_stids=False)
+
+    meteogram(data, field_info=mesonet_var_map)
     plt.show()
