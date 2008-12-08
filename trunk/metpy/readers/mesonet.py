@@ -205,6 +205,10 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
     data = mloadtxt(fh, dtype=None, names=True, usecols=fields, skiprows=skip,
         converters=conv, missing=missing)
 
+    # Hack here to have the date/time field have the same mask as the rest
+    # of the data.  By rest, we'll use tair here.
+    data['TIME'].mask = data['TAIR'].mask.copy()
+
     #Use the inverted dictionary to map names in the FILE to their more
     #descriptive counterparts
     if rename_fields:
