@@ -1,17 +1,19 @@
 __all__ = ['meteogram']
 
+from datetime import timedelta
+from pytz import UTC
 import matplotlib.pyplot as plt
 from matplotlib.ticker import NullFormatter
-from matplotlib.dates import DateFormatter, HourLocator, date2num
+from matplotlib.dates import (DateFormatter, HourLocator, AutoDateLocator,
+    date2num)
+from metpy.cbook import iterable
 
 #WORK IN PROGRESS
 #TODO:
 #   *cleanup support for mesonet style filled plots
-#   *figure out how to specify x-axis limits in time and allow those
-#       to be set by user
 #   *Update documentation for existing options and add documentation for
 #       new options
-#   *Make xtick format work with x range
+#   **** REWRITE AS CLASS ****
 #Elsewhere, need a dewpoint calculation function
 
 #Default units for certain variables
@@ -19,8 +21,8 @@ default_units = {'temperature':'C', 'dewpoint':'C', 'relative humidity':'%',
     'pressure':'mb', 'wind speed':'m/s', 'solar radiation':'$W/m^2$',
     'rainfall':'mm', 'wind gusts':'m/s'}
 
-def meteogram(data, num_panels=5, layout=None, styles=None, limits=None,
-    units=None, field_info=None):
+def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
+    styles=None, limits=None, units=None, field_info=None):
     '''
     Plots a meteogram (collection of time series) for a data set. This
     is broken down into a series of panels (defaults to 3), each of which
@@ -33,6 +35,17 @@ def meteogram(data, num_panels=5, layout=None, styles=None, limits=None,
 
     *num_panels* : int
         The number of panels to use in the plot.
+
+    *time_range* : sequence, datetime.timedetla, or *None*
+        If a sequence, the starting and ending times for the x-axis.  If
+        a :class:`datetime.timedelta` object, it represents the time span
+        to plot, which will end with the last data point.  It defaults to
+        the last 24 hours of data.
+
+    *ticker* : :class:`matplotlib.dates.DateLocator`
+        An instance of a :class:`matplotlib.dates.DateLocator` that controls
+        where the ticks will be located.  The default is
+        :class:`matplotlib.dates.AutoDateLocator`.
 
     *layout* : dictionary
         A dictionary that maps panel numbers to lists of variables.
@@ -74,11 +87,31 @@ def meteogram(data, num_panels=5, layout=None, styles=None, limits=None,
     def inv_map_field(name):
         return inv_field_info.get(name, name)
 
+    #Get the time variable, using field info if necessary
+    dt = map_field('datetime')
+    time = data[dt]
+    tz = UTC
+
+    #Process time_range.
+    if time_range is None:
+        time_range = timedelta(hours=24)
+        if ticker is None:
+            ticker = HourLocator(byhour=np.arange(0, 25, 3), tz=tz)
+
+    #Process ticker
+    if ticker is None:
+        ticker = AutoDateLocator(tz=tz)
+
+    if not iterable(time_range):
+        end = time[-1]
+        start = end - time_range
+        time_range = (start, end)
+
     #List of variables in each panel.  None denotes that at that point, twinx
     #should be called and the remaining variables plotted on the other axis
     default_layout = {
         0:[map_field('temperature'), None, map_field('relative humidity')],
-        1:[map_field('wind speed'), map_field('wind gusts'), None,
+        1:[map_field('wind gusts'), map_field('wind speed'), None,
             map_field('wind direction')],
         2:[map_field('pressure')],
         3:[map_field('rainfall')],
@@ -132,12 +165,8 @@ def meteogram(data, num_panels=5, layout=None, styles=None, limits=None,
         def_units.update(units)
     units = def_units
 
-    #Get the time variable, using field info if necessary
-    dt = field_info.get('datetime', 'datetime')
-    time = data[dt]
-
     #Get the station name, using field info if necessary
-    site_name = field_info.get('site', 'site')
+    site_name = map_field('site')
     site = data[site_name][0]
 
     #Get the date from the first time
@@ -195,20 +224,20 @@ def meteogram(data, num_panels=5, layout=None, styles=None, limits=None,
                 unit_str = ''
             ax.set_ylabel(inv_map_field(varname).title() + unit_str)
 
-        ax.xaxis.set_major_locator(HourLocator(interval=3))
+        ax.xaxis.set_major_locator(ticker)
         ax.xaxis.set_major_formatter(DateFormatter('%H'))
         if not panel_twinned:
             ax.yaxis.set_ticks_position('both')
             for tick in ax.yaxis.get_major_ticks():
                 tick.label2On = True
         axes.append(ax)
-    ax.set_xlabel('Hour (UTC)')
+    ax.set_xlabel('Hour (%s)' % tz.tzname(time[0]))
+    ax.set_xlim(*time_range)
 
     return axes
 
 import numpy as np
 from numpy import ma
-import matplotlib.pyplot as plt
 from matplotlib.cbook import delete_masked_points
 
 def scalar_label(ax, x, y, data, format, loc='C', **kw):
