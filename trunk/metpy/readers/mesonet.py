@@ -3,7 +3,7 @@ from cStringIO import StringIO
 import numpy as np
 from numpy.ma import mrecords
 from metpy.cbook import loadtxt, mloadtxt #Can go back to numpy once it's updated
-from metpy.cbook import is_string_like, lru_cache, append_field
+from metpy.cbook import is_string_like, lru_cache, rec_append_fields
 
 #This is a direct copy and paste of the mesonet station data avaiable at
 #http://www.mesonet.org/sites/geomeso.csv
@@ -204,7 +204,7 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
         lat = sta_table['Lat'][station_indices]
         lon = sta_table['Lon'][station_indices]
         elev = sta_table['Elev'][station_indices]
-        data = append_field(data, ('Latitude', 'Longitude', 'Elevation'),
+        data = rec_append_fields(data, ('Latitude', 'Longitude', 'Elevation'),
             (lat, lon, elev))
 
     return data
@@ -212,12 +212,12 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
 def mesonet_stid_info(info=None):
     '''
     Get mesonet station information.
-    
+
     info : sequence of tuples
         Sequence of column name and number pairs, specifying
         what information to return.  The default of None returns
         station ID, latitude, longitude, and elevation.
-    
+
     Returns : structured array
         A structured array with the station information.
     '''
@@ -244,14 +244,14 @@ if __name__ == '__main__':
         metavar='SITE', default='nrmn')
     parser.add_option('-d', '--date', dest='date', help='get data for YYYYMMDD',
         metavar='YYYYMMDD', default=None)
-    
+
     #Parse the command line options and convert them to useful values
     opts,args = parser.parse_args()
     if opts.date is not None:
         dt = datetime.datetime.strptime(opts.date, '%Y%m%d')
     else:
         dt = None
-    
+
     data = remote_mesonet_data(dt,
         ('stid', 'time', 'relh', 'tair', 'wspd', 'wmax', 'wdir', 'pres', 'srad',
             'rain'),

@@ -165,4 +165,4 @@ def lru_cache(maxsize):
 #
 
 from genloadtxt import loadtxt, mloadtxt
-from matplotlib.mlab import rec_append_fields as append_field
+from matplotlib.mlab import rec_append_fields
