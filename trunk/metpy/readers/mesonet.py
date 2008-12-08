@@ -104,11 +104,11 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
     '''
     #If we don't get a date, and therefore are using today, fetch yesterday's
     #data too so that we can have a full 24 hour record
-    if dt is None:
+    if date_time is None:
         import datetime
-        dt = datetime.datetime.utcnow()
+        date_time = datetime.datetime.utcnow()
         if full_day_record:
-            yest = dt - datetime.timedelta(days=1)
+            yest = date_time - datetime.timedelta(days=1)
 
             old_data = StringIO(_fetch_mesonet_data(yest, site))
             old_data = read_mesonet_data(old_data, fields, rename_fields,
