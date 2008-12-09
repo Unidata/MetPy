@@ -262,6 +262,7 @@ if __name__ == '__main__':
     from optparse import OptionParser
 
     import matplotlib.pyplot as plt
+    import scipy.constants as sconsts
     from metpy.vis import meteogram
     from metpy.constants import C2F
 
@@ -289,11 +290,21 @@ if __name__ == '__main__':
     dewpt = C2F(dewpoint(data['TAIR'], data['RELH']/100.))
     data = rec_append_fields(data, ('dewpoint',), (dewpt,))
 
-    #Convert temperature to Farenheit
+    #Convert temperature and dewpoint to Farenheit
     mod_units = mesonet_units.copy()
     mod_units['TAIR'] = 'F'
     mod_units['dewpoint'] = 'F'
     data['TAIR'] = C2F(data['TAIR'])
+
+    #Convert wind speeds to MPH
+    data['WSPD'] *= sconsts.hour / sconsts.mile
+    data['WMAX'] *= sconsts.hour / sconsts.mile
+    mod_units['WSPD'] = 'MPH'
+    mod_units['WMAX'] = 'MPH'
+
+    #Convert rainfall to inches
+    data['RAIN'] *= sconsts.milli / sconsts.inch
+    mod_units['RAIN'] = 'in.'
 
     #Add a reasonable time range if we're doing current data
     if dt is None:
