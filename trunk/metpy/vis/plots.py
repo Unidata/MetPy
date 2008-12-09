@@ -23,8 +23,8 @@ def _rescale_yaxis(ax, bounds):
     ax.autoscale_view()
 
 #TODO: REWRITE AS CLASS
-def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
-    styles=None, limits=None, units=None, field_info=None):
+def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
+    layout=None, styles=None, limits=None, units=None, field_info=None):
     '''
     Plots a meteogram (collection of time series) for a data set. This
     is broken down into a series of panels (defaults to 3), each of which
@@ -34,6 +34,10 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
     *data* : numpy record array
         A numpy record array containing time series for individual variables
         in each field.
+
+    *fig* : :class:`matplotlib.figure.Figure` instance or None.
+        A matplotlib Figure on which to draw.  If None, a new figure
+        will be created.
 
     *num_panels* : int
         The number of panels to use in the plot.
@@ -80,6 +84,9 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
     Returns : list
         A list of the axes objects that were created.
     '''
+
+    if fig is None:
+        fig = plt.figure()
 
     if field_info is None:
         field_info = {}
@@ -183,9 +190,9 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
     axes = []
     for panel in range(num_panels):
         if panel > 0:
-            ax = plt.subplot(num_panels, 1, panel+1, sharex=ax)
+            ax = fig.add_subplot(num_panels, 1, panel+1, sharex=ax)
         else:
-            ax = plt.subplot(num_panels, 1, panel+1)
+            ax = fig.add_subplot(num_panels, 1, panel+1)
             ax.set_title('Meteogram for %s on %s' % (site, date))
 
         panel_twinned = False
@@ -195,7 +202,7 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
         for varname in layout[panel]:
             if varname is None:
                 _rescale_yaxis(ax, var_min + var_max)
-                ax = plt.twinx(ax)
+                ax = ax.twinx()
                 panel_twinned = True
                 var_min = []
                 var_max = []
