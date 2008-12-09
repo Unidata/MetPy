@@ -4,6 +4,7 @@ import numpy as np
 from numpy.ma import mrecords
 from metpy.cbook import loadtxt, mloadtxt #Can go back to numpy once it's updated
 from metpy.cbook import is_string_like, lru_cache, rec_append_fields
+from metpy.calc import dewpoint
 
 #This is a direct copy and paste of the mesonet station data avaiable at
 #http://www.mesonet.org/sites/geomeso.csv
@@ -25,7 +26,7 @@ mesonet_inv_var_map = dict(zip(mesonet_var_map.values(),
     mesonet_var_map.keys()))
 
 mesonet_units = {'TAIR':'C', 'RELH':'%', 'PRES':'mb', 'WSPD':'m/s',
-    'SRAD':'W/m^2', 'RAIN':'mm', 'WDIR':'deg', 'WMAX':'m/s'}
+    'SRAD':'$W/m^2$', 'RAIN':'mm', 'WDIR':'deg', 'WMAX':'m/s'}
 
 @lru_cache(maxsize=20)
 def _fetch_mesonet_data(date_time, site=None):
@@ -284,9 +285,14 @@ if __name__ == '__main__':
     data = remote_mesonet_data(dt, fields, opts.site, rename_fields=False,
         lookup_stids=False)
 
+    #Calculate dewpoint in F from relative humidity and temperature
+    dewpt = C2F(dewpoint(data['TAIR'], data['RELH']/100.))
+    data = rec_append_fields(data, ('dewpoint',), (dewpt,))
+
     #Convert temperature to Farenheit
     mod_units = mesonet_units.copy()
     mod_units['TAIR'] = 'F'
+    mod_units['dewpoint'] = 'F'
     data['TAIR'] = C2F(data['TAIR'])
 
     #Add a reasonable time range if we're doing current data
@@ -295,6 +301,7 @@ if __name__ == '__main__':
         times = (now - datetime.timedelta(hours=24), now)
     else:
         times = None
-    meteogram(data, field_info=mesonet_var_map, units=mod_units,
+    axs = meteogram(data, field_info=mesonet_var_map, units=mod_units,
         time_range=times)
+    axs[0].set_ylabel('Temperature (F)')
     plt.show()
