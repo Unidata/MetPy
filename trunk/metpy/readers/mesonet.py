@@ -4,7 +4,6 @@ import numpy as np
 from numpy.ma import mrecords
 from metpy.cbook import loadtxt, mloadtxt #Can go back to numpy once it's updated
 from metpy.cbook import is_string_like, lru_cache, rec_append_fields
-from metpy.calc import dewpoint
 
 #This is a direct copy and paste of the mesonet station data avaiable at
 #http://www.mesonet.org/sites/geomeso.csv
@@ -265,6 +264,7 @@ if __name__ == '__main__':
     import scipy.constants as sconsts
     from metpy.vis import meteogram
     from metpy.constants import C2F
+    from metpy.calc import dewpoint, windchill
 
     #Create a command line option parser so we can pass in site and/or date
     parser = OptionParser()
@@ -306,6 +306,10 @@ if __name__ == '__main__':
     data['RAIN'] *= sconsts.milli / sconsts.inch
     mod_units['RAIN'] = 'in.'
 
+    #Calculate windchill
+    wchill = windchill(data['TAIR'], data['WSPD'], metric=False)
+    data = rec_append_fields(data, ('windchill',), (wchill,))
+
     #Add a reasonable time range if we're doing current data
     if dt is None:
         now = datetime.datetime.utcnow()
@@ -313,7 +317,8 @@ if __name__ == '__main__':
     else:
         times = None
     fig = plt.figure(figsize=(8,10))
+    layout = {0:['TAIR', 'dewpoint', 'windchill']}
     axs = meteogram(data, fig, field_info=mesonet_var_map, units=mod_units,
-        time_range=times)
+        time_range=times, layout=layout)
     axs[0].set_ylabel('Temperature (F)')
     plt.show()
