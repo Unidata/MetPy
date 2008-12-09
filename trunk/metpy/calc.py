@@ -1,7 +1,7 @@
 'A collection of generic calculation functions.'
 
 import numpy as np
-from numpy.ma import log, exp
+from numpy.ma import log, exp, cos, sin
 from metpy.cbook import iterable
 
 sat_pressure_0c = 6.112 # mb
@@ -59,3 +59,23 @@ def mixing_ratio(part_press, tot_press):
     they have the same units.
     '''
     return part_press / (tot_press - part_press)
+
+def get_wind_components(speed, wdir):
+    '''
+    Calculate the U, V wind vector components from the speed and
+    direction (from which the wind is blowing).
+
+    speed : scalar or array
+        The wind speed (magnitude)
+
+    wdir : scalar or array
+        The wind direction in degrees
+
+    Returns : tuple of scalars or arrays
+        The tuple (U,V) corresponding to the wind components in the
+        X (East-West) and Y (North-South) directions, respectively.
+    '''
+    from scipy.constants import degree
+    u = -speed * sin(wdir * degree)
+    v = -speed * cos(wdir * degree)
+    return u,v
