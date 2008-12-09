@@ -165,4 +165,55 @@ def lru_cache(maxsize):
 #
 
 from genloadtxt import loadtxt, mloadtxt
-from matplotlib.mlab import rec_append_fields
+
+#Taken from a numpy-discussion mailing list post 'Re: adding field to rec array'
+#by Robert Kern.  Modified to handle masked arrays, which is why we don't
+#just use the matplotlib version
+def rec_append_fields(rec, name, arr, dtype=None):
+    """
+    Appends a field to an existing record array, handling masked fields
+    if necessary.
+
+    Parameters
+    ----------
+    rec : numpy record array
+        Array to which the new field should be appended
+    name : string
+        Name to be given to the new field
+    arr : ndarray
+        Array containing the data for the new field.
+    dtype : data-type or None, optional
+        Data type of the new field.  If this is None, the data type will
+        be obtained from `arr`.
+
+    Returns
+    -------
+    out : numpy record array
+        `rec` with the new field appended.
+    rec = np.asarray(rec, name, arr)
+    """
+    if not iterable(name):
+        name = [name]
+    if not iterable(arr):
+        arr = [arr]
+
+    if dtype is None:
+        dtype = [a.dtype for a in arr]
+
+    newdtype = np.dtype(rec.dtype.descr + zip(name, dtype))
+    newrec = np.empty(rec.shape, dtype=newdtype).view(type(rec))
+
+    for field in rec.dtype.fields:
+        newrec[field] = rec[field]
+        try:
+            newrec.mask[field] = rec.mask[field]
+        except AttributeError:
+            pass #Not a masked array
+
+    for n,a in zip(name, arr):
+        newrec[n] = a
+        try:
+            newrec.mask[n] = np.array([False]*a.size).reshape(a.shape)
+        except:
+            pass
+    return newrec
