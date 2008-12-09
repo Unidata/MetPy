@@ -167,7 +167,7 @@ def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
         map_field('wind speed'):(0, None),
         map_field('wind gusts'):(0, None),
         map_field('rainfall'):(0, None),
-        map_field('solar radiation'):(0, 800)
+        map_field('solar radiation'):(0, 1000, np.arange(0,1050,200))
         }
 
     if limits is not None:
@@ -236,7 +236,7 @@ def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
                 lims = lims[:2]
                 #Separate out the ticks and perhaps labels
                 if len(other) == 1:
-                    ax.set_yticks(ticks)
+                    ax.set_yticks(other[0])
                 else:
                     ticks,labels = other
                     ax.set_yticks(ticks)
