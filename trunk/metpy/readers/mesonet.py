@@ -230,7 +230,7 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
         lat = sta_table['Lat'][station_indices]
         lon = sta_table['Lon'][station_indices]
         elev = sta_table['Elev'][station_indices]
-        data = rec_append_fields(data, ('Latitude', 'Longitude', 'Elevation'),
+        data = rec_append_fields(data, ('latitude', 'longitude', 'elevation'),
             (lat, lon, elev))
 
     return data
