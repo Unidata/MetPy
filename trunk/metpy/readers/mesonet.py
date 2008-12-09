@@ -312,7 +312,8 @@ if __name__ == '__main__':
         times = (now - datetime.timedelta(hours=24), now)
     else:
         times = None
-    axs = meteogram(data, field_info=mesonet_var_map, units=mod_units,
+    fig = plt.figure(figsize=(8,10))
+    axs = meteogram(data, fig, field_info=mesonet_var_map, units=mod_units,
         time_range=times)
     axs[0].set_ylabel('Temperature (F)')
     plt.show()
