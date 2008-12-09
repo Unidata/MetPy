@@ -4,6 +4,7 @@ from operator import itemgetter as _itemgetter
 from keyword import iskeyword as _iskeyword
 import itertools
 import sys as _sys
+import numpy as np
 from numpy import ma
 
 from matplotlib.cbook import iterable, is_string_like, Bunch
