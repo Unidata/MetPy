@@ -289,9 +289,12 @@ if __name__ == '__main__':
     mod_units['TAIR'] = 'F'
     data['TAIR'] = C2F(data['TAIR'])
 
-    #Add a reasonable time range
-    now = datetime.datetime.utcnow()
-    times = (now - datetime.timedelta(hours=24), now)
+    #Add a reasonable time range if we're doing current data
+    if dt is None:
+        now = datetime.datetime.utcnow()
+        times = (now - datetime.timedelta(hours=24), now)
+    else:
+        times = None
     meteogram(data, field_info=mesonet_var_map, units=mod_units,
         time_range=times)
     plt.show()
