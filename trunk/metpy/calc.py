@@ -1,6 +1,7 @@
 'A collection of generic calculation functions.'
 
 import numpy as np
+from numpy.ma import log, exp
 from metpy.cbook import iterable
 
 sat_pressure_0c = 6.112 # mb
@@ -19,7 +20,7 @@ def vapor_pressure(temp):
     Instead of temperature, dewpoint may be used in order to calculate
     the actual (ambient) water vapor (partial) pressure.
     '''
-    return sat_pressure_0c * np.exp(17.67 * temp / (temp + 243.5))
+    return sat_pressure_0c * exp(17.67 * temp / (temp + 243.5))
 
 def dewpoint(temp, rh):
     '''
@@ -37,7 +38,7 @@ def dewpoint(temp, rh):
         of the result being determined using numpy's broadcasting rules.
     '''
     es = vapor_pressure(temp)
-    val = np.log(rh * es/sat_pressure_0c)
+    val = log(rh * es/sat_pressure_0c)
     return 243.5 * val / (17.67 - val)
 
 def mixing_ratio(part_press, tot_press):
