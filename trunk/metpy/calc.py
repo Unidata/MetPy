@@ -13,8 +13,8 @@ def vapor_pressure(temp):
         The temperature in degrees Celsius.
 
     Returns : scalar or array
-        The saturation water vapor (partial) presure, with the same
-        shape as *temp*.
+        The saturation water vapor (partial) presure in millibars, with
+        the same shape as *temp*.
 
     Instead of temperature, dewpoint may be used in order to calculate
     the actual (ambient) water vapor (partial) pressure.
@@ -33,10 +33,28 @@ def dewpoint(temp, rh):
         The relative humidity expressed as a ratio in the range [0, 1]
 
     Returns : scalar or array
-        The dew point temperature, with the shape of the result being
-        that which results from broadcasting temp against rh using
-        numpy's broadcasting rules.
+        The dew point temperature in degrees Celsius, with the shape
+        of the result being determined using numpy's broadcasting rules.
     '''
     es = vapor_pressure(temp)
     val = np.log(rh * es/sat_pressure_0c)
     return 243.5 * val / (17.67 - val)
+
+def mixing_ratio(part_press, tot_press):
+    '''
+    Calculates the mixing ratio of gas given its partial pressure
+    and the total pressure of the air.
+
+    part_press : scalar or array
+        The partial pressure of the constituent gas.
+
+    tot_press : scalar or array
+        The total air pressure.
+
+    Returns : scalar or array
+        The (mass) mixing ratio, unitless (e.g. Kg/Kg or g/g)
+
+    There are no required units for the input arrays, other than that
+    they have the same units.
+    '''
+    return part_press / (tot_press - part_press)
