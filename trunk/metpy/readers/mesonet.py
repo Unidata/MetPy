@@ -104,6 +104,7 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
     '''
     #If we don't get a date, and therefore are using today, fetch yesterday's
     #data too so that we can have a full 24 hour record
+    yest = None
     if date_time is None:
         import datetime
         date_time = datetime.datetime.utcnow()
@@ -119,7 +120,7 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
     data = read_mesonet_data(data, fields, rename_fields, convert_time,
         lookup_stids)
 
-    if full_day_record:
+    if yest:
         # Need to create a new array.  Resizing the old ones will not work.
         final_data = np.ma.empty(old_data.size + data.size, dtype=data.dtype)
         final_data[:old_data.size] = old_data
