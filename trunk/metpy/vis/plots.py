@@ -185,8 +185,9 @@ def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
     site_name = map_field('site')
     site = data[site_name][0]
 
-    #Get the date from the first time
-    date = time_range[0].strftime('%Y-%m-%d')
+    #Get strings for the start and end times
+    start = time_range[0].strftime('%H%MZ %d %b %Y')
+    end = time_range[1].strftime('%H%MZ %d %b %Y')
 
     axes = []
     for panel in range(num_panels):
@@ -194,7 +195,7 @@ def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
             ax = fig.add_subplot(num_panels, 1, panel+1, sharex=ax)
         else:
             ax = fig.add_subplot(num_panels, 1, panel+1)
-            ax.set_title('Meteogram for %s on %s' % (site, date))
+            ax.set_title('%s\n%s to %s' % (site, start, end))
 
         panel_twinned = False
 
