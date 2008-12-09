@@ -27,6 +27,10 @@ mesonet_inv_var_map = dict(zip(mesonet_var_map.values(),
 mesonet_units = {'TAIR':'C', 'RELH':'%', 'PRES':'mb', 'WSPD':'m/s',
     'SRAD':'$W/m^2$', 'RAIN':'mm', 'WDIR':'deg', 'WMAX':'m/s'}
 
+#Some special numbers
+BAD_DATA_LIMIT = -990
+FUTURE_OBSERVATION = -996
+
 @lru_cache(maxsize=20)
 def _fetch_mesonet_data(date_time, site=None):
     '''
@@ -201,7 +205,6 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
         skip = 2
         conv = None
 
-    BAD_DATA_LIMIT = -990
     missing = ','.join(map(str,range(BAD_DATA_LIMIT, BAD_DATA_LIMIT-10, -1)))
     data = mloadtxt(fh, dtype=None, names=True, usecols=fields, skiprows=skip,
         converters=conv, missing=missing)
@@ -256,6 +259,26 @@ def mesonet_stid_info(info=None):
     return loadtxt(StringIO(mesonet_station_table), dtype=None, skiprows=123,
         usecols=cols, names=names, delimiter=',')
 
+def get_last_time(data, ref_field='TAIR', dt_field='datetime'):
+    '''
+    Get the time of the last actual observation in a mesonet file.
+
+    data : structured array
+        The mesonet data
+
+    ref_field : string
+        The name of the field in which to look to find where future
+        observations are marked.  This defaults to 'TAIR'.
+
+    dt_field : string
+        The name of the field containing date/time information. Defaults
+        to 'datetime'.
+
+    Returns : the date/time of the last actual observation in the file
+    '''
+    mask = data[ref_field].data != FUTURE_OBSERVATION
+    return data[dt_field][mask][-1]
+
 if __name__ == '__main__':
     import datetime
     from optparse import OptionParser
@@ -286,6 +309,13 @@ if __name__ == '__main__':
     data = remote_mesonet_data(dt, fields, opts.site, rename_fields=False,
         lookup_stids=False)
 
+    #Add a reasonable time range if we're doing current data
+    if dt is None:
+        end = get_last_time(data)
+        times = (end - datetime.timedelta(hours=24), end)
+    else:
+        times = None
+
     #Calculate dewpoint in F from relative humidity and temperature
     dewpt = C2F(dewpoint(data['TAIR'], data['RELH']/100.))
     data = rec_append_fields(data, ('dewpoint',), (dewpt,))
@@ -310,12 +340,6 @@ if __name__ == '__main__':
     wchill = windchill(data['TAIR'], data['WSPD'], metric=False)
     data = rec_append_fields(data, ('windchill',), (wchill,))
 
-    #Add a reasonable time range if we're doing current data
-    if dt is None:
-        now = datetime.datetime.utcnow()
-        times = (now - datetime.timedelta(hours=24), now)
-    else:
-        times = None
     fig = plt.figure(figsize=(8,10))
     layout = {0:['TAIR', 'dewpoint', 'windchill']}
     axs = meteogram(data, fig, field_info=mesonet_var_map, units=mod_units,
