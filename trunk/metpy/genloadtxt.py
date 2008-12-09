@@ -118,22 +118,22 @@ class LineSplitter:
         # Delimiter is a character
         if (delimiter is None) or _is_string_like(delimiter):
             delimiter = delimiter or None
-            _called = self._delimited_splitter
+            _handyman = self._delimited_splitter
         # Delimiter is a list of field widths
         elif hasattr(delimiter, '__iter__'):
-            _called = self._variablewidth_splitter
+            _handyman = self._variablewidth_splitter
             idx = np.cumsum([0]+list(delimiter))
             delimiter = [slice(i,j) for (i,j) in zip(idx[:-1], idx[1:])]
         # Delimiter is a single integer
         elif int(delimiter):
-            (_called, delimiter) = (self._fixedwidth_splitter, int(delimiter))
+            (_handyman, delimiter) = (self._fixedwidth_splitter, int(delimiter))
         else:
-            (_called, delimiter) = (self._delimited_splitter, None)
+            (_handyman, delimiter) = (self._delimited_splitter, None)
         self.delimiter = delimiter
         if autostrip:
-            self._called = self.autostrip(_called)
+            self._handyman = self.autostrip(_handyman)
         else:
-            self._called = _called
+            self._handyman = _handyman
     #
     def _delimited_splitter(self, line):
         line = line.split(self.comments)[0].strip()
@@ -157,7 +157,7 @@ class LineSplitter:
         return [line[s] for s in slices]
     #
     def __call__(self, line):
-        return self._called(line)
+        return self._handyman(line)
 
 
 
@@ -469,9 +469,9 @@ class StringConverter:
 
 
 def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
-               converters=None, missing='', missing_values=None,
-               usecols=None, unpack=None,
-               names=None, excludelist=None, deletechars=None, usemask=False):
+               converters=None, missing='', missing_values=None, usecols=None,
+               names=None, excludelist=None, deletechars=None,
+               unpack=None, usemask=False, loose=True):
     """
     Load data from a text file.
 
@@ -522,6 +522,12 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
     unpack : {bool}, optional
         If True, the returned array is transposed, so that arguments may be
         unpacked using ``x, y, z = loadtxt(...)``
+    usemask : {bool}, optional
+        Whether to create a mask indicating where data is missing.
+    loose : {bool}, optional
+        Whether to use a loose converter or not. With a loose converter, 
+        data that cannot be converted is transformed to a default value, 
+        and no ValueError exception is raised.
 
 
     Returns
@@ -558,7 +564,7 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
     # Initialize the filehandle, the LineSplitter and the NameValidator
     fhd = _to_filehandle(fname)
     split_line = LineSplitter(delimiter=delimiter, comments=comments, 
-                              autostrip=True)
+                              autostrip=False)._handyman
     validate_names = NameValidator(excludelist=excludelist,
                                    deletechars=deletechars)
 
@@ -577,9 +583,6 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
         usecols = list(usecols)
     nbcols = len(usecols or first_values)
 
-    # Set flag for whether we read names from the file
-    read_names = False
-
     # Check the names and overwrite the dtype.names if needed
     if dtype is not None:
         dtype = np.dtype(dtype)
@@ -587,7 +590,6 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
     if names is True:
         names = validate_names([_.strip() for _ in first_values])
         first_line =''
-        read_names = True
     elif _is_string_like(names):
         names = validate_names([_.strip() for _ in names.split(',')])
     elif names:
@@ -647,11 +649,9 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
 
     # Update the converters to use the user-defined ones
     for (i, conv) in user_converters.iteritems():
-
         # If the converter is specified by column names, use the index instead
         if _is_string_like(i):
             i = names.index(i)
-
         if usecols:
             try:
                 i = usecols.index(i)
@@ -661,16 +661,17 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
         converters[i].update(conv, default=None, 
                              missing_values=missing_values[i],
                              locked=True)
-
     all_locked = min((_._locked for _ in converters))
 
-    # Make sure we have the proper names
-    if read_names and usecols:
+    # Reset the names to match the usecols
+    if (not first_line) and usecols:
         names = [names[_] for _ in usecols]
 
-
     rows = []
-    rowmasks = []
+    append_to_rows = rows.append
+    if usemask:
+        masks = []
+        append_to_masks = masks.append
     # Parse each line
     for line in itertools.chain([first_line,], fhd):
         values = split_line(line)
@@ -685,19 +686,25 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
             for (converter, item) in zip(converters, values):
                 converter.upgrade(item)
         # Store the values
-        rows.append(tuple(values))
-        rowmasks.append(tuple([val in mss 
-                               for (val, mss) in zip(values, missing_values)]))
+        append_to_rows(tuple(values))
+        if usemask:
+            append_to_masks(tuple([val.strip() in mss 
+                                   for (val, mss) in zip(values,
+                                                         missing_values)]))
 
     # Convert each value according to the converter:
     # We want to modify the list in place to avoid creating a new one...
+    if loose:
+        conversionfuncs = [conv._loose_call for conv in converters]
+    else:
+        conversionfuncs = [conv._strict_call for conv in converters]
     for (i, vals) in enumerate(rows):
-        rows[i] = tuple([conv._loose_call(val)
-                         for (conv, val) in zip(converters, vals)])
+        rows[i] = tuple([convert(val)
+                         for (convert, val) in zip(conversionfuncs, vals)])
 
 
     # Reset the dtype
-    (data, mask) = (rows, rowmasks)
+    data = rows
     if dtype is None:
         # Get the dtypes from the first row
         coldtypes = [np.array(val).dtype for val in data[0]]
@@ -718,7 +725,8 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
             ddtype = zip(names, coldtypes)
             mdtype = zip(names, [np.bool] * len(coldtypes))
         output = np.array(data, dtype=ddtype)
-        outputmask = np.array(mask, dtype=mdtype)
+        if usemask:
+            outputmask = np.array(masks, dtype=mdtype)
     else:
         # Overwrite the initial dtype names if needed
         if names and dtype.names:
@@ -733,23 +741,29 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
             rows = np.array(data, dtype=[('', t) for t in flatdtypes])
             output = rows.view(dtype)
             # Now, process the rowmasks the same way
-            rowmasks = np.array(mask,
-                                dtype=np.dtype([('', np.bool)
-                                                for t in flatdtypes]))
-            # Construct the new dtype
-            mdtype = nested_masktype(dtype)
-            outputmask = rowmasks.view([tuple(_) for _ in mdtype])
+            if usemask:
+                rowmasks = np.array(masks,
+                                    dtype=np.dtype([('', np.bool)
+                                                    for t in flatdtypes]))
+                # Construct the new dtype
+                mdtype = nested_masktype(dtype)
+                outputmask = rowmasks.view([tuple(_) for _ in mdtype])
         else:
             output = np.array(data, dtype)
-            if dtype.names:
-                mdtype = [(_, np.bool) for _ in dtype.names]
-            else:
-                mdtype = np.bool
-            outputmask = np.array(mask, dtype=mdtype)
+            if usemask:
+                if dtype.names:
+                    mdtype = [(_, np.bool) for _ in dtype.names]
+                else:
+                    mdtype = np.bool
+                outputmask = np.array(masks, dtype=mdtype)
     # Construct the final array
     if unpack:
-       return (output.squeeze().T, outputmask.squeeze().T)
-    return (output.squeeze(), outputmask.squeeze().T)
+        if usemask:
+            return (output.squeeze().T, outputmask.squeeze().T)
+        return (output.squeeze().T, None)
+    if usemask:
+        return (output.squeeze(), outputmask.squeeze().T)
+    return (output.squeeze(), None)
 
 
 
@@ -803,7 +817,7 @@ if __name__ == '__main__':
         os.write(tmp_fd, ", ".join(row) + "\n")
     os.close(tmp_fd)
 
-    try:
+    if 1:
         # Get a hotshot profile for genloadtxt
         kwargs = dict(delimiter=",", dtype=float)
         profiler = hotshot.Profile( "_preview.prof", lineevents=0 )
@@ -834,15 +848,18 @@ import numpy as np
         """
         args = "'%s', dtype=float, delimiter=','" % tmp_fl
         #
-        command = "loadtxt(%s)" % args
-        timer = timeit.Timer(command, setup)
-        print command, min(timer.repeat(*repeatargs))
-        output_nw = loadtxt(tmp_fl, dtype=float, delimiter=',')
-    
         command = "np.loadtxt(%s)" % args
         timer = timeit.Timer(command, setup)
-        print command, min(timer.repeat(*repeatargs))
+        timer_np = min(timer.repeat(*repeatargs))
+        print command, timer_np
         output_np = np.loadtxt(tmp_fl, dtype=float, delimiter=',')
+        #
+        command = "loadtxt(%s)" % args
+        timer = timeit.Timer(command, setup)
+        timer_nw = min(timer.repeat(*repeatargs))
+        print command, timer_nw, "(%+02.2f%%)" % ((timer_nw/timer_np-1)*100)
+        output_nw = loadtxt(tmp_fl, dtype=float, delimiter=',')
+
 
         args = "'%s', delimiter=','" % tmp_fl
         command = "csv2rec(%s)" % args
@@ -850,8 +867,8 @@ import numpy as np
         print command, min(timer.repeat(*repeatargs))
         from matplotlib.mlab import csv2rec
         output_ml = csv2rec(tmp_fl, delimiter=',', names=("a","b","c")).view((float,3))
-    except:
-        raise
-    finally:
+    #    except:
+    #        raise
+    #    finally:
         os.remove(tmp_fl)
 
