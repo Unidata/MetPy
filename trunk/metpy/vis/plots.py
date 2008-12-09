@@ -8,19 +8,20 @@ from matplotlib.dates import (DateFormatter, HourLocator, AutoDateLocator,
     date2num)
 from metpy.cbook import iterable
 
-#WORK IN PROGRESS
-#TODO:
-#   *cleanup support for mesonet style filled plots
-#   *Update documentation for existing options and add documentation for
-#       new options
-#   **** REWRITE AS CLASS ****
-#Elsewhere, need a dewpoint calculation function
-
 #Default units for certain variables
 default_units = {'temperature':'C', 'dewpoint':'C', 'relative humidity':'%',
     'pressure':'mb', 'wind speed':'m/s', 'solar radiation':'$W/m^2$',
     'rainfall':'mm', 'wind gusts':'m/s'}
 
+def _rescale_yaxis(ax, bounds):
+    # Manually tweak the limits here to ignore the low bottom set
+    # for fill_between
+    XY = np.array([[0]*len(bounds), bounds]).T
+    ax.ignore_existing_data_limits = True
+    ax.update_datalim(XY, updatex=False, updatey=True)
+    ax.autoscale_view()
+
+#TODO: REWRITE AS CLASS
 def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
     styles=None, limits=None, units=None, field_info=None):
     '''
@@ -110,7 +111,7 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
     #List of variables in each panel.  None denotes that at that point, twinx
     #should be called and the remaining variables plotted on the other axis
     default_layout = {
-        0:[map_field('temperature'), None, map_field('relative humidity')],
+        0:[map_field('temperature'), map_field('dewpoint')],
         1:[map_field('wind gusts'), map_field('wind speed'), None,
             map_field('wind direction')],
         2:[map_field('pressure')],
@@ -123,7 +124,8 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
 
     #Default styles for each variable
     default_styles = {
-        map_field('relative humidity'):dict(facecolor='green', edgecolor='None',
+        map_field('relative humidity'):dict(color='green', linestyle='--'),
+        map_field('dewpoint'):dict(facecolor='green', edgecolor='None',
             fill=True),
         map_field('temperature'):dict(facecolor='red', edgecolor='None',
             fill=True),
@@ -151,6 +153,8 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
     default_limits = {
         map_field('wind direction'):(0, 360, np.arange(0,400,45),
             ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']),
+        map_field('wind speed'):(0, None),
+        map_field('wind gusts'):(0, None),
         map_field('rainfall'):(0, None),
         map_field('solar radiation'):(0, 800)
         }
@@ -181,10 +185,16 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
             ax.set_title('Meteogram for %s on %s' % (site, date))
 
         panel_twinned = False
+
+        var_min = []
+        var_max = []
         for varname in layout[panel]:
             if varname is None:
+                _rescale_yaxis(ax, var_min + var_max)
                 ax = plt.twinx(ax)
                 panel_twinned = True
+                var_min = []
+                var_max = []
                 continue
 
             # Get the linestyle for this variable
@@ -193,15 +203,21 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
             #Get the variable from the data and plot
             var = data[map_field(varname)]
 
+            #Set special limits if necessary
+            lims = limits.get(varname, (None, None))
+
+            #Store the max and min for auto scaling
+            var_max.append(var.max())
+            var_min.append(var.min())
+
             if style.pop('fill', False):
                 #Plot the filled area.  Need latest Matplotlib for date support
                 #with fill_betweeen
-                ax.fill_between(time, var.min(), var, where=~var.mask, **style)
+                lower = -500 if lims[0] is None else lims[0]
+                ax.fill_between(time, lower, var, where=~var.mask, **style)
+                _rescale_yaxis(ax, var_min + var_max)
             else:
                 ax.plot(time, var, **style)
-
-            #Set special limits if necessary
-            lims = limits.get(varname, (None, None))
 
             #If then length > 2, then we have ticks and (maybe) labels
             if len(lims) > 2:
