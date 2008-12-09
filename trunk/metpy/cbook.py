@@ -214,7 +214,11 @@ def rec_append_fields(rec, name, arr, dtype=None):
     for n,a in zip(name, arr):
         newrec[n] = a
         try:
-            newrec.mask[n] = np.array([False]*a.size).reshape(a.shape)
-        except:
+            old_mask = a.mask
+        except AttributeError:
+            old_mask = np.array([False]*a.size).reshape(a.shape)
+        try:
+            newrec[n].mask = old_mask
+        except AttributeError:
             pass
     return newrec
