@@ -174,7 +174,7 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
     site = data[site_name][0]
 
     #Get the date from the first time
-    date = time[0].strftime('%Y-%m-%d')
+    date = time_range[0].strftime('%Y-%m-%d')
 
     axes = []
     for panel in range(num_panels):
