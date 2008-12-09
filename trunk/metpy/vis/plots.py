@@ -364,7 +364,7 @@ def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
         u,v = get_wind_components(wspd, wdir)
 
     #Convert coordinates
-    x,y = basemap(data[map_field('longitude'), data[map_field('latitude')])
+    x,y = basemap(data[map_field('longitude')], data[map_field('latitude')])
 
     # plot barbs.
     ax.barbs(x, y, u, v)
