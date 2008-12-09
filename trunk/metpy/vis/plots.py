@@ -1,7 +1,8 @@
-__all__ = ['meteogram']
+__all__ = ['meteogram', 'station_plot']
 
 from datetime import timedelta
 from pytz import UTC
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.ticker import NullFormatter
 from matplotlib.dates import (DateFormatter, HourLocator, AutoDateLocator,
@@ -75,6 +76,9 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
     *field_info* : dictionary
         A dictionary that maps standard names, like 'temperature' or
         'dewpoint' to the respective variables in the data record array.
+
+    Returns : list
+        A list of the axes objects that were created.
     '''
 
     if field_info is None:
@@ -252,10 +256,6 @@ def meteogram(data, num_panels=5, time_range=None, ticker=None, layout=None,
 
     return axes
 
-import numpy as np
-from numpy import ma
-from matplotlib.cbook import delete_masked_points
-
 def scalar_label(ax, x, y, data, format, loc='C', **kw):
     offset_lookup = dict(C=(0,0), N=(0,1), NE=(1,1), E=(1,0), SE=(1,-1),
         S=(0,-1), SW=(-1,-1), W=(-1,0), NW=(-1,1))
@@ -263,44 +263,70 @@ def scalar_label(ax, x, y, data, format, loc='C', **kw):
     trans = ax.transData
     for xi, yi, d in zip(x, y, data):
         ax.text(xi, yi, format % d, transform=trans, ha='center', va='center',
-            **kw)
+            clip_on=True, **kw)
 
-def station_plot(data):
+def station_plot(data, layout=None, offset=10., field_info=None):
+    '''
+    Makes a station plot of the variables in data.
+
+    *data* : numpy record array
+        A numpy record array containing time series for individual variables
+        in each field.
+
+    *layout* : dictionary
+        A dictionary that maps locations to field names.  Valid locations are:
+        ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'C'], where 'C' represents
+        the center location, and all others represent cardinal directions
+        relative to the center point.  The actual distance from the center
+        is controlled by *offset*.
+
+    *offset* : float
+        The offset, in pixels, from the center point for the values being
+        plotted.
+
+    *field_info* : dictionary
+        A dictionary that maps standard names, like 'temperature' or
+        'dewpoint' to the respective variables in the data record array.
+    '''
+    from numpy.ma import sin, cos
+    from scipy.constants import degree
     import matplotlib.pyplot as plt
     from matplotlib import transforms
+    from matplotlib.cbook import delete_masked_points
     from mpl_toolkits.basemap import Basemap
+
+    if field_info is None:
+        field_info = {}
+
+    inv_field_info = dict(zip(field_info.values(), field_info.keys()))
+
+    def map_field(name):
+        return field_info.get(name, name)
+
+    def inv_map_field(name):
+        return inv_field_info.get(name, name)
 
     kts_per_ms = 1.94384
 
-    temp = data['temp']
-    rh = data['relh']
-    es = 6.112 * np.exp(17.67 * temp/(temp + 243.5))
-    e = rh/100. * es
-    Td = 243.5/(17.67/np.log(e/6.112) - 1)
-    temp = temp * 1.8 + 32
-    Td = Td * 1.8 + 32
+    temp = data[map_field('temperature')]
+    dewpoint = data[map_field('dewpoint')]
 
-    wspd = data['wspd']
-    wdir = data['wdir']
-    mask = (wspd < -900)|(wdir < -900)
-
-    wspd = wspd[~mask] * kts_per_ms
-    u = ma.array(-wspd * np.sin(wdir * np.pi / 180.), mask=mask)
-    v = ma.array(-wspd * np.cos(wdir * np.pi / 180.), mask=mask)
+    if (map_field('u') in data.dtype.names and
+        map_field('v') in data.dtype.names):
+        u = data[map_field('u')]
+        v = data[map_field('v')]
+    else:
+        wspd = data[map_field('wind speed')]
+        wdir = data[map_field('wind direction')]
+        u,v = get_wind_components(wspd, wdir)
 
     # stereogrpaphic projection.
     m = Basemap(lon_0=-99, lat_0=35., lat_ts=35, resolution='i',
         projection='stere', urcrnrlat=37, urcrnrlon=-94.25, llcrnrlat=33.7,
         llcrnrlon=-103)
     x,y = m(lon,lat)
-    # transform from spherical to map projection coordinates (rotation
-    # and interpolation).
-    #nxv = 25; nyv = 25
-    #udat, vdat, xv, yv = m.transform_vector(u,v,lons1,lats1,nxv,nyv,returnxy=True)
-    # create a figure, add an axes.
     fig=plt.figure(figsize=(20,12))
     ax = fig.add_subplot(1,1,1)
-#    ax = fig.add_axes([0.1,0.1,0.8,0.8])
     # plot barbs.
     ax.barbs(x, y, u, v)
     grid_off = 10
@@ -318,13 +344,8 @@ def station_plot(data):
         if temp[ind] > -900 and rh[ind] > -900:
             ax.text(x[ind], y[ind], '%.0f' % Td[ind],
                 transform=tran_dew, color='g', ha='center', va='center')
-    m.bluemarble()
+#    m.bluemarble()
     m.drawstates()
 #    m.readshapefile('/home/rmay/mapdata/c_28de04', 'counties')
-    # draw parallels
-#    m.drawparallels(np.arange(30,40,2),labels=[1,1,0,0])
-    # draw meridians
-#    m.drawmeridians(np.arange(-110,90,2),labels=[0,0,0,1])
-    plt.title('Surface Station Plot')
-    plt.savefig('stations.png', dpi=100)
+    plt.title('Station Plot')
     plt.show()
