@@ -154,7 +154,8 @@ def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
         map_field('rainfall'):dict(facecolor='lightgreen', edgecolor='None',
             fill=True),
         map_field('solar radiation'):dict(facecolor='orange', edgecolor='None',
-            fill=True)}
+            fill=True),
+        map_field('windchill'):dict(color='lightblue')}
 
     if styles is not None:
         default_styles.update(styles)
