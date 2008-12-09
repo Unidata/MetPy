@@ -263,16 +263,31 @@ def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
 
     return axes
 
-def scalar_label(ax, x, y, data, format, loc='C', **kw):
-    offset_lookup = dict(C=(0,0), N=(0,1), NE=(1,1), E=(1,0), SE=(1,-1),
-        S=(0,-1), SW=(-1,-1), W=(-1,0), NW=(-1,1))
+def text_plot(ax, x, y, data, format='%.0f', loc=None, **kw):
+    from matplotlib.cbook import delete_masked_points
+    from matplotlib import transforms
+
+    # Default to centered on point
+    if loc is not None:
+        x0,y0 = loc
+        trans = ax.transData + transforms.Affine2D().translate(x0, y0)
+    else:
+        trans = ax.transData
+
+    # Handle masked arrays
     x,y,data = delete_masked_points(x, y, data)
-    trans = ax.transData
+
+    #Calculate the offset
     for xi, yi, d in zip(x, y, data):
         ax.text(xi, yi, format % d, transform=trans, ha='center', va='center',
             clip_on=True, **kw)
 
-def station_plot(data, layout=None, offset=10., field_info=None):
+#Maps specifiers to normalized offsets in x and y
+direction_map = dict(N=(0,1), NE=(1,1), E=(1,0), SE=(1,-1), S=(0,-1),
+    SW=(-1,-1), W=(-1,0), NW=(-1,1), C=(0,0))
+
+def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
+    offset=10., field_info=None):
     '''
     Makes a station plot of the variables in data.
 
@@ -280,12 +295,25 @@ def station_plot(data, layout=None, offset=10., field_info=None):
         A numpy record array containing time series for individual variables
         in each field.
 
+    *ax* : :class:`matplotlib.axes.Axes` instance or None
+        The matplotlib Axes object on which to draw the station plot.  If None,
+        the current Axes object is used.
+
+    *basemap* : :class:`mpl_toolkits.basemap.Basemap` instance or None
+        A Basemap object to use to convert geographic coordinates.  If None,
+        the geographic coordinates are used, as is, without any projection.
+
     *layout* : dictionary
         A dictionary that maps locations to field names.  Valid locations are:
         ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'C'], where 'C' represents
         the center location, and all others represent cardinal directions
         relative to the center point.  The actual distance from the center
         is controlled by *offset*.
+
+    *styles* : dictionary
+        A dictionary that maps variable names to dictionary of matplotlib
+        text style arguments. Any variable not specified will use a
+        default (if available).
 
     *offset* : float
         The offset, in pixels, from the center point for the values being
@@ -295,12 +323,12 @@ def station_plot(data, layout=None, offset=10., field_info=None):
         A dictionary that maps standard names, like 'temperature' or
         'dewpoint' to the respective variables in the data record array.
     '''
-    from numpy.ma import sin, cos
-    from scipy.constants import degree
-    import matplotlib.pyplot as plt
-    from matplotlib import transforms
-    from matplotlib.cbook import delete_masked_points
-    from mpl_toolkits.basemap import Basemap
+    if ax is None:
+        ax = plt.gca()
+
+    #If we don't get a basemap converter, make it a do-nothing function
+    if basemap is None:
+        basemap = lambda x,y:x,y
 
     if field_info is None:
         field_info = {}
@@ -313,10 +341,18 @@ def station_plot(data, layout=None, offset=10., field_info=None):
     def inv_map_field(name):
         return inv_field_info.get(name, name)
 
-    kts_per_ms = 1.94384
+    #Update the default layout with the passed in one
+    #TODO: HOW DO WE SPECIFY BARBS?
+    default_layout=dict(NW=map_field('temperature'), SW=map_field('dewpoint'),
+        C=None)
+    if layout is not None:
+        default_layout.update(layout)
+        layout = default_layout
 
-    temp = data[map_field('temperature')]
-    dewpoint = data[map_field('dewpoint')]
+    default_styles=dict()
+    if styles is not None:
+        default_styles.update(styles)
+        styles = default_styles
 
     if (map_field('u') in data.dtype.names and
         map_field('v') in data.dtype.names):
@@ -327,32 +363,12 @@ def station_plot(data, layout=None, offset=10., field_info=None):
         wdir = data[map_field('wind direction')]
         u,v = get_wind_components(wspd, wdir)
 
-    # stereogrpaphic projection.
-    m = Basemap(lon_0=-99, lat_0=35., lat_ts=35, resolution='i',
-        projection='stere', urcrnrlat=37, urcrnrlon=-94.25, llcrnrlat=33.7,
-        llcrnrlon=-103)
-    x,y = m(lon,lat)
-    fig=plt.figure(figsize=(20,12))
-    ax = fig.add_subplot(1,1,1)
+    #Convert coordinates
+    x,y = basemap(data[map_field('longitude'), data[map_field('latitude')])
+
     # plot barbs.
     ax.barbs(x, y, u, v)
-    grid_off = 10
-    tran_wspd = ax.transData + transforms.Affine2D().translate(grid_off, 0)
-    tran_temp = ax.transData + transforms.Affine2D().translate(-grid_off, grid_off)
-    tran_dew = ax.transData + transforms.Affine2D().translate(-grid_off, -grid_off)
-
-    for ind in np.ndindex(lon.shape):
-        if not mask[ind]:
-            ax.text(x[ind], y[ind], '%.0f' % wspd[ind], transform=tran_wspd,
-                color='b', ha='center', va='center')
-        if temp[ind] > -900:
-            ax.text(x[ind], y[ind], '%.0f' % temp[ind],
-                transform=tran_temp, color='r', ha='center', va='center')
-        if temp[ind] > -900 and rh[ind] > -900:
-            ax.text(x[ind], y[ind], '%.0f' % Td[ind],
-                transform=tran_dew, color='g', ha='center', va='center')
-#    m.bluemarble()
-    m.drawstates()
-#    m.readshapefile('/home/rmay/mapdata/c_28de04', 'counties')
-    plt.title('Station Plot')
-    plt.show()
+    for spot in layout:
+        var = layout[spot]
+        style = styles.get(var, {})
+        text_plot(ax, x, y, data[var], '%.1f', loc=direction_map[spot], **style)
