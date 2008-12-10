@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
-import numpy as N
-from metpy.generic import get_dims
+import numpy as np
+from generic import get_dims
 
 def two_three_rot(ui,vi,wi,common=None,return_basis=False,unrotate = False,use_basis=None):
     '''
@@ -23,38 +23,38 @@ def two_three_rot(ui,vi,wi,common=None,return_basis=False,unrotate = False,use_b
 #
 #   initilize arrays to force three dimensions
 #
-    u=N.reshape(ui,(sensors,obs,blks))
-    v=N.reshape(vi,(sensors,obs,blks))
-    w=N.reshape(wi,(sensors,obs,blks))
+    u=np.reshape(ui,(sensors,obs,blks))
+    v=np.reshape(vi,(sensors,obs,blks))
+    w=np.reshape(wi,(sensors,obs,blks))
 
-    meanu1=N.ones((sensors,obs,blks))
-    meanu2=N.ones((sensors,obs,blks))
-    u1=N.ones((sensors,blks))
-    v1=N.ones((sensors,blks))
-    w1=N.ones((sensors,blks))
+    meanu1=np.ones((sensors,obs,blks))
+    meanu2=np.ones((sensors,obs,blks))
+    u1=np.ones((sensors,blks))
+    v1=np.ones((sensors,blks))
+    w1=np.ones((sensors,blks))
 
-    data_rot_u = N.ones((sensors,obs,blks))
-    data_rot_v = N.ones((sensors,obs,blks))
-    data_rot_w = N.ones((sensors,obs,blks))
+    data_rot_u = np.ones((sensors,obs,blks))
+    data_rot_v = np.ones((sensors,obs,blks))
+    data_rot_w = np.ones((sensors,obs,blks))
 
     avg_axis = 1
-    zeros = N.zeros((sensors,blks))
+    zeros = np.zeros((sensors,blks))
     sindex = range(0,sensors)
 
 #
 #   define cartesian unit vectors
 #
-    i1t = N.array([1,0,0])
-    j1t = N.array([0,1,0])
-    k1t = N.array([0,0,1])
+    i1t = np.array([1,0,0])
+    j1t = np.array([0,1,0])
+    k1t = np.array([0,0,1])
     i1=i1t
     j1=j1t
     k1=k1t
     if sensors != 1:
         for i in range(0,sensors-1):
-            i1=N.c_[i1,i1t]
-            j1=N.c_[j1,j1t]
-            k1=N.c_[k1,k1t]
+            i1=np.c_[i1,i1t]
+            j1=np.c_[j1,j1t]
+            k1=np.c_[k1,k1t]
 
     i1=i1.transpose()
     j1=j1.transpose()
@@ -62,12 +62,12 @@ def two_three_rot(ui,vi,wi,common=None,return_basis=False,unrotate = False,use_b
 #
 #   Compute mean 2d and 3d wind vectors
 #
-    u1 = N.average(u,axis=avg_axis)  # mean u comp
-    v1 = N.average(v,axis=avg_axis)  # mean v comp
-    w1 = N.average(w,axis=avg_axis)  # mean w comp
+    u1 = np.average(u,axis=avg_axis)  # mean u comp
+    v1 = np.average(v,axis=avg_axis)  # mean v comp
+    w1 = np.average(w,axis=avg_axis)  # mean w comp
 
-    meanu1 = N.array([u1,v1,zeros])  # mean 2D wind vector
-    meanu2 = N.array([u1,v1,w1])     # mean 3D wind vector
+    meanu1 = np.array([u1,v1,zeros])  # mean 2D wind vector
+    meanu2 = np.array([u1,v1,w1])     # mean 3D wind vector
 
     for blk in range(0,blks):
 #
@@ -76,22 +76,22 @@ def two_three_rot(ui,vi,wi,common=None,return_basis=False,unrotate = False,use_b
         if use_basis is None:
 #         first rotation
 #         i2 is aligned with mean horizontal wind
-            i2_temp = meanu1[:,:,blk]/N.power(meanu1[0,:,blk]*meanu1[0,:,blk]+\
+            i2_temp = meanu1[:,:,blk]/np.power(meanu1[0,:,blk]*meanu1[0,:,blk]+\
                                               meanu1[1,:,blk]*meanu1[1,:,blk]+\
                                               meanu1[2,:,blk]*meanu1[2,:,blk],0.5)
 #         k2 is the same as k1 in original cartesian coordinate system
 #         j2 is the cross product between k1 and the new i (i2)
-            j2 = N.cross(k1[sindex,:],i2_temp.transpose()[sindex,:])
+            j2 = np.cross(k1[sindex,:],i2_temp.transpose()[sindex,:])
 #
 #         second rotation
 #
 #         now define i2 to be aligned with the mean vector wind
-            i2 = N.transpose(meanu2[:,:,blk]/N.power(meanu2[0,:,blk]*meanu2[0,:,blk]+\
+            i2 = np.transpose(meanu2[:,:,blk]/np.power(meanu2[0,:,blk]*meanu2[0,:,blk]+\
                                                      meanu2[1,:,blk]*meanu2[1,:,blk]+\
                                                      meanu2[2,:,blk]*meanu2[2,:,blk],0.5))
 #         j2 is the result of the first rotation
 #         k2 is the cross product between i2 and j2
-            k2 = N.cross(i2[sindex,:],j2[sindex,:])
+            k2 = np.cross(i2[sindex,:],j2[sindex,:])
 #         correct alg...need to store results in data_rot_u,v and w correctly.
         else:
             i2=use_basis[0]
@@ -115,30 +115,30 @@ def two_three_rot(ui,vi,wi,common=None,return_basis=False,unrotate = False,use_b
 
         if common == None:
             for i in range(0,sensors):
-                data_rot_u[i,:,blk] = u[i,:,blk]*N.dot(i_old[i,:],i_new[i,:])+\
-                             v[i,:,blk]*N.dot(j_old[i,:],i_new[i,:])+\
-                             w[i,:,blk]*N.dot(k_old[i,:],i_new[i,:])
+                data_rot_u[i,:,blk] = u[i,:,blk]*np.dot(i_old[i,:],i_new[i,:])+\
+                             v[i,:,blk]*np.dot(j_old[i,:],i_new[i,:])+\
+                             w[i,:,blk]*np.dot(k_old[i,:],i_new[i,:])
 
-                data_rot_v[i,:,blk] = u[i,:,blk]*N.dot(i_old[i,:],j_new[i,:])+\
-                             v[i,:,blk]*N.dot(j_old[i,:],j_new[i,:])+\
-                             w[i,:,blk]*N.dot(k_old[i,:],j_new[i,:])
+                data_rot_v[i,:,blk] = u[i,:,blk]*np.dot(i_old[i,:],j_new[i,:])+\
+                             v[i,:,blk]*np.dot(j_old[i,:],j_new[i,:])+\
+                             w[i,:,blk]*np.dot(k_old[i,:],j_new[i,:])
 
-                data_rot_w[i,:,blk] = u[i,:,blk]*N.dot(i_old[i,:],k_new[i,:])+\
-                             v[i,:,blk]*N.dot(j_old[i,:],k_new[i,:])+\
-                             w[i,:,blk]*N.dot(k_old[i,:],k_new[i,:])
+                data_rot_w[i,:,blk] = u[i,:,blk]*np.dot(i_old[i,:],k_new[i,:])+\
+                             v[i,:,blk]*np.dot(j_old[i,:],k_new[i,:])+\
+                             w[i,:,blk]*np.dot(k_old[i,:],k_new[i,:])
         else:
             for i in range(0,sensors):
-                data_rot_u[i,:,blk] = u[i,:,blk]*N.dot(i_old[common,:],i_new[common,:])+\
-                             v[i,:,blk]*N.dot(j_old[common,:],i_new[common,:])+\
-                             w[i,:,blk]*N.dot(k_old[common,:],i_new[common,:])
+                data_rot_u[i,:,blk] = u[i,:,blk]*np.dot(i_old[common,:],i_new[common,:])+\
+                             v[i,:,blk]*np.dot(j_old[common,:],i_new[common,:])+\
+                             w[i,:,blk]*np.dot(k_old[common,:],i_new[common,:])
 
-                data_rot_v[i,:,blk] = u[i,:,blk]*N.dot(i_old[common,:],j_new[common,:])+\
-                             v[i,:,blk]*N.dot(j_old[common,:],j_new[common,:])+\
-                             w[i,:,blk]*N.dot(k_old[common,:],j_new[common,:])
+                data_rot_v[i,:,blk] = u[i,:,blk]*np.dot(i_old[common,:],j_new[common,:])+\
+                             v[i,:,blk]*np.dot(j_old[common,:],j_new[common,:])+\
+                             w[i,:,blk]*np.dot(k_old[common,:],j_new[common,:])
 
-                data_rot_w[i,:,blk] = u[i,:,blk]*N.dot(i_old[common,:],k_new[common,:])+\
-                             v[i,:,blk]*N.dot(j_old[common,:],k_new[common,:])+\
-                             w[i,:,blk]*N.dot(k_old[common,:],k_new[common,:])
+                data_rot_w[i,:,blk] = u[i,:,blk]*np.dot(i_old[common,:],k_new[common,:])+\
+                             v[i,:,blk]*np.dot(j_old[common,:],k_new[common,:])+\
+                             w[i,:,blk]*np.dot(k_old[common,:],k_new[common,:])
 
     if return_basis:
         return data_rot_u,data_rot_v,data_rot_w,(i_new,j_new,k_new)

@@ -1,6 +1,6 @@
 #!/usr/bin/python
-import numpy as N
-from metpy.generic import get_pert
+import numpy as np
+from generic import get_pert
 
 def kurtosis(a):
     '''
@@ -9,7 +9,7 @@ Compute the kurtosis of the timeseries a
     ax=1
 
     ap = get_pert(a)
-    K = N.average(N.power(ap,4),axis=ax)/N.power(N.std(ap),4)
+    K = np.average(np.power(ap,4),axis=ax)/np.power(np.std(ap),4)
 
     return K
 
@@ -20,7 +20,7 @@ Compute the skewness of the timeseries a
     ax = 1
 
     ap = get_pert(a)
-    S = N.average(N.power(ap,3),axis=ax)/N.power(N.std(ap),3)
+    S = np.average(np.power(ap,3),axis=ax)/np.power(np.std(ap),3)
 
     return S
 
@@ -35,9 +35,9 @@ components u,v, and w.
     vp = get_pert(v)
     wp = get_pert(w)
 
-    tke = N.power(N.average(N.power(up,2),axis=ax)+\
-                  N.average(N.power(vp,2),axis=ax)+\
-                  N.average(N.power(wp,2),axis=ax),0.5)
+    tke = np.power(np.average(np.power(up,2),axis=ax)+\
+                  np.average(np.power(vp,2),axis=ax)+\
+                  np.average(np.power(wp,2),axis=ax),0.5)
 
     return tke
 

@@ -4,7 +4,7 @@ import numpy as np
 from matplotlib.mlab import psd as psd_welch
 from matplotlib.mlab import csd as csd_welch
 from matplotlib.mlab import cohere as coherence
-from metpy.generic import get_dims
+from generic import get_dims
 from scipy.integrate import cumtrapz
 
 from matplotlib import cbook
