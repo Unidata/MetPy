@@ -101,6 +101,10 @@ def wavelet_plt(ts,c,**kwargs):
             scales=scales/sampf
     else:
         scales = None
+        if 'sampf' in keys:
+            sampf = kwargs['sampf']
+        else:
+            sampf = 1
 
     if 'show_plot' in keys:
         show_plot = kwargs['show_plot']
@@ -158,8 +162,8 @@ def wavelet_plt(ts,c,**kwargs):
         #else:
         #    ax2.legend(('all'),)
         ax2.grid(b=True,color='k',linestyle='-',linewidth=1)
-        ax1.set_yticks(ax2.get_yticks()/(wdu))
-        ax1.set_yticklabels((ax1.get_yticks()*wdu).astype(int))
+        ax1.set_yticks(ax2.get_yticks())
+        ax1.set_yticklabels((ax1.get_yticks()).astype(int))
         ax1.set_xticklabels((ax1.get_xticks()/sampf).astype(int))
         ax1.set_xlim(0,c.shape[1])
         ax1.set_ylim(0,c.shape[0])
@@ -247,7 +251,7 @@ def wavelet_plt(ts,c,**kwargs):
         plt.clf()
         plt.close()
 
-    return(xa,ya),gws_extrema*wdu
+    return(xa,ya),gws_extrema
 
 def xwavelet_plt(c1,c2,c3,max_period=None,min_time=0,max_time=None,
                cbarnorm=2,fname='',show=True,xlabs=None,ylabs=None,main_title='',
