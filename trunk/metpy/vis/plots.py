@@ -265,6 +265,69 @@ def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
 
     return axes
 
+from matplotlib.artist import Artist
+from matplotlib.cbook import is_string_like
+from matplotlib.text import Text
+from matplotlib.font_manager import FontProperties
+class TextCollection(Artist):
+    def __init__(self,
+                 x=0, y=0, text='',
+                 color=None,          # defaults to rc params
+                 verticalalignment='bottom',
+                 horizontalalignment='left',
+                 multialignment=None,
+                 fontproperties=None, # defaults to FontProperties()
+                 rotation=None,
+                 linespacing=None,
+                 **kwargs
+                 ):
+
+        Artist.__init__(self)
+        if color is None:
+            colors= rcParams['text.color']
+
+        if fontproperties is None:
+            fontproperties = FontProperties()
+        elif is_string_like(fontproperties):
+            fontproperties = FontProperties(fontproperties)
+
+        self._animated = False
+#        if is_string_like(text):
+#            text = [text]
+
+        self._textobjs = [Text(x[ind], y[ind], text[ind], color,
+            verticalalignment, horizontalalignment, multialignment,
+            fontproperties, rotation, linespacing, **kwargs)
+            for ind in xrange(len(x))]
+
+        self.update(kwargs)
+
+    def draw(self, renderer):
+        for t in self._textobjs:
+            t.draw(renderer)
+
+    def set_figure(self, fig):
+        for t in self._textobjs:
+            t.set_figure(fig)
+
+    def is_transform_set(self):
+        return all(t.is_transform_set() for t in self._textobjs)
+
+    def get_transform(self):
+        return self._textobjs[0].get_transform()
+
+    def set_transform(self, trans):
+        for t in self._textobjs:
+            t.set_transform(trans)
+
+    def set_clip_path(self, path):
+        for t in self._textobjs:
+            t.set_clip_path(path)
+
+    def set_axes(self, ax):
+        for t in self._textobjs:
+            t.set_axes(ax)
+
 def text_plot(ax, x, y, data, format='%.0f', loc=None, **kw):
     from matplotlib.cbook import delete_masked_points
     from matplotlib import transforms
@@ -276,13 +339,40 @@ def text_plot(ax, x, y, data, format='%.0f', loc=None, **kw):
     else:
         trans = ax.transData
 
+    # Handle both callables and strings for format
+    if is_string_like(format):
+        formatter = lambda s: format % s
+    else:
+        formatter = format
+
     # Handle masked arrays
     x,y,data = delete_masked_points(x, y, data)
 
-    #Calculate the offset
-    for xi, yi, d in zip(x, y, data):
-        ax.text(xi, yi, format % d, transform=trans, ha='center', va='center',
-            clip_on=True, **kw)
+    # Make the TextCollection object
+    texts = [formatter(d) for d in data]
+    text_obj = TextCollection(x, y, texts, horizontalalignment='center',
+        verticalalignment='center', clip_on=True, transform=trans, **kw)
+
+    # Add it to the axes
+    ax.add_artist(text_obj)
+
+    #Update plot range
+    minx = np.min(x)
+    maxx = np.max(x)
+    miny = np.min(y)
+    maxy = np.max(y)
+    w = maxx-minx
+    h = maxy-miny
+
+    # the pad is a little hack to deal with the fact that we don't
+    # want to transform all the symbols whose scales are in points
+    # to data coords to get the exact bounding box for efficiency
+    # reasons.  It can be done right if this is deemed important
+    padx, pady = 0.05*w, 0.05*h
+    corners = (minx-padx, miny-pady), (maxx+padx, maxy+pady)
+    ax.update_datalim(corners)
+    ax.autoscale_view()
+    return text_obj
 
 #Maps specifiers to normalized offsets in x and y
 direction_map = dict(N=(0,1), NE=(1,1), E=(1,0), SE=(1,-1), S=(0,-1),
