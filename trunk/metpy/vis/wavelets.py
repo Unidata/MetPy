@@ -2,24 +2,37 @@
 
 import numpy as np
 import metpy
-#import metobs
 import matplotlib.pyplot as plt
 import matplotlib
+import metpy.bl.generic as generic
 from matplotlib.colors import Normalize
 from pylab import poly_between
 
+def get_gws(wt,mask=None):
+    """
+    Used to live in metobs, but now covered by class method in tools/wavelets.py.
+    Function here only for compatibility, and will be gone once the wavelet
+    plotting routine is updated to take advantage of class method.
+    """
+    if mask is not None:
+        wt=np.ma.array(wt,mask=mask)
+
+    gws = np.power(np.abs(wt),2).mean(axis=1); #Torrence and Compo 1998
+
+    return gws
+
 def find_peaks(coefs,peak,cs_threshold=0.40,mask=None):
-    gws = metobs.bl.turb.wavelets.get_gws(coefs,mask)
+    gws = get_gws(coefs,mask)
 #   find all extrema in the gws
-    gws_extrema=metpy.generic.find_extrema(gws,mode='all')
+    gws_extrema=generic.find_extrema(gws,mode='all')
     if gws_extrema.shape[0] == 0:
         print 'trying close'
-        gws_extrema=metpy.generic.find_extrema(gws,mode='close',adj=1)
+        gws_extrema=generic.find_extrema(gws,mode='close',adj=1)
 
     if gws_extrema.shape[0] != 0:
 #       look for extrema and zero crossings at particular scale
-        cs_scale_extrema=metpy.generic.find_extrema(coefs[gws_extrema[peak],:],mode='all')
-        cs_scale_zero_crossings=metpy.generic.find_zero_crossings(coefs[gws_extrema[peak],:],mode='all')
+        cs_scale_extrema=generic.find_extrema(coefs[gws_extrema[peak],:],mode='all')
+        cs_scale_zero_crossings=generic.find_zero_crossings(coefs[gws_extrema[peak],:],mode='all')
     #   threshold for calling an event as CS event - 100*cs_threshold% of peak coefficient
         threshold=np.abs(coefs[gws_extrema[peak],cs_scale_extrema]).max()*cs_threshold
     #   find start/stop indicies for cs events
@@ -111,7 +124,7 @@ def wavelet_plt(ts,c,**kwargs):
 
     T=scales*wdu
     time = np.arange(0,c.shape[1])
-    gws = metobs.bl.turb.wavelets.get_gws(c,mask=None)
+    gws = get_gws(c,mask=None)
 
     if mkplot:
         fig = plt.figure(num=1,figsize=(16,12))
@@ -140,7 +153,7 @@ def wavelet_plt(ts,c,**kwargs):
         ax2 = fig.add_subplot(2,5,5)
         ax2.semilogx(gws,T,'k+')
         if mask is not None:
-            ax2.semilogx(metpy.bl.turb.wavelets.get_gws(c,mask=mask),T,'g+')
+            ax2.semilogx(get_gws(c,mask=mask),T,'g+')
             ax2.legend(('all','valid'))
         #else:
         #    ax2.legend(('all'),)
@@ -304,7 +317,7 @@ def gws_plot(c,ax,max_period=None,min_time=0,max_time=None,
     T = scales*np.pi/np.sqrt(2.) #(eq 22 Collineau and Brunet 1993a)
     time = np.arange(min_time,max_time-1)
 
-    gws = metobs.bl.turb.wavelets.gws(c[0:max_period-1,min_time:max_time-1])
+    gws = get_gws(c[0:max_period-1,min_time:max_time-1])
 
     ax.semilogx(gws[0:max_period-1],T[0:max_period-1],'+')
     ax.set_ylim(T[0],T[max_period-2])
@@ -312,7 +325,7 @@ def gws_plot(c,ax,max_period=None,min_time=0,max_time=None,
     if xlabs!=None: ax.set_xlabel(xlabs)
     if ylabs!=None: ax.set_ylabel(ylabs)
     if peak > 0:
-        gws_extrema=metpy.generic.find_extrema(gws,mode='all')
+        gws_extrema=generic.find_extrema(gws,mode='all')
         ax.text(gws[gws_extrema[peak]],T[gws_extrema[peak]],'x')
         ax.text(gws[gws_extrema[peak]]+2,T[gws_extrema[peak]],`np.round(T[gws_extrema[peak]],1)`,
             fontsize=16,backgroundcolor='white',bbox=dict(facecolor='white', alpha=1.0))

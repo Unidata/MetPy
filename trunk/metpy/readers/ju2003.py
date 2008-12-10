@@ -1,6 +1,20 @@
 #!/usr/bin/python
 import numpy as np
 import os
+import datetime
+
+def pull_date(x):
+    year=int(x[0:4])
+    month=int(x[5:7])
+    day=int(x[8:10])
+    hour=int(x[11:13])
+    minute=int(x[14:16])
+    second=int(x[17:19])
+    if len(x) == 19:
+        return datetime.datetime(year,month,day,hour,minute,second)
+    else:
+        microsecond = int(x[20:])*100000
+        return datetime.datetime(year,month,day,hour,minute,second,microsecond)
 
 def sonics(top_dir,filedate):
     '''
@@ -17,8 +31,9 @@ def sonics(top_dir,filedate):
     filename.append(top_dir+'/tower1/'+filedate+'-tower1-ts.txt.gz')
     filename.append(top_dir+'/tower2/'+filedate+'-tower2-ts.txt.gz')
     try:
-        date1 = np.loadtxt(filename[0], usecols=[0], dtype=str, comments='%', delimiter=',')
-        date2 = np.loadtxt(filename[1], usecols=[0], dtype=str, comments='%', delimiter=',')
+
+        date1 = np.loadtxt(filename[0], usecols=[1], dtype=datetime.datetime,converters={1:pull_date}, comments='%', delimiter=',')
+        date2 = np.loadtxt(filename[1], usecols=[1], dtype=datetime.datetime,converters={1:pull_date}, comments='%', delimiter=',')
     except IOError:
         print '%s does not exist\n'%filename
         raise
@@ -33,9 +48,6 @@ def sonics(top_dir,filedate):
         T=data[:,15:20]
 #        flags = data[:,20:25].astype(int)
 
-#        dt = np.dtype([('u1',np.float,(36000,5)),('v1',np.float,(36000,5)),
-#                       ('w1',np.float,(36000,5)),('T1',np.float,(36000,5)),
-#                       ('flags',np.int,(36000,5))])
         dt = np.dtype([('u1',np.float,(36000,5)),('v1',np.float,(36000,5)),
                        ('w1',np.float,(36000,5)),('T1',np.float,(36000,5))])
         if i == 0:
