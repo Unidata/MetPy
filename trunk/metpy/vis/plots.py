@@ -460,6 +460,8 @@ def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
 
     # plot barbs.
     ax.barbs(x, y, u, v)
+
+    #TODO: Formats should be passed in, probably on a var-by-var basis
     for spot in layout:
         var = layout[spot]
         style = styles.get(var, {})
