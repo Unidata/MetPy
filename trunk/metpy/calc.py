@@ -1,5 +1,8 @@
 'A collection of generic calculation functions.'
 
+__all__ = ['vapor_pressure', 'dewpoint', 'get_wind_components', 'mixing_ratio',
+    'windchill']
+
 import numpy as np
 from numpy.ma import log, exp, cos, sin, masked_array
 from scipy.constants import degree, kilo, hour
