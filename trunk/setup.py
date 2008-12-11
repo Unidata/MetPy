@@ -21,5 +21,5 @@ setup(name = 'MetPy',
 if not version.release:
   # Remove __svn_version__ so that if we run from local, an outdated version
   # won't be found
-  os.remove(os.path.join(setup_path, 'metpy', '__svn_version__.py'))
-  os.remove(os.path.join(setup_path, 'metpy', '__svn_version__.pyc'))
+  os.remove(version._svn_file_path)
+  os.remove(version._svn_file_path + 'c') #The .pyc file
