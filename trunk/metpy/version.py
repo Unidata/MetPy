@@ -29,7 +29,6 @@ def get_version():
             import __svn_version__
             version += __svn_version__.rev
         except ImportError:
-            print 'local run'
             version += get_svn_version()
             pass
     return version
