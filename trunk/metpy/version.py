@@ -2,8 +2,10 @@ release = False
 __version__ = '0.1'
 
 def get_svn_version():
-    import subprocess
-    proc = subprocess.Popen(['svnversion', '-n'], stdout=subprocess.PIPE)
+    import subprocess, os.path
+    repo_path = os.path.split(__file__)[0]
+    proc = subprocess.Popen(['svnversion', '-n', repo_path],
+        stdout=subprocess.PIPE)
     text = proc.stdout.readline()
     if text != 'exported':
         if ':' in text:
