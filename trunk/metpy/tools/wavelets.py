@@ -1,7 +1,6 @@
 #!/usr/bin/python
 
 import numpy as np
-import matplotlib.pyplot as plt
 from scipy.fftpack import fft, ifft
 
 class Wavelet(object):
@@ -34,7 +33,7 @@ class MotherWavelet(object):
         """
         y1 =  self.coi_coef*np.arange(0,self.coefs.shape[1]/2)
         y2 = -self.coi_coef*np.arange(0,self.coefs.shape[1]/2)+y1[-1]
-        coi = np.r_[y1,y2] 
+        coi = np.r_[y1,y2]
         self.coi = coi
         return coi
 
@@ -46,7 +45,7 @@ class MotherWavelet(object):
 
             wavelet_shape : tuple containing shape of wavelet
 
-            coi_coef : cone of influence coefficient 
+            coi_coef : cone of influence coefficient
 
             scales : 1d array of scales used in wavelet transform
 
@@ -87,7 +86,7 @@ class SDG(MotherWavelet):
         self.normalize = normalize
         self.coi_coef = self.get_coi_coef()
         self.coefs = self.get_coefs()
-        self.name='second degree of a gaussian mother wavelet'    
+        self.name='second degree of a gaussian mother wavelet'
         self.wdu = np.pi/np.sqrt(2.); # Collineau and Brunet 1993
 
     def get_coi_coef(self):
@@ -148,14 +147,14 @@ def cwt(x,wavelet):
 
 def cxwt(x1,x2,wavelet,scales):
     '''
-    Compute the cross-wavelet transform of 'x1' and 'x2' using the 
+    Compute the cross-wavelet transform of 'x1' and 'x2' using the
     'wavelet' basis set from scales 1 to 'max_scale'.
 
     x1,x2 - data to which the cross-wavelet transform is applied
 
     wavelet - instance of class MotherWavelet from motherwavelet.py
 
-    
+
     '''
     print "working on x1"
     cwt1=cwt(x1,wavelet)
