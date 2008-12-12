@@ -1,41 +1,83 @@
-'''This is a collection of meteorologically significant constants.'''
+'''
+This is a collection of meteorologically significant constants.
 
-#This should go away once scipy 0.7 is released and can be depended upon
-try:
-    from scipy.constants import pi, day, value, kilo
-    from scipy.constants import C2F, F2C, K2F, F2K, C2K,K2C
-    R = value('molar gas constant')
-    del value
-except ImportError:
-    from math import pi
-    day = 86400.
-    kilo = 1000.0
-    R = 8.314472
-    zero_Celsius = 273.15
+Earth
+-------------
+Name                    Abbr. Units    Description
+======================= ===== ======== ==================
+earth_avg_radious       Re    m        Avg. radius of the Earth
+earth_gravity           g     m s^-2   Avg. gravity acceleration on Earth
+earth_avg_angular_vel   omega rad s^-1 Avg. angular velocity of Earth
+earth_sfc_avg_dist_sun  d     m        Avg. distance of the Earth from the Sun
+earth_solar_irradiance  S     W m^-2   Avg. Solar Irradiance of Earth
+======================= ===== ======== ==================
 
-    def C2K(C):
-        """Convert Celcius to Kelvin"""
-        return C + zero_Celsius
+Water
+-------------
+Name                    Abbr. Units       Description
+======================= ===== =========== ==================
+water_molecular_weight  Mw    g mol^-1    Molecular weight of water
+water_gas_constant      Rv    J (K kg)^-1 Gas constant for water vapor
+density_water           rho_l kg m^-3     Nominal density of liquid water at 0C
+wv_specific_heat_press  Cp_v  J (K kg)^-1 Specific heat at constant pressure for
+                                          water vapor
+wv_specific_heat_vol    Cv_v  J (K kg)^-1 Specific heat at constant volume for
+                                          water vapor
+water_specific_heat     Cp_l  J (K kg)^-1 Specific heat of liquid water at 0C
+water_heat_vaporization Lv    J kg^-1     Latent heat of vaporization for liquid
+                                          water at 0C
+water_heat_fustion      Lf    J kg^-1     Latent heat of fusion for liquid water
+                                          at 0C
+ice_specific_heat       Cp_i  J (K kg)^-1 Specific heat of ice at 0C
+density_ice             rho_i kg m^-3     Density of ice at 0C
+======================= ===== =========== ==================
 
-    def K2C(K):
-        """Convert Kelvin to Celcius"""
-        return K - zero_Celsius
+Dry air
+-------------
+Name                     Abbr. Units       Description
+======================== ===== =========== ==================
+dry_air_molecular_weight Md    g / mol     Nominal molecular weight of dry air
+                                           at the surface of th Earth
+dry_air_gas_constant     Rd    J (K kg)^-1 Gas constant for dry air at the
+                                           surface of the Earth
+dry_air_spec_heat_press  Cp_d  J (K kg)^-1 Specific heat at constant pressure
+                                           for dry air
+dry_air_spec_heat_vol    Cv_d  J (K kg)^-1 Specific heat at constant volume
+                                           for dry air
+dry_air_density_stp      1.275 kg m^-3     Density of dry air at 0C and 1000mb
+======================== ===== ======== ==================
 
-    def F2C(F):
-        """Convert Fahrenheit to Celcius"""
-        return (F - 32) / 1.8
+General meteorology constants
+-------------
+Name                     Abbr.   Units    Description
+======================== ======= ======== ==================
+pot_temp_ref_press       P0      Pa       Reference pressure for potential
+                                          temperature
+poisson_exponent         kappa   None     Exponent in Poisson's equation (Rd/Cp_d)
+dry_adiabatic_lapse_rate gamma_d K km^-1  The dry adiabatic lapse rate
+molecular_weight_ratio   epsilon None     Ratio of molecular weight of water to
+                                          that of dry air
+======================= ===== ======== ==================
+'''
 
-    def C2F(C):
-        """Convert Celcius to Fahrenheit"""
-        return 1.8 * C + 32
+__all__ = ['C2F', 'C2K', 'F2K', 'K2C', 'K2F', 'F2C', 'Re', 'earth_avg_radious',
+    'g', 'earth_avg_gravity', 'omega', 'earth_avg_angular_vel',
+    'd', 'earth_sfc_avg_dist_sun', 'S', 'earth_solar_irradiance',
+    'Mw', 'water_molecular_weight', 'Rv', 'water_gas_constant',
+    'rho_l', 'density_water', 'Cp_v', 'water_vapor_specific_heat_press',
+    'Cv_v', 'water_vapor_specific_heat_vol', 'Cp_l', 'water_specific_heat',
+    'Lv', 'water_latent_heat_vaporization', 'Lf', 'water_latent_heat_fustion',
+    'Cp_i', 'ice_specific_heat', 'rho_i', 'density_ice',
+    'Md', 'dry_air_molecular_weight', 'Rd', 'dry_air_gas_constant',
+    'Cp_d', 'dry_air_spec_heat_press', 'Cv_d', 'dry_air_spec_heat_vol',
+    'dry_air_density_stp', 'P0', 'pot_temp_ref_press',
+    'kappa', 'poisson_exponent', 'gamma_d', 'dry_adiabatic_lapse_rate',
+    'epsilon', 'molecular_weight_ratio']
 
-    def F2K(F):
-        """Convert Fahrenheit to Kelvin"""
-        return C2K(F2C(F))
-
-    def K2F(K):
-        """Convert Kelvin to Fahrenheit"""
-        return C2F(K2C(K))
+from scipy.constants import pi, day, value, kilo
+from scipy.constants import C2F, F2C, K2F, F2K, C2K,K2C
+R = value('molar gas constant')
+del value
 
 #Earth
 Re = earth_avg_radious = 6.37e6 # m
