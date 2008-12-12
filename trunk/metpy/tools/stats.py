@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+__all__ = ['congruence', 'kurtosis', 'skewness']
+
 import numpy as np
 from scipy.stats import skewness,
 from scipy.stats import kurtosis

@@ -75,10 +75,3 @@ def running_average(x,length):
         tmp[x.shape[0]-i-1]=x[x.shape[0]-length-i:x.shape[0]-i].mean()
 
     return tmp
-
-def congruence(x,y):
-    tx = np.array(x).flatten()
-    ty = np.array(y).flatten()
-    tmp = np.sum(tx*ty)/np.sqrt(np.sum(tx*tx)*np.sum(ty*ty))
-
-    return tmp
