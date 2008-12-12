@@ -1,4 +1,7 @@
 #!/usr/bin/python
+
+__all__ = ['turb_covar', 'rs']
+
 import numpy as np
 from generic import get_dims
 from generic import get_pert

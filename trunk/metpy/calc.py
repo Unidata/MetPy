@@ -1,7 +1,7 @@
 'A collection of generic calculation functions.'
 
 __all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir','get_wind_components', 'mixing_ratio',
-    'windchill']
+    'tke','windchill']
 
 import numpy as np
 from numpy.ma import log, exp, cos, sin, masked_array
@@ -99,6 +99,24 @@ def get_wind_components(speed, wdir):
     u = -speed * sin(wdir * degree)
     v = -speed * cos(wdir * degree)
     return u,v
+
+def tke(u,v,w):
+    '''
+    Compute the turbulence kinetic energy from the time series of the velocity \
+    components u,v, and w.
+    '''
+    ax=1
+
+    up = u-u.mean()
+    vp = v-v.mean()
+    wp = w-w.mean()
+
+    tke = np.power(np.average(np.power(up,2))+\
+                  np.average(np.power(vp,2))+\
+                  np.average(np.power(wp,2)),0.5)
+
+    return tke
+
 
 def windchill(temp, speed, metric=True, face_level_winds=False,
     mask_undefined=True):
