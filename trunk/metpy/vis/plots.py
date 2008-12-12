@@ -378,7 +378,7 @@ def text_plot(ax, x, y, data, format='%.0f', loc=None, **kw):
 direction_map = dict(N=(0,1), NE=(1,1), E=(1,0), SE=(1,-1), S=(0,-1),
     SW=(-1,-1), W=(-1,0), NW=(-1,1), C=(0,0))
 
-def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
+def station_plot(data, ax=None, proj=None, layout=None, styles=None,
     offset=10., field_info=None):
     '''
     Makes a station plot of the variables in data.
@@ -391,9 +391,10 @@ def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
         The matplotlib Axes object on which to draw the station plot.  If None,
         the current Axes object is used.
 
-    *basemap* : :class:`mpl_toolkits.basemap.Basemap` instance or None
-        A Basemap object to use to convert geographic coordinates.  If None,
-        the geographic coordinates are used, as is, without any projection.
+    *proj* : callable
+        A callable (such as a :class:`mpl_toolkits.basemap.Basemap`) to use to
+        convert geographic coordinates.  If None, the geographic coordinates
+        are used, as is, without any projection.
 
     *layout* : dictionary
         A dictionary that maps locations to field names.  Valid locations are:
@@ -436,12 +437,16 @@ def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
     #Update the default layout with the passed in one
     #TODO: HOW DO WE SPECIFY BARBS?
     default_layout=dict(NW=map_field('temperature'), SW=map_field('dewpoint'),
-        C=None)
+        C=(map_field('u'), map_field('v')))
     if layout is not None:
         default_layout.update(layout)
         layout = default_layout
 
-    default_styles=dict()
+    default_styles=dict(
+        'temperature':dict(color='red'),
+        'dewpoint':dict(color='green'),
+        'wind speed':dict(color='blue'),
+        'pressure':dict(color='black'))
     if styles is not None:
         default_styles.update(styles)
         styles = default_styles
@@ -456,7 +461,7 @@ def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
         u,v = get_wind_components(wspd, wdir)
 
     #Convert coordinates
-    x,y = basemap(data[map_field('longitude')], data[map_field('latitude')])
+    x,y = proj(data[map_field('longitude')], data[map_field('latitude')])
 
     # plot barbs.
     ax.barbs(x, y, u, v)
