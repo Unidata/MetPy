@@ -5,6 +5,8 @@ from numpy.ma import mrecords
 from metpy.cbook import loadtxt, mloadtxt #Can go back to numpy once it's updated
 from metpy.cbook import is_string_like, lru_cache, rec_append_fields
 
+__all__ = ['remote_mesonet_data', 'read_mesonet_data', 'mesonet_stid_info']
+
 #This is a direct copy and paste of the mesonet station data avaiable at
 #http://www.mesonet.org/sites/geomeso.csv
 #As of November 20th, 2008
