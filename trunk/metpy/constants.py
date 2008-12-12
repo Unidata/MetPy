@@ -32,7 +32,7 @@ ice_specific_heat       Cp_i  J (K kg)^-1 Specific heat of ice at 0C
 density_ice             rho_i kg m^-3     Density of ice at 0C
 ======================= ===== =========== ==================
 
-Dry air
+Dry Air
 -------------
 Name                     Abbr. Units       Description
 ======================== ===== =========== ==================
@@ -47,7 +47,7 @@ dry_air_spec_heat_vol    Cv_d  J (K kg)^-1 Specific heat at constant volume
 dry_air_density_stp      rho_d kg m^-3     Density of dry air at 0C and 1000mb
 ======================== ===== ======== ==================
 
-General meteorology constants
+General Meteorology Constants
 -------------
 Name                     Abbr.   Units    Description
 ======================== ======= ======== ==================
@@ -58,19 +58,40 @@ dry_adiabatic_lapse_rate gamma_d K km^-1  The dry adiabatic lapse rate
 molecular_weight_ratio   epsilon None     Ratio of molecular weight of water to
                                           that of dry air
 ======================== ======= ======== ==================
+
+Temperature Conversion Functions
+-------------
+
+F2C :
+    Convert temperature in degrees Farenheit to degrees Celsius
+
+F2K :
+    Convert temperature in degrees Farenheit to Kelvin
+
+C2F :
+    Convert temperature in degrees Celsius to degrees Farenheit
+
+K2F :
+    Convert temperature in Kelvin to degrees Farenheit
+
+C2K :
+    Convert temperature in degrees Celsius to Kelvin
+
+K2C :
+    Convert temperature in Kelvin to degrees Celsius
 '''
 
 __all__ = ['C2F', 'C2K', 'F2K', 'K2C', 'K2F', 'F2C', 'Re', 'earth_avg_radious',
     'g', 'earth_avg_gravity', 'omega', 'earth_avg_angular_vel',
     'd', 'earth_sfc_avg_dist_sun', 'S', 'earth_solar_irradiance',
     'Mw', 'water_molecular_weight', 'Rv', 'water_gas_constant',
-    'rho_l', 'density_water', 'Cp_v', 'water_vapor_specific_heat_press',
-    'Cv_v', 'water_vapor_specific_heat_vol', 'Cp_l', 'water_specific_heat',
-    'Lv', 'water_latent_heat_vaporization', 'Lf', 'water_latent_heat_fustion',
+    'rho_l', 'density_water', 'Cp_v', 'wv_specific_heat_press',
+    'Cv_v', 'wv_specific_heat_vol', 'Cp_l', 'water_specific_heat',
+    'Lv', 'water_heat_vaporization', 'Lf', 'water_heat_fustion',
     'Cp_i', 'ice_specific_heat', 'rho_i', 'density_ice',
     'Md', 'dry_air_molecular_weight', 'Rd', 'dry_air_gas_constant',
     'Cp_d', 'dry_air_spec_heat_press', 'Cv_d', 'dry_air_spec_heat_vol',
-    'dry_air_density_stp', 'P0', 'pot_temp_ref_press',
+    'rho_d', 'dry_air_density_stp', 'P0', 'pot_temp_ref_press',
     'kappa', 'poisson_exponent', 'gamma_d', 'dry_adiabatic_lapse_rate',
     'epsilon', 'molecular_weight_ratio']
 
