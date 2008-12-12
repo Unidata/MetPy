@@ -1,6 +1,6 @@
 'A collection of generic calculation functions.'
 
-__all__ = ['vapor_pressure', 'dewpoint', 'get_wind_components', 'mixing_ratio',
+__all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir','get_wind_components', 'mixing_ratio',
     'windchill']
 
 import numpy as np
@@ -63,6 +63,23 @@ def mixing_ratio(part_press, tot_press):
     they have the same units.
     '''
     return part_press / (tot_press - part_press)
+
+def get_speed_dir(u,v,w=None):
+    '''
+    Compute the wind speed (horizontal and vector is W is supplied) and 
+    wind direction.
+
+    Return horizontal wind speed, vector wind speed, and wind direction in a tuple
+      * if w is not supplied, returns tuple of horizontal wind speed and wind direction.
+    '''
+    hws = np.sqrt(u*u+v*v)
+    wd = np.arctan2(-u,-v)*180./np.pi
+    wd[wd<0]=360+wd[wd<0]
+    if w is None:
+        return hws,wd
+    else:
+        vws = np.sqrt(u*u+v*v+w*w)
+        return hws,vws,wd
 
 def get_wind_components(speed, wdir):
     '''

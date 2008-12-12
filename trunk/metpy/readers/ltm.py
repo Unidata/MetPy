@@ -13,6 +13,23 @@ def pull_date(x):
 
     return datetime.datetime(year,month,day,hour,minute,second)
 
+def horizontal_align_fix(u,v,h_offset):
+    '''
+Compute a new u and v after applying a horizontal vertical offset (angle \
+in degrees)
+    '''
+    hws = np.sqrt(u*u+v*v)
+    wd = np.arctan2(-u,-v)*180./np.pi
+    wd[wd<0]=360+wd[wd<0]
+
+    wd_new = wd + h_offset
+    wd_new[wd_new<0]=360+wd_new[wd_new<0]
+    wd_new[wd_new>360]=wd_new[wd_new>360]-360
+
+    u_new = -hws*np.sin(wd_new*np.pi/180.)
+    v_new = -hws*np.cos(wd_new*np.pi/180.)
+
+    return u_new, v_new
 
 def sonic_2005(filename):
     '''
