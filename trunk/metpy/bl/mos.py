@@ -1,5 +1,7 @@
 #!/usr/bin/python
-import numpy as N
+import numpy as np
+
+__all__ = ['u_star', 'theta_star', 'obu_length']
 
 def u_star(u,v,w):
     '''
@@ -11,7 +13,7 @@ def u_star(u,v,w):
     uw = rs[3]
     vw = rs[4]
 
-    us = N.power(N.power(uw,2)+N.power(vw,2),0.25)
+    us = np.power(np.power(uw,2)+np.power(vw,2),0.25)
 
     return us
 
@@ -32,6 +34,6 @@ def obu_length(u,v,w,T):
     components u, v, and w, and temperature (an nD array)
     '''
     from metpy.constants import g
-    L = N.power(u_star(u,v,w),2)*N.average(T)/(0.4*g*theta_star(u,v,w,T))
+    L = np.power(u_star(u,v,w),2)*np.average(T)/(0.4*g*theta_star(u,v,w,T))
 
     return L

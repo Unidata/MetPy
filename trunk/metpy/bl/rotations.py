@@ -1,7 +1,9 @@
 #!/usr/bin/python
 
+__all__ = ['two_three_rot']
+
 import numpy as np
-from generic import get_dims
+from metpy.bly.generic import get_dims
 
 def two_three_rot(ui,vi,wi,common=None,return_basis=False,unrotate = False,use_basis=None):
     '''

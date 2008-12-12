@@ -1,10 +1,8 @@
-import rotations
-import mos
-import fluxes
-import spectra
-import hos
-
-__version__ = '0.1'
+from rotations import *
+from mos import *
+from fluxes import *
+from spectra import *
+from hos import *
 
 __all__ = [
     'rotations'
