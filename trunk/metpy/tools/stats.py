@@ -3,7 +3,7 @@
 __all__ = ['congruence', 'kurtosis', 'skewness']
 
 import numpy as np
-from scipy.stats import skewness,
+from scipy.stats import skew as skewness
 from scipy.stats import kurtosis
 
 def congruence(x,y):
