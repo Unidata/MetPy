@@ -435,7 +435,6 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
         return inv_field_info.get(name, name)
 
     #Update the default layout with the passed in one
-    #TODO: HOW DO WE SPECIFY BARBS?
     default_layout=dict(NW=map_field('temperature'), SW=map_field('dewpoint'),
         C=(map_field('u'), map_field('v')))
     if layout is not None:
@@ -451,23 +450,27 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
         default_styles.update(styles)
         styles = default_styles
 
-    if (map_field('u') in data.dtype.names and
-        map_field('v') in data.dtype.names):
-        u = data[map_field('u')]
-        v = data[map_field('v')]
-    else:
-        wspd = data[map_field('wind speed')]
-        wdir = data[map_field('wind direction')]
-        u,v = get_wind_components(wspd, wdir)
+#    if (map_field('u') in data.dtype.names and
+#        map_field('v') in data.dtype.names):
+#        u = data[map_field('u')]
+#        v = data[map_field('v')]
+#    else:
+#        wspd = data[map_field('wind speed')]
+#        wdir = data[map_field('wind direction')]
+#        u,v = get_wind_components(wspd, wdir)
 
     #Convert coordinates
     x,y = proj(data[map_field('longitude')], data[map_field('latitude')])
 
-    # plot barbs.
-    ax.barbs(x, y, u, v)
-
     #TODO: Formats should be passed in, probably on a var-by-var basis
     for spot in layout:
         var = layout[spot]
-        style = styles.get(var, {})
-        text_plot(ax, x, y, data[var], '%.1f', loc=direction_map[spot], **style)
+        if len(var) == 2:
+            # plot barbs.
+            u,v = var
+            style = styles.get('barbs', {})
+            ax.barbs(x, y, u, v, **style)
+        else:
+            style = styles.get(var, {})
+            text_plot(ax, x, y, data[var], '%.1f', loc=direction_map[spot],
+                **style)
