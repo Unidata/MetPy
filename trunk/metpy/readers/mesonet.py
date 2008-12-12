@@ -73,7 +73,7 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
 
     fields : sequence
         A list of the variables which should be returned.  See
-        :func:`read_mesonet_ts` for a list of valid fields.
+        :func:`read_mesonet_data` for a list of valid fields.
 
     site : string
         Optional station id for the data to be fetched.  This is
