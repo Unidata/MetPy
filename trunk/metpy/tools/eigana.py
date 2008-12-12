@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+__all__ = ['orthomax','pca','procrustes','promax']
+
 import numpy as np
 import scipy.signal as SS
 

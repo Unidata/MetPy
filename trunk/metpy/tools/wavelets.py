@@ -1,5 +1,7 @@
 #!/usr/bin/python
 
+__all__ = ['cwt', 'cxwt', 'SDG']
+
 import numpy as np
 from scipy.fftpack import fft, ifft
 
