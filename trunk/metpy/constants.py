@@ -5,7 +5,7 @@ Earth
 -------------
 Name                    Abbr. Units    Description
 ======================= ===== ======== ==================
-earth_avg_radious       Re    m        Avg. radius of the Earth
+earth_avg_radius        Re    m        Avg. radius of the Earth
 earth_gravity           g     m s^-2   Avg. gravity acceleration on Earth
 earth_avg_angular_vel   omega rad s^-1 Avg. angular velocity of Earth
 earth_sfc_avg_dist_sun  d     m        Avg. distance of the Earth from the Sun
@@ -26,7 +26,7 @@ wv_specific_heat_vol    Cv_v  J (K kg)^-1 Specific heat at constant volume for
 water_specific_heat     Cp_l  J (K kg)^-1 Specific heat of liquid water at 0C
 water_heat_vaporization Lv    J kg^-1     Latent heat of vaporization for liquid
                                           water at 0C
-water_heat_fustion      Lf    J kg^-1     Latent heat of fusion for liquid water
+water_heat_fusion       Lf    J kg^-1     Latent heat of fusion for liquid water
                                           at 0C
 ice_specific_heat       Cp_i  J (K kg)^-1 Specific heat of ice at 0C
 density_ice             rho_i kg m^-3     Density of ice at 0C
@@ -44,7 +44,7 @@ dry_air_spec_heat_press  Cp_d  J (K kg)^-1 Specific heat at constant pressure
                                            for dry air
 dry_air_spec_heat_vol    Cv_d  J (K kg)^-1 Specific heat at constant volume
                                            for dry air
-dry_air_density_stp      1.275 kg m^-3     Density of dry air at 0C and 1000mb
+dry_air_density_stp      rho_d kg m^-3     Density of dry air at 0C and 1000mb
 ======================== ===== ======== ==================
 
 General meteorology constants
@@ -57,7 +57,7 @@ poisson_exponent         kappa   None     Exponent in Poisson's equation (Rd/Cp_
 dry_adiabatic_lapse_rate gamma_d K km^-1  The dry adiabatic lapse rate
 molecular_weight_ratio   epsilon None     Ratio of molecular weight of water to
                                           that of dry air
-======================= ===== ======== ==================
+======================== ======= ======== ==================
 '''
 
 __all__ = ['C2F', 'C2K', 'F2K', 'K2C', 'K2F', 'F2C', 'Re', 'earth_avg_radious',
@@ -80,7 +80,7 @@ R = value('molar gas constant')
 del value
 
 #Earth
-Re = earth_avg_radious = 6.37e6 # m
+Re = earth_avg_radius = 6.37e6 # m
 g = earth_avg_gravity = 9.81 # m s^-2
 omega = earth_avg_angular_vel = 2 * pi / day # rad s^-1
 d = earth_sfc_avg_dist_sun = 1.50e11 # m
@@ -90,11 +90,11 @@ S = earth_solar_irradiance = 1.38e3 # W m^-2
 Mw = water_molecular_weight = 18.016 # g / mol
 Rv = water_gas_constant = R / Mw * kilo #J K^-1 kg^-1
 rho_l = density_water = 1e3 # Nominal density of liquid water at 0C in kg m^-3
-Cp_v = water_vapor_specific_heat_press = 1952. # J K^-1 kg^-1
-Cv_v = water_vapor_specific_heat_vol = 1463. # J K^-1 kg^-1
+Cp_v = wv_specific_heat_press = 1952. # J K^-1 kg^-1
+Cv_v = wv_specific_heat_vol = 1463. # J K^-1 kg^-1
 Cp_l = water_specific_heat = 4218. # at 0C J K^-1 kg^-1
-Lv = water_latent_heat_vaporization = 2.5e6 #0C J kg^-1
-Lf = water_latent_heat_fustion = 3.34e5 #0C J kg^-1
+Lv = water_heat_vaporization = 2.5e6 #0C J kg^-1
+Lf = water_heat_fusion = 3.34e5 #0C J kg^-1
 Cp_i = ice_specific_heat = 2106 # at 0C J K^-1 kg^-1
 rho_i = density_ice = 917 # at 0C in kg m^-3
 
@@ -103,7 +103,7 @@ Md = dry_air_molecular_weight = 28.97 # g / mol at the sfc
 Rd = dry_air_gas_constant = R / Md * kilo # J K^-1 kg^-1
 Cp_d = dry_air_spec_heat_press = 1004. # J K^-1 kg^-1
 Cv_d = dry_air_spec_heat_vol = 717. # J K^-1 kg^-1
-dry_air_density_stp = 1.275 # at 0C 1000mb in kg m^-3
+rho_d = dry_air_density_stp = 1.275 # at 0C 1000mb in kg m^-3
 
 #General meteorology constants
 P0 = pot_temp_ref_press = 100000. # Pa
