@@ -81,13 +81,13 @@ K2C :
     Convert temperature in Kelvin to degrees Celsius
 '''
 
-__all__ = ['C2F', 'C2K', 'F2K', 'K2C', 'K2F', 'F2C', 'Re', 'earth_avg_radious',
+__all__ = ['C2F', 'C2K', 'F2K', 'K2C', 'K2F', 'F2C', 'Re', 'earth_avg_radius',
     'g', 'earth_avg_gravity', 'omega', 'earth_avg_angular_vel',
     'd', 'earth_sfc_avg_dist_sun', 'S', 'earth_solar_irradiance',
     'Mw', 'water_molecular_weight', 'Rv', 'water_gas_constant',
     'rho_l', 'density_water', 'Cp_v', 'wv_specific_heat_press',
     'Cv_v', 'wv_specific_heat_vol', 'Cp_l', 'water_specific_heat',
-    'Lv', 'water_heat_vaporization', 'Lf', 'water_heat_fustion',
+    'Lv', 'water_heat_vaporization', 'Lf', 'water_heat_fusion',
     'Cp_i', 'ice_specific_heat', 'rho_i', 'density_ice',
     'Md', 'dry_air_molecular_weight', 'Rd', 'dry_air_gas_constant',
     'Cp_d', 'dry_air_spec_heat_press', 'Cv_d', 'dry_air_spec_heat_vol',
