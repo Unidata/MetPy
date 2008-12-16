@@ -222,3 +222,55 @@ def rec_append_fields(rec, name, arr, dtype=None):
         except AttributeError:
             pass
     return newrec
+
+def add_dtype_titles(array, title_map):
+    '''
+    Add titles to the fields in the array, handling masked arrays if
+    necessary.
+
+    array : ndarray
+        The array to which to add the titles
+
+    title_map : dictionary
+        A dictionary mapping field names to the titles that should be
+        added to the field.
+
+    Returns : None
+    '''
+    # Loop over all fields in the dtype and add a title to the tuple in
+    # the field.  Make a new dtype from this list
+    newdtype = np.dtype(dict((name, info + (title_map.get(name, None),))
+            for name,info in array.dtype.fields.iteritems()))
+    new_array = np.empty(array.shape, dtype=newdtype).view(type(array))
+
+    for name in new_array.dtype.names:
+        new_array[name] = array[name]
+        try:
+            new_array[name].mask = array[name].mask
+        except AttributeError:
+            pass
+
+    return new_array
+
+def get_title(array, name):
+    '''
+    Fetch the title for field *name*.
+
+    array : ndarray
+        The data type
+
+    name : string
+        The field name
+
+    Returns : object
+        The object set as the field's title. If there is none, just
+        return the name.
+    '''
+    try:
+        field = array.dtype.fields[name]
+    except (TypeError, KeyError, AttributeError):
+        return name
+    else:
+        if len(field) > 2:
+            return field[-1]
+        return name
