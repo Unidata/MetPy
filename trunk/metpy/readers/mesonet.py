@@ -286,7 +286,7 @@ def get_last_time(data, ref_field='TAIR', dt_field='datetime'):
     return data[dt_field][mask][-1]
 
 if __name__ == '__main__':
-    import datetime
+    import datetime, os, os.path
     from optparse import OptionParser
 
     import scipy.constants as sconsts
@@ -369,6 +369,12 @@ if __name__ == '__main__':
         station_plot(data, ax=ax, proj=m, field_info=mesonet_var_map,
             styles=dict(dewpoint=dict(color='lightgreen')))
         m.drawstates(ax=ax, zorder=0)
+
+        #Optionally plot a counties shapefile
+        mapfile = os.path.join(os.environ['HOME'], 'mapdata', 'c_03oc08.shp')
+        if os.path.exists(mapfile):
+            m.readshapefile(mapfile, 'counties', zorder=0)
+
         plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))
     else:
         fig = plt.figure(figsize=(8,10))
