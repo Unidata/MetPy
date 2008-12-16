@@ -383,8 +383,8 @@ def text_plot(ax, x, y, data, format='%.0f', loc=None, **kw):
 direction_map = dict(N=(0,1), NE=(1,1), E=(1,0), SE=(1,-1), S=(0,-1),
     SW=(-1,-1), W=(-1,0), NW=(-1,1), C=(0,0))
 
-def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
-    offset=10., field_info=None):
+def station_plot(data, ax=None, proj=None, layout=None, styles=None,
+    formats=None, offset=10., field_info=None):
     '''
     Makes a station plot of the variables in data.
 
@@ -412,6 +412,11 @@ def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
         text style arguments. Any variable not specified will use a
         default (if available).
 
+    *formats* : dictionary
+        A dictionary that maps variable names to either a format string or
+        a function that takes data and returns a string. The default is to
+        use '%0.f' for each variable.
+
     *offset* : float
         The offset, in pixels, from the center point for the values being
         plotted.
@@ -423,20 +428,15 @@ def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
     if ax is None:
         ax = plt.gca()
 
-    #If we don't get a basemap converter, make it a do-nothing function
-    if basemap is None:
-        basemap = lambda x,y:x,y
+    #If we don't get a lat/lon converter, make it a do-nothing function
+    if proj is None:
+        proj = lambda x,y:(x,y)
 
     if field_info is None:
         field_info = {}
 
-    inv_field_info = dict(zip(field_info.values(), field_info.keys()))
-
     def map_field(name):
         return field_info.get(name, name)
-
-    def inv_map_field(name):
-        return inv_field_info.get(name, name)
 
     #Update the default layout with the passed in one
     #TODO: HOW DO WE SPECIFY BARBS?
@@ -444,30 +444,33 @@ def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
         C=None)
     if layout is not None:
         default_layout.update(layout)
-        layout = default_layout
+    layout = default_layout
 
-    default_styles=dict()
+    default_styles = {
+        map_field('temperature'):dict(color='red'),
+        map_field('dewpoint'):dict(color='green'),
+        map_field('wind speed'):dict(color='blue'),
+        map_field('pressure'):dict(color='black')}
     if styles is not None:
         default_styles.update(styles)
-        styles = default_styles
+    styles = default_styles
 
-    if (map_field('u') in data.dtype.names and
-        map_field('v') in data.dtype.names):
-        u = data[map_field('u')]
-        v = data[map_field('v')]
-    else:
-        wspd = data[map_field('wind speed')]
-        wdir = data[map_field('wind direction')]
-        u,v = get_wind_components(wspd, wdir)
+    if formats is None:
+        formats = {}
 
     #Convert coordinates
     x,y = basemap(data[map_field('longitude')], data[map_field('latitude')])
 
-    # plot barbs.
-    ax.barbs(x, y, u, v)
-
-    #TODO: Formats should be passed in, probably on a var-by-var basis
     for spot in layout:
         var = layout[spot]
-        style = styles.get(var, {})
-        text_plot(ax, x, y, data[var], '%.1f', loc=direction_map[spot], **style)
+        if len(var) == 2:
+            # plot barbs.
+            u,v = [map_field(v) for v in var]
+            style = styles.get('barbs', {})
+            ax.barbs(x, y, data[u], data[v], **style)
+        else:
+            var = map_field(var)
+            style = styles.get(var, {})
+            loc = map(lambda x:offset * x, direction_map[spot])
+            f = formats.get(var, '%.0f')
+            text_plot(ax, x, y, data[var], f, loc=loc, **style)
