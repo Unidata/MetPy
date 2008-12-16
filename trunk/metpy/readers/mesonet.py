@@ -243,7 +243,7 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
 
     return data
 
-def mesonet_stid_info(info=None):
+def mesonet_stid_info(info=None, remote=False):
     '''
     Get mesonet station information.
 
@@ -252,18 +252,27 @@ def mesonet_stid_info(info=None):
         what information to return.  The default of None returns
         station ID, latitude, longitude, and elevation.
 
+    remote : boolean
+        Flag indicating whether to read the station table information
+        from the Oklahoma Mesonet's website (True) or to use a local copy
+        (False).  Defaults to False.
+
     Returns : structured array
         A structured array with the station information.
     '''
-
     if info is None:
         names = ['stid', 'Lat', 'Lon', 'Elev']
         cols = (1, 7, 8, 9)
     else:
         names,cols = zip(*info)
 
-    return loadtxt(StringIO(mesonet_station_table), dtype=None, skiprows=123,
-        usecols=cols, names=names, delimiter=',')
+    if remote:
+        station_info = urlopen('http://www.mesonet.org/sites/geomeso.csv')
+    else:
+        station_info = StringIO(mesonet_station_table)
+
+    return loadtxt(station_info, dtype=None, skiprows=123, usecols=cols,
+        names=names, delimiter=',')
 
 def get_last_time(data, ref_field='TAIR', dt_field='datetime'):
     '''
