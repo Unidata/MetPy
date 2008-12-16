@@ -1,5 +1,5 @@
 """
-Proposal : 
+Proposal :
 Here's an extension to np.loadtxt, designed to take missing values into account.
 
 """
@@ -25,7 +25,7 @@ def _to_filehandle(fname, flag='r', return_opened=False):
     """
     Returns the filehandle corresponding to a string or a file.
     If the string ends in '.gz', the file is automatically unzipped.
-    
+
     Parameters
     ----------
     fname : string, filehandle
@@ -97,7 +97,7 @@ def nested_masktype(datatype):
 class LineSplitter:
     """
     Defines a function to split a string at a given delimiter or at given places.
-    
+
     Parameters
     ----------
     comment : {'#', string}
@@ -168,7 +168,7 @@ class NameValidator:
     are replaced by `_`. If the optional input parameter `case_sensitive`
     is False, the strings are set to upper case.
 
-    During instantiation, the user can define a list of names to exclude, as 
+    During instantiation, the user can define a list of names to exclude, as
     well as a list of invalid characters. Names in the exclude list are appended
     a '_' character.
 
@@ -244,7 +244,7 @@ class NameValidator:
 def str2bool(value):
     """
     Tries to transform a string supposed to represent a boolean to a boolean.
-    
+
     Raises
     ------
     ValueError
@@ -265,7 +265,7 @@ class StringConverter:
     Factory class for function transforming a string into another object (int,
     float).
 
-    After initialization, an instance can be called to transform a string 
+    After initialization, an instance can be called to transform a string
     into another object. If the string is recognized as representing a missing
     value, a default value is returned.
 
@@ -284,7 +284,7 @@ class StringConverter:
     missing_values : {sequence}, optional
         Sequence of strings indicating a missing value.
     locked : {boolean}, optional
-        Whether the StringConverter should be locked to prevent automatic 
+        Whether the StringConverter should be locked to prevent automatic
         upgrade or not.
 
     Attributes
@@ -320,11 +320,11 @@ class StringConverter:
         """
     Upgrade the mapper of a StringConverter by adding a new function and its
     corresponding default.
-    
-    The input function (or sequence of functions) and its associated default 
+
+    The input function (or sequence of functions) and its associated default
     value (if any) is inserted in penultimate position of the mapper.
     The corresponding type is estimated from the dtype of the default value.
-    
+
     Parameters
     ----------
     func : var
@@ -525,8 +525,8 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
     usemask : {bool}, optional
         Whether to create a mask indicating where data is missing.
     loose : {bool}, optional
-        Whether to use a loose converter or not. With a loose converter, 
-        data that cannot be converted is transformed to a default value, 
+        Whether to use a loose converter or not. With a loose converter,
+        data that cannot be converted is transformed to a default value,
         and no ValueError exception is raised.
 
 
@@ -563,7 +563,7 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
 
     # Initialize the filehandle, the LineSplitter and the NameValidator
     fhd = _to_filehandle(fname)
-    split_line = LineSplitter(delimiter=delimiter, comments=comments, 
+    split_line = LineSplitter(delimiter=delimiter, comments=comments,
                               autostrip=False)._handyman
     validate_names = NameValidator(excludelist=excludelist,
                                    deletechars=deletechars)
@@ -658,7 +658,7 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
             except ValueError:
                 # Unused converter specified
                 continue
-        converters[i].update(conv, default=None, 
+        converters[i].update(conv, default=None,
                              missing_values=missing_values[i],
                              locked=True)
     all_locked = min((_._locked for _ in converters))
@@ -688,7 +688,7 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
         # Store the values
         append_to_rows(tuple(values))
         if usemask:
-            append_to_masks(tuple([val.strip() in mss 
+            append_to_masks(tuple([val.strip() in mss
                                    for (val, mss) in zip(values,
                                                          missing_values)]))
 
@@ -712,7 +712,7 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
         strcolidx = [i for (i, v) in enumerate(coldtypes) if v.char == 'S']
         for i in strcolidx:
             coldtypes[i] = "|S%i" % max(len(row[i]) for row in data)
-        
+
         if names is None:
             # If the dtype is uniform, don't define names, else use ''
             base = coldtypes[0]
@@ -771,10 +771,10 @@ def loadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
                converters=None, missing='', missing_values=None,
                usecols=None, unpack=None,
                names=None, excludelist=None, deletechars=None):
-    kwargs = dict(dtype=dtype, comments=comments, delimiter=delimiter, 
+    kwargs = dict(dtype=dtype, comments=comments, delimiter=delimiter,
                   skiprows=skiprows, converters=converters,
                   missing=missing, missing_values=missing_values,
-                  usecols=usecols, unpack=unpack, names=names, 
+                  usecols=usecols, unpack=unpack, names=names,
                   excludelist=excludelist, deletechars=deletechars,
                   usemask=False)
     (output, _) = genloadtxt(fname, **kwargs)
@@ -784,10 +784,10 @@ def mloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
                converters=None, missing='', missing_values=None,
                usecols=None, unpack=None,
                names=None, excludelist=None, deletechars=None):
-    kwargs = dict(dtype=dtype, comments=comments, delimiter=delimiter, 
+    kwargs = dict(dtype=dtype, comments=comments, delimiter=delimiter,
                   skiprows=skiprows, converters=converters,
                   missing=missing, missing_values=missing_values,
-                  usecols=usecols, unpack=unpack, names=names, 
+                  usecols=usecols, unpack=unpack, names=names,
                   excludelist=excludelist, deletechars=deletechars,
                   usemask=True)
     (output, outputmask) = genloadtxt(fname, **kwargs)
@@ -871,4 +871,3 @@ import numpy as np
     #        raise
     #    finally:
         os.remove(tmp_fl)
-
