@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import NullFormatter
 from matplotlib.dates import (DateFormatter, HourLocator, AutoDateLocator,
     date2num)
-from metpy.cbook import iterable
+from metpy.cbook import iterable, get_title
 
 #Default units for certain variables
 default_units = {'temperature':'C', 'dewpoint':'C', 'relative humidity':'%',
@@ -254,7 +254,9 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
                     unit_str = '$' + unit_str + '$'
             else:
                 unit_str = ''
-            ax.set_ylabel(inv_map_field(varname).title() + unit_str)
+
+            descr = get_title(data, varname)
+            ax.set_ylabel(descr.title() + unit_str)
 
         ax.xaxis.set_major_locator(ticker)
         ax.xaxis.set_major_formatter(DateFormatter('%H'))
