@@ -440,9 +440,8 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
         return field_info.get(name, name)
 
     #Update the default layout with the passed in one
-    #TODO: HOW DO WE SPECIFY BARBS?
     default_layout=dict(NW=map_field('temperature'), SW=map_field('dewpoint'),
-        C=None)
+        C=(map_field('u'), map_field('v')))
     if layout is not None:
         default_layout.update(layout)
     layout = default_layout
