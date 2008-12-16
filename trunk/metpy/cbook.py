@@ -170,7 +170,7 @@ from genloadtxt import loadtxt, mloadtxt
 #Taken from a numpy-discussion mailing list post 'Re: adding field to rec array'
 #by Robert Kern.  Modified to handle masked arrays, which is why we don't
 #just use the matplotlib version
-def rec_append_fields(rec, name, arr, dtype=None):
+def rec_append_fields(rec, names, arr, dtype=None):
     """
     Appends a field to an existing record array, handling masked fields
     if necessary.
@@ -179,39 +179,39 @@ def rec_append_fields(rec, name, arr, dtype=None):
     ----------
     rec : numpy record array
         Array to which the new field should be appended
-    name : string
-        Name to be given to the new field
+    names : string
+        Names to be given to the new fields
     arr : ndarray
-        Array containing the data for the new field.
+        Array containing the data for the new fields.
     dtype : data-type or None, optional
-        Data type of the new field.  If this is None, the data type will
+        Data type of the new fields.  If this is None, the data types will
         be obtained from `arr`.
 
     Returns
     -------
     out : numpy record array
         `rec` with the new field appended.
-    rec = np.asarray(rec, name, arr)
+    rec = rec_append_fields(rec, name, arr)
     """
-    if not iterable(name):
-        name = [name]
+    if not iterable(names):
+        names = [names]
     if not iterable(arr):
         arr = [arr]
 
     if dtype is None:
         dtype = [a.dtype for a in arr]
 
-    newdtype = np.dtype(rec.dtype.descr + zip(name, dtype))
+    newdtype = np.dtype(rec.dtype.descr + zip(names, dtype))
     newrec = np.empty(rec.shape, dtype=newdtype).view(type(rec))
 
-    for field in rec.dtype.fields:
-        newrec[field] = rec[field]
+    for name in rec.dtype.names:
+        newrec[name] = rec[name]
         try:
-            newrec.mask[field] = rec.mask[field]
+            newrec.mask[name] = rec.mask[name]
         except AttributeError:
             pass #Not a masked array
 
-    for n,a in zip(name, arr):
+    for n,a in zip(names, arr):
         newrec[n] = a
         try:
             old_mask = a.mask
