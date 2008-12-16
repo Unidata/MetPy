@@ -203,7 +203,15 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
         skip = 2
         conv = None
 
-    missing = ','.join(map(str,range(BAD_DATA_LIMIT, BAD_DATA_LIMIT-10, -1)))
+    # This long list is needed because missing values are detected by
+    # string equality and not value, so that -999 is not the same
+    # as -999.00
+    missing_vals = range(BAD_DATA_LIMIT, BAD_DATA_LIMIT-10, -1)
+    missing_strs = (map(str, missing_vals)
+        + ['%.0f' % v for v in missing_vals]
+        + ['%.1f' % v for v in missing_vals]
+        + ['%.2f' % v for v in missing_vals])
+    missing = ','.join(missing_strs)
     data = mloadtxt(fh, dtype=None, names=True, usecols=fields, skiprows=skip,
         converters=conv, missing=missing)
 
