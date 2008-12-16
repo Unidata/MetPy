@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 from cStringIO import StringIO
+from urllib2 import urlopen
 import numpy as np
 from numpy.ma import mrecords
 from metpy.cbook import loadtxt, mloadtxt #Can go back to numpy once it's updated
@@ -35,8 +36,6 @@ def _fetch_mesonet_data(date_time, site=None):
     Helper function for fetching mesonet data from a remote location.
     Uses an LRU cache.
     '''
-    import urllib2
-
     if site is None:
         data_type = 'mdf'
         #Put time back to last even 5 minutes
@@ -53,7 +52,7 @@ def _fetch_mesonet_data(date_time, site=None):
     baseurl='http://www.mesonet.org/public/data/getfile.php?dir=%s&filename=%s'
 
     #Open the remote location
-    datafile = urllib2.urlopen(baseurl % (path+fname, fname))
+    datafile = urlopen(baseurl % (path+fname, fname))
 
     return datafile.read()
 
