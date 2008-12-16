@@ -210,7 +210,7 @@ def read_mesonet_data(filename, fields=None, convert_time=True,
     data = add_dtype_titles(data, mesonet_inv_var_map)
 
     #Change converted column name from TIME to datetime
-    if convert_time:
+    if convert_time and (fields is None or 'TIME' in fields):
         names = list(data.dtype.names)
         names[names.index('TIME')] = 'datetime'
         data.dtype.names = names
@@ -218,7 +218,7 @@ def read_mesonet_data(filename, fields=None, convert_time=True,
 
     #Lookup station information so that returned data has latitude and
     #longitude information
-    if lookup_stids:
+    if lookup_stids and (fields is None or 'STID' in fields):
         sta_table = mesonet_stid_info()
         station_indices = sta_table['stid'].searchsorted(data['STID'])
         lat = sta_table['Lat'][station_indices]
