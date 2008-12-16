@@ -32,6 +32,5 @@ m.bluemarble()
 station_plot(data, ax=ax, proj=m, field_info=mesonet_var_map,
     styles=dict(dewpoint=dict(color='lightgreen')))
 m.drawstates(ax=ax, zorder=0)
-m.readshapefile('/home/rmay/mapdata/c_28de04', 'counties', zorder=0)
 plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))
 plt.show()
