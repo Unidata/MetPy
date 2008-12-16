@@ -342,7 +342,7 @@ if __name__ == '__main__':
 
     fig = plt.figure(figsize=(8,10))
     layout = {0:['TAIR', 'dewpoint', 'windchill']}
-    axs = meteogram(data, fig, field_info=mesonet_var_map, units=mod_units,
-        time_range=times, layout=layout)
+    axs = meteogram(data, fig, num_panels=5, field_info=mesonet_var_map,
+        units=mod_units, time_range=times, layout=layout)
     axs[0].set_ylabel('Temperature (F)')
     plt.show()

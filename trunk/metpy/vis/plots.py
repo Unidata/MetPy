@@ -23,7 +23,7 @@ def _rescale_yaxis(ax, bounds):
     ax.autoscale_view()
 
 #TODO: REWRITE AS CLASS
-def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
+def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
     layout=None, styles=None, limits=None, units=None, field_info=None):
     '''
     Plots a meteogram (collection of time series) for a data set. This
