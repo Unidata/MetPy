@@ -40,8 +40,8 @@ def _fetch_mesonet_data(date_time, site=None):
     if site is None:
         data_type = 'mdf'
         #Put time back to last even 5 minutes
-        date_time = date_time.replace(minute=(dt.minute - dt.minute%5),
-            second=0, microsecond=0)
+        date_time = date_time.replace(minute=(date_time.minute
+            - date_time.minute%5), second=0, microsecond=0)
         fname = '%s.mdf' % date_time.strftime('%Y%m%d%H%M')
     else:
         data_type = 'mts'
