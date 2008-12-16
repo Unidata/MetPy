@@ -289,30 +289,39 @@ if __name__ == '__main__':
     import datetime
     from optparse import OptionParser
 
-    import matplotlib.pyplot as plt
     import scipy.constants as sconsts
-    from metpy.vis import meteogram
+    import matplotlib.pyplot as plt
+    from mpl_toolkits.basemap import Basemap
+    from metpy.vis import meteogram, station_plot
     from metpy.constants import C2F
-    from metpy.calc import dewpoint, windchill
+    from metpy.calc import dewpoint, windchill, get_wind_components
 
     #Create a command line option parser so we can pass in site and/or date
     parser = OptionParser()
-    parser.add_option('-s', '--site', dest='site', help='get data for SITE',
+    parser.add_option('-s', '--site', dest='site', help='Get data for SITE. '
+        'SITE can be "None" to specify a mesonet data file for all stations '
+        'instead of using a time series file for a single station.',
         metavar='SITE', default='nrmn')
-    parser.add_option('-d', '--date', dest='date', help='get data for YYYYMMDD',
+    parser.add_option('-d', '--date', dest='date', help='get data for '
+        'YYYYMMDD[_HHMM] (HHMM is only used with None for site)',
         metavar='YYYYMMDD', default=None)
 
     #Parse the command line options and convert them to useful values
     opts,args = parser.parse_args()
+    if opts.site == 'None':
+        opts.site = None
     if opts.date is not None:
-        dt = datetime.datetime.strptime(opts.date, '%Y%m%d')
+        if opts.site is None:
+            dt = datetime.datetime.strptime(opts.date, '%Y%m%d_%H%M')
+        else:
+            dt = datetime.datetime.strptime(opts.date, '%Y%m%d')
     else:
         dt = None
 
     fields = ('stid', 'time', 'relh', 'tair', 'wspd', 'wmax', 'wdir', 'pres',
         'srad', 'rain')
 
-    data = remote_mesonet_data(dt, fields, opts.site, lookup_stids=False)
+    data = remote_mesonet_data(dt, fields, opts.site)
 
     #Add a reasonable time range if we're doing current data
     if dt is None:
@@ -345,9 +354,27 @@ if __name__ == '__main__':
     wchill = windchill(data['TAIR'], data['WSPD'], metric=False)
     data = rec_append_fields(data, ('windchill',), (wchill,))
 
-    fig = plt.figure(figsize=(8,10))
-    layout = {0:['TAIR', 'dewpoint', 'windchill']}
-    axs = meteogram(data, fig, num_panels=5, field_info=mesonet_var_map,
-        units=mod_units, time_range=times, layout=layout)
-    axs[0].set_ylabel('Temperature (F)')
+    #If site is None, do a station plot, otherwise do a meteogram
+    if opts.site is None:
+        # Convert wind speed and direction to U,V components
+        u,v = get_wind_components(data['WSPD'], data['WDIR'])
+        data = rec_append_fields(data, ('u', 'v'), (u, v))
+
+        fig = plt.figure(figsize=(20,12))
+        ax = fig.add_subplot(1,1,1)
+        m = Basemap(lon_0=-99, lat_0=35, lat_ts=35, resolution='i',
+            projection='stere', urcrnrlat=37., urcrnrlon=-94.25, llcrnrlat=33.7,
+            llcrnrlon=-103., ax=ax)
+        m.bluemarble()
+        station_plot(data, ax=ax, proj=m, field_info=mesonet_var_map,
+            styles=dict(dewpoint=dict(color='lightgreen')))
+        m.drawstates(ax=ax, zorder=0)
+        plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))
+    else:
+        fig = plt.figure(figsize=(8,10))
+        layout = {0:['TAIR', 'dewpoint', 'windchill']}
+        axs = meteogram(data, fig, num_panels=5, field_info=mesonet_var_map,
+            units=mod_units, time_range=times, layout=layout)
+        axs[0].set_ylabel('Temperature (F)')
+
     plt.show()
