@@ -135,27 +135,28 @@ def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
 
     #Default styles for each variable
     default_styles = {
-        map_field('relative humidity'):dict(color='green', linestyle='--'),
-        map_field('dewpoint'):dict(facecolor='green', edgecolor='None',
+        map_field('relative humidity'):dict(color='#255425', linestyle='--'),
+        map_field('dewpoint'):dict(facecolor='#265425', edgecolor='None',
             fill=True),
-        map_field('temperature'):dict(facecolor='red', edgecolor='None',
+        map_field('temperature'):dict(facecolor='#C14F53', edgecolor='None',
             fill=True),
-        map_field('pressure'):dict(facecolor='brown', edgecolor='None',
+        map_field('pressure'):dict(facecolor='#895125', edgecolor='None',
             fill=True),
-        map_field('dewpoint'):dict(facecolor='green', edgecolor='None',
+        map_field('dewpoint'):dict(facecolor='#265425', edgecolor='None',
             fill=True),
-        map_field('wind speed'):dict(facecolor='blue', edgecolor='None',
+        map_field('wind speed'):dict(facecolor='#1C2386', edgecolor='None',
             fill=True),
-        map_field('wind gusts'):dict(facecolor='lightblue', edgecolor='None',
+        map_field('wind gusts'):dict(facecolor='#8388FC', edgecolor='None',
             fill=True),
-        map_field('wind direction'):dict(markeredgecolor='goldenrod',
-            marker='o', linestyle='', markerfacecolor='None',
-            markeredgewidth=1),
-        map_field('rainfall'):dict(facecolor='lightgreen', edgecolor='None',
+        map_field('wind direction'):dict(markeredgecolor='#A9A64B',
+            marker='D', linestyle='', markerfacecolor='None',
+            markeredgewidth=1, markersize=3),
+        map_field('rainfall'):dict(facecolor='#37CD37', edgecolor='None',
             fill=True),
-        map_field('solar radiation'):dict(facecolor='orange', edgecolor='None',
+        map_field('solar radiation'):dict(facecolor='#FF8529', edgecolor='None',
             fill=True),
-        map_field('windchill'):dict(color='lightblue')}
+        map_field('windchill'):dict(color='#8388FC', linewidth=1.5),
+        map_field('heatindex'):dict(color='#671A5C')}
 
     if styles is not None:
         default_styles.update(styles)
@@ -231,7 +232,7 @@ def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
                 _rescale_yaxis(ax, var_min + var_max)
             else:
                 ax.plot(time, var, **style)
-
+                
             #If then length > 2, then we have ticks and (maybe) labels
             if len(lims) > 2:
                 other = lims[2:]
@@ -378,7 +379,7 @@ def text_plot(ax, x, y, data, format='%.0f', loc=None, **kw):
 direction_map = dict(N=(0,1), NE=(1,1), E=(1,0), SE=(1,-1), S=(0,-1),
     SW=(-1,-1), W=(-1,0), NW=(-1,1), C=(0,0))
 
-def station_plot(data, ax=None, proj=None, layout=None, styles=None,
+def station_plot(data, ax=None, basemap=None, layout=None, styles=None,
     offset=10., field_info=None):
     '''
     Makes a station plot of the variables in data.
@@ -391,10 +392,9 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
         The matplotlib Axes object on which to draw the station plot.  If None,
         the current Axes object is used.
 
-    *proj* : callable
-        A callable (such as a :class:`mpl_toolkits.basemap.Basemap`) to use to
-        convert geographic coordinates.  If None, the geographic coordinates
-        are used, as is, without any projection.
+    *basemap* : :class:`mpl_toolkits.basemap.Basemap` instance or None
+        A Basemap object to use to convert geographic coordinates.  If None,
+        the geographic coordinates are used, as is, without any projection.
 
     *layout* : dictionary
         A dictionary that maps locations to field names.  Valid locations are:
@@ -435,42 +435,35 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
         return inv_field_info.get(name, name)
 
     #Update the default layout with the passed in one
+    #TODO: HOW DO WE SPECIFY BARBS?
     default_layout=dict(NW=map_field('temperature'), SW=map_field('dewpoint'),
-        C=(map_field('u'), map_field('v')))
+        C=None)
     if layout is not None:
         default_layout.update(layout)
         layout = default_layout
 
-    default_styles=dict(
-        'temperature':dict(color='red'),
-        'dewpoint':dict(color='green'),
-        'wind speed':dict(color='blue'),
-        'pressure':dict(color='black'))
+    default_styles=dict()
     if styles is not None:
         default_styles.update(styles)
         styles = default_styles
 
-#    if (map_field('u') in data.dtype.names and
-#        map_field('v') in data.dtype.names):
-#        u = data[map_field('u')]
-#        v = data[map_field('v')]
-#    else:
-#        wspd = data[map_field('wind speed')]
-#        wdir = data[map_field('wind direction')]
-#        u,v = get_wind_components(wspd, wdir)
+    if (map_field('u') in data.dtype.names and
+        map_field('v') in data.dtype.names):
+        u = data[map_field('u')]
+        v = data[map_field('v')]
+    else:
+        wspd = data[map_field('wind speed')]
+        wdir = data[map_field('wind direction')]
+        u,v = get_wind_components(wspd, wdir)
 
     #Convert coordinates
-    x,y = proj(data[map_field('longitude')], data[map_field('latitude')])
+    x,y = basemap(data[map_field('longitude')], data[map_field('latitude')])
+
+    # plot barbs.
+    ax.barbs(x, y, u, v)
 
     #TODO: Formats should be passed in, probably on a var-by-var basis
     for spot in layout:
         var = layout[spot]
-        if len(var) == 2:
-            # plot barbs.
-            u,v = var
-            style = styles.get('barbs', {})
-            ax.barbs(x, y, u, v, **style)
-        else:
-            style = styles.get(var, {})
-            text_plot(ax, x, y, data[var], '%.1f', loc=direction_map[spot],
-                **style)
+        style = styles.get(var, {})
+        text_plot(ax, x, y, data[var], '%.1f', loc=direction_map[spot], **style)
