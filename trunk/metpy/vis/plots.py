@@ -396,8 +396,9 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
         The matplotlib Axes object on which to draw the station plot.  If None,
         the current Axes object is used.
 
-    *basemap* : :class:`mpl_toolkits.basemap.Basemap` instance or None
-        A Basemap object to use to convert geographic coordinates.  If None,
+    *proj* : callable or None
+        A function to use to convert geographic coordinates, such as
+        a :class:`mpl_toolkits.basemap.Basemap` instance.  If None,
         the geographic coordinates are used, as is, without any projection.
 
     *layout* : dictionary
@@ -459,7 +460,7 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
         formats = {}
 
     #Convert coordinates
-    x,y = basemap(data[map_field('longitude')], data[map_field('latitude')])
+    x,y = proj(data[map_field('longitude')], data[map_field('latitude')])
 
     for spot in layout:
         var = layout[spot]
