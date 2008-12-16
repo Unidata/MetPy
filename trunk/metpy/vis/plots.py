@@ -232,7 +232,7 @@ def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
                 _rescale_yaxis(ax, var_min + var_max)
             else:
                 ax.plot(time, var, **style)
-                
+
             #If then length > 2, then we have ticks and (maybe) labels
             if len(lims) > 2:
                 other = lims[2:]
@@ -250,6 +250,8 @@ def meteogram(data, fig=None, num_panels=5, time_range=None, ticker=None,
             # field info with units, if given.
             if varname in units and units[varname]:
                 unit_str = ' (%s)' % units[varname]
+                if '^' in unit_str:
+                    unit_str = '$' + unit_str + '$'
             else:
                 unit_str = ''
             ax.set_ylabel(inv_map_field(varname).title() + unit_str)

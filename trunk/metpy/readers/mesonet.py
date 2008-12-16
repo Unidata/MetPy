@@ -23,7 +23,7 @@ mesonet_inv_var_map = dict(zip(mesonet_var_map.values(),
     mesonet_var_map.keys()))
 
 mesonet_units = {'TAIR':'C', 'RELH':'%', 'PRES':'mb', 'WSPD':'m/s',
-    'SRAD':'$W/m^2$', 'RAIN':'mm', 'WDIR':'deg', 'WMAX':'m/s'}
+    'SRAD':'W/m^2', 'RAIN':'mm', 'WDIR':'deg', 'WMAX':'m/s'}
 
 #Some special numbers
 BAD_DATA_LIMIT = -990
