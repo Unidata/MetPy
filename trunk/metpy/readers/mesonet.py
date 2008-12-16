@@ -4,7 +4,8 @@ from urllib2 import urlopen
 import numpy as np
 from numpy.ma import mrecords
 from metpy.cbook import loadtxt, mloadtxt #Can go back to numpy once it's updated
-from metpy.cbook import is_string_like, lru_cache, rec_append_fields
+from metpy.cbook import (is_string_like, lru_cache, rec_append_fields,
+    add_dtype_titles)
 
 __all__ = ['remote_mesonet_data', 'read_mesonet_data', 'mesonet_stid_info']
 
@@ -57,8 +58,7 @@ def _fetch_mesonet_data(date_time, site=None):
     return datafile.read()
 
 def remote_mesonet_data(date_time=None, fields=None, site=None,
-    rename_fields=False, convert_time=True, lookup_stids=True,
-    full_day_record=True):
+    convert_time=True, lookup_stids=True, full_day_record=True):
     '''
     Reads in Oklahoma Mesonet Datafile (MDF) directly from their servers.
 
@@ -77,10 +77,6 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
         case-insensitive.  If specified, a time series file will be
         downloaded.  If left blank, a snapshot data file for the whole
         network is downloaded.
-
-    rename_fields : boolean
-        Flag indicating whether the field names given by the mesonet
-        should be renamed to standard names. Defaults to False.
 
     convert_time : boolean
         Flag indicating whether the time reported in the file, which is
@@ -113,13 +109,12 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
             yest = date_time - datetime.timedelta(days=1)
 
             old_data = StringIO(_fetch_mesonet_data(yest, site))
-            old_data = read_mesonet_data(old_data, fields, rename_fields,
-                convert_time, lookup_stids)
+            old_data = read_mesonet_data(old_data, fields, convert_time,
+                lookup_stids)
 
     #Fetch the data and read it in
     data = StringIO(_fetch_mesonet_data(date_time, site))
-    data = read_mesonet_data(data, fields, rename_fields, convert_time,
-        lookup_stids)
+    data = read_mesonet_data(data, fields, convert_time, lookup_stids)
 
     if yest:
         # Need to create a new array.  Resizing the old ones will not work.
@@ -130,8 +125,8 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
 
     return data
 
-def read_mesonet_data(filename, fields=None, rename_fields=False,
-    convert_time=True, lookup_stids=True):
+def read_mesonet_data(filename, fields=None, convert_time=True,
+    lookup_stids=True):
     '''
     Reads Oklahoma Mesonet data from *filename*.
 
@@ -147,10 +142,6 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
             WSSD, WMAX, RAIN, PRES, SRAD, TA9M, WS2M, TS10, TB10,
             TS05, TB05, TS30, TR05, TR25, TR60, TR75
         The default is to return all fields.
-
-    rename_fields : boolean
-        Flag indicating whether the field names given by the mesonet
-        should be renamed to standard names. Defaults to False.
 
     convert_time : boolean
         Flag indicating whether the time reported in the file, which is
@@ -216,11 +207,7 @@ def read_mesonet_data(filename, fields=None, rename_fields=False,
 
     #Use the inverted dictionary to map names in the FILE to their more
     #descriptive counterparts
-    if rename_fields:
-        names = data.dtype.names
-        new_names = [mesonet_inv_var_map.get(n.upper(), n) for n in names]
-        data.dtype.names = new_names
-        data.mask.dtype.names = new_names
+    data = add_dtype_titles(data, mesonet_inv_var_map)
 
     #Change converted column name from TIME to datetime
     if convert_time:
@@ -320,8 +307,7 @@ if __name__ == '__main__':
     fields = ('stid', 'time', 'relh', 'tair', 'wspd', 'wmax', 'wdir', 'pres',
         'srad', 'rain')
 
-    data = remote_mesonet_data(dt, fields, opts.site, rename_fields=False,
-        lookup_stids=False)
+    data = remote_mesonet_data(dt, fields, opts.site, lookup_stids=False)
 
     #Add a reasonable time range if we're doing current data
     if dt is None:
