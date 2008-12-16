@@ -1,7 +1,5 @@
 from __future__ import division
-from BeautifulSoup import BeautifulSoup as bs
 from mpl_toolkits.basemap import Basemap
-from datetime import date
 import matplotlib.pyplot as plt
 import numpy as np
 import urllib2, time, re
@@ -90,6 +88,10 @@ def get_text_snippet(product):
 
 
 if __name__ == '__main__':
+    
+    from BeautifulSoup import BeautifulSoup as bs
+
+    
     totallons = []
     totallats = []
     text_snippet = []
