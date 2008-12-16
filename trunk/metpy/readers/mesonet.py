@@ -100,9 +100,10 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
         the order given in *fields*.
     '''
     #If we don't get a date, and therefore are using today, fetch yesterday's
-    #data too so that we can have a full 24 hour record
+    #data too so that we can have a full 24 hour record, only if we are using
+    #time series and not a mesonet data file
     yest = None
-    if date_time is None:
+    if date_time is None and site is not None:
         import datetime
         date_time = datetime.datetime.utcnow()
         if full_day_record:
