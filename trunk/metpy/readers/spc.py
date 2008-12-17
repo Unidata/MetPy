@@ -86,7 +86,6 @@ def get_text_snippet(product):
 
 if __name__ == '__main__':
     
-    from BeautifulSoup import BeautifulSoup as bs
     from mpl_toolkits.basemap import Basemap
     import matplotlib.pyplot as plt
 
@@ -98,14 +97,22 @@ if __name__ == '__main__':
     valid_threshold = 5
     invalid = 0
     valid = False
-    for version in range(0,21):
-        URL = 'http://www.srh.noaa.gov/productview.php?pil=SWOMCD&version=%i&max=21' % version
+    for version in range(0,57):
+        SPC_product = ''
+        URL = 'http://www.srh.noaa.gov/productview.php?pil=SWOMCD&version=%i&max=57' % version
         get_SPC_product = urllib2.urlopen(URL)
-        SPC_html = bs(get_SPC_product)
+        SPC_html = get_SPC_product.readlines()
         get_SPC_product.close()
-        for html in SPC_html('pre'):
-            SPC_product = html.contents[:]
-        product = SPC_product[0].split('LAT...LON')
+        for i, line in enumerate(SPC_html):
+            if re.match(re.compile('<pre>'), line):
+                product_begin_index = i
+                continue
+            if re.match(re.compile('</pre>'), line):
+                product_end_index = i
+                break
+        for i in range(product_begin_index, product_end_index):
+            SPC_product += SPC_html[i]
+        product = SPC_product.split('LAT...LON')
         product_text = product[0].split('\n')
         if is_valid(find_valid_time(product_text)):
             valid = True
@@ -132,12 +139,9 @@ if __name__ == '__main__':
         plt.title('Valid SPC Mesoscale Discussions\n%04iZ' % curtime)
         plt.show()
     else:
-        X, Y = map(-98, 40)
-        plt.text(X, Y, 'No Valid Mesoscale Discussions', color='red', \
-                 fontsize=18, horizontalalignment='center', \
+        X, Y = map(-99, 40)
+        plt.text(X, Y, 'No Valid Mesoscale Discussions', color='yellow', \
+                 fontsize=21, horizontalalignment='center', \
                  verticalalignment='center')
         plt.title('Valid SPC Mesoscale Discussions\n%04iZ' % curtime)
-        try:
-            plt.show()
-        except:
-            plt.savefig('valid_mds.png')
+        plt.show()
