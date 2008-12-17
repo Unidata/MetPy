@@ -2,7 +2,7 @@
 from cStringIO import StringIO
 from urllib2 import urlopen
 import numpy as np
-from numpy.ma import mrecords
+from numpy import ma
 from metpy.cbook import loadtxt, mloadtxt #Can go back to numpy once it's updated
 from metpy.cbook import (is_string_like, lru_cache, rec_append_fields,
     add_dtype_titles)
@@ -360,6 +360,10 @@ if __name__ == '__main__':
         u,v = get_wind_components(data['WSPD'], data['WDIR'])
         data = rec_append_fields(data, ('u', 'v'), (u, v))
 
+        #Mask 0 rainfall
+        rain = data['rainfall']
+        rain[rain == 0.0] = ma.masked
+
         fig = plt.figure(figsize=(20,12))
         ax = fig.add_subplot(1,1,1)
         m = Basemap(lon_0=-99, lat_0=35, lat_ts=35, resolution='i',
@@ -367,7 +371,9 @@ if __name__ == '__main__':
             llcrnrlon=-103., ax=ax)
         m.bluemarble()
         station_plot(data, ax=ax, proj=m, field_info=mesonet_var_map,
-            styles=dict(dewpoint=dict(color='lightgreen')))
+            styles=dict(dewpoint=dict(color='lightgreen'),
+                        rainfall=dict(color='darkblue')),
+            layout=dict(E='rainfall'), formats=dict(RAIN='%.1f'), offset=12)
         m.drawstates(ax=ax, zorder=0)
 
         #Optionally plot a counties shapefile
