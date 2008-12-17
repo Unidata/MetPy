@@ -406,7 +406,9 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
         ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'C'], where 'C' represents
         the center location, and all others represent cardinal directions
         relative to the center point.  The actual distance from the center
-        is controlled by *offset*.
+        is controlled by *offset*.  A location can be mapped to None to
+        specify that nothing should be plotted in that location.  This is
+        useful for overriding the default layout.
 
     *styles* : dictionary
         A dictionary that maps variable names to dictionary of matplotlib
@@ -463,6 +465,10 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
 
     for spot in layout:
         var = layout[spot]
+        # This allows specifying a spot in the layout as None to override
+        # the default and eliminate a variable from the plot.
+        if var is None:
+            continue
         if len(var) == 2:
             # plot barbs.
             u,v = [map_field(v) for v in var]
