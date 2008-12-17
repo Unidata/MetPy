@@ -13,7 +13,7 @@ def spc_parse(product_points):
     point_pairs = ''
     for i in range(0,len(product_points)):
         product_points[i] = product_points[i].strip()
-        if re.match(re.compile('\d'), product_points[i]):
+        if re.match('\d', product_points[i]):
             point_pairs += ' '
             point_pairs += product_points[i]
     point_pairs = point_pairs.split()
@@ -31,7 +31,7 @@ def spc_parse(product_points):
 
 def find_valid_time(text):
     for line in text:
-        if re.search(re.compile('VALID \d{6,6}Z - \d{6,6}Z'), line):
+        if re.search('VALID \d{6,6}Z - \d{6,6}Z', line):
             line = line.split()
             init_date = int(line[1][:2])
             init_time = int(line[1][2:-1])
@@ -70,12 +70,12 @@ def is_valid(times):
 def get_text_snippet(product):
     text = ''
     for i in range(len(product)):
-        if re.search(re.compile('AREAS AFFECTED...'), product[i]):
+        if re.search('AREAS AFFECTED...', product[i]):
             snippet_begin = i
             break
     total_chars = 0
     for i in range(snippet_begin,len(product)):
-        if total_chars < 450 and (450 - len(product[i]) >= 0):
+        if total_chars < 425 and (425 - len(product[i]) >= 0):
             text += product[i]
             text += '\\n'
             total_chars += len(product[i])
@@ -103,10 +103,10 @@ if __name__ == '__main__':
         SPC_html = get_SPC_product.readlines()
         get_SPC_product.close()
         for i, line in enumerate(SPC_html):
-            if re.match(re.compile('<pre>'), line):
+            if re.match('<pre>', line):
                 product_begin_index = i
                 continue
-            if re.match(re.compile('</pre>'), line):
+            if re.match('</pre>', line):
                 product_end_index = i
                 break
         for i in range(product_begin_index, product_end_index):
