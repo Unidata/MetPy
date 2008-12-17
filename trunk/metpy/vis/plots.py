@@ -452,7 +452,8 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
         map_field('temperature'):dict(color='red'),
         map_field('dewpoint'):dict(color='green'),
         map_field('wind speed'):dict(color='blue'),
-        map_field('pressure'):dict(color='black')}
+        map_field('pressure'):dict(color='black'),
+        map_field('rainfall'):dict(color='blue')}
     if styles is not None:
         default_styles.update(styles)
     styles = default_styles
