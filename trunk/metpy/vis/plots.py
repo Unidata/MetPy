@@ -427,6 +427,10 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
     *field_info* : dictionary
         A dictionary that maps standard names, like 'temperature' or
         'dewpoint' to the respective variables in the data record array.
+
+    Returns : dictionary
+        A dictionary mapping layout locations to the object that was
+        created in making the plot.
     '''
     if ax is None:
         ax = plt.gca()
@@ -464,6 +468,7 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
     #Convert coordinates
     x,y = proj(data[map_field('longitude')], data[map_field('latitude')])
 
+    results = dict()
     for spot in layout:
         var = layout[spot]
         # This allows specifying a spot in the layout as None to override
@@ -474,10 +479,16 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
             # plot barbs.
             u,v = [map_field(v) for v in var]
             style = styles.get('barbs', {})
-            ax.barbs(x, y, data[u], data[v], **style)
+            out = ax.barbs(x, y, data[u], data[v], **style)
         else:
             var = map_field(var)
             style = styles.get(var, {})
             loc = map(lambda x:offset * x, direction_map[spot])
             f = formats.get(var, '%.0f')
-            text_plot(ax, x, y, data[var], f, loc=loc, **style)
+            out = text_plot(ax, x, y, data[var], f, loc=loc, **style)
+
+        # Add the output of the plotting command to the dictionary for
+        # returning objects to the caller
+        results[spot] = out
+
+    return results
