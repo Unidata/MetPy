@@ -89,7 +89,6 @@ if __name__ == '__main__':
     from mpl_toolkits.basemap import Basemap
     import matplotlib.pyplot as plt
 
-
     
     totallons = []
     totallats = []
