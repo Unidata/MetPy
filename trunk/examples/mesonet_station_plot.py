@@ -2,7 +2,6 @@ import scipy.constants as sconsts
 import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 from metpy import read_mesonet_data, dewpoint, get_wind_components
-from metpy.readers.mesonet import mesonet_var_map
 from metpy.constants import C2F
 from metpy.cbook import rec_append_fields
 from metpy.vis import station_plot
@@ -29,7 +28,7 @@ m = Basemap(lon_0=-99, lat_0=35, lat_ts=35, resolution='i',
     projection='stere', urcrnrlat=37., urcrnrlon=-94.25, llcrnrlat=33.7,
     llcrnrlon=-103., ax=ax)
 m.bluemarble()
-station_plot(data, ax=ax, proj=m, field_info=mesonet_var_map,
+station_plot(data, ax=ax, proj=m,
     styles=dict(dewpoint=dict(color='lightgreen')))
 m.drawstates(ax=ax, zorder=0)
 plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))

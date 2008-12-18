@@ -2,7 +2,7 @@ import datetime
 import matplotlib.pyplot as plt
 import scipy.constants as sconsts
 from metpy.readers.mesonet import (read_mesonet_data, get_last_time,
-    mesonet_units, mesonet_var_map)
+    mesonet_units)
 from metpy.vis import meteogram
 from metpy.constants import C2F
 from metpy.calc import dewpoint, windchill
@@ -42,8 +42,8 @@ wchill = windchill(data['TAIR'], data['WSPD'], metric=False)
 data = rec_append_fields(data, ('windchill',), (wchill,))
 
 fig = plt.figure(figsize=(8,10))
-layout = {0:['TAIR', 'dewpoint', 'windchill']}
-axs = meteogram(data, fig, num_panels=5, field_info=mesonet_var_map,
-    units=mod_units, time_range=times, layout=layout)
+layout = {0:['temperature', 'dewpoint', 'windchill']}
+axs = meteogram(data, fig, num_panels=5, units=mod_units, time_range=times,
+    layout=layout)
 axs[0].set_ylabel('Temperature (F)')
 plt.show()

@@ -24,7 +24,7 @@ def _rescale_yaxis(ax, bounds):
 
 #TODO: REWRITE AS CLASS
 def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
-    layout=None, styles=None, limits=None, units=None, field_info=None):
+    layout=None, styles=None, limits=None, units=None):
     '''
     Plots a meteogram (collection of time series) for a data set. This
     is broken down into a series of panels (defaults to 3), each of which
@@ -77,10 +77,6 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
     *units* : dictionary
         A dictionary that maps variable names to unit strings for axis labels.
 
-    *field_info* : dictionary
-        A dictionary that maps standard names, like 'temperature' or
-        'dewpoint' to the respective variables in the data record array.
-
     Returns : list
         A list of the axes objects that were created.
     '''
@@ -88,19 +84,8 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
     if fig is None:
         fig = plt.figure()
 
-    if field_info is None:
-        field_info = {}
-
-    inv_field_info = dict(zip(field_info.values(), field_info.keys()))
-
-    def map_field(name):
-        return field_info.get(name, name)
-
-    def inv_map_field(name):
-        return inv_field_info.get(name, name)
-
     #Get the time variable, using field info if necessary
-    dt = map_field('datetime')
+    dt = 'datetime'
     time = data[dt]
     tz = UTC
 
@@ -122,12 +107,11 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
     #List of variables in each panel.  None denotes that at that point, twinx
     #should be called and the remaining variables plotted on the other axis
     default_layout = {
-        0:[map_field('temperature'), map_field('dewpoint')],
-        1:[map_field('wind gusts'), map_field('wind speed'), None,
-            map_field('wind direction')],
-        2:[map_field('pressure')],
-        3:[map_field('rainfall')],
-        4:[map_field('solar radiation')]}
+        0:['temperature', 'dewpoint'],
+        1:['wind gusts', 'wind speed', None, 'wind direction'],
+        2:['pressure'],
+        3:['rainfall'],
+        4:['solar radiation']}
 
     if layout is not None:
         default_layout.update(layout)
@@ -135,28 +119,21 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
 
     #Default styles for each variable
     default_styles = {
-        map_field('relative humidity'):dict(color='#255425', linestyle='--'),
-        map_field('dewpoint'):dict(facecolor='#265425', edgecolor='None',
+        'relative humidity':dict(color='#255425', linestyle='--'),
+        'dewpoint':dict(facecolor='#265425', edgecolor='None', fill=True),
+        'temperature':dict(facecolor='#C14F53', edgecolor='None', fill=True),
+        'pressure':dict(facecolor='#895125', edgecolor='None', fill=True),
+        'dewpoint':dict(facecolor='#265425', edgecolor='None', fill=True),
+        'wind speed':dict(facecolor='#1C2386', edgecolor='None', fill=True),
+        'wind gusts':dict(facecolor='#8388FC', edgecolor='None', fill=True),
+        'wind direction':dict(markeredgecolor='#A9A64B', marker='D',
+            linestyle='', markerfacecolor='None', markeredgewidth=1,
+            markersize=3),
+        'rainfall':dict(facecolor='#37CD37', edgecolor='None', fill=True),
+        'solar radiation':dict(facecolor='#FF8529', edgecolor='None',
             fill=True),
-        map_field('temperature'):dict(facecolor='#C14F53', edgecolor='None',
-            fill=True),
-        map_field('pressure'):dict(facecolor='#895125', edgecolor='None',
-            fill=True),
-        map_field('dewpoint'):dict(facecolor='#265425', edgecolor='None',
-            fill=True),
-        map_field('wind speed'):dict(facecolor='#1C2386', edgecolor='None',
-            fill=True),
-        map_field('wind gusts'):dict(facecolor='#8388FC', edgecolor='None',
-            fill=True),
-        map_field('wind direction'):dict(markeredgecolor='#A9A64B',
-            marker='D', linestyle='', markerfacecolor='None',
-            markeredgewidth=1, markersize=3),
-        map_field('rainfall'):dict(facecolor='#37CD37', edgecolor='None',
-            fill=True),
-        map_field('solar radiation'):dict(facecolor='#FF8529', edgecolor='None',
-            fill=True),
-        map_field('windchill'):dict(color='#8388FC', linewidth=1.5),
-        map_field('heatindex'):dict(color='#671A5C')}
+        'windchill':dict(color='#8388FC', linewidth=1.5),
+        'heatindex':dict(color='#671A5C')}
 
     if styles is not None:
         default_styles.update(styles)
@@ -164,14 +141,13 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
 
     #Default data limits
     default_limits = {
-        map_field('wind direction'):(0, 360, np.arange(0,400,45),
+        'wind direction':(0, 360, np.arange(0,400,45,),
             ['N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N']),
-        map_field('wind speed'):(0, None),
-        map_field('wind gusts'):(0, None),
-        map_field('rainfall'):(0, None),
-        map_field('solar radiation'):(0, 1000, np.arange(0,1050,200))
+        'wind speed':(0, None),
+        'wind gusts':(0, None),
+        'rainfall':(0, None),
+        'solar radiation':(0, 1000, np.arange(0,1050,200))
         }
-
     if limits is not None:
         default_limits.update(limits)
     limits = default_limits
@@ -182,9 +158,8 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
         def_units.update(units)
     units = def_units
 
-    #Get the station name, using field info if necessary
-    site_name = map_field('site')
-    site = data[site_name][0]
+    #Get the station name
+    site = data['site'][0]
 
     #Get strings for the start and end times
     start = time_range[0].strftime('%H%MZ %d %b %Y')
@@ -215,7 +190,7 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
             style = styles.get(varname, dict())
 
             #Get the variable from the data and plot
-            var = data[map_field(varname)]
+            var = data[varname]
 
             #Set special limits if necessary
             lims = limits.get(varname, (None, None))
@@ -384,7 +359,7 @@ direction_map = dict(N=(0,1), NE=(1,1), E=(1,0), SE=(1,-1), S=(0,-1),
     SW=(-1,-1), W=(-1,0), NW=(-1,1), C=(0,0))
 
 def station_plot(data, ax=None, proj=None, layout=None, styles=None,
-    formats=None, offset=10., field_info=None):
+    formats=None, offset=10.):
     '''
     Makes a station plot of the variables in data.
 
@@ -424,10 +399,6 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
         The offset, in pixels, from the center point for the values being
         plotted.
 
-    *field_info* : dictionary
-        A dictionary that maps standard names, like 'temperature' or
-        'dewpoint' to the respective variables in the data record array.
-
     Returns : dictionary
         A dictionary mapping layout locations to the object that was
         created in making the plot.
@@ -439,25 +410,18 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
     if proj is None:
         proj = lambda x,y:(x,y)
 
-    if field_info is None:
-        field_info = {}
-
-    def map_field(name):
-        return field_info.get(name, name)
-
     #Update the default layout with the passed in one
-    default_layout=dict(NW=map_field('temperature'), SW=map_field('dewpoint'),
-        C=(map_field('u'), map_field('v')))
+    default_layout=dict(NW='temperature', SW='dewpoint', C=('u', 'v'))
     if layout is not None:
         default_layout.update(layout)
     layout = default_layout
 
     default_styles = {
-        map_field('temperature'):dict(color='red'),
-        map_field('dewpoint'):dict(color='green'),
-        map_field('wind speed'):dict(color='blue'),
-        map_field('pressure'):dict(color='black'),
-        map_field('rainfall'):dict(color='blue')}
+        'temperature':dict(color='red'),
+        'dewpoint':dict(color='green'),
+        'wind speed':dict(color='blue'),
+        'pressure':dict(color='black'),
+        'rainfall':dict(color='blue')}
     if styles is not None:
         default_styles.update(styles)
     styles = default_styles
@@ -466,7 +430,7 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
         formats = {}
 
     #Convert coordinates
-    x,y = proj(data[map_field('longitude')], data[map_field('latitude')])
+    x,y = proj(data['longitude'], data['latitude'])
 
     results = dict()
     for spot in layout:
@@ -477,11 +441,11 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
             continue
         if len(var) == 2:
             # plot barbs.
-            u,v = [map_field(v) for v in var]
+            u,v = [v for v in var]
             style = styles.get('barbs', {})
             out = ax.barbs(x, y, data[u], data[v], **style)
         else:
-            var = map_field(var)
+            var = var
             style = styles.get(var, {})
             loc = map(lambda x:offset * x, direction_map[spot])
             f = formats.get(var, '%.0f')

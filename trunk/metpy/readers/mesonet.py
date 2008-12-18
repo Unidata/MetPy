@@ -370,10 +370,10 @@ if __name__ == '__main__':
             projection='stere', urcrnrlat=37., urcrnrlon=-94.25, llcrnrlat=33.7,
             llcrnrlon=-103., ax=ax)
         m.bluemarble()
-        station_plot(data, ax=ax, proj=m, field_info=mesonet_var_map,
+        station_plot(data, ax=ax, proj=m,
             styles=dict(dewpoint=dict(color='lightgreen'),
                         rainfall=dict(color='darkblue')),
-            layout=dict(E='rainfall'), formats=dict(RAIN='%.1f'), offset=11)
+            layout=dict(E='rainfall'), formats=dict(rainfall='%.1f'), offset=11)
         m.drawstates(ax=ax, zorder=0)
 
         #Optionally plot a counties shapefile
@@ -384,8 +384,8 @@ if __name__ == '__main__':
         plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))
     else:
         fig = plt.figure(figsize=(8,10))
-        layout = {0:['TAIR', 'dewpoint', 'windchill']}
-        axs = meteogram(data, fig, num_panels=5, field_info=mesonet_var_map,
+        layout = {0:['temperature', 'dewpoint', 'windchill']}
+        axs = meteogram(data, fig, num_panels=5,
             units=mod_units, time_range=times, layout=layout)
         axs[0].set_ylabel('Temperature (F)')
 
