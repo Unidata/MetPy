@@ -373,7 +373,7 @@ if __name__ == '__main__':
         station_plot(data, ax=ax, proj=m, field_info=mesonet_var_map,
             styles=dict(dewpoint=dict(color='lightgreen'),
                         rainfall=dict(color='darkblue')),
-            layout=dict(E='rainfall'), formats=dict(RAIN='%.1f'), offset=12)
+            layout=dict(E='rainfall'), formats=dict(RAIN='%.1f'), offset=11)
         m.drawstates(ax=ax, zorder=0)
 
         #Optionally plot a counties shapefile
