@@ -52,16 +52,16 @@ def sonic_2005(filename):
             T=np.r_[T1,T2,T3,T4,T5]
 
             dt = np.dtype([('u',np.float),('v',np.float),('w',np.float),
-                      ('T',np.float)])       
+                      ('T',np.float)])
             data=np.array(zip(u,v,w,T), dtype=dt).reshape(5,-1)
 
             dt = np.dtype([('date',object),('voltage',np.float)])
-            ext = np.array(zip(date,voltage), dtype=dt) 
+            ext = np.array(zip(date,voltage), dtype=dt)
 
         except IOError:
             print '%s does not exist\n'%filename
             raise
-    
+
         return data,ext
 
     elif os.path.splitext(os.path.basename(filename))[1]=='.nc':
@@ -84,7 +84,7 @@ def sonic(filename, L5_fix=True):
           --includes fix for level 5 alignment as default (controlled with keyword
             L5_fix (L5_fix=True default)
     '''
-    from metpy.generic import horizontal_align_fix as haf
+    haf = horizontal_align_fix
 #
 #   Determine file type
 #
@@ -103,13 +103,13 @@ def sonic(filename, L5_fix=True):
             T=np.r_[T1,T2,T3,T4,T5]
 
             dt = np.dtype([('u',np.float),('v',np.float),('w',np.float),
-                      ('T',np.float)])       
+                      ('T',np.float)])
             data=np.array(zip(u,v,w,T), dtype=dt).reshape(5,-1)
 
         except IOError:
             print '%s does not exist\n'%filename
             raise
-    
+
         return date,data
 
     elif os.path.splitext(os.path.basename(filename))[1]=='.nc':
