@@ -96,8 +96,9 @@ def get_wind_components(speed, wdir):
         The tuple (U,V) corresponding to the wind components in the
         X (East-West) and Y (North-South) directions, respectively.
     '''
-    u = -speed * sin(wdir * degree)
-    v = -speed * cos(wdir * degree)
+    wdir = wdir * degree
+    u = -speed * sin(wdir)
+    v = -speed * cos(wdir)
     return u,v
 
 def tke(u,v,w):
