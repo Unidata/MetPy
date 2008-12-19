@@ -1,7 +1,7 @@
 'A collection of generic calculation functions.'
 
-__all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir','get_wind_components', 'mixing_ratio',
-    'tke','windchill']
+__all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir','get_wind_components',
+    'mixing_ratio','tke', 'windchill', 'heat_index']
 
 import numpy as np
 from numpy.ma import log, exp, cos, sin, masked_array
