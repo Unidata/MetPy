@@ -66,7 +66,7 @@ def mixing_ratio(part_press, tot_press):
 
 def get_speed_dir(u,v,w=None):
     '''
-    Compute the wind speed (horizontal and vector is W is supplied) and 
+    Compute the wind speed (horizontal and vector is W is supplied) and
     wind direction.
 
     Return horizontal wind speed, vector wind speed, and wind direction in a tuple
@@ -186,3 +186,45 @@ def windchill(temp, speed, metric=True, face_level_winds=False,
             wcti = masked_array(wcti, mask=mask)
 
     return wcti
+
+def heat_index(temp, rh, mask_undefined=True):
+    '''
+    Calculate the Heat Index from the current temperature and relative
+    humidity.
+
+    The implementation uses the formula outlined in:
+    http://www.srh.noaa.gov/ffc/html/studies/ta_htindx.PDF
+
+    temp : scalar or array
+        The air temperature, in Farenheit.
+
+    rh : scalar or array
+        The relative humidity expressed as an integer percentage.
+
+    mask_undefined : boolean
+        A flag indicating whether a masked array should be returned with
+        values where heat index is undefined masked.  These are values where
+        the temperature < 80F or relative humidity < 40 percent. Defaults
+        to True.
+
+    Reference:
+        Steadman, R.G., 1979: The assessment of sultriness. Part I: A
+        temperature-humidity index based on human physiology and clothing
+        science. J. Appl. Meteor., 18, 861-873.
+    '''
+    rh2 = rh**2
+    temp2 = temp**2
+
+    # Calculate the Heat Index
+    HI = (-42.379 + 2.04901523 * temp + 10.14333127 * rh
+        - 0.22475541 * temp * rh - 6.83783e-3 * temp2 - 5.481717e-2 * rh2
+        + 1.22874e-3 * temp2 * rh + 8.5282e-4 * temp * rh2
+        - 1.99e-6 * temp2 * rh2)
+
+    # See if we need to mask any undefined values
+    if mask_undefined:
+        mask = np.array((temp < 80.) | (rh < 40))
+        if mask.any():
+            HI = masked_arry(HI, mask=mask)
+
+    return HI
