@@ -102,21 +102,30 @@ def get_wind_components(speed, wdir):
 
 def tke(u,v,w):
     '''
-    Compute the turbulence kinetic energy from the time series of the velocity \
-    components u,v, and w.
+    Compute the turbulence kinetic energy (tke) from the time series of the
+    velocity components u, v, and w.
+
+    u : scalar or array
+        The wind component along the x-axis
+
+    v : scalar or array
+        The wind component along the y-axis
+
+    w : scalar or array
+        The wind componennt along the z-axis
+
+    Returns : scalar or array
+        The corresponding tke value(s)
     '''
-    ax=1
+    up = u - u.mean()
+    vp = v - v.mean()
+    wp = w - w.mean()
 
-    up = u-u.mean()
-    vp = v-v.mean()
-    wp = w-w.mean()
-
-    tke = np.power(np.average(np.power(up,2))+\
-                  np.average(np.power(vp,2))+\
-                  np.average(np.power(wp,2)),0.5)
+    tke = np.power(np.average(np.power(up, 2)) +
+                  np.average(np.power(vp, 2)) +
+                  np.average(np.power(wp, 2)), 0.5)
 
     return tke
-
 
 def windchill(temp, speed, metric=True, face_level_winds=False,
     mask_undefined=True):
@@ -206,6 +215,9 @@ def heat_index(temp, rh, mask_undefined=True):
         values where heat index is undefined masked.  These are values where
         the temperature < 80F or relative humidity < 40 percent. Defaults
         to True.
+
+    Returns : scalar or array
+        The corresponding Heat Index value(s)
 
     Reference:
         Steadman, R.G., 1979: The assessment of sultriness. Part I: A
