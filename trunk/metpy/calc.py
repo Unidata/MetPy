@@ -164,7 +164,7 @@ def windchill(temp, speed, metric=True, face_level_winds=False,
     mask_undefined : boolean
         A flag indicating whether a masked array should be returned with
         values where wind chill is undefined masked.  These are values where
-        the temperature >= 50F or wind speed <= 3 miles per hour. Defaults
+        the temperature > 50F or wind speed <= 3 miles per hour. Defaults
         to True.
 
     Returns : scalar or array
