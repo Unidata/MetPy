@@ -190,7 +190,7 @@ def windchill(temp, speed, metric=True, face_level_winds=False,
 
     #See if we need to mask any undefined values
     if mask_undefined:
-        mask = (temp > temp_limit) | (speed <= speed_limit)
+        mask = np.array((temp > temp_limit) | (speed <= speed_limit))
         if mask.any():
             wcti = masked_array(wcti, mask=mask)
 
