@@ -237,6 +237,6 @@ def heat_index(temp, rh, mask_undefined=True):
     if mask_undefined:
         mask = np.array((temp < 80.) | (rh < 40))
         if mask.any():
-            HI = masked_arry(HI, mask=mask)
+            HI = masked_array(HI, mask=mask)
 
     return HI
