@@ -328,6 +328,10 @@ def text_plot(ax, x, y, data, format='%.0f', loc=None, **kw):
     # Handle masked arrays
     x,y,data = delete_masked_points(x, y, data)
 
+    # If there is nothing left after deleting the masked points, return None
+    if not data.any():
+        return None
+
     # Make the TextCollection object
     texts = [formatter(d) for d in data]
     text_obj = TextCollection(x, y, texts, horizontalalignment='center',
@@ -336,13 +340,13 @@ def text_plot(ax, x, y, data, format='%.0f', loc=None, **kw):
     # Add it to the axes
     ax.add_artist(text_obj)
 
-    #Update plot range
+    # Update plot range
     minx = np.min(x)
     maxx = np.max(x)
     miny = np.min(y)
     maxy = np.max(y)
-    w = maxx-minx
-    h = maxy-miny
+    w = maxx - minx
+    h = maxy - miny
 
     # the pad is a little hack to deal with the fact that we don't
     # want to transform all the symbols whose scales are in points
