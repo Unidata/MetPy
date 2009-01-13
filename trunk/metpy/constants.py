@@ -3,14 +3,16 @@ This is a collection of meteorologically significant constants.
 
 Earth
 -------------
-Name                    Abbr. Units    Description
-======================= ===== ======== ==================
-earth_avg_radius        Re    m        Avg. radius of the Earth
-earth_gravity           g     m s^-2   Avg. gravity acceleration on Earth
-earth_avg_angular_vel   omega rad s^-1 Avg. angular velocity of Earth
-earth_sfc_avg_dist_sun  d     m        Avg. distance of the Earth from the Sun
-earth_solar_irradiance  S     W m^-2   Avg. Solar Irradiance of Earth
-======================= ===== ======== ==================
+Name                     Abbr. Units    Description
+======================== ===== ======== ==================
+earth_avg_radius         Re    m        Avg. radius of the Earth
+earth_gravity            g     m s^-2   Avg. gravity acceleration on Earth
+earth_avg_angular_vel    omega rad s^-1 Avg. angular velocity of Earth
+earth_sfc_avg_dist_sun   d     m        Avg. distance of the Earth from the Sun
+earth_solar_irradiance   S     W m^-2   Avg. solar irradiance of Earth
+earth_max_declination    delta degrees  Max. solar declination angle of Earth
+earth_orbit_eccentricity       None     Avg. eccentricity of Earth's orbit
+======================== ===== ======== ==================
 
 Water
 -------------
@@ -93,10 +95,12 @@ __all__ = ['C2F', 'C2K', 'F2K', 'K2C', 'K2F', 'F2C', 'Re', 'earth_avg_radius',
     'Cp_d', 'dry_air_spec_heat_press', 'Cv_d', 'dry_air_spec_heat_vol',
     'rho_d', 'dry_air_density_stp', 'P0', 'pot_temp_ref_press',
     'kappa', 'poisson_exponent', 'gamma_d', 'dry_adiabatic_lapse_rate',
-    'epsilon', 'molecular_weight_ratio']
+    'epsilon', 'molecular_weight_ratio', 'delta', 'earth_max_declination',
+    'earth_orbit_eccentricity']
 
+from datetime import date
 from scipy.constants import pi, day, value, kilo
-from scipy.constants import C2F, F2C, K2F, F2K, C2K,K2C
+from scipy.constants import C2F, F2C, K2F, F2K, C2K, K2C
 R = value('molar gas constant')
 del value
 
@@ -104,8 +108,10 @@ del value
 Re = earth_avg_radius = 6.37e6 # m
 g = earth_avg_gravity = 9.81 # m s^-2
 omega = earth_avg_angular_vel = 2 * pi / day # rad s^-1
-d = earth_sfc_avg_dist_sun = 1.50e11 # m
-S = earth_solar_irradiance = 1.38e3 # W m^-2
+d = earth_sfc_avg_dist_sun = 1.496e11 # m
+S = earth_solar_irradiance = 1.368e3 # W m^-2
+delta = earth_max_declination = 23.45 # degrees
+earth_orbit_eccentricity = 0.0167
 
 #Water
 Mw = water_molecular_weight = 18.016 # g / mol
