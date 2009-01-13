@@ -65,7 +65,7 @@ except ImportError:
         return earth_max_declination * np.cos(solar_longitude) * degree
 
     def _get_cos_zenith(lat, lon, dt):
-        delta = solar_declination_angle(dt)
+        delta = solar_declination_angle(dt[0])
         hour = np.array([d.hour + d.minute/60. + d.second/3600. for d in dt])
         hour_angle = 15 * hour * degree
 
