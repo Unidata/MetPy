@@ -108,7 +108,7 @@ def solar_constant(date=None):
 
     return _get_solar_const(date)
 
-def solar_irradiance(latitude, longitude, dt=None):
+def solar_irradiance(latitude, longitude, dt=None, optical_depth=0.125):
     '''
     Calculate the solar irradiance for the specified time and location.
 
@@ -121,6 +121,11 @@ def solar_irradiance(latitude, longitude, dt=None):
     dt : datetime.datetime instance
         The date and time for which the irradiance should be calculated.
         This defaults to the current date.
+
+    optical_depth : scalar
+        An overall optical depth value to assume for the atmosphere so
+        that the effects of atmospheric absorption can be accounted for.
+        Defaults to 0.125.
 
     Returns : scalar or array
         The solar irradiance in W / m^2 for each value in *hour*.
@@ -143,7 +148,7 @@ def solar_irradiance(latitude, longitude, dt=None):
     if mask.any():
         cos_zenith = masked_array(cos_zenith, mask=mask)
 
-    return s * cos_zenith * np.exp(-.12 / cos_zenith)
+    return s * cos_zenith * np.exp(-optical_depth / cos_zenith)
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
