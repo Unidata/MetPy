@@ -295,6 +295,7 @@ if __name__ == '__main__':
     from metpy.vis import meteogram, station_plot
     from metpy.constants import C2F
     from metpy.calc import dewpoint, windchill, get_wind_components
+    from metpy.tools import solar_irradiance
 
     #Create a command line option parser so we can pass in site and/or date
     parser = OptionParser()
@@ -383,10 +384,19 @@ if __name__ == '__main__':
 
         plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))
     else:
+        #Calculate the theoretically expected solar radiation
+        srad = solar_irradiance(data['latitude'][0], data['longitude'][0],
+            data['datetime'])
+        data = rec_append_fields(data, ('theoretical solar',), (srad,))
+
         fig = plt.figure(figsize=(8,10))
-        layout = {0:['temperature', 'dewpoint', 'windchill']}
-        axs = meteogram(data, fig, num_panels=5,
-            units=mod_units, time_range=times, layout=layout)
+        layout = {0:['temperature', 'dewpoint', 'windchill'],
+                  4:['theoretical solar', 'solar radiation']}
+        styles = {'theoretical solar':dict(edgecolor='None',
+                facecolor='#CFCFCF', fill=True)}
+        limits = {'solar radiation':(0, 800, np.arange(0,850,200))}
+        axs = meteogram(data, fig, num_panels=5, styles=styles,
+            units=mod_units, time_range=times, layout=layout, limits=limits)
         axs[0].set_ylabel('Temperature (F)')
 
     plt.show()
