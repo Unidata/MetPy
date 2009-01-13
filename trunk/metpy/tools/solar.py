@@ -15,7 +15,8 @@ from scipy.constants import degree
 from metpy.constants import S, d
 from metpy.cbook import iterable
 
-__all__ = ['solar_irradiance', 'solar_declination_angle', 'solar_constant']
+__all__ = ['solar_irradiance', 'solar_declination_angle', 'solar_constant',
+    'sunrise', 'sunset']
 
 try:
     import ephem
@@ -40,6 +41,22 @@ try:
             sun.compute(loc)
             results.append(np.pi / 2 - sun.alt)
         return np.cos(np.array(results))
+
+    def _get_sunrise(lat, lon, dt):
+        sun = ephem.Sun()
+        loc = ephem.Observer()
+        loc.lat = lat
+        loc.long = lon
+        loc.date = dt
+        return loc.next_rising(sun).datetime()
+
+    def _get_sunset(lat, lon, dt):
+        sun = ephem.Sun()
+        loc = ephem.Observer()
+        loc.lat = lat
+        loc.long = lon
+        loc.date = dt
+        return loc.next_setting(sun).datetime()
 
 except ImportError:
     import warnings
@@ -71,6 +88,17 @@ except ImportError:
 
         return (np.sin(lat) * np.sin(delta)
             - np.cos(lat) * np.cos(delta) * np.cos(hour_angle + lon))
+
+    def _horizon_hour_angle(lat, lon, dt):
+        pass
+
+    def _get_sunrise(lat, lon, dt):
+        raise NotImplementedError('Sunrise calculation needs to be written for '
+            'the non-PyEphem case.')
+
+    def _get_sunset(lat, lon, dt):
+        raise NotImplementedError('Sunset calculation needs to be written for '
+            'the non-PyEphem case.')
 
 def solar_declination_angle(date=None):
     '''
@@ -149,6 +177,56 @@ def solar_irradiance(latitude, longitude, dt=None, optical_depth=0.125):
         cos_zenith = masked_array(cos_zenith, mask=mask)
 
     return s * cos_zenith * np.exp(-optical_depth / cos_zenith)
+
+def sunrise(latitude, longitude, date=None):
+    '''
+    Calculate the time of sunrise for a given date and location.
+
+    latitude : scalar
+        The latitude of the location on the Earth in degrees
+
+    longitude : scalar
+        The longitude of the location on the Earth in degrees
+
+    dt : datetime.datetime instance
+        The date for which sunrise should be calculated. Defaults to today.
+
+    Returns : datetime.datetime instance
+        The time of sunrise in UTC.
+    '''
+
+    if date is None:
+        date = datetime.utcnow().date()
+
+    lat_rad = latitude * degree
+    lon_rad = longitude * degree
+
+    return _get_sunrise(lat_rad, lon_rad, date)
+
+def sunset(latitude, longitude, date=None):
+    '''
+    Calculate the time of sunset for a given date and location.
+
+    latitude : scalar
+        The latitude of the location on the Earth in degrees
+
+    longitude : scalar
+        The longitude of the location on the Earth in degrees
+
+    dt : datetime.datetime instance
+        The date for which sunrise should be calculated. Defaults to today.
+
+    Returns : datetime.datetime instance
+        The time of sunrise in UTC.
+    '''
+
+    if date is None:
+        date = datetime.utcnow().date()
+
+    lat_rad = latitude * degree
+    lon_rad = longitude * degree
+
+    return _get_sunset(lat_rad, lon_rad, date)
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
