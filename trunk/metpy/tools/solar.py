@@ -15,6 +15,8 @@ from scipy.constants import degree
 from metpy.constants import S, d
 from metpy.cbook import iterable
 
+__all__ = ['solar_irradiance', 'solar_declination_angle', 'solar_constant']
+
 try:
     import ephem
 
