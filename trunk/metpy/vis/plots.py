@@ -133,7 +133,7 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
         'solar radiation':dict(facecolor='#FF8529', edgecolor='None',
             fill=True),
         'windchill':dict(color='#8388FC', linewidth=1.5),
-        'heatindex':dict(color='#671A5C')}
+        'heat index':dict(color='#671A5C')}
 
     if styles is not None:
         default_styles.update(styles)
