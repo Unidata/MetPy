@@ -233,11 +233,21 @@ def sunset(latitude, longitude, date=None):
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
-    print sunrise(35.2167, -97.433), sunset(35.2167, -97.433)
-    times = np.linspace(0, 24, 200)
-    basedate = datetime.utcnow().replace(hour=0, minute=0, second=0,
-        microsecond=0)
-    dts = [basedate + timedelta(hours=t) for t in times]
-    data = solar_irradiance(35.2167, -97.433, dts)
-    plt.plot(times, data)
+    inc = timedelta(days=1)
+    lat, lon = 35.2167, -97.433
+    utc_offset = 6.
+
+    dates = [datetime(2008, 1, 1) + i*inc for i in range(365)]
+    sunrises = np.array([(sunrise(lat, lon, d) - d).seconds for d in dates])
+    sunsets = np.array([(sunset(lat, lon, d) - d).seconds for d in dates])
+    sunsets[sunsets<8000.] += 86400.
+
+    plt.figure(figsize=(15,5))
+    plt.plot(dates, sunrises / 3600. - utc_offset, label='Sunrise')
+    plt.plot(dates, sunsets / 3600. - utc_offset, label='Sunset')
+    plt.plot(dates, (sunsets - sunrises) / 3600., label='Day Length')
+    plt.title('Sunrise, Sunset, and Day Length through the year')
+    plt.xlabel('Date')
+    plt.ylabel('Hours (Local)')
+    plt.legend(loc='right')
     plt.show()
