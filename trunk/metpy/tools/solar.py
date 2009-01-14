@@ -136,7 +136,7 @@ def solar_constant(date=None):
 
     return _get_solar_const(date)
 
-def solar_irradiance(latitude, longitude, dt=None, optical_depth=0.125):
+def solar_irradiance(latitude, longitude, dt=None, optical_depth=0.12):
     '''
     Calculate the solar irradiance for the specified time and location.
 
@@ -153,7 +153,7 @@ def solar_irradiance(latitude, longitude, dt=None, optical_depth=0.125):
     optical_depth : scalar
         An overall optical depth value to assume for the atmosphere so
         that the effects of atmospheric absorption can be accounted for.
-        Defaults to 0.125.
+        Defaults to 0.12.
 
     Returns : scalar or array
         The solar irradiance in W / m^2 for each value in *hour*.
