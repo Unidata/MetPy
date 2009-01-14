@@ -65,6 +65,8 @@ except ImportError:
         'http://rhodesmill.org/pyephem/index')
     from metpy.constants import earth_max_declination, earth_orbit_eccentricity
 
+    # These formulas are based on:
+    # Stull, R. B., 1995: Meteorology Today For Scientists and Engineers.
     def _get_solar_const(dt):
         perihelion = dt.replace(month=1, day=3)
         ndays = (dt - perihelion).days
@@ -96,9 +98,8 @@ except ImportError:
 
     def _get_sunset(lat, lon, dt):
         dec = solar_declination_angle(dt)
-        hour = ((2 * np.pi - np.arccos(np.tan(lat) * np.tan(dec)) - lon)
-            / (15 * degree))
-        return dt + timedelta(hours=24. - hour)
+        hour = ((-np.arccos(np.tan(lat) * np.tan(dec)) - lon) / (15 * degree))
+        return dt + timedelta(hours=24. + hour)
 
 def solar_declination_angle(date=None):
     '''
