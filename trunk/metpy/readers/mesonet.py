@@ -324,10 +324,13 @@ if __name__ == '__main__':
 
     data = remote_mesonet_data(dt, fields, opts.site)
 
-    #Add a reasonable time range if we're doing current data
+    # Add a reasonable time range if we're doing current data. Subset the data
+    # in that case to only include that time range, so that plot limits won't
+    # be determined by data that is not displayed.
     if dt is None:
         end = get_last_time(data)
         times = (end - datetime.timedelta(hours=24), end)
+        data = data[data['datetime'] >= times[0]]
     else:
         times = None
 
