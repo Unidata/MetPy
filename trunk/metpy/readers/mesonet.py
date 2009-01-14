@@ -390,12 +390,15 @@ if __name__ == '__main__':
             data['datetime'])
         data = rec_append_fields(data, ('theoretical solar',), (srad,))
 
+        srad_limit = (int(srad.max() / 200.) + 1) * 200.
+
         fig = plt.figure(figsize=(8,10))
         layout = {0:['temperature', 'dewpoint', 'windchill', 'heat index'],
                   4:['theoretical solar', 'solar radiation']}
         styles = {'theoretical solar':dict(edgecolor='None',
                 facecolor='#CFCFCF', fill=True)}
-        limits = {'solar radiation':(0, 800, np.arange(0,850,200))}
+        limits = {'solar radiation':(0, srad_limit,
+            np.arange(0, srad_limit + 50, 200))}
         axs = meteogram(data, fig, num_panels=5, styles=styles,
             units=mod_units, time_range=times, layout=layout, limits=limits)
         axs[0].set_ylabel('Temperature (F)')
