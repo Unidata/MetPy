@@ -89,16 +89,16 @@ except ImportError:
         return (np.sin(lat) * np.sin(delta)
             - np.cos(lat) * np.cos(delta) * np.cos(hour_angle + lon))
 
-    def _horizon_hour_angle(lat, lon, dt):
-        pass
-
     def _get_sunrise(lat, lon, dt):
-        raise NotImplementedError('Sunrise calculation needs to be written for '
-            'the non-PyEphem case.')
+        dec = solar_declination_angle(dt)
+        hour = (np.arccos(np.tan(lat) * np.tan(dec)) - lon) / (15 * degree)
+        return dt + timedelta(hours=hour)
 
     def _get_sunset(lat, lon, dt):
-        raise NotImplementedError('Sunset calculation needs to be written for '
-            'the non-PyEphem case.')
+        dec = solar_declination_angle(dt)
+        hour = ((2 * np.pi - np.arccos(np.tan(lat) * np.tan(dec)) - lon)
+            / (15 * degree))
+        return dt + timedelta(hours=24. - hour)
 
 def solar_declination_angle(date=None):
     '''
@@ -196,7 +196,8 @@ def sunrise(latitude, longitude, date=None):
     '''
 
     if date is None:
-        date = datetime.utcnow().date()
+        date = datetime.utcnow().replace(hour=0, minute=0, second=0,
+            microsecond=0)
 
     lat_rad = latitude * degree
     lon_rad = longitude * degree
@@ -221,7 +222,8 @@ def sunset(latitude, longitude, date=None):
     '''
 
     if date is None:
-        date = datetime.utcnow().date()
+        date = datetime.utcnow().replace(hour=0, minute=0, second=0,
+            microsecond=0)
 
     lat_rad = latitude * degree
     lon_rad = longitude * degree
@@ -230,6 +232,7 @@ def sunset(latitude, longitude, date=None):
 
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
+    print sunrise(35.2167, -97.433), sunset(35.2167, -97.433)
     times = np.linspace(0, 24, 200)
     basedate = datetime.utcnow().replace(hour=0, minute=0, second=0,
         microsecond=0)
