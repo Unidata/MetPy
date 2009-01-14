@@ -392,7 +392,8 @@ if __name__ == '__main__':
 
         srad_limit = (int(srad.max() / 200.) + 1) * 200.
 
-        fig = plt.figure(figsize=(8,10))
+        fig = plt.figure(figsize=(9.25,10))
+        fig.subplots_adjust(bottom=0.05, top=0.95)
         layout = {0:['temperature', 'dewpoint', 'windchill', 'heat index'],
                   4:['theoretical solar', 'solar radiation']}
         styles = {'theoretical solar':dict(edgecolor='None',
