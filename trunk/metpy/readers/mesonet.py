@@ -294,7 +294,7 @@ if __name__ == '__main__':
     from mpl_toolkits.basemap import Basemap
     from metpy.vis import meteogram, station_plot
     from metpy.constants import C2F
-    from metpy.calc import dewpoint, windchill, get_wind_components
+    from metpy.calc import dewpoint, windchill, get_wind_components, heat_index
     from metpy.tools import solar_irradiance
 
     #Create a command line option parser so we can pass in site and/or date
@@ -351,9 +351,10 @@ if __name__ == '__main__':
     data['RAIN'] *= sconsts.milli / sconsts.inch
     mod_units['RAIN'] = 'in.'
 
-    #Calculate windchill
+    #Calculate windchill and heat index
     wchill = windchill(data['TAIR'], data['WSPD'], metric=False)
-    data = rec_append_fields(data, ('windchill',), (wchill,))
+    heat = heat_index(data['TAIR'], data['RELH'])
+    data = rec_append_fields(data, ('windchill', 'heat index'), (wchill, heat))
 
     #If site is None, do a station plot, otherwise do a meteogram
     if opts.site is None:
@@ -390,7 +391,7 @@ if __name__ == '__main__':
         data = rec_append_fields(data, ('theoretical solar',), (srad,))
 
         fig = plt.figure(figsize=(8,10))
-        layout = {0:['temperature', 'dewpoint', 'windchill'],
+        layout = {0:['temperature', 'dewpoint', 'windchill', 'heat index'],
                   4:['theoretical solar', 'solar radiation']}
         styles = {'theoretical solar':dict(edgecolor='None',
                 facecolor='#CFCFCF', fill=True)}
