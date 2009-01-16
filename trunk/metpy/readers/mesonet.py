@@ -422,7 +422,7 @@ if __name__ == '__main__':
 
         # If freezing is within the plotting range, draw a horizontal line
         # showing it.
-        temp_min, temp_max = axs[0].get_xlim()
+        temp_min, temp_max = axs[0].get_ylim()
         if temp_min < 32. < temp_max:
             axs[0].axhline(32., color='gray')
 
