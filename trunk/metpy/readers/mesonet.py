@@ -416,8 +416,8 @@ if __name__ == '__main__':
 
         # Draw a vertical line at midnight central time in all panels
         end = get_last_time(data)
-        midnight = end.replace(hour=0, minute=0, second=0, microsecond=0,
-            tzinfo=central)
+        midnight = end.astimezone(central).replace(hour=0, minute=0, second=0,
+            microsecond=0)
         for ax in axs:
             ax.axvline(midnight, color='gray')
 
