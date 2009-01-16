@@ -436,10 +436,11 @@ if __name__ == '__main__':
         for ax in axs:
             ax.axvline(midnight, color='gray')
 
-        # If freezing is within the plotting range, draw a horizontal line
-        # showing it.
+        # If a significant line is within the plotting range, draw it.
         temp_min, temp_max = axs[0].get_ylim()
-        if temp_min < 32. < temp_max:
-            axs[0].axhline(32., color='gray')
+        sig_lines = [32., 100.]
+        for l in sig_lines:
+            if temp_min < l < temp_max:
+                axs[0].axhline(l, color='gray')
 
     plt.show()
