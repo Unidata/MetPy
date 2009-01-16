@@ -4,9 +4,9 @@ from datetime import timedelta
 from pytz import UTC
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.ticker import NullFormatter
+from matplotlib.ticker import NullFormatter, NullLocator
 from matplotlib.dates import (DateFormatter, HourLocator, AutoDateLocator,
-    date2num)
+    AutoDateFormatter, date2num)
 from metpy.cbook import iterable, get_title
 
 #Default units for certain variables
@@ -23,8 +23,8 @@ def _rescale_yaxis(ax, bounds):
     ax.autoscale_view()
 
 #TODO: REWRITE AS CLASS
-def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
-    layout=None, styles=None, limits=None, units=None, tz=UTC):
+def meteogram(data, fig=None, num_panels=3, time_range=None, tickers=None,
+    formatters=None, layout=None, styles=None, limits=None, units=None, tz=UTC):
     '''
     Plots a meteogram (collection of time series) for a data set. This
     is broken down into a series of panels (defaults to 3), each of which
@@ -48,10 +48,19 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
         to plot, which will end with the last data point.  It defaults to
         the last 24 hours of data.
 
-    *ticker* : :class:`matplotlib.dates.DateLocator`
+    *tickers* : :class:`matplotlib.dates.DateLocator`
         An instance of a :class:`matplotlib.dates.DateLocator` that controls
-        where the ticks will be located.  The default is
-        :class:`matplotlib.dates.AutoDateLocator`.
+        where the ticks will be located.  This can also be a tuple of two
+        tickers, where the first is for the major tick lines and
+        the second is for the minor tick marks. The default is
+        :class:`matplotlib.dates.AutoDateLocator` for only the major tickmarks.
+
+    *formatters* : :class:`matplotlib.dates.DateFormatter`
+        An instance of a :class:`matplotlib.dates.DateFormatter` that controls
+        how ticks will be labelled.  This can also be a tuple of two
+        formatters, where the first is for the major tick lines and
+        the second is for the minor tick marks. The default is to only show
+        the hour for the major tickmarks.
 
     *layout* : dictionary
         A dictionary that maps panel numbers to lists of variables.
@@ -90,23 +99,40 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
     if fig is None:
         fig = plt.figure()
 
-    #Get the time variable
+    # Get the time variable
     time = data['datetime']
 
-    #Process time_range.
+    # Process time_range.
     if time_range is None:
         time_range = timedelta(hours=24)
-        if ticker is None:
-            ticker = HourLocator(byhour=np.arange(0, 25, 3), tz=tz)
-
-    #Process ticker
-    if ticker is None:
-        ticker = AutoDateLocator(tz=tz)
+        if tickers is None:
+            major_ticker = HourLocator(byhour=np.arange(0, 25, 3), tz=tz)
+            minor_ticker = HourLocator(tz=tz)
 
     if not iterable(time_range):
         end = time[-1]
         start = end - time_range
         time_range = (start, end)
+
+    # Process tickers
+    if tickers is None:
+        major_ticker = AutoDateLocator(tz=tz)
+        minor_ticker = NullLocator()
+    elif iterable(tickers):
+        major_ticker,minor_ticker = tickers
+    else:
+        major_ticker = tickers
+        minor_ticker = NullLocator()
+
+    # Process formatters
+    if formatters is None:
+        major_formatter = DateFormatter('%H', tz)
+        minor_formatter = NullFormatter()
+    elif iterable(formatters):
+        major_formatter,minor_formatter = formatters
+    else:
+        major_formatter = formatters
+        minor_formatter = NullFormatter()
 
     #List of variables in each panel.  None denotes that at that point, twinx
     #should be called and the remaining variables plotted on the other axis
@@ -237,8 +263,10 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
             descr = get_title(data, varname)
             ax.set_ylabel(descr.title() + unit_str)
 
-        ax.xaxis.set_major_locator(ticker)
-        ax.xaxis.set_major_formatter(DateFormatter('%H', tz))
+        ax.xaxis.set_major_locator(major_ticker)
+        ax.xaxis.set_major_formatter(major_formatter)
+        ax.xaxis.set_minor_locator(minor_ticker)
+        ax.xaxis.set_minor_formatter(minor_formatter)
         if not panel_twinned:
             ax.yaxis.set_ticks_position('both')
             for tick in ax.yaxis.get_major_ticks():
