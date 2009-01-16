@@ -165,6 +165,7 @@ def read_mesonet_data(filename, fields=None, convert_time=True,
         the order given in *fields*.
     '''
     from datetime import datetime, timedelta
+    from pytz import utc
 
     if is_string_like(filename):
         if filename.endswith('.gz'):
@@ -191,7 +192,7 @@ def read_mesonet_data(filename, fields=None, convert_time=True,
         #Skip first line, read the second for the date
         fh.readline()
         info = fh.readline().split()
-        dt = datetime(*map(int, info[1:4]))
+        dt = datetime(tzinfo=utc, *map(int, info[1:4]))
         skip = 0
         conv = {'TIME': lambda t: dt + timedelta(minutes=int(t))}
     else:
@@ -388,7 +389,7 @@ if __name__ == '__main__':
 
         plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))
     else:
-        from pytz import timezone, UTC
+        from pytz import timezone
         central = timezone('US/Central')
 
         # Calculate the theoretically expected solar radiation
