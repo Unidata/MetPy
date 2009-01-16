@@ -244,7 +244,12 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
             for tick in ax.yaxis.get_major_ticks():
                 tick.label2On = True
         axes.append(ax)
-    ax.set_xlabel('Hour (%s)' % tz.tzname(time[0]))
+
+    # Call to normalize here will adjust the time for daylight savings and
+    # update the timezone name.  In order to call normalize, you must first
+    # move the time to the new timezone.  This way we can display CST or CDT
+    # as appropriate
+    ax.set_xlabel('Hour (%s)' % tz.normalize(time[-1].astimezone(tz)).tzname())
     ax.set_xlim(*time_range)
 
     return axes
