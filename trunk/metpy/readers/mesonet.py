@@ -388,7 +388,10 @@ if __name__ == '__main__':
 
         plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))
     else:
-        #Calculate the theoretically expected solar radiation
+        from pytz import timezone, UTC
+        central = timezone('US/Central')
+
+        # Calculate the theoretically expected solar radiation
         srad = solar_irradiance(data['latitude'][0], data['longitude'][0],
             data['datetime'])
         data = rec_append_fields(data, ('theoretical solar',), (srad,))
@@ -411,13 +414,11 @@ if __name__ == '__main__':
         axs[0].set_ylabel('Temperature (F)')
 
         # Draw a vertical line at midnight central time in all panels
-        from pytz import timezone, UTC
-        central = timezone('US/Central')
-        midnight = data['datetime'].compressed()[-1]
-        midnight = midnight.replace(hour=0, minute=0, second=0, microsecond=0,
+        end = get_last_time(data)
+        midnight = end.replace(hour=0, minute=0, second=0, microsecond=0,
             tzinfo=central)
         for ax in axs:
-            ax.axvline(midnight.astimezone(UTC), color='gray')
+            ax.axvline(midnight, color='gray')
 
         # If freezing is within the plotting range, draw a horizontal line
         # showing it.
