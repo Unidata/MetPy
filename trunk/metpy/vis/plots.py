@@ -94,9 +94,8 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, layout=None,
     minor_formatter = NullFormatter()
     if time_range is None:
         time_range = timedelta(hours=24)
-        if tickers is None:
-            major_ticker = HourLocator(byhour=np.arange(0, 25, 3), tz=tz)
-            minor_ticker = HourLocator(tz=tz)
+        major_ticker = HourLocator(byhour=np.arange(0, 25, 3), tz=tz)
+        minor_ticker = HourLocator(tz=tz)
 
     if not iterable(time_range):
         end = time[-1]
