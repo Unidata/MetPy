@@ -429,9 +429,9 @@ if __name__ == '__main__':
         axs[0].xaxis.set_major_locator(HourLocator(np.arange(0, 25, 3), tz=tz))
         axs[0].xaxis.set_minor_locator(HourLocator(tz=tz))
 
-        # Draw a vertical line at midnight central time in all panels
+        # Draw a vertical line at midnight (in the timezone) in all panels
         end = get_last_time(data)
-        midnight = end.astimezone(central).replace(hour=0, minute=0, second=0,
+        midnight = end.astimezone(tz).replace(hour=0, minute=0, second=0,
             microsecond=0)
         for ax in axs:
             ax.axvline(midnight, color='gray')
