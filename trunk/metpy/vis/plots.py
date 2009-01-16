@@ -166,8 +166,8 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
     site = data['site'][0]
 
     #Get strings for the start and end times
-    start = time_range[0].strftime('%H%MZ %d %b %Y')
-    end = time_range[1].strftime('%H%MZ %d %b %Y')
+    start = time_range[0].astimezone(tz).strftime('%H%M %d %b %Y')
+    end = time_range[1].astimezone(tz).strftime('%H%M %d %b %Y %Z')
 
     axes = []
     for panel in range(num_panels):
@@ -245,11 +245,8 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
                 tick.label2On = True
         axes.append(ax)
 
-    # Call to normalize here will adjust the time for daylight savings and
-    # update the timezone name.  In order to call normalize, you must first
-    # move the time to the new timezone.  This way we can display CST or CDT
-    # as appropriate
-    ax.set_xlabel('Hour (%s)' % tz.normalize(time[-1].astimezone(tz)).tzname())
+    # Set the xlabel as appropriate depending on the timezone
+    ax.set_xlabel('Hour (%s)' % time[-1].astimezone(tz).tzname())
     ax.set_xlim(*time_range)
 
     return axes
