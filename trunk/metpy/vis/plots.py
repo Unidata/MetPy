@@ -4,9 +4,8 @@ from datetime import timedelta
 from pytz import UTC
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib.ticker import NullFormatter, NullLocator
-from matplotlib.dates import (DateFormatter, HourLocator, AutoDateLocator,
-    AutoDateFormatter, date2num)
+from matplotlib.ticker import NullLocator, NullFormatter
+from matplotlib.dates import HourLocator, AutoDateLocator, DateFormatter
 from metpy.cbook import iterable, get_title
 
 #Default units for certain variables
@@ -23,8 +22,8 @@ def _rescale_yaxis(ax, bounds):
     ax.autoscale_view()
 
 #TODO: REWRITE AS CLASS
-def meteogram(data, fig=None, num_panels=3, time_range=None, tickers=None,
-    formatters=None, layout=None, styles=None, limits=None, units=None, tz=UTC):
+def meteogram(data, fig=None, num_panels=3, time_range=None, layout=None,
+    styles=None, limits=None, units=None, tz=UTC):
     '''
     Plots a meteogram (collection of time series) for a data set. This
     is broken down into a series of panels (defaults to 3), each of which
@@ -47,20 +46,6 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, tickers=None,
         a :class:`datetime.timedelta` object, it represents the time span
         to plot, which will end with the last data point.  It defaults to
         the last 24 hours of data.
-
-    *tickers* : :class:`matplotlib.dates.DateLocator`
-        An instance of a :class:`matplotlib.dates.DateLocator` that controls
-        where the ticks will be located.  This can also be a tuple of two
-        tickers, where the first is for the major tick lines and
-        the second is for the minor tick marks. The default is
-        :class:`matplotlib.dates.AutoDateLocator` for only the major tickmarks.
-
-    *formatters* : :class:`matplotlib.dates.DateFormatter`
-        An instance of a :class:`matplotlib.dates.DateFormatter` that controls
-        how ticks will be labelled.  This can also be a tuple of two
-        formatters, where the first is for the major tick lines and
-        the second is for the minor tick marks. The default is to only show
-        the hour for the major tickmarks.
 
     *layout* : dictionary
         A dictionary that maps panel numbers to lists of variables.
@@ -103,6 +88,10 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, tickers=None,
     time = data['datetime']
 
     # Process time_range.
+    major_ticker = AutoDateLocator(tz=tz)
+    minor_ticker = NullLocator()
+    major_formatter = DateFormatter('%H', tz=tz)
+    minor_formatter = NullFormatter()
     if time_range is None:
         time_range = timedelta(hours=24)
         if tickers is None:
@@ -113,26 +102,6 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, tickers=None,
         end = time[-1]
         start = end - time_range
         time_range = (start, end)
-
-    # Process tickers
-    if tickers is None:
-        major_ticker = AutoDateLocator(tz=tz)
-        minor_ticker = NullLocator()
-    elif iterable(tickers):
-        major_ticker,minor_ticker = tickers
-    else:
-        major_ticker = tickers
-        minor_ticker = NullLocator()
-
-    # Process formatters
-    if formatters is None:
-        major_formatter = DateFormatter('%H', tz)
-        minor_formatter = NullFormatter()
-    elif iterable(formatters):
-        major_formatter,minor_formatter = formatters
-    else:
-        major_formatter = formatters
-        minor_formatter = NullFormatter()
 
     #List of variables in each panel.  None denotes that at that point, twinx
     #should be called and the remaining variables plotted on the other axis
