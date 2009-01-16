@@ -19,8 +19,8 @@ mesonet_station_table = '''
 #Map of standard variable names to those use by the mesonet
 mesonet_var_map = {'temperature':'TAIR', 'relative humidity':'RELH',
     'wind speed':'WSPD', 'wind direction':'WDIR', 'rainfall':'RAIN',
-    'pressure':'PRES', 'site':'STID', 'solar radiation':'SRAD',
-    'wind gusts':'WMAX'}
+    'pressure':'PRES', 'solar radiation':'SRAD', 'wind gusts':'WMAX',
+    'stid':'STID'}
 mesonet_inv_var_map = dict(zip(mesonet_var_map.values(),
     mesonet_var_map.keys()))
 
@@ -230,8 +230,10 @@ def read_mesonet_data(filename, fields=None, convert_time=True,
         lat = sta_table['Lat'][station_indices]
         lon = sta_table['Lon'][station_indices]
         elev = sta_table['Elev'][station_indices]
-        data = rec_append_fields(data, ('latitude', 'longitude', 'elevation'),
-            (lat, lon, elev))
+        names = sta_table['Name'][station_indices]
+        data = rec_append_fields(data,
+            ('latitude', 'longitude', 'elevation', 'site'),
+            (lat, lon, elev, names))
 
     return data
 
@@ -253,8 +255,8 @@ def mesonet_stid_info(info=None, remote=False):
         A structured array with the station information.
     '''
     if info is None:
-        names = ['stid', 'Lat', 'Lon', 'Elev']
-        cols = (1, 7, 8, 9)
+        names = ['stid', 'Name', 'Lat', 'Lon', 'Elev']
+        cols = (1, 2, 7, 8, 9)
     else:
         names,cols = zip(*info)
 
