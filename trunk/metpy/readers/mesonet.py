@@ -393,18 +393,36 @@ if __name__ == '__main__':
             data['datetime'])
         data = rec_append_fields(data, ('theoretical solar',), (srad,))
 
+        # Use the theoretical maximum to set the upper limit on the
+        # plotting of measured solar radiation
         srad_limit = (int(srad.max() / 200.) + 1) * 200.
+        limits = {'solar radiation':(0, srad_limit,
+            np.arange(0, srad_limit + 50, 200))}
 
+        # Plot the meteogram
         fig = plt.figure(figsize=(9.25,10))
         fig.subplots_adjust(bottom=0.05, top=0.95)
         layout = {0:['temperature', 'dewpoint', 'windchill', 'heat index'],
                   4:['theoretical solar', 'solar radiation']}
         styles = {'theoretical solar':dict(edgecolor='None',
                 facecolor='#CFCFCF', fill=True)}
-        limits = {'solar radiation':(0, srad_limit,
-            np.arange(0, srad_limit + 50, 200))}
         axs = meteogram(data, fig, num_panels=5, styles=styles,
             units=mod_units, time_range=times, layout=layout, limits=limits)
         axs[0].set_ylabel('Temperature (F)')
+
+        # Draw a vertical line at midnight central time in all panels
+        from pytz import timezone, UTC
+        central = timezone('US/Central')
+        midnight = data['datetime'].compressed()[-1]
+        midnight = midnight.replace(hour=0, minute=0, second=0, microsecond=0,
+            tzinfo=central)
+        for ax in axs:
+            ax.axvline(midnight.astimezone(UTC), color='gray')
+
+        # If freezing is within the plotting range, draw a horizontal line
+        # showing it.
+        temp_min, temp_max = axs[0].get_xlim()
+        if temp_min < 32. < temp_max:
+            axs[0].axhline(32., color='gray')
 
     plt.show()
