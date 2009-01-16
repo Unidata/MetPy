@@ -416,7 +416,7 @@ if __name__ == '__main__':
 
         # Plot the meteogram
         fig = plt.figure(figsize=(9.25,10))
-        fig.subplots_adjust(bottom=0.05, top=0.95)
+        fig.subplots_adjust(bottom=0.05, top=0.94)
         layout = {0:['temperature', 'dewpoint', 'windchill', 'heat index'],
                   4:['theoretical solar', 'solar radiation']}
         styles = {'theoretical solar':dict(edgecolor='None',
