@@ -307,6 +307,9 @@ if __name__ == '__main__':
     parser.add_option('-d', '--date', dest='date', help='get data for '
         'YYYYMMDD[_HHMM] (HHMM is only used with None for site)',
         metavar='YYYYMMDD', default=None)
+    parser.add_option('-u', '--utc', dest='utc', help='Display date and times '
+        'in UTC. Otherwise, use U.S. Central time, adjusted for Daylight '
+        'Savings Time.', action='store_true')
 
     #Parse the command line options and convert them to useful values
     opts,args = parser.parse_args()
@@ -389,8 +392,14 @@ if __name__ == '__main__':
 
         plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))
     else:
-        from pytz import timezone
+        from pytz import timezone, utc
         central = timezone('US/Central')
+
+        # Allow for commandline switching of timezones
+        if opts.utc:
+            tz = utc
+        else:
+            tz = central
 
         # Calculate the theoretically expected solar radiation
         srad = solar_irradiance(data['latitude'][0], data['longitude'][0],
@@ -411,7 +420,8 @@ if __name__ == '__main__':
         styles = {'theoretical solar':dict(edgecolor='None',
                 facecolor='#CFCFCF', fill=True)}
         axs = meteogram(data, fig, num_panels=5, styles=styles,
-            units=mod_units, time_range=times, layout=layout, limits=limits)
+            units=mod_units, time_range=times, layout=layout, limits=limits,
+            tz=tz)
         axs[0].set_ylabel('Temperature (F)')
 
         # Draw a vertical line at midnight central time in all panels
