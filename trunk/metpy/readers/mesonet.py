@@ -394,6 +394,7 @@ if __name__ == '__main__':
 
         plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))
     else:
+        from matplotlib.dates import HourLocator
         from pytz import timezone, utc
         central = timezone('US/Central')
 
@@ -425,6 +426,8 @@ if __name__ == '__main__':
             units=mod_units, time_range=times, layout=layout, limits=limits,
             tz=tz)
         axs[0].set_ylabel('Temperature (F)')
+        axs[0].xaxis.set_major_locator(HourLocator(np.arange(0, 25, 3), tz=tz))
+        axs[0].xaxis.set_minor_locator(HourLocator(tz=tz))
 
         # Draw a vertical line at midnight central time in all panels
         end = get_last_time(data)
