@@ -24,7 +24,7 @@ def _rescale_yaxis(ax, bounds):
 
 #TODO: REWRITE AS CLASS
 def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
-    layout=None, styles=None, limits=None, units=None):
+    layout=None, styles=None, limits=None, units=None, tz=UTC):
     '''
     Plots a meteogram (collection of time series) for a data set. This
     is broken down into a series of panels (defaults to 3), each of which
@@ -77,6 +77,12 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
     *units* : dictionary
         A dictionary that maps variable names to unit strings for axis labels.
 
+    *tz* : datetime.tzinfo instance
+        A :class:`datetime.tzinfo instance specifying the timezone to use
+        for plotting the x-axis.  See the docs for :module:`datetime` and
+        :module:`pytz` for how to construct and use these objects.  The
+        default is UTC.
+
     Returns : list
         A list of the axes objects that were created.
     '''
@@ -84,10 +90,8 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
     if fig is None:
         fig = plt.figure()
 
-    #Get the time variable, using field info if necessary
-    dt = 'datetime'
-    time = data[dt]
-    tz = UTC
+    #Get the time variable
+    time = data['datetime']
 
     #Process time_range.
     if time_range is None:
@@ -234,7 +238,7 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
             ax.set_ylabel(descr.title() + unit_str)
 
         ax.xaxis.set_major_locator(ticker)
-        ax.xaxis.set_major_formatter(DateFormatter('%H'))
+        ax.xaxis.set_major_formatter(DateFormatter('%H', tz))
         if not panel_twinned:
             ax.yaxis.set_ticks_position('both')
             for tick in ax.yaxis.get_major_ticks():
