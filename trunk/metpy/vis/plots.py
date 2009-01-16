@@ -229,7 +229,7 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, ticker=None,
             # field info with units, if given.
             if varname in units and units[varname]:
                 unit_str = ' (%s)' % units[varname]
-                if '^' in unit_str:
+                if '^' in unit_str and '$' not in unit_str:
                     unit_str = '$' + unit_str + '$'
             else:
                 unit_str = ''
