@@ -346,19 +346,23 @@ if __name__ == '__main__':
 
     #Convert temperature and dewpoint to Farenheit
     mod_units = mesonet_units.copy()
-    mod_units['TAIR'] = 'F'
-    mod_units['dewpoint'] = 'F'
     data['TAIR'] = C2F(data['TAIR'])
+    mod_units['TAIR'] = 'F'
+    mod_units[mesonet_inv_var_map['TAIR']] = 'F'
+    mod_units['dewpoint'] = 'F'
 
     #Convert wind speeds to MPH
     data['WSPD'] *= sconsts.hour / sconsts.mile
     data['WMAX'] *= sconsts.hour / sconsts.mile
     mod_units['WSPD'] = 'MPH'
+    mod_units[mesonet_inv_var_map['WSPD']] = 'MPH'
     mod_units['WMAX'] = 'MPH'
+    mod_units[mesonet_inv_var_map['WMAX']] = 'MPH'
 
     #Convert rainfall to inches
     data['RAIN'] *= sconsts.milli / sconsts.inch
     mod_units['RAIN'] = 'in.'
+    mod_units[mesonet_inv_var_map['RAIN']] = 'in.'
 
     #Calculate windchill and heat index
     wchill = windchill(data['TAIR'], data['WSPD'], metric=False)
