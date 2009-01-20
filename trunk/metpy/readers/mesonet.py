@@ -394,7 +394,7 @@ if __name__ == '__main__':
         #Optionally plot a counties shapefile
         mapfile = os.path.join(os.environ['HOME'], 'mapdata', 'c_03oc08.shp')
         if os.path.exists(mapfile):
-            m.readshapefile(mapfile, 'counties', zorder=0)
+            m.readshapefile(os.path.splitext(mapfile)[0], 'counties', zorder=0)
 
         plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))
     else:
