@@ -32,7 +32,7 @@ timeseres (if timeseries was subsampled to calculate wavelet).
         tmpb = np.mean((a2-a2.mean(axis=1).reshape(-1,1))*(b2-b2.mean(axis=1).reshape(-1,1)),axis=1)
 
         cohf_n.append((tmpa/tmpb)*(np.float(a1.shape[1])/a2.shape[1]))
-        tcoh.append(bins[i][1]-bins[0])*subsamp)
+        tcoh.append((bins[i][1]-bins[0])*subsamp)
 
     F_coh=np.array(cohf_n).squeeze().sum()/(a.shape[1]*turb_covar(a[0,:],b[0,:]))
     TE=F_coh/((1./a.shape[1])*np.array(tcoh).sum())
