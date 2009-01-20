@@ -49,6 +49,12 @@ def pca(data,**args):
     else:
         use = 'corr'
 
+    if 'gamma' in keys:
+        gamma = args['gamma']
+    else:
+        gamma = 1
+
+
     if 'use_loadings' in keys:
         use_loadings = args['use_loadings']
     else:
@@ -90,9 +96,9 @@ def pca(data,**args):
         loadings=loadings[:,0:use_loadings]
 
     if rotate is 'promax':
-        loadings,tmat = promax(loadings,rotation_type)
+        loadings,tmat = promax(loadings,rot_type=rotation_type,gamma=gamma)
     elif rotate is 'orthomax':
-        loadings,tmat = orothomax(loadings)
+        loadings,tmat = orthomax(loadings,gamma=gamma)
 
     #pcscore<-z%*%rloadPromax$rmat%*%solve(t(rloadPromax$rmat)%*%rloadPromax$rmat)
     pcscore = np.matrix(z)*np.matrix(loadings)*np.linalg.inv(np.matrix(loadings.transpose())*np.matrix(loadings))
@@ -132,9 +138,9 @@ def procrustes(A, target, rot_type):
             T = np.linalg.lstsq(A,target)[0]
 
         tmp1 = np.dot(T.transpose(),T)
-        tmp2 = np.linalg.solve(tmp1,np.eye(m)) 
+        tmp2 = np.linalg.solve(tmp1,np.eye(m))
         T=np.dot(T,np.diag(np.sqrt(np.diag(tmp2))))
-    
+
     B = np.dot(A,T)
     return B,T
 #
@@ -167,6 +173,7 @@ def orthomax(A, gamma=1, reltol=1.4901e-07, maxit=256):
     else:
 #       Use a sequence of bivariate rotations
         for iter in range(1,maxit+1):
+            print iter
             maxTheta = 0
             for i in range(0,m-1):
                 for j in range(i,m):
