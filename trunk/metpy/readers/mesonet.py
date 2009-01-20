@@ -333,8 +333,8 @@ if __name__ == '__main__':
     # Add a reasonable time range if we're doing current data. Subset the data
     # in that case to only include that time range, so that plot limits won't
     # be determined by data that is not displayed.
+    end = get_last_time(data) # Needed later on
     if dt is None:
-        end = get_last_time(data)
         times = (end - datetime.timedelta(hours=24), end)
         data = data[data['datetime'] >= times[0]]
     else:
@@ -434,7 +434,6 @@ if __name__ == '__main__':
         axs[0].xaxis.set_minor_locator(HourLocator(tz=tz))
 
         # Draw a vertical line at midnight (in the timezone) in all panels
-        end = times[-1]
         midnight = end.astimezone(tz).replace(hour=0, minute=0, second=0,
             microsecond=0)
         for ax in axs:
