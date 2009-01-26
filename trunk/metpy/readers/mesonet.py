@@ -203,7 +203,7 @@ def read_mesonet_data(filename, fields=None, convert_time=True,
     # as -999.00
     missing_vals = range(BAD_DATA_LIMIT, BAD_DATA_LIMIT-10, -1)
     missing_strs = (map(str, missing_vals)
-        + ['%.0f' % v for v in missing_vals]
+        + ['%d.' % v for v in missing_vals]
         + ['%.1f' % v for v in missing_vals]
         + ['%.2f' % v for v in missing_vals])
     missing = ','.join(missing_strs)
