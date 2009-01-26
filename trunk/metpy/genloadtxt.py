@@ -265,7 +265,7 @@ class StringConverter:
     Factory class for function transforming a string into another object (int,
     float).
 
-    After initialization, an instance can be called to transform a string
+    After initialization, an instance can be called to transform a string 
     into another object. If the string is recognized as representing a missing
     value, a default value is returned.
 
@@ -284,7 +284,7 @@ class StringConverter:
     missing_values : {sequence}, optional
         Sequence of strings indicating a missing value.
     locked : {boolean}, optional
-        Whether the StringConverter should be locked to prevent automatic
+        Whether the StringConverter should be locked to prevent automatic 
         upgrade or not.
 
     Attributes
@@ -293,6 +293,8 @@ class StringConverter:
         Function used for the conversion
     default : var
         Default value to return when the input corresponds to a missing value.
+    type : type
+        Type of the output.
     _status : integer
         Integer representing the order of the conversion.
     _mapper : sequence of tuples
@@ -303,10 +305,10 @@ class StringConverter:
 
     """
     #
-    _mapper = [(np.bool_, str2bool, None),
+    _mapper = [(np.bool_, str2bool, False),
                (np.integer, int, -1),
                (np.floating, float, np.nan),
-               (np.complex, complex, np.nan+0j),
+               (complex, complex, np.nan+0j),
                (np.string_, str, '???')]
     (_defaulttype, _defaultfunc, _defaultfill) = zip(*_mapper)
     #
@@ -320,15 +322,23 @@ class StringConverter:
         """
     Upgrade the mapper of a StringConverter by adding a new function and its
     corresponding default.
-
-    The input function (or sequence of functions) and its associated default
+    
+    The input function (or sequence of functions) and its associated default 
     value (if any) is inserted in penultimate position of the mapper.
     The corresponding type is estimated from the dtype of the default value.
-
+    
     Parameters
     ----------
     func : var
         Function, or sequence of functions
+
+    Examples
+    --------
+    >>> import dateutil.parser
+    >>> import datetime
+    >>> dateparser = datetutil.parser.parse
+    >>> defaultdate = datetime.date(2000, 1, 1)
+    >>> StringConverter.upgrade_mapper(dateparser, default=defaultdate)
         """
         # Func is a single functions
         if hasattr(func, '__call__'):
@@ -355,7 +365,8 @@ class StringConverter:
         if dtype_or_func is None:
             self.func = str2bool
             self._status = 0
-            self.default = default
+            self.default = default or False
+            ttype = np.bool
         else:
             # Is the input a np.dtype ?
             try:
@@ -395,6 +406,8 @@ class StringConverter:
             self.missing_values = set(list(missing_values) + [''])
         #
         self._callingfunction = self._strict_call
+        self.type = ttype
+        self._checked = False
     #
     def _loose_call(self, value):
         try:
@@ -407,6 +420,8 @@ class StringConverter:
             return self.func(value)
         except ValueError:
             if value.strip() in self.missing_values:
+                if not self._status:
+                    self._checked = False
                 return self.default
             raise ValueError("Cannot convert string '%s'" % value)
     #
@@ -420,6 +435,7 @@ class StringConverter:
     The order in which the converters are tested is read from the
     :attr:`_status` attribute of the instance.
         """
+        self._checked = True
         try:
             self._strict_call(value)
         except ValueError:
@@ -432,7 +448,7 @@ class StringConverter:
                 raise ValueError("Could not find a valid conversion function")
             elif self._status < _statusmax - 1:
                 self._status += 1
-            (_, self.func, self.default) = self._mapper[self._status]
+            (self.type, self.func, self.default) = self._mapper[self._status]
             self.upgrade(value)
     #
     def update(self, func, default=None, missing_values='', locked=False):
@@ -463,7 +479,8 @@ class StringConverter:
                 for val in missing_values:
                     self.missing_values.add(val)
         else:
-            self.missing_values = []
+            self.missing_values = []        # Update the type
+        self.type = self._getsubdtype(func('0'))
 
 
 
@@ -706,18 +723,21 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
     # Reset the dtype
     data = rows
     if dtype is None:
-        # Get the dtypes from the first row
-        coldtypes = [np.array(val).dtype for val in data[0]]
-        # Find the columns with strings, and take the largest number of chars.
-        strcolidx = [i for (i, v) in enumerate(coldtypes) if v.char == 'S']
+        # Get the dtypes from the types of the converters
+        coldtypes = [conv.type for conv in converters]
+        # Find the columns with strings...
+        strcolidx = [i for (i, v) in enumerate(coldtypes)
+                     if v in (type('S'), np.string_)]
+        # ... and take the largest number of chars.
         for i in strcolidx:
             coldtypes[i] = "|S%i" % max(len(row[i]) for row in data)
-
+        #
         if names is None:
             # If the dtype is uniform, don't define names, else use ''
-            base = coldtypes[0]
-            if np.all([(dt == base) for dt in coldtypes]):
-                (ddtype, mdtype) = (base, np.bool)
+            base = set([c.type for c in converters if c._checked])
+            
+            if len(base) == 1:
+                (ddtype, mdtype) = (list(base)[0], np.bool)
             else:
                 ddtype = [('', dt) for dt in coldtypes]
                 mdtype = [('', np.bool) for dt in coldtypes]
