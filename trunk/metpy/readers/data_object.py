@@ -1,5 +1,5 @@
 import numpy as np
-from metpy.cbook import rec_append_fields, add_dtype_titles, get_title
+from metpy.cbook import append_fields, add_dtype_titles, get_title
 
 __all__ = ['Data', 'ArrayData']
 
@@ -79,7 +79,7 @@ class ArrayData(Data):
         self.units.update(zip(names, units))
 
         names = zip(descriptions, names)
-        self._data = rec_append_fields(self._data, names, arr, dtypes)
+        self._data = append_fields(self._data, names, arr, dtypes)
 
     def get_descrip(self, name):
         return get_title(self._data, name)

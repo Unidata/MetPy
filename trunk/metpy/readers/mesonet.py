@@ -4,7 +4,7 @@ from urllib2 import urlopen
 import numpy as np
 from numpy import ma
 from metpy.cbook import ndfromtxt, mafromtxt #Can go back to numpy once it's updated
-from metpy.cbook import (is_string_like, lru_cache, rec_append_fields,
+from metpy.cbook import (is_string_like, lru_cache, append_fields,
     add_dtype_titles)
 
 __all__ = ['remote_mesonet_data', 'read_mesonet_data', 'mesonet_stid_info']
@@ -230,7 +230,7 @@ def read_mesonet_data(filename, fields=None, convert_time=True,
         lon = sta_table['Lon'][station_indices]
         elev = sta_table['Elev'][station_indices]
         names = sta_table['Name'][station_indices]
-        data = rec_append_fields(data,
+        data = append_fields(data,
             ('latitude', 'longitude', 'elevation', 'site'),
             (lat, lon, elev, names))
 
@@ -341,7 +341,7 @@ if __name__ == '__main__':
 
     #Calculate dewpoint in F from relative humidity and temperature
     dewpt = C2F(dewpoint(data['TAIR'], data['RELH']/100.))
-    data = rec_append_fields(data, ('dewpoint',), (dewpt,))
+    data = append_fields(data, ('dewpoint',), (dewpt,))
 
     #Convert temperature and dewpoint to Farenheit
     mod_units = mesonet_units.copy()
@@ -366,13 +366,13 @@ if __name__ == '__main__':
     #Calculate windchill and heat index
     wchill = windchill(data['TAIR'], data['WSPD'], metric=False)
     heat = heat_index(data['TAIR'], data['RELH'])
-    data = rec_append_fields(data, ('windchill', 'heat index'), (wchill, heat))
+    data = append_fields(data, ('windchill', 'heat index'), (wchill, heat))
 
     #If site is None, do a station plot, otherwise do a meteogram
     if opts.site is None:
         # Convert wind speed and direction to U,V components
         u,v = get_wind_components(data['WSPD'], data['WDIR'])
-        data = rec_append_fields(data, ('u', 'v'), (u, v))
+        data = append_fields(data, ('u', 'v'), (u, v))
 
         #Mask 0 rainfall
         rain = data['rainfall']
@@ -410,7 +410,7 @@ if __name__ == '__main__':
         # Calculate the theoretically expected solar radiation
         srad = solar_irradiance(data['latitude'][0], data['longitude'][0],
             data['datetime'])
-        data = rec_append_fields(data, ('theoretical solar',), (srad,))
+        data = append_fields(data, ('theoretical solar',), (srad,))
 
         # Use the theoretical maximum to set the upper limit on the
         # plotting of measured solar radiation

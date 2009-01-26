@@ -174,15 +174,14 @@ try:
 except ImportError:
     from genloadtxt import loadtxt as ndfromtxt
 
+try:
+    from numpy.lib.recfunctions import append_fields
+except ImportError:
 #Taken from a numpy-discussion mailing list post 'Re: adding field to rec array'
 #by Robert Kern.  Modified to handle masked arrays, which is why we don't
 #just use the matplotlib version
 
-try:
-    from numpy.lib.recfunctions import rec_append_fields
-    raise ImportError #The above isn't a drop-in replacement for ours yet
-except ImportError:
-    def rec_append_fields(rec, names, arr, dtype=None):
+    def append_fields(rec, names, arr, dtype=None):
         """
         Appends a field to an existing record array, handling masked fields
         if necessary.
@@ -203,7 +202,7 @@ except ImportError:
         -------
         out : numpy record array
             `rec` with the new field appended.
-        rec = rec_append_fields(rec, name, arr)
+        rec = append_fields(rec, name, arr)
         """
         if not iterable(names):
             names = [names]
