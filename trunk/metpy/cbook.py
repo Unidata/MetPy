@@ -162,66 +162,78 @@ def lru_cache(maxsize):
     return decorating_function
 
 #
-# This can be removed once it lands in numpy trunk
+# These can be removed once numpy 1.3 is released
 #
+try:
+    from numpy import mafromtxt
+except ImportError:
+    from genloadtxt import mloadtxt as mafromtxt
 
-from genloadtxt import loadtxt, mloadtxt
+try:
+    from numpy import ndfromtxt
+except ImportError:
+    from genloadtxt import loadtxt as ndfromtxt
 
 #Taken from a numpy-discussion mailing list post 'Re: adding field to rec array'
 #by Robert Kern.  Modified to handle masked arrays, which is why we don't
 #just use the matplotlib version
-def rec_append_fields(rec, names, arr, dtype=None):
-    """
-    Appends a field to an existing record array, handling masked fields
-    if necessary.
 
-    Parameters
-    ----------
-    rec : numpy record array
-        Array to which the new field should be appended
-    names : string
-        Names to be given to the new fields
-    arr : ndarray
-        Array containing the data for the new fields.
-    dtype : data-type or None, optional
-        Data type of the new fields.  If this is None, the data types will
-        be obtained from `arr`.
+try:
+    from numpy.lib.recfunctions import rec_append_fields
+    raise ImportError #The above isn't a drop-in replacement for ours yet
+except ImportError:
+    def rec_append_fields(rec, names, arr, dtype=None):
+        """
+        Appends a field to an existing record array, handling masked fields
+        if necessary.
 
-    Returns
-    -------
-    out : numpy record array
-        `rec` with the new field appended.
-    rec = rec_append_fields(rec, name, arr)
-    """
-    if not iterable(names):
-        names = [names]
-    if not iterable(arr):
-        arr = [arr]
+        Parameters
+        ----------
+        rec : numpy record array
+            Array to which the new field should be appended
+        names : string
+            Names to be given to the new fields
+        arr : ndarray
+            Array containing the data for the new fields.
+        dtype : data-type or None, optional
+            Data type of the new fields.  If this is None, the data types will
+            be obtained from `arr`.
 
-    if dtype is None:
-        dtype = [a.dtype for a in arr]
+        Returns
+        -------
+        out : numpy record array
+            `rec` with the new field appended.
+        rec = rec_append_fields(rec, name, arr)
+        """
+        if not iterable(names):
+            names = [names]
+        if not iterable(arr):
+            arr = [arr]
 
-    newdtype = np.dtype(rec.dtype.descr + zip(names, dtype))
-    newrec = np.empty(rec.shape, dtype=newdtype).view(type(rec))
+        if dtype is None:
+            dtype = [a.dtype for a in arr]
 
-    for name in rec.dtype.names:
-        newrec[name] = rec[name]
-        try:
-            newrec.mask[name] = rec.mask[name]
-        except AttributeError:
-            pass #Not a masked array
+        newdtype = np.dtype(rec.dtype.descr + zip(names, dtype))
+        newrec = np.empty(rec.shape, dtype=newdtype).view(type(rec))
 
-    for n,a in zip(names, arr):
-        newrec[n] = a
-        try:
-            old_mask = a.mask
-        except AttributeError:
-            old_mask = np.array([False]*a.size).reshape(a.shape)
-        try:
-            newrec[n].mask = old_mask
-        except AttributeError:
-            pass
-    return newrec
+        for name in rec.dtype.names:
+            newrec[name] = rec[name]
+            try:
+                newrec.mask[name] = rec.mask[name]
+            except AttributeError:
+                pass #Not a masked array
+
+        for n,a in zip(names, arr):
+            newrec[n] = a
+            try:
+                old_mask = a.mask
+            except AttributeError:
+                old_mask = np.array([False]*a.size).reshape(a.shape)
+            try:
+                newrec[n].mask = old_mask
+            except AttributeError:
+                pass
+        return newrec
 
 def add_dtype_titles(array, title_map):
     '''

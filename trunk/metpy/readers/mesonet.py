@@ -3,7 +3,7 @@ from cStringIO import StringIO
 from urllib2 import urlopen
 import numpy as np
 from numpy import ma
-from metpy.cbook import loadtxt, mloadtxt #Can go back to numpy once it's updated
+from metpy.cbook import ndfromtxt, mafromtxt #Can go back to numpy once it's updated
 from metpy.cbook import (is_string_like, lru_cache, rec_append_fields,
     add_dtype_titles)
 
@@ -54,7 +54,6 @@ def _fetch_mesonet_data(date_time, site=None):
 
     #Open the remote location
     datafile = urlopen(baseurl % (path+fname, fname))
-
     return datafile.read()
 
 def remote_mesonet_data(date_time=None, fields=None, site=None,
@@ -208,7 +207,7 @@ def read_mesonet_data(filename, fields=None, convert_time=True,
         + ['%.1f' % v for v in missing_vals]
         + ['%.2f' % v for v in missing_vals])
     missing = ','.join(missing_strs)
-    data = mloadtxt(fh, dtype=None, names=True, usecols=fields, skiprows=skip,
+    data = mafromtxt(fh, dtype=None, names=True, usecols=fields, skiprows=skip,
         converters=conv, missing=missing)
 
     #Use the inverted dictionary to map names in the FILE to their more
@@ -265,7 +264,7 @@ def mesonet_stid_info(info=None, remote=False):
     else:
         station_info = StringIO(mesonet_station_table)
 
-    return loadtxt(station_info, dtype=None, skiprows=123, usecols=cols,
+    return ndfromtxt(station_info, dtype=None, skiprows=123, usecols=cols,
         names=names, delimiter=',')
 
 def get_last_time(data, ref_field='TAIR', dt_field='datetime'):
