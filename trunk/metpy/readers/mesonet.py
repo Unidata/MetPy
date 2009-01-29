@@ -3,7 +3,7 @@ from cStringIO import StringIO
 from urllib2 import urlopen
 import numpy as np
 from numpy import ma
-from metpy.cbook import ndfromtxt, mafromtxt #Can go back to numpy once it's updated
+from metpy.cbook import ndfromtxt, mafromtxt, stack_arrays #Can go back to numpy once it's updated
 from metpy.cbook import (is_string_like, lru_cache, append_fields,
     add_dtype_titles)
 
@@ -121,6 +121,7 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
     data = read_mesonet_data(data, fields, convert_time, lookup_stids)
 
     if yest:
+#        data = stack_arrays((old_data, data))
         # Need to create a new array.  Resizing the old ones will not work.
         final_data = np.ma.empty(old_data.size + data.size, dtype=data.dtype)
         final_data[:old_data.size] = old_data
@@ -335,7 +336,7 @@ if __name__ == '__main__':
     end = get_last_time(data) # Needed later on
     if dt is None:
         times = (end - datetime.timedelta(hours=24), end)
-        data = data[data['datetime'] >= times[0]]
+#        data = data[data['datetime'] >= times[0]]
     else:
         times = None
 
