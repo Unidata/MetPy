@@ -51,8 +51,8 @@ _NWSRef_data = {'blue': [(0.0, 0.92549019607843142, 0.92549019607843142),
     (0.85714286, 1.0, 1.0),
     (0.92857143, 0.59999999999999998, 0.59999999999999998),
     (1.0, 0.0, 0.0)]}
-NWSRefPrecip = Normalize(5,75)
-NWSRefClearAir = Normalize(-28, 28)
+NWSRefPrecip = colors.Normalize(5,75)
+NWSRefClearAir = colors.Normalize(-28, 28)
 
 _NWSVel_data = {'blue': [(0.0, 0.62352941176470589, 0.62352941176470589),
  (0.071428571428571425, 0.0, 0.0),
