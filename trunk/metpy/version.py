@@ -11,14 +11,17 @@ def get_svn_revision():
     path to this file.
     '''
     from subprocess import Popen, PIPE
-    proc = Popen(['svnversion', '-n', _repository_path], stdout=PIPE)
-    text = proc.stdout.readline()
-    if text != 'exported':
-        if ':' in text:
-            text = text[text.find(':')+1:]
-        rev = '.dev' + text
-    else:
-        rev = ''
+    rev = ''
+    try:
+        proc = Popen(['svnversion', '-n', _repository_path], stdout=PIPE)
+        text = proc.stdout.readline()
+        if text != 'exported':
+            if ':' in text:
+                text = text[text.find(':')+1:]
+            rev = '.dev' + text
+    except OSError:
+        # SVN not installed, don't worry about finding the revision
+        pass
     return rev
 
 def write_svn_version():
