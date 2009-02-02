@@ -253,7 +253,7 @@ if __name__ == '__main__':
     x_grid,y_grid = np.meshgrid(x, y)
 
     # Perform analysis of height obs using Cressman weights
-    heights_cress = analyze_grid(height, x_grid, y_grid, lon, lat,
+    heights_cress = grid_data(height, x_grid, y_grid, lon, lat,
         cressman_weights, 7)
 
     # Generate a grid for basemap plotting
