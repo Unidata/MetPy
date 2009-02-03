@@ -3,9 +3,9 @@ from cStringIO import StringIO
 from urllib2 import urlopen
 import numpy as np
 from numpy import ma
-from metpy.cbook import ndfromtxt, mafromtxt #Can go back to numpy once it's updated
-from metpy.cbook import (is_string_like, lru_cache, append_fields,
-    add_dtype_titles)
+from metpy.cbook import is_string_like, lru_cache, add_dtype_titles
+# Can go back to numpy once it's updated
+from metpy.cbook import ndfromtxt, mafromtxt, stack_arrays, append_fields
 
 __all__ = ['remote_mesonet_data', 'read_mesonet_data', 'mesonet_stid_info']
 
@@ -122,10 +122,7 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
 
     if yest:
         # Need to create a new array.  Resizing the old ones will not work.
-        final_data = np.ma.empty(old_data.size + data.size, dtype=data.dtype)
-        final_data[:old_data.size] = old_data
-        final_data[old_data.size:] = data
-        data = final_data
+        data = stack_arrays((old_data, data), autoconvert=True)
 
     return data
 
