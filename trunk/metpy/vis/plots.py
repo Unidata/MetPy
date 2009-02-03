@@ -194,8 +194,9 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, layout=None,
             lims = limits.get(varname, (None, None))
 
             #Store the max and min for auto scaling
-            var_max.append(var.max())
-            var_min.append(var.min())
+            if var.max() is not np.ma.masked:
+                var_max.append(var.max())
+                var_min.append(var.min())
 
             if style.pop('fill', False):
                 #Plot the filled area.  Need latest Matplotlib for date support
