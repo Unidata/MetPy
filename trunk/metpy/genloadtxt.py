@@ -265,7 +265,7 @@ class StringConverter:
     Factory class for function transforming a string into another object (int,
     float).
 
-    After initialization, an instance can be called to transform a string 
+    After initialization, an instance can be called to transform a string
     into another object. If the string is recognized as representing a missing
     value, a default value is returned.
 
@@ -284,7 +284,7 @@ class StringConverter:
     missing_values : {sequence}, optional
         Sequence of strings indicating a missing value.
     locked : {boolean}, optional
-        Whether the StringConverter should be locked to prevent automatic 
+        Whether the StringConverter should be locked to prevent automatic
         upgrade or not.
 
     Attributes
@@ -322,11 +322,11 @@ class StringConverter:
         """
     Upgrade the mapper of a StringConverter by adding a new function and its
     corresponding default.
-    
-    The input function (or sequence of functions) and its associated default 
+
+    The input function (or sequence of functions) and its associated default
     value (if any) is inserted in penultimate position of the mapper.
     The corresponding type is estimated from the dtype of the default value.
-    
+
     Parameters
     ----------
     func : var
@@ -740,7 +740,7 @@ def genloadtxt(fname, dtype=float, comments='#', delimiter=None, skiprows=0,
         if names is None:
             # If the dtype is uniform, don't define names, else use ''
             base = set([c.type for c in converters if c._checked])
-            
+
             if len(base) == 1:
                 (ddtype, mdtype) = (list(base)[0], np.bool)
             else:
