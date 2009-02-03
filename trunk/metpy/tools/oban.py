@@ -130,8 +130,9 @@ def get_ob_incs(obx, oby, ob, grid_x, grid_y, field, cressman_radius = None):
 
 if __name__ == '__main__':
     from StringIO import StringIO
-    from mpl_toolkits.basemap import Basemap
+    from mpl_toolkits.basemap import Basemap, maskoceans
     import matplotlib.pyplot as plt
+    from scipy.constants import kilo
     import metpy
 
     data = '''72214,30.4,-84.3,5740.0,250.0,34.9
@@ -244,33 +245,34 @@ if __name__ == '__main__':
     lat,lon,height,wdir,speed = np.loadtxt(StringIO(data), delimiter=',',
         unpack=True, usecols=(1,2,3,4,5))
 
-    # Get U,V components from wind speed and direction
-    u,v = metpy.get_wind_components(speed, wdir)
-
-    # Generate grid of x,y positions
-    x = np.linspace(-125, -60, 130)
-    y = np.linspace(25, 55, 60)
-    x_grid,y_grid = np.meshgrid(x, y)
-
-    # Perform analysis of height obs using Cressman weights
-    heights_cress = grid_data(height, x_grid, y_grid, lon, lat,
-        cressman_weights, 7)
-
-    # Generate a grid for basemap plotting
+    # Create a map for plotting
     bm = Basemap(projection='tmerc', lat_0=90.0, lon_0=-100.0, lat_ts=40.0,
         llcrnrlon=-121, llcrnrlat=24, urcrnrlon=-65, urcrnrlat=46,
         resolution='l')
 
-    # Transform the grid to basemap space for plotting
-    x_bm,y_bm = bm(x_grid, y_grid)
+    # Get U,V components from wind speed and direction
+    u,v = metpy.get_wind_components(speed, wdir)
+
+    # Rotate the vectors to be properly aligned in the map projection
+    u,v = bm.rotate_vector(u, v, lon, lat)
+
+    # Generate grid of x,y positions
+    lon_grid, lat_grid, x_grid, y_grid = bm.makegrid(130, 60, returnxy=True)
+
+    # Transform the obs to basemap space for gridding
     obx,oby = bm(lon, lat)
+
+    # Perform analysis of height obs using Cressman weights
+    heights_cress = grid_data(height, x_grid, y_grid, obx, oby,
+        cressman_weights, 600. * kilo)
+    heights_cress = maskoceans(lon_grid, lat_grid, heights_cress)
 
     # Map plotting
     contours = np.arange(5000., 5800., 60.0)
     bm.drawstates()
     bm.drawcountries()
     bm.drawcoastlines()
-    cp = bm.contour(x_bm, y_bm, heights_cress, contours)
+    cp = bm.contour(x_grid, y_grid, heights_cress, contours)
     bm.barbs(obx, oby, u, v)
     plt.clabel(cp, fmt='%.0f', inline_spacing=0)
     plt.title('500mb Height map')
