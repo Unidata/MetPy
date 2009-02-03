@@ -186,11 +186,11 @@ class Level3File(object):
         ('vcp', 'h'), ('seq_num', 'H'), ('vol_num', 'H'),
         ('vol_date', 'H'), ('vol_start_time', 'l'), ('prod_gen_date', 'H'),
         ('prod_gen_time', 'l'), ('dep1', 'h'), ('dep2', 'h'), ('el_num', 'H'),
-        ('dep3', 'h'), ('thr1', 'h'), ('thr2', 'h'), ('thr3', 'h'),
-        ('thr4', 'h'), ('thr5', 'h'), ('thr6', 'h'), ('thr7', 'h'),
-        ('thr8', 'h'), ('thr9', 'h'), ('thr10', 'h'), ('thr11', 'h'),
-        ('thr12', 'h'), ('thr13', 'h'), ('thr14', 'h'), ('thr15', 'h'),
-        ('thr16', 'h'), ('dep4', 'h'), ('dep5', 'h'), ('dep6', 'h'),
+        ('dep3', 'h'), ('thr1', 'H'), ('thr2', 'H'), ('thr3', 'H'),
+        ('thr4', 'H'), ('thr5', 'H'), ('thr6', 'H'), ('thr7', 'H'),
+        ('thr8', 'H'), ('thr9', 'H'), ('thr10', 'H'), ('thr11', 'H'),
+        ('thr12', 'H'), ('thr13', 'H'), ('thr14', 'H'), ('thr15', 'H'),
+        ('thr16', 'H'), ('dep4', 'h'), ('dep5', 'h'), ('dep6', 'h'),
         ('dep7', 'h'), ('dep8', 'h'), ('dep9', 'h'), ('dep10', 'h'),
         ('n_maps', 'h'), ('sym_off', 'L'), ('graph_off', 'L'),
         ('tab_off', 'L')], '>', 'ProdDesc')
@@ -211,31 +211,34 @@ class Level3File(object):
         self._fobj.seek(self._start_offset)
 
         # Set up places to store data and metadata
-        self.data = []
-        self.metadata = dict()
+#        self.data = []
+#        self.metadata = dict()
 
         # Unpack the message header and the product description block
-        hdr = self.header_fmt.unpack_file(self._fobj)
-        desc = self.prod_desc_fmt.unpack_file(self._fobj)
+        self.header = self.header_fmt.unpack_file(self._fobj)
+        self.prod_desc = self.prod_desc_fmt.unpack_file(self._fobj)
 
-        print hdr
-        print desc
-        self.metadata['datetime'] = nexrad_to_datetime(hdr.date, hdr.time*1000)
+        print self.header
+        print self.prod_desc
+        self.thresholds = [getattr(self.prod_desc, 'thr%d' % i) for i in range(1,17)]
+#        self.metadata['datetime'] = nexrad_to_datetime(hdr.date, hdr.time*1000)
 
         # Unpack the various blocks, if present.  The factor of 2 converts from
         # 'half-words' to bytes
-        if desc.sym_off:
-            self._unpack_symblock(2 * desc.sym_off)
-        if desc.graph_off:
-            self._unpack_graphblock(2 * desc.graph_off)
-        if desc.tab_off:
-            self._unpack_tabblock(2 * desc.tab_off)
+        if self.prod_desc.sym_off:
+            self._unpack_symblock(2 * self.prod_desc.sym_off)
+        if self.prod_desc.graph_off:
+            self._unpack_graphblock(2 * self.prod_desc.graph_off)
+        if self.prod_desc.tab_off:
+            self._unpack_tabblock(2 * self.prod_desc.tab_off)
 
     def _unpack_symblock(self, offset):
         code = Struct('>H')
         self._fobj.seek(self._start_offset + offset)
         blk = self.sym_block_fmt.unpack_file(self._fobj)
         print blk
+
+        self.sym_block = []
         assert blk.divider == -1
         assert blk.block_id == 1
         blk_data = self._fobj.read(blk.block_len - 6) # 6 for len and nlayers
@@ -249,12 +252,14 @@ class Level3File(object):
             layer_off += layer_hdr.length
             
             data_off = 0
+            layer = []
+            self.sym_block.append(layer)
             while data_off < len(layer_data):
                 packet_code, = code.unpack_from(layer_data, data_off)
                 data_off += code.size
                 print packet_code, '%x' % packet_code
                 data,size = self.packet_map[packet_code](layer_data[data_off:])
-                self.data.append(data)
+                layer.append(data)
                 data_off += size
 
     def _unpack_graphblock(self, offset):
@@ -286,30 +291,43 @@ class Level3File(object):
             unpacked = []
             for run in map(ord, rad_data):
                 num,val = run>>4, run&0x0F
-                unpacked.extend([val]*num)
+                unpacked.extend([self.thresholds[val]]*num)
             rads.append((start_az, end_az, unpacked))
             size += rad.num_hwords * 2
         start,end,vals = zip(*rads)
-        return dict(start_az=start, end_az=end, data=vals), size 
+        return (dict(start_az=list(start), end_az=list(end), data=list(vals)),
+            size )
+
+def is_precip_mode(vcp_num):
+    return vcp_num // 10 == 3
 
 if __name__ == '__main__':
     import numpy as np
     from numpy.ma import masked_array
     import matplotlib.pyplot as plt
+    from matplotlib.colors import Normalize
     from scipy.constants import degree
+    from metpy.vis import ctables
 #    name = '/home/rmay/test_radar/KTLX20081110_220148_V03'
 #    f = Level2File(name)
     name = '/home/rmay/test_radar/nids/KOUN_SDUS54_N0RTLX_200811101410'
     f = Level3File(name)
-    datadict = f.data[0]
-    
+    datadict = f.sym_block[0][0]
+
     ref = np.array(datadict['data'])
-    ref = masked_array(ref, mask=(ref==0))
-    az = np.array(datadict['start_az'])
-    rng = np.arange(ref.shape[1])
+    ref = masked_array(ref, mask=(ref==32770))
+    az = np.array(datadict['start_az'] + [datadict['end_az'][-1]])
+    rng = np.arange(ref.shape[1] + 1)
+
+    if is_precip_mode(f.prod_desc.vcp):
+        norm = ctables.NWSRefClearAir
+    else:
+        norm = ctables.NWSRefPrecip
 
     xlocs = rng * np.sin(az[:, np.newaxis] * degree)
     ylocs = rng * np.cos(az[:, np.newaxis] * degree)
-    plt.pcolormesh(xlocs, ylocs, ref)
+    plt.pcolormesh(xlocs, ylocs, ref, cmap=ctables.NWSRef,
+        norm=norm)
+    plt.colorbar(ticks=np.linspace(norm.vmin, norm.vmax, 15))
     plt.axis('equal')
     plt.show()
