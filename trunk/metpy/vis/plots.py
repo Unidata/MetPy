@@ -247,6 +247,7 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, layout=None,
 
     return axes
 
+from matplotlib import rcParams
 from matplotlib.artist import Artist
 from matplotlib.cbook import is_string_like
 from matplotlib.text import Text
