@@ -4,6 +4,7 @@ import numpy as np
 from mpl_toolkits.basemap import Basemap, maskoceans
 import matplotlib.pyplot as plt
 from metpy.cbook import ndfromtxt
+from scipy.constants import kilo
 from metpy.tools.oban import grid_data, cressman_weights
 from metpy.vis import station_plot
 
@@ -34,9 +35,10 @@ obx, oby = bm(lon, lat)
 # Generate grid of x,y positions
 lon_grid, lat_grid, x_grid, y_grid = bm.makegrid(130, 60, returnxy=True)
 
-# Perform analysis of height obs using Cressman weights
+# Perform analysis of height obs using Cressman weights. Everything is in
+# meters
 heights_cress = grid_data(height, x_grid, y_grid, obx, oby, cressman_weights,
-    600000.)
+    600. * kilo)
 
 # Mask out values over the ocean so that we don't draw contours there
 heights_cress = maskoceans(lon_grid, lat_grid, heights_cress)
