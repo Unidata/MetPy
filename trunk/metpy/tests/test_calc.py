@@ -95,7 +95,7 @@ class TestHeatIndex(TestCase):
         assert_array_almost_equal(hi, values, 0)
 
     def test_scalar(self):
-        hi = heat_index(96, 65,)
+        hi = heat_index(96, 65)
         assert_almost_equal(hi, 121, 0)
 
     def test_invalid(self):
@@ -115,6 +115,41 @@ class TestHeatIndex(TestCase):
         hi = heat_index(temp, rh, mask_undefined=False)
         mask = np.array([False]*6)
         assert_array_equal(hi.mask, mask)
+
+class TestIrrad(TestCase):
+    def test_basic(self):
+        'Test the basic solar irradiance calculation.'
+        from datetime import date
+
+        d = date(2008, 9, 28)
+        lat = 35.25
+        hours = np.linspace(6,18,10)
+
+        s = solar_irradiance(lat, d, hours)
+        values = np.array([0., 344.1, 682.6, 933.9, 1067.6, 1067.6, 933.9,
+            682.6, 344.1, 0.])
+        assert_array_almost_equal(s, values, 1)
+
+    def test_scalar(self):
+        from datetime import date
+        d = date(2008, 9, 28)
+        lat = 35.25
+        hour = 9.5
+        s = solar_irradiance(lat, d, hour)
+        assert_almost_equal(s, 852.1, 1)
+
+    def test_invalid(self):
+        'Test for values that should be masked.'
+        from datetime import date
+        d = date(2008, 9, 28)
+        lat = 35.25
+        hours = np.linspace(0,22,12)
+        print hours
+        s = solar_irradiance(lat, d, hours)
+
+        mask = np.array([ True,  True,  True,  True, False, False, False,
+            False, False, True,  True,  True])
+        assert_array_equal(s.mask, mask)
 
 if __name__ == '__main__':
     run_module_suite()
