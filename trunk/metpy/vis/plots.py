@@ -366,7 +366,7 @@ direction_map = dict(N=(0,1), NE=(1,1), E=(1,0), SE=(1,-1), S=(0,-1),
     SW=(-1,-1), W=(-1,0), NW=(-1,1), C=(0,0))
 
 def station_plot(data, ax=None, proj=None, layout=None, styles=None,
-    formats=None, offset=10.):
+    formats=None, offset=10., **kwarg):
     '''
     Makes a station plot of the variables in data.
 
@@ -405,6 +405,10 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
     *offset* : float
         The offset, in pixels, from the center point for the values being
         plotted.
+
+    *kwarg* : dictionary
+        Other keyword arguments that will be passed to all matplotlib
+        drawing commands.
 
     Returns : dictionary
         A dictionary mapping layout locations to the object that was
@@ -450,10 +454,12 @@ def station_plot(data, ax=None, proj=None, layout=None, styles=None,
             # plot barbs.
             u,v = [v for v in var]
             style = styles.get('barbs', {})
+            style.update(kwarg)
             out = ax.barbs(x, y, data[u], data[v], **style)
         else:
             var = var
             style = styles.get(var, {})
+            style.update(kwarg)
             loc = map(lambda x:offset * x, direction_map[spot])
             f = formats.get(var, '%.0f')
             out = text_plot(ax, x, y, data[var], f, loc=loc, **style)
