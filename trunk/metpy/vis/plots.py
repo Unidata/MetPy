@@ -203,6 +203,9 @@ def meteogram(data, fig=None, num_panels=3, time_range=None, layout=None,
                 #with fill_betweeen
                 lower = -500 if lims[0] is None else lims[0]
                 ax.fill_between(time, lower, var, where=~var.mask, **style)
+                #TODO: Matplotlib SVN has support for turning off the
+                #automatic scaling of the y-axis.  Can we use that somehow
+                #to simplify our code??
                 _rescale_yaxis(ax, var_min + var_max)
             else:
                 ax.plot(time, var, **style)
