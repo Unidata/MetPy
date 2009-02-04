@@ -14,22 +14,97 @@ def cressman_weights(dists, radius):
     weights[dists > radius] = 0.0
     return weights
 
-def barnes_weights(dists, kappa0, gamma):
-    "Calculates weights for Barnes interpolation."
-    weights = np.exp(-dists**2 / (kappa0 * gamma))
-    critical_radius = np.sqrt(15 * kappa0)
-    weights[dists > critical_radius] = 0.0
+def barnes_weights(dists, data_spacing, kappa_star=0.5, gamma=1.0, min_weight=0.01):
+    """Calculates weights for Barnes interpolation.
+    
+    The Barnes weighting function is a simple inverse exponential. 
+    
+    Trapp and Doswell (2000, J. Atmos. Ocean. Tech., hereafter TD2000) 
+    and Koch et al. (1983, J. Clim. and Appl. Met.), hereafter K83 describe
+    the theory behind the following prescription for choosing weights.
+    
+    Adopting the nomenclature of TD2000,
+    w=exp(- r^2 / k)
+    k= (k*) (2*DLT)^2
+    
+    DLT is the maximum data spacing, and k* is the nondimensional response
+    parameter, specified nondimensionally in terms of the Nyquist.
+    
+    For subsequent passes, given initial k_0 as calculated above,
+    k_1 = gamma * k_0
+    (k_0 and k_1 can be either the dimensional or nondimensional forms,
+    since k and k* are related by simple proportionality)
+    
+    TD2000 recommend k*=0.5, which attenuates about 30 pct at twice the
+    spatial nyquist, though it almost comlpetely removes all variability
+    below the nyquist. k*=0.1 is another intersting choice, as it achives
+    a similar filter response in one pass as does a two-pass with k*=0.5
+    and gamma=0.2
+    
+    # below is a demonstration of the above discussion of nondimensional
+    # filter parameter tuning.
+    
+    import numpy as N
+
+    def response_firstpass(lstar, kstar):
+        # return first pass response given nondimensional wavelengths lstar
+        # and nondimensional tuning parameter kstar
+        
+        R = N.exp(-kstar*((N.pi / lstar)**2.0))
+        return R
+
+    def response_secondpass(lstar, gamma, kstar):
+        # calculate the second pass response given nondimensional
+        # wavelengths lstar, nondimensional tuning parameter kstar
+        # and smoothing adjustment parameter gamma
+        R0 = response_firstpass(lstar, kstar)
+        R =  R0 * (1 + R0**(gamma-1) - R0**gamma)
+        return R
+
+    #non-dim wavelengths
+    l = N.arange(0, 10, 0.1)
+
+    # Test single pass
+    k = 0.1
+    R_test1 = response_firstpass(l, k)
+
+    # Test two pass
+    k = 0.5
+    g = 0.3
+    R_test2 = response_secondpass(l, g, k)
+
+    # Test two pass
+    k = 0.5
+    g = 0.2
+    R_test3 = response_secondpass(l, g, k)
+
+    from pylab import *
+    figure()
+    plot(l, R_test1)
+    plot(l, R_test2)
+    plot(l, R_test3)
+    plot((1,1), (0,1), 'y')
+    plot((0,10), (0.9,0.9), 'y')
+    title('Nondimensinoal filter response for Barnes')
+    legend(('one pass, k=0.1', 
+            'two pass, g=0.3, k=0.5', 
+            'two pass, g=0.2, k=0.5'), loc='lower right')
+    show()
+    
+    """
+    
+    kappa = kappa_star * (2.0*data_spacing)**2.0
+    weights = np.exp(-dists**2.0 / (kappa*gamma))
+    # build in a hard cutoff on the weights
+    weights[weights < min_weight] = 0.0
+    
+    # OLD
+    # weights = np.exp(-dists**2 / (kappa0 * gamma))
+    # critical_radius = np.sqrt(15 * kappa0)
+    # weights[dists > critical_radius] = 0.0
+
     return weights
 
-def calc_barnes_param(spacing):
-    '''
-    Calculate the Barnes analysis smoothing parameter, kappa0, from the
-    average grid spacing.
-    '''
-    # TODO: Check where the 5.052 comes from.  I sense from the pedigree
-    # of this code (i.e. Fred's OBAN class), that this is specific to using
-    # station separation in centimeters
-    return 5.052 * (2.0 * spacing / np.pi)**2
 
 #def bilinear(x, y, data, xloc, yloc):
 #    xind = find_axis_index(x, xloc)
@@ -134,7 +209,16 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
     from scipy.constants import kilo
     import metpy
+    
+    # name, weight function, and parameters for each type of objective analysis
+    obans = {'barnes':(barnes_weights, (500.*kilo, 0.5)), 
+             'cressman':(cressman_weights, (600.*kilo))
+             }
+    
+    # name of the oban type to test (key from obans dict)
+    which_oban = 'cressman'
 
+    # station, lat, lon, height, wdir, wspd
     data = '''72214,30.4,-84.3,5740.0,250.0,34.9
 72274,32.2,-111.0,5730.0,45.0,13.3
 72293,32.9,-117.1,5750.0,95.0,19.0
@@ -261,18 +345,19 @@ if __name__ == '__main__':
 
     # Transform the obs to basemap space for gridding
     obx,oby = bm(lon, lat)
-
+    
     # Perform analysis of height obs using Cressman weights
-    heights_cress = grid_data(height, x_grid, y_grid, obx, oby,
-        cressman_weights, 600. * kilo)
-    heights_cress = maskoceans(lon_grid, lat_grid, heights_cress)
+    heights_oban = grid_data(height, x_grid, y_grid, obx, oby,
+        obans[which_oban][0], obans[which_oban][1])
+
+    heights_oban = maskoceans(lon_grid, lat_grid, heights_oban)
 
     # Map plotting
     contours = np.arange(5000., 5800., 60.0)
     bm.drawstates()
     bm.drawcountries()
     bm.drawcoastlines()
-    cp = bm.contour(x_grid, y_grid, heights_cress, contours)
+    cp = bm.contour(x_grid, y_grid, heights_oban, contours)
     bm.barbs(obx, oby, u, v)
     plt.clabel(cp, fmt='%.0f', inline_spacing=0)
     plt.title('500mb Height map')
