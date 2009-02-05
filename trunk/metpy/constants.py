@@ -104,7 +104,7 @@ try:
     from scipy.constants import C2F, F2C, K2F, F2K, C2K, K2C
 except ImportError:
     # Use internal copy
-    from scipy_consants import pi, day, value, kilo
+    from scipy_constants import pi, day, value, kilo
     from scipy_constants import C2F, F2C, K2F, F2K, C2K, K2C
 R = value('molar gas constant')
 del value
