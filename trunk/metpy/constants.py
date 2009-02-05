@@ -98,7 +98,6 @@ __all__ = ['C2F', 'C2K', 'F2K', 'K2C', 'K2F', 'F2C', 'Re', 'earth_avg_radius',
     'epsilon', 'molecular_weight_ratio', 'delta', 'earth_max_declination',
     'earth_orbit_eccentricity']
 
-from datetime import date
 try:
     from scipy.constants import pi, day, value, kilo
     from scipy.constants import C2F, F2C, K2F, F2K, C2K, K2C
