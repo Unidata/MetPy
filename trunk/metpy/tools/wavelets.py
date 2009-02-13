@@ -13,9 +13,10 @@ class Wavelet(object):
 
     def get_gws(self,valid=False):
         if valid:
-            self=np.ma.array(self,mask=self.motherwavelet.get_mask())
-
-        gws = np.power(np.abs(self.coefs),2).mean(axis=1); #Torrence and Compo 1998
+            self_ma=np.ma.array(self.coefs,mask=self.motherwavelet.get_mask())
+            gws = np.power(np.abs(self_ma),2).mean(axis=1); #Torrence and Compo 1998
+        else:
+            gws = np.power(np.abs(self.coefs),2).mean(axis=1); #Torrence and Compo 1998
 
         return gws
 
