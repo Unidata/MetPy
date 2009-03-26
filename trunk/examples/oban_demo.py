@@ -13,7 +13,7 @@ def convert_date(s):
 converter = dict(date=convert_date, longitude=lambda s:-float(s))
 
 # Extracts data from IDV output and masks out stations outside of North America
-data = ndfromtxt('12Zrun_0203.csv', delimiter=',', skiprows=2,
+data = ndfromtxt('data/12Zrun_0203.csv', delimiter=',', skiprows=2,
     names='date, stid, latitude, longitude, height, pressure, temperature',
     dtype=None, converters=converter)
 
