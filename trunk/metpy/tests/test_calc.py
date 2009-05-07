@@ -116,40 +116,68 @@ class TestHeatIndex(TestCase):
         mask = np.array([False]*6)
         assert_array_equal(hi.mask, mask)
 
-class TestIrrad(TestCase):
+#class TestIrrad(TestCase):
+#    def test_basic(self):
+#        'Test the basic solar irradiance calculation.'
+#        from datetime import date
+
+#        d = date(2008, 9, 28)
+#        lat = 35.25
+#        hours = np.linspace(6,18,10)
+
+#        s = solar_irradiance(lat, d, hours)
+#        values = np.array([0., 344.1, 682.6, 933.9, 1067.6, 1067.6, 933.9,
+#            682.6, 344.1, 0.])
+#        assert_array_almost_equal(s, values, 1)
+
+#    def test_scalar(self):
+#        from datetime import date
+#        d = date(2008, 9, 28)
+#        lat = 35.25
+#        hour = 9.5
+#        s = solar_irradiance(lat, d, hour)
+#        assert_almost_equal(s, 852.1, 1)
+
+#    def test_invalid(self):
+#        'Test for values that should be masked.'
+#        from datetime import date
+#        d = date(2008, 9, 28)
+#        lat = 35.25
+#        hours = np.linspace(0,22,12)
+#        s = solar_irradiance(lat, d, hours)
+
+#        mask = np.array([ True,  True,  True,  True, False, False, False,
+#            False, False, True,  True,  True])
+#        assert_array_equal(s.mask, mask)
+
+class TestGradients(TestCase):
     def test_basic(self):
-        'Test the basic solar irradiance calculation.'
-        from datetime import date
+        'Basic braindead test of vorticity and divergence calculation'
+        u = np.ones((3,3))
+        c,v = convergence_vorticity(u, u, 1, 1)
+        truth = np.zeros_like(u)
+        assert_array_equal(c, truth)
+        assert_array_equal(v, truth)
 
-        d = date(2008, 9, 28)
-        lat = 35.25
-        hours = np.linspace(6,18,10)
+    def test_basic2(self):
+        'Basic test of vorticity and divergence calculation'
+        a = np.arange(3)
+        u = np.c_[a, a, a]
+        c,v = convergence_vorticity(u, u.T, 1, 1)
+        true_c = 2. * np.ones_like(u)
+        true_v = np.zeros_like(u)
+        assert_array_equal(c, true_c)
+        assert_array_equal(v, true_v)
 
-        s = solar_irradiance(lat, d, hours)
-        values = np.array([0., 344.1, 682.6, 933.9, 1067.6, 1067.6, 933.9,
-            682.6, 344.1, 0.])
-        assert_array_almost_equal(s, values, 1)
-
-    def test_scalar(self):
-        from datetime import date
-        d = date(2008, 9, 28)
-        lat = 35.25
-        hour = 9.5
-        s = solar_irradiance(lat, d, hour)
-        assert_almost_equal(s, 852.1, 1)
-
-    def test_invalid(self):
-        'Test for values that should be masked.'
-        from datetime import date
-        d = date(2008, 9, 28)
-        lat = 35.25
-        hours = np.linspace(0,22,12)
-        print hours
-        s = solar_irradiance(lat, d, hours)
-
-        mask = np.array([ True,  True,  True,  True, False, False, False,
-            False, False, True,  True,  True])
-        assert_array_equal(s.mask, mask)
+    def test_basic3(self):
+        'Basic test of vorticity and divergence calculation'
+        a = np.arange(3)
+        u = np.c_[a, a, a]
+        c,v = convergence_vorticity(u, u, 1, 1)
+        true_c = np.ones_like(u)
+        true_v = np.ones_like(u)
+        assert_array_equal(c, true_c)
+        assert_array_equal(v, true_v)
 
 if __name__ == '__main__':
     run_module_suite()
