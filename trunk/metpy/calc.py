@@ -1,7 +1,8 @@
 'A collection of generic calculation functions.'
 
 __all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir','get_wind_components',
-    'mixing_ratio','tke', 'windchill', 'heat_index']
+    'mixing_ratio','tke', 'windchill', 'heat_index', 'h_convergence',
+    'v_vorticity', 'convergence_vorticity']
 
 import numpy as np
 from numpy.ma import log, exp, cos, sin, masked_array
@@ -241,3 +242,74 @@ def heat_index(temp, rh, mask_undefined=True):
             HI = masked_array(HI, mask=mask)
 
     return HI
+
+def _get_gradients(u, v, dx, dy):
+    #Helper function for getting convergence and vorticity from 2D arrays
+    dudx, dudy = np.gradient(u, dx, dy)
+    dvdx, dvdy = np.gradient(v, dx, dy)
+    return dudx, dudy, dvdx, dvdy
+
+def v_vorticity(u, v, dx, dy):
+    '''
+    Calculate the vertical vorticity of the horizontal wind.  The grid
+    must have a constant spacing in each direction.
+
+    u, v : 2 dimensional arrays
+        Arrays with the x and y components of the wind, respectively.
+        X must be the first dimension and y the second.
+
+    dx : scalar
+        The grid spacing in the x-direction
+
+    dy : scalar
+        The grid spacing in the y-direction
+
+    Returns : 2 dimensional array
+        The vertical vorticity
+    '''
+    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    return dvdx - dudy
+
+def h_convergence(u, v, dx, dy):
+    '''
+    Calculate the horizontal convergence of the horizontal wind.  The grid
+    must have a constant spacing in each direction.
+
+    u, v : 2 dimensional arrays
+        Arrays with the x and y components of the wind, respectively.
+        X must be the first dimension and y the second.
+
+    dx : scalar
+        The grid spacing in the x-direction
+
+    dy : scalar
+        The grid spacing in the y-direction
+
+    Returns : 2 dimensional array
+        The horizontal convergence
+    '''
+    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    return dudx + dvdy
+
+def convergence_vorticity(u, v, dx, dy):
+    '''
+    Calculate the horizontal convergence and vertical vorticity of the
+    horizontal wind.  The grid must have a constant spacing in each direction.
+    This is a convenience function that will do less work than calculating
+    the horizontal convergence and vertical vorticity separately.
+
+    u, v : 2 dimensional arrays
+        Arrays with the x and y components of the wind, respectively.
+        X must be the first dimension and y the second.
+
+    dx : scalar
+        The grid spacing in the x-direction
+
+    dy : scalar
+        The grid spacing in the y-direction
+
+    Returns : A 2-item tuple of 2 dimensional arrays
+        A tuple of (horizontal convergence, vertical vorticity)
+    '''
+    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    return dudx + dvdy, dvdx - dudy
