@@ -20,7 +20,6 @@ if build_gauss:
     # C file
     try:
         from Cython.Distutils import build_ext
-        raise ImportError
         files = ["src/gauss.pyx"]
     except ImportError:
         from distutils.command.build_ext import build_ext
