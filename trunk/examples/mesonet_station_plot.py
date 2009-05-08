@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.basemap import Basemap
 from metpy import read_mesonet_data, dewpoint, get_wind_components
 from metpy.constants import C2F
-from metpy.cbook import rec_append_fields
+from metpy.cbook import append_fields
 from metpy.vis import station_plot
 
 # stereogrpaphic projection
@@ -12,7 +12,7 @@ data = read_mesonet_data('data/200811210030.mdf',
 
 #Calculate dewpoint in F from relative humidity and temperature
 dewpt = C2F(dewpoint(data['TAIR'], data['RELH']/100.))
-data = rec_append_fields(data, ('dewpoint',), (dewpt,))
+data = append_fields(data, ('dewpoint',), (dewpt,))
 
 #Convert temperature and dewpoint to Farenheit
 data['TAIR'] = C2F(data['TAIR'])
@@ -20,7 +20,7 @@ data['TAIR'] = C2F(data['TAIR'])
 #Convert wind speeds to MPH
 data['WSPD'] *= sconsts.hour / sconsts.mile
 u,v = get_wind_components(data['WSPD'], data['WDIR'])
-data = rec_append_fields(data, ('u', 'v'), (u, v))
+data = append_fields(data, ('u', 'v'), (u, v))
 
 fig = plt.figure(figsize=(20,12))
 ax = fig.add_subplot(1,1,1)
