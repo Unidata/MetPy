@@ -1,6 +1,91 @@
 import numpy as np
 from metpy.cbook import iterable
 
+__all__ = ['gaussian_filter', 'grid_data', 'barnes_weights', 'cressman_weights']
+
+try:
+    from _gauss_filt import gauss_filter as _gauss
+    def gaussian_filter(x_grid, y_grid, var, sigmax, sigmay, min_weight=0.0001):
+        # Reduce dimensional grids to 1D
+        if x_grid.ndim > 1:
+            x_grid = x_grid[:, 0]
+        if y_grid.ndim > 1:
+            y_grid = y_grid[0, :]
+
+        #Fill masked arrays:
+        try:
+            masked_value = var.fill_value
+            var = var.filled()
+            masked = True
+        except AttributeError:
+            masked = False
+            masked_value = -9999
+
+        filt_var = _gauss(x_grid.astype(np.float), y_grid.astype(np.float),
+            var.astype(np.float), sigmax, sigmay, masked_value, min_weight)
+
+        if masked:
+            filt_var = np.ma.array(filt_var, mask=(filt_var == masked_value))
+            filt_var.fill_value = masked_value
+
+        return filt_var
+
+except ImportError:
+    def gaussian_filter(x_grid, y_grid, var, sigmax, sigmay, min_weight=0.0001):
+        var_fil = np.empty_like(var)
+        # Reduce dimensional grids to 1D
+        if x_grid.ndim > 1:
+            x_grid = x_grid[:, 0]
+        if y_grid.ndim > 1:
+            y_grid = y_grid[0, :]
+
+        xw = np.exp(-((x_grid[:, np.newaxis] - x_grid)**2 / (2 * sigmax**2)))
+        yw = np.exp(-((y_grid[:, np.newaxis] - y_grid)**2 / (2 * sigmay**2)))
+
+        for ind in np.ndindex(var.shape):
+            totalw = np.outer(yw[ind[0]], xw[ind[1]])
+            totalw = np.ma.array(totalw, mask=var.mask|(totalw < min_weight))
+            var_fil[ind] = (var * totalw).sum() / totalw.sum()
+
+        # Optionally create a masked array
+        try:
+            var_fil[var.mask] = np.ma.masked
+        except AttributeError:
+            pass
+
+        return var_fil
+
+gaussian_filter_doc="""
+    Smooth a 2D array of data using a 2D Gaussian kernel function.  This will
+    ignore missing values.
+
+    x_grid : array
+        Locations of grid points along the x axis
+
+    y_grid : array
+        Locations of grid points along the y axis
+
+    var : array
+        2D array of data to be smoothed.  Should be arranged in x by y order.
+
+    sigmax : scalar
+        Width of kernel in x dimension.  At x = sigmax, the kernel will have
+        a value of e^-1.
+
+    sigmay : scalar
+        Width of kernel in y dimension.  At y = sigmay, the kernel will have
+        a value of e^-1.
+
+    min_weight : scalar
+        Minimum weighting for points to be included in the smoothing.  If a
+        point ends up with a weight less than this value, it will not be
+        included in the final weighted sum.
+
+    Returns : array
+        2D (optionally masked) array of smoothed values.
+"""
+gaussian_filter.__doc__ = gaussian_filter_doc
+
 def grid_point_dists(grid_x, grid_y, ob_x, ob_y):
     "Calculates distances for each grid point to every ob point."
     return np.hypot(grid_x[..., np.newaxis] - ob_x[np.newaxis, np.newaxis],
@@ -16,40 +101,40 @@ def cressman_weights(dists, radius):
 
 def barnes_weights(dists, data_spacing, kappa_star=0.5, gamma=1.0, min_weight=0.01):
     """Calculates weights for Barnes interpolation.
-    
-    The Barnes weighting function is a simple inverse exponential. 
-    
-    Trapp and Doswell (2000, J. Atmos. Ocean. Tech., hereafter TD2000) 
+
+    The Barnes weighting function is a simple inverse exponential.
+
+    Trapp and Doswell (2000, J. Atmos. Ocean. Tech., hereafter TD2000)
     and Koch et al. (1983, J. Clim. and Appl. Met.), hereafter K83 describe
     the theory behind the following prescription for choosing weights.
-    
+
     Adopting the nomenclature of TD2000,
     w=exp(- r^2 / k)
     k= (k*) (2*DLT)^2
-    
+
     DLT is the maximum data spacing, and k* is the nondimensional response
     parameter, specified nondimensionally in terms of the Nyquist.
-    
+
     For subsequent passes, given initial k_0 as calculated above,
     k_1 = gamma * k_0
     (k_0 and k_1 can be either the dimensional or nondimensional forms,
     since k and k* are related by simple proportionality)
-    
+
     TD2000 recommend k*=0.5, which attenuates about 30 pct at twice the
     spatial nyquist, though it almost comlpetely removes all variability
     below the nyquist. k*=0.1 is another intersting choice, as it achives
     a similar filter response in one pass as does a two-pass with k*=0.5
     and gamma=0.2
-    
+
     # below is a demonstration of the above discussion of nondimensional
     # filter parameter tuning.
-    
+
     import numpy as N
 
     def response_firstpass(lstar, kstar):
         # return first pass response given nondimensional wavelengths lstar
         # and nondimensional tuning parameter kstar
-        
+
         R = N.exp(-kstar*((N.pi / lstar)**2.0))
         return R
 
@@ -86,18 +171,18 @@ def barnes_weights(dists, data_spacing, kappa_star=0.5, gamma=1.0, min_weight=0.
     plot((1,1), (0,1), 'y')
     plot((0,10), (0.9,0.9), 'y')
     title('Nondimensinoal filter response for Barnes')
-    legend(('one pass, k=0.1', 
-            'two pass, g=0.3, k=0.5', 
+    legend(('one pass, k=0.1',
+            'two pass, g=0.3, k=0.5',
             'two pass, g=0.2, k=0.5'), loc='lower right')
     show()
-    
+
     """
-    
+
     kappa = kappa_star * (2.0*data_spacing)**2.0
     weights = np.exp(-dists**2.0 / (kappa*gamma))
     # build in a hard cutoff on the weights
     weights[weights < min_weight] = 0.0
-    
+
     # OLD
     # weights = np.exp(-dists**2 / (kappa0 * gamma))
     # critical_radius = np.sqrt(15 * kappa0)
@@ -209,12 +294,12 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
     from scipy.constants import kilo
     import metpy
-    
+
     # name, weight function, and parameters for each type of objective analysis
-    obans = {'barnes':(barnes_weights, (500.*kilo, 0.5)), 
+    obans = {'barnes':(barnes_weights, (500.*kilo, 0.5)),
              'cressman':(cressman_weights, (600.*kilo))
              }
-    
+
     # name of the oban type to test (key from obans dict)
     which_oban = 'cressman'
 
@@ -345,7 +430,7 @@ if __name__ == '__main__':
 
     # Transform the obs to basemap space for gridding
     obx,oby = bm(lon, lat)
-    
+
     # Perform analysis of height obs using Cressman weights
     heights_oban = grid_data(height, x_grid, y_grid, obx, oby,
         obans[which_oban][0], obans[which_oban][1])
