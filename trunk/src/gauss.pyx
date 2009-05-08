@@ -20,10 +20,10 @@ def gauss_filter(np.ndarray[DTYPE_t, ndim=1] x,
     cdef DTYPE_t xdenom, ydenom
     cdef DTYPE_t weighted_sum, totalw, weights
 
-    cdef unsigned int numy = var.shape[0]
-    cdef unsigned int numx = var.shape[1]
+    cdef unsigned int numx = var.shape[0]
+    cdef unsigned int numy = var.shape[1]
 
-    cdef np.ndarray[DTYPE_t, ndim=2] var_fil = np.zeros([numy, numx], dtype=DTYPE)
+    cdef np.ndarray[DTYPE_t, ndim=2] var_fil = np.zeros([numx, numy], dtype=DTYPE)
     cdef np.ndarray[DTYPE_t, ndim=2] xweight = np.empty([numx, numx], dtype=DTYPE)
     cdef np.ndarray[DTYPE_t, ndim=2] yweight = np.empty([numy, numy], dtype=DTYPE)
 
@@ -38,22 +38,22 @@ def gauss_filter(np.ndarray[DTYPE_t, ndim=1] x,
         for yi in range(numy):
             yweight[yloc, yi] = exp(ydenom * (y[yloc] - y[yi])**2)
 
-    for yloc in range(numy):
-        for xloc in range(numx):
+    for xloc in range(numx):
+        for yloc in range(numy):
             weighted_sum = 0.
             totalw = 0.
-            if var[yloc, xloc] != masked_value:
-                for yi in range(numy):
-                    for xi in range(numx):
-                        if var[yi, xi] != masked_value:
+            if var[xloc, yloc] != masked_value:
+                for xi in range(numx):
+                    for yi in range(numy):
+                        if var[xi, yi] != masked_value:
                             weights = xweight[xloc, xi] * yweight[yloc, yi]
                             if weights >= min_weight:
-                                weighted_sum += var[yi, xi] * weights
+                                weighted_sum += var[xi, yi] * weights
                                 totalw += weights
 
             if totalw > 0.:
-                var_fil[yloc, xloc] = weighted_sum / totalw
+                var_fil[xloc, yloc] = weighted_sum / totalw
             else:
-                var_fil[yloc, xloc] = masked_value
+                var_fil[xloc, yloc] = masked_value
 
     return var_fil
