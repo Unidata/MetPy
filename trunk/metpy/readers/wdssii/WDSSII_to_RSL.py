@@ -234,10 +234,10 @@ def RSL_wdssii_to_radar(vol_scan, radar_name='MPAR'):
                 sweep_data = np.zeros((n_rays, n_gates), dtype=np.float32) + no_data_flag
                 pixel_x = ncdf.variables['pixel_x'].data
                 pixel_y = ncdf.variables['pixel_y'].data
-                pixel_id = ncdf.variables['pixel_count'].data
+                pixel_n = ncdf.variables['pixel_count'].data
                 for i_px in range(ncdf.dimensions['pixel']):
                     y_low  = pixel_y[i_px]
-                    y_high = pixel_y[i_px]+pixel_id[i_px]-1
+                    y_high = pixel_y[i_px]+pixel_n[i_px]
                     sweep_data[pixel_x[i_px], y_low:y_high] = rle_sweep[i_px]
             else:
                 sweep_data = ncdf.variables[field].data.astype(np.float32)
