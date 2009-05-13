@@ -43,7 +43,7 @@ except ImportError:
         yw = np.exp(-((y_grid[:, np.newaxis] - y_grid)**2 / (2 * sigmay**2)))
 
         for ind in np.ndindex(var.shape):
-            totalw = np.outer(yw[ind[0]], xw[ind[1]])
+            totalw = np.outer(xw[ind[0]], yw[ind[1]])
             totalw = np.ma.array(totalw, mask=var.mask|(totalw < min_weight))
             var_fil[ind] = (var * totalw).sum() / totalw.sum()
 
