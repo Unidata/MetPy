@@ -1,7 +1,7 @@
 import numpy as np
-from metpy.cbook import iterable
+from metpy.cbook import iterable, progress
 
-__all__ = ['gaussian_filter', 'grid_data', 'barnes_weights', 'cressman_weights']
+__all__ = ['gaussian_filter', 'grid_data', 'barnes_weights', 'cressman_weights', 'grid_spherical_decomposed']
 
 try:
     from _gauss_filt import gauss_filter as _gauss
@@ -263,6 +263,97 @@ def analyze_grid_multipass(ob_data, grid_x, grid_y, ob_x, ob_y, num_passes,
         background += analyze_grid(ob_incs, grid_x, grid_y, ob_x, ob_y,
             weight_func, params)
     return background
+    
+    
+from matplotlib.mlab import griddata
+def grid_spherical_decomposed(x, y, z, data, x_i, y_i, z_i, horz_res, missing_value=-32767):
+    """ Interpolate data (shape == n_el, n_az, n_r) with coordinates x, y, z (same shape)
+        to a regular cartesian grid locations defined by 1-D vectors x_i, y_i, z_i.
+        
+        Interpolation is decomposed into two 2-D steps, first along constant azimuth to get range
+        and height, and then along constant altitude to get x and y. Interpolation uses
+        matplotlib.mlab.griddata to do natural-neighbor (delaunay) interpolation.
+        
+        An implicit but crucial assumption is that a slices through the spherical grids 
+        return data that are truly along constant elevation, azimuth, or range.
+        
+        The x, y, and z coordinates always refer to data in some map-projection coordinate
+        system (z included!). If the intent is to compare radar data with other datasets, 
+        it is not possible to do objective analysis to cartesian coordianates
+        without assuming a projection. Objective analysis to a coordinate system tangent to
+        the earth's surface will have altitude errors relative to MSL at medium to long range 
+        (~100 kn) on the order of 1 km.
+        
+        coordinate_systems.RadarCoordinateSystem and coordinate_systems.MapProjection
+        can be used in concert to convert from spherical data coordinates to map projections.
+        Beware that the RadarCoordinateSystem assumes effectiveRadiusMultiplier=4./3. to
+        correct for atmospheric refraction at microwave frequencies.
+        
+    """
+
+    r_map   = np.sqrt(x**2.0 + y**2.0) # cartesian radius from map (x,y) center
+    az_map  = np.arctan2(y,x) #azimuth in the cartesian system. might vary along a ray due to map projection curvature
+    vcp = np.fromiter((np.median(az_map[:, i_az, :]) for i_az in range(az_map.shape[1])), np.float32)
+    print x.shape
+    
+    r_i = np.arange(r_map.min(), r_map.max(), horz_res)    # cartesian radius from map(x,y) center
+
+    # also need to griddata the x, y, z geographic coordinates.
+    # decomposed geometry in radar polar coordinates is a not a
+    # geophysical coordinate system (it's really a tangent plane
+    # coord sys without beam refraction effects), so really there 
+    # are two xyz systems in play here.
+
+    # unless, if by using z and R = np.sqrt(x**2.0 + y**2.0), we remain in a cylinderical 
+    # system referenced to the map projection in use. I think this is true.
+
+    # Interpolate from spherical to cylindrical.
+    # Cylindrical system is a different
+    # range coordinate than the radar range coordinate.
+    az_idx = 1
+    cyl_grid_shape = (r_i.shape[0], x.shape[az_idx], z_i.shape[0])
+    cyl_grid = np.empty(cyl_grid_shape)
+    
+    for az_id in range(cyl_grid_shape[az_idx]):
+        progress(az_id, cyl_grid_shape[az_idx], 'Gridding along azimuths')
+        rhi_r = r_map[:, az_id, :]
+        # rhi_y = y[:, az_id, :]
+        # R_i = rhir = np.sqrt(x[:, az_id, :]**2.0 + y[:, az_id, :]**2.0)
+        rhi_z = z[:, az_id, :]
+        rhi_data = data[:, az_id, :]
+    
+        # input and output coordinates need to be taken from the same coordinate system
+        cyl_grid[:, az_id, :] = griddata(rhi_r.flatten(), rhi_z.flatten(), rhi_data.flatten(), r_i, z_i).T
+    print "\r" + 'Gridding along azimuths ... done'
+        # cyl_grid is r, az, z instead of r, az, el
+    
+    # get mesh of coordinates for all interpolated radii r_i and along the azimuth
+    # since constant radar azimuth might have curvature induced by the map projection
+    # it's tricky to do this.
+
+    # steps:
+    # Do new transform from r,az radar system to map system using r=r_i to get x,y
+    # or 
+    # Just do naive assumption that azimuths are straight and accept the error (used this one)
+    
+    # interpolate from cylindrical to cartesian.
+    grid = np.empty((len(x_i), len(y_i), len(z_i)), dtype=np.float32)
+    for z_id in range(z_i.shape[0]):
+        progress(z_id, z_i.shape[0], 'Gridding at constant altitude')
+        cappi_x  = r_i[:, None]*np.cos(vcp[None, :])
+        cappi_y  = r_i[:, None]*np.sin(vcp[None, :])
+        cappi_data = cyl_grid[:,:,z_id]
+    
+        # input and output coordinates need to be taken from the same coordinate system
+        grid_2d = griddata(cappi_x.flatten(), cappi_y.flatten(), cappi_data.flatten(), x_i, y_i).T
+        grid[:, :, z_id] = grid_2d
+    print "\r" + 'Gridding at constant altitude ... done'
+    
+    grid[np.isnan(grid)] = missing_value
+    
+    return grid
+
+
 
 from itertools import izip
 def get_ob_incs(obx, oby, ob, grid_x, grid_y, field, cressman_radius = None):

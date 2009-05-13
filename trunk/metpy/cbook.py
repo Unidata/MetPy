@@ -9,6 +9,21 @@ from numpy import ma
 
 from matplotlib.cbook import iterable, is_string_like, Bunch
 
+def progress(current, total, pre_text=''):
+    """ Basic progress indicator, looks like:
+        pre_text ... 31%
+        
+        The argument current should run from 0 to total.
+        At each step in an analysis, call progress(current, total, pre_text)
+        
+        When done, you can also add
+        print '\r' + pre_text + '... done'
+    """
+    percent = int(100.0*float(current)/total)
+    sys.stdout.write("\r" + pre_text + " ... %d%%" % percent)
+    sys.stdout.flush()
+
+
 #Taken from a cookbook recipe.  Will be available in Python 2.6
 def namedtuple(typename, field_names, verbose=False):
     """Returns a new subclass of tuple with named fields.
