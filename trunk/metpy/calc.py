@@ -337,15 +337,15 @@ def advection(scalar, wind, deltas):
     Return : N-dimensional array
         An N-dimensional array containing the advection at all grid points.
     '''
-    #Gradient returns a list of derivatives along each dimension.  We convert
-    #this to an array with dimension as the first index
+    # Gradient returns a list of derivatives along each dimension.  We convert
+    # this to an array with dimension as the first index
     grad = np.asarray(np.gradient(scalar, *deltas))
 
-    #This allows passing in a list of wind components or an array
+    # This allows passing in a list of wind components or an array
     wind = np.asarray(wind)
 
-    #Make them be at least 2D (handling the 1D case) so that we can do the
-    #multiply and sum below
+    # Make them be at least 2D (handling the 1D case) so that we can do the
+    # multiply and sum below
     grad,wind = np.atleast_2d(grad, wind)
 
     return (-grad * wind).sum(axis=0)
