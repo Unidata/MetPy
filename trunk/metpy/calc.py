@@ -2,11 +2,11 @@
 
 __all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir','get_wind_components',
     'mixing_ratio','tke', 'windchill', 'heat_index', 'h_convergence',
-    'v_vorticity', 'convergence_vorticity', 'advection']
+    'v_vorticity', 'convergence_vorticity', 'advection', 'geostrophic_wind']
 
 import numpy as np
 from numpy.ma import log, exp, cos, sin, masked_array
-from scipy.constants import degree, kilo, hour
+from scipy.constants import degree, kilo, hour, g
 from metpy.cbook import iterable
 
 sat_pressure_0c = 6.112 # mb
@@ -349,3 +349,46 @@ def advection(scalar, wind, deltas):
     grad,wind = np.atleast_2d(grad, wind)
 
     return (-grad * wind).sum(axis=0)
+
+def geostrophic_wind(heights, f, dx, dy, geopotential=False):
+    '''
+    Calculate the geostrophic wind given from the heights.  If geopotential
+    is set to true, it treats the passed in heights as geopotential and
+    will not multiply by g.
+
+    heights : N-dimensional array
+        The height field, given with leading dimensions of x by y.  There
+        can be trailing dimensions on the array.  If geopotential is False
+        (the default), these need to be in units of meters and will be
+        multiplied by gravity.  If geopotential is True, no scaling will
+        be applied and *heights* should be in units of m^2 s^-s.
+
+    f : scalar or array
+        The coriolis parameter in s^-1.  This can be a scalar to be applied
+        everywhere or an array of values.
+
+    dx : scalar
+        The grid spacing in the x-direction in meters.
+
+    dy : scalar
+        The grid spacing in the y-direction in meters.
+
+    Returns : A 2-item tuple of arrays
+        A tuple of the x-component and y-component of the geostropic wind in
+        m s^-1.
+    '''
+    if geopotential:
+        norm_factor = 1. / f
+    else:
+        norm_factor = g / f
+
+    # If heights is has more than 2 dimensions, we need to pass in some dummy
+    # grid deltas so that we can still use np.gradient.  It may be better to
+    # to loop in this case, but that remains to be done.
+    deltas = [dx, dy]
+    if heights.ndim > 2:
+        deltas = deltas + [1.] * (heights.ndim - 2)
+
+    grad = np.gradient(heights, *deltas)
+    dx,dy = grad[0], grad[1] # This throws away unused gradient components
+    return -norm_factor * dy, norm_factor * dx

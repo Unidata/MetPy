@@ -1,6 +1,7 @@
 from numpy.testing import *
 import numpy as np
 from metpy.calc import *
+from metpy.constants import g
 
 class TestVaporPressure(TestCase):
     def test_basic(self):
@@ -222,6 +223,16 @@ class TestAdvection(TestCase):
         truth = np.array([[-3, -2, 1], [-4, 0, 4], [-1, 2, 3]])
         assert_array_equal(a, truth)
 
+class TestGeos(TestCase):
+    def test_basic(self):
+        'Basic test of geostrophic wind calculation'
+        z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100.
+        #Using g as the value for f allows it to cancel out
+        ug, vg = geostrophic_wind(z, g, 100., 100.)
+        true_u = np.array([[-1, 0, 1]]*3)
+        true_v = -true_u.T
+        assert_array_equal(ug, true_u)
+        assert_array_equal(vg, true_v)
 
 if __name__ == '__main__':
     run_module_suite()
