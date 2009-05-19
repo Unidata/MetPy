@@ -2,7 +2,7 @@
 
 __all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir','get_wind_components',
     'mixing_ratio','tke', 'windchill', 'heat_index', 'h_convergence',
-    'v_vorticity', 'convergence_vorticity']
+    'v_vorticity', 'convergence_vorticity', 'advection']
 
 import numpy as np
 from numpy.ma import log, exp, cos, sin, masked_array
@@ -313,3 +313,39 @@ def convergence_vorticity(u, v, dx, dy):
     '''
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy, dvdx - dudy
+
+def advection(scalar, wind, deltas):
+    '''
+    Calculate the advection of *scalar* by the wind. The order of the
+    dimensions of the arrays must match the order in which the wind
+    components are given.  For example, if the winds are given [u, v], then
+    the scalar and wind arrays must be indexed as x,y (which puts x as the
+    rows, not columns).
+
+    scalar : N-dimensional array
+        Array (with N-dimensions) with the quantity to be advected.
+
+    wind : sequence of arrays
+        Length N sequence of N-dimensional arrays.  Represents the flow,
+        with a component of the wind in each dimension.  For example, for
+        horizontal advection, this could be a list: [u, v], where u and v
+        are each a 2-dimensional array.
+
+    deltas : sequence
+        A (length N) sequence containing the grid spacing in each dimension.
+
+    Return : N-dimensional array
+        An N-dimensional array containing the advection at all grid points.
+    '''
+    #Gradient returns a list of derivatives along each dimension.  We convert
+    #this to an array with dimension as the first index
+    grad = np.asarray(np.gradient(scalar, *deltas))
+
+    #This allows passing in a list of wind components or an array
+    wind = np.asarray(wind)
+
+    #Make them be at least 2D (handling the 1D case) so that we can do the
+    #multiply and sum below
+    grad,wind = np.atleast_2d(grad, wind)
+
+    return (-grad * wind).sum(axis=0)

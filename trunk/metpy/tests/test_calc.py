@@ -179,5 +179,49 @@ class TestGradients(TestCase):
         assert_array_equal(c, true_c)
         assert_array_equal(v, true_v)
 
+class TestAdvection(TestCase):
+    def test_basic(self):
+        'Basic braindead test of advection'
+        u = np.ones((3,))
+        s = np.ones_like(u)
+        a = advection(s, u, (1,))
+        truth = np.zeros_like(u)
+        assert_array_equal(a, truth)
+
+    def test_basic2(self):
+        'Basic test of advection'
+        u = np.ones((3,))
+        s = np.array([1, 2, 3])
+        a = advection(s, u, (1,))
+        truth = -np.ones_like(u)
+        assert_array_equal(a, truth)
+
+    def test_basic3(self):
+        'Basic test of advection'
+        u = np.array([1, 2, 3])
+        s = np.array([1, 2, 3])
+        a = advection(s, u, (1,))
+        truth = np.array([-1, -2, -3])
+        assert_array_equal(a, truth)
+
+    def test_2dbasic(self):
+        'Basic 2D braindead test of advection'
+        u = np.ones((3,3))
+        v = np.ones((3,3))
+        s = np.ones_like(u)
+        a = advection(s, u, (1,))
+        truth = np.zeros_like(u)
+        assert_array_equal(a, truth)
+
+    def test_2dbasic2(self):
+        'Basic 2D test of advection'
+        u = np.ones((3,3))
+        v = 2 * np.ones((3,3))
+        s = np.array([[1, 2, 1], [2, 4, 2], [1, 2, 1]])
+        a = advection(s, [u, v], (1, 1))
+        truth = np.array([[-3, -2, 1], [-4, 0, 4], [-1, 2, 3]])
+        assert_array_equal(a, truth)
+
+
 if __name__ == '__main__':
     run_module_suite()
