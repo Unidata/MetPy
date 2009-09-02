@@ -180,8 +180,8 @@ class SkewXAxes(Axes):
         self.transProjection = transforms.TransformWrapper(
             transforms.IdentityTransform())
         self._update_data_transform()
-        
-    def get_xaxis_transform(self):
+
+    def get_xaxis_transform(self, which='grid'):
         """
         Get the transformation used for drawing x-axis labels, ticks
         and gridlines.  The x-direction is in data coordinates and the
