@@ -192,6 +192,17 @@ class SkewXAxes(Axes):
         """
         return self._xaxis_transform + self.transProjection
 
+    # Disable panning until we find a way to handle the problem with
+    # the projection
+    def start_pan(self, x, y, button):
+        pass
+
+    def end_pan(self):
+        pass
+
+    def drag_pan(self, button, key, x, y):
+        pass
+
 # Now register the projection with matplotlib so the user can select
 # it.
 register_projection(SkewXAxes)
