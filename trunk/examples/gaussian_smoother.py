@@ -1,4 +1,6 @@
 import matplotlib.pyplot as plt
+import numpy as np
+from metpy.tools import gaussian_filter
 
 x = np.linspace(-10, 10, 40)
 y = np.linspace(-15, 15, 60)
