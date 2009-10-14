@@ -308,7 +308,7 @@ def _fetch_mesonet_data(date_time, site=None):
     baseurl='http://www.mesonet.org/public/data/getfile.php?dir=%s&filename=%s'
 
     #Open the remote location
-    datafile = urlopen(baseurl % (path+fname, fname))
+    datafile = urlopen(baseurl % (path + fname, fname))
     return datafile.read()
 
 def remote_mesonet_data(date_time=None, fields=None, site=None,
@@ -318,7 +318,7 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
 
     date_time : datetime object
         A python :class:`datetime` object specify that date and time
-        for which that data should be downloaded.  For a times series
+        for which that data should be downloaded.  For time series
         data, this only needs to be a date.  For snapshot files, this is
         the time to the nearest five minutes.
 
