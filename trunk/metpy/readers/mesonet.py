@@ -312,7 +312,7 @@ def _fetch_mesonet_data(date_time, site=None):
     return datafile.read()
 
 def remote_mesonet_data(date_time=None, fields=None, site=None,
-    convert_time=True, lookup_stids=True, full_day_record=True):
+    convert_time=True, lookup_stids=True, full_day_record=True, num_days=1):
     '''
     Reads in Oklahoma Mesonet Datafile (MDF) directly from their servers.
 
@@ -347,16 +347,18 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
         when datetime is None.  This will give a full 24 hour of data, as
         opposed to just today's (incomplete) set.
 
+    num_days : integer
+        The number of days for which data should be retrieved, ending at
+        `date_time`. This only applies when time series data are retrieved
+        (i.e. site is None).  Defaults to 1.
+
     Returns : array
         A nfield by ntime masked array.  nfield is the number of fields
         requested and ntime is the number of times in the file.  Each
         variable is a row in the array.  The variables are returned in
         the order given in *fields*.
     '''
-    #If we don't get a date, and therefore are using today, fetch yesterday's
-    #data too so that we can have a full 24 hour record, only if we are using
-    #time series and not a mesonet data file
-    yest = None
+    # Use current date and time if we're not given one
     if date_time is None:
         import datetime
         date_time = datetime.datetime.utcnow()
@@ -364,22 +366,20 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
             # Take off time to allow for lag of 'current data' behind actual
             # time
             date_time -= datetime.timedelta(minutes=10)
-        elif full_day_record:
-            yest = date_time - datetime.timedelta(days=1)
 
-            old_data = StringIO(_fetch_mesonet_data(yest, site))
-            old_data = read_mesonet_data(old_data, fields, convert_time,
-                lookup_stids)
+    # Optionally grab an extra day so that we have a full set of data N days
+    # of data
+    if full_day_record:
+        num_days += 1
 
-    #Fetch the data and read it in
-    data = StringIO(_fetch_mesonet_data(date_time, site))
-    data = read_mesonet_data(data, fields, convert_time, lookup_stids)
+    data_list = []
+    for n in range(num_days - 1, -1, -1):
+        data = StringIO(
+            _fetch_mesonet_data(date_time - datetime.timedelta(days=n), site))
+        data = read_mesonet_data(data, fields, convert_time, lookup_stids)
+        data_list.append(data)
 
-    if yest:
-        # Need to create a new array.  Resizing the old ones will not work.
-        data = stack_arrays((old_data, data), autoconvert=True)
-
-    return data
+    return stack_arrays(data_list, autoconvert=True)
 
 def read_mesonet_data(filename, fields=None, convert_time=True,
     lookup_stids=True):
@@ -557,15 +557,20 @@ if __name__ == '__main__':
         'SITE can be "None" to specify a mesonet data file for all stations '
         'instead of using a time series file for a single station.',
         metavar='SITE', default='nrmn')
-    parser.add_option('-d', '--date', dest='date', help='get data for '
-        'YYYYMMDD[_HHMM] (HHMM is only used with None for site)',
+    parser.add_option('-d', '--date', dest='date', help='Get data for '
+        'YYYYMMDD[_HHMM] (HHMM is only used with None for site).',
         metavar='YYYYMMDD', default=None)
     parser.add_option('-u', '--utc', dest='utc', help='Display date and times '
         'in UTC. Otherwise, use U.S. Central time, adjusted for Daylight '
         'Savings Time.', action='store_true')
+    parser.add_option('-a', '--days', dest='ndays', help='Number of days for '
+        'which data should be retrieved, ending at the specified date. '
+        'This is only useful for time series plots.',
+        default=1)
 
     #Parse the command line options and convert them to useful values
     opts,args = parser.parse_args()
+    opts.ndays = int(opts.ndays)
     if opts.site == 'None':
         opts.site = None
     if opts.date is not None:
@@ -579,14 +584,14 @@ if __name__ == '__main__':
     fields = ('stid', 'time', 'relh', 'tair', 'wspd', 'wmax', 'wdir', 'pres',
         'srad', 'rain')
 
-    data = remote_mesonet_data(dt, fields, opts.site)
+    data = remote_mesonet_data(dt, fields, opts.site, num_days=opts.ndays)
 
     # Add a reasonable time range if we're doing current data. Subset the data
     # in that case to only include that time range, so that plot limits won't
     # be determined by data that is not displayed.
     end = get_last_time(data) # Needed later on
     if dt is None:
-        times = (end - datetime.timedelta(hours=24), end)
+        times = (end - datetime.timedelta(days=opts.ndays), end)
         data = data[data['datetime'] >= times[0]]
     else:
         times = None
@@ -687,8 +692,11 @@ if __name__ == '__main__':
         # Draw a vertical line at midnight (in the timezone) in all panels
         midnight = end.astimezone(tz).replace(hour=0, minute=0, second=0,
             microsecond=0)
+        midnights = [midnight - datetime.timedelta(days=n)
+                     for n in range(opts.ndays)]
         for ax in axs:
-            ax.axvline(midnight, color='gray')
+            for m in midnights:
+                ax.axvline(m, color='gray')
 
         # If a significant line is within the plotting range, draw it.
         temp_min, temp_max = axs[0].get_ylim()
