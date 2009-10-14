@@ -305,7 +305,6 @@ def _fetch_mesonet_data(date_time, site=None):
     #Create the various parts of the URL and assemble them together
     path = '%s/%04d/%02d/%02d/' % (data_type, date_time.year, date_time.month,
         date_time.day)
-#    baseurl='http://www.mesonet.org/public/data/getfile.php?dir=%s&filename=%s'
     baseurl='http://www.mesonet.org/data/public/mesonet/%s'
 
     #Open the remote location
