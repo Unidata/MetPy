@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 from cStringIO import StringIO
-from urllib2 import urlopen
+from urllib2 import urlopen, HTTPError
 import numpy as np
 from numpy import ma
 from metpy.cbook import is_string_like, lru_cache, add_dtype_titles
@@ -303,12 +303,18 @@ def _fetch_mesonet_data(date_time, site=None):
         fname = '%s%s.mts' % (date_time.strftime('%Y%m%d'), site.lower())
 
     #Create the various parts of the URL and assemble them together
-    path = '/%s/%04d/%02d/%02d/' % (data_type, date_time.year, date_time.month,
+    path = '%s/%04d/%02d/%02d/' % (data_type, date_time.year, date_time.month,
         date_time.day)
-    baseurl='http://www.mesonet.org/public/data/getfile.php?dir=%s&filename=%s'
+#    baseurl='http://www.mesonet.org/public/data/getfile.php?dir=%s&filename=%s'
+    baseurl='http://www.mesonet.org/data/public/mesonet/%s'
 
     #Open the remote location
-    datafile = urlopen(baseurl % (path + fname, fname))
+    url = baseurl % (path + fname)
+    try:
+        datafile = urlopen(url)
+    except HTTPError:
+            print "Could not open: %s" % url
+            raise
     return datafile.read()
 
 def remote_mesonet_data(date_time=None, fields=None, site=None,
