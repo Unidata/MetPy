@@ -659,7 +659,8 @@ if __name__ == '__main__':
 
         plt.title(data['datetime'][0].strftime('%H%MZ %d %b %Y'))
     else:
-        from matplotlib.dates import HourLocator
+        from matplotlib.dates import (AutoDateFormatter, AutoDateLocator,
+            HourLocator)
         from pytz import timezone, utc
         central = timezone('US/Central')
 
@@ -691,8 +692,23 @@ if __name__ == '__main__':
             units=mod_units, time_range=times, layout=layout, limits=limits,
             tz=tz)
         axs[0].set_ylabel('Temperature (F)')
-        axs[0].xaxis.set_major_locator(HourLocator(np.arange(0, 25, 3), tz=tz))
-        axs[0].xaxis.set_minor_locator(HourLocator(tz=tz))
+
+        # Set tickers depending on how much data we have.
+        # TODO: This could be done better with just a singular ticking class
+        # Maybe improvements to AutoDateLocator? This could then be used in
+        # meteogram itself.
+        if opts.ndays > 1:
+            maj_locator = AutoDateLocator(tz)
+            maj_formatter = AutoDateFormatter(maj_locator, tz=tz)
+            # Just display hour for hourly ticks
+            maj_formatter.scaled[1/24.] = '%H'
+            axs[-1].xaxis.set_major_locator(maj_locator)
+            axs[-1].xaxis.set_major_formatter(maj_formatter)
+        else:
+            axs[-1].xaxis.set_major_locator(HourLocator(np.arange(0, 25, 3),
+                tz=tz))
+
+        axs[-1].xaxis.set_minor_locator(HourLocator(tz=tz))
 
         # Draw a vertical line at midnight (in the timezone) in all panels
         midnight = end.astimezone(tz).replace(hour=0, minute=0, second=0,
