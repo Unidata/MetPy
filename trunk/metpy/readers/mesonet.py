@@ -675,9 +675,11 @@ if __name__ == '__main__':
             data['datetime'])
         data = append_fields(data, ('theoretical solar',), (srad,))
 
-        # Use the theoretical maximum to set the upper limit on the
-        # plotting of measured solar radiation
-        srad_limit = (int(srad.max() / 200.) + 1) * 200.
+        # Use the greater of the theoretical or data maxima to set the upper
+        # limit on the plotting of measured solar radiation.  This is
+        # necessary because our theoretical curve isn't perfect.
+        max_rad = max(srad.max(), data['solar radiation'].max())
+        srad_limit = (int(max_rad / 200.) + 1) * 200.
         limits = {'solar radiation':(0, srad_limit,
             np.arange(0, srad_limit + 50, 200))}
 
