@@ -374,7 +374,7 @@ def remote_mesonet_data(date_time=None, fields=None, site=None,
 
     # Optionally grab an extra day so that we have a full set of data N days
     # of data
-    if full_day_record:
+    if full_day_record and site is not None:
         num_days += 1
 
     data_list = []
