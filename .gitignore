@@ -1,0 +1,6 @@
+~*
+.DS_Store
+__git_version__.py
+*.pyc
+dist/*
+build/*
