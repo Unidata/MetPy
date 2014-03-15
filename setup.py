@@ -6,8 +6,6 @@ from distutils.command.install_data import install_data
 import numpy as np
 import os, sys
 
-build_gauss = True
-
 # Scan directory for extension files, converting
 # them to extension names in dotted notation
 def scandir(dir, files=[]):
@@ -50,40 +48,20 @@ version.write_git_version()
 ver = version.get_version()
 sys.path.pop()
 
-# Optionally build the gaussian filter code
-if build_gauss:
-    from numpy.distutils.misc_util import get_numpy_include_dirs
-    include_dirs = get_numpy_include_dirs()
-    from distutils.extension import Extension
-
-    # If we find Cython, build from the pyx file, otherwise just build the
-    # C file
-    try:
-        from Cython.Distutils import build_ext
-        files = ["src/gauss.pyx"]
-    except ImportError:
-        from distutils.command.build_ext import build_ext
-        files = ["src/gauss.c"]
-
-    ext_modules = [Extension("metpy.tools._gauss_filt", files,
-        extra_compile_args=['-O2 -fomit-frame-pointer'])]
-else:
-    ext_modules = []
-    include_dirs = None
-    build_ext = None
+ext_modules = []
+include_dirs = None
+build_ext = None
 
 setup(
     name            = 'MetPy',
     version         = ver,
-    packages        = ['metpy', 'metpy.bl', 'metpy.readers', 'metpy.tools',
-                       'metpy.vis'],
+    packages        = ['metpy', 'metpy.calc', 'metpy.io', 'metpy.plots'],
     ext_modules     = ext_modules,
     include_dirs    = include_dirs,
-    cmdclass        = {'build_ext':build_ext},
-    platforms       = ['Linux'],
+    platforms       = ['Linux', 'Windows', 'Mac'],
     description     = 'Collection of tools for reading, visualizing and'
                       'performing calculations with weather data.',
-    url             = 'http://code.forwarn.org/metpy',)
+    url             = 'http://www.github.com/Unidata/MetPy',)
 
 if not version.release:
   # Remove __git_version__ so that if we run from local, an outdated version
