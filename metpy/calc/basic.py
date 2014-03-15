@@ -377,7 +377,7 @@ def geostrophic_wind(heights, f, dx, dy, geopotential=False):
         can be trailing dimensions on the array.  If geopotential is False
         (the default), these need to be in units of meters and will be
         multiplied by gravity.  If geopotential is True, no scaling will
-        be applied and *heights* should be in units of m^2 s^-s.
+        be applied and *heights* should be in units of m^2 s^-2.
 
     f : scalar or array
         The coriolis parameter in s^-1.  This can be a scalar to be applied
