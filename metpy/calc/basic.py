@@ -1,14 +1,17 @@
 'A collection of generic calculation functions.'
 
-__all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir','get_wind_components',
-    'mixing_ratio','tke', 'windchill', 'heat_index', 'h_convergence',
-    'v_vorticity', 'convergence_vorticity', 'advection', 'geostrophic_wind']
+__all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir',
+           'get_wind_components', 'mixing_ratio', 'tke', 'windchill',
+           'heat_index', 'h_convergence', 'v_vorticity',
+           'convergence_vorticity', 'advection', 'geostrophic_wind']
 
 import numpy as np
 from numpy.ma import log, exp, cos, sin, masked_array
 from scipy.constants import degree, kilo, hour, g
 
-sat_pressure_0c = 6.112 # mb
+sat_pressure_0c = 6.112  # mb
+
+
 def vapor_pressure(temp):
     '''
     Calculate the saturation water vapor (partial) pressure given
@@ -26,6 +29,7 @@ def vapor_pressure(temp):
     '''
     return sat_pressure_0c * exp(17.67 * temp / (temp + 243.5))
 
+
 def dewpoint(temp, rh):
     '''
     Calculate the ambient dewpoint given air temperature and relative
@@ -42,8 +46,9 @@ def dewpoint(temp, rh):
         of the result being determined using numpy's broadcasting rules.
     '''
     es = vapor_pressure(temp)
-    val = log(rh * es/sat_pressure_0c)
+    val = log(rh * es / sat_pressure_0c)
     return 243.5 * val / (17.67 - val)
+
 
 def mixing_ratio(part_press, tot_press):
     '''
@@ -64,22 +69,25 @@ def mixing_ratio(part_press, tot_press):
     '''
     return part_press / (tot_press - part_press)
 
-def get_speed_dir(u,v,w=None):
+
+def get_speed_dir(u, v, w=None):
     '''
     Compute the wind speed (horizontal and vector is W is supplied) and
     wind direction.
 
-    Return horizontal wind speed, vector wind speed, and wind direction in a tuple
-      * if w is not supplied, returns tuple of horizontal wind speed and wind direction.
+    Return horizontal wind speed, vector wind speed, and wind direction in
+    a tuple. If w is not supplied, returns tuple of horizontal wind speed
+    and wind direction.
     '''
-    hws = np.sqrt(u*u+v*v)
-    wd = np.arctan2(-u,-v)*180./np.pi
-    wd[wd<0]=360+wd[wd<0]
+    hws = np.sqrt(u * u + v * v)
+    wd = np.rad2deg(np.arctan2(-u, -v))
+    wd[wd < 0] = 360. + wd[wd < 0]
     if w is None:
-        return hws,wd
+        return hws, wd
     else:
-        vws = np.sqrt(u*u+v*v+w*w)
-        return hws,vws,wd
+        vws = np.sqrt(u * u + v * v + w * w)
+        return hws, vws, wd
+
 
 def get_wind_components(speed, wdir):
     '''
@@ -99,9 +107,10 @@ def get_wind_components(speed, wdir):
     wdir = wdir * degree
     u = -speed * sin(wdir)
     v = -speed * cos(wdir)
-    return u,v
+    return u, v
 
-def tke(u,v,w):
+
+def tke(u, v, w):
     '''
     Compute the turbulence kinetic energy (tke) from the time series of the
     velocity components u, v, and w.
@@ -123,13 +132,14 @@ def tke(u,v,w):
     wp = w - w.mean()
 
     tke = np.power(np.average(np.power(up, 2)) +
-                  np.average(np.power(vp, 2)) +
-                  np.average(np.power(wp, 2)), 0.5)
+                   np.average(np.power(vp, 2)) +
+                   np.average(np.power(wp, 2)), 0.5)
 
     return tke
 
+
 def windchill(temp, speed, metric=True, face_level_winds=False,
-    mask_undefined=True):
+              mask_undefined=True):
     '''
     Calculate the Wind Chill Temperature Index (WCTI) from the current
     temperature and wind speed.
@@ -178,24 +188,25 @@ def windchill(temp, speed, metric=True, face_level_winds=False,
     if metric:
         # Formula uses wind speed in km/hr, but passing in m/s makes more
         # sense.  Convert here.
-        temp_limit, speed_limit = 10., 4.828 #Temp in C, speed in km/h
+        temp_limit, speed_limit = 10., 4.828  # Temp in C, speed in km/h
         speed = speed * hour / kilo
         speed_factor = speed ** 0.16
         wcti = (13.12 + 0.6215 * temp - 11.37 * speed_factor
-            + 0.3965 * temp * speed_factor)
+                + 0.3965 * temp * speed_factor)
     else:
         temp_limit, speed_limit = 50., 3.
         speed_factor = speed ** 0.16
         wcti = (35.74 + 0.6215 * temp - 35.75 * speed_factor
-            + 0.4275 * temp * speed_factor)
+                + 0.4275 * temp * speed_factor)
 
-    #See if we need to mask any undefined values
+    # See if we need to mask any undefined values
     if mask_undefined:
         mask = np.array((temp > temp_limit) | (speed <= speed_limit))
         if mask.any():
             wcti = masked_array(wcti, mask=mask)
 
     return wcti
+
 
 def heat_index(temp, rh, mask_undefined=True):
     '''
@@ -225,14 +236,14 @@ def heat_index(temp, rh, mask_undefined=True):
         temperature-humidity index based on human physiology and clothing
         science. J. Appl. Meteor., 18, 861-873.
     '''
-    rh2 = rh**2
-    temp2 = temp**2
+    rh2 = rh ** 2
+    temp2 = temp ** 2
 
     # Calculate the Heat Index
     HI = (-42.379 + 2.04901523 * temp + 10.14333127 * rh
-        - 0.22475541 * temp * rh - 6.83783e-3 * temp2 - 5.481717e-2 * rh2
-        + 1.22874e-3 * temp2 * rh + 8.5282e-4 * temp * rh2
-        - 1.99e-6 * temp2 * rh2)
+          - 0.22475541 * temp * rh - 6.83783e-3 * temp2 - 5.481717e-2 * rh2
+          + 1.22874e-3 * temp2 * rh + 8.5282e-4 * temp * rh2
+          - 1.99e-6 * temp2 * rh2)
 
     # See if we need to mask any undefined values
     if mask_undefined:
@@ -242,11 +253,13 @@ def heat_index(temp, rh, mask_undefined=True):
 
     return HI
 
+
 def _get_gradients(u, v, dx, dy):
-    #Helper function for getting convergence and vorticity from 2D arrays
+    # Helper function for getting convergence and vorticity from 2D arrays
     dudx, dudy = np.gradient(u, dx, dy)
     dvdx, dvdy = np.gradient(v, dx, dy)
     return dudx, dudy, dvdx, dvdy
+
 
 def v_vorticity(u, v, dx, dy):
     '''
@@ -269,6 +282,7 @@ def v_vorticity(u, v, dx, dy):
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
     return dvdx - dudy
 
+
 def h_convergence(u, v, dx, dy):
     '''
     Calculate the horizontal convergence of the horizontal wind.  The grid
@@ -289,6 +303,7 @@ def h_convergence(u, v, dx, dy):
     '''
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy
+
 
 def convergence_vorticity(u, v, dx, dy):
     '''
@@ -312,6 +327,7 @@ def convergence_vorticity(u, v, dx, dy):
     '''
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy, dvdx - dudy
+
 
 def advection(scalar, wind, deltas):
     '''
@@ -345,9 +361,10 @@ def advection(scalar, wind, deltas):
 
     # Make them be at least 2D (handling the 1D case) so that we can do the
     # multiply and sum below
-    grad,wind = np.atleast_2d(grad, wind)
+    grad, wind = np.atleast_2d(grad, wind)
 
     return (-grad * wind).sum(axis=0)
+
 
 def geostrophic_wind(heights, f, dx, dy, geopotential=False):
     '''
@@ -389,5 +406,5 @@ def geostrophic_wind(heights, f, dx, dy, geopotential=False):
         deltas = deltas + [1.] * (heights.ndim - 2)
 
     grad = np.gradient(heights, *deltas)
-    dx,dy = grad[0], grad[1] # This throws away unused gradient components
+    dx, dy = grad[0], grad[1]  # This throws away unused gradient components
     return -norm_factor * dy, norm_factor * dx

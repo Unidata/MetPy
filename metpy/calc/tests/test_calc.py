@@ -3,6 +3,7 @@ import numpy as np
 from metpy.calc import *
 from metpy.constants import g
 
+
 class TestVaporPressure(TestCase):
     def test_basic(self):
         temp = np.array([5, 10, 18, 25])
@@ -12,6 +13,7 @@ class TestVaporPressure(TestCase):
     def test_scalar(self):
         es = vapor_pressure(0)
         assert_almost_equal(es, 6.112, 3)
+
 
 class TestDewpoint(TestCase):
     def test_basic(self):
@@ -25,6 +27,7 @@ class TestDewpoint(TestCase):
         td = dewpoint(10.6, .37) * 1.8 + 32.
         assert_almost_equal(td, 26, 0)
 
+
 class TestWindComps(TestCase):
     def test_basic(self):
         'Test the basic calculation.'
@@ -32,7 +35,7 @@ class TestWindComps(TestCase):
         dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360])
         s2 = np.sqrt(2)
 
-        u,v = get_wind_components(speed, dirs)
+        u, v = get_wind_components(speed, dirs)
 
         true_u = np.array([0, -4/s2, -4, -4/s2, 0, 25/s2, 25, 25/s2, 0])
         true_v = np.array([-4, -4/s2, 0, 4/s2, 25, 25/s2, 0, -25/s2, -10])
@@ -43,6 +46,7 @@ class TestWindComps(TestCase):
     def test_scalar(self):
         comps = np.array(get_wind_components(8, 150))
         assert_array_almost_equal(comps, np.array([-4, 6.9282]), 3)
+
 
 class TestWindChill(TestCase):
     def test_basic(self):
@@ -85,6 +89,7 @@ class TestWindChill(TestCase):
         mask = np.array([False]*6)
         assert_array_equal(wc.mask, mask)
 
+
 class TestHeatIndex(TestCase):
     def test_basic(self):
         'Test the basic heat index calculation.'
@@ -116,6 +121,7 @@ class TestHeatIndex(TestCase):
         hi = heat_index(temp, rh, mask_undefined=False)
         mask = np.array([False]*6)
         assert_array_equal(hi.mask, mask)
+
 
 #class TestIrrad(TestCase):
 #    def test_basic(self):
@@ -151,11 +157,12 @@ class TestHeatIndex(TestCase):
 #            False, False, True,  True,  True])
 #        assert_array_equal(s.mask, mask)
 
+
 class TestGradients(TestCase):
     def test_basic(self):
         'Basic braindead test of vorticity and divergence calculation'
-        u = np.ones((3,3))
-        c,v = convergence_vorticity(u, u, 1, 1)
+        u = np.ones((3, 3))
+        c, v = convergence_vorticity(u, u, 1, 1)
         truth = np.zeros_like(u)
         assert_array_equal(c, truth)
         assert_array_equal(v, truth)
@@ -164,7 +171,7 @@ class TestGradients(TestCase):
         'Basic test of vorticity and divergence calculation'
         a = np.arange(3)
         u = np.c_[a, a, a]
-        c,v = convergence_vorticity(u, u.T, 1, 1)
+        c, v = convergence_vorticity(u, u.T, 1, 1)
         true_c = 2. * np.ones_like(u)
         true_v = np.zeros_like(u)
         assert_array_equal(c, true_c)
@@ -174,11 +181,12 @@ class TestGradients(TestCase):
         'Basic test of vorticity and divergence calculation'
         a = np.arange(3)
         u = np.c_[a, a, a]
-        c,v = convergence_vorticity(u, u, 1, 1)
+        c, v = convergence_vorticity(u, u, 1, 1)
         true_c = np.ones_like(u)
         true_v = np.ones_like(u)
         assert_array_equal(c, true_c)
         assert_array_equal(v, true_v)
+
 
 class TestAdvection(TestCase):
     def test_basic(self):
@@ -207,8 +215,8 @@ class TestAdvection(TestCase):
 
     def test_2dbasic(self):
         'Basic 2D braindead test of advection'
-        u = np.ones((3,3))
-        v = np.ones((3,3))
+        u = np.ones((3, 3))
+        v = np.ones((3, 3))
         s = np.ones_like(u)
         a = advection(s, u, (1,))
         truth = np.zeros_like(u)
@@ -216,12 +224,13 @@ class TestAdvection(TestCase):
 
     def test_2dbasic2(self):
         'Basic 2D test of advection'
-        u = np.ones((3,3))
-        v = 2 * np.ones((3,3))
+        u = np.ones((3, 3))
+        v = 2 * np.ones((3, 3))
         s = np.array([[1, 2, 1], [2, 4, 2], [1, 2, 1]])
         a = advection(s, [u, v], (1, 1))
         truth = np.array([[-3, -2, 1], [-4, 0, 4], [-1, 2, 3]])
         assert_array_equal(a, truth)
+
 
 class TestGeos(TestCase):
     def test_basic(self):
@@ -233,6 +242,7 @@ class TestGeos(TestCase):
         true_v = -true_u.T
         assert_array_equal(ug, true_u)
         assert_array_equal(vg, true_v)
+
 
 if __name__ == '__main__':
     run_module_suite()

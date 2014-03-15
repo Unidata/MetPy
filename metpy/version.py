@@ -19,8 +19,10 @@ def _minimal_ext_cmd(cmd):
     env['LANGUAGE'] = 'C'
     env['LANG'] = 'C'
     env['LC_ALL'] = 'C'
-    out = subprocess.Popen(cmd, stdout=subprocess.PIPE, env=env).communicate()[0]
+    out = subprocess.Popen(
+        cmd, stdout=subprocess.PIPE, env=env).communicate()[0]
     return out
+
 
 def get_git_hash():
     '''
@@ -35,9 +37,10 @@ def get_git_hash():
 
     return GIT_REVISION
 
+
 def get_git_revision():
     hash = get_git_hash()
-    if hash :
+    if hash:
         rev = '.dev.' + hash[:7]
         try:
             cmd = ['git', 'show', '%s' % (hash), '--date=short',
@@ -50,6 +53,7 @@ def get_git_revision():
         rev = ".dev.Unknown"
 
     return rev
+
 
 def write_git_version():
     'Write the GIT revision to a file.'
@@ -74,5 +78,5 @@ def get_version():
             version += __git_version__.rev
         except ImportError:
             version += get_git_revision()
-    
+
     return version
