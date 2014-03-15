@@ -1,5 +1,4 @@
 import basic
-import solar
 
 from basic import *
 __all__ == []
