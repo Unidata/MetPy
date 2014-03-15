@@ -98,13 +98,8 @@ __all__ = ['C2F', 'C2K', 'F2K', 'K2C', 'K2F', 'F2C', 'Re', 'earth_avg_radius',
     'epsilon', 'molecular_weight_ratio', 'delta', 'earth_max_declination',
     'earth_orbit_eccentricity']
 
-try:
-    from scipy.constants import pi, day, value, kilo, g
-    from scipy.constants import C2F, F2C, K2F, F2K, C2K, K2C
-except ImportError:
-    # Use internal copy
-    from scipy_constants import pi, day, value, kilo, g
-    from scipy_constants import C2F, F2C, K2F, F2K, C2K, K2C
+from scipy.constants import pi, day, value, kilo, g
+from scipy.constants import C2F, F2C, K2F, F2K, C2K, K2C
 R = value('molar gas constant')
 del value
 

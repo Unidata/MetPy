@@ -6,7 +6,8 @@ from cStringIO import StringIO
 
 import numpy as np
 from scipy.constants import day, milli
-from metpy.cbook import is_string_like, namedtuple
+from metpy.cbook import is_string_like
+from collections import namedtuple
 
 class NamedStruct(Struct):
     def __init__(self, info, prefmt='', tuple_name=None):
