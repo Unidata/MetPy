@@ -3,7 +3,7 @@
 __all__ = ['vapor_pressure', 'saturation_vapor_pressure', 'dewpoint',
            'dewpoint_rh', 'get_speed_dir', 'potential_temperature',
            'get_wind_components', 'mixing_ratio', 'tke', 'windchill',
-           'heat_index', 'h_convergence', 'v_vorticity',
+           'heat_index', 'h_convergence', 'v_vorticity', 'dry_lapse',
            'convergence_vorticity', 'advection', 'geostrophic_wind']
 
 import numpy as np
@@ -31,6 +31,25 @@ def potential_temperature(pressure, temperature):
     '''
     # Factor of 100 converts mb to Pa. Really need unit support here.
     return temperature * (P0 / (pressure * 100))**kappa
+
+
+def dry_lapse(pressure, temperature):
+    '''
+    Calculate the potential temperature given *pressure* and
+    *temperature*.
+
+    pressure : scalar or array
+        The total atmospheric pressure in mb
+
+    temperature : scalar or array
+        The temperature in Kelvin
+
+    Returns : scalar or array
+       The potential temperature corresponding to the the tempearture and
+       pressure, with the shape determined by numpy broadcasting rules.
+    '''
+    # Factor of 100 converts mb to Pa. Really need unit support here.
+    return temperature * (pressure * 100 / P0)**kappa
 
 
 def vapor_pressure(pressure, mixing):

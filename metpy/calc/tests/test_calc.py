@@ -17,6 +17,11 @@ class TestPotentialTemperature(TestCase):
         assert_almost_equal(potential_temperature(800, 293), 312.2987, 4)
 
 
+class TestDryLapse(TestCase):
+    def test_scalar(self):
+        assert_almost_equal(dry_lapse(500, 293), 240.3341, 4)
+
+
 class TestSatVaporPressure(TestCase):
     def test_basic(self):
         temp = np.array([5, 10, 18, 25])
