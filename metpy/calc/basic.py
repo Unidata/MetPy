@@ -8,6 +8,7 @@ __all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir',
 import numpy as np
 from numpy.ma import log, exp, cos, sin, masked_array
 from scipy.constants import degree, kilo, hour, g
+from ..constants import epsilon
 
 sat_pressure_0c = 6.112  # mb
 
@@ -67,7 +68,7 @@ def mixing_ratio(part_press, tot_press):
     There are no required units for the input arrays, other than that
     they have the same units.
     '''
-    return part_press / (tot_press - part_press)
+    return epsilon * part_press / (tot_press - part_press)
 
 
 def get_speed_dir(u, v, w=None):

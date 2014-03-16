@@ -28,6 +28,12 @@ class TestDewpoint(TestCase):
         assert_almost_equal(td, 26, 0)
 
 
+class TestMixingRatio(TestCase):
+    def test_scalar(self):
+        P = 998.
+        e = 73.75
+        assert_almost_equal(mixing_ratio(e, P), 0.04963, 3)
+
 class TestWindComps(TestCase):
     def test_basic(self):
         'Test the basic calculation.'
