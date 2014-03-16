@@ -31,7 +31,7 @@ class TestSatVaporPressure(TestCase):
 class TestDewpointRH(TestCase):
     def test_basic(self):
         temp = np.array([30, 25, 10, 20, 25])
-        rh = np.array([30, 45, 55, 80, 85])/100.
+        rh = np.array([30, 45, 55, 80, 85]) / 100.
 
         real_td = np.array([11, 12, 1, 16, 22])
         assert_array_almost_equal(real_td, dewpoint_rh(temp, rh), 0)
@@ -79,34 +79,25 @@ class TestWindComps(TestCase):
 
 
 class TestWindChill(TestCase):
-    def test_basic(self):
-        'Test the basic wind chill calculation.'
-        temp = np.array([40, -10, -45, 20])
-        speed = np.array([5, 55, 25, 15])
-
-        wc = windchill(temp, speed, metric=False)
-        values = np.array([36, -46, -84, 6])
-        assert_array_almost_equal(wc, values, 0)
-
     def test_scalar(self):
-        wc = windchill(-5, 35, metric=False)
-        assert_almost_equal(wc, -34, 0)
+        wc = windchill(-5, 35)
+        assert_almost_equal(wc, -18.9357, 0)
 
-    def test_metric(self):
+    def test_basic(self):
         'Test the basic wind chill calculation.'
         temp = (np.array([40, -10, -45, 20]) - 32.) / 1.8
         speed = np.array([5, 55, 25, 15]) * .44704
 
-        wc = windchill(temp, speed, metric=True)
+        wc = windchill(temp, speed)
         values = (np.array([36, -46, -84, 6]) - 32.) / 1.8
         assert_array_almost_equal(wc, values, 0)
 
     def test_invalid(self):
         'Test for values that should be masked.'
-        temp = np.array([50, 51, 49, 60, 80, 81])
+        temp = np.array([10, 51, 49, 60, 80, 81])
         speed = np.array([4, 4, 3, 1, 10, 39])
 
-        wc = windchill(temp, speed, metric=False)
+        wc = windchill(temp, speed)
         mask = np.array([False, True, True, True, True, True])
         assert_array_equal(wc.mask, mask)
 
@@ -115,7 +106,7 @@ class TestWindChill(TestCase):
         temp = np.ma.array([49, 50, 49, 60, 80, 81])
         speed = np.ma.array([4, 4, 3, 1, 10, 39])
 
-        wc = windchill(temp, speed, metric=False, mask_undefined=False)
+        wc = windchill(temp, speed, mask_undefined=False)
         mask = np.array([False]*6)
         assert_array_equal(wc.mask, mask)
 

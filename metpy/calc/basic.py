@@ -190,8 +190,7 @@ def tke(u, v, w):
     return tke
 
 
-def windchill(temp, speed, metric=True, face_level_winds=False,
-              mask_undefined=True):
+def windchill(temp, speed, face_level_winds=False, mask_undefined=True):
     '''
     Calculate the Wind Chill Temperature Index (WCTI) from the current
     temperature and wind speed.
@@ -212,12 +211,7 @@ def windchill(temp, speed, metric=True, face_level_winds=False,
         The wind speed at 10m.  If instead the winds are at face level,
         *face_level_winds* should be set to True and the 1.5 multiplicative
         correction will be applied automatically.  Wind speed should be
-        given in units of miles per hour if *metric* is False and
-        meters per second if *metric* is True.
-
-    metric : boolean
-        A flag indicating whether data is given in metric units. Defaults
-        to True.
+        given in units of meters per second.
 
     face_level_winds : boolean
         A flag indicating whether the wind speeds were measured at facial
@@ -231,25 +225,19 @@ def windchill(temp, speed, metric=True, face_level_winds=False,
         to True.
 
     Returns : scalar or array
-        The correspond Wind Chill Temperature Index value(s)
+        The corresponding Wind Chill Temperature Index value(s)
     '''
     # Correct for lower height measurement of winds if necessary
     if face_level_winds:
         speed = speed * 1.5
 
-    if metric:
-        # Formula uses wind speed in km/hr, but passing in m/s makes more
-        # sense.  Convert here.
-        temp_limit, speed_limit = 10., 4.828  # Temp in C, speed in km/h
-        speed = speed * hour / kilo
-        speed_factor = speed ** 0.16
-        wcti = (13.12 + 0.6215 * temp - 11.37 * speed_factor
-                + 0.3965 * temp * speed_factor)
-    else:
-        temp_limit, speed_limit = 50., 3.
-        speed_factor = speed ** 0.16
-        wcti = (35.74 + 0.6215 * temp - 35.75 * speed_factor
-                + 0.4275 * temp * speed_factor)
+    # Formula uses wind speed in km/hr, but passing in m/s makes more
+    # sense.  Convert here.
+    temp_limit, speed_limit = 10., 4.828  # Temp in C, speed in km/h
+    speed = speed * hour / kilo
+    speed_factor = speed ** 0.16
+    wcti = (13.12 + 0.6215 * temp - 11.37 * speed_factor
+            + 0.3965 * temp * speed_factor)
 
     # See if we need to mask any undefined values
     if mask_undefined:
