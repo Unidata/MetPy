@@ -4,6 +4,19 @@ from metpy.calc import *
 from metpy.constants import g
 
 
+class TestPotentialTemperature(TestCase):
+    def test_basic(self):
+        temp = np.array([278, 283, 291, 298])
+        pres = np.array([900, 500, 300, 100])
+        real_th = np.array([286.5, 345.0155, 410.5467, 575.5397])
+        assert_array_almost_equal(potential_temperature(pres, temp),
+                real_th, 3)
+
+    def test_scalar(self):
+        assert_almost_equal(potential_temperature(1000, 293), 293, 4)
+        assert_almost_equal(potential_temperature(800, 293), 312.2987, 4)
+
+
 class TestSatVaporPressure(TestCase):
     def test_basic(self):
         temp = np.array([5, 10, 18, 25])

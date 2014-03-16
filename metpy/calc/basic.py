@@ -1,7 +1,7 @@
 'A collection of basic meteorological calculation functions.'
 
 __all__ = ['vapor_pressure', 'saturation_vapor_pressure', 'dewpoint',
-           'dewpoint_rh', 'get_speed_dir',
+           'dewpoint_rh', 'get_speed_dir', 'potential_temperature',
            'get_wind_components', 'mixing_ratio', 'tke', 'windchill',
            'heat_index', 'h_convergence', 'v_vorticity',
            'convergence_vorticity', 'advection', 'geostrophic_wind']
@@ -12,6 +12,25 @@ from scipy.constants import degree, kilo, hour, g
 from ..constants import epsilon, kappa, P0
 
 sat_pressure_0c = 6.112  # mb
+
+
+def potential_temperature(pressure, temperature):
+    '''
+    Calculate the potential temperature given *pressure* and
+    *temperature*.
+
+    pressure : scalar or array
+        The total atmospheric pressure in mb
+
+    temperature : scalar or array
+        The temperature in Kelvin
+
+    Returns : scalar or array
+       The potential temperature corresponding to the the tempearture and
+       pressure, with the shape determined by numpy broadcasting rules.
+    '''
+    # Factor of 100 converts mb to Pa. Really need unit support here.
+    return temperature * (P0 / (pressure * 100))**kappa
 
 
 def vapor_pressure(pressure, mixing):
