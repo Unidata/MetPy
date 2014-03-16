@@ -1,6 +1,7 @@
-'A collection of generic calculation functions.'
+'A collection of basic meteorological calculation functions.'
 
-__all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir',
+__all__ = ['vapor_pressure', 'saturation_vapor_pressure', 'dewpoint',
+           'dewpoint_rh', 'get_speed_dir',
            'get_wind_components', 'mixing_ratio', 'tke', 'windchill',
            'heat_index', 'h_convergence', 'v_vorticity',
            'convergence_vorticity', 'advection', 'geostrophic_wind']
@@ -8,12 +9,30 @@ __all__ = ['vapor_pressure', 'dewpoint', 'get_speed_dir',
 import numpy as np
 from numpy.ma import log, exp, cos, sin, masked_array
 from scipy.constants import degree, kilo, hour, g
-from ..constants import epsilon
+from ..constants import epsilon, kappa, P0
 
 sat_pressure_0c = 6.112  # mb
 
 
-def vapor_pressure(temp):
+def vapor_pressure(pressure, mixing):
+    '''
+    Calculate the water vapor (partial) pressure given *pressure* and
+    *mixing* ratio.
+
+    pressure : scalar or array
+        The total atmospheric pressure
+
+    mixing : scalar or array
+        The dimensionless mass mixing ratio
+
+    Returns : scalar or array
+        The ambient water vapor (partial) pressure in the same units as
+        pressure, with the shape determined by numpy broadcasting rules.
+    '''
+    return pressure * mixing / (epsilon + mixing)
+
+
+def saturation_vapor_pressure(temp):
     '''
     Calculate the saturation water vapor (partial) pressure given
     *temperature*.
@@ -31,7 +50,7 @@ def vapor_pressure(temp):
     return sat_pressure_0c * exp(17.67 * temp / (temp + 243.5))
 
 
-def dewpoint(temp, rh):
+def dewpoint_rh(temp, rh):
     '''
     Calculate the ambient dewpoint given air temperature and relative
     humidity.
@@ -46,8 +65,21 @@ def dewpoint(temp, rh):
         The dew point temperature in degrees Celsius, with the shape
         of the result being determined using numpy's broadcasting rules.
     '''
-    es = vapor_pressure(temp)
-    val = log(rh * es / sat_pressure_0c)
+    return dewpoint(rh * saturation_vapor_pressure(temp))
+
+
+def dewpoint(e):
+    '''
+    Calculate the ambient dewpoint given the vapor pressure.
+
+    e : scalar or array
+        The water vapor partial pressure in mb.
+
+    Returns : scalar or array
+        The dew point temperature in degrees Celsius, with the shape
+        of the result being determined using numpy's broadcasting rules.
+    '''
+    val = log(e / sat_pressure_0c)
     return 243.5 * val / (17.67 - val)
 
 

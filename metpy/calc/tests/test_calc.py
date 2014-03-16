@@ -4,35 +4,46 @@ from metpy.calc import *
 from metpy.constants import g
 
 
-class TestVaporPressure(TestCase):
+class TestSatVaporPressure(TestCase):
     def test_basic(self):
         temp = np.array([5, 10, 18, 25])
         real_es = np.array([8.72, 12.28, 20.64, 31.68])
-        assert_array_almost_equal(vapor_pressure(temp), real_es, 2)
+        assert_array_almost_equal(saturation_vapor_pressure(temp), real_es, 2)
 
     def test_scalar(self):
-        es = vapor_pressure(0)
+        es = saturation_vapor_pressure(0)
         assert_almost_equal(es, 6.112, 3)
 
 
-class TestDewpoint(TestCase):
+class TestDewpointRH(TestCase):
     def test_basic(self):
         temp = np.array([30, 25, 10, 20, 25])
         rh = np.array([30, 45, 55, 80, 85])/100.
 
         real_td = np.array([11, 12, 1, 16, 22])
-        assert_array_almost_equal(real_td, dewpoint(temp, rh), 0)
+        assert_array_almost_equal(real_td, dewpoint_rh(temp, rh), 0)
 
     def test_scalar(self):
-        td = dewpoint(10.6, .37) * 1.8 + 32.
+        td = dewpoint_rh(10.6, .37) * 1.8 + 32.
         assert_almost_equal(td, 26, 0)
+
+
+class TestDewpoint(TestCase):
+    def test_scalar(self):
+        assert_almost_equal(dewpoint(6.112), 0., 2)
 
 
 class TestMixingRatio(TestCase):
     def test_scalar(self):
         P = 998.
         e = 73.75
-        assert_almost_equal(mixing_ratio(e, P), 0.04963, 3)
+        assert_almost_equal(mixing_ratio(e, P), 0.04963, 2)
+
+
+class TestVaporPressure(TestCase):
+    def test_scalar(self):
+        assert_almost_equal(vapor_pressure(998, 0.04963), 73.76, 3)
+
 
 class TestWindComps(TestCase):
     def test_basic(self):
