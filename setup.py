@@ -4,7 +4,9 @@ from distutils.core import setup
 from distutils.extension import Extension
 from distutils.command.install_data import install_data
 import numpy as np
-import os, sys
+import os
+import os.path
+import sys
 
 # Scan directory for extension files, converting
 # them to extension names in dotted notation
@@ -55,19 +57,21 @@ build_ext = None
 setup(
     name            = 'MetPy',
     version         = ver,
-    packages        = ['metpy', 'metpy.calc', 'metpy.io', 'metpy.plots'],
+    packages        = ['metpy', 'metpy.calc', 'metpy.plots'],
     ext_modules     = ext_modules,
     include_dirs    = include_dirs,
     platforms       = ['Linux', 'Windows', 'Mac'],
     description     = 'Collection of tools for reading, visualizing and'
                       'performing calculations with weather data.',
-    url             = 'http://www.github.com/Unidata/MetPy',)
+    url             = 'http://www.github.com/MetPy/MetPy',)
 
 if not version.release:
   # Remove __git_version__ so that if we run from local, an outdated version
   # won't be found
-  os.remove(version._git_file_path)
-  os.remove(version._git_file_path + 'c') #The .pyc file
+  if os.path.exists(version._git_file_path):
+      os.remove(version._git_file_path)
+  if os.path.exists(version._git_file_path + 'c'):
+      os.remove(version._git_file_path + 'c') #The .pyc file
 
   cleanup('.', '.html')
   cleanup('.', '.pyc')
