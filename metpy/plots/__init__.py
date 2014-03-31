@@ -1,2 +1,2 @@
 #!/usr/bin/python
-import ctables
+from . import ctables
