@@ -154,6 +154,16 @@ class SkewT(object):
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
         self.ax.set_xlim(-50, 50)
 
+    def plot_barbs(self, p, u, v, xloc=1.0, **kwargs):
+        # Assemble array of x-locations in axes space
+        x = np.empty_like(p)
+        x.fill(xloc)
+
+        # Do barbs plot at this location
+        self.ax.barbs(x, p, u, v,
+                transform=self.ax.get_yaxis_transform(which='tick2'),
+                clip_on=False, **kwargs)
+
     def plot_dry_adiabats(self, T0=None, P=None, **kwargs):
         # Determine set of starting temps if necessary
         if T0 is None:
