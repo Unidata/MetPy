@@ -4,13 +4,14 @@ __all__ = ['vapor_pressure', 'saturation_vapor_pressure', 'dewpoint',
            'dewpoint_rh', 'get_speed_dir', 'potential_temperature',
            'get_wind_components', 'mixing_ratio', 'tke', 'windchill',
            'heat_index', 'h_convergence', 'v_vorticity', 'dry_lapse',
-           'moist_lapse',
+           'moist_lapse', 'lcl',
            'convergence_vorticity', 'advection', 'geostrophic_wind']
 
 import numpy as np
 import scipy.integrate as si
+import scipy.optimize as so
 from numpy.ma import log, exp, cos, sin, masked_array
-from scipy.constants import degree, kilo, hour, g, K2C
+from scipy.constants import degree, kilo, hour, g, K2C, C2K
 from ..constants import epsilon, kappa, P0, Rd, Lv, Cp_d
 
 sat_pressure_0c = 6.112  # mb
@@ -80,6 +81,31 @@ def moist_lapse(pressure, temperature):
         return (1. / P) * ((Rd * T + Lv * rs) /
             (Cp_d + (Lv * Lv * rs * epsilon / (Rd * T * T))))
     return si.odeint(dT, temperature.squeeze(), pressure.squeeze()).T
+
+
+def lcl(pressure, temperature, dewpt):
+    '''
+    Calculate the lifted condensation level (LCL) using from the starting
+    point *temperature* and *dewpoint*, located at *pressure*.
+
+    pressure : scalar or array
+        The atmospheric pressure in mb
+
+    temperature : scalar or array
+        The temperature in Kelvin
+
+    dewpt : scalar or array
+        The dew point in Kelvin
+
+    Returns : scalar or array
+        The LCL in mb with the shape determined by numpy broadcasting rules.
+    '''
+    w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
+    def diff(P):
+        T = K2C(dry_lapse(P, C2K(temperature), pressure))
+        Td = dewpoint(vapor_pressure(P, w))
+        return (T - Td)**2
+    return so.minimize(diff, pressure).x
 
 
 def vapor_pressure(pressure, mixing):
