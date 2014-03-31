@@ -6,7 +6,7 @@ import matplotlib.path as mpath
 from matplotlib.projections import register_projection
 from matplotlib.ticker import ScalarFormatter, MultipleLocator
 from matplotlib.collections import LineCollection
-from metpy.calc.basic import dry_lapse, dewpoint, vapor_pressure
+from metpy.calc.basic import dry_lapse, moist_lapse, dewpoint, vapor_pressure
 from scipy.constants import C2K, K2C
 import numpy as np
 
@@ -162,14 +162,35 @@ class SkewT(object):
 
         # Get pressure levels based on ylims if necessary
         if P is None:
-            P = np.linspace(*self.ax.get_ylim()).reshape(1, -1)
+            P = np.linspace(*self.ax.get_ylim())
 
         # Assemble into data for plotting
         T = K2C(dry_lapse(P, C2K(T0[:, np.newaxis])))
-        linedata = [np.vstack((t[np.newaxis,:], P)).T for t in T]
+        linedata = [np.vstack((t, P)).T for t in T]
 
         # Add to plot
         kwargs.setdefault('colors', 'r')
+        kwargs.setdefault('linestyles', 'dashed')
+        kwargs.setdefault('alpha', 0.5)
+        self.ax.add_collection(LineCollection(linedata, **kwargs))
+
+    def plot_moist_adiabats(self, T0=None, P=None, **kwargs):
+        # Determine set of starting temps if necessary
+        if T0 is None:
+            xmin,xmax = self.ax.get_xlim()
+            T0 = np.concatenate((np.arange(xmin, 0, 10),
+                np.arange(0, xmax + 1, 5)))
+
+        # Get pressure levels based on ylims if necessary
+        if P is None:
+            P = np.linspace(*self.ax.get_ylim())
+
+        # Assemble into data for plotting
+        T = K2C(moist_lapse(P, C2K(T0[:, np.newaxis])))
+        linedata = [np.vstack((t, P)).T for t in T]
+
+        # Add to plot
+        kwargs.setdefault('colors', 'b')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
         self.ax.add_collection(LineCollection(linedata, **kwargs))
@@ -182,11 +203,11 @@ class SkewT(object):
 
         # Set pressure range if necessary
         if P is None:
-            P = np.linspace(600, max(self.ax.get_ylim())).reshape(1, -1)
+            P = np.linspace(600, max(self.ax.get_ylim()))
 
         # Assemble data for plotting
         Td = dewpoint(vapor_pressure(P, w))
-        linedata = [np.vstack((t[np.newaxis,:], P)).T for t in Td]
+        linedata = [np.vstack((t, P)).T for t in Td]
 
         # Add to plot
         kwargs.setdefault('colors', 'g')
