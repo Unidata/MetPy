@@ -35,7 +35,8 @@ def potential_temperature(pressure, temperature):
     return temperature * (P0 / (pressure * 100))**kappa
 
 
-def dry_lapse(pressure, temperature):
+# Dividing P0 by 100 converts to mb
+def dry_lapse(pressure, temperature, starting_pressure=P0 / 100):
     '''
     Calculate the temperature at given *pressure* level from starting
     *temperature*, assuming only dry processes. That is, assuming potential
@@ -45,14 +46,16 @@ def dry_lapse(pressure, temperature):
         The atmospheric pressure in mb
 
     temperature : scalar or array
-        The temperature in Kelvin
+        The starting temperature in Kelvin
+
+    starting_pressure : scalar or array
+        The pressure at the starting point. Defaults to P0 (1000 mb).
 
     Returns : scalar or array
        The temperature corresponding to the the starting temperature and
        pressure levels, with the shape determined by numpy broadcasting rules.
     '''
-    # Factor of 100 converts mb to Pa. Really need unit support here.
-    return temperature * (pressure * 100 / P0)**kappa
+    return temperature * (pressure / starting_pressure)**kappa
 
 
 def moist_lapse(pressure, temperature):
