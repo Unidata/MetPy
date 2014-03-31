@@ -1,3 +1,2 @@
 #!/usr/bin/python
-from . import ctables
-from . import skewt
+from .skewt import *
