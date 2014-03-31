@@ -35,18 +35,19 @@ def potential_temperature(pressure, temperature):
 
 def dry_lapse(pressure, temperature):
     '''
-    Calculate the potential temperature given *pressure* and
-    *temperature*.
+    Calculate the temperature at given *pressure* level from starting
+    *temperature*, assuming only dry processes. That is, assuming potential
+    temperature is conserved.
 
     pressure : scalar or array
-        The total atmospheric pressure in mb
+        The atmospheric pressure in mb
 
     temperature : scalar or array
         The temperature in Kelvin
 
     Returns : scalar or array
-       The potential temperature corresponding to the the tempearture and
-       pressure, with the shape determined by numpy broadcasting rules.
+       The temperature corresponding to the the starting temperature and
+       pressure levels, with the shape determined by numpy broadcasting rules.
     '''
     # Factor of 100 converts mb to Pa. Really need unit support here.
     return temperature * (pressure * 100 / P0)**kappa
