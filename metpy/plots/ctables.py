@@ -2249,7 +2249,7 @@ _BuDRd12_data = {'blue': [(0.0, 0.84999999999999998, 0.84999999999999998),
                          (1.0, 0.65000000000000002, 0.65000000000000002)]}
 
 datad = {}
-for name in locals().keys():
+for name in locals().copy().keys():
     if name.endswith('_data'):
         newname = name[1:-5]
 
