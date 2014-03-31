@@ -154,24 +154,45 @@ class SkewT(object):
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
         self.ax.set_xlim(-50, 50)
 
-    def plot_dry_adiabats(self):
-        T0 = np.arange(-50, 60, 10)
-        P = np.linspace(*self.ax.get_ylim()).reshape(1, -1)
+    def plot_dry_adiabats(self, T0=None, P=None, **kwargs):
+        # Determine set of starting temps if necessary
+        if T0 is None:
+            xmin,xmax = self.ax.get_xlim()
+            T0 = np.arange(xmin, xmax + 1, 10)
+
+        # Get pressure levels based on ylims if necessary
+        if P is None:
+            P = np.linspace(*self.ax.get_ylim()).reshape(1, -1)
+
+        # Assemble into data for plotting
         T = K2C(dry_lapse(P, C2K(T0[:, np.newaxis])))
         linedata = [np.vstack((t[np.newaxis,:], P)).T for t in T]
-        dry_adiabats = LineCollection(linedata, colors='r',
-            linestyles='dashed', alpha=0.5)
-        self.ax.add_collection(dry_adiabats)
 
-    def plot_mixing_lines(self):
-        w = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01, 0.016, 0.024,
-            0.032]).reshape(-1, 1)
-        P = np.linspace(600, max(self.ax.get_ylim())).reshape(1, -1)
+        # Add to plot
+        kwargs.setdefault('colors', 'r')
+        kwargs.setdefault('linestyles', 'dashed')
+        kwargs.setdefault('alpha', 0.5)
+        self.ax.add_collection(LineCollection(linedata, **kwargs))
+
+    def plot_mixing_lines(self, w=None, P=None, **kwargs):
+        # Default mixing level values if necessary
+        if w is None:
+            w = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01,
+                0.016, 0.024, 0.032]).reshape(-1, 1)
+
+        # Set pressure range if necessary
+        if P is None:
+            P = np.linspace(600, max(self.ax.get_ylim())).reshape(1, -1)
+
+        # Assemble data for plotting
         Td = dewpoint(vapor_pressure(P, w))
         linedata = [np.vstack((t[np.newaxis,:], P)).T for t in Td]
-        mixing = LineCollection(linedata, colors='g', linestyles='dashed',
-            alpha=0.8)
-        self.ax.add_collection(mixing)
+
+        # Add to plot
+        kwargs.setdefault('colors', 'g')
+        kwargs.setdefault('linestyles', 'dashed')
+        kwargs.setdefault('alpha', 0.8)
+        self.ax.add_collection(LineCollection(linedata, **kwargs))
 
 
 __all__ = ['SkewT']
