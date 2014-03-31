@@ -5,6 +5,8 @@ python:
   - 2.6
   - 2.7
   - 3.3
+notifications:
+  email: false
 before_install:
   - uname -a
   - free -m
