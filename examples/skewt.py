@@ -36,6 +36,7 @@ l = skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
 skew.plot_dry_adiabats()
 skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
+skew.ax.set_ylim(1000, 100)
 
 # Show the plot
 plt.show()
