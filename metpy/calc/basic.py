@@ -4,7 +4,7 @@ __all__ = ['vapor_pressure', 'saturation_vapor_pressure', 'dewpoint',
            'dewpoint_rh', 'get_speed_dir', 'potential_temperature',
            'get_wind_components', 'mixing_ratio', 'tke', 'windchill',
            'heat_index', 'h_convergence', 'v_vorticity', 'dry_lapse',
-           'moist_lapse', 'lcl',
+           'moist_lapse', 'lcl', 'parcel_profile',
            'convergence_vorticity', 'advection', 'geostrophic_wind']
 
 import numpy as np
@@ -106,6 +106,40 @@ def lcl(pressure, temperature, dewpt):
         Td = dewpoint(vapor_pressure(P, w))
         return (T - Td)**2
     return so.minimize(diff, pressure).x
+
+
+def parcel_profile(pressure, temperature, dewpt):
+    '''
+    Calculate the profile a parcel takes through the atmosphere, lifting
+    from the starting point at *temperature*, and *dewpt*, up
+    dry adiabatically to the LCL, and then moist adiabatically from there.
+    *pressure* is the pressure levels for the profile.
+
+    pressure : scalar or array
+        The atmospheric pressure in mb. The first entry should be the starting
+        point pressure.
+
+    temperature : scalar or array
+        The temperature in Kelvin
+
+    dewpt : scalar or array
+        The dew point in Kelvin
+
+    Returns : scalar or array
+        The parcel temperatures corresponding to the specified pressure
+        levels.
+    '''
+    # Find the LCL
+    l = lcl(pressure[0], temperature, dewpt)
+
+    # Find the dry adiabatic profile, *including* the LCL
+    press_lower = np.concatenate((pressure[pressure > l], l))
+    T1 = dry_lapse(press_lower, C2K(temperature), pressure[0])
+
+    # Find moist pseudo-adiabatic; combine and return, making sure to
+    # elminate (duplicated) starting point
+    T2 = moist_lapse(pressure[pressure < l], T1[-1]).squeeze()
+    return K2C(np.concatenate((T1, T2[1:])))
 
 
 def vapor_pressure(pressure, mixing):
