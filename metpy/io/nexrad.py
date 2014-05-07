@@ -701,17 +701,17 @@ class Level3File(object):
         ret = dict()
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             # Read position
-            ret.setdefault('y', list()).append(self._buffer.read_int('>H'))
-            ret.setdefault('x', list()).append(self._buffer.read_int('>H'))
+            ret.setdefault('y', list()).append(self._buffer.read_int('>h'))
+            ret.setdefault('x', list()).append(self._buffer.read_int('>h'))
 
             # Handle any types that have additional info
             if code in (3, 11, 25):
-                ret.setdefault('radius', list()).append(self._buffer.read_int('>H'))
+                ret.setdefault('radius', list()).append(self._buffer.read_int('>h'))
             elif code == 15:
                 ret.setdefault('id', list()).append(''.join(self._buffer.read(2)))
             elif code == 19:
-                ret.setdefault('POH', list()).append(self._buffer.read_int('>H'))
-                ret.setdefault('POSH', list()).append(self._buffer.read_int('>H'))
+                ret.setdefault('POH', list()).append(self._buffer.read_int('>h'))
+                ret.setdefault('POSH', list()).append(self._buffer.read_int('>h'))
                 ret.setdefault('Max Size', list()).append(self._buffer.read_int('>H'))
             elif code == 20:
                 kind = self._buffer.read_int('>H')
