@@ -365,6 +365,7 @@ class Level3File(object):
                             ('source', 5), ('avg_speed', scaled_elem(7, 0.1)), ('avg_dir', scaled_elem(8, 0.1))),
                      57  : (('el_angle', scaled_elem(2, 0.1)), ('max', 3)), # Max in kg / m^2
                      58  : (('num_storms', 3),),
+                     61  : (('num_tvs', 3), ('num_etvs', 4)),
                      78  : (('max_rainfall', scaled_elem(3, 0.1)), ('bias', scaled_elem(4, 0.01)),
                             ('gr_pairs', scaled_elem(5, 0.01)), ('rainfall_end', date_elem(6, 7))),
                      79  : (('max_rainfall', scaled_elem(3, 0.1)), ('bias', scaled_elem(4, 0.01)),
