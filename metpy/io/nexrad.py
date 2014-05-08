@@ -887,6 +887,50 @@ class Level3File(object):
         data = ''.join(self._buffer.read(num_bytes))
         return dict(xdrdata=data)
 
+    def _unpack_packet_trend_times(self, code):
+        num_bytes = self._buffer.read_int('>h')
+        return dict(times=self._read_trends())
+
+    def _unpack_packet_cell_trend(self, code):
+        code_map = ['Cell Top', 'Cell Base', 'Max Reflectivity Height',
+                    'Probability of Hail', 'Probability of Severe Hail',
+                    'Cell-based VIL', 'Maximum Reflectivity',
+                    'Centroid Height']
+        code_scales = [100, 100, 100, 1, 1, 1, 1, 100]
+        num_bytes = self._buffer.read_int('>h')
+        packet_data_start = self._buffer.set_mark()
+        cell_id = ''.join(self._buffer.read(2))
+        y = self._buffer.read_int('>h')
+        x = self._buffer.read_int('>h')
+        ret = dict(id=cell_id, x=x, y=y)
+        while self._buffer.offset_from(packet_data_start) < num_bytes:
+            code = self._buffer.read_int('>h')
+            try:
+                ind = code - 1
+                key = code_map[ind]
+                scale = code_scales[ind]
+            except IndexError:
+                warnings.warn('{0}: Unsupported trend code {1}/{1:#x}.'.format(self._filename, code))
+                key = 'Unknown'
+                scale = 1
+            vals = self._read_trends()
+            if code in (1,2):
+                ret['%s Limited' % key] = [True if v > 700 else False for v in vals]
+                vals = [v - 1000 if v > 700 else v for v in vals]
+            ret[key] = [v * scale for v in vals]
+
+        return ret
+
+    def _read_trends(self):
+        num_vols = self._buffer.read_int('b')
+        latest = self._buffer.read_int('b')
+        vals = [self._buffer.read_int('>h') for i in range(num_vols)]
+
+        # Wrap the circular buffer so that latest is last
+        vals = vals[latest:] + vals[:latest]
+        return vals
+
+
     packet_map = {1      : _unpack_packet_uniform_text,
                   2      : _unpack_packet_special_text_symbol,
                   3      : _unpack_packet_special_graphic_symbol,
@@ -905,6 +949,8 @@ class Level3File(object):
                   18     : _unpack_packet_digital_precipitation,
                   19     : _unpack_packet_special_graphic_symbol,
                   20     : _unpack_packet_special_graphic_symbol,
+                  21     : _unpack_packet_cell_trend,
+                  22     : _unpack_packet_trend_times,
                   23     : _unpack_packet_scit,
                   24     : _unpack_packet_scit,
                   25     : _unpack_packet_special_graphic_symbol,
