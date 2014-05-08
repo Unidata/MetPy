@@ -491,6 +491,11 @@ class Level3File(object):
         self._buffer = IOBuffer(self._buffer.read_func(zlib_decompress_all_frames))
         self._process_WMO_header()
 
+        # Check for empty product
+        if len(self._buffer) == 0:
+            warnings.warn("{}: Empty product!".format(self._filename))
+            return
+
         # Set up places to store data and metadata
 #        self.data = []
         self.metadata = dict()
