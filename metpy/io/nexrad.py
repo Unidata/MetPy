@@ -245,6 +245,9 @@ class IOBuffer(object):
     def truncate(self, num_bytes):
         self._data = self._data[:-num_bytes]
 
+    def at_end(self):
+        return self._offset >= len(self._data)
+
     def __getitem__(self, item):
         return self._data[item]
 
@@ -349,6 +352,7 @@ class Level3File(object):
         'SymLayer')
     graph_block_fmt = NamedStruct([('divider', 'h'), ('block_id', 'h'),
         ('block_len', 'L'), ('num_pages', 'H')], '>', 'GraphBlock')
+    standalone_tabular = [73, 62, 75, 82]
     prod_spec_map = {16  : (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8))),
                      17  : (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8))),
                      18  : (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8))),
@@ -366,6 +370,7 @@ class Level3File(object):
                      57  : (('el_angle', scaled_elem(2, 0.1)), ('max', 3)), # Max in kg / m^2
                      58  : (('num_storms', 3),),
                      61  : (('num_tvs', 3), ('num_etvs', 4)),
+                     62  : (),
                      78  : (('max_rainfall', scaled_elem(3, 0.1)), ('bias', scaled_elem(4, 0.01)),
                             ('gr_pairs', scaled_elem(5, 0.01)), ('rainfall_end', date_elem(6, 7))),
                      79  : (('max_rainfall', scaled_elem(3, 0.1)), ('bias', scaled_elem(4, 0.01)),
@@ -495,12 +500,24 @@ class Level3File(object):
 
         # Unpack the various blocks, if present.  The factor of 2 converts from
         # 'half-words' to bytes
-        if self.prod_desc.sym_off:
-            self._unpack_symblock(msg_start, 2 * self.prod_desc.sym_off)
-        if self.prod_desc.graph_off:
-            self._unpack_graphblock(msg_start, 2 * self.prod_desc.graph_off)
-        if self.prod_desc.tab_off:
-            self._unpack_tabblock(msg_start, 2 * self.prod_desc.tab_off)
+        # Check to see if this is one of the "special" products that uses
+        # header-free blocks and re-assigns the offests
+        if self.header.code in self.standalone_tabular:
+            if self.prod_desc.sym_off:
+                # For standalone tabular alphanumeric, symbology offset is actually
+                # tabular
+                self._unpack_tabblock(msg_start, 2 * self.prod_desc.sym_off, False)
+            if self.prod_desc.graph_off:
+                # Offset seems to be off by 1 from where we're counting, but
+                # it's not clear why.
+                self._unpack_standalone_graphblock(msg_start, 2 * (self.prod_desc.graph_off - 1))
+        else:
+            if self.prod_desc.sym_off:
+                self._unpack_symblock(msg_start, 2 * self.prod_desc.sym_off)
+            if self.prod_desc.graph_off:
+                self._unpack_graphblock(msg_start, 2 * self.prod_desc.graph_off)
+            if self.prod_desc.tab_off:
+                self._unpack_tabblock(msg_start, 2 * self.prod_desc.tab_off)
 
         if 'defaultVals' in self.metadata:
             warnings.warn("{}: Using default metadata for product {}".format(self._filename, self.header.code))
@@ -551,8 +568,8 @@ class Level3File(object):
     def _unpack_graphblock(self, start, offset):
         self._buffer.jump_to(start, offset)
         hdr = self._buffer.read_struct(self.graph_block_fmt)
-        assert hdr.divider == -1
-        assert hdr.block_id == 2
+        assert hdr.divider == -1, 'Bad divider for graphical block: %d should be -1' % hdr.divider
+        assert hdr.block_id == 2, 'Bad block ID for graphical block: %d should be 1' % hdr.block_id
         self.graph_pages = []
         for page in range(hdr.num_pages):
             page_num = self._buffer.read_int('>H')
@@ -569,19 +586,34 @@ class Level3File(object):
                     self._buffer.skip(page_size)
             self.graph_pages.append(packets)
 
-    def _unpack_tabblock(self, start, offset):
+    def _unpack_standalone_graphblock(self, start, offset):
+        self._buffer.jump_to(start, offset)
+        packets = []
+        while not self._buffer.at_end():
+            packet_code = self._buffer.read_int('>H')
+            if packet_code in self.packet_map:
+                packets.append(self.packet_map[packet_code](self, packet_code))
+            else:
+                warnings.warn('{0}: Unknown standalone graphical packet type {1}/{1:#x}.'.format(self._filename, packet_code))
+                # Assume next 2 bytes is packet length and try skipping
+                num_bytes = self._buffer.read_int('>H')
+                self._buffer.skip(num_bytes)
+        self.graph_pages = [packets]
+
+    def _unpack_tabblock(self, start, offset, haveHeader=True):
         self._buffer.jump_to(start, offset)
         block_start = self._buffer.set_mark()
 
-        # Read the header and validate
-        header = self._buffer.read_struct(self.tab_header_fmt)
-        assert header.divider == -1
-        assert header.block_id == 3
+        # Read the header and validate if needed
+        if haveHeader:
+            header = self._buffer.read_struct(self.tab_header_fmt)
+            assert header.divider == -1
+            assert header.block_id == 3
 
-        # Read off secondary message and product description blocks,
-        # but as far as I can tell, all we really need is the text that follows
-        msg_header2 = self._buffer.read_struct(self.header_fmt)
-        prod_desc2 = self._buffer.read_struct(self.prod_desc_fmt)
+            # Read off secondary message and product description blocks,
+            # but as far as I can tell, all we really need is the text that follows
+            msg_header2 = self._buffer.read_struct(self.header_fmt)
+            prod_desc2 = self._buffer.read_struct(self.prod_desc_fmt)
 
         # Get the start of the block with number of pages and divider
         blk = self._buffer.read_struct(self.tab_block_fmt)
@@ -596,7 +628,9 @@ class Level3File(object):
                 lines.append(''.join(self._buffer.read(num_chars)))
                 num_chars = self._buffer.read_int('>h')
             self.tab_pages.append('\n'.join(lines))
-        assert self._buffer.offset_from(block_start) == header.block_len
+
+        if haveHeader:
+            assert self._buffer.offset_from(block_start) == header.block_len
 
     def __repr__(self):
         return self._filename + ': ' + '\n'.join(map(str, [self.header, self.prod_desc, self.thresholds,
