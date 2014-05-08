@@ -333,6 +333,19 @@ class Level3File(object):
     header_fmt = NamedStruct([('code', 'H'), ('date', 'H'), ('time', 'l'),
         ('msg_len', 'L'), ('src_id', 'h'), ('dest_id', 'h'),
         ('num_blks', 'H')], '>', 'MsgHdr')
+    # See figure 3-17 in 2620001 document for definition of status bit fields
+    gsm_fmt = NamedStruct([('divider', 'h'), ('block_len', 'H'),
+        ('op_mode', 'h'), ('rda_op_status', 'h'), ('vcp', 'h'), ('num_el', 'h'),
+        ('el1', 'h'), ('el2', 'h'), ('el3', 'h'), ('el4', 'h'), ('el5', 'h'),
+        ('el6', 'h'), ('el7', 'h'), ('el8', 'h'), ('el9', 'h'), ('el10', 'h'),
+        ('el11', 'h'), ('el12', 'h'), ('el13', 'h'), ('el14', 'h'), ('el15', 'h'),
+        ('el16', 'h'), ('el17', 'h'), ('el18', 'h'), ('el19', 'h'), ('el20', 'h'),
+        ('rda_status', 'h'), ('rda_alarms', 'h'), ('tranmission_enable', 'h'),
+        ('rpg_op_status', 'h'), ('rpg_alarms', 'h'), ('rpg_status', 'h'),
+        ('rpg_narrowband_status', 'h'), ('h_ref_calib', 'h'), ('prod_avail', 'h'),
+        ('super_res_cuts', 'h'), ('cmd_status', 'h'), ('v_ref_calib', 'h'),
+        ('rda_build', 'h'), ('rda_channel', 'h'), ('reserved', 'h'),
+        ('reserved2', 'h'), ('build_version', 'h')], '>', 'GSM')
     prod_desc_fmt = NamedStruct([('divider', 'h'), ('lat', 'l'), ('lon', 'l'),
         ('height', 'h'), ('prod_code', 'h'), ('op_mode', 'h'),
         ('vcp', 'h'), ('seq_num', 'H'), ('vol_num', 'H'),
@@ -465,6 +478,14 @@ class Level3File(object):
         self.header = self._buffer.read_struct(self.header_fmt)
         #print self.header, len(self._buffer), self.header.msg_len - self.header_fmt.size
         assert self._buffer.check_remains(self.header.msg_len - self.header_fmt.size), 'Insufficient bytes remaining.'
+
+        # Handle GSM and jump out
+        if self.header.code == 2:
+            self.gsm = self._buffer.read_struct(self.gsm_fmt)
+            assert self.gsm.divider == -1
+            assert self.gsm.block_len == 82
+            return
+
         self.prod_desc = self._buffer.read_struct(self.prod_desc_fmt)
 
         # Convert thresholds and dependent values to lists of values
