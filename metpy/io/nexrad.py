@@ -329,7 +329,7 @@ def zlib_decompress_all_frames(data):
     return ''.join(frames) + data
 
 class Level3File(object):
-    wmo_finder = re.compile('(?:NX|SD)US\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
+    wmo_finder = re.compile('((?:NX|SD|NO)US)\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
     header_fmt = NamedStruct([('code', 'H'), ('date', 'H'), ('time', 'l'),
         ('msg_len', 'L'), ('src_id', 'h'), ('dest_id', 'h'),
         ('num_blks', 'H')], '>', 'MsgHdr')
@@ -487,6 +487,11 @@ class Level3File(object):
         # Pop off last 4 bytes if necessary
         self._process_end_bytes()
 
+        # Handle free text message products that are pure text
+        if self.wmo_code == 'NOUS':
+            self.text = ''.join(self._buffer.read())
+            return
+
         # Decompress the data if necessary, and if so, pop off new header
         self._buffer = IOBuffer(self._buffer.read_func(zlib_decompress_all_frames))
         self._process_WMO_header()
@@ -580,6 +585,7 @@ class Level3File(object):
         data = self._buffer.get_next(64)
         match = self.wmo_finder.match(data)
         if match:
+            self.wmo_code = match.groups()[0]
             self.siteID = match.groups()[-1]
             self._buffer.skip(match.end())
 
