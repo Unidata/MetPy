@@ -367,7 +367,7 @@ class Level3File(object):
         'SymLayer')
     graph_block_fmt = NamedStruct([('divider', 'h'), ('block_id', 'h'),
         ('block_len', 'L'), ('num_pages', 'H')], '>', 'GraphBlock')
-    standalone_tabular = [73, 62, 75, 82]
+    standalone_tabular = [62, 73, 75, 82]
     prod_spec_map = {16  : (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8))),
                      17  : (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8))),
                      18  : (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8))),
@@ -386,6 +386,7 @@ class Level3File(object):
                      58  : (('num_storms', 3),),
                      61  : (('num_tvs', 3), ('num_etvs', 4)),
                      62  : (),
+                     74  : (),
                      78  : (('max_rainfall', scaled_elem(3, 0.1)), ('bias', scaled_elem(4, 0.01)),
                             ('gr_pairs', scaled_elem(5, 0.01)), ('rainfall_end', date_elem(6, 7))),
                      79  : (('max_rainfall', scaled_elem(3, 0.1)), ('bias', scaled_elem(4, 0.01)),
@@ -534,6 +535,9 @@ class Level3File(object):
                 # Offset seems to be off by 1 from where we're counting, but
                 # it's not clear why.
                 self._unpack_standalone_graphblock(msg_start, 2 * (self.prod_desc.graph_off - 1))
+        # Need special handling for (old) radar coded message format
+        elif self.header.code == 74:
+            self._unpack_rcm(msg_start, 2 * self.prod_desc.sym_off)
         else:
             if self.prod_desc.sym_off:
                 self._unpack_symblock(msg_start, 2 * self.prod_desc.sym_off)
@@ -564,6 +568,12 @@ class Level3File(object):
             num,val = run>>4, run&0x0F
             unpacked.extend([self.thresholds[val]]*num)
         return unpacked
+
+    def _unpack_rcm(self, start, offset):
+        self._buffer.jump_to(start, offset)
+        header = self._buffer.read(10)
+        assert header == '1234 ROBUU'
+        #warnings.warn("{}: RCM decoding not supported.".format(self._filename))
 
     def _unpack_symblock(self, start, offset):
         self._buffer.jump_to(start, offset)
