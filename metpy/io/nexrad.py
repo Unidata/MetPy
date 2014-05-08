@@ -1,6 +1,7 @@
 import bz2
 import datetime
 import gzip
+import re
 import warnings
 import zlib
 from struct import Struct
@@ -328,6 +329,7 @@ def zlib_decompress_all_frames(data):
     return ''.join(frames) + data
 
 class Level3File(object):
+    wmo_finder = re.compile('(?:NX|SD)US\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
     header_fmt = NamedStruct([('code', 'H'), ('date', 'H'), ('time', 'l'),
         ('msg_len', 'L'), ('src_id', 'h'), ('dest_id', 'h'),
         ('num_blks', 'H')], '>', 'MsgHdr')
@@ -525,10 +527,10 @@ class Level3File(object):
     def _process_WMO_header(self):
         # Read off the WMO header if necessary
         data = self._buffer.get_next(64)
-        if 'SDUS' in data:
-            endIndex = data.rfind('\r\r\n')
-            self.siteID = data[endIndex - 3:endIndex]
-            self._buffer.skip(endIndex + 3)
+        match = self.wmo_finder.match(data)
+        if match:
+            self.siteID = match.groups()[-1]
+            self._buffer.skip(match.end())
 
     def _process_end_bytes(self):
         if self._buffer[-4:-1] == '\r\r\n':
