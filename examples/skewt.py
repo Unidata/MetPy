@@ -21,11 +21,11 @@ skew.plot(p, T, 'r')
 skew.plot(p, Td, 'g')
 skew.plot_barbs(p, u, v)
 
-l = lcl(p[0], T[0], Td[0])
+l = lcl(p[0], C2K(T[0]), C2K(Td[0]))
 skew.plot(l, K2C(dry_lapse(l, C2K(T[0]), p[0])), 'ko',
         markerfacecolor='black')
 
-prof = parcel_profile(p, T[0], Td[0])
+prof = parcel_profile(p, C2K(T[0]), C2K(Td[0]))
 skew.plot(p, prof, 'k', linewidth=2)
 
 # An example of a slanted line at constant T -- in this case the 0

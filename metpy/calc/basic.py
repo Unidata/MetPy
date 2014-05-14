@@ -83,7 +83,7 @@ def moist_lapse(pressure, temperature):
     return si.odeint(dT, temperature.squeeze(), pressure.squeeze()).T
 
 
-def lcl(pressure, temperature, dewpt):
+def lcl(pressure, temperature, dewpt, maxIters=50, eps=1e-2):
     '''
     Calculate the lifted condensation level (LCL) using from the starting
     point *temperature* and *dewpoint*, located at *pressure*.
@@ -100,12 +100,16 @@ def lcl(pressure, temperature, dewpt):
     Returns : scalar or array
         The LCL in mb with the shape determined by numpy broadcasting rules.
     '''
-    w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
-    def diff(P):
-        T = K2C(dry_lapse(P, C2K(temperature), pressure))
-        Td = dewpoint(vapor_pressure(P, w))
-        return (T - Td)**2
-    return so.minimize(diff, pressure).x
+    w = mixing_ratio(saturation_vapor_pressure(K2C(dewpt)), pressure)
+    P = pressure
+    while maxIters:
+        Td = C2K(dewpoint(vapor_pressure(P, w)))
+        newP = pressure * (Td / temperature) ** (1. / kappa)
+        if np.abs(newP - P).max() < eps:
+            break
+        P = newP
+        maxIters -= 1
+    return newP
 
 
 def parcel_profile(pressure, temperature, dewpt):
@@ -130,16 +134,16 @@ def parcel_profile(pressure, temperature, dewpt):
         levels.
     '''
     # Find the LCL
-    l = lcl(pressure[0], temperature, dewpt)
+    l = np.atleast_1d(lcl(pressure[0], temperature, dewpt))
 
     # Find the dry adiabatic profile, *including* the LCL
     press_lower = np.concatenate((pressure[pressure > l], l))
-    T1 = dry_lapse(press_lower, C2K(temperature), pressure[0])
+    T1 = dry_lapse(press_lower, temperature, pressure[0])
 
     # Find moist pseudo-adiabatic; combine and return, making sure to
     # elminate (duplicated) starting point
     T2 = moist_lapse(pressure[pressure < l], T1[-1]).squeeze()
-    return K2C(np.concatenate((T1, T2[1:])))
+    return np.concatenate((T1, T2[1:]))
 
 
 def vapor_pressure(pressure, mixing):
