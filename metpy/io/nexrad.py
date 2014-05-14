@@ -329,6 +329,7 @@ def zlib_decompress_all_frames(data):
     return ''.join(frames) + data
 
 class Level3File(object):
+    ij_to_km = 0.25
     wmo_finder = re.compile('((?:NX|SD|NO)US)\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
     header_fmt = NamedStruct([('code', 'H'), ('date', 'H'), ('time', 'l'),
         ('msg_len', 'L'), ('src_id', 'h'), ('dest_id', 'h'),
@@ -717,7 +718,9 @@ class Level3File(object):
             rads.append((start_az, end_az,
                          self._unpack_rle_data(self._buffer.read_binary(2 * rad.num_hwords))))
         start,end,vals = zip(*rads)
-        return dict(start_az=list(start), end_az=list(end), data=list(vals))
+        return dict(start_az=list(start), end_az=list(end), data=list(vals),
+                center=(hdr.i_center * self.ij_to_km, hdr.j_center * self.ij_to_km),
+                gate_scale=hdr.scale_factor * 0.001, first=hdr.ind_first_bin)
 
     def _unpack_packet_digital_radial(self, code):
         hdr_fmt = NamedStruct([('ind_first_bin', 'H'), ('nbins', 'H'),
@@ -733,7 +736,9 @@ class Level3File(object):
             end_az = start_az + rad.angle_delta * 0.1
             rads.append((start_az, end_az, self._buffer.read_binary(rad.num_bytes)))
         start,end,vals = zip(*rads)
-        return dict(start_az=list(start), end_az=list(end), data=list(vals))
+        return dict(start_az=list(start), end_az=list(end), data=list(vals),
+                center=(hdr.i_center * self.ij_to_km, hdr.j_center * self.ij_to_km),
+                gate_scale=hdr.scale_factor * 0.001, first=hdr.ind_first_bin)
 
     def _unpack_packet_raster_data(self, code):
         hdr_fmt = NamedStruct([('code', 'L'), ('i_start', 'h'), ('j_start', 'h'), # start in km/4
@@ -747,8 +752,8 @@ class Level3File(object):
         for row in range(hdr.num_rows):
             num_bytes = self._buffer.read_int('>H')
             rows.append(self._unpack_rle_data(self._buffer.read_binary(num_bytes)))
-        return dict(start_x=hdr.j_start * hdr.xscale_int,
-                    start_y=hdr.i_start * hdr.yscale_int, data=rows)
+        return dict(start_x=hdr.i_start * hdr.xscale_int,
+                    start_y=hdr.j_start * hdr.yscale_int, data=rows)
 
     def _unpack_packet_uniform_text(self, code):
         # By not using a struct, we can handle multiple codes
@@ -764,7 +769,7 @@ class Level3File(object):
 
         # Text is what remains beyond what's been read, not including byte count
         text = ''.join(self._buffer.read(num_bytes - read_bytes))
-        return dict(x=j_start, y=i_start, color=value, text=text)
+        return dict(x=i_start, y=j_start, color=value, text=text)
 
     def _unpack_packet_special_text_symbol(self, code):
         d = self._unpack_packet_uniform_text(code)
@@ -800,8 +805,8 @@ class Level3File(object):
         ret = dict()
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             # Read position
-            ret.setdefault('y', list()).append(self._buffer.read_int('>h'))
             ret.setdefault('x', list()).append(self._buffer.read_int('>h'))
+            ret.setdefault('y', list()).append(self._buffer.read_int('>h'))
 
             # Handle any types that have additional info
             if code in (3, 11, 25):
@@ -918,13 +923,13 @@ class Level3File(object):
         # Check for color value indicator
         assert self._buffer.read_int('>H') == 0x8000
 
-        starty = self._buffer.read_int('>h')
-        startx = self._buffer.read_int('>h')
+        startx = self._buffer.read_int('>h') * self.ij_to_km
+        starty = self._buffer.read_int('>h') * self.ij_to_km
         vectors = [(startx, starty)]
         num_vecs = self._buffer.read_int('>H') / 4
         for i in range(num_vecs):
-            y = self._buffer.read_int('>h')
-            x = self._buffer.read_int('>h')
+            x = self._buffer.read_int('>h') * self.ij_to_km
+            y = self._buffer.read_int('>h') * self.ij_to_km
             vectors.append((x, y))
         return dict(vectors=vectors)
 
@@ -965,8 +970,8 @@ class Level3File(object):
         num_bytes = self._buffer.read_int('>h')
         packet_data_start = self._buffer.set_mark()
         cell_id = ''.join(self._buffer.read(2))
-        y = self._buffer.read_int('>h')
         x = self._buffer.read_int('>h')
+        y = self._buffer.read_int('>h')
         ret = dict(id=cell_id, x=x, y=y)
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             code = self._buffer.read_int('>h')
