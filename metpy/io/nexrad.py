@@ -2,6 +2,7 @@ import bz2
 import datetime
 import gzip
 import re
+import struct
 import warnings
 import zlib
 from struct import Struct
@@ -304,8 +305,7 @@ def combine_elem(ind1, ind2):
     return inner
 
 def float_elem(ind1, ind2):
-    comb = combine_elem(ind1, ind2)
-    return lambda x: float(comb(x))
+    return lambda seq: struct.unpack('>f', struct.pack('>hh', seq[ind1], seq[ind2]))[0]
 
 def high_byte(ind):
     def inner(seq):
