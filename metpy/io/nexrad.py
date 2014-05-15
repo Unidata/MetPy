@@ -677,7 +677,7 @@ class Level3File(object):
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3),
                              ('layer_bottom', scaled_elem(4, 1000.)), ('layer_top', scaled_elem(5, 1000.)),
                              ('calib_const', float_elem(7, 8)))),
-                     93  : ('ITWS Digital Base Velocity', 120., DigitalVelMapper,
+                     93  : ('ITWS Digital Base Velocity', 115., DigitalVelMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', 3),
                              ('max', 4), ('precision', 6))),
                      94  : ('Base Reflectivity Data Array', 460., DigitalRefMapper,
