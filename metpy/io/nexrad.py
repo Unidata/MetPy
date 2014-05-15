@@ -284,6 +284,11 @@ def nexrad_to_datetime(julian_date, ms_midnight):
     return datetime.datetime.fromtimestamp((julian_date - 1) * day
         + ms_midnight * milli)
 
+def two_comp16(val):
+    if val>>15:
+        val =  -(~val & 0x7fff) - 1
+    return val
+
 def date_elem(ind_days, ind_minutes):
     def inner(seq):
         return nexrad_to_datetime(seq[ind_days], seq[ind_minutes] * 60 * 1000)
@@ -328,6 +333,8 @@ def zlib_decompress_all_frames(data):
         data = decomp.unused_data
     return ''.join(frames) + data
 
+#RANGE_FOLD = -9999
+RANGE_FOLD = float('nan')
 class Level3File(object):
     ij_to_km = 0.25
     wmo_finder = re.compile('((?:NX|SD|NO)US)\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
@@ -655,6 +662,9 @@ class Level3File(object):
             else:
                 self.metadata[name] = self.depVals[block]
 
+        # Now that we have the header, we have everything needed to make tables
+        self._generate_data_lut()
+
         # Process compression if indicated. We need to fail
         # gracefully here since we default to it being on
         if self.metadata.get('compression', False):
@@ -693,6 +703,88 @@ class Level3File(object):
         if 'defaultVals' in self.metadata:
             warnings.warn("{}: Using default metadata for product {}".format(self._filename, self.header.code))
 
+    def _generate_data_lut(self):
+        nan = float('NAN')
+        lut_names = ['Blank', 'TH', 'ND', 'RF', 'BI', 'GC', 'IC', 'GR', 'WS'
+                'DS', 'RA', 'HR', 'BD', 'HA', 'UK']
+        if self.header.code in (32, 81, 93, 94, 99, 153, 154, 155, 194, 195, 199):
+            min_val = two_comp16(self.thresholds[0]) / 10.
+            inc = self.thresholds[1] / 10.
+            num_levels = self.thresholds[2]
+            self.data_lut = [nan] * 256
+            if self.header.code in (32, 94, 153, 194, 195):
+                self.data_lut[0] = nan
+                self.data_lut[1] = nan
+                start,end = 2,255
+                self.units = 'dBZ'
+            elif self.header.code == 81:
+                inc = self.thresholds[1] / 1000.
+                self.data_lut[0] = nan
+                self.data_lut[255] = nan
+                start,end = 1,254
+                self.units = 'dBA'
+            elif self.header.code in (93, 99, 154, 155, 199):
+                self.data_lut[0] = nan
+                self.data_lut[1] = RANGE_FOLD
+                self.units = 'm/s'
+
+                if self.header.code == 155:
+                    start,end = 129,149
+                else:
+                    start,end = 2,255
+
+            # Generate lookup table -- sanity check on num_levels handles
+            # the fact that DHR advertises 256 levels, which *includes*
+            # missing, differing from other products
+            num_levels = min(num_levels, end - start + 1)
+            for i in range(num_levels):
+                self.data_lut[i + start] = min_val + i * inc
+
+        else:
+            self.data_labels = []
+            self.data_lut = []
+            for t in self.thresholds:
+                codes,val = t>>8, t & 0xFF
+                label=''
+                if codes>>7:
+                    label = lut_names[val]
+                    if label in ('Blank', 'TH', 'ND'):
+                        val = nan
+                    elif label == 'RF':
+                        val = RANGE_FOLD
+
+                elif codes>>6:
+                    val *= 0.01
+                    label = '%.2f' % val
+                elif codes>>5:
+                    val *= 0.05
+                    label = '%.2f' % val
+                elif codes>>4:
+                    val *= 0.1
+                    label = '%.1f' % val
+
+                if codes & 0x1:
+                    val *= -1
+                    label = '-' + label
+                elif (codes >> 1) & 0x1:
+                    label = '+' + label
+
+                if (codes >> 2) & 0x1:
+                    label = '<' + label
+                elif (codes >> 3) & 0x1:
+                    label = '>' + label
+
+                if not label:
+                    label = str(val)
+
+                self.data_lut.append(val)
+                self.data_labels.append(label)
+
+        self.data_lut = np.array(self.data_lut)
+
+    def map_data(self, data):
+        return self.data_lut[data]
+
     def _process_WMO_header(self):
         # Read off the WMO header if necessary
         data = self._buffer.get_next(64)
@@ -711,7 +803,7 @@ class Level3File(object):
         unpacked = []
         for run in data:
             num,val = run>>4, run&0x0F
-            unpacked.extend([self.thresholds[val]]*num)
+            unpacked.extend([val]*num)
         return unpacked
 
     def pos_scale(self, isSymBlock):
