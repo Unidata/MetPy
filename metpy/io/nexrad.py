@@ -289,6 +289,25 @@ def two_comp16(val):
         val =  -(~val & 0x7fff) - 1
     return val
 
+def float16(val):
+    # Fraction is 10 LSB, Exponent middle 5, and Sign the MSB
+    frac = val & 0x03ff
+    exp = (val >> 10) & 0x1F
+    sign = val >> 15
+
+    if exp:
+        value = 2 ** (exp - 16) * (1 + float(frac) / 2**10)
+    else:
+        value = float(frac) / 2**9
+
+    if sign:
+        value *= -1
+
+    return value
+
+def float32(short1, short2):
+    return struct.unpack('>f', struct.pack('>hh', short1, short2))[0]
+
 def date_elem(ind_days, ind_minutes):
     def inner(seq):
         return nexrad_to_datetime(seq[ind_days], seq[ind_minutes] * 60 * 1000)
@@ -310,7 +329,7 @@ def combine_elem(ind1, ind2):
     return inner
 
 def float_elem(ind1, ind2):
-    return lambda seq: struct.unpack('>f', struct.pack('>hh', seq[ind1], seq[ind2]))[0]
+    return lambda seq: float32(seq[ind1], seq[ind2])
 
 def high_byte(ind):
     def inner(seq):
@@ -333,8 +352,178 @@ def zlib_decompress_all_frames(data):
         data = decomp.unused_data
     return ''.join(frames) + data
 
-#RANGE_FOLD = -9999
-RANGE_FOLD = float('nan')
+# Data mappers used to take packed data and turn into physical units
+# Default is to use numpy array indexing to use LUT to change data bytes
+# into physical values. Can also have a 'labels' attribute to give 
+# categorical labels
+class DataMapper(object):
+    # Need to find way to handle range folded
+    #RANGE_FOLD = -9999
+    RANGE_FOLD = float('nan')
+    MISSING = float('nan')
+
+    def __call__(self, data):
+        return self.lut[data]
+
+class DigitalMapper(DataMapper):
+    _min_scale = 0.1
+    _inc_scale = 0.1
+    _min_data = 2
+    _max_data = 255
+    range_fold = False
+    def __init__(self, prod):
+        min_val = two_comp16(prod.thresholds[0]) * self._min_scale
+        inc = prod.thresholds[1] * self._inc_scale
+        num_levels = prod.thresholds[2]
+        self.lut = [self.MISSING] * 256
+
+        # Generate lookup table -- sanity check on num_levels handles
+        # the fact that DHR advertises 256 levels, which *includes*
+        # missing, differing from other products
+        num_levels = min(num_levels, self._max_data - self._min_data + 1)
+        for i in range(num_levels):
+            self.lut[i + self._min_data] = min_val + i * inc
+
+        self.lut = np.array(self.lut)
+
+class DigitalRefMapper(DigitalMapper):
+    units = 'dBZ'
+
+class DigitalVelMapper(DigitalMapper):
+    units = 'm/s'
+    range_fold = True
+
+class DigitalSPWMapper(DigitalVelMapper):
+    _min_data = 129
+    _max_data = 149
+
+class PrecipArrayMapper(DigitalMapper):
+    _inc_scale = 0.001
+    _min_data = 1
+    _max_data = 254
+    units = 'dBA'
+
+class DigitalStormPrecipMapper(DigitalMapper):
+    units = 'inches'
+    _inc_scale = 0.01
+
+class DigitalVILMapper(DataMapper):
+    def __init__(self, prod):
+        lin_scale = float16(prod.thresholds[0])
+        lin_offset = float16(prod.thresholds[1])
+        log_start = prod.thresholds[2]
+        log_scale = float16(prod.thresholds[3])
+        log_offset = float16(prod.thresholds[4])
+        self.lut = np.empty((256,), dtype=np.float)
+        self.lut.fill(self.MISSING)
+
+        # VIL is allowed to use 2 through 254 inclusive. 0 is thresholded,
+        # 1 is flagged, and 255 is reserved
+        ind = np.arange(255)
+        self.lut[2:log_start] = (ind[2:log_start] - lin_offset) / lin_scale
+        self.lut[log_start:-1] = np.exp((ind[log_start:] - log_offset) / log_scale)
+
+class DigitalEETMapper(DataMapper):
+    def __init__(self, prod):
+        data_mask = prod.thresholds[0]
+        scale = prod.thresholds[1]
+        offset = prod.thresholds[2]
+        topped_mask = prod.thresholds[3]
+        self.lut = [self.MISSING] * 256
+        self.topped_lut = [False] * 256
+        for i in range(2, 256):
+            self.lut[i] = ((i & data_mask) - offset) / scale
+            self.topped_lut[i] = bool(i & topped_mask)
+
+        self.lut = np.array(self.lut)
+        self.topped_lut = np.array(self.topped_lut)
+
+    def __call__(self, data_vals):
+        return self.lut[data_vals], self.topped_lut[data_vals]
+
+class GenericDigitalMapper(DataMapper):
+    def __init__(self, prod):
+        scale = float32(prod.thresholds[0], prod.thresholds[1])
+        offset = float32(prod.thresholds[2], prod.thresholds[3])
+        max_data_val = prod.thresholds[5]
+        leading_flags = prod.thresholds[6]
+        trailing_flags = prod.thresholds[7]
+        self.lut = [self.MISSING] * max_data_val
+
+        if leading_flags > 1:
+            self.lut[1] = self.RANGE_FOLD
+
+        for i in range(leading_flags, max_data_val - trailing_flags):
+            self.lut[i] = (i - offset) / scale
+
+        self.lut = np.array(self.lut)
+
+class DigitalHMCMapper(DataMapper):
+    labels = ['ND', 'BI', 'GC', 'IC', 'DS', 'WS', 'RA', 'HR',
+              'BD', 'GR', 'HA', 'UK', 'RF']
+    def __init__(self, prod):
+        self.lut = [self.MISSING] * 256
+        for i in range(10, 256):
+            self.lut[i] = i // 10
+        self.lut[150] = self.RANGE_FOLD
+        self.lut = np.array(self.lut)
+
+#156, 157
+class EDRMapper(DataMapper):
+    def __init__(self, prod):
+        scale = prod.thresholds[0] / 1000.
+        offset = prod.thresholds[1] / 1000.
+        data_levels = prod.thresholds[2]
+        leading_flags = prod.thresholds[3]
+        self.lut = [self.MISSING] * data_levels
+        for i in range(leading_flags, data_levels):
+            self.lut = scale * i + offset
+        self.lut = np.array(self.lut)
+
+class LegacyMapper(DataMapper):
+    lut_names = ['Blank', 'TH', 'ND', 'RF', 'BI', 'GC', 'IC', 'GR', 'WS',
+                 'DS', 'RA', 'HR', 'BD', 'HA', 'UK']
+    def __init__(self, prod):
+        self.labels = []
+        self.lut = []
+        for t in prod.thresholds:
+            codes,val = t>>8, t & 0xFF
+            label=''
+            if codes>>7:
+                label = self.lut_names[val]
+                if label in ('Blank', 'TH', 'ND'):
+                    val = self.MISSING
+                elif label == 'RF':
+                    val = self.RANGE_FOLD
+
+            elif codes>>6:
+                val *= 0.01
+                label = '%.2f' % val
+            elif codes>>5:
+                val *= 0.05
+                label = '%.2f' % val
+            elif codes>>4:
+                val *= 0.1
+                label = '%.1f' % val
+
+            if codes & 0x1:
+                val *= -1
+                label = '-' + label
+            elif (codes >> 1) & 0x1:
+                label = '+' + label
+
+            if (codes >> 2) & 0x1:
+                label = '<' + label
+            elif (codes >> 3) & 0x1:
+                label = '>' + label
+
+            if not label:
+                label = str(val)
+
+            self.lut.append(val)
+            self.labels.append(label)
+        self.lut = np.array(self.lut)
+
 class Level3File(object):
     ij_to_km = 0.25
     wmo_finder = re.compile('((?:NX|SD|NO)US)\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
@@ -376,222 +565,225 @@ class Level3File(object):
     graph_block_fmt = NamedStruct([('divider', 'h'), ('block_id', 'h'),
         ('block_len', 'L'), ('num_pages', 'H')], '>', 'GraphBlock')
     standalone_tabular = [62, 73, 75, 82]
-    prod_spec_map = {16  : ('Base Reflectivity', 230.,
+    prod_spec_map = {16  : ('Base Reflectivity', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     17  : ('Base Reflectivity', 460.,
+                     17  : ('Base Reflectivity', 460., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     18  : ('Base Reflectivity', 460.,
+                     18  : ('Base Reflectivity', 460., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     19  : ('Base Reflectivity', 230.,
+                     19  : ('Base Reflectivity', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     20  : ('Base Reflectivity', 460.,
+                     20  : ('Base Reflectivity', 460., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     21  : ('Base Reflectivity', 460.,
+                     21  : ('Base Reflectivity', 460., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     22  : ('Base Velocity', 60.,
+                     22  : ('Base Velocity', 60., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', 3), ('max', 4))),
-                     23  : ('Base Velocity', 115.,
+                     23  : ('Base Velocity', 115., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', 3), ('max', 4))),
-                     24  : ('Base Velocity', 230.,
+                     24  : ('Base Velocity', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', 3), ('max', 4))),
-                     25  : ('Base Velocity', 60.,
+                     25  : ('Base Velocity', 60., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', 3), ('max', 4))),
-                     26  : ('Base Velocity', 115.,
+                     26  : ('Base Velocity', 115., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', 3), ('max', 4))),
-                     27  : ('Base Velocity', 230.,
+                     27  : ('Base Velocity', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', 3), ('max', 4))),
-                     28  : ('Base Spectrum Width', 60.,
+                     28  : ('Base Spectrum Width', 60., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3))),
-                     29  : ('Base Spectrum Width', 115.,
+                     29  : ('Base Spectrum Width', 115., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3))),
-                     30  : ('Base Spectrum Width', 230.,
+                     30  : ('Base Spectrum Width', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3))),
-                     31  : ('User Selectable Storm Total Precipitation', 230.,
+                     31  : ('User Selectable Storm Total Precipitation', 230., LegacyMapper,
                             (('end_hour', 0), ('hour_span', 1), ('null_product', 2),
                              ('max_rainfall', scaled_elem(3, 0.1)), ('rainfall_begin', date_elem(4, 5)),
                              ('rainfall_end', date_elem(6, 7)), ('bias', scaled_elem(8, 0.01)),
                              ('gr_pairs', scaled_elem(5, 0.01)))),
-                     32  : ('Digital Hybrid Scan Reflectivity', 230.,
+                     32  : ('Digital Hybrid Scan Reflectivity', 230., DigitalRefMapper,
                             (('max', 3), ('avg_time', date_elem(4, 5)), ('compression', 7),
                              ('uncompressed_size', combine_elem(8, 9)))),
-                     33  : ('Hybrid Scan Reflectivity', 230.,
+                     33  : ('Hybrid Scan Reflectivity', 230., LegacyMapper,
                             (('max', 3), ('avg_time', date_elem(4, 5)))),
-                     34  : ('Clutter Filter Control', 230.,
+                     34  : ('Clutter Filter Control', 230., LegacyMapper,
                             (('clutter_bitmap', 0), ('cmd_map', 1), ('bypass_map_date', date_elem(4, 5)),
                              ('notchwidth_map_date', date_elem(6, 7)))),
-                     35  : ('Composite Reflectivity', 230.,
+                     35  : ('Composite Reflectivity', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     36  : ('Composite Reflectivity', 460.,
+                     36  : ('Composite Reflectivity', 460., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     37  : ('Composite Reflectivity', 230.,
+                     37  : ('Composite Reflectivity', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     38  : ('Composite Reflectivity', 460.,
+                     38  : ('Composite Reflectivity', 460., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     41  : ('Echo Tops', 230.,
+                     41  : ('Echo Tops', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', scaled_elem(3, 1000)))), # Max in ft
-                     48  : ('VAD Wind Profile', None,
+                     48  : ('VAD Wind Profile', None, LegacyMapper,
                             (('max', 3), ('dir_max', 4), ('alt_max', scaled_elem(5, 10)))), # Max in ft
-                     55  : ('Storm Relative Mean Radial Velocity', 50.,
+                     55  : ('Storm Relative Mean Radial Velocity', 50., LegacyMapper,
                             (('window_az', scaled_elem(0, 0.1)), ('window_range', scaled_elem(1, 0.1)),
                              ('el_angle', scaled_elem(2, 0.1)), ('min', 3), ('max', 4),
                              ('source', 5), ('height', 6), ('avg_speed', scaled_elem(7, 0.1)),
                              ('avg_dir', scaled_elem(8, 0.1)), ('alert_category', 9))),
-                     56  : ('Storm Relative Mean Radial Velocity', 230.,
+                     56  : ('Storm Relative Mean Radial Velocity', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', 3), ('max', 4),
                              ('source', 5), ('avg_speed', scaled_elem(7, 0.1)), ('avg_dir', scaled_elem(8, 0.1)))),
-                     57  : ('Vertically Integrated Liquid', 230.,
+                     57  : ('Vertically Integrated Liquid', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3))), # Max in kg / m^2
-                     58  : ('Storm Tracking Information', 460., (('num_storms', 3),)),
-                     59  : ('Hail Index', 230., ()),
-                     61  : ('Tornado Vortex Signature', 230., (('num_tvs', 3), ('num_etvs', 4))),
-                     62  : ('Storm Structure', 460., ()),
-                     63  : ('Layer Composite Reflectivity (Layer 1 Average)', 230.,
+                     58  : ('Storm Tracking Information', 460., LegacyMapper, (('num_storms', 3),)),
+                     59  : ('Hail Index', 230., LegacyMapper, ()),
+                     61  : ('Tornado Vortex Signature', 230., LegacyMapper, (('num_tvs', 3), ('num_etvs', 4))),
+                     62  : ('Storm Structure', 460., LegacyMapper, ()),
+                     63  : ('Layer Composite Reflectivity (Layer 1 Average)', 230., LegacyMapper,
                             (('max', 3),
                              ('layer_bottom', scaled_elem(4, 1000.)), ('layer_top', scaled_elem(5, 1000.)),
                              ('calib_const', float_elem(7, 8)))),
-                     64  : ('Layer Composite Reflectivity (Layer 2 Average)', 230.,
+                     64  : ('Layer Composite Reflectivity (Layer 2 Average)', 230., LegacyMapper,
                             (('max', 3),
                              ('layer_bottom', scaled_elem(4, 1000.)), ('layer_top', scaled_elem(5, 1000.)),
                              ('calib_const', float_elem(7, 8)))),
-                     65  : ('Layer Composite Reflectivity (Layer 1 Max)', 230.,
+                     65  : ('Layer Composite Reflectivity (Layer 1 Max)', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3),
                              ('layer_bottom', scaled_elem(4, 1000.)), ('layer_top', scaled_elem(5, 1000.)),
                              ('calib_const', float_elem(7, 8)))),
-                     66  : ('Layer Composite Reflectivity (Layer 2 Max)', 230.,
+                     66  : ('Layer Composite Reflectivity (Layer 2 Max)', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3),
                              ('layer_bottom', scaled_elem(4, 1000.)), ('layer_top', scaled_elem(5, 1000.)),
                              ('calib_const', float_elem(7, 8)))),
-                     67  : ('Layer Composite Reflectivity - AP Removed', 230.,
+                     67  : ('Layer Composite Reflectivity - AP Removed', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3),
                              ('layer_bottom', scaled_elem(4, 1000.)), ('layer_top', scaled_elem(5, 1000.)),
                              ('calib_const', float_elem(7, 8)))),
-                     74  : ('Radar Coded Message', 460., ()),
-                     78  : ('Surface Rainfall Accumulation (1 hour)', 230.,
+                     74  : ('Radar Coded Message', 460., LegacyMapper, ()),
+                     78  : ('Surface Rainfall Accumulation (1 hour)', 230., LegacyMapper,
                             (('max_rainfall', scaled_elem(3, 0.1)), ('bias', scaled_elem(4, 0.01)),
                              ('gr_pairs', scaled_elem(5, 0.01)), ('rainfall_end', date_elem(6, 7)))),
-                     79  : ('Surface Rainfall Accumulation (3 hour)', 230.,
+                     79  : ('Surface Rainfall Accumulation (3 hour)', 230., LegacyMapper,
                             (('max_rainfall', scaled_elem(3, 0.1)), ('bias', scaled_elem(4, 0.01)),
                              ('gr_pairs', scaled_elem(5, 0.01)), ('rainfall_end', date_elem(6, 7)))),
-                     80  : ('Storm Total Rainfall Accumulation', 230.,
+                     80  : ('Storm Total Rainfall Accumulation', 230., LegacyMapper,
                             (('max_rainfall', scaled_elem(3, 0.1)), ('rainfall_begin', date_elem(4, 5)),
                              ('rainfall_end', date_elem(6, 7)), ('bias', scaled_elem(8, 0.01)),
                              ('gr_pairs', scaled_elem(9, 0.01)))),
-                     81  : ('Hourly Digital Precipitation Array', 230.,
+                     81  : ('Hourly Digital Precipitation Array', 230., PrecipArrayMapper,
                             (('max_rainfall', scaled_elem(3, 0.001)), ('bias', scaled_elem(4, 0.01)),
                              ('gr_pairs', scaled_elem(5, 0.01)), ('rainfall_end', date_elem(6, 7)))),
-                     82  : ('Supplemental Precipitation Data', None, ()),
-                     89  : ('Layer Composite Reflectivity (Layer 3 Average)', 230.,
+                     82  : ('Supplemental Precipitation Data', None, LegacyMapper, ()),
+                     89  : ('Layer Composite Reflectivity (Layer 3 Average)', 230., LegacyMapper,
                             (('max', 3),
                              ('layer_bottom', scaled_elem(4, 1000.)), ('layer_top', scaled_elem(5, 1000.)),
                              ('calib_const', float_elem(7, 8)))),
-                     90  : ('Layer Composite Reflectivity (Layer 3 Max)', 230.,
+                     90  : ('Layer Composite Reflectivity (Layer 3 Max)', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3),
                              ('layer_bottom', scaled_elem(4, 1000.)), ('layer_top', scaled_elem(5, 1000.)),
                              ('calib_const', float_elem(7, 8)))),
-                     94  : ('Base Reflectivity Data Array', 460.,
+                     93  : ('ITWS Digital Base Velocity', 120., DigitalVelMapper,
+                            (('el_angle', scaled_elem(2, 0.1)), ('min', 3),
+                             ('max', 4), ('precision', 6))),
+                     94  : ('Base Reflectivity Data Array', 460., DigitalRefMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     95  : ('Composite Reflectivity Edited for AP', 230.,
+                     95  : ('Composite Reflectivity Edited for AP', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     96  : ('Composite Reflectivity Edited for AP', 460.,
+                     96  : ('Composite Reflectivity Edited for AP', 460., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     97  : ('Composite Reflectivity Edited for AP', 230.,
+                     97  : ('Composite Reflectivity Edited for AP', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     98  : ('Composite Reflectivity Edited for AP', 460.,
+                     98  : ('Composite Reflectivity Edited for AP', 460., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('calib_const', float_elem(7, 8)))),
-                     99  : ('Base Velocity Data Array', 300.,
+                     99  : ('Base Velocity Data Array', 300., DigitalVelMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', 3), ('max', 4),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     132 : ('Clutter Likelihood Reflectivity', 230., (('el_angle', scaled_elem(2, 0.1)),)),
-                     133 : ('Clutter Likelihood Doppler', 230., (('el_angle', scaled_elem(2, 0.1)),)),
-                     134 : ('High Resolution VIL', 460.,
+                     132 : ('Clutter Likelihood Reflectivity', 230., LegacyMapper, (('el_angle', scaled_elem(2, 0.1)),)),
+                     133 : ('Clutter Likelihood Doppler', 230., LegacyMapper, (('el_angle', scaled_elem(2, 0.1)),)),
+                     134 : ('High Resolution VIL', 460., DigitalVILMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3), ('num_edited', 4),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     135 : ('Enhanced Echo Tops', 345.,
+                     135 : ('Enhanced Echo Tops', 345., DigitalEETMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', scaled_elem(3, 1000.)), # Max in ft
                              ('num_edited', 4), ('ref_thresh', 5), ('points_removed', 6),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     138 : ('Digital Storm Total Precipitation', 230.,
+                     138 : ('Digital Storm Total Precipitation', 230., DigitalStormPrecipMapper,
                             (('rainfall_begin', date_elem(0, 1)), ('bias', scaled_elem(2, 0.01)),
                              ('max', scaled_elem(3, 0.01)), ('rainfall_end', date_elem(4, 5)),
                              ('gr_pairs', scaled_elem(6, 0.01)),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     141 : ('Mesocyclone Detection', 230.,
+                     141 : ('Mesocyclone Detection', 230., LegacyMapper,
                             (('min_ref_thresh', 0), ('overlap_display_filter', 1), ('min_strength_rank', 2))),
-                     152 : ('Archive III Status Product', None,
+                     152 : ('Archive III Status Product', None, LegacyMapper,
                             (('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     153 : ('Super Resolution Reflectivity Data Array', 460.,
+                     153 : ('Super Resolution Reflectivity Data Array', 460., DigitalRefMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     154 : ('Super Resolution Velocity Data Array', 300.,
+                     154 : ('Super Resolution Velocity Data Array', 300., DigitalVelMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     155 : ('Super Resolution Spectrum Width Data Array', 300.,
+                     155 : ('Super Resolution Spectrum Width Data Array', 300., DigitalSPWMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     158 : ('Differential Reflectivity', 230.,
+                     158 : ('Differential Reflectivity', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', scaled_elem(3, 0.1)), ('max', scaled_elem(4, 0.1)))),
-                     159 : ('Digital Differential Reflectivity', 300.,
+                     159 : ('Digital Differential Reflectivity', 300., GenericDigitalMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', scaled_elem(3, 0.1)), ('max', scaled_elem(4, 0.1)),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     160 : ('Correlation Coefficient', 230.,
+                     160 : ('Correlation Coefficient', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', scaled_elem(3, 0.00333)), ('max', scaled_elem(4, 0.00333)))),
-                     161 : ('Digital Correlation Coefficient', 300.,
+                     161 : ('Digital Correlation Coefficient', 300., GenericDigitalMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', scaled_elem(3, 0.00333)), ('max', scaled_elem(4, 0.00333)),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     162 : ('Specific Differential Phase', 230.,
+                     162 : ('Specific Differential Phase', 230., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', scaled_elem(3, 0.05)), ('max', scaled_elem(4, 0.05)))),
-                     163 : ('Digital Specific Differential Phase', 300.,
+                     163 : ('Digital Specific Differential Phase', 300., GenericDigitalMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', scaled_elem(3, 0.05)), ('max', scaled_elem(4, 0.05)),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     164 : ('Hydrometeor Classification', 230., (('el_angle', scaled_elem(2, 0.1)),)),
-                     165 : ('Digital Hydrometeor Classification', 300., (('el_angle', scaled_elem(2, 0.1)),
+                     164 : ('Hydrometeor Classification', 230., LegacyMapper, (('el_angle', scaled_elem(2, 0.1)),)),
+                     165 : ('Digital Hydrometeor Classification', 300., DigitalHMCMapper, (('el_angle', scaled_elem(2, 0.1)),
                             ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     166 : ('Melting Layer', 230., (('el_angle', scaled_elem(2, 0.1)),)),
-                     169 : ('One Hour Accumulation', 230.,
+                     166 : ('Melting Layer', 230., LegacyMapper, (('el_angle', scaled_elem(2, 0.1)),)),
+                     169 : ('One Hour Accumulation', 230., LegacyMapper,
                             (('null_product', low_byte(2)), ('max', scaled_elem(3, 0.1)),
                              ('rainfall_end', date_elem(4, 5)), ('bias', scaled_elem(6, 0.01)),
                              ('gr_pairs', scaled_elem(7, 0.01)))),
-                     170 : ('Digital Accumulation Array', 230.,
+                     170 : ('Digital Accumulation Array', 230., GenericDigitalMapper,
                             (('null_product', low_byte(2)), ('max', scaled_elem(3, 0.1)),
                              ('rainfall_end', date_elem(4, 5)), ('bias', scaled_elem(6, 0.01)),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     171 : ('Storm Total Accumulation', 230.,
+                     171 : ('Storm Total Accumulation', 230., LegacyMapper,
                             (('rainfall_begin', date_elem(0, 1)), ('null_product', low_byte(2)),
                              ('max', scaled_elem(3, 0.1)), ('rainfall_end', date_elem(4, 5)),
                              ('bias', scaled_elem(6, 0.01)), ('gr_pairs', scaled_elem(7, 0.01)))),
-                     172 : ('Digital Storm total Accumulation', 230.,
+                     172 : ('Digital Storm total Accumulation', 230., GenericDigitalMapper,
                             (('rainfall_begin', date_elem(0, 1)), ('null_product', low_byte(2)),
                              ('max', scaled_elem(3, 0.1)), ('rainfall_end', date_elem(4, 5)), ('bias', scaled_elem(6, 0.01)),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     173 : ('Digital user-Selectable Accumulation', 230.,
+                     173 : ('Digital User-Selectable Accumulation', 230., GenericDigitalMapper,
                             (('period', 1), ('missing_period', high_byte(2)),
                              ('null_product', low_byte(2)), ('max', scaled_elem(3, 0.1)),
                              ('rainfall_end', date_elem(4, 0)), ('start_time', 5), ('bias', scaled_elem(6, 0.01)),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     174 : ('Digital One-Hour Difference Accumulation', 230.,
+                     174 : ('Digital One-Hour Difference Accumulation', 230., GenericDigitalMapper,
                             (('max', scaled_elem(3, 0.1)), ('rainfall_end', date_elem(4, 5)), ('min', scaled_elem(6, 0.1)),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     175 : ('Digital Storm Total Difference Accumulation', 230.,
+                     175 : ('Digital Storm Total Difference Accumulation', 230., GenericDigitalMapper,
                             (('rainfall_begin', date_elem(0, 1)), ('null_product', low_byte(2)),
                             ('max', scaled_elem(3, 0.1)), ('rainfall_end', date_elem(4, 5)), ('min', scaled_elem(6, 0.1)),
                             ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     176 : ('Digital Instantaneous Precipitation Rate', 230.,
+                     176 : ('Digital Instantaneous Precipitation Rate', 230., GenericDigitalMapper,
                             (('rainfall_begin', date_elem(0, 1)), ('precip_detected', high_byte(2)), ('need_bias', low_byte(2)),
                              ('max', 3), ('percent_filled', scaled_elem(4, 0.01)), ('max_elev', scaled_elem(5, 0.1)),
                              ('bias', scaled_elem(6, 0.01)),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     177 : ('Hybrid Hydrometeor Classification', 230.,
+                     177 : ('Hybrid Hydrometeor Classification', 230., DigitalHMCMapper,
                             (('mode_filter_size', 3), ('hybrid_percent_filled', 4), ('max_elev', scaled_elem(5, 0.1)),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     181 : ('TDWR Base Reflectivity', 90.,
+                     181 : ('TDWR Base Reflectivity', 90., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3),
 #                            ('calib_const', float_elem(7, 8))),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     182 : ('TDWR Base Velocity', 90.,
+                     182 : ('TDWR Base Velocity', 90., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('min', 3), ('max', 4),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9)))),
-                     186 : ('TDWR Long Range Base Reflectivity', 416.,
+                     186 : ('TDWR Long Range Base Reflectivity', 416., LegacyMapper,
                             (('el_angle', scaled_elem(2, 0.1)), ('max', 3),
                              ('compression', 7), ('uncompressed_size', combine_elem(8, 9))))}
 
@@ -652,8 +844,10 @@ class Level3File(object):
         self.height = self.prod_desc.height
 
         # Handle product-specific blocks. Default to compression and elevation angle
-        self.product_name, self.max_range, meta = self.prod_spec_map.get(self.header.code,
-                                                 ('Unknown Product', 230., (('el_angle', scaled_elem(2, 0.1)),
+        # Also get other product specific information, like name,
+        # maximum range, and how to map data bytes to values
+        self.product_name, self.max_range, mapper, meta = self.prod_spec_map.get(self.header.code,
+                                                 ('Unknown Product', 230., LegacyMapper, (('el_angle', scaled_elem(2, 0.1)),
                                                   ('compression', 7), ('uncompressed_size', combine_elem(8, 9)),
                                                   ('defaultVals', 0))))
         for name,block in meta:
@@ -663,7 +857,8 @@ class Level3File(object):
                 self.metadata[name] = self.depVals[block]
 
         # Now that we have the header, we have everything needed to make tables
-        self._generate_data_lut()
+        # Store as class that can be called
+        self.map_data = mapper(self)
 
         # Process compression if indicated. We need to fail
         # gracefully here since we default to it being on
@@ -702,88 +897,6 @@ class Level3File(object):
 
         if 'defaultVals' in self.metadata:
             warnings.warn("{}: Using default metadata for product {}".format(self._filename, self.header.code))
-
-    def _generate_data_lut(self):
-        nan = float('NAN')
-        lut_names = ['Blank', 'TH', 'ND', 'RF', 'BI', 'GC', 'IC', 'GR', 'WS'
-                'DS', 'RA', 'HR', 'BD', 'HA', 'UK']
-        if self.header.code in (32, 81, 93, 94, 99, 153, 154, 155, 194, 195, 199):
-            min_val = two_comp16(self.thresholds[0]) / 10.
-            inc = self.thresholds[1] / 10.
-            num_levels = self.thresholds[2]
-            self.data_lut = [nan] * 256
-            if self.header.code in (32, 94, 153, 194, 195):
-                self.data_lut[0] = nan
-                self.data_lut[1] = nan
-                start,end = 2,255
-                self.units = 'dBZ'
-            elif self.header.code == 81:
-                inc = self.thresholds[1] / 1000.
-                self.data_lut[0] = nan
-                self.data_lut[255] = nan
-                start,end = 1,254
-                self.units = 'dBA'
-            elif self.header.code in (93, 99, 154, 155, 199):
-                self.data_lut[0] = nan
-                self.data_lut[1] = RANGE_FOLD
-                self.units = 'm/s'
-
-                if self.header.code == 155:
-                    start,end = 129,149
-                else:
-                    start,end = 2,255
-
-            # Generate lookup table -- sanity check on num_levels handles
-            # the fact that DHR advertises 256 levels, which *includes*
-            # missing, differing from other products
-            num_levels = min(num_levels, end - start + 1)
-            for i in range(num_levels):
-                self.data_lut[i + start] = min_val + i * inc
-
-        else:
-            self.data_labels = []
-            self.data_lut = []
-            for t in self.thresholds:
-                codes,val = t>>8, t & 0xFF
-                label=''
-                if codes>>7:
-                    label = lut_names[val]
-                    if label in ('Blank', 'TH', 'ND'):
-                        val = nan
-                    elif label == 'RF':
-                        val = RANGE_FOLD
-
-                elif codes>>6:
-                    val *= 0.01
-                    label = '%.2f' % val
-                elif codes>>5:
-                    val *= 0.05
-                    label = '%.2f' % val
-                elif codes>>4:
-                    val *= 0.1
-                    label = '%.1f' % val
-
-                if codes & 0x1:
-                    val *= -1
-                    label = '-' + label
-                elif (codes >> 1) & 0x1:
-                    label = '+' + label
-
-                if (codes >> 2) & 0x1:
-                    label = '<' + label
-                elif (codes >> 3) & 0x1:
-                    label = '>' + label
-
-                if not label:
-                    label = str(val)
-
-                self.data_lut.append(val)
-                self.data_labels.append(label)
-
-        self.data_lut = np.array(self.data_lut)
-
-    def map_data(self, data):
-        return self.data_lut[data]
 
     def _process_WMO_header(self):
         # Read off the WMO header if necessary
