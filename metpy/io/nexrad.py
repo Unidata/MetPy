@@ -986,7 +986,7 @@ class Level3File(object):
         while not self._buffer.at_end():
             packet_code = self._buffer.read_int('>H')
             if packet_code in self.packet_map:
-                packets.append(self.packet_map[packet_code](self, packet_code))
+                packets.append(self.packet_map[packet_code](self, packet_code, False))
             else:
                 warnings.warn('{0}: Unknown standalone graphical packet type {1}/{1:#x}.'.format(self._filename, packet_code))
                 # Assume next 2 bytes is packet length and try skipping
@@ -1102,7 +1102,7 @@ class Level3File(object):
                     color=value, text=text)
 
     def _unpack_packet_special_text_symbol(self, code, inSymBlock):
-        d = self._unpack_packet_uniform_text(code)
+        d = self._unpack_packet_uniform_text(code, inSymBlock)
 
             # Translate special characters to their meaning
         ret = dict()
@@ -1190,7 +1190,7 @@ class Level3File(object):
                 self._buffer.jump_to(packet_data_start, num_bytes)
                 return ret
             else:
-                next_packet = self.packet_map[next_code](self, next_code)
+                next_packet = self.packet_map[next_code](self, next_code, inSymBlock)
                 if next_code == 6:
                     ret['track'] = next_packet['vectors']
                 elif next_code == 25:
