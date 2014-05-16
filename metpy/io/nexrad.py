@@ -1239,6 +1239,8 @@ class Level3File(object):
         else:
             value = None
         bytes = self._buffer.read_binary(num_bytes)
+        scale = self.pos_scale(inSymBlock)
+        bytes = [b * scale for b in bytes]
         vectors = zip(bytes[::2], bytes[1::2])
         return dict(vectors=vectors, color=value)
 
