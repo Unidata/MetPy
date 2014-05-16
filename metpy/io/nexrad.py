@@ -1285,15 +1285,15 @@ class Level3File(object):
         # Figure out how much to read
         num_bytes = self._buffer.read_int('>h')
         packet_data_start = self._buffer.set_mark()
-        ret = dict()
+        ret = defaultdict(list)
 
         # Read while we have data, then return
         while self._buffer.offset_from(packet_data_start) < num_bytes:
-            ret.setdefault('color', list()).append(self._buffer.read_int('>h'))
-            ret.setdefault('x', list()).append(self._buffer.read_int('>h') * self.pos_scale(inSymBlock))
-            ret.setdefault('y', list()).append(self._buffer.read_int('>h') * self.pos_scale(inSymBlock))
-            ret.setdefault('direc', list()).append(self._buffer.read_int('>h'))
-            ret.setdefault('speed', list()).append(self._buffer.read_int('>h'))
+            ret['color'].append(self._buffer.read_int('>h'))
+            ret['x'].append(self._buffer.read_int('>h') * self.pos_scale(inSymBlock))
+            ret['y'].append(self._buffer.read_int('>h') * self.pos_scale(inSymBlock))
+            ret['direc'].append(self._buffer.read_int('>h'))
+            ret['speed'].append(self._buffer.read_int('>h'))
         return ret
 
     def _unpack_packet_generic(self, code, inSymBlock):
