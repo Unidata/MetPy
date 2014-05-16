@@ -1104,7 +1104,7 @@ class Level3File(object):
     def _unpack_packet_special_text_symbol(self, code, inSymBlock):
         d = self._unpack_packet_uniform_text(code, inSymBlock)
 
-            # Translate special characters to their meaning
+        # Translate special characters to their meaning
         ret = dict()
         symbol_map = {'!': 'past storm position', '"': 'current storm position', '#': 'forecast storm position',
                       '$': 'past MDA position', '%': 'forecast MDA position', ' ': None}
