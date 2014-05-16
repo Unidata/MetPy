@@ -1131,16 +1131,18 @@ class Level3File(object):
         num_bytes = self._buffer.read_int('>H')
         packet_data_start = self._buffer.set_mark()
 
+        scale = self.pos_scale(inSymBlock)
+
         # Loop over the bytes we have
         ret = dict()
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             # Read position
-            ret.setdefault('x', list()).append(self._buffer.read_int('>h') * self.pos_scale(inSymBlock))
-            ret.setdefault('y', list()).append(self._buffer.read_int('>h') * self.pos_scale(inSymBlock))
+            ret.setdefault('x', list()).append(self._buffer.read_int('>h') * scale)
+            ret.setdefault('y', list()).append(self._buffer.read_int('>h') * scale)
 
             # Handle any types that have additional info
             if code in (3, 11, 25):
-                ret.setdefault('radius', list()).append(self._buffer.read_int('>h'))
+                ret.setdefault('radius', list()).append(self._buffer.read_int('>h') * scale)
             elif code == 15:
                 ret.setdefault('id', list()).append(''.join(self._buffer.read(2)))
             elif code == 19:
@@ -1151,14 +1153,13 @@ class Level3File(object):
                 kind = self._buffer.read_int('>H')
                 attr = self._buffer.read_int('>H')
                 if kind < 5 or kind > 8:
-                    ret.setdefault('radius', list()).append(attr)
-                    if kind not in point_feature_map:
-                        warnings.warn('{0}: Unknown graphic symbol point kind {1}/{1:#x}.'.format(self._filename, kind))
-                        ret.setdefault('type', list()).append('Unknown')
-                    else:
-                        ret.setdefault('type', list()).append(point_feature_map[kind])
+                    ret.setdefault('radius', list()).append(attr * scale)
 
-                ret.setdefault('type', list()).append(kind)
+                if kind not in point_feature_map:
+                    warnings.warn('{0}: Unknown graphic symbol point kind {1}/{1:#x}.'.format(self._filename, kind))
+                    ret.setdefault('type', list()).append('Unknown (%d)' % kind)
+                else:
+                    ret.setdefault('type', list()).append(point_feature_map[kind])
 
         # Map the code to a name for this type of symbol
         if code != 20:
@@ -1171,7 +1172,7 @@ class Level3File(object):
         # Check and return
         assert self._buffer.offset_from(packet_data_start) == num_bytes
 
-        # Make numpy arrays and squeeze if we can
+        # Reduce dimensions of lists if possible
         for field in ret:
             old_data = ret[field]
             if len(old_data) == 1:
