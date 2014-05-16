@@ -1209,6 +1209,7 @@ class Level3File(object):
                 else:
                     warnings.warn('{0}: Unsupported packet in SCIT {1}/{1:#x}.'.format(self._filename, next_code))
                     ret['data'].append(next_packet)
+        reduce_lists(ret)
         return ret
 
     def _unpack_packet_digital_precipitation(self, code, inSymBlock):
