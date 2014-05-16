@@ -219,8 +219,13 @@ class IOBuffer(object):
         self.skip(num_bytes)
         return res
 
-    def read_binary(self, num_bytes=None, signed=True):
-        return map(ord, self.read(num_bytes))
+    def read_binary(self, num=None, type='B'):
+        if type[0] in ('@', '=', '<', '>', '!'):
+            order = type[0]
+            type = type[1:]
+        else:
+            order = '@'
+        return list(self.read_struct(Struct('%c%d%s' % (order, num, type))))
 
     def read_int(self, code):
         return self.read_struct(Struct(code))[0]
@@ -1186,7 +1191,7 @@ class Level3File(object):
     def _unpack_packet_scit(self, code, inSymBlock):
         num_bytes = self._buffer.read_int('>H')
         packet_data_start = self._buffer.set_mark()
-        ret = dict()
+        ret = defaultdict(list)
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             next_code = self._buffer.read_int('>H')
             if next_code not in self.packet_map:
@@ -1196,14 +1201,14 @@ class Level3File(object):
             else:
                 next_packet = self.packet_map[next_code](self, next_code, inSymBlock)
                 if next_code == 6:
-                    ret['track'] = next_packet['vectors']
+                    ret['track'].append(next_packet['vectors'])
                 elif next_code == 25:
-                    ret['STI Circle'] = next_packet
+                    ret['STI Circle'].append(next_packet)
                 elif next_code == 2:
-                    ret['marker'] = next_packet
+                    ret['markers'].append(next_packet)
                 else:
                     warnings.warn('{0}: Unsupported packet in SCIT {1}/{1:#x}.'.format(self._filename, next_code))
-                    ret['data'] = next_packet
+                    ret['data'].append(next_packet)
         return ret
 
     def _unpack_packet_digital_precipitation(self, code, inSymBlock):
@@ -1238,10 +1243,9 @@ class Level3File(object):
             num_bytes -= 2
         else:
             value = None
-        bytes = self._buffer.read_binary(num_bytes)
         scale = self.pos_scale(inSymBlock)
-        bytes = [b * scale for b in bytes]
-        vectors = zip(bytes[::2], bytes[1::2])
+        pos = [b * scale for b in self._buffer.read_binary(num_bytes / 2, '>h')]
+        vectors = zip(pos[::2], pos[1::2])
         return dict(vectors=vectors, color=value)
 
     def _unpack_packet_vector(self, code, inSymBlock):
@@ -1251,10 +1255,9 @@ class Level3File(object):
             num_bytes -= 2
         else:
             value = None
-        bytes = self._buffer.read_binary(num_bytes)
         scale = self.pos_scale(inSymBlock)
-        bytes = [b * scale for b in bytes]
-        vectors = zip(bytes[::4], bytes[1::4], bytes[2::4], bytes[3::4])
+        pos = [p * scale for p in self._buffer.read_binary(num_bytes / 2, '>h')]
+        vectors = zip(pos[::4], pos[1::4], pos[2::4], pos[3::4])
         return dict(vectors=vectors, color=value)
 
     def _unpack_packet_contour_color(self, code, inSymBlock):
