@@ -797,7 +797,7 @@ class Level3File(object):
 
     def __init__(self, fname):
         # Just read in the entire set of data at once
-        self._filename = fname
+        self.filename = fname
         self._buffer = IOBuffer.fromfile(open(fname, 'rb'))
 
         # Pop off the WMO header if we find it
