@@ -1268,17 +1268,16 @@ class Level3File(object):
         return dict(color=self._buffer.read_int('>H'))
 
     def _unpack_packet_linked_contour(self, code, inSymBlock):
-        # Check for color value indicator
+        # Check for initial point indicator
         assert self._buffer.read_int('>H') == 0x8000
 
-        startx = self._buffer.read_int('>h') * self.pos_scale(inSymBlock)
-        starty = self._buffer.read_int('>h') * self.pos_scale(inSymBlock)
+        scale = self.pos_scale(inSymBlock)
+        startx = self._buffer.read_int('>h') * scale
+        starty = self._buffer.read_int('>h') * scale
         vectors = [(startx, starty)]
-        num_vecs = self._buffer.read_int('>H') / 4
-        for i in range(num_vecs):
-            x = self._buffer.read_int('>h') * self.ij_to_km
-            y = self._buffer.read_int('>h') * self.ij_to_km
-            vectors.append((x, y))
+        num_bytes = self._buffer.read_int('>H')
+        pos = [b * scale for b in self._buffer.read_binary(num_bytes / 2, '>h')]
+        vectors.extend(zip(pos[::2], pos[1::2]))
         return dict(vectors=vectors)
 
     def _unpack_packet_wind_barbs(self, code, inSymBlock):
