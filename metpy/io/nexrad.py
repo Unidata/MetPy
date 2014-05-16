@@ -7,6 +7,7 @@ import warnings
 import zlib
 from struct import Struct
 from cStringIO import StringIO
+from collections import defaultdict
 
 import numpy as np
 from scipy.constants import day, milli
@@ -278,6 +279,11 @@ class NamedStruct(Struct):
         bytes = fobj.read(self.size)
         return self.unpack(bytes)
 
+def reduce_lists(d):
+    for field in d:
+        old_data = d[field]
+        if len(old_data) == 1:
+            d[field] = old_data[0]
 
 def nexrad_to_datetime(julian_date, ms_midnight):
     #Subtracting one from julian_date is because epoch date is 1
@@ -1134,32 +1140,32 @@ class Level3File(object):
         scale = self.pos_scale(inSymBlock)
 
         # Loop over the bytes we have
-        ret = dict()
+        ret = defaultdict(list)
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             # Read position
-            ret.setdefault('x', list()).append(self._buffer.read_int('>h') * scale)
-            ret.setdefault('y', list()).append(self._buffer.read_int('>h') * scale)
+            ret['x'].append(self._buffer.read_int('>h') * scale)
+            ret['y'].append(self._buffer.read_int('>h') * scale)
 
             # Handle any types that have additional info
             if code in (3, 11, 25):
-                ret.setdefault('radius', list()).append(self._buffer.read_int('>h') * scale)
+                ret['radius'].append(self._buffer.read_int('>h') * scale)
             elif code == 15:
-                ret.setdefault('id', list()).append(''.join(self._buffer.read(2)))
+                ret['id'].append(''.join(self._buffer.read(2)))
             elif code == 19:
-                ret.setdefault('POH', list()).append(self._buffer.read_int('>h'))
-                ret.setdefault('POSH', list()).append(self._buffer.read_int('>h'))
-                ret.setdefault('Max Size', list()).append(self._buffer.read_int('>H'))
+                ret['POH'].append(self._buffer.read_int('>h'))
+                ret['POSH'].append(self._buffer.read_int('>h'))
+                ret['Max Size'].append(self._buffer.read_int('>H'))
             elif code == 20:
                 kind = self._buffer.read_int('>H')
                 attr = self._buffer.read_int('>H')
                 if kind < 5 or kind > 8:
-                    ret.setdefault('radius', list()).append(attr * scale)
+                    ret['radius'].append(attr * scale)
 
                 if kind not in point_feature_map:
                     warnings.warn('{0}: Unknown graphic symbol point kind {1}/{1:#x}.'.format(self._filename, kind))
-                    ret.setdefault('type', list()).append('Unknown (%d)' % kind)
+                    ret['type'].append('Unknown (%d)' % kind)
                 else:
-                    ret.setdefault('type', list()).append(point_feature_map[kind])
+                    ret['type'].append(point_feature_map[kind])
 
         # Map the code to a name for this type of symbol
         if code != 20:
@@ -1173,10 +1179,7 @@ class Level3File(object):
         assert self._buffer.offset_from(packet_data_start) == num_bytes
 
         # Reduce dimensions of lists if possible
-        for field in ret:
-            old_data = ret[field]
-            if len(old_data) == 1:
-                ret[field] = old_data[0]
+        reduce_lists(ret)
 
         return ret
 
