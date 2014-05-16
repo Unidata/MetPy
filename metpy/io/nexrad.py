@@ -1104,8 +1104,8 @@ class Level3File(object):
         else:
             value = None
             read_bytes = 4
-        i_start = self._buffer.read_int('>H')
-        j_start = self._buffer.read_int('>H')
+        i_start = self._buffer.read_int('>h')
+        j_start = self._buffer.read_int('>h')
 
         # Text is what remains beyond what's been read, not including byte count
         text = ''.join(self._buffer.read(num_bytes - read_bytes))
