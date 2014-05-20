@@ -828,7 +828,7 @@ class Level3File(object):
 
         # Check for empty product
         if len(self._buffer) == 0:
-            warnings.warn("{}: Empty product!".format(self._filename))
+            warnings.warn("{}: Empty product!".format(self.filename))
             return
 
         # Set up places to store data and metadata
@@ -915,7 +915,7 @@ class Level3File(object):
                 self._unpack_tabblock(msg_start, 2 * self.prod_desc.tab_off)
 
         if 'defaultVals' in self.metadata:
-            warnings.warn("{}: Using default metadata for product {}".format(self._filename, self.header.code))
+            warnings.warn("{}: Using default metadata for product {}".format(self.filename, self.header.code))
 
     def _process_WMO_header(self):
         # Read off the WMO header if necessary
@@ -945,7 +945,7 @@ class Level3File(object):
         self._buffer.jump_to(start, offset)
         header = self._buffer.read(10)
         assert header == '1234 ROBUU'
-        #warnings.warn("{}: RCM decoding not supported.".format(self._filename))
+        #warnings.warn("{}: RCM decoding not supported.".format(self.filename))
 
     def _unpack_symblock(self, start, offset):
         self._buffer.jump_to(start, offset)
@@ -966,7 +966,7 @@ class Level3File(object):
                 if packet_code in self.packet_map:
                     layer.append(self.packet_map[packet_code](self, packet_code, True))
                 else:
-                    warnings.warn('{0}: Unknown symbology packet type {1}/{1:#x}.'.format(self._filename, packet_code))
+                    warnings.warn('{0}: Unknown symbology packet type {1}/{1:#x}.'.format(self.filename, packet_code))
                     self._buffer.jump_to(layer_start, layer_hdr.length)
             assert self._buffer.offset_from(layer_start) == layer_hdr.length
 
@@ -987,7 +987,7 @@ class Level3File(object):
                 if packet_code in self.packet_map:
                     packets.append(self.packet_map[packet_code](self, packet_code, False))
                 else:
-                    warnings.warn('{0}: Unknown graphical packet type {1}/{1:#x}.'.format(self._filename, packet_code))
+                    warnings.warn('{0}: Unknown graphical packet type {1}/{1:#x}.'.format(self.filename, packet_code))
                     self._buffer.skip(page_size)
             self.graph_pages.append(packets)
 
@@ -999,7 +999,7 @@ class Level3File(object):
             if packet_code in self.packet_map:
                 packets.append(self.packet_map[packet_code](self, packet_code, False))
             else:
-                warnings.warn('{0}: Unknown standalone graphical packet type {1}/{1:#x}.'.format(self._filename, packet_code))
+                warnings.warn('{0}: Unknown standalone graphical packet type {1}/{1:#x}.'.format(self.filename, packet_code))
                 # Assume next 2 bytes is packet length and try skipping
                 num_bytes = self._buffer.read_int('>H')
                 self._buffer.skip(num_bytes)
@@ -1038,7 +1038,7 @@ class Level3File(object):
             assert self._buffer.offset_from(block_start) == header.block_len
 
     def __repr__(self):
-        return self._filename + ': ' + '\n'.join(map(str, [self.product_name, self.header, self.prod_desc, self.thresholds,
+        return self.filename + ': ' + '\n'.join(map(str, [self.product_name, self.header, self.prod_desc, self.thresholds,
                                                            self.depVals, self.metadata,
                                                            (self.siteID, self.lat, self.lon, self.height)]))
 
@@ -1123,7 +1123,7 @@ class Level3File(object):
         # Use this meaning as the key in the returned packet
         for c in d['text']:
             if c not in symbol_map:
-                warnings.warn('{0}: Unknown special symbol {1}/{2:#x}.'.format(self._filename, c, ord(c)))
+                warnings.warn('{0}: Unknown special symbol {1}/{2:#x}.'.format(self.filename, c, ord(c)))
             else:
                 key = symbol_map[c]
                 if key:
@@ -1167,7 +1167,7 @@ class Level3File(object):
                     ret['radius'].append(attr * scale)
 
                 if kind not in point_feature_map:
-                    warnings.warn('{0}: Unknown graphic symbol point kind {1}/{1:#x}.'.format(self._filename, kind))
+                    warnings.warn('{0}: Unknown graphic symbol point kind {1}/{1:#x}.'.format(self.filename, kind))
                     ret['type'].append('Unknown (%d)' % kind)
                 else:
                     ret['type'].append(point_feature_map[kind])
@@ -1175,7 +1175,7 @@ class Level3File(object):
         # Map the code to a name for this type of symbol
         if code != 20:
             if code not in type_map:
-                warnings.warn('{0}: Unknown graphic symbol type {1}/{1:#x}.'.format(self._filename, code))
+                warnings.warn('{0}: Unknown graphic symbol type {1}/{1:#x}.'.format(self.filename, code))
                 ret['type'] = 'Unknown'
             else:
                 ret['type'] = type_map[code]
@@ -1195,7 +1195,7 @@ class Level3File(object):
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             next_code = self._buffer.read_int('>H')
             if next_code not in self.packet_map:
-                warnings.warn('{0}: Unknown packet in SCIT {1}/{1:#x}.'.format(self._filename, next_code))
+                warnings.warn('{0}: Unknown packet in SCIT {1}/{1:#x}.'.format(self.filename, next_code))
                 self._buffer.jump_to(packet_data_start, num_bytes)
                 return ret
             else:
@@ -1207,7 +1207,7 @@ class Level3File(object):
                 elif next_code == 2:
                     ret['markers'].append(next_packet)
                 else:
-                    warnings.warn('{0}: Unsupported packet in SCIT {1}/{1:#x}.'.format(self._filename, next_code))
+                    warnings.warn('{0}: Unsupported packet in SCIT {1}/{1:#x}.'.format(self.filename, next_code))
                     ret['data'].append(next_packet)
         reduce_lists(ret)
         return ret
@@ -1328,7 +1328,7 @@ class Level3File(object):
                 key = code_map[ind]
                 scale = code_scales[ind]
             except IndexError:
-                warnings.warn('{0}: Unsupported trend code {1}/{1:#x}.'.format(self._filename, code))
+                warnings.warn('{0}: Unsupported trend code {1}/{1:#x}.'.format(self.filename, code))
                 key = 'Unknown'
                 scale = 1
             vals = self._read_trends()
