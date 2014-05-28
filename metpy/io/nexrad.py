@@ -271,18 +271,49 @@ class NamedStruct(Struct):
         if tuple_name is None:
             tuple_name = 'NamedStruct'
         names, fmts = zip(*info)
+        self.converters = []
+        for i in info:
+            if len(i) > 2:
+                self.converters.append(i[-1])
+            else:
+                self.converters.append(None)
         self._tuple = namedtuple(tuple_name, ' '.join(n for n in names if n))
         Struct.__init__(self, prefmt + ''.join(fmts))
 
+    def _create(self, items):
+        return self._tuple(*[conv(i) if conv else i for conv,i in zip(self.converters, items)])
+
     def unpack(self, s):
-        return self._tuple(*Struct.unpack(self, s))
+        return self._create(Struct.unpack(self, s))
 
     def unpack_from(self, buff, offset=0):
-        return self._tuple(*Struct.unpack_from(self, buff, offset))
+        return self._create(Struct.unpack_from(self, buff, offset))
 
     def unpack_file(self, fobj):
         bytes = fobj.read(self.size)
         return self.unpack(bytes)
+
+class Bits(object):
+    def __init__(self, num_bits):
+        self._num_bits = num_bits
+
+    def _create(self, vals):
+        return vals
+
+    def __call__(self, val):
+        return self._create([bool((val>>i) & 0x1) for i in range(self._num_bits)])
+
+class BitField(Bits):
+    def __init__(self, *names):
+        Bits.__init__(self, len(names))
+        self._names = names
+
+    def _create(self, vals):
+        l= [n for n,v in zip(self._names, vals) if v]
+        if l:
+            return l if len(l) > 1 else l[0]
+        else:
+            return None
 
 def reduce_lists(d):
     for field in d:
@@ -294,6 +325,14 @@ def nexrad_to_datetime(julian_date, ms_midnight):
     #Subtracting one from julian_date is because epoch date is 1
     return datetime.datetime.fromtimestamp((julian_date - 1) * day
         + ms_midnight * milli)
+
+def version(val):
+    return '{:.1f}'.format(val / 10.)
+
+def scaler(scale):
+    def inner(val):
+        return val * scale
+    return inner
 
 def two_comp16(val):
     if val>>15:
