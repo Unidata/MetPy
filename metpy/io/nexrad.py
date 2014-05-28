@@ -554,6 +554,10 @@ class Level3File(object):
         ('super_res_cuts', 'h'), ('cmd_status', 'h'), ('v_ref_calib', 'h'),
         ('rda_build', 'h'), ('rda_channel', 'h'), ('reserved', 'h'),
         ('reserved2', 'h'), ('build_version', 'h')], '>', 'GSM')
+    # Build 14.0 added more bytes to the GSM
+    additional_gsm_fmt = NamedStruct([('el21', 'h'), ('el22', 'h'),
+        ('el23', 'h'), ('el24', 'h'), ('el25', 'h'), ('vcp_supplemental', 'H'),
+        ('spare', '84s')], '>', 'GSM')
     prod_desc_fmt = NamedStruct([('divider', 'h'), ('lat', 'l'), ('lon', 'l'),
         ('height', 'h'), ('prod_code', 'h'), ('op_mode', 'h'),
         ('vcp', 'h'), ('seq_num', 'H'), ('vol_num', 'H'),
@@ -845,7 +849,11 @@ class Level3File(object):
         if self.header.code == 2:
             self.gsm = self._buffer.read_struct(self.gsm_fmt)
             assert self.gsm.divider == -1
-            assert self.gsm.block_len == 82
+            if self.gsm.block_len > 82:
+                self.gsm_additional = self._buffer.read_struct(self.additional_gsm_fmt)
+                assert self.gsm.block_len == 178
+            else:
+                assert self.gsm.block_len == 82
             return
 
         self.prod_desc = self._buffer.read_struct(self.prod_desc_fmt)
