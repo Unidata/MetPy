@@ -62,7 +62,7 @@ class CompressedBlockFile(object):
 
     def read(self, nbytes):
         bytes = self._buffer.read(nbytes)
-        if not bytes:
+        if nbytes and not bytes:
             self._buffer = StringIO(self._read_next_compressed_block())
             bytes = self._buffer.read(nbytes)
         return bytes
