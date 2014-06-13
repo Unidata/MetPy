@@ -19,16 +19,26 @@ class NamedStruct(Struct):
         if tuple_name is None:
             tuple_name = 'NamedStruct'
         names, fmts = zip(*info)
+        self.converters = []
+        for i in info:
+            if len(i) > 2:
+                self.converters.append(i[-1])
+            else:
+                self.converters.append(None)
         self._tuple = namedtuple(tuple_name, ' '.join(n for n in names if n))
         Struct.__init__(self, prefmt + ''.join(fmts))
 
+    def _create(self, items):
+        return self._tuple(*[conv(i) if conv else i for conv,i in zip(self.converters, items)])
+
     def unpack(self, s):
-        return self._tuple(*Struct.unpack(self, s))
+        return self._create(Struct.unpack(self, s))
 
     def unpack_from(self, buff, offset=0):
-        return self._tuple(*Struct.unpack_from(self, buff, offset))
+        return self._create(Struct.unpack_from(self, buff, offset))
 
     def unpack_file(self, fobj):
+        print 'unpack_file :', self._tuple
         bytes = fobj.read(self.size)
         return self.unpack(bytes)
 
@@ -265,33 +275,6 @@ class IOBuffer(object):
     def __len__(self):
         return len(self._data)
 
-
-class NamedStruct(Struct):
-    def __init__(self, info, prefmt='', tuple_name=None):
-        if tuple_name is None:
-            tuple_name = 'NamedStruct'
-        names, fmts = zip(*info)
-        self.converters = []
-        for i in info:
-            if len(i) > 2:
-                self.converters.append(i[-1])
-            else:
-                self.converters.append(None)
-        self._tuple = namedtuple(tuple_name, ' '.join(n for n in names if n))
-        Struct.__init__(self, prefmt + ''.join(fmts))
-
-    def _create(self, items):
-        return self._tuple(*[conv(i) if conv else i for conv,i in zip(self.converters, items)])
-
-    def unpack(self, s):
-        return self._create(Struct.unpack(self, s))
-
-    def unpack_from(self, buff, offset=0):
-        return self._create(Struct.unpack_from(self, buff, offset))
-
-    def unpack_file(self, fobj):
-        bytes = fobj.read(self.size)
-        return self.unpack(bytes)
 
 class Bits(object):
     def __init__(self, num_bits):
