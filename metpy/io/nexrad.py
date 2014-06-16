@@ -38,167 +38,45 @@ class NamedStruct(Struct):
         return self._create(Struct.unpack_from(self, buff, offset))
 
     def unpack_file(self, fobj):
-        print 'unpack_file :', self._tuple
         bytes = fobj.read(self.size)
         return self.unpack(bytes)
 
-class FileStruct(Struct):
-    'Wraps unpacking data directly from a file.'
-    def __init__(self, fmt, fobj):
-        self._fobj = fobj
-        Struct.__init__(self, fmt)
-    def read(self):
-        bytes = self._fobj.read(self.size)
-        return self.unpack(bytes)
+class Bits(object):
+    def __init__(self, num_bits):
+        self._num_bits = num_bits
 
-class CompressedBlockFile(object):
-    '''
-    A class to wrap a file that consists of a series of compressed blocks
-    and their sizes.
-    '''
-    def __init__(self, fobj):
-        self._fobj = fobj
-        self._buffer = StringIO(self._read_next_compressed_block())
+    def _create(self, vals):
+        return vals
 
-    def read(self, nbytes):
-        bytes = self._buffer.read(nbytes)
-        if nbytes and not bytes:
-            self._buffer = StringIO(self._read_next_compressed_block())
-            bytes = self._buffer.read(nbytes)
-        return bytes
+    def __call__(self, val):
+        return self._create([bool((val>>i) & 0x1) for i in range(self._num_bits)])
 
-    def close(self):
-        self._fobj.close()
-        self._buffer.close()
+class BitField(Bits):
+    def __init__(self, *names):
+        Bits.__init__(self, len(names))
+        self._names = names
 
-    def _read_next_compressed_block(self):
-        num_bytes, = FileStruct('>l', self._fobj).read()
-        print 'num_bytes: %d' % num_bytes
-        cmp_block = self._fobj.read(num_bytes)
-        return bz2.decompress(cmp_block)
-
-def nexrad_to_datetime(julian_date, ms_midnight):
-    #Subtracting one from julian_date is because epoch date is 1
-    return datetime.datetime.fromtimestamp((julian_date - 1) * day
-        + ms_midnight * milli)
-
-class Level2File(object):
-    #Number of bytes
-    AR2_BLOCKSIZE = 2416
-    def __init__(self, filename):
-        if is_string_like(filename):
-            if filename.endswith('.bz2'):
-                self._fobj = bz2.BZ2File(filename, 'rb')
-            elif filename.endswith('.gz'):
-                self._fobj = gzip.GzipFile(filename, 'rb')
-            else:
-                self._fobj = file(filename, 'rb')
+    def _create(self, vals):
+        l= [n for n,v in zip(self._names, vals) if v]
+        if l:
+            return l if len(l) > 1 else l[0]
         else:
-            self._fobj = filename
+            return None
 
-        self._read_volume_header()
+def version(val):
+    return '{:.1f}'.format(val / 10.)
 
-        #If this comes up with an actual number of bytes, we have a file with
-        #bz2'd blocks.  If it's zero, that means we're in the 12-bytes
-        fmt = FileStruct('>l', self._fobj)
-        bz2_test, = fmt.read()
+def scaler(scale):
+    def inner(val):
+        return val * scale
+    return inner
 
-        #Rewind the bytes we just read
-        self._fobj.seek(-fmt.size, 1)
-
-        if bz2_test:
-            self._fobj = CompressedBlockFile(self._fobj)
-
-        #Now we're all initialized, we can proceed with reading in data
-        self._read_data()
-
-    def _read_volume_header(self):
-        vol_fields = [('version', '9s'), ('vol_num', '3s'), ('date', 'L'),
-                      ('time_ms', 'L'), ('stid', '4s')]
-        vol_hdr_fmt = NamedStruct(vol_fields, '>', 'VolHdr')
-        vol_hdr = vol_hdr_fmt.unpack_file(self._fobj)
-        print vol_hdr
-        self.dt = nexrad_to_datetime(vol_hdr.date, vol_hdr.time_ms)
-        self._version = vol_hdr.version
-        self.stid = vol_hdr.stid
-        print self.dt
-
-    def _read_data(self):
-        ctm_hdr = FileStruct('12c', self._fobj)
-        ctm_hdr.read()
-        msg_hdr_fields = [('size_hw', 'H'), ('rda_channel', 'B'),
-                          ('msg_type', 'B'), ('seq_num', 'H'),
-                          ('date', 'H'), ('time_ms', 'I'),
-                          ('num_segments', 'H'), ('segment_num', 'H')]
-        msg_hdr_fmt = NamedStruct(msg_hdr_fields, '>', 'MsgHdr')
-        while True:
-            msg_hdr = msg_hdr_fmt.unpack_file(self._fobj)
-            if msg_hdr.msg_type in (1,31):
-                dt = nexrad_to_datetime(msg_hdr.date, msg_hdr.time_ms)
-                print msg_hdr, str(dt)
-
-            msg = self._fobj.read(2 * msg_hdr.size_hw)
-            try:
-                getattr(self, '_decode_msg%d' % msg_hdr.msg_type)(msg)
-            except AttributeError:
-                pass
-#                print 'Unknown Message Type: %d' % msg_hdr.msg_type
-            if msg_hdr.msg_type != 31:
-                self._fobj.read(self.AR2_BLOCKSIZE - len(msg))
-
-    msg31_data_hdr_fields = [('stid', '4s'), ('time_ms', 'L'), ('date', 'H'),
-                             ('az_num', 'H'), ('az_angle', 'f'),
-                             ('compression', 'B'), (None, 'x'),
-                             ('rad_length', 'H'), ('az_spacing', 'B'),
-                             ('rad_status', 'B'), ('el_num', 'B'),
-                             ('sector_num', 'B'), ('el_angle', 'f'),
-                             ('spot_blanking', 'B'), ('az_index_mode', 'B'),
-                             ('num_data_blks', 'H'), ('vol_const_ptr', 'L'),
-                             ('el_const_ptr', 'L'), ('rad_const_ptr', 'L'),
-                             ('ref_ptr', 'L'), ('vel_ptr', 'L'),
-                             ('sw_ptr', 'L'), ('zdr_ptr', 'L'),
-                             ('phi_ptr', 'L'), ('rho_ptr', 'L')]
-    msg31_data_hdr_fmt = NamedStruct(msg31_data_hdr_fields, '>', 'Msg31DataHdr')
-
-    msg31_vol_const_fields = [('type', 's'), ('name', '3s'), ('size', 'H'),
-                              ('major', 'B'), ('minor', 'B'), ('lat', 'f'),
-                              ('lon', 'f'), ('site_amsl', 'h'),
-                              ('feedhorn_agl', 'H'), ('calib_dbz', 'f'),
-                              ('txpower_h', 'f'), ('txpower_v', 'f'),
-                              ('sys_zdr', 'f'), ('phidp0', 'f'),
-                              ('vcp', 'H'), (None, '2x')]
-    msg31_vol_const_fmt = NamedStruct(msg31_vol_const_fields, '>', 'VolConsts')
-
-    msg31_el_const_fields = [('type', 's'), ('name', '3s'), ('size', 'H'),
-                             ('atmos_atten', 'h'), ('calib_dbz0', 'f')]
-    msg31_el_const_fmt = NamedStruct(msg31_el_const_fields, '>', 'ElConsts')
-
-    rad_const_fields = [('type', 's'), ('name', '3s'), ('size', 'H'),
-                        ('unamb_range', 'H'), ('noise_h', 'f'),
-                        ('noise_v', 'f'), ('nyq_vel', 'H'), (None, '2x')]
-    rad_const_fmt = NamedStruct(rad_const_fields, '>', 'RadConsts')
-    def _decode_msg31(self, msg):
-        print len(msg)
-        data_hdr = self.msg31_data_hdr_fmt.unpack_from(msg)
-        print data_hdr
-        vol_consts = self.msg31_vol_const_fmt.unpack_from(msg,
-            data_hdr.vol_const_ptr)
-        print vol_consts
-        el_consts = self.msg31_el_const_fmt.unpack_from(msg,
-            data_hdr.el_const_ptr)
-        print el_consts
-        rad_consts = self.rad_const_fmt.unpack_from(msg, data_hdr.rad_const_ptr)
-        print rad_consts
-
-    def _decode_msg1(self, msg):
-        pass
 
 class IOBuffer(object):
     def __init__(self, source):
         self._data = source
         self._offset = 0
-        self._bookmarks = []
-        self._int_codes = {}
+        self.clear_marks()
 
     @classmethod
     def fromfile(cls, fobj):
@@ -213,6 +91,9 @@ class IOBuffer(object):
 
     def offset_from(self, mark):
         return self._offset - self._bookmarks[mark]
+
+    def clear_marks(self):
+        self._bookmarks = []
 
     def splice(self, mark, newdata):
         self.jump_to(mark)
@@ -272,31 +153,154 @@ class IOBuffer(object):
     def __str__(self):
         return 'Size: {} Offset: {}'.format(len(self._data), self._offset)
 
+    def print_next(self, num_bytes):
+        print ' '.join('%02x' % ord(c) for c in self.get_next(num_bytes))
+
     def __len__(self):
         return len(self._data)
 
 
-class Bits(object):
-    def __init__(self, num_bits):
-        self._num_bits = num_bits
-
-    def _create(self, vals):
-        return vals
-
-    def __call__(self, val):
-        return self._create([bool((val>>i) & 0x1) for i in range(self._num_bits)])
-
-class BitField(Bits):
-    def __init__(self, *names):
-        Bits.__init__(self, len(names))
-        self._names = names
-
-    def _create(self, vals):
-        l= [n for n,v in zip(self._names, vals) if v]
-        if l:
-            return l if len(l) > 1 else l[0]
+def bzip_blocks_decompress_all(data):
+    frames = []
+    offset = 0
+    while offset < len(data):
+        size_bytes = data[offset:offset + 4]
+        offset += 4
+        block_cmp_bytes = abs(Struct('>l').unpack(size_bytes)[0])
+        if block_cmp_bytes:
+            frames.append(bz2.decompress(data[offset:offset+block_cmp_bytes]))
+            offset += block_cmp_bytes
         else:
-            return None
+            frames.append(size_bytes)
+            frames.append(data[offset:])
+    return ''.join(frames)
+
+
+def nexrad_to_datetime(julian_date, ms_midnight):
+    #Subtracting one from julian_date is because epoch date is 1
+    return datetime.datetime.fromtimestamp((julian_date - 1) * day
+        + ms_midnight * milli)
+
+
+class Level2File(object):
+    #Number of bytes
+    AR2_BLOCKSIZE = 2432
+    CTM_HEADER_SIZE = 12
+    def __init__(self, filename):
+        if is_string_like(filename):
+            if filename.endswith('.bz2'):
+                fobj = bz2.BZ2File(filename, 'rb')
+            elif filename.endswith('.gz'):
+                fobj = gzip.GzipFile(filename, 'rb')
+            else:
+                fobj = file(filename, 'rb')
+        else:
+            fobj = filename
+
+        self._buffer = IOBuffer.fromfile(fobj)
+        self._read_volume_header()
+
+        self._buffer = IOBuffer(self._buffer.read_func(bzip_blocks_decompress_all))
+
+        #Now we're all initialized, we can proceed with reading in data
+        self._read_data()
+
+    vol_hdr_fmt = NamedStruct([('version', '9s'), ('vol_num', '3s'),
+        ('date', 'L'), ('time_ms', 'L'), ('stid', '4s')], '>', 'VolHdr')
+
+    def _read_volume_header(self):
+        vol_hdr = self._buffer.read_struct(self.vol_hdr_fmt)
+        print vol_hdr
+        self.dt = nexrad_to_datetime(vol_hdr.date, vol_hdr.time_ms)
+        self._version = vol_hdr.version
+        self.stid = vol_hdr.stid
+        print self.dt
+
+    msg_hdr_fmt = NamedStruct([('size_hw', 'H'), ('rda_channel', 'B'),
+        ('msg_type', 'B'), ('seq_num', 'H'), ('date', 'H'), ('time_ms', 'I'),
+        ('num_segments', 'H'), ('segment_num', 'H')], '>', 'MsgHdr')
+
+    def _read_data(self):
+        while not self._buffer.at_end():
+            # Clear old file book marks and set the start of message for
+            # easy jumping to the end
+            self._buffer.clear_marks()
+            msg_start = self._buffer.set_mark()
+
+            # Skip CTM
+            self._buffer.skip(self.CTM_HEADER_SIZE)
+
+            # Read the message header
+            msg_hdr = self._buffer.read_struct(self.msg_hdr_fmt)
+
+            # If the size is 0, this is just padding, which is for certain
+            # done in the metadata messages. Just handle generally here
+            if msg_hdr.size_hw:
+                print msg_hdr, str(nexrad_to_datetime(msg_hdr.date, msg_hdr.time_ms))
+
+                # Try to handle the message. If we don't handle it, skipping
+                # past it is handled at the end anyway.
+                try:
+                    getattr(self, '_decode_msg%d' % msg_hdr.msg_type)(msg_hdr)
+                except AttributeError:
+                    warnings.warn("Unknown message: {0.msg_type}".format(msg_hdr))
+
+            # Jump to the start of the next message. This depends on whether
+            # the message was legacy with fixed block size or not.
+            if msg_hdr.msg_type != 31:
+                # The AR2_BLOCKSIZE includes accounts for the CTM header
+                self._buffer.jump_to(msg_start, self.AR2_BLOCKSIZE)
+            else:
+                # Need to include the CTM header
+                self._buffer.jump_to(msg_start,
+                        self.CTM_HEADER_SIZE + 2 * msg_hdr.size_hw)
+
+    msg31_data_hdr_fmt = NamedStruct([('stid', '4s'), ('time_ms', 'L'),
+        ('date', 'H'), ('az_num', 'H'), ('az_angle', 'f'),
+        ('compression', 'B'), (None, 'x'), ('rad_length', 'H'),
+        ('az_spacing', 'B'), ('rad_status', 'B'), ('el_num', 'B'),
+        ('sector_num', 'B'), ('el_angle', 'f'), ('spot_blanking', 'B'),
+        ('az_index_mode', 'B', scaler(0.01)), ('num_data_blks', 'H'), ('vol_const_ptr', 'L'),
+        ('el_const_ptr', 'L'), ('rad_const_ptr', 'L'), ('ref_ptr', 'L'),
+        ('vel_ptr', 'L'), ('sw_ptr', 'L'), ('zdr_ptr', 'L'), ('phi_ptr', 'L'),
+        ('rho_ptr', 'L')], '>', 'Msg31DataHdr')
+
+    msg31_vol_const_fmt = NamedStruct([('type', 's'), ('name', '3s'),
+        ('size', 'H'), ('major', 'B'), ('minor', 'B'), ('lat', 'f'),
+        ('lon', 'f'), ('site_amsl', 'h'), ('feedhorn_agl', 'H'),
+        ('calib_dbz', 'f'), ('txpower_h', 'f'), ('txpower_v', 'f'),
+        ('sys_zdr', 'f'), ('phidp0', 'f'), ('vcp', 'H'), (None, '2x')],
+        '>', 'VolConsts')
+
+    msg31_el_const_fmt = NamedStruct([('type', 's'), ('name', '3s'),
+        ('size', 'H'), ('atmos_atten', 'h', scaler(0.001)),
+        ('calib_dbz0', 'f')], '>', 'ElConsts')
+
+    rad_const_fmt = NamedStruct([('type', 's'), ('name', '3s'), ('size', 'H'),
+        ('unamb_range', 'H', scaler(0.1)), ('noise_h', 'f'), ('noise_v', 'f'),
+        ('nyq_vel', 'H', scaler(0.01)), (None, '2x')], '>', 'RadConsts')
+
+    def _decode_msg31(self, msg_hdr):
+        msg_start = self._buffer.set_mark()
+        data_hdr = self._buffer.read_struct(self.msg31_data_hdr_fmt)
+        print data_hdr
+
+        self._buffer.jump_to(msg_start, data_hdr.vol_const_ptr)
+        vol_consts = self._buffer.read_struct(self.msg31_vol_const_fmt)
+        print vol_consts
+
+        self._buffer.jump_to(msg_start, data_hdr.el_const_ptr)
+        el_consts = self._buffer.read_struct(self.msg31_el_const_fmt)
+        print el_consts
+
+        self._buffer.jump_to(msg_start, data_hdr.rad_const_ptr)
+        rad_consts = self._buffer.read_struct(self.rad_const_fmt)
+        print rad_consts
+
+
+    def _decode_msg1(self, msg_hdr):
+        pass
+
 
 def reduce_lists(d):
     for field in d:
@@ -308,14 +312,6 @@ def nexrad_to_datetime(julian_date, ms_midnight):
     #Subtracting one from julian_date is because epoch date is 1
     return datetime.datetime.fromtimestamp((julian_date - 1) * day
         + ms_midnight * milli)
-
-def version(val):
-    return '{:.1f}'.format(val / 10.)
-
-def scaler(scale):
-    def inner(val):
-        return val * scale
-    return inner
 
 def two_comp16(val):
     if val>>15:
