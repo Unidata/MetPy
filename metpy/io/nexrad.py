@@ -23,7 +23,7 @@ class NamedStruct(Struct):
         for i in info:
             if len(i) > 2:
                 self.converters.append(i[-1])
-            else:
+            elif i[0]: # Skip items with no name
                 self.converters.append(None)
         self._tuple = namedtuple(tuple_name, ' '.join(n for n in names if n))
         Struct.__init__(self, prefmt + ''.join(fmts))
