@@ -309,9 +309,7 @@ class Level2File(object):
         ('sector_num', 'B'), ('el_angle', 'f'),
         ('spot_blanking', 'B', BitField('Radial', 'Elevation', 'Volume')),
         ('az_index_mode', 'B', scaler(0.01)), ('num_data_blks', 'H'), ('vol_const_ptr', 'L'),
-        ('el_const_ptr', 'L'), ('rad_const_ptr', 'L'), ('ref_ptr', 'L'),
-        ('vel_ptr', 'L'), ('sw_ptr', 'L'), ('zdr_ptr', 'L'), ('phi_ptr', 'L'),
-        ('rho_ptr', 'L')], '>', 'Msg31DataHdr')
+        ('el_const_ptr', 'L'), ('rad_const_ptr', 'L')], '>', 'Msg31DataHdr')
 
     msg31_vol_const_fmt = NamedStruct([('type', 's'), ('name', '3s'),
         ('size', 'H'), ('major', 'B'), ('minor', 'B'), ('lat', 'f'),
@@ -341,6 +339,11 @@ class Level2File(object):
         msg_start = self._buffer.set_mark()
         data_hdr = self._buffer.read_struct(self.msg31_data_hdr_fmt)
         print data_hdr
+
+        # Read all the data block pointers separately. This simplifies just
+        # iterating over them
+        ptrs = self._buffer.read_binary(6, '>L')
+
         assert data_hdr.compression == 0, 'Compressed message 31 not supported!'
 
         self._buffer.jump_to(msg_start, data_hdr.vol_const_ptr)
@@ -357,8 +360,7 @@ class Level2File(object):
 
         data = dict()
         block_count = 3
-        for ptr in (data_hdr.ref_ptr, data_hdr.vel_ptr, data_hdr.sw_ptr,
-                data_hdr.zdr_ptr, data_hdr.phi_ptr, data_hdr.rho_ptr):
+        for ptr in ptrs:
             if ptr:
                 block_count += 1
                 self._buffer.jump_to(msg_start, ptr)
