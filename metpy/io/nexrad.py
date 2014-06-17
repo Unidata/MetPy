@@ -380,7 +380,8 @@ class Level2File(object):
         if len(self.sweeps) != data_hdr.el_num:
             warnings.warn('Missed elevation -- Have %d but data on %d.'
                     ' Compensating...' % (len(self.sweeps), data_hdr.el_num))
-            self.sweeps.append([])
+            while len(self.sweeps) < data_hdr.el_num:
+                self.sweeps.append([])
 
         self.sweeps[-1].append((data_hdr, vol_consts, el_consts, rad_consts, data))
 
