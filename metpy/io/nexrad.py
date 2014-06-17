@@ -48,25 +48,28 @@ class NamedStruct(Struct):
 
 class Bits(object):
     def __init__(self, num_bits):
-        self._num_bits = num_bits
-
-    def _create(self, vals):
-        return vals
+        self._bits = range(num_bits)
 
     def __call__(self, val):
-        return self._create([bool((val>>i) & 0x1) for i in range(self._num_bits)])
+        return [bool((val>>i) & 0x1) for i in self._bits]
 
 class BitField(Bits):
     def __init__(self, *names):
         Bits.__init__(self, len(names))
         self._names = names
 
-    def _create(self, vals):
-        l= [n for n,v in zip(self._names, vals) if v]
-        if l:
-            return l if len(l) > 1 else l[0]
-        else:
-            return None
+    def __call__(self, val):
+        if not val: return None
+
+        l = []
+        for n in self._names:
+            if val & 0x1:
+                l.append(n)
+            val = val >> 1
+            if not val:
+                break
+
+        return l if len(l) > 1 else l[0]
 
 def version(val):
     return '{:.1f}'.format(val / 10.)
