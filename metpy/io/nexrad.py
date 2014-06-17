@@ -82,7 +82,7 @@ def scaler(scale):
 
 class IOBuffer(object):
     def __init__(self, source):
-        self._data = source
+        self._data = bytearray(source)
         self._offset = 0
         self.clear_marks()
 
@@ -105,7 +105,7 @@ class IOBuffer(object):
 
     def splice(self, mark, newdata):
         self.jump_to(mark)
-        self._data = self._data[:self._offset] + newdata
+        self._data = self._data[:self._offset] + bytearray(newdata)
 
     def read_struct(self, struct_class):
         struct = struct_class.unpack_from(self._data, self._offset)
@@ -118,13 +118,20 @@ class IOBuffer(object):
         self.skip(num_bytes)
         return res
 
-    def read_binary(self, num=None, type='B'):
+    def read_ascii(self, num_bytes=None):
+        return str(self.read(num_bytes))
+
+    def read_binary(self, num, type='B'):
+        if 'B' in type:
+            return self.read(num)
+
         if type[0] in ('@', '=', '<', '>', '!'):
             order = type[0]
             type = type[1:]
         else:
             order = '@'
-        return list(self.read_struct(Struct('%c%d%s' % (order, num, type))))
+
+        return list(self.read_struct(Struct(order + '%d' % num + type)))
 
     def read_int(self, code):
         return self.read_struct(Struct(code))[0]
@@ -945,7 +952,7 @@ class Level3File(object):
 
         # Handle free text message products that are pure text
         if self.wmo_code == 'NOUS':
-            self.text = ''.join(self._buffer.read())
+            self.text = ''.join(self._buffer.read_ascii())
             return
 
         # Decompress the data if necessary, and if so, pop off new header
@@ -1073,7 +1080,7 @@ class Level3File(object):
 
     def _unpack_rcm(self, start, offset):
         self._buffer.jump_to(start, offset)
-        header = self._buffer.read(10)
+        header = self._buffer.read_ascii(10)
         assert header == '1234 ROBUU'
         #warnings.warn("{}: RCM decoding not supported.".format(self.filename))
 
@@ -1160,7 +1167,7 @@ class Level3File(object):
             lines = []
             num_chars = self._buffer.read_int('>h')
             while num_chars != -1:
-                lines.append(''.join(self._buffer.read(num_chars)))
+                lines.append(''.join(self._buffer.read_ascii(num_chars)))
                 num_chars = self._buffer.read_int('>h')
             self.tab_pages.append('\n'.join(lines))
 
@@ -1238,7 +1245,7 @@ class Level3File(object):
         j_start = self._buffer.read_int('>h')
 
         # Text is what remains beyond what's been read, not including byte count
-        text = ''.join(self._buffer.read(num_bytes - read_bytes))
+        text = ''.join(self._buffer.read_ascii(num_bytes - read_bytes))
         return dict(x=i_start * self.pos_scale(inSymBlock), y=j_start * self.pos_scale(inSymBlock),
                     color=value, text=text)
 
@@ -1285,7 +1292,7 @@ class Level3File(object):
             if code in (3, 11, 25):
                 ret['radius'].append(self._buffer.read_int('>h') * scale)
             elif code == 15:
-                ret['id'].append(''.join(self._buffer.read(2)))
+                ret['id'].append(''.join(self._buffer.read_ascii(2)))
             elif code == 19:
                 ret['POH'].append(self._buffer.read_int('>h'))
                 ret['POSH'].append(self._buffer.read_int('>h'))
@@ -1432,7 +1439,7 @@ class Level3File(object):
 
         # Read number of bytes (2 HW) and return
         num_bytes = self._buffer.read_int('>l')
-        data = ''.join(self._buffer.read(num_bytes))
+        data = ''.join(self._buffer.read_ascii(num_bytes))
         return dict(xdrdata=data)
 
     def _unpack_packet_trend_times(self, code, inSymBlock):
@@ -1447,7 +1454,7 @@ class Level3File(object):
         code_scales = [100, 100, 100, 1, 1, 1, 1, 100]
         num_bytes = self._buffer.read_int('>h')
         packet_data_start = self._buffer.set_mark()
-        cell_id = ''.join(self._buffer.read(2))
+        cell_id = ''.join(self._buffer.read_ascii(2))
         x = self._buffer.read_int('>h') * self.pos_scale(inSymBlock)
         y = self._buffer.read_int('>h') * self.pos_scale(inSymBlock)
         ret = dict(id=cell_id, x=x, y=y)
