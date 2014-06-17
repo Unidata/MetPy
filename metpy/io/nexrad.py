@@ -267,6 +267,7 @@ class Level2File(object):
         ('num_segments', 'H'), ('segment_num', 'H')], '>', 'MsgHdr')
 
     def _read_data(self):
+        self._msg_buf = {}
         self.sweeps = []
         while not self._buffer.at_end():
             # Clear old file book marks and set the start of message for
@@ -301,6 +302,8 @@ class Level2File(object):
                 # Need to include the CTM header
                 self._buffer.jump_to(msg_start,
                         self.CTM_HEADER_SIZE + 2 * msg_hdr.size_hw)
+
+        del self._msg_buf
 
     msg31_data_hdr_fmt = NamedStruct([('stid', '4s'), ('time_ms', 'L'),
         ('date', 'H'), ('az_num', 'H'), ('az_angle', 'f'),
@@ -389,6 +392,44 @@ class Level2File(object):
             warnings.warn('Incorrect number of blocks detected -- Got %d'
                     'instead of %d' % (block_count, data_hdr.num_data_blks))
         assert data_hdr.rad_length == self._buffer.offset_from(msg_start)
+
+
+    msg15_code_map = {0:'Bypass Filter', 1:'Bypass map in Control',
+            2:'Force Filter'}
+
+    def _decode_msg15(self, msg_hdr):
+        # buffer the segments until we have the whole thing. The data
+        # will be returned concatenated when this is the case
+        data = self._buffer_segment(msg_hdr)
+        if data:
+            data = list(Struct('>%dh' % (len(data) / 2)).unpack(data))
+            cmap = dict()
+            date,time,num_el = data[:3]
+            cmap['datetime'] = nexrad_to_datetime(date, time)
+
+            offset = 3
+            cmap['data'] = [[]] * num_el
+            for e in range(num_el):
+                cmap['data'][e] = [[]] * 360
+                for a in range(360):
+                    num_rng = data[offset]
+                    offset += 1
+
+                    codes = data[offset:2 * num_rng + offset:2]
+                    offset += 1
+
+                    ends = data[offset:2 * num_rng + offset:2]
+                    offset += 2 * num_rng - 1
+                    cmap['data'][e][a] = zip(ends, codes)
+
+            self.clutter_filter_map = cmap
+
+    def _buffer_segment(self, msg_hdr):
+        # Add to the buffer
+        bufs = self._msg_buf.setdefault(msg_hdr.msg_type, [])
+        bufs.append(self._buffer.read(2 * msg_hdr.size_hw))
+        if msg_hdr.segment_num == msg_hdr.num_segments:
+            return sum(bufs, bytearray())
 
     def _decode_msg1(self, msg_hdr):
         pass
