@@ -257,10 +257,8 @@ class Level2File(object):
 
     def _read_volume_header(self):
         self.vol_hdr = self._buffer.read_struct(self.vol_hdr_fmt)
-        print self.vol_hdr
         self.dt = nexrad_to_datetime(self.vol_hdr.date, self.vol_hdr.time_ms)
         self.stid = self.vol_hdr.stid
-        print self.dt
 
     msg_hdr_fmt = NamedStruct([('size_hw', 'H'), ('rda_channel', 'B'),
         ('msg_type', 'B'), ('seq_num', 'H'), ('date', 'H'), ('time_ms', 'I'),
@@ -341,7 +339,6 @@ class Level2File(object):
     def _decode_msg31(self, msg_hdr):
         msg_start = self._buffer.set_mark()
         data_hdr = self._buffer.read_struct(self.msg31_data_hdr_fmt)
-        print data_hdr
 
         # Read all the data block pointers separately. This simplifies just
         # iterating over them
@@ -351,15 +348,12 @@ class Level2File(object):
 
         self._buffer.jump_to(msg_start, data_hdr.vol_const_ptr)
         vol_consts = self._buffer.read_struct(self.msg31_vol_const_fmt)
-        print vol_consts
 
         self._buffer.jump_to(msg_start, data_hdr.el_const_ptr)
         el_consts = self._buffer.read_struct(self.msg31_el_const_fmt)
-        print el_consts
 
         self._buffer.jump_to(msg_start, data_hdr.rad_const_ptr)
         rad_consts = self._buffer.read_struct(self.rad_const_fmt)
-        print rad_consts
 
         data = dict()
         block_count = 3
@@ -371,7 +365,6 @@ class Level2File(object):
                 vals = self._buffer.read_binary(hdr.num_gates,
                         '>' + hdr.data_size)
                 vals = (np.array(vals) - hdr.offset) / hdr.scale
-                print hdr, len(vals)
                 data[hdr.name] = (hdr, vals)
 
         if not self.sweeps and not data_hdr.rad_status & START_VOLUME:
