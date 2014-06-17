@@ -19,17 +19,22 @@ class NamedStruct(Struct):
         if tuple_name is None:
             tuple_name = 'NamedStruct'
         names, fmts = zip(*info)
-        self.converters = []
-        for i in info:
+        self.converters = {}
+        conv_off = 0
+        for ind,i in enumerate(info):
             if len(i) > 2:
-                self.converters.append(i[-1])
-            elif i[0]: # Skip items with no name
-                self.converters.append(None)
+                self.converters[ind - conv_off] = i[-1]
+            elif not i[0]: # Skip items with no name
+                conv_off += 1
         self._tuple = namedtuple(tuple_name, ' '.join(n for n in names if n))
         Struct.__init__(self, prefmt + ''.join(fmts))
 
     def _create(self, items):
-        return self._tuple(*[conv(i) if conv else i for conv,i in zip(self.converters, items)])
+        if self.converters:
+            items = list(items)
+            for ind,conv in self.converters.items():
+                items[ind] = conv(items[ind])
+        return self._tuple(*items)
 
     def unpack(self, s):
         return self._create(Struct.unpack(self, s))
