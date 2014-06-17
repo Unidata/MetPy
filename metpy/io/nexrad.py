@@ -181,6 +181,38 @@ def nexrad_to_datetime(julian_date, ms_midnight):
     return datetime.datetime.fromtimestamp((julian_date - 1) * day
         + ms_midnight * milli)
 
+def bits_to_code(val):
+    if val == 8:
+        return 'B'
+    elif val == 16:
+        return 'H'
+    else:
+        warnings.warn('Unsuported bit size: %s' % val)
+        return 'B'
+
+START_ELEVATION = 0x1
+END_ELEVATION = 0x2
+START_VOLUME = 0x4
+END_VOLUME = 0x8
+LAST_ELEVATION = 0x10
+BAD_DATA = 0x20
+def remap_status(val):
+    bad = BAD_DATA if val & 0xF0 else 0
+    val = val & 0x0F
+    if val == 0:
+        status = START_ELEVATION
+    elif val == 1:
+        status = 0
+    elif val == 2:
+        status = END_ELEVATION
+    elif val == 3:
+        status = START_ELEVATION | START_VOLUME
+    elif val == 4:
+        status = END_ELEVATION | END_VOLUME
+    elif val == 5:
+        status = START_ELEVATION | LAST_ELEVATION
+
+    return status | bad
 
 class Level2File(object):
     #Number of bytes
@@ -209,11 +241,10 @@ class Level2File(object):
         ('date', 'L'), ('time_ms', 'L'), ('stid', '4s')], '>', 'VolHdr')
 
     def _read_volume_header(self):
-        vol_hdr = self._buffer.read_struct(self.vol_hdr_fmt)
-        print vol_hdr
-        self.dt = nexrad_to_datetime(vol_hdr.date, vol_hdr.time_ms)
-        self._version = vol_hdr.version
-        self.stid = vol_hdr.stid
+        self.vol_hdr = self._buffer.read_struct(self.vol_hdr_fmt)
+        print self.vol_hdr
+        self.dt = nexrad_to_datetime(self.vol_hdr.date, self.vol_hdr.time_ms)
+        self.stid = self.vol_hdr.stid
         print self.dt
 
     msg_hdr_fmt = NamedStruct([('size_hw', 'H'), ('rda_channel', 'B'),
@@ -221,6 +252,7 @@ class Level2File(object):
         ('num_segments', 'H'), ('segment_num', 'H')], '>', 'MsgHdr')
 
     def _read_data(self):
+        self.sweeps = []
         while not self._buffer.at_end():
             # Clear old file book marks and set the start of message for
             # easy jumping to the end
@@ -258,8 +290,9 @@ class Level2File(object):
     msg31_data_hdr_fmt = NamedStruct([('stid', '4s'), ('time_ms', 'L'),
         ('date', 'H'), ('az_num', 'H'), ('az_angle', 'f'),
         ('compression', 'B'), (None, 'x'), ('rad_length', 'H'),
-        ('az_spacing', 'B'), ('rad_status', 'B'), ('el_num', 'B'),
-        ('sector_num', 'B'), ('el_angle', 'f'), ('spot_blanking', 'B'),
+        ('az_spacing', 'B'), ('rad_status', 'B', remap_status), ('el_num', 'B'),
+        ('sector_num', 'B'), ('el_angle', 'f'),
+        ('spot_blanking', 'B', BitField('Radial', 'Elevation', 'Volume')),
         ('az_index_mode', 'B', scaler(0.01)), ('num_data_blks', 'H'), ('vol_const_ptr', 'L'),
         ('el_const_ptr', 'L'), ('rad_const_ptr', 'L'), ('ref_ptr', 'L'),
         ('vel_ptr', 'L'), ('sw_ptr', 'L'), ('zdr_ptr', 'L'), ('phi_ptr', 'L'),
@@ -280,10 +313,20 @@ class Level2File(object):
         ('unamb_range', 'H', scaler(0.1)), ('noise_h', 'f'), ('noise_v', 'f'),
         ('nyq_vel', 'H', scaler(0.01)), (None, '2x')], '>', 'RadConsts')
 
+    data_block_fmt = NamedStruct([('type', 's'), ('name', '3s'),
+        ('reserved', 'L'), ('num_gates', 'H'),
+        ('first_range_gate', 'H', scaler(0.001)),
+        ('gate_width', 'H', scaler(0.001)), ('tover', 'H', scaler(0.1)),
+        ('snr_thresh', 'h', scaler(0.1)),
+        ('recombined', 'B', BitField('Azimuths', 'Gates')),
+        ('data_size', 'B', bits_to_code), ('scale', 'f'), ('offset', 'f')],
+        '>', 'DataBlockHdr')
+
     def _decode_msg31(self, msg_hdr):
         msg_start = self._buffer.set_mark()
         data_hdr = self._buffer.read_struct(self.msg31_data_hdr_fmt)
         print data_hdr
+        assert data_hdr.compression == 0, 'Compressed message 31 not supported!'
 
         self._buffer.jump_to(msg_start, data_hdr.vol_const_ptr)
         vol_consts = self._buffer.read_struct(self.msg31_vol_const_fmt)
@@ -297,6 +340,37 @@ class Level2File(object):
         rad_consts = self._buffer.read_struct(self.rad_const_fmt)
         print rad_consts
 
+        data = dict()
+        block_count = 3
+        for ptr in (data_hdr.ref_ptr, data_hdr.vel_ptr, data_hdr.sw_ptr,
+                data_hdr.zdr_ptr, data_hdr.phi_ptr, data_hdr.rho_ptr):
+            if ptr:
+                block_count += 1
+                self._buffer.jump_to(msg_start, ptr)
+                hdr = self._buffer.read_struct(self.data_block_fmt)
+                vals = self._buffer.read_binary(hdr.num_gates,
+                        '>' + hdr.data_size)
+                vals = (np.array(vals) - hdr.offset) / hdr.scale
+                print hdr, len(vals)
+                data[hdr.name] = (hdr, vals)
+
+        if not self.sweeps and not data_hdr.rad_status & START_VOLUME:
+            warnings.warn('Missed start of volume!')
+
+        if data_hdr.rad_status & START_ELEVATION:
+            self.sweeps.append([])
+
+        if len(self.sweeps) != data_hdr.el_num:
+            warnings.warn('Missed elevation -- Have %d but data on %d.'
+                    ' Compensating...' % (len(self.sweeps), data_hdr.el_num))
+            self.sweeps.append([])
+
+        self.sweeps[-1].append((data_hdr, vol_consts, el_consts, rad_consts, data))
+
+        if data_hdr.num_data_blks != block_count:
+            warnings.warn('Incorrect number of blocks detected -- Got %d'
+                    'instead of %d' % (block_count, data_hdr.num_data_blks))
+        assert data.rad_length == self._buffer.offset_to(msg_start)
 
     def _decode_msg1(self, msg_hdr):
         pass
@@ -307,11 +381,6 @@ def reduce_lists(d):
         old_data = d[field]
         if len(old_data) == 1:
             d[field] = old_data[0]
-
-def nexrad_to_datetime(julian_date, ms_midnight):
-    #Subtracting one from julian_date is because epoch date is 1
-    return datetime.datetime.fromtimestamp((julian_date - 1) * day
-        + ms_midnight * milli)
 
 def two_comp16(val):
     if val>>15:
