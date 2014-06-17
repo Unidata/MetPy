@@ -286,9 +286,9 @@ class Level2File(object):
 
                 # Try to handle the message. If we don't handle it, skipping
                 # past it is handled at the end anyway.
-                try:
+                if hasattr(self, '_decode_msg%d' % msg_hdr.msg_type):
                     getattr(self, '_decode_msg%d' % msg_hdr.msg_type)(msg_hdr)
-                except AttributeError:
+                else:
                     warnings.warn("Unknown message: {0.msg_type}".format(msg_hdr))
 
             # Jump to the start of the next message. This depends on whether
