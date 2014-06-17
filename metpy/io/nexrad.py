@@ -387,7 +387,7 @@ class Level2File(object):
         if data_hdr.num_data_blks != block_count:
             warnings.warn('Incorrect number of blocks detected -- Got %d'
                     'instead of %d' % (block_count, data_hdr.num_data_blks))
-        assert data.rad_length == self._buffer.offset_to(msg_start)
+        assert data_hdr.rad_length == self._buffer.offset_from(msg_start)
 
     def _decode_msg1(self, msg_hdr):
         pass
