@@ -329,6 +329,10 @@ class Level2File(object):
 
             self.clutter_filter_bypass_map = bmap
 
+            if offset != len(data):
+                warnings.warn('Message 13 left data -- Used: %d Avail: %d' % (offset, len(data)))
+                #assert False
+
 
     msg15_code_map = {0:'Bypass Filter', 1:'Bypass map in Control',
             2:'Force Filter'}
@@ -360,6 +364,8 @@ class Level2File(object):
                 cmap['data'].append(az_data)
 
             self.clutter_filter_map = cmap
+            if offset != len(data):
+                warnings.warn('Message 15 left data -- Used: %d Avail: %d' % (offset, len(data)))
 
 
     msg31_data_hdr_fmt = NamedStruct([('stid', '4s'), ('time_ms', 'L'),
