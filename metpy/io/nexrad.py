@@ -303,6 +303,65 @@ class Level2File(object):
 
         del self._msg_buf
 
+    def _decode_msg1(self, msg_hdr):
+        pass
+
+    def _decode_msg13(self, msg_hdr):
+        data = self._buffer_segment(msg_hdr)
+        if data:
+            data = list(Struct('>%dh' % (len(data) / 2)).unpack(data))
+            bmap = dict()
+            date,time,num_el = data[:3]
+            bmap['datetime'] = nexrad_to_datetime(date, time)
+
+            offset = 3
+            bmap['data'] = []
+            bit_conv = Bits(16)
+            for e in range(num_el):
+                az_data = []
+                for a in range(360):
+                    gates = []
+                    for g in range(32):
+                        gates.extend(bit_conv(data[offset]))
+                        offset += 1
+                    az_data.append(gates)
+                bmap['data'].append(az_data)
+
+            self.clutter_filter_bypass_map = bmap
+
+
+    msg15_code_map = {0:'Bypass Filter', 1:'Bypass map in Control',
+            2:'Force Filter'}
+
+    def _decode_msg15(self, msg_hdr):
+        # buffer the segments until we have the whole thing. The data
+        # will be returned concatenated when this is the case
+        data = self._buffer_segment(msg_hdr)
+        if data:
+            data = list(Struct('>%dh' % (len(data) / 2)).unpack(data))
+            cmap = dict()
+            date,time,num_el = data[:3]
+            cmap['datetime'] = nexrad_to_datetime(date, time)
+
+            offset = 3
+            cmap['data'] = []
+            for e in range(num_el):
+                az_data = []
+                for a in range(360):
+                    num_rng = data[offset]
+                    offset += 1
+
+                    codes = data[offset:2 * num_rng + offset:2]
+                    offset += 1
+
+                    ends = data[offset:2 * num_rng + offset:2]
+                    offset += 2 * num_rng - 1
+                    az_data.append(zip(ends, codes))
+                cmap['data'].append(az_data)
+
+            self.clutter_filter_map = cmap
+
+
     msg31_data_hdr_fmt = NamedStruct([('stid', '4s'), ('time_ms', 'L'),
         ('date', 'H'), ('az_num', 'H'), ('az_angle', 'f'),
         ('compression', 'B'), (None, 'x'), ('rad_length', 'H'),
@@ -387,70 +446,12 @@ class Level2File(object):
         assert data_hdr.rad_length == self._buffer.offset_from(msg_start)
 
 
-    def _decode_msg13(self, msg_hdr):
-        data = self._buffer_segment(msg_hdr)
-        if data:
-            data = list(Struct('>%dh' % (len(data) / 2)).unpack(data))
-            bmap = dict()
-            date,time,num_el = data[:3]
-            bmap['datetime'] = nexrad_to_datetime(date, time)
-
-            offset = 3
-            bmap['data'] = []
-            bit_conv = Bits(16)
-            for e in range(num_el):
-                az_data = []
-                for a in range(360):
-                    gates = []
-                    for g in range(32):
-                        gates.extend(bit_conv(data[offset]))
-                        offset += 1
-                    az_data.append(gates)
-                bmap['data'].append(az_data)
-
-            self.clutter_filter_bypass_map = bmap
-
-
-    msg15_code_map = {0:'Bypass Filter', 1:'Bypass map in Control',
-            2:'Force Filter'}
-
-    def _decode_msg15(self, msg_hdr):
-        # buffer the segments until we have the whole thing. The data
-        # will be returned concatenated when this is the case
-        data = self._buffer_segment(msg_hdr)
-        if data:
-            data = list(Struct('>%dh' % (len(data) / 2)).unpack(data))
-            cmap = dict()
-            date,time,num_el = data[:3]
-            cmap['datetime'] = nexrad_to_datetime(date, time)
-
-            offset = 3
-            cmap['data'] = []
-            for e in range(num_el):
-                az_data = []
-                for a in range(360):
-                    num_rng = data[offset]
-                    offset += 1
-
-                    codes = data[offset:2 * num_rng + offset:2]
-                    offset += 1
-
-                    ends = data[offset:2 * num_rng + offset:2]
-                    offset += 2 * num_rng - 1
-                    az_data.append(zip(ends, codes))
-                cmap['data'].append(az_data)
-
-            self.clutter_filter_map = cmap
-
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer
         bufs = self._msg_buf.setdefault(msg_hdr.msg_type, [])
         bufs.append(self._buffer.read(2 * msg_hdr.size_hw))
         if msg_hdr.segment_num == msg_hdr.num_segments:
             return sum(bufs, bytearray())
-
-    def _decode_msg1(self, msg_hdr):
-        pass
 
 
 def reduce_lists(d):
