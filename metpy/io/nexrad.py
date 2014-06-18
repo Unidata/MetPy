@@ -387,6 +387,30 @@ class Level2File(object):
         assert data_hdr.rad_length == self._buffer.offset_from(msg_start)
 
 
+    def _decode_msg13(self, msg_hdr):
+        data = self._buffer_segment(msg_hdr)
+        if data:
+            data = list(Struct('>%dh' % (len(data) / 2)).unpack(data))
+            bmap = dict()
+            date,time,num_el = data[:3]
+            bmap['datetime'] = nexrad_to_datetime(date, time)
+
+            offset = 3
+            bmap['data'] = []
+            bit_conv = Bits(16)
+            for e in range(num_el):
+                az_data = []
+                for a in range(360):
+                    gates = []
+                    for g in range(32):
+                        gates.extend(bit_conv(data[offset]))
+                        offset += 1
+                    az_data.append(gates)
+                bmap['data'].append(az_data)
+
+            self.clutter_filter_bypass_map = bmap
+
+
     msg15_code_map = {0:'Bypass Filter', 1:'Bypass map in Control',
             2:'Force Filter'}
 
