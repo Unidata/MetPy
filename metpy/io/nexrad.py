@@ -449,7 +449,7 @@ class Level2File(object):
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer
         bufs = self._msg_buf.setdefault(msg_hdr.msg_type, [])
-        bufs.append(self._buffer.read(2 * msg_hdr.size_hw))
+        bufs.append(self._buffer.read(2 * msg_hdr.size_hw - self.msg_hdr_fmt.size))
         if msg_hdr.segment_num == msg_hdr.num_segments:
             return sum(bufs, bytearray())
 
