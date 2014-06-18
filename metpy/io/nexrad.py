@@ -318,6 +318,10 @@ class Level2File(object):
             bmap['data'] = []
             bit_conv = Bits(16)
             for e in range(num_el):
+                seg_num = data[offset]
+                offset += 1
+                assert seg_num == (e + 1), 'Message 13 segments out of sync -- read %d but on %d' % (seg_num, e + 1)
+
                 az_data = []
                 for a in range(360):
                     gates = []
@@ -331,7 +335,6 @@ class Level2File(object):
 
             if offset != len(data):
                 warnings.warn('Message 13 left data -- Used: %d Avail: %d' % (offset, len(data)))
-                #assert False
 
 
     msg15_code_map = {0:'Bypass Filter', 1:'Bypass map in Control',
