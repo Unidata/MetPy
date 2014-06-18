@@ -401,9 +401,9 @@ class Level2File(object):
             cmap['datetime'] = nexrad_to_datetime(date, time)
 
             offset = 3
-            cmap['data'] = [[]] * num_el
+            cmap['data'] = []
             for e in range(num_el):
-                cmap['data'][e] = [[]] * 360
+                az_data = []
                 for a in range(360):
                     num_rng = data[offset]
                     offset += 1
@@ -413,7 +413,8 @@ class Level2File(object):
 
                     ends = data[offset:2 * num_rng + offset:2]
                     offset += 2 * num_rng - 1
-                    cmap['data'][e][a] = zip(ends, codes)
+                    az_data.append(zip(ends, codes))
+                cmap['data'].append(az_data)
 
             self.clutter_filter_map = cmap
 
