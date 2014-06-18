@@ -367,6 +367,18 @@ class Level2File(object):
             if offset != len(data):
                 warnings.warn('Message 15 left data -- Used: %d Avail: %d' % (offset, len(data)))
 
+    def _decode_msg18(self, msg_hdr):
+        # buffer the segments until we have the whole thing. The data
+        # will be returned concatenated when this is the case
+        data = self._buffer_segment(msg_hdr)
+        if data:
+            from .nexrad_msgs.msg18 import descriptions,fields
+            self.rda_adaptation_desc = descriptions
+            #TODO: need to parse VCP descriptions in this data
+
+            msg_fmt = NamedStruct(fields, '>', 'Msg18Fmt')
+            self.rda_adaptation_data = msg_fmt.unpack_from(data, 0)
+
 
     msg31_data_hdr_fmt = NamedStruct([('stid', '4s'), ('time_ms', 'L'),
         ('date', 'H'), ('az_num', 'H'), ('az_angle', 'f'),
