@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from __future__ import print_function
 
 processors = {}
 def register_processor(num):
@@ -6,6 +7,38 @@ def register_processor(num):
         processors[num] = func
         return func
     return inner
+
+@register_processor(3)
+def process_msg3(fname):
+    with open(fname, 'r') as infile:
+        info = []
+        for lineno,line in enumerate(infile):
+            parts = line.split('  ')
+            try:
+                var_name,desc,typ,units = parts[:4]
+                size_hw = parts[-1]
+                if '-' in size_hw:
+                    start,end = map(int, size_hw.split('-'))
+                    size = (end - start + 1) * 2
+                else:
+                    size = 2
+
+                assert size >= 2
+                fmt = fix_type(typ, size)
+
+                var_name = fix_var_name(var_name)
+                full_desc = fix_desc(desc, units)
+
+                info.append({'name':var_name, 'desc':full_desc, 'fmt':fmt})
+                print('%d > %s' % (lineno + 1, '{name}:{desc}:{fmt}'.format(**info[-1])))
+
+                if ignored_item(info[-1]) and var_name != 'Spare':
+                    print('WARNING: %s has type %s. Setting as Spare' % (var_name, typ))
+
+            except (ValueError, AssertionError):
+                print('%d > %s' % (lineno + 1, ':'.join(parts)))
+                raise
+        return info
 
 @register_processor(18)
 def process_msg18(fname):
@@ -42,7 +75,8 @@ def process_msg18(fname):
                 raise
         return info
 
-types = [('Real*4', ('f',4)), ('Integer*4', ('L',4)), ('SInteger*4', ('l', 4)),
+types = [('Real*4', ('f', 4)), ('Integer*4', ('L', 4)), ('SInteger*4', ('l', 4)),
+         ('Integer*2', ('H', 2)),
          ('', lambda s: ('{size}x', s)), ('N/A', lambda s: ('{size}x', s)),
          (lambda t: t.startswith('String'), lambda s: ('{size}s', s))]
 def fix_type(typ, size, additional=None):
@@ -62,14 +96,14 @@ def fix_type(typ, size, additional=None):
                 fmtStr,trueSize = info(size)
             else:
                 fmtStr,trueSize = info
-            assert size == trueSize, 'Got size %d instead of %d' % (size, trueSize)
+            assert size == trueSize, 'Got size %d instead of %d for %s' % (size, trueSize, typ)
             return fmtStr.format(size=size)
     else:
         raise ValueError('No type match! (%s)' % typ)
 
 def fix_var_name(var_name):
     name = var_name.strip()
-    for char in '().':
+    for char in '(). ':
         name = name.replace(char, '_')
     if name.endswith('_'):
         name = name[:-1]
@@ -78,11 +112,14 @@ def fix_var_name(var_name):
 def fix_desc(desc, units=None):
     full_desc = desc.strip()
     if units and units != 'N/A':
-        full_desc += ' (' + units + ')'
+        if full_desc:
+            full_desc += ' (' + units + ')'
+        else:
+            full_desc = units
     return full_desc
 
 def ignored_item(item):
-    return item['name'] == 'SPARE' or 'x' in item['fmt']
+    return item['name'].upper() == 'SPARE' or 'x' in item['fmt']
 
 def need_desc(item):
     return item['desc'] and not ignored_item(item)
@@ -113,7 +150,7 @@ def write_file(fname, info):
 if __name__ == '__main__':
     import os.path
 
-    for num in [18]:
+    for num in [18, 3]:
         fname = 'msg%d.spec' % num
         info = processors[num](fname)
         fname = os.path.splitext(fname)[0] + '.py'
