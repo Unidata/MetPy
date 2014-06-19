@@ -21,46 +21,77 @@ def process_msg18(fname):
                 start,end = map(int, byte_range.split('-'))
                 size = end - start + 1
                 assert size >= 4
-                if typ == 'Real*4':
-                    typ = 'f'
-                    assert size == 4, 'Got size %d' % size
-                elif typ == 'Integer*4':
-                    typ = 'L'
-                    assert size == 4, 'Got size %d' % size
-                elif typ == 'SInteger*4':
-                    typ = 'l'
-                    assert size == 4, 'Got size %d' % size
-                elif typ.startswith('String'):
-                    typ = '%ds' % size
-                elif not typ or typ == 'N/A':
-                    if var_name != 'SPARE':
-                        print('WARNING: %s has type %s. Setting as SPARE' % (var_name, typ))
-                        var_name = 'SPARE'
-                    typ = '%dx' % size
-                elif typ == 'See Note (5)':
-                    typ = '%ds' % size
-                    assert size == 1172
-                else:
-                    raise ValueError('No type match! (%s)' % typ)
-                full_desc = desc.strip()
-                if units and units != 'N/A':
-                    full_desc += ' (' + units + ')'
-
-                name = var_name.strip()
-                for char in '().':
-                    name = name.replace(char, '_')
-                if name.endswith('_'):
-                    name = name[:-1]
-                info.append((name, full_desc, typ))
+                fmt = fix_type(typ, size,
+                        additional=[('See Note (5)', ('{size}s', 1172))])
 
                 if ' ' in var_name:
                     print('WARNING: space in %s' % var_name)
                 if not desc:
                     print('WARNING: null description for %s' % var_name)
+
+                var_name = fix_var_name(var_name)
+                full_desc = fix_desc(desc, units)
+
+                info.append({'name':var_name, 'desc':full_desc, 'fmt':fmt})
+
+                if ignored_item(info[-1]) and var_name != 'SPARE':
+                    print('WARNING: %s has type %s. Setting as SPARE' % (var_name, typ))
+
             except ValueError:
                 print('%d > %s' % (lineno + 1, ':'.join(parts)))
                 raise
         return info
+
+types = [('Real*4', ('f',4)), ('Integer*4', ('L',4)), ('SInteger*4', ('l', 4)),
+         ('', lambda s: ('{size}x', s)), ('N/A', lambda s: ('{size}x', s)),
+         (lambda t: t.startswith('String'), lambda s: ('{size}s', s))]
+def fix_type(typ, size, additional=None):
+    if additional is not None:
+        myTypes = types + additional
+    else:
+        myTypes = types
+
+    for t, info in myTypes:
+        if callable(t):
+            matches = t(typ)
+        else:
+            matches = t == typ
+
+        if matches:
+            if callable(info):
+                fmtStr,trueSize = info(size)
+            else:
+                fmtStr,trueSize = info
+            assert size == trueSize, 'Got size %d instead of %d' % (size, trueSize)
+            return fmtStr.format(size=size)
+    else:
+        raise ValueError('No type match! (%s)' % typ)
+
+def fix_var_name(var_name):
+    name = var_name.strip()
+    for char in '().':
+        name = name.replace(char, '_')
+    if name.endswith('_'):
+        name = name[:-1]
+    return name
+
+def fix_desc(desc, units=None):
+    full_desc = desc.strip()
+    if units and units != 'N/A':
+        full_desc += ' (' + units + ')'
+    return full_desc
+
+def ignored_item(item):
+    return item['name'] == 'SPARE' or 'x' in item['fmt']
+
+def need_desc(item):
+    return item['desc'] and not ignored_item(item)
+
+def field_name(item):
+    return '"%s"' % item['name'] if not ignored_item(item) else None
+
+def field_fmt(item):
+    return '"%s"' % item['fmt'] if '"' not in item['fmt'] else item['fmt']
 
 def write_file(fname, info):
     with open(fname, 'w') as outfile:
@@ -69,14 +100,13 @@ def write_file(fname, info):
 
         # Variable descriptions
         outfile.write('descriptions = {')
-        outdata = '\n    '.join('"{0}" : "{1}",'.format(*i) for i in info if i[0] != 'SPARE')
+        outdata = '\n    '.join('"{name}" : "{desc}",'.format(**i) for i in info if need_desc(i))
         outfile.write(outdata)
         outfile.write('}\n\n')
 
         # Now the struct format
         outfile.write('fields = [')
-        outdata = '\n    '.join('({0}, "{1}"),'.format('"' + name + '"' if name != 'SPARE' else None, fmt)
-                for name,__,fmt in info)
+        outdata = '\n    '.join('({fname}, "{fmt}"),'.format(fname=field_name(i), **i) for i in info)
         outfile.write(outdata)
         outfile.write(']\n')
 
