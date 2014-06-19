@@ -380,7 +380,7 @@ class Level2File(object):
             #TODO: need to parse VCP descriptions in this data
 
             msg_fmt = NamedStruct(fields, '>', 'Msg18Fmt')
-            self.rda_adaptation_data = msg_fmt.unpack_from(data, 0)
+            self.rda_adaptation_data = msg_fmt.unpack(data)
 
 
     msg31_data_hdr_fmt = NamedStruct([('stid', '4s'), ('time_ms', 'L'),
