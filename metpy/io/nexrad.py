@@ -306,6 +306,13 @@ class Level2File(object):
     def _decode_msg1(self, msg_hdr):
         pass
 
+    def _decode_msg3(self, msg_hdr):
+        from .nexrad_msgs.msg3 import descriptions,fields
+        self.maintenance_data_desc = descriptions
+        msg_fmt = NamedStruct(fields, '>', 'Msg3Fmt')
+        self.maintenance_data = self._buffer.read_struct(msg_fmt)
+        assert msg_fmt.size  == msg_hdr.size_hw * 2 - 16, 'Message type 3 should be %d bytes but got %d' % (msg_fmt.size, msg_hdr.size_hw * 2 - 16)
+
     def _decode_msg13(self, msg_hdr):
         data = self._buffer_segment(msg_hdr)
         if data:
