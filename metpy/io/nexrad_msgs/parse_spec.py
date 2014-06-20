@@ -30,7 +30,6 @@ def process_msg3(fname):
                 full_desc = fix_desc(desc, units)
 
                 info.append({'name':var_name, 'desc':full_desc, 'fmt':fmt})
-                print('%d > %s' % (lineno + 1, '{name}:{desc}:{fmt}'.format(**info[-1])))
 
                 if ignored_item(info[-1]) and var_name != 'Spare':
                     print('WARNING: %s has type %s. Setting as Spare' % (var_name, typ))
@@ -70,7 +69,7 @@ def process_msg18(fname):
                 if ignored_item(info[-1]) and var_name != 'SPARE':
                     print('WARNING: %s has type %s. Setting as SPARE' % (var_name, typ))
 
-            except ValueError:
+            except (ValueError, AssertionError):
                 print('%d > %s' % (lineno + 1, ':'.join(parts)))
                 raise
         return info
@@ -103,8 +102,10 @@ def fix_type(typ, size, additional=None):
 
 def fix_var_name(var_name):
     name = var_name.strip()
-    for char in '(). ':
+    for char in '(). /#,':
         name = name.replace(char, '_')
+    name = name.replace('+', 'pos_')
+    name = name.replace('-', 'neg_')
     if name.endswith('_'):
         name = name[:-1]
     return name
@@ -152,6 +153,7 @@ if __name__ == '__main__':
 
     for num in [18, 3]:
         fname = 'msg%d.spec' % num
+        print('Processing {}...'.format(fname))
         info = processors[num](fname)
         fname = os.path.splitext(fname)[0] + '.py'
         write_file(fname, info)

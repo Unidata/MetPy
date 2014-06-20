@@ -43,7 +43,7 @@ AME State    Integer*2  N/A  0 to 3  1  0 = START 1 = RUNNING 2 = FLASH 3 = ERRO
 AME +3.3V PS Voltage    Real*4  V  0.00 to 4.09  0.01 N/A  69-70
 AME +5V PS Voltage    Real*4  V  0.00 to 6.10  0.01 N/A  71-72 
 AME +6.5V PS Voltage    Real*4  V  0.00 to 7.50  0.01 N/A  73-74 
-AME +6.5V PS Voltage    Real*4  V  0.00 to 19.00  0.01 N/A  75-76 
+AME +15V PS Voltage    Real*4  V  0.00 to 19.00  0.01 N/A  75-76 
 AME +48V PS Voltage    Real*4  V  0.00 to 60.00  0.01 N/A  77-78 
 AME STALO Power    Real*4  V  0.00 to 4.09  0.01 N/A  79-80 
 Peltier Current    Real*4  A  0.00 to 16.00  0.01 N/A  81-82 
@@ -176,7 +176,7 @@ DAU -15v PS    Real*4  V  -20.00 to 0.00  0.01  N/A  277 - 278
 DAU +28v PS    Real*4  V   0.00 to 37.40   0.01  N/A  279 - 280 
 DAU +5v PS    Real*4  V   0.00 to 6.64   0.01  N/A  281 - 282 
 Converted Generator Fuel Level    Integer*2  %  0 to 100  1  N/A  283 
-Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  284 - 290  
+Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  284 - 290 
 +28v PS    Real*4  V  0.00  to  40.80  0.01  N/A  291 - 292
 Pedestal +15v PS    Real*4  V  0.00  to  20.00  0.01  N/A  293 - 294 
 Encoder +5v PS    Real*4  V  0.00  to 18.36  0.01  N/A  295 - 296 
@@ -210,7 +210,8 @@ Azimuth Handwheel    Integer*2  N/A  0 to 1  1  0=Operational, 1=Engaged  325
 Azimuth Servo Amp PS    Integer*2  N/A  0 to 1  1  0=OK, 1=Fail  326 
 Servo    Integer*2  N/A  0 to 1  1  0=On, 1=Off  327 
 Pedestal Interlock Switch    Integer*2  N/A  0 to 1  1  0=Operational, 1=Safe  328 
-Spare  N/A  N/A  N/A  N/A  N/A   See Note (3).  329 Spare  N/A  N/A  N/A  N/A  N/A  See Note (3).  330 
+Spare  N/A  N/A  N/A  N/A  N/A   See Note (3).  329 
+Spare  N/A  N/A  N/A  N/A  N/A  See Note (3).  330 
 Self Test 1 Status    Integer*2  N/A  1 to 3  1  1=No, 2=OK, 3=Fail See Note(1)  331
 Self Test 2 Status    Integer*2  N/A  1 to 3  1  1=No, 2=OK, 3=Fail See Note(1)  332 
 Self Test 2 Data    Integer*2  N/A  N/A  1  Hex See Note (2)  333 
@@ -248,7 +249,8 @@ Vertical I0    Real*4  dBm  -999.9000 to +999.9000  0.0001  N/A  385 - 386
 Vertical Dynamic Range    Real*4  dB  0.000 to 120.000  0.001  N/A  387 - 388 
 Short Pulse, Vertical dBZ0    Real*4  dBZ  -99.9000 to +99.9000  0.0001  N/A  389 - 390 
 Long Pulse, Vertical dBZ0    Real*4  dBZ  -99.9000 to +99.9000  0.0001  N/A  391 - 392 
-Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  393 - 394 Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  395 - 396 
+Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  393 - 394 
+Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  395 - 396 
 Horizontal Power Sense    Real*4  dBm  -999.9000 to +999.9000  0.0001  N/A  397 - 398
 Vertical Power Sense    Real*4  dBm  -999.9000 to +999.9000  0.0001  N/A  399 - 400 
 ZDR Bias    Real*4  dB  -999.9000 to +999.9000  0.0001  N/A  401 - 402 
@@ -258,14 +260,16 @@ Clutter Suppression Unfiltered Power    Real*4  dBZ  -99.90  to  +99.90  0.01  N
 Clutter Suppression Filtered Power    Real*4  dBZ  -99.90  to  +99.90   0.01  N/A  413 - 414 
 Transmit Burst Power    Real*4  dBm  -99.90 to +99.90  0.01  N/A  415 - 416 
 Transmit Burst Phase    Real*4  deg  -99.00 to +99.90  0.01  N/A  417 - 418 
-Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  419 - 422 Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  423 - 424 
+Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  419 - 422 
+Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  423 - 424 
 Vertical Linearity    Real*4  N/A  0.5000 to 1.5000  0.0001  N/A  425 - 426 
 Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  427 - 430 
 State File Read Status    Integer*2  N/A  0 to 1  1  0=OK, 1=Fail  431 
 State File Write Status    Integer*2  N/A  0 to 1  1  0=OK, 1=Fail  432 
 Bypass Map File Read Status    Integer*2  N/A  0 to 1  1  0=OK, 1=Fail  433 
 Bypass Map File Write Status    Integer*2  N/A  0 to 1  1  0=OK, 1=Fail  434 
-Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  435 Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  436 
+Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  435 
+Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  436 
 Current Adaptation File Read Status    Integer*2  N/A  0 to 1  1  0=OK, 1=Fail  437 
 Current Adaptation File Write Status    Integer*2  N/A  0 to 1  1  0=OK, 1=Fail  438 
 Censor Zone File Read Status    Integer*2  N/A  0 to 1  1  0=OK, 1=Fail  439 
