@@ -72,7 +72,11 @@ class BitField(Bits):
         return l if len(l) > 1 else l[0]
 
 def version(val):
-    return '{:.1f}'.format(val / 10.)
+    if val / 100. > 2.:
+        ver = val / 100.
+    else:
+        ver = val / 10.
+    return '{:.1f}'.format(ver)
 
 def scaler(scale):
     def inner(val):
@@ -305,6 +309,49 @@ class Level2File(object):
 
     def _decode_msg1(self, msg_hdr):
         pass
+
+    msg2_fmt = NamedStruct([
+        ('rda_status', 'H', BitField('None', 'Start-Up', 'Standby', 'Restart',
+            'Operate', 'Spare', 'Off-line Operate')),
+        ('op_status', 'H', BitField('Disabled', 'On-Line',
+            'Maintenance Action Required', 'Maintenance Action Mandatory',
+            'Commanded Shut Down', 'Inoperable', 'Automatic Calibration')),
+        ('control_status', 'H', BitField('None', 'Local Only',
+            'RPG (Remote) Only', 'Either')),
+        ('aux_power_gen_state', 'H', BitField('Switch to Aux Power',
+            'Utility PWR Available', 'Generator On', 'Transfer Switch Manual',
+            'Commanded Switchover')),
+        ('avg_tx_pwr', 'H'), ('ref_calib_cor', 'h'),
+        ('data_transmission_enabled', 'H', BitField('None', 'None',
+            'Reflectivity', 'Velocity', 'Width')),
+        ('vcp_num', 'h'), ('rda_control_auth', 'H', BitField('No Action',
+            'Local Control Requested', 'Remote Control Enabled')),
+        ('rda_build', 'H', version), ('op_mode', 'H', BitField('None', 'Test',
+            'Operational', 'Maintenance')),
+        ('super_res_status', 'H', BitField('None', 'Enabled', 'Disabled')),
+        ('cmd_status', 'H', Bits(6)),
+        ('avset_status', 'H', BitField('None', 'Enabled', 'Disabled')),
+        ('rda_alarm_status', 'H', BitField('No Alarms', 'Tower/Utilities',
+            'Pedestal', 'Transmitter', 'Receiver', 'RDA Control',
+            'Communication', 'Signal Processor')),
+        ('command_acknowledge', 'H', BitField('Remote VCP Received',
+            'Clutter Bypass map received', 'Redundant Chan Ctrl Cmd received')),
+        ('channel_control_status', 'H'),
+        ('spot_blanking', 'H', BitField('Enabled', 'Disabled')),
+        ('bypass_map_gen_date', 'H'), ('bypass_map_gen_time', 'H'),
+        ('clutter_filter_map_gen_date', 'H'), ('clutter_filter_map_gen_time', 'H'),
+        (None, '2x'),
+        ('transition_pwr_src_state', 'H', BitField('Off', 'OK')),
+        ('RMS_control_status', 'H', BitField('RMS in control', 'RDA in control')),
+        (None, '2x')], '>', 'Msg2Fmt')
+
+    def _decode_msg2(self, msg_hdr):
+        self.rda_status = self._buffer.read_struct(self.msg2_fmt)
+
+        # See Table IV-A for definition of alarms
+        self.rda_alarms = self._buffer.read_binary(14, '>H')
+
+        assert 2 * len(self.rda_alarms) + self.msg2_fmt.size == msg_hdr.size_hw * 2 - 16, 'Bad size of Message 2'
 
     def _decode_msg3(self, msg_hdr):
         from .nexrad_msgs.msg3 import descriptions,fields
