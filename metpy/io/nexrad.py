@@ -380,7 +380,7 @@ class Level2File(object):
         self.maintenance_data_desc = descriptions
         msg_fmt = NamedStruct(fields, '>', 'Msg3Fmt')
         self.maintenance_data = self._buffer.read_struct(msg_fmt)
-        assert msg_fmt.size  == msg_hdr.size_hw * 2 - 16, 'Message type 3 should be %d bytes but got %d' % (msg_fmt.size, msg_hdr.size_hw * 2 - 16)
+        self._check_size(msg_hdr, msg_fmt.size)
 
     def _decode_msg13(self, msg_hdr):
         data = self._buffer_segment(msg_hdr)
@@ -550,6 +550,9 @@ class Level2File(object):
         if msg_hdr.segment_num == msg_hdr.num_segments:
             return sum(bufs, bytearray())
 
+    def _check_size(self, msg_hdr, size):
+        hdr_size = msg_hdr.size_hw * 2 - self.msg_hdr_fmt.size
+        assert size == hdr_size, 'Message type %d should be %d bytes but got %d' % (msg_hdr.msg_type, size, hdr_size)
 
 def reduce_lists(d):
     for field in d:
