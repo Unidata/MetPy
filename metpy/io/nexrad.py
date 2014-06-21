@@ -48,6 +48,20 @@ class NamedStruct(Struct):
         bytes = fobj.read(self.size)
         return self.unpack(bytes)
 
+class Enum(object):
+    def __init__(self, *args, **kwargs):
+        self.val_map = dict()
+        # Assign values for args in order starting at 0
+        for ind,a in enumerate(args):
+            self.val_map[ind] = a
+
+        # Invert the kwargs dict so that we can map from value to name
+        for k in kwargs:
+            self.val_map[kwargs[k]] = k
+
+    def __call__(self, val):
+        return self.val_map.get(val, 'Unknown ({})'.format(val))
+
 class Bits(object):
     def __init__(self, num_bits):
         self._bits = range(num_bits)
@@ -55,9 +69,8 @@ class Bits(object):
     def __call__(self, val):
         return [bool((val>>i) & 0x1) for i in self._bits]
 
-class BitField(Bits):
+class BitField(object):
     def __init__(self, *names):
-        Bits.__init__(self, len(names))
         self._names = names
 
     def __call__(self, val):
@@ -73,6 +86,13 @@ class BitField(Bits):
 
         return l if len(l) > 1 else l[0]
 
+class Array(object):
+    def __init__(self, fmt):
+        self._struct = Struct(fmt)
+
+    def __call__(self, buf):
+        return list(self._struct.unpack(buf))
+
 def version(val):
     if val / 100. > 2.:
         ver = val / 100.
@@ -85,6 +105,8 @@ def scaler(scale):
         return val * scale
     return inner
 
+def angle(val):
+    return val * 360. / 2**16
 
 class IOBuffer(object):
     def __init__(self, source):
