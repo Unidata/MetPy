@@ -108,6 +108,9 @@ def scaler(scale):
 def angle(val):
     return val * 360. / 2**16
 
+def az_rate(val):
+    return val * 90. / 2**16
+
 class IOBuffer(object):
     def __init__(self, source):
         self._data = bytearray(source)
@@ -397,7 +400,7 @@ class Level2File(object):
         ('super_res', 'B', BitField('0.5 azimuth and 0.25km range resolution',
             'Doppler to 300km', 'Dual Polarization Control',
             'Dual Polarization to 300km')),
-        ('surv_prf_num', 'B'), ('surv_pulse_count', 'H'), ('az_rate', 'h'),
+        ('surv_prf_num', 'B'), ('surv_pulse_count', 'H'), ('az_rate', 'h', az_rate),
         ('ref_thresh', 'h', scaler(0.125)), ('vel_thresh', 'h', scaler(0.125)),
         ('sw_thresh', 'h', scaler(0.125)), ('zdr_thresh', 'h', scaler(0.125)),
         ('phidp_thresh', 'h', scaler(0.125)), ('rhohv_thresh', 'h', scaler(0.125)),
