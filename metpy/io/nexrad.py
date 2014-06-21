@@ -288,7 +288,9 @@ class Level2File(object):
         self.dt = nexrad_to_datetime(self.vol_hdr.date, self.vol_hdr.time_ms)
         self.stid = self.vol_hdr.stid
 
-    msg_hdr_fmt = NamedStruct([('size_hw', 'H'), ('rda_channel', 'B'),
+    msg_hdr_fmt = NamedStruct([('size_hw', 'H'),
+        ('rda_channel', 'B', BitField('Redundant Channel 1', 'Redundant Channel 2',
+            None, 'ORDA')),
         ('msg_type', 'B'), ('seq_num', 'H'), ('date', 'H'), ('time_ms', 'I'),
         ('num_segments', 'H'), ('segment_num', 'H')], '>', 'MsgHdr')
 
