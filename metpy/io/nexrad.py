@@ -27,13 +27,15 @@ class NamedStruct(Struct):
             elif not i[0]: # Skip items with no name
                 conv_off += 1
         self._tuple = namedtuple(tuple_name, ' '.join(n for n in names if n))
-        Struct.__init__(self, prefmt + ''.join(fmts))
+        Struct.__init__(self, prefmt + ''.join(f for f in fmts if f))
 
     def _create(self, items):
         if self.converters:
             items = list(items)
             for ind,conv in self.converters.items():
                 items[ind] = conv(items[ind])
+            if len(items) < len(self._tuple._fields):
+                items.extend([None]*(len(self._tuple._fields) - len(items)))
         return self._tuple(*items)
 
     def unpack(self, s):
