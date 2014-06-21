@@ -312,14 +312,13 @@ class Level2File(object):
             # If the size is 0, this is just padding, which is for certain
             # done in the metadata messages. Just handle generally here
             if msg_hdr.size_hw:
-                print msg_hdr, str(nexrad_to_datetime(msg_hdr.date, msg_hdr.time_ms))
-
                 # Try to handle the message. If we don't handle it, skipping
                 # past it is handled at the end anyway.
                 if hasattr(self, '_decode_msg%d' % msg_hdr.msg_type):
                     getattr(self, '_decode_msg%d' % msg_hdr.msg_type)(msg_hdr)
                 else:
                     warnings.warn("Unknown message: {0.msg_type}".format(msg_hdr))
+                    print msg_hdr, str(nexrad_to_datetime(msg_hdr.date, msg_hdr.time_ms))
 
             # Jump to the start of the next message. This depends on whether
             # the message was legacy with fixed block size or not.
@@ -333,8 +332,8 @@ class Level2File(object):
 
         del self._msg_buf
 
-    def _decode_msg1(self, msg_hdr):
-        pass
+    #def _decode_msg1(self, msg_hdr):
+        #pass
 
     msg2_fmt = NamedStruct([
         ('rda_status', 'H', BitField('None', 'Start-Up', 'Standby', 'Restart',
