@@ -368,15 +368,12 @@ class Level2File(object):
         (None, '2x'),
         ('transition_pwr_src_state', 'H', BitField('Off', 'OK')),
         ('RMS_control_status', 'H', BitField('RMS in control', 'RDA in control')),
-        (None, '2x')], '>', 'Msg2Fmt')
+        # See Table IV-A for definition of alarms
+        (None, '2x'), ('alarms', '28s', Array('>14H'))], '>', 'Msg2Fmt')
 
     def _decode_msg2(self, msg_hdr):
         self.rda_status = self._buffer.read_struct(self.msg2_fmt)
-
-        # See Table IV-A for definition of alarms
-        self.rda_alarms = self._buffer.read_binary(14, '>H')
-
-        assert 2 * len(self.rda_alarms) + self.msg2_fmt.size == msg_hdr.size_hw * 2 - 16, 'Bad size of Message 2'
+        self._check_size(msg_hdr, self.msg2_fmt.size)
 
     def _decode_msg3(self, msg_hdr):
         from .nexrad_msgs.msg3 import descriptions,fields
