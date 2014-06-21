@@ -382,6 +382,38 @@ class Level2File(object):
         self.maintenance_data = self._buffer.read_struct(msg_fmt)
         self._check_size(msg_hdr, msg_fmt.size)
 
+    vcp_fmt = NamedStruct([('size_hw', 'H'), ('pattern_type', 'H'),
+        ('num', 'H'), ('num_el_cuts', 'H'), ('clutter_map_group', 'H'),
+        ('dop_res', 'B', BitField(None, 0.5, 1.0)),
+        ('pulse_width', 'B', BitField('None', 'Short', 'Long')),
+        (None, '10x'), ('els', None)], '>', 'VCPFmt')
+
+    vcp_el_fmt = NamedStruct([('el_angle', 'H', angle),
+        ('channel_config', 'B', Enum('Constant Phase', 'Random Phase', 'SZ2 Phase')),
+        ('waveform', 'B', Enum('None', 'Contiguous Surveillance',
+            'Contiguous Doppler with Ambiguity Resolution',
+            'Contiguous Doppler without Ambiguity Resolution',
+            'Batch', 'Staggered Pulse Pair')),
+        ('super_res', 'B', BitField('0.5 azimuth and 0.25km range resolution',
+            'Doppler to 300km', 'Dual Polarization Control',
+            'Dual Polarization to 300km')),
+        ('surv_prf_num', 'B'), ('surv_pulse_count', 'H'), ('az_rate', 'h'),
+        ('ref_thresh', 'h', scaler(0.125)), ('vel_thresh', 'h', scaler(0.125)),
+        ('sw_thresh', 'h', scaler(0.125)), ('zdr_thresh', 'h', scaler(0.125)),
+        ('phidp_thresh', 'h', scaler(0.125)), ('rhohv_thresh', 'h', scaler(0.125)),
+        ('sector1_edge', 'H', angle), ('sector1_doppler_prf_num', 'H'),
+        ('sector1_pulse_count', 'H'), (None, '2x'),
+        ('sector2_edge', 'H', angle), ('sector2_doppler_prf_num', 'H'),
+        ('sector2_pulse_count', 'H'), (None, '2x'),
+        ('sector3_edge', 'H', angle), ('sector3_doppler_prf_num', 'H'),
+        ('sector3_pulse_count', 'H'), (None, '2x')], '>', 'VCPEl')
+
+    def _decode_msg5(self, msg_hdr):
+        vcp_info = self._buffer.read_struct(self.vcp_fmt)
+        els = [self._buffer.read_struct(self.vcp_el_fmt) for i in range(vcp_info.num_el_cuts)]
+        self.vcp_info = vcp_info._replace(els=els)
+        self._check_size(msg_hdr, self.vcp_fmt.size + vcp_info.num_el_cuts * self.vcp_el_fmt.size)
+
     def _decode_msg13(self, msg_hdr):
         data = self._buffer_segment(msg_hdr)
         if data:
@@ -453,10 +485,22 @@ class Level2File(object):
         if data:
             from .nexrad_msgs.msg18 import descriptions,fields
             self.rda_adaptation_desc = descriptions
-            #TODO: need to parse VCP descriptions in this data
 
             msg_fmt = NamedStruct(fields, '>', 'Msg18Fmt')
-            self.rda_adaptation_data = msg_fmt.unpack(data)
+            rda = msg_fmt.unpack(data)
+            vcps = {}
+            for num in (11, 21, 31, 32, 300, 301):
+                attr = 'VCPAT%d' % num
+                dat = getattr(rda, attr)
+                vcp_hdr = self.vcp_fmt.unpack_from(dat, 0)
+                off = self.vcp_fmt.size
+                els = []
+                for i in range(vcp_hdr.num_el_cuts):
+                    els.append(self.vcp_el_fmt.unpack_from(dat, off))
+                    off += self.vcp_el_fmt.size
+                vcps[attr] = vcp_hdr._replace(els=els)
+
+            self.rda_adaptation_data = rda._replace(**vcps)
 
 
     msg31_data_hdr_fmt = NamedStruct([('stid', '4s'), ('time_ms', 'L'),
