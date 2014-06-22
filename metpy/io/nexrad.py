@@ -308,6 +308,7 @@ class Level2File(object):
     def _read_data(self):
         self._msg_buf = {}
         self.sweeps = []
+        self.rda_status = []
         while not self._buffer.at_end():
             # Clear old file book marks and set the start of message for
             # easy jumping to the end
@@ -383,7 +384,7 @@ class Level2File(object):
         (None, '2x'), ('alarms', '28s', Array('>14H'))], '>', 'Msg2Fmt')
 
     def _decode_msg2(self, msg_hdr):
-        self.rda_status = self._buffer.read_struct(self.msg2_fmt)
+        self.rda_status.append(self._buffer.read_struct(self.msg2_fmt))
         self._check_size(msg_hdr, self.msg2_fmt.size)
 
     def _decode_msg3(self, msg_hdr):
