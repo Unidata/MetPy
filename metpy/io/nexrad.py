@@ -581,17 +581,7 @@ class Level2File(object):
                 scaled_vals[vals == 1] = self.RANGE_FOLD
                 data[hdr.name] = (hdr, scaled_vals)
 
-        if not self.sweeps and not data_hdr.rad_status & START_VOLUME:
-            warnings.warn('Missed start of volume!')
-
-        if data_hdr.rad_status & START_ELEVATION:
-            self.sweeps.append([])
-
-        if len(self.sweeps) != data_hdr.el_num:
-            warnings.warn('Missed elevation -- Have %d but data on %d.'
-                    ' Compensating...' % (len(self.sweeps), data_hdr.el_num))
-            while len(self.sweeps) < data_hdr.el_num:
-                self.sweeps.append([])
+        self._add_sweep(data_hdr)
 
         self.sweeps[-1].append((data_hdr, vol_consts, el_consts, rad_consts, data))
 
@@ -607,6 +597,19 @@ class Level2File(object):
         bufs.append(self._buffer.read(2 * msg_hdr.size_hw - self.msg_hdr_fmt.size))
         if msg_hdr.segment_num == msg_hdr.num_segments:
             return sum(bufs, bytearray())
+
+    def _add_sweep(self, hdr):
+        if not self.sweeps and not hdr.rad_status & START_VOLUME:
+            warnings.warn('Missed start of volume!')
+
+        if hdr.rad_status & START_ELEVATION:
+            self.sweeps.append([])
+
+        if len(self.sweeps) != hdr.el_num:
+            warnings.warn('Missed elevation -- Have %d but data on %d.'
+                    ' Compensating...' % (len(self.sweeps), hdr.el_num))
+            while len(self.sweeps) < hdr.el_num:
+                self.sweeps.append([])
 
     def _check_size(self, msg_hdr, size):
         hdr_size = msg_hdr.size_hw * 2 - self.msg_hdr_fmt.size
