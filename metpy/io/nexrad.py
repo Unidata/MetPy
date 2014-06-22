@@ -330,7 +330,6 @@ class Level2File(object):
                     getattr(self, '_decode_msg%d' % msg_hdr.msg_type)(msg_hdr)
                 else:
                     warnings.warn("Unknown message: {0.msg_type}".format(msg_hdr))
-                    print msg_hdr, str(nexrad_to_datetime(msg_hdr.date, msg_hdr.time_ms))
 
             # Jump to the start of the next message. This depends on whether
             # the message was legacy with fixed block size or not.
@@ -344,8 +343,57 @@ class Level2File(object):
 
         del self._msg_buf
 
-    #def _decode_msg1(self, msg_hdr):
-        #pass
+
+    msg1_fmt = NamedStruct([('time_ms', 'L'), ('date', 'H'),
+        ('unamb_range', 'H', scaler(0.1)), ('az_angle', 'H', angle),
+        ('az_num', 'H'), ('rad_status', 'H', remap_status),
+        ('el_angle', 'H', angle), ('el_num', 'H'),
+        ('surv_range', 'H', scaler(0.001)),
+        ('doppler_range', 'H', scaler(0.001)),
+        ('surv_gate_width', 'H', scaler(0.001)),
+        ('doppler_gate_width', 'H', scaler(0.001)),
+        ('surv_num_gates', 'H'), ('doppler_num_gates', 'H'),
+        ('cut_sector_num', 'H'), ('calib_dbz0', 'f'),
+        ('ref_offset', 'H'), ('vel_offset', 'H'), ('sw_offset', 'H'),
+        ('dop_res', 'H', BitField(None, 0.5, 1.0)), ('vcp', 'H'),
+        (None, '14x'), ('nyq_vel', 'H', scaler(0.01)),
+        ('atmos_atten', 'H', scaler(0.001)), ('tover', 'H', scaler(0.1)),
+        ('spot_blanking', 'B', BitField('Radial', 'Elevation', 'Volume')),
+        (None, '32x')], '>', 'Msg1Fmt')
+
+    def _decode_msg1(self, msg_hdr):
+        msg_start = self._buffer.set_mark()
+        hdr = self._buffer.read_struct(self.msg1_fmt)
+        data_dict = dict()
+
+        # Process any ref data
+        if hdr.surv_num_gates and hdr.ref_offset:
+            self._buffer.jump_to(msg_start, hdr.ref_offset)
+            data = np.array(self._buffer.read(hdr.surv_num_gates))
+            ref_data = 0.5 * data - 33.0
+            ref_data[data == 0] = self.MISSING
+            data_dict['REF'] = (hdr, ref_data)
+
+        # Process any vel data
+        if hdr.vel_offset:
+            self._buffer.jump_to(msg_start, hdr.vel_offset)
+            data = np.array(self._buffer.read(hdr.doppler_num_gates))
+            vel_data = hdr.dop_res * (data - 129.)
+            vel_data[data == 0] = self.MISSING
+            vel_data[data == 1] = self.RANGE_FOLD
+            data_dict['VEL'] = (hdr, vel_data)
+
+        # Process any SW data
+        if hdr.sw_offset:
+            self._buffer.jump_to(msg_start, hdr.sw_offset)
+            data = np.array(self._buffer.read(hdr.doppler_num_gates))
+            sw_data = 0.5 * data - 64.5
+            sw_data[data == 0] = self.MISSING
+            sw_data[data == 1] = self.RANGE_FOLD
+            data_dict['SW'] = (hdr, sw_data)
+
+        self._add_sweep(hdr)
+        self.sweeps[-1].append((hdr, data_dict))
 
     msg2_fmt = NamedStruct([
         ('rda_status', 'H', BitField('None', 'Start-Up', 'Standby', 'Restart',
