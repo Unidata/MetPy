@@ -264,6 +264,9 @@ class Level2File(object):
     #Number of bytes
     AR2_BLOCKSIZE = 2432
     CTM_HEADER_SIZE = 12
+
+    MISSING = float('nan')
+    RANGE_FOLD = float('nan') # TODO: Need to separate from missing
     def __init__(self, filename):
         if is_string_like(filename):
             if filename.endswith('.bz2'):
@@ -572,8 +575,10 @@ class Level2File(object):
                 hdr = self._buffer.read_struct(self.data_block_fmt)
                 vals = self._buffer.read_binary(hdr.num_gates,
                         '>' + hdr.data_size)
-                vals = (np.array(vals) - hdr.offset) / hdr.scale
-                data[hdr.name] = (hdr, vals)
+                scaled_vals = (np.array(vals) - hdr.offset) / hdr.scale
+                scaled_vals[vals == 0] = self.MISSING
+                scaled_vals[vals == 1] = self.RANGE_FOLD
+                data[hdr.name] = (hdr, scaled_vals)
 
         if not self.sweeps and not data_hdr.rad_status & START_VOLUME:
             warnings.warn('Missed start of volume!')
