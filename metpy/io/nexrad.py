@@ -348,8 +348,8 @@ class Level2File(object):
         ('unamb_range', 'H', scaler(0.1)), ('az_angle', 'H', angle),
         ('az_num', 'H'), ('rad_status', 'H', remap_status),
         ('el_angle', 'H', angle), ('el_num', 'H'),
-        ('surv_range', 'H', scaler(0.001)),
-        ('doppler_range', 'H', scaler(0.001)),
+        ('surv_first_gate', 'h', scaler(0.001)),
+        ('doppler_first_gate', 'h', scaler(0.001)),
         ('surv_gate_width', 'H', scaler(0.001)),
         ('doppler_gate_width', 'H', scaler(0.001)),
         ('surv_num_gates', 'H'), ('doppler_num_gates', 'H'),
@@ -361,36 +361,44 @@ class Level2File(object):
         ('spot_blanking', 'B', BitField('Radial', 'Elevation', 'Volume')),
         (None, '32x')], '>', 'Msg1Fmt')
 
+    msg1_data_hdr = namedtuple('Msg1DataHdr',
+            'name first_gate gate_width num_gates scale offset')
+
     def _decode_msg1(self, msg_hdr):
         msg_start = self._buffer.set_mark()
         hdr = self._buffer.read_struct(self.msg1_fmt)
         data_dict = dict()
 
-        # Process any ref data
+        # Process all data pointers:
+        read_info = []
         if hdr.surv_num_gates and hdr.ref_offset:
-            self._buffer.jump_to(msg_start, hdr.ref_offset)
-            data = np.array(self._buffer.read(hdr.surv_num_gates))
-            ref_data = 0.5 * data - 33.0
-            ref_data[data == 0] = self.MISSING
-            data_dict['REF'] = (hdr, ref_data)
+            read_info.append((hdr.ref_offset,
+                    self.msg1_data_hdr('REF', hdr.surv_first_gate,
+                    hdr.surv_gate_width, hdr.surv_num_gates, 2.0, 66.0)))
 
-        # Process any vel data
         if hdr.vel_offset:
-            self._buffer.jump_to(msg_start, hdr.vel_offset)
-            data = np.array(self._buffer.read(hdr.doppler_num_gates))
-            vel_data = hdr.dop_res * (data - 129.)
-            vel_data[data == 0] = self.MISSING
-            vel_data[data == 1] = self.RANGE_FOLD
-            data_dict['VEL'] = (hdr, vel_data)
+            read_info.append((hdr.vel_offset,
+                self.msg1_data_hdr('VEL', hdr.doppler_first_gate,
+                    hdr.doppler_gate_width, hdr.doppler_num_gates,
+                     1. / hdr.dop_res, 129.0)))
 
-        # Process any SW data
         if hdr.sw_offset:
-            self._buffer.jump_to(msg_start, hdr.sw_offset)
-            data = np.array(self._buffer.read(hdr.doppler_num_gates))
-            sw_data = 0.5 * data - 64.5
-            sw_data[data == 0] = self.MISSING
-            sw_data[data == 1] = self.RANGE_FOLD
-            data_dict['SW'] = (hdr, sw_data)
+            read_info.append((hdr.sw_offset,
+                self.msg1_data_hdr('SW', hdr.doppler_first_gate,
+                    hdr.doppler_gate_width, hdr.doppler_num_gates, 2.0, 129.0)))
+
+        for ptr,data_hdr in read_info:
+            # Jump and read
+            self._buffer.jump_to(msg_start, ptr)
+            vals = np.array(self._buffer.read_binary(data_hdr.num_gates, 'B'))
+
+            # Scale and flag data
+            scaled_vals = (vals - data_hdr.offset) / data_hdr.scale
+            scaled_vals[vals == 0] = self.MISSING
+            scaled_vals[vals == 1] = self.RANGE_FOLD
+
+            # Store
+            data_dict[data_hdr.name] = (data_hdr, scaled_vals)
 
         self._add_sweep(hdr)
         self.sweeps[-1].append((hdr, data_dict))
