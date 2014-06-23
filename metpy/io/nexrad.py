@@ -262,7 +262,7 @@ def remap_status(val):
 
 class Level2File(object):
     #Number of bytes
-    AR2_BLOCKSIZE = 2432
+    AR2_BLOCKSIZE = 2432 # 12 (CTM) + 2416 (Msg hdr + data) + 4 (FCS)
     CTM_HEADER_SIZE = 12
 
     MISSING = float('nan')
@@ -334,10 +334,12 @@ class Level2File(object):
             # Jump to the start of the next message. This depends on whether
             # the message was legacy with fixed block size or not.
             if msg_hdr.msg_type != 31:
-                # The AR2_BLOCKSIZE includes accounts for the CTM header
+                # The AR2_BLOCKSIZE accounts for the CTM header before the
+                # data, as well as the Frame Check Sequence (4 bytes) after
+                # the end of the data
                 self._buffer.jump_to(msg_start, self.AR2_BLOCKSIZE)
             else:
-                # Need to include the CTM header
+                # Need to include the CTM header but not FCS
                 self._buffer.jump_to(msg_start,
                         self.CTM_HEADER_SIZE + 2 * msg_hdr.size_hw)
 
