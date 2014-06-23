@@ -597,7 +597,7 @@ class Level2File(object):
 
     data_block_fmt = NamedStruct([('type', 's'), ('name', '3s'),
         ('reserved', 'L'), ('num_gates', 'H'),
-        ('first_range_gate', 'H', scaler(0.001)),
+        ('first_gate', 'H', scaler(0.001)),
         ('gate_width', 'H', scaler(0.001)), ('tover', 'H', scaler(0.1)),
         ('snr_thresh', 'h', scaler(0.1)),
         ('recombined', 'B', BitField('Azimuths', 'Gates')),
@@ -630,12 +630,12 @@ class Level2File(object):
                 block_count += 1
                 self._buffer.jump_to(msg_start, ptr)
                 hdr = self._buffer.read_struct(self.data_block_fmt)
-                vals = self._buffer.read_binary(hdr.num_gates,
-                        '>' + hdr.data_size)
-                scaled_vals = (np.array(vals) - hdr.offset) / hdr.scale
+                vals = np.array(self._buffer.read_binary(hdr.num_gates,
+                        '>' + hdr.data_size))
+                scaled_vals = (vals - hdr.offset) / hdr.scale
                 scaled_vals[vals == 0] = self.MISSING
                 scaled_vals[vals == 1] = self.RANGE_FOLD
-                data[hdr.name] = (hdr, scaled_vals)
+                data[hdr.name.strip()] = (hdr, scaled_vals)
 
         self._add_sweep(data_hdr)
 
