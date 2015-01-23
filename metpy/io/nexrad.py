@@ -1339,11 +1339,13 @@ class Level3File(object):
     def _process_WMO_header(self):
         # Read off the WMO header if necessary
         data = self._buffer.get_next(64)
-        match = self.wmo_finder.match(data)
+        match = self.wmo_finder.search(data)
         if match:
             self.wmo_code = match.groups()[0]
             self.siteID = match.groups()[-1]
             self._buffer.skip(match.end())
+        else:
+            self.wmo_code = ''
 
     def _process_end_bytes(self):
         if self._buffer[-4:-1] == '\r\r\n':
