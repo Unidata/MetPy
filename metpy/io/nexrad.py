@@ -741,7 +741,7 @@ def zlib_decompress_all_frames(data):
     while data:
         decomp = zlib.decompressobj()
         try:
-            frames.append(decomp.decompress(data))
+            frames.append(decomp.decompress(str(data)))
         except zlib.error:
             break
         data = decomp.unused_data
