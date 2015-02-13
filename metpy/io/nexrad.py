@@ -586,7 +586,8 @@ class Level2File(object):
         ('size', 'H'), ('major', 'B'), ('minor', 'B'), ('lat', 'f'),
         ('lon', 'f'), ('site_amsl', 'h'), ('feedhorn_agl', 'H'),
         ('calib_dbz', 'f'), ('txpower_h', 'f'), ('txpower_v', 'f'),
-        ('sys_zdr', 'f'), ('phidp0', 'f'), ('vcp', 'H'), (None, '2x')],
+        ('sys_zdr', 'f'), ('phidp0', 'f'), ('vcp', 'H'),
+        ('processing_status', 'H', BitField('RxR Noise', 'CBT'))],
         '>', 'VolConsts')
 
     msg31_el_const_fmt = NamedStruct([('type', 's'), ('name', '3s'),
