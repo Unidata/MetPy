@@ -140,7 +140,9 @@ XMTR RF Avg Power    Real*4  W  0 to 9999.9  0.1  N/A  213 - 214
 XMTR Power Meter Zero    Integer*2  N/A  0 to 255  1  N/A  215 
 Spare    N/A  N/A  N/A  N/A  See Note (3)  216 
 XMTR Recycle Count    Integer*4  N/A  0 to  999,999  1  N/A  217 - 218 
-Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  219 - 228 
+Receiver Bias    Real*4  dB  0 to  999.9999  0.0001  N/A  219 - 220
+Transmit Imbalance    Real*4  dB  0 to 999.99  0.01  N/A  221 - 222
+Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  223 - 228
 AC Unit #1 Compressor Shut off    Integer*2  N/A  0 to 1  1  0=OK, 1=Shutoff  229 
 AC Unit #2 Compressor Shut off    Integer*2  N/A  0 to 1  1  0=OK, 1=Shutoff  230 
 Generator Maintenance Required    Integer*2  N/A  0 to 1  1  0=Yes, 1=No  231 
@@ -289,4 +291,6 @@ Signal Processor Comm Status    Integer*2  N/A  0 to 1  1  0=OK, 1=Fail  464
 AME Communication Status    Integer*2  N/A  0 to 1  1  0 = OK 1 = FAIL  465 
 RMS Link Status    Integer*2  N/A  0 to 1  1  0 = Connected, 1 = Not Connected  466 
 RPG Link Status    Integer*2  N/A  0 to 1  1  0 = Connected, 1 = Not Connected  467 
-Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  468 - 480
+Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  468
+Performance Check Time    Integer*4  N/A  N/A  1    469 - 470
+Spare  N/A  N/A  N/A  N/A  N/A  See Note (3)  471 - 480
