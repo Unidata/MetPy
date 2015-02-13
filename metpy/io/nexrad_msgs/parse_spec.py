@@ -66,7 +66,7 @@ def process_msg18(fname):
 
                 info.append({'name':var_name, 'desc':full_desc, 'fmt':fmt})
 
-                if ignored_item(info[-1]) and var_name != 'SPARE':
+                if ignored_item(info[-1]) and var_name != 'SPARE' and 'SPARE' not in full_desc:
                     print('WARNING: %s has type %s. Setting as SPARE' % (var_name, typ))
 
             except (ValueError, AssertionError):
