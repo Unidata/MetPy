@@ -594,9 +594,13 @@ class Level2File(object):
         ('size', 'H'), ('atmos_atten', 'h', scaler(0.001)),
         ('calib_dbz0', 'f')], '>', 'ElConsts')
 
-    rad_const_fmt = NamedStruct([('type', 's'), ('name', '3s'), ('size', 'H'),
+    rad_const_fmt_v1 = NamedStruct([('type', 's'), ('name', '3s'), ('size', 'H'),
         ('unamb_range', 'H', scaler(0.1)), ('noise_h', 'f'), ('noise_v', 'f'),
-        ('nyq_vel', 'H', scaler(0.01)), (None, '2x')], '>', 'RadConsts')
+        ('nyq_vel', 'H', scaler(0.01)), (None, '2x')], '>', 'RadConstsV1')
+    rad_const_fmt_v2 = NamedStruct([('type', 's'), ('name', '3s'), ('size', 'H'),
+        ('unamb_range', 'H', scaler(0.1)), ('noise_h', 'f'), ('noise_v', 'f'),
+        ('nyq_vel', 'H', scaler(0.01)), (None, '2x'), ('calib_dbz0_h', 'f'),
+        ('calib_dbz0_v', 'f')], '>', 'RadConstsV2')
 
     data_block_fmt = NamedStruct([('type', 's'), ('name', '3s'),
         ('reserved', 'L'), ('num_gates', 'H'),
@@ -624,7 +628,11 @@ class Level2File(object):
         el_consts = self._buffer.read_struct(self.msg31_el_const_fmt)
 
         self._buffer.jump_to(msg_start, data_hdr.rad_const_ptr)
-        rad_consts = self._buffer.read_struct(self.rad_const_fmt)
+        # Major version jumped with Build 14.0
+        if vol_consts.major < 2:
+            rad_consts = self._buffer.read_struct(self.rad_const_fmt_v1)
+        else:
+            rad_consts = self._buffer.read_struct(self.rad_const_fmt_v2)
 
         data = dict()
         block_count = 3
