@@ -976,7 +976,7 @@ class Level3File(object):
     additional_gsm_fmt = NamedStruct([('el21', 'h', scaler(0.1)),
         ('el22', 'h', scaler(0.1)), ('el23', 'h', scaler(0.1)),
         ('el24', 'h', scaler(0.1)), ('el25', 'h', scaler(0.1)),
-        ('vcp_supplemental', 'H', BitField('AVSET', 'SAILS', 'site_vcp')),
+        ('vcp_supplemental', 'H', BitField('AVSET', 'SAILS', 'site_vcp', 'RxR Noise', 'CBT')),
         ('spare', '84s')], '>', 'GSM')
     prod_desc_fmt = NamedStruct([('divider', 'h'), ('lat', 'l'), ('lon', 'l'),
         ('height', 'h'), ('prod_code', 'h'), ('op_mode', 'h'),
