@@ -57,7 +57,7 @@ build_ext = None
 setup(
     name            = 'MetPy',
     version         = ver,
-    packages        = ['metpy', 'metpy.calc', 'metpy.plots'],
+    packages        = ['metpy', 'metpy.calc', 'metpy.io', 'metpy.plots'],
     ext_modules     = ext_modules,
     include_dirs    = include_dirs,
     platforms       = ['Linux', 'Windows', 'Mac'],
