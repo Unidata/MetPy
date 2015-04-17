@@ -754,10 +754,11 @@ def low_byte(ind):
 
 def zlib_decompress_all_frames(data):
     frames = bytearray()
+    data = bytes(data)
     while data:
         decomp = zlib.decompressobj()
         try:
-            frames.extend(decomp.decompress(bytes(data)))
+            frames.extend(decomp.decompress(data))
         except zlib.error:
             break
         data = decomp.unused_data
