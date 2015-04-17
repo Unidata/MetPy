@@ -18,8 +18,6 @@ before_install:
   - chmod +x miniconda.sh
   - ./miniconda.sh -b
   - export PATH=${HOME}/miniconda/bin:$PATH
-  - conda update --yes conda
-  - python -V
 
 install:
   - conda create --yes -n travis python=$TRAVIS_PYTHON_VERSION scipy numpy matplotlib nose
