@@ -55,6 +55,26 @@ class NamedStruct(Struct):
         bytes = fobj.read(self.size)
         return self.unpack(bytes)
 
+# This works around times when we have more than 255 items and can't use
+# NamedStruct. This is a CPython limit for arguments.
+class DictStruct(Struct):
+    def __init__(self, info, prefmt=''):
+        names, formats = zip(*info)
+
+        # Remove empty names
+        self._names = [n for n in names if n]
+
+        Struct.__init__(self, prefmt + ''.join(f for f in formats if f))
+
+    def _create(self, items):
+        return {n:v for n,v in zip(self._names, items)}
+
+    def unpack(self, s):
+        return self._create(Struct.unpack(self, s))
+
+    def unpack_from(self, buff, offset=0):
+        return self._create(Struct.unpack_from(self, buff, offset))
+
 class Enum(object):
     def __init__(self, *args, **kwargs):
         self.val_map = dict()
@@ -455,7 +475,7 @@ class Level2File(object):
     def _decode_msg3(self, msg_hdr):
         from .nexrad_msgs.msg3 import descriptions,fields
         self.maintenance_data_desc = descriptions
-        msg_fmt = NamedStruct(fields, '>', 'Msg3Fmt')
+        msg_fmt = DictStruct(fields, '>')
         self.maintenance_data = self._buffer.read_struct(msg_fmt)
         self._check_size(msg_hdr, msg_fmt.size)
 
@@ -563,21 +583,20 @@ class Level2File(object):
             from .nexrad_msgs.msg18 import descriptions,fields
             self.rda_adaptation_desc = descriptions
 
-            msg_fmt = NamedStruct(fields, '>', 'Msg18Fmt')
-            rda = msg_fmt.unpack(data)
-            vcps = {}
+            # Can't use NamedStruct because we have more than 255 items--this
+            # is a CPython limit for arguments.
+            msg_fmt = DictStruct(fields, '>')
+            self.rda = msg_fmt.unpack(data)
             for num in (11, 21, 31, 32, 300, 301):
                 attr = 'VCPAT%d' % num
-                dat = getattr(rda, attr)
+                dat = self.rda[attr]
                 vcp_hdr = self.vcp_fmt.unpack_from(dat, 0)
                 off = self.vcp_fmt.size
                 els = []
                 for i in range(vcp_hdr.num_el_cuts):
                     els.append(self.vcp_el_fmt.unpack_from(dat, off))
                     off += self.vcp_el_fmt.size
-                vcps[attr] = vcp_hdr._replace(els=els)
-
-            self.rda_adaptation_data = rda._replace(**vcps)
+                self.rda[attr] = vcp_hdr._replace(els=els)
 
 
     msg31_data_hdr_fmt = NamedStruct([('stid', '4s'), ('time_ms', 'L'),
@@ -667,10 +686,10 @@ class Level2File(object):
 
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer
-        bufs = self._msg_buf.setdefault(msg_hdr.msg_type, [])
-        bufs.append(self._buffer.read(2 * msg_hdr.size_hw - self.msg_hdr_fmt.size))
+        bufs = self._msg_buf.setdefault(msg_hdr.msg_type, bytearray())
+        bufs.extend(self._buffer.read(2 * msg_hdr.size_hw - self.msg_hdr_fmt.size))
         if msg_hdr.segment_num == msg_hdr.num_segments:
-            return sum(bufs, bytearray())
+            return bufs
 
     def _add_sweep(self, hdr):
         if not self.sweeps and not hdr.rad_status & START_VOLUME:
