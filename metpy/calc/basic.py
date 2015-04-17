@@ -4,12 +4,15 @@ __all__ = ['vapor_pressure', 'saturation_vapor_pressure', 'dewpoint',
            'dewpoint_rh', 'get_speed_dir', 'potential_temperature',
            'get_wind_components', 'mixing_ratio', 'tke', 'windchill',
            'heat_index', 'h_convergence', 'v_vorticity', 'dry_lapse',
+           'moist_lapse', 'lcl', 'parcel_profile',
            'convergence_vorticity', 'advection', 'geostrophic_wind']
 
 import numpy as np
+import scipy.integrate as si
+import scipy.optimize as so
 from numpy.ma import log, exp, cos, sin, masked_array
-from scipy.constants import degree, kilo, hour, g
-from ..constants import epsilon, kappa, P0
+from scipy.constants import degree, kilo, hour, g, K2C, C2K
+from ..constants import epsilon, kappa, P0, Rd, Lv, Cp_d
 
 sat_pressure_0c = 6.112  # mb
 
@@ -33,23 +36,114 @@ def potential_temperature(pressure, temperature):
     return temperature * (P0 / (pressure * 100))**kappa
 
 
-def dry_lapse(pressure, temperature):
+# Dividing P0 by 100 converts to mb
+def dry_lapse(pressure, temperature, starting_pressure=P0 / 100):
     '''
-    Calculate the potential temperature given *pressure* and
-    *temperature*.
+    Calculate the temperature at given *pressure* level from starting
+    *temperature*, assuming only dry processes. That is, assuming potential
+    temperature is conserved.
 
     pressure : scalar or array
-        The total atmospheric pressure in mb
+        The atmospheric pressure in mb
+
+    temperature : scalar or array
+        The starting temperature in Kelvin
+
+    starting_pressure : scalar or array
+        The pressure at the starting point. Defaults to P0 (1000 mb).
+
+    Returns : scalar or array
+       The temperature corresponding to the the starting temperature and
+       pressure levels, with the shape determined by numpy broadcasting rules.
+    '''
+    return temperature * (pressure / starting_pressure)**kappa
+
+
+def moist_lapse(pressure, temperature):
+    '''
+    Calculate the temperature at given *pressure* level from starting
+    *temperature*, assuming liquid saturation processes. That is, 
+    this is calculating moist pseudo-adiabats.
+
+    pressure : scalar or array
+        The atmospheric pressure in mb
 
     temperature : scalar or array
         The temperature in Kelvin
 
     Returns : scalar or array
-       The potential temperature corresponding to the the tempearture and
-       pressure, with the shape determined by numpy broadcasting rules.
+       The temperature corresponding to the the starting temperature and
+       pressure levels, with the shape determined by numpy broadcasting rules.
     '''
     # Factor of 100 converts mb to Pa. Really need unit support here.
-    return temperature * (pressure * 100 / P0)**kappa
+    def dT(T, P):
+        rs = mixing_ratio(saturation_vapor_pressure(K2C(T)), P)
+        return (1. / P) * ((Rd * T + Lv * rs) /
+            (Cp_d + (Lv * Lv * rs * epsilon / (Rd * T * T))))
+    return si.odeint(dT, temperature.squeeze(), pressure.squeeze()).T
+
+
+def lcl(pressure, temperature, dewpt, maxIters=50, eps=1e-2):
+    '''
+    Calculate the lifted condensation level (LCL) using from the starting
+    point *temperature* and *dewpoint*, located at *pressure*.
+
+    pressure : scalar or array
+        The atmospheric pressure in mb
+
+    temperature : scalar or array
+        The temperature in Kelvin
+
+    dewpt : scalar or array
+        The dew point in Kelvin
+
+    Returns : scalar or array
+        The LCL in mb with the shape determined by numpy broadcasting rules.
+    '''
+    w = mixing_ratio(saturation_vapor_pressure(K2C(dewpt)), pressure)
+    P = pressure
+    while maxIters:
+        Td = C2K(dewpoint(vapor_pressure(P, w)))
+        newP = pressure * (Td / temperature) ** (1. / kappa)
+        if np.abs(newP - P).max() < eps:
+            break
+        P = newP
+        maxIters -= 1
+    return newP
+
+
+def parcel_profile(pressure, temperature, dewpt):
+    '''
+    Calculate the profile a parcel takes through the atmosphere, lifting
+    from the starting point at *temperature*, and *dewpt*, up
+    dry adiabatically to the LCL, and then moist adiabatically from there.
+    *pressure* is the pressure levels for the profile.
+
+    pressure : scalar or array
+        The atmospheric pressure in mb. The first entry should be the starting
+        point pressure.
+
+    temperature : scalar or array
+        The temperature in Kelvin
+
+    dewpt : scalar or array
+        The dew point in Kelvin
+
+    Returns : scalar or array
+        The parcel temperatures corresponding to the specified pressure
+        levels.
+    '''
+    # Find the LCL
+    l = np.atleast_1d(lcl(pressure[0], temperature, dewpt))
+
+    # Find the dry adiabatic profile, *including* the LCL
+    press_lower = np.concatenate((pressure[pressure > l], l))
+    T1 = dry_lapse(press_lower, temperature, pressure[0])
+
+    # Find moist pseudo-adiabatic; combine and return, making sure to
+    # elminate (duplicated) starting point
+    T2 = moist_lapse(pressure[pressure < l], T1[-1]).squeeze()
+    return np.concatenate((T1, T2[1:]))
 
 
 def vapor_pressure(pressure, mixing):
