@@ -214,19 +214,19 @@ class IOBuffer(object):
 
 
 def bzip_blocks_decompress_all(data):
-    frames = []
+    frames = bytearray()
     offset = 0
     while offset < len(data):
         size_bytes = data[offset:offset + 4]
         offset += 4
         block_cmp_bytes = abs(Struct('>l').unpack(size_bytes)[0])
         if block_cmp_bytes:
-            frames.append(bz2.decompress(data[offset:offset+block_cmp_bytes]))
+            frames.extend(bz2.decompress(data[offset:offset+block_cmp_bytes]))
             offset += block_cmp_bytes
         else:
-            frames.append(size_bytes)
-            frames.append(data[offset:])
-    return ''.join(frames)
+            frames.extend(size_bytes)
+            frames.extend(data[offset:])
+    return frames
 
 
 def nexrad_to_datetime(julian_date, ms_midnight):
@@ -753,15 +753,15 @@ def low_byte(ind):
     return inner
 
 def zlib_decompress_all_frames(data):
-    frames = []
+    frames = bytearray()
     while data:
         decomp = zlib.decompressobj()
         try:
-            frames.append(decomp.decompress(str(data)))
+            frames.extend(decomp.decompress(bytes(data)))
         except zlib.error:
             break
         data = decomp.unused_data
-    return ''.join(frames) + data
+    return frames + data
 
 # Data mappers used to take packed data and turn into physical units
 # Default is to use numpy array indexing to use LUT to change data bytes
@@ -1354,7 +1354,7 @@ class Level3File(object):
 
     def _process_WMO_header(self):
         # Read off the WMO header if necessary
-        data = self._buffer.get_next(64)
+        data = self._buffer.get_next(64).decode('utf-8', 'ignore')
         match = self.wmo_finder.search(data)
         if match:
             self.wmo_code = match.groups()[0]
@@ -1364,7 +1364,7 @@ class Level3File(object):
             self.wmo_code = ''
 
     def _process_end_bytes(self):
-        if self._buffer[-4:-1] == '\r\r\n':
+        if self._buffer[-4:-1] == b'\r\r\n':
             self._buffer.truncate(4)
 
     def _unpack_rle_data(self, data):
