@@ -5,7 +5,7 @@ from matplotlib.colors import Normalize
 from scipy.constants import degree
 from metpy.io.nexrad import Level3File
 #from metpy.vis import ctables
-#    name = '/home/rmay/test_radar/KTLX20081110_220148_V03'
+#    name = 'testdata/KTLX20081110_220148_V03'
 #    f = Level2File(name)
 name = 'testdata/Level3_FFC_N0Q_20140407_1805.nids'
 f = Level3File(name)

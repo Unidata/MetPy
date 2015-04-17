@@ -14,6 +14,8 @@ from scipy.constants import day, milli
 from collections import namedtuple
 from metpy.cbook import is_string_like
 
+__all__ = ['Level2File', 'Level3File', 'is_precip_mode']
+
 class NamedStruct(Struct):
     def __init__(self, info, prefmt='', tuple_name=None):
         if tuple_name is None:
