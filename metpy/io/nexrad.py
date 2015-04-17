@@ -1,3 +1,4 @@
+from __future__ import print_function
 import bz2
 import datetime
 import gzip
@@ -6,7 +7,11 @@ import struct
 import warnings
 import zlib
 from struct import Struct
-from cStringIO import StringIO
+# Python 2/3 compatibility
+try:
+    from io import StringIO
+except ImportError:
+    from cStringIO import StringIO
 from collections import defaultdict
 
 import numpy as np
@@ -202,7 +207,7 @@ class IOBuffer(object):
         return 'Size: {} Offset: {}'.format(len(self._data), self._offset)
 
     def print_next(self, num_bytes):
-        print ' '.join('%02x' % ord(c) for c in self.get_next(num_bytes))
+        print(' '.join('%02x' % ord(c) for c in self.get_next(num_bytes)))
 
     def __len__(self):
         return len(self._data)
@@ -1264,7 +1269,7 @@ class Level3File(object):
         # Unpack the message header and the product description block
         msg_start = self._buffer.set_mark()
         self.header = self._buffer.read_struct(self.header_fmt)
-        #print self.header, len(self._buffer), self.header.msg_len - self.header_fmt.size
+        #print(self.header, len(self._buffer), self.header.msg_len - self.header_fmt.size)
         assert self._buffer.check_remains(self.header.msg_len - self.header_fmt.size), 'Insufficient bytes remaining.'
 
         # Handle GSM and jump out
@@ -1391,7 +1396,7 @@ class Level3File(object):
             assert layer_hdr.divider == -1
             layer = []
             self.sym_block.append(layer)
-            #print blk, layer_hdr, ' '.join('%02x' % ord(c) for c in self._buffer.get_next(64))
+            #print(blk, layer_hdr, ' '.join('%02x' % ord(c) for c in self._buffer.get_next(64)))
             layer_start = self._buffer.set_mark()
             while self._buffer.offset_from(layer_start) < layer_hdr.length:
                 packet_code = self._buffer.read_int('>H')
