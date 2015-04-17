@@ -13,7 +13,7 @@ u,v = get_wind_components(spd, direc)
 
 # Create a new figure. The dimensions here give a good aspect ratio
 fig = plt.figure(figsize=(6.5875, 6.2125))
-skew = SkewT(fig)
+skew = SkewT(fig, rotation=45)
 
 # Plot the data using normal plotting functions, in this case using
 # log scaling in Y, as dictated by the typical meteorological plot

@@ -85,6 +85,11 @@ class SkewXAxes(Axes):
     # projection='skewx')``.
     name = 'skewx'
 
+    def __init__(self, *args, **kwargs):
+        # This needs to be popped and set before moving on
+        self.rot = kwargs.pop('rotation', 30)
+        Axes.__init__(self, *args, **kwargs)
+
     def _init_axis(self):
         #Taken from Axes and modified to use our modified X-axis
         self.xaxis = SkewXAxis(self)
@@ -106,8 +111,6 @@ class SkewXAxes(Axes):
         This is called once when the plot is created to set up all the
         transforms for the data, text and grids.
         """
-        rot = 30
-
         #Get the standard transform setup from the Axes base class
         Axes._set_lim_and_transforms(self)
 
@@ -117,7 +120,7 @@ class SkewXAxes(Axes):
         # We keep the pre-transAxes transform around for other users, like the
         # spines for finding bounds
         self.transDataToAxes = self.transScale + (self.transLimits +
-                transforms.Affine2D().skew_deg(rot, 0))
+                transforms.Affine2D().skew_deg(self.rot, 0))
 
         # Create the full transform from Data to Pixels
         self.transData = self.transDataToAxes + self.transAxes
@@ -127,7 +130,7 @@ class SkewXAxes(Axes):
         self._xaxis_transform = (transforms.blended_transform_factory(
                     self.transScale + self.transLimits,
                     transforms.IdentityTransform()) +
-                transforms.Affine2D().skew_deg(rot, 0)) + self.transAxes
+                transforms.Affine2D().skew_deg(self.rot, 0)) + self.transAxes
 
 # Now register the projection with matplotlib so the user can select
 # it.
@@ -135,9 +138,19 @@ register_projection(SkewXAxes)
 
 
 class SkewT(object):
-    def __init__(self, fig):
+    '''
+    Creates SkewT - logP plots.
+
+    Kwargs:
+
+        rotation: number
+        Controls the rotation of temperature relative to horizontal. Given
+        in degrees counterclockwise from x-axis.
+    '''
+    def __init__(self, fig, rotation=30):
         self._fig = fig
-        self.ax = fig.add_subplot(1, 1, 1, projection='skewx')
+        self.ax = fig.add_subplot(1, 1, 1, projection='skewx',
+                rotation=rotation)
         self.ax.grid(True)
 
     def plot(self, p, T, *args, **kwargs):
