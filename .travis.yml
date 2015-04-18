@@ -4,7 +4,7 @@ language: python
 
 sudo: false
 
-environment: PEP8=false
+env: PEP8=false
 
 matrix:
   include:
