@@ -10,11 +10,13 @@ from metpy.calc.basic import dry_lapse, moist_lapse, dewpoint, vapor_pressure
 from scipy.constants import C2K, K2C
 import numpy as np
 
+
 # The sole purpose of this class is to look at the upper, lower, or total
 # interval as appropriate and see what parts of the tick to draw, if any.
 class SkewXTick(maxis.XTick):
     def draw(self, renderer):
-        if not self.get_visible(): return
+        if not self.get_visible():
+            return
         renderer.open_group(self.__name__)
 
         lower_interval = self.axes.xaxis.lower_interval
@@ -70,7 +72,7 @@ class SkewSpine(mspines.Spine):
         left = trans.transform_point((0.0, yloc))[0]
         right = trans.transform_point((1.0, yloc))[0]
 
-        pts  = self._path.vertices
+        pts = self._path.vertices
         pts[0, 0] = left
         pts[1, 0] = right
         self.axis.upper_interval = (left, right)
@@ -91,7 +93,7 @@ class SkewXAxes(Axes):
         Axes.__init__(self, *args, **kwargs)
 
     def _init_axis(self):
-        #Taken from Axes and modified to use our modified X-axis
+        # Taken from Axes and modified to use our modified X-axis
         self.xaxis = SkewXAxis(self)
         self.spines['top'].register_axis(self.xaxis)
         self.spines['bottom'].register_axis(self.xaxis)
@@ -100,10 +102,10 @@ class SkewXAxes(Axes):
         self.spines['right'].register_axis(self.yaxis)
 
     def _gen_axes_spines(self):
-        spines = {'top':SkewSpine.linear_spine(self, 'top'),
-                  'bottom':mspines.Spine.linear_spine(self, 'bottom'),
-                  'left':mspines.Spine.linear_spine(self, 'left'),
-                  'right':mspines.Spine.linear_spine(self, 'right')}
+        spines = {'top': SkewSpine.linear_spine(self, 'top'),
+                  'bottom': mspines.Spine.linear_spine(self, 'bottom'),
+                  'left': mspines.Spine.linear_spine(self, 'left'),
+                  'right': mspines.Spine.linear_spine(self, 'right')}
         return spines
 
     def _set_lim_and_transforms(self):
@@ -111,7 +113,7 @@ class SkewXAxes(Axes):
         This is called once when the plot is created to set up all the
         transforms for the data, text and grids.
         """
-        #Get the standard transform setup from the Axes base class
+        # Get the standard transform setup from the Axes base class
         Axes._set_lim_and_transforms(self)
 
         # Need to put the skew in the middle, after the scale and limits,
@@ -119,8 +121,9 @@ class SkewXAxes(Axes):
         # coordinates thus performing the transform around the proper origin
         # We keep the pre-transAxes transform around for other users, like the
         # spines for finding bounds
-        self.transDataToAxes = self.transScale + (self.transLimits +
-                transforms.Affine2D().skew_deg(self.rot, 0))
+        self.transDataToAxes = (self.transScale +
+                                (self.transLimits +
+                                 transforms.Affine2D().skew_deg(self.rot, 0)))
 
         # Create the full transform from Data to Pixels
         self.transData = self.transDataToAxes + self.transAxes
@@ -128,8 +131,8 @@ class SkewXAxes(Axes):
         # Blended transforms like this need to have the skewing applied using
         # both axes, in axes coords like before.
         self._xaxis_transform = (transforms.blended_transform_factory(
-                    self.transScale + self.transLimits,
-                    transforms.IdentityTransform()) +
+                self.transScale + self.transLimits,
+                transforms.IdentityTransform()) +
                 transforms.Affine2D().skew_deg(self.rot, 0)) + self.transAxes
 
 # Now register the projection with matplotlib so the user can select
@@ -150,7 +153,7 @@ class SkewT(object):
     def __init__(self, fig, rotation=30):
         self._fig = fig
         self.ax = fig.add_subplot(1, 1, 1, projection='skewx',
-                rotation=rotation)
+                                  rotation=rotation)
         self.ax.grid(True)
 
     def plot(self, p, T, *args, **kwargs):
@@ -174,13 +177,13 @@ class SkewT(object):
 
         # Do barbs plot at this location
         self.ax.barbs(x, p, u, v,
-                transform=self.ax.get_yaxis_transform(which='tick2'),
-                clip_on=False, **kwargs)
+                      transform=self.ax.get_yaxis_transform(which='tick2'),
+                      clip_on=False, **kwargs)
 
     def plot_dry_adiabats(self, T0=None, P=None, **kwargs):
         # Determine set of starting temps if necessary
         if T0 is None:
-            xmin,xmax = self.ax.get_xlim()
+            xmin, xmax = self.ax.get_xlim()
             T0 = np.arange(xmin, xmax + 1, 10)
 
         # Get pressure levels based on ylims if necessary
@@ -200,9 +203,9 @@ class SkewT(object):
     def plot_moist_adiabats(self, T0=None, P=None, **kwargs):
         # Determine set of starting temps if necessary
         if T0 is None:
-            xmin,xmax = self.ax.get_xlim()
+            xmin, xmax = self.ax.get_xlim()
             T0 = np.concatenate((np.arange(xmin, 0, 10),
-                np.arange(0, xmax + 1, 5)))
+                                 np.arange(0, xmax + 1, 5)))
 
         # Get pressure levels based on ylims if necessary
         if P is None:
@@ -222,7 +225,7 @@ class SkewT(object):
         # Default mixing level values if necessary
         if w is None:
             w = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01,
-                0.016, 0.024, 0.032]).reshape(-1, 1)
+                          0.016, 0.024, 0.032]).reshape(-1, 1)
 
         # Set pressure range if necessary
         if P is None:

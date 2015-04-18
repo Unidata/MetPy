@@ -9,8 +9,7 @@ class TestPotentialTemperature(TestCase):
         temp = np.array([278, 283, 291, 298])
         pres = np.array([900, 500, 300, 100])
         real_th = np.array([286.5, 345.0155, 410.5467, 575.5397])
-        assert_array_almost_equal(potential_temperature(pres, temp),
-                real_th, 3)
+        assert_array_almost_equal(potential_temperature(pres, temp), real_th, 3)
 
     def test_scalar(self):
         assert_almost_equal(potential_temperature(1000, 293), 293, 4)
@@ -72,8 +71,8 @@ class TestWindComps(TestCase):
 
         u, v = get_wind_components(speed, dirs)
 
-        true_u = np.array([0, -4/s2, -4, -4/s2, 0, 25/s2, 25, 25/s2, 0])
-        true_v = np.array([-4, -4/s2, 0, 4/s2, 25, 25/s2, 0, -25/s2, -10])
+        true_u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0])
+        true_v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10])
 
         assert_array_almost_equal(true_u, u, 4)
         assert_array_almost_equal(true_v, v, 4)
@@ -112,7 +111,7 @@ class TestWindChill(TestCase):
         speed = np.ma.array([4, 4, 3, 1, 10, 39])
 
         wc = windchill(temp, speed, mask_undefined=False)
-        mask = np.array([False]*6)
+        mask = np.array([False] * 6)
         assert_array_equal(wc.mask, mask)
 
 
@@ -145,11 +144,11 @@ class TestHeatIndex(TestCase):
         rh = np.ma.array([40, 39, 2, 70, 50, 39])
 
         hi = heat_index(temp, rh, mask_undefined=False)
-        mask = np.array([False]*6)
+        mask = np.array([False] * 6)
         assert_array_equal(hi.mask, mask)
 
 
-#class TestIrrad(TestCase):
+# class TestIrrad(TestCase):
 #    def test_basic(self):
 #        'Test the basic solar irradiance calculation.'
 #        from datetime import date
@@ -262,9 +261,9 @@ class TestGeos(TestCase):
     def test_basic(self):
         'Basic test of geostrophic wind calculation'
         z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100.
-        #Using g as the value for f allows it to cancel out
+        # Using g as the value for f allows it to cancel out
         ug, vg = geostrophic_wind(z, g, 100., 100.)
-        true_u = np.array([[-1, 0, 1]]*3)
+        true_u = np.array([[-1, 0, 1]] * 3)
         true_v = -true_u.T
         assert_array_equal(ug, true_u)
         assert_array_equal(vg, true_v)

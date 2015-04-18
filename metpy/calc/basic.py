@@ -1,4 +1,9 @@
-'A collection of basic meteorological calculation functions.'
+import numpy as np
+import scipy.integrate as si
+import scipy.optimize as so
+from numpy.ma import log, exp, cos, sin, masked_array
+from scipy.constants import degree, kilo, hour, g, K2C, C2K
+from ..constants import epsilon, kappa, P0, Rd, Lv, Cp_d
 
 __all__ = ['vapor_pressure', 'saturation_vapor_pressure', 'dewpoint',
            'dewpoint_rh', 'get_speed_dir', 'potential_temperature',
@@ -6,13 +11,6 @@ __all__ = ['vapor_pressure', 'saturation_vapor_pressure', 'dewpoint',
            'heat_index', 'h_convergence', 'v_vorticity', 'dry_lapse',
            'moist_lapse', 'lcl', 'parcel_profile',
            'convergence_vorticity', 'advection', 'geostrophic_wind']
-
-import numpy as np
-import scipy.integrate as si
-import scipy.optimize as so
-from numpy.ma import log, exp, cos, sin, masked_array
-from scipy.constants import degree, kilo, hour, g, K2C, C2K
-from ..constants import epsilon, kappa, P0, Rd, Lv, Cp_d
 
 sat_pressure_0c = 6.112  # mb
 
@@ -62,7 +60,7 @@ def dry_lapse(pressure, temperature, starting_pressure=P0 / 100):
 def moist_lapse(pressure, temperature):
     '''
     Calculate the temperature at given *pressure* level from starting
-    *temperature*, assuming liquid saturation processes. That is, 
+    *temperature*, assuming liquid saturation processes. That is,
     this is calculating moist pseudo-adiabats.
 
     pressure : scalar or array
@@ -79,7 +77,7 @@ def moist_lapse(pressure, temperature):
     def dT(T, P):
         rs = mixing_ratio(saturation_vapor_pressure(K2C(T)), P)
         return (1. / P) * ((Rd * T + Lv * rs) /
-            (Cp_d + (Lv * Lv * rs * epsilon / (Rd * T * T))))
+                           (Cp_d + (Lv * Lv * rs * epsilon / (Rd * T * T))))
     return si.odeint(dT, temperature.squeeze(), pressure.squeeze()).T
 
 
@@ -349,8 +347,8 @@ def windchill(temp, speed, face_level_winds=False, mask_undefined=True):
     temp_limit, speed_limit = 10., 4.828  # Temp in C, speed in km/h
     speed = speed * hour / kilo
     speed_factor = speed ** 0.16
-    wcti = (13.12 + 0.6215 * temp - 11.37 * speed_factor
-            + 0.3965 * temp * speed_factor)
+    wcti = (13.12 + 0.6215 * temp - 11.37 * speed_factor +
+            0.3965 * temp * speed_factor)
 
     # See if we need to mask any undefined values
     if mask_undefined:
@@ -393,10 +391,10 @@ def heat_index(temp, rh, mask_undefined=True):
     temp2 = temp ** 2
 
     # Calculate the Heat Index
-    HI = (-42.379 + 2.04901523 * temp + 10.14333127 * rh
-          - 0.22475541 * temp * rh - 6.83783e-3 * temp2 - 5.481717e-2 * rh2
-          + 1.22874e-3 * temp2 * rh + 8.5282e-4 * temp * rh2
-          - 1.99e-6 * temp2 * rh2)
+    HI = (-42.379 + 2.04901523 * temp + 10.14333127 * rh -
+          0.22475541 * temp * rh - 6.83783e-3 * temp2 - 5.481717e-2 * rh2 +
+          1.22874e-3 * temp2 * rh + 8.5282e-4 * temp * rh2 -
+          1.99e-6 * temp2 * rh2)
 
     # See if we need to mask any undefined values
     if mask_undefined:

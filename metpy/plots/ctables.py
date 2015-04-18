@@ -1,9 +1,9 @@
 from numpy import array
 import matplotlib as mpl
+import matplotlib.colors as colors
 LUTSIZE = mpl.rcParams['image.lut']
 del mpl
 
-import matplotlib.colors as colors
 
 # These are standard National Weather Service Radar Colortables
 _NWSRef_data = {'blue': [(0.0, 0.92549019607843142, 0.92549019607843142),
@@ -2272,7 +2272,7 @@ def get_cmap(name, lut=None):
     # If lut is < 0, then return the table with only levels originally defined
     if lut < 0:
         lut = len(datad[name]['red'])
-    return colors.LinearSegmentedColormap(name,  datad[name], lut)
+    return colors.LinearSegmentedColormap(name, datad[name], lut)
 
 # Taken from the matplotlib cookbook
 
@@ -2293,8 +2293,7 @@ def cmap_map(function, cmap):
     step_list = reduce(lambda x, y: x + y, step_dict.values())
     step_list = array(list(set(step_list)))
     # Then compute the LUT, and apply the function to the LUT
-    reduced_cmap = lambda step: array(cmap(step)[0:3])
-    old_LUT = array(map(reduced_cmap, step_list))
+    old_LUT = array(map(lambda step: array(cmap(step)[0:3]), step_list))
     new_LUT = array(map(function, old_LUT))
     # Now try to make a minimal segment definition of the new LUT
     cdict = {}
