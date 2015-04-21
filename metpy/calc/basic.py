@@ -1,6 +1,5 @@
 import numpy as np
 import scipy.integrate as si
-import scipy.optimize as so
 from numpy.ma import log, exp, cos, sin, masked_array
 from scipy.constants import degree, kilo, hour, g, K2C, C2K
 from ..constants import epsilon, kappa, P0, Rd, Lv, Cp_d

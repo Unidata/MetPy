@@ -1,3 +1,4 @@
+# flake8: noqa
 # Generated file -- do not modify
 descriptions = {"T1_Output_Frames": "The number of octets received on interface, including frame octets (octet)",
                 "T1_Input_Frames": "The number of octets sent on interface, including frame octets (octet)",

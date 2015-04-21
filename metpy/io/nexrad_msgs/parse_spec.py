@@ -150,6 +150,7 @@ def field_fmt(item):
 def write_file(fname, info):
     with open(fname, 'w') as outfile:
         # File header
+        outfile.write('# flake8: noqa\n')
         outfile.write('# Generated file -- do not modify\n')
 
         # Variable descriptions

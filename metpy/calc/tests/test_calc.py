@@ -1,6 +1,7 @@
-from numpy.testing import *
+from numpy.testing import (TestCase, assert_array_almost_equal,
+                           assert_almost_equal, assert_array_equal)
 import numpy as np
-from metpy.calc import *
+from metpy.calc import *  # noqa
 from metpy.constants import g
 
 
@@ -241,7 +242,6 @@ class TestAdvection(TestCase):
     def test_2dbasic(self):
         'Basic 2D braindead test of advection'
         u = np.ones((3, 3))
-        v = np.ones((3, 3))
         s = np.ones_like(u)
         a = advection(s, u, (1,))
         truth = np.zeros_like(u)

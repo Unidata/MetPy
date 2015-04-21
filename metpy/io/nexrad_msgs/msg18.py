@@ -1,3 +1,4 @@
+# flake8: noqa
 # Generated file -- do not modify
 descriptions = {"ADAP_FILE_NAME": "NAME OF ADAPTATION DATA FILE",
                 "ADAP_FORMAT": "FORMAT OF ADAPTATION DATA FILE",

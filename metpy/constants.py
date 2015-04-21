@@ -88,7 +88,7 @@ K2C :
 '''
 
 __all__ = ['C2F', 'C2K', 'F2K', 'K2C', 'K2F', 'F2C', 'Re', 'earth_avg_radius',
-           'g', 'earth_avg_gravity', 'omega', 'earth_avg_angular_vel',
+           'g', 'omega', 'earth_avg_angular_vel',
            'd', 'earth_sfc_avg_dist_sun', 'S', 'earth_solar_irradiance',
            'Mw', 'water_molecular_weight', 'Rv', 'water_gas_constant',
            'rho_l', 'density_water', 'Cp_v', 'wv_specific_heat_press',

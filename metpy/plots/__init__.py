@@ -1,2 +1,6 @@
 #!/usr/bin/python
-from .skewt import *
+from . import skewt
+
+from .skewt import *  # noqa
+
+__all__ = skewt.__all__

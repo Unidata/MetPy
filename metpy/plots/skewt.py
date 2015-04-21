@@ -2,7 +2,6 @@ from matplotlib.axes import Axes
 import matplotlib.transforms as transforms
 import matplotlib.axis as maxis
 import matplotlib.spines as mspines
-import matplotlib.path as mpath
 from matplotlib.projections import register_projection
 from matplotlib.ticker import ScalarFormatter, MultipleLocator
 from matplotlib.collections import LineCollection
