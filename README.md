@@ -21,5 +21,6 @@ Other required packages:
 
 ###Contributing
 We welcome contributions of all sorts. We PEP8 as our style guide, which will
-be checked in automated testing. We welcome [Pull Requests](https://help.github.com/articles/using-pull-requests/)
+be checked in automated testing, in addition to other linting checks done by
+flake8. We welcome [Pull Requests](https://help.github.com/articles/using-pull-requests/)
 as our primary means of merging in contributions.
