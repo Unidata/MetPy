@@ -25,11 +25,15 @@ MetPy
     :target: https://pypi.python.org/pypi/MetPy/
     :alt: Download format
 
+.. image:: https://pypip.in/download/MetPy/badge.svg?period=month
+    :target: https://pypi.python.org/pypi/MetPy/
+    :alt: Downloads
+
 .. image:: https://travis-ci.org/metpy/MetPy.svg?branch=master
     :target: https://travis-ci.org/metpy/MetPy
     :alt: Travis Build Status
 
-.. image:: https://coveralls.io/repos/metpy/MetPy/badge.svg
+.. image:: https://coveralls.io/repos/metpy/MetPy/badge.svg?branch=master
     :target: https://coveralls.io/r/metpy/MetPy
     :alt: Coveralls Coverage Status
 
