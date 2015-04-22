@@ -3,7 +3,6 @@ import distutils.sysconfig
 from distutils.core import setup
 from distutils.extension import Extension
 from distutils.command.install_data import install_data
-import numpy as np
 import os
 import os.path
 import sys
@@ -32,6 +31,7 @@ def cleanup(dir, fext):
 
 # Generate an Extension object from its dotted name
 def makeExtension(extName):
+    import numpy as np
     extPath = extName.replace(".", os.path.sep)+".pyx"
     return Extension(
         extName,
