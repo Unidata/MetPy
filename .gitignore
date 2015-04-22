@@ -5,3 +5,4 @@ __git_version__.py
 dist/*
 build/*
 *.swp
+MANIFEST

@@ -55,15 +55,27 @@ include_dirs = None
 build_ext = None
 
 setup(
-    name            = 'MetPy',
-    version         = ver,
-    packages        = ['metpy', 'metpy.calc', 'metpy.io', 'metpy.plots'],
-    ext_modules     = ext_modules,
-    include_dirs    = include_dirs,
-    platforms       = ['Linux', 'Windows', 'Mac'],
-    description     = 'Collection of tools for reading, visualizing and'
-                      'performing calculations with weather data.',
-    url             = 'http://www.github.com/MetPy/MetPy',)
+    name             = 'MetPy',
+    packages         = ['metpy', 'metpy.calc', 'metpy.io', 'metpy.plots'],
+    version          = ver,
+    ext_modules      = ext_modules,
+    include_dirs     = include_dirs,
+    maintainer       = 'Unidata',
+    maintainer_email = 'support-python@unidata.ucar.edu',
+    description      = 'Collection of tools for reading, visualizing and'
+                       'performing calculations with weather data.',
+    url              = 'http://github.com/MetPy/MetPy',
+    download_url     = 'https://github.com/MetPy/metpy/tarball/%s' % ver,
+    keywords         = ['meteorology', 'weather'],
+    classifiers      = ['Development Status :: 3 - Alpha',
+                        'Programming Language :: Python',
+                        'Programming Language :: Python :: 2.7',
+                        'Programming Language :: Python :: 3.3',
+                        'Programming Language :: Python :: 3.4',
+                        'Topic :: Scientific/Engineering',
+                        'Intended Audience :: Science/Research',
+                        'Operating System :: OS Independent',
+                        'License :: OSI Approved :: BSD License'],)
 
 if not version.release:
   # Remove __git_version__ so that if we run from local, an outdated version
