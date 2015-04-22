@@ -65,7 +65,7 @@ setup(
     description      = 'Collection of tools for reading, visualizing and'
                        'performing calculations with weather data.',
     url              = 'http://github.com/MetPy/MetPy',
-    download_url     = 'https://github.com/MetPy/metpy/tarball/%s' % ver,
+    download_url     = 'https://github.com/metpy/MetPy/archive/v%s.tar.gz' % ver,
     keywords         = ['meteorology', 'weather'],
     classifiers      = ['Development Status :: 3 - Alpha',
                         'Programming Language :: Python',
