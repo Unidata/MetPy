@@ -15,19 +15,40 @@ sat_pressure_0c = 6.112  # mb
 
 
 def potential_temperature(pressure, temperature):
-    '''
-    Calculate the potential temperature given *pressure* and
-    *temperature*.
+    '''Calculate the potential temperature.
 
-    pressure : scalar or array
+    Uses the Poisson equation to calculation the potential temperature
+    given `pressure` and `temperature`.
+
+    Parameters
+    ----------
+    pressure : array_like
         The total atmospheric pressure in mb
 
-    temperature : scalar or array
+    temperature : array_like
         The temperature in Kelvin
 
-    Returns : scalar or array
-       The potential temperature corresponding to the the tempearture and
-       pressure, with the shape determined by numpy broadcasting rules.
+    Returns
+    -------
+    array_like
+        The potential temperature corresponding to the the temperature and
+        pressure.
+
+    See Also
+    --------
+    dry_lapse
+
+    Notes
+    -----
+    Formula:
+
+    .. math:: \Theta = T (P_0 / P)^\kappa
+
+    Examples
+    --------
+    >>> metpy.calc.potential_temperature(800., 273.)
+    290.9814150577374
+
     '''
     # Factor of 100 converts mb to Pa. Really need unit support here.
     return temperature * (P0 / (pressure * 100))**kappa
@@ -301,41 +322,44 @@ def tke(u, v, w):
 
 
 def windchill(temp, speed, face_level_winds=False, mask_undefined=True):
-    '''
-    Calculate the Wind Chill Temperature Index (WCTI) from the current
+    '''Calculate the Wind Chill Temperature Index (WCTI) from the current
     temperature and wind speed.
-
-    This implementation comes from the formulas outlined at:
-    http://www.ofcm.gov/jagti/r19-ti-plan/pdf/03_chap3.pdf
 
     Specifically, these formulas assume that wind speed is measured at
     10m.  If, instead, the speeds are measured at face level, the winds
     need to be multiplied by a factor of 1.5 (this can be done by specifying
-    *face_level_winds* as True.
+    `face_level_winds` as True.)
 
-    temp : scalar or array
-        The air temperature, in Farenheit if *metric* is False or Celsius
-        if *metric is True.
-
-    speed : scalar or array
+    Parameters
+    ----------
+    temp : array_like
+        The air temperature in degrees Celsius
+    speed : array_like
         The wind speed at 10m.  If instead the winds are at face level,
-        *face_level_winds* should be set to True and the 1.5 multiplicative
+        `face_level_winds` should be set to True and the 1.5 multiplicative
         correction will be applied automatically.  Wind speed should be
         given in units of meters per second.
 
-    face_level_winds : boolean
+    Returns
+    -------
+    array_like
+        The corresponding Wind Chill Temperature Index value(s)
+
+    Other Parameters
+    ----------------
+    face_level_winds : bool, optional
         A flag indicating whether the wind speeds were measured at facial
         level instead of 10m, thus requiring a correction.  Defaults to
         False.
-
-    mask_undefined : boolean
+    mask_undefined : bool, optional
         A flag indicating whether a masked array should be returned with
         values where wind chill is undefined masked.  These are values where
         the temperature > 50F or wind speed <= 3 miles per hour. Defaults
         to True.
 
-    Returns : scalar or array
-        The corresponding Wind Chill Temperature Index value(s)
+    References
+    ----------
+    .. [1] http://www.ofcm.gov/jagti/r19-ti-plan/pdf/03_chap3.pdf
     '''
     # Correct for lower height measurement of winds if necessary
     if face_level_winds:

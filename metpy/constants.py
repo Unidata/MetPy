@@ -1,13 +1,11 @@
-from scipy.constants import pi, day, value, kilo, g
-from scipy.constants import C2F, F2C, K2F, F2K, C2K, K2C
-
 '''
 This is a collection of meteorologically significant constants.
 
 Earth
--------------
+-----
+======================== ===== ======== =======================================
 Name                     Abbr. Units    Description
-======================== ===== ======== ==================
+------------------------ ----- -------- ---------------------------------------
 earth_avg_radius         Re    m        Avg. radius of the Earth
 earth_gravity            g     m s^-2   Avg. gravity acceleration on Earth
 earth_avg_angular_vel    omega rad s^-1 Avg. angular velocity of Earth
@@ -15,12 +13,13 @@ earth_sfc_avg_dist_sun   d     m        Avg. distance of the Earth from the Sun
 earth_solar_irradiance   S     W m^-2   Avg. solar irradiance of Earth
 earth_max_declination    delta degrees  Max. solar declination angle of Earth
 earth_orbit_eccentricity       None     Avg. eccentricity of Earth's orbit
-======================== ===== ======== ==================
+======================== ===== ======== =======================================
 
 Water
--------------
+-----
+======================= ===== =========== =====================================
 Name                    Abbr. Units       Description
-======================= ===== =========== ==================
+----------------------- ----- ----------- -------------------------------------
 water_molecular_weight  Mw    g mol^-1    Molecular weight of water
 water_gas_constant      Rv    J (K kg)^-1 Gas constant for water vapor
 density_water           rho_l kg m^-3     Nominal density of liquid water at 0C
@@ -35,12 +34,13 @@ water_heat_fusion       Lf    J kg^-1     Latent heat of fusion for liquid
                                           water at 0C
 ice_specific_heat       Cp_i  J (K kg)^-1 Specific heat of ice at 0C
 density_ice             rho_i kg m^-3     Density of ice at 0C
-======================= ===== =========== ==================
+======================= ===== =========== =====================================
 
 Dry Air
--------------
+-------
+======================== ===== =========== ====================================
 Name                     Abbr. Units       Description
-======================== ===== =========== ==================
+------------------------ ----- ----------- ------------------------------------
 dry_air_molecular_weight Md    g / mol     Nominal molecular weight of dry air
                                            at the surface of th Earth
 dry_air_gas_constant     Rd    J (K kg)^-1 Gas constant for dry air at the
@@ -50,12 +50,13 @@ dry_air_spec_heat_press  Cp_d  J (K kg)^-1 Specific heat at constant pressure
 dry_air_spec_heat_vol    Cv_d  J (K kg)^-1 Specific heat at constant volume
                                            for dry air
 dry_air_density_stp      rho_d kg m^-3     Density of dry air at 0C and 1000mb
-======================== ===== ======== ==================
+======================== ===== =========== ====================================
 
 General Meteorology Constants
--------------
+-----------------------------
+======================== ======= ======== =====================================
 Name                     Abbr.   Units    Description
-======================== ======= ======== ==================
+------------------------ ------- -------- -------------------------------------
 pot_temp_ref_press       P0      Pa       Reference pressure for potential
                                           temperature
 poisson_exponent         kappa   None     Exponent in Poisson's equation
@@ -63,32 +64,25 @@ poisson_exponent         kappa   None     Exponent in Poisson's equation
 dry_adiabatic_lapse_rate gamma_d K km^-1  The dry adiabatic lapse rate
 molecular_weight_ratio   epsilon None     Ratio of molecular weight of water to
                                           that of dry air
-======================== ======= ======== ==================
+======================== ======= ======== =====================================
 
 Temperature Conversion Functions
--------------
+--------------------------------
 
-F2C :
-    Convert temperature in degrees Farenheit to degrees Celsius
+.. autosummary::
 
-F2K :
-    Convert temperature in degrees Farenheit to Kelvin
-
-C2F :
-    Convert temperature in degrees Celsius to degrees Farenheit
-
-K2F :
-    Convert temperature in Kelvin to degrees Farenheit
-
-C2K :
-    Convert temperature in degrees Celsius to Kelvin
-
-K2C :
-    Convert temperature in Kelvin to degrees Celsius
+   F2C
+   F2K
+   C2F
+   K2F
+   C2K
+   K2C
 '''
+from scipy.constants import pi, day, value, kilo, g
+from scipy.constants import C2F, F2C, K2F, F2K, C2K, K2C
 
 __all__ = ['C2F', 'C2K', 'F2K', 'K2C', 'K2F', 'F2C', 'Re', 'earth_avg_radius',
-           'g', 'omega', 'earth_avg_angular_vel',
+           'g', 'earth_gravity', 'omega', 'earth_avg_angular_vel',
            'd', 'earth_sfc_avg_dist_sun', 'S', 'earth_solar_irradiance',
            'Mw', 'water_molecular_weight', 'Rv', 'water_gas_constant',
            'rho_l', 'density_water', 'Cp_v', 'wv_specific_heat_press',
@@ -106,6 +100,7 @@ R = value('molar gas constant')
 del value
 
 # Earth
+earth_gravity = g
 Re = earth_avg_radius = 6.37e6  # m
 omega = earth_avg_angular_vel = 2 * pi / day  # rad s^-1
 d = earth_sfc_avg_dist_sun = 1.496e11  # m
