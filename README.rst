@@ -1,8 +1,37 @@
 MetPy
 =====
 
+.. image:: https://pypip.in/status/MetPy/badge.svg
+    :target: https://pypi.python.org/pypi/MetPy/
+    :alt: Development Status
+
+.. image:: https://pypip.in/py_versions/MetPy/badge.svg
+    :target: https://pypi.python.org/pypi/MetPy/
+    :alt: Supported Python versions
+
+.. image:: https://pypip.in/implementation/MetPy/badge.svg
+    :target: https://pypi.python.org/pypi/MetPy/
+    :alt: Supported Python implementations
+
+.. image:: https://pypip.in/license/MetPy/badge.svg
+    :target: https://pypi.python.org/pypi/MetPy/
+    :alt: License
+
+.. image:: https://pypip.in/version/MetPy/badge.svg?text=version
+    :target: https://pypi.python.org/pypi/MetPy/
+    :alt: Latest Version
+
+.. image:: https://pypip.in/format/MetPy/badge.svg
+    :target: https://pypi.python.org/pypi/MetPy/
+    :alt: Download format
+
 .. image:: https://travis-ci.org/metpy/MetPy.svg?branch=master
     :target: https://travis-ci.org/metpy/MetPy
+    :alt: Travis Build Status
+
+.. image:: https://coveralls.io/repos/metpy/MetPy/badge.svg
+    :target: https://coveralls.io/r/metpy/MetPy
+    :alt: Coveralls Coverage Status
 
 MetPy is a collection of tools in Python for reading, visualizing and
 performing calculations with weather data.
@@ -12,14 +41,8 @@ MetPy is still in an early stage of development, and as such
 just for fun, many things may still change as we work through
 design issues.
 
-Requirements
+Dependencies
 ------------
-Python versions supported:
-
-- 2.7
-- 3.3
-- 3.4
-
 Other required packages:
 
 - Numpy
