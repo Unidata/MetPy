@@ -8,6 +8,8 @@ matrix:
   include:
     - python: 2.7
       env: LINT=false
+    - python: 2.7
+      env: LINT=true
     - python: 3.3
       env: LINT=false
     - python: 3.4
