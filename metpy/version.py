@@ -1,5 +1,5 @@
 import os.path
-release = False
+release = True
 __version__ = '0.1.0'
 
 
