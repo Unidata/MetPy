@@ -313,7 +313,7 @@ class Level2File(object):
             elif filename.endswith('.gz'):
                 fobj = gzip.GzipFile(filename, 'rb')
             else:
-                fobj = file(filename, 'rb')
+                fobj = open(filename, 'rb')
         else:
             fobj = filename
 

@@ -2290,7 +2290,9 @@ def cmap_map(function, cmap):
     # Firt get the list of points where the segments start or end
     for key in ('red', 'green', 'blue'):
         step_dict[key] = map(lambda x: x[0], cdict[key])
-    step_list = reduce(lambda x, y: x + y, step_dict.values())
+    step_list = []
+    for v in step_dict.values():
+        step_list += v
     step_list = array(list(set(step_list)))
     # Then compute the LUT, and apply the function to the LUT
     old_LUT = array(map(lambda step: array(cmap(step)[0:3]), step_list))
