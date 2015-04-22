@@ -6,3 +6,4 @@ dist/*
 build/*
 *.swp
 MANIFEST
+.coverage

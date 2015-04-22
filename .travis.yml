@@ -7,13 +7,11 @@ sudo: false
 matrix:
   include:
     - python: 2.7
-      env: LINT=false
     - python: 2.7
       env: LINT=true
     - python: 3.3
-      env: LINT=false
     - python: 3.4
-      env: LINT=false
+      env: NOSE_WITH_COVERAGE=y NOSE_COVER_PACKAGE=metpy
     - python: 3.4
       env: LINT=true
 
@@ -29,6 +27,9 @@ before_install:
 install:
   - conda create --yes -n travis python=$TRAVIS_PYTHON_VERSION scipy numpy matplotlib nose flake8
   - source activate travis
+  - if [[ $NOSE_WITH_COVERAGE == y ]]; then
+      pip install coveralls;
+    fi
   - python setup.py install
 
 script:
@@ -36,4 +37,9 @@ script:
       flake8 metpy;
     else
       nosetests;
+    fi
+
+after_success:
+  - if [[ $NOSE_WITH_COVERAGE == y ]]; then
+      coveralls;
     fi
