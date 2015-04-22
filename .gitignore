@@ -4,6 +4,7 @@ __git_version__.py
 *.pyc
 dist/*
 build/*
+doc/build/
 *.swp
 MANIFEST
 .coverage
