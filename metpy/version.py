@@ -52,7 +52,12 @@ def get_version():
             import __git_version__
             rev = __git_version__.rev
         except ImportError:
-            rev = get_revision()
-        version += '.dev+' + rev
+            try:
+                from . import __git_version__
+                rev = __git_version__.rev
+            except ImportError:
+                rev = get_revision()
+        if rev:
+            version += '.dev+' + rev
 
     return version
