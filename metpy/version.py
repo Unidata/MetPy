@@ -1,66 +1,41 @@
 import os.path
-import subprocess
 release = False
-__version__ = '0.1'
+__version__ = '0.1.0'
 
 
 _repository_path = os.path.split(__file__)[0]
 _git_file_path = os.path.join(_repository_path, '__git_version__.py')
 
 
-def _minimal_ext_cmd(cmd):
-    # construct minimal environment
-    env = {}
-    for k in ['SYSTEMROOT', 'PATH']:
-        v = os.environ.get(k)
-        if v is not None:
-            env[k] = v
-    # LANGUAGE is used on win32
-    env['LANGUAGE'] = 'C'
-    env['LANG'] = 'C'
-    env['LC_ALL'] = 'C'
-    out = subprocess.Popen(cmd, stdout=subprocess.PIPE,
-                           stderr=subprocess.PIPE, env=env).communicate()[0]
-    return out
-
-
-def get_git_hash():
+def get_revision():
     '''
-    Gets the last GIT commit hash and date for the repository, using the
+    Gets the last GIT commit hash the repository, using the
     path to this file.
     '''
-    try:
-        out = _minimal_ext_cmd(['git', 'rev-parse', 'HEAD'])
-        GIT_REVISION = out.strip().decode('ascii')
-    except:
-        GIT_REVISION = None
+    package_dir = os.path.dirname(__file__)
+    checkout_dir = os.path.normpath(os.path.join(package_dir, os.pardir))
+    path = os.path.join(checkout_dir, '.git')
+    if os.path.exists(path):
+        return _get_git_revision(path)
+    return None
 
-    return GIT_REVISION
 
-
-def get_git_revision():
-    hash = get_git_hash()
-    if hash:
-        rev = '.dev.' + hash[:7]
-        try:
-            cmd = ['git', 'show', '%s' % (hash), '--date=short',
-                   '--format="(%ad)"']
-            date = _minimal_ext_cmd(cmd).split('"')[1]
-            rev += date
-        except:
-            pass
+def _get_git_revision(path):
+    head = os.path.join(path, 'HEAD')
+    if not os.path.exists(head):
+        return None
+    link = open(head, 'r').read().strip()
+    if not link.startswith('ref:'):
+        shorthash = link[:7]
     else:
-        rev = ".dev.Unknown"
-
-    return rev
+        ref = link.split()[-1]
+        shorthash = open(os.path.join(path, ref), 'r').read().strip()[:7]
+    return shorthash
 
 
 def write_git_version():
     'Write the GIT revision to a file.'
-    rev = get_git_revision()
-    if rev == ".dev.Unknown":
-        if os.path.isfile(_git_file_path):
-            return
+    rev = get_revision()
     gitfile = open(_git_file_path, 'w')
     gitfile.write('rev = "%s"\n' % rev)
     gitfile.close()
@@ -75,8 +50,9 @@ def get_version():
     if not release:
         try:
             import __git_version__
-            version += __git_version__.rev
+            rev = __git_version__.rev
         except ImportError:
-            version += get_git_revision()
+            rev = get_revision()
+        version += '.dev+' + rev
 
     return version
