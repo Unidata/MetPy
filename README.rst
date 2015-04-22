@@ -15,11 +15,13 @@ design issues.
 Requirements
 ------------
 Python versions supported:
+
 - 2.7
 - 3.3
 - 3.4
 
 Other required packages:
+
 - Numpy
 - Scipy
 - Matplotlib
