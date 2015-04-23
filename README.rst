@@ -37,6 +37,14 @@ MetPy
     :target: https://coveralls.io/r/metpy/MetPy
     :alt: Coveralls Coverage Status
 
+.. image:: https://readthedocs.org/projects/pip/badge/?version=latest
+    :target: http://metpy.readthedocs.org/en/latest/
+    :alt: Latest Doc Build Status
+
+.. image:: https://readthedocs.org/projects/pip/badge/?version=stable
+    :target: http://metpy.readthedocs.org/en/stable/
+    :alt: Stable Doc Build Status
+
 MetPy is a collection of tools in Python for reading, visualizing and
 performing calculations with weather data.
 
