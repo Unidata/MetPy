@@ -2,7 +2,7 @@ from numpy.testing import (TestCase, assert_array_almost_equal,
                            assert_almost_equal, assert_array_equal)
 import numpy as np
 from metpy.calc import *  # noqa
-from metpy.constants import g
+from metpy.constants import g, F2C
 
 
 class TestPotentialTemperature(TestCase):
@@ -119,23 +119,23 @@ class TestWindChill(TestCase):
 class TestHeatIndex(TestCase):
     def test_basic(self):
         'Test the basic heat index calculation.'
-        temp = np.array([80, 88, 92, 110])
+        temp = F2C(np.array([80, 88, 92, 110]))
         rh = np.array([40, 100, 70, 40])
 
         hi = heat_index(temp, rh)
-        values = np.array([80, 121, 112, 136])
+        values = F2C(np.array([80, 121, 112, 136]))
         assert_array_almost_equal(hi, values, 0)
 
     def test_scalar(self):
-        hi = heat_index(96, 65)
-        assert_almost_equal(hi, 121, 0)
+        hi = heat_index(F2C(96), 65)
+        assert_almost_equal(hi, F2C(121), 0)
 
     def test_invalid(self):
         'Test for values that should be masked.'
-        temp = np.array([80, 88, 92, 79, 30, 81])
+        temp = F2C(np.array([80, 88, 92, 79, 30, 81]))
         rh = np.array([40, 39, 2, 70, 50, 39])
 
-        hi = heat_index(temp, rh)
+        hi = F2C(heat_index(temp, rh))
         mask = np.array([False, True, True, True, True, True])
         assert_array_equal(hi.mask, mask)
 
