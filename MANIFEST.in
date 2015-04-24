@@ -1,3 +1,5 @@
 include README.rst
 include LICENSE
 include CONTRIBUTING.md
+include versioneer.py
+include metpy/_version.py

@@ -1,4 +1,5 @@
 # What do we want to pull into the top-level namespace?
 
-from . import version
-__version__ = version.get_version()
+from ._version import get_versions
+__version__ = get_versions()['version']
+del get_versions
