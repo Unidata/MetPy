@@ -2278,13 +2278,13 @@ def get_cmap(name, lut=None):
 
 
 def cmap_map(function, cmap):
-    """ Applies function (which should operate on vectors of shape 3:
+    ''' Applies function (which should operate on vectors of shape 3:
     [r, g, b], on colormap cmap. This routine will break any discontinuous
     points in a colormap.
 
     Example usage:
     light_jet = cmap_map(lambda x: x/2+0.5, cm.jet)
-    """
+    '''
     cdict = cmap._segmentdata
     step_dict = {}
     # Firt get the list of points where the segments start or end
@@ -2318,14 +2318,14 @@ if __name__ == '__main__':
     a = numpy.outer(numpy.arange(0, 1, 0.01), numpy.ones(10))
     pylab.figure(figsize=(10, 7))
     pylab.subplots_adjust(top=0.8, bottom=0.05, left=0.01, right=0.99)
-    maps = [m for m in datad.keys() if not m.endswith("_r")]
+    maps = [m for m in datad.keys() if not m.endswith('_r')]
     maps.sort()
     l = len(maps) + 1
     i = 1
     for m in maps:
         pylab.subplot(1, l, i)
-        pylab.axis("off")
-        pylab.imshow(a, aspect='auto', cmap=locals()[m], origin="lower")
+        pylab.axis('off')
+        pylab.imshow(a, aspect='auto', cmap=locals()[m], origin='lower')
         pylab.title(m, rotation=90, fontsize=10)
         i = i + 1
     pylab.show()

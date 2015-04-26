@@ -6,12 +6,11 @@ import re
 import struct
 import warnings
 import zlib
+from collections import defaultdict, namedtuple
 from struct import Struct
-from collections import defaultdict
 
 import numpy as np
 from scipy.constants import day, milli
-from collections import namedtuple
 from metpy.cbook import is_string_like
 
 __all__ = ['Level2File', 'Level3File', 'is_precip_mode']
@@ -370,7 +369,7 @@ class Level2File(object):
                 if hasattr(self, '_decode_msg%d' % msg_hdr.msg_type):
                     getattr(self, '_decode_msg%d' % msg_hdr.msg_type)(msg_hdr)
                 else:
-                    warnings.warn("Unknown message: {0.msg_type}".format(msg_hdr))
+                    warnings.warn('Unknown message: {0.msg_type}'.format(msg_hdr))
 
             # Jump to the start of the next message. This depends on whether
             # the message was legacy with fixed block size or not.
@@ -1561,7 +1560,7 @@ class Level3File(object):
 
         # Check for empty product
         if len(self._buffer) == 0:
-            warnings.warn("{}: Empty product!".format(self.filename))
+            warnings.warn('{}: Empty product!'.format(self.filename))
             return
 
         # Set up places to store data and metadata
@@ -1657,7 +1656,7 @@ class Level3File(object):
                 self._unpack_tabblock(msg_start, 2 * self.prod_desc.tab_off)
 
         if 'defaultVals' in self.metadata:
-            warnings.warn("{}: Using default metadata for product {}".format(
+            warnings.warn('{}: Using default metadata for product {}'.format(
                 self.filename, self.header.code))
 
     def _process_wmo_header(self):
