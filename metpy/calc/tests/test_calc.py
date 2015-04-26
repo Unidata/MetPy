@@ -2,7 +2,7 @@ from numpy.testing import (TestCase, assert_array_almost_equal,
                            assert_almost_equal, assert_array_equal)
 import numpy as np
 from metpy.calc import *  # noqa
-from metpy.constants import g, F2C
+from metpy.constants import g, F2C, C2K
 
 
 class TestPotentialTemperature(TestCase):
@@ -268,6 +268,12 @@ class TestGeos(TestCase):
         assert_array_equal(ug, true_u)
         assert_array_equal(vg, true_v)
 
+
+class TestLCL(TestCase):
+    def test_basic(self):
+        'Simple test of LCL calculation.'
+        l = lcl(1000., C2K(30.), C2K(20.))
+        assert_almost_equal(l, 864.89, 2)
 
 if __name__ == '__main__':
     run_module_suite()
