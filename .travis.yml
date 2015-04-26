@@ -27,6 +27,9 @@ before_install:
 install:
   - conda create --yes -n travis python=$TRAVIS_PYTHON_VERSION scipy numpy matplotlib nose flake8
   - source activate travis
+  - if [[ $LINT == true ]]; then
+      pip install pep8-naming;
+    fi
   - if [[ $NOSE_WITH_COVERAGE == y ]]; then
       pip install coveralls;
     fi
