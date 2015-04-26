@@ -155,9 +155,9 @@ class SkewT(object):
                                   rotation=rotation)
         self.ax.grid(True)
 
-    def plot(self, p, T, *args, **kwargs):
+    def plot(self, p, t, *args, **kwargs):
         # Skew-T logP plotting
-        self.ax.semilogy(T, p, *args, **kwargs)
+        self.ax.semilogy(t, p, *args, **kwargs)
 
         # Disables the log-formatting that comes with semilogy
         self.ax.yaxis.set_major_formatter(ScalarFormatter())
@@ -179,19 +179,19 @@ class SkewT(object):
                       transform=self.ax.get_yaxis_transform(which='tick2'),
                       clip_on=False, **kwargs)
 
-    def plot_dry_adiabats(self, T0=None, P=None, **kwargs):
+    def plot_dry_adiabats(self, t0=None, p=None, **kwargs):
         # Determine set of starting temps if necessary
-        if T0 is None:
+        if t0 is None:
             xmin, xmax = self.ax.get_xlim()
-            T0 = np.arange(xmin, xmax + 1, 10)
+            t0 = np.arange(xmin, xmax + 1, 10)
 
         # Get pressure levels based on ylims if necessary
-        if P is None:
-            P = np.linspace(*self.ax.get_ylim())
+        if p is None:
+            p = np.linspace(*self.ax.get_ylim())
 
         # Assemble into data for plotting
-        T = K2C(dry_lapse(P, C2K(T0[:, np.newaxis])))
-        linedata = [np.vstack((t, P)).T for t in T]
+        t = K2C(dry_lapse(p, C2K(t0[:, np.newaxis])))
+        linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
         kwargs.setdefault('colors', 'r')
@@ -199,20 +199,20 @@ class SkewT(object):
         kwargs.setdefault('alpha', 0.5)
         self.ax.add_collection(LineCollection(linedata, **kwargs))
 
-    def plot_moist_adiabats(self, T0=None, P=None, **kwargs):
+    def plot_moist_adiabats(self, t0=None, p=None, **kwargs):
         # Determine set of starting temps if necessary
-        if T0 is None:
+        if t0 is None:
             xmin, xmax = self.ax.get_xlim()
-            T0 = np.concatenate((np.arange(xmin, 0, 10),
+            t0 = np.concatenate((np.arange(xmin, 0, 10),
                                  np.arange(0, xmax + 1, 5)))
 
         # Get pressure levels based on ylims if necessary
-        if P is None:
-            P = np.linspace(*self.ax.get_ylim())
+        if p is None:
+            p = np.linspace(*self.ax.get_ylim())
 
         # Assemble into data for plotting
-        T = K2C(moist_lapse(P, C2K(T0[:, np.newaxis])))
-        linedata = [np.vstack((t, P)).T for t in T]
+        t = K2C(moist_lapse(p, C2K(t0[:, np.newaxis])))
+        linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
         kwargs.setdefault('colors', 'b')
@@ -220,19 +220,19 @@ class SkewT(object):
         kwargs.setdefault('alpha', 0.5)
         self.ax.add_collection(LineCollection(linedata, **kwargs))
 
-    def plot_mixing_lines(self, w=None, P=None, **kwargs):
+    def plot_mixing_lines(self, w=None, p=None, **kwargs):
         # Default mixing level values if necessary
         if w is None:
             w = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01,
                           0.016, 0.024, 0.032]).reshape(-1, 1)
 
         # Set pressure range if necessary
-        if P is None:
-            P = np.linspace(600, max(self.ax.get_ylim()))
+        if p is None:
+            p = np.linspace(600, max(self.ax.get_ylim()))
 
         # Assemble data for plotting
-        Td = dewpoint(vapor_pressure(P, w))
-        linedata = [np.vstack((t, P)).T for t in Td]
+        td = dewpoint(vapor_pressure(p, w))
+        linedata = [np.vstack((t, p)).T for t in td]
 
         # Add to plot
         kwargs.setdefault('colors', 'g')

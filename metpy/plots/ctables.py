@@ -2295,17 +2295,17 @@ def cmap_map(function, cmap):
         step_list += v
     step_list = array(list(set(step_list)))
     # Then compute the LUT, and apply the function to the LUT
-    old_LUT = array(map(lambda step: array(cmap(step)[0:3]), step_list))
-    new_LUT = array(map(function, old_LUT))
+    old_lut = array(map(lambda step: array(cmap(step)[0:3]), step_list))
+    new_lut = array(map(function, old_lut))
     # Now try to make a minimal segment definition of the new LUT
     cdict = {}
     for i, key in enumerate(('red', 'green', 'blue')):
         this_cdict = {}
         for j, step in enumerate(step_list):
             if step in step_dict[key]:
-                this_cdict[step] = new_LUT[j, i]
-            elif new_LUT[j, i] != old_LUT[j, i]:
-                this_cdict[step] = new_LUT[j, i]
+                this_cdict[step] = new_lut[j, i]
+            elif new_lut[j, i] != old_lut[j, i]:
+                this_cdict[step] = new_lut[j, i]
         colorvector = map(lambda x: x + (x[1], ), this_cdict.items())
         colorvector.sort()
         cdict[key] = colorvector

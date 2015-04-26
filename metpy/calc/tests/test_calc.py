@@ -53,9 +53,9 @@ class TestDewpoint(TestCase):
 
 class TestMixingRatio(TestCase):
     def test_scalar(self):
-        P = 998.
+        p = 998.
         e = 73.75
-        assert_almost_equal(mixing_ratio(e, P), 0.04963, 2)
+        assert_almost_equal(mixing_ratio(e, p), 0.04963, 2)
 
 
 class TestVaporPressure(TestCase):

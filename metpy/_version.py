@@ -102,8 +102,8 @@ def git_versions_from_keywords(keywords, tag_prefix, verbose=False):
     refs = set([r.strip() for r in refnames.strip("()").split(",")])
     # starting in git-1.8.3, tags are listed as "tag: foo-1.0" instead of
     # just "foo-1.0". If we see a "tag: " prefix, prefer those.
-    TAG = "tag: "
-    tags = set([r[len(TAG):] for r in refs if r.startswith(TAG)])
+    _TAG = "tag: "
+    tags = set([r[len(_TAG):] for r in refs if r.startswith(_TAG)])
     if not tags:
         # Either we're using git < 1.8.3, or there really are no tags. We use
         # a heuristic: assume all version tags have a digit. The old git %d
@@ -189,13 +189,13 @@ def git_versions_from_vcs(tag_prefix, root, verbose=False):
             print("no .git in %s" % root)
         return {}  # get_versions() will try next method
 
-    GITS = ["git"]
+    _GITS = ["git"]
     if sys.platform == "win32":
-        GITS = ["git.cmd", "git.exe"]
+        _GITS = ["git.cmd", "git.exe"]
     # if there is a tag, this yields TAG-NUM-gHEX[-dirty]
     # if there are no tags, this yields HEX[-dirty] (no NUM)
-    stdout = run_command(GITS, ["describe", "--tags", "--dirty",
-                                "--always", "--long"],
+    stdout = run_command(_GITS, ["describe", "--tags", "--dirty",
+                                 "--always", "--long"],
                          cwd=root)
     # --long was added in git-1.5.5
     if stdout is None:
@@ -203,7 +203,7 @@ def git_versions_from_vcs(tag_prefix, root, verbose=False):
     version, dirty = git_parse_vcs_describe(stdout, tag_prefix, verbose)
 
     # build "full", which is FULLHEX[.dirty]
-    stdout = run_command(GITS, ["rev-parse", "HEAD"], cwd=root)
+    stdout = run_command(_GITS, ["rev-parse", "HEAD"], cwd=root)
     if stdout is None:
         return {}
     full = stdout.strip()

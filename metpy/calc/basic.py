@@ -133,14 +133,14 @@ def moist_lapse(pressure, temperature):
     '''
 
     # Factor of 100 converts mb to Pa. Really need unit support here.
-    def dT(T, P):
-        rs = mixing_ratio(saturation_vapor_pressure(K2C(T)), P)
-        return (1. / P) * ((Rd * T + Lv * rs) /
-                           (Cp_d + (Lv * Lv * rs * epsilon / (Rd * T * T))))
-    return si.odeint(dT, temperature.squeeze(), pressure.squeeze()).T
+    def dt(t, p):
+        rs = mixing_ratio(saturation_vapor_pressure(K2C(t)), p)
+        return (1. / p) * ((Rd * t + Lv * rs) /
+                           (Cp_d + (Lv * Lv * rs * epsilon / (Rd * t * t))))
+    return si.odeint(dt, temperature.squeeze(), pressure.squeeze()).T
 
 
-def lcl(pressure, temperature, dewpt, maxIters=50, eps=1e-2):
+def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
     r'''Calculate the lifted condensation level (LCL) using from the starting
     point.
 
@@ -163,7 +163,7 @@ def lcl(pressure, temperature, dewpt, maxIters=50, eps=1e-2):
 
     Other Parameters
     ----------------
-    maxIters : int, optional
+    max_iters : int, optional
         The maximum number of iterations to use in calculation, defaults to 50.
     eps : float, optional
         The desired absolute error in the calculated value, defaults to 1e-2.
@@ -184,15 +184,15 @@ def lcl(pressure, temperature, dewpt, maxIters=50, eps=1e-2):
     '''
 
     w = mixing_ratio(saturation_vapor_pressure(K2C(dewpt)), pressure)
-    P = pressure
-    while maxIters:
-        Td = C2K(dewpoint(vapor_pressure(P, w)))
-        newP = pressure * (Td / temperature) ** (1. / kappa)
-        if np.abs(newP - P).max() < eps:
+    p = pressure
+    while max_iters:
+        td = C2K(dewpoint(vapor_pressure(p, w)))
+        new_p = pressure * (td / temperature) ** (1. / kappa)
+        if np.abs(new_p - p).max() < eps:
             break
-        P = newP
-        maxIters -= 1
-    return newP
+        p = new_p
+        max_iters -= 1
+    return new_p
 
 
 def parcel_profile(pressure, temperature, dewpt):
@@ -228,12 +228,12 @@ def parcel_profile(pressure, temperature, dewpt):
 
     # Find the dry adiabatic profile, *including* the LCL
     press_lower = np.concatenate((pressure[pressure > l], l))
-    T1 = dry_lapse(press_lower, temperature, pressure[0])
+    t1 = dry_lapse(press_lower, temperature, pressure[0])
 
     # Find moist pseudo-adiabatic; combine and return, making sure to
     # elminate (duplicated) starting point
-    T2 = moist_lapse(pressure[pressure < l], T1[-1]).squeeze()
-    return np.concatenate((T1, T2[1:]))
+    t2 = moist_lapse(pressure[pressure < l], t1[-1]).squeeze()
+    return np.concatenate((t1, t2[1:]))
 
 
 def vapor_pressure(pressure, mixing):
@@ -574,7 +574,7 @@ def heat_index(temperature, rh, mask_undefined=True):
     temp2 = temperature ** 2
 
     # Calculate the Heat Index
-    HI = (-42.379 + 2.04901523 * temperature + 10.14333127 * rh -
+    hi = (-42.379 + 2.04901523 * temperature + 10.14333127 * rh -
           0.22475541 * temperature * rh - 6.83783e-3 * temp2 -
           5.481717e-2 * rh2 + 1.22874e-3 * temp2 * rh +
           8.5282e-4 * temperature * rh2 - 1.99e-6 * temp2 * rh2)
@@ -583,9 +583,9 @@ def heat_index(temperature, rh, mask_undefined=True):
     if mask_undefined:
         mask = np.array((temperature < 80.) | (rh < 40))
         if mask.any():
-            HI = masked_array(HI, mask=mask)
+            hi = masked_array(hi, mask=mask)
 
-    return F2C(HI)
+    return F2C(hi)
 
 
 def _get_gradients(u, v, dx, dy):

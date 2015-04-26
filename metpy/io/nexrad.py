@@ -1545,7 +1545,7 @@ class Level3File(object):
         self._buffer = IOBuffer.fromfile(open(fname, 'rb'))
 
         # Pop off the WMO header if we find it
-        self._process_WMO_header()
+        self._process_wmo_header()
 
         # Pop off last 4 bytes if necessary
         self._process_end_bytes()
@@ -1557,7 +1557,7 @@ class Level3File(object):
 
         # Decompress the data if necessary, and if so, pop off new header
         self._buffer = IOBuffer(self._buffer.read_func(zlib_decompress_all_frames))
-        self._process_WMO_header()
+        self._process_wmo_header()
 
         # Check for empty product
         if len(self._buffer) == 0:
@@ -1660,7 +1660,7 @@ class Level3File(object):
             warnings.warn("{}: Using default metadata for product {}".format(
                 self.filename, self.header.code))
 
-    def _process_WMO_header(self):
+    def _process_wmo_header(self):
         # Read off the WMO header if necessary
         data = self._buffer.get_next(64).decode('utf-8', 'ignore')
         match = self.wmo_finder.search(data)
@@ -1683,8 +1683,8 @@ class Level3File(object):
             unpacked.extend([val] * num)
         return unpacked
 
-    def pos_scale(self, isSymBlock):
-        return 0.25 if isSymBlock else 1
+    def pos_scale(self, is_sym_block):
+        return 0.25 if is_sym_block else 1
 
     def _unpack_rcm(self, start, offset):
         self._buffer.jump_to(start, offset)
@@ -1758,12 +1758,12 @@ class Level3File(object):
                 self._buffer.skip(num_bytes)
         self.graph_pages = [packets]
 
-    def _unpack_tabblock(self, start, offset, haveHeader=True):
+    def _unpack_tabblock(self, start, offset, have_header=True):
         self._buffer.jump_to(start, offset)
         block_start = self._buffer.set_mark()
 
         # Read the header and validate if needed
-        if haveHeader:
+        if have_header:
             header = self._buffer.read_struct(self.tab_header_fmt)
             assert header.divider == -1
             assert header.block_id == 3
@@ -1787,7 +1787,7 @@ class Level3File(object):
                 num_chars = self._buffer.read_int('>h')
             self.tab_pages.append('\n'.join(lines))
 
-        if haveHeader:
+        if have_header:
             assert self._buffer.offset_from(block_start) == header.block_len
 
     def __repr__(self):
@@ -1796,7 +1796,7 @@ class Level3File(object):
                                                self.height)]
         return self.filename + ': ' + '\n'.join(map(str, items))
 
-    def _unpack_packet_radial_data(self, code, inSymBlock):
+    def _unpack_packet_radial_data(self, code, in_sym_block):
         hdr_fmt = NamedStruct([('ind_first_bin', 'H'), ('nbins', 'H'),
                                ('i_center', 'h'), ('j_center', 'h'),
                                ('scale_factor', 'h'), ('num_rad', 'H')],
@@ -1814,11 +1814,11 @@ class Level3File(object):
                              self._buffer.read_binary(2 * rad.num_hwords))))
         start, end, vals = zip(*rads)
         return dict(start_az=list(start), end_az=list(end), data=list(vals),
-                    center=(hdr.i_center * self.pos_scale(inSymBlock),
-                            hdr.j_center * self.pos_scale(inSymBlock)),
+                    center=(hdr.i_center * self.pos_scale(in_sym_block),
+                            hdr.j_center * self.pos_scale(in_sym_block)),
                     gate_scale=hdr.scale_factor * 0.001, first=hdr.ind_first_bin)
 
-    def _unpack_packet_digital_radial(self, code, inSymBlock):
+    def _unpack_packet_digital_radial(self, code, in_sym_block):
         hdr_fmt = NamedStruct([('ind_first_bin', 'H'), ('nbins', 'H'),
                                ('i_center', 'h'), ('j_center', 'h'),
                                ('scale_factor', 'h'), ('num_rad', 'H')],
@@ -1834,11 +1834,11 @@ class Level3File(object):
             rads.append((start_az, end_az, self._buffer.read_binary(rad.num_bytes)))
         start, end, vals = zip(*rads)
         return dict(start_az=list(start), end_az=list(end), data=list(vals),
-                    center=(hdr.i_center * self.pos_scale(inSymBlock),
-                            hdr.j_center * self.pos_scale(inSymBlock)),
+                    center=(hdr.i_center * self.pos_scale(in_sym_block),
+                            hdr.j_center * self.pos_scale(in_sym_block)),
                     gate_scale=hdr.scale_factor * 0.001, first=hdr.ind_first_bin)
 
-    def _unpack_packet_raster_data(self, code, inSymBlock):
+    def _unpack_packet_raster_data(self, code, in_sym_block):
         hdr_fmt = NamedStruct([('code', 'L'),
                                ('i_start', 'h'), ('j_start', 'h'),  # start in km/4
                                ('xscale_int', 'h'), ('xscale_frac', 'h'),
@@ -1854,7 +1854,7 @@ class Level3File(object):
         return dict(start_x=hdr.i_start * hdr.xscale_int,
                     start_y=hdr.j_start * hdr.yscale_int, data=rows)
 
-    def _unpack_packet_uniform_text(self, code, inSymBlock):
+    def _unpack_packet_uniform_text(self, code, in_sym_block):
         # By not using a struct, we can handle multiple codes
         num_bytes = self._buffer.read_int('>H')
         if code == 8:
@@ -1868,11 +1868,11 @@ class Level3File(object):
 
         # Text is what remains beyond what's been read, not including byte count
         text = ''.join(self._buffer.read_ascii(num_bytes - read_bytes))
-        return dict(x=i_start * self.pos_scale(inSymBlock),
-                    y=j_start * self.pos_scale(inSymBlock), color=value, text=text)
+        return dict(x=i_start * self.pos_scale(in_sym_block),
+                    y=j_start * self.pos_scale(in_sym_block), color=value, text=text)
 
-    def _unpack_packet_special_text_symbol(self, code, inSymBlock):
-        d = self._unpack_packet_uniform_text(code, inSymBlock)
+    def _unpack_packet_special_text_symbol(self, code, in_sym_block):
+        d = self._unpack_packet_uniform_text(code, in_sym_block)
 
         # Translate special characters to their meaning
         ret = dict()
@@ -1893,7 +1893,7 @@ class Level3File(object):
 
         return ret
 
-    def _unpack_packet_special_graphic_symbol(self, code, inSymBlock):
+    def _unpack_packet_special_graphic_symbol(self, code, in_sym_block):
         type_map = {3: 'Mesocyclone', 11: '3D Correlated Shear', 12: 'TVS',
                     26: 'ETVS', 13: 'Positive Hail', 14: 'Probable Hail',
                     15: 'Storm ID', 19: 'HDA', 25: 'STI Circle'}
@@ -1905,7 +1905,7 @@ class Level3File(object):
         num_bytes = self._buffer.read_int('>H')
         packet_data_start = self._buffer.set_mark()
 
-        scale = self.pos_scale(inSymBlock)
+        scale = self.pos_scale(in_sym_block)
 
         # Loop over the bytes we have
         ret = defaultdict(list)
@@ -1954,7 +1954,7 @@ class Level3File(object):
 
         return ret
 
-    def _unpack_packet_scit(self, code, inSymBlock):
+    def _unpack_packet_scit(self, code, in_sym_block):
         num_bytes = self._buffer.read_int('>H')
         packet_data_start = self._buffer.set_mark()
         ret = defaultdict(list)
@@ -1966,7 +1966,7 @@ class Level3File(object):
                 self._buffer.jump_to(packet_data_start, num_bytes)
                 return ret
             else:
-                next_packet = self.packet_map[next_code](self, next_code, inSymBlock)
+                next_packet = self.packet_map[next_code](self, next_code, in_sym_block)
                 if next_code == 6:
                     ret['track'].append(next_packet['vectors'])
                 elif next_code == 25:
@@ -1980,7 +1980,7 @@ class Level3File(object):
         reduce_lists(ret)
         return ret
 
-    def _unpack_packet_digital_precipitation(self, code, inSymBlock):
+    def _unpack_packet_digital_precipitation(self, code, in_sym_block):
         # Read off a couple of unused spares
         self._buffer.read_int('>H')
         self._buffer.read_int('>H')
@@ -2005,42 +2005,42 @@ class Level3File(object):
 
         return dict(data=rows)
 
-    def _unpack_packet_linked_vector(self, code, inSymBlock):
+    def _unpack_packet_linked_vector(self, code, in_sym_block):
         num_bytes = self._buffer.read_int('>h')
         if code == 9:
             value = self._buffer.read_int('>h')
             num_bytes -= 2
         else:
             value = None
-        scale = self.pos_scale(inSymBlock)
+        scale = self.pos_scale(in_sym_block)
         pos = [b * scale for b in self._buffer.read_binary(num_bytes / 2, '>h')]
         vectors = zip(pos[::2], pos[1::2])
         return dict(vectors=vectors, color=value)
 
-    def _unpack_packet_vector(self, code, inSymBlock):
+    def _unpack_packet_vector(self, code, in_sym_block):
         num_bytes = self._buffer.read_int('>h')
         if code == 10:
             value = self._buffer.read_int('>h')
             num_bytes -= 2
         else:
             value = None
-        scale = self.pos_scale(inSymBlock)
+        scale = self.pos_scale(in_sym_block)
         pos = [p * scale for p in self._buffer.read_binary(num_bytes / 2, '>h')]
         vectors = zip(pos[::4], pos[1::4], pos[2::4], pos[3::4])
         return dict(vectors=vectors, color=value)
 
-    def _unpack_packet_contour_color(self, code, inSymBlock):
+    def _unpack_packet_contour_color(self, code, in_sym_block):
         # Check for color value indicator
         assert self._buffer.read_int('>H') == 0x0002
 
         # Read and return value (level) of contour
         return dict(color=self._buffer.read_int('>H'))
 
-    def _unpack_packet_linked_contour(self, code, inSymBlock):
+    def _unpack_packet_linked_contour(self, code, in_sym_block):
         # Check for initial point indicator
         assert self._buffer.read_int('>H') == 0x8000
 
-        scale = self.pos_scale(inSymBlock)
+        scale = self.pos_scale(in_sym_block)
         startx = self._buffer.read_int('>h') * scale
         starty = self._buffer.read_int('>h') * scale
         vectors = [(startx, starty)]
@@ -2049,7 +2049,7 @@ class Level3File(object):
         vectors.extend(zip(pos[::2], pos[1::2]))
         return dict(vectors=vectors)
 
-    def _unpack_packet_wind_barbs(self, code, inSymBlock):
+    def _unpack_packet_wind_barbs(self, code, in_sym_block):
         # Figure out how much to read
         num_bytes = self._buffer.read_int('>h')
         packet_data_start = self._buffer.set_mark()
@@ -2058,13 +2058,13 @@ class Level3File(object):
         # Read while we have data, then return
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             ret['color'].append(self._buffer.read_int('>h'))
-            ret['x'].append(self._buffer.read_int('>h') * self.pos_scale(inSymBlock))
-            ret['y'].append(self._buffer.read_int('>h') * self.pos_scale(inSymBlock))
+            ret['x'].append(self._buffer.read_int('>h') * self.pos_scale(in_sym_block))
+            ret['y'].append(self._buffer.read_int('>h') * self.pos_scale(in_sym_block))
             ret['direc'].append(self._buffer.read_int('>h'))
             ret['speed'].append(self._buffer.read_int('>h'))
         return ret
 
-    def _unpack_packet_generic(self, code, inSymBlock):
+    def _unpack_packet_generic(self, code, in_sym_block):
         # Reserved HW
         assert self._buffer.read_int('>h') == 0
 
@@ -2073,11 +2073,11 @@ class Level3File(object):
         data = ''.join(self._buffer.read_ascii(num_bytes))
         return dict(xdrdata=data)
 
-    def _unpack_packet_trend_times(self, code, inSymBlock):
+    def _unpack_packet_trend_times(self, code, in_sym_block):
         self._buffer.read_int('>h')  # number of bytes, not needed to process
         return dict(times=self._read_trends())
 
-    def _unpack_packet_cell_trend(self, code, inSymBlock):
+    def _unpack_packet_cell_trend(self, code, in_sym_block):
         code_map = ['Cell Top', 'Cell Base', 'Max Reflectivity Height',
                     'Probability of Hail', 'Probability of Severe Hail',
                     'Cell-based VIL', 'Maximum Reflectivity',
@@ -2086,8 +2086,8 @@ class Level3File(object):
         num_bytes = self._buffer.read_int('>h')
         packet_data_start = self._buffer.set_mark()
         cell_id = ''.join(self._buffer.read_ascii(2))
-        x = self._buffer.read_int('>h') * self.pos_scale(inSymBlock)
-        y = self._buffer.read_int('>h') * self.pos_scale(inSymBlock)
+        x = self._buffer.read_int('>h') * self.pos_scale(in_sym_block)
+        y = self._buffer.read_int('>h') * self.pos_scale(in_sym_block)
         ret = dict(id=cell_id, x=x, y=y)
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             code = self._buffer.read_int('>h')
