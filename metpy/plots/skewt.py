@@ -101,6 +101,7 @@ class SkewXAxes(Axes):
         self.spines['right'].register_axis(self.yaxis)
 
     def _gen_axes_spines(self, locations=None, offset=0.0, units='inches'):
+        # pylint: disable=unused-argument
         spines = {'top': SkewSpine.linear_spine(self, 'top'),
                   'bottom': mspines.Spine.linear_spine(self, 'bottom'),
                   'left': mspines.Spine.linear_spine(self, 'left'),
