@@ -37,6 +37,10 @@ MetPy
     :target: https://coveralls.io/r/metpy/MetPy
     :alt: Coveralls Coverage Status
 
+.. image:: https://landscape.io/github/metpy/MetPy/master/landscape.svg?style=flat
+    :target: https://landscape.io/github/metpy/MetPy/master
+    :alt: Code Health
+
 .. image:: https://readthedocs.org/projects/pip/badge/?version=latest
     :target: http://metpy.readthedocs.org/en/latest/
     :alt: Latest Doc Build Status
