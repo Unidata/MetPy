@@ -1,0 +1,11 @@
+ignore-paths:
+  - doc
+  - build
+  - versioneer.py
+  - metpy/_version.py
+# Until the SyntaxError this causes with PyLint is fixed
+  - metpy/io/nexrad.py
+
+pep8:
+  options:
+    max-line-length: 95
