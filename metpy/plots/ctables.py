@@ -2285,7 +2285,7 @@ def cmap_map(function, cmap):
     Example usage:
     light_jet = cmap_map(lambda x: x/2+0.5, cm.jet)
     '''
-    cdict = cmap._segmentdata
+    cdict = cmap._segmentdata  # pylint: disable=protected-access
     step_dict = {}
     # Firt get the list of points where the segments start or end
     for key in ('red', 'green', 'blue'):

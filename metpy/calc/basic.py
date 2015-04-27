@@ -621,7 +621,7 @@ def v_vorticity(u, v, dx, dy):
     h_convergence, convergence_vorticity
     '''
 
-    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
     return dvdx - dudy
 
 
@@ -651,7 +651,7 @@ def h_convergence(u, v, dx, dy):
     v_vorticity, convergence_vorticity
     '''
 
-    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy
 
 
