@@ -13,4 +13,4 @@ build/*
 *.egg-info
 MANIFEST
 
-doc/build/
+docs/build/
