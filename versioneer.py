@@ -896,6 +896,7 @@ class cmd_version(Command):
 class cmd_build_py(_build_py):
     def run(self):
         versions = get_versions(verbose=True)
+        _build_py.run(self)
         # now locate _version.py in the new build/ directory and replace it
         # with an updated value
         if versionfile_build:
@@ -1051,6 +1052,7 @@ def get_cmdclass():
     cmds = {'version': cmd_version,
             'versioneer': cmd_update_files,
             'build': cmd_build,
+            'build_py': cmd_build_py,
             'sdist': cmd_sdist,
             }
     if 'cx_Freeze' in sys.modules:  # cx_freeze enabled?
