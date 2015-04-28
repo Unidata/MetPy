@@ -38,6 +38,7 @@ extensions = [
     'sphinxcontrib.napoleon',
 ]
 
+mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 #autosummary_generate = True
 
 # Add any paths that contain templates here, relative to this directory.
