@@ -1,13 +1,17 @@
-from matplotlib.axes import Axes
+import numpy as np
 import matplotlib.transforms as transforms
 import matplotlib.axis as maxis
 import matplotlib.spines as mspines
+from matplotlib.axes import Axes
 from matplotlib.projections import register_projection
 from matplotlib.ticker import ScalarFormatter, MultipleLocator
 from matplotlib.collections import LineCollection
-from metpy.calc.basic import dry_lapse, moist_lapse, dewpoint, vapor_pressure
+from ..calc import dry_lapse, moist_lapse, dewpoint, vapor_pressure
 from scipy.constants import C2K, K2C
-import numpy as np
+
+from ..package_tools import Exporter
+
+exporter = Exporter(globals())
 
 
 # The sole purpose of this class is to look at the upper, lower, or total
@@ -140,6 +144,7 @@ class SkewXAxes(Axes):
 register_projection(SkewXAxes)
 
 
+@exporter.export
 class SkewT(object):
     '''
     Creates SkewT - logP plots.
@@ -240,6 +245,3 @@ class SkewT(object):
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.8)
         self.ax.add_collection(LineCollection(linedata, **kwargs))
-
-
-__all__ = ['SkewT']

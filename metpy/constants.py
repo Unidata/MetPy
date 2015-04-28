@@ -78,59 +78,50 @@ Temperature Conversion Functions
    C2K
    K2C
 '''
-from scipy.constants import pi, day, value, kilo, g
-from scipy.constants import C2F, F2C, K2F, F2K, C2K, K2C
+from scipy.constants import pi, day, value, kilo
+from .package_tools import Exporter
 
-__all__ = ['C2F', 'C2K', 'F2K', 'K2C', 'K2F', 'F2C', 'Re', 'earth_avg_radius',
-           'g', 'earth_gravity', 'omega', 'earth_avg_angular_vel',
-           'd', 'earth_sfc_avg_dist_sun', 'S', 'earth_solar_irradiance',
-           'Mw', 'water_molecular_weight', 'Rv', 'water_gas_constant',
-           'rho_l', 'density_water', 'Cp_v', 'wv_specific_heat_press',
-           'Cv_v', 'wv_specific_heat_vol', 'Cp_l', 'water_specific_heat',
-           'Lv', 'water_heat_vaporization', 'Lf', 'water_heat_fusion',
-           'Cp_i', 'ice_specific_heat', 'rho_i', 'density_ice',
-           'Md', 'dry_air_molecular_weight', 'Rd', 'dry_air_gas_constant',
-           'Cp_d', 'dry_air_spec_heat_press', 'Cv_d', 'dry_air_spec_heat_vol',
-           'rho_d', 'dry_air_density_stp', 'P0', 'pot_temp_ref_press',
-           'kappa', 'poisson_exponent', 'gamma_d', 'dry_adiabatic_lapse_rate',
-           'epsilon', 'molecular_weight_ratio', 'delta',
-           'earth_max_declination', 'earth_orbit_eccentricity']
+exporter = Exporter(globals())
 
 R = value('molar gas constant')
 del value
 
-# Earth
-earth_gravity = g
-Re = earth_avg_radius = 6.37e6  # m
-omega = earth_avg_angular_vel = 2 * pi / day  # rad s^-1
-d = earth_sfc_avg_dist_sun = 1.496e11  # m
-S = earth_solar_irradiance = 1.368e3  # W m^-2
-delta = earth_max_declination = 23.45  # degrees
-earth_orbit_eccentricity = 0.0167
+# Export all the variables defined in this block
+with exporter:
+    from scipy.constants import C2F, F2C, K2F, F2K, C2K, K2C, g  # noqa
 
-# Water
-Mw = water_molecular_weight = 18.016  # g / mol
-Rv = water_gas_constant = R / Mw * kilo  # J K^-1 kg^-1
-rho_l = density_water = 1e3  # Nominal density of liquid water at 0C in kg m^-3
-Cp_v = wv_specific_heat_press = 1952.  # J K^-1 kg^-1
-Cv_v = wv_specific_heat_vol = 1463.  # J K^-1 kg^-1
-Cp_l = water_specific_heat = 4218.  # at 0C J K^-1 kg^-1
-Lv = water_heat_vaporization = 2.5e6  # 0C J kg^-1
-Lf = water_heat_fusion = 3.34e5  # 0C J kg^-1
-Cp_i = ice_specific_heat = 2106  # at 0C J K^-1 kg^-1
-rho_i = density_ice = 917  # at 0C in kg m^-3
+    # Earth
+    earth_gravity = g
+    Re = earth_avg_radius = 6.37e6  # m
+    omega = earth_avg_angular_vel = 2 * pi / day  # rad s^-1
+    d = earth_sfc_avg_dist_sun = 1.496e11  # m
+    S = earth_solar_irradiance = 1.368e3  # W m^-2
+    delta = earth_max_declination = 23.45  # degrees
+    earth_orbit_eccentricity = 0.0167
 
-# Dry air
-Md = dry_air_molecular_weight = 28.97  # g / mol at the sfc
-Rd = dry_air_gas_constant = R / Md * kilo  # J K^-1 kg^-1
-Cp_d = dry_air_spec_heat_press = 1004.  # J K^-1 kg^-1
-Cv_d = dry_air_spec_heat_vol = 717.  # J K^-1 kg^-1
-rho_d = dry_air_density_stp = 1.275  # at 0C 1000mb in kg m^-3
+    # Water
+    Mw = water_molecular_weight = 18.016  # g / mol
+    Rv = water_gas_constant = R / Mw * kilo  # J K^-1 kg^-1
+    rho_l = density_water = 1e3  # Nominal density of liquid water at 0C in kg m^-3
+    Cp_v = wv_specific_heat_press = 1952.  # J K^-1 kg^-1
+    Cv_v = wv_specific_heat_vol = 1463.  # J K^-1 kg^-1
+    Cp_l = water_specific_heat = 4218.  # at 0C J K^-1 kg^-1
+    Lv = water_heat_vaporization = 2.5e6  # 0C J kg^-1
+    Lf = water_heat_fusion = 3.34e5  # 0C J kg^-1
+    Cp_i = ice_specific_heat = 2106  # at 0C J K^-1 kg^-1
+    rho_i = density_ice = 917  # at 0C in kg m^-3
 
-# General meteorology constants
-P0 = pot_temp_ref_press = 100000.  # Pa
-kappa = poisson_exponent = Rd / Cp_d
-gamma_d = dry_adiabatic_lapse_rate = g / Cp_d * kilo  # K km^-1
-epsilon = molecular_weight_ratio = Mw / Md
+    # Dry air
+    Md = dry_air_molecular_weight = 28.97  # g / mol at the sfc
+    Rd = dry_air_gas_constant = R / Md * kilo  # J K^-1 kg^-1
+    Cp_d = dry_air_spec_heat_press = 1004.  # J K^-1 kg^-1
+    Cv_d = dry_air_spec_heat_vol = 717.  # J K^-1 kg^-1
+    rho_d = dry_air_density_stp = 1.275  # at 0C 1000mb in kg m^-3
+
+    # General meteorology constants
+    P0 = pot_temp_ref_press = 100000.  # Pa
+    kappa = poisson_exponent = Rd / Cp_d
+    gamma_d = dry_adiabatic_lapse_rate = g / Cp_d * kilo  # K km^-1
+    epsilon = molecular_weight_ratio = Mw / Md
 
 del pi, day, R, kilo

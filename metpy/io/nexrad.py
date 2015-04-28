@@ -11,9 +11,10 @@ from struct import Struct
 
 import numpy as np
 from scipy.constants import day, milli
-from metpy.cbook import is_string_like
+from ..cbook import is_string_like
+from ..package_tools import Exporter
 
-__all__ = ['Level2File', 'Level3File', 'is_precip_mode']
+exporter = Exporter(globals())
 
 
 class NamedStruct(Struct):
@@ -297,6 +298,7 @@ LAST_ELEVATION = 0x10
 BAD_DATA = 0x20
 
 
+@exporter.export
 class Level2File(object):
     # Number of bytes
     AR2_BLOCKSIZE = 2432  # 12 (CTM) + 2416 (Msg hdr + data) + 4 (FCS)
@@ -1030,6 +1032,7 @@ class LegacyMapper(DataMapper):
         self.lut = np.array(self.lut)
 
 
+@exporter.export
 class Level3File(object):
     ij_to_km = 0.25
     wmo_finder = re.compile('((?:NX|SD|NO)US)\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
@@ -2148,5 +2151,6 @@ class Level3File(object):
                   0xba07: _unpack_packet_raster_data}
 
 
+@exporter.export
 def is_precip_mode(vcp_num):
     return vcp_num // 10 == 3
