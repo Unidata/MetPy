@@ -287,7 +287,8 @@ import re
 import subprocess
 import sys
 from distutils.command.build import build as _build
-from distutils.command.sdist import sdist as _sdist
+from setuptools.command.build_py import build_py as _build_py
+from setuptools.command.sdist import sdist as _sdist
 from distutils.core import Command
 
 # these configuration settings will be overridden by setup.py after it
@@ -891,6 +892,19 @@ class cmd_version(Command):
         ver = get_version(verbose=True)
         print("Version is currently: %s" % ver)
 
+
+class cmd_build_py(_build_py):
+    def run(self):
+        versions = get_versions(verbose=True)
+        # now locate _version.py in the new build/ directory and replace it
+        # with an updated value
+        if versionfile_build:
+            target_versionfile = os.path.join(self.build_lib,
+                                              versionfile_build)
+            print("UPDATING %s" % target_versionfile)
+            os.unlink(target_versionfile)
+            with open(target_versionfile, "w") as f:
+                f.write(SHORT_VERSION_PY % versions)
 
 class cmd_build(_build):
     def run(self):
