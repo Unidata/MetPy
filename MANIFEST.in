@@ -3,3 +3,5 @@ include LICENSE
 include CONTRIBUTING.md
 include versioneer.py
 include metpy/_version.py
+recursive-include examples *
+recursive-include docs *
