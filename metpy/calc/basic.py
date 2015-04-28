@@ -176,9 +176,9 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
     -----
     This function is implemented using an iterative approach to solve for the
     LCL. The basic algorithm is:
-       1. Find the dew point from the LCL pressure and starting mixing ratio
-       2. Find the LCL pressure from the starting temperature and dewpoint
-       3. Iterate until convergence
+    1. Find the dew point from the LCL pressure and starting mixing ratio
+    2. Find the LCL pressure from the starting temperature and dewpoint
+    3. Iterate until convergence
 
     The function is guaranteed to finish by virtue of the `maxIters` counter.
     '''
@@ -288,13 +288,13 @@ def saturation_vapor_pressure(temperature):
     Instead of temperature, dewpoint may be used in order to calculate
     the actual (ambient) water vapor (partial) pressure.
 
-    The formula used is that from Bolton 1980 [1] for T in degrees Celsius:
+    The formula used is that from Bolton 1980 [2] for T in degrees Celsius:
 
     .. math:: 6.112 e^\frac{17.67T}{T + 243.5}
 
     References
     ----------
-    .. [1] Bolton, D., 1980: The Computation of Equivalent Potential
+    .. [2] Bolton, D., 1980: The Computation of Equivalent Potential
            Temperature. Mon. Wea. Rev., 108, 1046-1053.
     '''
 
@@ -347,7 +347,7 @@ def dewpoint(e):
 
     Notes
     -----
-    This function inverts the Bolton 1980 [1] formula for saturation vapor
+    This function inverts the Bolton 1980 [3] formula for saturation vapor
     pressure to instead calculate the temperature. This yield the following
     formula for dewpoint in degrees Celsius:
 
@@ -355,7 +355,7 @@ def dewpoint(e):
 
     References
     ----------
-    .. [1] Bolton, D., 1980: The Computation of Equivalent Potential
+    .. [3] Bolton, D., 1980: The Computation of Equivalent Potential
            Temperature. Mon. Wea. Rev., 108, 1046-1053.
     '''
 
@@ -517,7 +517,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
     References
     ----------
-    .. [1] http://www.ofcm.gov/jagti/r19-ti-plan/pdf/03_chap3.pdf
+    .. [4] http://www.ofcm.gov/jagti/r19-ti-plan/pdf/03_chap3.pdf
     '''
 
     # Correct for lower height measurement of winds if necessary
@@ -546,7 +546,7 @@ def heat_index(temperature, rh, mask_undefined=True):
     r'''Calculate the Heat Index from the current temperature and relative
     humidity.
 
-    The implementation uses the formula outlined in [2].
+    The implementation uses the formula outlined in [6].
 
     Parameters
     ----------
@@ -572,11 +572,11 @@ def heat_index(temperature, rh, mask_undefined=True):
 
     References
     ----------
-    .. [1] Steadman, R.G., 1979: The assessment of sultriness. Part I: A
+    .. [5] Steadman, R.G., 1979: The assessment of sultriness. Part I: A
            temperature-humidity index based on human physiology and clothing
            science. J. Appl. Meteor., 18, 861-873.
 
-    .. [2] http://www.srh.noaa.gov/ffc/html/studies/ta_htindx.PDF
+    .. [6] http://www.srh.noaa.gov/ffc/html/studies/ta_htindx.PDF
 
     '''
 
