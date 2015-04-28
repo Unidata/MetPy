@@ -6,6 +6,7 @@ SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = build
+NBCONVERT     = ipython nbconvert
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
@@ -48,6 +49,14 @@ help:
 
 clean:
 	rm -rf $(BUILDDIR)/*
+
+all: scripts examples html
+
+scripts:
+	cd ../examples/scripts && $(NBCONVERT)
+
+examples:
+	cd source/examples/generated && $(NBCONVERT)
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
