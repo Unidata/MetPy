@@ -1,6 +1,6 @@
 c = get_config()
 
-#Export all the notebooks in the current directory to the sphinx_howto format.
+# Output all example notebooks as Python scripts
 c.NbConvertApp.notebooks = ['../notebooks/*.ipynb']
 c.NbConvertApp.export_format = 'python'
 c.Exporter.template_file = 'python-scripts'
