@@ -37,6 +37,7 @@ setup(
 
     install_requires=['matplotlib>=1.4', 'numpy>=1.8', 'scipy>=0.14'],
     extras_require={
+        'dev': ['ipython[all]>=3.0'],
         'doc': ['sphinxcontrib-napoleon'],
         'test': ['nosetest']
     },
