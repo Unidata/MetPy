@@ -18,8 +18,29 @@ class TestPotentialTemperature(TestCase):
 
 
 class TestDryLapse(TestCase):
+    def test_array(self):
+        levels = np.array([1000, 900, 864.89])
+        temps = dry_lapse(levels, 303.15)
+        assert_array_almost_equal(temps, np.array([303.15, 294.16, 290.83]), 2)
+
     def test_scalar(self):
         assert_almost_equal(dry_lapse(500, 293), 240.3341, 4)
+
+
+class TestMoistLapse(TestCase):
+    def test_array(self):
+        temp = moist_lapse(np.array([1000, 800, 600, 500, 400]), 293)
+        true_temp = np.array([293, 284.64, 272.8, 264.4, 252.87])
+        assert_array_almost_equal(temp, true_temp, 2)
+
+
+class TestParcelProfile(TestCase):
+    def test_basic(self):
+        levels = np.array([1000., 900., 800., 700., 600., 500., 400.])
+        true_prof = np.array([303.15, 294.16, 288.02, 283.06, 277.04, 269.38, 258.93])
+
+        prof = parcel_profile(levels, C2K(30.), C2K(20.))
+        assert_array_almost_equal(prof, true_prof, 2)
 
 
 class TestSatVaporPressure(TestCase):
