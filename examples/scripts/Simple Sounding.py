@@ -1,7 +1,6 @@
 # coding: utf-8
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.constants import C2K, K2C
 
 from metpy.calc import get_wind_components
 from metpy.plots import SkewT
@@ -9,7 +8,7 @@ from metpy.plots import SkewT
 # Parse the data
 p, T, Td, direc, spd = np.loadtxt('../testdata/sounding_data.txt',
         usecols=(0, 2, 3, 6, 7), unpack=True)
-u,v = get_wind_components(spd, direc)
+u, v = get_wind_components(spd, direc)
 
 # Create a new figure. The dimensions here give a good aspect ratio
 fig = plt.figure(figsize=(9, 9))
