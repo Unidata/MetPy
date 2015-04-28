@@ -1,6 +1,3 @@
-#!/usr/bin/python
-from . import skewt
-
 from .skewt import *  # noqa
-
-__all__ = skewt.__all__
+__all__ = []
+__all__.extend(skewt.__all__)
