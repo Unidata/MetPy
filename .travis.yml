@@ -15,6 +15,9 @@ matrix:
       env: DEPENDS="numpy=1.8.0 matplotlib=1.4.0 scipy=0.13.3"
     - python: 2.7
       env: LINT=true
+    # Docs built on 2.7 because that's what readthedocs uses
+    - python: 2.7
+      env: DOCBUILD=true
     - python: 3.3
     - python: 3.4
       env: NOSE_WITH_COVERAGE=y NOSE_COVER_PACKAGE=metpy
@@ -26,8 +29,6 @@ before_install:
   - chmod +x miniconda.sh
   - ./miniconda.sh -b
   - export PATH=${HOME}/miniconda/bin:$PATH
-
-install:
   - conda create --yes -n travis python=$TRAVIS_PYTHON_VERSION scipy numpy matplotlib nose flake8
   - source activate travis
   - if [[ $LINT == true ]]; then
@@ -36,11 +37,21 @@ install:
   - if [[ $NOSE_WITH_COVERAGE == y ]]; then
       pip install coveralls;
     fi
+  # Stuck on sphinx 1.2 until readthedocs upgrades
+  - if [[ $DOCBUILD == true ]]; then
+      conda install --yes sphinx=1.2;
+      pip install sphinxcontrib-napoleon;
+    fi
+
+install:
   - python setup.py install
 
 script:
   - if [[ $LINT == true ]]; then
       flake8 metpy;
+    elif [[ $DOCBUILD == true ]]; then
+      cd docs;
+      make html;
     else
       nosetests;
     fi
