@@ -11,3 +11,4 @@ Calculations
    basic
    kinematics
    thermo
+   turbulence
