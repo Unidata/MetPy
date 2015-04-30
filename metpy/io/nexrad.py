@@ -2157,4 +2157,4 @@ class Level3File(object):
 
 @exporter.export
 def is_precip_mode(vcp_num):
-    return vcp_num // 10 == 3
+    return not vcp_num // 10 == 3
