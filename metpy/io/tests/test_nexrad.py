@@ -8,7 +8,7 @@ datadir = os.path.join(curdir, '../../../examples/testdata')
 
 class TestLevel3(TestCase):
     def test_basic(self):
-        Level3File(os.path.join(datadir, 'Level3_FFC_N0Q_20140407_1805.nids'))
+        Level3File(os.path.join(datadir, 'nids/Level3_FFC_N0Q_20140407_1805.nids'))
 
 
 class TestLevel2(TestCase):
