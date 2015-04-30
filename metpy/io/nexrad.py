@@ -6,8 +6,9 @@ import re
 import struct
 import warnings
 import zlib
-from collections import defaultdict, namedtuple
+from collections import defaultdict, namedtuple, OrderedDict
 from struct import Struct
+from xdrlib import Unpacker
 
 import numpy as np
 from scipy.constants import day, milli
@@ -2080,9 +2081,8 @@ class Level3File(object):
         # Read number of bytes (2 HW) and return
         num_bytes = self._buffer.read_int('>l')
         hunk = self._buffer.read(num_bytes)
-        warnings.warn('{0}: Generic packet XDR parsing not yet implemented.'.format(
-            self.filename))
-        return dict(xdrdata=hunk)
+        xdrparser = Level3XDRParser(hunk)
+        return xdrparser(code)
 
     def _unpack_packet_trend_times(self, code, in_sym_block):
         self._buffer.read_int('>h')  # number of bytes, not needed to process
@@ -2153,11 +2153,157 @@ class Level3File(object):
                   25: _unpack_packet_special_graphic_symbol,
                   26: _unpack_packet_special_graphic_symbol,
                   28: _unpack_packet_generic,
-                  # 29: _unpack_packet_generic,
+                  29: _unpack_packet_generic,
                   0x0802: _unpack_packet_contour_color,
                   0x0E03: _unpack_packet_linked_contour,
                   0xaf1f: _unpack_packet_radial_data,
                   0xba07: _unpack_packet_raster_data}
+
+
+class Level3XDRParser(Unpacker):
+    def __call__(self, code):
+        xdr = OrderedDict()
+
+        if code == 28:
+            xdr.update(self._unpack_prod_desc())
+        else:
+            warnings.warn('XDR: code {0} not implemented'.format(code))
+
+        # Check that we got it all
+        self.done()
+        return xdr
+
+    def unpack_string(self):
+        return Unpacker.unpack_string(self).decode('ascii')
+
+    def _unpack_prod_desc(self):
+        xdr = OrderedDict()
+
+        # NOTE: The ICD (262001U) incorrectly lists op-mode, vcp, el_num, and
+        # spare as int*2. Changing to int*4 makes things parse correctly.
+        xdr['name'] = self.unpack_string()
+        xdr['description'] = self.unpack_string()
+        xdr['code'] = self.unpack_int()
+        xdr['type'] = self.unpack_int()
+        xdr['prod_time'] = self.unpack_uint()
+        xdr['radar_name'] = self.unpack_string()
+        xdr['latitude'] = self.unpack_float()
+        xdr['longitude'] = self.unpack_float()
+        xdr['height'] = self.unpack_float()
+        xdr['vol_time'] = self.unpack_uint()
+        xdr['el_time'] = self.unpack_uint()
+        xdr['el_angle'] = self.unpack_float()
+        xdr['vol_num'] = self.unpack_int()
+        xdr['op_mode'] = self.unpack_int()
+        xdr['vcp_num'] = self.unpack_int()
+        xdr['el_num'] = self.unpack_int()
+        xdr['compression'] = self.unpack_int()
+        xdr['uncompressed_size'] = self.unpack_int()
+        xdr['parameters'] = self._unpack_parameters()
+        xdr['components'] = self._unpack_components()
+
+        return xdr
+
+    def _unpack_parameters(self):
+        num = self.unpack_int()
+
+        # ICD documents a "pointer" here, that seems to be garbage. Just read
+        # and use the number, starting the list immediately.
+        self.unpack_int()
+
+        if num == 0:
+            return None
+
+        ret = list()
+        for i in range(num):
+            ret.append((self.unpack_string(), self.unpack_string()))
+            if i < num - 1:
+                self.unpack_int()  # Another pointer for the 'list' ?
+
+        if num == 1:
+            ret = ret[0]
+
+        return ret
+
+    def _unpack_components(self):
+        num = self.unpack_int()
+
+        # ICD documents a "pointer" here, that seems to be garbage. Just read
+        # and use the number, starting the list immediately.
+        self.unpack_int()
+
+        ret = list()
+        for i in range(num):
+            try:
+                code = self.unpack_int()
+                ret.append(self._component_lookup[code](self))
+                if i < num - 1:
+                    self.unpack_int()  # Another pointer for the 'list' ?
+            except KeyError:
+                warnings.warn('Unknown XDR Component: {0}'.format(code))
+                break
+
+        if num == 1:
+            ret = ret[0]
+
+        return ret
+
+    radial_fmt = namedtuple('RadialComponent', ['description', 'gate_width',
+                                                'first_gate', 'parameters',
+                                                'radials'])
+    radial_data_fmt = namedtuple('RadialData', ['azimuth', 'elevation', 'width',
+                                                'num_bins', 'attributes',
+                                                'data'])
+
+    def _unpack_radial(self):
+        ret = self.radial_fmt(description=self.unpack_string(),
+                              gate_width=self.unpack_float(),
+                              first_gate=self.unpack_float(),
+                              parameters=self._unpack_parameters(),
+                              radials=None)
+        num_rads = self.unpack_int()
+        rads = list()
+        for i in range(num_rads):
+            # ICD is wrong, says num_bins is float, should be int
+            rads.append(self.radial_data_fmt(azimuth=self.unpack_float(),
+                                             elevation=self.unpack_float(),
+                                             width=self.unpack_float(),
+                                             num_bins=self.unpack_int(),
+                                             attributes=self.unpack_string(),
+                                             data=self.unpack_array(self.unpack_int)))
+        return ret._replace(radials=rads)
+
+    text_fmt = namedtuple('TextComponent', ['parameters', 'text'])
+
+    def _unpack_text(self):
+        return self.text_fmt(parameters=self._unpack_parameters(),
+                             text=self.unpack_string())
+
+    _component_lookup = {1: _unpack_radial, 4: _unpack_text}
+
+
+# For debugging
+def hexdump(buf, num_bytes, offset=0, width=32):
+    ind = offset
+    end = offset + num_bytes
+    while ind < end:
+        chunk = buf[ind:ind + width]
+        actual_width = len(chunk)
+        hexfmt = '%02X'
+        blocksize = 4
+        blocks = [hexfmt * blocksize for i in range(actual_width // blocksize)]
+
+        # Need to get any partial lines
+        num_left = actual_width % blocksize
+        if num_left:
+            blocks += [hexfmt * num_left + '--' * (blocksize - num_left)]
+        blocks += ['--' * blocksize] * (width // blocksize - len(blocks))
+
+        hexoutput = ' '.join(blocks)
+        printable = tuple(chunk)
+        print(hexoutput % printable, str(ind).ljust(len(str(end))),
+              ''.join(chr(c) if 31 < c < 128 else '.' for c in chunk), sep='  ')
+        ind += width
 
 
 @exporter.export
