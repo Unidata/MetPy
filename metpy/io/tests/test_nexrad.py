@@ -23,4 +23,4 @@ class TestLevel3(TestCase):
 
 class TestLevel2(TestCase):
     def test_basic(self):
-        Level2File(os.path.join(datadir, 'KTLX20130520_190411_V06.gz'))
+        Level2File(os.path.join(datadir, 'KTLX20130520_201643_V06.gz'))
