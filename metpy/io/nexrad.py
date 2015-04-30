@@ -184,7 +184,7 @@ class IOBuffer(object):
         return res
 
     def read_ascii(self, num_bytes=None):
-        return str(self.read(num_bytes))
+        return self.read(num_bytes).decode('ascii')
 
     def read_binary(self, num, type='B'):
         if 'B' in type:
@@ -789,7 +789,7 @@ def float16(val):
 
 
 def float32(short1, short2):
-    return struct.unpack('>f', struct.pack('>hh', short1, short2))[0]
+    return struct.unpack('>f', struct.pack('>HH', short1, short2))[0]
 
 
 def date_elem(ind_days, ind_minutes):
@@ -816,7 +816,8 @@ def combine_elem(ind1, ind2):
 
 
 def float_elem(ind1, ind2):
-    return lambda seq: float32(seq[ind1], seq[ind2])
+    # Masking below in python will properly convert signed values to unsigned
+    return lambda seq: float32(seq[ind1] & 0xFFFF, seq[ind2] & 0xFFFF)
 
 
 def high_byte(ind):
@@ -1544,7 +1545,8 @@ class Level3File(object):
     def __init__(self, fname):
         # Just read in the entire set of data at once
         self.filename = fname
-        self._buffer = IOBuffer.fromfile(open(fname, 'rb'))
+        with open(fname, 'rb') as fobj:
+            self._buffer = IOBuffer.fromfile(fobj)
 
         # Pop off the WMO header if we find it
         self._process_wmo_header()
@@ -2072,8 +2074,10 @@ class Level3File(object):
 
         # Read number of bytes (2 HW) and return
         num_bytes = self._buffer.read_int('>l')
-        data = ''.join(self._buffer.read_ascii(num_bytes))
-        return dict(xdrdata=data)
+        hunk = self._buffer.read(num_bytes)
+        warnings.warn('{0}: Generic packet XDR parsing not yet implemented.'.format(
+            self.filename))
+        return dict(xdrdata=hunk)
 
     def _unpack_packet_trend_times(self, code, in_sym_block):
         self._buffer.read_int('>h')  # number of bytes, not needed to process
