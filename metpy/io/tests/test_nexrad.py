@@ -8,7 +8,7 @@ datadir = os.path.join(curdir, '../../../examples/testdata')
 
 
 def test_level3_generator():
-    for fname in glob.glob(os.path.join(datadir, 'nids', 'KOUN*')):
+    for fname in glob.glob(os.path.join(datadir, 'nids', 'K???_*')):
         yield read_level3_file, fname
 
 
