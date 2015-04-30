@@ -34,6 +34,42 @@ class TestGradients(TestCase):
         assert_array_equal(v, true_v)
 
 
+class TestVort(TestCase):
+    def test_basic(self):
+        'Simple test of only vorticity'
+        a = np.arange(3)
+        u = np.c_[a, a, a]
+        v = v_vorticity(u, u.T, 1, 1)
+        true_v = np.zeros_like(u)
+        assert_array_equal(v, true_v)
+
+    def test_basic3(self):
+        'Basic test of vorticity and divergence calculation'
+        a = np.arange(3)
+        u = np.c_[a, a, a]
+        v = v_vorticity(u, u, 1, 1)
+        true_v = np.ones_like(u)
+        assert_array_equal(v, true_v)
+
+
+class TestConv(TestCase):
+    def test_basic(self):
+        'Simple test of only vorticity'
+        a = np.arange(3)
+        u = np.c_[a, a, a]
+        c = h_convergence(u, u.T, 1, 1)
+        true_c = 2. * np.ones_like(u)
+        assert_array_equal(c, true_c)
+
+    def test_basic3(self):
+        'Basic test of vorticity and divergence calculation'
+        a = np.arange(3)
+        u = np.c_[a, a, a]
+        c = h_convergence(u, u, 1, 1)
+        true_c = np.ones_like(u)
+        assert_array_equal(c, true_c)
+
+
 class TestAdvection(TestCase):
     def test_basic(self):
         'Basic braindead test of advection'
@@ -85,5 +121,28 @@ class TestGeos(TestCase):
         ug, vg = geostrophic_wind(z, g, 100., 100.)
         true_u = np.array([[-1, 0, 1]] * 3)
         true_v = -true_u.T
+        assert_array_equal(ug, true_u)
+        assert_array_equal(vg, true_v)
+
+    def test_geopotential(self):
+        'Test of geostrophic wind calculation with geopotential'
+        z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100.
+        ug, vg = geostrophic_wind(z, 1, 100., 100., geopotential=True)
+        true_u = np.array([[-1, 0, 1]] * 3)
+        true_v = -true_u.T
+        assert_array_equal(ug, true_u)
+        assert_array_equal(vg, true_v)
+
+    def test_3d(self):
+        'Test of geostrophic wind calculation with 3D array'
+        z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100.
+        # Using g as the value for f allows it to cancel out
+        z3d = np.dstack((z, z))
+        ug, vg = geostrophic_wind(z3d, g, 100., 100.)
+        true_u = np.array([[-1, 0, 1]] * 3)
+        true_v = -true_u.T
+
+        true_u = np.dstack((true_u, true_u))
+        true_v = np.dstack((true_v, true_v))
         assert_array_equal(ug, true_u)
         assert_array_equal(vg, true_v)

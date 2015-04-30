@@ -7,10 +7,10 @@ from metpy.constants import F2C
 
 class TestWindComps(TestCase):
     def test_basic(self):
-        'Test the basic calculation.'
+        'Test the basic wind component calculation.'
         speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.])
         dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360])
-        s2 = np.sqrt(2)
+        s2 = np.sqrt(2.)
 
         u, v = get_wind_components(speed, dirs)
 
@@ -21,8 +21,28 @@ class TestWindComps(TestCase):
         assert_array_almost_equal(true_v, v, 4)
 
     def test_scalar(self):
+        'Test scalar wind components'
         comps = np.array(get_wind_components(8, 150))
         assert_array_almost_equal(comps, np.array([-4, 6.9282]), 3)
+
+
+class TestSpeedDir(TestCase):
+    def test_basic(self):
+        u = np.array([4., 2., 0., 0.])
+        v = np.array([0., 2., 4., 0.])
+
+        speed, direc = get_speed_dir(u, v)
+
+        s2 = np.sqrt(2.)
+        true_speed = np.array([4., 2 * s2, 4., 0.])
+        true_dir = np.array([90., 45., 0., 90.])
+
+        assert_array_almost_equal(true_speed, speed, 4)
+        assert_array_almost_equal(true_dir, direc, 4)
+
+    def test_scalar(self):
+        sd = get_speed_dir(-3., -4.)
+        assert_array_almost_equal(sd, np.array([5., 216.870]), 3)
 
 
 class TestWindChill(TestCase):
@@ -32,11 +52,11 @@ class TestWindChill(TestCase):
 
     def test_basic(self):
         'Test the basic wind chill calculation.'
-        temp = (np.array([40, -10, -45, 20]) - 32.) / 1.8
+        temp = F2C(np.array([40, -10, -45, 20]))
         speed = np.array([5, 55, 25, 15]) * .44704
 
         wc = windchill(temp, speed)
-        values = (np.array([36, -46, -84, 6]) - 32.) / 1.8
+        values = F2C(np.array([36, -46, -84, 6]))
         assert_array_almost_equal(wc, values, 0)
 
     def test_invalid(self):
@@ -56,6 +76,15 @@ class TestWindChill(TestCase):
         wc = windchill(temp, speed, mask_undefined=False)
         mask = np.array([False] * 6)
         assert_array_equal(wc.mask, mask)
+
+    def test_face_level(self):
+        'Tests using the face_level flag'
+        temp = F2C(np.array([20, 0, -20, -40]))
+        speed = np.array([15, 30, 45, 60]) * 0.44704
+
+        wc = windchill(temp, speed, face_level_winds=True)
+        values = F2C(np.array([3, -30, -64, -98]))
+        assert_array_almost_equal(wc, values, 0)
 
 
 class TestHeatIndex(TestCase):

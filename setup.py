@@ -34,6 +34,7 @@ setup(
     keywords='meteorology weather',
 
     packages=find_packages(exclude=['doc', 'examples']),
+    test_suite="nose.collector",
 
     install_requires=['matplotlib>=1.4', 'numpy>=1.8', 'scipy>=0.14'],
     extras_require={

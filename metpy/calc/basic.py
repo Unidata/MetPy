@@ -28,9 +28,9 @@ def get_speed_dir(u, v):
     '''
 
     speed = np.sqrt(u * u + v * v)
-    wdir = np.rad2deg(np.arctan2(-u, -v))
+    wdir = np.atleast_1d(90. - np.rad2deg(np.arctan2(v, u)))
     wdir[wdir < 0] += 360.
-    return speed, wdir
+    return speed, wdir.reshape(speed.shape)
 
 
 @exporter.export

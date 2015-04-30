@@ -136,7 +136,8 @@ def moist_lapse(pressure, temperature):
         rs = mixing_ratio(saturation_vapor_pressure(K2C(t)), p)
         return (1. / p) * ((Rd * t + Lv * rs) /
                            (Cp_d + (Lv * Lv * rs * epsilon / (Rd * t * t))))
-    return si.odeint(dt, temperature.squeeze(), pressure.squeeze()).T
+    return si.odeint(dt, np.atleast_1d(temperature).squeeze(),
+                     pressure.squeeze()).T.squeeze()
 
 
 @exporter.export
@@ -231,10 +232,11 @@ def parcel_profile(pressure, temperature, dewpt):
     press_lower = np.concatenate((pressure[pressure > l], l))
     t1 = dry_lapse(press_lower, temperature, pressure[0])
 
-    # Find moist pseudo-adiabatic; combine and return, making sure to
-    # elminate (duplicated) starting point
-    t2 = moist_lapse(pressure[pressure < l], t1[-1]).squeeze()
-    return np.concatenate((t1, t2[1:]))
+    # Find moist pseudo-adiabatic profile starting at the LCL
+    t2 = moist_lapse(np.concatenate((l, pressure[pressure < l])), t1[-1])
+
+    # Return LCL *without* the LCL point
+    return np.concatenate((t1[:-1], t2[1:]))
 
 
 @exporter.export
