@@ -1701,7 +1701,15 @@ class Level3File(object):
         self._buffer.jump_to(start, offset)
         header = self._buffer.read_ascii(10)
         assert header == '1234 ROBUU'
-        warnings.warn('{}: RCM decoding not supported.'.format(self.filename))
+        text_data = self._buffer.read_ascii()
+        end = 0
+        # Appendix B of ICD tells how to interpret this stuff, but that just
+        # doesn't seem worth it.
+        for marker, name in [('AA', 'ref'), ('BB', 'vad'), ('CC', 'remarks')]:
+            start = text_data.find('/NEXR' + marker, end)
+            # For part C the search for end fails, but returns -1, which works
+            end = text_data.find('/END' + marker, start)
+            setattr(self, 'rcm_' + name, text_data[start:end])
 
     def _unpack_symblock(self, start, offset):
         self._buffer.jump_to(start, offset)
