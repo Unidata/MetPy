@@ -25,8 +25,8 @@ skew.ax.set_xlim(-40, 60)
 
 # Calculate LCL height and plot as black dot
 l = lcl(p[0], C2K(T[0]), C2K(Td[0]))
-skew.plot(l, K2C(dry_lapse(l, C2K(T[0]), p[0])), 'ko',
-        markerfacecolor='black')
+lcl_temp = K2C(dry_lapse(np.array([p[0], l]), C2K(T[0])))[-1]
+skew.plot(l, lcl_temp, 'ko', markerfacecolor='black')
 
 # Calculate full parcel profile and add to plot as black line
 prof = K2C(parcel_profile(p, C2K(T[0]), C2K(Td[0])))
