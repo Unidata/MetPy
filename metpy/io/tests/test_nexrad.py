@@ -34,6 +34,9 @@ class TestLevel3(TestCase):
     def test_basic(self):
         Level3File(os.path.join(datadir, 'nids/Level3_FFC_N0Q_20140407_1805.nids'))
 
+    def test_nwstg(self):
+        Level3File(os.path.join(datadir, 'nids/sn.last'))
+
 
 class TestPrecipMode(TestCase):
     def test21(self):
