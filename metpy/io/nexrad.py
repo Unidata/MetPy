@@ -1554,8 +1554,17 @@ class Level3File(object):
         # Pop off last 4 bytes if necessary
         self._process_end_bytes()
 
+        # Set up places to store data and metadata
+#        self.data = []
+        self.metadata = dict()
+
         # Handle free text message products that are pure text
         if self.wmo_code == 'NOUS':
+            self.header = None
+            self.prod_desc = None
+            self.thresholds = None
+            self.depVals = None
+            self.product_name = 'Free Text Message'
             self.text = ''.join(self._buffer.read_ascii())
             return
 
@@ -1567,10 +1576,6 @@ class Level3File(object):
         if len(self._buffer) == 0:
             warnings.warn('{}: Empty product!'.format(self.filename))
             return
-
-        # Set up places to store data and metadata
-#        self.data = []
-        self.metadata = dict()
 
         # Unpack the message header and the product description block
         msg_start = self._buffer.set_mark()
@@ -1676,7 +1681,8 @@ class Level3File(object):
             self.wmo_code = ''
 
     def _process_end_bytes(self):
-        if self._buffer[-4:-1] == b'\r\r\n':
+        check_bytes = self._buffer[-4:-1]
+        if check_bytes == b'\r\r\n' or check_bytes == b'\xff\xff\n':
             self._buffer.truncate(4)
 
     def _unpack_rle_data(self, data):
@@ -1694,7 +1700,7 @@ class Level3File(object):
         self._buffer.jump_to(start, offset)
         header = self._buffer.read_ascii(10)
         assert header == '1234 ROBUU'
-        # warnings.warn("{}: RCM decoding not supported.".format(self.filename))
+        warnings.warn('{}: RCM decoding not supported.'.format(self.filename))
 
     def _unpack_symblock(self, start, offset):
         self._buffer.jump_to(start, offset)
@@ -1796,8 +1802,7 @@ class Level3File(object):
 
     def __repr__(self):
         items = [self.product_name, self.header, self.prod_desc, self.thresholds,
-                 self.depVals, self.metadata, (self.siteID, self.lat, self.lon,
-                                               self.height)]
+                 self.depVals, self.metadata, self.siteID]
         return self.filename + ': ' + '\n'.join(map(str, items))
 
     def _unpack_packet_radial_data(self, code, in_sym_block):
