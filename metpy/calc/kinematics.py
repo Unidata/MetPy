@@ -198,29 +198,3 @@ def geostrophic_wind(heights, f, dx, dy, geopotential=False):
     grad = np.gradient(heights, *deltas)
     dx, dy = grad[0], grad[1]  # This throws away unused gradient components
     return -norm_factor * dy, norm_factor * dx
-
-
-@exporter.export
-def tke(u, v, w):
-    r'''Compute the turbulence kinetic energy (tke) from the time series of the
-    velocity components.
-
-    Parameters
-    ----------
-    u : array_like
-        The wind component along the x-axis
-    v : array_like
-        The wind component along the y-axis
-    w : array_like
-        The wind componennt along the z-axis
-
-    Returns
-    -------
-    array_like
-        The corresponding tke value(s)
-    '''
-
-    up = u - u.mean()
-    vp = v - v.mean()
-    wp = w - w.mean()
-    return np.sqrt(up * up + vp * vp + wp * wp)
