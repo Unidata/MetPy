@@ -10,7 +10,6 @@ env:
 
 matrix:
   include:
-    - python: 2.6
     - python: 2.7
     - python: 2.7
       env: DEPENDS="numpy=1.8.0 matplotlib=1.4.0 scipy=0.13.3"
@@ -19,15 +18,11 @@ matrix:
     # Docs built on 2.7 because that's what readthedocs uses
     - python: 2.7
       env: DOCBUILD=true
-    - python: 3.2
     - python: 3.3
     - python: 3.4
       env: NOSE_WITH_COVERAGE=y NOSE_COVER_PACKAGE=metpy
     - python: 3.4
       env: LINT=true
-    - python: nightly
-  allow_failures:
-    - python: 2.6, 3.2, nightly
 
 before_install:
   - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
