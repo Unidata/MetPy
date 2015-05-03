@@ -27,7 +27,7 @@ matrix:
       env: LINT=true
     - python: nightly
   allow_failures:
-    - python: 2.6, nightly
+    - python: 2.6, 3.2, nightly
 
 before_install:
   - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
