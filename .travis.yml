@@ -4,47 +4,64 @@ language: python
 
 sudo: false
 
+addons:
+  apt:
+    packages:
+    - libblas3gf
+    - liblapack3gf
+
 env:
   global:
-    - DEPENDS="numpy matplotlib scipy"
+    - REQUIRES=requirements.txt
 
 matrix:
   include:
     - python: 2.7
     - python: 2.7
-      env: DEPENDS="numpy=1.8.0 matplotlib=1.4.0 scipy=0.13.3"
+      env: REQUIRES=min-requirements.txt
     - python: 2.7
       env: LINT=true
     # Docs built on 2.7 because that's what readthedocs uses
     - python: 2.7
       env: DOCBUILD=true
+    - python: 3.2
     - python: 3.3
     - python: 3.4
       env: NOSE_WITH_COVERAGE=y NOSE_COVER_PACKAGE=metpy
     - python: 3.4
       env: LINT=true
+    #- python: nightly
+  allow_failures:
+    - python: nightly
 
 before_install:
-  - wget http://repo.continuum.io/miniconda/Miniconda-latest-Linux-x86_64.sh -O miniconda.sh
-  - chmod +x miniconda.sh
-  - ./miniconda.sh -b
-  - export PATH=${HOME}/miniconda/bin:$PATH
-  - conda create --yes -n travis python=$TRAVIS_PYTHON_VERSION scipy numpy matplotlib nose flake8
-  - source activate travis
+  # Stuck on sphinx 1.2 for docbuilds until readthedocs upgrades
+  - virtualenv --python=python venv
+  - source venv/bin/activate
   - if [[ $LINT == true ]]; then
-      pip install pep8-naming;
+      pip install flake8 pep8-naming;
+    else
+      if [[ $DOCBUILD == true ]]; then
+        pip install sphinx==1.2;
+        pip install sphinxcontrib-napoleon;
+      else
+        pip install nose;
+      fi;
+      wget https://github.com/MetPy/travis-wheels/archive/${TRAVIS_PYTHON_VERSION}.zip -O wheels.zip && unzip wheels.zip;
+      if [[ $TRAVIS_PYTHON_VERSION == "nightly" ]]; then
+        cd travis-wheels-${TRAVIS_PYTHON_VERSION}/wheel-0.24.0 && python setup.py install && cd ../..;
+      fi;
+      pip install -f "file://$PWD/travis-wheels-${TRAVIS_PYTHON_VERSION}/wheelhouse/" -r $REQUIRES;
+      python -c "import numpy; print(numpy.__version__)";
     fi
   - if [[ $NOSE_WITH_COVERAGE == y ]]; then
       pip install coveralls;
     fi
-  # Stuck on sphinx 1.2 until readthedocs upgrades
-  - if [[ $DOCBUILD == true ]]; then
-      conda install --yes sphinx=1.2;
-      pip install sphinxcontrib-napoleon;
-    fi
 
 install:
-  - python setup.py install
+  - if [[ $LINT != true ]]; then
+      python setup.py install;
+    fi
 
 script:
   - if [[ $LINT == true ]]; then
