@@ -30,12 +30,24 @@ def read_level2_file(fname):
     Level2File(fname)
 
 
+class TestLevel2(TestCase):
+    def test_fobj(self):
+        fobj = open(os.path.join(datadir, 'Level2_KFTG_20150430_1419.ar2v'),
+                    'rb')
+        Level2File(fobj)
+
+
 class TestLevel3(TestCase):
     def test_basic(self):
         Level3File(os.path.join(datadir, 'nids/Level3_FFC_N0Q_20140407_1805.nids'))
 
     def test_nwstg(self):
         Level3File(os.path.join(datadir, 'nids/sn.last'))
+
+    def test_fobj(self):
+        fobj = open(os.path.join(datadir, 'nids/Level3_FFC_N0Q_20140407_1805.nids'),
+                    'rb')
+        Level3File(fobj)
 
 
 class TestPrecipMode(TestCase):

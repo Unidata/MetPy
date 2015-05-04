@@ -8,6 +8,9 @@ Simple Sounding
     
     from metpy.calc import get_wind_components
     from metpy.plots import SkewT
+    
+    # Change default to be better for skew-T
+    plt.rcParams['figure.figsize'] = (9, 9)
 
 .. code:: python
 
@@ -18,9 +21,8 @@ Simple Sounding
 
 .. code:: python
 
-    # Create a new figure. The dimensions here give a good aspect ratio
-    fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
+    # Create a skewT using matplotlib's default figure size
+    skew = SkewT()
     
     # Plot the data using normal plotting functions, in this case using
     # log scaling in Y, as dictated by the typical meteorological plot

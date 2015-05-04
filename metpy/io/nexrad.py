@@ -14,114 +14,9 @@ import numpy as np
 from scipy.constants import day, milli
 from ..cbook import is_string_like
 from ..package_tools import Exporter
+from .tools import Array, BitField, Bits, DictStruct, Enum, IOBuffer, NamedStruct, bits_to_code
 
 exporter = Exporter(globals())
-
-
-class NamedStruct(Struct):
-    def __init__(self, info, prefmt='', tuple_name=None):
-        if tuple_name is None:
-            tuple_name = 'NamedStruct'
-        names, fmts = zip(*info)
-        self.converters = {}
-        conv_off = 0
-        for ind, i in enumerate(info):
-            if len(i) > 2:
-                self.converters[ind - conv_off] = i[-1]
-            elif not i[0]:  # Skip items with no name
-                conv_off += 1
-        self._tuple = namedtuple(tuple_name, ' '.join(n for n in names if n))
-        Struct.__init__(self, prefmt + ''.join(f for f in fmts if f))
-
-    def _create(self, items):
-        if self.converters:
-            items = list(items)
-            for ind, conv in self.converters.items():
-                items[ind] = conv(items[ind])
-            if len(items) < len(self._tuple._fields):
-                items.extend([None] * (len(self._tuple._fields) - len(items)))
-        return self._tuple(*items)
-
-    def unpack(self, s):
-        return self._create(Struct.unpack(self, s))
-
-    def unpack_from(self, buff, offset=0):
-        return self._create(Struct.unpack_from(self, buff, offset))
-
-    def unpack_file(self, fobj):
-        bytes = fobj.read(self.size)
-        return self.unpack(bytes)
-
-
-# This works around times when we have more than 255 items and can't use
-# NamedStruct. This is a CPython limit for arguments.
-class DictStruct(Struct):
-    def __init__(self, info, prefmt=''):
-        names, formats = zip(*info)
-
-        # Remove empty names
-        self._names = [n for n in names if n]
-
-        Struct.__init__(self, prefmt + ''.join(f for f in formats if f))
-
-    def _create(self, items):
-        return {n: v for n, v in zip(self._names, items)}
-
-    def unpack(self, s):
-        return self._create(Struct.unpack(self, s))
-
-    def unpack_from(self, buff, offset=0):
-        return self._create(Struct.unpack_from(self, buff, offset))
-
-
-class Enum(object):
-    def __init__(self, *args, **kwargs):
-        self.val_map = dict()
-        # Assign values for args in order starting at 0
-        for ind, a in enumerate(args):
-            self.val_map[ind] = a
-
-        # Invert the kwargs dict so that we can map from value to name
-        for k in kwargs:
-            self.val_map[kwargs[k]] = k
-
-    def __call__(self, val):
-        return self.val_map.get(val, 'Unknown ({})'.format(val))
-
-
-class Bits(object):
-    def __init__(self, num_bits):
-        self._bits = range(num_bits)
-
-    def __call__(self, val):
-        return [bool((val >> i) & 0x1) for i in self._bits]
-
-
-class BitField(object):
-    def __init__(self, *names):
-        self._names = names
-
-    def __call__(self, val):
-        if not val:
-            return None
-
-        l = []
-        for n in self._names:
-            if val & 0x1:
-                l.append(n)
-            val = val >> 1
-            if not val:
-                break
-
-        return l if len(l) > 1 else l[0]
-
-
-class Array(object):
-    def __init__(self, fmt):
-        self._struct = Struct(fmt)
-
-    def __call__(self, buf):
-        return list(self._struct.unpack(buf))
 
 
 def version(val):
@@ -146,99 +41,17 @@ def az_rate(val):
     return val * 90. / 2**16
 
 
-class IOBuffer(object):
-    def __init__(self, source):
-        self._data = bytearray(source)
-        self._offset = 0
-        self.clear_marks()
-
-    @classmethod
-    def fromfile(cls, fobj):
-        return cls(fobj.read())
-
-    def set_mark(self):
-        self._bookmarks.append(self._offset)
-        return len(self._bookmarks) - 1
-
-    def jump_to(self, mark, offset=0):
-        self._offset = self._bookmarks[mark] + offset
-
-    def offset_from(self, mark):
-        return self._offset - self._bookmarks[mark]
-
-    def clear_marks(self):
-        self._bookmarks = []
-
-    def splice(self, mark, newdata):
-        self.jump_to(mark)
-        self._data = self._data[:self._offset] + bytearray(newdata)
-
-    def read_struct(self, struct_class):
-        struct = struct_class.unpack_from(self._data, self._offset)
-        self.skip(struct_class.size)
-        return struct
-
-    def read_func(self, func, num_bytes=None):
-        # only advance if func succeeds
-        res = func(self.get_next(num_bytes))
-        self.skip(num_bytes)
-        return res
-
-    def read_ascii(self, num_bytes=None):
-        return self.read(num_bytes).decode('ascii')
-
-    def read_binary(self, num, type='B'):
-        if 'B' in type:
-            return self.read(num)
-
-        if type[0] in ('@', '=', '<', '>', '!'):
-            order = type[0]
-            type = type[1:]
-        else:
-            order = '@'
-
-        return list(self.read_struct(Struct(order + '%d' % num + type)))
-
-    def read_int(self, code):
-        return self.read_struct(Struct(code))[0]
-
-    def read(self, num_bytes=None):
-        res = self.get_next(num_bytes)
-        self.skip(len(res))
-        return res
-
-    def get_next(self, num_bytes=None):
-        if num_bytes is None:
-            return self._data[self._offset:]
-        else:
-            return self._data[self._offset:self._offset + num_bytes]
-
-    def skip(self, num_bytes):
-        if num_bytes is None:
-            self._offset = len(self._data)
-        else:
-            self._offset += num_bytes
-
-    def check_remains(self, num_bytes):
-        return len(self._data[self._offset:]) == num_bytes
-
-    def truncate(self, num_bytes):
-        self._data = self._data[:-num_bytes]
-
-    def at_end(self):
-        return self._offset >= len(self._data)
-
-    def __getitem__(self, item):
-        return self._data[item]
-
-    def __str__(self):
-        return 'Size: {} Offset: {}'.format(len(self._data), self._offset)
-
-    def print_next(self, num_bytes):
-        print(' '.join('%02x' % ord(c) for c in self.get_next(num_bytes)))
-
-    def __len__(self):
-        return len(self._data)
+def zlib_decompress_all_frames(data):
+    frames = bytearray()
+    data = bytes(data)
+    while data:
+        decomp = zlib.decompressobj()
+        try:
+            frames.extend(decomp.decompress(data))
+        except zlib.error:
+            break
+        data = decomp.unused_data
+    return frames + data
 
 
 def bzip_blocks_decompress_all(data):
@@ -261,16 +74,6 @@ def nexrad_to_datetime(julian_date, ms_midnight):
     # Subtracting one from julian_date is because epoch date is 1
     return datetime.datetime.fromtimestamp((julian_date - 1) * day +
                                            ms_midnight * milli)
-
-
-def bits_to_code(val):
-    if val == 8:
-        return 'B'
-    elif val == 16:
-        return 'H'
-    else:
-        warnings.warn('Unsuported bit size: %s' % val)
-        return 'B'
 
 
 def remap_status(val):
@@ -301,6 +104,44 @@ BAD_DATA = 0x20
 
 @exporter.export
 class Level2File(object):
+    r'''A class that handles reading the NEXRAD Level 2 data and the various
+    messages that are contained within.
+
+    This class attempts to decode every byte that is in a given data file.
+    It supports both external compression, as well as the internal BZ2
+    compression that is used.
+
+    Attributes
+    ----------
+    stid : str
+        The ID of the radar station
+    dt : Datetime instance
+        The date and time of the data
+    vol_hdr : namedtuple
+        The unpacked volume header
+    sweeps : list of tuples
+        Data for each of the sweeps found in the file
+    rda_status : namedtuple, optional
+        Unpacked RDA status information, if found
+    maintenance_data : namedtuple, optional
+        Unpacked maintenance data information, if found
+    maintenance_data_desc : dict, optional
+        Descriptions of maintenance data fields, if maintenance data present
+    vcp_info : namedtuple, optional
+        Unpacked VCP information, if found
+    clutter_filter_bypass_map : dict, optional
+        Unpacked clutter filter bypass map, if present
+    rda : dict, optional
+        Unpacked RDA adaptation data, if present
+    rda_adaptation_desc : dict, optional
+        Descriptions of RDA adaptation data, if adaptation data present
+
+    Notes
+    -----
+    The internal data structure that things are decoded into is still to be
+    determined.
+    '''
+
     # Number of bytes
     AR2_BLOCKSIZE = 2432  # 12 (CTM) + 2416 (Msg hdr + data) + 4 (FCS)
     CTM_HEADER_SIZE = 12
@@ -309,6 +150,17 @@ class Level2File(object):
     RANGE_FOLD = float('nan')  # TODO: Need to separate from missing
 
     def __init__(self, filename):
+        r'''Create instance of `Level2File`.
+
+        Parameters
+        ----------
+        fname : str or file-like object
+            If str, the name of the file to be opened. Gzip-ed files are
+            recognized with the extension '.gz', as are bzip2-ed files with
+            the extension `.bz2` If `fname` is a file-like object,
+            this will be read from directly.
+        '''
+
         if is_string_like(filename):
             if filename.endswith('.bz2'):
                 fobj = bz2.BZ2File(filename, 'rb')
@@ -833,19 +685,6 @@ def low_byte(ind):
     return inner
 
 
-def zlib_decompress_all_frames(data):
-    frames = bytearray()
-    data = bytes(data)
-    while data:
-        decomp = zlib.decompressobj()
-        try:
-            frames.extend(decomp.decompress(data))
-        except zlib.error:
-            break
-        data = decomp.unused_data
-    return frames + data
-
-
 # Data mappers used to take packed data and turn into physical units
 # Default is to use numpy array indexing to use LUT to change data bytes
 # into physical values. Can also have a 'labels' attribute to give
@@ -1036,6 +875,48 @@ class LegacyMapper(DataMapper):
 
 @exporter.export
 class Level3File(object):
+    r'''A class that handles reading the wide array of NEXRAD Level 3 (NIDS)
+    product files.
+
+    This class attempts to decode every byte that is in a given product file.
+    It supports all of the various compression formats that exist for these
+    products in the wild.
+
+    Attributes
+    ----------
+    metadata : dict
+        Various general metadata available from the product
+    header : namedtuple
+        Decoded product header
+    prod_desc : namedtuple
+        Decoded product description block
+    siteID : str
+        ID of the site found in the header, empty string if none found
+    lat : float
+        Radar site latitude
+    lon : float
+        Radar site longitude
+    height : float
+        Radar site height AMSL
+    product_name : str
+        Name of the product contained in file
+    max_range : float
+        Maximum range of the product, taken from the NIDS ICD
+    map_data : Mapper
+        Class instance mapping data int values to proper floating point values
+    sym_block : list, optional
+        Any symbology block packets that were found
+    tab_pages : list, optional
+        Any tabular pages that were found
+    graph_pages : list, optional
+        Any graphical pages that were found
+
+    Notes
+    -----
+    The internal data structure that things are decoded into is still to be
+    determined.
+    '''
+
     ij_to_km = 0.25
     wmo_finder = re.compile('((?:NX|SD|NO)US)\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
     header_fmt = NamedStruct([('code', 'H'), ('date', 'H'), ('time', 'l'),
@@ -1543,11 +1424,25 @@ class Level3File(object):
                             ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9))))}
 
-    def __init__(self, fname):
+    def __init__(self, filename):
+        r'''Create instance of `Level3File`.
+
+        Parameters
+        ----------
+        filename : str or file-like object
+            If str, the name of the file to be opened. If file-like object,
+            this will be read from directly.
+        '''
+
+        if is_string_like(filename):
+            fobj = open(filename, 'rb')
+            self.filename = filename
+        else:
+            fobj = filename
+            self.filename = "No Filename"
+
         # Just read in the entire set of data at once
-        self.filename = fname
-        with open(fname, 'rb') as fobj:
-            self._buffer = IOBuffer.fromfile(fobj)
+        self._buffer = IOBuffer.fromfile(fobj)
 
         # Pop off the WMO header if we find it
         self._process_wmo_header()
@@ -2290,30 +2185,18 @@ class Level3XDRParser(Unpacker):
     _component_lookup = {1: _unpack_radial, 4: _unpack_text}
 
 
-# For debugging
-def hexdump(buf, num_bytes, offset=0, width=32):
-    ind = offset
-    end = offset + num_bytes
-    while ind < end:
-        chunk = buf[ind:ind + width]
-        actual_width = len(chunk)
-        hexfmt = '%02X'
-        blocksize = 4
-        blocks = [hexfmt * blocksize for i in range(actual_width // blocksize)]
-
-        # Need to get any partial lines
-        num_left = actual_width % blocksize
-        if num_left:
-            blocks += [hexfmt * num_left + '--' * (blocksize - num_left)]
-        blocks += ['--' * blocksize] * (width // blocksize - len(blocks))
-
-        hexoutput = ' '.join(blocks)
-        printable = tuple(chunk)
-        print(hexoutput % printable, str(ind).ljust(len(str(end))),
-              ''.join(chr(c) if 31 < c < 128 else '.' for c in chunk), sep='  ')
-        ind += width
-
-
 @exporter.export
 def is_precip_mode(vcp_num):
+    r'''Determine if the NEXRAD radar is operating in precipitation mode
+
+    Parameters
+    ----------
+    vcp_num : int
+        The NEXRAD volume coverage pattern (VCP) number
+
+    Returns
+    -------
+    bool
+        True if the VCP corresponds to precipitation mode, False otherwise
+    '''
     return not vcp_num // 10 == 3
