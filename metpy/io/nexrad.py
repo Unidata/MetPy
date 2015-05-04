@@ -1434,10 +1434,15 @@ class Level3File(object):
             this will be read from directly.
         '''
 
+        if is_string_like(filename):
+            fobj = open(filename, 'rb')
+            self.filename = filename
+        else:
+            fobj = filename
+            self.filename = "No Filename"
+
         # Just read in the entire set of data at once
-        self.filename = filename
-        with open(filename, 'rb') as fobj:
-            self._buffer = IOBuffer.fromfile(fobj)
+        self._buffer = IOBuffer.fromfile(fobj)
 
         # Pop off the WMO header if we find it
         self._process_wmo_header()
