@@ -36,7 +36,7 @@ setup(
     packages=find_packages(exclude=['doc', 'examples']),
     test_suite="nose.collector",
 
-    install_requires=['matplotlib>=1.4', 'numpy>=1.8', 'scipy>=0.14'],
+    install_requires=['matplotlib>=1.4', 'numpy>=1.8', 'scipy>=0.13.3'],
     extras_require={
         'dev': ['ipython[all]>=3.0'],
         'doc': ['sphinxcontrib-napoleon'],
