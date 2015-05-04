@@ -104,6 +104,44 @@ BAD_DATA = 0x20
 
 @exporter.export
 class Level2File(object):
+    r'''A class that handles reading the NEXRAD Level 2 data and the various
+    messages that are contained within.
+
+    This class attempts to decode every byte that is in a given data file.
+    It supports both external compression, as well as the internal BZ2
+    compression that is used.
+
+    Attributes
+    ----------
+    stid : str
+        The ID of the radar station
+    dt : Datetime instance
+        The date and time of the data
+    vol_hdr : namedtuple
+        The unpacked volume header
+    sweeps : list of tuples
+        Data for each of the sweeps found in the file
+    rda_status : namedtuple, optional
+        Unpacked RDA status information, if found
+    maintenance_data : namedtuple, optional
+        Unpacked maintenance data information, if found
+    maintenance_data_desc : dict, optional
+        Descriptions of maintenance data fields, if maintenance data present
+    vcp_info : namedtuple, optional
+        Unpacked VCP information, if found
+    clutter_filter_bypass_map : dict, optional
+        Unpacked clutter filter bypass map, if present
+    rda : dict, optional
+        Unpacked RDA adaptation data, if present
+    rda_adaptation_desc : dict, optional
+        Descriptions of RDA adaptation data, if adaptation data present
+
+    Notes
+    -----
+    The internal data structure that things are decoded into is still to be
+    determined.
+    '''
+
     # Number of bytes
     AR2_BLOCKSIZE = 2432  # 12 (CTM) + 2416 (Msg hdr + data) + 4 (FCS)
     CTM_HEADER_SIZE = 12
@@ -112,6 +150,17 @@ class Level2File(object):
     RANGE_FOLD = float('nan')  # TODO: Need to separate from missing
 
     def __init__(self, filename):
+        r'''Create instance of `Level2File`.
+
+        Parameters
+        ----------
+        fname : str or file-like object
+            If str, the name of the file to be opened. Gzip-ed files are
+            recognized with the extension '.gz', as are bzip2-ed files with
+            the extension `.bz2` If `fname` is a file-like object,
+            this will be read from directly.
+        '''
+
         if is_string_like(filename):
             if filename.endswith('.bz2'):
                 fobj = bz2.BZ2File(filename, 'rb')
@@ -826,6 +875,48 @@ class LegacyMapper(DataMapper):
 
 @exporter.export
 class Level3File(object):
+    r'''A class that handles reading the wide array of NEXRAD Level 3 (NIDS)
+    product files.
+
+    This class attempts to decode every byte that is in a given product file.
+    It supports all of the various compression formats that exist for these
+    products in the wild.
+
+    Attributes
+    ----------
+    metadata : dict
+        Various general metadata available from the product
+    header : namedtuple
+        Decoded product header
+    prod_desc : namedtuple
+        Decoded product description block
+    siteID : str
+        ID of the site found in the header, empty string if none found
+    lat : float
+        Radar site latitude
+    lon : float
+        Radar site longitude
+    height : float
+        Radar site height AMSL
+    product_name : str
+        Name of the product contained in file
+    max_range : float
+        Maximum range of the product, taken from the NIDS ICD
+    map_data : Mapper
+        Class instance mapping data int values to proper floating point values
+    sym_block : list, optional
+        Any symbology block packets that were found
+    tab_pages : list, optional
+        Any tabular pages that were found
+    graph_pages : list, optional
+        Any graphical pages that were found
+
+    Notes
+    -----
+    The internal data structure that things are decoded into is still to be
+    determined.
+    '''
+
     ij_to_km = 0.25
     wmo_finder = re.compile('((?:NX|SD|NO)US)\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
     header_fmt = NamedStruct([('code', 'H'), ('date', 'H'), ('time', 'l'),
@@ -1333,10 +1424,19 @@ class Level3File(object):
                             ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9))))}
 
-    def __init__(self, fname):
+    def __init__(self, filename):
+        r'''Create instance of `Level3File`.
+
+        Parameters
+        ----------
+        filename : str or file-like object
+            If str, the name of the file to be opened. If file-like object,
+            this will be read from directly.
+        '''
+
         # Just read in the entire set of data at once
-        self.filename = fname
-        with open(fname, 'rb') as fobj:
+        self.filename = filename
+        with open(filename, 'rb') as fobj:
             self._buffer = IOBuffer.fromfile(fobj)
 
         # Pop off the WMO header if we find it
@@ -2082,4 +2182,16 @@ class Level3XDRParser(Unpacker):
 
 @exporter.export
 def is_precip_mode(vcp_num):
+    r'''Determine if the NEXRAD radar is operating in precipitation mode
+
+    Parameters
+    ----------
+    vcp_num : int
+        The NEXRAD volume coverage pattern (VCP) number
+
+    Returns
+    -------
+    bool
+        True if the VCP corresponds to precipitation mode, False otherwise
+    '''
     return not vcp_num // 10 == 3

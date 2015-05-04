@@ -8,4 +8,4 @@ File Formats (I/O)
 
 .. automodule:: metpy.io
    :members:
-   :undoc-members:
+   :special-members: __init__

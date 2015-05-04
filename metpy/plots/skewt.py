@@ -146,22 +146,61 @@ register_projection(SkewXAxes)
 
 @exporter.export
 class SkewT(object):
-    '''
-    Creates SkewT - logP plots.
+    r'''Make Skew-T log-P plots of data
 
-    Kwargs:
+    This class simplifies the process of creating Skew-T log-P plots in
+    using matplotlib. It handles requesting the appropriate skewed projection,
+    and provides simplified wrappers to make it easy to plot data, add wind
+    barbs, and add other lines to the plots (e.g. dry adiabats)
 
-        rotation: number
-        Controls the rotation of temperature relative to horizontal. Given
-        in degrees counterclockwise from x-axis.
+    Attributes
+    ----------
+    ax : `matplotlib.axes.Axes`
+        The underlying Axes instance, which can be used for calling additional
+        plot functions (e.g. `axvline`)
     '''
-    def __init__(self, fig, rotation=30):
+
+    def __init__(self, fig=None, rotation=30):
+        r'''Creates SkewT - logP plots.
+
+        Parameters
+        ----------
+        fig : `matplotlib.figure.Figure`, optional
+            Source figure to use for plotting. If none is given, a new
+            `matplotlib.figure.Figure` instance will be created.
+        rotation : float or int, optional
+            Controls the rotation of temperature relative to horizontal. Given
+            in degrees counterclockwise from x-axis. Defaults to 30 degrees.
+        '''
+
         self._fig = fig
         self.ax = fig.add_subplot(1, 1, 1, projection='skewx',
                                   rotation=rotation)
         self.ax.grid(True)
 
     def plot(self, p, t, *args, **kwargs):
+        r'''Plot data.
+
+        Simple wrapper around plot so that pressure is the first (independent)
+        input. This is essentially a wrapper around `semilogy`. It also
+        sets some appropriate ticking and plot ranges.
+
+        Parameters
+        ----------
+        p : array_like
+            pressure values
+        t : array_like
+            temperature values, can also be used for things like dew point
+        args
+            Other positional arguments to pass to `semilogy`
+        kwargs
+            Other keyword arguments to pass to `semilogy`
+
+        See Also
+        --------
+        `matplotlib.Axes.semilogy`
+        '''
+
         # Skew-T logP plotting
         self.ax.semilogy(t, p, *args, **kwargs)
 
@@ -176,6 +215,31 @@ class SkewT(object):
         self.ax.set_xlim(-50, 50)
 
     def plot_barbs(self, p, u, v, xloc=1.0, **kwargs):
+        r'''Plot wind barbs.
+
+        Adds wind barbs to the skew-T plot. This is a wrapper around the
+        `barbs` command that adds to appropriate transform to place the
+        barbs in a vertical line, located as a function of pressure.
+
+        Parameters
+        ----------
+        p : array_like
+            pressure values
+        u : array_like
+            U (East-West) component of wind
+        v : array_like
+            V (North-South) component of wind
+        xloc : float, optional
+            Position for the barbs, in normalized axes coordinates, where 0.0
+            denotes far left and 1.0 denotes far right. Defaults to far right.
+        kwargs
+            Other keyword arguments to pass to `barbs`
+
+        See Also
+        --------
+        `matplotlib.Axes.barbs`
+        '''
+
         # Assemble array of x-locations in axes space
         x = np.empty_like(p)
         x.fill(xloc)
@@ -186,6 +250,32 @@ class SkewT(object):
                       clip_on=False, **kwargs)
 
     def plot_dry_adiabats(self, t0=None, p=None, **kwargs):
+        r'''Plot dry adiabats.
+
+        Adds dry adiabats (lines of constant potential temperature) to the
+        plot. The default style of these lines is dashed red lines with an alpha
+        value of 0.5. These can be overridden using keyword arguments.
+
+        Parameters
+        ----------
+        t0 : array_like, optional
+            Starting temperature values in Kelvin. If none are given, they will be
+            generated using the current temperature range at the bottom of
+            the plot.
+        p : array_like, optional
+            Pressure values to be included in the dry adiabats. If not
+            specified, they will be linearly distributed across the current
+            plotted pressure range.
+        kwargs
+            Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+
+        See Also
+        --------
+        plot_moist_adiabats
+        `matplotlib.collections.LineCollection`
+        `metpy.calc.dry_lapse`
+        '''
+
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
@@ -206,6 +296,33 @@ class SkewT(object):
         self.ax.add_collection(LineCollection(linedata, **kwargs))
 
     def plot_moist_adiabats(self, t0=None, p=None, **kwargs):
+        r'''Plot moist adiabats.
+
+        Adds saturated pseudo-adiabats (lines of constant equivalent potential
+        temperature) to the plot. The default style of these lines is dashed
+        blue lines with an alpha value of 0.5. These can be overridden using
+        keyword arguments.
+
+        Parameters
+        ----------
+        t0 : array_like, optional
+            Starting temperature values in Kelvin. If none are given, they will be
+            generated using the current temperature range at the bottom of
+            the plot.
+        p : array_like, optional
+            Pressure values to be included in the moist adiabats. If not
+            specified, they will be linearly distributed across the current
+            plotted pressure range.
+        kwargs
+            Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+
+        See Also
+        --------
+        plot_dry_adiabats
+        `matplotlib.collections.LineCollection`
+        `metpy.calc.moist_lapse`
+        '''
+
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
@@ -227,6 +344,29 @@ class SkewT(object):
         self.ax.add_collection(LineCollection(linedata, **kwargs))
 
     def plot_mixing_lines(self, w=None, p=None, **kwargs):
+        r'''Plot lines of constant mixing ratio.
+
+        Adds lines of constant mixing ratio (isohumes) to the
+        plot. The default style of these lines is dashed green lines with an
+        alpha value of 0.8. These can be overridden using keyword arguments.
+
+        Parameters
+        ----------
+        w : array_like, optional
+            Unitless mixing ratio values to plot. If none are given, default
+            values are used.
+        p : array_like, optional
+            Pressure values to be included in the isohumes. If not
+            specified, they will be linearly distributed across the current
+            plotted pressure range up to 600 mb.
+        kwargs
+            Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+
+        See Also
+        --------
+        `matplotlib.collections.LineCollection`
+        '''
+
         # Default mixing level values if necessary
         if w is None:
             w = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01,
