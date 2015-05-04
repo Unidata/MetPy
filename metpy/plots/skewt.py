@@ -3,9 +3,9 @@ import matplotlib.transforms as transforms
 import matplotlib.axis as maxis
 import matplotlib.spines as mspines
 from matplotlib.axes import Axes
+from matplotlib.collections import LineCollection
 from matplotlib.projections import register_projection
 from matplotlib.ticker import ScalarFormatter, MultipleLocator
-from matplotlib.collections import LineCollection
 from ..calc import dry_lapse, moist_lapse, dewpoint, vapor_pressure
 from scipy.constants import C2K, K2C
 
@@ -173,6 +173,10 @@ class SkewT(object):
             in degrees counterclockwise from x-axis. Defaults to 30 degrees.
         '''
 
+        if fig is None:
+            import matplotlib.pyplot as plt
+            figsize = plt.rcParams.get('figure.figsize', (7, 7))
+            fig = plt.figure(figsize=figsize)
         self._fig = fig
         self.ax = fig.add_subplot(1, 1, 1, projection='skewx',
                                   rotation=rotation)

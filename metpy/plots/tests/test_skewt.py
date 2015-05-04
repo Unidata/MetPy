@@ -28,3 +28,9 @@ class TestSkewT(object):
 
         with tempfile.NamedTemporaryFile() as f:
             FigureCanvasAgg(fig).print_png(f.name)
+
+    def test_no_figure(self):
+        'Test the SkewT api'
+        skew = SkewT()
+        with tempfile.NamedTemporaryFile() as f:
+            FigureCanvasAgg(skew.ax.figure).print_png(f.name)
