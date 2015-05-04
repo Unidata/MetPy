@@ -51,15 +51,14 @@ def potential_temperature(pressure, temperature):
     return temperature * (P0 / (pressure * 100))**kappa
 
 
-# Dividing P0 by 100 converts to mb
 @exporter.export
-def dry_lapse(pressure, temperature, starting_pressure=P0 / 100):
+def dry_lapse(pressure, temperature):
     r'''Calculate the temperature at a level assuming only dry processes
     operating from the starting point.
 
-    This function lifts a parcel starting at `temperature` and
-    `starting_pressure` to the level given by `pressure`, conserving potential
-    temperature.
+    This function lifts a parcel starting at `temperature`, conserving
+    potential temperature. The starting pressure should be the first item in
+    the `pressure` array.
 
     Parameters
     ----------
@@ -67,13 +66,12 @@ def dry_lapse(pressure, temperature, starting_pressure=P0 / 100):
         The atmospheric pressure level of interest in mb
     temperature : array_like
         The starting temperature in Kelvin
-    starting_pressure : array_like
-        The pressure at the starting point. Defaults to P0 (1000 mb).
 
     Returns
     -------
     array_like
-       The resulting parcel temperature, in Kelvin, at level `pressure`
+       The resulting parcel temperature, in Kelvin, at levels given by
+       `pressure`
 
     See Also
     --------
@@ -83,7 +81,7 @@ def dry_lapse(pressure, temperature, starting_pressure=P0 / 100):
     potential_temperature
     '''
 
-    return temperature * (pressure / starting_pressure)**kappa
+    return temperature * (pressure / pressure[0])**kappa
 
 
 @exporter.export
@@ -92,9 +90,9 @@ def moist_lapse(pressure, temperature):
     Calculate the temperature at a level assuming liquid saturation processes
     operating from the starting point.
 
-    This function lifts a parcel starting at `temperature`
-    this is calculating moist pseudo-adiabats. The starting pressure should be
-    the first item in the `pressure` array.
+    This function lifts a parcel starting at `temperature`. The starting
+    pressure should be the first item in the `pressure` array. Essentially,
+    this function is calculating moist pseudo-adiabats.
 
     Parameters
     ----------
@@ -230,7 +228,7 @@ def parcel_profile(pressure, temperature, dewpt):
 
     # Find the dry adiabatic profile, *including* the LCL
     press_lower = np.concatenate((pressure[pressure > l], l))
-    t1 = dry_lapse(press_lower, temperature, pressure[0])
+    t1 = dry_lapse(press_lower, temperature)
 
     # Find moist pseudo-adiabatic profile starting at the LCL
     t2 = moist_lapse(np.concatenate((l, pressure[pressure < l])), t1[-1])

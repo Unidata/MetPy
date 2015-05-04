@@ -23,8 +23,9 @@ class TestDryLapse(TestCase):
         temps = dry_lapse(levels, 303.15)
         assert_array_almost_equal(temps, np.array([303.15, 294.16, 290.83]), 2)
 
-    def test_scalar(self):
-        assert_almost_equal(dry_lapse(500, 293), 240.3341, 4)
+    def test_2_levels(self):
+        temps = dry_lapse(np.array([1000., 500.]), 293)
+        assert_array_almost_equal(temps, [293., 240.3341], 4)
 
 
 class TestMoistLapse(TestCase):
