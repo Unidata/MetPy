@@ -135,9 +135,9 @@ class SkewXAxes(Axes):
         # Blended transforms like this need to have the skewing applied using
         # both axes, in axes coords like before.
         self._xaxis_transform = (transforms.blended_transform_factory(
-                self.transScale + self.transLimits,
-                transforms.IdentityTransform()) +
-                transforms.Affine2D().skew_deg(self.rot, 0)) + self.transAxes
+            self.transScale + self.transLimits,
+            transforms.IdentityTransform()) +
+            transforms.Affine2D().skew_deg(self.rot, 0)) + self.transAxes
 
 # Now register the projection with matplotlib so the user can select
 # it.

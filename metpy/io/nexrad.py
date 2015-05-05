@@ -1514,7 +1514,7 @@ class Level3File(object):
                    (('el_angle', scaled_elem(2, 0.1)), ('compression', 7),
                     ('uncompressed_size', combine_elem(8, 9)), ('defaultVals', 0)))
         self.product_name, self.max_range, mapper, meta = self.prod_spec_map.get(
-                self.header.code, default)
+            self.header.code, default)
         for name, block in meta:
             if callable(block):
                 self.metadata[name] = block(self.depVals)
@@ -1651,8 +1651,8 @@ class Level3File(object):
                     packets.append(self.packet_map[packet_code](self, packet_code, False))
                 else:
                     warnings.warn(
-                            '{0}: Unknown graphical packet type {1}/{1:#x}.'.format(
-                                self.filename, packet_code))
+                        '{0}: Unknown graphical packet type {1}/{1:#x}.'.format(
+                            self.filename, packet_code))
                     self._buffer.skip(page_size)
             self.graph_pages.append(packets)
 
@@ -1665,8 +1665,8 @@ class Level3File(object):
                 packets.append(self.packet_map[packet_code](self, packet_code, False))
             else:
                 warnings.warn(
-                        '{0}: Unknown standalone graphical packet type {1}/{1:#x}.'.format(
-                            self.filename, packet_code))
+                    '{0}: Unknown standalone graphical packet type {1}/{1:#x}.'.format(
+                        self.filename, packet_code))
                 # Assume next 2 bytes is packet length and try skipping
                 num_bytes = self._buffer.read_int('>H')
                 self._buffer.skip(num_bytes)
@@ -1844,8 +1844,8 @@ class Level3File(object):
 
                 if kind not in point_feature_map:
                     warnings.warn(
-                            '{0}: Unknown graphic symbol point kind {1}/{1:#x}.'.format(
-                                self.filename, kind))
+                        '{0}: Unknown graphic symbol point kind {1}/{1:#x}.'.format(
+                            self.filename, kind))
                     ret['type'].append('Unknown (%d)' % kind)
                 else:
                     ret['type'].append(point_feature_map[kind])
