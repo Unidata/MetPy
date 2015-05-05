@@ -52,7 +52,7 @@ class DictStruct(Struct):
         Struct.__init__(self, prefmt + ''.join(f for f in formats if f))
 
     def _create(self, items):
-        return {n: v for n, v in zip(self._names, items)}
+        return dict(zip(self._names, items))
 
     def unpack(self, s):
         return self._create(Struct.unpack(self, s))
