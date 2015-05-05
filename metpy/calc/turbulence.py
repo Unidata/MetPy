@@ -34,7 +34,13 @@ def get_perturbation(ts, axis=-1):
     """
     slices = [slice(None)] * ts.ndim
     slices[axis] = None
-    return ts - ts.mean(axis=axis)[slices]
+    # For numpy<=1.8.0, can't slice on a scalar
+    mean = ts.mean(axis=axis)
+    if ts.ndim == 1:
+        mean = np.atleast_1d(mean)
+    else:
+        mean = mean[slices]
+    return ts - mean
 
 
 @exporter.export
