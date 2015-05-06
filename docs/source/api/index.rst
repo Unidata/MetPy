@@ -11,6 +11,7 @@
    :maxdepth: 2
 
    constants
+   units
    io
    calc
    plots
