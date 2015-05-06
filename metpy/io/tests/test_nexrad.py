@@ -2,7 +2,6 @@ import glob
 import os.path
 
 import nose.tools
-from numpy.testing import TestCase
 from metpy.io.nexrad import Level2File, Level3File, is_precip_mode
 from metpy.cbook import get_test_data
 
@@ -33,12 +32,12 @@ def read_level2_file(fname):
     Level2File(fname)
 
 
-class TestLevel2(TestCase):
+class TestLevel2(object):
     def test_fobj(self):
         Level2File(get_test_data('Level2_KFTG_20150430_1419.ar2v'))
 
 
-class TestLevel3(TestCase):
+class TestLevel3(object):
     def test_basic(self):
         Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids', as_file_obj=False))
 
@@ -49,7 +48,7 @@ class TestLevel3(TestCase):
         Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids'))
 
 
-class TestPrecipMode(TestCase):
+class TestPrecipMode(object):
     def test21(self):
         assert is_precip_mode(21), 'VCP 21 is precip'
 

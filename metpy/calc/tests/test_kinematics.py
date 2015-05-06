@@ -1,10 +1,10 @@
-from numpy.testing import TestCase, assert_array_equal
+from numpy.testing import assert_array_equal
 import numpy as np
 from metpy.calc.kinematics import *  # noqa
 from metpy.constants import g
 
 
-class TestGradients(TestCase):
+class TestGradients(object):
     def test_basic(self):
         'Basic braindead test of vorticity and divergence calculation'
         u = np.ones((3, 3))
@@ -34,7 +34,7 @@ class TestGradients(TestCase):
         assert_array_equal(v, true_v)
 
 
-class TestVort(TestCase):
+class TestVort(object):
     def test_basic(self):
         'Simple test of only vorticity'
         a = np.arange(3)
@@ -52,7 +52,7 @@ class TestVort(TestCase):
         assert_array_equal(v, true_v)
 
 
-class TestConv(TestCase):
+class TestConv(object):
     def test_basic(self):
         'Simple test of only vorticity'
         a = np.arange(3)
@@ -70,7 +70,7 @@ class TestConv(TestCase):
         assert_array_equal(c, true_c)
 
 
-class TestAdvection(TestCase):
+class TestAdvection(object):
     def test_basic(self):
         'Basic braindead test of advection'
         u = np.ones((3,))
@@ -113,7 +113,7 @@ class TestAdvection(TestCase):
         assert_array_equal(a, truth)
 
 
-class TestGeos(TestCase):
+class TestGeos(object):
     def test_basic(self):
         'Basic test of geostrophic wind calculation'
         z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100.

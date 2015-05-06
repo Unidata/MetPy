@@ -5,7 +5,7 @@ from metpy.calc.basic import *  # noqa
 from metpy.constants import F2C
 
 
-class TestWindComps(TestCase):
+class TestWindComps(object):
     def test_basic(self):
         'Test the basic wind component calculation.'
         speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.])
@@ -26,7 +26,7 @@ class TestWindComps(TestCase):
         assert_array_almost_equal(comps, np.array([-4, 6.9282]), 3)
 
 
-class TestSpeedDir(TestCase):
+class TestSpeedDir(object):
     def test_basic(self):
         u = np.array([4., 2., 0., 0.])
         v = np.array([0., 2., 4., 0.])
@@ -45,7 +45,7 @@ class TestSpeedDir(TestCase):
         assert_array_almost_equal(sd, np.array([5., 216.870]), 3)
 
 
-class TestWindChill(TestCase):
+class TestWindChill(object):
     def test_scalar(self):
         wc = windchill(-5, 35)
         assert_almost_equal(wc, -18.9357, 0)
@@ -87,7 +87,7 @@ class TestWindChill(TestCase):
         assert_array_almost_equal(wc, values, 0)
 
 
-class TestHeatIndex(TestCase):
+class TestHeatIndex(object):
     def test_basic(self):
         'Test the basic heat index calculation.'
         temp = F2C(np.array([80, 88, 92, 110]))
@@ -120,7 +120,7 @@ class TestHeatIndex(TestCase):
         assert_array_equal(hi.mask, mask)
 
 
-# class TestIrrad(TestCase):
+# class TestIrrad(object):
 #    def test_basic(self):
 #        'Test the basic solar irradiance calculation.'
 #        from datetime import date
@@ -153,7 +153,3 @@ class TestHeatIndex(TestCase):
 #        mask = np.array([ True,  True,  True,  True, False, False, False,
 #            False, False, True,  True,  True])
 #        assert_array_equal(s.mask, mask)
-
-
-if __name__ == '__main__':
-    run_module_suite()
