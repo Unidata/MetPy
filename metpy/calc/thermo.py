@@ -1,13 +1,13 @@
 import numpy as np
 import scipy.integrate as si
 from numpy.ma import log, exp
-from scipy.constants import K2C, C2K
 from ..package_tools import Exporter
 from ..constants import epsilon, kappa, P0, Rd, Lv, Cp_d
+from ..units import units, concatenate
 
 exporter = Exporter(globals())
 
-sat_pressure_0c = 6.112  # mb
+sat_pressure_0c = 6.112 * units.millibar
 
 
 @exporter.export
@@ -47,8 +47,7 @@ def potential_temperature(pressure, temperature):
 
     '''
 
-    # Factor of 100 converts mb to Pa. Really need unit support here.
-    return temperature * (P0 / (pressure * 100))**kappa
+    return temperature * (P0 / pressure)**kappa
 
 
 @exporter.export
@@ -129,13 +128,14 @@ def moist_lapse(pressure, temperature):
            Noniterative Approximation. J. Appl. Meteor. Clim., 52, 5-15.
     '''
 
-    # Factor of 100 converts mb to Pa. Really need unit support here.
     def dt(t, p):
-        rs = mixing_ratio(saturation_vapor_pressure(K2C(t)), p)
+        t = units.Quantity(t, temperature.units)
+        p = units.Quantity(p, pressure.units)
+        rs = mixing_ratio(saturation_vapor_pressure(t), p)
         return (1. / p) * ((Rd * t + Lv * rs) /
                            (Cp_d + (Lv * Lv * rs * epsilon / (Rd * t * t))))
-    return si.odeint(dt, np.atleast_1d(temperature).squeeze(),
-                     pressure.squeeze()).T.squeeze()
+    return units.Quantity(si.odeint(dt, np.atleast_1d(temperature).squeeze(),
+                                    pressure.squeeze()).T.squeeze(), temperature.units)
 
 
 @exporter.export
@@ -182,10 +182,11 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
     The function is guaranteed to finish by virtue of the `maxIters` counter.
     '''
 
-    w = mixing_ratio(saturation_vapor_pressure(K2C(dewpt)), pressure)
+    w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
     p = pressure
+    eps = units.Quantity(eps, p.units)
     while max_iters:
-        td = C2K(dewpoint(vapor_pressure(p, w)))
+        td = dewpoint(vapor_pressure(p, w))
         new_p = pressure * (td / temperature) ** (1. / kappa)
         if np.abs(new_p - p).max() < eps:
             break
@@ -199,7 +200,7 @@ def parcel_profile(pressure, temperature, dewpt):
     r'''Calculate the profile a parcel takes through the atmosphere, lifting
     from the starting point.
 
-    The parcel starts at `temperature`, and `dewpt`, lifed up
+    The parcel starts at `temperature`, and `dewpt`, lifted up
     dry adiabatically to the LCL, and then moist adiabatically from there.
     `pressure` specifies the pressure levels for the profile.
 
@@ -224,17 +225,18 @@ def parcel_profile(pressure, temperature, dewpt):
     '''
 
     # Find the LCL
-    l = np.atleast_1d(lcl(pressure[0], temperature, dewpt))
+    l = lcl(pressure[0], temperature, dewpt).to(pressure.units)
 
     # Find the dry adiabatic profile, *including* the LCL
-    press_lower = np.concatenate((pressure[pressure > l], l))
+    press_lower = concatenate(pressure[pressure > l], l)
     t1 = dry_lapse(press_lower, temperature)
 
     # Find moist pseudo-adiabatic profile starting at the LCL
-    t2 = moist_lapse(np.concatenate((l, pressure[pressure < l])), t1[-1])
+    press_upper = concatenate(l, pressure[pressure < l])
+    t2 = moist_lapse(press_upper, t1[-1]).to(t1.units)
 
     # Return LCL *without* the LCL point
-    return np.concatenate((t1[:-1], t2[1:]))
+    return concatenate(t1[:-1], t2[1:])
 
 
 @exporter.export
@@ -298,7 +300,10 @@ def saturation_vapor_pressure(temperature):
            Temperature. Mon. Wea. Rev., 108, 1046-1053.
     '''
 
-    return sat_pressure_0c * exp(17.67 * temperature / (temperature + 243.5))
+    # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
+    # a formula plays havoc with units support.
+    return sat_pressure_0c * exp(17.67 * (temperature - 273.15 * units.kelvin) /
+                                 (temperature - 29.65 * units.kelvin))
 
 
 @exporter.export
@@ -360,7 +365,7 @@ def dewpoint(e):
     '''
 
     val = log(e / sat_pressure_0c)
-    return 243.5 * val / (17.67 - val)
+    return 0. * units.degC + 243.5 * units.delta_degC * val / (17.67 - val)
 
 
 @exporter.export

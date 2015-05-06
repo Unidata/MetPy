@@ -1,68 +1,71 @@
-from numpy.testing import (TestCase, assert_array_almost_equal,
-                           assert_almost_equal, assert_array_equal)
 import numpy as np
+from numpy.testing import assert_array_equal
+
+from metpy.units import units
+from metpy.testing import assert_almost_equal, assert_array_almost_equal
 from metpy.calc.basic import *  # noqa
-from metpy.constants import F2C
 
 
 class TestWindComps(object):
     def test_basic(self):
         'Test the basic wind component calculation.'
-        speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.])
-        dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360])
+        speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.]) * units.mph
+        dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
         s2 = np.sqrt(2.)
 
         u, v = get_wind_components(speed, dirs)
 
-        true_u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0])
-        true_v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10])
+        true_u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph
+        true_v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph
 
         assert_array_almost_equal(true_u, u, 4)
         assert_array_almost_equal(true_v, v, 4)
 
     def test_scalar(self):
         'Test scalar wind components'
-        comps = np.array(get_wind_components(8, 150))
-        assert_array_almost_equal(comps, np.array([-4, 6.9282]), 3)
+        u, v = get_wind_components(8 * units('m/s'), 150 * units.deg)
+        assert_almost_equal(u, -4 * units('m/s'), 3)
+        assert_almost_equal(v, 6.9282 * units('m/s'), 3)
 
 
 class TestSpeedDir(object):
     def test_basic(self):
-        u = np.array([4., 2., 0., 0.])
-        v = np.array([0., 2., 4., 0.])
+        u = np.array([4., 2., 0., 0.]) * units('m/s')
+        v = np.array([0., 2., 4., 0.]) * units('m/s')
 
         speed, direc = get_speed_dir(u, v)
 
         s2 = np.sqrt(2.)
-        true_speed = np.array([4., 2 * s2, 4., 0.])
-        true_dir = np.array([90., 45., 0., 90.])
+        true_speed = np.array([4., 2 * s2, 4., 0.]) * units('m/s')
+        true_dir = np.array([90., 45., 0., 90.]) * units.deg
 
         assert_array_almost_equal(true_speed, speed, 4)
         assert_array_almost_equal(true_dir, direc, 4)
 
     def test_scalar(self):
-        sd = get_speed_dir(-3., -4.)
-        assert_array_almost_equal(sd, np.array([5., 216.870]), 3)
+        s, d = get_speed_dir(-3. * units('m/s'), -4. * units('m/s'))
+        assert_almost_equal(s, 5. * units('m/s'), 3)
+        assert_almost_equal(d, 216.870 * units.deg, 3)
 
 
 class TestWindChill(object):
     def test_scalar(self):
-        wc = windchill(-5, 35)
-        assert_almost_equal(wc, -18.9357, 0)
+        wc = windchill(-5 * units.degC, 35 * units('m/s'))
+        assert_almost_equal(wc, -18.9357 * units.degC, 0)
 
     def test_basic(self):
         'Test the basic wind chill calculation.'
-        temp = F2C(np.array([40, -10, -45, 20]))
-        speed = np.array([5, 55, 25, 15]) * .44704
+        temp = np.array([40, -10, -45, 20]) * units.degF
+        speed = np.array([5, 55, 25, 15]) * units.mph
 
         wc = windchill(temp, speed)
-        values = F2C(np.array([36, -46, -84, 6]))
+        values = np.array([36, -46, -84, 6]) * units.degF
         assert_array_almost_equal(wc, values, 0)
 
     def test_invalid(self):
         'Test for values that should be masked.'
-        temp = np.array([10, 51, 49, 60, 80, 81])
-        speed = np.array([4, 4, 3, 1, 10, 39])
+        temp = np.array([10, 51, 49, 60, 80, 81]) * units.degF
+        speed = np.array([4, 4, 3, 1, 10, 39]) * units.mph
 
         wc = windchill(temp, speed)
         mask = np.array([False, True, True, True, True, True])
@@ -70,8 +73,8 @@ class TestWindChill(object):
 
     def test_undefined_flag(self):
         'Tests whether masking values can be disabled.'
-        temp = np.ma.array([49, 50, 49, 60, 80, 81])
-        speed = np.ma.array([4, 4, 3, 1, 10, 39])
+        temp = units.Quantity(np.ma.array([49, 50, 49, 60, 80, 81]), units.degF)
+        speed = units.Quantity(([4, 4, 3, 1, 10, 39]), units.mph)
 
         wc = windchill(temp, speed, mask_undefined=False)
         mask = np.array([False] * 6)
@@ -79,40 +82,40 @@ class TestWindChill(object):
 
     def test_face_level(self):
         'Tests using the face_level flag'
-        temp = F2C(np.array([20, 0, -20, -40]))
-        speed = np.array([15, 30, 45, 60]) * 0.44704
+        temp = np.array([20, 0, -20, -40]) * units.degF
+        speed = np.array([15, 30, 45, 60]) * units.mph
 
         wc = windchill(temp, speed, face_level_winds=True)
-        values = F2C(np.array([3, -30, -64, -98]))
+        values = np.array([3, -30, -64, -98]) * units.degF
         assert_array_almost_equal(wc, values, 0)
 
 
 class TestHeatIndex(object):
     def test_basic(self):
         'Test the basic heat index calculation.'
-        temp = F2C(np.array([80, 88, 92, 110]))
+        temp = np.array([80, 88, 92, 110]) * units.degF
         rh = np.array([40, 100, 70, 40])
 
         hi = heat_index(temp, rh)
-        values = F2C(np.array([80, 121, 112, 136]))
+        values = np.array([80, 121, 112, 136]) * units.degF
         assert_array_almost_equal(hi, values, 0)
 
     def test_scalar(self):
-        hi = heat_index(F2C(96), 65)
-        assert_almost_equal(hi, F2C(121), 0)
+        hi = heat_index(96 * units.degF, 65)
+        assert_almost_equal(hi, 121 * units.degF, 0)
 
     def test_invalid(self):
         'Test for values that should be masked.'
-        temp = F2C(np.array([80, 88, 92, 79, 30, 81]))
+        temp = np.array([80, 88, 92, 79, 30, 81]) * units.degF
         rh = np.array([40, 39, 2, 70, 50, 39])
 
-        hi = F2C(heat_index(temp, rh))
+        hi = heat_index(temp, rh)
         mask = np.array([False, True, True, True, True, True])
         assert_array_equal(hi.mask, mask)
 
     def test_undefined_flag(self):
         'Tests whether masking values can be disabled.'
-        temp = np.ma.array([80, 88, 92, 79, 30, 81])
+        temp = units.Quantity(np.ma.array([80, 88, 92, 79, 30, 81]), units.degF)
         rh = np.ma.array([40, 39, 2, 70, 50, 39])
 
         hi = heat_index(temp, rh, mask_undefined=False)

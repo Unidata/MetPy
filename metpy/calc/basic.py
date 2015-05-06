@@ -1,7 +1,7 @@
 import numpy as np
-from numpy.ma import cos, sin, masked_array
-from scipy.constants import kilo, hour, C2F, F2C
+from numpy.ma import masked_array
 from ..package_tools import Exporter
+from ..units import units
 
 exporter = Exporter(globals())
 
@@ -28,8 +28,8 @@ def get_speed_dir(u, v):
     '''
 
     speed = np.sqrt(u * u + v * v)
-    wdir = np.atleast_1d(90. - np.rad2deg(np.arctan2(v, u)))
-    wdir[wdir < 0] += 360.
+    wdir = units.Quantity(np.atleast_1d(90. * units.deg - np.arctan2(v, u)), units.deg)
+    wdir[wdir < 0] += 360. * units.deg
     return speed, wdir.reshape(speed.shape)
 
 
@@ -57,9 +57,8 @@ def get_wind_components(speed, wdir):
     get_speed_dir
     '''
 
-    wdir = np.deg2rad(wdir)
-    u = -speed * sin(wdir)
-    v = -speed * cos(wdir)
+    u = -speed * np.sin(wdir)
+    v = -speed * np.cos(wdir)
     return u, v
 
 
@@ -115,11 +114,11 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
     # Formula uses wind speed in km/hr, but passing in m/s makes more
     # sense.  Convert here.
-    temp_limit, speed_limit = 10., 4.828  # Temp in C, speed in km/h
-    speed = speed * hour / kilo
-    speed_factor = speed ** 0.16
-    wcti = (13.12 + 0.6215 * temperature - 11.37 * speed_factor +
-            0.3965 * temperature * speed_factor)
+    temp_limit, speed_limit = 10. * units.degC, 3 * units.mph
+    speed_factor = speed.to('km/hr').magnitude ** 0.16
+    delta = temperature - 0. * units.degC
+    wcti = (13.12 * units.degC + 0.6215 * delta -
+            11.37 * units.delta_degC * speed_factor + 0.3965 * delta * speed_factor)
 
     # See if we need to mask any undefined values
     if mask_undefined:
@@ -169,20 +168,21 @@ def heat_index(temperature, rh, mask_undefined=True):
 
     '''
 
-    temperature = C2F(temperature)  # Formula in F
+    delta = temperature - 0. * units.degF
     rh2 = rh ** 2
-    temp2 = temperature ** 2
+    delta2 = delta ** 2
 
     # Calculate the Heat Index
-    hi = (-42.379 + 2.04901523 * temperature + 10.14333127 * rh -
-          0.22475541 * temperature * rh - 6.83783e-3 * temp2 -
-          5.481717e-2 * rh2 + 1.22874e-3 * temp2 * rh +
-          8.5282e-4 * temperature * rh2 - 1.99e-6 * temp2 * rh2)
+    hi = (-42.379 * units.degF + 2.04901523 * delta +
+          10.14333127 * units.delta_degF * rh - 0.22475541 * delta * rh -
+          6.83783e-3 / units.delta_degF * delta2 - 5.481717e-2 * units.delta_degF * rh2 +
+          1.22874e-3 / units.delta_degF * delta2 * rh + 8.5282e-4 * delta * rh2 -
+          1.99e-6 / units.delta_degF * delta2 * rh2)
 
     # See if we need to mask any undefined values
     if mask_undefined:
-        mask = np.array((temperature < 80.) | (rh < 40))
+        mask = np.array((temperature < 80. * units.degF) | (rh < 40))
         if mask.any():
             hi = masked_array(hi, mask=mask)
 
-    return F2C(hi)
+    return hi
