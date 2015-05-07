@@ -20,9 +20,9 @@ def potential_temperature(pressure, temperature):
     Parameters
     ----------
     pressure : array_like
-        The total atmospheric pressure in mb
+        The total atmospheric pressure
     temperature : array_like
-        The temperature in Kelvin
+        The temperature
 
     Returns
     -------
@@ -42,7 +42,7 @@ def potential_temperature(pressure, temperature):
 
     Examples
     --------
-    >>> metpy.calc.potential_temperature(800., 273.)
+    >>> metpy.calc.potential_temperature(800. * metpy.units.mbar, 273. * metpy.units.kelvin)
     290.9814150577374
 
     '''
@@ -62,15 +62,14 @@ def dry_lapse(pressure, temperature):
     Parameters
     ----------
     pressure : array_like
-        The atmospheric pressure level of interest in mb
+        The atmospheric pressure level(s) of interest
     temperature : array_like
-        The starting temperature in Kelvin
+        The starting temperature
 
     Returns
     -------
     array_like
-       The resulting parcel temperature, in Kelvin, at levels given by
-       `pressure`
+       The resulting parcel temperature at levels given by `pressure`
 
     See Also
     --------
@@ -96,15 +95,15 @@ def moist_lapse(pressure, temperature):
     Parameters
     ----------
     pressure : array_like
-        The atmospheric pressure level of interest in mb
+        The atmospheric pressure level(s) of interest
     temperature : array_like
-        The starting temperature in Kelvin
+        The starting temperature
 
     Returns
     -------
     array_like
        The temperature corresponding to the the starting temperature and
-       pressure levels, with the shape determined by numpy broadcasting rules.
+       pressure levels.
 
     See Also
     --------
@@ -149,16 +148,16 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
     Parameters
     ----------
     pressure : array_like
-        The starting atmospheric pressure in mb
+        The starting atmospheric pressure
     temperature : array_like
-        The starting temperature in Kelvin
+        The starting temperature
     dewpt : array_like
-        The dew point in Kelvin
+        The starting dew point
 
     Returns
     -------
     array_like
-        The LCL in mb.
+        The LCL
 
     Other Parameters
     ----------------
@@ -207,12 +206,12 @@ def parcel_profile(pressure, temperature, dewpt):
     Parameters
     ----------
     pressure : array_like
-        The atmospheric pressure in mb. The first entry should be the starting
+        The atmospheric pressure level(s) of interest. The first entry should be the starting
         point pressure.
     temperature : array_like
-        The temperature in Kelvin
+        The starting temperature
     dewpt : array_like
-        The dew point in Kelvin
+        The starting dew point
 
     Returns
     -------
@@ -274,12 +273,12 @@ def saturation_vapor_pressure(temperature):
     Parameters
     ----------
     temperature : array_like
-        The temperature in degrees Celsius.
+        The temperature
 
     Returns
     -------
     array_like
-        The saturation water vapor (partial) presure in mb.
+        The saturation water vapor (partial) pressure
 
     See Also
     --------
@@ -314,15 +313,14 @@ def dewpoint_rh(temperature, rh):
     Parameters
     ----------
     temperature : array_like
-        Temperature in degrees Celsius
+        Air temperature
     rh : array_like
         Relative humidity expressed as a ratio in the range [0, 1]
 
     Returns
     -------
     array_like
-        The dew point temperature in degrees Celsius, with the shape
-        of the result being determined using numpy's broadcasting rules.
+        The dew point temperature
 
     See Also
     --------
@@ -339,12 +337,12 @@ def dewpoint(e):
     Parameters
     ----------
     e : array_like
-        Water vapor partial pressure in mb
+        Water vapor partial pressure
 
     Returns
     -------
     array_like
-        Dew point temperature in degrees Celsius.
+        Dew point temperature
 
     See Also
     --------
@@ -386,7 +384,7 @@ def mixing_ratio(part_press, tot_press):
     Returns
     -------
     array_like
-        The (mass) mixing ratio, unitless (e.g. Kg/Kg or g/g)
+        The (mass) mixing ratio, dimensionless (e.g. Kg/Kg or g/g)
 
     See Also
     --------

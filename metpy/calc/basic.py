@@ -75,12 +75,11 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     Parameters
     ----------
     temp : array_like
-        The air temperature in degrees Celsius
+        The air temperature
     speed : array_like
         The wind speed at 10m.  If instead the winds are at face level,
         `face_level_winds` should be set to True and the 1.5 multiplicative
-        correction will be applied automatically.  Wind speed should be
-        given in units of meters per second.
+        correction will be applied automatically.
 
     Returns
     -------
@@ -112,8 +111,6 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     if face_level_winds:
         speed = speed * 1.5
 
-    # Formula uses wind speed in km/hr, but passing in m/s makes more
-    # sense.  Convert here.
     temp_limit, speed_limit = 10. * units.degC, 3 * units.mph
     speed_factor = speed.to('km/hr').magnitude ** 0.16
     delta = temperature - 0. * units.degC
@@ -139,12 +136,12 @@ def heat_index(temperature, rh, mask_undefined=True):
     Parameters
     ----------
     temp : array_like
-        Air temperature in degrees Celsuis
+        Air temperature
     rh : array_like
-        The relative humidity expressed as an integer percentage.
+        The relative humidity expressed as a percentage in the range [0, 100].
 
     Returns : array_like
-        The corresponding Heat Index value(s) in degrees Celsuis
+        The corresponding Heat Index value(s)
 
     Other Parameters
     ----------------
