@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy as np
 import scipy.integrate as si
 from numpy.ma import log, exp

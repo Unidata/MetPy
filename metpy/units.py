@@ -10,6 +10,7 @@ units : `pint.UnitRegistry`
     import this registry and use it to grab units.
 '''
 
+from __future__ import division
 import pint
 import numpy as np
 

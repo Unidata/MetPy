@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy as np
 from numpy.ma import masked_array
 from ..package_tools import Exporter

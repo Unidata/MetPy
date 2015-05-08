@@ -1,3 +1,4 @@
+from __future__ import division
 import numpy as np
 from ..package_tools import Exporter
 from ..constants import g
