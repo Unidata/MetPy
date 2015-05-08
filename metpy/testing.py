@@ -31,10 +31,15 @@ def check_and_drop_units(actual, desired):
 
 
 def assert_almost_equal(actual, desired, decimal=7):
-        actual, desired = check_and_drop_units(actual, desired)
-        numpy.testing.assert_almost_equal(actual, desired, decimal)
+    actual, desired = check_and_drop_units(actual, desired)
+    numpy.testing.assert_almost_equal(actual, desired, decimal)
 
 
 def assert_array_almost_equal(actual, desired, decimal=7):
     actual, desired = check_and_drop_units(actual, desired)
     numpy.testing.assert_array_almost_equal(actual, desired, decimal)
+
+
+def assert_array_equal(actual, desired):
+    actual, desired = check_and_drop_units(actual, desired)
+    numpy.testing.assert_array_equal(actual, desired)

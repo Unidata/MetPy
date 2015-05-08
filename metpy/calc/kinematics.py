@@ -1,14 +1,29 @@
 import numpy as np
 from ..package_tools import Exporter
 from ..constants import g
+from ..units import atleast_2d, concatenate, units
 
 exporter = Exporter(globals())
 
 
+def _gradient(f, *args, **kwargs):
+    if len(args) < f.ndim:
+        args = list(args)
+        args.extend([units.Quantity(1., 'dimensionless')] * (f.ndim - len(args)))
+    grad = np.gradient(f, *args, **kwargs)
+    if f.ndim == 1:
+        return units.Quantity(grad, f.units / args[0].units)
+    return [units.Quantity(g, f.units / dx.units) for dx, g in zip(args, grad)]
+
+
+def _stack(arrs):
+    return concatenate([a[np.newaxis] for a in arrs], axis=0)
+
+
 def _get_gradients(u, v, dx, dy):
     # Helper function for getting convergence and vorticity from 2D arrays
-    dudx, dudy = np.gradient(u, dx, dy)
-    dvdx, dvdy = np.gradient(v, dx, dy)
+    dudx, dudy = _gradient(u, dx, dy)
+    dvdx, dvdy = _gradient(v, dx, dy)
     return dudx, dudy, dvdx, dvdy
 
 
@@ -138,52 +153,44 @@ def advection(scalar, wind, deltas):
         An N-dimensional array containing the advection at all grid points.
     '''
 
+    # This allows passing in a list of wind components or an array
+    wind = _stack(wind)
+
     # Gradient returns a list of derivatives along each dimension.  We convert
     # this to an array with dimension as the first index
-    grad = np.asarray(np.gradient(scalar, *deltas))
-
-    # This allows passing in a list of wind components or an array
-    wind = np.asarray(wind)
+    grad = _stack(_gradient(scalar, *deltas))
 
     # Make them be at least 2D (handling the 1D case) so that we can do the
     # multiply and sum below
-    grad, wind = np.atleast_2d(grad, wind)
+    grad, wind = atleast_2d(grad, wind)
 
     return (-grad * wind).sum(axis=0)
 
 
 @exporter.export
-def geostrophic_wind(heights, f, dx, dy, geopotential=False):
-    r'''Calculate the geostrophic wind given from the heights.
+def geostrophic_wind(heights, f, dx, dy):
+    r'''Calculate the geostrophic wind given from the heights or geopotential.
 
     Parameters
     ----------
     heights : (x,y) ndarray
         The height field, given with leading dimensions of x by y.  There
-        can be trailing dimensions on the array. These are assumed in meters
-        and will be scaled by gravity.
+        can be trailing dimensions on the array.
     f : array_like
-        The coriolis parameter in s^-1.  This can be a scalar to be applied
+        The coriolis parameter.  This can be a scalar to be applied
         everywhere or an array of values.
     dx : scalar
-        The grid spacing in the x-direction in meters.
+        The grid spacing in the x-direction
     dy : scalar
-        The grid spacing in the y-direction in meters.
+        The grid spacing in the y-direction
 
     Returns
     -------
     A 2-item tuple of arrays
-        A tuple of the x-component and y-component of the geostropic wind in
-        m s^-1.
-
-    Other Parameters
-    ----------------
-    geopotential : boolean, optional
-        If true, the heights are assumed to actually be values of geopotential,
-        in units of m^2 s^-2, and the values will not be scaled by gravity.
+        A tuple of the x-component and y-component of the geostrophic wind.
     '''
 
-    if geopotential:
+    if heights.dimensionality['[length]'] == 2.0:
         norm_factor = 1. / f
     else:
         norm_factor = g / f
@@ -193,8 +200,8 @@ def geostrophic_wind(heights, f, dx, dy, geopotential=False):
     # to loop in this case, but that remains to be done.
     deltas = [dx, dy]
     if heights.ndim > 2:
-        deltas = deltas + [1.] * (heights.ndim - 2)
+        deltas = deltas + [units.Quantity(1., units.m)] * (heights.ndim - 2)
 
-    grad = np.gradient(heights, *deltas)
+    grad = _gradient(heights, *deltas)
     dx, dy = grad[0], grad[1]  # This throws away unused gradient components
     return -norm_factor * dy, norm_factor * dx
