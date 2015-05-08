@@ -3,7 +3,7 @@ import scipy.integrate as si
 from numpy.ma import log, exp
 from ..package_tools import Exporter
 from ..constants import epsilon, kappa, P0, Rd, Lv, Cp_d
-from ..units import units, concatenate
+from ..units import atleast_1d, concatenate, units
 
 exporter = Exporter(globals())
 
@@ -133,7 +133,7 @@ def moist_lapse(pressure, temperature):
         rs = mixing_ratio(saturation_vapor_pressure(t), p)
         return (1. / p) * ((Rd * t + Lv * rs) /
                            (Cp_d + (Lv * Lv * rs * epsilon / (Rd * t * t))))
-    return units.Quantity(si.odeint(dt, np.atleast_1d(temperature).squeeze(),
+    return units.Quantity(si.odeint(dt, atleast_1d(temperature).squeeze(),
                                     pressure.squeeze()).T.squeeze(), temperature.units)
 
 
@@ -227,15 +227,15 @@ def parcel_profile(pressure, temperature, dewpt):
     l = lcl(pressure[0], temperature, dewpt).to(pressure.units)
 
     # Find the dry adiabatic profile, *including* the LCL
-    press_lower = concatenate(pressure[pressure > l], l)
+    press_lower = concatenate((pressure[pressure > l], l))
     t1 = dry_lapse(press_lower, temperature)
 
     # Find moist pseudo-adiabatic profile starting at the LCL
-    press_upper = concatenate(l, pressure[pressure < l])
+    press_upper = concatenate((l, pressure[pressure < l]))
     t2 = moist_lapse(press_upper, t1[-1]).to(t1.units)
 
     # Return LCL *without* the LCL point
-    return concatenate(t1[:-1], t2[1:])
+    return concatenate((t1[:-1], t2[1:]))
 
 
 @exporter.export

@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.ma import masked_array
 from ..package_tools import Exporter
-from ..units import units
+from ..units import atleast_1d, units
 
 exporter = Exporter(globals())
 
@@ -28,7 +28,7 @@ def get_speed_dir(u, v):
     '''
 
     speed = np.sqrt(u * u + v * v)
-    wdir = units.Quantity(np.atleast_1d(90. * units.deg - np.arctan2(v, u)), units.deg)
+    wdir = atleast_1d(90. * units.deg - np.arctan2(v, u))
     wdir[wdir < 0] += 360. * units.deg
     return speed, wdir.reshape(speed.shape)
 
