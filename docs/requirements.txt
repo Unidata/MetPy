@@ -1,3 +1,4 @@
 sphinx==1.2
 sphinxcontrib-napoleon
 ipython
+jsonschema
