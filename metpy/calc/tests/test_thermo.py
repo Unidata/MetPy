@@ -83,6 +83,12 @@ class TestDewpoint(object):
     def test_scalar(self):
         assert_almost_equal(dewpoint(6.112 * units.mbar), 0. * units.degC, 2)
 
+    def test_weird_units(self):
+        # This was revealed by a having odd dimensionless units and ending up using
+        # numpy.ma math functions instead of numpy ones.
+        assert_almost_equal(dewpoint(15825.6 * units('g * mbar / kg')),
+                            13.8564 * units.degC, 4)
+
 
 class TestMixingRatio(object):
     def test_scalar(self):

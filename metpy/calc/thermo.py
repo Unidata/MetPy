@@ -1,7 +1,6 @@
 from __future__ import division
 import numpy as np
 import scipy.integrate as si
-from numpy.ma import log, exp
 from ..package_tools import Exporter
 from ..constants import epsilon, kappa, P0, Rd, Lv, Cp_d
 from ..units import atleast_1d, concatenate, units
@@ -302,8 +301,8 @@ def saturation_vapor_pressure(temperature):
 
     # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
     # a formula plays havoc with units support.
-    return sat_pressure_0c * exp(17.67 * (temperature - 273.15 * units.kelvin) /
-                                 (temperature - 29.65 * units.kelvin))
+    return sat_pressure_0c * np.exp(17.67 * (temperature - 273.15 * units.kelvin) /
+                                    (temperature - 29.65 * units.kelvin))
 
 
 @exporter.export
@@ -363,7 +362,7 @@ def dewpoint(e):
            Temperature. Mon. Wea. Rev., 108, 1046-1053.
     '''
 
-    val = log(e / sat_pressure_0c)
+    val = np.log(e / sat_pressure_0c)
     return 0. * units.degC + 243.5 * units.delta_degC * val / (17.67 - val)
 
 
