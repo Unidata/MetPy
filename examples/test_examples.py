@@ -8,7 +8,7 @@ import traceback
 
 # Loop over all scripts, read them in and execute. If *any* exception is raised,
 # print it out and print 'FAILED'. If any example fails to run, exit non-zero.
-script_dir = os.path.join(os.path.split(__file__)[0], 'scripts')
+script_dir = os.path.join(os.path.dirname(__file__), 'scripts')
 failed_test = False
 for fname in glob.glob(os.path.join(script_dir, '*.py')):
     with open(fname) as pysource:

@@ -28,7 +28,7 @@ def nb_to_rst(nb_path):
     """convert notebook to restructured text"""
     exporter = rst.RSTExporter()
     out, resources = exporter.from_file(nb_path)
-    basename = os.path.splitext(os.path.split(nb_path)[-1])[0]
+    basename = os.path.splitext(os.path.basename(nb_path))[0]
     imgdir = basename + '_files'
     img_prefix = os.path.join(imgdir, basename + '_')
     resources['metadata']['basename'] = basename

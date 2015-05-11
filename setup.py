@@ -24,7 +24,7 @@ class MakeExamples(Command):
         import os.path
         from IPython.nbconvert.exporters import python
         from IPython.config import Config
-        examples_dir = os.path.join(os.path.split(__file__)[0], 'examples')
+        examples_dir = os.path.join(os.path.dirname(__file__), 'examples')
         script_dir = os.path.join(examples_dir, 'scripts')
         if not os.path.exists(script_dir):
             os.makedirs(script_dir)
@@ -32,7 +32,7 @@ class MakeExamples(Command):
         exporter = python.PythonExporter(config=c)
         for fname in glob.glob(os.path.join(examples_dir, 'notebooks', '*.ipynb')):
             output, _ = exporter.from_filename(fname)
-            out_fname = os.path.splitext(os.path.split(fname)[-1])[0]
+            out_fname = os.path.splitext(os.path.basename(fname))[0]
             out_name = os.path.join(script_dir, out_fname + '.py')
             print(fname, '->', out_name)
             with open(out_name, 'w') as outf:
