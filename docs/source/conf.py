@@ -34,8 +34,7 @@ extensions = [
     'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
     'sphinx.ext.mathjax',
-    #'sphinx.ext.napoleon',
-    'sphinxcontrib.napoleon',
+    'sphinx.ext.napoleon',
     'notebook_gen_sphinxext'
 ]
 
