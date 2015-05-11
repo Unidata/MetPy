@@ -4,6 +4,7 @@ ignore-paths:
   - versioneer.py
   - metpy/_version.py
 # Until the SyntaxError this causes with PyLint is fixed
+  - metpy/io/tools.py
   - metpy/io/nexrad.py
   - examples
 
