@@ -45,7 +45,8 @@ def nb_to_rst(nb_path):
 
 
 def write_nb(dest, output, resources):
-    os.makedirs(dest, exist_ok=True)
+    if not os.path.exists(dest):
+        os.makedirs(dest)
     rst_file = os.path.join(dest,
                             resources['metadata']['basename'] + resources['output_extension'])
     name = resources['metadata']['name']
@@ -57,7 +58,8 @@ def write_nb(dest, output, resources):
         rst.write(output)
 
     imgdir = os.path.join(dest, resources['metadata']['imgdir'])
-    os.makedirs(imgdir, exist_ok=True)
+    if not os.path.exists(imgdir):
+        os.makedirs(imgdir)
     basename = resources['metadata']['basename']
     for filename in resources['outputs']:
         img_file =  os.path.join(imgdir, filename.replace('output_', basename + '_'))
