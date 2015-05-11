@@ -24,24 +24,27 @@ matrix:
     # Docs built on 2.7 because that's what readthedocs uses
     - python: 2.7
       env: DOCBUILD=true
+    - python: 2.7
+      env: EXAMPLES=true
     - python: 3.2
     - python: 3.3
     - python: 3.4
       env: NOSE_WITH_COVERAGE=y NOSE_COVER_PACKAGE=metpy
     - python: 3.4
       env: LINT=true
+    - python: 3.4
+      env: EXAMPLES=true
     #- python: nightly
   allow_failures:
     - python: nightly
 
 before_install:
-  # Stuck on sphinx 1.2 for docbuilds until readthedocs upgrades
   - virtualenv --python=python venv
   - source venv/bin/activate
   - if [[ $LINT == true ]]; then
       pip install flake8 pep8-naming;
     else
-      if [[ $DOCBUILD == true ]]; then
+      if [[ $DOCBUILD == true || $EXAMPLES == true ]]; then
         pip install -r docs/requirements.txt;
       else
         pip install nose;
@@ -53,13 +56,13 @@ before_install:
       pip install -f "file://$PWD/travis-wheels-${TRAVIS_PYTHON_VERSION}/wheelhouse/" -r $REQUIRES;
       python -c "import numpy; print(numpy.__version__)";
     fi
-  - if [[ $NOSE_WITH_COVERAGE == y ]]; then
-      pip install coveralls;
-    fi
 
 install:
   - if [[ $LINT != true ]]; then
       python setup.py install;
+    fi
+  - if [[ $EXAMPLES == true ]]; then
+      python setup.py examples;
     fi
 
 script:
@@ -68,11 +71,15 @@ script:
     elif [[ $DOCBUILD == true ]]; then
       cd docs;
       make html;
+    elif [[ $EXAMPLES == true ]]; then
+      cd examples;
+      python test_examples.py;
     else
       nosetests;
     fi
 
 after_success:
   - if [[ $NOSE_WITH_COVERAGE == y ]]; then
+      pip install coveralls;
       coveralls;
     fi
