@@ -7,6 +7,7 @@ Welcome to MetPy's documentation!
 =================================
 
 Contents:
+   Requirements For Installation
 
 .. toctree::
    :maxdepth: 2
