@@ -73,7 +73,8 @@ script:
       make html;
     elif [[ $EXAMPLES == true ]]; then
       cd examples;
-      TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata python test_examples.py;
+      echo backend:agg > matplotlibrc;
+      MPLBACKEND='agg' TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata python test_examples.py;
     else
       nosetests;
     fi
