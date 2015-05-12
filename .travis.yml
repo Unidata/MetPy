@@ -9,6 +9,7 @@ addons:
     packages:
     - libblas3gf
     - liblapack3gf
+    - pandoc
 
 env:
   global:
@@ -48,6 +49,9 @@ before_install:
         pip install -r docs/requirements.txt;
       else
         pip install nose;
+      fi;
+      if [[ $NOSE_WITH_COVERAGE == y ]]; then
+        pip install coverage;
       fi;
       wget https://github.com/MetPy/travis-wheels/archive/${TRAVIS_PYTHON_VERSION}.zip -O wheels.zip && unzip wheels.zip;
       if [[ $TRAVIS_PYTHON_VERSION == "nightly" ]]; then

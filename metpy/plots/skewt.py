@@ -7,7 +7,7 @@ from matplotlib.collections import LineCollection
 from matplotlib.projections import register_projection
 from matplotlib.ticker import ScalarFormatter, MultipleLocator
 from ..calc import dry_lapse, moist_lapse, dewpoint, vapor_pressure
-from scipy.constants import C2K, K2C
+from ..units import units
 
 from ..package_tools import Exporter
 
@@ -283,14 +283,14 @@ class SkewT(object):
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
-            t0 = np.arange(xmin, xmax + 1, 10)
+            t0 = np.arange(xmin, xmax + 1, 10) * units.degC
 
         # Get pressure levels based on ylims if necessary
         if p is None:
-            p = np.linspace(*self.ax.get_ylim())
+            p = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = K2C(dry_lapse(p, C2K(t0[:, np.newaxis])))
+        t = dry_lapse(p, t0[:, np.newaxis]).to(units.degC)
         linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
@@ -331,14 +331,14 @@ class SkewT(object):
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
             t0 = np.concatenate((np.arange(xmin, 0, 10),
-                                 np.arange(0, xmax + 1, 5)))
+                                 np.arange(0, xmax + 1, 5))) * units.degC
 
         # Get pressure levels based on ylims if necessary
         if p is None:
-            p = np.linspace(*self.ax.get_ylim())
+            p = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = K2C(moist_lapse(p, C2K(t0[:, np.newaxis])))
+        t = moist_lapse(p, t0[:, np.newaxis]).to(units.degC)
         linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
@@ -378,7 +378,7 @@ class SkewT(object):
 
         # Set pressure range if necessary
         if p is None:
-            p = np.linspace(600, max(self.ax.get_ylim()))
+            p = np.linspace(600, max(self.ax.get_ylim())) * units.mbar
 
         # Assemble data for plotting
         td = dewpoint(vapor_pressure(p, w))

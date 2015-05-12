@@ -1,9 +1,9 @@
 import numpy as np
-from numpy.testing import (TestCase, assert_array_equal)
+from numpy.testing import assert_array_equal
 from metpy.calc.turbulence import *  # noqa
 
 
-class TestTurbulenceKineticEnergy(TestCase):
+class TestTurbulenceKineticEnergy(object):
     def get_uvw_and_known_tke(self):
         u = np.array([-2, -1, 0, 1, 2])
         v = -u
@@ -65,7 +65,7 @@ class TestTurbulenceKineticEnergy(TestCase):
         assert_array_equal(e_true, tke(u, v, w, axis=0, perturbation=True))
 
 
-class TestGetPerturbation(TestCase):
+class TestGetPerturbation(object):
     def get_pert_from_zero_mean(self):
         ts = np.array([-2, -1, 0, 1, 2])
         #  ts.meam() = 0
