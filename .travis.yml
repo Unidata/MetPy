@@ -9,6 +9,7 @@ addons:
     packages:
     - libblas3gf
     - liblapack3gf
+    - pandoc
 
 env:
   global:
