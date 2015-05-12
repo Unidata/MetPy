@@ -1,1 +1,3 @@
-sphinxcontrib-napoleon
+sphinx>=1.3
+ipython
+jsonschema

@@ -1,4 +1,5 @@
-from setuptools import setup, find_packages
+from __future__ import print_function
+from setuptools import setup, find_packages, Command
 import versioneer
 versioneer.VCS = 'git'
 versioneer.versionfile_source = 'metpy/_version.py'
@@ -7,7 +8,41 @@ versioneer.tag_prefix = 'v'
 versioneer.parentdir_prefix = 'metpy-'
 
 
+class MakeExamples(Command):
+    description = 'Create example scripts from IPython notebooks'
+    user_options=[]
+
+    def initialize_options(self):
+        pass
+
+    def finalize_options(self):
+        pass
+
+    def run(self):
+        import glob
+        import os
+        import os.path
+        from IPython.nbconvert.exporters import python
+        from IPython.config import Config
+        examples_dir = os.path.join(os.path.dirname(__file__), 'examples')
+        script_dir = os.path.join(examples_dir, 'scripts')
+        if not os.path.exists(script_dir):
+            os.makedirs(script_dir)
+        c = Config({'Exporter': {'template_file': 'examples/python-scripts.tpl'}})
+        exporter = python.PythonExporter(config=c)
+        for fname in glob.glob(os.path.join(examples_dir, 'notebooks', '*.ipynb')):
+            output, _ = exporter.from_filename(fname)
+            out_fname = os.path.splitext(os.path.basename(fname))[0]
+            out_name = os.path.join(script_dir, out_fname + '.py')
+            print(fname, '->', out_name)
+            with open(out_name, 'w') as outf:
+                outf.write(output)
+
+
 ver = versioneer.get_version()
+commands = versioneer.get_cmdclass()
+commands.update(examples=MakeExamples)
+
 
 setup(
     name='MetPy',
@@ -43,6 +78,6 @@ setup(
         'test': ['nosetest']
     },
 
-    cmdclass=versioneer.get_cmdclass(),
+    cmdclass=commands,
 
     download_url='https://github.com/metpy/MetPy/archive/v%s.tar.gz' % ver,)

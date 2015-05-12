@@ -1,14 +1,17 @@
 import glob
 import os.path
+
+import nose.tools
 from numpy.testing import TestCase
 from metpy.io.nexrad import Level2File, Level3File, is_precip_mode
+from metpy.cbook import get_test_data
 
-curdir, f = os.path.split(__file__)
-datadir = os.path.join(curdir, '../../../examples/testdata')
+get_test_data = nose.tools.nottest(get_test_data)
 
 
 def test_level3_generator():
-    for fname in glob.glob(os.path.join(datadir, 'nids', 'K???_*')):
+    datadir = get_test_data('nids', as_file_obj=False)
+    for fname in glob.glob(os.path.join(datadir, 'K???_*')):
         yield read_level3_file, fname
 
 
@@ -23,7 +26,7 @@ level2_files = ['KTLX20130520_201643_V06.gz', 'KTLX19990503_235621.gz',
 
 def test_level2_generator():
     for fname in level2_files:
-        yield read_level2_file, os.path.join(datadir, fname)
+        yield read_level2_file, get_test_data(fname, as_file_obj=False)
 
 
 def read_level2_file(fname):
@@ -32,22 +35,18 @@ def read_level2_file(fname):
 
 class TestLevel2(TestCase):
     def test_fobj(self):
-        fobj = open(os.path.join(datadir, 'Level2_KFTG_20150430_1419.ar2v'),
-                    'rb')
-        Level2File(fobj)
+        Level2File(get_test_data('Level2_KFTG_20150430_1419.ar2v'))
 
 
 class TestLevel3(TestCase):
     def test_basic(self):
-        Level3File(os.path.join(datadir, 'nids/Level3_FFC_N0Q_20140407_1805.nids'))
+        Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids', as_file_obj=False))
 
     def test_nwstg(self):
-        Level3File(os.path.join(datadir, 'nids/sn.last'))
+        Level3File(get_test_data('nids/sn.last', as_file_obj=False))
 
     def test_fobj(self):
-        fobj = open(os.path.join(datadir, 'nids/Level3_FFC_N0Q_20140407_1805.nids'),
-                    'rb')
-        Level3File(fobj)
+        Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids'))
 
 
 class TestPrecipMode(TestCase):

@@ -50,14 +50,6 @@ help:
 clean:
 	rm -rf $(BUILDDIR)/*
 
-all: scripts examples html
-
-scripts:
-	cd ../examples/scripts && $(NBCONVERT)
-
-examples:
-	cd source/examples/generated && $(NBCONVERT)
-
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
 	@echo

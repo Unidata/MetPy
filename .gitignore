@@ -1,6 +1,7 @@
 ~*
 .DS_Store
 *.swp
+.idea/
 
 *.pyc
 
@@ -14,3 +15,5 @@ build/*
 MANIFEST
 
 docs/build/
+docs/source/examples/generated
+examples/scripts
