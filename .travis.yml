@@ -50,6 +50,9 @@ before_install:
       else
         pip install nose;
       fi;
+      if [[ $NOSE_WITH_COVERAGE == y ]]; then
+        pip install coverage;
+      fi;
       wget https://github.com/MetPy/travis-wheels/archive/${TRAVIS_PYTHON_VERSION}.zip -O wheels.zip && unzip wheels.zip;
       if [[ $TRAVIS_PYTHON_VERSION == "nightly" ]]; then
         cd travis-wheels-${TRAVIS_PYTHON_VERSION}/wheel-0.24.0 && python setup.py install && cd ../..;
