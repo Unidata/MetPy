@@ -17,6 +17,10 @@ class TestPotentialTemperature(object):
         assert_almost_equal(potential_temperature(800. * units.mbar, 293. * units.kelvin),
                             312.2987 * units.kelvin, 4)
 
+    def test_farenheit(self):
+        assert_almost_equal(potential_temperature(800. * units.mbar, 68. * units.degF),
+                            (312.4586 * units.kelvin).to(units.degF), 4)
+
 
 class TestDryLapse(object):
     def test_array(self):
@@ -58,12 +62,17 @@ class TestParcelProfile(object):
 class TestSatVaporPressure(object):
     def test_basic(self):
         temp = np.array([5., 10., 18., 25.]) * units.degC
-        real_es = np.array([8.72, 12.28, 20.64, 31.68]) * units.mbar
+        real_es = np.array([8.72, 12.27, 20.63, 31.67]) * units.mbar
         assert_array_almost_equal(saturation_vapor_pressure(temp), real_es, 2)
 
     def test_scalar(self):
         es = saturation_vapor_pressure(0 * units.degC)
         assert_almost_equal(es, 6.112 * units.mbar, 3)
+
+    def test_farenheit(self):
+        temp = np.array([50., 68.]) * units.degF
+        real_es = np.array([12.2717, 23.3695]) * units.mbar
+        assert_array_almost_equal(saturation_vapor_pressure(temp), real_es, 4)
 
 
 class TestDewpointRH(object):
