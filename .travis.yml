@@ -73,7 +73,7 @@ script:
       make html;
     elif [[ $EXAMPLES == true ]]; then
       cd examples;
-      python test_examples.py;
+      TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata python test_examples.py;
     else
       nosetests;
     fi
