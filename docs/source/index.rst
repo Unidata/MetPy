@@ -15,6 +15,7 @@ Contents:
    units
    api/index
    examples/index
+   developerguide
 
 
 
