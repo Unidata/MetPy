@@ -69,6 +69,7 @@ setup(
     keywords='meteorology weather',
 
     packages=find_packages(exclude=['doc', 'examples']),
+    package_data={'metpy.plots': ['colortables/*.tbl', 'nexrad_tables/*.tbl']},
     test_suite="nose.collector",
 
     install_requires=['matplotlib>=1.4', 'numpy>=1.8', 'scipy>=0.13.3',
