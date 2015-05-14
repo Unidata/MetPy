@@ -69,13 +69,14 @@ setup(
     keywords='meteorology weather',
 
     packages=find_packages(exclude=['doc', 'examples']),
+    package_data={'metpy.plots': ['colortables/*.tbl', 'nexrad_tables/*.tbl']},
     test_suite="nose.collector",
 
     install_requires=['matplotlib>=1.4', 'numpy>=1.8', 'scipy>=0.13.3',
                       'pint>=0.6'],
     extras_require={
-        'dev': ['ipython[all]>=3.0'],
-        'doc': ['sphinxcontrib-napoleon'],
+        'dev': ['ipython[all]>=3.1'],
+        'doc': ['sphinx>=1.3', 'ipython[all]>=3.1'],
         'test': ['nosetest']
     },
 
