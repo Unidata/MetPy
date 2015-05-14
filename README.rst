@@ -57,6 +57,14 @@ MetPy is still in an early stage of development, and as such
 just for fun, many things may still change as we work through
 design issues.
 
+Important Links
+---------------
+
+- Source code repository: https://github.com/MetPy/MetPy
+- HTML Documentation (stable release): http://metpy.readthedocs.org/en/stable/
+- HTML Documentation (development): http://metpy.readthedocs.org/en/latest/
+- Issue tracker: http://github.com/Metpy/MetPy/issues
+
 Dependencies
 ------------
 Other required packages:
@@ -64,3 +72,4 @@ Other required packages:
 - Numpy
 - Scipy
 - Matplotlib
+- Pint
