@@ -9,6 +9,7 @@ Requirements
 - nose
 - flake8
 - sphinx >= 1.3
+- sphinx-rtd-theme >= 0.1.7
 - IPython >= 3.1
 - pandoc (not a python package)
 
@@ -109,7 +110,8 @@ also be converted to standalone scripts using:
 
 The documentation is hosted by `Read the Docs <http://metpy.readthedocs.org>`_. The docs are built automatically
 from ``master`` as well as for the tagged versions on github. ``master`` is used for the ``latest`` documentation,
-and the latest tagged version is used for the ``stable`` documentation.
+and the latest tagged version is used for the ``stable`` documentation. To see what the docs will look like on RTD,
+you also need to install the ``sphinx-rtd-theme`` package.
 
 -----------
 Other Tools
