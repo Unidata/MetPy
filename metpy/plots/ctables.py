@@ -1,3 +1,4 @@
+import ast
 import glob
 import os.path
 import posixpath
@@ -5,6 +6,12 @@ import matplotlib.colors as mcolors
 from pkg_resources import resource_listdir, resource_stream
 
 TABLE_EXT = '.tbl'
+
+
+def _parse(s):
+    if hasattr(s, 'decode'):
+        s = s.decode('ascii')
+    return ast.literal_eval(s)
 
 
 def read_colortable(fobj):
@@ -25,7 +32,7 @@ def read_colortable(fobj):
         A list of the RGB color values, where each RGB color is a tuple of 3 floats in the
         range of [0, 1].
     '''
-    return [mcolors.colorConverter.to_rgb(eval(line)) for line in fobj]
+    return [mcolors.colorConverter.to_rgb(_parse(line)) for line in fobj]
 
 
 class ColortableRegistry(dict):
