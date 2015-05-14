@@ -78,7 +78,7 @@ class ColortableRegistry(dict):
 
         self[name] = read_colortable(fobj)
 
-    def get_with_limits(self, name, start, step):
+    def get_with_steps(self, name, start, step):
         r'''Get a colortable from the registry with a corresponding norm.
 
         Builds a `matplotlib.colors.BoundaryNorm` using `start`, `step`, and
@@ -100,10 +100,12 @@ class ColortableRegistry(dict):
             from the number of entries matching the colortable, and the colortable itself.
         '''
 
-        import numpy as np
-        cmap = mcolors.ListedColormap(self[name])
-        boundaries = np.linspace(start, step * cmap.N, cmap.N)
-        return mcolors.BoundaryNorm(boundaries, cmap.N), cmap
+        from numpy import arange
+
+        # Need one more boundary than color
+        num_steps = len(self[name]) + 1
+        boundaries = arange(start, step * num_steps, step)
+        return self.get_with_boundaries(name, boundaries)
 
     def get_with_boundaries(self, name, boundaries):
         r'''Get a colortable from the registry with a corresponding norm.
@@ -123,7 +125,7 @@ class ColortableRegistry(dict):
             The boundary norm based on `boundaries`, and the colortable itself.
         '''
 
-        cmap = mcolors.ListedColormap(self[name])
+        cmap = self.get_colortable(name)
         return mcolors.BoundaryNorm(boundaries, cmap.N), cmap
 
     def get_colortable(self, name):
@@ -140,7 +142,7 @@ class ColortableRegistry(dict):
             The colortable corresponding to `name`
         '''
 
-        return mcolors.ListedColormap(dict.get(self, name))
+        return mcolors.ListedColormap(self.get(name), name=name)
 
 
 registry = ColortableRegistry()
