@@ -125,3 +125,22 @@ ensure they stay working.
 Test coverage is monitored by `Coveralls.io <https://coveralls.io/r/metpy/MetPy>`_.
 
 `Landscape.io <https://landscape.io/github/metpy/MetPy>`_ is used to track code quality using the ``prospector`` tool.
+
+---------
+Releasing
+---------
+
+To create a new release:
+
+1. Go to the GitHub page and make a new release. The tag should be a sensible version number, like v1.0.0. Add a
+   name (can just be the version) and add some notes on what the big changes are.
+2. Do a pull locally to grab the new tag. This will ensure that ``versioneer`` will give you the proper version.
+3. (optional) Perform a ``git clean -f -x -d`` from the root of the repository. This will **delete** everything not
+   tracked by git, but will also ensure clean source distribution. ``MANIFEST.in`` is set to include/exclude mostly
+   correctly, but could miss some things.
+4. Run ``python setup.py sdist bdist_wheel`` (this requires ``wheel`` is installed).
+5. Upload using ``twine``: ``twine upload dist/*``, assuming the ``dist/`` directory contains only files for this
+   release. This upload process will include any changes to the ``README`` as well as any updated flags from
+   ``setup.py``.
+6. Tagging a new version on GitHub should also update the `stable <http://metpy.readthedocs.org/en/stable>`_  docs on
+   Read the Docs.
