@@ -5,3 +5,8 @@ include versioneer.py
 include metpy/_version.py
 recursive-include examples *
 recursive-include docs *
+prune docs/build
+prune examples/scripts
+prune docs/source/examples/generated
+prune docs/source/__pycache__
+exclude .ipynb_checkpoints/*
