@@ -1,31 +1,23 @@
 MetPy
 =====
 
-.. image:: https://pypip.in/status/MetPy/badge.svg
-    :target: https://pypi.python.org/pypi/MetPy/
-    :alt: Development Status
-
-.. image:: https://pypip.in/py_versions/MetPy/badge.svg
-    :target: https://pypi.python.org/pypi/MetPy/
-    :alt: Supported Python versions
-
-.. image:: https://pypip.in/implementation/MetPy/badge.svg
-    :target: https://pypi.python.org/pypi/MetPy/
-    :alt: Supported Python implementations
-
-.. image:: https://pypip.in/license/MetPy/badge.svg
+.. image:: https://img.shields.io/pypi/l/metpy.svg
     :target: https://pypi.python.org/pypi/MetPy/
     :alt: License
 
-.. image:: https://pypip.in/version/MetPy/badge.svg?text=version
+.. image:: https://img.shields.io/github/issues/badges/shields.svg
+    :target: http://www.github.com/metpy/MetPy/issues
+    :alt: GitHub Issues
+
+.. image:: https://img.shields.io/github/tag/metpy/metpy.svg
+    :target: https://github.com/metpy/MetPy/tags
+    :alt: GitHub Tags
+
+.. image:: https://img.shields.io/pypi/v/metpy.svg
     :target: https://pypi.python.org/pypi/MetPy/
     :alt: Latest Version
 
-.. image:: https://pypip.in/format/MetPy/badge.svg
-    :target: https://pypi.python.org/pypi/MetPy/
-    :alt: Download format
-
-.. image:: https://pypip.in/download/MetPy/badge.svg?period=month
+.. image:: https://img.shields.io/pypi/dm/metpy.svg
     :target: https://pypi.python.org/pypi/MetPy/
     :alt: Downloads
 
@@ -56,6 +48,8 @@ MetPy is still in an early stage of development, and as such
 **no APIs are considered stable.** While we won't break things
 just for fun, many things may still change as we work through
 design issues.
+
+We support Python 2.7 as well as Python >= 3.2.
 
 Important Links
 ---------------
