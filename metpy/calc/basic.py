@@ -44,8 +44,8 @@ def get_wind_components(speed, wdir):
     speed : array_like
         The wind speed (magnitude)
     wdir : array_like
-        The wind direction in degrees, specified as the direction from which the
-        wind is blowing.
+        The wind direction, specified as the direction from which the wind is
+        blowing.
 
     Returns
     -------
@@ -56,6 +56,13 @@ def get_wind_components(speed, wdir):
     See Also
     --------
     get_speed_dir
+
+    Examples
+    --------
+    >>> from metpy.units import units
+    >>> metpy.calc.get_wind_components(10. * units('m/s'), 225. * units.deg)
+    (<Quantity(7.071067811865475, 'meter / second')>,
+     <Quantity(7.071067811865477, 'meter / second')>)
     '''
 
     u = -speed * np.sin(wdir)
