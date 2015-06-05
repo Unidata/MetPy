@@ -42,7 +42,8 @@ def potential_temperature(pressure, temperature):
 
     Examples
     --------
-    >>> metpy.calc.potential_temperature(800. * metpy.units.mbar, 273. * metpy.units.kelvin)
+    >>> from metpy.units import units
+    >>> metpy.calc.potential_temperature(800. * units.mbar, 273. * units.kelvin)
     290.9814150577374
 
     '''
