@@ -67,3 +67,22 @@ Other required packages:
 - Scipy
 - Matplotlib
 - Pint
+
+Philosophy
+----------
+The space MetPy aims for is GEMPAK (and maybe NCL)-like functionality, in a way that plugs easily
+into the existing scientific Python ecosystem (numpy, scipy, matplotlib). So, if you take the average GEMPAK script
+for a weather map, you need to:
+
+- read data
+- calculate a derived field
+- show on a map/skew-T
+
+One of the benefits hoped to achieve over GEMPAK is to make it easier to use these routines for any
+meteorological Python application; this means making it easy to pull out the LCL calculation and just use that,
+or re-use the Skew-T with your own data code. MetPy also prides itself on being well-documented and well-tested,
+so that on-going maintenance is easily manageable.
+
+The intended audience is that of GEMPAK: researchers, educators, and any one wanting to script up weather analysis.
+It doesn't even have to be scripting; all python meteorology tools are hoped to be able to benefit from MetPy.
+Conversely, it's hoped to be the meteorological equivalent of the audience of scipy/scikit-learn/skimage.
