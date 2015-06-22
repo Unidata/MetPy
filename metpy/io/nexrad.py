@@ -456,7 +456,7 @@ class Level2File(object):
 
                     ends = data[offset:2 * num_rng + offset:2]
                     offset += 2 * num_rng - 1
-                    az_data.append(zip(ends, codes))
+                    az_data.append(list(zip(ends, codes)))
                 cmap['data'].append(az_data)
 
             self.clutter_filter_map = cmap
@@ -1927,7 +1927,7 @@ class Level3File(object):
             value = None
         scale = self.pos_scale(in_sym_block)
         pos = [b * scale for b in self._buffer.read_binary(num_bytes / 2, '>h')]
-        vectors = zip(pos[::2], pos[1::2])
+        vectors = list(zip(pos[::2], pos[1::2]))
         return dict(vectors=vectors, color=value)
 
     def _unpack_packet_vector(self, code, in_sym_block):
@@ -1939,7 +1939,7 @@ class Level3File(object):
             value = None
         scale = self.pos_scale(in_sym_block)
         pos = [p * scale for p in self._buffer.read_binary(num_bytes / 2, '>h')]
-        vectors = zip(pos[::4], pos[1::4], pos[2::4], pos[3::4])
+        vectors = list(zip(pos[::4], pos[1::4], pos[2::4], pos[3::4]))
         return dict(vectors=vectors, color=value)
 
     def _unpack_packet_contour_color(self, code, in_sym_block):

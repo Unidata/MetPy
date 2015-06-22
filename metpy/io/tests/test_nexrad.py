@@ -1,6 +1,8 @@
 import glob
 import os.path
 
+import numpy as np
+
 import nose.tools
 from metpy.io.nexrad import Level2File, Level3File, is_precip_mode
 from metpy.cbook import get_test_data
@@ -57,3 +59,29 @@ class TestPrecipMode(object):
 
     def test31(self):
         assert not is_precip_mode(31), 'VCP 31 is not precip'
+
+
+class TestZipCalls(object):
+    def test_msg15(self):
+        f = Level2File(get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False))
+        data = f.clutter_filter_map['data']
+        assert isinstance(data[0][0], list)
+
+    def test_tracks(self):
+        f = Level3File(get_test_data('nids/KOUN_SDUS34_NSTTLX_201305202016'))
+        for data in f.sym_block[0]:
+            if 'track' in data:
+                x, y = np.array(data['track']).T
+                assert len(x)
+                assert len(y)
+
+    def test_vector_packet(self):
+        f = Level3File(get_test_data('nids/KOUN_SDUS64_NHITLX_201305202016'))
+        for page in f.graph_pages:
+            for item in page:
+                if 'vectors' in item:
+                    x1, x2, y1, y2 = np.array(item['vectors']).T
+                    assert len(x1)
+                    assert len(x2)
+                    assert len(y1)
+                    assert len(y2)
