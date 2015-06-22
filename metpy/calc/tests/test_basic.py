@@ -122,6 +122,13 @@ class TestHeatIndex(object):
         mask = np.array([False] * 6)
         assert_array_equal(hi.mask, mask)
 
+    def test_units(self):
+        'Test units coming out of heat index'
+        temp = units.Quantity([35., 20.], units.degC)
+        rh = 70.
+        hi = heat_index(temp, rh)
+        assert_almost_equal(hi.to('degC'), units.Quantity([50.3405, np.nan], units.degC), 4)
+
 
 # class TestIrrad(object):
 #    def test_basic(self):

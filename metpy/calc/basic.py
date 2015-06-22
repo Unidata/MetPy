@@ -188,6 +188,6 @@ def heat_index(temperature, rh, mask_undefined=True):
     if mask_undefined:
         mask = np.array((temperature < 80. * units.degF) | (rh < 40))
         if mask.any():
-            hi = masked_array(hi, mask=mask)
+            hi = units.Quantity(masked_array(hi, mask=mask), hi.units)
 
     return hi
