@@ -218,7 +218,7 @@ class SkewT(object):
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
         self.ax.set_xlim(-50, 50)
 
-    def plot_barbs(self, p, u, v, xloc=1.0, **kwargs):
+    def plot_barbs(self, p, u, v, xloc=1.0, x_clip_radius=0.08, y_clip_radius=0.08, **kwargs):
         r'''Plot wind barbs.
 
         Adds wind barbs to the skew-T plot. This is a wrapper around the
@@ -236,6 +236,12 @@ class SkewT(object):
         xloc : float, optional
             Position for the barbs, in normalized axes coordinates, where 0.0
             denotes far left and 1.0 denotes far right. Defaults to far right.
+        x_clip_radius : float, optional
+            Space, in normalized axes coordinates, to leave before clipping
+            wind barbs in the x-direction. Defaults to 0.08.
+        y_clip_radius : float, optional
+            Space, in normalized axes coordinates, to leave above/below plot
+            before clipping wind barbs in the y-direction. Defaults to 0.08.
         kwargs
             Other keyword arguments to pass to `barbs`
 
@@ -249,9 +255,15 @@ class SkewT(object):
         x.fill(xloc)
 
         # Do barbs plot at this location
-        self.ax.barbs(x, p, u, v,
-                      transform=self.ax.get_yaxis_transform(which='tick2'),
-                      clip_on=False, **kwargs)
+        b = self.ax.barbs(x, p, u, v,
+                          transform=self.ax.get_yaxis_transform(which='tick2'),
+                          clip_on=True, **kwargs)
+
+        # Override the default clip box, which is the axes rectangle, so we can have
+        # barbs that extend outside.
+        ax_bbox = transforms.Bbox([[xloc - x_clip_radius, -y_clip_radius],
+                                   [xloc + x_clip_radius, 1.0 + y_clip_radius]])
+        b.set_clip_box(transforms.TransformedBbox(ax_bbox, self.ax.transAxes))
 
     def plot_dry_adiabats(self, t0=None, p=None, **kwargs):
         r'''Plot dry adiabats.
