@@ -21,6 +21,15 @@ import os
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('.'))
 
+#
+# Read the docs fix
+# On read the docs, there is no $HOME now, which breaks pandoc. Set one,
+# which is unused, so that pandoc will run
+# 
+
+if 'READTHEDOCS' in os.environ and not 'HOME' in os.environ:
+    os.environ['HOME'] = '/home/docs'  # Not sure what else to use
+
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
