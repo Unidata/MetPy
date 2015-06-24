@@ -2,9 +2,9 @@ from __future__ import print_function
 import bz2
 import datetime
 import gzip
+import logging
 import re
 import struct
-import warnings
 import zlib
 from collections import defaultdict, namedtuple, OrderedDict
 from struct import Struct
@@ -17,6 +17,9 @@ from ..package_tools import Exporter
 from .tools import Array, BitField, Bits, DictStruct, Enum, IOBuffer, NamedStruct, bits_to_code
 
 exporter = Exporter(globals())
+
+log = logging.getLogger("metpy.io.nexrad")
+log.setLevel(logging.WARNING)
 
 
 def version(val):
@@ -224,7 +227,7 @@ class Level2File(object):
                 if hasattr(self, '_decode_msg%d' % msg_hdr.msg_type):
                     getattr(self, '_decode_msg%d' % msg_hdr.msg_type)(msg_hdr)
                 else:
-                    warnings.warn('Unknown message: {0.msg_type}'.format(msg_hdr))
+                    log.warning('Unknown message: %d', msg_hdr.msg_type)
 
             # Jump to the start of the next message. This depends on whether
             # the message was legacy with fixed block size or not.
@@ -427,8 +430,7 @@ class Level2File(object):
             self.clutter_filter_bypass_map = bmap
 
             if offset != len(data):
-                warnings.warn('Message 13 left data -- Used: %d Avail: %d' %
-                              (offset, len(data)))
+                log.warning('Message 13 left data -- Used: %d Avail: %d', offset, len(data))
 
     msg15_code_map = {0: 'Bypass Filter', 1: 'Bypass map in Control',
                       2: 'Force Filter'}
@@ -461,8 +463,7 @@ class Level2File(object):
 
             self.clutter_filter_map = cmap
             if offset != len(data):
-                warnings.warn('Message 15 left data -- Used: %d Avail: %d' %
-                              (offset, len(data)))
+                log.warning('Message 15 left data -- Used: %d Avail: %d', offset, len(data))
 
     def _decode_msg18(self, msg_hdr):
         # buffer the segments until we have the whole thing. The data
@@ -581,8 +582,8 @@ class Level2File(object):
         self.sweeps[-1].append((data_hdr, vol_consts, el_consts, rad_consts, data))
 
         if data_hdr.num_data_blks != block_count:
-            warnings.warn('Incorrect number of blocks detected -- Got %d'
-                          'instead of %d' % (block_count, data_hdr.num_data_blks))
+            log.warning('Incorrect number of blocks detected -- Got %d'
+                        'instead of %d', block_count, data_hdr.num_data_blks)
         assert data_hdr.rad_length == self._buffer.offset_from(msg_start)
 
     def _buffer_segment(self, msg_hdr):
@@ -594,14 +595,14 @@ class Level2File(object):
 
     def _add_sweep(self, hdr):
         if not self.sweeps and not hdr.rad_status & START_VOLUME:
-            warnings.warn('Missed start of volume!')
+            log.warning('Missed start of volume!')
 
         if hdr.rad_status & START_ELEVATION:
             self.sweeps.append([])
 
         if len(self.sweeps) != hdr.el_num:
-            warnings.warn('Missed elevation -- Have %d but data on %d.'
-                          ' Compensating...' % (len(self.sweeps), hdr.el_num))
+            log.warning('Missed elevation -- Have %d but data on %d.'
+                        ' Compensating...', len(self.sweeps), hdr.el_num)
             while len(self.sweeps) < hdr.el_num:
                 self.sweeps.append([])
 
@@ -1470,7 +1471,7 @@ class Level3File(object):
 
         # Check for empty product
         if len(self._buffer) == 0:
-            warnings.warn('{}: Empty product!'.format(self.filename))
+            log.warning('%s: Empty product!', self.filename)
             return
 
         # Unpack the message header and the product description block
@@ -1562,8 +1563,8 @@ class Level3File(object):
                 self._unpack_tabblock(msg_start, 2 * self.prod_desc.tab_off)
 
         if 'defaultVals' in self.metadata:
-            warnings.warn('{}: Using default metadata for product {}'.format(
-                self.filename, self.header.code))
+            log.warning('%s: Using default metadata for product %d',
+                        self.filename, self.header.code)
 
     def _process_wmo_header(self):
         # Read off the WMO header if necessary
@@ -1626,8 +1627,8 @@ class Level3File(object):
                 if packet_code in self.packet_map:
                     layer.append(self.packet_map[packet_code](self, packet_code, True))
                 else:
-                    warnings.warn('{0}: Unknown symbology packet type {1}/{1:#x}.'.format(
-                        self.filename, packet_code))
+                    log.warning('%s: Unknown symbology packet type %d/%x.',
+                                self.filename, packet_code, packet_code)
                     self._buffer.jump_to(layer_start, layer_hdr.length)
             assert self._buffer.offset_from(layer_start) == layer_hdr.length
 
@@ -1650,9 +1651,8 @@ class Level3File(object):
                 if packet_code in self.packet_map:
                     packets.append(self.packet_map[packet_code](self, packet_code, False))
                 else:
-                    warnings.warn(
-                        '{0}: Unknown graphical packet type {1}/{1:#x}.'.format(
-                            self.filename, packet_code))
+                    log.warning('%s: Unknown graphical packet type %d/%x.',
+                                self.filename, packet_code, packet_code)
                     self._buffer.skip(page_size)
             self.graph_pages.append(packets)
 
@@ -1664,9 +1664,8 @@ class Level3File(object):
             if packet_code in self.packet_map:
                 packets.append(self.packet_map[packet_code](self, packet_code, False))
             else:
-                warnings.warn(
-                    '{0}: Unknown standalone graphical packet type {1}/{1:#x}.'.format(
-                        self.filename, packet_code))
+                log.warning('%s: Unknown standalone graphical packet type %d/%x.',
+                            self.filename, packet_code, packet_code)
                 # Assume next 2 bytes is packet length and try skipping
                 num_bytes = self._buffer.read_int('>H')
                 self._buffer.skip(num_bytes)
@@ -1796,8 +1795,7 @@ class Level3File(object):
         # Use this meaning as the key in the returned packet
         for c in d['text']:
             if c not in symbol_map:
-                warnings.warn('{0}: Unknown special symbol {1}/{2:#x}.'.format(
-                    self.filename, c, ord(c)))
+                log.warning('%s: Unknown special symbol %d/%x.', self.filename, c, ord(c))
             else:
                 key = symbol_map[c]
                 if key:
@@ -1843,9 +1841,8 @@ class Level3File(object):
                     ret['radius'].append(attr * scale)
 
                 if kind not in point_feature_map:
-                    warnings.warn(
-                        '{0}: Unknown graphic symbol point kind {1}/{1:#x}.'.format(
-                            self.filename, kind))
+                    log.warning('%s: Unknown graphic symbol point kind %d/%x.',
+                                self.filename, kind, kind)
                     ret['type'].append('Unknown (%d)' % kind)
                 else:
                     ret['type'].append(point_feature_map[kind])
@@ -1853,8 +1850,8 @@ class Level3File(object):
         # Map the code to a name for this type of symbol
         if code != 20:
             if code not in type_map:
-                warnings.warn('{0}: Unknown graphic symbol type {1}/{1:#x}.'.format(
-                    self.filename, code))
+                log.warning('%s: Unknown graphic symbol type %d/%x.',
+                            self.filename, code, code)
                 ret['type'] = 'Unknown'
             else:
                 ret['type'] = type_map[code]
@@ -1874,8 +1871,8 @@ class Level3File(object):
         while self._buffer.offset_from(packet_data_start) < num_bytes:
             next_code = self._buffer.read_int('>H')
             if next_code not in self.packet_map:
-                warnings.warn('{0}: Unknown packet in SCIT {1}/{1:#x}.'.format(
-                    self.filename, next_code))
+                log.warning('%s: Unknown packet in SCIT %d/%x.',
+                            self.filename, next_code, next_code)
                 self._buffer.jump_to(packet_data_start, num_bytes)
                 return ret
             else:
@@ -1887,8 +1884,8 @@ class Level3File(object):
                 elif next_code == 2:
                     ret['markers'].append(next_packet)
                 else:
-                    warnings.warn('{0}: Unsupported packet in SCIT {1}/{1:#x}.'.format(
-                        self.filename, next_code))
+                    log.warning('%s: Unsupported packet in SCIT %d/%x.',
+                                self.filename, next_code, next_code)
                     ret['data'].append(next_packet)
         reduce_lists(ret)
         return ret
@@ -2010,8 +2007,7 @@ class Level3File(object):
                 key = code_map[ind]
                 scale = code_scales[ind]
             except IndexError:
-                warnings.warn('{0}: Unsupported trend code {1}/{1:#x}.'.format(
-                    self.filename, code))
+                log.warning('%s: Unsupported trend code %d/%x.', self.filename, code, code)
                 key = 'Unknown'
                 scale = 1
             vals = self._read_trends()
@@ -2070,7 +2066,7 @@ class Level3XDRParser(Unpacker):
         if code == 28:
             xdr.update(self._unpack_prod_desc())
         else:
-            warnings.warn('XDR: code {0} not implemented'.format(code))
+            log.warning('XDR: code %d not implemented', code)
 
         # Check that we got it all
         self.done()
@@ -2143,7 +2139,7 @@ class Level3XDRParser(Unpacker):
                 if i < num - 1:
                     self.unpack_int()  # Another pointer for the 'list' ?
             except KeyError:
-                warnings.warn('Unknown XDR Component: {0}'.format(code))
+                log.warning('Unknown XDR Component: %d', code)
                 break
 
         if num == 1:
