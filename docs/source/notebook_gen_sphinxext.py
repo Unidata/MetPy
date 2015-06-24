@@ -27,7 +27,7 @@ generated_source_dir = 'examples/generated'
 def nb_to_rst(nb_path):
     """convert notebook to restructured text"""
     exporter = rst.RSTExporter()
-    out, resources = exporter.from_file(nb_path)
+    out, resources = exporter.from_file(open(nb_path))
     basename = os.path.splitext(os.path.basename(nb_path))[0]
     imgdir = basename + '_files'
     img_prefix = os.path.join(imgdir, basename + '_')
