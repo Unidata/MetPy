@@ -34,7 +34,9 @@ def nb_to_rst(nb_path):
     resources['metadata']['basename'] = basename
     resources['metadata']['name'] = basename.replace('_', ' ')
     resources['metadata']['imgdir'] = imgdir
-    out_lines = []
+    base_url = ('http://nbviewer.ipython.org/github/metpy/MetPy/blob/master/'
+                'examples/notebooks/')
+    out_lines = ['`Notebook <%s>`_' % (base_url + os.path.basename(nb_path))]
     for line in out.split('\n'):
         if line.startswith('.. image:: '):
             line = line.replace('output_', img_prefix)
