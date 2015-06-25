@@ -31,7 +31,7 @@ class TestColortableRegistry(object):
         eq_(self.reg[name], [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)])
 
     def test_read_file(self):
-        fobj = StringIO('(0., 0., 1.0)\n"red"\n"#0000FF"')
+        fobj = StringIO('(0., 0., 1.0)\n"red"\n"#0000FF" #Blue')
 
         self.reg.add_colortable(fobj, 'test_table')
 
