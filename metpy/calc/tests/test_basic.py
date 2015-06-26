@@ -29,22 +29,33 @@ class TestWindComps(object):
 
 
 class TestSpeedDir(object):
-    def test_basic(self):
+    def test_speed(self):
         u = np.array([4., 2., 0., 0.]) * units('m/s')
         v = np.array([0., 2., 4., 0.]) * units('m/s')
 
-        speed, direc = get_speed_dir(u, v)
+        speed = get_wind_speed(u, v)
 
         s2 = np.sqrt(2.)
         true_speed = np.array([4., 2 * s2, 4., 0.]) * units('m/s')
-        true_dir = np.array([90., 45., 0., 90.]) * units.deg
 
         assert_array_almost_equal(true_speed, speed, 4)
+
+    def test_dir(self):
+        u = np.array([4., 2., 0., 0.]) * units('m/s')
+        v = np.array([0., 2., 4., 0.]) * units('m/s')
+
+        direc = get_wind_dir(u, v)
+
+        true_dir = np.array([90., 45., 0., 90.]) * units.deg
+
         assert_array_almost_equal(true_dir, direc, 4)
 
-    def test_scalar(self):
-        s, d = get_speed_dir(-3. * units('m/s'), -4. * units('m/s'))
+    def test_scalar_speed(self):
+        s = get_wind_speed(-3. * units('m/s'), -4. * units('m/s'))
         assert_almost_equal(s, 5. * units('m/s'), 3)
+
+    def test_scalar_dir(self):
+        d = get_wind_dir(-3. * units('m/s'), -4. * units('m/s'))
         assert_almost_equal(d, 216.870 * units.deg, 3)
 
 

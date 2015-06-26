@@ -8,8 +8,8 @@ exporter = Exporter(globals())
 
 
 @exporter.export
-def get_speed_dir(u, v):
-    r'''Compute the wind speed and wind direction.
+def get_wind_speed(u, v):
+    r'''Compute the wind speed from u and v-components.
 
     Parameters
     ----------
@@ -20,18 +20,42 @@ def get_speed_dir(u, v):
 
     Returns
     -------
-    speed, direction : tuple of array_like
-        The speed and direction of the wind, respectively
+    wind speed: array_like
+        The speed of the wind
 
     See Also
     --------
     get_wind_components
     '''
-
     speed = np.sqrt(u * u + v * v)
-    wdir = atleast_1d(90. * units.deg - np.arctan2(v, u))
+    return speed
+
+
+@exporter.export
+def get_wind_dir(u, v):
+    r'''Compute the wind direction from u and v-components.
+
+    Parameters
+    ----------
+    u : array_like
+        Wind component in the X (East-West) direction
+    v : array_like
+        Wind component in the Y (North-South) direction
+
+    Returns
+    -------
+    wind direction: array_like
+        The direction of the wind in degrees
+
+    See Also
+    --------
+    get_wind_components
+    '''
+    wdir = 90. * units.deg - np.arctan2(v, u)
+    origshape = wdir.shape
+    wdir = atleast_1d(wdir)
     wdir[wdir < 0] += 360. * units.deg
-    return speed, wdir.reshape(speed.shape)
+    return wdir.reshape(origshape)
 
 
 @exporter.export
