@@ -188,7 +188,7 @@ def geostrophic_wind(heights, f, dx, dy):
     Returns
     -------
     A 2-item tuple of arrays
-        A tuple of the x-component and y-component of the geostrophic wind.
+        A tuple of the u-component and v-component of the geostrophic wind.
     '''
 
     if heights.dimensionality['[length]'] == 2.0:
