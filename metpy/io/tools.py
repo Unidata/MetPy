@@ -1,8 +1,11 @@
 'A collection of general purpose tools for reading files'
 from __future__ import print_function
-import warnings
+import logging
 from collections import namedtuple
 from struct import Struct
+
+log = logging.getLogger("metpy.io.tools")
+log.setLevel(logging.WARNING)
 
 
 class NamedStruct(Struct):
@@ -212,7 +215,7 @@ def bits_to_code(val):
     elif val == 16:
         return 'H'
     else:
-        warnings.warn('Unsuported bit size: %s' % val)
+        log.warning('Unsupported bit size: %s. Returning "B"', val)
         return 'B'
 
 
