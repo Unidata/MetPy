@@ -13,6 +13,21 @@ Requirements
 - IPython >= 3.1
 - pandoc (not a python package)
 
+~~~~~
+Conda
+~~~~~
+
+Settings up a development environment in MetPy is as easy as (from the
+base of the repository):
+
+.. parsed-literal::
+    conda env create
+    conda develop -n devel .
+
+The ``environment.yml`` contains all of the configuration needed to easily
+set up the environment, called ``devel``. The second line sets up conda to
+run directly out of the git repository.
+
 --------------
 Making Changes
 --------------
