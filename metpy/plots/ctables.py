@@ -158,7 +158,7 @@ class ColortableRegistry(dict):
             The colortable corresponding to `name`
         '''
 
-        return mcolors.ListedColormap(self.get(name), name=name)
+        return mcolors.ListedColormap(self[name], name=name)
 
 
 registry = ColortableRegistry()
