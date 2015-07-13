@@ -1,0 +1,16 @@
+# Create full conda environment for development, including some useful tools
+name: devel
+channels:
+  - https://conda.binstar.org/Unidata
+dependencies:
+  - python=3
+  - numpy
+  - scipy
+  - matplotlib
+  - pint
+  - netcdf4
+  - ipython-notebook
+  - sphinx
+  - nose
+  - flake8
+  - pep8-naming

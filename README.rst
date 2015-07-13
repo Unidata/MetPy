@@ -15,11 +15,19 @@ MetPy
 
 .. image:: https://img.shields.io/pypi/v/metpy.svg
     :target: https://pypi.python.org/pypi/MetPy/
-    :alt: Latest Version
+    :alt: PyPI Package
 
 .. image:: https://img.shields.io/pypi/dm/metpy.svg
     :target: https://pypi.python.org/pypi/MetPy/
-    :alt: Downloads
+    :alt: PyPI Downloads
+
+.. image:: https://binstar.org/unidata/metpy/badges/version.svg
+    :target: https://binstar.org/unidata/metpy
+    :alt: Binstar Package
+
+.. image:: https://binstar.org/unidata/metpy/badges/downloads.svg
+    :target: https://binstar.org/unidata/metpy
+    :alt: Binstar Downloads
 
 .. image:: https://travis-ci.org/metpy/MetPy.svg?branch=master
     :target: https://travis-ci.org/metpy/MetPy
