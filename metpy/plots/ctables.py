@@ -11,7 +11,11 @@ TABLE_EXT = '.tbl'
 def _parse(s):
     if hasattr(s, 'decode'):
         s = s.decode('ascii')
-    return ast.literal_eval(s)
+
+    if not s.startswith('#'):
+        return ast.literal_eval(s)
+
+    return None
 
 
 def read_colortable(fobj):
@@ -32,7 +36,12 @@ def read_colortable(fobj):
         A list of the RGB color values, where each RGB color is a tuple of 3 floats in the
         range of [0, 1].
     '''
-    return [mcolors.colorConverter.to_rgb(_parse(line)) for line in fobj]
+    ret = list()
+    for line in fobj:
+        literal = _parse(line)
+        if literal:
+            ret.append(mcolors.colorConverter.to_rgb(literal))
+    return ret
 
 
 class ColortableRegistry(dict):
@@ -149,7 +158,7 @@ class ColortableRegistry(dict):
             The colortable corresponding to `name`
         '''
 
-        return mcolors.ListedColormap(self.get(name), name=name)
+        return mcolors.ListedColormap(self[name], name=name)
 
 
 registry = ColortableRegistry()
