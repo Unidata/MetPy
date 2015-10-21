@@ -5,7 +5,7 @@ import glob
 import os
 import os.path
 
-from IPython.nbconvert.exporters import rst
+from nbconvert.exporters import rst
 
 def setup(app):
     setup.app = app
