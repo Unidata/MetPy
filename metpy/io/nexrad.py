@@ -19,6 +19,7 @@ from .tools import Array, BitField, Bits, DictStruct, Enum, IOBuffer, NamedStruc
 exporter = Exporter(globals())
 
 log = logging.getLogger("metpy.io.nexrad")
+log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
 log.setLevel(logging.WARNING)
 
 
@@ -605,7 +606,7 @@ class Level2File(object):
         # If we're complete, return the full collection of data
         if msg_hdr.num_segments == len(bufs):
             self._msg_buf.pop(msg_hdr.msg_type)
-            return b''.join(item[1] for item in sorted(bufs.items()))
+            return b''.join(bytes(item[1]) for item in sorted(bufs.items()))
 
     def _add_sweep(self, hdr):
         if not self.sweeps and not hdr.rad_status & START_VOLUME:
