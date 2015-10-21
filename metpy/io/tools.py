@@ -103,7 +103,8 @@ class BitField(object):
             if not val:
                 break
 
-        return l if len(l) > 1 else l[0]
+        # Return whole list if empty or multiple items, otherwise just single item
+        return l[0] if len(l) == 1 else l
 
 
 class Array(object):
