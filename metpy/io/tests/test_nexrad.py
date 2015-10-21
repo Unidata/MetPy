@@ -1,4 +1,5 @@
 import glob
+import logging
 import os.path
 
 import numpy as np
@@ -8,6 +9,9 @@ from metpy.io.nexrad import Level2File, Level3File, is_precip_mode
 from metpy.cbook import get_test_data
 
 get_test_data = nose.tools.nottest(get_test_data)
+
+# Turn off the warnings for tests
+logging.getLogger("metpy.io.nexrad").setLevel(logging.CRITICAL)
 
 
 def test_level3_generator():
@@ -21,8 +25,9 @@ def read_level3_file(fname):
 
 # 1999 file tests old message 1
 # KFTG tests bzip compression and newer format for a part of message 31
+# KTLX 2015 has missing segments for message 18, which was causing exception
 level2_files = ['KTLX20130520_201643_V06.gz', 'KTLX19990503_235621.gz',
-                'Level2_KFTG_20150430_1419.ar2v']
+                'Level2_KFTG_20150430_1419.ar2v', 'KTLX20150530_000802_V06.bz2']
 
 
 def test_level2_generator():

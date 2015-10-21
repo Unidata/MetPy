@@ -19,6 +19,7 @@ from .tools import Array, BitField, Bits, DictStruct, Enum, IOBuffer, NamedStruc
 exporter = Exporter(globals())
 
 log = logging.getLogger("metpy.io.nexrad")
+log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
 log.setLevel(logging.WARNING)
 
 
@@ -240,6 +241,11 @@ class Level2File(object):
                 # Need to include the CTM header but not FCS
                 self._buffer.jump_to(msg_start,
                                      self.CTM_HEADER_SIZE + 2 * msg_hdr.size_hw)
+
+        # Check if we have any message segments still in the buffer
+        if self._msg_buf:
+            log.warning('Remaining buffered messages segments for message type(s): %s',
+                        ' '.join(map(str, self._msg_buf.keys())))
 
         del self._msg_buf
 
@@ -588,10 +594,19 @@ class Level2File(object):
 
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer
-        bufs = self._msg_buf.setdefault(msg_hdr.msg_type, bytearray())
-        bufs.extend(self._buffer.read(2 * msg_hdr.size_hw - self.msg_hdr_fmt.size))
-        if msg_hdr.segment_num == msg_hdr.num_segments:
-            return bufs
+        bufs = self._msg_buf.setdefault(msg_hdr.msg_type, dict())
+        bufs[msg_hdr.segment_num] = self._buffer.read(2 * msg_hdr.size_hw -
+                                                      self.msg_hdr_fmt.size)
+
+        # Warn for badly formatted data
+        if len(bufs) != msg_hdr.segment_num:
+            log.warning('Segment out of order (Got: %d Count: %d) for message type %d.',
+                        msg_hdr.segment_num, len(bufs), msg_hdr.msg_type)
+
+        # If we're complete, return the full collection of data
+        if msg_hdr.num_segments == len(bufs):
+            self._msg_buf.pop(msg_hdr.msg_type)
+            return b''.join(bytes(item[1]) for item in sorted(bufs.items()))
 
     def _add_sweep(self, hdr):
         if not self.sweeps and not hdr.rad_status & START_VOLUME:
