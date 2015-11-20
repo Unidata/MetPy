@@ -1,81 +1,89 @@
 # After changing this file, check it on:
 #   http://lint.travis-ci.org/
 language: python
-
 sudo: false
 
 addons:
+  artifacts:
+    target_paths: /
+    paths:
+      - $(find $WHEELDIR -newer $WHEELDIR/download_marker -name *.whl | tr [:space:] :)
   apt:
-    packages:
-    - libblas3gf
-    - liblapack3gf
-    - pandoc
+    packages: &base_build
+    - libblas-dev
+    - liblapack-dev
+    - gfortran
+
+python:
+  - 3.5
+  - 2.7
 
 env:
   global:
-    - REQUIRES=requirements.txt
+    - WHEELHOUSE="https://unidata-python.s3.amazonaws.com/wheelhouse/index.html"
+    - WHEELDIR="wheelhouse/"
+  matrix:
+    - NOSE_WITH_COVERAGE=y NOSE_COVER_PACKAGE=metpy
+    - TASK="examples"
+    - TASK="lint"
 
 matrix:
   include:
     - python: 2.7
-    - python: 2.7
-      env: REQUIRES=min-requirements.txt
-    - python: 2.7
-      env: LINT=true
+      env: VERSIONS="numpy==1.8.0 matplotlib==1.4.0 scipy==0.13.3 pint==0.6"
     # Docs built on 2.7 because that's what readthedocs uses
     - python: 2.7
-      env: DOCBUILD=true
-    - python: 2.7
-      env: EXAMPLES=true
-    - python: 3.2
+      env: TASK="docs"
+      addons:
+        apt:
+          packages:
+            - *base_build
+            - pandoc
     - python: 3.3
+      env:
     - python: 3.4
-      env: NOSE_WITH_COVERAGE=y NOSE_COVER_PACKAGE=metpy
-    - python: 3.4
-      env: LINT=true
-    - python: 3.4
-      env: EXAMPLES=true
-    #- python: nightly
+      env:
+    - python: "3.5-dev"
+      env: PRE="--pre"
+    - python: nightly
+      env: PRE="--pre"
   allow_failures:
+    - python: "3.5-dev"
     - python: nightly
 
 before_install:
-  - virtualenv --python=python venv
-  - source venv/bin/activate
-  - if [[ $LINT == true ]]; then
+  - if [[ $TASK == "lint" ]]; then
       pip install flake8 pep8-naming;
     else
-      if [[ $DOCBUILD == true || $EXAMPLES == true ]]; then
+      pip install --upgrade pip;
+      if [[ $TASK == "docs" || $TASK == "examples" ]]; then
         pip install -r docs/requirements.txt;
-      else
-        pip install nose;
       fi;
       if [[ $NOSE_WITH_COVERAGE == y ]]; then
         pip install coverage;
       fi;
-      wget https://github.com/MetPy/travis-wheels/archive/${TRAVIS_PYTHON_VERSION}.zip -O wheels.zip && unzip wheels.zip;
-      if [[ $TRAVIS_PYTHON_VERSION == "nightly" ]]; then
-        cd travis-wheels-${TRAVIS_PYTHON_VERSION}/wheel-0.24.0 && python setup.py install && cd ../..;
-      fi;
-      pip install -f "file://$PWD/travis-wheels-${TRAVIS_PYTHON_VERSION}/wheelhouse/" -r $REQUIRES;
-      python -c "import numpy; print(numpy.__version__)";
+      mkdir $WHEELDIR;
+      pip install ".[test]" -d $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
+      touch $WHEELDIR/download_marker;
+      travis_wait pip wheel ".[test]" -w $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
+      rm -f $WHEELDIR/MetPy*.whl;
     fi
 
 install:
-  - if [[ $LINT != true ]]; then
-      python setup.py install;
-    fi
-  - if [[ $EXAMPLES == true ]]; then
-      python setup.py examples;
+  - if [[ $TASK != "lint" ]]; then
+      pip install ".[test]" --upgrade --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
+      if [[ $TASK == "examples" ]]; then
+        python setup.py examples;
+      fi;
     fi
 
 script:
-  - if [[ $LINT == true ]]; then
+  - if [[ $TASK == "lint" ]]; then
       flake8 metpy;
-    elif [[ $DOCBUILD == true ]]; then
+    elif [[ $TASK == "docs" ]]; then
       cd docs;
       make html;
-    elif [[ $EXAMPLES == true ]]; then
+    elif [[ $TASK == "examples" ]]; then
       cd examples;
       echo backend:agg > matplotlibrc;
       MPLBACKEND='agg' TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata python test_examples.py;

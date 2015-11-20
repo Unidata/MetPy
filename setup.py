@@ -78,7 +78,7 @@ setup(
     extras_require={
         'dev': ['ipython[all]>=3.1'],
         'doc': ['sphinx>=1.3', 'ipython[all]>=3.1'],
-        'test': ['nosetest']
+        'test': ['nose']
     },
 
     cmdclass=commands,
