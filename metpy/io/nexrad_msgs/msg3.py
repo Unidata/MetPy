@@ -1,3 +1,7 @@
+# Copyright (c) 2008-2015 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+
 # flake8: noqa
 # Generated file -- do not modify
 descriptions = {"T1_Output_Frames": "The number of octets received on interface, including frame octets (octet)",
