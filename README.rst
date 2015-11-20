@@ -33,9 +33,9 @@ MetPy
     :target: https://travis-ci.org/metpy/MetPy
     :alt: Travis Build Status
 
-.. image:: https://coveralls.io/repos/metpy/MetPy/badge.svg?branch=master
-    :target: https://coveralls.io/r/metpy/MetPy
-    :alt: Coveralls Coverage Status
+.. image:: https://codecov.io/github/metpy/MetPy/coverage.svg?branch=master
+    :target: https://codecov.io/github/metpy/MetPy?branch=master
+    :alt: Code Coverage Status
 
 .. image:: https://landscape.io/github/metpy/MetPy/master/landscape.svg?style=flat
     :target: https://landscape.io/github/metpy/MetPy/master

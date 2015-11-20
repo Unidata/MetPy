@@ -93,6 +93,6 @@ script:
 
 after_success:
   - if [[ $NOSE_WITH_COVERAGE == y ]]; then
-      pip install coveralls;
-      coveralls;
+      pip install codecov;
+      codecov;
     fi
