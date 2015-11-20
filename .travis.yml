@@ -9,11 +9,10 @@ addons:
     paths:
       - $(find $WHEELDIR -newer $WHEELDIR/download_marker -name *.whl | tr [:space:] :)
   apt:
-    packages:
+    packages: &base_build
     - libblas-dev
     - liblapack-dev
     - gfortran
-    - pandoc
 
 python:
   - 3.5
@@ -35,6 +34,11 @@ matrix:
     # Docs built on 2.7 because that's what readthedocs uses
     - python: 2.7
       env: TASK="docs"
+      addons:
+        apt:
+          packages:
+            - *base_build
+            - pandoc
     - python: 3.3
       env:
     - python: 3.4
