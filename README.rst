@@ -37,9 +37,9 @@ MetPy
     :target: https://codecov.io/github/metpy/MetPy?branch=master
     :alt: Code Coverage Status
 
-.. image:: https://landscape.io/github/metpy/MetPy/master/landscape.svg?style=flat
-    :target: https://landscape.io/github/metpy/MetPy/master
-    :alt: Code Health
+.. image:: https://www.quantifiedcode.com/api/v1/project/1153e58350aa41e6a7970a134febeb2d/badge.svg
+    :target: https://www.quantifiedcode.com/app/project/1153e58350aa41e6a7970a134febeb2d
+    :alt: Code issues
 
 .. image:: https://readthedocs.org/projects/pip/badge/?version=latest
     :target: http://metpy.readthedocs.org/en/latest/
