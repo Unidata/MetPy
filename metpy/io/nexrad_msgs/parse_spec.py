@@ -150,6 +150,9 @@ def field_fmt(item):
 def write_file(fname, info):
     with open(fname, 'w') as outfile:
         # File header
+        outfile.write('# Copyright (c) 2008-2015 MetPy Developers.\n')
+        outfile.write('# Distributed under the terms of the BSD 3-Clause License.\n')
+        outfile.write('# SPDX-License-Identifier: BSD-3-Clause\n\n')
         outfile.write('# flake8: noqa\n')
         outfile.write('# Generated file -- do not modify\n')
 

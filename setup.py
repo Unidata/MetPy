@@ -1,11 +1,10 @@
+# Copyright (c) 2008-2015 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+
 from __future__ import print_function
 from setuptools import setup, find_packages, Command
 import versioneer
-versioneer.VCS = 'git'
-versioneer.versionfile_source = 'metpy/_version.py'
-versioneer.versionfile_build = 'metpy/_version.py'
-versioneer.tag_prefix = 'v'
-versioneer.parentdir_prefix = 'metpy-'
 
 
 class MakeExamples(Command):
