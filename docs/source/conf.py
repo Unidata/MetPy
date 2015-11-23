@@ -33,14 +33,28 @@ if 'READTHEDOCS' in os.environ:
 
     MOCK_MODULES = ['matplotlib', 'matplotlib.axis', 'matplotlib.axes',
                     'matplotlib.backends', 'matplotlib.cbook',
-                    'matplotlib.collections', 'matplotlib.figure',
-                    'matplotlib.projections', 'matplotlib.pyplot',
-                    'matplotlib.spints', 'matplotlib.ticker',
-                    'matplotlib.transforms',
+                    'matplotlib.collections', 'matplotlib.colors',
+                    'matplotlib.figure', 'matplotlib.projections',
+                    'matplotlib.pyplot', 'matplotlib.spines',
+                    'matplotlib.ticker', 'matplotlib.transforms',
                     'numpy', 'numpy.ma', 'numpy.testing', 'pint',
                     'scipy', 'scipy.constants', 'scipy.integrate']
     for mod_name in MOCK_MODULES:
         sys.modules[mod_name] = mock.Mock()
+
+    class MockUnit(float):
+        def to_base_units(self):
+            return self
+
+    class MockUnits(object):
+        def __getattr__(self, attr):
+            return MockUnit(1.0)
+
+        def Quantity(self, *args):
+            return MockUnit(1.0)
+
+    sys.modules['pint'].UnitRegistry = mock.Mock(return_value=MockUnits())
+
 
     # Fixes pandoc
     if 'HOME' not in os.environ:
