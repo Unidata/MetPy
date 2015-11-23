@@ -20,6 +20,7 @@ import os
 # add these directories to sys.path here. If the directory is relative to the
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.insert(0, os.path.abspath('.'))
+sys.path.insert(0, os.path.abspath('../..'))
 
 #
 # Read the docs fix
@@ -27,21 +28,37 @@ sys.path.insert(0, os.path.abspath('.'))
 # which is unused, so that pandoc will run
 # 
 
-if 'READTHEDOCS' in os.environ and not 'HOME' in os.environ:
+if 'READTHEDOCS' in os.environ:
     import mock
 
     MOCK_MODULES = ['matplotlib', 'matplotlib.axis', 'matplotlib.axes',
                     'matplotlib.backends', 'matplotlib.cbook',
-                    'matplotlib.collections', 'matplotlib.figure',
-                    'matplotlib.projections', 'matplotlib.pyplot',
-                    'matplotlib.spints', 'matplotlib.ticker',
-                    'matplotlib.transforms',
-                    'numpy', 'numpy.ma', 'numpy.testing',
+                    'matplotlib.collections', 'matplotlib.colors',
+                    'matplotlib.figure', 'matplotlib.projections',
+                    'matplotlib.pyplot', 'matplotlib.spines',
+                    'matplotlib.ticker', 'matplotlib.transforms',
+                    'numpy', 'numpy.ma', 'numpy.testing', 'pint',
                     'scipy', 'scipy.constants', 'scipy.integrate']
     for mod_name in MOCK_MODULES:
         sys.modules[mod_name] = mock.Mock()
+
+    class MockUnit(float):
+        def to_base_units(self):
+            return self
+
+    class MockUnits(object):
+        def __getattr__(self, attr):
+            return MockUnit(1.0)
+
+        def Quantity(self, *args):
+            return MockUnit(1.0)
+
+    sys.modules['pint'].UnitRegistry = mock.Mock(return_value=MockUnits())
+
+
     # Fixes pandoc
-    os.environ['HOME'] = '/home/docs'  # Not sure what else to use
+    if 'HOME' not in os.environ:
+        os.environ['HOME'] = '/home/docs'  # Not sure what else to use
 
 # -- General configuration ------------------------------------------------
 
