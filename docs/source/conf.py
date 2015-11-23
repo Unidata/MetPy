@@ -37,7 +37,7 @@ if 'READTHEDOCS' in os.environ and not 'HOME' in os.environ:
                     'matplotlib.projections', 'matplotlib.pyplot',
                     'matplotlib.spints', 'matplotlib.ticker',
                     'matplotlib.transforms',
-                    'numpy', 'numpy.ma', 'numpy.testing',
+                    'numpy', 'numpy.ma', 'numpy.testing', 'pint',
                     'scipy', 'scipy.constants', 'scipy.integrate']
     for mod_name in MOCK_MODULES:
         sys.modules[mod_name] = mock.Mock()
