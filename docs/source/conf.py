@@ -28,7 +28,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # which is unused, so that pandoc will run
 # 
 
-if 'READTHEDOCS' in os.environ and not 'HOME' in os.environ:
+if 'READTHEDOCS' in os.environ:
     import mock
 
     MOCK_MODULES = ['matplotlib', 'matplotlib.axis', 'matplotlib.axes',
@@ -41,8 +41,10 @@ if 'READTHEDOCS' in os.environ and not 'HOME' in os.environ:
                     'scipy', 'scipy.constants', 'scipy.integrate']
     for mod_name in MOCK_MODULES:
         sys.modules[mod_name] = mock.Mock()
+
     # Fixes pandoc
-    os.environ['HOME'] = '/home/docs'  # Not sure what else to use
+    if 'HOME' not in os.environ:
+        os.environ['HOME'] = '/home/docs'  # Not sure what else to use
 
 # -- General configuration ------------------------------------------------
 
