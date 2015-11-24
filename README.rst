@@ -41,6 +41,10 @@ MetPy
     :target: https://www.quantifiedcode.com/app/project/1153e58350aa41e6a7970a134febeb2d
     :alt: Code issues
 
+.. image:: https://api.codacy.com/project/badge/grade/e1ea0937eb4942e79a44bc9bb2de616d
+    :target: https://www.codacy.com/app/dopplershift/MetPy
+    :alt: Codacy code issues
+
 .. image:: https://readthedocs.org/projects/pip/badge/?version=latest
     :target: http://metpy.readthedocs.org/en/latest/
     :alt: Latest Doc Build Status
