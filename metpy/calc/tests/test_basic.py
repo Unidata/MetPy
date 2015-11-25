@@ -109,20 +109,20 @@ class TestHeatIndex(object):
     def test_basic(self):
         'Test the basic heat index calculation.'
         temp = np.array([80, 88, 92, 110]) * units.degF
-        rh = np.array([40, 100, 70, 40])
+        rh = np.array([40, 100, 70, 40]) * units.percent
 
         hi = heat_index(temp, rh)
         values = np.array([80, 121, 112, 136]) * units.degF
         assert_array_almost_equal(hi, values, 0)
 
     def test_scalar(self):
-        hi = heat_index(96 * units.degF, 65)
+        hi = heat_index(96 * units.degF, 65 * units.percent)
         assert_almost_equal(hi, 121 * units.degF, 0)
 
     def test_invalid(self):
         'Test for values that should be masked.'
         temp = np.array([80, 88, 92, 79, 30, 81]) * units.degF
-        rh = np.array([40, 39, 2, 70, 50, 39])
+        rh = np.array([40, 39, 2, 70, 50, 39]) * units.percent
 
         hi = heat_index(temp, rh)
         mask = np.array([False, True, True, True, True, True])
@@ -131,7 +131,7 @@ class TestHeatIndex(object):
     def test_undefined_flag(self):
         'Tests whether masking values can be disabled.'
         temp = units.Quantity(np.ma.array([80, 88, 92, 79, 30, 81]), units.degF)
-        rh = np.ma.array([40, 39, 2, 70, 50, 39])
+        rh = np.ma.array([40, 39, 2, 70, 50, 39]) * units.percent
 
         hi = heat_index(temp, rh, mask_undefined=False)
         mask = np.array([False] * 6)
@@ -140,10 +140,16 @@ class TestHeatIndex(object):
     def test_units(self):
         'Test units coming out of heat index'
         temp = units.Quantity([35., 20.], units.degC)
-        rh = 70.
+        rh = 70 * units.percent
         hi = heat_index(temp, rh)
         assert_almost_equal(hi.to('degC'), units.Quantity([50.3405, np.nan], units.degC), 4)
 
+    def test_ratio(self):
+        'Test giving humidity as number [0, 1]'
+        temp = units.Quantity([35., 20.], units.degC)
+        rh = 0.7
+        hi = heat_index(temp, rh)
+        assert_almost_equal(hi.to('degC'), units.Quantity([50.3405, np.nan], units.degC), 4)
 
 # class TestIrrad(object):
 #    def test_basic(self):

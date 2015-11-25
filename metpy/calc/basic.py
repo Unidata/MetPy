@@ -174,7 +174,8 @@ def heat_index(temperature, rh, mask_undefined=True):
     temp : array_like
         Air temperature
     rh : array_like
-        The relative humidity expressed as a percentage in the range [0, 100].
+        The relative humidity expressed as a unitless ratio in the range [0, 1].
+        Can also pass a percentage if proper units are attached.
 
     Returns : array_like
         The corresponding Heat Index value(s)
@@ -205,16 +206,16 @@ def heat_index(temperature, rh, mask_undefined=True):
     rh2 = rh ** 2
     delta2 = delta ** 2
 
-    # Calculate the Heat Index
+    # Calculate the Heat Index -- constants converted for RH in [0, 1]
     hi = (-42.379 * units.degF + 2.04901523 * delta +
-          10.14333127 * units.delta_degF * rh - 0.22475541 * delta * rh -
-          6.83783e-3 / units.delta_degF * delta2 - 5.481717e-2 * units.delta_degF * rh2 +
-          1.22874e-3 / units.delta_degF * delta2 * rh + 8.5282e-4 * delta * rh2 -
-          1.99e-6 / units.delta_degF * delta2 * rh2)
+          1014.333127 * units.delta_degF * rh - 22.475541 * delta * rh -
+          6.83783e-3 / units.delta_degF * delta2 - 5.481717e2 * units.delta_degF * rh2 +
+          1.22874e-1 / units.delta_degF * delta2 * rh + 8.5282 * delta * rh2 -
+          1.99e-2 / units.delta_degF * delta2 * rh2)
 
     # See if we need to mask any undefined values
     if mask_undefined:
-        mask = np.array((temperature < 80. * units.degF) | (rh < 40))
+        mask = np.array((temperature < 80. * units.degF) | (rh < 40 * units.percent))
         if mask.any():
             hi = units.Quantity(masked_array(hi, mask=mask), hi.units)
 
