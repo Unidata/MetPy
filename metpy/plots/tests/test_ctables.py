@@ -58,6 +58,13 @@ class TestColortableRegistry(object):
         eq_(cmap(norm(np.array([15.1]))).tolist(), [[1.0, 0.0, 0.0, 1.0]])
         eq_(cmap(norm(np.array([26.]))).tolist(), [[0.0, 1.0, 0.0, 1.0]])
 
+    def test_get_steps_negative_start(self):
+        'Test for issue #81 (bad start for get with steps'
+        self.reg['table'] = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
+        norm, cmap = self.reg.get_with_steps('table', -10, 5)
+        eq_(norm.vmin, -10)
+        eq_(norm.vmax, 5)
+
     def test_get_boundaries(self):
         self.reg['table'] = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
         norm, cmap = self.reg.get_with_boundaries('table', [0., 8., 10., 20.])
