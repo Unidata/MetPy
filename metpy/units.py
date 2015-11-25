@@ -36,7 +36,10 @@ def concatenate(arrs, axis=0):
     Parameters
     ----------
     arrs : Sequence of arrays
-         The items to be joined together
+        The items to be joined together
+
+    axis : integer, optional
+        The array axis along which to join the arrays. Defaults to 0 (the first dimension)
 
     Returns
     -------
