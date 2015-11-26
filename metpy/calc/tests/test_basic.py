@@ -11,7 +11,8 @@ from metpy.calc.basic import *  # noqa
 
 
 class TestWindComps(object):
-    def test_basic(self):
+    @staticmethod
+    def test_basic():
         'Test the basic wind component calculation.'
         speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.]) * units.mph
         dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
@@ -25,7 +26,8 @@ class TestWindComps(object):
         assert_array_almost_equal(true_u, u, 4)
         assert_array_almost_equal(true_v, v, 4)
 
-    def test_scalar(self):
+    @staticmethod
+    def test_scalar():
         'Test scalar wind components'
         u, v = get_wind_components(8 * units('m/s'), 150 * units.deg)
         assert_almost_equal(u, -4 * units('m/s'), 3)
@@ -33,7 +35,9 @@ class TestWindComps(object):
 
 
 class TestSpeedDir(object):
-    def test_speed(self):
+    @staticmethod
+    def test_speed():
+        'Basic test of wind speed calculation'
         u = np.array([4., 2., 0., 0.]) * units('m/s')
         v = np.array([0., 2., 4., 0.]) * units('m/s')
 
@@ -44,7 +48,9 @@ class TestSpeedDir(object):
 
         assert_array_almost_equal(true_speed, speed, 4)
 
-    def test_dir(self):
+    @staticmethod
+    def test_dir():
+        'Basic test of wind direction calculation'
         u = np.array([4., 2., 0., 0.]) * units('m/s')
         v = np.array([0., 2., 4., 0.]) * units('m/s')
 
@@ -54,21 +60,28 @@ class TestSpeedDir(object):
 
         assert_array_almost_equal(true_dir, direc, 4)
 
-    def test_scalar_speed(self):
+    @staticmethod
+    def test_scalar_speed():
+        'Test wind speed with scalars'
         s = get_wind_speed(-3. * units('m/s'), -4. * units('m/s'))
         assert_almost_equal(s, 5. * units('m/s'), 3)
 
-    def test_scalar_dir(self):
+    @staticmethod
+    def test_scalar_dir():
+        'Test wind direction with scalars'
         d = get_wind_dir(-3. * units('m/s'), -4. * units('m/s'))
         assert_almost_equal(d, 216.870 * units.deg, 3)
 
 
 class TestWindChill(object):
-    def test_scalar(self):
+    @staticmethod
+    def test_scalar():
+        'Test wind chill with scalars'
         wc = windchill(-5 * units.degC, 35 * units('m/s'))
         assert_almost_equal(wc, -18.9357 * units.degC, 0)
 
-    def test_basic(self):
+    @staticmethod
+    def test_basic():
         'Test the basic wind chill calculation.'
         temp = np.array([40, -10, -45, 20]) * units.degF
         speed = np.array([5, 55, 25, 15]) * units.mph
@@ -77,7 +90,8 @@ class TestWindChill(object):
         values = np.array([36, -46, -84, 6]) * units.degF
         assert_array_almost_equal(wc, values, 0)
 
-    def test_invalid(self):
+    @staticmethod
+    def test_invalid():
         'Test for values that should be masked.'
         temp = np.array([10, 51, 49, 60, 80, 81]) * units.degF
         speed = np.array([4, 4, 3, 1, 10, 39]) * units.mph
@@ -86,7 +100,8 @@ class TestWindChill(object):
         mask = np.array([False, True, True, True, True, True])
         assert_array_equal(wc.mask, mask)
 
-    def test_undefined_flag(self):
+    @staticmethod
+    def test_undefined_flag():
         'Tests whether masking values can be disabled.'
         temp = units.Quantity(np.ma.array([49, 50, 49, 60, 80, 81]), units.degF)
         speed = units.Quantity(([4, 4, 3, 1, 10, 39]), units.mph)
@@ -95,7 +110,8 @@ class TestWindChill(object):
         mask = np.array([False] * 6)
         assert_array_equal(wc.mask, mask)
 
-    def test_face_level(self):
+    @staticmethod
+    def test_face_level():
         'Tests using the face_level flag'
         temp = np.array([20, 0, -20, -40]) * units.degF
         speed = np.array([15, 30, 45, 60]) * units.mph
@@ -106,7 +122,8 @@ class TestWindChill(object):
 
 
 class TestHeatIndex(object):
-    def test_basic(self):
+    @staticmethod
+    def test_basic():
         'Test the basic heat index calculation.'
         temp = np.array([80, 88, 92, 110]) * units.degF
         rh = np.array([40, 100, 70, 40]) * units.percent
@@ -115,11 +132,14 @@ class TestHeatIndex(object):
         values = np.array([80, 121, 112, 136]) * units.degF
         assert_array_almost_equal(hi, values, 0)
 
-    def test_scalar(self):
+    @staticmethod
+    def test_scalar():
+        'Test heat index using scalars'
         hi = heat_index(96 * units.degF, 65 * units.percent)
         assert_almost_equal(hi, 121 * units.degF, 0)
 
-    def test_invalid(self):
+    @staticmethod
+    def test_invalid():
         'Test for values that should be masked.'
         temp = np.array([80, 88, 92, 79, 30, 81]) * units.degF
         rh = np.array([40, 39, 2, 70, 50, 39]) * units.percent
@@ -128,7 +148,8 @@ class TestHeatIndex(object):
         mask = np.array([False, True, True, True, True, True])
         assert_array_equal(hi.mask, mask)
 
-    def test_undefined_flag(self):
+    @staticmethod
+    def test_undefined_flag():
         'Tests whether masking values can be disabled.'
         temp = units.Quantity(np.ma.array([80, 88, 92, 79, 30, 81]), units.degF)
         rh = np.ma.array([40, 39, 2, 70, 50, 39]) * units.percent
@@ -137,14 +158,16 @@ class TestHeatIndex(object):
         mask = np.array([False] * 6)
         assert_array_equal(hi.mask, mask)
 
-    def test_units(self):
+    @staticmethod
+    def test_units():
         'Test units coming out of heat index'
         temp = units.Quantity([35., 20.], units.degC)
         rh = 70 * units.percent
         hi = heat_index(temp, rh)
         assert_almost_equal(hi.to('degC'), units.Quantity([50.3405, np.nan], units.degC), 4)
 
-    def test_ratio(self):
+    @staticmethod
+    def test_ratio():
         'Test giving humidity as number [0, 1]'
         temp = units.Quantity([35., 20.], units.degC)
         rh = 0.7
