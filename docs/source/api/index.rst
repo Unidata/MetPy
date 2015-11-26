@@ -12,3 +12,6 @@
    io
    calc
    plots
+
+* :ref:`modindex`
+* :ref:`genindex`
