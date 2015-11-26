@@ -4,9 +4,6 @@
   The MetPy API
 ###############
 
-   :Release: |version|
-   :Date: |today|
-
 .. toctree::
    :maxdepth: 2
 
