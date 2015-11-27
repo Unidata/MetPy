@@ -4,9 +4,6 @@
   The MetPy API
 ###############
 
-   :Release: |version|
-   :Date: |today|
-
 .. toctree::
    :maxdepth: 2
 
@@ -15,3 +12,6 @@
    io
    calc
    plots
+
+* :ref:`modindex`
+* :ref:`genindex`

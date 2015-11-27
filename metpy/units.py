@@ -16,9 +16,13 @@ units : `pint.UnitRegistry`
 
 from __future__ import division
 import pint
+import pint.unit
 import numpy as np
 
 units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
+
+# For pint 0.6, this is the best way to define a dimensionless unit. See pint #185
+units.define(pint.unit.UnitDefinition('percent', '%', (), pint.unit.ScaleConverter(0.01)))
 
 
 def concatenate(arrs, axis=0):
@@ -32,7 +36,10 @@ def concatenate(arrs, axis=0):
     Parameters
     ----------
     arrs : Sequence of arrays
-         The items to be joined together
+        The items to be joined together
+
+    axis : integer, optional
+        The array axis along which to join the arrays. Defaults to 0 (the first dimension)
 
     Returns
     -------

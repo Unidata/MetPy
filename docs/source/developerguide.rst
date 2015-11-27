@@ -137,9 +137,12 @@ unit tests on all support versions, as well as runs against the minimum package 
 against the code to check formatting. Travis is also used to build the documentation and to run the examples to
 ensure they stay working.
 
-Test coverage is monitored by `Coveralls.io <https://coveralls.io/r/metpy/MetPy>`_.
+Test coverage is monitored by `codecov.io <https://codecov.io/github/metpy/MetPy>`_.
 
-`Landscape.io <https://landscape.io/github/metpy/MetPy>`_ is used to track code quality using the ``prospector`` tool.
+The following services are used to track code quality:
+* `QuantifiedCode <https://www.quantifiedcode.com/app/project/gh:metpy:MetPy>`_
+* `Codacy <https://www.codacy.com/app/dopplershift/MetPy/dashboard>`_
+* `Landscape.io <https://landscape.io/github/metpy/MetPy>`_
 
 ---------
 Releasing

@@ -124,7 +124,7 @@ class ColortableRegistry(dict):
 
         # Need one more boundary than color
         num_steps = len(self[name]) + 1
-        boundaries = arange(start, step * num_steps, step)
+        boundaries = arange(start, start + step * num_steps, step)
         return self.get_with_boundaries(name, boundaries)
 
     def get_with_boundaries(self, name, boundaries):
