@@ -5,6 +5,7 @@
 import tempfile
 import numpy as np
 from matplotlib.figure import Figure
+from matplotlib.gridspec import GridSpec
 from matplotlib.backends.backend_agg import FigureCanvasAgg
 from metpy.plots.skewt import *  # noqa
 
@@ -30,5 +31,20 @@ class TestSkewT(object):
         skew.plot_moist_adiabats()
         skew.plot_mixing_lines()
 
+        with tempfile.NamedTemporaryFile() as f:
+            FigureCanvasAgg(fig).print_png(f.name)
+
+    def test_subplot(self):
+        'Test using SkewT on a sub-plot'
+        fig = Figure(figsize=(9, 9))
+        SkewT(fig, subplot=(2, 2, 1))
+        with tempfile.NamedTemporaryFile() as f:
+            FigureCanvasAgg(fig).print_png(f.name)
+
+    def test_gridspec(self):
+        'Test using SkewT on a sub-plot'
+        fig = Figure(figsize=(9, 9))
+        gs = GridSpec(1, 2)
+        SkewT(fig, subplot=gs[0, 1])
         with tempfile.NamedTemporaryFile() as f:
             FigureCanvasAgg(fig).print_png(f.name)

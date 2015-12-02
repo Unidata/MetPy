@@ -164,7 +164,7 @@ class SkewT(object):
         plot functions (e.g. `axvline`)
     '''
 
-    def __init__(self, fig=None, rotation=30):
+    def __init__(self, fig=None, rotation=30, subplot=(1, 1, 1)):
         r'''Creates SkewT - logP plots.
 
         Parameters
@@ -175,6 +175,12 @@ class SkewT(object):
         rotation : float or int, optional
             Controls the rotation of temperature relative to horizontal. Given
             in degrees counterclockwise from x-axis. Defaults to 30 degrees.
+        subplot : tuple of 3 integers or `matplotlib.gridspec.SubplotSpec` instance, optional
+            Controls the size/position of the created subplot. This allows creating
+            the skewT as part of a collection of subplots. If subplot is a tuple, it
+            should conform to the specification used for
+            `matplotlib.figure.Figure.add_subplot`. The `matplotlib.gridspec.SubplotSpec`
+            can be created by using `matplotlib.gridspec.GridSpec'.
         '''
 
         if fig is None:
@@ -182,8 +188,13 @@ class SkewT(object):
             figsize = plt.rcParams.get('figure.figsize', (7, 7))
             fig = plt.figure(figsize=figsize)
         self._fig = fig
-        self.ax = fig.add_subplot(1, 1, 1, projection='skewx',
-                                  rotation=rotation)
+
+        # Handle being passed a tuple for the subplot, or a GridSpec instance
+        try:
+            len(subplot)
+        except TypeError:
+            subplot = (subplot,)
+        self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
         self.ax.grid(True)
 
     def plot(self, p, t, *args, **kwargs):
