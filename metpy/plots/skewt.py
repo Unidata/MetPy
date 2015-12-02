@@ -217,13 +217,17 @@ class SkewT(object):
         kwargs
             Other keyword arguments to pass to `semilogy`
 
+        Returns
+        -------
+            list of lines plotted
+
         See Also
         --------
         `matplotlib.Axes.semilogy`
         '''
 
         # Skew-T logP plotting
-        self.ax.semilogy(t, p, *args, **kwargs)
+        l = self.ax.semilogy(t, p, *args, **kwargs)
 
         # Disables the log-formatting that comes with semilogy
         self.ax.yaxis.set_major_formatter(ScalarFormatter())
@@ -234,6 +238,8 @@ class SkewT(object):
         # Try to make sane default temperature plotting
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
         self.ax.set_xlim(-50, 50)
+
+        return l
 
     def plot_barbs(self, p, u, v, xloc=1.0, x_clip_radius=0.08, y_clip_radius=0.08, **kwargs):
         r'''Plot wind barbs.
@@ -262,6 +268,10 @@ class SkewT(object):
         kwargs
             Other keyword arguments to pass to `barbs`
 
+        Returns
+        -------
+            The `matplotlib.quiver.Barbs` instance created
+
         See Also
         --------
         `matplotlib.Axes.barbs`
@@ -281,6 +291,7 @@ class SkewT(object):
         ax_bbox = transforms.Bbox([[xloc - x_clip_radius, -y_clip_radius],
                                    [xloc + x_clip_radius, 1.0 + y_clip_radius]])
         b.set_clip_box(transforms.TransformedBbox(ax_bbox, self.ax.transAxes))
+        return b
 
     def plot_dry_adiabats(self, t0=None, p=None, **kwargs):
         r'''Plot dry adiabats.
@@ -301,6 +312,10 @@ class SkewT(object):
             plotted pressure range.
         kwargs
             Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+
+        Returns
+        -------
+            The `matplotlib.collections.LineCollection` instance created
 
         See Also
         --------
@@ -326,7 +341,7 @@ class SkewT(object):
         kwargs.setdefault('colors', 'r')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
-        self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.ax.add_collection(LineCollection(linedata, **kwargs))
 
     def plot_moist_adiabats(self, t0=None, p=None, **kwargs):
         r'''Plot moist adiabats.
@@ -348,6 +363,10 @@ class SkewT(object):
             plotted pressure range.
         kwargs
             Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+
+        Returns
+        -------
+            The `matplotlib.collections.LineCollection` instance created
 
         See Also
         --------
@@ -374,7 +393,7 @@ class SkewT(object):
         kwargs.setdefault('colors', 'b')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
-        self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.ax.add_collection(LineCollection(linedata, **kwargs))
 
     def plot_mixing_lines(self, w=None, p=None, **kwargs):
         r'''Plot lines of constant mixing ratio.
@@ -394,6 +413,10 @@ class SkewT(object):
             plotted pressure range up to 600 mb.
         kwargs
             Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+
+        Returns
+        -------
+            The `matplotlib.collections.LineCollection` instance created
 
         See Also
         --------
@@ -417,7 +440,7 @@ class SkewT(object):
         kwargs.setdefault('colors', 'g')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.8)
-        self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.ax.add_collection(LineCollection(linedata, **kwargs))
 
 
 @exporter.export
