@@ -1,8 +1,8 @@
 .. _api-index:
 
-###############
-  The MetPy API
-###############
+#############
+The MetPy API
+#############
 
 .. toctree::
    :maxdepth: 2
