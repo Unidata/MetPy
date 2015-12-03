@@ -8,8 +8,10 @@ import matplotlib.axis as maxis
 import matplotlib.spines as mspines
 from matplotlib.axes import Axes
 from matplotlib.collections import LineCollection
+from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 from matplotlib.ticker import ScalarFormatter, MultipleLocator
+from .util import colored_line
 from ..calc import dry_lapse, moist_lapse, dewpoint, vapor_pressure
 from ..units import units
 
@@ -416,3 +418,141 @@ class SkewT(object):
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.8)
         self.ax.add_collection(LineCollection(linedata, **kwargs))
+
+
+@exporter.export
+class Hodograph(object):
+    r'''Make a hodograph of wind data--plots the u and v components of the wind along the
+    x and y axes, respectively.
+
+    This class simplifies the process of creating a hodograph using matplotlib.
+    It provides helpers for creating a circular grid and for plotting the wind as a line
+    colored by another value (such as wind speed).
+
+    Attributes
+    ----------
+    ax : `matplotlib.axes.Axes`
+        The underlying Axes instance used for all plotting
+    '''
+    def __init__(self, ax=None, component_range=80):
+        r'''Create a Hodograph instance.
+
+        Parameters
+        ----------
+        ax : `matplotlib.axes.Axes`, optional
+            The `Axes` instance used for plotting
+        component_range : value
+            The maximum range of the plot. Used to set plot bounds and control the maximum
+            number of grid rings needed.
+        '''
+        if ax is None:
+            import matplotlib.pyplot as plt
+            self.ax = plt.figure().add_subplot(1, 1, 1)
+        else:
+            self.ax = ax
+        ax.set_aspect('equal', 'box')
+        ax.set_xlim(-component_range, component_range)
+        ax.set_ylim(-component_range, component_range)
+
+        # == sqrt(2) * max_range, which is the distance at the corner
+        self.max_range = 1.4142135 * component_range
+
+    def add_grid(self, increment=10., **kwargs):
+        r'''Add grid lines to hodograph.
+
+        Creates lines for the x- and y-axes, as well as circles denoting wind speed values.
+
+        Parameters
+        ----------
+        increment : value, optional
+            The value increment between rings
+        kwargs
+            Other kwargs to control appearance of lines
+
+        '''
+        # Some default arguments. Take those, and update with any
+        # arguments passed in
+        grid_args = dict(color='grey', linestyle='dashed')
+        if kwargs:
+            grid_args.update(kwargs)
+
+        # Take those args and make appropriate for a Circle
+        circle_args = grid_args.copy()
+        color = circle_args.pop('color', None)
+        circle_args['edgecolor'] = color
+        circle_args['fill'] = False
+
+        self.rings = []
+        for r in np.arange(increment, self.max_range, increment):
+            c = Circle((0, 0), radius=r, **circle_args)
+            self.ax.add_patch(c)
+            self.rings.append(c)
+
+        # Add lines for x=0 and y=0
+        self.yaxis = self.ax.axvline(0, **grid_args)
+        self.xaxis = self.ax.axhline(0, **grid_args)
+
+    @staticmethod
+    def _form_line_args(kwargs):
+        r'Simple helper to take default line style and extend with kwargs'
+        def_args = dict(linewidth=3)
+        def_args.update(kwargs)
+        return def_args
+
+    def plot(self, u, v, **kwargs):
+        r'''Plot u, v data.
+
+        Plots the wind data on the hodograph.
+
+        Parameters
+        ----------
+        u : array_like
+            u-component of wind
+        v : array_like
+            v-component of wind
+        kwargs
+            Other keyword arguments to pass to matplotlib's `plot`
+
+        Returns
+        -------
+            list of lines plotted
+
+        See Also
+        --------
+        `Hodograph.plot_colormapped`
+        '''
+        line_args = self._form_line_args(kwargs)
+        return self.ax.plot(u, v, **line_args)
+
+    def plot_colormapped(self, u, v, c, **kwargs):
+        r'''Plot u, v data, with line colored based on a third set of data.
+
+        Plots the wind data on the hodograph, but
+
+        Simple wrapper around plot so that pressure is the first (independent)
+        input. This is essentially a wrapper around `semilogy`. It also
+        sets some appropriate ticking and plot ranges.
+
+        Parameters
+        ----------
+        u : array_like
+            u-component of wind
+        v : array_like
+            v-component of wind
+        c : array_like
+            data to use for colormapping
+        kwargs
+            Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+
+        Returns
+        -------
+            The `matplotlib.collections.LineCollection` instance created
+
+        See Also
+        --------
+        `Hodograph.plot`
+        '''
+        line_args = self._form_line_args(kwargs)
+        lc = colored_line(u, v, c, **line_args)
+        self.ax.add_collection(lc)
+        return lc
