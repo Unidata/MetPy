@@ -14,7 +14,9 @@ from metpy.units import units
 # TODO: Need at some point to do image-based comparison, but that's a lot to
 # bite off right now
 class TestSkewT(object):
-    def test_api(self):
+    'Test SkewT'
+    @staticmethod
+    def test_api():
         'Test the SkewT api'
         fig = Figure(figsize=(9, 9))
         skew = SkewT(fig)
@@ -35,14 +37,16 @@ class TestSkewT(object):
         with tempfile.NamedTemporaryFile() as f:
             FigureCanvasAgg(fig).print_png(f.name)
 
-    def test_subplot(self):
+    @staticmethod
+    def test_subplot():
         'Test using SkewT on a sub-plot'
         fig = Figure(figsize=(9, 9))
         SkewT(fig, subplot=(2, 2, 1))
         with tempfile.NamedTemporaryFile() as f:
             FigureCanvasAgg(fig).print_png(f.name)
 
-    def test_gridspec(self):
+    @staticmethod
+    def test_gridspec():
         'Test using SkewT on a sub-plot'
         fig = Figure(figsize=(9, 9))
         gs = GridSpec(1, 2)
@@ -52,6 +56,7 @@ class TestSkewT(object):
 
 
 class TestHodograph(object):
+    'Test Hodograph'
     @staticmethod
     def test_basic_api():
         'Basic test of Hodograph API'
