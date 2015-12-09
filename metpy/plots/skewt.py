@@ -8,8 +8,10 @@ import matplotlib.axis as maxis
 import matplotlib.spines as mspines
 from matplotlib.axes import Axes
 from matplotlib.collections import LineCollection
+from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 from matplotlib.ticker import ScalarFormatter, MultipleLocator
+from .util import colored_line
 from ..calc import dry_lapse, moist_lapse, dewpoint, vapor_pressure
 from ..units import units
 
@@ -164,7 +166,7 @@ class SkewT(object):
         plot functions (e.g. `axvline`)
     '''
 
-    def __init__(self, fig=None, rotation=30):
+    def __init__(self, fig=None, rotation=30, subplot=(1, 1, 1)):
         r'''Creates SkewT - logP plots.
 
         Parameters
@@ -175,6 +177,12 @@ class SkewT(object):
         rotation : float or int, optional
             Controls the rotation of temperature relative to horizontal. Given
             in degrees counterclockwise from x-axis. Defaults to 30 degrees.
+        subplot : tuple of 3 integers or `matplotlib.gridspec.SubplotSpec` instance, optional
+            Controls the size/position of the created subplot. This allows creating
+            the skewT as part of a collection of subplots. If subplot is a tuple, it
+            should conform to the specification used for
+            `matplotlib.figure.Figure.add_subplot`. The `matplotlib.gridspec.SubplotSpec`
+            can be created by using `matplotlib.gridspec.GridSpec'.
         '''
 
         if fig is None:
@@ -182,8 +190,13 @@ class SkewT(object):
             figsize = plt.rcParams.get('figure.figsize', (7, 7))
             fig = plt.figure(figsize=figsize)
         self._fig = fig
-        self.ax = fig.add_subplot(1, 1, 1, projection='skewx',
-                                  rotation=rotation)
+
+        # Handle being passed a tuple for the subplot, or a GridSpec instance
+        try:
+            len(subplot)
+        except TypeError:
+            subplot = (subplot,)
+        self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
         self.ax.grid(True)
 
     def plot(self, p, t, *args, **kwargs):
@@ -204,13 +217,17 @@ class SkewT(object):
         kwargs
             Other keyword arguments to pass to `semilogy`
 
+        Returns
+        -------
+            list of lines plotted
+
         See Also
         --------
         `matplotlib.Axes.semilogy`
         '''
 
         # Skew-T logP plotting
-        self.ax.semilogy(t, p, *args, **kwargs)
+        l = self.ax.semilogy(t, p, *args, **kwargs)
 
         # Disables the log-formatting that comes with semilogy
         self.ax.yaxis.set_major_formatter(ScalarFormatter())
@@ -221,6 +238,8 @@ class SkewT(object):
         # Try to make sane default temperature plotting
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
         self.ax.set_xlim(-50, 50)
+
+        return l
 
     def plot_barbs(self, p, u, v, xloc=1.0, x_clip_radius=0.08, y_clip_radius=0.08, **kwargs):
         r'''Plot wind barbs.
@@ -249,6 +268,10 @@ class SkewT(object):
         kwargs
             Other keyword arguments to pass to `barbs`
 
+        Returns
+        -------
+            The `matplotlib.quiver.Barbs` instance created
+
         See Also
         --------
         `matplotlib.Axes.barbs`
@@ -268,6 +291,7 @@ class SkewT(object):
         ax_bbox = transforms.Bbox([[xloc - x_clip_radius, -y_clip_radius],
                                    [xloc + x_clip_radius, 1.0 + y_clip_radius]])
         b.set_clip_box(transforms.TransformedBbox(ax_bbox, self.ax.transAxes))
+        return b
 
     def plot_dry_adiabats(self, t0=None, p=None, **kwargs):
         r'''Plot dry adiabats.
@@ -288,6 +312,10 @@ class SkewT(object):
             plotted pressure range.
         kwargs
             Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+
+        Returns
+        -------
+            The `matplotlib.collections.LineCollection` instance created
 
         See Also
         --------
@@ -313,7 +341,7 @@ class SkewT(object):
         kwargs.setdefault('colors', 'r')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
-        self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.ax.add_collection(LineCollection(linedata, **kwargs))
 
     def plot_moist_adiabats(self, t0=None, p=None, **kwargs):
         r'''Plot moist adiabats.
@@ -335,6 +363,10 @@ class SkewT(object):
             plotted pressure range.
         kwargs
             Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+
+        Returns
+        -------
+            The `matplotlib.collections.LineCollection` instance created
 
         See Also
         --------
@@ -361,7 +393,7 @@ class SkewT(object):
         kwargs.setdefault('colors', 'b')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
-        self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.ax.add_collection(LineCollection(linedata, **kwargs))
 
     def plot_mixing_lines(self, w=None, p=None, **kwargs):
         r'''Plot lines of constant mixing ratio.
@@ -381,6 +413,10 @@ class SkewT(object):
             plotted pressure range up to 600 mb.
         kwargs
             Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+
+        Returns
+        -------
+            The `matplotlib.collections.LineCollection` instance created
 
         See Also
         --------
@@ -404,4 +440,142 @@ class SkewT(object):
         kwargs.setdefault('colors', 'g')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.8)
-        self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.ax.add_collection(LineCollection(linedata, **kwargs))
+
+
+@exporter.export
+class Hodograph(object):
+    r'''Make a hodograph of wind data--plots the u and v components of the wind along the
+    x and y axes, respectively.
+
+    This class simplifies the process of creating a hodograph using matplotlib.
+    It provides helpers for creating a circular grid and for plotting the wind as a line
+    colored by another value (such as wind speed).
+
+    Attributes
+    ----------
+    ax : `matplotlib.axes.Axes`
+        The underlying Axes instance used for all plotting
+    '''
+    def __init__(self, ax=None, component_range=80):
+        r'''Create a Hodograph instance.
+
+        Parameters
+        ----------
+        ax : `matplotlib.axes.Axes`, optional
+            The `Axes` instance used for plotting
+        component_range : value
+            The maximum range of the plot. Used to set plot bounds and control the maximum
+            number of grid rings needed.
+        '''
+        if ax is None:
+            import matplotlib.pyplot as plt
+            self.ax = plt.figure().add_subplot(1, 1, 1)
+        else:
+            self.ax = ax
+        ax.set_aspect('equal', 'box')
+        ax.set_xlim(-component_range, component_range)
+        ax.set_ylim(-component_range, component_range)
+
+        # == sqrt(2) * max_range, which is the distance at the corner
+        self.max_range = 1.4142135 * component_range
+
+    def add_grid(self, increment=10., **kwargs):
+        r'''Add grid lines to hodograph.
+
+        Creates lines for the x- and y-axes, as well as circles denoting wind speed values.
+
+        Parameters
+        ----------
+        increment : value, optional
+            The value increment between rings
+        kwargs
+            Other kwargs to control appearance of lines
+
+        '''
+        # Some default arguments. Take those, and update with any
+        # arguments passed in
+        grid_args = dict(color='grey', linestyle='dashed')
+        if kwargs:
+            grid_args.update(kwargs)
+
+        # Take those args and make appropriate for a Circle
+        circle_args = grid_args.copy()
+        color = circle_args.pop('color', None)
+        circle_args['edgecolor'] = color
+        circle_args['fill'] = False
+
+        self.rings = []
+        for r in np.arange(increment, self.max_range, increment):
+            c = Circle((0, 0), radius=r, **circle_args)
+            self.ax.add_patch(c)
+            self.rings.append(c)
+
+        # Add lines for x=0 and y=0
+        self.yaxis = self.ax.axvline(0, **grid_args)
+        self.xaxis = self.ax.axhline(0, **grid_args)
+
+    @staticmethod
+    def _form_line_args(kwargs):
+        r'Simple helper to take default line style and extend with kwargs'
+        def_args = dict(linewidth=3)
+        def_args.update(kwargs)
+        return def_args
+
+    def plot(self, u, v, **kwargs):
+        r'''Plot u, v data.
+
+        Plots the wind data on the hodograph.
+
+        Parameters
+        ----------
+        u : array_like
+            u-component of wind
+        v : array_like
+            v-component of wind
+        kwargs
+            Other keyword arguments to pass to matplotlib's `plot`
+
+        Returns
+        -------
+            list of lines plotted
+
+        See Also
+        --------
+        `Hodograph.plot_colormapped`
+        '''
+        line_args = self._form_line_args(kwargs)
+        return self.ax.plot(u, v, **line_args)
+
+    def plot_colormapped(self, u, v, c, **kwargs):
+        r'''Plot u, v data, with line colored based on a third set of data.
+
+        Plots the wind data on the hodograph, but
+
+        Simple wrapper around plot so that pressure is the first (independent)
+        input. This is essentially a wrapper around `semilogy`. It also
+        sets some appropriate ticking and plot ranges.
+
+        Parameters
+        ----------
+        u : array_like
+            u-component of wind
+        v : array_like
+            v-component of wind
+        c : array_like
+            data to use for colormapping
+        kwargs
+            Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+
+        Returns
+        -------
+            The `matplotlib.collections.LineCollection` instance created
+
+        See Also
+        --------
+        `Hodograph.plot`
+        '''
+        line_args = self._form_line_args(kwargs)
+        lc = colored_line(u, v, c, **line_args)
+        self.ax.add_collection(lc)
+        return lc
