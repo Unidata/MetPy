@@ -6,6 +6,7 @@
 
 from __future__ import print_function
 import logging
+import zlib
 from collections import namedtuple
 from struct import Struct
 
@@ -213,6 +214,19 @@ class IOBuffer(object):
 
     def __len__(self):
         return len(self._data)
+
+
+def zlib_decompress_all_frames(data):
+    frames = bytearray()
+    data = bytes(data)
+    while data:
+        decomp = zlib.decompressobj()
+        try:
+            frames.extend(decomp.decompress(data))
+        except zlib.error:
+            break
+        data = decomp.unused_data
+    return frames + data
 
 
 def bits_to_code(val):
