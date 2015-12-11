@@ -245,5 +245,6 @@ def hexdump(buf, num_bytes, offset=0, width=32):
         hexoutput = ' '.join(blocks)
         printable = tuple(chunk)
         print(hexoutput % printable, str(ind).ljust(len(str(end))),
+              str(ind - offset).ljust(len(str(end))),
               ''.join(chr(c) if 31 < c < 128 else '.' for c in chunk), sep='  ')
         ind += width
