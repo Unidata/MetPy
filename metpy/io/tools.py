@@ -209,7 +209,7 @@ class IOBuffer(object):
         return 'Size: {} Offset: {}'.format(len(self._data), self._offset)
 
     def print_next(self, num_bytes):
-        print(' '.join('%02x' % ord(c) for c in self.get_next(num_bytes)))
+        print(' '.join('%02x' % c for c in self.get_next(num_bytes)))
 
     def __len__(self):
         return len(self._data)
