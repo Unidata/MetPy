@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+from __future__ import division
 import ast
 import glob
 import os.path
@@ -46,6 +47,13 @@ def read_colortable(fobj):
         if literal:
             ret.append(mcolors.colorConverter.to_rgb(literal))
     return ret
+
+
+def convert_gempak_table(infile, outfile):
+    for line in infile:
+        if not line.startswith('!') and line.strip():
+            r, g, b = map(int, line.split())
+            outfile.write('(%f, %f, %f)\n' % (r / 255, g / 255, b / 255))
 
 
 class ColortableRegistry(dict):
