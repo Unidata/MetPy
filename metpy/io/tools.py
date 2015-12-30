@@ -27,7 +27,7 @@ class NamedStruct(Struct):
             elif not i[0]:  # Skip items with no name
                 conv_off += 1
         self._tuple = namedtuple(tuple_name, ' '.join(n for n in names if n))
-        Struct.__init__(self, prefmt + ''.join(f for f in fmts if f))
+        super(NamedStruct, self).__init__(prefmt + ''.join(f for f in fmts if f))
 
     def _create(self, items):
         if self.converters:
@@ -39,10 +39,10 @@ class NamedStruct(Struct):
         return self._tuple(*items)
 
     def unpack(self, s):
-        return self._create(Struct.unpack(self, s))
+        return self._create(super(NamedStruct, self).unpack(s))
 
     def unpack_from(self, buff, offset=0):
-        return self._create(Struct.unpack_from(self, buff, offset))
+        return self._create(super(NamedStruct, self).unpack_from(buff, offset))
 
     def unpack_file(self, fobj):
         bytes = fobj.read(self.size)
@@ -58,16 +58,16 @@ class DictStruct(Struct):
         # Remove empty names
         self._names = [n for n in names if n]
 
-        Struct.__init__(self, prefmt + ''.join(f for f in formats if f))
+        super(DictStruct, self).__init__(prefmt + ''.join(f for f in formats if f))
 
     def _create(self, items):
         return dict(zip(self._names, items))
 
     def unpack(self, s):
-        return self._create(Struct.unpack(self, s))
+        return self._create(super(DictStruct, self).unpack(s))
 
     def unpack_from(self, buff, offset=0):
-        return self._create(Struct.unpack_from(self, buff, offset))
+        return self._create(super(DictStruct, self).unpack_from(buff, offset))
 
 
 class Enum(object):
@@ -105,7 +105,7 @@ class BitField(object):
         for n in self._names:
             if val & 0x1:
                 l.append(n)
-            val = val >> 1
+            val >>= 1
             if not val:
                 break
 
@@ -162,17 +162,17 @@ class IOBuffer(object):
     def read_ascii(self, num_bytes=None):
         return self.read(num_bytes).decode('ascii')
 
-    def read_binary(self, num, type='B'):
-        if 'B' in type:
+    def read_binary(self, num, item_type='B'):
+        if 'B' in item_type:
             return self.read(num)
 
-        if type[0] in ('@', '=', '<', '>', '!'):
-            order = type[0]
-            type = type[1:]
+        if item_type[0] in ('@', '=', '<', '>', '!'):
+            order = item_type[0]
+            item_type = item_type[1:]
         else:
             order = '@'
 
-        return list(self.read_struct(Struct(order + '%d' % num + type)))
+        return list(self.read_struct(Struct(order + '%d' % num + item_type)))
 
     def read_int(self, code):
         return self.read_struct(Struct(code))[0]
@@ -248,7 +248,7 @@ def hexdump(buf, num_bytes, offset=0, width=32):
         actual_width = len(chunk)
         hexfmt = '%02X'
         blocksize = 4
-        blocks = [hexfmt * blocksize for i in range(actual_width // blocksize)]
+        blocks = [hexfmt * blocksize for _ in range(actual_width // blocksize)]
 
         # Need to get any partial lines
         num_left = actual_width % blocksize
