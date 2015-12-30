@@ -13,6 +13,7 @@ addons:
     - libblas-dev
     - liblapack-dev
     - gfortran
+    - libproj-dev
 
 python:
   - 3.5
@@ -23,6 +24,7 @@ env:
     - secure: "MOw+6pAQ8s7XX1U9Pbgw8SIuz5MHODj6PXe6xCSIyGR14/0KFNiR9s6NEIa9i7qnp7HOq/V2M9ZFPPioQCrL8k5V4XzZfNz6kXGUT8DoSAAnAAnDWy4yMRxYMlEcjSY8l0KZ9B3szxypkLh0Qd9+pHZYvRSLt8A8UcZSVSNGDjg="
     - WHEELHOUSE="https://unidata-python.s3.amazonaws.com/wheelhouse/index.html"
     - WHEELDIR="wheelhouse/"
+    - EXTRA_INSTALLS="test,cdm"
   matrix:
     - NOSE_WITH_COVERAGE=y NOSE_COVER_PACKAGE=metpy
     - TASK="examples"
@@ -59,20 +61,24 @@ before_install:
       pip install --upgrade pip;
       if [[ $TASK == "docs" || $TASK == "examples" ]]; then
         pip install -r docs/requirements.txt;
+        if [[ $TASK == "examples" ]]; then
+            export EXTRA_INSTALLS="$EXTRA_INSTALLS,examples";
+            pip install Cython;
+        fi;
       fi;
       if [[ $NOSE_WITH_COVERAGE == y ]]; then
         pip install coverage;
       fi;
       mkdir $WHEELDIR;
-      pip install ".[test,cdm]" -d $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
+      pip install ".[$EXTRA_INSTALLS]" -d $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
       touch $WHEELDIR/download_marker;
-      travis_wait pip wheel ".[test,cdm]" -w $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
+      travis_wait pip wheel ".[$EXTRA_INSTALLS]" -w $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
       rm -f $WHEELDIR/MetPy*.whl;
     fi
 
 install:
   - if [[ $TASK != "lint" ]]; then
-      pip install ".[test,cdm]" --upgrade --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
+      pip install ".[$EXTRA_INSTALLS]" --upgrade --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
       if [[ $TASK == "examples" ]]; then
         python setup.py examples;
       fi;

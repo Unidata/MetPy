@@ -82,6 +82,7 @@ setup(
         'cdm': ['pyproj>=1.9.4'],
         'dev': ['ipython[all]>=3.1'],
         'doc': ['sphinx>=1.3', 'ipython[all]>=3.1'],
+        'examples': ['cartopy>=0.13','pillow'],
         'test': ['nose']
     },
 
