@@ -80,6 +80,12 @@ Other required packages:
 - Matplotlib
 - Pint
 
+Python versions older than 3.4 require the enum34 package, which is a backport
+of the standard library enum module.
+
+There is also an optional dependency on the pyproj library for geographic
+projections (used with CDM interface).
+
 Philosophy
 ----------
 The space MetPy aims for is GEMPAK (and maybe NCL)-like functionality, in a way that plugs easily

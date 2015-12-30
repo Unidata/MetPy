@@ -64,15 +64,15 @@ before_install:
         pip install coverage;
       fi;
       mkdir $WHEELDIR;
-      pip install ".[test]" -d $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
+      pip install ".[test,cdm]" -d $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
       touch $WHEELDIR/download_marker;
-      travis_wait pip wheel ".[test]" -w $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
+      travis_wait pip wheel ".[test,cdm]" -w $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
       rm -f $WHEELDIR/MetPy*.whl;
     fi
 
 install:
   - if [[ $TASK != "lint" ]]; then
-      pip install ".[test]" --upgrade --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
+      pip install ".[test,cdm]" --upgrade --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
       if [[ $TASK == "examples" ]]; then
         python setup.py examples;
       fi;
