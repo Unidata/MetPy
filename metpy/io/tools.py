@@ -223,10 +223,11 @@ def zlib_decompress_all_frames(data):
         decomp = zlib.decompressobj()
         try:
             frames.extend(decomp.decompress(data))
+            data = decomp.unused_data
         except zlib.error:
+            frames.extend(data)
             break
-        data = decomp.unused_data
-    return frames + data
+    return frames
 
 
 def bits_to_code(val):
