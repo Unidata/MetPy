@@ -22,11 +22,14 @@ log.setLevel(logging.WARN)
 
 
 def make_datetime(s):
+    s = bytearray(s)  # For Python 2
     year, month, day, hour, minute, second, cs = s
     return datetime(1900 + year, month, day, hour, minute, second, 10000 * cs)
 
 
 def scaled_int(s):
+    s = bytearray(s)  # For Python 2
+
     # Get leftmost bit (sign) as 1 (if 0) or -1 (if 1)
     sign = 1 - ((s[0] & 0x80) >> 6)
 
