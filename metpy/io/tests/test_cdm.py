@@ -2,6 +2,9 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+import numpy as np
+from nose.tools import raises
+
 from metpy.io.cdm import Dataset
 
 
@@ -31,6 +34,7 @@ class TestCDM(object):
         ds = Dataset()
         dim = ds.createDimension('x', 5)
         assert dim.size == 5
+        assert dim.group() is ds
         assert str(dim) == "<class 'metpy.io.cdm.Dimension'>: name = x, size = 5"
 
     @staticmethod
@@ -43,6 +47,8 @@ class TestCDM(object):
         assert 'data' in ds.variables
         assert var.shape == (2,)
         assert var.size == 2
+        assert var.ndim == 1
+        assert var.dtype == np.float32
         assert var[0] == 5
 
         var.units = 'meters'
@@ -50,5 +56,57 @@ class TestCDM(object):
         assert 'units' in var.ncattrs()
         assert var.units == 'meters'
 
+        assert var.group() is ds
+
         assert str(var) == ("<class 'metpy.io.cdm.Variable'>: float32 data(x)"
                             "\n\tunits: meters\n\tshape = 2")
+
+    @staticmethod
+    def test_multidim_var():
+        r'Test multi-dim Variable'
+        ds = Dataset()
+        ds.createDimension('x', 2)
+        ds.createDimension('y', 3)
+        var = ds.createVariable('data', 'i8', ('x', 'y'))
+
+        assert var.shape == (2, 3)
+        assert var.size == 6
+        assert var.ndim == 2
+        assert var.dtype == np.int64
+
+        assert str(var) == ("<class 'metpy.io.cdm.Variable'>: int64 data(x, y)"
+                            "\n\tshape = (2, 3)")
+
+    @staticmethod
+    def test_remove_attr():
+        r'Test removing an attribute'
+        ds = Dataset()
+        ds.maker = 'me'
+        assert 'maker' in ds.ncattrs()
+
+        del ds.maker
+        assert not hasattr(ds, 'maker')
+        assert 'maker' not in ds.ncattrs()
+
+    @staticmethod
+    def test_add_group():
+        r'Test adding a group'
+        ds = Dataset()
+        grp = ds.createGroup('myGroup')
+        assert grp.name == 'myGroup'
+        assert 'myGroup' in ds.groups
+
+        assert str(ds) == "root\nGroups:\nmyGroup"
+
+    @staticmethod
+    @raises(ValueError)
+    def test_variable_size_check():
+        r'Test Variable checking size of passed array'
+        ds = Dataset()
+        xdim = ds.createDimension('x', 2)
+        ydim = ds.createDimension('y', 3)
+
+        # Create array with dims flipped
+        arr = np.empty((ydim.size, xdim.size), dtype='f4')
+
+        ds.createVariable('data', 'f4', ('x', 'y'), wrap_array=arr)
