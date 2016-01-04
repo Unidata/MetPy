@@ -373,7 +373,7 @@ class Dimension(object):
         return self.size
 
     def __str__(self):
-        return '{0} name = {1.name}, size = {1.size}'.format(type(self), self.name)
+        return '{0}: name = {1.name}, size = {1.size}'.format(type(self), self)
 
 
 # Not sure if this lives long-term or not
