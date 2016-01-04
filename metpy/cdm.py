@@ -85,7 +85,7 @@ class Group(AttributeContainer):
         if self.ncattrs():
             print_groups.append('\nAttributes:')
             for att in self.ncattrs():
-                print_groups.append('\t%s: %s' % (att, getattr(self, att)))
+                print_groups.append('\t{0}: {1}'.format(att, getattr(self, att)))
         return '\n'.join(print_groups)
 
 
@@ -158,15 +158,15 @@ class Variable(AttributeContainer):
         return self._data[ind]
 
     def __str__(self):
-        groups = [str(type(self)) + ': %s %s(%s)' % (self.datatype, self.name,
-                                                     ', '.join(self.dimensions))]
+        groups = [str(type(self)) +
+                  ': {0.datatype} {0.name}({1})'.format(self, ', '.join(self.dimensions))]
         for att in self.ncattrs():
-            groups.append('\t%s: %s' % (att, getattr(self, att)))
+            groups.append('\t{0}: {1}'.format(att, getattr(self, att)))
         if self.ndim:
             if self.ndim > 1:
-                shape_str = '(' + ', '.join('%d' % s for s in self.shape) + ')'
+                shape_str = str(self.shape)
             else:
-                shape_str = '%d' % self.shape[0]
+                shape_str = str(self.shape[0])
             groups.append('\tshape = ' + shape_str)
         return '\n'.join(groups)
 
@@ -188,8 +188,7 @@ class Dimension(object):
         return self.size
 
     def __str__(self):
-        grps = ['%s ' % type(self), 'name = ' + self.name, ', size = %d' % self.size]
-        return ''.join(grps)
+        return '{0} name = {1.name}, size = {1.size}'.format(type(self), self.name)
 
 
 # Not sure if this lives long-term or not
