@@ -15,19 +15,24 @@ import numpy as np
 from .tools import Bits, IOBuffer, NamedStruct, zlib_decompress_all_frames
 from ..cbook import is_string_like
 from ..cdm import Dataset, cf_to_proj
+from ..package_tools import Exporter
+
+exporter = Exporter(globals())
 
 log = logging.getLogger('metpy.io.gini')
 log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
 log.setLevel(logging.WARN)
 
 
-def make_datetime(s):
+def _make_datetime(s):
+    r'Converts 7 bytes from a GINI file to a `datetime` instance.'
     s = bytearray(s)  # For Python 2
     year, month, day, hour, minute, second, cs = s
     return datetime(1900 + year, month, day, hour, minute, second, 10000 * cs)
 
 
-def scaled_int(s):
+def _scaled_int(s):
+    r'Converts a 3 byte string to a signed integer value'
     s = bytearray(s)  # For Python 2
 
     # Get leftmost bit (sign) as 1 (if 0) or -1 (if 1)
@@ -41,7 +46,8 @@ def scaled_int(s):
     return (sign * int_val) / 10000.
 
 
-def name_lookup(names):
+def _name_lookup(names):
+    r'Creates an io helper to convert an integer to a named value.'
     mapper = dict(zip(range(len(names)), names))
 
     def lookup(val):
@@ -50,12 +56,36 @@ def name_lookup(names):
 
 
 class GiniProjection(Enum):
+    r'Represents projection values in GINI files'
     mercator = 1
     lambert_conformal = 3
     polar_stereographic = 5
 
 
+@exporter.export
 class GiniFile(object):
+    r'''A class that handles reading the GINI format satellite images from the NWS.
+
+    This class attempts to decode every byte that is in a given GINI file.
+
+    Attributes
+    ----------
+    prod_desc : namedtuple
+        Decoded first section of product description block
+    prod_desc2 : namedtuple
+        Decoded second section of product description block
+    proj_info : namedtuple
+        Decoded geographic projection information
+
+    Notes
+    -----
+    The internal data structures that things are decoded into are subject to change. For
+    a more stable interface, use the ``to_dataset`` method.
+
+    See Also
+    --------
+    GiniFile.to_dataset
+    '''
     missing = 255
     wmo_finder = re.compile('(T\w{3}\d{2})[\s\w\d]+\w*(\w{3})\r\r\n')
 
@@ -87,33 +117,44 @@ class GiniFile(object):
                 'Sounder (3.74 micron)', 'Sounder (Visible)']
 
     prod_desc_fmt = NamedStruct([('source', 'b'),
-                                 ('creating_entity', 'b', name_lookup(crafts)),
-                                 ('sector_id', 'b', name_lookup(sectors)),
-                                 ('channel', 'b', name_lookup(channels)),
+                                 ('creating_entity', 'b', _name_lookup(crafts)),
+                                 ('sector_id', 'b', _name_lookup(sectors)),
+                                 ('channel', 'b', _name_lookup(channels)),
                                  ('num_records', 'H'), ('record_len', 'H'),
-                                 ('datetime', '7s', make_datetime),
+                                 ('datetime', '7s', _make_datetime),
                                  ('projection', 'b', GiniProjection), ('nx', 'H'), ('ny', 'H'),
-                                 ('la1', '3s', scaled_int), ('lo1', '3s', scaled_int)
+                                 ('la1', '3s', _scaled_int), ('lo1', '3s', _scaled_int)
                                  ], '>', 'ProdDescStart')
 
-    lc_ps_fmt = NamedStruct([('reserved', 'b'), ('lov', '3s', scaled_int),
-                             ('dx', '3s', scaled_int), ('dy', '3s', scaled_int),
+    lc_ps_fmt = NamedStruct([('reserved', 'b'), ('lov', '3s', _scaled_int),
+                             ('dx', '3s', _scaled_int), ('dy', '3s', _scaled_int),
                              ('proj_center', 'b')], '>', 'LambertOrPolarProjection')
 
-    mercator_fmt = NamedStruct([('resolution', 'b'), ('la2', '3s', scaled_int),
-                                ('lo2', '3s', scaled_int), ('di', 'H'), ('dj', 'H')
+    mercator_fmt = NamedStruct([('resolution', 'b'), ('la2', '3s', _scaled_int),
+                                ('lo2', '3s', _scaled_int), ('di', 'H'), ('dj', 'H')
                                 ], '>', 'MercatorProjection')
 
     prod_desc2_fmt = NamedStruct([('scanning_mode', 'b', Bits(3)),
-                                  ('lat_in', '3s', scaled_int), ('resolution', 'b'),
+                                  ('lat_in', '3s', _scaled_int), ('resolution', 'b'),
                                   ('compression', 'b'), ('version', 'b'), ('pdb_size', 'H'),
                                   ('nav_cal', 'b')], '>', 'ProdDescEnd')
 
-    nav_fmt = NamedStruct([('sat_lat', '3s', scaled_int), ('sat_lon', '3s', scaled_int),
-                           ('sat_height', 'H'), ('ur_lat', '3s', scaled_int),
-                           ('ur_lon', '3s', scaled_int)], '>', 'Navigation')
+    nav_fmt = NamedStruct([('sat_lat', '3s', _scaled_int), ('sat_lon', '3s', _scaled_int),
+                           ('sat_height', 'H'), ('ur_lat', '3s', _scaled_int),
+                           ('ur_lon', '3s', _scaled_int)], '>', 'Navigation')
 
     def __init__(self, filename):
+        r'''Create instance of `GiniFile`.
+
+        Parameters
+        ----------
+        filename : str or file-like object
+            If str, the name of the file to be opened. Gzip-ed files are
+            recognized with the extension '.gz', as are bzip2-ed files with
+            the extension `.bz2` If `filename` is a file-like object,
+            this will be read from directly.
+        '''
+
         if is_string_like(filename):
             fobj = open(filename, 'rb')
             self.filename = filename
@@ -190,7 +231,15 @@ class GiniFile(object):
                         self._buffer.get_next(10))
 
     def to_dataset(self):
-        """Convert to a netCDF-like dataset"""
+        """Convert to a CDM dataset.
+
+        Gives a representation of the data in a much more user-friendly manner, providing
+        easy access to Variables and relevant attributes.
+
+        Returns
+        -------
+        Dataset
+        """
         ds = Dataset()
 
         # Put in time
@@ -250,7 +299,7 @@ class GiniFile(object):
         return ds
 
     def _process_wmo_header(self):
-        # Read off the WMO header if necessary
+        'Read off the WMO header from the file, if necessary.'
         data = self._buffer.get_next(64).decode('utf-8', 'ignore')
         match = self.wmo_finder.search(data)
         if match:

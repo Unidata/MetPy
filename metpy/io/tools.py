@@ -217,6 +217,21 @@ class IOBuffer(object):
 
 
 def zlib_decompress_all_frames(data):
+    """Decompress all frames of zlib-compressed bytes.
+
+    Repeatedly tries to decompress `data` until all data are decompressed, or decompression
+    fails. This will skip over bytes that are not compressed with zlib.
+
+    Parameters
+    ----------
+    data : bytearray or bytes
+        Binary data compressed using zlib.
+
+    Returns
+    -------
+        bytearray
+            All decompressed bytes
+    """
     frames = bytearray()
     data = bytes(data)
     while data:
