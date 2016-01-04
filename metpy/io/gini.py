@@ -13,8 +13,8 @@ from itertools import repeat
 
 import numpy as np
 from .tools import Bits, IOBuffer, NamedStruct, zlib_decompress_all_frames
+from .cdm import Dataset, cf_to_proj
 from ..cbook import is_string_like
-from ..cdm import Dataset, cf_to_proj
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
