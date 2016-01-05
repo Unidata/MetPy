@@ -281,6 +281,17 @@ class GiniFile(object):
         y_var.standard_name = 'projection_y_coordinate'
         y_var[:] = y0 + np.arange(self.prod_desc.ny) * (1000. * self.proj_info.dy)
 
+        # Get the two-D lon,lat grid as well
+        x, y = np.meshgrid(x_var[:], y_var[:])
+        lon, lat = proj(x, y, inverse=True)
+        lon_var = ds.createVariable('lon', np.float64, dimensions=('y', 'x'), wrap_array=lon)
+        lon_var.long_name = 'longitude'
+        lon_var.units = 'degrees_east'
+
+        lat_var = ds.createVariable('lat', np.float64, dimensions=('y', 'x'), wrap_array=lat)
+        lat_var.long_name = 'latitude'
+        lat_var.units = 'degrees_north'
+
         # Now the data
         name = self.prod_desc.channel
         if '(' in name:

@@ -69,6 +69,8 @@ class TestGini(object):
         assert 'WV' in ds.variables
         assert hasattr(ds.variables['WV'], 'grid_mapping')
         assert ds.variables['WV'].grid_mapping in ds.variables
+        assert_almost_equal(ds.variables['lon'][0, 0], f.prod_desc.lo1, 4)
+        assert_almost_equal(ds.variables['lat'][0, 0], f.prod_desc.la1, 4)
 
     @staticmethod
     def test_str():
