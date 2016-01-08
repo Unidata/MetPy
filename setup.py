@@ -74,7 +74,8 @@ setup(
     keywords='meteorology weather',
 
     packages=find_packages(exclude=['doc', 'examples']),
-    package_data={'metpy.plots': ['colortables/*.tbl', 'nexrad_tables/*.tbl']},
+    package_data={'metpy.plots': ['colortables/*.tbl', 'nexrad_tables/*.tbl',
+                                  'fonts/*.ttf']},
 
     install_requires=dependencies,
     extras_require={
