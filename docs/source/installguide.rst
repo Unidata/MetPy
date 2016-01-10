@@ -21,6 +21,14 @@ Installation Instructions for Matplotlib can be found at:
 
 Pint is a pure python package and can be installed via ``pip install pint``.
 
+Python versions older than 3.4 require the enum34 package, which is a backport
+of the enum standard library module. It can be installed via
+``pip install enum34``.
+
+PyProj is an optional dependency (if using the CDM interface to data files).
+It can also be installed via ``pip install pyproj``, though it does require
+the Proj.4 library and a compiled extension.
+
 ------------
 Installation
 ------------

@@ -110,7 +110,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
     Parameters
     ----------
-    temp : array_like
+    temperature : array_like
         The air temperature
     speed : array_like
         The wind speed at 10m.  If instead the winds are at face level,
@@ -171,7 +171,7 @@ def heat_index(temperature, rh, mask_undefined=True):
 
     Parameters
     ----------
-    temp : array_like
+    temperature : array_like
         Air temperature
     rh : array_like
         The relative humidity expressed as a unitless ratio in the range [0, 1].

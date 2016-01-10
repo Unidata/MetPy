@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+from __future__ import division
 import ast
 import glob
 import os.path
@@ -23,7 +24,7 @@ def _parse(s):
 
 
 def read_colortable(fobj):
-    r'''Read colortable information from a file
+    r'''Read colortable information from a file.
 
     Reads a colortable, which consists of one color per line of the file, where
     a color can be one of: a tuple of 3 floats, a string with a HTML color name,
@@ -46,6 +47,25 @@ def read_colortable(fobj):
         if literal:
             ret.append(mcolors.colorConverter.to_rgb(literal))
     return ret
+
+
+def convert_gempak_table(infile, outfile):
+    r'''Convert a GEMPAK colortable to one MetPy can read.
+
+    Reads lines from a GEMPAK-style color table file, and writes them to another file in
+    a format that MetPy can parse.
+
+    Parameters
+    ----------
+    infile : file-like object
+        The file-like object to read from
+    outfile : file-like object
+        The file-like object to write to
+    '''
+    for line in infile:
+        if not line.startswith('!') and line.strip():
+            r, g, b = map(int, line.split())
+            outfile.write('({0:f}, {1:f}, {2:f})\n'.format(r / 255, g / 255, b / 255))
 
 
 class ColortableRegistry(dict):

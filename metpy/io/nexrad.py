@@ -9,7 +9,6 @@ import gzip
 import logging
 import re
 import struct
-import zlib
 from collections import defaultdict, namedtuple, OrderedDict
 from struct import Struct
 from xdrlib import Unpacker
@@ -18,7 +17,8 @@ import numpy as np
 from scipy.constants import day, milli
 from ..cbook import is_string_like
 from ..package_tools import Exporter
-from .tools import Array, BitField, Bits, DictStruct, Enum, IOBuffer, NamedStruct, bits_to_code
+from .tools import (Array, BitField, Bits, DictStruct, Enum, IOBuffer, NamedStruct,
+                    bits_to_code, zlib_decompress_all_frames)
 
 exporter = Exporter(globals())
 
@@ -47,19 +47,6 @@ def angle(val):
 
 def az_rate(val):
     return val * 90. / 2**16
-
-
-def zlib_decompress_all_frames(data):
-    frames = bytearray()
-    data = bytes(data)
-    while data:
-        decomp = zlib.decompressobj()
-        try:
-            frames.extend(decomp.decompress(data))
-        except zlib.error:
-            break
-        data = decomp.unused_data
-    return frames + data
 
 
 def bzip_blocks_decompress_all(data):

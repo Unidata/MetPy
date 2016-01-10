@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from __future__ import print_function
+import sys
 from setuptools import setup, find_packages, Command
 import versioneer
 
@@ -42,6 +43,10 @@ ver = versioneer.get_version()
 commands = versioneer.get_cmdclass()
 commands.update(examples=MakeExamples)
 
+# Need to conditionally add enum support for older Python
+dependencies = ['matplotlib>=1.4', 'numpy>=1.8', 'scipy>=0.13.3', 'pint>=0.6']
+if sys.version_info < (3, 4):
+    dependencies.append('enum34')
 
 setup(
     name='MetPy',
@@ -59,9 +64,9 @@ setup(
                  'Programming Language :: Python :: 2',
                  'Programming Language :: Python :: 2.7',
                  'Programming Language :: Python :: 3',
-                 'Programming Language :: Python :: 3.2',
                  'Programming Language :: Python :: 3.3',
                  'Programming Language :: Python :: 3.4',
+                 'Programming Language :: Python :: 3.5',
                  'Topic :: Scientific/Engineering',
                  'Intended Audience :: Science/Research',
                  'Operating System :: OS Independent',
@@ -72,11 +77,12 @@ setup(
     package_data={'metpy.plots': ['colortables/*.tbl', 'nexrad_tables/*.tbl']},
     test_suite="nose.collector",
 
-    install_requires=['matplotlib>=1.4', 'numpy>=1.8', 'scipy>=0.13.3',
-                      'pint>=0.6'],
+    install_requires=dependencies,
     extras_require={
+        'cdm': ['pyproj>=1.9.4'],
         'dev': ['ipython[all]>=3.1'],
         'doc': ['sphinx>=1.3', 'ipython[all]>=3.1'],
+        'examples': ['cartopy>=0.13','pillow'],
         'test': ['nose']
     },
 

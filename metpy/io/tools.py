@@ -6,6 +6,7 @@
 
 from __future__ import print_function
 import logging
+import zlib
 from collections import namedtuple
 from struct import Struct
 
@@ -26,7 +27,7 @@ class NamedStruct(Struct):
             elif not i[0]:  # Skip items with no name
                 conv_off += 1
         self._tuple = namedtuple(tuple_name, ' '.join(n for n in names if n))
-        Struct.__init__(self, prefmt + ''.join(f for f in fmts if f))
+        super(NamedStruct, self).__init__(prefmt + ''.join(f for f in fmts if f))
 
     def _create(self, items):
         if self.converters:
@@ -38,10 +39,10 @@ class NamedStruct(Struct):
         return self._tuple(*items)
 
     def unpack(self, s):
-        return self._create(Struct.unpack(self, s))
+        return self._create(super(NamedStruct, self).unpack(s))
 
     def unpack_from(self, buff, offset=0):
-        return self._create(Struct.unpack_from(self, buff, offset))
+        return self._create(super(NamedStruct, self).unpack_from(buff, offset))
 
     def unpack_file(self, fobj):
         bytes = fobj.read(self.size)
@@ -57,16 +58,16 @@ class DictStruct(Struct):
         # Remove empty names
         self._names = [n for n in names if n]
 
-        Struct.__init__(self, prefmt + ''.join(f for f in formats if f))
+        super(DictStruct, self).__init__(prefmt + ''.join(f for f in formats if f))
 
     def _create(self, items):
         return dict(zip(self._names, items))
 
     def unpack(self, s):
-        return self._create(Struct.unpack(self, s))
+        return self._create(super(DictStruct, self).unpack(s))
 
     def unpack_from(self, buff, offset=0):
-        return self._create(Struct.unpack_from(self, buff, offset))
+        return self._create(super(DictStruct, self).unpack_from(buff, offset))
 
 
 class Enum(object):
@@ -104,7 +105,7 @@ class BitField(object):
         for n in self._names:
             if val & 0x1:
                 l.append(n)
-            val = val >> 1
+            val >>= 1
             if not val:
                 break
 
@@ -161,17 +162,17 @@ class IOBuffer(object):
     def read_ascii(self, num_bytes=None):
         return self.read(num_bytes).decode('ascii')
 
-    def read_binary(self, num, type='B'):
-        if 'B' in type:
+    def read_binary(self, num, item_type='B'):
+        if 'B' in item_type:
             return self.read(num)
 
-        if type[0] in ('@', '=', '<', '>', '!'):
-            order = type[0]
-            type = type[1:]
+        if item_type[0] in ('@', '=', '<', '>', '!'):
+            order = item_type[0]
+            item_type = item_type[1:]
         else:
             order = '@'
 
-        return list(self.read_struct(Struct(order + '%d' % num + type)))
+        return list(self.read_struct(Struct(order + '%d' % num + item_type)))
 
     def read_int(self, code):
         return self.read_struct(Struct(code))[0]
@@ -209,10 +210,39 @@ class IOBuffer(object):
         return 'Size: {} Offset: {}'.format(len(self._data), self._offset)
 
     def print_next(self, num_bytes):
-        print(' '.join('%02x' % ord(c) for c in self.get_next(num_bytes)))
+        print(' '.join('%02x' % c for c in self.get_next(num_bytes)))
 
     def __len__(self):
         return len(self._data)
+
+
+def zlib_decompress_all_frames(data):
+    """Decompress all frames of zlib-compressed bytes.
+
+    Repeatedly tries to decompress `data` until all data are decompressed, or decompression
+    fails. This will skip over bytes that are not compressed with zlib.
+
+    Parameters
+    ----------
+    data : bytearray or bytes
+        Binary data compressed using zlib.
+
+    Returns
+    -------
+        bytearray
+            All decompressed bytes
+    """
+    frames = bytearray()
+    data = bytes(data)
+    while data:
+        decomp = zlib.decompressobj()
+        try:
+            frames.extend(decomp.decompress(data))
+            data = decomp.unused_data
+        except zlib.error:
+            frames.extend(data)
+            break
+    return frames
 
 
 def bits_to_code(val):
@@ -234,7 +264,7 @@ def hexdump(buf, num_bytes, offset=0, width=32):
         actual_width = len(chunk)
         hexfmt = '%02X'
         blocksize = 4
-        blocks = [hexfmt * blocksize for i in range(actual_width // blocksize)]
+        blocks = [hexfmt * blocksize for _ in range(actual_width // blocksize)]
 
         # Need to get any partial lines
         num_left = actual_width % blocksize
@@ -245,5 +275,6 @@ def hexdump(buf, num_bytes, offset=0, width=32):
         hexoutput = ' '.join(blocks)
         printable = tuple(chunk)
         print(hexoutput % printable, str(ind).ljust(len(str(end))),
+              str(ind - offset).ljust(len(str(end))),
               ''.join(chr(c) if 31 < c < 128 else '.' for c in chunk), sep='  ')
         ind += width
