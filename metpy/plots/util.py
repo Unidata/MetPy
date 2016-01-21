@@ -9,12 +9,12 @@ from ..units import concatenate
 
 
 def resample_nn_1d(a, centers):
-    """Helper function that returns one-dimensional nearest-neighbor 
-	indexes based on user-specified centers.
+    """Helper function that returns one-dimensional nearest-neighbor
+    indexes based on user-specified centers.
     ----------
     a : array-like
-        1-dimensional array of numeric values from which to 
-		extract indexes of nearest-neighbors
+        1-dimensional array of numeric values from which to
+        extract indexes of nearest-neighbors
     centers : array-like
         1-dimensional array of numeric values representing a subset of values to approximate
     Returns
