@@ -13,14 +13,14 @@ Install metpy:
 
     python setup.py install
 
-Install nose and make sure the tests pass:
+Install py.test and make sure the tests pass:
 
-    pip install nose
-    nosetests
+    pip install pytest
+    py.test
 
 Make your change. Add tests for your change. Make the tests pass:
 
-    nosetests
+    py.test
 
 Push to your fork and [submit a pull request][pr].
 

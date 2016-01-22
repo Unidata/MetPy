@@ -11,6 +11,6 @@ dependencies:
   - netcdf4
   - ipython-notebook
   - sphinx
-  - nose
+  - pytest
   - flake8
   - pep8-naming
