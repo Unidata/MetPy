@@ -26,7 +26,7 @@ env:
     - WHEELDIR="wheelhouse/"
     - EXTRA_INSTALLS="test,cdm"
   matrix:
-    - NOSE_WITH_COVERAGE=y NOSE_COVER_PACKAGE=metpy
+    - TASK="coverage"
     - TASK="examples"
     - TASK="lint"
 
@@ -65,9 +65,8 @@ before_install:
             export EXTRA_INSTALLS="$EXTRA_INSTALLS,examples";
             pip install Cython;
         fi;
-      fi;
-      if [[ $NOSE_WITH_COVERAGE == y ]]; then
-        pip install coverage;
+      elif [[ $TASK == "coverage" ]]; then
+       pip install pytest-cov;
       fi;
       mkdir $WHEELDIR;
       pip install ".[$EXTRA_INSTALLS]" -d $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
@@ -94,12 +93,14 @@ script:
       cd examples;
       echo backend:agg > matplotlibrc;
       MPLBACKEND='agg' TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata python test_examples.py;
+    elif [[ $TASK == "coverage" ]]; then
+      python setup.py test --addopts --cov=metpy;
     else
-      nosetests;
+      python setup.py test;
     fi
 
 after_success:
-  - if [[ $NOSE_WITH_COVERAGE == y ]]; then
+  - if [[ $TASK == "coverage" ]]; then
       pip install codecov codacy-coverage;
       codecov;
       coverage xml;
