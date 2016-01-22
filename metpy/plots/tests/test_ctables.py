@@ -12,13 +12,12 @@ except ImportError:
     buffer_args = dict(buffering=1)
 
 import numpy as np
-from nose.tools import eq_
 from metpy.plots.ctables import ColortableRegistry, convert_gempak_table
 
 
 class TestColortableRegistry(object):
     'Tests for ColortableRegistry'
-    def setUp(self):  # noqa
+    def setup_method(self, _):  # noqa
         'Set up a registry for use by the tests.'
         self.reg = ColortableRegistry()
 
@@ -36,7 +35,7 @@ class TestColortableRegistry(object):
         name = os.path.splitext(os.path.basename(fobj.name))[0]
 
         assert name in self.reg
-        eq_(self.reg[name], [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)])
+        assert self.reg[name] == [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)]
 
     def test_read_file(self):
         'Test reading a colortable from a file'
@@ -53,32 +52,32 @@ class TestColortableRegistry(object):
         self.reg['table'] = true_colors
 
         table = self.reg.get_colortable('table')
-        eq_(table.N, 2)
-        eq_(table.colors, true_colors)
+        assert table.N == 2
+        assert table.colors == true_colors
 
     def test_get_steps(self):
         'Test getting a colortable and norm with appropriate steps'
         self.reg['table'] = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
         norm, cmap = self.reg.get_with_steps('table', 5., 10.)
-        eq_(cmap(norm(np.array([6.]))).tolist(), [[0.0, 0.0, 1.0, 1.0]])
-        eq_(cmap(norm(np.array([14.9]))).tolist(), [[0.0, 0.0, 1.0, 1.0]])
-        eq_(cmap(norm(np.array([15.1]))).tolist(), [[1.0, 0.0, 0.0, 1.0]])
-        eq_(cmap(norm(np.array([26.]))).tolist(), [[0.0, 1.0, 0.0, 1.0]])
+        assert cmap(norm(np.array([6.]))).tolist() == [[0.0, 0.0, 1.0, 1.0]]
+        assert cmap(norm(np.array([14.9]))).tolist() == [[0.0, 0.0, 1.0, 1.0]]
+        assert cmap(norm(np.array([15.1]))).tolist() == [[1.0, 0.0, 0.0, 1.0]]
+        assert cmap(norm(np.array([26.]))).tolist() == [[0.0, 1.0, 0.0, 1.0]]
 
     def test_get_steps_negative_start(self):
         'Test for issue #81 (bad start for get with steps)'
         self.reg['table'] = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
         norm, cmap = self.reg.get_with_steps('table', -10, 5)
-        eq_(norm.vmin, -10)
-        eq_(norm.vmax, 5)
+        assert norm.vmin == -10
+        assert norm.vmax == 5
 
     def test_get_boundaries(self):
         'Test getting a colortable with explicit boundaries'
         self.reg['table'] = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
         norm, cmap = self.reg.get_with_boundaries('table', [0., 8., 10., 20.])
-        eq_(cmap(norm(np.array([7.]))).tolist(), [[0.0, 0.0, 1.0, 1.0]])
-        eq_(cmap(norm(np.array([9.]))).tolist(), [[1.0, 0.0, 0.0, 1.0]])
-        eq_(cmap(norm(np.array([10.1]))).tolist(), [[0.0, 1.0, 0.0, 1.0]])
+        assert cmap(norm(np.array([7.]))).tolist() == [[0.0, 0.0, 1.0, 1.0]]
+        assert cmap(norm(np.array([9.]))).tolist() == [[1.0, 0.0, 0.0, 1.0]]
+        assert cmap(norm(np.array([10.1]))).tolist() == [[0.0, 1.0, 0.0, 1.0]]
 
 
 def test_gempak():
