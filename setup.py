@@ -75,7 +75,6 @@ setup(
 
     packages=find_packages(exclude=['doc', 'examples']),
     package_data={'metpy.plots': ['colortables/*.tbl', 'nexrad_tables/*.tbl']},
-    test_suite="nose.collector",
 
     install_requires=dependencies,
     extras_require={
@@ -83,7 +82,7 @@ setup(
         'dev': ['ipython[all]>=3.1'],
         'doc': ['sphinx>=1.3', 'ipython[all]>=3.1'],
         'examples': ['cartopy>=0.13','pillow'],
-        'test': ['nose']
+        'test': ['pytest', 'pytest-runner']
     },
 
     cmdclass=commands,

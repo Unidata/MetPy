@@ -6,6 +6,7 @@
 *.pyc
 
 .coverage
+.cache
 
 .ipynb_checkpoints/
 
@@ -13,6 +14,7 @@ dist/*
 build/*
 *.egg-info
 MANIFEST
+.eggs/
 
 docs/build/
 docs/source/examples/generated

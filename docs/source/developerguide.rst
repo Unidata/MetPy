@@ -6,7 +6,7 @@ Developer's Guide
 Requirements
 ------------
 
-- nose
+- pytest
 - flake8
 - sphinx >= 1.3
 - sphinx-rtd-theme >= 0.1.7
@@ -74,7 +74,7 @@ Testing
 -------
 
 Unit tests are the lifeblood of the project, as it ensures that we can continue to add and change the code
-and stay confident that things have not broken. Running the tests requires ``nose``, which is easily available
+and stay confident that things have not broken. Running the tests requires ``pytest``, which is easily available
 through ``conda`` or ``pip``. Running the tests can be done via either:
 
 .. parsed-literal::
@@ -83,14 +83,14 @@ through ``conda`` or ``pip``. Running the tests can be done via either:
 or
 
 .. parsed-literal::
-    nosetests
+    py.test
 
-Using ``nosetests`` also gives you the option of passing a path to the directory with tests to run, which can speed
+Using ``py.test`` also gives you the option of passing a path to the directory with tests to run, which can speed
 running only the tests of interest when doing development. For instance, to only run the tests in the ``metpy/calc``
 directory, use:
 
 .. parsed-literal::
-    nosetests metpy/calc
+    py.test metpy/calc
 
 ----------
 Code Style
