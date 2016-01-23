@@ -2,20 +2,33 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-import tempfile
 import numpy as np
-from matplotlib.figure import Figure
 from matplotlib.gridspec import GridSpec
-from matplotlib.backends.backend_agg import FigureCanvasAgg
+import pytest
+
 from metpy.plots.skewt import *  # noqa
 from metpy.units import units
 
 
-# TODO: Need at some point to do image-based comparison, but that's a lot to
-# bite off right now
+def make_figure(*args, **kwargs):
+    'Create an Agg figure for testing'
+    from matplotlib.figure import Figure
+    from matplotlib.backends.backend_agg import FigureCanvasAgg
+    fig = Figure(*args, **kwargs)
+    fig.canvas = FigureCanvasAgg(fig)
+    return fig
+
+
+def hide_tick_labels(ax):
+    'Hide the ticklabels on an axes'
+    ax.xaxis.set_ticklabels([])
+    ax.yaxis.set_ticklabels([])
+
+
+@pytest.mark.mpl_image_compare
 def test_skewt_api():
     'Test the SkewT api'
-    fig = Figure(figsize=(9, 9))
+    fig = make_figure(figsize=(9, 9))
     skew = SkewT(fig)
 
     # Plot the data using normal plotting functions, in this case using
@@ -30,44 +43,51 @@ def test_skewt_api():
     skew.plot_dry_adiabats()
     skew.plot_moist_adiabats()
     skew.plot_mixing_lines()
+    hide_tick_labels(skew.ax)
 
-    with tempfile.NamedTemporaryFile() as f:
-        FigureCanvasAgg(fig).print_png(f.name)
+    return fig
 
 
+@pytest.mark.mpl_image_compare
 def test_skewt_subplot():
     'Test using SkewT on a sub-plot'
-    fig = Figure(figsize=(9, 9))
-    SkewT(fig, subplot=(2, 2, 1))
-    with tempfile.NamedTemporaryFile() as f:
-        FigureCanvasAgg(fig).print_png(f.name)
+    fig = make_figure(figsize=(9, 9))
+    hide_tick_labels(SkewT(fig, subplot=(2, 2, 1)).ax)
+    return fig
 
 
+@pytest.mark.mpl_image_compare
 def test_skewt_gridspec():
     'Test using SkewT on a sub-plot'
-    fig = Figure(figsize=(9, 9))
+    fig = make_figure(figsize=(9, 9))
     gs = GridSpec(1, 2)
-    SkewT(fig, subplot=gs[0, 1])
-    with tempfile.NamedTemporaryFile() as f:
-        FigureCanvasAgg(fig).print_png(f.name)
+    hide_tick_labels(SkewT(fig, subplot=gs[0, 1]).ax)
+    return fig
 
 
+@pytest.mark.mpl_image_compare
 def test_hodograph_api():
     'Basic test of Hodograph API'
-    fig = Figure(figsize=(9, 9))
+    fig = make_figure(figsize=(9, 9))
     ax = fig.add_subplot(1, 1, 1)
     hodo = Hodograph(ax, component_range=60)
     hodo.add_grid(increment=5, color='k')
     hodo.plot([1, 10], [1, 10], color='red')
-    hodo.plot_colormapped([1, 3, 5, 10], [2, 4, 6, 11], [0.1, 0.3, 0.5, 0.9], cmap='Greys')
+    hodo.plot_colormapped(np.array([1, 3, 5, 10]), np.array([2, 4, 6, 11]),
+                          np.array([0.1, 0.3, 0.5, 0.9]), cmap='Greys')
+    hide_tick_labels(ax)
+    return fig
 
 
+@pytest.mark.mpl_image_compare
 def test_hodograph_units():
     'Test passing unit-ed quantities to Hodograph'
-    fig = Figure(figsize=(9, 9))
+    fig = make_figure(figsize=(9, 9))
     ax = fig.add_subplot(1, 1, 1)
     hodo = Hodograph(ax)
     u = np.arange(10) * units.kt
     v = np.arange(10) * units.kt
     hodo.plot(u, v)
     hodo.plot_colormapped(u, v, np.sqrt(u * u + v * v), cmap='Greys')
+    hide_tick_labels(ax)
+    return fig
