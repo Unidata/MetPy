@@ -9,6 +9,7 @@ from metpy.calc.tools import resample_nn_1d
 
 
 def test_resample_nn():
+    'Test 1d nearest neighbor functionality.'
     a = np.arange(5.)
     b = np.array([2, 3.8])
     truth = np.array([2, 4])
