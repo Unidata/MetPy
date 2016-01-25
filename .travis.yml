@@ -65,8 +65,13 @@ before_install:
             export EXTRA_INSTALLS="$EXTRA_INSTALLS,examples";
             pip install Cython;
         fi;
-      elif [[ $TASK == "coverage" ]]; then
-       pip install pytest-cov;
+      else
+        export TEST_OPTS="--addopts --mpl";
+        pip install pytest-mpl;
+        if [[ $TASK == "coverage" ]]; then
+          export TEST_OPTS="$TEST_OPTS --addopts --cov=metpy";
+          pip install pytest-cov;
+        fi;
       fi;
       mkdir $WHEELDIR;
       pip install ".[$EXTRA_INSTALLS]" -d $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
@@ -93,10 +98,8 @@ script:
       cd examples;
       echo backend:agg > matplotlibrc;
       MPLBACKEND='agg' TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata python test_examples.py;
-    elif [[ $TASK == "coverage" ]]; then
-      python setup.py test --addopts --cov=metpy;
     else
-      python setup.py test;
+      python setup.py test $TEST_OPTS;
     fi
 
 after_success:

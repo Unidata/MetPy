@@ -92,6 +92,22 @@ directory, use:
 .. parsed-literal::
     py.test metpy/calc
 
+Some tests (for matplotlib plotting code) are done through an image comparison, using the pytest-mpl plugin. To run
+these tests, use:
+
+.. parsed-literal::
+    py.test --mpl
+
+When adding new image comparison tests, start by creating the baseline images for the tests:
+
+.. parsed-literal::
+    py.test --mpl-generate-path=baseline
+
+That command runs the tests and saves the images in the ``baseline`` directory. Once the images are reviewed and
+determined to be correct, they should be moved to a ``baseline`` directory in the same directory as the test
+script (e.g. ``metpy/plots/tests``) For more information, see the
+`docs for mpl-test <https://github.com/astrofrog/pytest-mpl>`_.
+
 ----------
 Code Style
 ----------
