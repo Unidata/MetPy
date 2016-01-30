@@ -34,9 +34,10 @@ if 'READTHEDOCS' in os.environ:
     MOCK_MODULES = ['matplotlib', 'matplotlib.axis', 'matplotlib.axes',
                     'matplotlib.backends', 'matplotlib.cbook',
                     'matplotlib.collections', 'matplotlib.colors',
-                    'matplotlib.figure', 'matplotlib.projections',
-                    'matplotlib.pyplot', 'matplotlib.spines',
-                    'matplotlib.ticker', 'matplotlib.transforms',
+                    'matplotlib.figure', 'matplotlib.patches',
+                    'matplotlib.projections', 'matplotlib.pyplot',
+                    'matplotlib.spines', 'matplotlib.ticker',
+                    'matplotlib.transforms',
                     'numpy', 'numpy.ma', 'numpy.testing', 'pint', 'pint.unit',
                     'scipy', 'scipy.constants', 'scipy.integrate']
     for mod_name in MOCK_MODULES:
@@ -44,6 +45,8 @@ if 'READTHEDOCS' in os.environ:
 
     class MockUnit(float):
         def to_base_units(self):
+            return self
+        def __call__(self, arg):
             return self
 
     class MockUnits(object):
