@@ -75,6 +75,7 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.autosummary',
     'sphinx.ext.coverage',
+    'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
     'notebook_gen_sphinxext'
@@ -82,6 +83,15 @@ extensions = [
 
 mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 #autosummary_generate = True
+
+# Set up mapping for other projects' docs
+intersphinx_mapping = {
+                       #'pint': ('http://pint.readthedocs.org/en/stable/', None),
+                       'matplotlib': ('http://matplotlib.org/', None),
+                       'python': ('http://docs.python.org/3/', None),
+                       'numpy': ('http://docs.scipy.org/doc/numpy/', None),
+                       'scipy': ('http://docs.scipy.org/doc/scipy/reference/', None)
+                       }
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
