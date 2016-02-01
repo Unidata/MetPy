@@ -68,19 +68,10 @@ class GiniFile(object):
 
     This class attempts to decode every byte that is in a given GINI file.
 
-    Attributes
-    ----------
-    prod_desc : namedtuple
-        Decoded first section of product description block
-    prod_desc2 : namedtuple
-        Decoded second section of product description block
-    proj_info : namedtuple
-        Decoded geographic projection information
-
     Notes
     -----
     The internal data structures that things are decoded into are subject to change. For
-    a more stable interface, use the ``to_dataset`` method.
+    a more stable interface, use the :meth:`to_dataset` method.
 
     See Also
     --------
@@ -150,8 +141,8 @@ class GiniFile(object):
         ----------
         filename : str or file-like object
             If str, the name of the file to be opened. Gzip-ed files are
-            recognized with the extension '.gz', as are bzip2-ed files with
-            the extension `.bz2` If `filename` is a file-like object,
+            recognized with the extension ``'.gz'``, as are bzip2-ed files with
+            the extension ``'.bz2'`` If `filename` is a file-like object,
             this will be read from directly.
         '''
 
@@ -181,8 +172,15 @@ class GiniFile(object):
 
         # Read product description start
         start = self._buffer.set_mark()
+
+        #: :desc: Decoded first section of product description block
+        #: :type: namedtuple
         self.prod_desc = self._buffer.read_struct(self.prod_desc_fmt)
         log.debug(self.prod_desc)
+
+        #: :desc: Decoded geographic projection information
+        #: :type: namedtuple
+        self.proj_info = None
 
         # Handle projection-dependent parts
         if self.prod_desc.projection in (GiniProjection.lambert_conformal,
@@ -191,11 +189,12 @@ class GiniFile(object):
         elif self.prod_desc.projection == GiniProjection.mercator:
             self.proj_info = self._buffer.read_struct(self.mercator_fmt)
         else:
-            self.proj_info = None
             log.warning('Unknown projection: %d', self.prod_desc.projection)
         log.debug(self.proj_info)
 
         # Read the rest of the guaranteed product description block (PDB)
+        #: :desc: Decoded second section of product description block
+        #: :type: namedtuple
         self.prod_desc2 = self._buffer.read_struct(self.prod_desc2_fmt)
         log.debug(self.prod_desc2)
 

@@ -1,10 +1,10 @@
+# Copyright (c) 2008-2015 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 r'''The Common Data Model (CDM) is a data model for representing a wide array of data. The
 goal is to be a simple, universal interface to different datasets. This API is a Python
 implementation in the spirit of the original Java interface in netCDF-Java.
 '''
-# Copyright (c) 2008-2015 MetPy Developers.
-# Distributed under the terms of the BSD 3-Clause License.
-# SPDX-License-Identifier: BSD-3-Clause
 
 from collections import OrderedDict
 
@@ -15,7 +15,7 @@ class AttributeContainer(object):
     r"""A class to handle maintaining a list of netCDF attributes. Implements the attribute
     handling for other CDM classes."""
     def __init__(self):
-        r"""Initialize an AttributeContainer."""
+        r"""Initialize an :class:`AttributeContainer`."""
         self._attrs = []
 
     def ncattrs(self):
@@ -23,7 +23,7 @@ class AttributeContainer(object):
 
         Returns
         -------
-        list(str)
+        List[str]
         """
 
         return self._attrs
@@ -41,26 +41,16 @@ class AttributeContainer(object):
 
 class Group(AttributeContainer):
     r"""A Group holds dimensions and variables. Every CDM dataset has at least a root group.
-
-    Attributes
-    ----------
-    name : str
-        The name of the Group
-    groups : dict(str, Group)
-        Any Groups nested within this one
-    variables : dict(str, Variable)
-        Variables contained within this group
-    dimensions : dict(str, Dimension)
-        Dimensions contained within this group
     """
     def __init__(self, parent, name):
-        r"""Initialize this Group. Instead of constructing a Group directly, you should
-        use ``Group.createGroup``.
+        r"""Initialize this :class:`Group`. Instead of constructing a :class:`Group` directly,
+        you should use :meth:`~Group.createGroup`.
 
         Parameters
         ----------
         parent : Group or None
-            The parent Group for this one. Passing in None implies that this is the root Group.
+            The parent Group for this one. Passing in :data:`None` implies that this is
+            the root :class:`Group`.
         name : str
             The name of this group
 
@@ -72,9 +62,20 @@ class Group(AttributeContainer):
         if parent:
             self.parent.groups[name] = self
 
+        #: :desc: The name of the :class:`Group`
+        #: :type: str
         self.name = name
+
+        #: :desc: Any Groups nested within this one
+        #: :type: dict[str, Group]
         self.groups = OrderedDict()
+
+        #: :desc: Variables contained within this group
+        #: :type: dict[str, Variable]
         self.variables = OrderedDict()
+
+        #: :desc: Dimensions contained within this group
+        #: :type: dict[str, Dimension]
         self.dimensions = OrderedDict()
 
         # Do this last so earlier attributes aren't captured
@@ -92,14 +93,14 @@ class Group(AttributeContainer):
         Returns
         -------
         Group
-            The newly created Group instance.
+            The newly created :class:`Group`
         """
         grp = Group(self, name)
         self.groups[name] = grp
         return grp
 
     def createDimension(self, name, size):  # noqa
-        """Create a new Dimension in this Group.
+        """Create a new :class:`Dimension` in this :class:`Group`.
 
         Parameters
         ----------
@@ -111,7 +112,7 @@ class Group(AttributeContainer):
         Returns
         -------
         Dimension
-            The newly created Dimension instance.
+            The newly created :class:`Dimension`
         """
         dim = Dimension(self, name, size)
         self.dimensions[name] = dim
@@ -124,15 +125,15 @@ class Group(AttributeContainer):
         ----------
         name : str
             The name of the new Variable.
-        datatype : str or ``numpy.dtype``
+        datatype : str or numpy.dtype
             A valid Numpy dtype that describes the layout of the data within the Variable.
-        dimensions : tuple(str), optional
+        dimensions : tuple[str], optional
             The dimensions of this Variable. Defaults to empty, which implies a scalar
             variable.
-        fill_value : scalar, optional
+        fill_value : number, optional
             A scalar value that is used to fill the created storage. Defaults to None, which
             performs no filling, leaving the storage uninitialized.
-        wrap_array : ``numpy.ndarray`` instance, optional
+        wrap_array : numpy.ndarray, optional
             Instead of creating an array, the Variable instance will assume ownership of the
             passed in array as its data storage. This is a performance optimization to avoid
             copying large data blocks. Defaults to None, which means a new array will be
@@ -141,7 +142,7 @@ class Group(AttributeContainer):
         Returns
         -------
         Variable
-            The newly created Variable instance.
+            The newly created :class:`Variable`
         """
         var = Variable(self, name, datatype, dimensions, fill_value, wrap_array)
         self.variables[name] = var
@@ -185,50 +186,32 @@ class Dataset(Group):
 
 
 class Variable(AttributeContainer):
-    r"""A Variable holds typed data (using a ``numpy.ndarray``), as well as any relevant
+    r"""A Variable holds typed data (using a :class:`numpy.ndarray`), as well as any relevant
     attributes (e.g. units).
 
     In addition to its various attributes, the Variable supports getting *and* setting data
-    using the `[]` operator and indices or slices. Getting data returns ``numpy.ndarray``
-    instances.
-
-    Attributes
-    ----------
-    name : str
-        The name of the Variable
-    size : int
-        The total size of this Variable
-    shape : tuple(int)
-        A tuple of integers describing the size of the Variable along each of its
-        dimensions
-    ndim : int
-        The number of dimensions
-    dtype : ``numpy.dtype``
-        The datatype of the Variable's elements
-    datatype : ``numpy.dtype``
-        An alias for dtype
-    dimensions : tuple(str)
-        Names of Dimensions used by this Variable
+    using the ``[]`` operator and indices or slices. Getting data returns
+    :class:`numpy.ndarray` instances.
     """
     def __init__(self, group, name, datatype, dimensions, fill_value, wrap_array):
         """Initialize a Variable. Instead of constructing a Variable directly, you should
-        use ``Group.createVariable``.
+        use :meth:`Group.createVariable`.
 
         Parameters
         ----------
         group : Group
-            The parent Group that owns this Variable.
+            The parent :class:`Group` that owns this Variable.
         name : str
             The name of this Variable.
-        datatype : str or ``numpy.dtype``
+        datatype : str or numpy.dtype
             A valid Numpy dtype that describes the layout of each element of the data
-        dimensions : tuple(str), optional
+        dimensions : tuple[str], optional
             The dimensions of this Variable. Defaults to empty, which implies a scalar
             variable.
         fill_value : scalar, optional
             A scalar value that is used to fill the created storage. Defaults to None, which
             performs no filling, leaving the storage uninitialized.
-        wrap_array : ``numpy.ndarray`` instance, optional
+        wrap_array : numpy.ndarray, optional
             Instead of creating an array, the Variable instance will assume ownership of the
             passed in array as its data storage. This is a performance optimization to avoid
             copying large data blocks. Defaults to None, which means a new array will be
@@ -270,37 +253,40 @@ class Variable(AttributeContainer):
 
     @property
     def name(self):
-        'the name of the variable'
+        'str: the name of the variable'
         return self._name
 
     @property
     def size(self):
-        'the total number of elements'
+        'int: the total number of elements'
         return self._data.size
 
     @property
     def shape(self):
-        'a tuple of integers describing the size of the Variable along each of its dimensions'
+        """tuple[int]: a tuple of integers describing the size of the Variable along each
+        of its dimensions"""
         return self._data.shape
 
     @property
     def ndim(self):
-        'the number of dimensions used by this variable'
+        'int: the number of dimensions used by this variable'
         return self._data.ndim
 
     @property
     def dtype(self):
-        'a valid Numpy dtype that describes the layout of each element of the data'
+        """numpy.dtype: a valid Numpy :class:`~numpy.dtype` that describes the layout of each
+        element of the data"""
         return self._data.dtype
 
     @property
     def datatype(self):
-        'a valid Numpy dtype that describes the layout of each element of the data'
+        """numpy.dtype: a valid Numpy :class:`~numpy.dtype` that describes the layout of each
+        element of the data"""
         return self._data.dtype
 
     @property
     def dimensions(self):
-        'a tuple of str with all the names of Dimensions used by this Variable'
+        'tuple[str]: all the names of :class:`Dimension` used by this :class:`Variable`'
         return self._dimensions
 
     def __setitem__(self, ind, value):
@@ -329,13 +315,6 @@ class Variable(AttributeContainer):
 class Dimension(object):
     r"""A Dimension is used to represent a shared dimension between different Variables.
     For instance, variables that are dependent upon a common set of times.
-
-    Attributes
-    ----------
-    name : str
-        The name of the Dimension
-    size : int
-        The size of this Dimension
     """
     def __init__(self, group, name, size=None):
         """Initialize a Dimension. Instead of constructing a Dimension directly, you should
@@ -355,7 +334,13 @@ class Dimension(object):
         Group.createDimension
         """
         self._group = group
+
+        #: :desc: The name of the Dimension
+        #: :type: str
         self.name = name
+
+        #: :desc: The size of this Dimension
+        #: :type: int
         self.size = size
 
     # Not a property to maintain compatibility with NetCDF4 python

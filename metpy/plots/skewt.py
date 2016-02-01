@@ -171,18 +171,19 @@ class SkewT(object):
 
         Parameters
         ----------
-        fig : `matplotlib.figure.Figure`, optional
+        fig : matplotlib.figure.Figure, optional
             Source figure to use for plotting. If none is given, a new
-            `matplotlib.figure.Figure` instance will be created.
+            :class:`matplotlib.figure.Figure` instance will be created.
         rotation : float or int, optional
             Controls the rotation of temperature relative to horizontal. Given
             in degrees counterclockwise from x-axis. Defaults to 30 degrees.
-        subplot : tuple of 3 integers or `matplotlib.gridspec.SubplotSpec` instance, optional
+        subplot : tuple[int, int, int] or `matplotlib.gridspec.SubplotSpec` instance, optional
             Controls the size/position of the created subplot. This allows creating
             the skewT as part of a collection of subplots. If subplot is a tuple, it
             should conform to the specification used for
-            `matplotlib.figure.Figure.add_subplot`. The `matplotlib.gridspec.SubplotSpec`
-            can be created by using `matplotlib.gridspec.GridSpec'.
+            :meth:`matplotlib.figure.Figure.add_subplot`. The
+            :class:`matplotlib.gridspec.SubplotSpec`
+            can be created by using :class:`matplotlib.gridspec.GridSpec`.
         '''
 
         if fig is None:
@@ -213,17 +214,18 @@ class SkewT(object):
         t : array_like
             temperature values, can also be used for things like dew point
         args
-            Other positional arguments to pass to `semilogy`
+            Other positional arguments to pass to :func:`~matplotlib.pyplot.semilogy`
         kwargs
-            Other keyword arguments to pass to `semilogy`
+            Other keyword arguments to pass to :func:`~matplotlib.pyplot.semilogy`
 
         Returns
         -------
-            list of lines plotted
+        list[matplotlib.lines.Line2D]
+            lines plotted
 
         See Also
         --------
-        `matplotlib.Axes.semilogy`
+        :func:`matplotlib.pyplot.semilogy`
         '''
 
         # Skew-T logP plotting
@@ -266,15 +268,16 @@ class SkewT(object):
             Space, in normalized axes coordinates, to leave above/below plot
             before clipping wind barbs in the y-direction. Defaults to 0.08.
         kwargs
-            Other keyword arguments to pass to `barbs`
+            Other keyword arguments to pass to :func:`~matplotlib.pyplot.barbs`
 
         Returns
         -------
-            The `matplotlib.quiver.Barbs` instance created
+        matplotlib.quiver.Barbs
+            instance created
 
         See Also
         --------
-        `matplotlib.Axes.barbs`
+        :func:`matplotlib.pyplot.barbs`
         '''
 
         # Assemble array of x-locations in axes space
@@ -311,17 +314,18 @@ class SkewT(object):
             specified, they will be linearly distributed across the current
             plotted pressure range.
         kwargs
-            Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+            Other keyword arguments to pass to :class:`matplotlib.collections.LineCollection`
 
         Returns
         -------
-            The `matplotlib.collections.LineCollection` instance created
+        matplotlib.collections.LineCollection
+            instance created
 
         See Also
         --------
-        plot_moist_adiabats
-        `matplotlib.collections.LineCollection`
-        `metpy.calc.dry_lapse`
+        :func:`~metpy.calc.thermo.dry_lapse`
+        :meth:`plot_moist_adiabats`
+        :class:`matplotlib.collections.LineCollection`
         '''
 
         # Determine set of starting temps if necessary
@@ -366,13 +370,14 @@ class SkewT(object):
 
         Returns
         -------
-            The `matplotlib.collections.LineCollection` instance created
+        matplotlib.collections.LineCollection
+            instance created
 
         See Also
         --------
-        plot_dry_adiabats
-        `matplotlib.collections.LineCollection`
-        `metpy.calc.moist_lapse`
+        :func:`~metpy.calc.thermo.moist_lapse`
+        :meth:`plot_dry_adiabats`
+        :class:`matplotlib.collections.LineCollection`
         '''
 
         # Determine set of starting temps if necessary
@@ -416,11 +421,12 @@ class SkewT(object):
 
         Returns
         -------
-            The `matplotlib.collections.LineCollection` instance created
+        matplotlib.collections.LineCollection
+            instance created
 
         See Also
         --------
-        `matplotlib.collections.LineCollection`
+        :class:`matplotlib.collections.LineCollection`
         '''
 
         # Default mixing level values if necessary
@@ -492,6 +498,11 @@ class Hodograph(object):
         kwargs
             Other kwargs to control appearance of lines
 
+        See Also
+        --------
+        :class:`matplotlib.patches.Circle`
+        :meth:`matplotlib.axes.Axes.axhline`
+        :meth:`matplotlib.axes.Axes.axvline`
         '''
         # Some default arguments. Take those, and update with any
         # arguments passed in
@@ -534,15 +545,16 @@ class Hodograph(object):
         v : array_like
             v-component of wind
         kwargs
-            Other keyword arguments to pass to matplotlib's `plot`
+            Other keyword arguments to pass to :meth:`matplotlib.axes.Axes.plot`
 
         Returns
         -------
-            list of lines plotted
+        list[matplotlib.lines.Line2D]
+            lines plotted
 
         See Also
         --------
-        `Hodograph.plot_colormapped`
+        :meth:`Hodograph.plot_colormapped`
         '''
         line_args = self._form_line_args(kwargs)
         return self.ax.plot(u, v, **line_args)
@@ -565,15 +577,16 @@ class Hodograph(object):
         c : array_like
             data to use for colormapping
         kwargs
-            Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+            Other keyword arguments to pass to :class:`matplotlib.collections.LineCollection`
 
         Returns
         -------
-            The `matplotlib.collections.LineCollection` instance created
+        matplotlib.collections.LineCollection
+            instance created
 
         See Also
         --------
-        `Hodograph.plot`
+        :meth:`Hodograph.plot`
         '''
         line_args = self._form_line_args(kwargs)
         lc = colored_line(u, v, c, **line_args)
