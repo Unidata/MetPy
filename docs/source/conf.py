@@ -93,6 +93,12 @@ intersphinx_mapping = {
                        'scipy': ('http://docs.scipy.org/doc/scipy/reference/', None)
                        }
 
+# Tweak how docs are formatted
+napoleon_use_rtype = False
+
+# Control main class documentation
+autoclass_content = 'both'
+
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
 
