@@ -1,18 +1,17 @@
-r'''Module to enable unit support.
+# Copyright (c) 2008-2015 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+r'''Module to provide unit support.
 
-This makes use of the `pint` library and sets up the default settings
+This makes use of the :mod:`pint` library and sets up the default settings
 for good temperature support.
 
 Attributes
 ----------
-units : `pint.UnitRegistry`
+units : :class:`pint.UnitRegistry`
     The unit registry used throughout the package. Any use of units in MetPy should
     import this registry and use it to grab units.
 '''
-
-# Copyright (c) 2008-2015 MetPy Developers.
-# Distributed under the terms of the BSD 3-Clause License.
-# SPDX-License-Identifier: BSD-3-Clause
 
 from __future__ import division
 import pint

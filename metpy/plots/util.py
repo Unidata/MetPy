@@ -22,11 +22,11 @@ def colored_line(x, y, c, **kwargs):
     c : array-like
         values used for color-mapping
     kwargs : dict
-        Other keyword arguments passed to ``matplotlib.collections.LineCollection``
+        Other keyword arguments passed to :class:`matplotlib.collections.LineCollection`
 
     Returns
     -------
-        The created ``matplotlib.collections.LineCollection`` instance.
+        The created :class:`matplotlib.collections.LineCollection` instance.
 
     """
     # Paste values end to end
