@@ -1,11 +1,12 @@
-r'''Collection of utilities for testing
-
-    Currently, this consists of unit-aware test functions
-'''
-
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+r"""Collection of utilities for testing
+
+    This includes:
+    * unit-aware test functions
+    * code for testing matplotlib figures
+"""
 
 import numpy.testing
 from pint import DimensionalityError
@@ -47,3 +48,18 @@ def assert_array_almost_equal(actual, desired, decimal=7):
 def assert_array_equal(actual, desired):
     actual, desired = check_and_drop_units(actual, desired)
     numpy.testing.assert_array_equal(actual, desired)
+
+
+def make_figure(*args, **kwargs):
+    'Create an Agg figure for testing'
+    from matplotlib.figure import Figure
+    from matplotlib.backends.backend_agg import FigureCanvasAgg
+    fig = Figure(*args, **kwargs)
+    fig.canvas = FigureCanvasAgg(fig)
+    return fig
+
+
+def hide_tick_labels(ax):
+    'Hide the ticklabels on an axes'
+    ax.xaxis.set_ticklabels([])
+    ax.yaxis.set_ticklabels([])
