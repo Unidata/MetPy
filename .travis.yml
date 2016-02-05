@@ -66,10 +66,10 @@ before_install:
             pip install Cython;
         fi;
       else
-        export TEST_OPTS="--addopts --mpl";
+        export TEST_OPTS="--mpl";
         pip install pytest-mpl;
         if [[ $TASK == "coverage" ]]; then
-          export TEST_OPTS="$TEST_OPTS --addopts --cov=metpy";
+          export TEST_OPTS="$TEST_OPTS --cov=metpy";
           pip install pytest-cov;
         fi;
       fi;
@@ -99,7 +99,7 @@ script:
       echo backend:agg > matplotlibrc;
       MPLBACKEND='agg' TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata python test_examples.py;
     else
-      python setup.py test $TEST_OPTS;
+      python setup.py test --addopts "$TEST_OPTS";
     fi
 
 after_success:
