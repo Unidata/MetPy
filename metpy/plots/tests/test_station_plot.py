@@ -5,7 +5,7 @@
 import numpy as np
 import pytest
 
-from metpy.plots.station_plot import StationPlot, StationPlotLayout, simple_layout
+from metpy.plots.station_plot import StationPlot, StationPlotLayout, nws_layout, simple_layout
 from metpy.plots.wx_symbols import high_clouds, sky_cover
 from metpy.testing import hide_tick_labels, make_figure
 from metpy.units import units
@@ -166,6 +166,41 @@ def test_simple_layout():
 
     sp.ax.set_xlim(0, 6)
     sp.ax.set_ylim(0, 6)
+    hide_tick_labels(sp.ax)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=18.5, savefig_kwargs={'dpi': 300})
+def test_nws_layout():
+    'Test metpy\'s NWS layout for station plots'
+    setup_font()
+    fig = make_figure(figsize=(3, 3))
+
+    # testing data
+    x = np.array([1])
+    y = np.array([2])
+    data = dict()
+    data['air_temperature'] = np.array([77]) * units.degF
+    data['dew_point_temperature'] = np.array([71]) * units.degF
+    data['air_pressure_at_sea_level'] = np.array([999.8]) * units('mbar')
+    data['eastward_wind'] = np.array([15.]) * units.knots
+    data['northward_wind'] = np.array([15.]) * units.knots
+    data['cloud_coverage'] = [7]
+    data['present_weather'] = [80]
+    data['high_cloud_type'] = [1]
+    data['medium_cloud_type'] = [3]
+    data['low_cloud_type'] = [2]
+    data['visibility_in_air'] = np.array([5.]) * units.mile
+    data['tendency_of_air_pressure'] = np.array([-0.3]) * units('mbar')
+    data['tendency_of_air_pressure_symbol'] = [8]
+
+    # Make the plot
+    sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=12, spacing=16)
+    nws_layout.plot(sp, data)
+
+    sp.ax.set_xlim(0, 3)
+    sp.ax.set_ylim(0, 3)
     hide_tick_labels(sp.ax)
 
     return fig

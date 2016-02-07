@@ -11,7 +11,8 @@ import numpy as np
 
 from ..cbook import is_string_like
 from ..package_tools import Exporter
-from .wx_symbols import current_weather, sky_cover, wx_symbol_font
+from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
+                         pressure_tendency, sky_cover, wx_symbol_font)
 
 exporter = Exporter(globals())
 
@@ -465,6 +466,27 @@ with exporter:
     simple_layout.add_value('NW', 'air_temperature', units='degC')
     simple_layout.add_value('SW', 'dew_point_temperature', units='degC')
     simple_layout.add_value('NE', 'air_pressure_at_sea_level', units='mbar',
-                            fmt=lambda v: format(10 * v, '.0f')[-3:])
+                            fmt=lambda v: format(10 * v, '03.0f')[-3:])
     simple_layout.add_symbol('C', 'cloud_coverage', sky_cover)
     simple_layout.add_symbol('W', 'present_weather', current_weather)
+
+    #: :desc: Full NWS station plot layout from
+    #: http://oceanservice.noaa.gov/education/yos/resource/JetStream/synoptic/wxmaps.htm
+    nws_layout = StationPlotLayout()
+    nws_layout.add_value((-1, 1), 'air_temperature', units='degF')
+    nws_layout.add_symbol((0, 2), 'high_cloud_type', high_clouds)
+    nws_layout.add_symbol((0, 1), 'medium_cloud_type', mid_clouds)
+    nws_layout.add_symbol((0, -1), 'low_cloud_type', low_clouds)
+    nws_layout.add_value((1, 1), 'air_pressure_at_sea_level', units='mbar',
+                         fmt=lambda v: format(10 * v, '03.0f')[-3:])
+    nws_layout.add_value((-2, 0), 'visibility_in_air', fmt='.0f', units='miles')
+    nws_layout.add_symbol((-1, 0), 'present_weather', current_weather)
+    nws_layout.add_symbol((0, 0), 'cloud_coverage', sky_cover)
+    nws_layout.add_value((1, 0), 'tendency_of_air_pressure', units='mbar',
+                         fmt=lambda v: ('-' if v < 0 else '') + format(10 * abs(v), '02.0f'))
+    nws_layout.add_symbol((2, 0), 'tendency_of_air_pressure_symbol', pressure_tendency)
+    nws_layout.add_barb('eastward_wind', 'northward_wind', units='knots')
+    nws_layout.add_value((-1, -1), 'dew_point_temperature', units='degF')
+
+    # TODO: Fix once we have the past weather symbols converted
+    nws_layout.add_symbol((1, -1), 'past_weather', current_weather)
