@@ -169,3 +169,14 @@ def test_simple_layout():
     hide_tick_labels(sp.ax)
 
     return fig
+
+
+def test_layout_str():
+    'Test layout string representation'
+    layout = StationPlotLayout()
+    layout.add_barb('u', 'v')
+    layout.add_text('E', 'stid')
+    layout.add_value('W', 'temp')
+    layout.add_symbol('C', 'cover', lambda x: x)
+    assert str(layout) == ('{C: (symbol, cover, ...), E: (text, stid, ...), '
+                           'W: (value, temp, ...), barb: (barb, (\'u\', \'v\'), ...)}')

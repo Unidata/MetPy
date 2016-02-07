@@ -383,7 +383,7 @@ class StationPlotLayout(dict):
         """
         # Not sure if putting the v_name as a plot-specific option is appropriate,
         # but it seems simpler than making name code in plot handle tuples
-        self[None] = (self.PlotTypes.barb, (u_name, v_name), (units, kwargs))
+        self['barb'] = (self.PlotTypes.barb, (u_name, v_name), (units, kwargs))
 
     def names(self):
         """Get the list of names used by the layout.
@@ -449,6 +449,14 @@ class StationPlotLayout(dict):
                         plotter.plot_symbol(loc, data, mapper, **kwargs)
                     elif typ == self.PlotTypes.text:
                         plotter.plot_text(loc, data, **args)
+
+    def __repr__(self):
+        """Return string representation of layout"""
+        return ('{' +
+                ', '.join('{0}: ({1[0].name}, {1[1]}, ...)'.format(loc, info)
+                          for loc, info in sorted(self.items())) +
+                '}')
+
 
 with exporter:
     #: :desc: Simple station plot layout
