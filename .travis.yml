@@ -109,3 +109,16 @@ after_success:
       coverage xml;
       python-codacy-coverage -r coverage.xml;
     fi
+
+deploy:
+  provider: pypi
+  user: dopplershift
+  password:
+    secure: VYbxLZZnQ1hR2WZwe6+NXLNVbxceDQzlaVM/G3PW8mYlnyWgIVJBgCcgpH22wT4IsNQqo1r9ow9HiybzwcU1VTZ9KXjYsjre/kCZob0jmuPKlDtujOLaMJFf0XzOw7Y/AFXaMakFA8ZOYJLaMXc0WMLwGT7Hw/oP/e2ztpVLxRA=
+  distributions: sdist bdist_wheel
+  upload_docs: no
+  on:
+    repo: metpy/MetPy
+    python: 3.5
+    condition: '$TASK == "coverage"'
+    tags: true
