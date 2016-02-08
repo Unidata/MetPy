@@ -2,15 +2,22 @@
 :mod:`metpy.plots`
 ==================
 
-Plots
-*****
-
 .. automodule:: metpy.plots
+
+Skew-T
+******
+
+.. automodule:: metpy.plots.skewt
    :members:
    :undoc-members:
 
-   .. autoclass:: metpy.plots.SkewT
-   .. autoclass:: metpy.plots.Hodograph
+
+Station Plots
+*************
+
+.. automodule:: metpy.plots.station_plot
+   :members:
+   :undoc-members:
 
 
 Colortables

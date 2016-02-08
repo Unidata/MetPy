@@ -7,22 +7,8 @@ from matplotlib.gridspec import GridSpec
 import pytest
 
 from metpy.plots.skewt import *  # noqa
+from metpy.testing import hide_tick_labels, make_figure
 from metpy.units import units
-
-
-def make_figure(*args, **kwargs):
-    'Create an Agg figure for testing'
-    from matplotlib.figure import Figure
-    from matplotlib.backends.backend_agg import FigureCanvasAgg
-    fig = Figure(*args, **kwargs)
-    fig.canvas = FigureCanvasAgg(fig)
-    return fig
-
-
-def hide_tick_labels(ax):
-    'Hide the ticklabels on an axes'
-    ax.xaxis.set_ticklabels([])
-    ax.yaxis.set_ticklabels([])
 
 
 @pytest.mark.mpl_image_compare
