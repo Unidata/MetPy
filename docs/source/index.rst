@@ -47,10 +47,12 @@ Contact Us
 * The source code is available on GitHub_
 * Bug reports and feature requests should be directed to the
   `GitHub issue tracker`__
+* MetPy has a Gitter_ chatroom for more "live" communication
 * MetPy can also be found on Twitter_
 
 .. _python-users: https://www.unidata.ucar.edu/support/#mailinglists
 .. _GitHub: https://github.com/metpy/MetPy
+.. _Gitter: https://gitter.im/metpy/MetPy
 .. _Twitter: https://twitter.com/MetPy
 __ https://github.com/metpy/MetPy/issues
 
