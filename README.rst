@@ -1,57 +1,61 @@
 MetPy
 =====
 
-.. image:: https://img.shields.io/pypi/l/metpy.svg
+|License| |Gitter|
+
+|PyPI| |PyPIDownloads| |Conda| |CondaDownloads|
+
+|Travis| |CodeCov| |Codacy| |QuantifiedCode|
+
+|LatestDocs| |StableDocs|
+
+.. |License| image:: https://img.shields.io/pypi/l/metpy.svg
     :target: https://pypi.python.org/pypi/MetPy/
     :alt: License
 
-.. image:: https://img.shields.io/github/issues/metpy/metpy.svg
-    :target: http://www.github.com/metpy/MetPy/issues
-    :alt: GitHub Issues
-
-.. image:: https://img.shields.io/github/tag/metpy/metpy.svg
-    :target: https://github.com/metpy/MetPy/tags
-    :alt: GitHub Tags
-
-.. image:: https://img.shields.io/pypi/v/metpy.svg
+.. |PyPI| image:: https://img.shields.io/pypi/v/metpy.svg
     :target: https://pypi.python.org/pypi/MetPy/
     :alt: PyPI Package
 
-.. image:: https://img.shields.io/pypi/dm/metpy.svg
+.. |PyPIDownloads| image:: https://img.shields.io/pypi/dm/metpy.svg
     :target: https://pypi.python.org/pypi/MetPy/
     :alt: PyPI Downloads
 
-.. image:: https://binstar.org/unidata/metpy/badges/version.svg
+.. |Conda| image:: https://binstar.org/unidata/metpy/badges/version.svg
     :target: https://binstar.org/unidata/metpy
     :alt: Binstar Package
 
-.. image:: https://binstar.org/unidata/metpy/badges/downloads.svg
+.. |CondaDownloads| image:: https://binstar.org/unidata/metpy/badges/downloads.svg
     :target: https://binstar.org/unidata/metpy
     :alt: Binstar Downloads
 
-.. image:: https://travis-ci.org/metpy/MetPy.svg?branch=master
+.. |Travis| image:: https://travis-ci.org/metpy/MetPy.svg?branch=master
     :target: https://travis-ci.org/metpy/MetPy
     :alt: Travis Build Status
 
-.. image:: https://codecov.io/github/metpy/MetPy/coverage.svg?branch=master
+.. |CodeCov| image:: https://codecov.io/github/metpy/MetPy/coverage.svg?branch=master
     :target: https://codecov.io/github/metpy/MetPy?branch=master
     :alt: Code Coverage Status
 
-.. image:: https://www.quantifiedcode.com/api/v1/project/1153e58350aa41e6a7970a134febeb2d/badge.svg
+.. |QuantifiedCode| image:: https://www.quantifiedcode.com/api/v1/project/1153e58350aa41e6a7970a134febeb2d/badge.svg
     :target: https://www.quantifiedcode.com/app/project/1153e58350aa41e6a7970a134febeb2d
     :alt: Code issues
 
-.. image:: https://api.codacy.com/project/badge/grade/e1ea0937eb4942e79a44bc9bb2de616d
+.. |Codacy| image:: https://api.codacy.com/project/badge/grade/e1ea0937eb4942e79a44bc9bb2de616d
     :target: https://www.codacy.com/app/dopplershift/MetPy
     :alt: Codacy code issues
 
-.. image:: https://readthedocs.org/projects/pip/badge/?version=latest
+.. |LatestDocs| image:: https://readthedocs.org/projects/pip/badge/?version=latest
     :target: http://metpy.readthedocs.org/en/latest/
     :alt: Latest Doc Build Status
 
-.. image:: https://readthedocs.org/projects/pip/badge/?version=stable
+.. |StableDocs| image:: https://readthedocs.org/projects/pip/badge/?version=stable
     :target: http://metpy.readthedocs.org/en/stable/
     :alt: Stable Doc Build Status
+
+.. |Gitter| image:: https://badges.gitter.im/metpy/MetPy.svg
+    :target: https://gitter.im/metpy/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+    :alt: Gitter
 
 MetPy is a collection of tools in Python for reading, visualizing and
 performing calculations with weather data.
@@ -61,7 +65,7 @@ MetPy is still in an early stage of development, and as such
 just for fun, many things may still change as we work through
 design issues.
 
-We support Python 2.7 as well as Python >= 3.2.
+We support Python 2.7 as well as Python >= 3.3.
 
 Important Links
 ---------------
