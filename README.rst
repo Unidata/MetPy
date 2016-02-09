@@ -49,6 +49,10 @@ MetPy
     :target: http://metpy.readthedocs.org/en/stable/
     :alt: Stable Doc Build Status
 
+.. image:: https://badges.gitter.im/metpy/MetPy.svg
+    :target: https://gitter.im/metpy/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+    :alt: Gitter
+
 MetPy is a collection of tools in Python for reading, visualizing and
 performing calculations with weather data.
 
