@@ -74,6 +74,7 @@ Important Links
 - HTML Documentation (stable release): http://metpy.readthedocs.org/en/stable/
 - HTML Documentation (development): http://metpy.readthedocs.org/en/latest/
 - Issue tracker: http://github.com/Metpy/MetPy/issues
+- Gitter chat room: https://gitter.im/metpy/MetPy
 
 Dependencies
 ------------
