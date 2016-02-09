@@ -5,10 +5,6 @@ MetPy
     :target: https://pypi.python.org/pypi/MetPy/
     :alt: License
 
-.. image:: https://img.shields.io/github/tag/metpy/metpy.svg
-    :target: https://github.com/metpy/MetPy/tags
-    :alt: GitHub Tags
-
 .. image:: https://img.shields.io/pypi/v/metpy.svg
     :target: https://pypi.python.org/pypi/MetPy/
     :alt: PyPI Package
