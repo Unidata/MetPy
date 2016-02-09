@@ -57,7 +57,7 @@ MetPy is still in an early stage of development, and as such
 just for fun, many things may still change as we work through
 design issues.
 
-We support Python 2.7 as well as Python >= 3.2.
+We support Python 2.7 as well as Python >= 3.3.
 
 Important Links
 ---------------
