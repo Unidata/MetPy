@@ -79,7 +79,7 @@ exporter = Exporter(globals())
 # Export all the variables defined in this block
 with exporter:
     # Earth
-    earth_gravity = g = units.gravity.to_base_units()
+    earth_gravity = g = units.Quantity(1.0, units.gravity).to('m / s^2')
     Re = earth_avg_radius = 6.37e6 * units.m
     omega = earth_avg_angular_vel = 2 * units.pi / units.day
     d = earth_sfc_avg_dist_sun = 1.496e11 * units.m
@@ -87,9 +87,12 @@ with exporter:
     delta = earth_max_declination = 23.45 * units.deg
     earth_orbit_eccentricity = 0.0167
 
+    # molar gas constant
+    R = units.Quantity(1.0, units.R).to('J / K / mol')
+
     # Water
     Mw = water_molecular_weight = units.Quantity(18.016, 'g / mol')
-    Rv = water_gas_constant = units.R.to_base_units() / Mw
+    Rv = water_gas_constant = R / Mw
     # Nominal density of liquid water at 0C
     rho_l = density_water = units.Quantity(1e3, 'kg / m^3')
     Cp_v = wv_specific_heat_press = units.Quantity(1952., 'm^2 / s^2 / K')
@@ -102,7 +105,7 @@ with exporter:
 
     # Dry air
     Md = dry_air_molecular_weight = units.Quantity(28.97, 'g / mol')  # at the sfc
-    Rd = dry_air_gas_constant = units.R.to_base_units() / Md
+    Rd = dry_air_gas_constant = R / Md
     Cp_d = dry_air_spec_heat_press = units.Quantity(1004., 'm^2 / s^2 / K')
     Cv_d = dry_air_spec_heat_vol = units.Quantity(717., 'm^2 / s^2 / K')
     rho_d = dry_air_density_stp = units.Quantity(1.275, 'kg / m^3')  # at 0C 1000mb

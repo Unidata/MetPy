@@ -136,8 +136,9 @@ def moist_lapse(pressure, temperature):
         t = units.Quantity(t, temperature.units)
         p = units.Quantity(p, pressure.units)
         rs = mixing_ratio(saturation_vapor_pressure(t), p)
-        return (1. / p) * ((Rd * t + Lv * rs) /
-                           (Cp_d + (Lv * Lv * rs * epsilon / (Rd * t * t))))
+        frac = ((Rd * t + Lv * rs) /
+                (Cp_d + (Lv * Lv * rs * epsilon / (Rd * t * t)))).to('kelvin')
+        return frac / p
     return units.Quantity(si.odeint(dt, atleast_1d(temperature).squeeze(),
                                     pressure.squeeze()).T.squeeze(), temperature.units)
 
