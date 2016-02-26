@@ -12,18 +12,18 @@ class TestPotentialTemperature(object):
     def test_basic(self):
         temp = np.array([278., 283., 291., 298.]) * units.kelvin
         pres = np.array([900., 500., 300., 100.]) * units.mbar
-        real_th = np.array([286.5, 345.0155, 410.5467, 575.5397]) * units.kelvin
+        real_th = np.array([286.493, 344.961, 410.4335, 575.236]) * units.kelvin
         assert_array_almost_equal(potential_temperature(pres, temp), real_th, 3)
 
     def test_scalar(self):
         assert_almost_equal(potential_temperature(1000. * units.mbar, 293. * units.kelvin),
                             293. * units.kelvin, 4)
         assert_almost_equal(potential_temperature(800. * units.mbar, 293. * units.kelvin),
-                            312.2987 * units.kelvin, 4)
+                            312.2828 * units.kelvin, 4)
 
     def test_farenheit(self):
         assert_almost_equal(potential_temperature(800. * units.mbar, 68. * units.degF),
-                            (312.4586 * units.kelvin).to(units.degF), 4)
+                            (312.444 * units.kelvin).to(units.degF), 2)
 
 
 class TestDryLapse(object):
@@ -35,29 +35,29 @@ class TestDryLapse(object):
 
     def test_2_levels(self):
         temps = dry_lapse(np.array([1000., 500.]) * units.mbar, 293. * units.kelvin)
-        assert_array_almost_equal(temps, [293., 240.3341] * units.kelvin, 4)
+        assert_array_almost_equal(temps, [293., 240.3723] * units.kelvin, 4)
 
 
 class TestMoistLapse(object):
     def test_array(self):
         temp = moist_lapse(np.array([1000., 800., 600., 500., 400.]) * units.mbar,
                            293. * units.kelvin)
-        true_temp = np.array([293, 284.64, 272.8, 264.4, 252.87]) * units.kelvin
+        true_temp = np.array([293, 284.64, 272.81, 264.42, 252.91]) * units.kelvin
         assert_array_almost_equal(temp, true_temp, 2)
 
     def test_degc(self):
         'Test moist lapse with Celsius'
         temp = moist_lapse(np.array([1000., 800., 600., 500., 400.]) * units.mbar,
                            19.85 * units.degC)
-        true_temp = np.array([293, 284.64, 272.8, 264.4, 252.87]) * units.kelvin
+        true_temp = np.array([293, 284.64, 272.81, 264.42, 252.91]) * units.kelvin
         assert_array_almost_equal(temp, true_temp, 2)
 
 
 class TestParcelProfile(object):
     def test_basic(self):
         levels = np.array([1000., 900., 800., 700., 600., 500., 400.]) * units.mbar
-        true_prof = np.array([303.15, 294.16, 288.02, 283.06, 277.04, 269.38,
-                              258.93]) * units.kelvin
+        true_prof = np.array([303.15, 294.16, 288.026, 283.073, 277.058, 269.402,
+                              258.966]) * units.kelvin
 
         prof = parcel_profile(levels, 30. * units.degC, 20. * units.degC)
         assert_array_almost_equal(prof, true_prof, 2)
@@ -113,11 +113,11 @@ class TestMixingRatio(object):
 class TestVaporPressure(object):
     def test_scalar(self):
         assert_almost_equal(vapor_pressure(998. * units.mbar, 0.04963),
-                            73.76 * units.mbar, 3)
+                            73.74925 * units.mbar, 5)
 
 
 class TestLCL(object):
     def test_basic(self):
         'Simple test of LCL calculation.'
         l = lcl(1000. * units.mbar, 30. * units.degC, 20. * units.degC)
-        assert_almost_equal(l, 864.89 * units.mbar, 2)
+        assert_almost_equal(l, 864.761 * units.mbar, 2)

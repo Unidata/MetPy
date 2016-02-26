@@ -90,25 +90,28 @@ with exporter:
     # molar gas constant
     R = units.Quantity(1.0, units.R).to('J / K / mol')
 
+    #
     # Water
-    Mw = water_molecular_weight = units.Quantity(18.016, 'g / mol')
+    #
+    # From: https://pubchem.ncbi.nlm.nih.gov/compound/water
+    Mw = water_molecular_weight = units.Quantity(18.01528, 'g / mol')
     Rv = water_gas_constant = R / Mw
     # Nominal density of liquid water at 0C
     rho_l = density_water = units.Quantity(1e3, 'kg / m^3')
     Cp_v = wv_specific_heat_press = units.Quantity(1952., 'm^2 / s^2 / K')
     Cv_v = wv_specific_heat_vol = units.Quantity(1463., 'm^2 / s^2 / K')
     Cp_l = water_specific_heat = units.Quantity(4218., 'm^2 / s^2 / K')  # at 0C
-    Lv = water_heat_vaporization = units.Quantity(2.5e6, 'm^2 / s^2')  # at 0C
+    Lv = water_heat_vaporization = units.Quantity(2.501e6, 'm^2 / s^2')  # at 0C
     Lf = water_heat_fusion = units.Quantity(3.34e5, 'm^2 / s^2')  # at 0C
     Cp_i = ice_specific_heat = units.Quantity(2106, 'm^2 / s^2 / K')  # at 0C
     rho_i = density_ice = units.Quantity(917, 'kg / m^3')  # at 0C
 
-    # Dry air
-    Md = dry_air_molecular_weight = units.Quantity(28.97, 'g / mol')  # at the sfc
+    # Dry air -- standard atmosphere
+    Md = dry_air_molecular_weight = units.Quantity(28.9644, 'g / mol')
     Rd = dry_air_gas_constant = R / Md
-    Cp_d = dry_air_spec_heat_press = units.Quantity(1004., 'm^2 / s^2 / K')
-    Cv_d = dry_air_spec_heat_vol = units.Quantity(717., 'm^2 / s^2 / K')
-    rho_d = dry_air_density_stp = units.Quantity(1.275, 'kg / m^3')  # at 0C 1000mb
+    dry_air_spec_heat_ratio = 1.4
+    Cp_d = dry_air_spec_heat_press = units.Quantity(1005, 'm^2 / s^2 / K')  # Bolton 1980
+    Cv_d = dry_air_spec_heat_vol = Cp_d / dry_air_spec_heat_ratio
 
     # General meteorology constants
     P0 = pot_temp_ref_press = 1000. * units.mbar
