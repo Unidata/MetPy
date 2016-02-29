@@ -82,7 +82,8 @@ setup(
         'cdm': ['pyproj>=1.9.4'],
         'dev': ['ipython[all]>=3.1'],
         'doc': ['sphinx>=1.3', 'ipython[all]>=3.1'],
-        'examples': ['cartopy>=0.13','pillow'],
+        # Until we have 0.13.1 on pypi, need to limit shapely
+        'examples': ['cartopy>=0.13.0', 'shapely<=1.5.12', 'pillow'],
         'test': ['pytest', 'pytest-runner']
     },
 
