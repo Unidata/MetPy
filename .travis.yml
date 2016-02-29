@@ -63,7 +63,7 @@ before_install:
         pip install -r docs/requirements.txt;
         if [[ $TASK == "examples" ]]; then
             export EXTRA_INSTALLS="$EXTRA_INSTALLS,examples";
-            pip install Cython;
+            pip install Cython ipykernel;
         fi;
       else
         export TEST_OPTS="--mpl";
@@ -95,9 +95,9 @@ script:
       cd docs;
       make html;
     elif [[ $TASK == "examples" ]]; then
-      cd examples;
-      echo backend:agg > matplotlibrc;
-      MPLBACKEND='agg' TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata python test_examples.py;
+      cd examples/notebooks;
+      export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata;
+      find . -name \*.ipynb -print0 | xargs -0 -n1 jupyter nbconvert --execute --to=notebook --stdout >| /dev/null;
     else
       python setup.py test --addopts "$TEST_OPTS";
     fi
