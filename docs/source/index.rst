@@ -60,9 +60,11 @@ __ https://github.com/metpy/MetPy/issues
 Presentations
 -------------
 
-* Ryan May's talk and tutorial on MetPy at the `2015 Unidata Users Workshop`__.
+* Ryan May's talk and tutorial on MetPy at the `2015 Unidata Users Workshop`_.
+* Presentation on MetPy at the `2016 AMS Annual Meeting`_ by Ryan May.
 
-__ https://www.youtube.com/watch?v=umwauHAL-0M
+.. _`2015 Unidata Users Workshop`: https://www.youtube.com/watch?v=umwauHAL-0M
+.. _`2016 AMS Annual Meeting`: https://ams.confex.com/ams/96Annual/webprogram/Paper286983.html
 
 -------
 License
