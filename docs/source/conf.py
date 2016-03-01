@@ -28,7 +28,7 @@ sys.path.insert(0, os.path.abspath('../..'))
 # which is unused, so that pandoc will run
 # 
 
-if 'READTHEDOCS' in os.environ:
+if 'READTHEDOCS' in os.environ or 'TRAVIS' in os.environ:
     import mock
 
     MOCK_MODULES = ['matplotlib', 'matplotlib.axis', 'matplotlib.axes',
