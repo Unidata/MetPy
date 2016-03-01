@@ -101,13 +101,11 @@ script:
         false;
       fi;
     elif [[ $TASK == "examples" ]]; then
-      pushd examples/notebooks;
       export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata;
       if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then
-        sed -i -e "s/python3/python2/" *.ipynb;
+        sed -i -e "s/python3/python2/" examples/notebooks/*.ipynb;
       fi;
-      find . -name \*.ipynb -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=60 --to=notebook --stdout >| /dev/null;
-      popd;
+      find examples/notebooks/ -name \*.ipynb -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=60 --to=notebook --stdout >| /dev/null;
     else
       python setup.py test --addopts "$TEST_OPTS";
     fi
