@@ -34,10 +34,11 @@ if 'READTHEDOCS' in os.environ or 'TRAVIS' in os.environ:
     MOCK_MODULES = ['matplotlib', 'matplotlib.axis', 'matplotlib.axes',
                     'matplotlib.backends', 'matplotlib.cbook',
                     'matplotlib.collections', 'matplotlib.colors',
+                    'matplotlib.font_manager',
                     'matplotlib.figure', 'matplotlib.patches',
                     'matplotlib.projections', 'matplotlib.pyplot',
-                    'matplotlib.spines', 'matplotlib.ticker',
-                    'matplotlib.transforms',
+                    'matplotlib.quiver', 'matplotlib.spines',
+                    'matplotlib.ticker', 'matplotlib.transforms',
                     'numpy', 'numpy.ma', 'numpy.testing', 'pint', 'pint.unit',
                     'scipy', 'scipy.constants', 'scipy.integrate']
     for mod_name in MOCK_MODULES:
