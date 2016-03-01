@@ -4,6 +4,9 @@
 import glob
 import os
 import os.path
+import warnings
+
+warnings.simplefilter('ignore')
 
 from nbconvert.exporters import rst
 
