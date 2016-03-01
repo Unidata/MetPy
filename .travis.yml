@@ -55,13 +55,13 @@ matrix:
     - python: nightly
 
 before_install:
+  - pip install --upgrade pip;
   - if [[ $TASK == "lint" ]]; then
       pip install flake8 pep8-naming;
+    elif [[ $TASK == "docs" ]]; then
+        pip install -r docs/requirements.txt -f $WHEELHOUSE;
     else
-      pip install --upgrade pip;
-      if [[ $TASK == "docs" ]]; then
-        pip install -r docs/requirements.txt;
-      elif [[ $TASK == "examples" ]]; then
+      if [[ $TASK == "examples" ]]; then
         export EXTRA_INSTALLS="$EXTRA_INSTALLS,examples";
         export EXTRA_PACKAGES="Cython nbconvert ipykernel";
       else
