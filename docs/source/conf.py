@@ -28,25 +28,30 @@ sys.path.insert(0, os.path.abspath('../..'))
 # which is unused, so that pandoc will run
 # 
 
-if 'READTHEDOCS' in os.environ:
+if 'READTHEDOCS' in os.environ or 'TRAVIS' in os.environ:
     import mock
 
     MOCK_MODULES = ['matplotlib', 'matplotlib.axis', 'matplotlib.axes',
                     'matplotlib.backends', 'matplotlib.cbook',
                     'matplotlib.collections', 'matplotlib.colors',
+                    'matplotlib.font_manager',
                     'matplotlib.figure', 'matplotlib.patches',
                     'matplotlib.projections', 'matplotlib.pyplot',
-                    'matplotlib.spines', 'matplotlib.ticker',
-                    'matplotlib.transforms',
+                    'matplotlib.quiver', 'matplotlib.spines',
+                    'matplotlib.ticker', 'matplotlib.transforms',
                     'numpy', 'numpy.ma', 'numpy.testing', 'pint', 'pint.unit',
                     'scipy', 'scipy.constants', 'scipy.integrate']
     for mod_name in MOCK_MODULES:
         sys.modules[mod_name] = mock.Mock()
 
+    sys.modules['matplotlib'].__version__ = '1.5'
+
     class MockUnit(float):
         def to_base_units(self):
             return self
         def __call__(self, arg):
+            return self
+        def to(self, arg):
             return self
 
     class MockUnits(object):

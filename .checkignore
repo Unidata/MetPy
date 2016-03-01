@@ -7,4 +7,4 @@ metpy/_version.py
 versioneer.py
 
 # Don't scan sphinx config
-docs/conf.py
+docs/source/conf.py

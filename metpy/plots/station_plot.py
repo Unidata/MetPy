@@ -470,8 +470,9 @@ with exporter:
     simple_layout.add_symbol('C', 'cloud_coverage', sky_cover)
     simple_layout.add_symbol('W', 'present_weather', current_weather)
 
-    #: :desc: Full NWS station plot layout from
-    #: http://oceanservice.noaa.gov/education/yos/resource/JetStream/synoptic/wxmaps.htm
+    #: Full NWS station plot `layout`__
+    #:
+    #: __ http://oceanservice.noaa.gov/education/yos/resource/JetStream/synoptic/wxmaps.htm
     nws_layout = StationPlotLayout()
     nws_layout.add_value((-1, 1), 'air_temperature', units='degF')
     nws_layout.add_symbol((0, 2), 'high_cloud_type', high_clouds)
