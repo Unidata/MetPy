@@ -43,6 +43,8 @@ if 'READTHEDOCS' in os.environ or 'TRAVIS' in os.environ:
     for mod_name in MOCK_MODULES:
         sys.modules[mod_name] = mock.Mock()
 
+    sys.modules['matplotlib'].__version__ = '1.5'
+
     class MockUnit(float):
         def to_base_units(self):
             return self
