@@ -48,6 +48,8 @@ if 'READTHEDOCS' in os.environ or 'TRAVIS' in os.environ:
             return self
         def __call__(self, arg):
             return self
+        def to(self, arg):
+            return self
 
     class MockUnits(object):
         def __getattr__(self, attr):
