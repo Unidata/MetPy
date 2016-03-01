@@ -82,7 +82,7 @@ before_install:
     fi
 
 install:
-  - if [[ $TASK != "lint" ]]; then
+  - if [[ $TASK != "lint" && $TASK != "docs" ]]; then
       pip install ".[$EXTRA_INSTALLS]" --upgrade --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
       if [[ $TASK == "examples" ]]; then
         python setup.py examples;
@@ -94,7 +94,12 @@ script:
       flake8 metpy;
     elif [[ $TASK == "docs" ]]; then
       cd docs;
-      make html;
+      make html 2>docs.log;
+      if [ -s docs.log ]; then
+        echo Doc build produced warnings or errors:;
+        cat docs.log;
+        false;
+      fi;
     elif [[ $TASK == "examples" ]]; then
       pushd examples/notebooks;
       export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata;
