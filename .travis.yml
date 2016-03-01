@@ -59,12 +59,11 @@ before_install:
       pip install flake8 pep8-naming;
     else
       pip install --upgrade pip;
-      if [[ $TASK == "docs" || $TASK == "examples" ]]; then
+      if [[ $TASK == "docs" ]]; then
         pip install -r docs/requirements.txt;
-        if [[ $TASK == "examples" ]]; then
-            export EXTRA_INSTALLS="$EXTRA_INSTALLS,examples";
-            pip install Cython;
-        fi;
+      elif [[ $TASK == "examples" ]]; then
+        export EXTRA_INSTALLS="$EXTRA_INSTALLS,examples";
+        export EXTRA_PACKAGES="Cython nbconvert ipykernel";
       else
         export TEST_OPTS="--mpl";
         pip install pytest-mpl;
@@ -74,9 +73,11 @@ before_install:
         fi;
       fi;
       mkdir $WHEELDIR;
-      pip install ".[$EXTRA_INSTALLS]" -d $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
-      touch $WHEELDIR/download_marker;
-      travis_wait pip wheel ".[$EXTRA_INSTALLS]" -w $WHEELDIR -f $WHEELHOUSE $PRE $VERSIONS;
+      pip download -d $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
+      touch $WHEELDIR/download_marker && ls -lrt $WHEELDIR;
+      travis_wait pip wheel -w $WHEELDIR $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
+      pip install $EXTRA_PACKAGES --upgrade --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
+      travis_wait pip wheel -w $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
       rm -f $WHEELDIR/MetPy*.whl;
     fi
 
@@ -95,9 +96,13 @@ script:
       cd docs;
       make html;
     elif [[ $TASK == "examples" ]]; then
-      cd examples;
-      echo backend:agg > matplotlibrc;
-      MPLBACKEND='agg' TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata python test_examples.py;
+      pushd examples/notebooks;
+      export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata;
+      if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then
+        sed -i -e "s/python3/python2/" *.ipynb;
+      fi;
+      find . -name \*.ipynb -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=60 --to=notebook --stdout >| /dev/null;
+      popd;
     else
       python setup.py test --addopts "$TEST_OPTS";
     fi

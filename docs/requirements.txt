@@ -1,5 +1,3 @@
 sphinx>=1.3
-nbconvert>=4.0
-# Until nbconvert 4.1
-IPython>=4.0
+nbconvert>=4.1
 jsonschema
