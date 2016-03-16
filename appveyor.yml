@@ -1,0 +1,47 @@
+clone_depth: 5
+
+environment:
+
+  CONDA_PATH: "C:\\Miniconda"
+
+  matrix:
+    - PYTHON_VERSION: "2.7"
+    - PYTHON_VERSION: "3.4"
+    #- PYTHON_VERSION: "3.5"
+
+platform:
+    - x86
+    - x64
+
+install:
+    # Use the pre-installed Miniconda for the desired arch
+    - ps: if($env:PYTHON_VERSION -eq '3.5')
+            { $env:CONDA_PATH="$($env:CONDA_PATH)35" }
+    - ps: if($env:TARGET_ARCH -eq 'x64')
+            { $env:CONDA_PATH="$($env:CONDA_PATH)-x64" }
+    - ps: $env:path="$($env:CONDA_PATH);$($env:CONDA_PATH)\Scripts;$($env:CONDA_PATH)\Library\bin;C:\cygwin\bin;$($env:PATH)"
+    - cmd: conda config --set always_yes yes --set changeps1 no
+    - cmd: conda update -q conda
+    # Useful for debugging any issues with conda
+    - cmd: conda info -a
+    - cmd: sed -i -e s/python=3/python=%PYTHON_VERSION%/ environment.yml
+    - cmd: conda env create -q -f environment.yml
+    - cmd: activate devel
+    - cmd: python --version
+    - cmd: conda list
+    - cmd: if %PYTHON_VERSION% == 2.7 conda install -q enum34
+    - cmd: pip install ".[test]"
+    - cmd: pip install pytest-mpl
+
+# Skip .NET project specific build phase.
+build: off
+
+test_script:
+    - cmd: set TEST_DATA_DIR=%APPVEYOR_BUILD_FOLDER%\\testdata
+    - cmd: if %PYTHON_VERSION% == 2.7 find examples\notebooks -name "*.ipynb" -exec sed -i -e s/python3/python2/ {} ;
+    - cmd: python setup.py test --addopts "--mpl --cov=metpy"
+    - cmd: find examples\notebooks\ -name "*.ipynb" -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=120 --inplace
+
+after_test:
+    - cmd: pip install codecov
+    - cmd: codecov
