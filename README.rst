@@ -5,7 +5,9 @@ MetPy
 
 |PyPI| |PyPIDownloads| |Conda| |CondaDownloads|
 
-|Travis| |CodeCov| |Codacy| |QuantifiedCode|
+|Travis| |AppVeyor|
+
+|CodeCov| |Codacy| |QuantifiedCode|
 
 |LatestDocs| |StableDocs|
 
@@ -32,6 +34,10 @@ MetPy
 .. |Travis| image:: https://travis-ci.org/metpy/MetPy.svg?branch=master
     :target: https://travis-ci.org/metpy/MetPy
     :alt: Travis Build Status
+
+.. |AppVeyor| image:: https://ci.appveyor.com/api/projects/status/403xt697ir8md6gh/branch/master?svg=true
+    :target: https://ci.appveyor.com/project/MetPy/metpy/branch/master
+    :alt: AppVeyor Build Status
 
 .. |CodeCov| image:: https://codecov.io/github/metpy/MetPy/coverage.svg?branch=master
     :target: https://codecov.io/github/metpy/MetPy?branch=master
