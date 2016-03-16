@@ -366,7 +366,7 @@ class SkewT(object):
             specified, they will be linearly distributed across the current
             plotted pressure range.
         kwargs
-            Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+            Other keyword arguments to pass to :class:`matplotlib.collections.LineCollection`
 
         Returns
         -------
@@ -417,7 +417,7 @@ class SkewT(object):
             specified, they will be linearly distributed across the current
             plotted pressure range up to 600 mb.
         kwargs
-            Other keyword arguments to pass to `matplotlib.collections.LineCollection`
+            Other keyword arguments to pass to :class:`matplotlib.collections.LineCollection`
 
         Returns
         -------
