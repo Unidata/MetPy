@@ -28,14 +28,20 @@ class TestColortableRegistry(object):
 
     def test_scan_dir(self):
         'Test registry scanning a directory'
-        with tempfile.NamedTemporaryFile(mode='w', dir='.', suffix='.tbl',
-                                         **buffer_args) as fobj:
-            fobj.write('"red"\n"lime"\n"blue"\n')
-            self.reg.scan_dir(os.path.dirname(fobj.name))
-        name = os.path.splitext(os.path.basename(fobj.name))[0]
+        try:
+            with tempfile.NamedTemporaryFile(mode='w', dir='.', suffix='.tbl', delete=False,
+                                             **buffer_args) as fobj:
+                fobj.write('"red"\n"lime"\n"blue"\n')
+                fname = fobj.name
 
-        assert name in self.reg
-        assert self.reg[name] == [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)]
+            # Needs to be outside with so it's closed on windows
+            self.reg.scan_dir(os.path.dirname(fname))
+            name = os.path.splitext(os.path.basename(fobj.name))[0]
+
+            assert name in self.reg
+            assert self.reg[name] == [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)]
+        finally:
+            os.remove(fname)
 
     def test_read_file(self):
         'Test reading a colortable from a file'
