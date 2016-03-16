@@ -6,8 +6,8 @@ environment:
 
   matrix:
     - PYTHON_VERSION: "2.7"
-    #- PYTHON_VERSION: "3.4"
-    - PYTHON_VERSION: "3.5"
+    - PYTHON_VERSION: "3.4"
+    #- PYTHON_VERSION: "3.5"
 
 platform:
     - x86
@@ -29,7 +29,7 @@ install:
     - cmd: activate devel
     - cmd: python --version
     - cmd: conda list
-    - cmd: if %PYTHON_VERSION% == 2.7 conda install enum34
+    - cmd: if %PYTHON_VERSION% == 2.7 conda install -q enum34
     - cmd: pip install ".[test]"
 
 # Skip .NET project specific build phase.
