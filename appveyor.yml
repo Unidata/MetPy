@@ -31,13 +31,14 @@ install:
     - cmd: conda list
     - cmd: if %PYTHON_VERSION% == 2.7 conda install -q enum34
     - cmd: pip install ".[test]"
+    - cmd: pip install pytest-mpl
 
 # Skip .NET project specific build phase.
 build: off
 
 test_script:
     - cmd: if %PYTHON_VERSION% == 2.7 find examples\notebooks -name "*.ipynb" -exec sed -i -e s/python3/python2/ {} ;
-    - cmd: python setup.py test --addopts --cov=metpy
+    - cmd: python setup.py test --addopts "--mpl --cov=metpy"
     - cmd: find examples\notebooks\ -name "*.ipynb" -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=120 --inplace
 
 after_test:
