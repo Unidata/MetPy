@@ -64,6 +64,17 @@ before_install:
       if [[ $TASK == "examples" ]]; then
         export EXTRA_INSTALLS="$EXTRA_INSTALLS,examples";
         export EXTRA_PACKAGES="Cython nbconvert ipykernel";
+        wget https://github.com/OSGeo/proj.4/archive/4.9.2.tar.gz;
+        tar xf 4.9.2.tar.gz;
+        pushd proj.4-4.9.2;
+        ./configure --prefix=$HOME/local;
+        make;
+        sed -i "" -e s/-I// proj.pc;
+        make install;
+        export PKG_CONFIG_PATH="$HOME/local/lib/pkgconfig";
+        export LD_LIBRARY_PATH="$HOME/local/lib";
+        pkg-config --modversion proj;
+        popd;
       else
         export TEST_OPTS="--mpl";
         pip install pytest-mpl;
