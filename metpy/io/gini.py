@@ -258,6 +258,14 @@ class GiniFile(object):
             proj_var.latitude_of_projection_origin = self.prod_desc2.lat_in
             proj_var.earth_radius = 6371200.0
             proj = cf_to_proj(proj_var)
+        elif self.prod_desc.projection == GiniProjection.polar_stereographic:
+            proj_var = ds.createVariable('Polar_Stereographic', np.int32)
+            proj_var.grid_mapping_name = 'polar_stereographic'
+            proj_var.standard_parallel = self.prod_desc2.lat_in
+            proj_var.longitude_of_projection_origin = self.proj_info.lov
+            proj_var.latitude_of_projection_origin = self.prod_desc2.lat_in
+            proj_var.earth_radius = 6371200.0
+            proj = cf_to_proj(proj_var)
         else:
             raise NotImplementedError('Need to add more projections to dataset!')
 
