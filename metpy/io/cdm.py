@@ -373,11 +373,17 @@ def cf_to_proj(var):
     '''
     import pyproj
     kwargs = dict(lat_0=var.latitude_of_projection_origin,
-                  lon_0=var.longitude_of_central_meridian,
                   a=var.earth_radius, b=var.earth_radius)
     if var.grid_mapping_name == 'lambert_conformal_conic':
         kwargs['proj'] = 'lcc'
+        kwargs['lon_0'] = var.longitude_of_central_meridian
         kwargs['lat_1'] = var.standard_parallel
         kwargs['lat_2'] = var.standard_parallel
+    if var.grid_mapping_name == 'polar_stereographic':
+        kwargs['proj'] = 'stere'
+        kwargs['lon_0'] = var.longitude_of_projection_origin
+        kwargs['k_0'] = 1.0    # scale factor at natural origin
+        kwargs['x_0'] = False  # Easting
+        kwargs['y_0'] = False  # Northing
 
     return pyproj.Proj(**kwargs)
