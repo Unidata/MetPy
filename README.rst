@@ -1,7 +1,7 @@
 MetPy
 =====
 
-|License| |Gitter|
+|License| |Gitter| |PRWelcome|
 
 |PyPI| |PyPIDownloads| |Conda| |CondaDownloads|
 
@@ -62,6 +62,11 @@ MetPy
 .. |Gitter| image:: https://badges.gitter.im/metpy/MetPy.svg
     :target: https://gitter.im/metpy/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
     :alt: Gitter
+
+.. |PRWelcome| image:: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=round-square
+    :target: https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github
+    :alt: PRs Welcome
+
 
 MetPy is a collection of tools in Python for reading, visualizing and
 performing calculations with weather data.
