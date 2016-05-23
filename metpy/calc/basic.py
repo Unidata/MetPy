@@ -220,3 +220,8 @@ def heat_index(temperature, rh, mask_undefined=True):
             hi = units.Quantity(masked_array(hi, mask=mask), hi.units)
 
     return hi
+
+@exporter.export
+def absolute_to_slp(pressure, temperature, height):
+    '''TBD'''
+    return pressure*(1-(0.0065*height/(temperature + 0.0065*height + 273.15)))**-5.257

@@ -199,3 +199,11 @@ def test_heat_index_ratio():
 #        mask = np.array([ True,  True,  True,  True, False, False, False,
 #            False, False, True,  True,  True])
 #        assert_array_equal(s.mask, mask)
+
+
+def test_slp():
+    temperature = 15
+    pressure = 850
+    height = 1600
+    p0 = absolute_to_slp(pressure, temperature,height)
+    assert_almost_equal(p0,1024.16,2)
