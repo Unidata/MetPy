@@ -203,7 +203,7 @@ def test_heat_index_ratio():
 
 def test_pressure_to_heights_basic():
     'Tests basic pressure to height calculation.'
-    pressures = np.array([975.2,987.5,956.,943.])*units.mbar
+    pressures = np.array([975.2, 987.5, 956., 943.]) * units.mbar
     heights = pressure_to_height_std(pressures)
-    values = np.array([321.5,216.5,487.6,601.7])*units.meter
+    values = np.array([321.5, 216.5, 487.6, 601.7]) * units.meter
     assert_almost_equal(heights, values, 1)

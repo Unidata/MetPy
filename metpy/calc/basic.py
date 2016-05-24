@@ -243,10 +243,7 @@ def pressure_to_height_std(pressure):
     .. [7] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
             Survey. 60-61.
     '''
-    T0 = 288.*units.kelvin
-    Gamma = 6.5*units('K/km')
-    P0 = 1013.25*units.mbar
-    return (T0 / Gamma) * (1 - (pressure/P0)**(Rd*Gamma/g))
-
-
-
+    t0 = 288. * units.kelvin
+    gamma = 6.5 * units('K/km')
+    p0 = 1013.25 * units.mbar
+    return (t0 / gamma) * (1 - (pressure / p0)**(Rd * gamma / g))
