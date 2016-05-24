@@ -228,7 +228,7 @@ def heat_index(temperature, rh, mask_undefined=True):
 
 @exporter.export
 def pressure_to_height_std(pressure):
-    '''Convert pressure data to heights using the U.S. standard atmosphere.
+    r'''Convert pressure data to heights using the U.S. standard atmosphere.
 
     The implementation uses the formula outlined in [7].
 
