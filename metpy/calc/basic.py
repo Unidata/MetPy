@@ -5,8 +5,10 @@
 from __future__ import division
 import numpy as np
 from numpy.ma import masked_array
+from ..constants import g, Rd
 from ..package_tools import Exporter
 from ..units import atleast_1d, units
+
 
 exporter = Exporter(globals())
 
@@ -177,7 +179,9 @@ def heat_index(temperature, rh, mask_undefined=True):
         The relative humidity expressed as a unitless ratio in the range [0, 1].
         Can also pass a percentage if proper units are attached.
 
-    Returns : array_like
+    Returns
+    -------
+    array_like
         The corresponding Heat Index value(s)
 
     Other Parameters
@@ -220,3 +224,34 @@ def heat_index(temperature, rh, mask_undefined=True):
             hi = units.Quantity(masked_array(hi, mask=mask), hi.units)
 
     return hi
+
+
+@exporter.export
+def pressure_to_height_std(pressure):
+    r'''Convert pressure data to heights using the U.S. standard atmosphere.
+
+    The implementation uses the formula outlined in [7].
+
+    Parameters
+    ----------
+    pressure : array_like
+        Atmospheric pressure
+
+    Returns
+    -------
+    array_like
+        The corresponding height value(s)
+
+    Notes
+    -----
+    .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]
+
+    References
+    ----------
+    .. [7] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+            Survey. 60-61.
+    '''
+    t0 = 288. * units.kelvin
+    gamma = 6.5 * units('K/km')
+    p0 = 1013.25 * units.mbar
+    return (t0 / gamma) * (1 - (pressure / p0)**(Rd * gamma / g))
