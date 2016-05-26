@@ -258,7 +258,7 @@ def pressure_to_height_std(pressure):
 
 
 @exporter.export
-def coriolis_force(latitude, windspeed):
+def coriolis_force(latitude):
     r'''Calculate the coriolis force at each point.
 
     The implementation uses the formula outlined in [8].
@@ -266,9 +266,7 @@ def coriolis_force(latitude, windspeed):
     Parameters
     ----------
     latitude : array_like
-        Latitude at each point (90S to 90N)
-    windspeed : array_like
-        The wind speed at each point
+        Latitude at each point
 
     Returns
     -------
@@ -284,4 +282,4 @@ def coriolis_force(latitude, windspeed):
     .. [8] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
             Survey. 370-371.
     '''
-    return 2 * omega * windspeed * np.sin(np.radians(latitude))
+    return 2. * omega * np.sin(latitude)
