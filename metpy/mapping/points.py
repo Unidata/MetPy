@@ -5,6 +5,8 @@ from scipy.ndimage import gaussian_filter
 from scipy.spatial import Voronoi, Delaunay, cKDTree
 from scipy.spatial.distance import euclidean
 
+from collections import deque
+
 
 def interp_points(x, y, z, interp_type="linear", xres=1000, yres=1000, buffer=1000):
 
@@ -163,7 +165,7 @@ def smoothed_freq_map(x_points, y_points, bbox, x_steps, y_steps, gaussian):
     return gaussian_filter(grid, sigma=gaussian)
 
 
-def generate_grid(x_dim, y_dim, bbox):
+def generate_grid(x_dim, y_dim, bbox, ignore_warnings=False):
     '''Generate a meshgrid based on bounding box and x & y resolution
 
     Parameters
@@ -180,11 +182,15 @@ def generate_grid(x_dim, y_dim, bbox):
     (X, Y) ndarray
         meshgrid defined by given bounding box
     '''
+    if not ignore_warnings and (x_dim < 10000 or y_dim < 10000):
+        print("Grids less than 10km may be slow to load at synoptic scale.")
+        print("Set ignore_warnings to True to run anyway. Defaulting to 10km")
+        x_dim = y_dim = 10000
 
     x_steps, y_steps = get_xy_steps(bbox, x_dim, y_dim)
 
-    grid_x = np.linspace(bbox['northeast'][0], bbox['southwest'][0], x_steps)
-    grid_y = np.linspace(bbox['northeast'][1], bbox['southwest'][1], y_steps)
+    grid_x = np.linspace(bbox['southwest'][0], bbox['northeast'][0], x_steps)
+    grid_y = np.linspace(bbox['southwest'][1], bbox['northeast'][1], y_steps)
 
     gx, gy = np.meshgrid(grid_x, grid_y)
 
@@ -222,8 +228,8 @@ def get_xy_range(bbox):
         X and Y ranges in meters
     '''
 
-    x_range = np.abs(bbox['southwest'][0] - bbox['northeast'][0])
-    y_range = np.abs(bbox['northeast'][1] - bbox['southwest'][1])
+    x_range = bbox['northeast'][0] - bbox['southwest'][0]
+    y_range = bbox['northeast'][1] - bbox['southwest'][1]
 
     return x_range, y_range
 
@@ -246,12 +252,10 @@ def get_xy_steps(bbox, x_dim, y_dim):
 
     x_range, y_range = get_xy_range(bbox)
 
-    print(x_range)
-    print(y_range)
-    x_steps = int((x_range / x_dim) + 1)
-    y_steps = int((y_range / y_dim) + 1)
-
-    return x_steps, y_steps
+    x_steps = np.ceil(x_range / x_dim)
+    y_steps = np.ceil(y_range / y_dim)
+    
+    return int(x_steps), int(y_steps)
 
 
 def get_boundary_coords(x, y, spatial_pad = 0):
@@ -279,16 +283,3 @@ def get_boundary_coords(x, y, spatial_pad = 0):
     south = np.min(y) - spatial_pad
 
     return {'southwest': (west, south), 'northeast': (east, north)}
-
-def circumcircle_radius(triangle):
-
-    a = euclidean(triangle[0], triangle[1])
-    b = euclidean(triangle[1], triangle[2])
-    c = euclidean(triangle[2], triangle[0])
-
-    s = (a + b + c) / 2
-
-    radius = (a*b*c) / (4*np.sqrt((s*(s-a)*(s-b)*(s-c))))
-
-    return radius
-
