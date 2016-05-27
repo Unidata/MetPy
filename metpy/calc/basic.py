@@ -273,10 +273,6 @@ def coriolis_force(latitude):
     array_like
         The corresponding coriolis force at each point
 
-    Notes
-    -----
-
-
     References
     ----------
     .. [8] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
