@@ -258,8 +258,8 @@ def pressure_to_height_std(pressure):
 
 
 @exporter.export
-def coriolis_force(latitude):
-    r'''Calculate the coriolis force at each point.
+def coriolis_parameter(latitude):
+    r'''Calculate the coriolis parameter at each point.
 
     The implementation uses the formula outlined in [8].
 
