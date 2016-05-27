@@ -6,6 +6,8 @@ import glob
 import logging
 import os.path
 
+import pytest
+
 import numpy as np
 
 from metpy.io.nexrad import Level2File, Level3File, is_precip_mode
@@ -14,15 +16,9 @@ from metpy.cbook import get_test_data
 # Turn off the warnings for tests
 logging.getLogger("metpy.io.nexrad").setLevel(logging.CRITICAL)
 
-
-def test_level3_generator():
-    datadir = get_test_data('nids', as_file_obj=False)
-    for fname in glob.glob(os.path.join(datadir, 'K???_*')):
-        yield read_level3_file, fname
-
-
-def read_level3_file(fname):
-    Level3File(fname)
+#
+# NEXRAD Level 2 Tests
+#
 
 # 1999 file tests old message 1
 # KFTG tests bzip compression and newer format for a part of message 31
@@ -31,18 +27,26 @@ level2_files = ['KTLX20130520_201643_V06.gz', 'KTLX19990503_235621.gz',
                 'Level2_KFTG_20150430_1419.ar2v', 'KTLX20150530_000802_V06.bz2']
 
 
-def test_level2_generator():
-    for fname in level2_files:
-        yield read_level2_file, get_test_data(fname, as_file_obj=False)
+@pytest.mark.parametrize('fname', level2_files)
+def test_level2(fname):
+    'Test reading NEXRAD level 2 files from the filename'
+    Level2File(get_test_data(fname, as_file_obj=False))
 
 
-def read_level2_file(fname):
-    Level2File(fname)
+def test_level2_fobj():
+    'Test reading NEXRAD level2 data from a file object'
+    Level2File(get_test_data('Level2_KFTG_20150430_1419.ar2v'))
+
+#
+# NIDS/Level 3 Tests
+#
+
+nexrad_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=False), 'K???_*'))
 
 
-class TestLevel2(object):
-    def test_fobj(self):
-        Level2File(get_test_data('Level2_KFTG_20150430_1419.ar2v'))
+@pytest.mark.parametrize('fname', nexrad_nids_files)
+def test_level3_files(fname):
+    Level3File(fname)
 
 
 class TestLevel3(object):
