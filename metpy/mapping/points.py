@@ -50,11 +50,15 @@ def interp_points(x, y, z, interp_type="linear", xres=1000, yres=1000, buffer=10
 
     return grid_x, grid_y, img
 
-def natural_neighbor(x, y, z, gx, gy):
+#from https://github.com/metpy/MetPy/files/138653/cwp-657.pdf
+def natural_neighbor(x, y, z, gx = None, gy = None):
 
     points = list(zip(x, y))
 
-    grid_points = list(zip(generate_grid_coords(gx, gy)))
+    if gx == None or gy == None:
+        grid_points = list(zip(generate_grid_coords(gx, gy)))
+    else:
+        grid_points = list(zip(gx, gy))
 
     triangles = Delaunay(points)
 
