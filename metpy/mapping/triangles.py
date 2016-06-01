@@ -1,5 +1,5 @@
 import numpy as np
-
+from numba import jit
 from scipy.spatial import Delaunay
 from scipy.spatial.distance import euclidean
 
@@ -10,7 +10,7 @@ from scipy.spatial.distance import euclidean
 
 #        self.delaunay = Delaunay(points)
 
-
+@jit
 def circumcircle_radius(triangle):
 
     a = euclidean(triangle[0], triangle[1])
@@ -25,6 +25,7 @@ def circumcircle_radius(triangle):
 
     return radius
 
+@jit
 def circumcenter(triangle):
 
     a_x = triangle[0, 0]
@@ -40,3 +41,57 @@ def circumcenter(triangle):
     cy = ((a_x ** 2 + a_y ** 2) * (c_x - b_x) + (b_x ** 2 + b_y ** 2) * (a_x - c_x) + (c_x ** 2 + c_y ** 2) * (b_x - a_x)) / d
 
     return cx, cy
+
+def area(triangle):
+
+    area = 0
+
+    for i in range(len(triangle)):
+
+        p1 = triangle[i]
+        p2 = triangle[(i + 1) % 3]
+
+        area += np.cross(p1, p2)
+
+    return area
+
+
+def find_nn(tri, cur_tri, position):
+
+    nn = set()
+
+    for adjacent_neighbor in tri.neighbors[cur_tri]:
+
+        for second_neighbor in tri.neighbors[adjacent_neighbor]:
+
+            triangle = tri.points[tri.simplices[second_neighbor]]
+            cur_x, cur_y = circumcenter(triangle)
+            r = circumcircle_radius(triangle)
+
+            if euclidean([position[0], position[1]], [cur_x, cur_y]) < r:
+                nn.add(second_neighbor)
+
+        triangle = tri.points[tri.simplices[adjacent_neighbor]]
+        cur_x, cur_y = circumcenter(triangle)
+        r = circumcircle_radius(triangle)
+
+        if euclidean([position[0], position[1]], [cur_x, cur_y]) < r:
+            nn.add(adjacent_neighbor)
+
+    return list(nn)
+
+
+def plot_triangle(plt, triangle):
+    x = [triangle[0, 0], triangle[1, 0], triangle[2, 0], triangle[0, 0]]
+    y = [triangle[0, 1], triangle[1, 1], triangle[2, 1], triangle[0, 1]]
+
+    plt.plot(x, y, "-")
+
+
+def plot_voronoi_lines(plt, vor):
+
+    for simplex in vor.ridge_vertices:
+        simplex = np.asarray(simplex)
+
+        if np.all(simplex >= 0):
+            plt.plot(vor.vertices[simplex, 0], vor.vertices[simplex, 1], 'k--')
