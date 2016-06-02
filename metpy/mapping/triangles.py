@@ -56,20 +56,11 @@ def area(triangle):
     return area
 
 
-def find_nn(tri, cur_tri, position):
+def find_nn_triangles(tri, cur_tri, position):
 
     nn = set()
 
     for adjacent_neighbor in tri.neighbors[cur_tri]:
-
-        for second_neighbor in tri.neighbors[adjacent_neighbor]:
-
-            triangle = tri.points[tri.simplices[second_neighbor]]
-            cur_x, cur_y = circumcenter(triangle)
-            r = circumcircle_radius(triangle)
-
-            if euclidean([position[0], position[1]], [cur_x, cur_y]) < r:
-                nn.add(second_neighbor)
 
         triangle = tri.points[tri.simplices[adjacent_neighbor]]
         cur_x, cur_y = circumcenter(triangle)
@@ -78,6 +69,14 @@ def find_nn(tri, cur_tri, position):
         if euclidean([position[0], position[1]], [cur_x, cur_y]) < r:
             nn.add(adjacent_neighbor)
 
+            for second_neighbor in tri.neighbors[adjacent_neighbor]:
+                triangle = tri.points[tri.simplices[second_neighbor]]
+                cur_x, cur_y = circumcenter(triangle)
+                r = circumcircle_radius(triangle)
+
+                if euclidean([position[0], position[1]], [cur_x, cur_y]) < r:
+                    nn.add(second_neighbor)
+
     return list(nn)
 
 
@@ -85,7 +84,7 @@ def plot_triangle(plt, triangle):
     x = [triangle[0, 0], triangle[1, 0], triangle[2, 0], triangle[0, 0]]
     y = [triangle[0, 1], triangle[1, 1], triangle[2, 1], triangle[0, 1]]
 
-    plt.plot(x, y, "-")
+    plt.plot(x, y, "k-")
 
 
 def plot_voronoi_lines(plt, vor):
