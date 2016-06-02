@@ -1,8 +1,9 @@
 import numpy as np
 from numba import jit
 from scipy.spatial import Delaunay
-from scipy.spatial.distance import euclidean
+#from scipy.spatial.distance import euclidean
 
+from shapely.geometry import Polygon
 
 #class Triangles(object):
 
@@ -11,11 +12,17 @@ from scipy.spatial.distance import euclidean
 #        self.delaunay = Delaunay(points)
 
 @jit
+#http://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise
+# .euclidean_distances.html#sklearn.metrics.pairwise.euclidean_distances
+def distance(x, y):
+    return np.sqrt(np.dot(x, x) - 2 * np.dot(x, y) + np.dot(y, y))
+
+@jit
 def circumcircle_radius(triangle):
 
-    a = euclidean(triangle[0], triangle[1])
-    b = euclidean(triangle[1], triangle[2])
-    c = euclidean(triangle[2], triangle[0])
+    a = distance(triangle[0], triangle[1])
+    b = distance(triangle[1], triangle[2])
+    c = distance(triangle[2], triangle[0])
 
     s = (a + b + c) * 0.5
 
@@ -44,38 +51,31 @@ def circumcenter(triangle):
 
 def area(triangle):
 
-    area = 0
-
-    for i in range(len(triangle)):
-
-        p1 = triangle[i]
-        p2 = triangle[(i + 1) % 3]
-
-        area += np.cross(p1, p2)
-
-    return area
+    return Polygon(triangle).area
 
 
 def find_nn_triangles(tri, cur_tri, position):
 
-    nn = set()
+    nn = []
 
     for adjacent_neighbor in tri.neighbors[cur_tri]:
 
-        triangle = tri.points[tri.simplices[adjacent_neighbor]]
-        cur_x, cur_y = circumcenter(triangle)
-        r = circumcircle_radius(triangle)
+        if not adjacent_neighbor in nn:
+            triangle = tri.points[tri.simplices[adjacent_neighbor]]
+            cur_x, cur_y = circumcenter(triangle)
+            r = circumcircle_radius(triangle)
 
-        if euclidean([position[0], position[1]], [cur_x, cur_y]) < r:
-            nn.add(adjacent_neighbor)
+            if distance([position[0], position[1]], [cur_x, cur_y]) < r:
+                nn.append(adjacent_neighbor)
 
-            for second_neighbor in tri.neighbors[adjacent_neighbor]:
+        for second_neighbor in tri.neighbors[adjacent_neighbor]:
+            if not second_neighbor in nn:
                 triangle = tri.points[tri.simplices[second_neighbor]]
                 cur_x, cur_y = circumcenter(triangle)
                 r = circumcircle_radius(triangle)
 
-                if euclidean([position[0], position[1]], [cur_x, cur_y]) < r:
-                    nn.add(second_neighbor)
+                if distance([position[0], position[1]], [cur_x, cur_y]) < r:
+                    nn.append(second_neighbor)
 
     return list(nn)
 

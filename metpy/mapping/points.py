@@ -2,13 +2,14 @@ import numpy as np
 
 from scipy.interpolate import griddata
 from scipy.ndimage import gaussian_filter
-from scipy.spatial import Voronoi, Delaunay, cKDTree
+from scipy.spatial import Voronoi, Delaunay, cKDTree, ConvexHull
 from scipy.spatial.distance import euclidean
-
+from metpy.mapping.triangles import *
+from matplotlib.mlab import griddata as mpl_gridding
 from collections import deque
 
 
-def interp_points(x, y, z, interp_type="linear", xres=1000, yres=1000, buffer=1000):
+def interp_points(x, y, z, interp_type="linear", xres=50000, yres=50000, buffer=1000):
 
     #xmin = np.min(x) - buffer*1000
     #xmax = np.max(x) + buffer*1000
@@ -28,7 +29,9 @@ def interp_points(x, y, z, interp_type="linear", xres=1000, yres=1000, buffer=10
 
     elif interp_type == "natural_neighbor":
 
-        img = natural_neighbor(x, y, z, grid_x, grid_y)
+        grids = generate_grid_coords(grid_x, grid_y)
+        img = natural_neighbor(x, y, z, grids)
+        #img = mpl_gridding(x, y, z, grid_x, grid_y, interp='nn')
 
     elif interp_type == "barnes":
 
@@ -51,24 +54,78 @@ def interp_points(x, y, z, interp_type="linear", xres=1000, yres=1000, buffer=10
     return grid_x, grid_y, img
 
 #from https://github.com/metpy/MetPy/files/138653/cwp-657.pdf
-def natural_neighbor(x, y, z, gx = None, gy = None):
+def natural_neighbor(xp, yp, variable, grid_points):
 
-    points = list(zip(x, y))
+    points = list(zip(xp, yp))
 
-    if gx == None or gy == None:
-        grid_points = list(zip(generate_grid_coords(gx, gy)))
-    else:
-        grid_points = list(zip(gx, gy))
+    tri = Delaunay(points)
+    tri_match = tri.find_simplex(grid_points)
 
-    triangles = Delaunay(points)
+    img = []
 
-    tri_match = triangles.find_simplex(grid_points)
+    for cur_tri, grid in zip(tri_match, grid_points):
+
+        interp_value = -999
+
+        if cur_tri != -1:
+            neighbors = find_nn_triangles(tri, cur_tri, grid)
+
+            neighbor_vertices = []
+
+            for neighbor in neighbors:
+                for point in tri.simplices[neighbor]:
+                    neighbor_vertices.append(tri.points[point])
+
+            neighbor_vertices = np.array(neighbor_vertices)
+
+            if len(neighbor_vertices) > 0:
+
+                new_tri = Delaunay(neighbor_vertices)
+                hull = ConvexHull(neighbor_vertices)
 
 
 
+                area_list = []
+                for i in range(len(hull.vertices)):
 
+                    p1 = neighbor_vertices[hull.vertices[i]]
+                    p2 = neighbor_vertices[hull.vertices[(i+1)%len(hull.vertices)]]
+                    p3 = neighbor_vertices[hull.vertices[(i+2)%len(hull.vertices)]]
 
-    return 0
+                    polygon = []
+
+                    c1 = circumcenter(np.array([grid, p1, p2]))
+                    c2 = circumcenter(np.array([grid, p2, p3]))
+
+                    polygon.append(c1)
+                    polygon.append(c2)
+
+                    cur_match = 0
+                    for triangle in new_tri.simplices:
+                        points = new_tri.points[triangle]
+                        if p2 in points:
+                            polygon.append(circumcenter(points))
+                            cur_match += 1
+
+                    polygon.append(c1)
+
+                    polygon = np.array(polygon)
+
+                    pts = polygon[ConvexHull(polygon).vertices]
+                    pts = np.concatenate((pts, [pts[0]]), axis=0)
+
+                    value = variable[lookup_values(xp, yp, p2[0], p2[1])]
+                    area_list.append((value[0], area(pts)))
+
+                area_list = np.array(area_list)
+
+                total_area = np.sum(area_list[:,1])
+
+                interp_value = np.sum(area_list[:,0] * (area_list[:,1]/total_area))
+
+        img.append(interp_value)
+
+    return np.array(img)
 
 def barnes():
 
@@ -81,6 +138,13 @@ def cressman():
 def radial_basis_functions():
 
     return 0
+
+def lookup_values(xi, yi, xs, ys):
+
+    x_match = np.isclose(xi, xs)
+    y_match = np.isclose(yi, ys)
+
+    return np.where((x_match==True) & (y_match==True))
 
 def get_points_within_r(center_point, target_points, r, return_idx=False):
     '''Get all target_points within a specified radius
