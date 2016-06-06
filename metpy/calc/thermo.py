@@ -398,3 +398,37 @@ def mixing_ratio(part_press, tot_press):
     '''
 
     return epsilon * part_press / (tot_press - part_press)
+
+
+@exporter.export
+def saturation_mixing_ratio(tot_press, temperature):
+    r'''Calculates the saturation mixing ratio given its total pressure
+    and the temperature.
+
+    The implementation uses the formula outlined in [4]
+
+    Parameters
+    ----------
+    tot_press: array_like
+        Total air pressure
+    temperature: array_like
+        Air temperature
+
+    Returns
+    -------
+    array_like
+        The saturation mixing ratio, dimensionless
+
+    References
+    ----------
+    .. [4] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+            Survey. 73.
+    '''
+
+    return 0.622 * saturation_vapor_pressure(temperature) / tot_press
+
+
+@exporter.export
+def equivalent_potential_temperature(pressure, temperature):
+    return potential_temperature(pressure, temperature) * np.exp(Lv * saturation_mixing_ratio(pressure, temperature) /
+                                                                 (Cp_d * temperature))
