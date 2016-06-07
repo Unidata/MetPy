@@ -31,7 +31,11 @@ def interp_points(x, y, z, interp_type="linear", xres=50000, yres=50000, buffer=
 
         grids = generate_grid_coords(grid_x, grid_y)
         img = natural_neighbor(x, y, z, grids)
-        #img = mpl_gridding(x, y, z, grid_x, grid_y, interp='nn')
+
+    elif interp_type == "nngrid":
+
+        grids = generate_grid_coords(grid_x, grid_y)
+        img = mpl_gridding(x, y, z, grid_x, grid_y, interp='nn')
 
     elif interp_type == "barnes":
 
@@ -50,6 +54,7 @@ def interp_points(x, y, z, interp_type="linear", xres=50000, yres=50000, buffer=
         print("Interpolation option not available\n" +
               "Try: linear, nearest, cubic, natural_neighbor, barnes, cressman, rbf")
 
+    img = np.ma.masked_where(np.isnan(img), img)
 
     return grid_x, grid_y, img
 
@@ -65,7 +70,7 @@ def natural_neighbor(xp, yp, variable, grid_points):
 
     for cur_tri, grid in zip(tri_match, grid_points):
 
-        interp_value = -999
+        interp_value = np.nan
 
         if cur_tri != -1:
             neighbors = find_nn_triangles(tri, cur_tri, grid)

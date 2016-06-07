@@ -11,13 +11,13 @@ from shapely.geometry import Polygon
 
 #        self.delaunay = Delaunay(points)
 
-@jit
+
 #http://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise
 # .euclidean_distances.html#sklearn.metrics.pairwise.euclidean_distances
 def distance(x, y):
     return np.sqrt(np.dot(x, x) - 2 * np.dot(x, y) + np.dot(y, y))
 
-@jit
+
 def circumcircle_radius(triangle):
 
     a = distance(triangle[0], triangle[1])
@@ -32,7 +32,7 @@ def circumcircle_radius(triangle):
 
     return radius
 
-@jit
+
 def circumcenter(triangle):
 
     a_x = triangle[0, 0]

@@ -1,6 +1,6 @@
 import numpy as np
 
-from mpl_toolkits import basemap
+import cartopy.crs as ccrs
 from metpy.cbook import get_test_data
 from metpy.io import *
 
@@ -16,7 +16,8 @@ class MPMap(object):
 
         filename = settings['filename']
         var = settings['variable']
-
+        self.to_proj = settings['to_proj']
+        self.from_proj = settings['from_proj']
 
         print(filename)
         type = filename.split(".")[-1]
@@ -37,22 +38,14 @@ class MPMap(object):
 
         try:
 
-            lons = data.variables['lon'][:]
-            lats = data.variables['lat'][:]
+            self.lons = data.variables['lon'][:]
+            self.lats = data.variables['lat'][:]
 
             self.z = data.variables[var][:]
 
-            self.view = basemap.Basemap(projection='aea', resolution='l', lat_1=28.5, lat_2=44.5, lat_0=38.5,
-                            lon_0=-97., area_thresh=5000,  llcrnrlon=np.min(lons[0,:]), llcrnrlat=np.min(lats),
-                            urcrnrlon=np.max(lons[0,:]), urcrnrlat=np.max(lats))
+            self.proj_points = self.to_proj.transform_points(self.from_proj, self.lons, self.lats)
 
-            #basemap.Basemap(
-                        #width=4800000, height=3100000, projection='aea', resolution='l',
-                        #lat_1=28.5, lat_2=44.5, lat_0=38.5, lon_0=-97.,area_thresh=10000)
-
-            self.x_p, self.y_p = self.view(lons, lats)# basemap.pyproj.transform(aea, lcc, lons, lats)
-
-
+            self.x_p, self.y_p = self.proj_points[:,:,0], self.proj_points[:,:,1]
 
         except Exception as e:
             print(e)
@@ -60,8 +53,10 @@ class MPMap(object):
     def show(self):
 
         #wv_norm, wv_cmap = registry.get_with_steps('WVCIMSS', 0, 1)
+        view = plt.axes([0, 0, 1, 1], projection=self.to_proj)
+        view.set_extent([-120, -60, 20, 50])
+        view.pcolormesh(self.x_p, self.y_p, np.flipud(self.z), cmap="Greys_r") #, norm=wv_norm)
 
-        self.view.pcolormesh(self.x_p, self.y_p, np.flipud(self.z), cmap="Greys_r") #, norm=wv_norm)
-        self.view.drawcoastlines()
+        return view
 
 

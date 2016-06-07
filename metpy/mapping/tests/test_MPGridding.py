@@ -1,6 +1,8 @@
 from metpy.mapping.points import interp_points
 from metpy.cbook import get_test_data
-from mpl_toolkits.basemap import pyproj
+#from mpl_toolkits.basemap import pyproj
+
+import cartopy.crs as ccrs
 
 import numpy as np
 import matplotlib.pyplot as plt
@@ -12,7 +14,8 @@ from mpl_toolkits import basemap
 def make_string_list(arr):
     return [s.decode('ascii') for s in arr]
 
-def create_test_data(variable_name, proj_from=None, proj_to=None):
+def station_test_data(variable_name, proj_from=None, proj_to=None):
+
     f = get_test_data('station_data.txt')
 
     all_data = np.loadtxt(f, skiprows=1, delimiter=',',
@@ -38,11 +41,9 @@ def create_test_data(variable_name, proj_from=None, proj_to=None):
     if proj_from != None and proj_to != None:
 
         try:
-            from_projection = pyproj.Proj(proj_from)
-            to_projection = pyproj.Proj(proj_to)
 
-            x, y = pyproj.transform(from_projection, to_projection, lon, lat)
-            return x, y, value
+            proj_points = proj_to.transform_points(proj_from, lon, lat)
+            return proj_points[:,0], proj_points[:,1], value
 
         except Exception as e:
 
