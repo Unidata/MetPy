@@ -127,13 +127,13 @@ class TestSaturationMixingRatio(object):
     def test_scalar(self):
         'Simple test of saturation mixing ratio calculation.'
         p = 999. * units.mbar
-        t = 288 * units.kelvin
+        t = 288. * units.kelvin
         assert_almost_equal(saturation_mixing_ratio(p,t), .01068, 2)
 
 
 class TestEquivalentPotentialTemperature(object):
     def test_scalar(self):
         'Simple test of equivalent potential temperature calculation.'
-        p = 999 * units.mbar
-        t = 288 * units.kelvin
-        assert_almost_equal(equivalent_potential_temperature(p,t), )
+        p = 999. * units.mbar
+        t = 288. * units.kelvin
+        assert_almost_equal(equivalent_potential_temperature(p,t), 316.7, 2)

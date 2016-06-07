@@ -402,7 +402,7 @@ def mixing_ratio(part_press, tot_press):
 
 @exporter.export
 def saturation_mixing_ratio(tot_press, temperature):
-    r'''Calculates the saturation mixing ratio given its total pressure
+    r'''Calculates the saturation mixing ratio given total pressure
     and the temperature.
 
     The implementation uses the formula outlined in [4]
@@ -430,5 +430,29 @@ def saturation_mixing_ratio(tot_press, temperature):
 
 @exporter.export
 def equivalent_potential_temperature(pressure, temperature):
-    return potential_temperature(pressure, temperature) * np.exp(Lv * saturation_mixing_ratio(pressure, temperature) /
-                                                                 (Cp_d * temperature))
+    r'''Calculates equivalent potential temperature given an air parcel's intial
+    pressure and temperature.
+
+    The implementation uses the formula outlined in [5]
+
+    Parameters
+    ----------
+    pressure: array_like
+        Initial pressure of air parcel
+    temperature: array_like
+        Initial temperature of air parcel
+
+    Returns
+    -------
+    array_like
+        The corresponding equivalent potential temperature of the parcel
+
+    References
+    ----------
+    .. [5] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+            Survey. 78-79.
+    '''
+
+    pottemp =  potential_temperature(pressure, temperature) * units.kelvin
+    smixr = saturation_mixing_ratio(pressure, temperature) * units('kg/kg')
+    return pottemp * np.exp(Lv * smixr / (Cp_d * temperature))
