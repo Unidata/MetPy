@@ -136,4 +136,5 @@ class TestEquivalentPotentialTemperature(object):
         'Simple test of equivalent potential temperature calculation.'
         p = 999. * units.mbar
         t = 288. * units.kelvin
-        assert_almost_equal(equivalent_potential_temperature(p,t), 316.7, 2)
+        ept = equivalent_potential_temperature(p,t)
+        assert_almost_equal(ept, 316.7, 2)

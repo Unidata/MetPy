@@ -430,7 +430,7 @@ def saturation_mixing_ratio(tot_press, temperature):
 
 @exporter.export
 def equivalent_potential_temperature(pressure, temperature):
-    r'''Calculates equivalent potential temperature given an air parcel's intial
+    r'''Calculates equivalent potential temperature given an air parcel's initial
     pressure and temperature.
 
     The implementation uses the formula outlined in [5]
@@ -438,9 +438,9 @@ def equivalent_potential_temperature(pressure, temperature):
     Parameters
     ----------
     pressure: array_like
-        Initial pressure of air parcel
+        Initial air pressure
     temperature: array_like
-        Initial temperature of air parcel
+        Initial air temperature
 
     Returns
     -------
@@ -453,6 +453,6 @@ def equivalent_potential_temperature(pressure, temperature):
             Survey. 78-79.
     '''
 
-    pottemp =  potential_temperature(pressure, temperature) * units.kelvin
-    smixr = saturation_mixing_ratio(pressure, temperature) * units('kg/kg')
+    pottemp = potential_temperature(pressure * units.mbar, temperature * units.kelvin)
+    smixr = saturation_mixing_ratio(pressure * units.mbar, temperature * units.kelvin)
     return pottemp * np.exp(Lv * smixr / (Cp_d * temperature))
