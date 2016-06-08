@@ -14,7 +14,7 @@ from mpl_toolkits import basemap
 def make_string_list(arr):
     return [s.decode('ascii') for s in arr]
 
-def station_test_data(variable_name, proj_from=None, proj_to=None):
+def station_test_data(variable_names, proj_from=None, proj_to=None):
 
     f = get_test_data('station_data.txt')
 
@@ -30,13 +30,13 @@ def station_test_data(variable_name, proj_from=None, proj_to=None):
 
     data = np.concatenate([all_data[all_stids.index(site)].reshape(1, ) for site in all_stids])
 
-    value = data[variable_name]
+    value = data[variable_names]
     lon = data['lon']
     lat = data['lat']
 
-    lon = lon[~np.isnan(value)]
-    lat = lat[~np.isnan(value)]
-    value = value[~np.isnan(value)]
+    #lon = lon[~np.isnan(value)]
+    #lat = lat[~np.isnan(value)]
+    #value = value[~np.isnan(value)]
 
     if proj_from != None and proj_to != None:
 
