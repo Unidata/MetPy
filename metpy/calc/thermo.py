@@ -398,3 +398,55 @@ def mixing_ratio(part_press, tot_press):
     '''
 
     return epsilon * part_press / (tot_press - part_press)
+	
+
+@exporter.export
+def relative_humidity(temperature, wet_temperature, pressure):
+    r'''Calculates relative humidity with wet bulb and dry bulb.
+
+    Parameters
+    ----------
+    temperature : array_like
+        Dry bulb temperature [degC]
+    temperature_h : array_like
+        Wet bulb temperature [degC]
+    pressure : array_like
+        The atmospheric pressure
+
+    Returns
+    -------
+    array_like
+        relative humidity............................
+
+    See Also
+    --------
+    saturation_vapor_pressure
+    
+    Notes
+    -----
+    Basic formula (Sprung), adopted by WMO:
+    RH = 100.[es(tw) - A.P(td -tw)]/es(td)
+    
+    Where:
+    es(tw) is the saturation vapour pressure of the wet bulb;
+    es(td) is the saturation vapour pressure of the dry bulb;
+    p is the pressure of the air;
+    td is the temperature of the dry bulb;
+    tw is the temperature of the wet bulb;
+    A is the psychrometer coefficient A = 0.000662 kelvin ^-1.
+    
+    Psychrometer coefficient depends on air flow speed (>2.2m/s), 
+    thermodynamic properties of water and vapor pressure and 
+    geometry of wet bulb thermometer and is dificult to determine precisely.
+
+    References
+    ----------
+    .. WMO GUIDE TO METEOROLOGICAL INSTRUMENTS AND METHODS OF OBSERVATION WMO-No.8 
+    (2008 edition, Updated in 2010) : PART 4
+    https://www.wmo.int/pages/prog/www/IMOP/CIMO-Guide.html[3]
+    
+    '''
+  
+    A   = 0.000662  / units.kelvin  
+    return  (saturation_vapor_pressure(wet_temperature) - A * pressure * (temperature.to('kelvin') - wet_temperature.to('kelvin'))) / saturation_vapor_pressure(temperature)
+
