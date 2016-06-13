@@ -73,29 +73,26 @@ def natural_neighbor(xp, yp, variable, grid_points):
         interp_value = np.nan
 
         if cur_tri != -1:
+
             neighbors = find_nn_triangles(tri, cur_tri, grid)
 
-            neighbor_vertices = []
+            new_tri = tri.simplices[neighbors]
 
-            for neighbor in neighbors:
-                for point in tri.simplices[neighbor]:
-                    neighbor_vertices.append(tri.points[point])
+            edges = find_local_boundary(tri, neighbors)
 
-            neighbor_vertices = np.array(neighbor_vertices)
+            ordered = np.array(order_edges(edges))
 
-            if len(neighbor_vertices) > 0:
+            edge_vertices = np.array(tri.points[ordered[:, 0]])
 
-                new_tri = Delaunay(neighbor_vertices)
-                hull = ConvexHull(neighbor_vertices)
-
-
+            if len(edge_vertices) > 0:
 
                 area_list = []
-                for i in range(len(hull.vertices)):
+                num_vertices = len(edge_vertices)
+                for i in range(num_vertices):
 
-                    p1 = neighbor_vertices[hull.vertices[i]]
-                    p2 = neighbor_vertices[hull.vertices[(i+1)%len(hull.vertices)]]
-                    p3 = neighbor_vertices[hull.vertices[(i+2)%len(hull.vertices)]]
+                    p1 = edge_vertices[i]
+                    p2 = edge_vertices[(i + 1) % num_vertices]
+                    p3 = edge_vertices[(i + 2) % num_vertices]
 
                     polygon = []
 
@@ -106,8 +103,8 @@ def natural_neighbor(xp, yp, variable, grid_points):
                     polygon.append(c2)
 
                     cur_match = 0
-                    for triangle in new_tri.simplices:
-                        points = new_tri.points[triangle]
+                    for new in new_tri:
+                        points = tri.points[new]
                         if p2 in points:
                             polygon.append(circumcenter(points))
                             cur_match += 1
@@ -120,17 +117,18 @@ def natural_neighbor(xp, yp, variable, grid_points):
                     pts = np.concatenate((pts, [pts[0]]), axis=0)
 
                     value = variable[lookup_values(xp, yp, p2[0], p2[1])]
+
                     area_list.append((value[0], area(pts)))
 
                 area_list = np.array(area_list)
 
-                total_area = np.sum(area_list[:,1])
+                total_area = np.sum(area_list[:, 1])
 
-                interp_value = np.sum(area_list[:,0] * (area_list[:,1]/total_area))
+                interp_value = np.sum(area_list[:, 0] * (area_list[:, 1] / total_area))
 
         img.append(interp_value)
 
-    return np.array(img)
+    return np.array(img).reshape(grid_points[:,0].shape)
 
 def barnes():
 

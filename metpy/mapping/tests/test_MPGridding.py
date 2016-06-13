@@ -149,3 +149,23 @@ def test_natural_neighbor():
     view.drawcoastlines()
 
     #return img
+
+def state_capitol_wx_stations():
+
+    return {'Washington':'KOLM', 'Oregon':'KSLE', 'California':'KSAC',
+            'Nevada':'KCXP', 'Idaho':'KBOI', 'Montana':'KHLN',
+            'Utah':'KSLC', 'Arizona':'KDVT', 'New Mexico':'KSAF',
+            'Colorado':'KBKF', 'Wyoming':'KCYS', 'North Dakota':'KBIS',
+            'South Dakota':'KPIR', 'Nebraska':'KLNK', 'Kansas':'KTOP',
+            'Oklahoma':'KPWA', 'Texas':'KATT', 'Louisiana':'KBTR',
+            'Arkansas':'KLIT', 'Missouri':'KJEF', 'Iowa':'KDSM',
+            'Minnesota':'KSTP', 'Wisconsin':'KMSN', 'Illinois':'KSPI',
+            'Mississippi':'KHKS', 'Alabama':'KMGM', 'Nashville':'KBNA',
+            'Kentucky':'KFFT', 'Indiana':'KIND', 'Michigan':'KLAN',
+            'Ohio':'KCMH', 'Georgia':'KFTY', 'Florida':'KTLH',
+            'South Carolina':'KCUB', 'North Carolina':'KRDU',
+            'Virginia':'KRIC', 'West Virginia':'KCRW',
+            'Pennsylvania':'KCXY', 'New York':'KALB', 'Vermont':'KMPV',
+            'New Hampshire':'KCON', 'Maine':'KAUG', 'Massachusetts':'KBOS',
+            'Rhode Island':'KPVD', 'Connecticut':'KHFD', 'New Jersey':'KTTN',
+            'Delaware':'KDOV' }
