@@ -49,9 +49,22 @@ def test_level3_files(fname):
     Level3File(fname)
 
 
+tdwr_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=False),
+                                         'Level3_MCI_*'))
+
+
+@pytest.mark.parametrize('fname', tdwr_nids_files)
+def test_tdwr_nids(fname):
+    Level3File(fname)
+
+
 class TestLevel3(object):
     def test_basic(self):
         Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids', as_file_obj=False))
+
+    def test_tdwr(self):
+        f = Level3File(get_test_data('nids/Level3_SLC_TV0_20160516_2359.nids'))
+        f.prod_desc
 
     def test_nwstg(self):
         Level3File(get_test_data('nids/sn.last', as_file_obj=False))
