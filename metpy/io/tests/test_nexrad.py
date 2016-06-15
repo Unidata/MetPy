@@ -46,6 +46,7 @@ nexrad_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=Fal
 
 @pytest.mark.parametrize('fname', nexrad_nids_files)
 def test_level3_files(fname):
+    'Test opening a NEXRAD NIDS file'
     Level3File(fname)
 
 
@@ -55,56 +56,71 @@ tdwr_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=False
 
 @pytest.mark.parametrize('fname', tdwr_nids_files)
 def test_tdwr_nids(fname):
+    'Test opening a TDWR NIDS file'
     Level3File(fname)
 
 
-class TestLevel3(object):
-    def test_basic(self):
-        Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids', as_file_obj=False))
-
-    def test_tdwr(self):
-        f = Level3File(get_test_data('nids/Level3_SLC_TV0_20160516_2359.nids'))
-        f.prod_desc
-
-    def test_nwstg(self):
-        Level3File(get_test_data('nids/sn.last', as_file_obj=False))
-
-    def test_fobj(self):
-        Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids'))
+def test_basic():
+    'Basic test of reading one specific NEXRAD NIDS file based on the filename'
+    Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids', as_file_obj=False))
 
 
-class TestPrecipMode(object):
-    def test21(self):
-        assert is_precip_mode(21), 'VCP 21 is precip'
-
-    def test11(self):
-        assert is_precip_mode(11), 'VCP 11 is precip'
-
-    def test31(self):
-        assert not is_precip_mode(31), 'VCP 31 is not precip'
+def test_tdwr():
+    'Test reading a specific TDWR file'
+    f = Level3File(get_test_data('nids/Level3_SLC_TV0_20160516_2359.nids'))
+    assert f.prod_desc.prod_code == 182
 
 
-class TestZipCalls(object):
-    def test_msg15(self):
-        f = Level2File(get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False))
-        data = f.clutter_filter_map['data']
-        assert isinstance(data[0][0], list)
+def test_nwstg():
+    'Test reading a nids file pulled from the NWSTG'
+    Level3File(get_test_data('nids/sn.last', as_file_obj=False))
 
-    def test_tracks(self):
-        f = Level3File(get_test_data('nids/KOUN_SDUS34_NSTTLX_201305202016'))
-        for data in f.sym_block[0]:
-            if 'track' in data:
-                x, y = np.array(data['track']).T
-                assert len(x)
-                assert len(y)
 
-    def test_vector_packet(self):
-        f = Level3File(get_test_data('nids/KOUN_SDUS64_NHITLX_201305202016'))
-        for page in f.graph_pages:
-            for item in page:
-                if 'vectors' in item:
-                    x1, x2, y1, y2 = np.array(item['vectors']).T
-                    assert len(x1)
-                    assert len(x2)
-                    assert len(y1)
-                    assert len(y2)
+def test_fobj():
+    'Test reading a specific NEXRAD NIDS files from a file object'
+    Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids'))
+
+
+def test21_precip():
+    'Test checking whether VCP 21 is precipitation mode'
+    assert is_precip_mode(21), 'VCP 21 is precip'
+
+
+def test11_precip():
+    'Test checking whether VCP 11 is precipitation mode'
+    assert is_precip_mode(11), 'VCP 11 is precip'
+
+
+def test31_clear_air():
+    'Test checking whether VCP 31 is clear air mode'
+    assert not is_precip_mode(31), 'VCP 31 is not precip'
+
+
+def test_msg15():
+    'Check proper decoding of message type 15'
+    f = Level2File(get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False))
+    data = f.clutter_filter_map['data']
+    assert isinstance(data[0][0], list)
+
+
+def test_tracks():
+    'Check that tracks are properly decoded'
+    f = Level3File(get_test_data('nids/KOUN_SDUS34_NSTTLX_201305202016'))
+    for data in f.sym_block[0]:
+        if 'track' in data:
+            x, y = np.array(data['track']).T
+            assert len(x)
+            assert len(y)
+
+
+def test_vector_packet():
+    'Check that vector packets are properly decoded'
+    f = Level3File(get_test_data('nids/KOUN_SDUS64_NHITLX_201305202016'))
+    for page in f.graph_pages:
+        for item in page:
+            if 'vectors' in item:
+                x1, x2, y1, y2 = np.array(item['vectors']).T
+                assert len(x1)
+                assert len(x2)
+                assert len(y1)
+                assert len(y2)
