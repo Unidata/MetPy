@@ -1,9 +1,10 @@
+import math
 import numpy as np
 from numba import jit
 from scipy.spatial import Delaunay
 #from scipy.spatial.distance import euclidean
 
-from shapely.geometry import Polygon
+from shapely.geometry import Polygon, Point
 
 #class Triangles(object):
 
@@ -11,12 +12,15 @@ from shapely.geometry import Polygon
 
 #        self.delaunay = Delaunay(points)
 
-
 #http://scikit-learn.org/stable/modules/generated/sklearn.metrics.pairwise
-# .euclidean_distances.html#sklearn.metrics.pairwise.euclidean_distances
-def distance(x, y):
-    return np.sqrt(np.dot(x, x) - 2 * np.dot(x, y) + np.dot(y, y))
+# .euclidean_distances.html#sklearn.metrics.pairwise.euclidean_distance
+def dist_2(x0, y0, x1, y1):
+    d0 = x1 - x0
+    d1 = y1 - y0
+    return d0 * d0 + d1 * d1
 
+def distance(p0, p1):
+    return math.sqrt(dist_2(p0[0], p0[1], p1[0], p1[1]))
 
 def circumcircle_radius(triangle):
 
@@ -28,34 +32,10 @@ def circumcircle_radius(triangle):
 
     prod = s*(a+b-s)*(a+c-s)*(b+c-s)
 
-    radius = (a*b*c) / (4*np.sqrt(prod))
+    prod2 = a*b*c
+    radius = prod2 * prod2 / (16*prod)
 
     return radius
-
-def order_edges(edges):
-
-    tedges = np.copy(edges)
-    edge = edges[0]
-    edges = edges[1:]
-
-    ordered_edges = []
-    ordered_edges.append(edge)
-
-    num_max = len(edges)
-    while len(edges) > 0 and num_max > 0:
-
-        match = edge[1]
-
-        for search_edge in edges:
-            vertex = search_edge[0]
-            if match == vertex:
-                edge = search_edge
-                edges.remove(edge)
-                ordered_edges.append(search_edge)
-                break
-        num_max -= 1
-
-    return ordered_edges
 
 def find_local_boundary(triangulation, triangles):
 
@@ -79,64 +59,47 @@ def find_local_boundary(triangulation, triangles):
 
     return edges
 
-def circumcenter(triangle):
+def circumcenter(pt0, pt1, pt2):
 
-    a_x = triangle[0, 0]
-    a_y = triangle[0, 1]
-    b_x = triangle[1, 0]
-    b_y = triangle[1, 1]
-    c_x = triangle[2, 0]
-    c_y = triangle[2, 1]
+    a_x = pt0[0]
+    a_y = pt0[1]
+    b_x = pt1[0]
+    b_y = pt1[1]
+    c_x = pt2[0]
+    c_y = pt2[1]
 
-    d = 2 * ((a_x * (b_y - c_y)) + (b_x * (c_y - a_y)) + (c_x * (a_y - b_y)))
+    bc_y_diff = b_y - c_y
+    ca_y_diff = c_y - a_y
+    ab_y_diff = a_y - b_y
+    d_inv = 0.5 / (a_x * bc_y_diff + b_x * ca_y_diff + c_x * ab_y_diff)
 
-    cx = ((a_x ** 2 + a_y ** 2) * (b_y - c_y) + (b_x ** 2 + b_y ** 2) * (c_y - a_y) + (c_x ** 2 + c_y ** 2) * (a_y - b_y)) / d
-    cy = ((a_x ** 2 + a_y ** 2) * (c_x - b_x) + (b_x ** 2 + b_y ** 2) * (a_x - c_x) + (c_x ** 2 + c_y ** 2) * (b_x - a_x)) / d
+    a_mag = a_x * a_x + a_y * a_y
+    b_mag = b_x * b_x + b_y * b_y
+    c_mag = c_x * c_x + c_y * c_y
+    cx = (a_mag * bc_y_diff + b_mag * ca_y_diff + c_mag * ab_y_diff) * d_inv
+    cy = (a_mag * (c_x - b_x) + b_mag * (a_x - c_x) + c_mag * (b_x - a_x))* d_inv
 
     return cx, cy
-
-def area(triangle):
-
-    return Polygon(triangle).area
-
 
 def find_nn_triangles(tri, cur_tri, position):
 
     nn = []
 
-    for adjacent_neighbor in tri.neighbors[cur_tri]:
+    tri_queue = set(tri.neighbors[cur_tri])
 
-        if not adjacent_neighbor in nn:
-            triangle = tri.points[tri.simplices[adjacent_neighbor]]
-            cur_x, cur_y = circumcenter(triangle)
-            r = circumcircle_radius(triangle)
+    tri_queue |= set(tri.neighbors[tri.neighbors[cur_tri]].flat)
+    tri_queue.discard(-1)
 
-            if distance([position[0], position[1]], [cur_x, cur_y]) < r:
-                nn.append(adjacent_neighbor)
+    for neighbor in tri_queue:
 
-        for second_neighbor in tri.neighbors[adjacent_neighbor]:
-            if not second_neighbor in nn:
-                triangle = tri.points[tri.simplices[second_neighbor]]
-                cur_x, cur_y = circumcenter(triangle)
-                r = circumcircle_radius(triangle)
+        triangle = tri.points[tri.simplices[neighbor]]
+        cur_x, cur_y = circumcenter(triangle[0], triangle[1], triangle[2])
+        r = circumcircle_radius(triangle)
 
-                if distance([position[0], position[1]], [cur_x, cur_y]) < r:
-                    nn.append(second_neighbor)
+        if dist_2(position[0], position[1], cur_x, cur_y) < r:
 
-    return list(nn)
+            nn.append(neighbor)
+
+    return nn
 
 
-def plot_triangle(plt, triangle):
-    x = [triangle[0, 0], triangle[1, 0], triangle[2, 0], triangle[0, 0]]
-    y = [triangle[0, 1], triangle[1, 1], triangle[2, 1], triangle[0, 1]]
-
-    plt.plot(x, y, "k-")
-
-
-def plot_voronoi_lines(plt, vor):
-
-    for simplex in vor.ridge_vertices:
-        simplex = np.asarray(simplex)
-
-        if np.all(simplex >= 0):
-            plt.plot(vor.vertices[simplex, 0], vor.vertices[simplex, 1], 'k--')

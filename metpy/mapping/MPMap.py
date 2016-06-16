@@ -1,62 +1,108 @@
 import numpy as np
 
-import cartopy.crs as ccrs
-from metpy.cbook import get_test_data
-from metpy.io import *
+from scipy.interpolate import griddata
+from metpy.mapping import _points, _triangles, interpolation
 
-from netCDF4 import Dataset
+try:
+    natgrid_available = True
+    from matplotlib.mlab import griddata as mpl_gridding
+except ImportError:
+    natgrid_available = False
 
-from metpy.plots.ctables import registry
+def interp_points(x, y, z, interp_type="linear", xres=50000, yres=50000, buffer=1000):
 
-import matplotlib.pyplot as plt
+    x = x + xres
+    y = y - yres
 
-class MPMap(object):
+    grid_x, grid_y = _points.generate_grid(xres, yres, _points.get_boundary_coords(x, y), buffer)
 
-    def __init__(self, settings):
+    if interp_type in ["linear", "nearest", "cubic"]:
 
-        filename = settings['filename']
-        var = settings['variable']
-        self.to_proj = settings['to_proj']
-        self.from_proj = settings['from_proj']
+        points_zip = np.array(list(zip(x, y)))
+        img = griddata(points_zip, z, (grid_x, grid_y), method=interp_type)
 
-        print(filename)
-        type = filename.split(".")[-1]
-        print(type)
-        data = None
+    elif interp_type == "natural_neighbor":
 
-        if type.upper()=='GINI':
+        grids = _points.generate_grid_coords(grid_x, grid_y)
+        img = interpolation.natural_neighbor(x, y, z, grids)
 
-            data = GiniFile(get_test_data(filename)).to_dataset()
+    elif interp_type == "nngrid":
 
-        elif type.upper() == 'NC':
-
-            data = Dataset(get_test_data(filename))
-
+        if natgrid_available:
+            grids = _points.generate_grid_coords(grid_x, grid_y)
+            img = mpl_gridding(x, y, z, grid_x, grid_y, interp='nn')
         else:
+            raise ValueError("Natgrid not installed.  Please use another interpolation choice: \n"
+                             "linear, nearest, cubic, natural_neighbor")
 
-            print("Data type not supported")
+    elif interp_type == "barnes":
 
-        try:
+        img = _interpolation.barnes()
 
-            self.lons = data.variables['lon'][:]
-            self.lats = data.variables['lat'][:]
+    elif interp_type == "cressman":
 
-            self.z = data.variables[var][:]
+        img = _interpolation.cressman()
 
-            self.proj_points = self.to_proj.transform_points(self.from_proj, self.lons, self.lats)
+    elif interp_type == "rbf":
 
-            self.x_p, self.y_p = self.proj_points[:,:,0], self.proj_points[:,:,1]
+        img = _interpolation.radial_basis_functions()
 
-        except Exception as e:
-            print(e)
+    else:
 
-    def show(self):
+        print("Interpolation option not available\n" +
+              "Try: linear, nearest, cubic, natural_neighbor, nngrid, barnes, cressman, rbf")
 
-        #wv_norm, wv_cmap = registry.get_with_steps('WVCIMSS', 0, 1)
-        view = plt.axes([0, 0, 1, 1], projection=self.to_proj)
-        view.set_extent([-120, -60, 20, 50])
-        view.pcolormesh(self.x_p, self.y_p, np.flipud(self.z), cmap="Greys_r") #, norm=wv_norm)
+    img = np.ma.masked_where(np.isnan(img), img)
 
-        return view
+    return grid_x, grid_y, img
+
+# class MPMap(object):
+#
+#     def __init__(self, settings):
+#
+#         filename = settings['filename']
+#         var = settings['variable']
+#         self.to_proj = settings['to_proj']
+#         self.from_proj = settings['from_proj']
+#
+#         print(filename)
+#         type = filename.split(".")[-1]
+#         print(type)
+#         data = None
+#
+#         if type.upper()=='GINI':
+#
+#             data = GiniFile(get_test_data(filename)).to_dataset()
+#
+#         elif type.upper() == 'NC':
+#
+#             data = Dataset(get_test_data(filename))
+#
+#         else:
+#
+#             print("Data type not supported")
+#
+#         try:
+#
+#             self.lons = data.variables['lon'][:]
+#             self.lats = data.variables['lat'][:]
+#
+#             self.z = data.variables[var][:]
+#
+#             self.proj_points = self.to_proj.transform_points(self.from_proj, self.lons, self.lats)
+#
+#             self.x_p, self.y_p = self.proj_points[:,:,0], self.proj_points[:,:,1]
+#
+#         except Exception as e:
+#             print(e)
+#
+#     def show(self):
+#
+#         #wv_norm, wv_cmap = registry.get_with_steps('WVCIMSS', 0, 1)
+#         view = plt.axes([0, 0, 1, 1], projection=self.to_proj)
+#         view.set_extent([-120, -60, 20, 50])
+#         view.pcolormesh(self.x_p, self.y_p, np.flipud(self.z), cmap="Greys_r") #, norm=wv_norm)
+#
+#         return view
 
 

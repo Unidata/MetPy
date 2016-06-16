@@ -4,5 +4,7 @@
 
 # Trigger matplotlib wrappers
 
-from .MPMap import *  # noqa
-from .points import *  # noqa
+#from .MPMap import *  # noqa
+#from .points import *  # noqa
+#from .triangles import *
+#from ._triangles import *
