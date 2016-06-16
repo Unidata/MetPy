@@ -257,46 +257,27 @@ class GiniFile(object):
             proj_var.longitude_of_central_meridian = self.proj_info.lov
             proj_var.latitude_of_projection_origin = self.prod_desc2.lat_in
             proj_var.earth_radius = 6371200.0
-            proj = cf_to_proj(proj_var)
+            _add_projection_coords(ds, self.prod_desc, proj_var, self.proj_info.dx,
+                                   self.proj_info.dy)
         elif self.prod_desc.projection == GiniProjection.polar_stereographic:
             proj_var = ds.createVariable('Polar_Stereographic', np.int32)
             proj_var.grid_mapping_name = 'polar_stereographic'
             proj_var.longitude_of_projection_origin = self.proj_info.lov
             proj_var.latitude_of_projection_origin = -90 if self.proj_info.proj_center else 90
             proj_var.earth_radius = 6371200.0
-            proj = cf_to_proj(proj_var)
+            _add_projection_coords(ds, self.prod_desc, proj_var, self.proj_info.dx,
+                                   self.proj_info.dy)
+        elif self.prod_desc.projection == GiniProjection.mercator:
+            proj_var = ds.createVariable('Mercator', np.int32)
+            proj_var.grid_mapping_name = 'mercator'
+            proj_var.longitude_of_projection_origin = self.prod_desc.lo1
+            proj_var.latitude_of_projection_origin = self.prod_desc.la1
+            proj_var.standard_parallel = self.prod_desc2.lat_in
+            proj_var.earth_radius = 6371200.0
+            _add_projection_coords(ds, self.prod_desc, proj_var, self.prod_desc2.resolution,
+                                   self.prod_desc2.resolution)
         else:
             raise NotImplementedError('Need to add more projections to dataset!')
-
-        # Get projected location of lower left point
-        x0, y0 = proj(self.prod_desc.lo1, self.prod_desc.la1)
-
-        # Coordinate variable for x
-        ds.createDimension('x', self.prod_desc.nx)
-        x_var = ds.createVariable('x', np.float64, dimensions=('x',))
-        x_var.units = 'm'
-        x_var.long_name = 'x coordinate of projection'
-        x_var.standard_name = 'projection_x_coordinate'
-        x_var[:] = x0 + np.arange(self.prod_desc.nx) * (1000. * self.proj_info.dx)
-
-        # Now y
-        ds.createDimension('y', self.prod_desc.ny)
-        y_var = ds.createVariable('y', np.float64, dimensions=('y',))
-        y_var.units = 'm'
-        y_var.long_name = 'y coordinate of projection'
-        y_var.standard_name = 'projection_y_coordinate'
-        y_var[:] = y0 + np.arange(self.prod_desc.ny) * (1000. * self.proj_info.dy)
-
-        # Get the two-D lon,lat grid as well
-        x, y = np.meshgrid(x_var[:], y_var[:])
-        lon, lat = proj(x, y, inverse=True)
-        lon_var = ds.createVariable('lon', np.float64, dimensions=('y', 'x'), wrap_array=lon)
-        lon_var.long_name = 'longitude'
-        lon_var.units = 'degrees_east'
-
-        lat_var = ds.createVariable('lat', np.float64, dimensions=('y', 'x'), wrap_array=lat)
-        lat_var.long_name = 'latitude'
-        lat_var.units = 'degrees_north'
 
         # Now the data
         name = self.prod_desc.channel
@@ -331,3 +312,38 @@ class GiniFile(object):
                  'Lower Left Corner (Lon, Lat): ({0.lo1}, {0.la1})',
                  'Resolution: {1.resolution}km']
         return '\n\t'.join(parts).format(self.prod_desc, self.prod_desc2)
+
+
+def _add_projection_coords(ds, prod_desc, proj_var, dx, dy):
+    'Helper function for adding coordinate variables (projection and lon/lat) to a dataset'
+    proj = cf_to_proj(proj_var)
+
+    # Get projected location of lower left point
+    x0, y0 = proj(prod_desc.lo1, prod_desc.la1)
+
+    # Coordinate variable for x
+    ds.createDimension('x', prod_desc.nx)
+    x_var = ds.createVariable('x', np.float64, dimensions=('x',))
+    x_var.units = 'm'
+    x_var.long_name = 'x coordinate of projection'
+    x_var.standard_name = 'projection_x_coordinate'
+    x_var[:] = x0 + np.arange(prod_desc.nx) * (1000. * dx)
+
+    # Now y
+    ds.createDimension('y', prod_desc.ny)
+    y_var = ds.createVariable('y', np.float64, dimensions=('y',))
+    y_var.units = 'm'
+    y_var.long_name = 'y coordinate of projection'
+    y_var.standard_name = 'projection_y_coordinate'
+    y_var[:] = y0 + np.arange(prod_desc.ny) * (1000. * dy)
+
+    # Get the two-D lon,lat grid as well
+    x, y = np.meshgrid(x_var[:], y_var[:])
+    lon, lat = proj(x, y, inverse=True)
+    lon_var = ds.createVariable('lon', np.float64, dimensions=('y', 'x'), wrap_array=lon)
+    lon_var.long_name = 'longitude'
+    lon_var.units = 'degrees_east'
+
+    lat_var = ds.createVariable('lat', np.float64, dimensions=('y', 'x'), wrap_array=lat)
+    lat_var.long_name = 'latitude'
+    lat_var.units = 'degrees_north'
