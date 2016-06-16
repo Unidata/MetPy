@@ -94,7 +94,7 @@ before_install:
 
 install:
   - if [[ $TASK != "lint" && $TASK != "docs" ]]; then
-      pip install ".[$EXTRA_INSTALLS]" --upgrade --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
+      pip install ".[$EXTRA_INSTALLS]" --upgrade --no-index $PRE -f file://$PWD/$WHEELDIR $VERSIONS;
       if [[ $TASK == "examples" ]]; then
         python setup.py examples;
       fi;

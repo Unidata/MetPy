@@ -149,7 +149,7 @@ class Level2File(object):
 
         Parameters
         ----------
-        fname : str or file-like object
+        filename : str or file-like object
             If str, the name of the file to be opened. Gzip-ed files are
             recognized with the extension '.gz', as are bzip2-ed files with
             the extension `.bz2` If `fname` is a file-like object,
@@ -393,7 +393,7 @@ class Level2File(object):
 
     def _decode_msg5(self, msg_hdr):
         vcp_info = self._buffer.read_struct(self.vcp_fmt)
-        els = [self._buffer.read_struct(self.vcp_el_fmt) for i in range(vcp_info.num_el_cuts)]
+        els = [self._buffer.read_struct(self.vcp_el_fmt) for _ in range(vcp_info.num_el_cuts)]
         self.vcp_info = vcp_info._replace(els=els)
         self._check_size(msg_hdr,
                          self.vcp_fmt.size + vcp_info.num_el_cuts * self.vcp_el_fmt.size)
@@ -1413,23 +1413,35 @@ class Level3File(object):
                             ('max_elev', scaled_elem(5, 0.1)),
                             ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
-                     181: ('TDWR Base Reflectivity', 90., LegacyMapper,
+                     180: ('TDWR Base Reflectivity', 90., DigitalRefMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
                             ('max', 3),
-                            # ('calib_const', float_elem(7, 8))),
                             ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
-                     182: ('TDWR Base Velocity', 90., LegacyMapper,
+                     181: ('TDWR Base Reflectivity', 90., LegacyMapper,
+                           (('el_angle', scaled_elem(2, 0.1)),
+                            ('max', 3))),
+                     182: ('TDWR Base Velocity', 90., DigitalVelMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
                             ('min', 3),
                             ('max', 4),
                             ('compression', 7),
                             ('uncompressed_size', combine_elem(8, 9)))),
-                     186: ('TDWR Long Range Base Reflectivity', 416., LegacyMapper,
+                     183: ('TDWR Base Velocity', 90., LegacyMapper,
+                           (('el_angle', scaled_elem(2, 0.1)),
+                            ('min', 3),
+                            ('max', 4))),
+                     185: ('TDWR Base Spectrum Width', 90., LegacyMapper,
+                           (('el_angle', scaled_elem(2, 0.1)),
+                            ('max', 3))),
+                     186: ('TDWR Long Range Base Reflectivity', 416., DigitalRefMapper,
                            (('el_angle', scaled_elem(2, 0.1)),
                             ('max', 3),
                             ('compression', 7),
-                            ('uncompressed_size', combine_elem(8, 9))))}
+                            ('uncompressed_size', combine_elem(8, 9)))),
+                     187: ('TDWR Long Range Base Reflectivity', 416., LegacyMapper,
+                           (('el_angle', scaled_elem(2, 0.1)),
+                            ('max', 3)))}
 
     def __init__(self, filename):
         r'''Create instance of `Level3File`.
@@ -1543,10 +1555,10 @@ class Level3File(object):
             except IOError:
                 pass
 
-        # Unpack the various blocks, if present.  The factor of 2 converts from
+        # Unpack the various blocks, if present. The factor of 2 converts from
         # 'half-words' to bytes
         # Check to see if this is one of the "special" products that uses
-        # header-free blocks and re-assigns the offests
+        # header-free blocks and re-assigns the offsets
         if self.header.code in self.standalone_tabular:
             if self.prod_desc.sym_off:
                 # For standalone tabular alphanumeric, symbology offset is
@@ -1588,7 +1600,8 @@ class Level3File(object):
         if check_bytes == b'\r\r\n' or check_bytes == b'\xff\xff\n':
             self._buffer.truncate(4)
 
-    def _unpack_rle_data(self, data):
+    @staticmethod
+    def _unpack_rle_data(data):
         # Unpack Run-length encoded data
         unpacked = []
         for run in data:
@@ -1596,7 +1609,8 @@ class Level3File(object):
             unpacked.extend([val] * num)
         return unpacked
 
-    def pos_scale(self, is_sym_block):
+    @staticmethod
+    def pos_scale(is_sym_block):
         return 0.25 if is_sym_block else 1
 
     def _unpack_rcm(self, start, offset):
@@ -2027,7 +2041,7 @@ class Level3File(object):
     def _read_trends(self):
         num_vols = self._buffer.read_int('b')
         latest = self._buffer.read_int('b')
-        vals = [self._buffer.read_int('>h') for i in range(num_vols)]
+        vals = [self._buffer.read_int('>h') for _ in range(num_vols)]
 
         # Wrap the circular buffer so that latest is last
         vals = vals[latest:] + vals[:latest]
