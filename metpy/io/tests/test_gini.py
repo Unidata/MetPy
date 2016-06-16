@@ -115,6 +115,10 @@ def test_gini_ak_regional_dataset():
     assert ds.variables['IR'].grid_mapping in ds.variables
     assert_almost_equal(ds.variables['lon'][0, 0], f.prod_desc.lo1, 4)
     assert_almost_equal(ds.variables['lat'][0, 0], f.prod_desc.la1, 4)
+    assert_almost_equal(ds.variables['Polar_Stereographic'].longitude_of_projection_origin,
+                        210.0)
+    assert_almost_equal(ds.variables['Polar_Stereographic'].latitude_of_projection_origin,
+                        90.0)
 
 
 def test_gini_str():
