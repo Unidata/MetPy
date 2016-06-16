@@ -401,7 +401,7 @@ def mixing_ratio(part_press, tot_press):
 	
 
 @exporter.export
-def relative_humidity(temperature, wet_temperature, pressure):
+def relative_humidity_psychrometric(temperature, wet_temperature, pressure):
     r'''Calculates relative humidity with wet bulb and dry bulb.
 
     Parameters
