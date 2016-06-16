@@ -1,7 +1,7 @@
 import numpy as np
 
 from scipy.interpolate import griddata
-from metpy.mapping import _points, _triangles, interpolation
+from metpy.mapping import _points, _triangles, _interpolation
 
 try:
     natgrid_available = True
@@ -24,7 +24,7 @@ def interp_points(x, y, z, interp_type="linear", xres=50000, yres=50000, buffer=
     elif interp_type == "natural_neighbor":
 
         grids = _points.generate_grid_coords(grid_x, grid_y)
-        img = interpolation.natural_neighbor(x, y, z, grids)
+        img = _interpolation.natural_neighbor(x, y, z, grids)
 
     elif interp_type == "nngrid":
 

@@ -1,14 +1,15 @@
-from shapely.geometry import Polygon
+from scipy.spatial import Delaunay
+
 #shoelace algorithm
 def area(poly):
-    return Polygon(poly).area
-    #A = 0.0
-    #n = len(poly)
 
-    #for i in range(n):
-    #    A += poly[i][0] * poly[(i+1) % n][1] - poly[(i+1) % n][0] * poly[i][1]
+    A = 0.0
+    n = len(poly)
 
-    #return abs(A) / 2.0
+    for i in range(n):
+        A += poly[i][0] * poly[(i+1) % n][1] - poly[(i+1) % n][0] * poly[i][1]
+
+    return abs(A) / 2.0
 
 def order_edges(edges):
 
@@ -33,3 +34,29 @@ def order_edges(edges):
         num_max -= 1
 
     return ordered_edges
+
+def find_outer_edges(polygon):
+
+    edges = []
+
+    tri = Delaunay(polygon)
+
+    for triangle in tri.simplices:
+
+        for i in range(3):
+
+            pt1 = triangle[i]
+            pt2 = triangle[(i + 1) % 3]
+
+            if (pt1, pt2) in edges:
+                edges.remove((pt1, pt2))
+
+            elif (pt2, pt1) in edges:
+
+                edges.remove((pt2, pt1))
+            else:
+                edges.append((pt1, pt2))
+
+    print(edges)
+    print(tri.points)
+    return [[tri.points[x], tri.points[y]] for x, y in edges]

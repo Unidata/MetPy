@@ -1,20 +1,20 @@
 import numpy as np
 
-from metpy.mapping import _triangles
+from metpy.mapping import _triangles, _polygons
 from scipy.spatial import Delaunay, ConvexHull
 
 
 def natural_neighbor(xp, yp, variable, grid_points):
 
-    points = list(zip(xp, yp))
-
-    tri = Delaunay(points)
+    tri = Delaunay(list(zip(xp, yp)))
     tri_match = tri.find_simplex(grid_points)
 
     img = np.empty(shape=(grid_points.shape[0]), dtype=variable.dtype)
     img.fill(np.nan)
 
     for ind, (cur_tri, grid) in enumerate(zip(tri_match, grid_points)):
+
+        total_area = 0.0
 
         if cur_tri != -1:
 
@@ -24,7 +24,7 @@ def natural_neighbor(xp, yp, variable, grid_points):
 
             edges = _triangles._find_local_boundary(tri, neighbors)
 
-            starting_indices = [segment[0] for segment in _triangles._order_edges(edges)]
+            starting_indices = [segment[0] for segment in _polygons._order_edges(edges)]
 
             edge_vertices = tri.points[starting_indices]
 
@@ -48,18 +48,14 @@ def natural_neighbor(xp, yp, variable, grid_points):
                                                      points[1, 0], points[1, 1],
                                                      points[2, 0], points[2, 1]))
 
-                edges = [[polygon[i], polygon[i + 1]] for i in range(len(polygon)-1)]
-
-                pts = [segment[0] for segment in _triangles._order_edges(edges)]
-
+                pts = [polygon[i] for i in ConvexHull(polygon).vertices]
                 value = variable[(p2[0]==xp) & (p2[1]==yp)]
 
-                area_list.append((value[0], _triangles._area(pts)))
+                cur_area = _polygons._area(pts)
+                total_area += cur_area
 
-            area_list = np.array(area_list)
+                area_list.append(cur_area * value[0])
 
-            total_area = np.sum(area_list[:, 1])
-
-            img[ind] = np.dot(area_list[:, 0], area_list[:, 1]) / total_area
+            img[ind] = sum([x / total_area for x in area_list])
 
     return img

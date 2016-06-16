@@ -6,15 +6,15 @@ from metpy.mapping import triangles, points, polygons
 #from https://github.com/metpy/MetPy/files/138653/cwp-657.pdf
 def natural_neighbor(xp, yp, variable, grid_points):
 
-    points = list(zip(xp, yp))
-
-    tri = Delaunay(points)
+    tri = Delaunay(list(zip(xp, yp)))
     tri_match = tri.find_simplex(grid_points)
 
     img = np.empty(shape=(grid_points.shape[0]), dtype=variable.dtype)
     img.fill(np.nan)
 
     for ind, (cur_tri, grid) in enumerate(zip(tri_match, grid_points)):
+
+        total_area = 0.0
 
         if cur_tri != -1:
 
@@ -49,13 +49,13 @@ def natural_neighbor(xp, yp, variable, grid_points):
                 pts = [polygon[i] for i in ConvexHull(polygon).vertices]
                 value = variable[(p2[0]==xp) & (p2[1]==yp)]
 
-                area_list.append((value[0], polygons.area(pts)))
+                cur_area = polygons.area(pts)
+                total_area += cur_area
 
-            area_list = np.array(area_list)
+                area_list.append(cur_area * value[0])
 
-            total_area = np.sum(area_list[:, 1])
-
-            img[ind] = np.dot(area_list[:, 0], area_list[:, 1]) / total_area
+            img[ind] = sum([x / total_area for x in area_list])
+                #np.dot(area_list[:, 0], area_list[:, 1]) / total_area
 
     return img
 

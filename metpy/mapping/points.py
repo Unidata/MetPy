@@ -1,151 +1,17 @@
 import numpy as np
-
-from scipy.interpolate import griddata
 from scipy.ndimage import gaussian_filter
-from scipy.spatial import Voronoi, Delaunay, cKDTree, ConvexHull
-from scipy.spatial.distance import euclidean
-from metpy.mapping.triangles import *
-from matplotlib.mlab import griddata as mpl_gridding
-from collections import deque
+from scipy.spatial import cKDTree
+#from metpy.mapping._triangles import _circumcenter, _find_nn_triangles, _find_local_boundary, _order_edges
 
 
-def interp_points(x, y, z, interp_type="linear", xres=50000, yres=50000, buffer=1000):
+def lookup_values(xi, yi, xs, ys, high_accuracy=False):
 
-    #xmin = np.min(x) - buffer*1000
-    #xmax = np.max(x) + buffer*1000
-    #ymin = np.min(y) - buffer*1000
-    #ymax = np.max(y) + buffer*1000
-
-    grid_x, grid_y = generate_grid(xres, yres, get_boundary_coords(x, y), buffer)
-
-    # np.mgrid[xmin:xmax:xres*1j, ymin:ymax:yres*1j]
-
-    if interp_type in ["linear", "nearest", "cubic"]:
-
-        #griddata requires (x, y) array
-        points_zip = np.array(list(zip(x, y)))
-
-        img = griddata(points_zip, z, (grid_x, grid_y), method=interp_type)
-
-    elif interp_type == "natural_neighbor":
-
-        grids = generate_grid_coords(grid_x, grid_y)
-        img = natural_neighbor(x, y, z, grids)
-
-    elif interp_type == "nngrid":
-
-        grids = generate_grid_coords(grid_x, grid_y)
-        img = mpl_gridding(x, y, z, grid_x, grid_y, interp='nn')
-
-    elif interp_type == "barnes":
-
-        img = barnes()
-
-    elif interp_type == "cressman":
-
-        img = cressman()
-
-    elif interp_type == "rbf":
-
-        img = radial_basis_functions()
-
+    if not high_accuracy:
+        x_match = np.array(xi, dtype=int) == np.array(xs, dtype=int)
+        y_match = np.array(yi, dtype=int) == np.array(ys, dtype=int)
     else:
-
-        print("Interpolation option not available\n" +
-              "Try: linear, nearest, cubic, natural_neighbor, barnes, cressman, rbf")
-
-    img = np.ma.masked_where(np.isnan(img), img)
-
-    return grid_x, grid_y, img
-
-#from https://github.com/metpy/MetPy/files/138653/cwp-657.pdf
-def natural_neighbor(xp, yp, variable, grid_points):
-
-    points = list(zip(xp, yp))
-
-    tri = Delaunay(points)
-    tri_match = tri.find_simplex(grid_points)
-
-    img = []
-
-    for cur_tri, grid in zip(tri_match, grid_points):
-
-        interp_value = np.nan
-
-        if cur_tri != -1:
-
-            neighbors = find_nn_triangles(tri, cur_tri, grid)
-
-            new_tri = tri.simplices[neighbors]
-
-            edges = find_local_boundary(tri, neighbors)
-
-            ordered = np.array(order_edges(edges))
-
-            edge_vertices = np.array(tri.points[ordered[:, 0]])
-
-            if len(edge_vertices) > 0:
-
-                area_list = []
-                num_vertices = len(edge_vertices)
-                for i in range(num_vertices):
-
-                    p1 = edge_vertices[i]
-                    p2 = edge_vertices[(i + 1) % num_vertices]
-                    p3 = edge_vertices[(i + 2) % num_vertices]
-
-                    polygon = []
-
-                    c1 = circumcenter(np.array([grid, p1, p2]))
-                    c2 = circumcenter(np.array([grid, p2, p3]))
-
-                    polygon.append(c1)
-                    polygon.append(c2)
-
-                    cur_match = 0
-                    for new in new_tri:
-                        points = tri.points[new]
-                        if p2 in points:
-                            polygon.append(circumcenter(points))
-                            cur_match += 1
-
-                    polygon.append(c1)
-
-                    polygon = np.array(polygon)
-
-                    pts = polygon[ConvexHull(polygon).vertices]
-                    pts = np.concatenate((pts, [pts[0]]), axis=0)
-
-                    value = variable[lookup_values(xp, yp, p2[0], p2[1])]
-
-                    area_list.append((value[0], area(pts)))
-
-                area_list = np.array(area_list)
-
-                total_area = np.sum(area_list[:, 1])
-
-                interp_value = np.sum(area_list[:, 0] * (area_list[:, 1] / total_area))
-
-        img.append(interp_value)
-
-    return np.array(img).reshape(grid_points[:,0].shape)
-
-def barnes():
-
-    return 0
-
-def cressman():
-
-    return 0
-
-def radial_basis_functions():
-
-    return 0
-
-def lookup_values(xi, yi, xs, ys):
-
-    x_match = np.isclose(xi, xs)
-    y_match = np.isclose(yi, ys)
+        x_match = np.isclose(xi, xs)
+        y_match = np.isclose(yi, ys)
 
     return np.where((x_match==True) & (y_match==True))
 

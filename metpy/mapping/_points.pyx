@@ -3,9 +3,6 @@ from scipy.ndimage import gaussian_filter
 from scipy.spatial import cKDTree
 
 
-# from metpy.mapping._triangles import _circumcenter, _find_nn_triangles, _find_local_boundary, _order_edges
-
-
 def lookup_values(xi, yi, xs, ys, high_accuracy=False):
     if not high_accuracy:
         x_match = np.array(xi, dtype=int) == np.array(xs, dtype=int)

@@ -37,6 +37,8 @@ def circumcircle_radius(triangle):
 
     return radius
 
+#This function assumes that only natural neighbor triangles
+#are passed.
 def find_local_boundary(triangulation, triangles):
 
     edges = []
