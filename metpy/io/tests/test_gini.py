@@ -23,7 +23,7 @@ def test_gini_basic():
     assert pdb.channel == 'WV (6.5/6.7 micron)'
     assert pdb.num_records == 1280
     assert pdb.record_len == 1100
-    assert pdb.datetime, datetime(2015, 12, 8, 22, 0, 19 == 0)
+    assert pdb.datetime == datetime(2015, 12, 8, 22, 0, 19)
     assert pdb.projection == GiniProjection.lambert_conformal
     assert pdb.nx == 1100
     assert pdb.ny == 1280
@@ -58,7 +58,7 @@ def test_gini_ak_regional():
     assert pdb.channel == 'IR (3.9 micron)'
     assert pdb.num_records == 408
     assert pdb.record_len == 576
-    assert pdb.datetime, datetime(2016, 4, 8, 14, 45, 20 == 0)
+    assert pdb.datetime == datetime(2016, 4, 8, 14, 45, 20)
     assert pdb.projection == GiniProjection.polar_stereographic
     assert pdb.nx == 576
     assert pdb.ny == 408
