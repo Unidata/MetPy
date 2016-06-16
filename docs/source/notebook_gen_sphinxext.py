@@ -78,7 +78,8 @@ def generate_rst(app):
     for fname in glob.glob(os.path.join(app.srcdir, notebook_source_dir, '*.ipynb')):
         write_nb(os.path.join(app.srcdir, generated_source_dir), *nb_to_rst(fname))
     with open(os.path.join(app.srcdir, 'examples', 'index.rst'), 'w') as test:
-        test.write('==============\n''MetPy Examples\n''==============\n')
+        test.write('==============\n''MetPy Examples\n''==============\n'
+                   '.. toctree::\n   :glob:\n   :hidden:\n   generated/*\n\n')
         no_images = []
         for fname in glob.glob(os.path.join(app.srcdir, generated_source_dir, '*.rst')):
             filepath, filename = os.path.split(fname)
