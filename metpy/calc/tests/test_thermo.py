@@ -128,7 +128,7 @@ class TestSaturationMixingRatio(object):
         'Simple test of saturation mixing ratio calculation.'
         p = 999. * units.mbar
         t = 288. * units.kelvin
-        assert_almost_equal(saturation_mixing_ratio(p,t), .01068, 2)
+        assert_almost_equal(saturation_mixing_ratio(p,t), .01068, 3)
 
 
 class TestEquivalentPotentialTemperature(object):
@@ -137,4 +137,4 @@ class TestEquivalentPotentialTemperature(object):
         p = 999. * units.mbar
         t = 288. * units.kelvin
         ept = equivalent_potential_temperature(p,t)
-        assert_almost_equal(ept, 316.7, 2)
+        assert_almost_equal(ept, 315.46 * units.kelvin, 2)

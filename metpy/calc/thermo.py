@@ -453,6 +453,6 @@ def equivalent_potential_temperature(pressure, temperature):
             Survey. 78-79.
     '''
 
-    pottemp = potential_temperature(pressure * units.mbar, temperature * units.kelvin)
-    smixr = saturation_mixing_ratio(pressure * units.mbar, temperature * units.kelvin)
+    pottemp = potential_temperature(pressure, temperature)
+    smixr = saturation_mixing_ratio(pressure, temperature)
     return pottemp * np.exp(Lv * smixr / (Cp_d * temperature))
