@@ -88,8 +88,7 @@ def generate_rst(app):
             if dir:
                 file = dir[0]
                 test.write('.. image:: generated/' + filename.replace('.rst', '_files') + '/' + file +
-                           '\n   :height: 300px'
-                           '\n   :width: 375px'
+                           '\n   :width: 220px'
                            '\n   :target: generated/' + target + '\n\n')
             else:
                 no_images.append(target)
