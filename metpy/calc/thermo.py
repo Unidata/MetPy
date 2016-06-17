@@ -410,9 +410,9 @@ def saturation_mixing_ratio(tot_press, temperature):
     Parameters
     ----------
     tot_press: array_like
-        Total air pressure
+        Total atmospheric pressure
     temperature: array_like
-        Air temperature
+        The temperature
 
     Returns
     -------
@@ -430,7 +430,7 @@ def saturation_mixing_ratio(tot_press, temperature):
 
 @exporter.export
 def equivalent_potential_temperature(pressure, temperature):
-    r'''Calculates equivalent potential temperature given an air parcel's initial
+    r'''Calculates equivalent potential temperature given an air parcel's
     pressure and temperature.
 
     The implementation uses the formula outlined in [5]
@@ -438,9 +438,9 @@ def equivalent_potential_temperature(pressure, temperature):
     Parameters
     ----------
     pressure: array_like
-        Initial air pressure
+        Total atmospheric pressure
     temperature: array_like
-        Initial air temperature
+        The temperature
 
     Returns
     -------
