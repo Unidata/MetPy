@@ -1,4 +1,4 @@
-from libc.math cimport sqrt
+    from libc.math cimport sqrt
 import numpy as np
 
 cdef double _dist_2(double x0, double y0, double x1, double y1):
@@ -37,6 +37,15 @@ cdef double _circumcircle_radius(double x0, double y0, double x1, double y1, dou
 
 def _circumcenter(double x0, double y0, double x1, double y1, double x2, double y2):
 
+    cdef double cur_x
+    cdef double cur_y
+
+    cc(&cur_x, &cur_y, x0, y0, x1, y1, x2, y2)
+
+    return cur_x, cur_y
+
+cdef cc(double * cur_x, double * cur_y, double x0, double y0, double x1, double y1, double x2, double y2):
+
     cdef double bc_y_diff
     cdef double ca_y_diff
     cdef double ab_y_diff
@@ -55,10 +64,8 @@ def _circumcenter(double x0, double y0, double x1, double y1, double x2, double 
     b_mag = x1 * x1 + y1 * y1
     c_mag = x2 * x2 + y2 * y2
 
-    cx = (a_mag * bc_y_diff + b_mag * ca_y_diff + c_mag * ab_y_diff) * d_inv
-    cy =(a_mag * (x2 - x1) + b_mag * (x0 - x2) + c_mag * (x1 - x0)) * d_inv
-
-    return cx, cy
+    cur_x[0] = (a_mag * bc_y_diff + b_mag * ca_y_diff + c_mag * ab_y_diff) * d_inv
+    cur_y[0] = (a_mag * (x2 - x1) + b_mag * (x0 - x2) + c_mag * (x1 - x0)) * d_inv
 
 cdef double _distance(double x0, double y0, double x1, double y1):
     return sqrt(_dist_2(x0, y0, x1, y1))

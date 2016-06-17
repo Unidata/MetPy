@@ -2,9 +2,9 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-# Trigger matplotlib wrappers
-
-#from .MPMap import *  # noqa
-#from .points import *  # noqa
-#from .triangles import *
-#from ._triangles import *
+from .mpmap import *
+from .map_functions import *
+from .points import *  
+from .triangles import * 
+from .polygons import *
+from .interpolation import *

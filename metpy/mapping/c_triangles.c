@@ -258,8 +258,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE___triangles
-#define __PYX_HAVE_API___triangles
+#define __PYX_HAVE__c_triangles
+#define __PYX_HAVE_API__c_triangles
 #include "math.h"
 #ifdef _OPENMP
 #include <omp.h>
@@ -476,7 +476,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "_triangles.pyx",
+  "c_triangles.pyx",
   "stringsource",
 };
 
@@ -781,16 +781,17 @@ static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 /* Module declarations from 'libc.math' */
 
-/* Module declarations from '_triangles' */
-static double __pyx_f_10_triangles__dist_2(double, double, double, double); /*proto*/
-static double __pyx_f_10_triangles__circumcircle_radius(double, double, double, double, double, double); /*proto*/
-static double __pyx_f_10_triangles__distance(double, double, double, double); /*proto*/
+/* Module declarations from 'c_triangles' */
+static double __pyx_f_11c_triangles__dist_2(double, double, double, double); /*proto*/
+static double __pyx_f_11c_triangles__circumcircle_radius(double, double, double, double, double, double); /*proto*/
+static PyObject *__pyx_f_11c_triangles_cc(double *, double *, double, double, double, double, double, double); /*proto*/
+static double __pyx_f_11c_triangles__distance(double, double, double, double); /*proto*/
 static int __Pyx_carray_from_py_double(PyObject *, double *, Py_ssize_t); /*proto*/
 static int __Pyx_carray_from_py_double____2__(PyObject *, double (*)[2], Py_ssize_t); /*proto*/
-#define __Pyx_MODULE_NAME "_triangles"
-int __pyx_module_is_main__triangles = 0;
+#define __Pyx_MODULE_NAME "c_triangles"
+int __pyx_module_is_main_c_triangles = 0;
 
-/* Implementation of '_triangles' */
+/* Implementation of 'c_triangles' */
 static PyObject *__pyx_builtin_range;
 static PyObject *__pyx_builtin_TypeError;
 static PyObject *__pyx_builtin_OverflowError;
@@ -798,8 +799,6 @@ static PyObject *__pyx_builtin_enumerate;
 static PyObject *__pyx_builtin_IndexError;
 static const char __pyx_k_i[] = "i";
 static const char __pyx_k_r[] = "r";
-static const char __pyx_k_cx[] = "cx";
-static const char __pyx_k_cy[] = "cy";
 static const char __pyx_k_nn[] = "nn";
 static const char __pyx_k_np[] = "np";
 static const char __pyx_k_x0[] = "x0";
@@ -817,13 +816,9 @@ static const char __pyx_k_edge[] = "edge";
 static const char __pyx_k_flat[] = "flat";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_test[] = "__test__";
-static const char __pyx_k_a_mag[] = "a_mag";
-static const char __pyx_k_b_mag[] = "b_mag";
-static const char __pyx_k_c_mag[] = "c_mag";
 static const char __pyx_k_cross[] = "cross";
 static const char __pyx_k_cur_x[] = "cur_x";
 static const char __pyx_k_cur_y[] = "cur_y";
-static const char __pyx_k_d_inv[] = "d_inv";
 static const char __pyx_k_edges[] = "edges";
 static const char __pyx_k_match[] = "match";
 static const char __pyx_k_numpy[] = "numpy";
@@ -839,44 +834,33 @@ static const char __pyx_k_neighbor[] = "neighbor";
 static const char __pyx_k_position[] = "position";
 static const char __pyx_k_triangle[] = "triangle";
 static const char __pyx_k_TypeError[] = "TypeError";
-static const char __pyx_k_ab_y_diff[] = "ab_y_diff";
-static const char __pyx_k_bc_y_diff[] = "bc_y_diff";
-static const char __pyx_k_ca_y_diff[] = "ca_y_diff";
 static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_neighbors[] = "neighbors";
 static const char __pyx_k_simplices[] = "simplices";
 static const char __pyx_k_tri_queue[] = "tri_queue";
 static const char __pyx_k_triangles[] = "triangles";
 static const char __pyx_k_IndexError[] = "IndexError";
+static const char __pyx_k_c_triangles[] = "c_triangles";
 static const char __pyx_k_order_edges[] = "_order_edges";
 static const char __pyx_k_search_edge[] = "search_edge";
-static const char __pyx_k_triangles_2[] = "_triangles";
 static const char __pyx_k_circumcenter[] = "_circumcenter";
 static const char __pyx_k_OverflowError[] = "OverflowError";
 static const char __pyx_k_ordered_edges[] = "ordered_edges";
 static const char __pyx_k_triangulation[] = "triangulation";
 static const char __pyx_k_find_nn_triangles[] = "_find_nn_triangles";
 static const char __pyx_k_find_local_boundary[] = "_find_local_boundary";
-static const char __pyx_k_C_Users_ahaberli_Documents_GitHu[] = "C:\\Users\\ahaberli\\Documents\\GitHub\\MetPy\\metpy\\mapping\\_triangles.pyx";
+static const char __pyx_k_C_Users_ahaberli_Documents_GitHu[] = "C:\\Users\\ahaberli\\Documents\\GitHub\\MetPy\\metpy\\mapping\\c_triangles.pyx";
 static PyObject *__pyx_kp_s_C_Users_ahaberli_Documents_GitHu;
 static PyObject *__pyx_n_s_IndexError;
 static PyObject *__pyx_n_s_OverflowError;
 static PyObject *__pyx_n_s_TypeError;
-static PyObject *__pyx_n_s_a_mag;
-static PyObject *__pyx_n_s_ab_y_diff;
 static PyObject *__pyx_n_s_area;
-static PyObject *__pyx_n_s_b_mag;
-static PyObject *__pyx_n_s_bc_y_diff;
-static PyObject *__pyx_n_s_c_mag;
-static PyObject *__pyx_n_s_ca_y_diff;
+static PyObject *__pyx_n_s_c_triangles;
 static PyObject *__pyx_n_s_circumcenter;
 static PyObject *__pyx_n_s_cross;
 static PyObject *__pyx_n_s_cur_tri;
 static PyObject *__pyx_n_s_cur_x;
 static PyObject *__pyx_n_s_cur_y;
-static PyObject *__pyx_n_s_cx;
-static PyObject *__pyx_n_s_cy;
-static PyObject *__pyx_n_s_d_inv;
 static PyObject *__pyx_n_s_discard;
 static PyObject *__pyx_n_s_edge;
 static PyObject *__pyx_n_s_edges;
@@ -911,7 +895,6 @@ static PyObject *__pyx_n_s_tri;
 static PyObject *__pyx_n_s_tri_queue;
 static PyObject *__pyx_n_s_triangle;
 static PyObject *__pyx_n_s_triangles;
-static PyObject *__pyx_n_s_triangles_2;
 static PyObject *__pyx_n_s_triangulation;
 static PyObject *__pyx_n_s_vertex;
 static PyObject *__pyx_n_s_x0;
@@ -920,11 +903,11 @@ static PyObject *__pyx_n_s_x2;
 static PyObject *__pyx_n_s_y0;
 static PyObject *__pyx_n_s_y1;
 static PyObject *__pyx_n_s_y2;
-static PyObject *__pyx_pf_10_triangles__circumcenter(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_x0, double __pyx_v_y0, double __pyx_v_x1, double __pyx_v_y1, double __pyx_v_x2, double __pyx_v_y2); /* proto */
-static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_tri, PyObject *__pyx_v_cur_tri, PyObject *__pyx_v_position); /* proto */
-static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_triangulation, PyObject *__pyx_v_triangles); /* proto */
-static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_edges); /* proto */
-static PyObject *__pyx_pf_10_triangles_8_area(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_triangle); /* proto */
+static PyObject *__pyx_pf_11c_triangles__circumcenter(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_x0, double __pyx_v_y0, double __pyx_v_x1, double __pyx_v_y1, double __pyx_v_x2, double __pyx_v_y2); /* proto */
+static PyObject *__pyx_pf_11c_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_tri, PyObject *__pyx_v_cur_tri, PyObject *__pyx_v_position); /* proto */
+static PyObject *__pyx_pf_11c_triangles_4_find_local_boundary(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_triangulation, PyObject *__pyx_v_triangles); /* proto */
+static PyObject *__pyx_pf_11c_triangles_6_order_edges(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_edges); /* proto */
+static PyObject *__pyx_pf_11c_triangles_8_area(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_triangle); /* proto */
 static PyObject *__pyx_float_2_;
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
@@ -945,7 +928,7 @@ static PyObject *__pyx_codeobj__10;
 static PyObject *__pyx_codeobj__12;
 static PyObject *__pyx_codeobj__14;
 
-/* "_triangles.pyx":4
+/* "c_triangles.pyx":4
  * import numpy as np
  * 
  * cdef double _dist_2(double x0, double y0, double x1, double y1):             # <<<<<<<<<<<<<<
@@ -953,14 +936,14 @@ static PyObject *__pyx_codeobj__14;
  *     cdef double d0
  */
 
-static double __pyx_f_10_triangles__dist_2(double __pyx_v_x0, double __pyx_v_y0, double __pyx_v_x1, double __pyx_v_y1) {
+static double __pyx_f_11c_triangles__dist_2(double __pyx_v_x0, double __pyx_v_y0, double __pyx_v_x1, double __pyx_v_y1) {
   double __pyx_v_d0;
   double __pyx_v_d1;
   double __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_dist_2", 0);
 
-  /* "_triangles.pyx":9
+  /* "c_triangles.pyx":9
  *     cdef double d1
  * 
  *     d0 = x1 - x0             # <<<<<<<<<<<<<<
@@ -969,7 +952,7 @@ static double __pyx_f_10_triangles__dist_2(double __pyx_v_x0, double __pyx_v_y0,
  */
   __pyx_v_d0 = (__pyx_v_x1 - __pyx_v_x0);
 
-  /* "_triangles.pyx":10
+  /* "c_triangles.pyx":10
  * 
  *     d0 = x1 - x0
  *     d1 = y1 - y0             # <<<<<<<<<<<<<<
@@ -978,7 +961,7 @@ static double __pyx_f_10_triangles__dist_2(double __pyx_v_x0, double __pyx_v_y0,
  */
   __pyx_v_d1 = (__pyx_v_y1 - __pyx_v_y0);
 
-  /* "_triangles.pyx":12
+  /* "c_triangles.pyx":12
  *     d1 = y1 - y0
  * 
  *     return d0 * d0 + d1 * d1             # <<<<<<<<<<<<<<
@@ -988,7 +971,7 @@ static double __pyx_f_10_triangles__dist_2(double __pyx_v_x0, double __pyx_v_y0,
   __pyx_r = ((__pyx_v_d0 * __pyx_v_d0) + (__pyx_v_d1 * __pyx_v_d1));
   goto __pyx_L0;
 
-  /* "_triangles.pyx":4
+  /* "c_triangles.pyx":4
  * import numpy as np
  * 
  * cdef double _dist_2(double x0, double y0, double x1, double y1):             # <<<<<<<<<<<<<<
@@ -1002,7 +985,7 @@ static double __pyx_f_10_triangles__dist_2(double __pyx_v_x0, double __pyx_v_y0,
   return __pyx_r;
 }
 
-/* "_triangles.pyx":14
+/* "c_triangles.pyx":14
  *     return d0 * d0 + d1 * d1
  * 
  * cdef double _circumcircle_radius(double x0, double y0, double x1, double y1, double x2, double y2):             # <<<<<<<<<<<<<<
@@ -1010,7 +993,7 @@ static double __pyx_f_10_triangles__dist_2(double __pyx_v_x0, double __pyx_v_y0,
  *     cdef double a
  */
 
-static double __pyx_f_10_triangles__circumcircle_radius(double __pyx_v_x0, double __pyx_v_y0, double __pyx_v_x1, double __pyx_v_y1, double __pyx_v_x2, double __pyx_v_y2) {
+static double __pyx_f_11c_triangles__circumcircle_radius(double __pyx_v_x0, double __pyx_v_y0, double __pyx_v_x1, double __pyx_v_y1, double __pyx_v_x2, double __pyx_v_y2) {
   double __pyx_v_a;
   double __pyx_v_b;
   double __pyx_v_c;
@@ -1024,34 +1007,34 @@ static double __pyx_f_10_triangles__circumcircle_radius(double __pyx_v_x0, doubl
   double __pyx_t_2;
   __Pyx_RefNannySetupContext("_circumcircle_radius", 0);
 
-  /* "_triangles.pyx":25
+  /* "c_triangles.pyx":25
  *     cdef double radius
  * 
  *     a = _distance(x0, y0, x1, y1)             # <<<<<<<<<<<<<<
  *     b = _distance(x1, y1, x2, y2)
  *     c = _distance(x2, y2, x0, y0)
  */
-  __pyx_v_a = __pyx_f_10_triangles__distance(__pyx_v_x0, __pyx_v_y0, __pyx_v_x1, __pyx_v_y1);
+  __pyx_v_a = __pyx_f_11c_triangles__distance(__pyx_v_x0, __pyx_v_y0, __pyx_v_x1, __pyx_v_y1);
 
-  /* "_triangles.pyx":26
+  /* "c_triangles.pyx":26
  * 
  *     a = _distance(x0, y0, x1, y1)
  *     b = _distance(x1, y1, x2, y2)             # <<<<<<<<<<<<<<
  *     c = _distance(x2, y2, x0, y0)
  * 
  */
-  __pyx_v_b = __pyx_f_10_triangles__distance(__pyx_v_x1, __pyx_v_y1, __pyx_v_x2, __pyx_v_y2);
+  __pyx_v_b = __pyx_f_11c_triangles__distance(__pyx_v_x1, __pyx_v_y1, __pyx_v_x2, __pyx_v_y2);
 
-  /* "_triangles.pyx":27
+  /* "c_triangles.pyx":27
  *     a = _distance(x0, y0, x1, y1)
  *     b = _distance(x1, y1, x2, y2)
  *     c = _distance(x2, y2, x0, y0)             # <<<<<<<<<<<<<<
  * 
  *     s = (a + b + c) * 0.5
  */
-  __pyx_v_c = __pyx_f_10_triangles__distance(__pyx_v_x2, __pyx_v_y2, __pyx_v_x0, __pyx_v_y0);
+  __pyx_v_c = __pyx_f_11c_triangles__distance(__pyx_v_x2, __pyx_v_y2, __pyx_v_x0, __pyx_v_y0);
 
-  /* "_triangles.pyx":29
+  /* "c_triangles.pyx":29
  *     c = _distance(x2, y2, x0, y0)
  * 
  *     s = (a + b + c) * 0.5             # <<<<<<<<<<<<<<
@@ -1060,7 +1043,7 @@ static double __pyx_f_10_triangles__circumcircle_radius(double __pyx_v_x0, doubl
  */
   __pyx_v_s = (((__pyx_v_a + __pyx_v_b) + __pyx_v_c) * 0.5);
 
-  /* "_triangles.pyx":31
+  /* "c_triangles.pyx":31
  *     s = (a + b + c) * 0.5
  * 
  *     prod = s*(a+b-s)*(a+c-s)*(b+c-s)             # <<<<<<<<<<<<<<
@@ -1069,7 +1052,7 @@ static double __pyx_f_10_triangles__circumcircle_radius(double __pyx_v_x0, doubl
  */
   __pyx_v_prod = (((__pyx_v_s * ((__pyx_v_a + __pyx_v_b) - __pyx_v_s)) * ((__pyx_v_a + __pyx_v_c) - __pyx_v_s)) * ((__pyx_v_b + __pyx_v_c) - __pyx_v_s));
 
-  /* "_triangles.pyx":33
+  /* "c_triangles.pyx":33
  *     prod = s*(a+b-s)*(a+c-s)*(b+c-s)
  * 
  *     prod2 = a*b*c             # <<<<<<<<<<<<<<
@@ -1078,7 +1061,7 @@ static double __pyx_f_10_triangles__circumcircle_radius(double __pyx_v_x0, doubl
  */
   __pyx_v_prod2 = ((__pyx_v_a * __pyx_v_b) * __pyx_v_c);
 
-  /* "_triangles.pyx":34
+  /* "c_triangles.pyx":34
  * 
  *     prod2 = a*b*c
  *     radius = prod2 * prod2 / (16*prod)             # <<<<<<<<<<<<<<
@@ -1093,7 +1076,7 @@ static double __pyx_f_10_triangles__circumcircle_radius(double __pyx_v_x0, doubl
   }
   __pyx_v_radius = (__pyx_t_1 / __pyx_t_2);
 
-  /* "_triangles.pyx":36
+  /* "c_triangles.pyx":36
  *     radius = prod2 * prod2 / (16*prod)
  * 
  *     return radius             # <<<<<<<<<<<<<<
@@ -1103,7 +1086,7 @@ static double __pyx_f_10_triangles__circumcircle_radius(double __pyx_v_x0, doubl
   __pyx_r = __pyx_v_radius;
   goto __pyx_L0;
 
-  /* "_triangles.pyx":14
+  /* "c_triangles.pyx":14
  *     return d0 * d0 + d1 * d1
  * 
  * cdef double _circumcircle_radius(double x0, double y0, double x1, double y1, double x2, double y2):             # <<<<<<<<<<<<<<
@@ -1113,25 +1096,25 @@ static double __pyx_f_10_triangles__circumcircle_radius(double __pyx_v_x0, doubl
 
   /* function exit code */
   __pyx_L1_error:;
-  __Pyx_WriteUnraisable("_triangles._circumcircle_radius", __pyx_clineno, __pyx_lineno, __pyx_filename, 0, 0);
+  __Pyx_WriteUnraisable("c_triangles._circumcircle_radius", __pyx_clineno, __pyx_lineno, __pyx_filename, 0, 0);
   __pyx_r = 0;
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "_triangles.pyx":38
+/* "c_triangles.pyx":38
  *     return radius
  * 
  * def _circumcenter(double x0, double y0, double x1, double y1, double x2, double y2):             # <<<<<<<<<<<<<<
  * 
- *     cdef double bc_y_diff
+ *     cdef double cur_x
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10_triangles_1_circumcenter(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_10_triangles_1_circumcenter = {"_circumcenter", (PyCFunction)__pyx_pw_10_triangles_1_circumcenter, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10_triangles_1_circumcenter(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_11c_triangles_1_circumcenter(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_11c_triangles_1_circumcenter = {"_circumcenter", (PyCFunction)__pyx_pw_11c_triangles_1_circumcenter, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_11c_triangles_1_circumcenter(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   double __pyx_v_x0;
   double __pyx_v_y0;
   double __pyx_v_x1;
@@ -1212,18 +1195,92 @@ static PyObject *__pyx_pw_10_triangles_1_circumcenter(PyObject *__pyx_self, PyOb
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("_circumcenter", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 38, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_triangles._circumcenter", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_triangles._circumcenter", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10_triangles__circumcenter(__pyx_self, __pyx_v_x0, __pyx_v_y0, __pyx_v_x1, __pyx_v_y1, __pyx_v_x2, __pyx_v_y2);
+  __pyx_r = __pyx_pf_11c_triangles__circumcenter(__pyx_self, __pyx_v_x0, __pyx_v_y0, __pyx_v_x1, __pyx_v_y1, __pyx_v_x2, __pyx_v_y2);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10_triangles__circumcenter(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_x0, double __pyx_v_y0, double __pyx_v_x1, double __pyx_v_y1, double __pyx_v_x2, double __pyx_v_y2) {
+static PyObject *__pyx_pf_11c_triangles__circumcenter(CYTHON_UNUSED PyObject *__pyx_self, double __pyx_v_x0, double __pyx_v_y0, double __pyx_v_x1, double __pyx_v_y1, double __pyx_v_x2, double __pyx_v_y2) {
+  double __pyx_v_cur_x;
+  double __pyx_v_cur_y;
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  PyObject *__pyx_t_1 = NULL;
+  PyObject *__pyx_t_2 = NULL;
+  PyObject *__pyx_t_3 = NULL;
+  __Pyx_RefNannySetupContext("_circumcenter", 0);
+
+  /* "c_triangles.pyx":43
+ *     cdef double cur_y
+ * 
+ *     cc(&cur_x, &cur_y, x0, y0, x1, y1, x2, y2)             # <<<<<<<<<<<<<<
+ * 
+ *     return cur_x, cur_y
+ */
+  __pyx_t_1 = __pyx_f_11c_triangles_cc((&__pyx_v_cur_x), (&__pyx_v_cur_y), __pyx_v_x0, __pyx_v_y0, __pyx_v_x1, __pyx_v_y1, __pyx_v_x2, __pyx_v_y2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 43, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+
+  /* "c_triangles.pyx":45
+ *     cc(&cur_x, &cur_y, x0, y0, x1, y1, x2, y2)
+ * 
+ *     return cur_x, cur_y             # <<<<<<<<<<<<<<
+ * 
+ * cdef cc(double * cur_x, double * cur_y, double x0, double y0, double x1, double y1, double x2, double y2):
+ */
+  __Pyx_XDECREF(__pyx_r);
+  __pyx_t_1 = PyFloat_FromDouble(__pyx_v_cur_x); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_cur_y); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_2);
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 45, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_3);
+  __Pyx_GIVEREF(__pyx_t_1);
+  PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_1);
+  __Pyx_GIVEREF(__pyx_t_2);
+  PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_t_2);
+  __pyx_t_1 = 0;
+  __pyx_t_2 = 0;
+  __pyx_r = __pyx_t_3;
+  __pyx_t_3 = 0;
+  goto __pyx_L0;
+
+  /* "c_triangles.pyx":38
+ *     return radius
+ * 
+ * def _circumcenter(double x0, double y0, double x1, double y1, double x2, double y2):             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double cur_x
+ */
+
+  /* function exit code */
+  __pyx_L1_error:;
+  __Pyx_XDECREF(__pyx_t_1);
+  __Pyx_XDECREF(__pyx_t_2);
+  __Pyx_XDECREF(__pyx_t_3);
+  __Pyx_AddTraceback("c_triangles._circumcenter", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = NULL;
+  __pyx_L0:;
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+/* "c_triangles.pyx":47
+ *     return cur_x, cur_y
+ * 
+ * cdef cc(double * cur_x, double * cur_y, double x0, double y0, double x1, double y1, double x2, double y2):             # <<<<<<<<<<<<<<
+ * 
+ *     cdef double bc_y_diff
+ */
+
+static PyObject *__pyx_f_11c_triangles_cc(double *__pyx_v_cur_x, double *__pyx_v_cur_y, double __pyx_v_x0, double __pyx_v_y0, double __pyx_v_x1, double __pyx_v_y1, double __pyx_v_x2, double __pyx_v_y2) {
   double __pyx_v_bc_y_diff;
   double __pyx_v_ca_y_diff;
   double __pyx_v_ab_y_diff;
@@ -1231,17 +1288,12 @@ static PyObject *__pyx_pf_10_triangles__circumcenter(CYTHON_UNUSED PyObject *__p
   double __pyx_v_a_mag;
   double __pyx_v_b_mag;
   double __pyx_v_c_mag;
-  double __pyx_v_cx;
-  double __pyx_v_cy;
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   double __pyx_t_1;
-  PyObject *__pyx_t_2 = NULL;
-  PyObject *__pyx_t_3 = NULL;
-  PyObject *__pyx_t_4 = NULL;
-  __Pyx_RefNannySetupContext("_circumcenter", 0);
+  __Pyx_RefNannySetupContext("cc", 0);
 
-  /* "_triangles.pyx":48
+  /* "c_triangles.pyx":57
  *     cdef double c_mag
  * 
  *     bc_y_diff = y1 - y2             # <<<<<<<<<<<<<<
@@ -1250,7 +1302,7 @@ static PyObject *__pyx_pf_10_triangles__circumcenter(CYTHON_UNUSED PyObject *__p
  */
   __pyx_v_bc_y_diff = (__pyx_v_y1 - __pyx_v_y2);
 
-  /* "_triangles.pyx":49
+  /* "c_triangles.pyx":58
  * 
  *     bc_y_diff = y1 - y2
  *     ca_y_diff = y2 - y0             # <<<<<<<<<<<<<<
@@ -1259,7 +1311,7 @@ static PyObject *__pyx_pf_10_triangles__circumcenter(CYTHON_UNUSED PyObject *__p
  */
   __pyx_v_ca_y_diff = (__pyx_v_y2 - __pyx_v_y0);
 
-  /* "_triangles.pyx":50
+  /* "c_triangles.pyx":59
  *     bc_y_diff = y1 - y2
  *     ca_y_diff = y2 - y0
  *     ab_y_diff = y0 - y1             # <<<<<<<<<<<<<<
@@ -1268,7 +1320,7 @@ static PyObject *__pyx_pf_10_triangles__circumcenter(CYTHON_UNUSED PyObject *__p
  */
   __pyx_v_ab_y_diff = (__pyx_v_y0 - __pyx_v_y1);
 
-  /* "_triangles.pyx":52
+  /* "c_triangles.pyx":61
  *     ab_y_diff = y0 - y1
  * 
  *     d_inv = 0.5 / (x0 * bc_y_diff + x1 * ca_y_diff + x2 * ab_y_diff)             # <<<<<<<<<<<<<<
@@ -1278,11 +1330,11 @@ static PyObject *__pyx_pf_10_triangles__circumcenter(CYTHON_UNUSED PyObject *__p
   __pyx_t_1 = (((__pyx_v_x0 * __pyx_v_bc_y_diff) + (__pyx_v_x1 * __pyx_v_ca_y_diff)) + (__pyx_v_x2 * __pyx_v_ab_y_diff));
   if (unlikely(__pyx_t_1 == 0)) {
     PyErr_SetString(PyExc_ZeroDivisionError, "float division");
-    __PYX_ERR(0, 52, __pyx_L1_error)
+    __PYX_ERR(0, 61, __pyx_L1_error)
   }
   __pyx_v_d_inv = (0.5 / __pyx_t_1);
 
-  /* "_triangles.pyx":54
+  /* "c_triangles.pyx":63
  *     d_inv = 0.5 / (x0 * bc_y_diff + x1 * ca_y_diff + x2 * ab_y_diff)
  * 
  *     a_mag = x0 * x0 + y0 * y0             # <<<<<<<<<<<<<<
@@ -1291,7 +1343,7 @@ static PyObject *__pyx_pf_10_triangles__circumcenter(CYTHON_UNUSED PyObject *__p
  */
   __pyx_v_a_mag = ((__pyx_v_x0 * __pyx_v_x0) + (__pyx_v_y0 * __pyx_v_y0));
 
-  /* "_triangles.pyx":55
+  /* "c_triangles.pyx":64
  * 
  *     a_mag = x0 * x0 + y0 * y0
  *     b_mag = x1 * x1 + y1 * y1             # <<<<<<<<<<<<<<
@@ -1300,103 +1352,78 @@ static PyObject *__pyx_pf_10_triangles__circumcenter(CYTHON_UNUSED PyObject *__p
  */
   __pyx_v_b_mag = ((__pyx_v_x1 * __pyx_v_x1) + (__pyx_v_y1 * __pyx_v_y1));
 
-  /* "_triangles.pyx":56
+  /* "c_triangles.pyx":65
  *     a_mag = x0 * x0 + y0 * y0
  *     b_mag = x1 * x1 + y1 * y1
  *     c_mag = x2 * x2 + y2 * y2             # <<<<<<<<<<<<<<
  * 
- *     cx = (a_mag * bc_y_diff + b_mag * ca_y_diff + c_mag * ab_y_diff) * d_inv
+ *     cur_x[0] = (a_mag * bc_y_diff + b_mag * ca_y_diff + c_mag * ab_y_diff) * d_inv
  */
   __pyx_v_c_mag = ((__pyx_v_x2 * __pyx_v_x2) + (__pyx_v_y2 * __pyx_v_y2));
 
-  /* "_triangles.pyx":58
+  /* "c_triangles.pyx":67
  *     c_mag = x2 * x2 + y2 * y2
  * 
- *     cx = (a_mag * bc_y_diff + b_mag * ca_y_diff + c_mag * ab_y_diff) * d_inv             # <<<<<<<<<<<<<<
- *     cy =(a_mag * (x2 - x1) + b_mag * (x0 - x2) + c_mag * (x1 - x0)) * d_inv
+ *     cur_x[0] = (a_mag * bc_y_diff + b_mag * ca_y_diff + c_mag * ab_y_diff) * d_inv             # <<<<<<<<<<<<<<
+ *     cur_y[0] = (a_mag * (x2 - x1) + b_mag * (x0 - x2) + c_mag * (x1 - x0)) * d_inv
  * 
  */
-  __pyx_v_cx = ((((__pyx_v_a_mag * __pyx_v_bc_y_diff) + (__pyx_v_b_mag * __pyx_v_ca_y_diff)) + (__pyx_v_c_mag * __pyx_v_ab_y_diff)) * __pyx_v_d_inv);
+  (__pyx_v_cur_x[0]) = ((((__pyx_v_a_mag * __pyx_v_bc_y_diff) + (__pyx_v_b_mag * __pyx_v_ca_y_diff)) + (__pyx_v_c_mag * __pyx_v_ab_y_diff)) * __pyx_v_d_inv);
 
-  /* "_triangles.pyx":59
+  /* "c_triangles.pyx":68
  * 
- *     cx = (a_mag * bc_y_diff + b_mag * ca_y_diff + c_mag * ab_y_diff) * d_inv
- *     cy =(a_mag * (x2 - x1) + b_mag * (x0 - x2) + c_mag * (x1 - x0)) * d_inv             # <<<<<<<<<<<<<<
- * 
- *     return cx, cy
- */
-  __pyx_v_cy = ((((__pyx_v_a_mag * (__pyx_v_x2 - __pyx_v_x1)) + (__pyx_v_b_mag * (__pyx_v_x0 - __pyx_v_x2))) + (__pyx_v_c_mag * (__pyx_v_x1 - __pyx_v_x0))) * __pyx_v_d_inv);
-
-  /* "_triangles.pyx":61
- *     cy =(a_mag * (x2 - x1) + b_mag * (x0 - x2) + c_mag * (x1 - x0)) * d_inv
- * 
- *     return cx, cy             # <<<<<<<<<<<<<<
+ *     cur_x[0] = (a_mag * bc_y_diff + b_mag * ca_y_diff + c_mag * ab_y_diff) * d_inv
+ *     cur_y[0] = (a_mag * (x2 - x1) + b_mag * (x0 - x2) + c_mag * (x1 - x0)) * d_inv             # <<<<<<<<<<<<<<
  * 
  * cdef double _distance(double x0, double y0, double x1, double y1):
  */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = PyFloat_FromDouble(__pyx_v_cx); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyFloat_FromDouble(__pyx_v_cy); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 61, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_4);
-  __Pyx_GIVEREF(__pyx_t_2);
-  PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2);
-  __Pyx_GIVEREF(__pyx_t_3);
-  PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_t_3);
-  __pyx_t_2 = 0;
-  __pyx_t_3 = 0;
-  __pyx_r = __pyx_t_4;
-  __pyx_t_4 = 0;
-  goto __pyx_L0;
+  (__pyx_v_cur_y[0]) = ((((__pyx_v_a_mag * (__pyx_v_x2 - __pyx_v_x1)) + (__pyx_v_b_mag * (__pyx_v_x0 - __pyx_v_x2))) + (__pyx_v_c_mag * (__pyx_v_x1 - __pyx_v_x0))) * __pyx_v_d_inv);
 
-  /* "_triangles.pyx":38
- *     return radius
+  /* "c_triangles.pyx":47
+ *     return cur_x, cur_y
  * 
- * def _circumcenter(double x0, double y0, double x1, double y1, double x2, double y2):             # <<<<<<<<<<<<<<
+ * cdef cc(double * cur_x, double * cur_y, double x0, double y0, double x1, double y1, double x2, double y2):             # <<<<<<<<<<<<<<
  * 
  *     cdef double bc_y_diff
  */
 
   /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  goto __pyx_L0;
   __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_2);
-  __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("_triangles._circumcenter", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
+  __Pyx_AddTraceback("c_triangles.cc", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __pyx_r = 0;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-/* "_triangles.pyx":63
- *     return cx, cy
+/* "c_triangles.pyx":70
+ *     cur_y[0] = (a_mag * (x2 - x1) + b_mag * (x0 - x2) + c_mag * (x1 - x0)) * d_inv
  * 
  * cdef double _distance(double x0, double y0, double x1, double y1):             # <<<<<<<<<<<<<<
  *     return sqrt(_dist_2(x0, y0, x1, y1))
  * 
  */
 
-static double __pyx_f_10_triangles__distance(double __pyx_v_x0, double __pyx_v_y0, double __pyx_v_x1, double __pyx_v_y1) {
+static double __pyx_f_11c_triangles__distance(double __pyx_v_x0, double __pyx_v_y0, double __pyx_v_x1, double __pyx_v_y1) {
   double __pyx_r;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_distance", 0);
 
-  /* "_triangles.pyx":64
+  /* "c_triangles.pyx":71
  * 
  * cdef double _distance(double x0, double y0, double x1, double y1):
  *     return sqrt(_dist_2(x0, y0, x1, y1))             # <<<<<<<<<<<<<<
  * 
  * def _find_nn_triangles(tri, cur_tri, position):
  */
-  __pyx_r = sqrt(__pyx_f_10_triangles__dist_2(__pyx_v_x0, __pyx_v_y0, __pyx_v_x1, __pyx_v_y1));
+  __pyx_r = sqrt(__pyx_f_11c_triangles__dist_2(__pyx_v_x0, __pyx_v_y0, __pyx_v_x1, __pyx_v_y1));
   goto __pyx_L0;
 
-  /* "_triangles.pyx":63
- *     return cx, cy
+  /* "c_triangles.pyx":70
+ *     cur_y[0] = (a_mag * (x2 - x1) + b_mag * (x0 - x2) + c_mag * (x1 - x0)) * d_inv
  * 
  * cdef double _distance(double x0, double y0, double x1, double y1):             # <<<<<<<<<<<<<<
  *     return sqrt(_dist_2(x0, y0, x1, y1))
@@ -1409,7 +1436,7 @@ static double __pyx_f_10_triangles__distance(double __pyx_v_x0, double __pyx_v_y
   return __pyx_r;
 }
 
-/* "_triangles.pyx":66
+/* "c_triangles.pyx":73
  *     return sqrt(_dist_2(x0, y0, x1, y1))
  * 
  * def _find_nn_triangles(tri, cur_tri, position):             # <<<<<<<<<<<<<<
@@ -1418,9 +1445,9 @@ static double __pyx_f_10_triangles__distance(double __pyx_v_x0, double __pyx_v_y
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10_triangles_3_find_nn_triangles(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_10_triangles_3_find_nn_triangles = {"_find_nn_triangles", (PyCFunction)__pyx_pw_10_triangles_3_find_nn_triangles, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10_triangles_3_find_nn_triangles(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_11c_triangles_3_find_nn_triangles(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_11c_triangles_3_find_nn_triangles = {"_find_nn_triangles", (PyCFunction)__pyx_pw_11c_triangles_3_find_nn_triangles, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_11c_triangles_3_find_nn_triangles(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_tri = 0;
   PyObject *__pyx_v_cur_tri = 0;
   PyObject *__pyx_v_position = 0;
@@ -1448,16 +1475,16 @@ static PyObject *__pyx_pw_10_triangles_3_find_nn_triangles(PyObject *__pyx_self,
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_cur_tri)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_find_nn_triangles", 1, 3, 3, 1); __PYX_ERR(0, 66, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_find_nn_triangles", 1, 3, 3, 1); __PYX_ERR(0, 73, __pyx_L3_error)
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_position)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_find_nn_triangles", 1, 3, 3, 2); __PYX_ERR(0, 66, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_find_nn_triangles", 1, 3, 3, 2); __PYX_ERR(0, 73, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_find_nn_triangles") < 0)) __PYX_ERR(0, 66, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_find_nn_triangles") < 0)) __PYX_ERR(0, 73, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 3) {
       goto __pyx_L5_argtuple_error;
@@ -1472,20 +1499,20 @@ static PyObject *__pyx_pw_10_triangles_3_find_nn_triangles(PyObject *__pyx_self,
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_find_nn_triangles", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 66, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_find_nn_triangles", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 73, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_triangles._find_nn_triangles", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_triangles._find_nn_triangles", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10_triangles_2_find_nn_triangles(__pyx_self, __pyx_v_tri, __pyx_v_cur_tri, __pyx_v_position);
+  __pyx_r = __pyx_pf_11c_triangles_2_find_nn_triangles(__pyx_self, __pyx_v_tri, __pyx_v_cur_tri, __pyx_v_position);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_tri, PyObject *__pyx_v_cur_tri, PyObject *__pyx_v_position) {
+static PyObject *__pyx_pf_11c_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_tri, PyObject *__pyx_v_cur_tri, PyObject *__pyx_v_position) {
   double __pyx_v_x0;
   double __pyx_v_y0;
   double __pyx_v_x1;
@@ -1524,90 +1551,90 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
   int __pyx_t_21;
   __Pyx_RefNannySetupContext("_find_nn_triangles", 0);
 
-  /* "_triangles.pyx":76
+  /* "c_triangles.pyx":83
  *         double y2
  *         double triangle[3][2]
  *         list nn = []             # <<<<<<<<<<<<<<
  *         set tri_queue
  * 
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 76, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_nn = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":81
+  /* "c_triangles.pyx":88
  *     #nn = []
  * 
  *     tri_queue = set(tri.neighbors[cur_tri])             # <<<<<<<<<<<<<<
  * 
  *     tri_queue |= set(tri.neighbors[tri.neighbors[cur_tri]].flat)
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_neighbors); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_neighbors); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = PyObject_GetItem(__pyx_t_1, __pyx_v_cur_tri); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_2 = PyObject_GetItem(__pyx_t_1, __pyx_v_cur_tri); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PySet_New(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 81, __pyx_L1_error)
+  __pyx_t_1 = PySet_New(__pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_v_tri_queue = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":83
+  /* "c_triangles.pyx":90
  *     tri_queue = set(tri.neighbors[cur_tri])
  * 
  *     tri_queue |= set(tri.neighbors[tri.neighbors[cur_tri]].flat)             # <<<<<<<<<<<<<<
  *     tri_queue.discard(-1)
  * 
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_neighbors); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_neighbors); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_neighbors); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_neighbors); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyObject_GetItem(__pyx_t_2, __pyx_v_cur_tri); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_3 = PyObject_GetItem(__pyx_t_2, __pyx_v_cur_tri); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PyObject_GetItem(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_2 = PyObject_GetItem(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_flat); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_flat); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_2 = PySet_New(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_2 = PySet_New(__pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PyNumber_InPlaceOr(__pyx_v_tri_queue, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 83, __pyx_L1_error)
+  __pyx_t_3 = PyNumber_InPlaceOr(__pyx_v_tri_queue, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 90, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF_SET(__pyx_v_tri_queue, ((PyObject*)__pyx_t_3));
   __pyx_t_3 = 0;
 
-  /* "_triangles.pyx":84
+  /* "c_triangles.pyx":91
  * 
  *     tri_queue |= set(tri.neighbors[tri.neighbors[cur_tri]].flat)
  *     tri_queue.discard(-1)             # <<<<<<<<<<<<<<
  * 
  *     for neighbor in tri_queue:
  */
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri_queue, __pyx_n_s_discard); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri_queue, __pyx_n_s_discard); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_tuple_, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "_triangles.pyx":86
+  /* "c_triangles.pyx":93
  *     tri_queue.discard(-1)
  * 
  *     for neighbor in tri_queue:             # <<<<<<<<<<<<<<
  * 
  *         triangle = tri.points[tri.simplices[neighbor]]
  */
-  __pyx_t_2 = PyObject_GetIter(__pyx_v_tri_queue); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_2 = PyObject_GetIter(__pyx_v_tri_queue); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 93, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 86, __pyx_L1_error)
+  __pyx_t_4 = Py_TYPE(__pyx_t_2)->tp_iternext; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 93, __pyx_L1_error)
   for (;;) {
     {
       __pyx_t_3 = __pyx_t_4(__pyx_t_2);
@@ -1615,7 +1642,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 86, __pyx_L1_error)
+          else __PYX_ERR(0, 93, __pyx_L1_error)
         }
         break;
       }
@@ -1624,29 +1651,29 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
     __Pyx_XDECREF_SET(__pyx_v_neighbor, __pyx_t_3);
     __pyx_t_3 = 0;
 
-    /* "_triangles.pyx":88
+    /* "c_triangles.pyx":95
  *     for neighbor in tri_queue:
  * 
  *         triangle = tri.points[tri.simplices[neighbor]]             # <<<<<<<<<<<<<<
  * 
  *         x0 = triangle[0][0]
  */
-    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_points); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_points); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_simplices); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_simplices); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_5 = PyObject_GetItem(__pyx_t_1, __pyx_v_neighbor); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_5 = PyObject_GetItem(__pyx_t_1, __pyx_v_neighbor); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = PyObject_GetItem(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 88, __pyx_L1_error)
+    __pyx_t_1 = PyObject_GetItem(__pyx_t_3, __pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-    if (unlikely(__Pyx_carray_from_py_double____2__(__pyx_t_1, __pyx_t_6, 3) < 0)) __PYX_ERR(0, 88, __pyx_L1_error)
+    if (unlikely(__Pyx_carray_from_py_double____2__(__pyx_t_1, __pyx_t_6, 3) < 0)) __PYX_ERR(0, 95, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     memcpy(&(__pyx_v_triangle[0]), __pyx_t_6, sizeof(__pyx_v_triangle[0]) * (3));
 
-    /* "_triangles.pyx":90
+    /* "c_triangles.pyx":97
  *         triangle = tri.points[tri.simplices[neighbor]]
  * 
  *         x0 = triangle[0][0]             # <<<<<<<<<<<<<<
@@ -1655,7 +1682,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
  */
     __pyx_v_x0 = ((__pyx_v_triangle[0])[0]);
 
-    /* "_triangles.pyx":91
+    /* "c_triangles.pyx":98
  * 
  *         x0 = triangle[0][0]
  *         y0 = triangle[0][1]             # <<<<<<<<<<<<<<
@@ -1664,7 +1691,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
  */
     __pyx_v_y0 = ((__pyx_v_triangle[0])[1]);
 
-    /* "_triangles.pyx":92
+    /* "c_triangles.pyx":99
  *         x0 = triangle[0][0]
  *         y0 = triangle[0][1]
  *         x1 = triangle[1][0]             # <<<<<<<<<<<<<<
@@ -1673,7 +1700,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
  */
     __pyx_v_x1 = ((__pyx_v_triangle[1])[0]);
 
-    /* "_triangles.pyx":93
+    /* "c_triangles.pyx":100
  *         y0 = triangle[0][1]
  *         x1 = triangle[1][0]
  *         y1 = triangle[1][1]             # <<<<<<<<<<<<<<
@@ -1682,7 +1709,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
  */
     __pyx_v_y1 = ((__pyx_v_triangle[1])[1]);
 
-    /* "_triangles.pyx":94
+    /* "c_triangles.pyx":101
  *         x1 = triangle[1][0]
  *         y1 = triangle[1][1]
  *         x2 = triangle[2][0]             # <<<<<<<<<<<<<<
@@ -1691,7 +1718,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
  */
     __pyx_v_x2 = ((__pyx_v_triangle[2])[0]);
 
-    /* "_triangles.pyx":95
+    /* "c_triangles.pyx":102
  *         y1 = triangle[1][1]
  *         x2 = triangle[2][0]
  *         y2 = triangle[2][1]             # <<<<<<<<<<<<<<
@@ -1700,26 +1727,26 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
  */
     __pyx_v_y2 = ((__pyx_v_triangle[2])[1]);
 
-    /* "_triangles.pyx":98
+    /* "c_triangles.pyx":105
  * 
  * 
  *         cur_x, cur_y = _circumcenter(x0, y0, x1, y1, x2, y2)             # <<<<<<<<<<<<<<
  *         r = _circumcircle_radius(x0, y0, x1, y1, x2, y2)
  * 
  */
-    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_circumcenter); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_GetModuleGlobalName(__pyx_n_s_circumcenter); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
-    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_x0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_3 = PyFloat_FromDouble(__pyx_v_x0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
-    __pyx_t_7 = PyFloat_FromDouble(__pyx_v_y0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_7 = PyFloat_FromDouble(__pyx_v_y0); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_7);
-    __pyx_t_8 = PyFloat_FromDouble(__pyx_v_x1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_8 = PyFloat_FromDouble(__pyx_v_x1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_8);
-    __pyx_t_9 = PyFloat_FromDouble(__pyx_v_y1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_9 = PyFloat_FromDouble(__pyx_v_y1); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_9);
-    __pyx_t_10 = PyFloat_FromDouble(__pyx_v_x2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_10 = PyFloat_FromDouble(__pyx_v_x2); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_10);
-    __pyx_t_11 = PyFloat_FromDouble(__pyx_v_y2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_11 = PyFloat_FromDouble(__pyx_v_y2); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_11);
     __pyx_t_12 = NULL;
     __pyx_t_13 = 0;
@@ -1733,7 +1760,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
         __pyx_t_13 = 1;
       }
     }
-    __pyx_t_14 = PyTuple_New(6+__pyx_t_13); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_14 = PyTuple_New(6+__pyx_t_13); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_14);
     if (__pyx_t_12) {
       __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_14, 0, __pyx_t_12); __pyx_t_12 = NULL;
@@ -1756,7 +1783,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
     __pyx_t_9 = 0;
     __pyx_t_10 = 0;
     __pyx_t_11 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_14, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 98, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_14, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 105, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_14); __pyx_t_14 = 0;
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -1770,7 +1797,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 98, __pyx_L1_error)
+        __PYX_ERR(0, 105, __pyx_L1_error)
       }
       #if CYTHON_COMPILING_IN_CPYTHON
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -1783,15 +1810,15 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
       __Pyx_INCREF(__pyx_t_5);
       __Pyx_INCREF(__pyx_t_14);
       #else
-      __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __pyx_t_5 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 105, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_14 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __pyx_t_14 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 105, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_14);
       #endif
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_11 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 98, __pyx_L1_error)
+      __pyx_t_11 = PyObject_GetIter(__pyx_t_1); if (unlikely(!__pyx_t_11)) __PYX_ERR(0, 105, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_11);
       __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
       __pyx_t_15 = Py_TYPE(__pyx_t_11)->tp_iternext;
@@ -1799,7 +1826,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
       __Pyx_GOTREF(__pyx_t_5);
       index = 1; __pyx_t_14 = __pyx_t_15(__pyx_t_11); if (unlikely(!__pyx_t_14)) goto __pyx_L5_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_14);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_15(__pyx_t_11), 2) < 0) __PYX_ERR(0, 98, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_15(__pyx_t_11), 2) < 0) __PYX_ERR(0, 105, __pyx_L1_error)
       __pyx_t_15 = NULL;
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       goto __pyx_L6_unpacking_done;
@@ -1807,7 +1834,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
       __Pyx_DECREF(__pyx_t_11); __pyx_t_11 = 0;
       __pyx_t_15 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 98, __pyx_L1_error)
+      __PYX_ERR(0, 105, __pyx_L1_error)
       __pyx_L6_unpacking_done:;
     }
     __Pyx_XDECREF_SET(__pyx_v_cur_x, __pyx_t_5);
@@ -1815,45 +1842,45 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
     __Pyx_XDECREF_SET(__pyx_v_cur_y, __pyx_t_14);
     __pyx_t_14 = 0;
 
-    /* "_triangles.pyx":99
+    /* "c_triangles.pyx":106
  * 
  *         cur_x, cur_y = _circumcenter(x0, y0, x1, y1, x2, y2)
  *         r = _circumcircle_radius(x0, y0, x1, y1, x2, y2)             # <<<<<<<<<<<<<<
  * 
  *         if _dist_2(position[0], position[1], cur_x, cur_y) < r:
  */
-    __pyx_v_r = __pyx_f_10_triangles__circumcircle_radius(__pyx_v_x0, __pyx_v_y0, __pyx_v_x1, __pyx_v_y1, __pyx_v_x2, __pyx_v_y2);
+    __pyx_v_r = __pyx_f_11c_triangles__circumcircle_radius(__pyx_v_x0, __pyx_v_y0, __pyx_v_x1, __pyx_v_y1, __pyx_v_x2, __pyx_v_y2);
 
-    /* "_triangles.pyx":101
+    /* "c_triangles.pyx":108
  *         r = _circumcircle_radius(x0, y0, x1, y1, x2, y2)
  * 
  *         if _dist_2(position[0], position[1], cur_x, cur_y) < r:             # <<<<<<<<<<<<<<
  * 
  *             nn.append(neighbor)
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_position, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_position, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_16 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_16 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_16 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_16 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_position, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_position, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_17 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_17 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L1_error)
+    __pyx_t_17 = __pyx_PyFloat_AsDouble(__pyx_t_1); if (unlikely((__pyx_t_17 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-    __pyx_t_18 = __pyx_PyFloat_AsDouble(__pyx_v_cur_x); if (unlikely((__pyx_t_18 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L1_error)
-    __pyx_t_19 = __pyx_PyFloat_AsDouble(__pyx_v_cur_y); if (unlikely((__pyx_t_19 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 101, __pyx_L1_error)
-    __pyx_t_20 = ((__pyx_f_10_triangles__dist_2(__pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19) < __pyx_v_r) != 0);
+    __pyx_t_18 = __pyx_PyFloat_AsDouble(__pyx_v_cur_x); if (unlikely((__pyx_t_18 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L1_error)
+    __pyx_t_19 = __pyx_PyFloat_AsDouble(__pyx_v_cur_y); if (unlikely((__pyx_t_19 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 108, __pyx_L1_error)
+    __pyx_t_20 = ((__pyx_f_11c_triangles__dist_2(__pyx_t_16, __pyx_t_17, __pyx_t_18, __pyx_t_19) < __pyx_v_r) != 0);
     if (__pyx_t_20) {
 
-      /* "_triangles.pyx":103
+      /* "c_triangles.pyx":110
  *         if _dist_2(position[0], position[1], cur_x, cur_y) < r:
  * 
  *             nn.append(neighbor)             # <<<<<<<<<<<<<<
  * 
  *     return nn
  */
-      __pyx_t_21 = __Pyx_PyList_Append(__pyx_v_nn, __pyx_v_neighbor); if (unlikely(__pyx_t_21 == -1)) __PYX_ERR(0, 103, __pyx_L1_error)
+      __pyx_t_21 = __Pyx_PyList_Append(__pyx_v_nn, __pyx_v_neighbor); if (unlikely(__pyx_t_21 == -1)) __PYX_ERR(0, 110, __pyx_L1_error)
 
-      /* "_triangles.pyx":101
+      /* "c_triangles.pyx":108
  *         r = _circumcircle_radius(x0, y0, x1, y1, x2, y2)
  * 
  *         if _dist_2(position[0], position[1], cur_x, cur_y) < r:             # <<<<<<<<<<<<<<
@@ -1862,7 +1889,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
  */
     }
 
-    /* "_triangles.pyx":86
+    /* "c_triangles.pyx":93
  *     tri_queue.discard(-1)
  * 
  *     for neighbor in tri_queue:             # <<<<<<<<<<<<<<
@@ -1872,7 +1899,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
   }
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "_triangles.pyx":105
+  /* "c_triangles.pyx":112
  *             nn.append(neighbor)
  * 
  *     return nn             # <<<<<<<<<<<<<<
@@ -1884,7 +1911,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
   __pyx_r = __pyx_v_nn;
   goto __pyx_L0;
 
-  /* "_triangles.pyx":66
+  /* "c_triangles.pyx":73
  *     return sqrt(_dist_2(x0, y0, x1, y1))
  * 
  * def _find_nn_triangles(tri, cur_tri, position):             # <<<<<<<<<<<<<<
@@ -1905,7 +1932,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
   __Pyx_XDECREF(__pyx_t_11);
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_14);
-  __Pyx_AddTraceback("_triangles._find_nn_triangles", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_triangles._find_nn_triangles", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_nn);
@@ -1918,7 +1945,7 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
   return __pyx_r;
 }
 
-/* "_triangles.pyx":107
+/* "c_triangles.pyx":114
  *     return nn
  * 
  * def _find_local_boundary(triangulation, triangles):             # <<<<<<<<<<<<<<
@@ -1927,9 +1954,9 @@ static PyObject *__pyx_pf_10_triangles_2_find_nn_triangles(CYTHON_UNUSED PyObjec
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10_triangles_5_find_local_boundary(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_10_triangles_5_find_local_boundary = {"_find_local_boundary", (PyCFunction)__pyx_pw_10_triangles_5_find_local_boundary, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_10_triangles_5_find_local_boundary(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_11c_triangles_5_find_local_boundary(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_11c_triangles_5_find_local_boundary = {"_find_local_boundary", (PyCFunction)__pyx_pw_11c_triangles_5_find_local_boundary, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_11c_triangles_5_find_local_boundary(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_triangulation = 0;
   PyObject *__pyx_v_triangles = 0;
   PyObject *__pyx_r = 0;
@@ -1955,11 +1982,11 @@ static PyObject *__pyx_pw_10_triangles_5_find_local_boundary(PyObject *__pyx_sel
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_triangles)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("_find_local_boundary", 1, 2, 2, 1); __PYX_ERR(0, 107, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("_find_local_boundary", 1, 2, 2, 1); __PYX_ERR(0, 114, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_find_local_boundary") < 0)) __PYX_ERR(0, 107, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "_find_local_boundary") < 0)) __PYX_ERR(0, 114, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 2) {
       goto __pyx_L5_argtuple_error;
@@ -1972,20 +1999,20 @@ static PyObject *__pyx_pw_10_triangles_5_find_local_boundary(PyObject *__pyx_sel
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("_find_local_boundary", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 107, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("_find_local_boundary", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 114, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_triangles._find_local_boundary", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_triangles._find_local_boundary", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_10_triangles_4_find_local_boundary(__pyx_self, __pyx_v_triangulation, __pyx_v_triangles);
+  __pyx_r = __pyx_pf_11c_triangles_4_find_local_boundary(__pyx_self, __pyx_v_triangulation, __pyx_v_triangles);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_triangulation, PyObject *__pyx_v_triangles) {
+static PyObject *__pyx_pf_11c_triangles_4_find_local_boundary(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_triangulation, PyObject *__pyx_v_triangles) {
   PyObject *__pyx_v_edges = NULL;
   PyObject *__pyx_v_triangle = NULL;
   PyObject *__pyx_v_i = NULL;
@@ -2009,19 +2036,19 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
   int __pyx_t_14;
   __Pyx_RefNannySetupContext("_find_local_boundary", 0);
 
-  /* "_triangles.pyx":109
+  /* "c_triangles.pyx":116
  * def _find_local_boundary(triangulation, triangles):
  * 
  *     edges = []             # <<<<<<<<<<<<<<
  * 
  *     for triangle in triangles:
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 109, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 116, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_edges = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":111
+  /* "c_triangles.pyx":118
  *     edges = []
  * 
  *     for triangle in triangles:             # <<<<<<<<<<<<<<
@@ -2032,26 +2059,26 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
     __pyx_t_1 = __pyx_v_triangles; __Pyx_INCREF(__pyx_t_1); __pyx_t_2 = 0;
     __pyx_t_3 = NULL;
   } else {
-    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_triangles); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 111, __pyx_L1_error)
+    __pyx_t_2 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_triangles); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 118, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 111, __pyx_L1_error)
+    __pyx_t_3 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 118, __pyx_L1_error)
   }
   for (;;) {
     if (likely(!__pyx_t_3)) {
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_2 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 111, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 118, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
         if (__pyx_t_2 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 111, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_2); __Pyx_INCREF(__pyx_t_4); __pyx_t_2++; if (unlikely(0 < 0)) __PYX_ERR(0, 118, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 111, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_2); __pyx_t_2++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
@@ -2061,7 +2088,7 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 111, __pyx_L1_error)
+          else __PYX_ERR(0, 118, __pyx_L1_error)
         }
         break;
       }
@@ -2070,22 +2097,22 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
     __Pyx_XDECREF_SET(__pyx_v_triangle, __pyx_t_4);
     __pyx_t_4 = 0;
 
-    /* "_triangles.pyx":113
+    /* "c_triangles.pyx":120
  *     for triangle in triangles:
  * 
  *         for i in range(3):             # <<<<<<<<<<<<<<
  * 
  *             pt1 = triangulation.simplices[triangle][i]
  */
-    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_tuple__2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     if (likely(PyList_CheckExact(__pyx_t_4)) || PyTuple_CheckExact(__pyx_t_4)) {
       __pyx_t_5 = __pyx_t_4; __Pyx_INCREF(__pyx_t_5); __pyx_t_6 = 0;
       __pyx_t_7 = NULL;
     } else {
-      __pyx_t_6 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 113, __pyx_L1_error)
+      __pyx_t_6 = -1; __pyx_t_5 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 120, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_5);
-      __pyx_t_7 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 113, __pyx_L1_error)
+      __pyx_t_7 = Py_TYPE(__pyx_t_5)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 120, __pyx_L1_error)
     }
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     for (;;) {
@@ -2093,17 +2120,17 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
         if (likely(PyList_CheckExact(__pyx_t_5))) {
           if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_5)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_4 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_6); __Pyx_INCREF(__pyx_t_4); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 113, __pyx_L1_error)
+          __pyx_t_4 = PyList_GET_ITEM(__pyx_t_5, __pyx_t_6); __Pyx_INCREF(__pyx_t_4); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 120, __pyx_L1_error)
           #else
-          __pyx_t_4 = PySequence_ITEM(__pyx_t_5, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+          __pyx_t_4 = PySequence_ITEM(__pyx_t_5, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           #endif
         } else {
           if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_5)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_6); __Pyx_INCREF(__pyx_t_4); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 113, __pyx_L1_error)
+          __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_5, __pyx_t_6); __Pyx_INCREF(__pyx_t_4); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 120, __pyx_L1_error)
           #else
-          __pyx_t_4 = PySequence_ITEM(__pyx_t_5, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 113, __pyx_L1_error)
+          __pyx_t_4 = PySequence_ITEM(__pyx_t_5, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           #endif
         }
@@ -2113,7 +2140,7 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 113, __pyx_L1_error)
+            else __PYX_ERR(0, 120, __pyx_L1_error)
           }
           break;
         }
@@ -2122,56 +2149,56 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
       __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "_triangles.pyx":115
+      /* "c_triangles.pyx":122
  *         for i in range(3):
  * 
  *             pt1 = triangulation.simplices[triangle][i]             # <<<<<<<<<<<<<<
  *             pt2 = triangulation.simplices[triangle][(i + 1) % 3]
  * 
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_triangulation, __pyx_n_s_simplices); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_triangulation, __pyx_n_s_simplices); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 122, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_8 = PyObject_GetItem(__pyx_t_4, __pyx_v_triangle); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 115, __pyx_L1_error)
+      __pyx_t_8 = PyObject_GetItem(__pyx_t_4, __pyx_v_triangle); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 122, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = PyObject_GetItem(__pyx_t_8, __pyx_v_i); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 115, __pyx_L1_error)
+      __pyx_t_4 = PyObject_GetItem(__pyx_t_8, __pyx_v_i); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 122, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_XDECREF_SET(__pyx_v_pt1, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "_triangles.pyx":116
+      /* "c_triangles.pyx":123
  * 
  *             pt1 = triangulation.simplices[triangle][i]
  *             pt2 = triangulation.simplices[triangle][(i + 1) % 3]             # <<<<<<<<<<<<<<
  * 
  *             if (pt1, pt2) in edges:
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_triangulation, __pyx_n_s_simplices); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_triangulation, __pyx_n_s_simplices); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_8 = PyObject_GetItem(__pyx_t_4, __pyx_v_triangle); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __pyx_t_8 = PyObject_GetItem(__pyx_t_4, __pyx_v_triangle); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_v_i, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_v_i, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_9 = __Pyx_PyInt_RemainderObjC(__pyx_t_4, __pyx_int_3, 3, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __pyx_t_9 = __Pyx_PyInt_RemainderObjC(__pyx_t_4, __pyx_int_3, 3, 0); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_9);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-      __pyx_t_4 = PyObject_GetItem(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 116, __pyx_L1_error)
+      __pyx_t_4 = PyObject_GetItem(__pyx_t_8, __pyx_t_9); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
       __Pyx_XDECREF_SET(__pyx_v_pt2, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "_triangles.pyx":118
+      /* "c_triangles.pyx":125
  *             pt2 = triangulation.simplices[triangle][(i + 1) % 3]
  * 
  *             if (pt1, pt2) in edges:             # <<<<<<<<<<<<<<
  *                 edges.remove((pt1, pt2))
  * 
  */
-      __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_v_pt1);
       __Pyx_GIVEREF(__pyx_v_pt1);
@@ -2179,21 +2206,21 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
       __Pyx_INCREF(__pyx_v_pt2);
       __Pyx_GIVEREF(__pyx_v_pt2);
       PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_v_pt2);
-      __pyx_t_10 = (__Pyx_PySequence_ContainsTF(__pyx_t_4, __pyx_v_edges, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 118, __pyx_L1_error)
+      __pyx_t_10 = (__Pyx_PySequence_ContainsTF(__pyx_t_4, __pyx_v_edges, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 125, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_11 = (__pyx_t_10 != 0);
       if (__pyx_t_11) {
 
-        /* "_triangles.pyx":119
+        /* "c_triangles.pyx":126
  * 
  *             if (pt1, pt2) in edges:
  *                 edges.remove((pt1, pt2))             # <<<<<<<<<<<<<<
  * 
  *             elif (pt2, pt1) in edges:
  */
-        __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_edges, __pyx_n_s_remove); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 119, __pyx_L1_error)
+        __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_edges, __pyx_n_s_remove); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 126, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
-        __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 119, __pyx_L1_error)
+        __pyx_t_8 = PyTuple_New(2); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 126, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_INCREF(__pyx_v_pt1);
         __Pyx_GIVEREF(__pyx_v_pt1);
@@ -2212,24 +2239,24 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
           }
         }
         if (!__pyx_t_12) {
-          __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 119, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
           __Pyx_GOTREF(__pyx_t_4);
         } else {
-          __pyx_t_13 = PyTuple_New(1+1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 119, __pyx_L1_error)
+          __pyx_t_13 = PyTuple_New(1+1); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 126, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_13);
           __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_12); __pyx_t_12 = NULL;
           __Pyx_GIVEREF(__pyx_t_8);
           PyTuple_SET_ITEM(__pyx_t_13, 0+1, __pyx_t_8);
           __pyx_t_8 = 0;
-          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_13, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 119, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_13, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 126, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
         }
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-        /* "_triangles.pyx":118
+        /* "c_triangles.pyx":125
  *             pt2 = triangulation.simplices[triangle][(i + 1) % 3]
  * 
  *             if (pt1, pt2) in edges:             # <<<<<<<<<<<<<<
@@ -2239,14 +2266,14 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
         goto __pyx_L7;
       }
 
-      /* "_triangles.pyx":121
+      /* "c_triangles.pyx":128
  *                 edges.remove((pt1, pt2))
  * 
  *             elif (pt2, pt1) in edges:             # <<<<<<<<<<<<<<
  * 
  *                 edges.remove((pt2, pt1))
  */
-      __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 121, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 128, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_v_pt2);
       __Pyx_GIVEREF(__pyx_v_pt2);
@@ -2254,21 +2281,21 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
       __Pyx_INCREF(__pyx_v_pt1);
       __Pyx_GIVEREF(__pyx_v_pt1);
       PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_v_pt1);
-      __pyx_t_11 = (__Pyx_PySequence_ContainsTF(__pyx_t_4, __pyx_v_edges, Py_EQ)); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 121, __pyx_L1_error)
+      __pyx_t_11 = (__Pyx_PySequence_ContainsTF(__pyx_t_4, __pyx_v_edges, Py_EQ)); if (unlikely(__pyx_t_11 < 0)) __PYX_ERR(0, 128, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_10 = (__pyx_t_11 != 0);
       if (__pyx_t_10) {
 
-        /* "_triangles.pyx":123
+        /* "c_triangles.pyx":130
  *             elif (pt2, pt1) in edges:
  * 
  *                 edges.remove((pt2, pt1))             # <<<<<<<<<<<<<<
  *             else:
  *                 edges.append((pt1, pt2))
  */
-        __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_edges, __pyx_n_s_remove); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 123, __pyx_L1_error)
+        __pyx_t_9 = __Pyx_PyObject_GetAttrStr(__pyx_v_edges, __pyx_n_s_remove); if (unlikely(!__pyx_t_9)) __PYX_ERR(0, 130, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_9);
-        __pyx_t_13 = PyTuple_New(2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 123, __pyx_L1_error)
+        __pyx_t_13 = PyTuple_New(2); if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 130, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_13);
         __Pyx_INCREF(__pyx_v_pt2);
         __Pyx_GIVEREF(__pyx_v_pt2);
@@ -2287,24 +2314,24 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
           }
         }
         if (!__pyx_t_8) {
-          __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_13); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_CallOneArg(__pyx_t_9, __pyx_t_13); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 130, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_13); __pyx_t_13 = 0;
           __Pyx_GOTREF(__pyx_t_4);
         } else {
-          __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 123, __pyx_L1_error)
+          __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 130, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_12);
           __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_8); __pyx_t_8 = NULL;
           __Pyx_GIVEREF(__pyx_t_13);
           PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_t_13);
           __pyx_t_13 = 0;
-          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_12, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 123, __pyx_L1_error)
+          __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_9, __pyx_t_12, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 130, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_4);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
         }
         __Pyx_DECREF(__pyx_t_9); __pyx_t_9 = 0;
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-        /* "_triangles.pyx":121
+        /* "c_triangles.pyx":128
  *                 edges.remove((pt1, pt2))
  * 
  *             elif (pt2, pt1) in edges:             # <<<<<<<<<<<<<<
@@ -2314,7 +2341,7 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
         goto __pyx_L7;
       }
 
-      /* "_triangles.pyx":125
+      /* "c_triangles.pyx":132
  *                 edges.remove((pt2, pt1))
  *             else:
  *                 edges.append((pt1, pt2))             # <<<<<<<<<<<<<<
@@ -2322,7 +2349,7 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
  *     return edges
  */
       /*else*/ {
-        __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 125, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_New(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 132, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         __Pyx_INCREF(__pyx_v_pt1);
         __Pyx_GIVEREF(__pyx_v_pt1);
@@ -2330,12 +2357,12 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
         __Pyx_INCREF(__pyx_v_pt2);
         __Pyx_GIVEREF(__pyx_v_pt2);
         PyTuple_SET_ITEM(__pyx_t_4, 1, __pyx_v_pt2);
-        __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_edges, __pyx_t_4); if (unlikely(__pyx_t_14 == -1)) __PYX_ERR(0, 125, __pyx_L1_error)
+        __pyx_t_14 = __Pyx_PyList_Append(__pyx_v_edges, __pyx_t_4); if (unlikely(__pyx_t_14 == -1)) __PYX_ERR(0, 132, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       }
       __pyx_L7:;
 
-      /* "_triangles.pyx":113
+      /* "c_triangles.pyx":120
  *     for triangle in triangles:
  * 
  *         for i in range(3):             # <<<<<<<<<<<<<<
@@ -2345,7 +2372,7 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
     }
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-    /* "_triangles.pyx":111
+    /* "c_triangles.pyx":118
  *     edges = []
  * 
  *     for triangle in triangles:             # <<<<<<<<<<<<<<
@@ -2355,7 +2382,7 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":127
+  /* "c_triangles.pyx":134
  *                 edges.append((pt1, pt2))
  * 
  *     return edges             # <<<<<<<<<<<<<<
@@ -2367,7 +2394,7 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
   __pyx_r = __pyx_v_edges;
   goto __pyx_L0;
 
-  /* "_triangles.pyx":107
+  /* "c_triangles.pyx":114
  *     return nn
  * 
  * def _find_local_boundary(triangulation, triangles):             # <<<<<<<<<<<<<<
@@ -2384,7 +2411,7 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_12);
   __Pyx_XDECREF(__pyx_t_13);
-  __Pyx_AddTraceback("_triangles._find_local_boundary", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_triangles._find_local_boundary", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_edges);
@@ -2397,7 +2424,7 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
   return __pyx_r;
 }
 
-/* "_triangles.pyx":129
+/* "c_triangles.pyx":136
  *     return edges
  * 
  * def _order_edges(edges):             # <<<<<<<<<<<<<<
@@ -2406,20 +2433,20 @@ static PyObject *__pyx_pf_10_triangles_4_find_local_boundary(CYTHON_UNUSED PyObj
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10_triangles_7_order_edges(PyObject *__pyx_self, PyObject *__pyx_v_edges); /*proto*/
-static PyMethodDef __pyx_mdef_10_triangles_7_order_edges = {"_order_edges", (PyCFunction)__pyx_pw_10_triangles_7_order_edges, METH_O, 0};
-static PyObject *__pyx_pw_10_triangles_7_order_edges(PyObject *__pyx_self, PyObject *__pyx_v_edges) {
+static PyObject *__pyx_pw_11c_triangles_7_order_edges(PyObject *__pyx_self, PyObject *__pyx_v_edges); /*proto*/
+static PyMethodDef __pyx_mdef_11c_triangles_7_order_edges = {"_order_edges", (PyCFunction)__pyx_pw_11c_triangles_7_order_edges, METH_O, 0};
+static PyObject *__pyx_pw_11c_triangles_7_order_edges(PyObject *__pyx_self, PyObject *__pyx_v_edges) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_order_edges (wrapper)", 0);
-  __pyx_r = __pyx_pf_10_triangles_6_order_edges(__pyx_self, ((PyObject *)__pyx_v_edges));
+  __pyx_r = __pyx_pf_11c_triangles_6_order_edges(__pyx_self, ((PyObject *)__pyx_v_edges));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_edges) {
+static PyObject *__pyx_pf_11c_triangles_6_order_edges(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_edges) {
   PyObject *__pyx_v_edge = NULL;
   PyObject *__pyx_v_ordered_edges = NULL;
   PyObject *__pyx_v_num_max = NULL;
@@ -2441,65 +2468,65 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
   __Pyx_RefNannySetupContext("_order_edges", 0);
   __Pyx_INCREF(__pyx_v_edges);
 
-  /* "_triangles.pyx":131
+  /* "c_triangles.pyx":138
  * def _order_edges(edges):
  * 
  *     edge = edges[0]             # <<<<<<<<<<<<<<
  *     edges = edges[1:]
  * 
  */
-  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_edges, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_edges, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_edge = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":132
+  /* "c_triangles.pyx":139
  * 
  *     edge = edges[0]
  *     edges = edges[1:]             # <<<<<<<<<<<<<<
  * 
  *     ordered_edges = []
  */
-  __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_v_edges, 1, 0, NULL, NULL, &__pyx_slice__3, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 132, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetSlice(__pyx_v_edges, 1, 0, NULL, NULL, &__pyx_slice__3, 1, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF_SET(__pyx_v_edges, __pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":134
+  /* "c_triangles.pyx":141
  *     edges = edges[1:]
  * 
  *     ordered_edges = []             # <<<<<<<<<<<<<<
  *     ordered_edges.append(edge)
  * 
  */
-  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 134, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 141, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_ordered_edges = ((PyObject*)__pyx_t_1);
   __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":135
+  /* "c_triangles.pyx":142
  * 
  *     ordered_edges = []
  *     ordered_edges.append(edge)             # <<<<<<<<<<<<<<
  * 
  *     num_max = len(edges)
  */
-  __pyx_t_2 = __Pyx_PyList_Append(__pyx_v_ordered_edges, __pyx_v_edge); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 135, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyList_Append(__pyx_v_ordered_edges, __pyx_v_edge); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 142, __pyx_L1_error)
 
-  /* "_triangles.pyx":137
+  /* "c_triangles.pyx":144
  *     ordered_edges.append(edge)
  * 
  *     num_max = len(edges)             # <<<<<<<<<<<<<<
  *     while len(edges) > 0 and num_max > 0:
  * 
  */
-  __pyx_t_3 = PyObject_Length(__pyx_v_edges); if (unlikely(__pyx_t_3 == -1)) __PYX_ERR(0, 137, __pyx_L1_error)
-  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 137, __pyx_L1_error)
+  __pyx_t_3 = PyObject_Length(__pyx_v_edges); if (unlikely(__pyx_t_3 == -1)) __PYX_ERR(0, 144, __pyx_L1_error)
+  __pyx_t_1 = PyInt_FromSsize_t(__pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 144, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __pyx_v_num_max = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":138
+  /* "c_triangles.pyx":145
  * 
  *     num_max = len(edges)
  *     while len(edges) > 0 and num_max > 0:             # <<<<<<<<<<<<<<
@@ -2507,33 +2534,33 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
  *         match = edge[1]
  */
   while (1) {
-    __pyx_t_3 = PyObject_Length(__pyx_v_edges); if (unlikely(__pyx_t_3 == -1)) __PYX_ERR(0, 138, __pyx_L1_error)
+    __pyx_t_3 = PyObject_Length(__pyx_v_edges); if (unlikely(__pyx_t_3 == -1)) __PYX_ERR(0, 145, __pyx_L1_error)
     __pyx_t_5 = ((__pyx_t_3 > 0) != 0);
     if (__pyx_t_5) {
     } else {
       __pyx_t_4 = __pyx_t_5;
       goto __pyx_L5_bool_binop_done;
     }
-    __pyx_t_1 = PyObject_RichCompare(__pyx_v_num_max, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 138, __pyx_L1_error)
-    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 138, __pyx_L1_error)
+    __pyx_t_1 = PyObject_RichCompare(__pyx_v_num_max, __pyx_int_0, Py_GT); __Pyx_XGOTREF(__pyx_t_1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 145, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_IsTrue(__pyx_t_1); if (unlikely(__pyx_t_5 < 0)) __PYX_ERR(0, 145, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
     __pyx_t_4 = __pyx_t_5;
     __pyx_L5_bool_binop_done:;
     if (!__pyx_t_4) break;
 
-    /* "_triangles.pyx":140
+    /* "c_triangles.pyx":147
  *     while len(edges) > 0 and num_max > 0:
  * 
  *         match = edge[1]             # <<<<<<<<<<<<<<
  * 
  *         for search_edge in edges:
  */
-    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_edge, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_GetItemInt(__pyx_v_edge, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 147, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_XDECREF_SET(__pyx_v_match, __pyx_t_1);
     __pyx_t_1 = 0;
 
-    /* "_triangles.pyx":142
+    /* "c_triangles.pyx":149
  *         match = edge[1]
  * 
  *         for search_edge in edges:             # <<<<<<<<<<<<<<
@@ -2544,26 +2571,26 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
       __pyx_t_1 = __pyx_v_edges; __Pyx_INCREF(__pyx_t_1); __pyx_t_3 = 0;
       __pyx_t_6 = NULL;
     } else {
-      __pyx_t_3 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_edges); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 142, __pyx_L1_error)
+      __pyx_t_3 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_v_edges); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_1);
-      __pyx_t_6 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 142, __pyx_L1_error)
+      __pyx_t_6 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 149, __pyx_L1_error)
     }
     for (;;) {
       if (likely(!__pyx_t_6)) {
         if (likely(PyList_CheckExact(__pyx_t_1))) {
           if (__pyx_t_3 >= PyList_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_7 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 142, __pyx_L1_error)
+          __pyx_t_7 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 149, __pyx_L1_error)
           #else
-          __pyx_t_7 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 142, __pyx_L1_error)
+          __pyx_t_7 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 149, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           #endif
         } else {
           if (__pyx_t_3 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
           #if CYTHON_COMPILING_IN_CPYTHON
-          __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 142, __pyx_L1_error)
+          __pyx_t_7 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_3); __Pyx_INCREF(__pyx_t_7); __pyx_t_3++; if (unlikely(0 < 0)) __PYX_ERR(0, 149, __pyx_L1_error)
           #else
-          __pyx_t_7 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 142, __pyx_L1_error)
+          __pyx_t_7 = PySequence_ITEM(__pyx_t_1, __pyx_t_3); __pyx_t_3++; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 149, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           #endif
         }
@@ -2573,7 +2600,7 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
           PyObject* exc_type = PyErr_Occurred();
           if (exc_type) {
             if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-            else __PYX_ERR(0, 142, __pyx_L1_error)
+            else __PYX_ERR(0, 149, __pyx_L1_error)
           }
           break;
         }
@@ -2582,31 +2609,31 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
       __Pyx_XDECREF_SET(__pyx_v_search_edge, __pyx_t_7);
       __pyx_t_7 = 0;
 
-      /* "_triangles.pyx":143
+      /* "c_triangles.pyx":150
  * 
  *         for search_edge in edges:
  *             vertex = search_edge[0]             # <<<<<<<<<<<<<<
  *             if match == vertex:
  *                 edge = search_edge
  */
-      __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_search_edge, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 143, __pyx_L1_error)
+      __pyx_t_7 = __Pyx_GetItemInt(__pyx_v_search_edge, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 150, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_7);
       __Pyx_XDECREF_SET(__pyx_v_vertex, __pyx_t_7);
       __pyx_t_7 = 0;
 
-      /* "_triangles.pyx":144
+      /* "c_triangles.pyx":151
  *         for search_edge in edges:
  *             vertex = search_edge[0]
  *             if match == vertex:             # <<<<<<<<<<<<<<
  *                 edge = search_edge
  *                 edges.remove(edge)
  */
-      __pyx_t_7 = PyObject_RichCompare(__pyx_v_match, __pyx_v_vertex, Py_EQ); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 144, __pyx_L1_error)
-      __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 144, __pyx_L1_error)
+      __pyx_t_7 = PyObject_RichCompare(__pyx_v_match, __pyx_v_vertex, Py_EQ); __Pyx_XGOTREF(__pyx_t_7); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 151, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_IsTrue(__pyx_t_7); if (unlikely(__pyx_t_4 < 0)) __PYX_ERR(0, 151, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
       if (__pyx_t_4) {
 
-        /* "_triangles.pyx":145
+        /* "c_triangles.pyx":152
  *             vertex = search_edge[0]
  *             if match == vertex:
  *                 edge = search_edge             # <<<<<<<<<<<<<<
@@ -2616,14 +2643,14 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
         __Pyx_INCREF(__pyx_v_search_edge);
         __Pyx_DECREF_SET(__pyx_v_edge, __pyx_v_search_edge);
 
-        /* "_triangles.pyx":146
+        /* "c_triangles.pyx":153
  *             if match == vertex:
  *                 edge = search_edge
  *                 edges.remove(edge)             # <<<<<<<<<<<<<<
  *                 ordered_edges.append(search_edge)
  *                 break
  */
-        __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_edges, __pyx_n_s_remove); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 146, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_v_edges, __pyx_n_s_remove); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 153, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __pyx_t_9 = NULL;
         if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_8))) {
@@ -2636,32 +2663,32 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
           }
         }
         if (!__pyx_t_9) {
-          __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_edge); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 146, __pyx_L1_error)
+          __pyx_t_7 = __Pyx_PyObject_CallOneArg(__pyx_t_8, __pyx_v_edge); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 153, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
         } else {
-          __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 146, __pyx_L1_error)
+          __pyx_t_10 = PyTuple_New(1+1); if (unlikely(!__pyx_t_10)) __PYX_ERR(0, 153, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_10);
           __Pyx_GIVEREF(__pyx_t_9); PyTuple_SET_ITEM(__pyx_t_10, 0, __pyx_t_9); __pyx_t_9 = NULL;
           __Pyx_INCREF(__pyx_v_edge);
           __Pyx_GIVEREF(__pyx_v_edge);
           PyTuple_SET_ITEM(__pyx_t_10, 0+1, __pyx_v_edge);
-          __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_10, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 146, __pyx_L1_error)
+          __pyx_t_7 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_10, NULL); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 153, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_7);
           __Pyx_DECREF(__pyx_t_10); __pyx_t_10 = 0;
         }
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
 
-        /* "_triangles.pyx":147
+        /* "c_triangles.pyx":154
  *                 edge = search_edge
  *                 edges.remove(edge)
  *                 ordered_edges.append(search_edge)             # <<<<<<<<<<<<<<
  *                 break
  *         num_max -= 1
  */
-        __pyx_t_2 = __Pyx_PyList_Append(__pyx_v_ordered_edges, __pyx_v_search_edge); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 147, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyList_Append(__pyx_v_ordered_edges, __pyx_v_search_edge); if (unlikely(__pyx_t_2 == -1)) __PYX_ERR(0, 154, __pyx_L1_error)
 
-        /* "_triangles.pyx":148
+        /* "c_triangles.pyx":155
  *                 edges.remove(edge)
  *                 ordered_edges.append(search_edge)
  *                 break             # <<<<<<<<<<<<<<
@@ -2670,7 +2697,7 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
  */
         goto __pyx_L8_break;
 
-        /* "_triangles.pyx":144
+        /* "c_triangles.pyx":151
  *         for search_edge in edges:
  *             vertex = search_edge[0]
  *             if match == vertex:             # <<<<<<<<<<<<<<
@@ -2679,7 +2706,7 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
  */
       }
 
-      /* "_triangles.pyx":142
+      /* "c_triangles.pyx":149
  *         match = edge[1]
  * 
  *         for search_edge in edges:             # <<<<<<<<<<<<<<
@@ -2690,20 +2717,20 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
     __pyx_L8_break:;
     __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-    /* "_triangles.pyx":149
+    /* "c_triangles.pyx":156
  *                 ordered_edges.append(search_edge)
  *                 break
  *         num_max -= 1             # <<<<<<<<<<<<<<
  * 
  *     return ordered_edges
  */
-    __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_num_max, __pyx_int_1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 149, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyInt_SubtractObjC(__pyx_v_num_max, __pyx_int_1, 1, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 156, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF_SET(__pyx_v_num_max, __pyx_t_1);
     __pyx_t_1 = 0;
   }
 
-  /* "_triangles.pyx":151
+  /* "c_triangles.pyx":158
  *         num_max -= 1
  * 
  *     return ordered_edges             # <<<<<<<<<<<<<<
@@ -2715,7 +2742,7 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
   __pyx_r = __pyx_v_ordered_edges;
   goto __pyx_L0;
 
-  /* "_triangles.pyx":129
+  /* "c_triangles.pyx":136
  *     return edges
  * 
  * def _order_edges(edges):             # <<<<<<<<<<<<<<
@@ -2730,7 +2757,7 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_9);
   __Pyx_XDECREF(__pyx_t_10);
-  __Pyx_AddTraceback("_triangles._order_edges", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_triangles._order_edges", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_edge);
@@ -2745,7 +2772,7 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
   return __pyx_r;
 }
 
-/* "_triangles.pyx":153
+/* "c_triangles.pyx":160
  *     return ordered_edges
  * 
  * def _area(triangle):             # <<<<<<<<<<<<<<
@@ -2754,20 +2781,20 @@ static PyObject *__pyx_pf_10_triangles_6_order_edges(CYTHON_UNUSED PyObject *__p
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_10_triangles_9_area(PyObject *__pyx_self, PyObject *__pyx_v_triangle); /*proto*/
-static PyMethodDef __pyx_mdef_10_triangles_9_area = {"_area", (PyCFunction)__pyx_pw_10_triangles_9_area, METH_O, 0};
-static PyObject *__pyx_pw_10_triangles_9_area(PyObject *__pyx_self, PyObject *__pyx_v_triangle) {
+static PyObject *__pyx_pw_11c_triangles_9_area(PyObject *__pyx_self, PyObject *__pyx_v_triangle); /*proto*/
+static PyMethodDef __pyx_mdef_11c_triangles_9_area = {"_area", (PyCFunction)__pyx_pw_11c_triangles_9_area, METH_O, 0};
+static PyObject *__pyx_pw_11c_triangles_9_area(PyObject *__pyx_self, PyObject *__pyx_v_triangle) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("_area (wrapper)", 0);
-  __pyx_r = __pyx_pf_10_triangles_8_area(__pyx_self, ((PyObject *)__pyx_v_triangle));
+  __pyx_r = __pyx_pf_11c_triangles_8_area(__pyx_self, ((PyObject *)__pyx_v_triangle));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_10_triangles_8_area(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_triangle) {
+static PyObject *__pyx_pf_11c_triangles_8_area(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_triangle) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2780,33 +2807,33 @@ static PyObject *__pyx_pf_10_triangles_8_area(CYTHON_UNUSED PyObject *__pyx_self
   Py_ssize_t __pyx_t_8;
   __Pyx_RefNannySetupContext("_area", 0);
 
-  /* "_triangles.pyx":154
+  /* "c_triangles.pyx":161
  * 
  * def _area(triangle):
  *     return np.sum(np.cross(triangle, triangle[1:] + [triangle[0]])) / 2.             # <<<<<<<<<<<<<<
  * 
  */
   __Pyx_XDECREF(__pyx_r);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_sum); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_cross); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_cross); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  __pyx_t_4 = __Pyx_PyObject_GetSlice(__pyx_v_triangle, 1, 0, NULL, NULL, &__pyx_slice__4, 1, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_GetSlice(__pyx_v_triangle, 1, 0, NULL, NULL, &__pyx_slice__4, 1, 0, 1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_triangle, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_6 = __Pyx_GetItemInt(__pyx_v_triangle, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
-  __pyx_t_7 = PyList_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_7 = PyList_New(1); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_GIVEREF(__pyx_t_6);
   PyList_SET_ITEM(__pyx_t_7, 0, __pyx_t_6);
   __pyx_t_6 = 0;
-  __pyx_t_6 = PyNumber_Add(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_6 = PyNumber_Add(__pyx_t_4, __pyx_t_7); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
@@ -2822,7 +2849,7 @@ static PyObject *__pyx_pf_10_triangles_8_area(CYTHON_UNUSED PyObject *__pyx_self
       __pyx_t_8 = 1;
     }
   }
-  __pyx_t_4 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_4 = PyTuple_New(2+__pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   if (__pyx_t_7) {
     __Pyx_GIVEREF(__pyx_t_7); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_7); __pyx_t_7 = NULL;
@@ -2833,7 +2860,7 @@ static PyObject *__pyx_pf_10_triangles_8_area(CYTHON_UNUSED PyObject *__pyx_self
   __Pyx_GIVEREF(__pyx_t_6);
   PyTuple_SET_ITEM(__pyx_t_4, 1+__pyx_t_8, __pyx_t_6);
   __pyx_t_6 = 0;
-  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_5, __pyx_t_4, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
@@ -2848,29 +2875,29 @@ static PyObject *__pyx_pf_10_triangles_8_area(CYTHON_UNUSED PyObject *__pyx_self
     }
   }
   if (!__pyx_t_5) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 154, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_3, __pyx_t_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 161, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 154, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 161, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_5); __pyx_t_5 = NULL;
     __Pyx_GIVEREF(__pyx_t_2);
     PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_t_2);
     __pyx_t_2 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 154, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_4, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 161, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = __Pyx_PyFloat_DivideObjC(__pyx_t_1, __pyx_float_2_, 2., 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyFloat_DivideObjC(__pyx_t_1, __pyx_float_2_, 2., 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_r = __pyx_t_3;
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "_triangles.pyx":153
+  /* "c_triangles.pyx":160
  *     return ordered_edges
  * 
  * def _area(triangle):             # <<<<<<<<<<<<<<
@@ -2887,7 +2914,7 @@ static PyObject *__pyx_pf_10_triangles_8_area(CYTHON_UNUSED PyObject *__pyx_self
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("_triangles._area", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_triangles._area", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -3556,7 +3583,7 @@ static struct PyModuleDef __pyx_moduledef = {
   #else
     PyModuleDef_HEAD_INIT,
   #endif
-    "_triangles",
+    "c_triangles",
     0, /* m_doc */
     -1, /* m_size */
     __pyx_methods /* m_methods */,
@@ -3572,21 +3599,13 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_IndexError, __pyx_k_IndexError, sizeof(__pyx_k_IndexError), 0, 0, 1, 1},
   {&__pyx_n_s_OverflowError, __pyx_k_OverflowError, sizeof(__pyx_k_OverflowError), 0, 0, 1, 1},
   {&__pyx_n_s_TypeError, __pyx_k_TypeError, sizeof(__pyx_k_TypeError), 0, 0, 1, 1},
-  {&__pyx_n_s_a_mag, __pyx_k_a_mag, sizeof(__pyx_k_a_mag), 0, 0, 1, 1},
-  {&__pyx_n_s_ab_y_diff, __pyx_k_ab_y_diff, sizeof(__pyx_k_ab_y_diff), 0, 0, 1, 1},
   {&__pyx_n_s_area, __pyx_k_area, sizeof(__pyx_k_area), 0, 0, 1, 1},
-  {&__pyx_n_s_b_mag, __pyx_k_b_mag, sizeof(__pyx_k_b_mag), 0, 0, 1, 1},
-  {&__pyx_n_s_bc_y_diff, __pyx_k_bc_y_diff, sizeof(__pyx_k_bc_y_diff), 0, 0, 1, 1},
-  {&__pyx_n_s_c_mag, __pyx_k_c_mag, sizeof(__pyx_k_c_mag), 0, 0, 1, 1},
-  {&__pyx_n_s_ca_y_diff, __pyx_k_ca_y_diff, sizeof(__pyx_k_ca_y_diff), 0, 0, 1, 1},
+  {&__pyx_n_s_c_triangles, __pyx_k_c_triangles, sizeof(__pyx_k_c_triangles), 0, 0, 1, 1},
   {&__pyx_n_s_circumcenter, __pyx_k_circumcenter, sizeof(__pyx_k_circumcenter), 0, 0, 1, 1},
   {&__pyx_n_s_cross, __pyx_k_cross, sizeof(__pyx_k_cross), 0, 0, 1, 1},
   {&__pyx_n_s_cur_tri, __pyx_k_cur_tri, sizeof(__pyx_k_cur_tri), 0, 0, 1, 1},
   {&__pyx_n_s_cur_x, __pyx_k_cur_x, sizeof(__pyx_k_cur_x), 0, 0, 1, 1},
   {&__pyx_n_s_cur_y, __pyx_k_cur_y, sizeof(__pyx_k_cur_y), 0, 0, 1, 1},
-  {&__pyx_n_s_cx, __pyx_k_cx, sizeof(__pyx_k_cx), 0, 0, 1, 1},
-  {&__pyx_n_s_cy, __pyx_k_cy, sizeof(__pyx_k_cy), 0, 0, 1, 1},
-  {&__pyx_n_s_d_inv, __pyx_k_d_inv, sizeof(__pyx_k_d_inv), 0, 0, 1, 1},
   {&__pyx_n_s_discard, __pyx_k_discard, sizeof(__pyx_k_discard), 0, 0, 1, 1},
   {&__pyx_n_s_edge, __pyx_k_edge, sizeof(__pyx_k_edge), 0, 0, 1, 1},
   {&__pyx_n_s_edges, __pyx_k_edges, sizeof(__pyx_k_edges), 0, 0, 1, 1},
@@ -3621,7 +3640,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_tri_queue, __pyx_k_tri_queue, sizeof(__pyx_k_tri_queue), 0, 0, 1, 1},
   {&__pyx_n_s_triangle, __pyx_k_triangle, sizeof(__pyx_k_triangle), 0, 0, 1, 1},
   {&__pyx_n_s_triangles, __pyx_k_triangles, sizeof(__pyx_k_triangles), 0, 0, 1, 1},
-  {&__pyx_n_s_triangles_2, __pyx_k_triangles_2, sizeof(__pyx_k_triangles_2), 0, 0, 1, 1},
   {&__pyx_n_s_triangulation, __pyx_k_triangulation, sizeof(__pyx_k_triangulation), 0, 0, 1, 1},
   {&__pyx_n_s_vertex, __pyx_k_vertex, sizeof(__pyx_k_vertex), 0, 0, 1, 1},
   {&__pyx_n_s_x0, __pyx_k_x0, sizeof(__pyx_k_x0), 0, 0, 1, 1},
@@ -3633,7 +3651,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 120, __pyx_L1_error)
   __pyx_builtin_TypeError = __Pyx_GetBuiltinName(__pyx_n_s_TypeError); if (!__pyx_builtin_TypeError) __PYX_ERR(1, 81, __pyx_L1_error)
   __pyx_builtin_OverflowError = __Pyx_GetBuiltinName(__pyx_n_s_OverflowError); if (!__pyx_builtin_OverflowError) __PYX_ERR(1, 81, __pyx_L1_error)
   __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(1, 84, __pyx_L1_error)
@@ -3647,108 +3665,108 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "_triangles.pyx":84
+  /* "c_triangles.pyx":91
  * 
  *     tri_queue |= set(tri.neighbors[tri.neighbors[cur_tri]].flat)
  *     tri_queue.discard(-1)             # <<<<<<<<<<<<<<
  * 
  *     for neighbor in tri_queue:
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_neg_1); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 84, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_int_neg_1); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 91, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
-  /* "_triangles.pyx":113
+  /* "c_triangles.pyx":120
  *     for triangle in triangles:
  * 
  *         for i in range(3):             # <<<<<<<<<<<<<<
  * 
  *             pt1 = triangulation.simplices[triangle][i]
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_int_3); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 113, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_int_3); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 120, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "_triangles.pyx":132
+  /* "c_triangles.pyx":139
  * 
  *     edge = edges[0]
  *     edges = edges[1:]             # <<<<<<<<<<<<<<
  * 
  *     ordered_edges = []
  */
-  __pyx_slice__3 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__3)) __PYX_ERR(0, 132, __pyx_L1_error)
+  __pyx_slice__3 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__3)) __PYX_ERR(0, 139, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__3);
   __Pyx_GIVEREF(__pyx_slice__3);
 
-  /* "_triangles.pyx":154
+  /* "c_triangles.pyx":161
  * 
  * def _area(triangle):
  *     return np.sum(np.cross(triangle, triangle[1:] + [triangle[0]])) / 2.             # <<<<<<<<<<<<<<
  * 
  */
-  __pyx_slice__4 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__4)) __PYX_ERR(0, 154, __pyx_L1_error)
+  __pyx_slice__4 = PySlice_New(__pyx_int_1, Py_None, Py_None); if (unlikely(!__pyx_slice__4)) __PYX_ERR(0, 161, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_slice__4);
   __Pyx_GIVEREF(__pyx_slice__4);
 
-  /* "_triangles.pyx":38
+  /* "c_triangles.pyx":38
  *     return radius
  * 
  * def _circumcenter(double x0, double y0, double x1, double y1, double x2, double y2):             # <<<<<<<<<<<<<<
  * 
- *     cdef double bc_y_diff
+ *     cdef double cur_x
  */
-  __pyx_tuple__5 = PyTuple_Pack(15, __pyx_n_s_x0, __pyx_n_s_y0, __pyx_n_s_x1, __pyx_n_s_y1, __pyx_n_s_x2, __pyx_n_s_y2, __pyx_n_s_bc_y_diff, __pyx_n_s_ca_y_diff, __pyx_n_s_ab_y_diff, __pyx_n_s_d_inv, __pyx_n_s_a_mag, __pyx_n_s_b_mag, __pyx_n_s_c_mag, __pyx_n_s_cx, __pyx_n_s_cy); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(8, __pyx_n_s_x0, __pyx_n_s_y0, __pyx_n_s_x1, __pyx_n_s_y1, __pyx_n_s_x2, __pyx_n_s_y2, __pyx_n_s_cur_x, __pyx_n_s_cur_y); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
-  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(6, 0, 15, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_circumcenter, 38, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(6, 0, 8, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_circumcenter, 38, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 38, __pyx_L1_error)
 
-  /* "_triangles.pyx":66
+  /* "c_triangles.pyx":73
  *     return sqrt(_dist_2(x0, y0, x1, y1))
  * 
  * def _find_nn_triangles(tri, cur_tri, position):             # <<<<<<<<<<<<<<
  * 
  *     cdef:
  */
-  __pyx_tuple__7 = PyTuple_Pack(16, __pyx_n_s_tri, __pyx_n_s_cur_tri, __pyx_n_s_position, __pyx_n_s_x0, __pyx_n_s_y0, __pyx_n_s_x1, __pyx_n_s_y1, __pyx_n_s_x2, __pyx_n_s_y2, __pyx_n_s_triangle, __pyx_n_s_nn, __pyx_n_s_tri_queue, __pyx_n_s_neighbor, __pyx_n_s_cur_x, __pyx_n_s_cur_y, __pyx_n_s_r); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(16, __pyx_n_s_tri, __pyx_n_s_cur_tri, __pyx_n_s_position, __pyx_n_s_x0, __pyx_n_s_y0, __pyx_n_s_x1, __pyx_n_s_y1, __pyx_n_s_x2, __pyx_n_s_y2, __pyx_n_s_triangle, __pyx_n_s_nn, __pyx_n_s_tri_queue, __pyx_n_s_neighbor, __pyx_n_s_cur_x, __pyx_n_s_cur_y, __pyx_n_s_r); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
-  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(3, 0, 16, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_find_nn_triangles, 66, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(3, 0, 16, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_find_nn_triangles, 73, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 73, __pyx_L1_error)
 
-  /* "_triangles.pyx":107
+  /* "c_triangles.pyx":114
  *     return nn
  * 
  * def _find_local_boundary(triangulation, triangles):             # <<<<<<<<<<<<<<
  * 
  *     edges = []
  */
-  __pyx_tuple__9 = PyTuple_Pack(7, __pyx_n_s_triangulation, __pyx_n_s_triangles, __pyx_n_s_edges, __pyx_n_s_triangle, __pyx_n_s_i, __pyx_n_s_pt1, __pyx_n_s_pt2); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_tuple__9 = PyTuple_Pack(7, __pyx_n_s_triangulation, __pyx_n_s_triangles, __pyx_n_s_edges, __pyx_n_s_triangle, __pyx_n_s_i, __pyx_n_s_pt1, __pyx_n_s_pt2); if (unlikely(!__pyx_tuple__9)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__9);
   __Pyx_GIVEREF(__pyx_tuple__9);
-  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_find_local_boundary, 107, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_codeobj__10 = (PyObject*)__Pyx_PyCode_New(2, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__9, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_find_local_boundary, 114, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__10)) __PYX_ERR(0, 114, __pyx_L1_error)
 
-  /* "_triangles.pyx":129
+  /* "c_triangles.pyx":136
  *     return edges
  * 
  * def _order_edges(edges):             # <<<<<<<<<<<<<<
  * 
  *     edge = edges[0]
  */
-  __pyx_tuple__11 = PyTuple_Pack(7, __pyx_n_s_edges, __pyx_n_s_edge, __pyx_n_s_ordered_edges, __pyx_n_s_num_max, __pyx_n_s_match, __pyx_n_s_search_edge, __pyx_n_s_vertex); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_tuple__11 = PyTuple_Pack(7, __pyx_n_s_edges, __pyx_n_s_edge, __pyx_n_s_ordered_edges, __pyx_n_s_num_max, __pyx_n_s_match, __pyx_n_s_search_edge, __pyx_n_s_vertex); if (unlikely(!__pyx_tuple__11)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__11);
   __Pyx_GIVEREF(__pyx_tuple__11);
-  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_order_edges, 129, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_codeobj__12 = (PyObject*)__Pyx_PyCode_New(1, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__11, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_order_edges, 136, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__12)) __PYX_ERR(0, 136, __pyx_L1_error)
 
-  /* "_triangles.pyx":153
+  /* "c_triangles.pyx":160
  *     return ordered_edges
  * 
  * def _area(triangle):             # <<<<<<<<<<<<<<
  *     return np.sum(np.cross(triangle, triangle[1:] + [triangle[0]])) / 2.
  * 
  */
-  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_n_s_triangle); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_tuple__13 = PyTuple_Pack(1, __pyx_n_s_triangle); if (unlikely(!__pyx_tuple__13)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__13);
   __Pyx_GIVEREF(__pyx_tuple__13);
-  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__13, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_area, 153, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_codeobj__14 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__13, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_area, 160, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__14)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -3769,11 +3787,11 @@ static int __Pyx_InitGlobals(void) {
 }
 
 #if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC init_triangles(void); /*proto*/
-PyMODINIT_FUNC init_triangles(void)
+PyMODINIT_FUNC initc_triangles(void); /*proto*/
+PyMODINIT_FUNC initc_triangles(void)
 #else
-PyMODINIT_FUNC PyInit__triangles(void); /*proto*/
-PyMODINIT_FUNC PyInit__triangles(void)
+PyMODINIT_FUNC PyInit_c_triangles(void); /*proto*/
+PyMODINIT_FUNC PyInit_c_triangles(void)
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
@@ -3787,7 +3805,7 @@ PyMODINIT_FUNC PyInit__triangles(void)
           Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
-  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit__triangles(void)", 0);
+  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_c_triangles(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -3816,7 +3834,7 @@ PyMODINIT_FUNC PyInit__triangles(void)
   #endif
   /*--- Module creation code ---*/
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("_triangles", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("c_triangles", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -3833,14 +3851,14 @@ PyMODINIT_FUNC PyInit__triangles(void)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main__triangles) {
+  if (__pyx_module_is_main_c_triangles) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "_triangles")) {
-      if (unlikely(PyDict_SetItemString(modules, "_triangles", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "c_triangles")) {
+      if (unlikely(PyDict_SetItemString(modules, "c_triangles", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -3860,7 +3878,7 @@ PyMODINIT_FUNC PyInit__triangles(void)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "_triangles.pyx":2
+  /* "c_triangles.pyx":2
  * from libc.math cimport sqrt
  * import numpy as np             # <<<<<<<<<<<<<<
  * 
@@ -3871,67 +3889,67 @@ PyMODINIT_FUNC PyInit__triangles(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":38
+  /* "c_triangles.pyx":38
  *     return radius
  * 
  * def _circumcenter(double x0, double y0, double x1, double y1, double x2, double y2):             # <<<<<<<<<<<<<<
  * 
- *     cdef double bc_y_diff
+ *     cdef double cur_x
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10_triangles_1_circumcenter, NULL, __pyx_n_s_triangles_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_11c_triangles_1_circumcenter, NULL, __pyx_n_s_c_triangles); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_circumcenter, __pyx_t_1) < 0) __PYX_ERR(0, 38, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":66
+  /* "c_triangles.pyx":73
  *     return sqrt(_dist_2(x0, y0, x1, y1))
  * 
  * def _find_nn_triangles(tri, cur_tri, position):             # <<<<<<<<<<<<<<
  * 
  *     cdef:
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10_triangles_3_find_nn_triangles, NULL, __pyx_n_s_triangles_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 66, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_11c_triangles_3_find_nn_triangles, NULL, __pyx_n_s_c_triangles); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_find_nn_triangles, __pyx_t_1) < 0) __PYX_ERR(0, 66, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_find_nn_triangles, __pyx_t_1) < 0) __PYX_ERR(0, 73, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":107
+  /* "c_triangles.pyx":114
  *     return nn
  * 
  * def _find_local_boundary(triangulation, triangles):             # <<<<<<<<<<<<<<
  * 
  *     edges = []
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10_triangles_5_find_local_boundary, NULL, __pyx_n_s_triangles_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 107, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_11c_triangles_5_find_local_boundary, NULL, __pyx_n_s_c_triangles); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_find_local_boundary, __pyx_t_1) < 0) __PYX_ERR(0, 107, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_find_local_boundary, __pyx_t_1) < 0) __PYX_ERR(0, 114, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":129
+  /* "c_triangles.pyx":136
  *     return edges
  * 
  * def _order_edges(edges):             # <<<<<<<<<<<<<<
  * 
  *     edge = edges[0]
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10_triangles_7_order_edges, NULL, __pyx_n_s_triangles_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 129, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_11c_triangles_7_order_edges, NULL, __pyx_n_s_c_triangles); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_order_edges, __pyx_t_1) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_order_edges, __pyx_t_1) < 0) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":153
+  /* "c_triangles.pyx":160
  *     return ordered_edges
  * 
  * def _area(triangle):             # <<<<<<<<<<<<<<
  *     return np.sum(np.cross(triangle, triangle[1:] + [triangle[0]])) / 2.
  * 
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_10_triangles_9_area, NULL, __pyx_n_s_triangles_2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 153, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_11c_triangles_9_area, NULL, __pyx_n_s_c_triangles); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_area, __pyx_t_1) < 0) __PYX_ERR(0, 153, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_area, __pyx_t_1) < 0) __PYX_ERR(0, 160, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_triangles.pyx":1
+  /* "c_triangles.pyx":1
  * from libc.math cimport sqrt             # <<<<<<<<<<<<<<
  * import numpy as np
  * 
@@ -3956,11 +3974,11 @@ PyMODINIT_FUNC PyInit__triangles(void)
   __Pyx_XDECREF(__pyx_t_1);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init _triangles", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init c_triangles", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init _triangles");
+    PyErr_SetString(PyExc_ImportError, "init c_triangles");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

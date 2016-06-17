@@ -1,8 +1,7 @@
 import numpy as np
 
-from metpy.mapping import _triangles, _polygons
+from metpy.mapping import c_triangles, c_polygons
 from scipy.spatial import Delaunay, ConvexHull
-
 
 def natural_neighbor(xp, yp, variable, grid_points):
 
@@ -18,18 +17,19 @@ def natural_neighbor(xp, yp, variable, grid_points):
 
         if cur_tri != -1:
 
-            neighbors = _triangles._find_nn_triangles(tri, cur_tri, grid)
+            neighbors = c_triangles._find_nn_triangles(tri, cur_tri, grid)
 
             new_tri = tri.simplices[neighbors]
 
-            edges = _triangles._find_local_boundary(tri, neighbors)
+            edges = c_triangles._find_local_boundary(tri, neighbors)
 
-            starting_indices = [segment[0] for segment in _polygons._order_edges(edges)]
+            starting_indices = [segment[0] for segment in c_polygons._order_edges(edges)]
 
             edge_vertices = tri.points[starting_indices]
 
             area_list = []
             num_vertices = len(edge_vertices)
+
             for i in range(num_vertices):
 
                 p1 = edge_vertices[i]
@@ -38,20 +38,20 @@ def natural_neighbor(xp, yp, variable, grid_points):
 
                 polygon = []
 
-                polygon.append(_triangles._circumcenter(grid[0], grid[1], p1[0], p1[1], p2[0], p2[1]))
-                polygon.append(_triangles._circumcenter(grid[0], grid[1], p2[0], p2[1], p3[0], p3[1]))
+                polygon.append(c_triangles._circumcenter(grid[0], grid[1], p1[0], p1[1], p2[0], p2[1]))
+                polygon.append(c_triangles._circumcenter(grid[0], grid[1], p2[0], p2[1], p3[0], p3[1]))
 
                 for new in new_tri:
                     points = tri.points[new]
                     if p2 in points:
-                        polygon.append(_triangles._circumcenter(points[0, 0], points[0, 1],
-                                                     points[1, 0], points[1, 1],
-                                                     points[2, 0], points[2, 1]))
+                        polygon.append(c_triangles._circumcenter(points[0, 0], points[0, 1],
+                                                                 points[1, 0], points[1, 1],
+                                                                 points[2, 0], points[2, 1]))
 
                 pts = [polygon[i] for i in ConvexHull(polygon).vertices]
                 value = variable[(p2[0]==xp) & (p2[1]==yp)]
 
-                cur_area = _polygons._area(pts)
+                cur_area = c_polygons._area(pts)
                 total_area += cur_area
 
                 area_list.append(cur_area * value[0])

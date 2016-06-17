@@ -30,6 +30,7 @@ def natural_neighbor(xp, yp, variable, grid_points):
 
             area_list = []
             num_vertices = len(edge_vertices)
+
             for i in range(num_vertices):
 
                 p1 = edge_vertices[i]
@@ -55,7 +56,6 @@ def natural_neighbor(xp, yp, variable, grid_points):
                 area_list.append(cur_area * value[0])
 
             img[ind] = sum([x / total_area for x in area_list])
-                #np.dot(area_list[:, 0], area_list[:, 1]) / total_area
 
     return img
 

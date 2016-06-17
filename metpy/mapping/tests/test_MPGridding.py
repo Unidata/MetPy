@@ -1,4 +1,7 @@
 from metpy.cbook import get_test_data
+import cartopy.crs as ccrs
+from metpy.mapping import points
+from metpy.mapping import interpolation
 import numpy as np
 
 def make_string_list(arr):
@@ -61,3 +64,30 @@ def state_capitol_wx_stations():
             'New Hampshire':'KCON', 'Maine':'KAUG', 'Massachusetts':'KBOS',
             'Rhode Island':'KPVD', 'Connecticut':'KHFD', 'New Jersey':'KTTN',
             'Delaware':'KDOV' }
+
+def run_test():
+
+
+    from_proj = ccrs.Geodetic()
+    to_proj = ccrs.AlbersEqualArea(central_longitude=-97.0000, central_latitude=38.0000)
+
+    x, y, temp = station_test_data("air_temperature", from_proj, to_proj)
+
+    x = x[~np.isnan(temp)]
+    y = y[~np.isnan(temp)]
+    temp = temp[~np.isnan(temp)]
+
+    xres = 100000
+    yres = 100000
+
+    x = x + xres
+    y = y - yres
+
+    grid_x, grid_y = points.generate_grid(xres, yres, points.get_boundary_coords(x, y))
+
+    grids = points.generate_grid_coords(grid_x, grid_y)
+    img = interpolation.natural_neighbor(x, y, temp, grids)
+
+    img = img.reshape(grid_x.shape)
+
+    return img

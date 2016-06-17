@@ -258,8 +258,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE___points
-#define __PYX_HAVE_API___points
+#define __PYX_HAVE__c_points
+#define __PYX_HAVE_API__c_points
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -475,7 +475,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "_points.pyx",
+  "c_points.pyx",
 };
 
 /*--- Type declarations ---*/
@@ -702,11 +702,11 @@ static int __Pyx_check_binary_version(void);
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
-/* Module declarations from '_points' */
-#define __Pyx_MODULE_NAME "_points"
-int __pyx_module_is_main__points = 0;
+/* Module declarations from 'c_points' */
+#define __Pyx_MODULE_NAME "c_points"
+int __pyx_module_is_main_c_points = 0;
 
-/* Implementation of '_points' */
+/* Implementation of 'c_points' */
 static const char __pyx_k_T[] = "T";
 static const char __pyx_k_r[] = "r";
 static const char __pyx_k_x[] = "x";
@@ -748,7 +748,6 @@ static const char __pyx_k_flipud[] = "flipud";
 static const char __pyx_k_grid_x[] = "grid_x";
 static const char __pyx_k_grid_y[] = "grid_y";
 static const char __pyx_k_import[] = "__import__";
-static const char __pyx_k_points[] = "_points";
 static const char __pyx_k_vstack[] = "vstack";
 static const char __pyx_k_cKDTree[] = "cKDTree";
 static const char __pyx_k_indices[] = "indices";
@@ -759,6 +758,7 @@ static const char __pyx_k_x_steps[] = "x_steps";
 static const char __pyx_k_y_match[] = "y_match";
 static const char __pyx_k_y_range[] = "y_range";
 static const char __pyx_k_y_steps[] = "y_steps";
+static const char __pyx_k_c_points[] = "c_points";
 static const char __pyx_k_gaussian[] = "gaussian";
 static const char __pyx_k_linspace[] = "linspace";
 static const char __pyx_k_meshgrid[] = "meshgrid";
@@ -787,7 +787,7 @@ static const char __pyx_k_get_boundary_coords[] = "get_boundary_coords";
 static const char __pyx_k_get_points_within_r[] = "get_points_within_r";
 static const char __pyx_k_generate_grid_coords[] = "generate_grid_coords";
 static const char __pyx_k_get_point_count_within_r[] = "get_point_count_within_r";
-static const char __pyx_k_C_Users_ahaberli_Documents_GitHu[] = "C:\\Users\\ahaberli\\Documents\\GitHub\\MetPy\\metpy\\mapping\\_points.pyx";
+static const char __pyx_k_C_Users_ahaberli_Documents_GitHu[] = "C:\\Users\\ahaberli\\Documents\\GitHub\\MetPy\\metpy\\mapping\\c_points.pyx";
 static const char __pyx_k_Grids_less_than_10km_may_be_slow[] = "Grids less than 10km may be slow to load at synoptic scale.";
 static const char __pyx_k_Set_ignore_warnings_to_True_to_r[] = "Set ignore_warnings to True to run anyway. Defaulting to 10km";
 static PyObject *__pyx_kp_s_C_Users_ahaberli_Documents_GitHu;
@@ -799,6 +799,7 @@ static PyObject *__pyx_n_s_array;
 static PyObject *__pyx_n_s_bbox;
 static PyObject *__pyx_n_s_bins;
 static PyObject *__pyx_n_s_cKDTree;
+static PyObject *__pyx_n_s_c_points;
 static PyObject *__pyx_n_s_ceil;
 static PyObject *__pyx_n_s_center_point;
 static PyObject *__pyx_n_s_center_points;
@@ -838,7 +839,6 @@ static PyObject *__pyx_n_s_north;
 static PyObject *__pyx_n_s_northeast;
 static PyObject *__pyx_n_s_np;
 static PyObject *__pyx_n_s_numpy;
-static PyObject *__pyx_n_s_points;
 static PyObject *__pyx_n_s_print;
 static PyObject *__pyx_n_s_query_ball_point;
 static PyObject *__pyx_n_s_r;
@@ -873,15 +873,15 @@ static PyObject *__pyx_n_s_y_range;
 static PyObject *__pyx_n_s_y_steps;
 static PyObject *__pyx_n_s_yi;
 static PyObject *__pyx_n_s_ys;
-static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_xi, PyObject *__pyx_v_yi, PyObject *__pyx_v_xs, PyObject *__pyx_v_ys, PyObject *__pyx_v_high_accuracy); /* proto */
-static PyObject *__pyx_pf_7_points_2get_points_within_r(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_center_point, PyObject *__pyx_v_target_points, PyObject *__pyx_v_r, CYTHON_UNUSED PyObject *__pyx_v_return_idx); /* proto */
-static PyObject *__pyx_pf_7_points_4get_point_count_within_r(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_center_points, PyObject *__pyx_v_target_points, PyObject *__pyx_v_r); /* proto */
-static PyObject *__pyx_pf_7_points_6smoothed_freq_map(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x_points, PyObject *__pyx_v_y_points, CYTHON_UNUSED PyObject *__pyx_v_bbox, PyObject *__pyx_v_x_steps, PyObject *__pyx_v_y_steps, PyObject *__pyx_v_gaussian); /* proto */
-static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x_dim, PyObject *__pyx_v_y_dim, PyObject *__pyx_v_bbox, PyObject *__pyx_v_ignore_warnings); /* proto */
-static PyObject *__pyx_pf_7_points_10generate_grid_coords(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_gx, PyObject *__pyx_v_gy); /* proto */
-static PyObject *__pyx_pf_7_points_12get_xy_range(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_bbox); /* proto */
-static PyObject *__pyx_pf_7_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_bbox, PyObject *__pyx_v_x_dim, PyObject *__pyx_v_y_dim); /* proto */
-static PyObject *__pyx_pf_7_points_16get_boundary_coords(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x, PyObject *__pyx_v_y, PyObject *__pyx_v_spatial_pad); /* proto */
+static PyObject *__pyx_pf_8c_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_xi, PyObject *__pyx_v_yi, PyObject *__pyx_v_xs, PyObject *__pyx_v_ys, PyObject *__pyx_v_high_accuracy); /* proto */
+static PyObject *__pyx_pf_8c_points_2get_points_within_r(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_center_point, PyObject *__pyx_v_target_points, PyObject *__pyx_v_r, CYTHON_UNUSED PyObject *__pyx_v_return_idx); /* proto */
+static PyObject *__pyx_pf_8c_points_4get_point_count_within_r(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_center_points, PyObject *__pyx_v_target_points, PyObject *__pyx_v_r); /* proto */
+static PyObject *__pyx_pf_8c_points_6smoothed_freq_map(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x_points, PyObject *__pyx_v_y_points, CYTHON_UNUSED PyObject *__pyx_v_bbox, PyObject *__pyx_v_x_steps, PyObject *__pyx_v_y_steps, PyObject *__pyx_v_gaussian); /* proto */
+static PyObject *__pyx_pf_8c_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x_dim, PyObject *__pyx_v_y_dim, PyObject *__pyx_v_bbox, PyObject *__pyx_v_ignore_warnings); /* proto */
+static PyObject *__pyx_pf_8c_points_10generate_grid_coords(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_gx, PyObject *__pyx_v_gy); /* proto */
+static PyObject *__pyx_pf_8c_points_12get_xy_range(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_bbox); /* proto */
+static PyObject *__pyx_pf_8c_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_bbox, PyObject *__pyx_v_x_dim, PyObject *__pyx_v_y_dim); /* proto */
+static PyObject *__pyx_pf_8c_points_16get_boundary_coords(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x, PyObject *__pyx_v_y, PyObject *__pyx_v_spatial_pad); /* proto */
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_10000;
 static PyObject *__pyx_tuple_;
@@ -903,7 +903,7 @@ static PyObject *__pyx_codeobj__15;
 static PyObject *__pyx_codeobj__17;
 static PyObject *__pyx_codeobj__19;
 
-/* "_points.pyx":6
+/* "c_points.pyx":6
  * 
  * 
  * def lookup_values(xi, yi, xs, ys, high_accuracy=False):             # <<<<<<<<<<<<<<
@@ -912,9 +912,9 @@ static PyObject *__pyx_codeobj__19;
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7_points_1lookup_values(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_7_points_1lookup_values = {"lookup_values", (PyCFunction)__pyx_pw_7_points_1lookup_values, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_7_points_1lookup_values(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8c_points_1lookup_values(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_8c_points_1lookup_values = {"lookup_values", (PyCFunction)__pyx_pw_8c_points_1lookup_values, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_8c_points_1lookup_values(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_xi = 0;
   PyObject *__pyx_v_yi = 0;
   PyObject *__pyx_v_xs = 0;
@@ -989,18 +989,18 @@ static PyObject *__pyx_pw_7_points_1lookup_values(PyObject *__pyx_self, PyObject
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("lookup_values", 0, 4, 5, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 6, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_points.lookup_values", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.lookup_values", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7_points_lookup_values(__pyx_self, __pyx_v_xi, __pyx_v_yi, __pyx_v_xs, __pyx_v_ys, __pyx_v_high_accuracy);
+  __pyx_r = __pyx_pf_8c_points_lookup_values(__pyx_self, __pyx_v_xi, __pyx_v_yi, __pyx_v_xs, __pyx_v_ys, __pyx_v_high_accuracy);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_xi, PyObject *__pyx_v_yi, PyObject *__pyx_v_xs, PyObject *__pyx_v_ys, PyObject *__pyx_v_high_accuracy) {
+static PyObject *__pyx_pf_8c_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_xi, PyObject *__pyx_v_yi, PyObject *__pyx_v_xs, PyObject *__pyx_v_ys, PyObject *__pyx_v_high_accuracy) {
   PyObject *__pyx_v_x_match = NULL;
   PyObject *__pyx_v_y_match = NULL;
   PyObject *__pyx_r = NULL;
@@ -1015,7 +1015,7 @@ static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_s
   Py_ssize_t __pyx_t_8;
   __Pyx_RefNannySetupContext("lookup_values", 0);
 
-  /* "_points.pyx":7
+  /* "c_points.pyx":7
  * 
  * def lookup_values(xi, yi, xs, ys, high_accuracy=False):
  *     if not high_accuracy:             # <<<<<<<<<<<<<<
@@ -1026,7 +1026,7 @@ static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_s
   __pyx_t_2 = ((!__pyx_t_1) != 0);
   if (__pyx_t_2) {
 
-    /* "_points.pyx":8
+    /* "c_points.pyx":8
  * def lookup_values(xi, yi, xs, ys, high_accuracy=False):
  *     if not high_accuracy:
  *         x_match = np.array(xi, dtype=int) == np.array(xs, dtype=int)             # <<<<<<<<<<<<<<
@@ -1075,7 +1075,7 @@ static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_s
     __pyx_v_x_match = __pyx_t_4;
     __pyx_t_4 = 0;
 
-    /* "_points.pyx":9
+    /* "c_points.pyx":9
  *     if not high_accuracy:
  *         x_match = np.array(xi, dtype=int) == np.array(xs, dtype=int)
  *         y_match = np.array(yi, dtype=int) == np.array(ys, dtype=int)             # <<<<<<<<<<<<<<
@@ -1124,7 +1124,7 @@ static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_s
     __pyx_v_y_match = __pyx_t_7;
     __pyx_t_7 = 0;
 
-    /* "_points.pyx":7
+    /* "c_points.pyx":7
  * 
  * def lookup_values(xi, yi, xs, ys, high_accuracy=False):
  *     if not high_accuracy:             # <<<<<<<<<<<<<<
@@ -1134,7 +1134,7 @@ static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_s
     goto __pyx_L3;
   }
 
-  /* "_points.pyx":11
+  /* "c_points.pyx":11
  *         y_match = np.array(yi, dtype=int) == np.array(ys, dtype=int)
  *     else:
  *         x_match = np.isclose(xi, xs)             # <<<<<<<<<<<<<<
@@ -1177,7 +1177,7 @@ static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_s
     __pyx_v_x_match = __pyx_t_7;
     __pyx_t_7 = 0;
 
-    /* "_points.pyx":12
+    /* "c_points.pyx":12
  *     else:
  *         x_match = np.isclose(xi, xs)
  *         y_match = np.isclose(yi, ys)             # <<<<<<<<<<<<<<
@@ -1221,7 +1221,7 @@ static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_s
   }
   __pyx_L3:;
 
-  /* "_points.pyx":14
+  /* "c_points.pyx":14
  *         y_match = np.isclose(yi, ys)
  * 
  *     return np.where((x_match == True) & (y_match == True))             # <<<<<<<<<<<<<<
@@ -1270,7 +1270,7 @@ static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_s
   __pyx_t_7 = 0;
   goto __pyx_L0;
 
-  /* "_points.pyx":6
+  /* "c_points.pyx":6
  * 
  * 
  * def lookup_values(xi, yi, xs, ys, high_accuracy=False):             # <<<<<<<<<<<<<<
@@ -1285,7 +1285,7 @@ static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_s
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("_points.lookup_values", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.lookup_values", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_x_match);
@@ -1295,7 +1295,7 @@ static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_s
   return __pyx_r;
 }
 
-/* "_points.pyx":17
+/* "c_points.pyx":17
  * 
  * 
  * def get_points_within_r(center_point, target_points, r, return_idx=False):             # <<<<<<<<<<<<<<
@@ -1304,10 +1304,10 @@ static PyObject *__pyx_pf_7_points_lookup_values(CYTHON_UNUSED PyObject *__pyx_s
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7_points_3get_points_within_r(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7_points_2get_points_within_r[] = "Get all target_points within a specified radius\n    of a center point.  All data must be in same coord-\n    inate system, or you will get unpredictable results.\n\n    Parameters\n    ----------\n    center_points: (X, Y) ndarray\n        location from which to grab surrounding points within r\n    target_points: (X, Y) ndarray\n        points from which to return if they are within r of center_points\n    r: integer\n        search radius around center_points to grab target_points\n    return_idx: bool\n        If true, function will return indices of winning points\n        If false (default), function will return list of winning points\n\n    Returns\n    -------\n    (X, Y) ndarray\n        A list of points within r distance of, and in the same\n        order as, center_points\n    ";
-static PyMethodDef __pyx_mdef_7_points_3get_points_within_r = {"get_points_within_r", (PyCFunction)__pyx_pw_7_points_3get_points_within_r, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7_points_2get_points_within_r};
-static PyObject *__pyx_pw_7_points_3get_points_within_r(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8c_points_3get_points_within_r(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_8c_points_2get_points_within_r[] = "Get all target_points within a specified radius\n    of a center point.  All data must be in same coord-\n    inate system, or you will get unpredictable results.\n\n    Parameters\n    ----------\n    center_points: (X, Y) ndarray\n        location from which to grab surrounding points within r\n    target_points: (X, Y) ndarray\n        points from which to return if they are within r of center_points\n    r: integer\n        search radius around center_points to grab target_points\n    return_idx: bool\n        If true, function will return indices of winning points\n        If false (default), function will return list of winning points\n\n    Returns\n    -------\n    (X, Y) ndarray\n        A list of points within r distance of, and in the same\n        order as, center_points\n    ";
+static PyMethodDef __pyx_mdef_8c_points_3get_points_within_r = {"get_points_within_r", (PyCFunction)__pyx_pw_8c_points_3get_points_within_r, METH_VARARGS|METH_KEYWORDS, __pyx_doc_8c_points_2get_points_within_r};
+static PyObject *__pyx_pw_8c_points_3get_points_within_r(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_center_point = 0;
   PyObject *__pyx_v_target_points = 0;
   PyObject *__pyx_v_r = 0;
@@ -1373,18 +1373,18 @@ static PyObject *__pyx_pw_7_points_3get_points_within_r(PyObject *__pyx_self, Py
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("get_points_within_r", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 17, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_points.get_points_within_r", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.get_points_within_r", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7_points_2get_points_within_r(__pyx_self, __pyx_v_center_point, __pyx_v_target_points, __pyx_v_r, __pyx_v_return_idx);
+  __pyx_r = __pyx_pf_8c_points_2get_points_within_r(__pyx_self, __pyx_v_center_point, __pyx_v_target_points, __pyx_v_r, __pyx_v_return_idx);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7_points_2get_points_within_r(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_center_point, PyObject *__pyx_v_target_points, PyObject *__pyx_v_r, CYTHON_UNUSED PyObject *__pyx_v_return_idx) {
+static PyObject *__pyx_pf_8c_points_2get_points_within_r(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_center_point, PyObject *__pyx_v_target_points, PyObject *__pyx_v_r, CYTHON_UNUSED PyObject *__pyx_v_return_idx) {
   PyObject *__pyx_v_tree = NULL;
   PyObject *__pyx_v_indices = NULL;
   PyObject *__pyx_r = NULL;
@@ -1396,7 +1396,7 @@ static PyObject *__pyx_pf_7_points_2get_points_within_r(CYTHON_UNUSED PyObject *
   Py_ssize_t __pyx_t_5;
   __Pyx_RefNannySetupContext("get_points_within_r", 0);
 
-  /* "_points.pyx":41
+  /* "c_points.pyx":41
  *     '''
  * 
  *     tree = cKDTree(target_points)             # <<<<<<<<<<<<<<
@@ -1433,7 +1433,7 @@ static PyObject *__pyx_pf_7_points_2get_points_within_r(CYTHON_UNUSED PyObject *
   __pyx_v_tree = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_points.pyx":42
+  /* "c_points.pyx":42
  * 
  *     tree = cKDTree(target_points)
  *     indices = tree.query_ball_point(center_point, r)             # <<<<<<<<<<<<<<
@@ -1472,7 +1472,7 @@ static PyObject *__pyx_pf_7_points_2get_points_within_r(CYTHON_UNUSED PyObject *
   __pyx_v_indices = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_points.pyx":43
+  /* "c_points.pyx":43
  *     tree = cKDTree(target_points)
  *     indices = tree.query_ball_point(center_point, r)
  *     return tree.data[indices].T             # <<<<<<<<<<<<<<
@@ -1492,7 +1492,7 @@ static PyObject *__pyx_pf_7_points_2get_points_within_r(CYTHON_UNUSED PyObject *
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "_points.pyx":17
+  /* "c_points.pyx":17
  * 
  * 
  * def get_points_within_r(center_point, target_points, r, return_idx=False):             # <<<<<<<<<<<<<<
@@ -1506,7 +1506,7 @@ static PyObject *__pyx_pf_7_points_2get_points_within_r(CYTHON_UNUSED PyObject *
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("_points.get_points_within_r", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.get_points_within_r", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_tree);
@@ -1516,7 +1516,7 @@ static PyObject *__pyx_pf_7_points_2get_points_within_r(CYTHON_UNUSED PyObject *
   return __pyx_r;
 }
 
-/* "_points.pyx":46
+/* "c_points.pyx":46
  * 
  * 
  * def get_point_count_within_r(center_points, target_points, r):             # <<<<<<<<<<<<<<
@@ -1525,10 +1525,10 @@ static PyObject *__pyx_pf_7_points_2get_points_within_r(CYTHON_UNUSED PyObject *
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7_points_5get_point_count_within_r(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7_points_4get_point_count_within_r[] = "Get count of target points within a specified radius\n    from center points.  All data must be in same coord-\n    inate system, or you will get unpredictable results.\n\n    Parameters\n    ----------\n    center_points: (X, Y) ndarray\n        locations from which to grab surrounding points within r\n    target_points: (X, Y) ndarray\n        points from which to return if they are within r of center_points\n    r: integer\n        search radius around center_points to grab target_points\n\n    Returns\n    -------\n        A list of point counts within r distance of, and in the same\n        order as, center_points\n    ";
-static PyMethodDef __pyx_mdef_7_points_5get_point_count_within_r = {"get_point_count_within_r", (PyCFunction)__pyx_pw_7_points_5get_point_count_within_r, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7_points_4get_point_count_within_r};
-static PyObject *__pyx_pw_7_points_5get_point_count_within_r(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8c_points_5get_point_count_within_r(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_8c_points_4get_point_count_within_r[] = "Get count of target points within a specified radius\n    from center points.  All data must be in same coord-\n    inate system, or you will get unpredictable results.\n\n    Parameters\n    ----------\n    center_points: (X, Y) ndarray\n        locations from which to grab surrounding points within r\n    target_points: (X, Y) ndarray\n        points from which to return if they are within r of center_points\n    r: integer\n        search radius around center_points to grab target_points\n\n    Returns\n    -------\n        A list of point counts within r distance of, and in the same\n        order as, center_points\n    ";
+static PyMethodDef __pyx_mdef_8c_points_5get_point_count_within_r = {"get_point_count_within_r", (PyCFunction)__pyx_pw_8c_points_5get_point_count_within_r, METH_VARARGS|METH_KEYWORDS, __pyx_doc_8c_points_4get_point_count_within_r};
+static PyObject *__pyx_pw_8c_points_5get_point_count_within_r(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_center_points = 0;
   PyObject *__pyx_v_target_points = 0;
   PyObject *__pyx_v_r = 0;
@@ -1582,18 +1582,18 @@ static PyObject *__pyx_pw_7_points_5get_point_count_within_r(PyObject *__pyx_sel
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("get_point_count_within_r", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 46, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_points.get_point_count_within_r", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.get_point_count_within_r", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7_points_4get_point_count_within_r(__pyx_self, __pyx_v_center_points, __pyx_v_target_points, __pyx_v_r);
+  __pyx_r = __pyx_pf_8c_points_4get_point_count_within_r(__pyx_self, __pyx_v_center_points, __pyx_v_target_points, __pyx_v_r);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7_points_4get_point_count_within_r(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_center_points, PyObject *__pyx_v_target_points, PyObject *__pyx_v_r) {
+static PyObject *__pyx_pf_8c_points_4get_point_count_within_r(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_center_points, PyObject *__pyx_v_target_points, PyObject *__pyx_v_r) {
   PyObject *__pyx_v_tree = NULL;
   PyObject *__pyx_v_indices = NULL;
   PyObject *__pyx_v_x = NULL;
@@ -1609,7 +1609,7 @@ static PyObject *__pyx_pf_7_points_4get_point_count_within_r(CYTHON_UNUSED PyObj
   Py_ssize_t __pyx_t_8;
   __Pyx_RefNannySetupContext("get_point_count_within_r", 0);
 
-  /* "_points.pyx":66
+  /* "c_points.pyx":66
  *     '''
  * 
  *     tree = cKDTree(target_points)             # <<<<<<<<<<<<<<
@@ -1646,7 +1646,7 @@ static PyObject *__pyx_pf_7_points_4get_point_count_within_r(CYTHON_UNUSED PyObj
   __pyx_v_tree = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_points.pyx":67
+  /* "c_points.pyx":67
  * 
  *     tree = cKDTree(target_points)
  *     indices = tree.query_ball_point(center_points, r)             # <<<<<<<<<<<<<<
@@ -1685,7 +1685,7 @@ static PyObject *__pyx_pf_7_points_4get_point_count_within_r(CYTHON_UNUSED PyObj
   __pyx_v_indices = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_points.pyx":68
+  /* "c_points.pyx":68
  *     tree = cKDTree(target_points)
  *     indices = tree.query_ball_point(center_points, r)
  *     return np.array([len(x) for x in indices])             # <<<<<<<<<<<<<<
@@ -1778,7 +1778,7 @@ static PyObject *__pyx_pf_7_points_4get_point_count_within_r(CYTHON_UNUSED PyObj
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "_points.pyx":46
+  /* "c_points.pyx":46
  * 
  * 
  * def get_point_count_within_r(center_points, target_points, r):             # <<<<<<<<<<<<<<
@@ -1793,7 +1793,7 @@ static PyObject *__pyx_pf_7_points_4get_point_count_within_r(CYTHON_UNUSED PyObj
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_7);
-  __Pyx_AddTraceback("_points.get_point_count_within_r", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.get_point_count_within_r", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_tree);
@@ -1804,7 +1804,7 @@ static PyObject *__pyx_pf_7_points_4get_point_count_within_r(CYTHON_UNUSED PyObj
   return __pyx_r;
 }
 
-/* "_points.pyx":71
+/* "c_points.pyx":71
  * 
  * 
  * def smoothed_freq_map(x_points, y_points, bbox, x_steps, y_steps, gaussian):             # <<<<<<<<<<<<<<
@@ -1813,10 +1813,10 @@ static PyObject *__pyx_pf_7_points_4get_point_count_within_r(CYTHON_UNUSED PyObj
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7_points_7smoothed_freq_map(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7_points_6smoothed_freq_map[] = "Create smoothed spatial frequency map of points per user\n    defined grid cell within a specified extent.  All values are\n    assumed to be in the same coordinate system.\n\n    Parameters\n    ----------\n    x_points: array-like\n        x_coordinates used to calculate counts per grid cell\n    y_points: array-like\n        y_coordinates used to calculate counts per grid cell\n    bbox: dictionary of boundary coordinates\n        spatial bounding box of histogram\n    steps: (X_size, Y_size) ndarray\n        size of the grid cells\n    gaussian: floating point\n        size of smoothing window\n\n    Returns\n    -------\n        A smoothed frequency grid\n    ";
-static PyMethodDef __pyx_mdef_7_points_7smoothed_freq_map = {"smoothed_freq_map", (PyCFunction)__pyx_pw_7_points_7smoothed_freq_map, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7_points_6smoothed_freq_map};
-static PyObject *__pyx_pw_7_points_7smoothed_freq_map(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8c_points_7smoothed_freq_map(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_8c_points_6smoothed_freq_map[] = "Create smoothed spatial frequency map of points per user\n    defined grid cell within a specified extent.  All values are\n    assumed to be in the same coordinate system.\n\n    Parameters\n    ----------\n    x_points: array-like\n        x_coordinates used to calculate counts per grid cell\n    y_points: array-like\n        y_coordinates used to calculate counts per grid cell\n    bbox: dictionary of boundary coordinates\n        spatial bounding box of histogram\n    steps: (X_size, Y_size) ndarray\n        size of the grid cells\n    gaussian: floating point\n        size of smoothing window\n\n    Returns\n    -------\n        A smoothed frequency grid\n    ";
+static PyMethodDef __pyx_mdef_8c_points_7smoothed_freq_map = {"smoothed_freq_map", (PyCFunction)__pyx_pw_8c_points_7smoothed_freq_map, METH_VARARGS|METH_KEYWORDS, __pyx_doc_8c_points_6smoothed_freq_map};
+static PyObject *__pyx_pw_8c_points_7smoothed_freq_map(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_x_points = 0;
   PyObject *__pyx_v_y_points = 0;
   CYTHON_UNUSED PyObject *__pyx_v_bbox = 0;
@@ -1897,18 +1897,18 @@ static PyObject *__pyx_pw_7_points_7smoothed_freq_map(PyObject *__pyx_self, PyOb
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("smoothed_freq_map", 1, 6, 6, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 71, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_points.smoothed_freq_map", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.smoothed_freq_map", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7_points_6smoothed_freq_map(__pyx_self, __pyx_v_x_points, __pyx_v_y_points, __pyx_v_bbox, __pyx_v_x_steps, __pyx_v_y_steps, __pyx_v_gaussian);
+  __pyx_r = __pyx_pf_8c_points_6smoothed_freq_map(__pyx_self, __pyx_v_x_points, __pyx_v_y_points, __pyx_v_bbox, __pyx_v_x_steps, __pyx_v_y_steps, __pyx_v_gaussian);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7_points_6smoothed_freq_map(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x_points, PyObject *__pyx_v_y_points, CYTHON_UNUSED PyObject *__pyx_v_bbox, PyObject *__pyx_v_x_steps, PyObject *__pyx_v_y_steps, PyObject *__pyx_v_gaussian) {
+static PyObject *__pyx_pf_8c_points_6smoothed_freq_map(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x_points, PyObject *__pyx_v_y_points, CYTHON_UNUSED PyObject *__pyx_v_bbox, PyObject *__pyx_v_x_steps, PyObject *__pyx_v_y_steps, PyObject *__pyx_v_gaussian) {
   PyObject *__pyx_v_grid = NULL;
   CYTHON_UNUSED PyObject *__pyx_v__ = NULL;
   PyObject *__pyx_r = NULL;
@@ -1921,7 +1921,7 @@ static PyObject *__pyx_pf_7_points_6smoothed_freq_map(CYTHON_UNUSED PyObject *__
   PyObject *(*__pyx_t_6)(PyObject *);
   __Pyx_RefNannySetupContext("smoothed_freq_map", 0);
 
-  /* "_points.pyx":99
+  /* "c_points.pyx":99
  *     #    south = bbox['southwest'][1]
  * 
  *     grid, _, _ = np.histogram2d(y_points, x_points, bins=(y_steps, x_steps))             # <<<<<<<<<<<<<<
@@ -2022,7 +2022,7 @@ static PyObject *__pyx_pf_7_points_6smoothed_freq_map(CYTHON_UNUSED PyObject *__
   __Pyx_DECREF_SET(__pyx_v__, __pyx_t_2);
   __pyx_t_2 = 0;
 
-  /* "_points.pyx":100
+  /* "c_points.pyx":100
  * 
  *     grid, _, _ = np.histogram2d(y_points, x_points, bins=(y_steps, x_steps))
  *     grid = np.flipud(grid)             # <<<<<<<<<<<<<<
@@ -2062,7 +2062,7 @@ static PyObject *__pyx_pf_7_points_6smoothed_freq_map(CYTHON_UNUSED PyObject *__
   __Pyx_DECREF_SET(__pyx_v_grid, __pyx_t_4);
   __pyx_t_4 = 0;
 
-  /* "_points.pyx":101
+  /* "c_points.pyx":101
  *     grid, _, _ = np.histogram2d(y_points, x_points, bins=(y_steps, x_steps))
  *     grid = np.flipud(grid)
  *     return gaussian_filter(grid, sigma=gaussian)             # <<<<<<<<<<<<<<
@@ -2089,7 +2089,7 @@ static PyObject *__pyx_pf_7_points_6smoothed_freq_map(CYTHON_UNUSED PyObject *__
   __pyx_t_2 = 0;
   goto __pyx_L0;
 
-  /* "_points.pyx":71
+  /* "c_points.pyx":71
  * 
  * 
  * def smoothed_freq_map(x_points, y_points, bbox, x_steps, y_steps, gaussian):             # <<<<<<<<<<<<<<
@@ -2104,7 +2104,7 @@ static PyObject *__pyx_pf_7_points_6smoothed_freq_map(CYTHON_UNUSED PyObject *__
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
-  __Pyx_AddTraceback("_points.smoothed_freq_map", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.smoothed_freq_map", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_grid);
@@ -2114,7 +2114,7 @@ static PyObject *__pyx_pf_7_points_6smoothed_freq_map(CYTHON_UNUSED PyObject *__
   return __pyx_r;
 }
 
-/* "_points.pyx":104
+/* "c_points.pyx":104
  * 
  * 
  * def generate_grid(x_dim, y_dim, bbox, ignore_warnings=False):             # <<<<<<<<<<<<<<
@@ -2123,10 +2123,10 @@ static PyObject *__pyx_pf_7_points_6smoothed_freq_map(CYTHON_UNUSED PyObject *__
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7_points_9generate_grid(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7_points_8generate_grid[] = "Generate a meshgrid based on bounding box and x & y resolution\n\n    Parameters\n    ----------\n    x_dim: integer\n        x resolution in meters\n    y_dim: integer\n        y resolution in meters\n    bbox: dictionary\n        dictionary containing coordinates for corners of study area\n\n    Returns\n    -------\n    (X, Y) ndarray\n        meshgrid defined by given bounding box\n    ";
-static PyMethodDef __pyx_mdef_7_points_9generate_grid = {"generate_grid", (PyCFunction)__pyx_pw_7_points_9generate_grid, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7_points_8generate_grid};
-static PyObject *__pyx_pw_7_points_9generate_grid(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8c_points_9generate_grid(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_8c_points_8generate_grid[] = "Generate a meshgrid based on bounding box and x & y resolution\n\n    Parameters\n    ----------\n    x_dim: integer\n        x resolution in meters\n    y_dim: integer\n        y resolution in meters\n    bbox: dictionary\n        dictionary containing coordinates for corners of study area\n\n    Returns\n    -------\n    (X, Y) ndarray\n        meshgrid defined by given bounding box\n    ";
+static PyMethodDef __pyx_mdef_8c_points_9generate_grid = {"generate_grid", (PyCFunction)__pyx_pw_8c_points_9generate_grid, METH_VARARGS|METH_KEYWORDS, __pyx_doc_8c_points_8generate_grid};
+static PyObject *__pyx_pw_8c_points_9generate_grid(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_x_dim = 0;
   PyObject *__pyx_v_y_dim = 0;
   PyObject *__pyx_v_bbox = 0;
@@ -2192,18 +2192,18 @@ static PyObject *__pyx_pw_7_points_9generate_grid(PyObject *__pyx_self, PyObject
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("generate_grid", 0, 3, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 104, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_points.generate_grid", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.generate_grid", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7_points_8generate_grid(__pyx_self, __pyx_v_x_dim, __pyx_v_y_dim, __pyx_v_bbox, __pyx_v_ignore_warnings);
+  __pyx_r = __pyx_pf_8c_points_8generate_grid(__pyx_self, __pyx_v_x_dim, __pyx_v_y_dim, __pyx_v_bbox, __pyx_v_ignore_warnings);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x_dim, PyObject *__pyx_v_y_dim, PyObject *__pyx_v_bbox, PyObject *__pyx_v_ignore_warnings) {
+static PyObject *__pyx_pf_8c_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x_dim, PyObject *__pyx_v_y_dim, PyObject *__pyx_v_bbox, PyObject *__pyx_v_ignore_warnings) {
   PyObject *__pyx_v_x_steps = NULL;
   PyObject *__pyx_v_y_steps = NULL;
   PyObject *__pyx_v_grid_x = NULL;
@@ -2227,7 +2227,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
   __Pyx_INCREF(__pyx_v_x_dim);
   __Pyx_INCREF(__pyx_v_y_dim);
 
-  /* "_points.pyx":121
+  /* "c_points.pyx":121
  *         meshgrid defined by given bounding box
  *     '''
  *     if not ignore_warnings and (x_dim < 10000 or y_dim < 10000):             # <<<<<<<<<<<<<<
@@ -2256,7 +2256,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
   __pyx_L4_bool_binop_done:;
   if (__pyx_t_1) {
 
-    /* "_points.pyx":122
+    /* "c_points.pyx":122
  *     '''
  *     if not ignore_warnings and (x_dim < 10000 or y_dim < 10000):
  *         print("Grids less than 10km may be slow to load at synoptic scale.")             # <<<<<<<<<<<<<<
@@ -2265,7 +2265,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
  */
     if (__Pyx_PrintOne(0, __pyx_kp_s_Grids_less_than_10km_may_be_slow) < 0) __PYX_ERR(0, 122, __pyx_L1_error)
 
-    /* "_points.pyx":123
+    /* "c_points.pyx":123
  *     if not ignore_warnings and (x_dim < 10000 or y_dim < 10000):
  *         print("Grids less than 10km may be slow to load at synoptic scale.")
  *         print("Set ignore_warnings to True to run anyway. Defaulting to 10km")             # <<<<<<<<<<<<<<
@@ -2274,7 +2274,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
  */
     if (__Pyx_PrintOne(0, __pyx_kp_s_Set_ignore_warnings_to_True_to_r) < 0) __PYX_ERR(0, 123, __pyx_L1_error)
 
-    /* "_points.pyx":124
+    /* "c_points.pyx":124
  *         print("Grids less than 10km may be slow to load at synoptic scale.")
  *         print("Set ignore_warnings to True to run anyway. Defaulting to 10km")
  *         x_dim = y_dim = 10000             # <<<<<<<<<<<<<<
@@ -2286,7 +2286,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
     __Pyx_INCREF(__pyx_int_10000);
     __Pyx_DECREF_SET(__pyx_v_y_dim, __pyx_int_10000);
 
-    /* "_points.pyx":121
+    /* "c_points.pyx":121
  *         meshgrid defined by given bounding box
  *     '''
  *     if not ignore_warnings and (x_dim < 10000 or y_dim < 10000):             # <<<<<<<<<<<<<<
@@ -2295,7 +2295,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
  */
   }
 
-  /* "_points.pyx":126
+  /* "c_points.pyx":126
  *         x_dim = y_dim = 10000
  * 
  *     x_steps, y_steps = get_xy_steps(bbox, x_dim, y_dim)             # <<<<<<<<<<<<<<
@@ -2389,7 +2389,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_y_steps = __pyx_t_8;
   __pyx_t_8 = 0;
 
-  /* "_points.pyx":128
+  /* "c_points.pyx":128
  *     x_steps, y_steps = get_xy_steps(bbox, x_dim, y_dim)
  * 
  *     grid_x = np.linspace(bbox['southwest'][0], bbox['northeast'][0], x_steps)             # <<<<<<<<<<<<<<
@@ -2444,7 +2444,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_grid_x = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "_points.pyx":129
+  /* "c_points.pyx":129
  * 
  *     grid_x = np.linspace(bbox['southwest'][0], bbox['northeast'][0], x_steps)
  *     grid_y = np.linspace(bbox['southwest'][1], bbox['northeast'][1], y_steps)             # <<<<<<<<<<<<<<
@@ -2499,7 +2499,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_grid_y = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "_points.pyx":131
+  /* "c_points.pyx":131
  *     grid_y = np.linspace(bbox['southwest'][1], bbox['northeast'][1], y_steps)
  * 
  *     gx, gy = np.meshgrid(grid_x, grid_y)             # <<<<<<<<<<<<<<
@@ -2593,7 +2593,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_gy = __pyx_t_6;
   __pyx_t_6 = 0;
 
-  /* "_points.pyx":133
+  /* "c_points.pyx":133
  *     gx, gy = np.meshgrid(grid_x, grid_y)
  * 
  *     return gx, gy             # <<<<<<<<<<<<<<
@@ -2613,7 +2613,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
   __pyx_t_4 = 0;
   goto __pyx_L0;
 
-  /* "_points.pyx":104
+  /* "c_points.pyx":104
  * 
  * 
  * def generate_grid(x_dim, y_dim, bbox, ignore_warnings=False):             # <<<<<<<<<<<<<<
@@ -2629,7 +2629,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
   __Pyx_XDECREF(__pyx_t_8);
   __Pyx_XDECREF(__pyx_t_10);
   __Pyx_XDECREF(__pyx_t_11);
-  __Pyx_AddTraceback("_points.generate_grid", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.generate_grid", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_x_steps);
@@ -2645,7 +2645,7 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
   return __pyx_r;
 }
 
-/* "_points.pyx":136
+/* "c_points.pyx":136
  * 
  * 
  * def generate_grid_coords(gx, gy):             # <<<<<<<<<<<<<<
@@ -2654,10 +2654,10 @@ static PyObject *__pyx_pf_7_points_8generate_grid(CYTHON_UNUSED PyObject *__pyx_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7_points_11generate_grid_coords(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7_points_10generate_grid_coords[] = "Calculate x,y coordinates of each grid cell\n\n    Parameters\n    ----------\n    gx: numeric\n        x coordinates in meshgrid\n    gy: numeric\n        y coordinates in meshgrid\n\n    Returns\n    -------\n    (X, Y) ndarray\n        List of coordinates in meshgrid\n    ";
-static PyMethodDef __pyx_mdef_7_points_11generate_grid_coords = {"generate_grid_coords", (PyCFunction)__pyx_pw_7_points_11generate_grid_coords, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7_points_10generate_grid_coords};
-static PyObject *__pyx_pw_7_points_11generate_grid_coords(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8c_points_11generate_grid_coords(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_8c_points_10generate_grid_coords[] = "Calculate x,y coordinates of each grid cell\n\n    Parameters\n    ----------\n    gx: numeric\n        x coordinates in meshgrid\n    gy: numeric\n        y coordinates in meshgrid\n\n    Returns\n    -------\n    (X, Y) ndarray\n        List of coordinates in meshgrid\n    ";
+static PyMethodDef __pyx_mdef_8c_points_11generate_grid_coords = {"generate_grid_coords", (PyCFunction)__pyx_pw_8c_points_11generate_grid_coords, METH_VARARGS|METH_KEYWORDS, __pyx_doc_8c_points_10generate_grid_coords};
+static PyObject *__pyx_pw_8c_points_11generate_grid_coords(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_gx = 0;
   PyObject *__pyx_v_gy = 0;
   PyObject *__pyx_r = 0;
@@ -2702,18 +2702,18 @@ static PyObject *__pyx_pw_7_points_11generate_grid_coords(PyObject *__pyx_self, 
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("generate_grid_coords", 1, 2, 2, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 136, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_points.generate_grid_coords", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.generate_grid_coords", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7_points_10generate_grid_coords(__pyx_self, __pyx_v_gx, __pyx_v_gy);
+  __pyx_r = __pyx_pf_8c_points_10generate_grid_coords(__pyx_self, __pyx_v_gx, __pyx_v_gy);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7_points_10generate_grid_coords(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_gx, PyObject *__pyx_v_gy) {
+static PyObject *__pyx_pf_8c_points_10generate_grid_coords(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_gx, PyObject *__pyx_v_gy) {
   PyObject *__pyx_r = NULL;
   __Pyx_RefNannyDeclarations
   PyObject *__pyx_t_1 = NULL;
@@ -2724,7 +2724,7 @@ static PyObject *__pyx_pf_7_points_10generate_grid_coords(CYTHON_UNUSED PyObject
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("generate_grid_coords", 0);
 
-  /* "_points.pyx":152
+  /* "c_points.pyx":152
  *     '''
  * 
  *     return np.vstack([gx.ravel(), gy.ravel()]).T             # <<<<<<<<<<<<<<
@@ -2818,7 +2818,7 @@ static PyObject *__pyx_pf_7_points_10generate_grid_coords(CYTHON_UNUSED PyObject
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "_points.pyx":136
+  /* "c_points.pyx":136
  * 
  * 
  * def generate_grid_coords(gx, gy):             # <<<<<<<<<<<<<<
@@ -2834,7 +2834,7 @@ static PyObject *__pyx_pf_7_points_10generate_grid_coords(CYTHON_UNUSED PyObject
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_5);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("_points.generate_grid_coords", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.generate_grid_coords", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -2842,7 +2842,7 @@ static PyObject *__pyx_pf_7_points_10generate_grid_coords(CYTHON_UNUSED PyObject
   return __pyx_r;
 }
 
-/* "_points.pyx":155
+/* "c_points.pyx":155
  * 
  * 
  * def get_xy_range(bbox):             # <<<<<<<<<<<<<<
@@ -2851,21 +2851,21 @@ static PyObject *__pyx_pf_7_points_10generate_grid_coords(CYTHON_UNUSED PyObject
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7_points_13get_xy_range(PyObject *__pyx_self, PyObject *__pyx_v_bbox); /*proto*/
-static char __pyx_doc_7_points_12get_xy_range[] = "Returns x and y ranges in meters based on bounding box\n\n    bbox: dictionary\n        dictionary containing coordinates for corners of study area\n\n    Returns\n    -------\n    X, Y: numeric\n        X and Y ranges in meters\n    ";
-static PyMethodDef __pyx_mdef_7_points_13get_xy_range = {"get_xy_range", (PyCFunction)__pyx_pw_7_points_13get_xy_range, METH_O, __pyx_doc_7_points_12get_xy_range};
-static PyObject *__pyx_pw_7_points_13get_xy_range(PyObject *__pyx_self, PyObject *__pyx_v_bbox) {
+static PyObject *__pyx_pw_8c_points_13get_xy_range(PyObject *__pyx_self, PyObject *__pyx_v_bbox); /*proto*/
+static char __pyx_doc_8c_points_12get_xy_range[] = "Returns x and y ranges in meters based on bounding box\n\n    bbox: dictionary\n        dictionary containing coordinates for corners of study area\n\n    Returns\n    -------\n    X, Y: numeric\n        X and Y ranges in meters\n    ";
+static PyMethodDef __pyx_mdef_8c_points_13get_xy_range = {"get_xy_range", (PyCFunction)__pyx_pw_8c_points_13get_xy_range, METH_O, __pyx_doc_8c_points_12get_xy_range};
+static PyObject *__pyx_pw_8c_points_13get_xy_range(PyObject *__pyx_self, PyObject *__pyx_v_bbox) {
   PyObject *__pyx_r = 0;
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("get_xy_range (wrapper)", 0);
-  __pyx_r = __pyx_pf_7_points_12get_xy_range(__pyx_self, ((PyObject *)__pyx_v_bbox));
+  __pyx_r = __pyx_pf_8c_points_12get_xy_range(__pyx_self, ((PyObject *)__pyx_v_bbox));
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7_points_12get_xy_range(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_bbox) {
+static PyObject *__pyx_pf_8c_points_12get_xy_range(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_bbox) {
   PyObject *__pyx_v_x_range = NULL;
   PyObject *__pyx_v_y_range = NULL;
   PyObject *__pyx_r = NULL;
@@ -2875,7 +2875,7 @@ static PyObject *__pyx_pf_7_points_12get_xy_range(CYTHON_UNUSED PyObject *__pyx_
   PyObject *__pyx_t_3 = NULL;
   __Pyx_RefNannySetupContext("get_xy_range", 0);
 
-  /* "_points.pyx":167
+  /* "c_points.pyx":167
  *     '''
  * 
  *     x_range = bbox['northeast'][0] - bbox['southwest'][0]             # <<<<<<<<<<<<<<
@@ -2899,7 +2899,7 @@ static PyObject *__pyx_pf_7_points_12get_xy_range(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_x_range = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_points.pyx":168
+  /* "c_points.pyx":168
  * 
  *     x_range = bbox['northeast'][0] - bbox['southwest'][0]
  *     y_range = bbox['northeast'][1] - bbox['southwest'][1]             # <<<<<<<<<<<<<<
@@ -2923,7 +2923,7 @@ static PyObject *__pyx_pf_7_points_12get_xy_range(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_y_range = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_points.pyx":170
+  /* "c_points.pyx":170
  *     y_range = bbox['northeast'][1] - bbox['southwest'][1]
  * 
  *     return x_range, y_range             # <<<<<<<<<<<<<<
@@ -2943,7 +2943,7 @@ static PyObject *__pyx_pf_7_points_12get_xy_range(CYTHON_UNUSED PyObject *__pyx_
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "_points.pyx":155
+  /* "c_points.pyx":155
  * 
  * 
  * def get_xy_range(bbox):             # <<<<<<<<<<<<<<
@@ -2956,7 +2956,7 @@ static PyObject *__pyx_pf_7_points_12get_xy_range(CYTHON_UNUSED PyObject *__pyx_
   __Pyx_XDECREF(__pyx_t_1);
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
-  __Pyx_AddTraceback("_points.get_xy_range", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.get_xy_range", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_x_range);
@@ -2966,7 +2966,7 @@ static PyObject *__pyx_pf_7_points_12get_xy_range(CYTHON_UNUSED PyObject *__pyx_
   return __pyx_r;
 }
 
-/* "_points.pyx":173
+/* "c_points.pyx":173
  * 
  * 
  * def get_xy_steps(bbox, x_dim, y_dim):             # <<<<<<<<<<<<<<
@@ -2975,10 +2975,10 @@ static PyObject *__pyx_pf_7_points_12get_xy_range(CYTHON_UNUSED PyObject *__pyx_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7_points_15get_xy_steps(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7_points_14get_xy_steps[] = "Return meshgrid spacing based on bounding box\n\n    bbox: dictionary\n        dictionary containing coordinates for corners of study area\n    x_dim: integer\n        x resolution in meters\n    y_dim: integer\n        y resolution in meters\n\n    Returns\n    -------\n    (X,Y): ndarray\n        List of all X and Y centers used to create a meshgrid\n    ";
-static PyMethodDef __pyx_mdef_7_points_15get_xy_steps = {"get_xy_steps", (PyCFunction)__pyx_pw_7_points_15get_xy_steps, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7_points_14get_xy_steps};
-static PyObject *__pyx_pw_7_points_15get_xy_steps(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8c_points_15get_xy_steps(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_8c_points_14get_xy_steps[] = "Return meshgrid spacing based on bounding box\n\n    bbox: dictionary\n        dictionary containing coordinates for corners of study area\n    x_dim: integer\n        x resolution in meters\n    y_dim: integer\n        y resolution in meters\n\n    Returns\n    -------\n    (X,Y): ndarray\n        List of all X and Y centers used to create a meshgrid\n    ";
+static PyMethodDef __pyx_mdef_8c_points_15get_xy_steps = {"get_xy_steps", (PyCFunction)__pyx_pw_8c_points_15get_xy_steps, METH_VARARGS|METH_KEYWORDS, __pyx_doc_8c_points_14get_xy_steps};
+static PyObject *__pyx_pw_8c_points_15get_xy_steps(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_bbox = 0;
   PyObject *__pyx_v_x_dim = 0;
   PyObject *__pyx_v_y_dim = 0;
@@ -3032,18 +3032,18 @@ static PyObject *__pyx_pw_7_points_15get_xy_steps(PyObject *__pyx_self, PyObject
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("get_xy_steps", 1, 3, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 173, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_points.get_xy_steps", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.get_xy_steps", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7_points_14get_xy_steps(__pyx_self, __pyx_v_bbox, __pyx_v_x_dim, __pyx_v_y_dim);
+  __pyx_r = __pyx_pf_8c_points_14get_xy_steps(__pyx_self, __pyx_v_bbox, __pyx_v_x_dim, __pyx_v_y_dim);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_bbox, PyObject *__pyx_v_x_dim, PyObject *__pyx_v_y_dim) {
+static PyObject *__pyx_pf_8c_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_bbox, PyObject *__pyx_v_x_dim, PyObject *__pyx_v_y_dim) {
   PyObject *__pyx_v_x_range = NULL;
   PyObject *__pyx_v_y_range = NULL;
   PyObject *__pyx_v_x_steps = NULL;
@@ -3058,7 +3058,7 @@ static PyObject *__pyx_pf_7_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_
   PyObject *__pyx_t_6 = NULL;
   __Pyx_RefNannySetupContext("get_xy_steps", 0);
 
-  /* "_points.pyx":189
+  /* "c_points.pyx":189
  *     '''
  * 
  *     x_range, y_range = get_xy_range(bbox)             # <<<<<<<<<<<<<<
@@ -3147,7 +3147,7 @@ static PyObject *__pyx_pf_7_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_y_range = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "_points.pyx":191
+  /* "c_points.pyx":191
  *     x_range, y_range = get_xy_range(bbox)
  * 
  *     x_steps = np.ceil(x_range / x_dim)             # <<<<<<<<<<<<<<
@@ -3190,7 +3190,7 @@ static PyObject *__pyx_pf_7_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_x_steps = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_points.pyx":192
+  /* "c_points.pyx":192
  * 
  *     x_steps = np.ceil(x_range / x_dim)
  *     y_steps = np.ceil(y_range / y_dim)             # <<<<<<<<<<<<<<
@@ -3233,7 +3233,7 @@ static PyObject *__pyx_pf_7_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_
   __pyx_v_y_steps = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_points.pyx":194
+  /* "c_points.pyx":194
  *     y_steps = np.ceil(y_range / y_dim)
  * 
  *     return int(x_steps), int(y_steps)             # <<<<<<<<<<<<<<
@@ -3257,7 +3257,7 @@ static PyObject *__pyx_pf_7_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_
   __pyx_t_3 = 0;
   goto __pyx_L0;
 
-  /* "_points.pyx":173
+  /* "c_points.pyx":173
  * 
  * 
  * def get_xy_steps(bbox, x_dim, y_dim):             # <<<<<<<<<<<<<<
@@ -3272,7 +3272,7 @@ static PyObject *__pyx_pf_7_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
   __Pyx_XDECREF(__pyx_t_6);
-  __Pyx_AddTraceback("_points.get_xy_steps", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.get_xy_steps", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_x_range);
@@ -3284,7 +3284,7 @@ static PyObject *__pyx_pf_7_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_
   return __pyx_r;
 }
 
-/* "_points.pyx":197
+/* "c_points.pyx":197
  * 
  * 
  * def get_boundary_coords(x, y, spatial_pad=0):             # <<<<<<<<<<<<<<
@@ -3293,10 +3293,10 @@ static PyObject *__pyx_pf_7_points_14get_xy_steps(CYTHON_UNUSED PyObject *__pyx_
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_7_points_17get_boundary_coords(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static char __pyx_doc_7_points_16get_boundary_coords[] = "Return bounding box based on given x and y coordinates\n       assuming northern hemisphere.\n\n    x: numeric\n        x coordinates\n    y: numeric\n        y coordinates\n    spatial_pad: numeric\n        Number of meters to add to the x and y dimensions to reduce\n        edge effects.\n\n    Returns\n    -------\n    bbox: dictionary\n        dictionary containing coordinates for corners of study area\n    ";
-static PyMethodDef __pyx_mdef_7_points_17get_boundary_coords = {"get_boundary_coords", (PyCFunction)__pyx_pw_7_points_17get_boundary_coords, METH_VARARGS|METH_KEYWORDS, __pyx_doc_7_points_16get_boundary_coords};
-static PyObject *__pyx_pw_7_points_17get_boundary_coords(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_8c_points_17get_boundary_coords(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static char __pyx_doc_8c_points_16get_boundary_coords[] = "Return bounding box based on given x and y coordinates\n       assuming northern hemisphere.\n\n    x: numeric\n        x coordinates\n    y: numeric\n        y coordinates\n    spatial_pad: numeric\n        Number of meters to add to the x and y dimensions to reduce\n        edge effects.\n\n    Returns\n    -------\n    bbox: dictionary\n        dictionary containing coordinates for corners of study area\n    ";
+static PyMethodDef __pyx_mdef_8c_points_17get_boundary_coords = {"get_boundary_coords", (PyCFunction)__pyx_pw_8c_points_17get_boundary_coords, METH_VARARGS|METH_KEYWORDS, __pyx_doc_8c_points_16get_boundary_coords};
+static PyObject *__pyx_pw_8c_points_17get_boundary_coords(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_x = 0;
   PyObject *__pyx_v_y = 0;
   PyObject *__pyx_v_spatial_pad = 0;
@@ -3353,18 +3353,18 @@ static PyObject *__pyx_pw_7_points_17get_boundary_coords(PyObject *__pyx_self, P
   __pyx_L5_argtuple_error:;
   __Pyx_RaiseArgtupleInvalid("get_boundary_coords", 0, 2, 3, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 197, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_points.get_boundary_coords", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.get_boundary_coords", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_7_points_16get_boundary_coords(__pyx_self, __pyx_v_x, __pyx_v_y, __pyx_v_spatial_pad);
+  __pyx_r = __pyx_pf_8c_points_16get_boundary_coords(__pyx_self, __pyx_v_x, __pyx_v_y, __pyx_v_spatial_pad);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_7_points_16get_boundary_coords(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x, PyObject *__pyx_v_y, PyObject *__pyx_v_spatial_pad) {
+static PyObject *__pyx_pf_8c_points_16get_boundary_coords(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_x, PyObject *__pyx_v_y, PyObject *__pyx_v_spatial_pad) {
   PyObject *__pyx_v_west = NULL;
   PyObject *__pyx_v_east = NULL;
   PyObject *__pyx_v_north = NULL;
@@ -3377,7 +3377,7 @@ static PyObject *__pyx_pf_7_points_16get_boundary_coords(CYTHON_UNUSED PyObject 
   PyObject *__pyx_t_4 = NULL;
   __Pyx_RefNannySetupContext("get_boundary_coords", 0);
 
-  /* "_points.pyx":215
+  /* "c_points.pyx":215
  *     '''
  * 
  *     west = np.min(x) - spatial_pad             # <<<<<<<<<<<<<<
@@ -3420,7 +3420,7 @@ static PyObject *__pyx_pf_7_points_16get_boundary_coords(CYTHON_UNUSED PyObject 
   __pyx_v_west = __pyx_t_3;
   __pyx_t_3 = 0;
 
-  /* "_points.pyx":216
+  /* "c_points.pyx":216
  * 
  *     west = np.min(x) - spatial_pad
  *     east = np.max(x) + spatial_pad             # <<<<<<<<<<<<<<
@@ -3463,7 +3463,7 @@ static PyObject *__pyx_pf_7_points_16get_boundary_coords(CYTHON_UNUSED PyObject 
   __pyx_v_east = __pyx_t_4;
   __pyx_t_4 = 0;
 
-  /* "_points.pyx":217
+  /* "c_points.pyx":217
  *     west = np.min(x) - spatial_pad
  *     east = np.max(x) + spatial_pad
  *     north = np.max(y) + spatial_pad             # <<<<<<<<<<<<<<
@@ -3506,7 +3506,7 @@ static PyObject *__pyx_pf_7_points_16get_boundary_coords(CYTHON_UNUSED PyObject 
   __pyx_v_north = __pyx_t_2;
   __pyx_t_2 = 0;
 
-  /* "_points.pyx":218
+  /* "c_points.pyx":218
  *     east = np.max(x) + spatial_pad
  *     north = np.max(y) + spatial_pad
  *     south = np.min(y) - spatial_pad             # <<<<<<<<<<<<<<
@@ -3549,7 +3549,7 @@ static PyObject *__pyx_pf_7_points_16get_boundary_coords(CYTHON_UNUSED PyObject 
   __pyx_v_south = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_points.pyx":220
+  /* "c_points.pyx":220
  *     south = np.min(y) - spatial_pad
  * 
  *     return {'southwest': (west, south), 'northeast': (east, north)}             # <<<<<<<<<<<<<<
@@ -3581,7 +3581,7 @@ static PyObject *__pyx_pf_7_points_16get_boundary_coords(CYTHON_UNUSED PyObject 
   __pyx_t_1 = 0;
   goto __pyx_L0;
 
-  /* "_points.pyx":197
+  /* "c_points.pyx":197
  * 
  * 
  * def get_boundary_coords(x, y, spatial_pad=0):             # <<<<<<<<<<<<<<
@@ -3595,7 +3595,7 @@ static PyObject *__pyx_pf_7_points_16get_boundary_coords(CYTHON_UNUSED PyObject 
   __Pyx_XDECREF(__pyx_t_2);
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_4);
-  __Pyx_AddTraceback("_points.get_boundary_coords", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_points.get_boundary_coords", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_west);
@@ -3618,7 +3618,7 @@ static struct PyModuleDef __pyx_moduledef = {
   #else
     PyModuleDef_HEAD_INIT,
   #endif
-    "_points",
+    "c_points",
     0, /* m_doc */
     -1, /* m_size */
     __pyx_methods /* m_methods */,
@@ -3639,6 +3639,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_bbox, __pyx_k_bbox, sizeof(__pyx_k_bbox), 0, 0, 1, 1},
   {&__pyx_n_s_bins, __pyx_k_bins, sizeof(__pyx_k_bins), 0, 0, 1, 1},
   {&__pyx_n_s_cKDTree, __pyx_k_cKDTree, sizeof(__pyx_k_cKDTree), 0, 0, 1, 1},
+  {&__pyx_n_s_c_points, __pyx_k_c_points, sizeof(__pyx_k_c_points), 0, 0, 1, 1},
   {&__pyx_n_s_ceil, __pyx_k_ceil, sizeof(__pyx_k_ceil), 0, 0, 1, 1},
   {&__pyx_n_s_center_point, __pyx_k_center_point, sizeof(__pyx_k_center_point), 0, 0, 1, 1},
   {&__pyx_n_s_center_points, __pyx_k_center_points, sizeof(__pyx_k_center_points), 0, 0, 1, 1},
@@ -3678,7 +3679,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_northeast, __pyx_k_northeast, sizeof(__pyx_k_northeast), 0, 0, 1, 1},
   {&__pyx_n_s_np, __pyx_k_np, sizeof(__pyx_k_np), 0, 0, 1, 1},
   {&__pyx_n_s_numpy, __pyx_k_numpy, sizeof(__pyx_k_numpy), 0, 0, 1, 1},
-  {&__pyx_n_s_points, __pyx_k_points, sizeof(__pyx_k_points), 0, 0, 1, 1},
   {&__pyx_n_s_print, __pyx_k_print, sizeof(__pyx_k_print), 0, 0, 1, 1},
   {&__pyx_n_s_query_ball_point, __pyx_k_query_ball_point, sizeof(__pyx_k_query_ball_point), 0, 0, 1, 1},
   {&__pyx_n_s_r, __pyx_k_r, sizeof(__pyx_k_r), 0, 0, 1, 1},
@@ -3723,7 +3723,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "_points.pyx":6
+  /* "c_points.pyx":6
  * 
  * 
  * def lookup_values(xi, yi, xs, ys, high_accuracy=False):             # <<<<<<<<<<<<<<
@@ -3735,7 +3735,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple_);
   __pyx_codeobj__2 = (PyObject*)__Pyx_PyCode_New(5, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple_, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_lookup_values, 6, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__2)) __PYX_ERR(0, 6, __pyx_L1_error)
 
-  /* "_points.pyx":17
+  /* "c_points.pyx":17
  * 
  * 
  * def get_points_within_r(center_point, target_points, r, return_idx=False):             # <<<<<<<<<<<<<<
@@ -3747,7 +3747,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__3);
   __pyx_codeobj__4 = (PyObject*)__Pyx_PyCode_New(4, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__3, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_get_points_within_r, 17, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__4)) __PYX_ERR(0, 17, __pyx_L1_error)
 
-  /* "_points.pyx":46
+  /* "c_points.pyx":46
  * 
  * 
  * def get_point_count_within_r(center_points, target_points, r):             # <<<<<<<<<<<<<<
@@ -3759,7 +3759,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__5);
   __pyx_codeobj__6 = (PyObject*)__Pyx_PyCode_New(3, 0, 6, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__5, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_get_point_count_within_r, 46, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__6)) __PYX_ERR(0, 46, __pyx_L1_error)
 
-  /* "_points.pyx":71
+  /* "c_points.pyx":71
  * 
  * 
  * def smoothed_freq_map(x_points, y_points, bbox, x_steps, y_steps, gaussian):             # <<<<<<<<<<<<<<
@@ -3771,7 +3771,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__8);
   __pyx_codeobj__9 = (PyObject*)__Pyx_PyCode_New(6, 0, 8, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__8, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_smoothed_freq_map, 71, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__9)) __PYX_ERR(0, 71, __pyx_L1_error)
 
-  /* "_points.pyx":104
+  /* "c_points.pyx":104
  * 
  * 
  * def generate_grid(x_dim, y_dim, bbox, ignore_warnings=False):             # <<<<<<<<<<<<<<
@@ -3783,7 +3783,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__10);
   __pyx_codeobj__11 = (PyObject*)__Pyx_PyCode_New(4, 0, 10, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__10, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_generate_grid, 104, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__11)) __PYX_ERR(0, 104, __pyx_L1_error)
 
-  /* "_points.pyx":136
+  /* "c_points.pyx":136
  * 
  * 
  * def generate_grid_coords(gx, gy):             # <<<<<<<<<<<<<<
@@ -3795,7 +3795,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__12);
   __pyx_codeobj__13 = (PyObject*)__Pyx_PyCode_New(2, 0, 2, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__12, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_generate_grid_coords, 136, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__13)) __PYX_ERR(0, 136, __pyx_L1_error)
 
-  /* "_points.pyx":155
+  /* "c_points.pyx":155
  * 
  * 
  * def get_xy_range(bbox):             # <<<<<<<<<<<<<<
@@ -3807,7 +3807,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__14);
   __pyx_codeobj__15 = (PyObject*)__Pyx_PyCode_New(1, 0, 3, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__14, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_get_xy_range, 155, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__15)) __PYX_ERR(0, 155, __pyx_L1_error)
 
-  /* "_points.pyx":173
+  /* "c_points.pyx":173
  * 
  * 
  * def get_xy_steps(bbox, x_dim, y_dim):             # <<<<<<<<<<<<<<
@@ -3819,7 +3819,7 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_GIVEREF(__pyx_tuple__16);
   __pyx_codeobj__17 = (PyObject*)__Pyx_PyCode_New(3, 0, 7, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__16, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_get_xy_steps, 173, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__17)) __PYX_ERR(0, 173, __pyx_L1_error)
 
-  /* "_points.pyx":197
+  /* "c_points.pyx":197
  * 
  * 
  * def get_boundary_coords(x, y, spatial_pad=0):             # <<<<<<<<<<<<<<
@@ -3847,11 +3847,11 @@ static int __Pyx_InitGlobals(void) {
 }
 
 #if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC init_points(void); /*proto*/
-PyMODINIT_FUNC init_points(void)
+PyMODINIT_FUNC initc_points(void); /*proto*/
+PyMODINIT_FUNC initc_points(void)
 #else
-PyMODINIT_FUNC PyInit__points(void); /*proto*/
-PyMODINIT_FUNC PyInit__points(void)
+PyMODINIT_FUNC PyInit_c_points(void); /*proto*/
+PyMODINIT_FUNC PyInit_c_points(void)
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
@@ -3866,7 +3866,7 @@ PyMODINIT_FUNC PyInit__points(void)
           Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
-  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit__points(void)", 0);
+  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_c_points(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -3895,7 +3895,7 @@ PyMODINIT_FUNC PyInit__points(void)
   #endif
   /*--- Module creation code ---*/
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("_points", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("c_points", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -3912,14 +3912,14 @@ PyMODINIT_FUNC PyInit__points(void)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main__points) {
+  if (__pyx_module_is_main_c_points) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "_points")) {
-      if (unlikely(PyDict_SetItemString(modules, "_points", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "c_points")) {
+      if (unlikely(PyDict_SetItemString(modules, "c_points", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -3939,7 +3939,7 @@ PyMODINIT_FUNC PyInit__points(void)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "_points.pyx":1
+  /* "c_points.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * from scipy.ndimage import gaussian_filter
  * from scipy.spatial import cKDTree
@@ -3949,7 +3949,7 @@ PyMODINIT_FUNC PyInit__points(void)
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_points.pyx":2
+  /* "c_points.pyx":2
  * import numpy as np
  * from scipy.ndimage import gaussian_filter             # <<<<<<<<<<<<<<
  * from scipy.spatial import cKDTree
@@ -3969,7 +3969,7 @@ PyMODINIT_FUNC PyInit__points(void)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "_points.pyx":3
+  /* "c_points.pyx":3
  * import numpy as np
  * from scipy.ndimage import gaussian_filter
  * from scipy.spatial import cKDTree             # <<<<<<<<<<<<<<
@@ -3990,115 +3990,115 @@ PyMODINIT_FUNC PyInit__points(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_points.pyx":6
+  /* "c_points.pyx":6
  * 
  * 
  * def lookup_values(xi, yi, xs, ys, high_accuracy=False):             # <<<<<<<<<<<<<<
  *     if not high_accuracy:
  *         x_match = np.array(xi, dtype=int) == np.array(xs, dtype=int)
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7_points_1lookup_values, NULL, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8c_points_1lookup_values, NULL, __pyx_n_s_c_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_lookup_values, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_points.pyx":17
+  /* "c_points.pyx":17
  * 
  * 
  * def get_points_within_r(center_point, target_points, r, return_idx=False):             # <<<<<<<<<<<<<<
  *     '''Get all target_points within a specified radius
  *     of a center point.  All data must be in same coord-
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7_points_3get_points_within_r, NULL, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8c_points_3get_points_within_r, NULL, __pyx_n_s_c_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_points_within_r, __pyx_t_1) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_points.pyx":46
+  /* "c_points.pyx":46
  * 
  * 
  * def get_point_count_within_r(center_points, target_points, r):             # <<<<<<<<<<<<<<
  *     '''Get count of target points within a specified radius
  *     from center points.  All data must be in same coord-
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7_points_5get_point_count_within_r, NULL, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8c_points_5get_point_count_within_r, NULL, __pyx_n_s_c_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_point_count_within_r, __pyx_t_1) < 0) __PYX_ERR(0, 46, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_points.pyx":71
+  /* "c_points.pyx":71
  * 
  * 
  * def smoothed_freq_map(x_points, y_points, bbox, x_steps, y_steps, gaussian):             # <<<<<<<<<<<<<<
  *     '''Create smoothed spatial frequency map of points per user
  *     defined grid cell within a specified extent.  All values are
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7_points_7smoothed_freq_map, NULL, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8c_points_7smoothed_freq_map, NULL, __pyx_n_s_c_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 71, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_smoothed_freq_map, __pyx_t_1) < 0) __PYX_ERR(0, 71, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_points.pyx":104
+  /* "c_points.pyx":104
  * 
  * 
  * def generate_grid(x_dim, y_dim, bbox, ignore_warnings=False):             # <<<<<<<<<<<<<<
  *     '''Generate a meshgrid based on bounding box and x & y resolution
  * 
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7_points_9generate_grid, NULL, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8c_points_9generate_grid, NULL, __pyx_n_s_c_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_generate_grid, __pyx_t_1) < 0) __PYX_ERR(0, 104, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_points.pyx":136
+  /* "c_points.pyx":136
  * 
  * 
  * def generate_grid_coords(gx, gy):             # <<<<<<<<<<<<<<
  *     '''Calculate x,y coordinates of each grid cell
  * 
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7_points_11generate_grid_coords, NULL, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8c_points_11generate_grid_coords, NULL, __pyx_n_s_c_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_generate_grid_coords, __pyx_t_1) < 0) __PYX_ERR(0, 136, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_points.pyx":155
+  /* "c_points.pyx":155
  * 
  * 
  * def get_xy_range(bbox):             # <<<<<<<<<<<<<<
  *     '''Returns x and y ranges in meters based on bounding box
  * 
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7_points_13get_xy_range, NULL, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8c_points_13get_xy_range, NULL, __pyx_n_s_c_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_xy_range, __pyx_t_1) < 0) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_points.pyx":173
+  /* "c_points.pyx":173
  * 
  * 
  * def get_xy_steps(bbox, x_dim, y_dim):             # <<<<<<<<<<<<<<
  *     '''Return meshgrid spacing based on bounding box
  * 
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7_points_15get_xy_steps, NULL, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8c_points_15get_xy_steps, NULL, __pyx_n_s_c_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 173, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_xy_steps, __pyx_t_1) < 0) __PYX_ERR(0, 173, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_points.pyx":197
+  /* "c_points.pyx":197
  * 
  * 
  * def get_boundary_coords(x, y, spatial_pad=0):             # <<<<<<<<<<<<<<
  *     '''Return bounding box based on given x and y coordinates
  *        assuming northern hemisphere.
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_7_points_17get_boundary_coords, NULL, __pyx_n_s_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_8c_points_17get_boundary_coords, NULL, __pyx_n_s_c_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_get_boundary_coords, __pyx_t_1) < 0) __PYX_ERR(0, 197, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_points.pyx":1
+  /* "c_points.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * from scipy.ndimage import gaussian_filter
  * from scipy.spatial import cKDTree
@@ -4116,11 +4116,11 @@ PyMODINIT_FUNC PyInit__points(void)
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init _points", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init c_points", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init _points");
+    PyErr_SetString(PyExc_ImportError, "init c_points");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

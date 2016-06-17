@@ -1,6 +1,4 @@
-#from scipy.spatial import Delaunay
 
-#shoelace algorithm
 
 def _area(poly):
 
@@ -34,6 +32,7 @@ cdef double A(poly):
 
     cdef double A = 0.0
     cdef int n = len(poly)
+    cdef int i = 0
 
     for i in range(n):
         A += poly[i][0] * poly[(i+1) % n][1] - poly[(i+1) % n][0] * poly[i][1]

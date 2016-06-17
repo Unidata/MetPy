@@ -258,8 +258,8 @@ static CYTHON_INLINE float __PYX_NAN() {
   #endif
 #endif
 
-#define __PYX_HAVE___interpolation
-#define __PYX_HAVE_API___interpolation
+#define __PYX_HAVE__c_interpolation
+#define __PYX_HAVE_API__c_interpolation
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -475,7 +475,7 @@ static const char *__pyx_filename;
 
 
 static const char *__pyx_f[] = {
-  "_interpolation.pyx",
+  "c_interpolation.pyx",
 };
 
 /*--- Type declarations ---*/
@@ -716,11 +716,11 @@ static int __Pyx_check_binary_version(void);
 static int __Pyx_InitStrings(__Pyx_StringTabEntry *t);
 
 
-/* Module declarations from '_interpolation' */
-#define __Pyx_MODULE_NAME "_interpolation"
-int __pyx_module_is_main__interpolation = 0;
+/* Module declarations from 'c_interpolation' */
+#define __Pyx_MODULE_NAME "c_interpolation"
+int __pyx_module_is_main_c_interpolation = 0;
 
-/* Implementation of '_interpolation' */
+/* Implementation of 'c_interpolation' */
 static PyObject *__pyx_builtin_zip;
 static PyObject *__pyx_builtin_enumerate;
 static PyObject *__pyx_builtin_range;
@@ -761,7 +761,6 @@ static const char __pyx_k_polygon[] = "polygon";
 static const char __pyx_k_segment[] = "segment";
 static const char __pyx_k_Delaunay[] = "Delaunay";
 static const char __pyx_k_cur_area[] = "cur_area";
-static const char __pyx_k_polygons[] = "_polygons";
 static const char __pyx_k_variable[] = "variable";
 static const char __pyx_k_vertices[] = "vertices";
 static const char __pyx_k_area_list[] = "area_list";
@@ -769,28 +768,32 @@ static const char __pyx_k_enumerate[] = "enumerate";
 static const char __pyx_k_neighbors[] = "neighbors";
 static const char __pyx_k_simplices[] = "simplices";
 static const char __pyx_k_tri_match[] = "tri_match";
-static const char __pyx_k_triangles[] = "_triangles";
 static const char __pyx_k_ConvexHull[] = "ConvexHull";
+static const char __pyx_k_c_polygons[] = "c_polygons";
 static const char __pyx_k_total_area[] = "total_area";
+static const char __pyx_k_c_triangles[] = "c_triangles";
 static const char __pyx_k_grid_points[] = "grid_points";
 static const char __pyx_k_order_edges[] = "_order_edges";
 static const char __pyx_k_circumcenter[] = "_circumcenter";
 static const char __pyx_k_find_simplex[] = "find_simplex";
 static const char __pyx_k_num_vertices[] = "num_vertices";
 static const char __pyx_k_edge_vertices[] = "edge_vertices";
-static const char __pyx_k_interpolation[] = "_interpolation";
 static const char __pyx_k_metpy_mapping[] = "metpy.mapping";
 static const char __pyx_k_scipy_spatial[] = "scipy.spatial";
+static const char __pyx_k_c_interpolation[] = "c_interpolation";
 static const char __pyx_k_natural_neighbor[] = "natural_neighbor";
 static const char __pyx_k_starting_indices[] = "starting_indices";
 static const char __pyx_k_find_nn_triangles[] = "_find_nn_triangles";
 static const char __pyx_k_find_local_boundary[] = "_find_local_boundary";
-static const char __pyx_k_C_Users_ahaberli_Documents_GitHu[] = "C:\\Users\\ahaberli\\Documents\\GitHub\\MetPy\\metpy\\mapping\\_interpolation.pyx";
+static const char __pyx_k_C_Users_ahaberli_Documents_GitHu[] = "C:\\Users\\ahaberli\\Documents\\GitHub\\MetPy\\metpy\\mapping\\c_interpolation.pyx";
 static PyObject *__pyx_kp_s_C_Users_ahaberli_Documents_GitHu;
 static PyObject *__pyx_n_s_ConvexHull;
 static PyObject *__pyx_n_s_Delaunay;
 static PyObject *__pyx_n_s_area;
 static PyObject *__pyx_n_s_area_list;
+static PyObject *__pyx_n_s_c_interpolation;
+static PyObject *__pyx_n_s_c_polygons;
+static PyObject *__pyx_n_s_c_triangles;
 static PyObject *__pyx_n_s_circumcenter;
 static PyObject *__pyx_n_s_cur_area;
 static PyObject *__pyx_n_s_cur_tri;
@@ -809,7 +812,6 @@ static PyObject *__pyx_n_s_i;
 static PyObject *__pyx_n_s_img;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_ind;
-static PyObject *__pyx_n_s_interpolation;
 static PyObject *__pyx_n_s_main;
 static PyObject *__pyx_n_s_metpy_mapping;
 static PyObject *__pyx_n_s_nan;
@@ -826,7 +828,6 @@ static PyObject *__pyx_n_s_p2;
 static PyObject *__pyx_n_s_p3;
 static PyObject *__pyx_n_s_points;
 static PyObject *__pyx_n_s_polygon;
-static PyObject *__pyx_n_s_polygons;
 static PyObject *__pyx_n_s_pts;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_scipy_spatial;
@@ -839,7 +840,6 @@ static PyObject *__pyx_n_s_test;
 static PyObject *__pyx_n_s_total_area;
 static PyObject *__pyx_n_s_tri;
 static PyObject *__pyx_n_s_tri_match;
-static PyObject *__pyx_n_s_triangles;
 static PyObject *__pyx_n_s_value;
 static PyObject *__pyx_n_s_variable;
 static PyObject *__pyx_n_s_vertices;
@@ -847,7 +847,8 @@ static PyObject *__pyx_n_s_x;
 static PyObject *__pyx_n_s_xp;
 static PyObject *__pyx_n_s_yp;
 static PyObject *__pyx_n_s_zip;
-static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_xp, PyObject *__pyx_v_yp, PyObject *__pyx_v_variable, PyObject *__pyx_v_grid_points); /* proto */
+static PyObject *__pyx_pf_15c_interpolation_natural_neighbor(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_xp, PyObject *__pyx_v_yp, PyObject *__pyx_v_variable, PyObject *__pyx_v_grid_points); /* proto */
+static PyObject *__pyx_float_0_0;
 static PyObject *__pyx_int_0;
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2;
@@ -861,18 +862,18 @@ static PyObject *__pyx_tuple__6;
 static PyObject *__pyx_tuple__7;
 static PyObject *__pyx_codeobj__8;
 
-/* "_interpolation.pyx":7
- * 
+/* "c_interpolation.pyx":6
+ * from scipy.spatial import Delaunay, ConvexHull
  * 
  * def natural_neighbor(xp, yp, variable, grid_points):             # <<<<<<<<<<<<<<
  * 
- *     cdef double total_area = 0.0
+ *     tri = Delaunay(list(zip(xp, yp)))
  */
 
 /* Python wrapper */
-static PyObject *__pyx_pw_14_interpolation_1natural_neighbor(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
-static PyMethodDef __pyx_mdef_14_interpolation_1natural_neighbor = {"natural_neighbor", (PyCFunction)__pyx_pw_14_interpolation_1natural_neighbor, METH_VARARGS|METH_KEYWORDS, 0};
-static PyObject *__pyx_pw_14_interpolation_1natural_neighbor(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
+static PyObject *__pyx_pw_15c_interpolation_1natural_neighbor(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds); /*proto*/
+static PyMethodDef __pyx_mdef_15c_interpolation_1natural_neighbor = {"natural_neighbor", (PyCFunction)__pyx_pw_15c_interpolation_1natural_neighbor, METH_VARARGS|METH_KEYWORDS, 0};
+static PyObject *__pyx_pw_15c_interpolation_1natural_neighbor(PyObject *__pyx_self, PyObject *__pyx_args, PyObject *__pyx_kwds) {
   PyObject *__pyx_v_xp = 0;
   PyObject *__pyx_v_yp = 0;
   PyObject *__pyx_v_variable = 0;
@@ -902,21 +903,21 @@ static PyObject *__pyx_pw_14_interpolation_1natural_neighbor(PyObject *__pyx_sel
         case  1:
         if (likely((values[1] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_yp)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("natural_neighbor", 1, 4, 4, 1); __PYX_ERR(0, 7, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("natural_neighbor", 1, 4, 4, 1); __PYX_ERR(0, 6, __pyx_L3_error)
         }
         case  2:
         if (likely((values[2] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_variable)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("natural_neighbor", 1, 4, 4, 2); __PYX_ERR(0, 7, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("natural_neighbor", 1, 4, 4, 2); __PYX_ERR(0, 6, __pyx_L3_error)
         }
         case  3:
         if (likely((values[3] = PyDict_GetItem(__pyx_kwds, __pyx_n_s_grid_points)) != 0)) kw_args--;
         else {
-          __Pyx_RaiseArgtupleInvalid("natural_neighbor", 1, 4, 4, 3); __PYX_ERR(0, 7, __pyx_L3_error)
+          __Pyx_RaiseArgtupleInvalid("natural_neighbor", 1, 4, 4, 3); __PYX_ERR(0, 6, __pyx_L3_error)
         }
       }
       if (unlikely(kw_args > 0)) {
-        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "natural_neighbor") < 0)) __PYX_ERR(0, 7, __pyx_L3_error)
+        if (unlikely(__Pyx_ParseOptionalKeywords(__pyx_kwds, __pyx_pyargnames, 0, values, pos_args, "natural_neighbor") < 0)) __PYX_ERR(0, 6, __pyx_L3_error)
       }
     } else if (PyTuple_GET_SIZE(__pyx_args) != 4) {
       goto __pyx_L5_argtuple_error;
@@ -933,27 +934,27 @@ static PyObject *__pyx_pw_14_interpolation_1natural_neighbor(PyObject *__pyx_sel
   }
   goto __pyx_L4_argument_unpacking_done;
   __pyx_L5_argtuple_error:;
-  __Pyx_RaiseArgtupleInvalid("natural_neighbor", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 7, __pyx_L3_error)
+  __Pyx_RaiseArgtupleInvalid("natural_neighbor", 1, 4, 4, PyTuple_GET_SIZE(__pyx_args)); __PYX_ERR(0, 6, __pyx_L3_error)
   __pyx_L3_error:;
-  __Pyx_AddTraceback("_interpolation.natural_neighbor", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_interpolation.natural_neighbor", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  __pyx_r = __pyx_pf_14_interpolation_natural_neighbor(__pyx_self, __pyx_v_xp, __pyx_v_yp, __pyx_v_variable, __pyx_v_grid_points);
+  __pyx_r = __pyx_pf_15c_interpolation_natural_neighbor(__pyx_self, __pyx_v_xp, __pyx_v_yp, __pyx_v_variable, __pyx_v_grid_points);
 
   /* function exit code */
   __Pyx_RefNannyFinishContext();
   return __pyx_r;
 }
 
-static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_xp, PyObject *__pyx_v_yp, PyObject *__pyx_v_variable, PyObject *__pyx_v_grid_points) {
-  double __pyx_v_total_area;
+static PyObject *__pyx_pf_15c_interpolation_natural_neighbor(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_xp, PyObject *__pyx_v_yp, PyObject *__pyx_v_variable, PyObject *__pyx_v_grid_points) {
   PyObject *__pyx_v_tri = NULL;
   PyObject *__pyx_v_tri_match = NULL;
   PyObject *__pyx_v_img = NULL;
   PyObject *__pyx_v_ind = NULL;
   PyObject *__pyx_v_cur_tri = NULL;
   PyObject *__pyx_v_grid = NULL;
+  PyObject *__pyx_v_total_area = NULL;
   PyObject *__pyx_v_neighbors = NULL;
   PyObject *__pyx_v_new_tri = NULL;
   PyObject *__pyx_v_edges = NULL;
@@ -1000,28 +1001,18 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
   int __pyx_t_23;
   Py_ssize_t __pyx_t_24;
   PyObject *__pyx_t_25 = NULL;
-  double __pyx_t_26;
   __Pyx_RefNannySetupContext("natural_neighbor", 0);
 
-  /* "_interpolation.pyx":9
+  /* "c_interpolation.pyx":8
  * def natural_neighbor(xp, yp, variable, grid_points):
- * 
- *     cdef double total_area = 0.0             # <<<<<<<<<<<<<<
- * 
- *     tri = Delaunay(list(zip(xp, yp)))
- */
-  __pyx_v_total_area = 0.0;
-
-  /* "_interpolation.pyx":11
- *     cdef double total_area = 0.0
  * 
  *     tri = Delaunay(list(zip(xp, yp)))             # <<<<<<<<<<<<<<
  *     tri_match = tri.find_simplex(grid_points)
  * 
  */
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Delaunay); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_Delaunay); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_3 = PyTuple_New(2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_INCREF(__pyx_v_xp);
   __Pyx_GIVEREF(__pyx_v_xp);
@@ -1029,10 +1020,10 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
   __Pyx_INCREF(__pyx_v_yp);
   __Pyx_GIVEREF(__pyx_v_yp);
   PyTuple_SET_ITEM(__pyx_t_3, 1, __pyx_v_yp);
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_3, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  __pyx_t_3 = PySequence_List(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
+  __pyx_t_3 = PySequence_List(__pyx_t_4); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 8, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   __pyx_t_4 = NULL;
@@ -1046,17 +1037,17 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
     }
   }
   if (!__pyx_t_4) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 11, __pyx_L1_error)
+    __pyx_t_5 = PyTuple_New(1+1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 8, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_5, 0, __pyx_t_4); __pyx_t_4 = NULL;
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_5, 0+1, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_5, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 8, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   }
@@ -1064,14 +1055,14 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
   __pyx_v_tri = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_interpolation.pyx":12
+  /* "c_interpolation.pyx":9
  * 
  *     tri = Delaunay(list(zip(xp, yp)))
  *     tri_match = tri.find_simplex(grid_points)             # <<<<<<<<<<<<<<
  * 
  *     img = np.empty(shape=(grid_points.shape[0]), dtype=variable.dtype)
  */
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_find_simplex); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 12, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_find_simplex); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 9, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __pyx_t_5 = NULL;
   if (CYTHON_COMPILING_IN_CPYTHON && likely(PyMethod_Check(__pyx_t_2))) {
@@ -1084,16 +1075,16 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
     }
   }
   if (!__pyx_t_5) {
-    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_grid_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_grid_points); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
   } else {
-    __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 12, __pyx_L1_error)
+    __pyx_t_3 = PyTuple_New(1+1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_5); PyTuple_SET_ITEM(__pyx_t_3, 0, __pyx_t_5); __pyx_t_5 = NULL;
     __Pyx_INCREF(__pyx_v_grid_points);
     __Pyx_GIVEREF(__pyx_v_grid_points);
     PyTuple_SET_ITEM(__pyx_t_3, 0+1, __pyx_v_grid_points);
-    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
+    __pyx_t_1 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_3, NULL); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 9, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   }
@@ -1101,50 +1092,50 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
   __pyx_v_tri_match = __pyx_t_1;
   __pyx_t_1 = 0;
 
-  /* "_interpolation.pyx":14
+  /* "c_interpolation.pyx":11
  *     tri_match = tri.find_simplex(grid_points)
  * 
  *     img = np.empty(shape=(grid_points.shape[0]), dtype=variable.dtype)             # <<<<<<<<<<<<<<
  *     img.fill(np.nan)
  * 
  */
-  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_1, __pyx_n_s_empty); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_grid_points, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_grid_points, __pyx_n_s_shape); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_GetItemInt(__pyx_t_3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_shape, __pyx_t_5) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_shape, __pyx_t_5) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_variable, __pyx_n_s_dtype); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_GetAttrStr(__pyx_v_variable, __pyx_n_s_dtype); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_dtype, __pyx_t_5) < 0) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_empty_tuple, __pyx_t_1); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 11, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_v_img = __pyx_t_5;
   __pyx_t_5 = 0;
 
-  /* "_interpolation.pyx":15
+  /* "c_interpolation.pyx":12
  * 
  *     img = np.empty(shape=(grid_points.shape[0]), dtype=variable.dtype)
  *     img.fill(np.nan)             # <<<<<<<<<<<<<<
  * 
  *     for ind, (cur_tri, grid) in enumerate(zip(tri_match, grid_points)):
  */
-  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_img, __pyx_n_s_fill); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_PyObject_GetAttrStr(__pyx_v_img, __pyx_n_s_fill); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_np); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_nan); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 15, __pyx_L1_error)
+  __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_nan); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 12, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = NULL;
@@ -1158,24 +1149,24 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
     }
   }
   if (!__pyx_t_2) {
-    __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 15, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_t_3); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 12, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_5);
   } else {
-    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 15, __pyx_L1_error)
+    __pyx_t_4 = PyTuple_New(1+1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 12, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_t_2); __pyx_t_2 = NULL;
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_4, 0+1, __pyx_t_3);
     __pyx_t_3 = 0;
-    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 15, __pyx_L1_error)
+    __pyx_t_5 = __Pyx_PyObject_Call(__pyx_t_1, __pyx_t_4, NULL); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 12, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_5);
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   }
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "_interpolation.pyx":17
+  /* "c_interpolation.pyx":14
  *     img.fill(np.nan)
  * 
  *     for ind, (cur_tri, grid) in enumerate(zip(tri_match, grid_points)):             # <<<<<<<<<<<<<<
@@ -1184,7 +1175,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
  */
   __Pyx_INCREF(__pyx_int_0);
   __pyx_t_5 = __pyx_int_0;
-  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_1 = PyTuple_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_v_tri_match);
   __Pyx_GIVEREF(__pyx_v_tri_match);
@@ -1192,16 +1183,16 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
   __Pyx_INCREF(__pyx_v_grid_points);
   __Pyx_GIVEREF(__pyx_v_grid_points);
   PyTuple_SET_ITEM(__pyx_t_1, 1, __pyx_v_grid_points);
-  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 17, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_zip, __pyx_t_1, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 14, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   if (likely(PyList_CheckExact(__pyx_t_4)) || PyTuple_CheckExact(__pyx_t_4)) {
     __pyx_t_1 = __pyx_t_4; __Pyx_INCREF(__pyx_t_1); __pyx_t_6 = 0;
     __pyx_t_7 = NULL;
   } else {
-    __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 17, __pyx_L1_error)
+    __pyx_t_6 = -1; __pyx_t_1 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 14, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_1);
-    __pyx_t_7 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 17, __pyx_L1_error)
+    __pyx_t_7 = Py_TYPE(__pyx_t_1)->tp_iternext; if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 14, __pyx_L1_error)
   }
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
   for (;;) {
@@ -1209,17 +1200,17 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
       if (likely(PyList_CheckExact(__pyx_t_1))) {
         if (__pyx_t_6 >= PyList_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_4); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 17, __pyx_L1_error)
+        __pyx_t_4 = PyList_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_4); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 14, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 17, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 14, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       } else {
         if (__pyx_t_6 >= PyTuple_GET_SIZE(__pyx_t_1)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_4); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 17, __pyx_L1_error)
+        __pyx_t_4 = PyTuple_GET_ITEM(__pyx_t_1, __pyx_t_6); __Pyx_INCREF(__pyx_t_4); __pyx_t_6++; if (unlikely(0 < 0)) __PYX_ERR(0, 14, __pyx_L1_error)
         #else
-        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 17, __pyx_L1_error)
+        __pyx_t_4 = PySequence_ITEM(__pyx_t_1, __pyx_t_6); __pyx_t_6++; if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 14, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
         #endif
       }
@@ -1229,7 +1220,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
         PyObject* exc_type = PyErr_Occurred();
         if (exc_type) {
           if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-          else __PYX_ERR(0, 17, __pyx_L1_error)
+          else __PYX_ERR(0, 14, __pyx_L1_error)
         }
         break;
       }
@@ -1245,7 +1236,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
       if (unlikely(size != 2)) {
         if (size > 2) __Pyx_RaiseTooManyValuesError(2);
         else if (size >= 0) __Pyx_RaiseNeedMoreValuesError(size);
-        __PYX_ERR(0, 17, __pyx_L1_error)
+        __PYX_ERR(0, 14, __pyx_L1_error)
       }
       #if CYTHON_COMPILING_IN_CPYTHON
       if (likely(PyTuple_CheckExact(sequence))) {
@@ -1258,15 +1249,15 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
       __Pyx_INCREF(__pyx_t_3);
       __Pyx_INCREF(__pyx_t_2);
       #else
-      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 17, __pyx_L1_error)
+      __pyx_t_3 = PySequence_ITEM(sequence, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 14, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_2 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 17, __pyx_L1_error)
+      __pyx_t_2 = PySequence_ITEM(sequence, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 14, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       #endif
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     } else {
       Py_ssize_t index = -1;
-      __pyx_t_8 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 17, __pyx_L1_error)
+      __pyx_t_8 = PyObject_GetIter(__pyx_t_4); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 14, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_9 = Py_TYPE(__pyx_t_8)->tp_iternext;
@@ -1274,7 +1265,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
       __Pyx_GOTREF(__pyx_t_3);
       index = 1; __pyx_t_2 = __pyx_t_9(__pyx_t_8); if (unlikely(!__pyx_t_2)) goto __pyx_L5_unpacking_failed;
       __Pyx_GOTREF(__pyx_t_2);
-      if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 2) < 0) __PYX_ERR(0, 17, __pyx_L1_error)
+      if (__Pyx_IternextUnpackEndCheck(__pyx_t_9(__pyx_t_8), 2) < 0) __PYX_ERR(0, 14, __pyx_L1_error)
       __pyx_t_9 = NULL;
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       goto __pyx_L6_unpacking_done;
@@ -1282,7 +1273,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __pyx_t_9 = NULL;
       if (__Pyx_IterFinish() == 0) __Pyx_RaiseNeedMoreValuesError(index);
-      __PYX_ERR(0, 17, __pyx_L1_error)
+      __PYX_ERR(0, 14, __pyx_L1_error)
       __pyx_L6_unpacking_done:;
     }
     __Pyx_XDECREF_SET(__pyx_v_cur_tri, __pyx_t_3);
@@ -1291,43 +1282,44 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
     __pyx_t_2 = 0;
     __Pyx_INCREF(__pyx_t_5);
     __Pyx_XDECREF_SET(__pyx_v_ind, __pyx_t_5);
-    __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_t_5, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 17, __pyx_L1_error)
+    __pyx_t_4 = __Pyx_PyInt_AddObjC(__pyx_t_5, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 14, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
     __Pyx_DECREF(__pyx_t_5);
     __pyx_t_5 = __pyx_t_4;
     __pyx_t_4 = 0;
 
-    /* "_interpolation.pyx":19
+    /* "c_interpolation.pyx":16
  *     for ind, (cur_tri, grid) in enumerate(zip(tri_match, grid_points)):
  * 
  *         total_area = 0.0             # <<<<<<<<<<<<<<
  * 
  *         if cur_tri != -1:
  */
-    __pyx_v_total_area = 0.0;
+    __Pyx_INCREF(__pyx_float_0_0);
+    __Pyx_XDECREF_SET(__pyx_v_total_area, __pyx_float_0_0);
 
-    /* "_interpolation.pyx":21
+    /* "c_interpolation.pyx":18
  *         total_area = 0.0
  * 
  *         if cur_tri != -1:             # <<<<<<<<<<<<<<
  * 
- *             neighbors = _triangles._find_nn_triangles(tri, cur_tri, grid)
+ *             neighbors = c_triangles._find_nn_triangles(tri, cur_tri, grid)
  */
-    __pyx_t_4 = PyObject_RichCompare(__pyx_v_cur_tri, __pyx_int_neg_1, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 21, __pyx_L1_error)
-    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 21, __pyx_L1_error)
+    __pyx_t_4 = PyObject_RichCompare(__pyx_v_cur_tri, __pyx_int_neg_1, Py_NE); __Pyx_XGOTREF(__pyx_t_4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 18, __pyx_L1_error)
+    __pyx_t_10 = __Pyx_PyObject_IsTrue(__pyx_t_4); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 18, __pyx_L1_error)
     __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
     if (__pyx_t_10) {
 
-      /* "_interpolation.pyx":23
+      /* "c_interpolation.pyx":20
  *         if cur_tri != -1:
  * 
- *             neighbors = _triangles._find_nn_triangles(tri, cur_tri, grid)             # <<<<<<<<<<<<<<
+ *             neighbors = c_triangles._find_nn_triangles(tri, cur_tri, grid)             # <<<<<<<<<<<<<<
  * 
  *             new_tri = tri.simplices[neighbors]
  */
-      __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_triangles); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 23, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_c_triangles); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 20, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_find_nn_triangles); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 23, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_find_nn_triangles); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 20, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_2 = NULL;
@@ -1342,7 +1334,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
           __pyx_t_11 = 1;
         }
       }
-      __pyx_t_8 = PyTuple_New(3+__pyx_t_11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 23, __pyx_L1_error)
+      __pyx_t_8 = PyTuple_New(3+__pyx_t_11); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 20, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       if (__pyx_t_2) {
         __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_8, 0, __pyx_t_2); __pyx_t_2 = NULL;
@@ -1356,38 +1348,38 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
       __Pyx_INCREF(__pyx_v_grid);
       __Pyx_GIVEREF(__pyx_v_grid);
       PyTuple_SET_ITEM(__pyx_t_8, 2+__pyx_t_11, __pyx_v_grid);
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 23, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_t_3, __pyx_t_8, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 20, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_XDECREF_SET(__pyx_v_neighbors, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "_interpolation.pyx":25
- *             neighbors = _triangles._find_nn_triangles(tri, cur_tri, grid)
+      /* "c_interpolation.pyx":22
+ *             neighbors = c_triangles._find_nn_triangles(tri, cur_tri, grid)
  * 
  *             new_tri = tri.simplices[neighbors]             # <<<<<<<<<<<<<<
  * 
- *             edges = _triangles._find_local_boundary(tri, neighbors)
+ *             edges = c_triangles._find_local_boundary(tri, neighbors)
  */
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_simplices); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 25, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_simplices); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 22, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_3 = PyObject_GetItem(__pyx_t_4, __pyx_v_neighbors); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 25, __pyx_L1_error)
+      __pyx_t_3 = PyObject_GetItem(__pyx_t_4, __pyx_v_neighbors); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 22, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_XDECREF_SET(__pyx_v_new_tri, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "_interpolation.pyx":27
+      /* "c_interpolation.pyx":24
  *             new_tri = tri.simplices[neighbors]
  * 
- *             edges = _triangles._find_local_boundary(tri, neighbors)             # <<<<<<<<<<<<<<
+ *             edges = c_triangles._find_local_boundary(tri, neighbors)             # <<<<<<<<<<<<<<
  * 
- *             starting_indices = [segment[0] for segment in _polygons._order_edges(edges)]
+ *             starting_indices = [segment[0] for segment in c_polygons._order_edges(edges)]
  */
-      __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_triangles); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 27, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_GetModuleGlobalName(__pyx_n_s_c_triangles); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 24, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_find_local_boundary); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 27, __pyx_L1_error)
+      __pyx_t_8 = __Pyx_PyObject_GetAttrStr(__pyx_t_4, __pyx_n_s_find_local_boundary); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 24, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_8);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __pyx_t_4 = NULL;
@@ -1402,7 +1394,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
           __pyx_t_11 = 1;
         }
       }
-      __pyx_t_2 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 27, __pyx_L1_error)
+      __pyx_t_2 = PyTuple_New(2+__pyx_t_11); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 24, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
       if (__pyx_t_4) {
         __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4); __pyx_t_4 = NULL;
@@ -1413,25 +1405,25 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
       __Pyx_INCREF(__pyx_v_neighbors);
       __Pyx_GIVEREF(__pyx_v_neighbors);
       PyTuple_SET_ITEM(__pyx_t_2, 1+__pyx_t_11, __pyx_v_neighbors);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 27, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_8, __pyx_t_2, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 24, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       __Pyx_XDECREF_SET(__pyx_v_edges, __pyx_t_3);
       __pyx_t_3 = 0;
 
-      /* "_interpolation.pyx":29
- *             edges = _triangles._find_local_boundary(tri, neighbors)
+      /* "c_interpolation.pyx":26
+ *             edges = c_triangles._find_local_boundary(tri, neighbors)
  * 
- *             starting_indices = [segment[0] for segment in _polygons._order_edges(edges)]             # <<<<<<<<<<<<<<
+ *             starting_indices = [segment[0] for segment in c_polygons._order_edges(edges)]             # <<<<<<<<<<<<<<
  * 
  *             edge_vertices = tri.points[starting_indices]
  */
-      __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 29, __pyx_L1_error)
+      __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 26, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_polygons); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 29, __pyx_L1_error)
+      __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_c_polygons); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 26, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_2);
-      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_order_edges); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 29, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_GetAttrStr(__pyx_t_2, __pyx_n_s_order_edges); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 26, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       __pyx_t_2 = NULL;
@@ -1445,16 +1437,16 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
         }
       }
       if (!__pyx_t_2) {
-        __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_edges); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 29, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyObject_CallOneArg(__pyx_t_4, __pyx_v_edges); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 26, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
       } else {
-        __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 29, __pyx_L1_error)
+        __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 26, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_GIVEREF(__pyx_t_2); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_2); __pyx_t_2 = NULL;
         __Pyx_INCREF(__pyx_v_edges);
         __Pyx_GIVEREF(__pyx_v_edges);
         PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_v_edges);
-        __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_12, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 29, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_PyObject_Call(__pyx_t_4, __pyx_t_12, NULL); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 26, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
       }
@@ -1463,9 +1455,9 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
         __pyx_t_4 = __pyx_t_8; __Pyx_INCREF(__pyx_t_4); __pyx_t_11 = 0;
         __pyx_t_13 = NULL;
       } else {
-        __pyx_t_11 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 29, __pyx_L1_error)
+        __pyx_t_11 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_8); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 26, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_13 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 29, __pyx_L1_error)
+        __pyx_t_13 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 26, __pyx_L1_error)
       }
       __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       for (;;) {
@@ -1473,17 +1465,17 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
           if (likely(PyList_CheckExact(__pyx_t_4))) {
             if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_4)) break;
             #if CYTHON_COMPILING_IN_CPYTHON
-            __pyx_t_8 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_8); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 29, __pyx_L1_error)
+            __pyx_t_8 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_8); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 26, __pyx_L1_error)
             #else
-            __pyx_t_8 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 29, __pyx_L1_error)
+            __pyx_t_8 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 26, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_8);
             #endif
           } else {
             if (__pyx_t_11 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
             #if CYTHON_COMPILING_IN_CPYTHON
-            __pyx_t_8 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_8); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 29, __pyx_L1_error)
+            __pyx_t_8 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_8); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 26, __pyx_L1_error)
             #else
-            __pyx_t_8 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 29, __pyx_L1_error)
+            __pyx_t_8 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 26, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_8);
             #endif
           }
@@ -1493,7 +1485,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 29, __pyx_L1_error)
+              else __PYX_ERR(0, 26, __pyx_L1_error)
             }
             break;
           }
@@ -1501,77 +1493,77 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
         }
         __Pyx_XDECREF_SET(__pyx_v_segment, __pyx_t_8);
         __pyx_t_8 = 0;
-        __pyx_t_8 = __Pyx_GetItemInt(__pyx_v_segment, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 29, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_GetItemInt(__pyx_v_segment, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 26, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 29, __pyx_L1_error)
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_8))) __PYX_ERR(0, 26, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
       }
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_XDECREF_SET(__pyx_v_starting_indices, ((PyObject*)__pyx_t_3));
       __pyx_t_3 = 0;
 
-      /* "_interpolation.pyx":31
- *             starting_indices = [segment[0] for segment in _polygons._order_edges(edges)]
+      /* "c_interpolation.pyx":28
+ *             starting_indices = [segment[0] for segment in c_polygons._order_edges(edges)]
  * 
  *             edge_vertices = tri.points[starting_indices]             # <<<<<<<<<<<<<<
  * 
  *             area_list = []
  */
-      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_points); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 31, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_points); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 28, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
-      __pyx_t_4 = PyObject_GetItem(__pyx_t_3, __pyx_v_starting_indices); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 31, __pyx_L1_error)
+      __pyx_t_4 = PyObject_GetItem(__pyx_t_3, __pyx_v_starting_indices); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 28, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       __Pyx_XDECREF_SET(__pyx_v_edge_vertices, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "_interpolation.pyx":33
+      /* "c_interpolation.pyx":30
  *             edge_vertices = tri.points[starting_indices]
  * 
  *             area_list = []             # <<<<<<<<<<<<<<
  *             num_vertices = len(edge_vertices)
- *             for i in range(num_vertices):
+ * 
  */
-      __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 33, __pyx_L1_error)
+      __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 30, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_XDECREF_SET(__pyx_v_area_list, ((PyObject*)__pyx_t_4));
       __pyx_t_4 = 0;
 
-      /* "_interpolation.pyx":34
+      /* "c_interpolation.pyx":31
  * 
  *             area_list = []
  *             num_vertices = len(edge_vertices)             # <<<<<<<<<<<<<<
- *             for i in range(num_vertices):
  * 
+ *             for i in range(num_vertices):
  */
-      __pyx_t_11 = PyObject_Length(__pyx_v_edge_vertices); if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 34, __pyx_L1_error)
-      __pyx_t_4 = PyInt_FromSsize_t(__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 34, __pyx_L1_error)
+      __pyx_t_11 = PyObject_Length(__pyx_v_edge_vertices); if (unlikely(__pyx_t_11 == -1)) __PYX_ERR(0, 31, __pyx_L1_error)
+      __pyx_t_4 = PyInt_FromSsize_t(__pyx_t_11); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 31, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_XDECREF_SET(__pyx_v_num_vertices, __pyx_t_4);
       __pyx_t_4 = 0;
 
-      /* "_interpolation.pyx":35
- *             area_list = []
+      /* "c_interpolation.pyx":33
  *             num_vertices = len(edge_vertices)
+ * 
  *             for i in range(num_vertices):             # <<<<<<<<<<<<<<
  * 
  *                 p1 = edge_vertices[i]
  */
-      __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
+      __pyx_t_4 = PyTuple_New(1); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 33, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
       __Pyx_INCREF(__pyx_v_num_vertices);
       __Pyx_GIVEREF(__pyx_v_num_vertices);
       PyTuple_SET_ITEM(__pyx_t_4, 0, __pyx_v_num_vertices);
-      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+      __pyx_t_3 = __Pyx_PyObject_Call(__pyx_builtin_range, __pyx_t_4, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_3);
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
       if (likely(PyList_CheckExact(__pyx_t_3)) || PyTuple_CheckExact(__pyx_t_3)) {
         __pyx_t_4 = __pyx_t_3; __Pyx_INCREF(__pyx_t_4); __pyx_t_11 = 0;
         __pyx_t_13 = NULL;
       } else {
-        __pyx_t_11 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 35, __pyx_L1_error)
+        __pyx_t_11 = -1; __pyx_t_4 = PyObject_GetIter(__pyx_t_3); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 33, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_4);
-        __pyx_t_13 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 35, __pyx_L1_error)
+        __pyx_t_13 = Py_TYPE(__pyx_t_4)->tp_iternext; if (unlikely(!__pyx_t_13)) __PYX_ERR(0, 33, __pyx_L1_error)
       }
       __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
       for (;;) {
@@ -1579,17 +1571,17 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
           if (likely(PyList_CheckExact(__pyx_t_4))) {
             if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_4)) break;
             #if CYTHON_COMPILING_IN_CPYTHON
-            __pyx_t_3 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_3); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 35, __pyx_L1_error)
+            __pyx_t_3 = PyList_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_3); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 33, __pyx_L1_error)
             #else
-            __pyx_t_3 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+            __pyx_t_3 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_3);
             #endif
           } else {
             if (__pyx_t_11 >= PyTuple_GET_SIZE(__pyx_t_4)) break;
             #if CYTHON_COMPILING_IN_CPYTHON
-            __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_3); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 35, __pyx_L1_error)
+            __pyx_t_3 = PyTuple_GET_ITEM(__pyx_t_4, __pyx_t_11); __Pyx_INCREF(__pyx_t_3); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 33, __pyx_L1_error)
             #else
-            __pyx_t_3 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
+            __pyx_t_3 = PySequence_ITEM(__pyx_t_4, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 33, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_3);
             #endif
           }
@@ -1599,7 +1591,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
             PyObject* exc_type = PyErr_Occurred();
             if (exc_type) {
               if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-              else __PYX_ERR(0, 35, __pyx_L1_error)
+              else __PYX_ERR(0, 33, __pyx_L1_error)
             }
             break;
           }
@@ -1608,89 +1600,89 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
         __Pyx_XDECREF_SET(__pyx_v_i, __pyx_t_3);
         __pyx_t_3 = 0;
 
-        /* "_interpolation.pyx":37
+        /* "c_interpolation.pyx":35
  *             for i in range(num_vertices):
  * 
  *                 p1 = edge_vertices[i]             # <<<<<<<<<<<<<<
  *                 p2 = edge_vertices[(i + 1) % num_vertices]
  *                 p3 = edge_vertices[(i + 2) % num_vertices]
  */
-        __pyx_t_3 = PyObject_GetItem(__pyx_v_edge_vertices, __pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
+        __pyx_t_3 = PyObject_GetItem(__pyx_v_edge_vertices, __pyx_v_i); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 35, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_XDECREF_SET(__pyx_v_p1, __pyx_t_3);
         __pyx_t_3 = 0;
 
-        /* "_interpolation.pyx":38
+        /* "c_interpolation.pyx":36
  * 
  *                 p1 = edge_vertices[i]
  *                 p2 = edge_vertices[(i + 1) % num_vertices]             # <<<<<<<<<<<<<<
  *                 p3 = edge_vertices[(i + 2) % num_vertices]
  * 
  */
-        __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_i, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_i, __pyx_int_1, 1, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_8 = PyNumber_Remainder(__pyx_t_3, __pyx_v_num_vertices); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 38, __pyx_L1_error)
+        __pyx_t_8 = PyNumber_Remainder(__pyx_t_3, __pyx_v_num_vertices); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 36, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_3 = PyObject_GetItem(__pyx_v_edge_vertices, __pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 38, __pyx_L1_error)
+        __pyx_t_3 = PyObject_GetItem(__pyx_v_edge_vertices, __pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 36, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_XDECREF_SET(__pyx_v_p2, __pyx_t_3);
         __pyx_t_3 = 0;
 
-        /* "_interpolation.pyx":39
+        /* "c_interpolation.pyx":37
  *                 p1 = edge_vertices[i]
  *                 p2 = edge_vertices[(i + 1) % num_vertices]
  *                 p3 = edge_vertices[(i + 2) % num_vertices]             # <<<<<<<<<<<<<<
  * 
  *                 polygon = []
  */
-        __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_i, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyInt_AddObjC(__pyx_v_i, __pyx_int_2, 2, 0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_8 = PyNumber_Remainder(__pyx_t_3, __pyx_v_num_vertices); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 39, __pyx_L1_error)
+        __pyx_t_8 = PyNumber_Remainder(__pyx_t_3, __pyx_v_num_vertices); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 37, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_3 = PyObject_GetItem(__pyx_v_edge_vertices, __pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
+        __pyx_t_3 = PyObject_GetItem(__pyx_v_edge_vertices, __pyx_t_8); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 37, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
         __Pyx_XDECREF_SET(__pyx_v_p3, __pyx_t_3);
         __pyx_t_3 = 0;
 
-        /* "_interpolation.pyx":41
+        /* "c_interpolation.pyx":39
  *                 p3 = edge_vertices[(i + 2) % num_vertices]
  * 
  *                 polygon = []             # <<<<<<<<<<<<<<
  * 
- *                 polygon.append(_triangles._circumcenter(grid[0], grid[1], p1[0], p1[1], p2[0], p2[1]))
+ *                 polygon.append(c_triangles._circumcenter(grid[0], grid[1], p1[0], p1[1], p2[0], p2[1]))
  */
-        __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
+        __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 39, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_XDECREF_SET(__pyx_v_polygon, ((PyObject*)__pyx_t_3));
         __pyx_t_3 = 0;
 
-        /* "_interpolation.pyx":43
+        /* "c_interpolation.pyx":41
  *                 polygon = []
  * 
- *                 polygon.append(_triangles._circumcenter(grid[0], grid[1], p1[0], p1[1], p2[0], p2[1]))             # <<<<<<<<<<<<<<
- *                 polygon.append(_triangles._circumcenter(grid[0], grid[1], p2[0], p2[1], p3[0], p3[1]))
+ *                 polygon.append(c_triangles._circumcenter(grid[0], grid[1], p1[0], p1[1], p2[0], p2[1]))             # <<<<<<<<<<<<<<
+ *                 polygon.append(c_triangles._circumcenter(grid[0], grid[1], p2[0], p2[1], p3[0], p3[1]))
  * 
  */
-        __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_triangles); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 43, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_GetModuleGlobalName(__pyx_n_s_c_triangles); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
-        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_circumcenter); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 43, __pyx_L1_error)
+        __pyx_t_12 = __Pyx_PyObject_GetAttrStr(__pyx_t_8, __pyx_n_s_circumcenter); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
         __Pyx_DECREF(__pyx_t_8); __pyx_t_8 = 0;
-        __pyx_t_8 = __Pyx_GetItemInt(__pyx_v_grid, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 43, __pyx_L1_error)
+        __pyx_t_8 = __Pyx_GetItemInt(__pyx_v_grid, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_8)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_8);
-        __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_grid, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 43, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_grid, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_14 = __Pyx_GetItemInt(__pyx_v_p1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 43, __pyx_L1_error)
+        __pyx_t_14 = __Pyx_GetItemInt(__pyx_v_p1, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_14);
-        __pyx_t_15 = __Pyx_GetItemInt(__pyx_v_p1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 43, __pyx_L1_error)
+        __pyx_t_15 = __Pyx_GetItemInt(__pyx_v_p1, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_15);
-        __pyx_t_16 = __Pyx_GetItemInt(__pyx_v_p2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 43, __pyx_L1_error)
+        __pyx_t_16 = __Pyx_GetItemInt(__pyx_v_p2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_16);
-        __pyx_t_17 = __Pyx_GetItemInt(__pyx_v_p2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 43, __pyx_L1_error)
+        __pyx_t_17 = __Pyx_GetItemInt(__pyx_v_p2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_17);
         __pyx_t_18 = NULL;
         __pyx_t_19 = 0;
@@ -1704,7 +1696,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
             __pyx_t_19 = 1;
           }
         }
-        __pyx_t_20 = PyTuple_New(6+__pyx_t_19); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 43, __pyx_L1_error)
+        __pyx_t_20 = PyTuple_New(6+__pyx_t_19); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_20);
         if (__pyx_t_18) {
           __Pyx_GIVEREF(__pyx_t_18); PyTuple_SET_ITEM(__pyx_t_20, 0, __pyx_t_18); __pyx_t_18 = NULL;
@@ -1727,36 +1719,36 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
         __pyx_t_15 = 0;
         __pyx_t_16 = 0;
         __pyx_t_17 = 0;
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_20, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 43, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_12, __pyx_t_20, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-        __pyx_t_21 = __Pyx_PyList_Append(__pyx_v_polygon, __pyx_t_3); if (unlikely(__pyx_t_21 == -1)) __PYX_ERR(0, 43, __pyx_L1_error)
+        __pyx_t_21 = __Pyx_PyList_Append(__pyx_v_polygon, __pyx_t_3); if (unlikely(__pyx_t_21 == -1)) __PYX_ERR(0, 41, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-        /* "_interpolation.pyx":44
+        /* "c_interpolation.pyx":42
  * 
- *                 polygon.append(_triangles._circumcenter(grid[0], grid[1], p1[0], p1[1], p2[0], p2[1]))
- *                 polygon.append(_triangles._circumcenter(grid[0], grid[1], p2[0], p2[1], p3[0], p3[1]))             # <<<<<<<<<<<<<<
+ *                 polygon.append(c_triangles._circumcenter(grid[0], grid[1], p1[0], p1[1], p2[0], p2[1]))
+ *                 polygon.append(c_triangles._circumcenter(grid[0], grid[1], p2[0], p2[1], p3[0], p3[1]))             # <<<<<<<<<<<<<<
  * 
  *                 for new in new_tri:
  */
-        __pyx_t_12 = __Pyx_GetModuleGlobalName(__pyx_n_s_triangles); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 44, __pyx_L1_error)
+        __pyx_t_12 = __Pyx_GetModuleGlobalName(__pyx_n_s_c_triangles); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
-        __pyx_t_20 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_circumcenter); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 44, __pyx_L1_error)
+        __pyx_t_20 = __Pyx_PyObject_GetAttrStr(__pyx_t_12, __pyx_n_s_circumcenter); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_20);
         __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
-        __pyx_t_12 = __Pyx_GetItemInt(__pyx_v_grid, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 44, __pyx_L1_error)
+        __pyx_t_12 = __Pyx_GetItemInt(__pyx_v_grid, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_12);
-        __pyx_t_17 = __Pyx_GetItemInt(__pyx_v_grid, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 44, __pyx_L1_error)
+        __pyx_t_17 = __Pyx_GetItemInt(__pyx_v_grid, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_17);
-        __pyx_t_16 = __Pyx_GetItemInt(__pyx_v_p2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 44, __pyx_L1_error)
+        __pyx_t_16 = __Pyx_GetItemInt(__pyx_v_p2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_16);
-        __pyx_t_15 = __Pyx_GetItemInt(__pyx_v_p2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 44, __pyx_L1_error)
+        __pyx_t_15 = __Pyx_GetItemInt(__pyx_v_p2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_15);
-        __pyx_t_14 = __Pyx_GetItemInt(__pyx_v_p3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 44, __pyx_L1_error)
+        __pyx_t_14 = __Pyx_GetItemInt(__pyx_v_p3, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_14);
-        __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_p3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 44, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_p3, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __pyx_t_8 = NULL;
         __pyx_t_19 = 0;
@@ -1770,7 +1762,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
             __pyx_t_19 = 1;
           }
         }
-        __pyx_t_18 = PyTuple_New(6+__pyx_t_19); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 44, __pyx_L1_error)
+        __pyx_t_18 = PyTuple_New(6+__pyx_t_19); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_18);
         if (__pyx_t_8) {
           __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_18, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -1793,15 +1785,15 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
         __pyx_t_15 = 0;
         __pyx_t_14 = 0;
         __pyx_t_2 = 0;
-        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_20, __pyx_t_18, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_PyObject_Call(__pyx_t_20, __pyx_t_18, NULL); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
         __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
-        __pyx_t_21 = __Pyx_PyList_Append(__pyx_v_polygon, __pyx_t_3); if (unlikely(__pyx_t_21 == -1)) __PYX_ERR(0, 44, __pyx_L1_error)
+        __pyx_t_21 = __Pyx_PyList_Append(__pyx_v_polygon, __pyx_t_3); if (unlikely(__pyx_t_21 == -1)) __PYX_ERR(0, 42, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-        /* "_interpolation.pyx":46
- *                 polygon.append(_triangles._circumcenter(grid[0], grid[1], p2[0], p2[1], p3[0], p3[1]))
+        /* "c_interpolation.pyx":44
+ *                 polygon.append(c_triangles._circumcenter(grid[0], grid[1], p2[0], p2[1], p3[0], p3[1]))
  * 
  *                 for new in new_tri:             # <<<<<<<<<<<<<<
  *                     points = tri.points[new]
@@ -1811,26 +1803,26 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
           __pyx_t_3 = __pyx_v_new_tri; __Pyx_INCREF(__pyx_t_3); __pyx_t_19 = 0;
           __pyx_t_22 = NULL;
         } else {
-          __pyx_t_19 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_v_new_tri); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 46, __pyx_L1_error)
+          __pyx_t_19 = -1; __pyx_t_3 = PyObject_GetIter(__pyx_v_new_tri); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 44, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_3);
-          __pyx_t_22 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 46, __pyx_L1_error)
+          __pyx_t_22 = Py_TYPE(__pyx_t_3)->tp_iternext; if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 44, __pyx_L1_error)
         }
         for (;;) {
           if (likely(!__pyx_t_22)) {
             if (likely(PyList_CheckExact(__pyx_t_3))) {
               if (__pyx_t_19 >= PyList_GET_SIZE(__pyx_t_3)) break;
               #if CYTHON_COMPILING_IN_CPYTHON
-              __pyx_t_20 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_19); __Pyx_INCREF(__pyx_t_20); __pyx_t_19++; if (unlikely(0 < 0)) __PYX_ERR(0, 46, __pyx_L1_error)
+              __pyx_t_20 = PyList_GET_ITEM(__pyx_t_3, __pyx_t_19); __Pyx_INCREF(__pyx_t_20); __pyx_t_19++; if (unlikely(0 < 0)) __PYX_ERR(0, 44, __pyx_L1_error)
               #else
-              __pyx_t_20 = PySequence_ITEM(__pyx_t_3, __pyx_t_19); __pyx_t_19++; if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 46, __pyx_L1_error)
+              __pyx_t_20 = PySequence_ITEM(__pyx_t_3, __pyx_t_19); __pyx_t_19++; if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 44, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_20);
               #endif
             } else {
               if (__pyx_t_19 >= PyTuple_GET_SIZE(__pyx_t_3)) break;
               #if CYTHON_COMPILING_IN_CPYTHON
-              __pyx_t_20 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_19); __Pyx_INCREF(__pyx_t_20); __pyx_t_19++; if (unlikely(0 < 0)) __PYX_ERR(0, 46, __pyx_L1_error)
+              __pyx_t_20 = PyTuple_GET_ITEM(__pyx_t_3, __pyx_t_19); __Pyx_INCREF(__pyx_t_20); __pyx_t_19++; if (unlikely(0 < 0)) __PYX_ERR(0, 44, __pyx_L1_error)
               #else
-              __pyx_t_20 = PySequence_ITEM(__pyx_t_3, __pyx_t_19); __pyx_t_19++; if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 46, __pyx_L1_error)
+              __pyx_t_20 = PySequence_ITEM(__pyx_t_3, __pyx_t_19); __pyx_t_19++; if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 44, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_20);
               #endif
             }
@@ -1840,7 +1832,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
               PyObject* exc_type = PyErr_Occurred();
               if (exc_type) {
                 if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                else __PYX_ERR(0, 46, __pyx_L1_error)
+                else __PYX_ERR(0, 44, __pyx_L1_error)
               }
               break;
             }
@@ -1849,71 +1841,71 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
           __Pyx_XDECREF_SET(__pyx_v_new, __pyx_t_20);
           __pyx_t_20 = 0;
 
-          /* "_interpolation.pyx":47
+          /* "c_interpolation.pyx":45
  * 
  *                 for new in new_tri:
  *                     points = tri.points[new]             # <<<<<<<<<<<<<<
  *                     if p2 in points:
- *                         polygon.append(_triangles._circumcenter(points[0, 0], points[0, 1],
+ *                         polygon.append(c_triangles._circumcenter(points[0, 0], points[0, 1],
  */
-          __pyx_t_20 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_points); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 47, __pyx_L1_error)
+          __pyx_t_20 = __Pyx_PyObject_GetAttrStr(__pyx_v_tri, __pyx_n_s_points); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 45, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_20);
-          __pyx_t_18 = PyObject_GetItem(__pyx_t_20, __pyx_v_new); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 47, __pyx_L1_error)
+          __pyx_t_18 = PyObject_GetItem(__pyx_t_20, __pyx_v_new); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 45, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_18);
           __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
           __Pyx_XDECREF_SET(__pyx_v_points, __pyx_t_18);
           __pyx_t_18 = 0;
 
-          /* "_interpolation.pyx":48
+          /* "c_interpolation.pyx":46
  *                 for new in new_tri:
  *                     points = tri.points[new]
  *                     if p2 in points:             # <<<<<<<<<<<<<<
- *                         polygon.append(_triangles._circumcenter(points[0, 0], points[0, 1],
- *                                                      points[1, 0], points[1, 1],
+ *                         polygon.append(c_triangles._circumcenter(points[0, 0], points[0, 1],
+ *                                                                  points[1, 0], points[1, 1],
  */
-          __pyx_t_10 = (__Pyx_PySequence_ContainsTF(__pyx_v_p2, __pyx_v_points, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 48, __pyx_L1_error)
+          __pyx_t_10 = (__Pyx_PySequence_ContainsTF(__pyx_v_p2, __pyx_v_points, Py_EQ)); if (unlikely(__pyx_t_10 < 0)) __PYX_ERR(0, 46, __pyx_L1_error)
           __pyx_t_23 = (__pyx_t_10 != 0);
           if (__pyx_t_23) {
 
-            /* "_interpolation.pyx":49
+            /* "c_interpolation.pyx":47
  *                     points = tri.points[new]
  *                     if p2 in points:
- *                         polygon.append(_triangles._circumcenter(points[0, 0], points[0, 1],             # <<<<<<<<<<<<<<
- *                                                      points[1, 0], points[1, 1],
- *                                                      points[2, 0], points[2, 1]))
+ *                         polygon.append(c_triangles._circumcenter(points[0, 0], points[0, 1],             # <<<<<<<<<<<<<<
+ *                                                                  points[1, 0], points[1, 1],
+ *                                                                  points[2, 0], points[2, 1]))
  */
-            __pyx_t_20 = __Pyx_GetModuleGlobalName(__pyx_n_s_triangles); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 49, __pyx_L1_error)
+            __pyx_t_20 = __Pyx_GetModuleGlobalName(__pyx_n_s_c_triangles); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 47, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_20);
-            __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_20, __pyx_n_s_circumcenter); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 49, __pyx_L1_error)
+            __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_20, __pyx_n_s_circumcenter); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 47, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_2);
             __Pyx_DECREF(__pyx_t_20); __pyx_t_20 = 0;
-            __pyx_t_20 = PyObject_GetItem(__pyx_v_points, __pyx_tuple_); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 49, __pyx_L1_error)
+            __pyx_t_20 = PyObject_GetItem(__pyx_v_points, __pyx_tuple_); if (unlikely(!__pyx_t_20)) __PYX_ERR(0, 47, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_20);
-            __pyx_t_14 = PyObject_GetItem(__pyx_v_points, __pyx_tuple__2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 49, __pyx_L1_error)
+            __pyx_t_14 = PyObject_GetItem(__pyx_v_points, __pyx_tuple__2); if (unlikely(!__pyx_t_14)) __PYX_ERR(0, 47, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_14);
 
-            /* "_interpolation.pyx":50
+            /* "c_interpolation.pyx":48
  *                     if p2 in points:
- *                         polygon.append(_triangles._circumcenter(points[0, 0], points[0, 1],
- *                                                      points[1, 0], points[1, 1],             # <<<<<<<<<<<<<<
- *                                                      points[2, 0], points[2, 1]))
+ *                         polygon.append(c_triangles._circumcenter(points[0, 0], points[0, 1],
+ *                                                                  points[1, 0], points[1, 1],             # <<<<<<<<<<<<<<
+ *                                                                  points[2, 0], points[2, 1]))
  * 
  */
-            __pyx_t_15 = PyObject_GetItem(__pyx_v_points, __pyx_tuple__3); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 50, __pyx_L1_error)
+            __pyx_t_15 = PyObject_GetItem(__pyx_v_points, __pyx_tuple__3); if (unlikely(!__pyx_t_15)) __PYX_ERR(0, 48, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_15);
-            __pyx_t_16 = PyObject_GetItem(__pyx_v_points, __pyx_tuple__4); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 50, __pyx_L1_error)
+            __pyx_t_16 = PyObject_GetItem(__pyx_v_points, __pyx_tuple__4); if (unlikely(!__pyx_t_16)) __PYX_ERR(0, 48, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_16);
 
-            /* "_interpolation.pyx":51
- *                         polygon.append(_triangles._circumcenter(points[0, 0], points[0, 1],
- *                                                      points[1, 0], points[1, 1],
- *                                                      points[2, 0], points[2, 1]))             # <<<<<<<<<<<<<<
+            /* "c_interpolation.pyx":49
+ *                         polygon.append(c_triangles._circumcenter(points[0, 0], points[0, 1],
+ *                                                                  points[1, 0], points[1, 1],
+ *                                                                  points[2, 0], points[2, 1]))             # <<<<<<<<<<<<<<
  * 
  *                 pts = [polygon[i] for i in ConvexHull(polygon).vertices]
  */
-            __pyx_t_17 = PyObject_GetItem(__pyx_v_points, __pyx_tuple__5); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 51, __pyx_L1_error)
+            __pyx_t_17 = PyObject_GetItem(__pyx_v_points, __pyx_tuple__5); if (unlikely(!__pyx_t_17)) __PYX_ERR(0, 49, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_17);
-            __pyx_t_12 = PyObject_GetItem(__pyx_v_points, __pyx_tuple__6); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 51, __pyx_L1_error)
+            __pyx_t_12 = PyObject_GetItem(__pyx_v_points, __pyx_tuple__6); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 49, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_12);
             __pyx_t_8 = NULL;
             __pyx_t_24 = 0;
@@ -1927,7 +1919,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
                 __pyx_t_24 = 1;
               }
             }
-            __pyx_t_25 = PyTuple_New(6+__pyx_t_24); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 49, __pyx_L1_error)
+            __pyx_t_25 = PyTuple_New(6+__pyx_t_24); if (unlikely(!__pyx_t_25)) __PYX_ERR(0, 47, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_25);
             if (__pyx_t_8) {
               __Pyx_GIVEREF(__pyx_t_8); PyTuple_SET_ITEM(__pyx_t_25, 0, __pyx_t_8); __pyx_t_8 = NULL;
@@ -1950,32 +1942,32 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
             __pyx_t_16 = 0;
             __pyx_t_17 = 0;
             __pyx_t_12 = 0;
-            __pyx_t_18 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_25, NULL); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 49, __pyx_L1_error)
+            __pyx_t_18 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_25, NULL); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 47, __pyx_L1_error)
             __Pyx_GOTREF(__pyx_t_18);
             __Pyx_DECREF(__pyx_t_25); __pyx_t_25 = 0;
             __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-            /* "_interpolation.pyx":49
+            /* "c_interpolation.pyx":47
  *                     points = tri.points[new]
  *                     if p2 in points:
- *                         polygon.append(_triangles._circumcenter(points[0, 0], points[0, 1],             # <<<<<<<<<<<<<<
- *                                                      points[1, 0], points[1, 1],
- *                                                      points[2, 0], points[2, 1]))
+ *                         polygon.append(c_triangles._circumcenter(points[0, 0], points[0, 1],             # <<<<<<<<<<<<<<
+ *                                                                  points[1, 0], points[1, 1],
+ *                                                                  points[2, 0], points[2, 1]))
  */
-            __pyx_t_21 = __Pyx_PyList_Append(__pyx_v_polygon, __pyx_t_18); if (unlikely(__pyx_t_21 == -1)) __PYX_ERR(0, 49, __pyx_L1_error)
+            __pyx_t_21 = __Pyx_PyList_Append(__pyx_v_polygon, __pyx_t_18); if (unlikely(__pyx_t_21 == -1)) __PYX_ERR(0, 47, __pyx_L1_error)
             __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
 
-            /* "_interpolation.pyx":48
+            /* "c_interpolation.pyx":46
  *                 for new in new_tri:
  *                     points = tri.points[new]
  *                     if p2 in points:             # <<<<<<<<<<<<<<
- *                         polygon.append(_triangles._circumcenter(points[0, 0], points[0, 1],
- *                                                      points[1, 0], points[1, 1],
+ *                         polygon.append(c_triangles._circumcenter(points[0, 0], points[0, 1],
+ *                                                                  points[1, 0], points[1, 1],
  */
           }
 
-          /* "_interpolation.pyx":46
- *                 polygon.append(_triangles._circumcenter(grid[0], grid[1], p2[0], p2[1], p3[0], p3[1]))
+          /* "c_interpolation.pyx":44
+ *                 polygon.append(c_triangles._circumcenter(grid[0], grid[1], p2[0], p2[1], p3[0], p3[1]))
  * 
  *                 for new in new_tri:             # <<<<<<<<<<<<<<
  *                     points = tri.points[new]
@@ -1984,16 +1976,16 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
         }
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
 
-        /* "_interpolation.pyx":53
- *                                                      points[2, 0], points[2, 1]))
+        /* "c_interpolation.pyx":51
+ *                                                                  points[2, 0], points[2, 1]))
  * 
  *                 pts = [polygon[i] for i in ConvexHull(polygon).vertices]             # <<<<<<<<<<<<<<
  *                 value = variable[(p2[0]==xp) & (p2[1]==yp)]
  * 
  */
-        __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_3 = PyList_New(0); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 51, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_ConvexHull); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_GetModuleGlobalName(__pyx_n_s_ConvexHull); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __pyx_t_25 = NULL;
         if (CYTHON_COMPILING_IN_CPYTHON && unlikely(PyMethod_Check(__pyx_t_2))) {
@@ -2006,30 +1998,30 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
           }
         }
         if (!__pyx_t_25) {
-          __pyx_t_18 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_polygon); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 53, __pyx_L1_error)
+          __pyx_t_18 = __Pyx_PyObject_CallOneArg(__pyx_t_2, __pyx_v_polygon); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 51, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_18);
         } else {
-          __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 53, __pyx_L1_error)
+          __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 51, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_12);
           __Pyx_GIVEREF(__pyx_t_25); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_25); __pyx_t_25 = NULL;
           __Pyx_INCREF(__pyx_v_polygon);
           __Pyx_GIVEREF(__pyx_v_polygon);
           PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_v_polygon);
-          __pyx_t_18 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_12, NULL); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 53, __pyx_L1_error)
+          __pyx_t_18 = __Pyx_PyObject_Call(__pyx_t_2, __pyx_t_12, NULL); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 51, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_18);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
         }
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_18, __pyx_n_s_vertices); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_PyObject_GetAttrStr(__pyx_t_18, __pyx_n_s_vertices); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
         if (likely(PyList_CheckExact(__pyx_t_2)) || PyTuple_CheckExact(__pyx_t_2)) {
           __pyx_t_18 = __pyx_t_2; __Pyx_INCREF(__pyx_t_18); __pyx_t_19 = 0;
           __pyx_t_22 = NULL;
         } else {
-          __pyx_t_19 = -1; __pyx_t_18 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 53, __pyx_L1_error)
+          __pyx_t_19 = -1; __pyx_t_18 = PyObject_GetIter(__pyx_t_2); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 51, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_18);
-          __pyx_t_22 = Py_TYPE(__pyx_t_18)->tp_iternext; if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 53, __pyx_L1_error)
+          __pyx_t_22 = Py_TYPE(__pyx_t_18)->tp_iternext; if (unlikely(!__pyx_t_22)) __PYX_ERR(0, 51, __pyx_L1_error)
         }
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         for (;;) {
@@ -2037,17 +2029,17 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
             if (likely(PyList_CheckExact(__pyx_t_18))) {
               if (__pyx_t_19 >= PyList_GET_SIZE(__pyx_t_18)) break;
               #if CYTHON_COMPILING_IN_CPYTHON
-              __pyx_t_2 = PyList_GET_ITEM(__pyx_t_18, __pyx_t_19); __Pyx_INCREF(__pyx_t_2); __pyx_t_19++; if (unlikely(0 < 0)) __PYX_ERR(0, 53, __pyx_L1_error)
+              __pyx_t_2 = PyList_GET_ITEM(__pyx_t_18, __pyx_t_19); __Pyx_INCREF(__pyx_t_2); __pyx_t_19++; if (unlikely(0 < 0)) __PYX_ERR(0, 51, __pyx_L1_error)
               #else
-              __pyx_t_2 = PySequence_ITEM(__pyx_t_18, __pyx_t_19); __pyx_t_19++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+              __pyx_t_2 = PySequence_ITEM(__pyx_t_18, __pyx_t_19); __pyx_t_19++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_2);
               #endif
             } else {
               if (__pyx_t_19 >= PyTuple_GET_SIZE(__pyx_t_18)) break;
               #if CYTHON_COMPILING_IN_CPYTHON
-              __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_18, __pyx_t_19); __Pyx_INCREF(__pyx_t_2); __pyx_t_19++; if (unlikely(0 < 0)) __PYX_ERR(0, 53, __pyx_L1_error)
+              __pyx_t_2 = PyTuple_GET_ITEM(__pyx_t_18, __pyx_t_19); __Pyx_INCREF(__pyx_t_2); __pyx_t_19++; if (unlikely(0 < 0)) __PYX_ERR(0, 51, __pyx_L1_error)
               #else
-              __pyx_t_2 = PySequence_ITEM(__pyx_t_18, __pyx_t_19); __pyx_t_19++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+              __pyx_t_2 = PySequence_ITEM(__pyx_t_18, __pyx_t_19); __pyx_t_19++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
               __Pyx_GOTREF(__pyx_t_2);
               #endif
             }
@@ -2057,7 +2049,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
               PyObject* exc_type = PyErr_Occurred();
               if (exc_type) {
                 if (likely(exc_type == PyExc_StopIteration || PyErr_GivenExceptionMatches(exc_type, PyExc_StopIteration))) PyErr_Clear();
-                else __PYX_ERR(0, 53, __pyx_L1_error)
+                else __PYX_ERR(0, 51, __pyx_L1_error)
               }
               break;
             }
@@ -2065,50 +2057,50 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
           }
           __Pyx_DECREF_SET(__pyx_v_i, __pyx_t_2);
           __pyx_t_2 = 0;
-          __pyx_t_2 = PyObject_GetItem(__pyx_v_polygon, __pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 53, __pyx_L1_error)
+          __pyx_t_2 = PyObject_GetItem(__pyx_v_polygon, __pyx_v_i); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 51, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
-          if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_2))) __PYX_ERR(0, 53, __pyx_L1_error)
+          if (unlikely(__Pyx_ListComp_Append(__pyx_t_3, (PyObject*)__pyx_t_2))) __PYX_ERR(0, 51, __pyx_L1_error)
           __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
         }
         __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
         __Pyx_XDECREF_SET(__pyx_v_pts, ((PyObject*)__pyx_t_3));
         __pyx_t_3 = 0;
 
-        /* "_interpolation.pyx":54
+        /* "c_interpolation.pyx":52
  * 
  *                 pts = [polygon[i] for i in ConvexHull(polygon).vertices]
  *                 value = variable[(p2[0]==xp) & (p2[1]==yp)]             # <<<<<<<<<<<<<<
  * 
- *                 cur_area = _polygons._area(pts)
+ *                 cur_area = c_polygons._area(pts)
  */
-        __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_p2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_p2, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_18 = PyObject_RichCompare(__pyx_t_3, __pyx_v_xp, Py_EQ); __Pyx_XGOTREF(__pyx_t_18); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_18 = PyObject_RichCompare(__pyx_t_3, __pyx_v_xp, Py_EQ); __Pyx_XGOTREF(__pyx_t_18); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 52, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_p2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_GetItemInt(__pyx_v_p2, 1, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_2 = PyObject_RichCompare(__pyx_t_3, __pyx_v_yp, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_2 = PyObject_RichCompare(__pyx_t_3, __pyx_v_yp, Py_EQ); __Pyx_XGOTREF(__pyx_t_2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
-        __pyx_t_3 = PyNumber_And(__pyx_t_18, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_3 = PyNumber_And(__pyx_t_18, __pyx_t_2); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 52, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
         __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_2 = PyObject_GetItem(__pyx_v_variable, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
+        __pyx_t_2 = PyObject_GetItem(__pyx_v_variable, __pyx_t_3); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 52, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __Pyx_XDECREF_SET(__pyx_v_value, __pyx_t_2);
         __pyx_t_2 = 0;
 
-        /* "_interpolation.pyx":56
+        /* "c_interpolation.pyx":54
  *                 value = variable[(p2[0]==xp) & (p2[1]==yp)]
  * 
- *                 cur_area = _polygons._area(pts)             # <<<<<<<<<<<<<<
+ *                 cur_area = c_polygons._area(pts)             # <<<<<<<<<<<<<<
  *                 total_area += cur_area
  * 
  */
-        __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_polygons); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 56, __pyx_L1_error)
+        __pyx_t_3 = __Pyx_GetModuleGlobalName(__pyx_n_s_c_polygons); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 54, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_3);
-        __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_area); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 56, __pyx_L1_error)
+        __pyx_t_18 = __Pyx_PyObject_GetAttrStr(__pyx_t_3, __pyx_n_s_area); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 54, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_18);
         __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
         __pyx_t_3 = NULL;
@@ -2122,16 +2114,16 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
           }
         }
         if (!__pyx_t_3) {
-          __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_18, __pyx_v_pts); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_CallOneArg(__pyx_t_18, __pyx_v_pts); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
         } else {
-          __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 56, __pyx_L1_error)
+          __pyx_t_12 = PyTuple_New(1+1); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 54, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_12);
           __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_3); __pyx_t_3 = NULL;
           __Pyx_INCREF(__pyx_v_pts);
           __Pyx_GIVEREF(__pyx_v_pts);
           PyTuple_SET_ITEM(__pyx_t_12, 0+1, __pyx_v_pts);
-          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_18, __pyx_t_12, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 56, __pyx_L1_error)
+          __pyx_t_2 = __Pyx_PyObject_Call(__pyx_t_18, __pyx_t_12, NULL); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 54, __pyx_L1_error)
           __Pyx_GOTREF(__pyx_t_2);
           __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
         }
@@ -2139,40 +2131,36 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
         __Pyx_XDECREF_SET(__pyx_v_cur_area, __pyx_t_2);
         __pyx_t_2 = 0;
 
-        /* "_interpolation.pyx":57
+        /* "c_interpolation.pyx":55
  * 
- *                 cur_area = _polygons._area(pts)
+ *                 cur_area = c_polygons._area(pts)
  *                 total_area += cur_area             # <<<<<<<<<<<<<<
  * 
  *                 area_list.append(cur_area * value[0])
  */
-        __pyx_t_2 = PyFloat_FromDouble(__pyx_v_total_area); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
+        __pyx_t_2 = PyNumber_InPlaceAdd(__pyx_v_total_area, __pyx_v_cur_area); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 55, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __pyx_t_18 = PyNumber_InPlaceAdd(__pyx_t_2, __pyx_v_cur_area); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 57, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_18);
-        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-        __pyx_t_26 = __pyx_PyFloat_AsDouble(__pyx_t_18); if (unlikely((__pyx_t_26 == (double)-1) && PyErr_Occurred())) __PYX_ERR(0, 57, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-        __pyx_v_total_area = __pyx_t_26;
+        __Pyx_DECREF_SET(__pyx_v_total_area, __pyx_t_2);
+        __pyx_t_2 = 0;
 
-        /* "_interpolation.pyx":59
+        /* "c_interpolation.pyx":57
  *                 total_area += cur_area
  * 
  *                 area_list.append(cur_area * value[0])             # <<<<<<<<<<<<<<
  * 
  *             img[ind] = sum([x / total_area for x in area_list])
  */
-        __pyx_t_18 = __Pyx_GetItemInt(__pyx_v_value, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 59, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_18);
-        __pyx_t_2 = PyNumber_Multiply(__pyx_v_cur_area, __pyx_t_18); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+        __pyx_t_2 = __Pyx_GetItemInt(__pyx_v_value, 0, long, 1, __Pyx_PyInt_From_long, 0, 0, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 57, __pyx_L1_error)
         __Pyx_GOTREF(__pyx_t_2);
-        __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-        __pyx_t_21 = __Pyx_PyList_Append(__pyx_v_area_list, __pyx_t_2); if (unlikely(__pyx_t_21 == -1)) __PYX_ERR(0, 59, __pyx_L1_error)
+        __pyx_t_18 = PyNumber_Multiply(__pyx_v_cur_area, __pyx_t_2); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 57, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_18);
         __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
+        __pyx_t_21 = __Pyx_PyList_Append(__pyx_v_area_list, __pyx_t_18); if (unlikely(__pyx_t_21 == -1)) __PYX_ERR(0, 57, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
 
-        /* "_interpolation.pyx":35
- *             area_list = []
+        /* "c_interpolation.pyx":33
  *             num_vertices = len(edge_vertices)
+ * 
  *             for i in range(num_vertices):             # <<<<<<<<<<<<<<
  * 
  *                 p1 = edge_vertices[i]
@@ -2180,56 +2168,53 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
       }
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "_interpolation.pyx":61
+      /* "c_interpolation.pyx":59
  *                 area_list.append(cur_area * value[0])
  * 
  *             img[ind] = sum([x / total_area for x in area_list])             # <<<<<<<<<<<<<<
  * 
  *     return img
  */
-      __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_4 = PyList_New(0); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __pyx_t_2 = __pyx_v_area_list; __Pyx_INCREF(__pyx_t_2); __pyx_t_11 = 0;
+      __pyx_t_18 = __pyx_v_area_list; __Pyx_INCREF(__pyx_t_18); __pyx_t_11 = 0;
       for (;;) {
-        if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_2)) break;
+        if (__pyx_t_11 >= PyList_GET_SIZE(__pyx_t_18)) break;
         #if CYTHON_COMPILING_IN_CPYTHON
-        __pyx_t_18 = PyList_GET_ITEM(__pyx_t_2, __pyx_t_11); __Pyx_INCREF(__pyx_t_18); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
+        __pyx_t_2 = PyList_GET_ITEM(__pyx_t_18, __pyx_t_11); __Pyx_INCREF(__pyx_t_2); __pyx_t_11++; if (unlikely(0 < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
         #else
-        __pyx_t_18 = PySequence_ITEM(__pyx_t_2, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 61, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_18);
+        __pyx_t_2 = PySequence_ITEM(__pyx_t_18, __pyx_t_11); __pyx_t_11++; if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
         #endif
-        __Pyx_XDECREF_SET(__pyx_v_x, __pyx_t_18);
-        __pyx_t_18 = 0;
-        __pyx_t_18 = PyFloat_FromDouble(__pyx_v_total_area); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 61, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_18);
-        __pyx_t_12 = __Pyx_PyNumber_Divide(__pyx_v_x, __pyx_t_18); if (unlikely(!__pyx_t_12)) __PYX_ERR(0, 61, __pyx_L1_error)
-        __Pyx_GOTREF(__pyx_t_12);
-        __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
-        if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_12))) __PYX_ERR(0, 61, __pyx_L1_error)
-        __Pyx_DECREF(__pyx_t_12); __pyx_t_12 = 0;
+        __Pyx_XDECREF_SET(__pyx_v_x, __pyx_t_2);
+        __pyx_t_2 = 0;
+        __pyx_t_2 = __Pyx_PyNumber_Divide(__pyx_v_x, __pyx_v_total_area); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 59, __pyx_L1_error)
+        __Pyx_GOTREF(__pyx_t_2);
+        if (unlikely(__Pyx_ListComp_Append(__pyx_t_4, (PyObject*)__pyx_t_2))) __PYX_ERR(0, 59, __pyx_L1_error)
+        __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
       }
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      __pyx_t_2 = PyTuple_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 61, __pyx_L1_error)
-      __Pyx_GOTREF(__pyx_t_2);
+      __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
+      __pyx_t_18 = PyTuple_New(1); if (unlikely(!__pyx_t_18)) __PYX_ERR(0, 59, __pyx_L1_error)
+      __Pyx_GOTREF(__pyx_t_18);
       __Pyx_GIVEREF(__pyx_t_4);
-      PyTuple_SET_ITEM(__pyx_t_2, 0, __pyx_t_4);
+      PyTuple_SET_ITEM(__pyx_t_18, 0, __pyx_t_4);
       __pyx_t_4 = 0;
-      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_sum, __pyx_t_2, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __pyx_t_4 = __Pyx_PyObject_Call(__pyx_builtin_sum, __pyx_t_18, NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 59, __pyx_L1_error)
       __Pyx_GOTREF(__pyx_t_4);
-      __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-      if (unlikely(PyObject_SetItem(__pyx_v_img, __pyx_v_ind, __pyx_t_4) < 0)) __PYX_ERR(0, 61, __pyx_L1_error)
+      __Pyx_DECREF(__pyx_t_18); __pyx_t_18 = 0;
+      if (unlikely(PyObject_SetItem(__pyx_v_img, __pyx_v_ind, __pyx_t_4) < 0)) __PYX_ERR(0, 59, __pyx_L1_error)
       __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
 
-      /* "_interpolation.pyx":21
+      /* "c_interpolation.pyx":18
  *         total_area = 0.0
  * 
  *         if cur_tri != -1:             # <<<<<<<<<<<<<<
  * 
- *             neighbors = _triangles._find_nn_triangles(tri, cur_tri, grid)
+ *             neighbors = c_triangles._find_nn_triangles(tri, cur_tri, grid)
  */
     }
 
-    /* "_interpolation.pyx":17
+    /* "c_interpolation.pyx":14
  *     img.fill(np.nan)
  * 
  *     for ind, (cur_tri, grid) in enumerate(zip(tri_match, grid_points)):             # <<<<<<<<<<<<<<
@@ -2240,7 +2225,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
 
-  /* "_interpolation.pyx":63
+  /* "c_interpolation.pyx":61
  *             img[ind] = sum([x / total_area for x in area_list])
  * 
  *     return img             # <<<<<<<<<<<<<<
@@ -2250,12 +2235,12 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
   __pyx_r = __pyx_v_img;
   goto __pyx_L0;
 
-  /* "_interpolation.pyx":7
- * 
+  /* "c_interpolation.pyx":6
+ * from scipy.spatial import Delaunay, ConvexHull
  * 
  * def natural_neighbor(xp, yp, variable, grid_points):             # <<<<<<<<<<<<<<
  * 
- *     cdef double total_area = 0.0
+ *     tri = Delaunay(list(zip(xp, yp)))
  */
 
   /* function exit code */
@@ -2274,7 +2259,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
   __Pyx_XDECREF(__pyx_t_18);
   __Pyx_XDECREF(__pyx_t_20);
   __Pyx_XDECREF(__pyx_t_25);
-  __Pyx_AddTraceback("_interpolation.natural_neighbor", __pyx_clineno, __pyx_lineno, __pyx_filename);
+  __Pyx_AddTraceback("c_interpolation.natural_neighbor", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XDECREF(__pyx_v_tri);
@@ -2283,6 +2268,7 @@ static PyObject *__pyx_pf_14_interpolation_natural_neighbor(CYTHON_UNUSED PyObje
   __Pyx_XDECREF(__pyx_v_ind);
   __Pyx_XDECREF(__pyx_v_cur_tri);
   __Pyx_XDECREF(__pyx_v_grid);
+  __Pyx_XDECREF(__pyx_v_total_area);
   __Pyx_XDECREF(__pyx_v_neighbors);
   __Pyx_XDECREF(__pyx_v_new_tri);
   __Pyx_XDECREF(__pyx_v_edges);
@@ -2318,7 +2304,7 @@ static struct PyModuleDef __pyx_moduledef = {
   #else
     PyModuleDef_HEAD_INIT,
   #endif
-    "_interpolation",
+    "c_interpolation",
     0, /* m_doc */
     -1, /* m_size */
     __pyx_methods /* m_methods */,
@@ -2335,6 +2321,9 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Delaunay, __pyx_k_Delaunay, sizeof(__pyx_k_Delaunay), 0, 0, 1, 1},
   {&__pyx_n_s_area, __pyx_k_area, sizeof(__pyx_k_area), 0, 0, 1, 1},
   {&__pyx_n_s_area_list, __pyx_k_area_list, sizeof(__pyx_k_area_list), 0, 0, 1, 1},
+  {&__pyx_n_s_c_interpolation, __pyx_k_c_interpolation, sizeof(__pyx_k_c_interpolation), 0, 0, 1, 1},
+  {&__pyx_n_s_c_polygons, __pyx_k_c_polygons, sizeof(__pyx_k_c_polygons), 0, 0, 1, 1},
+  {&__pyx_n_s_c_triangles, __pyx_k_c_triangles, sizeof(__pyx_k_c_triangles), 0, 0, 1, 1},
   {&__pyx_n_s_circumcenter, __pyx_k_circumcenter, sizeof(__pyx_k_circumcenter), 0, 0, 1, 1},
   {&__pyx_n_s_cur_area, __pyx_k_cur_area, sizeof(__pyx_k_cur_area), 0, 0, 1, 1},
   {&__pyx_n_s_cur_tri, __pyx_k_cur_tri, sizeof(__pyx_k_cur_tri), 0, 0, 1, 1},
@@ -2353,7 +2342,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_img, __pyx_k_img, sizeof(__pyx_k_img), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_ind, __pyx_k_ind, sizeof(__pyx_k_ind), 0, 0, 1, 1},
-  {&__pyx_n_s_interpolation, __pyx_k_interpolation, sizeof(__pyx_k_interpolation), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
   {&__pyx_n_s_metpy_mapping, __pyx_k_metpy_mapping, sizeof(__pyx_k_metpy_mapping), 0, 0, 1, 1},
   {&__pyx_n_s_nan, __pyx_k_nan, sizeof(__pyx_k_nan), 0, 0, 1, 1},
@@ -2370,7 +2358,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_p3, __pyx_k_p3, sizeof(__pyx_k_p3), 0, 0, 1, 1},
   {&__pyx_n_s_points, __pyx_k_points, sizeof(__pyx_k_points), 0, 0, 1, 1},
   {&__pyx_n_s_polygon, __pyx_k_polygon, sizeof(__pyx_k_polygon), 0, 0, 1, 1},
-  {&__pyx_n_s_polygons, __pyx_k_polygons, sizeof(__pyx_k_polygons), 0, 0, 1, 1},
   {&__pyx_n_s_pts, __pyx_k_pts, sizeof(__pyx_k_pts), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_scipy_spatial, __pyx_k_scipy_spatial, sizeof(__pyx_k_scipy_spatial), 0, 0, 1, 1},
@@ -2383,7 +2370,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_total_area, __pyx_k_total_area, sizeof(__pyx_k_total_area), 0, 0, 1, 1},
   {&__pyx_n_s_tri, __pyx_k_tri, sizeof(__pyx_k_tri), 0, 0, 1, 1},
   {&__pyx_n_s_tri_match, __pyx_k_tri_match, sizeof(__pyx_k_tri_match), 0, 0, 1, 1},
-  {&__pyx_n_s_triangles, __pyx_k_triangles, sizeof(__pyx_k_triangles), 0, 0, 1, 1},
   {&__pyx_n_s_value, __pyx_k_value, sizeof(__pyx_k_value), 0, 0, 1, 1},
   {&__pyx_n_s_variable, __pyx_k_variable, sizeof(__pyx_k_variable), 0, 0, 1, 1},
   {&__pyx_n_s_vertices, __pyx_k_vertices, sizeof(__pyx_k_vertices), 0, 0, 1, 1},
@@ -2394,10 +2380,10 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {0, 0, 0, 0, 0, 0, 0}
 };
 static int __Pyx_InitCachedBuiltins(void) {
-  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 11, __pyx_L1_error)
-  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 17, __pyx_L1_error)
-  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 35, __pyx_L1_error)
-  __pyx_builtin_sum = __Pyx_GetBuiltinName(__pyx_n_s_sum); if (!__pyx_builtin_sum) __PYX_ERR(0, 61, __pyx_L1_error)
+  __pyx_builtin_zip = __Pyx_GetBuiltinName(__pyx_n_s_zip); if (!__pyx_builtin_zip) __PYX_ERR(0, 8, __pyx_L1_error)
+  __pyx_builtin_enumerate = __Pyx_GetBuiltinName(__pyx_n_s_enumerate); if (!__pyx_builtin_enumerate) __PYX_ERR(0, 14, __pyx_L1_error)
+  __pyx_builtin_range = __Pyx_GetBuiltinName(__pyx_n_s_range); if (!__pyx_builtin_range) __PYX_ERR(0, 33, __pyx_L1_error)
+  __pyx_builtin_sum = __Pyx_GetBuiltinName(__pyx_n_s_sum); if (!__pyx_builtin_sum) __PYX_ERR(0, 59, __pyx_L1_error)
   return 0;
   __pyx_L1_error:;
   return -1;
@@ -2407,59 +2393,59 @@ static int __Pyx_InitCachedConstants(void) {
   __Pyx_RefNannyDeclarations
   __Pyx_RefNannySetupContext("__Pyx_InitCachedConstants", 0);
 
-  /* "_interpolation.pyx":49
+  /* "c_interpolation.pyx":47
  *                     points = tri.points[new]
  *                     if p2 in points:
- *                         polygon.append(_triangles._circumcenter(points[0, 0], points[0, 1],             # <<<<<<<<<<<<<<
- *                                                      points[1, 0], points[1, 1],
- *                                                      points[2, 0], points[2, 1]))
+ *                         polygon.append(c_triangles._circumcenter(points[0, 0], points[0, 1],             # <<<<<<<<<<<<<<
+ *                                                                  points[1, 0], points[1, 1],
+ *                                                                  points[2, 0], points[2, 1]))
  */
-  __pyx_tuple_ = PyTuple_Pack(2, __pyx_int_0, __pyx_int_0); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(2, __pyx_int_0, __pyx_int_0); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
-  __pyx_tuple__2 = PyTuple_Pack(2, __pyx_int_0, __pyx_int_1); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 49, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(2, __pyx_int_0, __pyx_int_1); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 47, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
-  /* "_interpolation.pyx":50
+  /* "c_interpolation.pyx":48
  *                     if p2 in points:
- *                         polygon.append(_triangles._circumcenter(points[0, 0], points[0, 1],
- *                                                      points[1, 0], points[1, 1],             # <<<<<<<<<<<<<<
- *                                                      points[2, 0], points[2, 1]))
+ *                         polygon.append(c_triangles._circumcenter(points[0, 0], points[0, 1],
+ *                                                                  points[1, 0], points[1, 1],             # <<<<<<<<<<<<<<
+ *                                                                  points[2, 0], points[2, 1]))
  * 
  */
-  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_int_1, __pyx_int_0); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_tuple__3 = PyTuple_Pack(2, __pyx_int_1, __pyx_int_0); if (unlikely(!__pyx_tuple__3)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__3);
   __Pyx_GIVEREF(__pyx_tuple__3);
-  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_int_1, __pyx_int_1); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 50, __pyx_L1_error)
+  __pyx_tuple__4 = PyTuple_Pack(2, __pyx_int_1, __pyx_int_1); if (unlikely(!__pyx_tuple__4)) __PYX_ERR(0, 48, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__4);
   __Pyx_GIVEREF(__pyx_tuple__4);
 
-  /* "_interpolation.pyx":51
- *                         polygon.append(_triangles._circumcenter(points[0, 0], points[0, 1],
- *                                                      points[1, 0], points[1, 1],
- *                                                      points[2, 0], points[2, 1]))             # <<<<<<<<<<<<<<
+  /* "c_interpolation.pyx":49
+ *                         polygon.append(c_triangles._circumcenter(points[0, 0], points[0, 1],
+ *                                                                  points[1, 0], points[1, 1],
+ *                                                                  points[2, 0], points[2, 1]))             # <<<<<<<<<<<<<<
  * 
  *                 pts = [polygon[i] for i in ConvexHull(polygon).vertices]
  */
-  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_int_2, __pyx_int_0); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_tuple__5 = PyTuple_Pack(2, __pyx_int_2, __pyx_int_0); if (unlikely(!__pyx_tuple__5)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__5);
   __Pyx_GIVEREF(__pyx_tuple__5);
-  __pyx_tuple__6 = PyTuple_Pack(2, __pyx_int_2, __pyx_int_1); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 51, __pyx_L1_error)
+  __pyx_tuple__6 = PyTuple_Pack(2, __pyx_int_2, __pyx_int_1); if (unlikely(!__pyx_tuple__6)) __PYX_ERR(0, 49, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__6);
   __Pyx_GIVEREF(__pyx_tuple__6);
 
-  /* "_interpolation.pyx":7
- * 
+  /* "c_interpolation.pyx":6
+ * from scipy.spatial import Delaunay, ConvexHull
  * 
  * def natural_neighbor(xp, yp, variable, grid_points):             # <<<<<<<<<<<<<<
  * 
- *     cdef double total_area = 0.0
+ *     tri = Delaunay(list(zip(xp, yp)))
  */
-  __pyx_tuple__7 = PyTuple_Pack(30, __pyx_n_s_xp, __pyx_n_s_yp, __pyx_n_s_variable, __pyx_n_s_grid_points, __pyx_n_s_total_area, __pyx_n_s_tri, __pyx_n_s_tri_match, __pyx_n_s_img, __pyx_n_s_ind, __pyx_n_s_cur_tri, __pyx_n_s_grid, __pyx_n_s_neighbors, __pyx_n_s_new_tri, __pyx_n_s_edges, __pyx_n_s_starting_indices, __pyx_n_s_edge_vertices, __pyx_n_s_area_list, __pyx_n_s_num_vertices, __pyx_n_s_i, __pyx_n_s_p1, __pyx_n_s_p2, __pyx_n_s_p3, __pyx_n_s_polygon, __pyx_n_s_new, __pyx_n_s_points, __pyx_n_s_pts, __pyx_n_s_value, __pyx_n_s_cur_area, __pyx_n_s_segment, __pyx_n_s_x); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_tuple__7 = PyTuple_Pack(30, __pyx_n_s_xp, __pyx_n_s_yp, __pyx_n_s_variable, __pyx_n_s_grid_points, __pyx_n_s_tri, __pyx_n_s_tri_match, __pyx_n_s_img, __pyx_n_s_ind, __pyx_n_s_cur_tri, __pyx_n_s_grid, __pyx_n_s_total_area, __pyx_n_s_neighbors, __pyx_n_s_new_tri, __pyx_n_s_edges, __pyx_n_s_starting_indices, __pyx_n_s_edge_vertices, __pyx_n_s_area_list, __pyx_n_s_num_vertices, __pyx_n_s_i, __pyx_n_s_p1, __pyx_n_s_p2, __pyx_n_s_p3, __pyx_n_s_polygon, __pyx_n_s_new, __pyx_n_s_points, __pyx_n_s_pts, __pyx_n_s_value, __pyx_n_s_cur_area, __pyx_n_s_segment, __pyx_n_s_x); if (unlikely(!__pyx_tuple__7)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__7);
   __Pyx_GIVEREF(__pyx_tuple__7);
-  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(4, 0, 30, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_natural_neighbor, 7, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_codeobj__8 = (PyObject*)__Pyx_PyCode_New(4, 0, 30, 0, 0, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__7, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_C_Users_ahaberli_Documents_GitHu, __pyx_n_s_natural_neighbor, 6, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__8)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -2469,6 +2455,7 @@ static int __Pyx_InitCachedConstants(void) {
 
 static int __Pyx_InitGlobals(void) {
   if (__Pyx_InitStrings(__pyx_string_tab) < 0) __PYX_ERR(0, 1, __pyx_L1_error);
+  __pyx_float_0_0 = PyFloat_FromDouble(0.0); if (unlikely(!__pyx_float_0_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_0 = PyInt_FromLong(0); if (unlikely(!__pyx_int_0)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_1 = PyInt_FromLong(1); if (unlikely(!__pyx_int_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_int_2 = PyInt_FromLong(2); if (unlikely(!__pyx_int_2)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -2479,11 +2466,11 @@ static int __Pyx_InitGlobals(void) {
 }
 
 #if PY_MAJOR_VERSION < 3
-PyMODINIT_FUNC init_interpolation(void); /*proto*/
-PyMODINIT_FUNC init_interpolation(void)
+PyMODINIT_FUNC initc_interpolation(void); /*proto*/
+PyMODINIT_FUNC initc_interpolation(void)
 #else
-PyMODINIT_FUNC PyInit__interpolation(void); /*proto*/
-PyMODINIT_FUNC PyInit__interpolation(void)
+PyMODINIT_FUNC PyInit_c_interpolation(void); /*proto*/
+PyMODINIT_FUNC PyInit_c_interpolation(void)
 #endif
 {
   PyObject *__pyx_t_1 = NULL;
@@ -2498,7 +2485,7 @@ PyMODINIT_FUNC PyInit__interpolation(void)
           Py_FatalError("failed to import 'refnanny' module");
   }
   #endif
-  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit__interpolation(void)", 0);
+  __Pyx_RefNannySetupContext("PyMODINIT_FUNC PyInit_c_interpolation(void)", 0);
   if (__Pyx_check_binary_version() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_tuple = PyTuple_New(0); if (unlikely(!__pyx_empty_tuple)) __PYX_ERR(0, 1, __pyx_L1_error)
   __pyx_empty_bytes = PyBytes_FromStringAndSize("", 0); if (unlikely(!__pyx_empty_bytes)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -2527,7 +2514,7 @@ PyMODINIT_FUNC PyInit__interpolation(void)
   #endif
   /*--- Module creation code ---*/
   #if PY_MAJOR_VERSION < 3
-  __pyx_m = Py_InitModule4("_interpolation", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
+  __pyx_m = Py_InitModule4("c_interpolation", __pyx_methods, 0, 0, PYTHON_API_VERSION); Py_XINCREF(__pyx_m);
   #else
   __pyx_m = PyModule_Create(&__pyx_moduledef);
   #endif
@@ -2544,14 +2531,14 @@ PyMODINIT_FUNC PyInit__interpolation(void)
   #if PY_MAJOR_VERSION < 3 && (__PYX_DEFAULT_STRING_ENCODING_IS_ASCII || __PYX_DEFAULT_STRING_ENCODING_IS_DEFAULT)
   if (__Pyx_init_sys_getdefaultencoding_params() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
-  if (__pyx_module_is_main__interpolation) {
+  if (__pyx_module_is_main_c_interpolation) {
     if (PyObject_SetAttrString(__pyx_m, "__name__", __pyx_n_s_main) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   }
   #if PY_MAJOR_VERSION >= 3
   {
     PyObject *modules = PyImport_GetModuleDict(); if (unlikely(!modules)) __PYX_ERR(0, 1, __pyx_L1_error)
-    if (!PyDict_GetItemString(modules, "_interpolation")) {
-      if (unlikely(PyDict_SetItemString(modules, "_interpolation", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
+    if (!PyDict_GetItemString(modules, "c_interpolation")) {
+      if (unlikely(PyDict_SetItemString(modules, "c_interpolation", __pyx_m) < 0)) __PYX_ERR(0, 1, __pyx_L1_error)
     }
   }
   #endif
@@ -2571,50 +2558,50 @@ PyMODINIT_FUNC PyInit__interpolation(void)
   if (__Pyx_patch_abc() < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   #endif
 
-  /* "_interpolation.pyx":1
+  /* "c_interpolation.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * 
- * from metpy.mapping import _triangles, _polygons
+ * from metpy.mapping import c_triangles, c_polygons
  */
   __pyx_t_1 = __Pyx_Import(__pyx_n_s_numpy, 0, -1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_np, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_interpolation.pyx":3
+  /* "c_interpolation.pyx":3
  * import numpy as np
  * 
- * from metpy.mapping import _triangles, _polygons             # <<<<<<<<<<<<<<
+ * from metpy.mapping import c_triangles, c_polygons             # <<<<<<<<<<<<<<
  * from scipy.spatial import Delaunay, ConvexHull
  * 
  */
   __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __Pyx_INCREF(__pyx_n_s_triangles);
-  __Pyx_GIVEREF(__pyx_n_s_triangles);
-  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_triangles);
-  __Pyx_INCREF(__pyx_n_s_polygons);
-  __Pyx_GIVEREF(__pyx_n_s_polygons);
-  PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_polygons);
+  __Pyx_INCREF(__pyx_n_s_c_triangles);
+  __Pyx_GIVEREF(__pyx_n_s_c_triangles);
+  PyList_SET_ITEM(__pyx_t_1, 0, __pyx_n_s_c_triangles);
+  __Pyx_INCREF(__pyx_n_s_c_polygons);
+  __Pyx_GIVEREF(__pyx_n_s_c_polygons);
+  PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_c_polygons);
   __pyx_t_2 = __Pyx_Import(__pyx_n_s_metpy_mapping, __pyx_t_1, -1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_triangles); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_c_triangles); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_triangles, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_c_triangles, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_polygons); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_c_polygons); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_polygons, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_c_polygons, __pyx_t_1) < 0) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "_interpolation.pyx":4
+  /* "c_interpolation.pyx":4
  * 
- * from metpy.mapping import _triangles, _polygons
+ * from metpy.mapping import c_triangles, c_polygons
  * from scipy.spatial import Delaunay, ConvexHull             # <<<<<<<<<<<<<<
  * 
- * 
+ * def natural_neighbor(xp, yp, variable, grid_points):
  */
   __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -2637,22 +2624,22 @@ PyMODINIT_FUNC PyInit__interpolation(void)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_interpolation.pyx":7
- * 
+  /* "c_interpolation.pyx":6
+ * from scipy.spatial import Delaunay, ConvexHull
  * 
  * def natural_neighbor(xp, yp, variable, grid_points):             # <<<<<<<<<<<<<<
  * 
- *     cdef double total_area = 0.0
+ *     tri = Delaunay(list(zip(xp, yp)))
  */
-  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_14_interpolation_1natural_neighbor, NULL, __pyx_n_s_interpolation); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 7, __pyx_L1_error)
+  __pyx_t_1 = PyCFunction_NewEx(&__pyx_mdef_15c_interpolation_1natural_neighbor, NULL, __pyx_n_s_c_interpolation); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_natural_neighbor, __pyx_t_1) < 0) __PYX_ERR(0, 7, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_natural_neighbor, __pyx_t_1) < 0) __PYX_ERR(0, 6, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
-  /* "_interpolation.pyx":1
+  /* "c_interpolation.pyx":1
  * import numpy as np             # <<<<<<<<<<<<<<
  * 
- * from metpy.mapping import _triangles, _polygons
+ * from metpy.mapping import c_triangles, c_polygons
  */
   __pyx_t_1 = PyDict_New(); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -2667,11 +2654,11 @@ PyMODINIT_FUNC PyInit__interpolation(void)
   __Pyx_XDECREF(__pyx_t_2);
   if (__pyx_m) {
     if (__pyx_d) {
-      __Pyx_AddTraceback("init _interpolation", __pyx_clineno, __pyx_lineno, __pyx_filename);
+      __Pyx_AddTraceback("init c_interpolation", __pyx_clineno, __pyx_lineno, __pyx_filename);
     }
     Py_DECREF(__pyx_m); __pyx_m = 0;
   } else if (!PyErr_Occurred()) {
-    PyErr_SetString(PyExc_ImportError, "init _interpolation");
+    PyErr_SetString(PyExc_ImportError, "init c_interpolation");
   }
   __pyx_L0:;
   __Pyx_RefNannyFinishContext();

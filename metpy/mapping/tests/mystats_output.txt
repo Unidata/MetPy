@@ -1,0 +1,63 @@
+Fri Jun 17 10:46:56 2016    mystats.stats
+
+         111508 function calls (111507 primitive calls) in 3.614 seconds
+
+   Ordered by: cumulative time, internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+        1    0.000    0.000    3.614    3.614 C:\Users\ahaberli\Documents\GitHub\MetPy\metpy\mapping\MPMap.py:12(interp_points)
+        1    3.115    3.115    3.613    3.613 {_interpolation.natural_neighbor}
+    27854    0.268    0.000    0.268    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+    18567    0.030    0.000    0.176    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\numeric.py:535(ascontiguousarray)
+    18573    0.146    0.000    0.146    0.000 {built-in method array}
+     9285    0.012    0.000    0.120    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\_methods.py:28(_amin)
+     9284    0.010    0.000    0.091    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\_methods.py:37(_any)
+     9285    0.008    0.000    0.088    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\_methods.py:25(_amax)
+     9283    0.010    0.000    0.023    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\ma\core.py:6028(isMaskedArray)
+     9291    0.013    0.000    0.013    0.000 {built-in method isinstance}
+        1    0.000    0.000    0.000    0.000 {_points.generate_grid}
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\ma\core.py:1764(masked_where)
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\lib\function_base.py:3968(meshgrid)
+        1    0.000    0.000    0.000    0.000 {_points.get_boundary_coords}
+        1    0.000    0.000    0.000    0.000 {method 'view' of 'numpy.ndarray' objects}
+        2    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\function_base.py:9(linspace)
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\ma\core.py:2864(__array_finalize__)
+      3/2    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\ma\core.py:3264(__setattr__)
+        1    0.000    0.000    0.000    0.000 {_points.generate_grid_coords}
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\ma\core.py:3295(__setmask__)
+        2    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\fromnumeric.py:2271(amin)
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\lib\function_base.py:4105(<listcomp>)
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\ma\core.py:1486(make_mask)
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\shape_base.py:180(vstack)
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\ma\core.py:2838(_update_from)
+        2    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\fromnumeric.py:2180(amax)
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\lib\function_base.py:4085(<listcomp>)
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\shape_base.py:230(<listcomp>)
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\numeric.py:148(ones)
+        2    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\shape_base.py:61(atleast_2d)
+        2    0.000    0.000    0.000    0.000 {built-in method arange}
+        2    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\ma\core.py:1263(make_mask_descr)
+        2    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\getlimits.py:94(__new__)
+        5    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\core\numeric.py:484(asanyarray)
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\ma\core.py:1581(make_mask_none)
+        9    0.000    0.000    0.000    0.000 {built-in method getattr}
+        1    0.000    0.000    0.000    0.000 {method 'any' of 'numpy.ndarray' objects}
+        1    0.000    0.000    0.000    0.000 {built-in method concatenate}
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\ma\core.py:559(filled)
+        2    0.000    0.000    0.000    0.000 {built-in method result_type}
+        1    0.000    0.000    0.000    0.000 {built-in method copyto}
+        2    0.000    0.000    0.000    0.000 {built-in method hasattr}
+        2    0.000    0.000    0.000    0.000 {method 'astype' of 'numpy.ndarray' objects}
+        2    0.000    0.000    0.000    0.000 {method 'reshape' of 'numpy.ndarray' objects}
+        1    0.000    0.000    0.000    0.000 {built-in method zeros}
+        1    0.000    0.000    0.000    0.000 {built-in method empty}
+        2    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\ma\core.py:1242(_recursive_make_descr)
+        5    0.000    0.000    0.000    0.000 {method 'update' of 'dict' objects}
+        1    0.000    0.000    0.000    0.000 C:\Users\ahaberli\anaconda3\envs\unidata3\lib\site-packages\numpy\lib\function_base.py:4088(<listcomp>)
+        2    0.000    0.000    0.000    0.000 {method 'get' of 'dict' objects}
+        7    0.000    0.000    0.000    0.000 {built-in method len}
+        2    0.000    0.000    0.000    0.000 {method 'append' of 'list' objects}
+        3    0.000    0.000    0.000    0.000 {method 'pop' of 'dict' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+
+
