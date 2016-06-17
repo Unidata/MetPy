@@ -83,15 +83,16 @@ def generate_rst(app):
         no_images = []
         for fname in glob.glob(os.path.join(app.srcdir, generated_source_dir, '*.rst')):
             filepath, filename = os.path.split(fname)
+            target = filename.replace('.rst', '.html')
             dir = os.listdir(os.path.join(app.srcdir, generated_source_dir, filename.replace('.rst', '_files')))
             if dir:
                 file = dir[0]
-                test.write('.. image:: generated/'+ filename.replace('.rst', '_files') + '/' + file +
+                test.write('.. image:: generated/' + filename.replace('.rst', '_files') + '/' + file +
                            '\n   :height: 300px'
                            '\n   :width: 375px'
-                           '\n   :target: generated/' + filename + '\n\n')
+                           '\n   :target: generated/' + target + '\n\n')
             else:
-                no_images.append(filename)
+                no_images.append(target)
         for filename in no_images:
-            test.write('`' + filename.replace('_', ' ').replace('.rst', '') +
+            test.write('`' + filename.replace('_', ' ').replace('.html', '') +
                        ' <generated/' + filename + '>`_\n\n')
