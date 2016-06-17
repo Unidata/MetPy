@@ -123,18 +123,16 @@ class TestLCL(object):
         assert_almost_equal(l, 864.761 * units.mbar, 2)
 
 
-class TestSaturationMixingRatio(object):
-    def test_scalar(self):
-        'Simple test of saturation mixing ratio calculation.'
-        p = 999. * units.mbar
-        t = 288. * units.kelvin
-        assert_almost_equal(saturation_mixing_ratio(p,t), .01068, 3)
+def Test_Saturation_Mixing_Ratio():
+    'Simple test of saturation mixing ratio calculation.'
+    p = 999. * units.mbar
+    t = 288. * units.kelvin
+    assert_almost_equal(saturation_mixing_ratio(p, t), .01068, 3)
 
 
-class TestEquivalentPotentialTemperature(object):
-    def test_scalar(self):
-        'Simple test of equivalent potential temperature calculation.'
-        p = 999. * units.mbar
-        t = 288. * units.kelvin
-        ept = equivalent_potential_temperature(p,t)
-        assert_almost_equal(ept, 315.46 * units.kelvin, 2)
+def Test_Equivalent_Potential_Temperature():
+    'Simple test of equivalent potential temperature calculation.'
+    p = 999. * units.mbar
+    t = 288. * units.kelvin
+    ept = equivalent_potential_temperature(p, t)
+    assert_almost_equal(ept, 315.46 * units.kelvin, 2)
