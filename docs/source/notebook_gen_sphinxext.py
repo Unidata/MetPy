@@ -58,10 +58,10 @@ def write_nb(dest, output, resources):
     name = resources['metadata']['name']
     with open(rst_file, 'w') as rst:
         header = '=' * len(name)
-        rst.write(header + '\n')
-        rst.write(name + '\n')
-        rst.write(header + '\n')
-        rst.write(output)
+        rst.write(header.encode('utf-8') + b'\n')
+        rst.write(name.encode('utf-8') + b'\n')
+        rst.write(header.encode('utf-8') + b'\n')
+        rst.write(output.encode('utf-8'))
 
     imgdir = os.path.join(dest, resources['metadata']['imgdir'])
     if not os.path.exists(imgdir):
