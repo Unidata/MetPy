@@ -10,6 +10,7 @@ warnings.simplefilter('ignore')
 
 from nbconvert.exporters import rst
 
+
 def setup(app):
     setup.app = app
     setup.config = app.config
@@ -73,5 +74,24 @@ def write_nb(dest, output, resources):
 
 
 def generate_rst(app):
+
     for fname in glob.glob(os.path.join(app.srcdir, notebook_source_dir, '*.ipynb')):
         write_nb(os.path.join(app.srcdir, generated_source_dir), *nb_to_rst(fname))
+    with open(os.path.join(app.srcdir, 'examples', 'index.rst'), 'w') as test:
+        test.write('==============\n''MetPy Examples\n''==============\n'
+                   '.. toctree::\n   :glob:\n   :hidden:\n\n   generated/*\n\n')
+        no_images = []
+        for fname in glob.glob(os.path.join(app.srcdir, generated_source_dir, '*.rst')):
+            filepath, filename = os.path.split(fname)
+            dir = os.listdir(os.path.join(app.srcdir, generated_source_dir, filename.replace('.rst', '_files')))
+            if dir:
+                file = dir[0]
+                test.write('.. image:: generated/'+ filename.replace('.rst', '_files') + '/' + file +
+                           '\n   :height: 300px'
+                           '\n   :width: 375px'
+                           '\n   :target: generated/' + filename + '\n\n')
+            else:
+                no_images.append(filename)
+        for filename in no_images:
+            test.write('`' + filename.replace('_', ' ').replace('.rst', '') +
+                       ' <generated/' + filename + '>`_\n\n')
