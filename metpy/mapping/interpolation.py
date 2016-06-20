@@ -1,6 +1,6 @@
 import numpy as np
 from scipy.interpolate import griddata
-from scipy.spatial import Delaunay, ConvexHull
+from scipy.spatial import Delaunay, ConvexHull, cKDTree
 from metpy.mapping import triangles, points, polygons
 
 #from https://github.com/metpy/MetPy/files/138653/cwp-657.pdf
@@ -63,9 +63,29 @@ def barnes():
 
     return 0
 
-def cressman():
+def cressman(xp, yp, variable, grid_points, r):
 
-    return 0
+    obs_tree = cKDTree(list(zip(xp, yp)))
+
+    indices = obs_tree.query_ball_point(grid_points, r=r)
+
+    img = np.empty(shape=(grid_points.shape[0]), dtype=variable.dtype)
+    img.fill(np.nan)
+
+    for idx, (matches, grid) in enumerate(zip(indices, grid_points)):
+        if len(matches) > 0:
+            x0, y0 = grid
+            x1, y1 = obs_tree.data[matches].T
+
+            values = variable[matches]
+
+            dist = triangles.distance([x0, y0], [x1, y1])
+
+            weights = (r * r - dist * dist) / (r * r + dist * dist)
+
+            total_weights = np.sum(weights)
+
+            img[idx] = sum([v * (w / total_weights) for (w, v) in zip(weights, values)])
 
 def radial_basis_functions():
 
