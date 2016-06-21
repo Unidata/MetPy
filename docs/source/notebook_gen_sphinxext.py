@@ -58,10 +58,10 @@ def write_nb(dest, output, resources):
     name = resources['metadata']['name']
     with open(rst_file, 'w') as rst:
         header = '=' * len(name)
-        rst.write(header + '\n')
-        rst.write(name + '\n')
-        rst.write(header + '\n')
-        rst.write(output)
+        rst.write(header.encode('utf-8') + b'\n')
+        rst.write(name.encode('utf-8') + b'\n')
+        rst.write(header.encode('utf-8') + b'\n')
+        rst.write(output.encode('utf-8'))
 
     imgdir = os.path.join(dest, resources['metadata']['imgdir'])
     if not os.path.exists(imgdir):
@@ -83,15 +83,15 @@ def generate_rst(app):
         no_images = []
         for fname in glob.glob(os.path.join(app.srcdir, generated_source_dir, '*.rst')):
             filepath, filename = os.path.split(fname)
+            target = filename.replace('.rst', '.html')
             dir = os.listdir(os.path.join(app.srcdir, generated_source_dir, filename.replace('.rst', '_files')))
             if dir:
                 file = dir[0]
-                test.write('.. image:: generated/'+ filename.replace('.rst', '_files') + '/' + file +
-                           '\n   :height: 300px'
-                           '\n   :width: 375px'
-                           '\n   :target: generated/' + filename + '\n\n')
+                test.write('.. image:: generated/' + filename.replace('.rst', '_files') + '/' + file +
+                           '\n   :width: 220px'
+                           '\n   :target: generated/' + target + '\n\n')
             else:
-                no_images.append(filename)
+                no_images.append(target)
         for filename in no_images:
-            test.write('`' + filename.replace('_', ' ').replace('.rst', '') +
+            test.write('`' + filename.replace('_', ' ').replace('.html', '') +
                        ' <generated/' + filename + '>`_\n\n')

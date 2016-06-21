@@ -17,5 +17,5 @@ MANIFEST
 .eggs/
 
 docs/build/
-docs/source/examples/generated
+docs/source/examples
 examples/scripts
