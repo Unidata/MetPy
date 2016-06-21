@@ -1,23 +1,50 @@
 import numpy as np
-from scipy.interpolate import griddata
 from scipy.spatial import Delaunay, ConvexHull, cKDTree
-from metpy.mapping import triangles, points, polygons
+from metpy.mapping import triangles, polygons
+from metpy.mapping.points import generate_grid_coords
 
-#from https://github.com/metpy/MetPy/files/138653/cwp-657.pdf
-def natural_neighbor(xp, yp, variable, grid_points):
+
+def natural_neighbor(xp, yp, variable, grid_x, grid_y):
+    '''Generate a natural neighbor interpolation of the given
+    points to the given grid using the Liang and Hale (2010)
+    approach.
+
+    Liang, Luming, and Dave Hale. "A stable and fast implementation
+    of natural neighbor interpolation." (2010).
+
+    Parameters
+    ----------
+    xp: (N, ) ndarray
+        x-coordinates of observations
+    yp: (N, ) ndarray
+        y-coordinates of observations
+    variable: (N, ) ndarray
+        observation values associated with (xp, yp) pairs.
+        IE, variable[i] is a unique observation at (xp[i], yp[i])
+    grid_x: (M, 2) ndarray
+        Meshgrid associated with x dimension
+    grid_y: (M, 2) ndarray
+        Meshgrid associated with y dimension
+
+    Returns
+    -------
+    img: (M, N) ndarray
+        Interpolated values on a 2-dimensional grid
+    '''
 
     tri = Delaunay(list(zip(xp, yp)))
+
+    grid_points = generate_grid_coords(grid_x, grid_y)
+
     tri_match = tri.find_simplex(grid_points)
 
     img = np.empty(shape=(grid_points.shape[0]), dtype=variable.dtype)
     img.fill(np.nan)
 
     for ind, (cur_tri, grid) in enumerate(zip(tri_match, grid_points)):
-
         total_area = 0.0
 
         if cur_tri != -1:
-
             neighbors = triangles.find_nn_triangles(tri, cur_tri, grid)
 
             new_tri = tri.simplices[neighbors]
@@ -32,7 +59,6 @@ def natural_neighbor(xp, yp, variable, grid_points):
             num_vertices = len(edge_vertices)
 
             for i in range(num_vertices):
-
                 p1 = edge_vertices[i]
                 p2 = edge_vertices[(i + 1) % num_vertices]
                 p3 = edge_vertices[(i + 2) % num_vertices]
@@ -57,15 +83,72 @@ def natural_neighbor(xp, yp, variable, grid_points):
 
             img[ind] = sum([x / total_area for x in area_list])
 
+    img = img.reshape(grid_x.shape)
     return img
 
 def barnes():
+    '''Generate a natural neighbor interpolation of the given
+    points to the given grid using the Liang and Hale (2010)
+    approach.
+
+    Liang, Luming, and Dave Hale. "A stable and fast implementation
+    of natural neighbor interpolation." (2010).
+
+    Parameters
+    ----------
+    xp: (N, ) ndarray
+        x-coordinates of observations
+    yp: (N, ) ndarray
+        y-coordinates of observations
+    variable: (N, ) ndarray
+        observation values associated with (xp, yp) pairs.
+        IE, variable[i] is a unique observation at (xp[i], yp[i])
+    grid_x: (M, 2) ndarray
+        Meshgrid associated with x dimension
+    grid_y: (M, 2) ndarray
+        Meshgrid associated with y dimension
+
+    Returns
+    -------
+    img: (M, N) ndarray
+        Interpolated values on a 2-dimensional grid
+    '''
 
     return 0
 
-def cressman(xp, yp, variable, grid_points, r):
+def cressman(xp, yp, variable, grid_x, grid_y, r):
+    '''Generate a cressman weights interpolation of the given
+    points to the given grid based on Cressman (1959).
+
+    Cressman, George P. "An operational objective analysis system."
+    Mon. Wea. Rev 87, no. 10 (1959): 367-374.
+
+    Parameters
+    ----------
+    xp: (N, ) ndarray
+        x-coordinates of observations.
+    yp: (N, ) ndarray
+        y-coordinates of observations.
+    variable: (N, ) ndarray
+        observation values associated with (xp, yp) pairs.
+        IE, variable[i] is a unique observation at (xp[i], yp[i]).
+    grid_x: (M, 2) ndarray
+        Meshgrid associated with x dimension.
+    grid_y: (M, 2) ndarray
+        Meshgrid associated with y dimension.
+    r: float
+        Radius from grid center, within which observations
+        are considered and weighted.
+
+    Returns
+    -------
+    img: (M, N) ndarray
+        Interpolated values on a 2-dimensional grid
+    '''
 
     obs_tree = cKDTree(list(zip(xp, yp)))
+
+    grid_points = generate_grid_coords(grid_x, grid_y)
 
     indices = obs_tree.query_ball_point(grid_points, r=r)
 
@@ -79,14 +162,43 @@ def cressman(xp, yp, variable, grid_points, r):
 
             values = variable[matches]
 
-            dist = triangles.distance([x0, y0], [x1, y1])
+            dist = triangles.dist_2(x0, y0, x1, y1)
 
-            weights = (r * r - dist * dist) / (r * r + dist * dist)
+            weights = (r * r - dist) / (r * r + dist)
 
             total_weights = np.sum(weights)
 
             img[idx] = sum([v * (w / total_weights) for (w, v) in zip(weights, values)])
 
+    img.reshape(grid_x.shape)
+    return img
+
 def radial_basis_functions():
+    '''Generate a natural neighbor interpolation of the given
+    points to the given grid using the Liang and Hale (2010)
+    approach.
+
+    Liang, Luming, and Dave Hale. "A stable and fast implementation
+    of natural neighbor interpolation." (2010).
+
+    Parameters
+    ----------
+    xp: (N, ) ndarray
+        x-coordinates of observations
+    yp: (N, ) ndarray
+        y-coordinates of observations
+    variable: (N, ) ndarray
+        observation values associated with (xp, yp) pairs.
+        IE, variable[i] is a unique observation at (xp[i], yp[i])
+    grid_x: (M, 2) ndarray
+        Meshgrid associated with x dimension
+    grid_y: (M, 2) ndarray
+        Meshgrid associated with y dimension
+
+    Returns
+    -------
+    img: (M, N) ndarray
+        Interpolated values on a 2-dimensional grid
+    '''
 
     return 0

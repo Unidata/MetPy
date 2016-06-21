@@ -1,19 +1,7 @@
 import numpy as np
-from scipy.ndimage import gaussian_filter
 from scipy.spatial import cKDTree
 #from metpy.mapping._triangles import _circumcenter, _find_nn_triangles, _find_local_boundary, _order_edges
 
-
-def lookup_values(xi, yi, xs, ys, high_accuracy=False):
-
-    if not high_accuracy:
-        x_match = np.array(xi, dtype=int) == np.array(xs, dtype=int)
-        y_match = np.array(yi, dtype=int) == np.array(ys, dtype=int)
-    else:
-        x_match = np.isclose(xi, xs)
-        y_match = np.isclose(yi, ys)
-
-    return np.where((x_match==True) & (y_match==True))
 
 def get_points_within_r(center_point, target_points, r, return_idx=False):
     '''Get all target_points within a specified radius
@@ -60,6 +48,7 @@ def get_point_count_within_r(center_points, target_points, r):
 
     Returns
     -------
+        (N, ) ndarray
         A list of point counts within r distance of, and in the same
         order as, center_points
     '''
@@ -69,7 +58,7 @@ def get_point_count_within_r(center_points, target_points, r):
     return np.array([len(x) for x in indices])
 
 
-def smoothed_freq_map(x_points, y_points, bbox, x_steps, y_steps, gaussian):
+def frequency_map(x_points, y_points, bbox, x_steps, y_steps):
     '''Create smoothed spatial frequency map of points per user
     defined grid cell within a specified extent.  All values are
     assumed to be in the same coordinate system.
@@ -92,17 +81,12 @@ def smoothed_freq_map(x_points, y_points, bbox, x_steps, y_steps, gaussian):
         A smoothed frequency grid
     '''
 
-    #    west = bbox['southwest'][0]
-    #    north = bbox['northeast'][1]
-    #    east = bbox['northeast'][0]
-    #    south = bbox['southwest'][1]
-
     grid, _, _ = np.histogram2d(y_points, x_points, bins=(y_steps, x_steps))
     grid = np.flipud(grid)
-    return gaussian_filter(grid, sigma=gaussian)
+    return grid
 
 
-def generate_grid(x_dim, y_dim, bbox, ignore_warnings=False):
+def generate_grid(horiz_dim, bbox, ignore_warnings=False):
     '''Generate a meshgrid based on bounding box and x & y resolution
 
     Parameters
@@ -119,12 +103,13 @@ def generate_grid(x_dim, y_dim, bbox, ignore_warnings=False):
     (X, Y) ndarray
         meshgrid defined by given bounding box
     '''
-    if not ignore_warnings and (x_dim < 10000 or y_dim < 10000):
+
+    if not ignore_warnings and horiz_dim < 10000:
         print("Grids less than 10km may be slow to load at synoptic scale.")
         print("Set ignore_warnings to True to run anyway. Defaulting to 10km")
         x_dim = y_dim = 10000
 
-    x_steps, y_steps = get_xy_steps(bbox, x_dim, y_dim)
+    x_steps, y_steps = get_xy_steps(bbox, horiz_dim)
 
     grid_x = np.linspace(bbox['southwest'][0], bbox['northeast'][0], x_steps)
     grid_y = np.linspace(bbox['southwest'][1], bbox['northeast'][1], y_steps)
@@ -171,7 +156,7 @@ def get_xy_range(bbox):
     return x_range, y_range
 
 
-def get_xy_steps(bbox, x_dim, y_dim):
+def get_xy_steps(bbox, h_dim):
     '''Return meshgrid spacing based on bounding box
 
     bbox: dictionary
@@ -189,8 +174,8 @@ def get_xy_steps(bbox, x_dim, y_dim):
 
     x_range, y_range = get_xy_range(bbox)
 
-    x_steps = np.ceil(x_range / x_dim)
-    y_steps = np.ceil(y_range / y_dim)
+    x_steps = np.ceil(x_range / h_dim)
+    y_steps = np.ceil(y_range / h_dim)
     
     return int(x_steps), int(y_steps)
 
