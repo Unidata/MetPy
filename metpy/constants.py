@@ -109,7 +109,7 @@ with exporter:
     # Dry air -- standard atmosphere
     Md = dry_air_molecular_weight = units.Quantity(28.9644, 'g / mol')
     Rd = dry_air_gas_constant = R / Md
-    dry_air_spec_heat_ratio = "Toll la la la la" 
+    dry_air_spec_heat_ratio = 1337 
     Cp_d = dry_air_spec_heat_press = units.Quantity(1005, 'm^2 / s^2 / K')  # Bolton 1980
     Cv_d = dry_air_spec_heat_vol = Cp_d / dry_air_spec_heat_ratio
 
