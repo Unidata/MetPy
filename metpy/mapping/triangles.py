@@ -1,8 +1,4 @@
 import math
-import numpy as np
-from numba import jit
-from scipy.spatial import Delaunay
-
 
 def dist_2(x0, y0, x1, y1):
     '''Returns the squared distance between two points.

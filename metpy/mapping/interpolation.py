@@ -1,7 +1,8 @@
 import numpy as np
+
 from scipy.spatial import Delaunay, ConvexHull, cKDTree
-from metpy.mapping import triangles, polygons
-from metpy.mapping.points import generate_grid_coords
+
+from metpy.mapping import triangles, polygons, points
 
 
 def natural_neighbor(xp, yp, variable, grid_x, grid_y):
@@ -34,7 +35,7 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
 
     tri = Delaunay(list(zip(xp, yp)))
 
-    grid_points = generate_grid_coords(grid_x, grid_y)
+    grid_points = points.generate_grid_coords(grid_x, grid_y)
 
     tri_match = tri.find_simplex(grid_points)
 
@@ -69,9 +70,9 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
                 polygon.append(triangles.circumcenter(grid, p3, p2))
 
                 for new in new_tri:
-                    points = tri.points[new]
-                    if p2 in points:
-                        polygon.append(triangles.circumcenter(points[0], points[1], points[2]))
+                    pts = tri.points[new]
+                    if p2 in pts:
+                        polygon.append(triangles.circumcenter(pts[0], pts[1], pts[2]))
 
                 pts = [polygon[i] for i in ConvexHull(polygon).vertices]
                 value = variable[(p2[0]==xp) & (p2[1]==yp)]
@@ -86,37 +87,19 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
     img = img.reshape(grid_x.shape)
     return img
 
-def barnes():
-    '''Generate a natural neighbor interpolation of the given
-    points to the given grid using the Liang and Hale (2010)
-    approach.
 
-    Liang, Luming, and Dave Hale. "A stable and fast implementation
-    of natural neighbor interpolation." (2010).
+def barnes_weights(dist, kappa, gamma=1.0):
 
-    Parameters
-    ----------
-    xp: (N, ) ndarray
-        x-coordinates of observations
-    yp: (N, ) ndarray
-        y-coordinates of observations
-    variable: (N, ) ndarray
-        observation values associated with (xp, yp) pairs.
-        IE, variable[i] is a unique observation at (xp[i], yp[i])
-    grid_x: (M, 2) ndarray
-        Meshgrid associated with x dimension
-    grid_y: (M, 2) ndarray
-        Meshgrid associated with y dimension
+    weights = np.exp(-dist / (kappa * gamma))
+    return weights
 
-    Returns
-    -------
-    img: (M, N) ndarray
-        Interpolated values on a 2-dimensional grid
-    '''
 
-    return 0
+def cressman_weights(dist, r):
 
-def cressman(xp, yp, variable, grid_x, grid_y, r):
+    return (r * r - dist) / (r * r + dist)
+
+
+def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None, kind='cressman'):
     '''Generate a cressman weights interpolation of the given
     points to the given grid based on Cressman (1959).
 
@@ -148,7 +131,7 @@ def cressman(xp, yp, variable, grid_x, grid_y, r):
 
     obs_tree = cKDTree(list(zip(xp, yp)))
 
-    grid_points = generate_grid_coords(grid_x, grid_y)
+    grid_points = points.generate_grid_coords(grid_x, grid_y)
 
     indices = obs_tree.query_ball_point(grid_points, r=r)
 
@@ -156,7 +139,7 @@ def cressman(xp, yp, variable, grid_x, grid_y, r):
     img.fill(np.nan)
 
     for idx, (matches, grid) in enumerate(zip(indices, grid_points)):
-        if len(matches) > 0:
+        if len(matches) > 2:
             x0, y0 = grid
             x1, y1 = obs_tree.data[matches].T
 
@@ -164,41 +147,22 @@ def cressman(xp, yp, variable, grid_x, grid_y, r):
 
             dist = triangles.dist_2(x0, y0, x1, y1)
 
-            weights = (r * r - dist) / (r * r + dist)
+            if kind == 'cressman':
+                weights = cressman_weights(dist, r)
+                total_weights = np.sum(weights)
+                img[idx] = sum([v * (w / total_weights) for (w, v) in zip(weights, values)])
 
-            total_weights = np.sum(weights)
+            elif kind == 'barnes':
 
-            img[idx] = sum([v * (w / total_weights) for (w, v) in zip(weights, values)])
+                weights = barnes_weights(dist, kappa)
+                weights_ = barnes_weights(dist, kappa, gamma)
+
+                total_weights = np.sum(weights)
+                img[idx] = np.sum(values * (weights / total_weights))
+
+                total_weights_ = np.sum(weights_)
+                img[idx] += np.sum((values - img[idx]) * (weights_ / total_weights_))
 
     img.reshape(grid_x.shape)
     return img
 
-def radial_basis_functions():
-    '''Generate a natural neighbor interpolation of the given
-    points to the given grid using the Liang and Hale (2010)
-    approach.
-
-    Liang, Luming, and Dave Hale. "A stable and fast implementation
-    of natural neighbor interpolation." (2010).
-
-    Parameters
-    ----------
-    xp: (N, ) ndarray
-        x-coordinates of observations
-    yp: (N, ) ndarray
-        y-coordinates of observations
-    variable: (N, ) ndarray
-        observation values associated with (xp, yp) pairs.
-        IE, variable[i] is a unique observation at (xp[i], yp[i])
-    grid_x: (M, 2) ndarray
-        Meshgrid associated with x dimension
-    grid_y: (M, 2) ndarray
-        Meshgrid associated with y dimension
-
-    Returns
-    -------
-    img: (M, N) ndarray
-        Interpolated values on a 2-dimensional grid
-    '''
-
-    return 0

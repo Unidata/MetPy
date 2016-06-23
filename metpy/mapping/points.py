@@ -1,6 +1,5 @@
 import numpy as np
 from scipy.spatial import cKDTree
-#from metpy.mapping._triangles import _circumcenter, _find_nn_triangles, _find_local_boundary, _order_edges
 
 
 def get_points_within_r(center_point, target_points, r, return_idx=False):

@@ -1,10 +1,9 @@
 import numpy as np
 
-from scipy.interpolate import griddata
-try:
-    from metpy.mapping import c_points, c_triangles, c_interpolation as points, triangles, interpolation
-except ImportError:
-    from metpy.mapping import points, triangles, interpolation
+from scipy.interpolate import griddata, Rbf
+
+from metpy.mapping import interpolation
+from metpy.mapping import points
 
 try:
     natgrid_available = True
@@ -12,6 +11,17 @@ try:
 except ImportError:
     natgrid_available = False
 
+def calc_kappa(spacing):
+
+    return 5.052 * (2.0 * spacing / np.pi)**2
+
+def threshold_value(x, y, z, val=0):
+
+    x_ = x[z >= val]
+    y_ = y[z >= val]
+    z_ = z[z >= val]
+
+    return x_, y_, z_
 
 def remove_nan_observations(x, y, z):
     '''Given (x,y) coordinates and an associated observation (z),
@@ -105,7 +115,8 @@ def remove_nans_and_repeats(x, y, z):
     return x_, y_, z_
 
 
-def interpolate(x, y, z, interp_type="linear", hres=50000, buffer=1000, search_radius=None):
+def interpolate(x, y, z, interp_type="linear", hres=50000, buffer=1000,
+                gamma=None, search_radius=None, rbf_func='gaussian', rbf_smooth=0):
     '''Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.
 
     Parameters
@@ -151,21 +162,32 @@ def interpolate(x, y, z, interp_type="linear", hres=50000, buffer=1000, search_r
         if natgrid_available:
             img = mpl_gridding(x, y, z, grid_x, grid_y, interp='nn')
         else:
-            raise ValueError("Natgrid not installed.  Please use another interpolation choice: \n"
-                             "linear, nearest, cubic, natural_neighbor")
-
-    elif interp_type == "barnes":
-        img = interpolation.barnes()
+            raise ValueError("Natgrid not installed.  Please use another interpolation choice.")
 
     elif interp_type == "cressman":
         if search_radius == None:
             raise ValueError("You must provide a search radius for cressman interpolation.")
         else:
-            img = interpolation.cressman(x, y, z, grid_x, grid_y, search_radius)
+            img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius, kind=interp_type)
+            img = img.reshape(grid_x.shape)
+
+    elif interp_type == "barnes":
+        if search_radius == None:
+            raise ValueError("You must provide a search radius for barnes interpolation.")
+        elif gamma == None:
+            raise ValueError("You must provide a smoothing parameter ('kappa_star') for barnes interpolation.")
+        else:
+            kappa = calc_kappa(hres)
+            img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius, gamma, kappa, kind=interp_type)
             img = img.reshape(grid_x.shape)
 
     elif interp_type == "rbf":
-        img = interpolation.radial_basis_functions()
+        h = np.zeros((len(x)))
+
+        rbfi = Rbf(x, y, h, z, function=rbf_func, smooth=rbf_smooth)
+
+        hi = np.zeros((grid_x.shape))
+        img = rbfi(grid_x, grid_y, hi)
 
     else:
         raise ValueError("Interpolation option not available\n" +
