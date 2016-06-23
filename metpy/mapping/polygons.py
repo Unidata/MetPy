@@ -1,7 +1,21 @@
-from scipy.spatial import Delaunay
+# Copyright (c) 2008-2015 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 
-#shoelace algorithm
+
 def area(poly):
+    '''Find the area of a given polygon using the shoelace algorithm.
+
+    Parameters
+    ----------
+    poly: (2, N) ndarray
+        2-dimensional coordinates representing an ordered
+        traversal around the edge a polygon.
+
+    Returns
+    -------
+    area: float
+    '''
 
     A = 0.0
     n = len(poly)
@@ -12,6 +26,20 @@ def area(poly):
     return abs(A) / 2.0
 
 def order_edges(edges):
+    '''Return an ordered traversal of the edges of a
+    two-dimensional polygon.
+
+    Parameters
+    ----------
+    edges: (2, N) ndarray
+        List of unordered line segments, where each
+        line segment is represented by two unique
+        vertex codes.
+
+    Returns
+    -------
+    ordered_edges: (2, N) ndarray
+    '''
 
     edge = edges[0]
     edges = edges[1:]
@@ -34,29 +62,3 @@ def order_edges(edges):
         num_max -= 1
 
     return ordered_edges
-
-def find_outer_edges(polygon):
-
-    edges = []
-
-    tri = Delaunay(polygon)
-
-    for triangle in tri.simplices:
-
-        for i in range(3):
-
-            pt1 = triangle[i]
-            pt2 = triangle[(i + 1) % 3]
-
-            if (pt1, pt2) in edges:
-                edges.remove((pt1, pt2))
-
-            elif (pt2, pt1) in edges:
-
-                edges.remove((pt2, pt1))
-            else:
-                edges.append((pt1, pt2))
-
-    print(edges)
-    print(tri.points)
-    return [[tri.points[x], tri.points[y]] for x, y in edges]

@@ -1,3 +1,7 @@
+# Copyright (c) 2008-2015 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+
 import numpy as np
 from scipy.spatial import cKDTree
 
@@ -72,12 +76,13 @@ def frequency_map(x_points, y_points, bbox, x_steps, y_steps):
         spatial bounding box of histogram
     steps: (X_size, Y_size) ndarray
         size of the grid cells
-    gaussian: floating point
-        size of smoothing window
+    gaussian: float
+        size of smoothing window.
 
     Returns
     -------
-        A smoothed frequency grid
+    grid: (M, N) ndarray
+        A frequency grid
     '''
 
     grid, _, _ = np.histogram2d(y_points, x_points, bins=(y_steps, x_steps))

@@ -1,3 +1,7 @@
+# Copyright (c) 2008-2015 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+
 import numpy as np
 
 from scipy.spatial import Delaunay, ConvexHull, cKDTree
@@ -75,7 +79,7 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
                         polygon.append(triangles.circumcenter(pts[0], pts[1], pts[2]))
 
                 pts = [polygon[i] for i in ConvexHull(polygon).vertices]
-                value = variable[(p2[0]==xp) & (p2[1]==yp)]
+                value = variable[(p2[0] == xp) & (p2[1] == yp)]
 
                 cur_area = polygons.area(pts)
                 total_area += cur_area
@@ -89,23 +93,69 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
 
 
 def barnes_weights(dist, kappa, gamma=1.0):
+    '''Calculate the barnes weights for observation points
+    based on their distance from an interpolation point.
 
-    weights = np.exp(-dist / (kappa * gamma))
-    return weights
+    Parameters
+    ----------
+    dist: (N, ) ndarray
+        Distances from interpolation point
+        associated with each observation in meters.
+    kappa: float
+        Response parameter for barnes interpolation. Default None.
+    gamma: float
+        Adjustable smoothing parameter for the barnes interpolation. Default None.
+
+    Returns
+    -------
+    weights: (N, ) ndarray
+        Calculated weights for the given observations determined by their distance
+        to the interpolation point.
+    '''
+
+    return np.exp(-dist / (kappa * gamma))
 
 
 def cressman_weights(dist, r):
+    '''Calculate the cressman weights for observation points
+    based on their distance from an interpolation point.
+
+    Parameters
+    ----------
+    dist: (N, ) ndarray
+        Distances from interpolation point
+        associated with each observation in meters.
+
+    r: float
+        Maximum distance an observation can be from an
+        interpolation point to be considered in the inter-
+        polation calculation.
+
+    Returns
+    -------
+    weights: (N, ) ndarray
+        Calculated weights for the given observations determined by their distance
+        to the interpolation point.
+    '''
 
     return (r * r - dist) / (r * r + dist)
 
 
 def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None,
                      min_neighbors=3, kind='cressman'):
-    '''Generate a cressman weights interpolation of the given
-    points to the given grid based on Cressman (1959).
+    '''Generate an inverse distance weighting interpolation of the given
+    points to the given grid based on either Cressman (1959) or Barnes (1964).
+    The Barnes implementation used here based on Koch et al. (1983).
 
     Cressman, George P. "An operational objective analysis system."
-    Mon. Wea. Rev 87, no. 10 (1959): 367-374.
+        Mon. Wea. Rev 87, no. 10 (1959): 367-374.
+
+    Barnes, S. L., 1964: A technique for maximizing details in numerical
+        weather map analysis. J. Appl. Meteor., 3, 396–409.
+
+    Koch, S. E., M. DesJardins, and P. J. Kocin, 1983: An interactive
+        Barnes objective analysis scheme for use with satellite and conventional
+        data. J. Climate Appl. Meteor., 22, 1487–1503.
 
     Parameters
     ----------
@@ -123,6 +173,15 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
     r: float
         Radius from grid center, within which observations
         are considered and weighted.
+    gamma: float
+        Adjustable smoothing parameter for the barnes interpolation. Default None.
+    kappa: float
+        Response parameter for barnes interpolation. Default None.
+    min_neighbors: int
+        Minimum number of neighbors needed to perform barnes or cressman interpolation for a point. Default is 3.
+    kind: str
+        Specify what inverse distance weighting interpolation to use.
+        Options: 'cressman' or 'barnes'. Default 'cressman'
 
     Returns
     -------

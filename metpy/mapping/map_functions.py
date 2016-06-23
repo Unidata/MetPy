@@ -1,3 +1,7 @@
+# Copyright (c) 2008-2015 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+
 import numpy as np
 
 from scipy.interpolate import griddata, Rbf
@@ -13,10 +17,42 @@ except ImportError:
     natgrid_available = False
 
 def calc_kappa(spacing, kappa_star=5.052):
+    '''Calculate the kappa parameter for barnes interpolation.
+
+    Parameters
+    ----------
+    spacing: float
+        Average spacing between observations
+    kappa_star: float
+        Non-dimensional response parameter. Default 5.052.
+
+    Returns
+    -------
+        kappa: float
+    '''
 
     return kappa_star * (2.0 * spacing / np.pi)**2
 
 def threshold_value(x, y, z, val=0):
+    '''Given (x,y) coordinates and an associated observation (z),
+    remove all x, y, and z where z is less than val. Will not destroy
+    original values.
+
+    Parameters
+    ----------
+    x: float
+        x coordinate
+    y: float
+        y coordinate
+    z: float
+        observation value
+
+    Returns
+    -------
+    x, y, z
+        List of coordinate observation pairs without
+        observation values less than val.
+    '''
 
     x_ = x[z >= val]
     y_ = y[z >= val]
@@ -161,7 +197,7 @@ def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_
         Meshgrid for the resulting interpolation in the x dimension
     grid_y: (N, 2) ndarray
         Meshgrid for the resulting interpolation in the y dimension ndarray
-    img: (M, M) ndarray
+    img: (M, N) ndarray
         2-dimensional array representing the interpolated values for each grid.
     '''
 

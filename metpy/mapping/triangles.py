@@ -1,3 +1,7 @@
+# Copyright (c) 2008-2015 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+
 import math
 
 def dist_2(x0, y0, x1, y1):
