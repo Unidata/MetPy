@@ -99,7 +99,8 @@ def cressman_weights(dist, r):
     return (r * r - dist) / (r * r + dist)
 
 
-def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None, kind='cressman'):
+def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None,
+                     min_neighbors=3, kind='cressman'):
     '''Generate a cressman weights interpolation of the given
     points to the given grid based on Cressman (1959).
 
@@ -139,7 +140,7 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
     img.fill(np.nan)
 
     for idx, (matches, grid) in enumerate(zip(indices, grid_points)):
-        if len(matches) > 2:
+        if len(matches) >= min_neighbors:
             x0, y0 = grid
             x1, y1 = obs_tree.data[matches].T
 

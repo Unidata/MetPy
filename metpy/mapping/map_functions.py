@@ -1,6 +1,7 @@
 import numpy as np
 
 from scipy.interpolate import griddata, Rbf
+from scipy.spatial.distance import cdist
 
 from metpy.mapping import interpolation
 from metpy.mapping import points
@@ -11,9 +12,9 @@ try:
 except ImportError:
     natgrid_available = False
 
-def calc_kappa(spacing):
+def calc_kappa(spacing, kappa_star=5.052):
 
-    return 5.052 * (2.0 * spacing / np.pi)**2
+    return kappa_star * (2.0 * spacing / np.pi)**2
 
 def threshold_value(x, y, z, val=0):
 
@@ -115,8 +116,8 @@ def remove_nans_and_repeats(x, y, z):
     return x_, y_, z_
 
 
-def interpolate(x, y, z, interp_type="linear", hres=50000, buffer=1000,
-                gamma=None, search_radius=None, rbf_func='gaussian', rbf_smooth=0):
+def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_neighbors=3,
+                gamma=0.25, kappa_star=5.052, search_radius=None, rbf_func='linear', rbf_smooth=0):
     '''Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.
 
     Parameters
@@ -128,14 +129,31 @@ def interpolate(x, y, z, interp_type="linear", hres=50000, buffer=1000,
     z: float
         observation value
     interp_type: str
-        What type of interpolation to use. Available options include "linear", "nearest", "cubic",
-        "natural_neighbor", "nngrid", "barnes", "cressman", "rbf".  Default "linear".
+        What type of interpolation to use. Available options include:
+        1) "linear", "nearest", "cubic", or "rbf" from Scipy.interpolate.
+        2) "natural_neighbor", "barnes", or "cressman" from Metpy.mapping .
+        3) "nngrid", if installed, from Matplotlib.natgrid.
+        Default "linear".
     hres: float
-        The horizontal resolution of the generated grid. Default 50000.
+        The horizontal resolution of the generated grid in meters. Default 50000.
     buffer: float
         How many meters to add to the bounds of the grid. Default 1000.
+    minimum_neighbors: int
+        Minimum number of neighbors needed to perform barnes or cressman interpolation for a point. Default is 3.
+    gamma: float
+        Adjustable smoothing parameter for the barnes interpolation. Default 0.25.
+    kappa_star: float
+        Response parameter for barnes interpolation, specified nondimensionally
+        in terms of the Nyquist. Default 5.052
     search_radius: float
-        A search radius to use for certain interpolation schemes. Default None.
+        A search radius to use for the barnes and cressman interpolation schemes.
+        If search_radius is not specified, it will default to the average spacing of observations.
+    rbf_func: str
+        Specifies which function to use for Rbf interpolation.
+        Options include: 'multiquadric', 'inverse', 'gaussian', 'linear', 'cubic',
+        'quintic', and 'thin_plate'. Defualt 'linear'. See scipy.interpolate.Rbf for more information.
+    rbf_smooth: float
+        Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.
 
     Returns
     -------
@@ -144,9 +162,13 @@ def interpolate(x, y, z, interp_type="linear", hres=50000, buffer=1000,
     grid_y: (N, 2) ndarray
         Meshgrid for the resulting interpolation in the y dimension ndarray
     img: (M, M) ndarray
-        List of coordinate observation pairs without
-        repeated coordinates and nan valued observations.
+        2-dimensional array representing the interpolated values for each grid.
     '''
+
+    ave_spacing = np.mean((cdist(list(zip(x, y)), list(zip(x, y)))))
+
+    if search_radius == None:
+        search_radius = ave_spacing
 
     grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y), buffer)
 
@@ -165,27 +187,26 @@ def interpolate(x, y, z, interp_type="linear", hres=50000, buffer=1000,
             raise ValueError("Natgrid not installed.  Please use another interpolation choice.")
 
     elif interp_type == "cressman":
-        if search_radius == None:
-            raise ValueError("You must provide a search radius for cressman interpolation.")
-        else:
-            img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius, kind=interp_type)
-            img = img.reshape(grid_x.shape)
+
+        img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius,
+                                             min_neighbors=minimum_neighbors, kind=interp_type)
+        img = img.reshape(grid_x.shape)
 
     elif interp_type == "barnes":
-        if search_radius == None:
-            raise ValueError("You must provide a search radius for barnes interpolation.")
-        elif gamma == None:
-            raise ValueError("You must provide a smoothing parameter ('kappa_star') for barnes interpolation.")
-        else:
-            kappa = calc_kappa(hres)
-            img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius, gamma, kappa, kind=interp_type)
-            img = img.reshape(grid_x.shape)
+
+        kappa = calc_kappa(ave_spacing, kappa_star)
+        img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius, gamma, kappa,
+                                             min_neighbors=minimum_neighbors, kind=interp_type)
+        img = img.reshape(grid_x.shape)
 
     elif interp_type == "rbf":
+
+        #3-dimensional support not yet included. Assign a zero to each z dimension for observations.
         h = np.zeros((len(x)))
 
         rbfi = Rbf(x, y, h, z, function=rbf_func, smooth=rbf_smooth)
 
+        #3-dimensional support not yet included. Assign a zero to each z dimension grid cell position.
         hi = np.zeros((grid_x.shape))
         img = rbfi(grid_x, grid_y, hi)
 
