@@ -4,7 +4,7 @@
 
 import numpy as np
 from scipy.spatial import cKDTree
-
+from collections import Counter
 
 def get_points_within_r(center_point, target_points, r, return_idx=False):
     '''Get all target_points within a specified radius
@@ -61,35 +61,6 @@ def get_point_count_within_r(center_points, target_points, r):
     return np.array([len(x) for x in indices])
 
 
-def frequency_map(x_points, y_points, bbox, x_steps, y_steps):
-    '''Create smoothed spatial frequency map of points per user
-    defined grid cell within a specified extent.  All values are
-    assumed to be in the same coordinate system.
-
-    Parameters
-    ----------
-    x_points: array-like
-        x_coordinates used to calculate counts per grid cell
-    y_points: array-like
-        y_coordinates used to calculate counts per grid cell
-    bbox: dictionary of boundary coordinates
-        spatial bounding box of histogram
-    steps: (X_size, Y_size) ndarray
-        size of the grid cells
-    gaussian: float
-        size of smoothing window.
-
-    Returns
-    -------
-    grid: (M, N) ndarray
-        A frequency grid
-    '''
-
-    grid, _, _ = np.histogram2d(y_points, x_points, bins=(y_steps, x_steps))
-    grid = np.flipud(grid)
-    return grid
-
-
 def generate_grid(horiz_dim, bbox, ignore_warnings=False):
     '''Generate a meshgrid based on bounding box and x & y resolution
 
@@ -115,8 +86,8 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
 
     x_steps, y_steps = get_xy_steps(bbox, horiz_dim)
 
-    grid_x = np.linspace(bbox['southwest'][0], bbox['northeast'][0], x_steps)
-    grid_y = np.linspace(bbox['southwest'][1], bbox['northeast'][1], y_steps)
+    grid_x = np.linspace(bbox['west'], bbox['east'], x_steps)
+    grid_y = np.linspace(bbox['south'], bbox['north'], y_steps)
 
     gx, gy = np.meshgrid(grid_x, grid_y)
 
@@ -154,8 +125,8 @@ def get_xy_range(bbox):
         X and Y ranges in meters
     '''
 
-    x_range = bbox['northeast'][0] - bbox['southwest'][0]
-    y_range = bbox['northeast'][1] - bbox['southwest'][1]
+    x_range = bbox['east'] - bbox['west']
+    y_range = bbox['north'] - bbox['south']
 
     return x_range, y_range
 
@@ -202,10 +173,9 @@ def get_boundary_coords(x, y, spatial_pad = 0):
         dictionary containing coordinates for corners of study area
     '''
 
-
     west = np.min(x) - spatial_pad
     east = np.max(x) + spatial_pad
     north = np.max(y) + spatial_pad
     south = np.min(y) - spatial_pad
 
-    return {'southwest': (west, south), 'northeast': (east, north)}
+    return {'west': west, 'south': south, 'east': east, 'north': north}

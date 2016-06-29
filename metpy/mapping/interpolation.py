@@ -41,52 +41,66 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
 
     grid_points = points.generate_grid_coords(grid_x, grid_y)
 
-    tri_match = tri.find_simplex(grid_points)
+    members, triangle_info = triangles.find_natural_neighbors(tri, grid_points)
 
     img = np.empty(shape=(grid_points.shape[0]), dtype=variable.dtype)
     img.fill(np.nan)
 
-    for ind, (cur_tri, grid) in enumerate(zip(tri_match, grid_points)):
-        total_area = 0.0
+    for ind, (grid, neighbors) in enumerate(members.items()):
 
-        if cur_tri != -1:
-            neighbors = triangles.find_nn_triangles(tri, cur_tri, grid)
-
-            new_tri = tri.simplices[neighbors]
+        if len(neighbors) > 0:
 
             edges = triangles.find_local_boundary(tri, neighbors)
 
-            starting_indices = [segment[0] for segment in polygons.order_edges(edges)]
-
-            edge_vertices = tri.points[starting_indices]
+            edge_vertices = [segment[0] for segment in polygons.order_edges(edges)]
 
             area_list = []
             num_vertices = len(edge_vertices)
 
+            polygon = list()
+
+            p1 = edge_vertices[0]
+            p2 = edge_vertices[1]
+
+            c1 = triangles.circumcenter(grid_points[grid], tri.points[p1], tri.points[p2])
+
+            polygon.append(c1)
+
+            total_area = 0.0
+
             for i in range(num_vertices):
-                p1 = edge_vertices[i]
-                p2 = edge_vertices[(i + 1) % num_vertices]
+
                 p3 = edge_vertices[(i + 2) % num_vertices]
 
-                polygon = []
+                try:
+                    
+                    c2 = triangles.circumcenter(grid_points[grid], tri.points[p3], tri.points[p2])
+                    polygon.append(c2)
 
-                polygon.append(triangles.circumcenter(grid, p1, p2))
-                polygon.append(triangles.circumcenter(grid, p3, p2))
+                    for check_tri in neighbors:
+                        if p2 in tri.simplices[check_tri]:
+                            polygon.append(triangle_info[check_tri]['cc'])
 
-                for new in new_tri:
-                    pts = tri.points[new]
-                    if p2 in pts:
-                        polygon.append(triangles.circumcenter(pts[0], pts[1], pts[2]))
+                except ZeroDivisionError:
+                    area_list.append(0)
+                    continue
 
                 pts = [polygon[i] for i in ConvexHull(polygon).vertices]
-                value = variable[(p2[0] == xp) & (p2[1] == yp)]
+                value = variable[(tri.points[p2][0] == xp) & (tri.points[p2][1] == yp)]
 
                 cur_area = polygons.area(pts)
                 total_area += cur_area
 
                 area_list.append(cur_area * value[0])
 
-            img[ind] = sum([x / total_area for x in area_list])
+                polygon = list()
+                polygon.append(c2)
+
+                p1 = p2
+                p2 = p3
+
+            if total_area > 0:
+                img[ind] = sum([x / total_area for x in area_list])
 
     img = img.reshape(grid_x.shape)
     return img

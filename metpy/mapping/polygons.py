@@ -25,6 +25,7 @@ def area(poly):
 
     return abs(A) / 2.0
 
+
 def order_edges(edges):
     '''Return an ordered traversal of the edges of a
     two-dimensional polygon.

@@ -4,7 +4,6 @@
 
 from metpy.mapping.points import *
 from numpy.testing import assert_array_almost_equal
-from itertools import permutations
 
 
 def test_get_points_within_r():
@@ -37,7 +36,7 @@ def test_get_point_count_within_r():
 
     truth = np.array([5, 2])
 
-    assert assert_array_almost_equal(truth, count)
+    assert_array_almost_equal(truth, count)
 
 
 def test_get_boundary_coords():
@@ -47,19 +46,27 @@ def test_get_boundary_coords():
 
     bbox = get_boundary_coords(x, y)
 
-    ne_truth = (9, 9)
-    sw_truth = (0, 0)
+    east_truth  = 9
+    north_truth = 9
+    south_truth = 0
+    west_truth = 0
 
-    assert_array_almost_equal(ne_truth, bbox['northeast'])
-    assert_array_almost_equal(sw_truth, bbox['southwest'])
+    assert_array_almost_equal(north_truth, bbox['north'])
+    assert_array_almost_equal(south_truth, bbox['south'])
+    assert_array_almost_equal(east_truth, bbox['east'])
+    assert_array_almost_equal(west_truth, bbox['west'])
 
     bbox = get_boundary_coords(x, y, 10)
 
-    ne_truth = (19, 19)
-    sw_truth = (-10, -10)
+    north_truth = 19
+    south_truth = -10
+    east_truth = 19
+    west_truth = -10
 
-    assert_array_almost_equal(ne_truth, bbox['northeast'])
-    assert_array_almost_equal(sw_truth, bbox['southwest'])
+    assert_array_almost_equal(north_truth, bbox['north'])
+    assert_array_almost_equal(south_truth, bbox['south'])
+    assert_array_almost_equal(east_truth, bbox['east'])
+    assert_array_almost_equal(west_truth, bbox['west'])
 
 
 def test_get_xy_steps():
@@ -114,3 +121,26 @@ def test_generate_grid():
     assert_array_almost_equal(gx, truth_x)
     assert_array_almost_equal(gy, truth_y)
 
+
+def test_generate_grid_coords():
+
+    x = list(range(10))
+    y = list(range(10))
+
+    bbox = get_boundary_coords(x, y)
+
+    gx, gy = generate_grid(3, bbox, ignore_warnings=True)
+
+    truth = [[0.0, 0.0],
+             [4.5, 0.0],
+             [9.0, 0.0],
+             [0.0, 4.5],
+             [4.5, 4.5],
+             [9.0, 4.5],
+             [0.0, 9.0],
+             [4.5, 9.0],
+             [9.0, 9.0]]
+
+    pts = generate_grid_coords(gx, gy)
+
+    assert_array_almost_equal(truth, pts)
