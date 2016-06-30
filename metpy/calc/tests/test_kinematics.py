@@ -158,7 +158,8 @@ class TestGeos(object):
         'Test of geostrophic wind calculation against gempak values'
         z = np.array([[5586387.00, 5584467.50, 5583147.50],
                       [5594407.00, 5592487.50, 5591307.50],
-                      [5604707.50, 5603247.50, 5602527.50]]).T * (9.80616 * units('m/s^2')) * 1e-3
+                      [5604707.50, 5603247.50, 5602527.50]]).T \
+            * (9.80616 * units('m/s^2')) * 1e-3
         dx = np.deg2rad(0.25) * Re * np.cos(np.deg2rad(44))
         # Inverting dy since latitudes in array increase as you go up
         dy = -np.deg2rad(0.25) * Re
@@ -170,5 +171,5 @@ class TestGeos(object):
         true_v = np.array([[-10.93621, -7.83859, -4.54839],
                            [-10.74533, -7.50152, -3.24262],
                            [-8.66612, -5.27816, -1.45282]])
-        assert_almost_equal(ug[1,1], true_u[1,1] * units('m/s'), 2)
-        assert_almost_equal(vg[1,1], true_v[1,1] * units('m/s'), 2)
+        assert_almost_equal(ug[1, 1], true_u[1, 1] * units('m/s'), 2)
+        assert_almost_equal(vg[1, 1], true_v[1, 1] * units('m/s'), 2)
