@@ -50,60 +50,100 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
 
         if len(neighbors) > 0:
 
-            edges = triangles.find_local_boundary(tri, neighbors)
-
-            edge_vertices = [segment[0] for segment in polygons.order_edges(edges)]
-
-            area_list = []
-            num_vertices = len(edge_vertices)
-
-            polygon = list()
-
-            p1 = edge_vertices[0]
-            p2 = edge_vertices[1]
-
-            c1 = triangles.circumcenter(grid_points[grid], tri.points[p1], tri.points[p2])
-
-            polygon.append(c1)
-
-            total_area = 0.0
-
-            for i in range(num_vertices):
-
-                p3 = edge_vertices[(i + 2) % num_vertices]
-
-                try:
-                    
-                    c2 = triangles.circumcenter(grid_points[grid], tri.points[p3], tri.points[p2])
-                    polygon.append(c2)
-
-                    for check_tri in neighbors:
-                        if p2 in tri.simplices[check_tri]:
-                            polygon.append(triangle_info[check_tri]['cc'])
-
-                except ZeroDivisionError:
-                    area_list.append(0)
-                    continue
-
-                pts = [polygon[i] for i in ConvexHull(polygon).vertices]
-                value = variable[(tri.points[p2][0] == xp) & (tri.points[p2][1] == yp)]
-
-                cur_area = polygons.area(pts)
-                total_area += cur_area
-
-                area_list.append(cur_area * value[0])
-
-                polygon = list()
-                polygon.append(c2)
-
-                p1 = p2
-                p2 = p3
-
-            if total_area > 0:
-                img[ind] = sum([x / total_area for x in area_list])
+                img[ind] = nn_point(xp, yp, variable, grid_points[grid],
+                                    tri, neighbors, triangle_info)
 
     img = img.reshape(grid_x.shape)
     return img
+
+
+def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
+    '''Generate a natural neighbor interpolation of the given
+    observations to the given point using the Liang and Hale (2010)
+    approach. The interpolation will fail if the grid point has no
+    natural neighbors.
+
+    Liang, Luming, and Dave Hale. "A stable and fast implementation
+    of natural neighbor interpolation." (2010).
+
+    Parameters
+    ----------
+    xp: (N, ) ndarray
+        x-coordinates of observations
+    yp: (N, ) ndarray
+        y-coordinates of observations
+    variable: (N, ) ndarray
+        observation values associated with (xp, yp) pairs.
+        IE, variable[i] is a unique observation at (xp[i], yp[i])
+    grid_loc: (N, 2) ndarray
+        Coordinates of the grid point at which to calculate the
+        interpolation.
+    tri: object
+        Delaunay triangulation of the observations.
+    neighbors: (N, ) ndarray
+        Simplex codes of the grid point's natural neighbors. The codes
+        will correspond to codes in the triangulation.
+    triangle_info: dictionary
+        Pre-calculated triangle attributes for quick look ups. Requires
+        items 'cc' (circumcenters) and 'r' (radii) to be associated with
+        each simplex code key from the delaunay triangulation.
+
+    Returns
+    -------
+    value: float
+       Interpolated value for the grid location
+    '''
+
+    edges = triangles.find_local_boundary(tri, neighbors)
+    edge_vertices = [segment[0] for segment in polygons.order_edges(edges)]
+    num_vertices = len(edge_vertices)
+
+    p1 = edge_vertices[0]
+    p2 = edge_vertices[1]
+
+    polygon = list()
+    c1 = triangles.circumcenter(grid_loc, tri.points[p1], tri.points[p2])
+    polygon.append(c1)
+
+    area_list = []
+    total_area = 0.0
+
+    for i in range(num_vertices):
+
+        p3 = edge_vertices[(i + 2) % num_vertices]
+
+        try:
+
+            c2 = triangles.circumcenter(grid_loc, tri.points[p3], tri.points[p2])
+            polygon.append(c2)
+
+            for check_tri in neighbors:
+                if p2 in tri.simplices[check_tri]:
+                    polygon.append(triangle_info[check_tri]['cc'])
+
+        except ZeroDivisionError:
+            area_list.append(0)
+            continue
+
+        pts = [polygon[i] for i in ConvexHull(polygon).vertices]
+        value = variable[(tri.points[p2][0] == xp) & (tri.points[p2][1] == yp)]
+
+        cur_area = polygons.area(pts)
+
+        total_area += cur_area
+
+        area_list.append(cur_area * value[0])
+
+        polygon = list()
+        polygon.append(c2)
+
+        p1 = p2
+        p2 = p3
+
+    if total_area > 0:
+        return sum([x / total_area for x in area_list])
+    else:
+        return np.nan
 
 
 def barnes_weights(dist, kappa, gamma=1.0):
@@ -139,7 +179,6 @@ def cressman_weights(dist, r):
     dist: (N, ) ndarray
         Distances from interpolation point
         associated with each observation in meters.
-
     r: float
         Maximum distance an observation can be from an
         interpolation point to be considered in the inter-
