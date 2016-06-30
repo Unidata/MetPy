@@ -80,8 +80,9 @@ exporter = Exporter(globals())
 with exporter:
     # Earth
     earth_gravity = g = units.Quantity(1.0, units.gravity).to('m / s^2')
-    Re = earth_avg_radius = 6.37e6 * units.m
-    omega = earth_avg_angular_vel = 2 * units.pi / units.day
+    #Taken from GEMPAK constants
+    Re = earth_avg_radius = 6.3712e6 * units.m
+    omega = earth_avg_angular_vel = (2 * units.pi / units.sidereal_day).to('1/s')
     d = earth_sfc_avg_dist_sun = 1.496e11 * units.m
     S = earth_solar_irradiance = units.Quantity(1.368e3, 'W / m^2')
     delta = earth_max_declination = 23.45 * units.deg
