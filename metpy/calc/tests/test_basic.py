@@ -52,7 +52,7 @@ def test_dir():
 
     direc = get_wind_dir(u, v)
 
-    true_dir = np.array([90., 45., 0., 90.]) * units.deg
+    true_dir = np.array([270., 225., 180., 270.]) * units.deg
 
     assert_array_almost_equal(true_dir, direc, 4)
 
@@ -65,7 +65,7 @@ def test_scalar_speed():
 
 def test_scalar_dir():
     'Test wind direction with scalars'
-    d = get_wind_dir(-3. * units('m/s'), -4. * units('m/s'))
+    d = get_wind_dir(3. * units('m/s'), 4. * units('m/s'))
     assert_almost_equal(d, 216.870 * units.deg, 3)
 
 
