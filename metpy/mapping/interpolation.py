@@ -10,7 +10,7 @@ from metpy.mapping import triangles, polygons, points
 
 
 def natural_neighbor(xp, yp, variable, grid_x, grid_y):
-    '''Generate a natural neighbor interpolation of the given
+    r"""Generate a natural neighbor interpolation of the given
     points to the given grid using the Liang and Hale (2010)
     approach.
 
@@ -35,7 +35,7 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
     -------
     img: (M, N) ndarray
         Interpolated values on a 2-dimensional grid
-    '''
+    """
 
     tri = Delaunay(list(zip(xp, yp)))
 
@@ -58,7 +58,7 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
 
 
 def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
-    '''Generate a natural neighbor interpolation of the given
+    r"""Generate a natural neighbor interpolation of the given
     observations to the given point using the Liang and Hale (2010)
     approach. The interpolation will fail if the grid point has no
     natural neighbors.
@@ -92,7 +92,7 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
     -------
     value: float
        Interpolated value for the grid location
-    '''
+    """
 
     edges = triangles.find_local_boundary(tri, neighbors)
     edge_vertices = [segment[0] for segment in polygons.order_edges(edges)]
@@ -146,14 +146,14 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
         return np.nan
 
 
-def barnes_weights(dist, kappa, gamma=1.0):
-    '''Calculate the barnes weights for observation points
+def barnes_weights(sq_dist, kappa, gamma):
+    r"""Calculate the barnes weights for observation points
     based on their distance from an interpolation point.
 
     Parameters
     ----------
-    dist: (N, ) ndarray
-        Distances from interpolation point
+    sq_dist: (N, ) ndarray
+        Squared distances from interpolation point
         associated with each observation in meters.
     kappa: float
         Response parameter for barnes interpolation. Default None.
@@ -165,19 +165,19 @@ def barnes_weights(dist, kappa, gamma=1.0):
     weights: (N, ) ndarray
         Calculated weights for the given observations determined by their distance
         to the interpolation point.
-    '''
+    """
 
-    return np.exp(-dist / (kappa * gamma))
+    return np.exp(-sq_dist / (kappa * gamma))
 
 
-def cressman_weights(dist, r):
-    '''Calculate the cressman weights for observation points
+def cressman_weights(sq_dist, r):
+    r"""Calculate the cressman weights for observation points
     based on their distance from an interpolation point.
 
     Parameters
     ----------
-    dist: (N, ) ndarray
-        Distances from interpolation point
+    sq_dist: (N, ) ndarray
+        Squared distances from interpolation point
         associated with each observation in meters.
     r: float
         Maximum distance an observation can be from an
@@ -189,14 +189,14 @@ def cressman_weights(dist, r):
     weights: (N, ) ndarray
         Calculated weights for the given observations determined by their distance
         to the interpolation point.
-    '''
+    """
 
-    return (r * r - dist) / (r * r + dist)
+    return (r * r - sq_dist) / (r * r + sq_dist)
 
 
 def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None,
                      min_neighbors=3, kind='cressman'):
-    '''Generate an inverse distance weighting interpolation of the given
+    r"""Generate an inverse distance weighting interpolation of the given
     points to the given grid based on either Cressman (1959) or Barnes (1964).
     The Barnes implementation used here based on Koch et al. (1983).
 
@@ -231,7 +231,8 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
     kappa: float
         Response parameter for barnes interpolation. Default None.
     min_neighbors: int
-        Minimum number of neighbors needed to perform barnes or cressman interpolation for a point. Default is 3.
+        Minimum number of neighbors needed to perform barnes or cressman interpolation
+        for a point. Default is 3.
     kind: str
         Specify what inverse distance weighting interpolation to use.
         Options: 'cressman' or 'barnes'. Default 'cressman'
@@ -240,7 +241,7 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
     -------
     img: (M, N) ndarray
         Interpolated values on a 2-dimensional grid
-    '''
+    """
 
     obs_tree = cKDTree(list(zip(xp, yp)))
 
@@ -253,29 +254,79 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
 
     for idx, (matches, grid) in enumerate(zip(indices, grid_points)):
         if len(matches) >= min_neighbors:
-            x0, y0 = grid
+
             x1, y1 = obs_tree.data[matches].T
-
             values = variable[matches]
-
-            dist = triangles.dist_2(x0, y0, x1, y1)
+            dists = triangles.dist_2(grid[0], grid[1], x1, y1)
 
             if kind == 'cressman':
-                weights = cressman_weights(dist, r)
-                total_weights = np.sum(weights)
-                img[idx] = sum([v * (w / total_weights) for (w, v) in zip(weights, values)])
-
+                img[idx] = cressman_point(dists, values, r)
             elif kind == 'barnes':
+                img[idx] = barnes_point(dists, values, kappa)
 
-                weights = barnes_weights(dist, kappa)
-                weights_ = barnes_weights(dist, kappa, gamma)
-
-                total_weights = np.sum(weights)
-                img[idx] = np.sum(values * (weights / total_weights))
-
-                total_weights_ = np.sum(weights_)
-                img[idx] += np.sum((values - img[idx]) * (weights_ / total_weights_))
+            else:
+                raise ValueError("This type of inverse distance " +
+                                 "interpolation not supported: ", str(kind))
 
     img.reshape(grid_x.shape)
     return img
 
+
+def cressman_point(sq_dist, values, radius):
+    r"""Generate a cressman interpolation value for a point based on
+    the given distances and search radius.
+
+    Cressman, George P. "An operational objective analysis system."
+        Mon. Wea. Rev 87, no. 10 (1959): 367-374.
+
+    Parameters
+    ----------
+    sq_dist: (N, ) ndarray
+        Squared distance between observations and grid point
+    values: (N, ) ndarray
+        Observation values in same order as sq_dist
+    radius: float
+        Maximum distance to search for observations to use for
+        interpolation.
+
+    Returns
+    -------
+    value: float
+        Interpolation value for grid point.
+    """
+
+    weights = cressman_weights(sq_dist, radius)
+    total_weights = np.sum(weights)
+
+    return sum([v * (w / total_weights) for (w, v) in zip(weights, values)])
+
+
+def barnes_point(sq_dist, values, kappa, gamma=1):
+    r"""Generate a single pass barnes interpolation value
+    for a point based on the given distances, kappa and
+    gamma values.
+
+    Cressman, George P. "An operational objective analysis system."
+        Mon. Wea. Rev 87, no. 10 (1959): 367-374.
+
+    Parameters
+    ----------
+    sq_dist: (N, ) ndarray
+        Squared distance between observations and grid point
+    values: (N, ) ndarray
+        Observation values in same order as sq_dist
+    kappa: float
+        Response parameter for barnes interpolation.
+    gamma: float
+        Adjustable smoothing parameter for the barnes interpolation. Default 1.
+
+    Returns
+    -------
+    value: float
+        Interpolation value for grid point.
+    """
+
+    weights = barnes_weights(sq_dist, kappa, gamma)
+    total_weights = np.sum(weights)
+
+    return np.sum(values * (weights / total_weights))

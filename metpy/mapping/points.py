@@ -4,10 +4,10 @@
 
 import numpy as np
 from scipy.spatial import cKDTree
-from collections import Counter
 
-def get_points_within_r(center_point, target_points, r, return_idx=False):
-    '''Get all target_points within a specified radius
+
+def get_points_within_r(center_points, target_points, r, return_idx=False):
+    r"""Get all target_points within a specified radius
     of a center point.  All data must be in same coord-
     inate system, or you will get unpredictable results.
 
@@ -25,18 +25,18 @@ def get_points_within_r(center_point, target_points, r, return_idx=False):
 
     Returns
     -------
-    (X, Y) ndarray
+    matches: (X, Y) ndarray
         A list of points within r distance of, and in the same
         order as, center_points
-    '''
+    """
 
     tree = cKDTree(target_points)
-    indices = tree.query_ball_point(center_point, r)
+    indices = tree.query_ball_point(center_points, r)
     return tree.data[indices].T
 
 
 def get_point_count_within_r(center_points, target_points, r):
-    '''Get count of target points within a specified radius
+    r"""Get count of target points within a specified radius
     from center points.  All data must be in same coord-
     inate system, or you will get unpredictable results.
 
@@ -51,10 +51,10 @@ def get_point_count_within_r(center_points, target_points, r):
 
     Returns
     -------
-        (N, ) ndarray
+    matches: (N, ) ndarray
         A list of point counts within r distance of, and in the same
         order as, center_points
-    '''
+    """
 
     tree = cKDTree(target_points)
     indices = tree.query_ball_point(center_points, r)
@@ -62,27 +62,29 @@ def get_point_count_within_r(center_points, target_points, r):
 
 
 def generate_grid(horiz_dim, bbox, ignore_warnings=False):
-    '''Generate a meshgrid based on bounding box and x & y resolution
+    r"""Generate a meshgrid based on bounding box and x & y resolution
 
     Parameters
     ----------
-    x_dim: integer
-        x resolution in meters
-    y_dim: integer
-        y resolution in meters
+    horiz_dim: integer
+        Horizontal resolution in meters
     bbox: dictionary
-        dictionary containing coordinates for corners of study area
+        Dictionary containing coordinates for corners of study area.
+    ignore_warnings: bool
+        Toggles minimum horizontal resolution of 10 km. Default is False.
 
     Returns
     -------
-    (X, Y) ndarray
-        meshgrid defined by given bounding box
-    '''
+    grid_x: (X, Y) ndarray
+        X dimension meshgrid defined by given bounding box
+    grid_y: (X, Y) ndarray
+        Y dimension meshgrid defined by given bounding box
+    """
 
     if not ignore_warnings and horiz_dim < 10000:
         print("Grids less than 10km may be slow to load at synoptic scale.")
         print("Set ignore_warnings to True to run anyway. Defaulting to 10km")
-        x_dim = y_dim = 10000
+        horiz_dim = 10000
 
     x_steps, y_steps = get_xy_steps(bbox, horiz_dim)
 
@@ -95,7 +97,7 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
 
 
 def generate_grid_coords(gx, gy):
-    '''Calculate x,y coordinates of each grid cell
+    r"""Calculate x,y coordinates of each grid cell
 
     Parameters
     ----------
@@ -108,22 +110,24 @@ def generate_grid_coords(gx, gy):
     -------
     (X, Y) ndarray
         List of coordinates in meshgrid
-    '''
+    """
 
     return np.vstack([gx.ravel(), gy.ravel()]).T
 
 
 def get_xy_range(bbox):
-    '''Returns x and y ranges in meters based on bounding box
+    r"""Returns x and y ranges in meters based on bounding box
 
     bbox: dictionary
         dictionary containing coordinates for corners of study area
 
     Returns
     -------
-    X, Y: numeric
-        X and Y ranges in meters
-    '''
+    x_range: float
+        Range in meters in x dimension.
+    y_range: float
+        Range in meters in y dimension.
+    """
 
     x_range = bbox['east'] - bbox['west']
     y_range = bbox['north'] - bbox['south']
@@ -132,37 +136,37 @@ def get_xy_range(bbox):
 
 
 def get_xy_steps(bbox, h_dim):
-    '''Return meshgrid spacing based on bounding box
+    r"""Return meshgrid spacing based on bounding box
 
     bbox: dictionary
-        dictionary containing coordinates for corners of study area
-    x_dim: integer
-        x resolution in meters
-    y_dim: integer
-        y resolution in meters
+        Dictionary containing coordinates for corners of study area.
+    h_dim: integer
+        Horizontal resolution in meters.
 
     Returns
     -------
-    (X,Y): ndarray
-        List of all X and Y centers used to create a meshgrid
-    '''
+    x_steps, (X, ) ndarray
+        Number of grids in x dimension.
+    y_steps: (Y, ) ndarray
+        Number of grids in y dimension.
+    """
 
     x_range, y_range = get_xy_range(bbox)
 
     x_steps = np.ceil(x_range / h_dim)
     y_steps = np.ceil(y_range / h_dim)
-    
+
     return int(x_steps), int(y_steps)
 
 
-def get_boundary_coords(x, y, spatial_pad = 0):
-    '''Return bounding box based on given x and y coordinates
+def get_boundary_coords(x, y, spatial_pad=0):
+    r"""Return bounding box based on given x and y coordinates
        assuming northern hemisphere.
 
     x: numeric
-        x coordinates
+        x coordinates.
     y: numeric
-        y coordinates
+        y coordinates.
     spatial_pad: numeric
         Number of meters to add to the x and y dimensions to reduce
         edge effects.
@@ -171,7 +175,7 @@ def get_boundary_coords(x, y, spatial_pad = 0):
     -------
     bbox: dictionary
         dictionary containing coordinates for corners of study area
-    '''
+    """
 
     west = np.min(x) - spatial_pad
     east = np.max(x) + spatial_pad
