@@ -4,7 +4,7 @@
 
 
 def area(poly):
-    '''Find the area of a given polygon using the shoelace algorithm.
+    """Find the area of a given polygon using the shoelace algorithm.
 
     Parameters
     ----------
@@ -15,19 +15,19 @@ def area(poly):
     Returns
     -------
     area: float
-    '''
+    """
 
-    A = 0.0
+    a = 0.0
     n = len(poly)
 
     for i in range(n):
-        A += poly[i][0] * poly[(i+1) % n][1] - poly[(i+1) % n][0] * poly[i][1]
+        a += poly[i][0] * poly[(i+1) % n][1] - poly[(i+1) % n][0] * poly[i][1]
 
-    return abs(A) / 2.0
+    return abs(a) / 2.0
 
 
 def order_edges(edges):
-    '''Return an ordered traversal of the edges of a
+    """Return an ordered traversal of the edges of a
     two-dimensional polygon.
 
     Parameters
@@ -40,12 +40,12 @@ def order_edges(edges):
     Returns
     -------
     ordered_edges: (2, N) ndarray
-    '''
+    """
 
     edge = edges[0]
     edges = edges[1:]
 
-    ordered_edges = []
+    ordered_edges = list()
     ordered_edges.append(edge)
 
     num_max = len(edges)

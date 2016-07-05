@@ -10,14 +10,9 @@ from scipy.spatial.distance import cdist
 from metpy.mapping import interpolation
 from metpy.mapping import points
 
-try:
-    natgrid_available = True
-    from matplotlib.mlab import griddata as mpl_gridding
-except ImportError:
-    natgrid_available = False
 
 def calc_kappa(spacing, kappa_star=5.052):
-    '''Calculate the kappa parameter for barnes interpolation.
+    """Calculate the kappa parameter for barnes interpolation.
 
     Parameters
     ----------
@@ -29,30 +24,33 @@ def calc_kappa(spacing, kappa_star=5.052):
     Returns
     -------
         kappa: float
-    '''
+    """
 
     return kappa_star * (2.0 * spacing / np.pi)**2
 
+
 def threshold_value(x, y, z, val=0):
-    '''Given (x,y) coordinates and an associated observation (z),
+    """Given (x,y) coordinates and an associated observation (z),
     remove all x, y, and z where z is less than val. Will not destroy
     original values.
 
     Parameters
     ----------
     x: float
-        x coordinate
+        x coordinate.
     y: float
-        y coordinate
+        y coordinate.
     z: float
-        observation value
+        Observation value.
+    val: float
+        Value at which to threshold z.
 
     Returns
     -------
     x, y, z
         List of coordinate observation pairs without
         observation values less than val.
-    '''
+    """
 
     x_ = x[z >= val]
     y_ = y[z >= val]
@@ -60,8 +58,9 @@ def threshold_value(x, y, z, val=0):
 
     return x_, y_, z_
 
+
 def remove_nan_observations(x, y, z):
-    '''Given (x,y) coordinates and an associated observation (z),
+    """Given (x,y) coordinates and an associated observation (z),
     remove all x, y, and z where z is nan. Will not destroy
     original values.
 
@@ -79,7 +78,7 @@ def remove_nan_observations(x, y, z):
     x, y, z
         List of coordinate observation pairs without
         nan valued observations.
-    '''
+    """
 
     x_ = x[~np.isnan(z)]
     y_ = y[~np.isnan(z)]
@@ -89,7 +88,7 @@ def remove_nan_observations(x, y, z):
 
 
 def remove_repeat_coordinates(x, y, z):
-    '''Given x,y coordinates and an associated observation (z),
+    """Given x,y coordinates and an associated observation (z),
     remove all x, y, and z where (x,y) is repeated. Will not
     destroy original values.
 
@@ -107,7 +106,7 @@ def remove_repeat_coordinates(x, y, z):
     x, y, z
         List of coordinate observation pairs without
         repeated coordinates.
-    '''
+    """
 
     coords = []
     variable = []
@@ -126,7 +125,7 @@ def remove_repeat_coordinates(x, y, z):
 
 
 def remove_nans_and_repeats(x, y, z):
-    '''Given x,y coordinates and an associated observation (z),
+    """Given x,y coordinates and an associated observation (z),
     remove all x, y, and z where (x,y) is repeated and where z
     is nan. Will not destroy original values.
 
@@ -144,7 +143,7 @@ def remove_nans_and_repeats(x, y, z):
     x, y, z
         List of coordinate observation pairs without
         repeated coordinates and nan valued observations.
-    '''
+    """
 
     x_, y_, z_ = remove_repeat_coordinates(x, y, z)
     x_, y_, z_ = remove_nan_observations(x_, y_, z_)
@@ -154,7 +153,7 @@ def remove_nans_and_repeats(x, y, z):
 
 def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_neighbors=3,
                 gamma=0.25, kappa_star=5.052, search_radius=None, rbf_func='linear', rbf_smooth=0):
-    '''Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.
+    """Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.
 
     Parameters
     ----------
@@ -168,7 +167,6 @@ def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_
         What type of interpolation to use. Available options include:
         1) "linear", "nearest", "cubic", or "rbf" from Scipy.interpolate.
         2) "natural_neighbor", "barnes", or "cressman" from Metpy.mapping .
-        3) "nngrid", if installed, from Matplotlib.natgrid.
         Default "linear".
     hres: float
         The horizontal resolution of the generated grid in meters. Default 50000.
@@ -199,11 +197,11 @@ def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_
         Meshgrid for the resulting interpolation in the y dimension ndarray
     img: (M, N) ndarray
         2-dimensional array representing the interpolated values for each grid.
-    '''
+    """
 
     ave_spacing = np.mean((cdist(list(zip(x, y)), list(zip(x, y)))))
 
-    if search_radius == None:
+    if search_radius is None:
         search_radius = ave_spacing
 
     grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y), buffer)
@@ -215,12 +213,6 @@ def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_
     elif interp_type == "natural_neighbor":
         img = interpolation.natural_neighbor(x, y, z, grid_x, grid_y)
         img = img.reshape(grid_x.shape)
-
-    elif interp_type == "nngrid":
-        if natgrid_available:
-            img = mpl_gridding(x, y, z, grid_x, grid_y, interp='nn')
-        else:
-            raise ValueError("Natgrid not installed.  Please use another interpolation choice.")
 
     elif interp_type == "cressman":
 
@@ -237,13 +229,13 @@ def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_
 
     elif interp_type == "rbf":
 
-        #3-dimensional support not yet included. Assign a zero to each z dimension for observations.
+        # 3-dimensional support not yet included. Assign a zero to each z dimension for observations.
         h = np.zeros((len(x)))
 
         rbfi = Rbf(x, y, h, z, function=rbf_func, smooth=rbf_smooth)
 
-        #3-dimensional support not yet included. Assign a zero to each z dimension grid cell position.
-        hi = np.zeros((grid_x.shape))
+        # 3-dimensional support not yet included. Assign a zero to each z dimension grid cell position.
+        hi = np.zeros(grid_x.shape)
         img = rbfi(grid_x, grid_y, hi)
 
     else:

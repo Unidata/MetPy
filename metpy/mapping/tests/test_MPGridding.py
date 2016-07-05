@@ -4,8 +4,10 @@ from metpy.mapping import points
 from metpy.mapping import interpolation
 import numpy as np
 
+
 def make_string_list(arr):
     return [s.decode('ascii') for s in arr]
+
 
 def station_test_data(variable_names, proj_from=None, proj_to=None):
 
@@ -27,11 +29,11 @@ def station_test_data(variable_names, proj_from=None, proj_to=None):
     lon = data['lon']
     lat = data['lat']
 
-    #lon = lon[~np.isnan(value)]
-    #lat = lat[~np.isnan(value)]
-    #value = value[~np.isnan(value)]
+    # lon = lon[~np.isnan(value)]
+    # lat = lat[~np.isnan(value)]
+    # value = value[~np.isnan(value)]
 
-    if proj_from != None and proj_to != None:
+    if proj_from is not None and proj_to is not None:
 
         try:
 
@@ -45,28 +47,29 @@ def station_test_data(variable_names, proj_from=None, proj_to=None):
 
     return lon, lat, value
 
+
 def state_capitol_wx_stations():
 
-    return {'Washington':'KOLM', 'Oregon':'KSLE', 'California':'KSAC',
-            'Nevada':'KCXP', 'Idaho':'KBOI', 'Montana':'KHLN',
-            'Utah':'KSLC', 'Arizona':'KDVT', 'New Mexico':'KSAF',
-            'Colorado':'KBKF', 'Wyoming':'KCYS', 'North Dakota':'KBIS',
-            'South Dakota':'KPIR', 'Nebraska':'KLNK', 'Kansas':'KTOP',
-            'Oklahoma':'KPWA', 'Texas':'KATT', 'Louisiana':'KBTR',
-            'Arkansas':'KLIT', 'Missouri':'KJEF', 'Iowa':'KDSM',
-            'Minnesota':'KSTP', 'Wisconsin':'KMSN', 'Illinois':'KSPI',
-            'Mississippi':'KHKS', 'Alabama':'KMGM', 'Nashville':'KBNA',
-            'Kentucky':'KFFT', 'Indiana':'KIND', 'Michigan':'KLAN',
-            'Ohio':'KCMH', 'Georgia':'KFTY', 'Florida':'KTLH',
-            'South Carolina':'KCUB', 'North Carolina':'KRDU',
-            'Virginia':'KRIC', 'West Virginia':'KCRW',
-            'Pennsylvania':'KCXY', 'New York':'KALB', 'Vermont':'KMPV',
-            'New Hampshire':'KCON', 'Maine':'KAUG', 'Massachusetts':'KBOS',
-            'Rhode Island':'KPVD', 'Connecticut':'KHFD', 'New Jersey':'KTTN',
-            'Delaware':'KDOV' }
+    return {'Washington': 'KOLM', 'Oregon': 'KSLE', 'California': 'KSAC',
+            'Nevada': 'KCXP', 'Idaho': 'KBOI', 'Montana': 'KHLN',
+            'Utah': 'KSLC', 'Arizona': 'KDVT', 'New Mexico': 'KSAF',
+            'Colorado': 'KBKF', 'Wyoming': 'KCYS', 'North Dakota': 'KBIS',
+            'South Dakota': 'KPIR', 'Nebraska': 'KLNK', 'Kansas': 'KTOP',
+            'Oklahoma': 'KPWA', 'Texas': 'KATT', 'Louisiana': 'KBTR',
+            'Arkansas': 'KLIT', 'Missouri': 'KJEF', 'Iowa': 'KDSM',
+            'Minnesota': 'KSTP', 'Wisconsin': 'KMSN', 'Illinois': 'KSPI',
+            'Mississippi': 'KHKS', 'Alabama': 'KMGM', 'Nashville': 'KBNA',
+            'Kentucky': 'KFFT', 'Indiana': 'KIND', 'Michigan': 'KLAN',
+            'Ohio': 'KCMH', 'Georgia': 'KFTY', 'Florida': 'KTLH',
+            'South Carolina': 'KCUB', 'North Carolina': 'KRDU',
+            'Virginia': 'KRIC', 'West Virginia': 'KCRW',
+            'Pennsylvania': 'KCXY', 'New York': 'KALB', 'Vermont': 'KMPV',
+            'New Hampshire': 'KCON', 'Maine': 'KAUG', 'Massachusetts': 'KBOS',
+            'Rhode Island': 'KPVD', 'Connecticut': 'KHFD', 'New Jersey': 'KTTN',
+            'Delaware': 'KDOV'}
+
 
 def run_test():
-
 
     from_proj = ccrs.Geodetic()
     to_proj = ccrs.AlbersEqualArea(central_longitude=-97.0000, central_latitude=38.0000)
@@ -80,8 +83,8 @@ def run_test():
     xres = 100000
     yres = 100000
 
-    x = x + xres
-    y = y - yres
+    x += xres
+    y -= yres
 
     grid_x, grid_y = points.generate_grid(xres, yres, points.get_boundary_coords(x, y))
 
