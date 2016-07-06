@@ -2,9 +2,12 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-from metpy.mapping.interpolation import *
+from metpy.mapping.interpolation import (barnes_weights, nn_point, cressman_weights,
+                                         cressman_point, barnes_point)
+
 from metpy.mapping.triangles import find_natural_neighbors, dist_2
 from metpy.mapping.map_functions import calc_kappa
+from scipy.spatial import cKDTree, Delaunay
 
 import numpy as np
 
@@ -15,6 +18,7 @@ from scipy.spatial.distance import cdist
 
 
 def test_nn_point():
+    r"""Tests find natural neighbors for a point interpolation function"""
 
     xp = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
     yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
@@ -37,11 +41,13 @@ def test_nn_point():
 
 
 def test_barnes_weights():
+    r"""Tests barnes weights function"""
 
     kappa = 1000000
+
     gamma = 0.5
 
-    dist = np.array([1000, 2000, 3000, 4000])
+    dist = np.array([1000, 2000, 3000, 4000])**2
 
     weights = barnes_weights(dist, kappa, gamma) * 10000000
 
@@ -54,10 +60,11 @@ def test_barnes_weights():
 
 
 def test_cressman_weights():
+    r"""Tests cressman weights function"""
 
     r = 5000
 
-    dist = np.array([1000, 2000, 3000, 4000])
+    dist = np.array([1000, 2000, 3000, 4000])**2
 
     weights = cressman_weights(dist, r)
 
@@ -70,6 +77,7 @@ def test_cressman_weights():
 
 
 def test_cressman_point():
+    r"""Tests cressman interpolation for a point function"""
 
     xp = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
     yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
@@ -94,6 +102,7 @@ def test_cressman_point():
 
 
 def test_barnes_point():
+    r"""Tests barnes interpolation for a point function"""
 
     xp = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
     yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])

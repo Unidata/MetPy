@@ -2,7 +2,10 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-from metpy.mapping.triangles import *
+from metpy.mapping.triangles import (dist_2, distance, circumcircle_radius_2,
+                                     circumcircle_radius, circumcenter, find_natural_neighbors,
+                                     find_nn_triangles_point, find_local_boundary)
+
 from numpy.testing import assert_array_almost_equal
 from numpy.testing import assert_almost_equal
 from scipy.spatial import Delaunay
@@ -11,6 +14,7 @@ import numpy as np
 
 
 def test_dist_2():
+    r"""Tests squared distance function"""
 
     x0 = 0
     y0 = 0
@@ -26,6 +30,7 @@ def test_dist_2():
 
 
 def test_distance():
+    r"""Tests distance function"""
 
     pt0 = [0, 0]
     pt1 = [10, 10]
@@ -38,6 +43,7 @@ def test_distance():
 
 
 def test_circumcircle_radius_2():
+    r"""Tests squared circumcircle radius function"""
 
     pt0 = [0, 0]
     pt1 = [10, 10]
@@ -51,6 +57,7 @@ def test_circumcircle_radius_2():
 
 
 def test_circumcircle_radius():
+    r"""Tests circumcircle radius function"""
 
     pt0 = [0, 0]
     pt1 = [10, 10]
@@ -64,6 +71,7 @@ def test_circumcircle_radius():
 
 
 def test_circumcenter():
+    r"""Tests circumcenter function"""
 
     pt0 = [0, 0]
     pt1 = [10, 10]
@@ -77,6 +85,7 @@ def test_circumcenter():
 
 
 def test_find_natural_neighbors():
+    r"""Tests find natural neighbors function"""
 
     x = list(range(0, 20, 4))
     y = list(range(0, 20, 4))
@@ -110,7 +119,7 @@ def test_find_natural_neighbors():
                          (10.0, 10.0), (6.0, 14.0), (6.0, 14.0),
                          (10.0, 14.0), (10.0, 14.0)])
 
-    r_truth = np.array([2.8284271247461916]*32)
+    r_truth = np.array([2.8284271247461916] * 32)
 
     for i in range(len(tri_info)):
 
@@ -122,6 +131,7 @@ def test_find_natural_neighbors():
 
 
 def test_find_nn_triangles_point():
+    r"""Tests find natural neighbors for a point function"""
 
     # creates a triangulation where all the triangles are the
     # same size but with different orientations and positions.
@@ -145,6 +155,7 @@ def test_find_nn_triangles_point():
 
 
 def test_find_local_boundary():
+    r"""Tests find edges of natural neighbor triangle group function"""
 
     # creates a triangulation where all the triangles are the
     # same size but with different orientations and positions.

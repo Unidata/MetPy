@@ -38,7 +38,7 @@ def station_test_data(variable_names, proj_from=None, proj_to=None):
         try:
 
             proj_points = proj_to.transform_points(proj_from, lon, lat)
-            return proj_points[:,0], proj_points[:,1], value
+            return proj_points[:, 0], proj_points[:, 1], value
 
         except Exception as e:
 

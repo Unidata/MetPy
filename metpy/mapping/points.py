@@ -7,7 +7,7 @@ from scipy.spatial import cKDTree
 
 
 def get_points_within_r(center_points, target_points, r, return_idx=False):
-    """Get all target_points within a specified radius
+    r"""Get all target_points within a specified radius
     of a center point.  All data must be in same coord-
     inate system, or you will get unpredictable results.
 
@@ -36,7 +36,7 @@ def get_points_within_r(center_points, target_points, r, return_idx=False):
 
 
 def get_point_count_within_r(center_points, target_points, r):
-    """Get count of target points within a specified radius
+    r"""Get count of target points within a specified radius
     from center points.  All data must be in same coord-
     inate system, or you will get unpredictable results.
 
@@ -62,7 +62,7 @@ def get_point_count_within_r(center_points, target_points, r):
 
 
 def generate_grid(horiz_dim, bbox, ignore_warnings=False):
-    """Generate a meshgrid based on bounding box and x & y resolution
+    r"""Generate a meshgrid based on bounding box and x & y resolution
 
     Parameters
     ----------
@@ -84,7 +84,7 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
     if not ignore_warnings and horiz_dim < 10000:
         print("Grids less than 10km may be slow to load at synoptic scale.")
         print("Set ignore_warnings to True to run anyway. Defaulting to 10km")
-        x_dim = y_dim = 10000
+        horiz_dim = 10000
 
     x_steps, y_steps = get_xy_steps(bbox, horiz_dim)
 
@@ -97,7 +97,7 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
 
 
 def generate_grid_coords(gx, gy):
-    """Calculate x,y coordinates of each grid cell
+    r"""Calculate x,y coordinates of each grid cell
 
     Parameters
     ----------
@@ -116,7 +116,7 @@ def generate_grid_coords(gx, gy):
 
 
 def get_xy_range(bbox):
-    """Returns x and y ranges in meters based on bounding box
+    r"""Returns x and y ranges in meters based on bounding box
 
     bbox: dictionary
         dictionary containing coordinates for corners of study area
@@ -136,7 +136,7 @@ def get_xy_range(bbox):
 
 
 def get_xy_steps(bbox, h_dim):
-    """Return meshgrid spacing based on bounding box
+    r"""Return meshgrid spacing based on bounding box
 
     bbox: dictionary
         Dictionary containing coordinates for corners of study area.
@@ -155,12 +155,12 @@ def get_xy_steps(bbox, h_dim):
 
     x_steps = np.ceil(x_range / h_dim)
     y_steps = np.ceil(y_range / h_dim)
-    
+
     return int(x_steps), int(y_steps)
 
 
-def get_boundary_coords(x, y, spatial_pad = 0):
-    """Return bounding box based on given x and y coordinates
+def get_boundary_coords(x, y, spatial_pad=0):
+    r"""Return bounding box based on given x and y coordinates
        assuming northern hemisphere.
 
     x: numeric

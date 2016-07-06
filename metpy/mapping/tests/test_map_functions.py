@@ -2,7 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-from metpy.mapping.map_functions import *
+from metpy.mapping.map_functions import (calc_kappa, remove_observations_below_value,
+                                         remove_nan_observations, remove_repeat_coordinates)
 
 import numpy as np
 
@@ -10,6 +11,7 @@ from numpy.testing import assert_array_almost_equal, assert_almost_equal
 
 
 def test_calc_kappa():
+    r"""Tests calculate kappa parameter function"""
 
     x = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
     y = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
@@ -20,10 +22,11 @@ def test_calc_kappa():
 
     truth = 5762.6872048
 
-    assert_almost_equal(truth, value)
+    assert_almost_equal(truth, value, decimal=6)
 
 
 def test_remove_observations_below_value():
+    r"""Tests threshold observations function"""
 
     x = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
     y = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
@@ -42,6 +45,7 @@ def test_remove_observations_below_value():
 
 
 def test_remove_nan_observations():
+    r"""Tests remove observations equal to nan function"""
 
     x = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
     y = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
@@ -60,6 +64,7 @@ def test_remove_nan_observations():
 
 
 def test_remove_repeat_coordinates():
+    r"""Tests remove repeat coordinates function"""
 
     x = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 8])
     y = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 24])
@@ -75,4 +80,3 @@ def test_remove_repeat_coordinates():
     assert_array_almost_equal(truthx, x_)
     assert_array_almost_equal(truthy, y_)
     assert_array_almost_equal(truthz, z_)
-
