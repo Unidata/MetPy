@@ -2,6 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+from __future__ import division
+
 from metpy.mapping.interpolation import (barnes_weights, nn_point, cressman_weights,
                                          cressman_point, barnes_point)
 
@@ -24,7 +26,7 @@ def test_nn_point():
     yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
 
     z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225,  3.364])
+                  0.225, 3.364])
 
     tri = Delaunay(list(zip(xp, yp)))
 
@@ -83,7 +85,7 @@ def test_cressman_point():
     yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
 
     z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225,  3.364])
+                  0.225, 3.364])
 
     r = 40
 
@@ -108,7 +110,7 @@ def test_barnes_point():
     yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
 
     z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225,  3.364])
+                  0.225, 3.364])
 
     r = 40
 

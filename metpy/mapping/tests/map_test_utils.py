@@ -1,3 +1,5 @@
+from __future__ import division
+
 from metpy.cbook import get_test_data
 import cartopy.crs as ccrs
 from metpy.mapping import points

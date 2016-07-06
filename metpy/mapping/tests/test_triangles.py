@@ -2,6 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+from __future__ import division
+
 from metpy.mapping.triangles import (dist_2, distance, circumcircle_radius_2,
                                      circumcircle_radius, circumcenter, find_natural_neighbors,
                                      find_nn_triangles_point, find_local_boundary)

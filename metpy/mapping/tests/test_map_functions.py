@@ -2,6 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+from __future__ import division
+
 from metpy.mapping.map_functions import (calc_kappa, remove_observations_below_value,
                                          remove_nan_observations, remove_repeat_coordinates)
 

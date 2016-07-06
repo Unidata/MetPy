@@ -2,6 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+from __future__ import division
+
 import numpy as np
 
 from scipy.interpolate import griddata, Rbf
@@ -9,8 +11,12 @@ from scipy.spatial.distance import cdist
 
 from metpy.mapping import interpolation
 from metpy.mapping import points
+from ..package_tools import Exporter
+
+exporter = Exporter(globals())
 
 
+@exporter.export
 def calc_kappa(spacing, kappa_star=5.052):
     r"""Calculate the kappa parameter for barnes interpolation.
 
@@ -29,6 +35,7 @@ def calc_kappa(spacing, kappa_star=5.052):
     return kappa_star * (2.0 * spacing / np.pi)**2
 
 
+@exporter.export
 def remove_observations_below_value(x, y, z, val=0):
     r"""Given (x,y) coordinates and an associated observation (z),
     remove all x, y, and z where z is less than val. Will not destroy
@@ -59,6 +66,7 @@ def remove_observations_below_value(x, y, z, val=0):
     return x_, y_, z_
 
 
+@exporter.export
 def remove_nan_observations(x, y, z):
     r"""Given (x,y) coordinates and an associated observation (z),
     remove all x, y, and z where z is nan. Will not destroy
@@ -87,6 +95,7 @@ def remove_nan_observations(x, y, z):
     return x_, y_, z_
 
 
+@exporter.export
 def remove_repeat_coordinates(x, y, z):
     r"""Given x,y coordinates and an associated observation (z),
     remove all x, y, and z where (x,y) is repeated and keep the
@@ -124,6 +133,7 @@ def remove_repeat_coordinates(x, y, z):
     return x_, y_, z_
 
 
+@exporter.export
 def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_neighbors=3,
                 gamma=0.25, kappa_star=5.052, search_radius=None, rbf_func='linear',
                 rbf_smooth=0):
@@ -222,7 +232,7 @@ def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_
     else:
         raise ValueError("Interpolation option not available\n" +
                          "Try: linear, nearest, cubic, natural_neighbor, " +
-                         "nngrid, barnes, cressman, rbf")
+                         "barnes, cressman, rbf")
 
     img = np.ma.masked_where(np.isnan(img), img)
 

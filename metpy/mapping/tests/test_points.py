@@ -2,6 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+from __future__ import division
+
 from metpy.mapping.points import (get_points_within_r, get_point_count_within_r,
                                   get_boundary_coords, get_xy_steps, get_xy_range,
                                   generate_grid, generate_grid_coords)

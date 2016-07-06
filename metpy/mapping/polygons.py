@@ -2,7 +2,14 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+from __future__ import division
 
+from ..package_tools import Exporter
+
+exporter = Exporter(globals())
+
+
+@exporter.export
 def area(poly):
     r"""Find the area of a given polygon using the shoelace algorithm.
 
@@ -26,6 +33,7 @@ def area(poly):
     return abs(a) / 2.0
 
 
+@exporter.export
 def order_edges(edges):
     r"""Return an ordered traversal of the edges of a
     two-dimensional polygon.

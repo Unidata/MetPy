@@ -2,13 +2,20 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+from __future__ import division
+
 import numpy as np
 
 from scipy.spatial import Delaunay, ConvexHull, cKDTree
 
 from metpy.mapping import triangles, polygons, points
 
+from ..package_tools import Exporter
 
+exporter = Exporter(globals())
+
+
+@exporter.export
 def natural_neighbor(xp, yp, variable, grid_x, grid_y):
     r"""Generate a natural neighbor interpolation of the given
     points to the given grid using the Liang and Hale (2010)
@@ -57,6 +64,7 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
     return img
 
 
+@exporter.export
 def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
     r"""Generate a natural neighbor interpolation of the given
     observations to the given point using the Liang and Hale (2010)
@@ -141,11 +149,12 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
         p2 = p3
 
     if total_area > 0:
-        return sum([x / total_area for x in area_list])
+        return sum([1.0 * x / total_area for x in area_list])
     else:
         return np.nan
 
 
+@exporter.export
 def barnes_weights(sq_dist, kappa, gamma):
     r"""Calculate the barnes weights for observation points
     based on their distance from an interpolation point.
@@ -167,9 +176,10 @@ def barnes_weights(sq_dist, kappa, gamma):
         to the interpolation point.
     """
 
-    return np.exp(-sq_dist / (kappa * gamma))
+    return np.exp(-1.0 * sq_dist / (kappa * gamma))
 
 
+@exporter.export
 def cressman_weights(sq_dist, r):
     r"""Calculate the cressman weights for observation points
     based on their distance from an interpolation point.
@@ -191,9 +201,10 @@ def cressman_weights(sq_dist, r):
         to the interpolation point.
     """
 
-    return (r * r - sq_dist) / (r * r + sq_dist)
+    return 1.0 * (r * r - sq_dist) / (r * r + sq_dist)
 
 
+@exporter.export
 def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None,
                      min_neighbors=3, kind='cressman'):
     r"""Generate an inverse distance weighting interpolation of the given
@@ -262,6 +273,7 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
     return img
 
 
+@exporter.export
 def cressman_point(sq_dist, values, radius):
     r"""Generate a cressman interpolation value for a point based on
     the given distances and search radius.
@@ -285,9 +297,10 @@ def cressman_point(sq_dist, values, radius):
     weights = cressman_weights(sq_dist, radius)
     total_weights = np.sum(weights)
 
-    return sum([v * (w / total_weights) for (w, v) in zip(weights, values)])
+    return sum([v * (1.0 * w / total_weights) for (w, v) in zip(weights, values)])
 
 
+@exporter.export
 def barnes_point(sq_dist, values, kappa, gamma=1):
     r"""Generate a single pass barnes interpolation value
     for a point based on the given distances, kappa and
@@ -313,4 +326,4 @@ def barnes_point(sq_dist, values, kappa, gamma=1):
     weights = barnes_weights(sq_dist, kappa, gamma)
     total_weights = np.sum(weights)
 
-    return np.sum(values * (weights / total_weights))
+    return np.sum(values * (1.0 * weights / total_weights))

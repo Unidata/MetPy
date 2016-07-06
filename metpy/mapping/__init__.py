@@ -2,8 +2,15 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-from .map_functions import *
-from .points import *  
-from .triangles import * 
-from .polygons import *
-from .interpolation import *
+from .map_functions import *  # noqa
+from .points import *  # noqa
+from .triangles import *  # noqa
+from .polygons import *  # noqa
+from .interpolation import *  # noqa
+
+__all__ = []
+__all__.extend(map_functions.__all__)  # pylint: disable=undefined-variable
+__all__.extend(points.__all__)  # pylint: disable=undefined-variable
+__all__.extend(triangles.__all__)  # pylint: disable=undefined-variable
+__all__.extend(polygons.__all__)  # pylint: disable=undefined-variable
+__all__.extend(interpolation.__all__)  # pylint: disable=undefined-variable

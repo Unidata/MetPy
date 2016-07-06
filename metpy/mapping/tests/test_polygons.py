@@ -2,6 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+from __future__ import division
+
 from metpy.mapping.polygons import (area, order_edges)
 from numpy import isclose
 from numpy.testing import assert_array_equal
