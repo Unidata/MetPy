@@ -2,10 +2,10 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-from metpy.testing import assert_array_equal
+from metpy.testing import assert_array_equal, assert_almost_equal
 import numpy as np
 from metpy.calc.kinematics import *  # noqa
-from metpy.constants import g
+from metpy.constants import g, Re, omega
 from metpy.units import units, concatenate
 
 
@@ -153,3 +153,23 @@ class TestGeos(object):
         true_v = concatenate((true_v[..., None], true_v[..., None]), axis=2)
         assert_array_equal(ug, true_u)
         assert_array_equal(vg, true_v)
+
+    def test_gempak(self):
+        'Test of geostrophic wind calculation against gempak values'
+        z = np.array([[5586387.00, 5584467.50, 5583147.50],
+                      [5594407.00, 5592487.50, 5591307.50],
+                      [5604707.50, 5603247.50, 5602527.50]]).T \
+            * (9.80616 * units('m/s^2')) * 1e-3
+        dx = np.deg2rad(0.25) * Re * np.cos(np.deg2rad(44))
+        # Inverting dy since latitudes in array increase as you go up
+        dy = -np.deg2rad(0.25) * Re
+        f = (2 * omega * np.sin(np.deg2rad(44))).to('1/s')
+        ug, vg = geostrophic_wind(z * units.m, f, dx, dy)
+        true_u = np.array([[21.97512, 21.97512, 22.08005],
+                           [31.89402, 32.69477, 33.73863],
+                           [38.43922, 40.18805, 42.14609]])
+        true_v = np.array([[-10.93621, -7.83859, -4.54839],
+                           [-10.74533, -7.50152, -3.24262],
+                           [-8.66612, -5.27816, -1.45282]])
+        assert_almost_equal(ug[1, 1], true_u[1, 1] * units('m/s'), 2)
+        assert_almost_equal(vg[1, 1], true_v[1, 1] * units('m/s'), 2)
