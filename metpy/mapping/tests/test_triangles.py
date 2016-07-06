@@ -76,7 +76,52 @@ def test_circumcenter():
     assert_array_almost_equal(truth, cc)
 
 
-def test_find_nn_triangles():
+def test_find_natural_neighbors():
+
+    x = list(range(0, 20, 4))
+    y = list(range(0, 20, 4))
+    gx, gy = np.meshgrid(x, y)
+    pts = np.vstack([gx.ravel(), gy.ravel()]).T
+    tri = Delaunay(pts)
+
+    test_points = np.array([[2, 2], [5, 10], [12, 13.4], [12, 8], [20, 20]])
+
+    neighbors, tri_info = find_natural_neighbors(tri, test_points)
+
+    neighbors_truth = [[0, 1],
+                       [24, 25],
+                       [16, 17, 30, 31],
+                       [18, 19, 20, 21, 22, 23, 26, 27],
+                       []]
+
+    for i in range(len(neighbors)):
+
+        assert_array_almost_equal(neighbors_truth[i], neighbors[i])
+
+    cc_truth = np.array([(2.0, 2.0), (2.0, 2.0), (14.0, 2.0),
+                         (14.0, 2.0), (6.0, 2.0), (6.0, 2.0),
+                         (10.0, 2.0), (10.0, 2.0), (2.0, 14.0),
+                         (2.0, 14.0), (6.0, 6.0), (6.0, 6.0),
+                         (2.0, 6.0), (2.0, 6.0), (2.0, 10.0),
+                         (2.0, 10.0), (14.0, 14.0), (14.0, 14.0),
+                         (10.0, 6.0), (10.0, 6.0), (14.0, 6.0),
+                         (14.0, 6.0), (14.0, 10.0), (14.0, 10.0),
+                         (6.0, 10.0), (6.0, 10.0), (10.0, 10.0),
+                         (10.0, 10.0), (6.0, 14.0), (6.0, 14.0),
+                         (10.0, 14.0), (10.0, 14.0)])
+
+    r_truth = np.array([2.8284271247461916]*32)
+
+    for i in range(len(tri_info)):
+
+        cc = tri_info[i]['cc']
+        r = tri_info[i]['r']
+
+        assert_almost_equal(cc_truth[i], cc)
+        assert_almost_equal(r_truth[i], r)
+
+
+def test_find_nn_triangles_point():
 
     # creates a triangulation where all the triangles are the
     # same size but with different orientations and positions.
@@ -94,7 +139,7 @@ def test_find_nn_triangles():
 
     truth = [62, 63]
 
-    nn = find_nn_triangles(tri, tri_match, [4.5, 4.5])
+    nn = find_nn_triangles_point(tri, tri_match, [4.5, 4.5])
 
     assert_array_almost_equal(truth, nn)
 
@@ -117,7 +162,7 @@ def test_find_local_boundary():
 
     truth = [62, 63]
 
-    nn = find_nn_triangles(tri, tri_match, [4.5, 4.5])
+    nn = find_nn_triangles_point(tri, tri_match, [4.5, 4.5])
 
     # point codes for 2d coordinates in triangulation
     edges = find_local_boundary(tri, nn)

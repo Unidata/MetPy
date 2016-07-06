@@ -247,6 +247,50 @@ def find_natural_neighbors(tri, grid_points):
     return members, triangle_info
 
 
+def find_nn_triangles_point(tri, cur_tri, point):
+    """Returns the natural neighbors of a triangle
+    containing a point based on the provided
+    Delaunay Triangulation.
+    Parameters
+    ----------
+    tri: Object
+        A Delaunay Triangulation
+    cur_tri: int
+        Simplex code for Delaunay Triangulation lookup of
+        a given triangle that contains 'position'.
+    point: (x, y)
+        Coordinates used to calculate distances to
+        simplexes in 'tri'.
+    Returns
+    --------
+    nn: (N, ) array
+        List of simplex codes for natural neighbor
+        triangles in 'tri'.
+    """
+
+    nn = []
+
+    candidates = set(tri.neighbors[cur_tri])
+
+    # find the union of the two sets
+    candidates |= set(tri.neighbors[tri.neighbors[cur_tri]].flat)
+
+    # remove instances of the "no neighbors" code
+    candidates.discard(-1)
+
+    for neighbor in candidates:
+
+        triangle = tri.points[tri.simplices[neighbor]]
+        cur_x, cur_y = circumcenter(triangle[0], triangle[1], triangle[2])
+        r = circumcircle_radius_2(triangle[0], triangle[1], triangle[2])
+
+        if dist_2(point[0], point[1], cur_x, cur_y) < r:
+
+            nn.append(neighbor)
+
+    return nn
+
+
 def find_local_boundary(tri, triangles):
     """Finds and returns the outside edges of a collection
     of natural neighbor triangles.  There is no guarantee

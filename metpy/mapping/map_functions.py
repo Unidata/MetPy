@@ -29,7 +29,7 @@ def calc_kappa(spacing, kappa_star=5.052):
     return kappa_star * (2.0 * spacing / np.pi)**2
 
 
-def threshold_value(x, y, z, val=0):
+def remove_observations_below_value(x, y, z, val=0):
     """Given (x,y) coordinates and an associated observation (z),
     remove all x, y, and z where z is less than val. Will not destroy
     original values.
@@ -89,8 +89,8 @@ def remove_nan_observations(x, y, z):
 
 def remove_repeat_coordinates(x, y, z):
     """Given x,y coordinates and an associated observation (z),
-    remove all x, y, and z where (x,y) is repeated. Will not
-    destroy original values.
+    remove all x, y, and z where (x,y) is repeated and keep the
+    first occurrence only. Will not destroy original values.
 
     Parameters
     ----------
@@ -120,33 +120,6 @@ def remove_repeat_coordinates(x, y, z):
     y_ = np.array(list(coords))[:, 1]
 
     z_ = np.array(variable)
-
-    return x_, y_, z_
-
-
-def remove_nans_and_repeats(x, y, z):
-    """Given x,y coordinates and an associated observation (z),
-    remove all x, y, and z where (x,y) is repeated and where z
-    is nan. Will not destroy original values.
-
-    Parameters
-    ----------
-    x: float
-        x coordinate
-    y: float
-        y coordinate
-    z: float
-        observation value
-
-    Returns
-    -------
-    x, y, z
-        List of coordinate observation pairs without
-        repeated coordinates and nan valued observations.
-    """
-
-    x_, y_, z_ = remove_repeat_coordinates(x, y, z)
-    x_, y_, z_ = remove_nan_observations(x_, y_, z_)
 
     return x_, y_, z_
 

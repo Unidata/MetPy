@@ -256,9 +256,9 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
 
             x1, y1 = obs_tree.data[matches].T
             values = variable[matches]
+            dists = triangles.dist_2(grid[0], grid[1], x1, y1)
 
             if kind == 'cressman':
-                dists = triangles.dist_2(grid[0], grid[1], x1, y1)
                 img[idx] = cressman_point(dists, values, r)
             elif kind == 'barnes':
                 img[idx] = barnes_point(dists, values, kappa)
@@ -299,9 +299,10 @@ def cressman_point(sq_dist, values, radius):
     return sum([v * (w/total_weights) for (w, v) in zip(weights, values)])
 
 
-def barnes_point(sq_dist, values, kappa):
-    """Generate a barnes interpolation value for a point based on
-    the given distances and kappa value.
+def barnes_point(sq_dist, values, kappa, gamma=1):
+    """Generate a single pass barnes interpolation value
+    for a point based on the given distances, kappa and
+    gamma values.
 
     Cressman, George P. "An operational objective analysis system."
         Mon. Wea. Rev 87, no. 10 (1959): 367-374.
@@ -314,6 +315,8 @@ def barnes_point(sq_dist, values, kappa):
         Observation values in same order as sq_dist
     kappa: float
         Response parameter for barnes interpolation.
+    gamma: float
+        Adjustable smoothing parameter for the barnes interpolation. Default 1.
 
     Returns
     -------
@@ -321,7 +324,7 @@ def barnes_point(sq_dist, values, kappa):
         Interpolation value for grid point.
     """
 
-    weights = barnes_weights(sq_dist, kappa)
+    weights = barnes_weights(sq_dist, kappa, gamma)
     total_weights = np.sum(weights)
 
     return np.sum(values * (weights / total_weights))
