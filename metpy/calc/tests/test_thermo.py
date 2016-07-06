@@ -135,4 +135,4 @@ def test_equivalent_potential_temperature():
     p = 999. * units.mbar
     t = 288. * units.kelvin
     ept = equivalent_potential_temperature(p, t)
-    assert_almost_equal(ept, 315.46 * units.kelvin, 2)
+    assert_almost_equal(ept, 315.9548 * units.kelvin, 3)
