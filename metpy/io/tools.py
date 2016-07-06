@@ -14,6 +14,15 @@ log = logging.getLogger("metpy.io.tools")
 log.setLevel(logging.WARNING)
 
 
+# This works around problems on early Python 2.7 where Struct.unpack_from() can't handle
+# being given a bytearray; use memoryview on Python 3, since calling bytearray again isn't
+# cheap.
+try:
+    bytearray_to_buff = buffer
+except NameError:
+    bytearray_to_buff = memoryview
+
+
 class NamedStruct(Struct):
     def __init__(self, info, prefmt='', tuple_name=None):
         if tuple_name is None:
@@ -149,7 +158,7 @@ class IOBuffer(object):
         self._data = self._data[:self._offset] + bytearray(newdata)
 
     def read_struct(self, struct_class):
-        struct = struct_class.unpack_from(self._data, self._offset)
+        struct = struct_class.unpack_from(bytearray_to_buff(self._data), self._offset)
         self.skip(struct_class.size)
         return struct
 

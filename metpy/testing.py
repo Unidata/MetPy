@@ -9,8 +9,12 @@ r"""Collection of utilities for testing
 """
 
 import numpy.testing
+from matplotlib import style
 from pint import DimensionalityError
 from .units import units
+
+# Our lowest supported matplotlib doesn't have the classic style, so fallback to empty list
+test_style = 'classic' if 'classic' in style.available else []
 
 
 def check_and_drop_units(actual, desired):
@@ -54,6 +58,8 @@ def make_figure(*args, **kwargs):
     'Create an Agg figure for testing'
     from matplotlib.figure import Figure
     from matplotlib.backends.backend_agg import FigureCanvasAgg
+    if 'dpi' not in kwargs:
+        kwargs['dpi'] = 100
     fig = Figure(*args, **kwargs)
     fig.canvas = FigureCanvasAgg(fig)
     return fig

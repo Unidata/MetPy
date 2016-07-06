@@ -23,7 +23,7 @@ def test_gini_basic():
     assert pdb.channel == 'WV (6.5/6.7 micron)'
     assert pdb.num_records == 1280
     assert pdb.record_len == 1100
-    assert pdb.datetime, datetime(2015, 12, 8, 22, 0, 19 == 0)
+    assert pdb.datetime == datetime(2015, 12, 8, 22, 0, 19)
     assert pdb.projection == GiniProjection.lambert_conformal
     assert pdb.nx == 1100
     assert pdb.ny == 1280
@@ -58,7 +58,7 @@ def test_gini_ak_regional():
     assert pdb.channel == 'IR (3.9 micron)'
     assert pdb.num_records == 408
     assert pdb.record_len == 576
-    assert pdb.datetime, datetime(2016, 4, 8, 14, 45, 20 == 0)
+    assert pdb.datetime == datetime(2016, 4, 8, 14, 45, 20)
     assert pdb.projection == GiniProjection.polar_stereographic
     assert pdb.nx == 576
     assert pdb.ny == 408
@@ -76,6 +76,43 @@ def test_gini_ak_regional():
     assert pdb2.scanning_mode == [False, False, False]
     assert_almost_equal(pdb2.lat_in, 0.0, 4)
     assert pdb2.resolution == 8
+    assert pdb2.compression == 0
+    assert pdb2.version == 1
+    assert pdb2.pdb_size == 512
+    assert pdb2.nav_cal == 0
+
+    assert f.data.shape, (pdb.num_records == pdb.record_len)
+
+
+def test_gini_mercator():
+    'Test reading of GINI file with Mercator projection (from HI)'
+    f = GiniFile(get_test_data('HI-REGIONAL_4km_3.9_20160616_1715.gini'))
+    pdb = f.prod_desc
+    assert pdb.source == 1
+    assert pdb.creating_entity == 'GOES-15'
+    assert pdb.sector_id == 'Hawaii Regional'
+    assert pdb.channel == 'IR (3.9 micron)'
+    assert pdb.num_records == 520
+    assert pdb.record_len == 560
+    assert pdb.datetime == datetime(2016, 6, 16, 17, 15, 18)
+
+    assert pdb.projection == GiniProjection.mercator
+    assert pdb.nx == 560
+    assert pdb.ny == 520
+    assert_almost_equal(pdb.la1, 9.343, 4)
+    assert_almost_equal(pdb.lo1, -167.315, 4)
+
+    proj = f.proj_info
+    assert proj.resolution == 0
+    assert_almost_equal(proj.la2, 28.0922, 4)
+    assert_almost_equal(proj.lo2, -145.878, 4)
+    assert proj.di == 0
+    assert proj.dj == 0
+
+    pdb2 = f.prod_desc2
+    assert pdb2.scanning_mode == [False, False, False]
+    assert_almost_equal(pdb2.lat_in, 20.0, 4)
+    assert pdb2.resolution == 4
     assert pdb2.compression == 0
     assert pdb2.version == 1
     assert pdb2.pdb_size == 512
@@ -115,6 +152,31 @@ def test_gini_ak_regional_dataset():
     assert ds.variables['IR'].grid_mapping in ds.variables
     assert_almost_equal(ds.variables['lon'][0, 0], f.prod_desc.lo1, 4)
     assert_almost_equal(ds.variables['lat'][0, 0], f.prod_desc.la1, 4)
+    assert_almost_equal(ds.variables['Polar_Stereographic'].longitude_of_projection_origin,
+                        210.0)
+    assert_almost_equal(ds.variables['Polar_Stereographic'].latitude_of_projection_origin,
+                        90.0)
+
+
+def test_gini_mercator_dataset():
+    'Test the dataset interface for a GINI file with Mercator projection'
+    f = GiniFile(get_test_data('HI-REGIONAL_4km_3.9_20160616_1715.gini'))
+    ds = f.to_dataset()
+    assert 'x' in ds.variables
+    assert 'y' in ds.variables
+    assert 'IR' in ds.variables
+    assert hasattr(ds.variables['IR'], 'grid_mapping')
+    assert ds.variables['IR'].grid_mapping in ds.variables
+    lat = ds.variables['lat']
+    lon = ds.variables['lon']
+    assert_almost_equal(lon[0, 0], f.prod_desc.lo1, 4)
+    assert_almost_equal(lat[0, 0], f.prod_desc.la1, 4)
+    # 2nd corner lat/lon are at the "upper right" corner of the pixel, so need to add one
+    # more grid point
+    assert_almost_equal(lon[-1, -1] + (lon[-1, -1] - lon[-1, -2]), f.proj_info.lo2, 4)
+    assert_almost_equal(lat[-1, -1] + (lat[-1, -1] - lat[-2, -1]), f.proj_info.la2, 4)
+    assert_almost_equal(ds.variables['Mercator'].longitude_of_projection_origin, -167.315)
+    assert_almost_equal(ds.variables['Mercator'].latitude_of_projection_origin, 9.343)
 
 
 def test_gini_str():
