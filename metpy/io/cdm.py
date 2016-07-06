@@ -379,10 +379,16 @@ def cf_to_proj(var):
         kwargs['lon_0'] = var.longitude_of_central_meridian
         kwargs['lat_1'] = var.standard_parallel
         kwargs['lat_2'] = var.standard_parallel
-    if var.grid_mapping_name == 'polar_stereographic':
+    elif var.grid_mapping_name == 'polar_stereographic':
         kwargs['proj'] = 'stere'
         kwargs['lon_0'] = var.longitude_of_projection_origin
         kwargs['k_0'] = 1.0    # scale factor at natural origin
+        kwargs['x_0'] = False  # Easting
+        kwargs['y_0'] = False  # Northing
+    elif var.grid_mapping_name == 'mercator':
+        kwargs['proj'] = 'merc'
+        kwargs['lon_0'] = var.longitude_of_projection_origin
+        kwargs['lat_ts'] = var.standard_parallel
         kwargs['x_0'] = False  # Easting
         kwargs['y_0'] = False  # Northing
 

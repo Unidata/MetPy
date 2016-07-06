@@ -23,13 +23,13 @@ MetPy
     :target: https://pypi.python.org/pypi/MetPy/
     :alt: PyPI Downloads
 
-.. |Conda| image:: https://binstar.org/unidata/metpy/badges/version.svg
-    :target: https://binstar.org/unidata/metpy
-    :alt: Binstar Package
+.. |Conda| image:: https://anaconda.org/conda-forge/metpy/badges/version.svg
+    :target: https://anaconda.org/conda-forge/metpy
+    :alt: Conda Package
 
-.. |CondaDownloads| image:: https://binstar.org/unidata/metpy/badges/downloads.svg
-    :target: https://binstar.org/unidata/metpy
-    :alt: Binstar Downloads
+.. |CondaDownloads| image:: https://anaconda.org/conda-forge/metpy/badges/downloads.svg
+    :target: https://anaconda.org/conda-forge/metpy
+    :alt: Conda Downloads
 
 .. |Travis| image:: https://travis-ci.org/metpy/MetPy.svg?branch=master
     :target: https://travis-ci.org/metpy/MetPy
