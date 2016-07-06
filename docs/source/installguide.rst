@@ -8,7 +8,7 @@ Requirements
 MetPy supports Python 2.7 as well as Python >= 3.3. Python 3.4 is the recommended version.
 
 MetPy requires the following packages:
-  - NumPy >= 1.9.0
+  - NumPy >= 1.9.1
   - SciPy >= 0.14.0
   - Matplotlib >= 1.4.0
   - pint >= 0.6
