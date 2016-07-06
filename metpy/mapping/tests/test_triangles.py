@@ -133,12 +133,6 @@ def test_find_natural_neighbors():
 def test_find_nn_triangles_point():
     r"""Tests find natural neighbors for a point function"""
 
-    # creates a triangulation where all the triangles are the
-    # same size but with different orientations and positions.
-    # the circumcircle radius is 0.707 for each triangle and
-    # the point 4.5, 4.5 is equal to the circumcenter for exactly
-    # two triangles.  This was tested and verified by hand.
-
     x = list(range(10))
     y = list(range(10))
     gx, gy = np.meshgrid(x, y)
@@ -157,12 +151,6 @@ def test_find_nn_triangles_point():
 def test_find_local_boundary():
     r"""Tests find edges of natural neighbor triangle group function"""
 
-    # creates a triangulation where all the triangles are the
-    # same size but with different orientations and positions.
-    # the circumcircle radius is 0.707 for each triangle and
-    # the point 4.5, 4.5 is equal to the circumcenter for exactly
-    # two triangles.  This was verified by pen and paper.
-
     x = list(range(10))
     y = list(range(10))
     gx, gy = np.meshgrid(x, y)
@@ -175,14 +163,8 @@ def test_find_local_boundary():
 
     nn = find_nn_triangles_point(tri, tri_match, [4.5, 4.5])
 
-    # point codes for 2d coordinates in triangulation
     edges = find_local_boundary(tri, nn)
 
-    # point codes for 2d coordinates in triangulation
-    # ( ([5.0, 4.0], [5.0, 5.0]),
-    #   ([4.0, 4.0], [5.0, 4.0]),
-    #   ([5.0, 5.0], [4.0, 5.0]),
-    #   ([4.0, 5.0], [4.0, 4.0]) )
     truth = [(45, 55), (44, 45), (55, 54), (54, 44)]
 
     assert_array_almost_equal(truth, edges)
