@@ -135,7 +135,7 @@ def moist_lapse(pressure, temperature):
     def dt(t, p):
         t = units.Quantity(t, temperature.units)
         p = units.Quantity(p, pressure.units)
-        rs = mixing_ratio(saturation_vapor_pressure(t), p)
+        rs = saturation_mixing_ratio(p, t)
         frac = ((Rd * t + Lv * rs) /
                 (Cp_d + (Lv * Lv * rs * epsilon / (Rd * t * t)))).to('kelvin')
         return frac / p
@@ -425,7 +425,7 @@ def saturation_mixing_ratio(tot_press, temperature):
             Survey. 73.
     '''
 
-    return 0.622 * saturation_vapor_pressure(temperature) / tot_press
+    return mixing_ratio(saturation_vapor_pressure(temperature), tot_press)
 
 
 @exporter.export
@@ -446,6 +446,10 @@ def equivalent_potential_temperature(pressure, temperature):
     -------
     array_like
         The corresponding equivalent potential temperature of the parcel
+
+    Notes
+    -----
+    .. math:: \Theta_e = \Theta e^\frac{L_v r_s}{C_{pd} T}
 
     References
     ----------
