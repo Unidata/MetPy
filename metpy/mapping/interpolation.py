@@ -63,8 +63,8 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
     approach. The interpolation will fail if the grid point has no
     natural neighbors.
 
-    Liang, Luming, and Dave Hale. "A stable and fast implementation
-    of natural neighbor interpolation." (2010).
+    Liang, Luming, and Dave Hale. A stable and fast implementation
+    of natural neighbor interpolation. (2010).
 
     Parameters
     ----------
@@ -200,16 +200,6 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
     points to the given grid based on either Cressman (1959) or Barnes (1964).
     The Barnes implementation used here based on Koch et al. (1983).
 
-    Cressman, George P. "An operational objective analysis system."
-        Mon. Wea. Rev 87, no. 10 (1959): 367-374.
-
-    Barnes, S. L., 1964: A technique for maximizing details in numerical
-        weather map analysis. J. Appl. Meteor., 3, 396–409.
-
-    Koch, S. E., M. DesJardins, and P. J. Kocin, 1983: An interactive
-        Barnes objective analysis scheme for use with satellite and conventional
-        data. J. Climate Appl. Meteor., 22, 1487–1503.
-
     Parameters
     ----------
     xp: (N, ) ndarray
@@ -276,9 +266,6 @@ def cressman_point(sq_dist, values, radius):
     r"""Generate a cressman interpolation value for a point based on
     the given distances and search radius.
 
-    Cressman, George P. "An operational objective analysis system."
-        Mon. Wea. Rev 87, no. 10 (1959): 367-374.
-
     Parameters
     ----------
     sq_dist: (N, ) ndarray
@@ -305,9 +292,6 @@ def barnes_point(sq_dist, values, kappa, gamma=1):
     r"""Generate a single pass barnes interpolation value
     for a point based on the given distances, kappa and
     gamma values.
-
-    Cressman, George P. "An operational objective analysis system."
-        Mon. Wea. Rev 87, no. 10 (1959): 367-374.
 
     Parameters
     ----------

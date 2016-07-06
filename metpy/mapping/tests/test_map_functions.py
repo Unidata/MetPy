@@ -7,6 +7,8 @@ from metpy.mapping.map_functions import (calc_kappa, remove_observations_below_v
 
 import numpy as np
 
+from scipy.spatial.distance import cdist
+
 from numpy.testing import assert_array_almost_equal, assert_almost_equal
 
 
