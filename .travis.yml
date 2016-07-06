@@ -33,7 +33,7 @@ env:
 matrix:
   include:
     - python: 2.7
-      env: VERSIONS="numpy==1.8.0 matplotlib==1.4.0 scipy==0.13.3 pint==0.6"
+      env: VERSIONS="numpy==1.9.0 matplotlib==1.4.0 scipy==0.14.0 pint==0.6"
     # Docs built on 2.7 because that's what readthedocs uses
     - python: 2.7
       env: TASK="docs"
