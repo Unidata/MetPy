@@ -201,7 +201,7 @@ def cressman_weights(sq_dist, r):
         to the interpolation point.
     """
 
-    return 1.0 * (r * r - sq_dist) / (r * r + sq_dist)
+    return (r * r - sq_dist) / (r * r + sq_dist)
 
 
 @exporter.export
@@ -297,7 +297,7 @@ def cressman_point(sq_dist, values, radius):
     weights = cressman_weights(sq_dist, radius)
     total_weights = np.sum(weights)
 
-    return sum([v * (1.0 * w / total_weights) for (w, v) in zip(weights, values)])
+    return sum([v * (w / total_weights) for (w, v) in zip(weights, values)])
 
 
 @exporter.export
@@ -326,4 +326,4 @@ def barnes_point(sq_dist, values, kappa, gamma=1):
     weights = barnes_weights(sq_dist, kappa, gamma)
     total_weights = np.sum(weights)
 
-    return np.sum(values * (1.0 * weights / total_weights))
+    return np.sum(values * (weights / total_weights))
