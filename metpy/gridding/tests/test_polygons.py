@@ -4,7 +4,8 @@
 
 from __future__ import division
 
-from metpy.mapping.polygons import (area, order_edges)
+from metpy.gridding.polygons import (area, order_edges)
+
 from numpy import isclose
 from numpy.testing import assert_array_equal
 

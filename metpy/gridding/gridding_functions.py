@@ -9,8 +9,8 @@ import numpy as np
 from scipy.interpolate import griddata, Rbf
 from scipy.spatial.distance import cdist
 
-from metpy.mapping import interpolation
-from metpy.mapping import points
+from metpy.gridding import interpolation
+from metpy.gridding import points
 
 from ..package_tools import Exporter
 

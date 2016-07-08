@@ -4,9 +4,9 @@
 
 from __future__ import division
 
-from metpy.mapping.points import (get_points_within_r, get_point_count_within_r,
-                                  get_boundary_coords, get_xy_steps, get_xy_range,
-                                  generate_grid, generate_grid_coords)
+from metpy.gridding.points import (get_points_within_r, get_point_count_within_r,
+                                   get_boundary_coords, get_xy_steps, get_xy_range,
+                                   generate_grid, generate_grid_coords)
 
 from numpy.testing import assert_array_almost_equal
 

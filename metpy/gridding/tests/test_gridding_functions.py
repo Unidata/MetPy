@@ -4,8 +4,8 @@
 
 from __future__ import division
 
-from metpy.mapping.map_functions import (calc_kappa, remove_observations_below_value,
-                                         remove_nan_observations, remove_repeat_coordinates)
+from metpy.gridding.map_functions import (calc_kappa, remove_observations_below_value,
+                                          remove_nan_observations, remove_repeat_coordinates)
 
 import numpy as np
 

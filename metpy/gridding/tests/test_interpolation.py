@@ -4,11 +4,11 @@
 
 from __future__ import division
 
-from metpy.mapping.interpolation import (barnes_weights, nn_point, cressman_weights,
-                                         cressman_point, barnes_point)
+from metpy.gridding.interpolation import (barnes_weights, nn_point, cressman_weights,
+                                          cressman_point, barnes_point)
 
-from metpy.mapping.triangles import find_natural_neighbors, dist_2
-from metpy.mapping.map_functions import calc_kappa
+from metpy.gridding.triangles import find_natural_neighbors, dist_2
+from metpy.gridding.map_functions import calc_kappa
 from scipy.spatial import cKDTree, Delaunay
 
 import numpy as np

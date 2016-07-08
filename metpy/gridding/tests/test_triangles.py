@@ -4,9 +4,10 @@
 
 from __future__ import division
 
-from metpy.mapping.triangles import (dist_2, distance, circumcircle_radius_2,
-                                     circumcircle_radius, circumcenter, find_natural_neighbors,
-                                     find_nn_triangles_point, find_local_boundary)
+from metpy.gridding.triangles import (dist_2, distance, circumcircle_radius_2,
+                                      circumcircle_radius, circumcenter,
+                                      find_natural_neighbors, find_nn_triangles_point,
+                                      find_local_boundary)
 
 from numpy.testing import assert_array_almost_equal
 from numpy.testing import assert_almost_equal

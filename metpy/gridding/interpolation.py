@@ -8,7 +8,7 @@ import numpy as np
 
 from scipy.spatial import Delaunay, ConvexHull, cKDTree
 
-from metpy.mapping import triangles, polygons, points
+from metpy.gridding import triangles, polygons, points
 
 from ..package_tools import Exporter
 
