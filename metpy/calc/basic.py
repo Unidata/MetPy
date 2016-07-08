@@ -58,7 +58,7 @@ def get_wind_dir(u, v):
     --------
     get_wind_components
     '''
-    wdir = 270. * units.deg - np.arctan2(v, u)
+    wdir = 90. * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
     wdir = atleast_1d(wdir)
     wdir[wdir < 0] += 360. * units.deg
