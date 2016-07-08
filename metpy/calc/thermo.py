@@ -135,7 +135,7 @@ def moist_lapse(pressure, temperature):
     def dt(t, p):
         t = units.Quantity(t, temperature.units)
         p = units.Quantity(p, pressure.units)
-        rs = mixing_ratio(saturation_vapor_pressure(t), p)
+        rs = saturation_mixing_ratio(p, t)
         frac = ((Rd * t + Lv * rs) /
                 (Cp_d + (Lv * Lv * rs * epsilon / (Rd * t * t)))).to('kelvin')
         return frac / p
@@ -398,3 +398,65 @@ def mixing_ratio(part_press, tot_press):
     '''
 
     return epsilon * part_press / (tot_press - part_press)
+
+
+@exporter.export
+def saturation_mixing_ratio(tot_press, temperature):
+    r'''Calculates the saturation mixing ratio given total pressure
+    and the temperature.
+
+    The implementation uses the formula outlined in [4]
+
+    Parameters
+    ----------
+    tot_press: array_like
+        Total atmospheric pressure
+    temperature: array_like
+        The temperature
+
+    Returns
+    -------
+    array_like
+        The saturation mixing ratio, dimensionless
+
+    References
+    ----------
+    .. [4] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+            Survey. 73.
+    '''
+
+    return mixing_ratio(saturation_vapor_pressure(temperature), tot_press)
+
+
+@exporter.export
+def equivalent_potential_temperature(pressure, temperature):
+    r'''Calculates equivalent potential temperature given an air parcel's
+    pressure and temperature.
+
+    The implementation uses the formula outlined in [5]
+
+    Parameters
+    ----------
+    pressure: array_like
+        Total atmospheric pressure
+    temperature: array_like
+        The temperature
+
+    Returns
+    -------
+    array_like
+        The corresponding equivalent potential temperature of the parcel
+
+    Notes
+    -----
+    .. math:: \Theta_e = \Theta e^\frac{L_v r_s}{C_{pd} T}
+
+    References
+    ----------
+    .. [5] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+            Survey. 78-79.
+    '''
+
+    pottemp = potential_temperature(pressure, temperature)
+    smixr = saturation_mixing_ratio(pressure, temperature)
+    return pottemp * np.exp(Lv * smixr / (Cp_d * temperature))

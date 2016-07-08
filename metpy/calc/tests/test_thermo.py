@@ -121,3 +121,18 @@ class TestLCL(object):
         'Simple test of LCL calculation.'
         l = lcl(1000. * units.mbar, 30. * units.degC, 20. * units.degC)
         assert_almost_equal(l, 864.761 * units.mbar, 2)
+
+
+def test_saturation_mixing_ratio():
+    'Simple test of saturation mixing ratio calculation.'
+    p = 999. * units.mbar
+    t = 288. * units.kelvin
+    assert_almost_equal(saturation_mixing_ratio(p, t), .01068, 3)
+
+
+def test_equivalent_potential_temperature():
+    'Simple test of equivalent potential temperature calculation.'
+    p = 999. * units.mbar
+    t = 288. * units.kelvin
+    ept = equivalent_potential_temperature(p, t)
+    assert_almost_equal(ept, 315.9548 * units.kelvin, 3)
