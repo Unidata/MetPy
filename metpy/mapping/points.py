@@ -5,6 +5,7 @@
 from __future__ import division
 
 import numpy as np
+
 from scipy.spatial import cKDTree
 
 from ..package_tools import Exporter

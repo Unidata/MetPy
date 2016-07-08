@@ -54,13 +54,13 @@ def test_remove_nan_observations():
     x = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
     y = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
 
-    z = np.array([np.nan, np.nan, 1, 1, 1, 1, 1, 1, 1, 1])
+    z = np.array([np.nan, np.nan, np.nan, 1, 1, 1, 1, 1, 1, 1])
 
     x_, y_, z_ = remove_nan_observations(x, y, z)
 
-    truthx = np.array([79, 10, 52, 53, 98, 34, 15, 58])
-    truthy = np.array([48, 94, 98, 66, 14, 24, 60, 16])
-    truthz = np.array([1, 1, 1, 1, 1, 1, 1, 1])
+    truthx = np.array([10, 52, 53, 98, 34, 15, 58])
+    truthy = np.array([94, 98, 66, 14, 24, 60, 16])
+    truthz = np.array([1, 1, 1, 1, 1, 1, 1])
 
     assert_array_almost_equal(truthx, x_)
     assert_array_almost_equal(truthy, y_)
@@ -70,15 +70,15 @@ def test_remove_nan_observations():
 def test_remove_repeat_coordinates():
     r"""Tests remove repeat coordinates function"""
 
-    x = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 8])
-    y = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 24])
+    x = np.array([8.523, 67, 79, 10, 52.11, 52.10, 98, 34, 15, 8.523])
+    y = np.array([24.123, 87, 48, 94, 98.11, 98.10, 14, 24, 60, 24.123])
 
     z = np.array(list(range(-10, 10, 2)))
 
     x_, y_, z_ = remove_repeat_coordinates(x, y, z)
 
-    truthx = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15])
-    truthy = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60])
+    truthx = np.array([8.523, 67, 79, 10, 52.11, 52.10, 98, 34, 15])
+    truthy = np.array([24.123, 87, 48, 94, 98.11, 98.10, 14, 24, 60])
     truthz = np.array([-10, -8, -6, -4, -2, 0, 2, 4, 6])
 
     assert_array_almost_equal(truthx, x_)

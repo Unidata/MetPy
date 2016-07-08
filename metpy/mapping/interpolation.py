@@ -149,7 +149,7 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
         p2 = p3
 
     if total_area > 0:
-        return sum([1.0 * x / total_area for x in area_list])
+        return sum([x / total_area for x in area_list])
     else:
         return np.nan
 
@@ -326,4 +326,4 @@ def barnes_point(sq_dist, values, kappa, gamma=1):
     weights = barnes_weights(sq_dist, kappa, gamma)
     total_weights = np.sum(weights)
 
-    return np.sum(values * (weights / total_weights))
+    return sum([v * (w / total_weights) for (w, v) in zip(weights, values)])

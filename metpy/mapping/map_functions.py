@@ -11,6 +11,7 @@ from scipy.spatial.distance import cdist
 
 from metpy.mapping import interpolation
 from metpy.mapping import points
+
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -125,8 +126,10 @@ def remove_repeat_coordinates(x, y, z):
             coords.append((x_, y_))
             variable.append(t_)
 
-    x_ = np.array(list(coords))[:, 0]
-    y_ = np.array(list(coords))[:, 1]
+    coords = np.array(coords)
+
+    x_ = coords[:, 0]
+    y_ = coords[:, 1]
 
     z_ = np.array(variable)
 
@@ -134,9 +137,9 @@ def remove_repeat_coordinates(x, y, z):
 
 
 @exporter.export
-def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_neighbors=3,
-                gamma=0.25, kappa_star=5.052, search_radius=None, rbf_func='linear',
-                rbf_smooth=0):
+def interpolate(x, y, z, interp_type='linear', hres=50000,
+                buffer=1000, minimum_neighbors=3, gamma=0.25,
+                kappa_star=5.052, search_radius=None, rbf_func='linear', rbf_smooth=0):
     r"""Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.
 
     Parameters
@@ -153,9 +156,9 @@ def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_
         2) "natural_neighbor", "barnes", or "cressman" from Metpy.mapping .
         Default "linear".
     hres: float
-        The horizontal resolution of the generated grid in meters. Default 50000.
+        The horizontal resolution of the generated grid. Default 50000 meters.
     buffer: float
-        How many meters to add to the bounds of the grid. Default 1000.
+        How many meters to add to the bounds of the grid. Default 1000 meters.
     minimum_neighbors: int
         Minimum number of neighbors needed to perform barnes or cressman interpolation for a
         point. Default is 3.
@@ -186,12 +189,8 @@ def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_
         2-dimensional array representing the interpolated values for each grid.
     """
 
-    ave_spacing = np.mean((cdist(list(zip(x, y)), list(zip(x, y)))))
-
-    if search_radius is None:
-        search_radius = ave_spacing
-
-    grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y), buffer)
+    grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y),
+                                          buffer)
 
     if interp_type in ["linear", "nearest", "cubic"]:
         points_zip = np.array(list(zip(x, y)))
@@ -201,19 +200,29 @@ def interpolate(x, y, z, interp_type='linear', hres=50000, buffer=1000, minimum_
         img = interpolation.natural_neighbor(x, y, z, grid_x, grid_y)
         img = img.reshape(grid_x.shape)
 
-    elif interp_type == "cressman":
+    elif interp_type in ["cressman", "barnes"]:
 
-        img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius,
-                                             min_neighbors=minimum_neighbors,
-                                             kind=interp_type)
-        img = img.reshape(grid_x.shape)
+        search_radius_m = search_radius
 
-    elif interp_type == "barnes":
+        ave_spacing = np.mean((cdist(list(zip(x, y)), list(zip(x, y)))))
 
-        kappa = calc_kappa(ave_spacing, kappa_star)
-        img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius, gamma,
-                                             kappa, min_neighbors=minimum_neighbors,
-                                             kind=interp_type)
+        if search_radius is None:
+            search_radius = ave_spacing
+
+        if interp_type == "cressman":
+
+            img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius_m,
+                                                 min_neighbors=minimum_neighbors,
+                                                 kind=interp_type)
+            img = img.reshape(grid_x.shape)
+
+        elif interp_type == "barnes":
+
+            kappa = calc_kappa(ave_spacing, kappa_star)
+            img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius_m,
+                                                 gamma, kappa, min_neighbors=minimum_neighbors,
+                                                 kind=interp_type)
+
         img = img.reshape(grid_x.shape)
 
     elif interp_type == "rbf":
