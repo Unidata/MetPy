@@ -3,7 +3,7 @@ MetPy
 
 |License| |Gitter| |PRWelcome|
 
-|PyPI| |PyPIDownloads| |Conda| |CondaDownloads|
+|PyPI| |Conda|
 
 |Travis| |AppVeyor|
 
