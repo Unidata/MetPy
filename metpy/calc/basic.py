@@ -208,8 +208,8 @@ def heat_index(temperature, rh, mask_undefined=True):
     '''
 
     delta = temperature - 0. * units.degF
-    rh2 = rh ** 2
-    delta2 = delta ** 2
+    rh2 = rh * rh
+    delta2 = delta * delta
 
     # Calculate the Heat Index -- constants converted for RH in [0, 1]
     hi = (-42.379 * units.degF + 2.04901523 * delta +
