@@ -52,9 +52,24 @@ def test_dir():
 
     direc = get_wind_dir(u, v)
 
-    true_dir = np.array([90., 45., 0., 90.]) * units.deg
+    true_dir = np.array([270., 225., 180., 270.]) * units.deg
 
     assert_array_almost_equal(true_dir, direc, 4)
+
+
+def test_speed_dir_roundtrip():
+    'Convert from wind speed and direction to u,v and back'
+    # Test each quadrant of the whole circle
+    wspd = np.array([15., 5., 2., 10.]) * units.meters / units.seconds
+    wdir = np.array([160., 30., 225., 350.]) * units.degrees
+
+    u, v = get_wind_components(wspd, wdir)
+
+    wdir_out = get_wind_dir(u, v)
+    wspd_out = get_wind_speed(u, v)
+
+    assert_array_almost_equal(wspd, wspd_out, 4)
+    assert_array_almost_equal(wdir, wdir_out, 4)
 
 
 def test_scalar_speed():
@@ -65,7 +80,7 @@ def test_scalar_speed():
 
 def test_scalar_dir():
     'Test wind direction with scalars'
-    d = get_wind_dir(-3. * units('m/s'), -4. * units('m/s'))
+    d = get_wind_dir(3. * units('m/s'), 4. * units('m/s'))
     assert_almost_equal(d, 216.870 * units.deg, 3)
 
 
