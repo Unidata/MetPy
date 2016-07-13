@@ -202,8 +202,6 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
 
     elif interp_type in ["cressman", "barnes"]:
 
-        search_radius_m = search_radius
-
         ave_spacing = np.mean((cdist(list(zip(x, y)), list(zip(x, y)))))
 
         if search_radius is None:
@@ -211,7 +209,7 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
 
         if interp_type == "cressman":
 
-            img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius_m,
+            img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius,
                                                  min_neighbors=minimum_neighbors,
                                                  kind=interp_type)
             img = img.reshape(grid_x.shape)
@@ -219,7 +217,7 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
         elif interp_type == "barnes":
 
             kappa = calc_kappa(ave_spacing, kappa_star)
-            img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius_m,
+            img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius,
                                                  gamma, kappa, min_neighbors=minimum_neighbors,
                                                  kind=interp_type)
 
