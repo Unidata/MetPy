@@ -14,9 +14,12 @@ units : :class:`pint.UnitRegistry`
 '''
 
 from __future__ import division
+import numpy as np
 import pint
 import pint.unit
-import numpy as np
+
+
+UndefinedUnitError = pint.UndefinedUnitError
 
 units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
 
