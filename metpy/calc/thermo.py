@@ -52,7 +52,7 @@ def potential_temperature(pressure, temperature):
 
     '''
 
-    return temperature * (P0 / pressure)**kappa
+    return temperature * (P0 / pressure).to('dimensionless')**kappa
 
 
 @exporter.export
