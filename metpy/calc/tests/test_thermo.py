@@ -26,6 +26,13 @@ class TestPotentialTemperature(object):
                             (312.444 * units.kelvin).to(units.degF), 2)
 
 
+# Tests fix for 165
+def test_pot_temp_inhg():
+    'Tests that we can handle pressure not in mb'
+    assert_almost_equal(potential_temperature(29.92 * units.inHg, 29 * units.degC),
+                        301.019735 * units.kelvin, 4)
+
+
 class TestDryLapse(object):
     def test_array(self):
         levels = np.array([1000, 900, 864.89]) * units.mbar
