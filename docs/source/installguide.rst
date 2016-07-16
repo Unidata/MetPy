@@ -42,7 +42,7 @@ The source code can also be grabbed from `GitHub <http://github.com/MetPy/metpy>
 the base of the source directory, run:
 
 .. parsed-literal::
-    python setup.py install
+    pip install .
 
 This will build and install MetPy into your current Python installation.
 
