@@ -6,10 +6,40 @@ from __future__ import division
 
 import math
 
+import numpy as np
+
 from scipy.spatial import cKDTree
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
+
+
+@exporter.export
+def triangle_area(pt1, pt2, pt3):
+    r"""Returns the area of a triangle.
+
+    Parameters
+    ----------
+    pt1: (X,Y) ndarray
+        Starting vertex of a triangle
+    pt2: (X,Y) ndarray
+        Second vertex of a triangle
+    pt3: (X,Y) ndarray
+        Ending vertex of a triangle
+
+    Returns
+    --------
+    area: float
+        Area of the given triangle.
+    """
+
+    a = 0.0
+
+    a += pt1[0] * pt2[1] - pt2[0] * pt1[1]
+    a += pt2[0] * pt3[1] - pt3[0] * pt2[1]
+    a += pt3[0] * pt1[1] - pt1[0] * pt3[1]
+
+    return abs(a) / 2
 
 
 @exporter.export
@@ -100,12 +130,13 @@ def circumcircle_radius_2(pt0, pt1, pt2):
     b = distance(pt1, pt2)
     c = distance(pt2, pt0)
 
-    s = (a + b + c) * 0.5
-
-    prod = s * (s - a) * (s - b) * (s - c)
+    t_area = triangle_area(pt0, pt1, pt2)
     prod2 = a * b * c
 
-    radius = prod2 * prod2 / (16 * prod)
+    if t_area > 0:
+        radius = prod2 * prod2 / (16 * t_area * t_area)
+    else:
+        radius = np.nan
 
     return radius
 
@@ -138,12 +169,12 @@ def circumcircle_radius(pt0, pt1, pt2):
     b = distance(pt1, pt2)
     c = distance(pt2, pt0)
 
-    s = (a + b + c) * 0.5
+    t_area = triangle_area(pt0, pt1, pt2)
 
-    prod = s * (s - a) * (s - b) * (s - c)
-    prod2 = a * b * c
-
-    radius = prod2 / (4 * math.sqrt(prod))
+    if t_area > 0:
+        radius = (a * b * c) / (4 * t_area)
+    else:
+        radius = np.nan
 
     return radius
 
@@ -193,7 +224,7 @@ def circumcenter(pt0, pt1, pt2):
     if d_div == 0:
         raise ZeroDivisionError
 
-    d_inv = 0.5 / (a_x * bc_y_diff + b_x * ca_y_diff + c_x * ab_y_diff)
+    d_inv = 0.5 / d_div
 
     a_mag = a_x * a_x + a_y * a_y
     b_mag = b_x * b_x + b_y * b_y

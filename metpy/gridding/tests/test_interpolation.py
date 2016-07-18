@@ -8,7 +8,7 @@ from metpy.gridding.interpolation import (barnes_weights, nn_point, cressman_wei
                                           cressman_point, barnes_point)
 
 from metpy.gridding.triangles import find_natural_neighbors, dist_2
-from metpy.gridding.map_functions import calc_kappa
+from metpy.gridding.gridding_functions import calc_kappa
 from scipy.spatial import cKDTree, Delaunay
 
 import numpy as np

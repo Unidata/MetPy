@@ -7,13 +7,37 @@ from __future__ import division
 from metpy.gridding.triangles import (dist_2, distance, circumcircle_radius_2,
                                       circumcircle_radius, circumcenter,
                                       find_natural_neighbors, find_nn_triangles_point,
-                                      find_local_boundary)
+                                      find_local_boundary, triangle_area)
 
 from numpy.testing import assert_array_almost_equal
 from numpy.testing import assert_almost_equal
 from scipy.spatial import Delaunay
 
 import numpy as np
+
+
+def test_triangle_area():
+
+    pt0 = [0, 0]
+    pt1 = [10, 10]
+    pt2 = [10, 0]
+
+    truth = 50.0
+
+    t_area = triangle_area(pt0, pt1, pt2)
+
+    assert_almost_equal(truth, t_area)
+
+    # what if two points are the same? Its a line!
+    pt0 = [0, 0]
+    pt1 = [0, 0]
+    pt2 = [10, 0]
+
+    truth = 0
+
+    t_area = triangle_area(pt0, pt1, pt2)
+
+    assert_almost_equal(truth, t_area)
 
 
 def test_dist_2():
