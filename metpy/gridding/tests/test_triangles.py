@@ -17,6 +17,7 @@ import numpy as np
 
 
 def test_triangle_area():
+    r"""Tests area of triangle function"""
 
     pt0 = [0, 0]
     pt1 = [10, 10]

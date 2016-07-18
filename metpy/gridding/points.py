@@ -10,6 +10,8 @@ from scipy.spatial import cKDTree
 
 from ..package_tools import Exporter
 
+import warnings
+
 exporter = Exporter(globals())
 
 
@@ -91,10 +93,11 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
         Y dimension meshgrid defined by given bounding box
     """
 
-    if not ignore_warnings and horiz_dim < 10000:
-        print("Grids less than 10km may be slow to load at synoptic scale.")
-        print("Set ignore_warnings to True to run anyway. Defaulting to 10km")
-        horiz_dim = 10000
+    if horiz_dim < 10000:
+        message = ("Grids less than 10km may be slow to "
+                   "load at synoptic scale.")
+
+        warnings.warn(message)
 
     x_steps, y_steps = get_xy_steps(bbox, horiz_dim)
 

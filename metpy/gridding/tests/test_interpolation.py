@@ -5,10 +5,12 @@
 from __future__ import division
 
 from metpy.gridding.interpolation import (barnes_weights, nn_point, cressman_weights,
-                                          cressman_point, barnes_point)
+                                          cressman_point, barnes_point, natural_neighbor,
+                                          inverse_distance)
 
 from metpy.gridding.triangles import find_natural_neighbors, dist_2
 from metpy.gridding.gridding_functions import calc_kappa
+from metpy.cbook import get_test_data
 from scipy.spatial import cKDTree, Delaunay
 
 import numpy as np
@@ -16,7 +18,57 @@ import numpy as np
 from numpy.testing import assert_array_almost_equal
 from numpy.testing import assert_almost_equal
 
+from metpy.gridding.points import generate_grid
+
 from scipy.spatial.distance import cdist
+
+
+def test_natural_neighbor():
+    r"""Tests natural neighbor interpolation function"""
+
+    xp = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
+    yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
+
+    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
+                  0.225, 3.364])
+
+    bbox = {"east": 100, "north": 100, "south": 0, "west": 0}
+
+    xg, yg = generate_grid(1, bbox, ignore_warnings=True)
+
+    img = natural_neighbor(xp, yp, z, xg, yg)
+
+    truth = np.load(get_test_data("nn_bbox0to100.npz"))['img']
+
+    assert_array_almost_equal(truth, img)
+
+
+def test_inverse_distance():
+    r"""Tests inverse distance interpolation function"""
+
+    xp = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
+    yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
+
+    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
+                  0.225, 3.364])
+
+    bbox = {"east": 100, "north": 100, "south": 0, "west": 0}
+
+    xg, yg = generate_grid(1, bbox, ignore_warnings=True)
+
+    img = inverse_distance(xp, yp, z, xg, yg, r=20,
+                           min_neighbors=1, kind='cressman')
+
+    truth = np.load(get_test_data("cressman_r20_mn1.npz"))['img']
+
+    assert_array_almost_equal(truth, img)
+
+    img = inverse_distance(xp, yp, z, xg, yg, r=40,
+                           kappa=100, kind='barnes')
+
+    truth = np.load(get_test_data("barnes_r40_k100.npz"))['img']
+
+    assert_array_almost_equal(truth, img)
 
 
 def test_nn_point():
@@ -33,9 +85,11 @@ def test_nn_point():
     sim_gridx = [30]
     sim_gridy = [30]
 
-    members, tri_info = find_natural_neighbors(tri, list(zip(sim_gridx, sim_gridy)))
+    members, tri_info = find_natural_neighbors(tri,
+                                               list(zip(sim_gridx, sim_gridy)))
 
-    val = nn_point(xp, yp, z, [sim_gridx[0], sim_gridy[0]], tri, members[0], tri_info)
+    val = nn_point(xp, yp, z, [sim_gridx[0], sim_gridy[0]],
+                   tri, members[0], tri_info)
 
     truth = 1.009
 

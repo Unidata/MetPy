@@ -6,7 +6,9 @@ from __future__ import division
 
 import numpy as np
 
-from scipy.spatial import Delaunay, ConvexHull, cKDTree
+import warnings
+
+from scipy.spatial import Delaunay, ConvexHull, cKDTree, qhull
 
 from metpy.gridding import triangles, polygons, points
 
@@ -57,8 +59,8 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
 
         if len(neighbors) > 0:
 
-                img[ind] = nn_point(xp, yp, variable, grid_points[grid],
-                                    tri, neighbors, triangle_info)
+            img[ind] = nn_point(xp, yp, variable, grid_points[grid],
+                                tri, neighbors, triangle_info)
 
     img = img.reshape(grid_x.shape)
     return img
@@ -129,29 +131,29 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
                 if p2 in tri.simplices[check_tri]:
                     polygon.append(triangle_info[check_tri]['cc'])
 
-        except ZeroDivisionError:
-            area_list.append(0)
-            continue
+            pts = [polygon[i] for i in ConvexHull(polygon).vertices]
+            value = variable[(tri.points[p2][0] == xp) & (tri.points[p2][1] == yp)]
 
-        pts = [polygon[i] for i in ConvexHull(polygon).vertices]
-        value = variable[(tri.points[p2][0] == xp) & (tri.points[p2][1] == yp)]
+            cur_area = polygons.area(pts)
 
-        cur_area = polygons.area(pts)
+            total_area += cur_area
 
-        total_area += cur_area
+            area_list.append(cur_area * value[0])
 
-        area_list.append(cur_area * value[0])
+        except (ZeroDivisionError, qhull.QhullError) as e:
+            message = ("Error during processing of a grid. "
+                       "Interpolation will continue but be mindful "
+                       "of errors in output. ") + str(e)
+
+            warnings.warn(message)
+            return np.nan
 
         polygon = list()
         polygon.append(c2)
 
-        p1 = p2
         p2 = p3
 
-    if total_area > 0:
-        return sum([x / total_area for x in area_list])
-    else:
-        return np.nan
+    return sum([x / total_area for x in area_list])
 
 
 @exporter.export
@@ -269,7 +271,7 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
                 raise ValueError("This type of inverse distance " +
                                  "interpolation not supported: ", str(kind))
 
-    img.reshape(grid_x.shape)
+    img = img.reshape(grid_x.shape)
     return img
 
 

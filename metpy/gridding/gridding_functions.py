@@ -138,7 +138,7 @@ def remove_repeat_coordinates(x, y, z):
 
 @exporter.export
 def interpolate(x, y, z, interp_type='linear', hres=50000,
-                buffer=1000, minimum_neighbors=3, gamma=0.25,
+                buffer=1, minimum_neighbors=3, gamma=0.25,
                 kappa_star=5.052, search_radius=None, rbf_func='linear', rbf_smooth=0):
     r"""Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.
 
@@ -198,7 +198,6 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
 
     elif interp_type == "natural_neighbor":
         img = interpolation.natural_neighbor(x, y, z, grid_x, grid_y)
-        img = img.reshape(grid_x.shape)
 
     elif interp_type in ["cressman", "barnes"]:
 
@@ -212,7 +211,6 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
             img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius,
                                                  min_neighbors=minimum_neighbors,
                                                  kind=interp_type)
-            img = img.reshape(grid_x.shape)
 
         elif interp_type == "barnes":
 
@@ -220,8 +218,6 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
             img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius,
                                                  gamma, kappa, min_neighbors=minimum_neighbors,
                                                  kind=interp_type)
-
-        img = img.reshape(grid_x.shape)
 
     elif interp_type == "rbf":
 
@@ -240,7 +236,5 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
         raise ValueError("Interpolation option not available\n" +
                          "Try: linear, nearest, cubic, natural_neighbor, " +
                          "barnes, cressman, rbf")
-
-    img = np.ma.masked_where(np.isnan(img), img)
 
     return grid_x, grid_y, img
