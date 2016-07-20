@@ -4,6 +4,8 @@
 
 from __future__ import division
 
+import pytest
+
 from metpy.gridding.interpolation import (barnes_weights, nn_point, cressman_weights,
                                           cressman_point, barnes_point, natural_neighbor,
                                           inverse_distance)
@@ -18,23 +20,36 @@ import numpy as np
 from numpy.testing import assert_array_almost_equal
 from numpy.testing import assert_almost_equal
 
-from metpy.gridding.points import generate_grid
-
 from scipy.spatial.distance import cdist
 
 
-def test_natural_neighbor():
+@pytest.fixture()
+def test_data():
+    r"""Test data used for tests in this file"""
+
+    x = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58], dtype=float)
+    y = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16], dtype=float)
+    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
+                  0.225, 3.364], dtype=float)
+
+    return x, y, z
+
+
+@pytest.fixture()
+def test_grid():
+    r"""Test grid locations used for tests in this file"""
+
+    xg = np.load(get_test_data("interpolation_test_grid.npz"))['xg']
+    yg = np.load(get_test_data("interpolation_test_grid.npz"))['yg']
+
+    return xg, yg
+
+
+def test_natural_neighbor(test_data, test_grid):
     r"""Tests natural neighbor interpolation function"""
 
-    xp = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
-    yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
-
-    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225, 3.364])
-
-    bbox = {"east": 100, "north": 100, "south": 0, "west": 0}
-
-    xg, yg = generate_grid(1, bbox, ignore_warnings=True)
+    xp, yp, z = test_data
+    xg, yg = test_grid
 
     img = natural_neighbor(xp, yp, z, xg, yg)
 
@@ -43,42 +58,37 @@ def test_natural_neighbor():
     assert_array_almost_equal(truth, img)
 
 
-def test_inverse_distance():
+interp_methods = ['cressman', 'barnes']
+
+
+@pytest.mark.parametrize('method', interp_methods)
+def test_inverse_distance(method, test_data, test_grid):
     r"""Tests inverse distance interpolation function"""
 
-    xp = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
-    yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
+    xp, yp, z = test_data
+    xg, yg = test_grid
 
-    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225, 3.364])
+    extra_kw = {}
+    if method == 'cressman':
+        extra_kw['r'] = 20
+        extra_kw['min_neighbors'] = 1
+        test_file = "cressman_r20_mn1.npz"
+    elif method == 'barnes':
+        extra_kw['r'] = 40
+        extra_kw['kappa'] = 100
+        test_file = "barnes_r40_k100.npz"
 
-    bbox = {"east": 100, "north": 100, "south": 0, "west": 0}
+    img = inverse_distance(xp, yp, z, xg, yg, kind=method, **extra_kw)
 
-    xg, yg = generate_grid(1, bbox, ignore_warnings=True)
-
-    img = inverse_distance(xp, yp, z, xg, yg, r=20,
-                           min_neighbors=1, kind='cressman')
-
-    truth = np.load(get_test_data("cressman_r20_mn1.npz"))['img']
-
-    assert_array_almost_equal(truth, img)
-
-    img = inverse_distance(xp, yp, z, xg, yg, r=40,
-                           kappa=100, kind='barnes')
-
-    truth = np.load(get_test_data("barnes_r40_k100.npz"))['img']
+    truth = np.load(get_test_data(test_file))['img']
 
     assert_array_almost_equal(truth, img)
 
 
-def test_nn_point():
+def test_nn_point(test_data):
     r"""Tests find natural neighbors for a point interpolation function"""
 
-    xp = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
-    yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
-
-    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225, 3.364])
+    xp, yp, z = test_data
 
     tri = Delaunay(list(zip(xp, yp)))
 
@@ -132,14 +142,10 @@ def test_cressman_weights():
     assert_array_almost_equal(truth, weights)
 
 
-def test_cressman_point():
+def test_cressman_point(test_data):
     r"""Tests cressman interpolation for a point function"""
 
-    xp = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
-    yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
-
-    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225, 3.364])
+    xp, yp, z = test_data
 
     r = 40
 
@@ -157,14 +163,10 @@ def test_cressman_point():
     assert_almost_equal(truth, value)
 
 
-def test_barnes_point():
+def test_barnes_point(test_data):
     r"""Tests barnes interpolation for a point function"""
 
-    xp = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58])
-    yp = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16])
-
-    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225, 3.364])
+    xp, yp, z = test_data
 
     r = 40
 

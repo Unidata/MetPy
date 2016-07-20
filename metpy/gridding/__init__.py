@@ -10,7 +10,4 @@ from .interpolation import *  # noqa
 
 __all__ = []
 __all__.extend(gridding_functions.__all__)  # pylint: disable=undefined-variable
-__all__.extend(points.__all__)  # pylint: disable=undefined-variable
-__all__.extend(triangles.__all__)  # pylint: disable=undefined-variable
-__all__.extend(polygons.__all__)  # pylint: disable=undefined-variable
 __all__.extend(interpolation.__all__)  # pylint: disable=undefined-variable

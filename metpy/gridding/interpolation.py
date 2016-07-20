@@ -66,7 +66,6 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
     return img
 
 
-@exporter.export
 def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
     r"""Generate a natural neighbor interpolation of the given
     observations to the given point using the Liang and Hale (2010)
@@ -156,7 +155,6 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
     return sum([x / total_area for x in area_list])
 
 
-@exporter.export
 def barnes_weights(sq_dist, kappa, gamma):
     r"""Calculate the barnes weights for observation points
     based on their distance from an interpolation point.
@@ -181,7 +179,6 @@ def barnes_weights(sq_dist, kappa, gamma):
     return np.exp(-1.0 * sq_dist / (kappa * gamma))
 
 
-@exporter.export
 def cressman_weights(sq_dist, r):
     r"""Calculate the cressman weights for observation points
     based on their distance from an interpolation point.
@@ -275,7 +272,6 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
     return img
 
 
-@exporter.export
 def cressman_point(sq_dist, values, radius):
     r"""Generate a cressman interpolation value for a point based on
     the given distances and search radius.
@@ -302,7 +298,6 @@ def cressman_point(sq_dist, values, radius):
     return sum([v * (w / total_weights) for (w, v) in zip(weights, values)])
 
 
-@exporter.export
 def barnes_point(sq_dist, values, kappa, gamma=1):
     r"""Generate a single pass barnes interpolation value
     for a point based on the given distances, kappa and

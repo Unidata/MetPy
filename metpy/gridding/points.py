@@ -8,14 +8,9 @@ import numpy as np
 
 from scipy.spatial import cKDTree
 
-from ..package_tools import Exporter
-
 import warnings
 
-exporter = Exporter(globals())
 
-
-@exporter.export
 def get_points_within_r(center_points, target_points, r, return_idx=False):
     r"""Get all target_points within a specified radius
     of a center point.  All data must be in same coord-
@@ -45,7 +40,6 @@ def get_points_within_r(center_points, target_points, r, return_idx=False):
     return tree.data[indices].T
 
 
-@exporter.export
 def get_point_count_within_r(center_points, target_points, r):
     r"""Get count of target points within a specified radius
     from center points.  All data must be in same coord-
@@ -72,7 +66,6 @@ def get_point_count_within_r(center_points, target_points, r):
     return np.array([len(x) for x in indices])
 
 
-@exporter.export
 def generate_grid(horiz_dim, bbox, ignore_warnings=False):
     r"""Generate a meshgrid based on bounding box and x & y resolution
 
@@ -109,7 +102,6 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
     return gx, gy
 
 
-@exporter.export
 def generate_grid_coords(gx, gy):
     r"""Calculate x,y coordinates of each grid cell
 
@@ -129,7 +121,6 @@ def generate_grid_coords(gx, gy):
     return np.vstack([gx.ravel(), gy.ravel()]).T
 
 
-@exporter.export
 def get_xy_range(bbox):
     r"""Returns x and y ranges in meters based on bounding box
 
@@ -150,7 +141,6 @@ def get_xy_range(bbox):
     return x_range, y_range
 
 
-@exporter.export
 def get_xy_steps(bbox, h_dim):
     r"""Return meshgrid spacing based on bounding box
 
@@ -175,7 +165,6 @@ def get_xy_steps(bbox, h_dim):
     return int(x_steps), int(y_steps)
 
 
-@exporter.export
 def get_boundary_coords(x, y, spatial_pad=0):
     r"""Return bounding box based on given x and y coordinates
        assuming northern hemisphere.

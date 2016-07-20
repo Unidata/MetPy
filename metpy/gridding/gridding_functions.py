@@ -17,7 +17,6 @@ from ..package_tools import Exporter
 exporter = Exporter(globals())
 
 
-@exporter.export
 def calc_kappa(spacing, kappa_star=5.052):
     r"""Calculate the kappa parameter for barnes interpolation.
 
@@ -36,7 +35,6 @@ def calc_kappa(spacing, kappa_star=5.052):
     return kappa_star * (2.0 * spacing / np.pi)**2
 
 
-@exporter.export
 def remove_observations_below_value(x, y, z, val=0):
     r"""Given (x,y) coordinates and an associated observation (z),
     remove all x, y, and z where z is less than val. Will not destroy
@@ -67,7 +65,6 @@ def remove_observations_below_value(x, y, z, val=0):
     return x_, y_, z_
 
 
-@exporter.export
 def remove_nan_observations(x, y, z):
     r"""Given (x,y) coordinates and an associated observation (z),
     remove all x, y, and z where z is nan. Will not destroy
@@ -96,7 +93,6 @@ def remove_nan_observations(x, y, z):
     return x_, y_, z_
 
 
-@exporter.export
 def remove_repeat_coordinates(x, y, z):
     r"""Given x,y coordinates and an associated observation (z),
     remove all x, y, and z where (x,y) is repeated and keep the

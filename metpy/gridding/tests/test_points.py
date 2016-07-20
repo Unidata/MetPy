@@ -56,27 +56,8 @@ def test_get_boundary_coords():
 
     bbox = get_boundary_coords(x, y)
 
-    east_truth = 9
-    north_truth = 9
-    south_truth = 0
-    west_truth = 0
-
-    assert_array_almost_equal(north_truth, bbox['north'])
-    assert_array_almost_equal(south_truth, bbox['south'])
-    assert_array_almost_equal(east_truth, bbox['east'])
-    assert_array_almost_equal(west_truth, bbox['west'])
-
-    bbox = get_boundary_coords(x, y, 10)
-
-    north_truth = 19
-    south_truth = -10
-    east_truth = 19
-    west_truth = -10
-
-    assert_array_almost_equal(north_truth, bbox['north'])
-    assert_array_almost_equal(south_truth, bbox['south'])
-    assert_array_almost_equal(east_truth, bbox['east'])
-    assert_array_almost_equal(west_truth, bbox['west'])
+    truth = dict(east=9, north=9, south=0, west=0)
+    assert bbox == truth
 
 
 def test_get_xy_steps():
