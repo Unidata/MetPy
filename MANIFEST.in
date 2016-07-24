@@ -4,9 +4,11 @@ include CONTRIBUTING.md
 include versioneer.py
 include metpy/_version.py
 recursive-include examples *
+recursive-include tutorials *
 recursive-include docs *
 prune docs/build
 prune docs/examples
+prune docs/tutorials
 prune docs/modules
 prune docs/source/__pycache__
 exclude .ipynb_checkpoints/*

@@ -35,6 +35,7 @@ Documentation
    installguide
    units
    examples/index
+   tutorials/index
    api/index
    developerguide
 

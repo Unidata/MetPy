@@ -18,5 +18,6 @@ MANIFEST
 
 docs/build/
 docs/examples
+docs/tutorials
 docs/api/generated
 examples/scripts
