@@ -116,7 +116,7 @@ script:
       if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then
         sed -i -e "s/python3/python2/" examples/notebooks/*.ipynb;
       fi;
-      find examples/notebooks/ -name \*.ipynb -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=60 --to=notebook --stdout >| /dev/null;
+      find examples/notebooks/ -name \*.ipynb -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=200 --to=notebook --stdout >| /dev/null;
     else
       python setup.py test --addopts "$TEST_OPTS";
     fi
