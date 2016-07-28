@@ -130,6 +130,16 @@ class TestLCL(object):
         assert_almost_equal(l, 864.761 * units.mbar, 2)
 
 
+def test_lfc_basic():
+    'Simple test of LFC calculation.'
+    levels = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperatures = np.array([22.2, 14.6, 12., 9.4, 7., -49.]) * units.celsius
+    dewpoints = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
+    l = lfc(levels, temperatures, dewpoints)
+    assert_almost_equal(l[0], 727.468 * units.mbar, 2)
+    assert_almost_equal(l[1], 9.705 * units.celsius, 2)
+
+
 def test_saturation_mixing_ratio():
     'Simple test of saturation mixing ratio calculation.'
     p = 999. * units.mbar

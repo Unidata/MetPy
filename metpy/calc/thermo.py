@@ -5,6 +5,7 @@
 from __future__ import division
 import numpy as np
 import scipy.integrate as si
+from .tools import find_intersections
 from ..package_tools import Exporter
 from ..constants import epsilon, kappa, P0, Rd, Lv, Cp_d
 from ..units import atleast_1d, concatenate, units
@@ -198,6 +199,36 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
         p = new_p
         max_iters -= 1
     return new_p
+
+
+@exporter.export
+def lfc(pressure, temperature, dewpt):
+    r'''Calculate the level of free convection (LFC) by finding the first
+    intersection of the ideal parcel path and the measured parcel
+    temperature.
+
+    Parameters
+    ----------
+    pressure : array_like
+        The starting atmospheric pressure
+    temperature : array_like
+        The starting temperature
+    dewpt : array_like
+        The starting dew point
+
+    Returns
+    -------
+    array_like
+        The LFC
+
+    See Also
+    --------
+    parcel_profile
+    '''
+
+    ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
+    intersections = find_intersections(pressure, ideal_profile, temperature)
+    return intersections[0]
 
 
 @exporter.export
