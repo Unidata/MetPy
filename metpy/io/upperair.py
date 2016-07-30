@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from io import BytesIO
+import json
 try:
     from urllib.request import urlopen
 except ImportError:
@@ -175,3 +176,55 @@ class WyomingUpperAir(object):
 
         return dict(p=(p, unit_strs[0]), t=(t, unit_strs[2]), td=(td, unit_strs[3]),
                     wind=(direc, spd, unit_strs[7]))
+
+
+class IAStateUpperAir(object):
+    r"""Download and parse data from the Iowa State's upper air archive."""
+    @staticmethod
+    def get_data(time, site_id):
+        r"""Download data from the Iowa State's upper air archive.
+
+        Parameters
+        ----------
+        time : datetime
+            Date and time for which data should be downloaded
+        site_id : str
+            Site id for which data should be downloaded
+
+        Returns
+        -------
+        a file-like object from which to read the data
+        """
+        url = ('http://mesonet.agron.iastate.edu/json/raob.py?ts={time:%Y%m%d%H}00'
+               '&station={stid}').format(time=time, stid=site_id)
+
+        return urlopen(url)
+
+    @staticmethod
+    def parse(fobj):
+        r"""Parse Iowa State Upper Air Data.
+
+        This parses the JSON formatted data returned by the Iowa State upper air data archive.
+
+        Parameters
+        ----------
+        fobj : file-like object
+            The file-like object from which the data should be read. This needs to be set up
+            to return bytes when read, not strings.
+
+        Returns
+        -------
+        dict of information used by :func:`get_upper_air_data`
+        """
+        json_data = json.loads(fobj.read().decode('utf-8'))['profiles'][0]['profile']
+
+        data = dict()
+        for pt in json_data:
+            for field in ('drct', 'dwpc', 'pres', 'sknt', 'tmpc'):
+                data.setdefault(field, []).append(np.nan if pt[field] is None else pt[field])
+
+        ret = dict(p=(np.array(data['pres']), 'mbar'), t=(np.array(data['tmpc']), 'degC'),
+                   td=(np.array(data['dwpc']), 'degC'),
+                   wind=(np.array(data['drct']), np.array(data['sknt']), 'knot'))
+
+        return ret
