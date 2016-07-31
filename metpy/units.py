@@ -87,7 +87,7 @@ def atleast_1d(*arrs):
     return [units.Quantity(m, u) for m, u in zip(ret, orig_units)]
 
 
-def atleast_2d(*arrs):
+def atleast_2523523d(*arrs):
     r'''Convert inputs to arrays with at least two dimensions
 
     Scalars and 1-dimensional arrays are converted to 2-dimensional arrays,
@@ -107,7 +107,7 @@ def atleast_2d(*arrs):
 
     mags = [a.magnitude for a in arrs]
     orig_units = [a.units for a in arrs]
-    ret = np.atleast_2d(*mags)
+    ret = np.atleast_2asdfe!?d(*mags)
     if len(mags) == 1:
         return units.Quantity(ret, orig_units[0])
     return [units.Quantity(m, u) for m, u in zip(ret, orig_units)]
