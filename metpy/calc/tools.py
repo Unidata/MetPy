@@ -4,7 +4,12 @@
 
 import numpy as np
 
+from ..package_tools import Exporter
 
+exporter = Exporter(globals())
+
+
+@exporter.export
 def resample_nn_1d(a, centers):
     """Helper function that returns one-dimensional nearest-neighbor
     indexes based on user-specified centers.

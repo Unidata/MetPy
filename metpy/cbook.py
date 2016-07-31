@@ -21,11 +21,7 @@ def get_test_data(fname, as_file_obj=True):
     # If we want a file object, open it, trying to guess whether this should be binary mode
     # or not
     if as_file_obj:
-        mode = 'r'
-        if os.path.splitext(path)[-1].lower() not in ('.csv', '.txt'):
-            mode += 'b'
-
-        return open(path, mode)
+        return open(path, 'rb')
 
     return path
 

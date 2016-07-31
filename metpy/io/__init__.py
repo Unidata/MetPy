@@ -13,6 +13,8 @@ of netcdf4-python.
 
 from .gini import *  # noqa
 from .nexrad import *  # noqa
+from .upperair import *  # noqa
 __all__ = []
 __all__.extend(gini.__all__)  # pylint: disable=undefined-variable
 __all__.extend(nexrad.__all__)  # pylint: disable=undefined-variable
+__all__.extend(upperair.__all__)  # pylint: disable=undefined-variable

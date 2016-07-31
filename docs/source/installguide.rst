@@ -11,7 +11,7 @@ MetPy requires the following packages:
   - NumPy >= 1.9.1
   - SciPy >= 0.14.0
   - Matplotlib >= 1.4.0
-  - pint >= 0.6
+  - pint >= 0.7
 
 Installation Instructions for NumPy and SciPy can be found at:
   http://www.scipy.org/scipylib/download.html

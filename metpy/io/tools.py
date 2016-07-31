@@ -10,6 +10,8 @@ import zlib
 from collections import namedtuple
 from struct import Struct
 
+from ..units import UndefinedUnitError, units
+
 log = logging.getLogger("metpy.io.tools")
 log.setLevel(logging.WARNING)
 
@@ -21,6 +23,48 @@ try:
     bytearray_to_buff = buffer
 except NameError:
     bytearray_to_buff = memoryview
+
+
+class UnitLinker(object):
+    r'''Wraps a :class:`metpy.io.cdm.Variable` and converts any attached unit attribute
+    to a class:`pint.Unit`. It also handles converting data returns to be instances
+    of class:`pint.Quantity` rather than bare (unit-less) arrays.
+    '''
+    def __init__(self, var):
+        r'''Construct a new :class:`UnitLinker`.
+
+        Parameters
+        ----------
+        var : Variable
+            The :class:`metpy.io.cdm.Variable` to be wrapped.
+        '''
+        self._var = var
+        try:
+            self._unit = units(self._var.units)
+        except (AttributeError, UndefinedUnitError):
+            self._unit = None
+
+    def __getitem__(self, ind):
+        r'Get data from the underlying variable and add units'
+        ret = self._var[ind]
+        return ret if self._unit is None else ret * self._unit
+
+    def __getattr__(self, item):
+        r'Forward all attribute access onto underlying variable'
+        return getattr(self._var, item)
+
+    @property
+    def units(self):
+        r'Access the units from the underlying variable as a :class:`pint.Quantity`'
+        return self._unit
+
+    @units.setter
+    def units(self, val):
+        r'Override the units on the underlying variable'
+        if isinstance(val, units.Unit):
+            self._unit = val
+        else:
+            self._unit = units(val)
 
 
 class NamedStruct(Struct):
