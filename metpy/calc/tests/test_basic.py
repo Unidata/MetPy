@@ -222,3 +222,11 @@ def test_pressure_to_heights_basic():
     heights = pressure_to_height_std(pressures)
     values = np.array([321.5, 216.5, 487.6, 601.7]) * units.meter
     assert_almost_equal(heights, values, 1)
+
+
+def test_coriolis_force():
+    'Tests basic coriolis force calculation.'
+    lat = np.array([-90., -30., 0., 30., 90.]) * units.degrees
+    cor = coriolis_parameter(lat)
+    values = np.array([-1.454E-4, -.727E-4, 0, .727E-4, 1.454E-4]) * units('s^-1')
+    assert_almost_equal(cor, values, 7)
