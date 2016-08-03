@@ -5,7 +5,7 @@
 from __future__ import division
 import numpy as np
 from numpy.ma import masked_array
-from ..constants import g, Rd
+from ..constants import g, Rd, omega
 from ..package_tools import Exporter
 from ..units import atleast_1d, units
 
@@ -256,3 +256,27 @@ def pressure_to_height_std(pressure):
     gamma = 6.5 * units('K/km')
     p0 = 1013.25 * units.mbar
     return (t0 / gamma) * (1 - (pressure / p0)**(Rd * gamma / g))
+
+
+@exporter.export
+def coriolis_parameter(latitude):
+    r'''Calculate the coriolis parameter at each point.
+
+    The implementation uses the formula outlined in [8].
+
+    Parameters
+    ----------
+    latitude : array_like
+        Latitude at each point
+
+    Returns
+    -------
+    array_like
+        The corresponding coriolis force at each point
+
+    References
+    ----------
+    .. [8] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+            Survey. 370-371.
+    '''
+    return 2. * omega * np.sin(latitude)
