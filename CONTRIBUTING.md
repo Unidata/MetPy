@@ -13,7 +13,7 @@ We love pull requests from everyone. Fork, then clone the repo:
 
 Install metpy:
 
-    python setup.py install
+    pip install .
 
 Install py.test and make sure the tests pass:
 
