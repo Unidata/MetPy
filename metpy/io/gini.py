@@ -151,7 +151,7 @@ class GiniFile(object):
             self.filename = filename
         else:
             fobj = filename
-            self.filename = "No Filename"
+            self.filename = 'No Filename'
 
         # Just read in the entire set of data at once
         self._buffer = IOBuffer.fromfile(fobj)
@@ -288,7 +288,7 @@ class GiniFile(object):
                                                             mask=self.data == self.missing))
         data_var.long_name = self.prod_desc.channel
         data_var.missing_value = self.missing
-        data_var.coordinates = "y x"
+        data_var.coordinates = 'y x'
         data_var.grid_mapping = proj_var.name
 
         # Add a bit more metadata

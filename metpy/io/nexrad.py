@@ -22,7 +22,7 @@ from .tools import (Array, BitField, Bits, DictStruct, Enum, IOBuffer, NamedStru
 
 exporter = Exporter(globals())
 
-log = logging.getLogger("metpy.io.nexrad")
+log = logging.getLogger('metpy.io.nexrad')
 log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
 log.setLevel(logging.WARNING)
 
@@ -1458,7 +1458,7 @@ class Level3File(object):
             self.filename = filename
         else:
             fobj = filename
-            self.filename = "No Filename"
+            self.filename = 'No Filename'
 
         # Just read in the entire set of data at once
         self._buffer = IOBuffer.fromfile(fobj)

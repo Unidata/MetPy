@@ -39,8 +39,8 @@ def test_data():
 def test_grid():
     r"""Test grid locations used for tests in this file"""
 
-    xg = np.load(get_test_data("interpolation_test_grid.npz"))['xg']
-    yg = np.load(get_test_data("interpolation_test_grid.npz"))['yg']
+    xg = np.load(get_test_data('interpolation_test_grid.npz'))['xg']
+    yg = np.load(get_test_data('interpolation_test_grid.npz'))['yg']
 
     return xg, yg
 
@@ -53,7 +53,7 @@ def test_natural_neighbor(test_data, test_grid):
 
     img = natural_neighbor(xp, yp, z, xg, yg)
 
-    truth = np.load(get_test_data("nn_bbox0to100.npz"))['img']
+    truth = np.load(get_test_data('nn_bbox0to100.npz'))['img']
 
     assert_array_almost_equal(truth, img)
 
@@ -72,11 +72,11 @@ def test_inverse_distance(method, test_data, test_grid):
     if method == 'cressman':
         extra_kw['r'] = 20
         extra_kw['min_neighbors'] = 1
-        test_file = "cressman_r20_mn1.npz"
+        test_file = 'cressman_r20_mn1.npz'
     elif method == 'barnes':
         extra_kw['r'] = 40
         extra_kw['kappa'] = 100
-        test_file = "barnes_r40_k100.npz"
+        test_file = 'barnes_r40_k100.npz'
 
     img = inverse_distance(xp, yp, z, xg, yg, kind=method, **extra_kw)
 

@@ -64,7 +64,7 @@ class CodePointMapping(object):
 
     @staticmethod
     def _safe_pop(l):
-        "Safely pop from a list; returns None if list empty."
+        'Safely pop from a list; returns None if list empty.'
         return l.pop(0) if l else None
 
     def __call__(self, code):

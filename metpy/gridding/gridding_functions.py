@@ -188,34 +188,34 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
     grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y),
                                           buffer)
 
-    if interp_type in ["linear", "nearest", "cubic"]:
+    if interp_type in ['linear', 'nearest', 'cubic']:
         points_zip = np.array(list(zip(x, y)))
         img = griddata(points_zip, z, (grid_x, grid_y), method=interp_type)
 
-    elif interp_type == "natural_neighbor":
+    elif interp_type == 'natural_neighbor':
         img = interpolation.natural_neighbor(x, y, z, grid_x, grid_y)
 
-    elif interp_type in ["cressman", "barnes"]:
+    elif interp_type in ['cressman', 'barnes']:
 
         ave_spacing = np.mean((cdist(list(zip(x, y)), list(zip(x, y)))))
 
         if search_radius is None:
             search_radius = ave_spacing
 
-        if interp_type == "cressman":
+        if interp_type == 'cressman':
 
             img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius,
                                                  min_neighbors=minimum_neighbors,
                                                  kind=interp_type)
 
-        elif interp_type == "barnes":
+        elif interp_type == 'barnes':
 
             kappa = calc_kappa(ave_spacing, kappa_star)
             img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius,
                                                  gamma, kappa, min_neighbors=minimum_neighbors,
                                                  kind=interp_type)
 
-    elif interp_type == "rbf":
+    elif interp_type == 'rbf':
 
         # 3-dimensional support not yet included.
         # Assign a zero to each z dimension for observations.
@@ -229,8 +229,8 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
         img = rbfi(grid_x, grid_y, hi)
 
     else:
-        raise ValueError("Interpolation option not available\n" +
-                         "Try: linear, nearest, cubic, natural_neighbor, " +
-                         "barnes, cressman, rbf")
+        raise ValueError('Interpolation option not available. '
+                         'Try: linear, nearest, cubic, natural_neighbor, '
+                         'barnes, cressman, rbf')
 
     return grid_x, grid_y, img

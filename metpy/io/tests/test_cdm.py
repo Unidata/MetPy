@@ -19,10 +19,10 @@ def test_group():
     assert 'data' in ds.variables
     assert 'conventions' in ds.ncattrs()
 
-    assert str(ds) == ("root\n\nDimensions:\n"
+    assert str(ds) == ('root\n\nDimensions:\n'
                        "<class 'metpy.io.cdm.Dimension'>: name = x, size = 5\n\n"
                        "Variables:\n<class 'metpy.io.cdm.Variable'>: float32 data(x)\n\t"
-                       "shape = 5\n\nAttributes:\n\tconventions: CF-1.5")
+                       'shape = 5\n\nAttributes:\n\tconventions: CF-1.5')
 
 
 def test_dim():
@@ -55,7 +55,7 @@ def test_var():
     assert var.group() is ds
 
     assert str(var) == ("<class 'metpy.io.cdm.Variable'>: float32 data(x)"
-                        "\n\tunits: meters\n\tshape = 2")
+                        '\n\tunits: meters\n\tshape = 2')
 
 
 def test_multidim_var():
@@ -71,7 +71,7 @@ def test_multidim_var():
     assert var.dtype == np.int64
 
     assert str(var) == ("<class 'metpy.io.cdm.Variable'>: int64 data(x, y)"
-                        "\n\tshape = (2, 3)")
+                        '\n\tshape = (2, 3)')
 
 
 def test_remove_attr():
@@ -92,7 +92,7 @@ def test_add_group():
     assert grp.name == 'myGroup'
     assert 'myGroup' in ds.groups
 
-    assert str(ds) == "root\nGroups:\nmyGroup"
+    assert str(ds) == 'root\nGroups:\nmyGroup'
 
 
 def test_variable_size_check():

@@ -227,7 +227,7 @@ if not hasattr(Axes, 'scattertext'):
                 self._usetex = None
 
         def __str__(self):
-            return "TextCollection"
+            return 'TextCollection'
 
         def get_datalim(self, transData):  # noqa
             """Return the limits of the data.

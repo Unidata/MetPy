@@ -87,10 +87,7 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
     """
 
     if horiz_dim < 10000:
-        message = ("Grids less than 10km may be slow to "
-                   "load at synoptic scale.")
-
-        warnings.warn(message)
+        warnings.warn('Grids less than 10km may be slow to load at synoptic scale.')
 
     x_steps, y_steps = get_xy_steps(bbox, horiz_dim)
 
