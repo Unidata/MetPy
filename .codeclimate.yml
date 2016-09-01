@@ -1,5 +1,15 @@
+engines:
+  pep8:
+    enabled: true
+  radon:
+    enabled: true
+
+ratings:
+  paths:
+  - "**/*.py"
+
 exclude_paths:
-- versioneer.py
-- metpy/_version.py
-- metpy/io/nexrad_msgs/msg*.py
-- doc/*
+- "versioneer.py"
+- "metpy/_version.py"
+- "metpy/io/nexrad_msgs/msg*.py"
+- "docs/*"
