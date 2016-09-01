@@ -6,7 +6,7 @@ import numpy as np
 from numpy.testing import assert_array_equal
 from metpy.testing import assert_array_almost_equal
 
-from metpy.calc.tools import *  # noqa
+from metpy.calc.tools import *  # noqa: F403
 
 
 def test_resample_nn():

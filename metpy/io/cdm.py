@@ -82,7 +82,7 @@ class Group(AttributeContainer):
         super(Group, self).__init__()
 
     # CamelCase API names for netcdf4-python compatibility
-    def createGroup(self, name):  # noqa
+    def createGroup(self, name):  # noqa: N802
         """Create a new Group as a descendant of this one.
 
         Parameters
@@ -99,7 +99,7 @@ class Group(AttributeContainer):
         self.groups[name] = grp
         return grp
 
-    def createDimension(self, name, size):  # noqa
+    def createDimension(self, name, size):  # noqa: N802
         """Create a new :class:`Dimension` in this :class:`Group`.
 
         Parameters
@@ -118,7 +118,7 @@ class Group(AttributeContainer):
         self.dimensions[name] = dim
         return dim
 
-    def createVariable(self, name, datatype, dimensions=(), fill_value=None, wrap_array=None):  # noqa
+    def createVariable(self, name, datatype, dimensions=(), fill_value=None, wrap_array=None):  # noqa: N802
         """Create a new Variable in this Group.
 
         Parameters

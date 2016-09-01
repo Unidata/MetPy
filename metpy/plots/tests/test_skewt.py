@@ -7,7 +7,7 @@ from matplotlib import style
 from matplotlib.gridspec import GridSpec
 import pytest
 
-from metpy.plots.skewt import *  # noqa
+from metpy.plots.skewt import *  # noqa: F403
 from metpy.testing import hide_tick_labels, make_figure, test_style
 from metpy.units import units
 

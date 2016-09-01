@@ -4,11 +4,12 @@
 r"""This module contains a variety of meteorological calculations.
 """
 
-from .basic import *  # noqa
-from .kinematics import *  # noqa
-from .thermo import *  # noqa
-from .tools import *  # noqa
-from . import turbulence  # noqa
+from .basic import *  # noqa: F403
+from .kinematics import *  # noqa: F403
+from .thermo import *  # noqa: F403
+from .tools import *  # noqa: F403
+from . import turbulence  # noqa: F401
+
 __all__ = []
 __all__.extend(basic.__all__)  # pylint: disable=undefined-variable
 __all__.extend(kinematics.__all__)  # pylint: disable=undefined-variable
