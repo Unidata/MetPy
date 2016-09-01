@@ -4,7 +4,7 @@
 
 from metpy.testing import assert_array_equal, assert_almost_equal
 import numpy as np
-from metpy.calc.kinematics import *  # noqa
+from metpy.calc.kinematics import *  # noqa: F403
 from metpy.constants import g, Re, omega
 from metpy.units import units, concatenate
 

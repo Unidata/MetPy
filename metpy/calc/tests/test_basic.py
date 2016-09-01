@@ -7,7 +7,7 @@ from numpy.testing import assert_array_equal
 
 from metpy.units import units
 from metpy.testing import assert_almost_equal, assert_array_almost_equal
-from metpy.calc.basic import *  # noqa
+from metpy.calc.basic import *  # noqa: F403
 
 
 def test_wind_comps_basic():

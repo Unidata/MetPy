@@ -119,7 +119,7 @@ if float(matplotlib.__version__[:3]) < 2.1:
 
 
 # See if we need to patch in our own scattertext implementation
-from matplotlib.axes import Axes  # noqa
+from matplotlib.axes import Axes  # noqa: E402
 if not hasattr(Axes, 'scattertext'):
     import matplotlib.cbook as cbook
     import matplotlib.transforms as mtransforms
@@ -227,9 +227,9 @@ if not hasattr(Axes, 'scattertext'):
                 self._usetex = None
 
         def __str__(self):
-            return "TextCollection"
+            return 'TextCollection'
 
-        def get_datalim(self, transData):  # noqa
+        def get_datalim(self, transData):  # noqa: N803
             """Return the limits of the data.
 
             Parameters
@@ -242,7 +242,7 @@ if not hasattr(Axes, 'scattertext'):
                 The bounding box of the data
             """
             full_transform = self.get_transform() - transData
-            XY = full_transform.transform(np.vstack((self.x, self.y)).T)  # noqa
+            XY = full_transform.transform(np.vstack((self.x, self.y)).T)  # noqa: N806
             bbox = transforms.Bbox.null()
             bbox.update_from_data_xy(XY, ignore=True)
             return bbox
@@ -299,7 +299,7 @@ if not hasattr(Axes, 'scattertext'):
                     if self.get_path_effects():
                         from matplotlib.patheffects import PathEffectRenderer
                         textrenderer = PathEffectRenderer(
-                                            self.get_path_effects(), renderer)  # noqa
+                                            self.get_path_effects(), renderer)  # noqa: E126
                     else:
                         textrenderer = renderer
 

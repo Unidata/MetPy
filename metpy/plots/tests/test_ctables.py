@@ -17,7 +17,7 @@ from metpy.plots.ctables import ColortableRegistry, convert_gempak_table
 
 class TestColortableRegistry(object):
     'Tests for ColortableRegistry'
-    def setup_method(self, _):  # noqa
+    def setup_method(self, _):
         'Set up a registry for use by the tests.'
         self.reg = ColortableRegistry()
 

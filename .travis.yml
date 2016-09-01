@@ -57,7 +57,7 @@ matrix:
 before_install:
   - pip install --upgrade pip;
   - if [[ $TASK == "lint" ]]; then
-      pip install flake8 pep8-naming;
+      pip install flake8 pep8-naming flake8-quotes;
     elif [[ $TASK == "docs" ]]; then
         pip install -r docs/requirements.txt -f $WHEELHOUSE;
     else

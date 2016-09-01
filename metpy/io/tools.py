@@ -12,7 +12,7 @@ from struct import Struct
 
 from ..units import UndefinedUnitError, units
 
-log = logging.getLogger("metpy.io.tools")
+log = logging.getLogger('metpy.io.tools')
 log.setLevel(logging.WARNING)
 
 

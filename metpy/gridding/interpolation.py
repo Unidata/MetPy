@@ -140,9 +140,9 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
             area_list.append(cur_area * value[0])
 
         except (ZeroDivisionError, qhull.QhullError) as e:
-            message = ("Error during processing of a grid. "
-                       "Interpolation will continue but be mindful "
-                       "of errors in output. ") + str(e)
+            message = ('Error during processing of a grid. '
+                       'Interpolation will continue but be mindful '
+                       'of errors in output. ') + str(e)
 
             warnings.warn(message)
             return np.nan
@@ -265,8 +265,7 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
                 img[idx] = barnes_point(dists, values, kappa)
 
             else:
-                raise ValueError("This type of inverse distance " +
-                                 "interpolation not supported: ", str(kind))
+                raise ValueError(str(kind) + ' interpolation not supported.')
 
     img = img.reshape(grid_x.shape)
     return img
