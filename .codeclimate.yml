@@ -1,6 +1,14 @@
 engines:
+#  duplication:
+#    enabled: true
+#    config:
+#      languages:
+#      - python
   pep8:
     enabled: true
+    checks:
+      E501:
+        enabled: false
   radon:
     enabled: true
 
@@ -12,4 +20,5 @@ exclude_paths:
 - "versioneer.py"
 - "metpy/_version.py"
 - "metpy/io/nexrad_msgs/msg*.py"
-- "docs/*"
+- "docs/**/*"
+- "examples/notebooks/*"
