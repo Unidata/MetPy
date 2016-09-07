@@ -53,10 +53,17 @@ setup(
     version=ver,
     description='Collection of tools for reading, visualizing and'
                 'performing calculations with weather data.',
+    long_description='The space MetPy aims for is GEMPAK '
+                     '(and maybe NCL)-like functionality, in a way that '
+                     'plugs easily into the existing scientific Python '
+                     'ecosystem (numpy, scipy, matplotlib).',
+
     url='http://github.com/MetPy/MetPy',
 
-    maintainer='Unidata',
-    maintainer_email='support-python@unidata.ucar.edu',
+    author='Ryan May, Patrick Marsh, Sean Arms, Eric Bruning',
+    author_email='python-users@unidata.ucar.edu',
+    maintainer='MetPy Developers',
+    maintainer_email='python-users@unidata.ucar.edu',
 
     license='BSD',
 
@@ -88,5 +95,7 @@ setup(
     },
 
     cmdclass=commands,
+
+    zip_safe=True,
 
     download_url='https://github.com/metpy/MetPy/archive/v%s.tar.gz' % ver,)

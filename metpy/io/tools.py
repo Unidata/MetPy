@@ -98,8 +98,7 @@ class NamedStruct(Struct):
         return self._create(super(NamedStruct, self).unpack_from(buff, offset))
 
     def unpack_file(self, fobj):
-        bytes = fobj.read(self.size)
-        return self.unpack(bytes)
+        return self.unpack(fobj.read(self.size))
 
 
 # This works around times when we have more than 255 items and can't use
