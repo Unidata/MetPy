@@ -416,9 +416,9 @@ class Level2File(object):
                                             ' read %d but on %d' % (seg_num, e + 1))
 
                 az_data = []
-                for a in range(360):
+                for _ in range(360):
                     gates = []
-                    for g in range(32):
+                    for _ in range(32):
                         gates.extend(bit_conv(data[offset]))
                         offset += 1
                     az_data.append(gates)
@@ -444,9 +444,9 @@ class Level2File(object):
 
             offset = 3
             cmap['data'] = []
-            for e in range(num_el):
+            for _ in range(num_el):
                 az_data = []
-                for a in range(360):
+                for _ in range(360):
                     num_rng = data[offset]
                     offset += 1
 
@@ -1636,7 +1636,7 @@ class Level3File(object):
                                    blk.divider)
         assert blk.block_id == 1, ('Bad block ID for symbology block: %d should be 1' %
                                    blk.block_id)
-        for l in range(blk.nlayer):
+        for _ in range(blk.nlayer):
             layer_hdr = self._buffer.read_struct(self.sym_layer_fmt)
             assert layer_hdr.divider == -1
             layer = []
@@ -1712,7 +1712,7 @@ class Level3File(object):
 
         # Read the pages line by line, break pages on a -1 character count
         self.tab_pages = []
-        for page in range(blk.num_pages):
+        for _ in range(blk.num_pages):
             lines = []
             num_chars = self._buffer.read_int('>h')
             while num_chars != -1:
@@ -1737,7 +1737,7 @@ class Level3File(object):
                                ('angle_delta', 'h')], '>', 'RadialData')
         hdr = self._buffer.read_struct(hdr_fmt)
         rads = []
-        for i in range(hdr.num_rad):
+        for _ in range(hdr.num_rad):
             rad = self._buffer.read_struct(rad_fmt)
             start_az = rad.start_angle * 0.1
             end_az = start_az + rad.angle_delta * 0.1
@@ -1780,7 +1780,7 @@ class Level3File(object):
         assert hdr.code == 0x800000C0
         assert hdr.packing == 2
         rows = []
-        for row in range(hdr.num_rows):
+        for _ in range(hdr.num_rows):
             num_bytes = self._buffer.read_int('>H')
             rows.append(self._unpack_rle_data(self._buffer.read_binary(num_bytes)))
         return dict(start_x=hdr.i_start * hdr.xscale_int,
@@ -1921,7 +1921,7 @@ class Level3File(object):
         rows = []
 
         # Read off each row and decode the RLE data
-        for row_num in range(num_rows):
+        for _ in range(num_rows):
             row_num_bytes = self._buffer.read_int('>H')
             row_bytes = self._buffer.read_binary(row_num_bytes)
             if code == 18:
@@ -2182,7 +2182,7 @@ class Level3XDRParser(Unpacker):
                               radials=None)
         num_rads = self.unpack_int()
         rads = list()
-        for i in range(num_rads):
+        for _ in range(num_rads):
             # ICD is wrong, says num_bins is float, should be int
             rads.append(self.radial_data_fmt(azimuth=self.unpack_float(),
                                              elevation=self.unpack_float(),
