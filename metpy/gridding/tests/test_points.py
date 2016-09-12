@@ -59,6 +59,11 @@ def test_get_boundary_coords():
     truth = dict(east=9, north=9, south=0, west=0)
     assert bbox == truth
 
+    bbox = get_boundary_coords(x, y, 10)
+
+    truth = dict(east=19, north=19, south=-10, west=-10)
+    assert bbox == truth
+
 
 def test_get_xy_steps():
     r"""Tests get count of grids function"""
