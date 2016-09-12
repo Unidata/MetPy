@@ -154,7 +154,7 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
     hres: float
         The horizontal resolution of the generated grid. Default 50000 meters.
     buffer: float
-        How many meters to add to the bounds of the grid. Default 1000 meters.
+        How many meters to add to the bounds of the grid. Default 1 meters.
     minimum_neighbors: int
         Minimum number of neighbors needed to perform barnes or cressman interpolation for a
         point. Default is 3.
@@ -185,8 +185,7 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
         2-dimensional array representing the interpolated values for each grid.
     """
 
-    grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y),
-                                          buffer)
+    grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y, buffer))
 
     if interp_type in ['linear', 'nearest', 'cubic']:
         points_zip = np.array(list(zip(x, y)))
