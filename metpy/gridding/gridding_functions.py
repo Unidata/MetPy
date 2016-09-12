@@ -134,7 +134,7 @@ def remove_repeat_coordinates(x, y, z):
 
 @exporter.export
 def interpolate(x, y, z, interp_type='linear', hres=50000,
-                buffer=1, minimum_neighbors=3, gamma=0.25,
+                buffer=0, minimum_neighbors=3, gamma=0.25,
                 kappa_star=5.052, search_radius=None, rbf_func='linear', rbf_smooth=0):
     r"""Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.
 
@@ -154,7 +154,7 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
     hres: float
         The horizontal resolution of the generated grid. Default 50000 meters.
     buffer: float
-        How many meters to add to the bounds of the grid. Default 1 meters.
+        How many meters to add to the bounds of the grid. Default 0 meters.
     minimum_neighbors: int
         Minimum number of neighbors needed to perform barnes or cressman interpolation for a
         point. Default is 3.
