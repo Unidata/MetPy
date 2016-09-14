@@ -21,8 +21,8 @@ install:
             { $env:CONDA_PATH="$($env:CONDA_PATH)-x64" }
     - ps: $env:path="$($env:CONDA_PATH);$($env:CONDA_PATH)\Scripts;$($env:CONDA_PATH)\Library\bin;C:\cygwin\bin;$($env:PATH)"
     - cmd: conda config --set always_yes yes --set changeps1 no
-    # Avoid updating conda until conda-forge rebuilds: See conda-forge/hdf5-feedstock#41
-    #- cmd: conda update -q conda
+    # Avoid updating to conda 4.2 until conda-forge rebuilds: See conda-forge/hdf5-feedstock#41
+    - cmd: conda install -q conda==4.1
     # Useful for debugging any issues with conda
     - cmd: conda info -a
     - cmd: sed -i -e s/python=3/python=%PYTHON_VERSION%/ environment.yml
