@@ -48,10 +48,13 @@ matrix:
       env:
     - python: "3.5-dev"
       env: PRE="--pre"
+    - python: "3.6-dev"
+      env: PRE="--pre"
     - python: nightly
       env: PRE="--pre"
   allow_failures:
     - python: "3.5-dev"
+    - python: "3.6-dev"
     - python: nightly
 
 before_install:
