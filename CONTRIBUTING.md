@@ -56,6 +56,8 @@ Make your change. Add tests for your change. Make the tests pass:
 
     py.test
 
+Commit the changes you made. Chris Beams has written a [guide](http://chris.beams.io/posts/git-commit/) on how to write good commit messages.
+
 Push to your fork and [submit a pull request][pr].
 
 [pr]: https://github.com/metpy/metpy/compare/
