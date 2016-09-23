@@ -24,7 +24,8 @@ UndefinedUnitError = pint.UndefinedUnitError
 units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
 
 # For pint 0.6, this is the best way to define a dimensionless unit. See pint #185
-units.define(pint.unit.UnitDefinition('percent', '%', (), pint.unit.ScaleConverter(0.01)))
+units.define(pint.unit.UnitDefinition('percent', '%', (),
+             pint.converters.ScaleConverter(0.01)))
 
 
 def concatenate(arrs, axis=0):
