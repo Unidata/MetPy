@@ -33,9 +33,7 @@ class MetarProduct(WMOTextProduct):
 
         parser = MetarParser(default_kind=def_kind)
         for l in it:
-            if l[3:7] == ' SA ':
-                self.reports.append(dict(null=False, report=l))
-            else:
+            if l[3:7] != ' SA ':
                 self.reports.append(parser.parse(l))
 
     def __str__(self):
