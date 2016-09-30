@@ -8,9 +8,7 @@ from metpy.io.text import TextProductFile
 from metpy.io.metar import MetarParser, MetarProduct, Weather, log
 from metpy.units import units
 
-from nose.tools import assert_in, assert_not_in, assert_true, eq_, nottest
-
-get_test_data = nottest(get_test_data)
+import pytest
 
 log.setLevel(logging.ERROR)
 
@@ -105,7 +103,7 @@ metar_tests = [('K0CO 042354Z AUTO 01007KT M1/4SM -SN OVC001 M07/M13 A2992 RMK\n
                ('METAR LLBG 042350Z 04004KT 5000 DU VV013 22/11 Q1010 TEMPO SHRA FEW050TCU',
                 [('temperature', (22 * units.degC, 11 * units.degC)),
                  ('sky_coverage', [(1300 * units.feet, 8, None)]),
-                 ('present_wx',[Weather.fillin(obscur='DU')])]),
+                 ('present_wx', [Weather.fillin(obscur='DU')])]),
                ('KABQ 042352Z 29013KT 10SM FEW035 BKN065 BKN090 10/02 A2991 RMK AO2 '
                 'PK WND 20029/2253 WSHFT 2318 RAE08 SLPNO VIRGA S MTNS OBSC NE-SE '
                 'P0001 60014 T01000022 10144 20089 53014',
@@ -166,44 +164,52 @@ metar_tests = [('K0CO 042354Z AUTO 01007KT M1/4SM -SN OVC001 M07/M13 A2992 RMK\n
                  ('runway_range', {'12': (6000 * units.feet, 'down')})]),
                ('PATA 051752Z 08009KT 10SM FEW050 SCT090 BKN200 M03/M06 A2944 '
                 'RMK AO2 SLP974 4/008 933012 T10331061 11011 21039 56024',
-                [('snow_liquid_equivalent', 12 * (0.1 * units.inch))])]
+                [('snow_liquid_equivalent', 12 * (0.1 * units.inch))]),
+               ('METAR CWUW 292300Z AUTO 14011KT ////SM //// OVC002 M01/M01 A2956',
+                [('visibility', lambda v: math.isnan(v.magnitude)),
+                 ('temperature', (-1 * units.degC, -1 * units.degC)),
+                 ('wind', dict(direction=140 * units.deg, speed=11 * units.kt,
+                               gust=None, dir1=None, dir2=None))]),
+               ('SPECI PAOM 292321Z 16010KT 2 1/2SM R28/5000VP6000FT BR OVC002 07/07 '
+                'A3040 RMK AO2 T00720072',
+                [('visibility', 2.5 * units.mile), ('altimeter', 3040 * 0.01 * units.inHg),
+                 ('runway_range', {'28': (5000 * units.feet, 6000 * units.feet)})]),
+                ('PAKU 292250Z 22007KT 10SM R24/P6000FT SCT170 BKN200 05/M01 A3037',
+                 [('runway_range', {'24': (6000 * units.feet)})])]
 
 
-def test_metar_generator():
-    for metar, truth in metar_tests:
-        check_metar.description = __name__ + '.check_metar(%s...)' % metar[:20]
-        yield check_metar, metar, truth
-
-
-def check_metar(metar, params):
+@pytest.mark.parametrize('metar, params', metar_tests)
+def test_metars(metar, params):
     parser = MetarParser(default_kind='METAR', ref_time=datetime(2015, 11, 1))
     ob = parser.parse(metar)
-    assert_not_in('unparsed', ob)
-    assert_not_in('remarks', ob)
+    assert 'unparsed' not in ob
+    assert 'remarks' not in ob
 
     for name, val in params:
-        assert_in(name, ob)
+        assert name in ob
         if callable(val):
-            assert_true(val(ob[name]))
+            assert val(ob[name])
         else:
-            eq_(val, ob[name])
+            assert val == ob[name]
 
 
-class TestFileParser(object):
-    def setUp(self):
-        gzfile = gzip.open(get_test_data('metar_20151105_0000.txt.gz', as_file_obj=False),
-                           'rt', encoding='latin-1')
-        self.prod_file = TextProductFile(gzfile)
+@pytest.fixture()
+def metar_product_file():
+    gzfile = gzip.open(get_test_data('metar_20151105_0000.txt.gz', as_file_obj=False),
+                       'rt', encoding='latin-1')
+    return TextProductFile(gzfile)
 
-    def test_ob_count(self):
-        prod = MetarProduct(next(iter(self.prod_file)))
-        eq_(len(prod.reports), 1)
 
-    def test_odd_lines(self):
-        it = iter(self.prod_file)
-        # Need to skip some first
-        for i in range(6):
-            next(it)
-        prod = MetarProduct(next(it))
-        eq_(prod.seq_num, 349)
-        eq_(len(prod.reports), 4)
+def test_ob_count(metar_product_file):
+    prod = MetarProduct(next(iter(metar_product_file)))
+    assert len(prod.reports) == 1
+
+
+def test_odd_lines(metar_product_file):
+    it = iter(metar_product_file)
+    # Need to skip some first
+    for i in range(6):
+        next(it)
+    prod = MetarProduct(next(it))
+    assert prod.seq_num == 349
+    assert len(prod.reports) == 4

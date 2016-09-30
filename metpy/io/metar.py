@@ -34,7 +34,7 @@ class MetarProduct(WMOTextProduct):
         parser = MetarParser(default_kind=def_kind)
         for l in it:
             if l[3:7] == ' SA ':
-                self.reports.append(l)
+                self.reports.append(dict(null=False, report=l))
             else:
                 self.reports.append(parser.parse(l))
 
@@ -120,7 +120,7 @@ class MetarParser(object):
     def parse(self, report):
         'Parses the report and returns a dictionary of parsed results'
         report = self.clean_whitespace.sub(' ', report)
-        ob = dict(report=report)
+        ob = dict(report=report, null=False)
 
         # Split into main and remark sections so we can treat slightly differently
         if 'RMK' in report:
@@ -324,6 +324,9 @@ def vis_to_float(dist, units):
     dist = dist.strip()
 
     if '/' in dist:
+        # Handle the case where the entire group is all '////'
+        if dist[0] == '/' and all(c == '/' for c in dist):
+            return float('nan') * units
         parts = dist.split(maxsplit=1)
         if len(parts) > 1:
             return as_value(parts[0], units) + frac_conv[parts[1]] * units
@@ -347,13 +350,19 @@ vis = RegexParser(r'''(?P<cavok>CAVOK)|
 
 
 # Runway visual range (RDD/VVVV(VVVVV)FT)
+def to_rvr_value(dist, units):
+    if dist[0] in ('M', 'P'):
+        dist = dist[1:]
+    return as_value(dist, units)
+
+
 def process_rvr(matches):
     dist_units = units(matches.pop('units').lower())
     ret = dict()
-    ret[matches['runway']] = as_value(matches['distance'], dist_units)
+    ret[matches['runway']] = to_rvr_value(matches['distance'], dist_units)
     if matches['max_dist']:
         ret[matches['runway']] = (ret[matches['runway']],
-                                  as_value(matches['max_dist'], dist_units))
+                                  to_rvr_value(matches['max_dist'], dist_units))
     if matches['change']:
         change_map = dict(D='down', U='up', N='no change')
         ret[matches['runway']] = (ret[matches['runway']], change_map[matches['change']])
@@ -374,14 +383,14 @@ precip_abbr = {'DZ': 'Drizzle', 'RA': 'Rain', 'SN': 'Snow', 'SG': 'Snow Grains',
 
 
 class Weather(namedtuple('WxBase', 'mod desc precip obscur other')):
-    lookups = [{'-':'Light', '+':'Heavy', 'VC':'In the vicinity'},
-               {'MI':'Shallow', 'PR':'Partial', 'BC':'Patches', 'DR':'Low Drifting',
-                'BL':'Blowing', 'SH':'Showers', 'TS':'Thunderstorm', 'FZ':'Freezing'},
+    lookups = [{'-': 'Light', '+': 'Heavy', 'VC': 'In the vicinity'},
+               {'MI': 'Shallow', 'PR': 'Partial', 'BC': 'Patches', 'DR': 'Low Drifting',
+                'BL': 'Blowing', 'SH': 'Showers', 'TS': 'Thunderstorm', 'FZ': 'Freezing'},
                precip_abbr,
-               {'BR':'Mist', 'FG':'Fog', 'FU':'Smoke', 'VA':'Volcanic Ash',
-                'DU':'Widespread Dust', 'SA':'Sand', 'HZ':'Haze', 'PY':'Spray'},
-               {'PO':'Well-developed Dust/Sand Whirls', 'SQ':'Squalls', 'FC':'Funnel Cloud',
-                'SS':'Sandstorm', 'DS':'Duststorm'}]
+               {'BR': 'Mist', 'FG': 'Fog', 'FU': 'Smoke', 'VA': 'Volcanic Ash',
+                'DU': 'Widespread Dust', 'SA': 'Sand', 'HZ': 'Haze', 'PY': 'Spray'},
+               {'PO': 'Well-developed Dust/Sand Whirls', 'SQ': 'Squalls', 'FC': 'Funnel Cloud',
+                'SS': 'Sandstorm', 'DS': 'Duststorm'}]
 
     @classmethod
     def fillin(cls, **kwargs):
@@ -449,7 +458,7 @@ def process_temp(matches):
 
     return temp, dewpt
 
-basic_temp = RegexParser(r'''(?P<temperature>(M?\d{2})|//|MM)/
+basic_temp = RegexParser(r'''(?P<temperature>(M?\d{2})|MM)/
                              (?P<dewpoint>(M?[\d]{1,2})|//|MM)?''', process_temp)
 
 
