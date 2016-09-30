@@ -10,7 +10,7 @@ from ..units import units
 
 exporter = Exporter(globals())
 
-log = logging.getLogger("metpy.io.metar")
+log = logging.getLogger('metpy.io.metar')
 log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
 log.setLevel(logging.WARNING)
 
@@ -311,10 +311,10 @@ wind = RegexParser(r'''(?P<direction>VRB|///|[0-3]\d{2})
 
 
 # The visibilty group (VVVVV)
-frac_conv = {'1/4': 1/4, '1/2': 1/2, '3/4': 3/4,
-             '1/8': 1/8, '3/8': 3/8, '5/8': 5/8, '7/8': 7/8,
-             '1/16': 1/16, '3/16': 3/16, '5/16': 5/16, '7/16': 7/16,
-             '9/16': 9/16, '11/16': 11/16, '13/16': 13/16, '15/16': 15/16}
+frac_conv = {'1/4': 1 / 4, '1/2': 1 / 2, '3/4': 3 / 4,
+             '1/8': 1 / 8, '3/8': 3 / 8, '5/8': 5 / 8, '7/8': 7 / 8,
+             '1/16': 1 / 16, '3/16': 3 / 16, '5/16': 5 / 16, '7/16': 7 / 16,
+             '9/16': 9 / 16, '11/16': 11 / 16, '13/16': 13 / 16, '15/16': 15 / 16}
 
 
 def vis_to_float(dist, units):
@@ -703,7 +703,7 @@ sig_cloud = RegexParser(r'''(?P<cloudtype>CB(MAM)?|TCU|ACC|[ACS]CSL|(APRNT\ ROTO
 # Cloud Types (8/ClCmCh)
 def process_cloud_types(matches, *args):
     ret = dict()
-    for k,v in matches.items():
+    for k, v in matches.items():
         if v == '/':
             ret[k] = None
         else:
@@ -727,7 +727,7 @@ pressure_change = RegexParser(r'\bPRES(?P<tend>[FR])R\b', process_pressure_chang
 # Sea-level pressure (SLPppp)
 def process_slp(matches, *args):
     if matches['slp'] == 'NO':
-         matches['slp'] = 'NaN'
+        matches['slp'] = 'NaN'
 
     slp = as_value(matches['slp'], 0.1 * units('mbar'))
     if slp < 50 * units('mbar'):
