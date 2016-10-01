@@ -33,8 +33,12 @@ class MetarProduct(WMOTextProduct):
 
         parser = MetarParser(default_kind=def_kind)
         for l in it:
+            # Skip SAOs
             if l[3:7] != ' SA ':
-                self.reports.append(parser.parse(l))
+                report = parser.parse(l)
+                # Only add the report if it's not empty
+                if report:
+                    self.reports.append(report)
 
     def __str__(self):
         return (super(MetarProduct, self).__str__() + '\n\tReports:' +
@@ -164,7 +168,11 @@ class MetarParser(object):
             if remark:
                 ob['remarks'] = remark
 
-        return ob
+        # Handle parsing garbage by checking for either datetime or null report
+        if ob['null'] or 'datetime' in ob:
+            return ob
+        else:
+            return dict()
 
     def _look_for_groups(self, string, groups, store, *context):
         # Walk through the list of (name, group) and try parsing the report with the group.
