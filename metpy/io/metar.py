@@ -31,7 +31,7 @@ class MetarProduct(WMOTextProduct):
         it.linesep = '=[\n]{0,2}'
         self.reports = []
 
-        parser = MetarParser(default_kind=def_kind)
+        parser = MetarParser(default_kind=def_kind, ref_time=self.datetime)
         for l in it:
             # Skip SAOs
             if l[3:7] != ' SA ':
@@ -335,9 +335,9 @@ def vis_to_float(dist, units):
             return float('nan') * units
         parts = dist.split(maxsplit=1)
         if len(parts) > 1:
-            return as_value(parts[0], units) + frac_conv[parts[1]] * units
+            return as_value(parts[0], units) + frac_conv.get(parts[1], float('nan')) * units
         else:
-            return frac_conv[dist] * units
+            return frac_conv.get(dist, float('nan')) * units
     else:
         return as_value(dist, units)
 
