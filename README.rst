@@ -35,7 +35,8 @@ MetPy
     :target: https://travis-ci.org/metpy/MetPy
     :alt: Travis Build Status
 
-.. |AppVeyor| image:: https://ci.appveyor.com/api/projects/status/403xt697ir8md6gh/branch/master?svg=true
+.. |AppVeyor|
+    image:: https://ci.appveyor.com/api/projects/status/403xt697ir8md6gh/branch/master?svg=true
     :target: https://ci.appveyor.com/project/MetPy/metpy/branch/master
     :alt: AppVeyor Build Status
 
@@ -43,7 +44,8 @@ MetPy
     :target: https://codecov.io/github/metpy/MetPy?branch=master
     :alt: Code Coverage Status
 
-.. |QuantifiedCode| image:: https://www.quantifiedcode.com/api/v1/project/1153e58350aa41e6a7970a134febeb2d/badge.svg
+.. |QuantifiedCode|
+    image:: https://www.quantifiedcode.com/api/v1/project/1153e58350aa41e6a7970a134febeb2d/badge.svg
     :target: https://www.quantifiedcode.com/app/project/1153e58350aa41e6a7970a134febeb2d
     :alt: Code issues
 
@@ -63,7 +65,8 @@ MetPy
     :target: https://gitter.im/metpy/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
     :alt: Gitter
 
-.. |PRWelcome| image:: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=round-square
+.. |PRWelcome|
+    image:: https://img.shields.io/badge/PRs-welcome-brightgreen.svg?style=round-square
     :target: https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github
     :alt: PRs Welcome
 
@@ -117,10 +120,10 @@ way to advance one's coding skills. Writing perfect code isn't the measure of a 
 learning from those mistakes. That's how we all improve, and we are happy to help others learn.
 
 Being an open source contributor doesn't just mean writing code, either. You can help out by
-writing documentation, tests, or even giving feedback about the project (and yes - that includes
-giving feedback about the contribution process). Some of these contributions may be the most
-valuable to the project as a whole, because you're coming to the project with fresh eyes,
-so you can see the errors and assumptions that seasoned contributors have glossed over.
+writing documentation, tests, or even giving feedback about the project (and yes - that
+includes giving feedback about the contribution process). Some of these contributions may be
+the most valuable to the project as a whole, because you're coming to the project with fresh
+eyes, so you can see the errors and assumptions that seasoned contributors have glossed over.
 
 For more information, please read the see the `contributing guide`__.
 
@@ -128,19 +131,21 @@ __ https://github.com/metpy/MetPy/blob/master/CONTRIBUTING.md
 
 Philosophy
 ----------
-The space MetPy aims for is GEMPAK (and maybe NCL)-like functionality, in a way that plugs easily
-into the existing scientific Python ecosystem (numpy, scipy, matplotlib). So, if you take the average GEMPAK script
-for a weather map, you need to:
+The space MetPy aims for is GEMPAK (and maybe NCL)-like functionality, in a way that plugs
+easily into the existing scientific Python ecosystem (numpy, scipy, matplotlib). So, if you
+take the average GEMPAK script for a weather map, you need to:
 
 - read data
 - calculate a derived field
 - show on a map/skew-T
 
-One of the benefits hoped to achieve over GEMPAK is to make it easier to use these routines for any
-meteorological Python application; this means making it easy to pull out the LCL calculation and just use that,
-or re-use the Skew-T with your own data code. MetPy also prides itself on being well-documented and well-tested,
-so that on-going maintenance is easily manageable.
+One of the benefits hoped to achieve over GEMPAK is to make it easier to use these routines for
+any meteorological Python application; this means making it easy to pull out the LCL
+calculation and just use that, or re-use the Skew-T with your own data code. MetPy also prides
+itself on being well-documented and well-tested, so that on-going maintenance is easily
+manageable.
 
-The intended audience is that of GEMPAK: researchers, educators, and any one wanting to script up weather analysis.
-It doesn't even have to be scripting; all python meteorology tools are hoped to be able to benefit from MetPy.
-Conversely, it's hoped to be the meteorological equivalent of the audience of scipy/scikit-learn/skimage.
+The intended audience is that of GEMPAK: researchers, educators, and any one wanting to script
+up weather analysis. It doesn't even have to be scripting; all python meteorology tools are
+hoped to be able to benefit from MetPy. Conversely, it's hoped to be the meteorological
+equivalent of the audience of scipy/scikit-learn/skimage.
