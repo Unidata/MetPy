@@ -107,9 +107,11 @@ script:
   - if [[ $TASK == "lint" ]]; then
       flake8 metpy;
     elif [[ $TASK == "docs" ]]; then
-      cd docs;
-      make html 2>docs.log;
-      if [ -s docs.log ]; then
+      pushd docs;
+      make html 2>../docs.log;
+      popd;
+      doc8 README.rst docs/source;
+      if [ -s docs.log -o $? -ne 0 ]; then
         echo Doc build produced warnings or errors:;
         cat docs.log;
         false;
