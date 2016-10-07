@@ -29,8 +29,11 @@ def parse_wmo_time(s, ref_time=None):
     '''
     if not ref_time:
         ref_time = datetime.utcnow()
-    return datetime.strptime(s, '%d%H%MZ').replace(year=ref_time.year,
-                                                   month=ref_time.month)
+    try:
+        return datetime.strptime(s, '%d%H%MZ').replace(year=ref_time.year,
+                                                       month=ref_time.month)
+    except ValueError:
+        raise ParseError('%s is not a valid WMO date/time string' % s)
 
 
 class StringIter(object):

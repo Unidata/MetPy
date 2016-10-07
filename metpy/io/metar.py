@@ -57,8 +57,7 @@ def as_value(val, units):
             val = 'NaN'
         return float(val) * units
     except (AttributeError, TypeError, ValueError) as e:
-        log.debug('Failed converting to value (%s): %s', e, val)
-        return val
+        raise ParseError('Could not parse "%s" as a value' % val)
 
 
 # Helper for parsing. Generates a function to grab a given group from the matches, optionally
@@ -131,6 +130,10 @@ class MetarParser(object):
             main = report
             remark = ''
 
+        # Handle badly formatted report where there is no main section
+        if not main.strip():
+            return dict()
+
         # Need to split out the trend forecast, otherwise will break parsing
         split = trend_forecast_regex.split(main, 1)
         if len(split) > 1:
@@ -147,14 +150,10 @@ class MetarParser(object):
         # Start with the main groups. Get back what remains of the report
         main = self._look_for_groups(main, self.main_groups, ob)
 
-        # Try a second pass for some badly ordered groups; skip first few groups
-        if main:
-            main = self._look_for_groups(main, self.main_groups[6:], ob)
-
         # If we have anything left now, it's un-parsed data and we should flag it. We check
         # to make sure it's actually useful leftovers
         if main and set(main) - set(' /'):
-            ob['unparsed'] = main
+            ob['unparsed'] = main.strip()
 
         # If we have a remarks section, try to parse it
         if remark:
@@ -169,7 +168,7 @@ class MetarParser(object):
                 ob['remarks'] = remark
 
         # Handle parsing garbage by checking for either datetime or null report
-        if ob['null'] or 'datetime' in ob:
+        if ob['null'] or ('datetime' in ob and 'stid' in ob):
             return ob
         else:
             return dict()
@@ -190,7 +189,11 @@ class MetarParser(object):
                 cursor += 1
 
             # Try to parse using the group.
-            rng, data = group.parse(string, cursor, *context)
+            try:
+                rng, data = group.parse(string, cursor, *context)
+            except ParseError as e:
+                log.exception('Error while parsing (%s)', string, exc_info=e)
+                rng = data = None
 
             # If we got back a range, that means the group succeeded in parsing
             if rng:
@@ -323,6 +326,13 @@ frac_conv = {'1/4': 1 / 4, '1/2': 1 / 2, '3/4': 3 / 4,
              '9/16': 9 / 16, '11/16': 11 / 16, '13/16': 13 / 16, '15/16': 15 / 16}
 
 
+def frac_to_float(frac):
+    try:
+        return frac_conv[frac]
+    except KeyError:
+        raise ParseError('%s is not a valid visibility fraction' % frac)
+
+
 def vis_to_float(dist, units):
     'Convert visibility, including fraction, to a value with units'
     if dist[0] == 'M':
@@ -335,9 +345,9 @@ def vis_to_float(dist, units):
             return float('nan') * units
         parts = dist.split(maxsplit=1)
         if len(parts) > 1:
-            return as_value(parts[0], units) + frac_conv.get(parts[1], float('nan')) * units
+            return as_value(parts[0], units) + frac_to_float(parts[1]) * units
         else:
-            return frac_conv.get(dist, float('nan')) * units
+            return frac_to_float(dist) * units
     else:
         return as_value(dist, units)
 
@@ -351,7 +361,7 @@ def process_vis(matches):
         return as_value(matches['vismetric'], units.meter)
 
 vis = RegexParser(r'''(?P<cavok>CAVOK)|
-                      ((?P<vismiles>M?[0-9 /]{1,5})SM\b)|
+                      ((?P<vismiles>M?(([1-9]\d?)|(([12][ ]?)?1?[13579]/1?[2468])|////))SM\b)|
                       (?P<vismetric>\b\d{4}\b)''', process_vis)
 
 
