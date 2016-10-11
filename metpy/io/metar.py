@@ -305,7 +305,8 @@ null = RegexParser(r'\b(?P<null>NIL)', grab_group('null', bool), default=False)
 # Process the full wind group (dddfffGfffKT dddVddd)
 def process_wind(matches):
     speed_unit = units('m/s') if matches.pop('units') == 'MPS' else units.knot
-    matches['direction'] = as_value(matches['direction'], units.deg)
+    if matches['direction'] != 'VRB':
+        matches['direction'] = as_value(matches['direction'], units.deg)
     matches['speed'] = as_value(matches['speed'], speed_unit)
     matches['gust'] = as_value(matches['gust'], speed_unit)
     matches['dir1'] = as_value(matches['dir1'], units.deg)
@@ -445,7 +446,7 @@ wx = RegexParser(r'''(((?P<mod>[-+])|\b)  # Begin with one of these mods or noth
 def process_sky(matches):
     coverage_to_value = dict(VV=8, FEW=2, SCT=4, BKN=6, BKM=6, OVC=8)
     if matches.pop('clear'):
-        return 'clear'
+        return float('nan'), 0, None
     hgt = as_value(matches['height'], 100 * units.feet)
     return hgt, coverage_to_value[matches['coverage']], matches['cumulus']
 
