@@ -25,7 +25,7 @@ def test_nearest_intersection_idx():
     y2 = 100 * x - 650
     truth = np.array([2, 12])
 
-    assert_array_equal(truth, nearest_intersection_idx(x, y1, y2))
+    assert_array_equal(truth, nearest_intersection_idx(y1, y2))
 
 
 def test_find_intersections():
