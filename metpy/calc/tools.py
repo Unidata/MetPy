@@ -36,15 +36,13 @@ def resample_nn_1d(a, centers):
 
 
 @exporter.export
-def nearest_intersection_idx(x, a, b):
+def nearest_intersection_idx(a, b):
     """
     Determines the index of the point just before two lines with
     common x values.
 
     Parameters
     ----------
-    x : array-like
-        1-dimensional array of numeric x-values
     a : array-like
         1-dimensional array of y-values for line 1
     b : array-like
@@ -87,7 +85,7 @@ def find_intersections(x, a, b):
     """
 
     # Find the index of the points just before the intersection(s)
-    nearest_idx = nearest_intersection_idx(x, a, b)
+    nearest_idx = nearest_intersection_idx(a, b)
 
     # Make an empty array to hold what we'll need for calculating
     # approximate intersections. Each row is an intersection
