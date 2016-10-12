@@ -48,7 +48,7 @@ class StringIter(object):
 
 class LineIter(StringIter):
     r'''Iterates over lines from a buffer using an arbitrary delimiter.'''
-    def __init__(self, text, skip_blank=False, linesep='\n\n'):
+    def __init__(self, text, skip_blank=False, linesep='[\r\n]{2,3}'):
         super(LineIter, self).__init__(text, skip_blank)
         self.linesep = linesep
 
