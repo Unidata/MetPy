@@ -182,7 +182,7 @@ metar_tests = [('K0CO 042354Z AUTO 01007KT M1/4SM -SN OVC001 M07/M13 A2992 RMK\n
                ('PAKU 292250Z 22007KT 10SM R24/P6000FT SCT170 BKN200 05/M01 A3037',
                 [('runway_range', {'24': (6000 * units.feet)})]),
                ('KEKM 122250Z 31049G25KT 21/2SM -SN SCT019 BKN028 OVC039 M07/M14',
-                [('visibility', lambda v:math.isnan(v.magnitude)),
+                [('unparsed', '21/2SM'),
                  ('wind', dict(direction=310 * units.deg, speed=49 * units.kt,
                                gust=25 * units.kt, dir1=None, dir2=None)),
                  ('temperature', (-7 * units.degC, -14 * units.degC))]),
