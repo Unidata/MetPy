@@ -263,8 +263,10 @@ def parcel_profile(pressure, temperature, dewpt):
     # Find the LCL
     l = lcl(pressure[0], temperature, dewpt).to(pressure.units)
 
-    # Find the dry adiabatic profile, *including* the LCL
-    press_lower = concatenate((pressure[pressure > l], l))
+    # Find the dry adiabatic profile, *including* the LCL. We need >= the LCL in case the
+    # LCL is included in the levels. It's slightly redundant in that case, but simplifies
+    # the logic for removing it later.
+    press_lower = concatenate((pressure[pressure >= l], l))
     t1 = dry_lapse(press_lower, temperature)
 
     # Find moist pseudo-adiabatic profile starting at the LCL

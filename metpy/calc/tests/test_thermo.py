@@ -76,6 +76,15 @@ def test_parcel_profile():
     assert_array_almost_equal(prof, true_prof, 2)
 
 
+def test_parcel_profile_saturated():
+    'Test parcel_profile works when LCL in levels (issue #232)'
+    levels = np.array([1000., 700., 500.]) * units.mbar
+    true_prof = np.array([296.95, 284.381, 271.123]) * units.kelvin
+
+    prof = parcel_profile(levels, 23.8 * units.degC, 23.8 * units.degC)
+    assert_array_almost_equal(prof, true_prof, 2)
+
+
 def test_sat_vapor_pressure():
     'Basic test of saturation_vapor_pressure calculation'
     temp = np.array([5., 10., 18., 25.]) * units.degC
