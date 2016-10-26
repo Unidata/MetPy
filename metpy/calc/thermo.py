@@ -24,14 +24,14 @@ def potential_temperature(pressure, temperature):
 
     Parameters
     ----------
-    pressure : array_like
+    pressure : `pint.Quantity`
         The total atmospheric pressure
-    temperature : array_like
+    temperature : `pint.Quantity`
         The temperature
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The potential temperature corresponding to the the temperature and
         pressure.
 
@@ -67,14 +67,14 @@ def dry_lapse(pressure, temperature):
 
     Parameters
     ----------
-    pressure : array_like
+    pressure : `pint.Quantity`
         The atmospheric pressure level(s) of interest
-    temperature : array_like
+    temperature : `pint.Quantity`
         The starting temperature
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
        The resulting parcel temperature at levels given by `pressure`
 
     See Also
@@ -100,14 +100,14 @@ def moist_lapse(pressure, temperature):
 
     Parameters
     ----------
-    pressure : array_like
+    pressure : `pint.Quantity`
         The atmospheric pressure level(s) of interest
-    temperature : array_like
+    temperature : `pint.Quantity`
         The starting temperature
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
        The temperature corresponding to the the starting temperature and
        pressure levels.
 
@@ -149,21 +149,21 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
     r'''Calculate the lifted condensation level (LCL) using from the starting
     point.
 
-    The starting state for the parcel is defined by `temperature`, `dewpoint`,
+    The starting state for the parcel is defined by `temperature`, `dewpt`,
     and `pressure`.
 
     Parameters
     ----------
-    pressure : array_like
+    pressure : `pint.Quantity`
         The starting atmospheric pressure
-    temperature : array_like
+    temperature : `pint.Quantity`
         The starting temperature
-    dewpt : array_like
+    dewpt : `pint.Quantity`
         The starting dew point
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The LCL
 
     Other Parameters
@@ -189,7 +189,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
     '''
 
     w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
-    p = pressure
+    new_p = p = pressure
     eps = units.Quantity(eps, p.units)
     while max_iters:
         td = dewpoint(vapor_pressure(p, w))
@@ -209,16 +209,16 @@ def lfc(pressure, temperature, dewpt):
 
     Parameters
     ----------
-    pressure : array_like
+    pressure : `pint.Quantity`
         The starting atmospheric pressure
-    temperature : array_like
+    temperature : `pint.Quantity`
         The starting temperature
-    dewpt : array_like
+    dewpt : `pint.Quantity`
         The starting dew point
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The LFC
 
     See Also
@@ -242,17 +242,17 @@ def parcel_profile(pressure, temperature, dewpt):
 
     Parameters
     ----------
-    pressure : array_like
+    pressure : `pint.Quantity`
         The atmospheric pressure level(s) of interest. The first entry should be the starting
         point pressure.
-    temperature : array_like
+    temperature : `pint.Quantity`
         The starting temperature
-    dewpt : array_like
+    dewpt : `pint.Quantity`
         The starting dew point
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The parcel temperatures at the specified pressure levels.
 
     See Also
@@ -284,14 +284,14 @@ def vapor_pressure(pressure, mixing):
 
     Parameters
     ----------
-    pressure : array_like
+    pressure : `pint.Quantity`
         total atmospheric pressure
-    mixing : array_like
+    mixing : `pint.Quantity`
         dimensionless mass mixing ratio
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The ambient water vapor (partial) pressure in the same units as
         `pressure`.
 
@@ -309,12 +309,12 @@ def saturation_vapor_pressure(temperature):
 
     Parameters
     ----------
-    temperature : array_like
+    temperature : `pint.Quantity`
         The temperature
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The saturation water vapor (partial) pressure
 
     See Also
@@ -349,14 +349,14 @@ def dewpoint_rh(temperature, rh):
 
     Parameters
     ----------
-    temperature : array_like
+    temperature : `pint.Quantity`
         Air temperature
-    rh : array_like
+    rh : `pint.Quantity`
         Relative humidity expressed as a ratio in the range [0, 1]
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The dew point temperature
 
     See Also
@@ -373,12 +373,12 @@ def dewpoint(e):
 
     Parameters
     ----------
-    e : array_like
+    e : `pint.Quantity`
         Water vapor partial pressure
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         Dew point temperature
 
     See Also
@@ -413,14 +413,14 @@ def mixing_ratio(part_press, tot_press):
 
     Parameters
     ----------
-    part_press : array_like
+    part_press : `pint.Quantity`
         Partial pressure of the constituent gas
-    tot_press : array_like
+    tot_press : `pint.Quantity`
         Total air pressure
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The (mass) mixing ratio, dimensionless (e.g. Kg/Kg or g/g)
 
     See Also
@@ -440,14 +440,14 @@ def saturation_mixing_ratio(tot_press, temperature):
 
     Parameters
     ----------
-    tot_press: array_like
+    tot_press: `pint.Quantity`
         Total atmospheric pressure
-    temperature: array_like
+    temperature: `pint.Quantity`
         The temperature
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The saturation mixing ratio, dimensionless
 
     References
@@ -468,14 +468,14 @@ def equivalent_potential_temperature(pressure, temperature):
 
     Parameters
     ----------
-    pressure: array_like
+    pressure: `pint.Quantity`
         Total atmospheric pressure
-    temperature: array_like
+    temperature: `pint.Quantity`
         The temperature
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The corresponding equivalent potential temperature of the parcel
 
     Notes
