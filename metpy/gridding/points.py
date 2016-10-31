@@ -76,7 +76,8 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
     bbox: dictionary
         Dictionary containing coordinates for corners of study area.
     ignore_warnings: bool
-        Toggles minimum horizontal resolution of 10 km. Default is False.
+        Toggle whether or not to display warning to prevent very large
+        number of grids. Default is False.
 
     Returns
     -------
@@ -86,7 +87,7 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
         Y dimension meshgrid defined by given bounding box
     """
 
-    if horiz_dim < 10000:
+    if horiz_dim < 10000 and not ignore_warnings:
         warnings.warn('Grids less than 10km may be slow to load at synoptic scale.')
 
     x_steps, y_steps = get_xy_steps(bbox, horiz_dim)
