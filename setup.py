@@ -58,7 +58,7 @@ setup(
                      'plugs easily into the existing scientific Python '
                      'ecosystem (numpy, scipy, matplotlib).',
 
-    url='http://github.com/MetPy/MetPy',
+    url='http://github.com/Unidata/MetPy',
 
     author='Ryan May, Patrick Marsh, Sean Arms, Eric Bruning',
     author_email='python-users@unidata.ucar.edu',
@@ -97,4 +97,4 @@ setup(
 
     zip_safe=True,
 
-    download_url='https://github.com/metpy/MetPy/archive/v%s.tar.gz' % ver,)
+    download_url='https://github.com/Unidata/MetPy/archive/v%s.tar.gz' % ver,)

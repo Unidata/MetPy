@@ -51,10 +51,10 @@ Contact Us
 * MetPy can also be found on Twitter_
 
 .. _python-users: https://www.unidata.ucar.edu/support/#mailinglists
-.. _GitHub: https://github.com/metpy/MetPy
-.. _Gitter: https://gitter.im/metpy/MetPy
+.. _GitHub: https://github.com/Unidata/MetPy
+.. _Gitter: https://gitter.im/Unidata/MetPy
 .. _Twitter: https://twitter.com/MetPy
-__ https://github.com/metpy/MetPy/issues
+__ https://github.com/Unidata/MetPy/issues
 
 -------------
 Presentations
@@ -76,7 +76,7 @@ License
 
 MetPy is available under the terms of the open source `BSD 3 Clause license`__.
 
-__ https://raw.githubusercontent.com/metpy/MetPy/master/LICENSE
+__ https://raw.githubusercontent.com/Unidata/MetPy/master/LICENSE
 
 ----------------
 Related Projects
@@ -89,4 +89,3 @@ Related Projects
 .. _netCDF: https://www.unidata.ucar.edu/software/netcdf/
 .. _siphon: http://siphon.readthedocs.org
 __ https://www.unidata.ucar.edu/software/thredds/current/tds/
-

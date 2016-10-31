@@ -31,38 +31,38 @@ MetPy
     :target: https://anaconda.org/conda-forge/metpy
     :alt: Conda Downloads
 
-.. |Travis| image:: https://travis-ci.org/metpy/MetPy.svg?branch=master
-    :target: https://travis-ci.org/metpy/MetPy
+.. |Travis| image:: https://travis-ci.org/Unidata/MetPy.svg?branch=master
+    :target: https://travis-ci.org/Unidata/MetPy
     :alt: Travis Build Status
 
 .. |AppVeyor|
-    image:: https://ci.appveyor.com/api/projects/status/403xt697ir8md6gh/branch/master?svg=true
-    :target: https://ci.appveyor.com/project/MetPy/metpy/branch/master
+    image:: https://ci.appveyor.com/api/projects/status/dwaletlb23v2ae4e/branch/master?svg=true
+    :target: https://ci.appveyor.com/project/Unidata/metpy/branch/master
     :alt: AppVeyor Build Status
 
-.. |CodeCov| image:: https://codecov.io/github/metpy/MetPy/coverage.svg?branch=master
-    :target: https://codecov.io/github/metpy/MetPy?branch=master
+.. |CodeCov| image:: https://codecov.io/github/Unidata/MetPy/coverage.svg?branch=master
+    :target: https://codecov.io/github/Unidata/MetPy?branch=master
     :alt: Code Coverage Status
 
 .. |QuantifiedCode|
-    image:: https://www.quantifiedcode.com/api/v1/project/1153e58350aa41e6a7970a134febeb2d/badge.svg
-    :target: https://www.quantifiedcode.com/app/project/1153e58350aa41e6a7970a134febeb2d
+    image:: https://www.quantifiedcode.com/api/v1/project/21ad9a03974148099ccb4729391688fd/badge.svg
+    :target: https://www.quantifiedcode.com/app/project/21ad9a03974148099ccb4729391688fd
     :alt: Code issues
 
-.. |Codacy| image:: https://api.codacy.com/project/badge/grade/e1ea0937eb4942e79a44bc9bb2de616d
+.. |Codacy| image:: https://api.codacy.com/project/badge/Grade/e1ea0937eb4942e79a44bc9bb2de616d
     :target: https://www.codacy.com/app/dopplershift/MetPy
     :alt: Codacy code issues
 
-.. |LatestDocs| image:: https://readthedocs.org/projects/pip/badge/?version=latest
+.. |LatestDocs| image:: https://readthedocs.org/projects/metpy/badge/?version=latest
     :target: http://metpy.readthedocs.org/en/latest/
     :alt: Latest Doc Build Status
 
-.. |StableDocs| image:: https://readthedocs.org/projects/pip/badge/?version=stable
+.. |StableDocs| image:: https://readthedocs.org/projects/metpy/badge/?version=stable
     :target: http://metpy.readthedocs.org/en/stable/
     :alt: Stable Doc Build Status
 
-.. |Gitter| image:: https://badges.gitter.im/metpy/MetPy.svg
-    :target: https://gitter.im/metpy/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
+.. |Gitter| image:: https://badges.gitter.im/Unidata/MetPy.svg
+    :target: https://gitter.im/Unidata/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
     :alt: Gitter
 
 .. |PRWelcome|
@@ -84,11 +84,11 @@ We support Python 2.7 as well as Python >= 3.3.
 Important Links
 ---------------
 
-- Source code repository: https://github.com/MetPy/MetPy
+- Source code repository: https://github.com/Unidata/MetPy
 - HTML Documentation (stable release): http://metpy.readthedocs.org/en/stable/
 - HTML Documentation (development): http://metpy.readthedocs.org/en/latest/
-- Issue tracker: http://github.com/Metpy/MetPy/issues
-- Gitter chat room: https://gitter.im/metpy/MetPy
+- Issue tracker: http://github.com/Unidata/MetPy/issues
+- Gitter chat room: https://gitter.im/Unidata/MetPy
 
 Dependencies
 ------------
@@ -127,7 +127,7 @@ eyes, so you can see the errors and assumptions that seasoned contributors have 
 
 For more information, please read the see the `contributing guide`__.
 
-__ https://github.com/metpy/MetPy/blob/master/CONTRIBUTING.md
+__ https://github.com/Unidata/MetPy/blob/master/CONTRIBUTING.md
 
 Philosophy
 ----------

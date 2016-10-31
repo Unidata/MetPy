@@ -4,13 +4,16 @@
 First off, thank you for considering contributing to MetPy. MetPy is community-driven
 project, so it's people like you that make MetPy useful and successful.
 
-Following these guidelines helps to communicate that you respect the time of the developers managing and developing this open source project. In return, they should reciprocate that respect in addressing your issue, assessing changes, and helping you finalize your pull requests.
+Following these guidelines helps to communicate that you respect the time of the
+developers managing and developing this open source project. In return, they
+should reciprocate that respect in addressing your issue, assessing changes, and
+helping you finalize your pull requests.
 
 We love contributions from community members, just like you! There are many ways
 to contribute, from writing tutorial or example Jupyter notebooks, improvements
 to the documentation, submitting bug report and feature requests, or even writing
 code which can be incorporated into MetPy for everyone to use. If you get stuck at
-any point you can create an [issue on GitHub](https://github.com/metpy/MetPy/issues)
+any point you can create an [issue on GitHub](https://github.com/Unidata/MetPy/issues)
 or contact us at one of the other channels mentioned below.
 
 For more information on contributing to open source projects,
@@ -60,15 +63,15 @@ Commit the changes you made. Chris Beams has written a [guide](http://chris.beam
 
 Push to your fork and [submit a pull request][pr].
 
-[pr]: https://github.com/metpy/metpy/compare/
+[pr]: https://github.com/Unidata/metpy/compare/
 
 For the Pull Request to be accepted, you need to agree to the
-[MetPy Contributor License Agreement (CLA)](https://www.clahub.com/agreements/metpy/MetPy).
-See [here](https://github.com/metpy/MetPy/blob/master/CLA.md) for more
+[MetPy Contributor License Agreement (CLA)](https://www.clahub.com/agreements/Unidata/MetPy).
+See [here](https://github.com/Unidata/MetPy/blob/master/CLA.md) for more
 explanation and rationale behind MetPy's CLA.
 
 As part of the Pull Request, be sure to add yourself to the
-[list of contributors](https://github.com/metpy/MetPy/blob/master/CONTRIBUTORS.md).
+[list of contributors](https://github.com/Unidata/MetPy/blob/master/CONTRIBUTORS.md).
 We want to make sure we acknowledge the hard work you've generously contributed
 here.
 
@@ -92,5 +95,5 @@ running both the unit tests as well as the `flake8` code linter.
 ## Other Channels
 If you're interested in contacting us or being a part of the community in
 other ways, feel free to contact us in
-[MetPy's Gitter Channel](https://gitter.im/metpy/MetPy) or through Unidata's
+[MetPy's Gitter Channel](https://gitter.im/Unidata/MetPy) or through Unidata's
 [python-users](https://www.unidata.ucar.edu/support/#mailinglists) mailing list.
