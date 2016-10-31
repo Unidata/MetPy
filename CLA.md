@@ -75,16 +75,16 @@ No. We will be asking all new contributors and patch submitters to sign before
 they submit anything.
 
 Based on material Copyright Django Software Foundation. [CC-BY](http://creativecommons.org/licenses/by/3.0/us/)
-Modified slighly to reflect MetPy.
+Modified slightly to reflect MetPy.
 
 MetPy Individual Contributor License Agreement
 ==============================================
 
 Thank you for your interest in contributing to MetPy ("We" or "Us").
-This contributor agreement ("Agreement") documents the rights granted by contributors to Us. To make this document effective, please sign it and send it to Us by electronic submission, following the instructions at https://www.clahub.com/agreements/metpy/MetPy. This is a legally binding document, so please read it carefully before agreeing to it. The Agreement may cover more than one software project managed by Us.
+This contributor agreement ("Agreement") documents the rights granted by contributors to Us. To make this document effective, please sign it and send it to Us by electronic submission, following the instructions at https://www.clahub.com/agreements/Unidata/MetPy. This is a legally binding document, so please read it carefully before agreeing to it. The Agreement may cover more than one software project managed by Us.
 
-1. Definitions
---------------
+1.Definitions
+-------------
 
 "You" means the individual who Submits a Contribution to Us.
 
@@ -100,8 +100,8 @@ This contributor agreement ("Agreement") documents the rights granted by contrib
 
 "Effective Date" means the date You execute this Agreement or the date You first Submit a Contribution to Us, whichever is earlier.
 
-2. Grant of Rights
-------------------
+2.Grant of Rights
+-----------------
 
 2.1 Copyright License
 
@@ -123,8 +123,8 @@ As a condition on the grant of rights in Sections 2.1 and 2.2, We agree to licen
 
 2.6 Reservation of Rights. Any rights not expressly licensed under this section are expressly reserved by You.
 
-3. Agreement
-------------
+3.Agreement
+-----------
 
 You confirm that:
 
@@ -134,18 +134,18 @@ You confirm that:
 
 (c) The grant of rights under Section 2 does not violate any grant of rights which You have made to third parties, including Your employer. If You are an employee, You have had Your employer approve this Agreement or sign the Entity version of this document. If You are less than eighteen years old, please have Your parents or guardian sign the Agreement.
 
-4. Disclaimer
--------------
+4.Disclaimer
+------------
 
 EXCEPT FOR THE EXPRESS WARRANTIES IN SECTION 3, THE CONTRIBUTION IS PROVIDED "AS IS". MORE PARTICULARLY, ALL EXPRESS OR IMPLIED WARRANTIES INCLUDING, WITHOUT LIMITATION, ANY IMPLIED WARRANTY OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE EXPRESSLY DISCLAIMED BY YOU TO US. TO THE EXTENT THAT ANY SUCH WARRANTIES CANNOT BE DISCLAIMED, SUCH WARRANTY IS LIMITED IN DURATION TO THE MINIMUM PERIOD PERMITTED BY LAW.
 
-5. Consequential Damage Waiver
-------------------------------
+5.Consequential Damage Waiver
+-----------------------------
 
 TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT WILL YOU BE LIABLE FOR ANY LOSS OF PROFITS, LOSS OF ANTICIPATED SAVINGS, LOSS OF DATA, INDIRECT, SPECIAL, INCIDENTAL, CONSEQUENTIAL AND EXEMPLARY DAMAGES ARISING OUT OF THIS AGREEMENT REGARDLESS OF THE LEGAL OR EQUITABLE THEORY (CONTRACT, TORT OR OTHERWISE) UPON WHICH THE CLAIM IS BASED.
 
-6. Miscellaneous
-----------------
+6.Miscellaneous
+---------------
 6.1 This Agreement will be governed by and construed in accordance with the laws of Colorado excluding its conflicts of law provisions. Under certain circumstances, the governing law in this section might be superseded by the United Nations Convention on Contracts for the International Sale of Goods ("UN Convention") and the parties intend to avoid the application of the UN Convention to this Agreement and, thus, exclude the application of the UN Convention in its entirety to this Agreement.
 
 6.2 This Agreement sets out the entire agreement between You and Us for Your Contributions to Us and overrides all other agreements or understandings.

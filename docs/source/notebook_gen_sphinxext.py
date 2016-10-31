@@ -38,7 +38,7 @@ def nb_to_rst(nb_path):
     resources['metadata']['basename'] = basename
     resources['metadata']['name'] = basename.replace('_', ' ')
     resources['metadata']['imgdir'] = imgdir
-    base_url = ('http://nbviewer.ipython.org/github/metpy/MetPy/blob/master/'
+    base_url = ('http://nbviewer.ipython.org/github/Unidata/MetPy/blob/master/'
                 'examples/notebooks/')
     out_lines = ['`Notebook <%s>`_' % (base_url + os.path.basename(nb_path))]
     for line in out.split('\n'):

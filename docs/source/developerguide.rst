@@ -155,17 +155,17 @@ documentation. To see what the docs will look like on RTD, you also need to inst
 Other Tools
 -----------
 
-Continuous integration is performed by `Travis CI <http://www.travis-ci.org/metpy/MetPy>`_.
+Continuous integration is performed by `Travis CI <http://www.travis-ci.org/Unidata/MetPy>`_.
 This service runs the unit tests on all support versions, as well as runs against the minimum
 package versions. ``flake8`` is also run against the code to check formatting. Travis is also
 used to build the documentation and to run the examples to ensure they stay working.
 
-Test coverage is monitored by `codecov.io <https://codecov.io/github/metpy/MetPy>`_.
+Test coverage is monitored by `codecov.io <https://codecov.io/github/Unidata/MetPy>`_.
 
 The following services are used to track code quality:
-* `QuantifiedCode <https://www.quantifiedcode.com/app/project/gh:metpy:MetPy>`_
-* `Codacy <https://www.codacy.com/app/dopplershift/MetPy/dashboard>`_
-* `Landscape.io <https://landscape.io/github/metpy/MetPy>`_
+* `QuantifiedCode <https://www.quantifiedcode.com/app/project/gh:Unidata:MetPy>`_
+* `Codacy <https://www.codacy.com/app/Unidata/MetPy/dashboard>`_
+* `Landscape.io <https://landscape.io/github/Unidata/MetPy>`_
 
 ---------
 Releasing

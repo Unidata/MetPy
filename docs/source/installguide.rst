@@ -38,7 +38,7 @@ The easiest way to install MetPy is through ``pip``:
 .. parsed-literal::
     pip install metpy
 
-The source code can also be grabbed from `GitHub <http://github.com/MetPy/metpy>`_. From
+The source code can also be grabbed from `GitHub <http://github.com/Unidata/MetPy>`_. From
 the base of the source directory, run:
 
 .. parsed-literal::
