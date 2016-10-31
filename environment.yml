@@ -16,6 +16,10 @@ dependencies:
   - pytest-mpl
   - pytest-runner
   - flake8
+  - flake8-quotes
   - pep8-naming
   - pyproj
   - cartopy
+  - pip
+  - pip:
+    - doc8

@@ -1,29 +1,31 @@
 Unit Support
 ============
 
-To ensure correct calculations, MetPy relies upon the :mod:`pint` library to enforce unit-correctness.
-This simplifies the MetPy API by eliminating the need to specify units various functions. Instead,
-only the final results need to be converted to desired units. For more information on unit support, see the
-documentation for `Pint <http://pint.readthedocs.org>`_. Particular attention should be paid to the support
+To ensure correct calculations, MetPy relies upon the :mod:`pint` library to enforce
+unit-correctness. This simplifies the MetPy API by eliminating the need to specify units
+various functions. Instead, only the final results need to be converted to desired units. For
+more information on unit support, see the documentation for
+`Pint <http://pint.readthedocs.org>`_. Particular attention should be paid to the support
 for `temperature units <http://pint.readthedocs.org/en/latest/nonmult.html>`_.
 
 ------------
 Construction
 ------------
 
-To use units, the first step is to import the default MetPy units registry from the :mod:`~metpy.units` module:
+To use units, the first step is to import the default MetPy units registry from the
+:mod:`~metpy.units` module:
 
 .. code-block:: python
 
     import numpy as np
     from metpy.units import units
 
-The unit registry encapsulates all of the available units, as well as any pertinent settings. The registry also
-understands unit prefixes and suffixes; this allows the registry to understand ``'kilometer'`` and ``'meters'``
-in addition to the base ``'meter'`` unit.
+The unit registry encapsulates all of the available units, as well as any pertinent settings.
+The registry also understands unit prefixes and suffixes; this allows the registry to
+understand ``'kilometer'`` and ``'meters'`` in addition to the base ``'meter'`` unit.
 
-In general, using units is only a small step on top of using the :class:`numpy.ndarray` object. The easiest way
-to attach units to an array is to multiply by the units:
+In general, using units is only a small step on top of using the :class:`numpy.ndarray` object.
+The easiest way to attach units to an array is to multiply by the units:
 
 .. code-block:: python
 
@@ -51,7 +53,8 @@ This verbose syntax can be reduced by using the unit registry's support for pars
 Operations
 ----------
 
-With units attached, it is possible to perform mathematical operations, resulting in the proper units:
+With units attached, it is possible to perform mathematical operations, resulting in the proper
+units:
 
 .. code-block:: python
 
@@ -60,8 +63,8 @@ With units attached, it is possible to perform mathematical operations, resultin
 .. parsed-literal::
     [ 0.5  0.5  0.5  0.5] meter / second
 
-For multiplication and division, units can combine and cancel. For addition and subtraction, instead the
-operands must have compatible units. For instance, this works:
+For multiplication and division, units can combine and cancel. For addition and subtraction,
+instead the operands must have compatible units. For instance, this works:
 
 .. code-block:: python
 
@@ -80,7 +83,8 @@ But this does not:
 .. parsed-literal::
     DimensionalityError: Cannot convert from 'meter' ([length]) to 'second' ([time])
 
-Even if the units are not identical, as long as they are dimensionally equivalent, the operation can be performed:
+Even if the units are not identical, as long as they are dimensionally equivalent, the
+operation can be performed:
 
 .. code-block:: python
 
@@ -93,8 +97,9 @@ Even if the units are not identical, as long as they are dimensionally equivalen
 Conversion
 ----------
 
-Converting a :class:`~pint.Quantity` between units can be accomplished by using the :meth:`~pint.Quantity.to`
-method call, which constructs a new :class:`~pint.Quantity` in the desired units:
+Converting a :class:`~pint.Quantity` between units can be accomplished by using the
+:meth:`~pint.Quantity.to` method call, which constructs a new :class:`~pint.Quantity` in the
+desired units:
 
 .. code-block:: python
 
@@ -103,9 +108,9 @@ method call, which constructs a new :class:`~pint.Quantity` in the desired units
 .. parsed-literal::
     25.400000000000002 millimeter
 
-There is also the :meth:`~pint.Quantity.ito` method which performs the same operation in place. To simplify units,
-there is also the :meth:`~pint.Quantity.to_base_units` method, which converts a quantity to SI units, performing
-any needed cancellation:
+There is also the :meth:`~pint.Quantity.ito` method which performs the same operation in place.
+To simplify units, there is also the :meth:`~pint.Quantity.to_base_units` method, which
+converts a quantity to SI units, performing any needed cancellation:
 
 .. code-block:: python
 
@@ -116,4 +121,5 @@ any needed cancellation:
     3340000.0 joule / kilogram
     3340000.0 meter ** 2 / second ** 2
 
-:meth:`~pint.Quantity.to_base_units` can also be done in place via the :meth:`~pint.Quantity.ito_base_units` method.
+:meth:`~pint.Quantity.to_base_units` can also be done in place via the
+:meth:`~pint.Quantity.ito_base_units` method.
