@@ -15,11 +15,6 @@ log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
 log.setLevel(logging.WARNING)
 
 
-def raise_parse_error(msg, *args):
-    'Format message and raise as an error'
-    raise ParseError(msg % args)
-
-
 class MetarProduct(WMOTextProduct):
     def _parse(self, it):
         # Handle NWS style where it's just specified once at the top rather than per METAR
@@ -35,10 +30,16 @@ class MetarProduct(WMOTextProduct):
         for l in it:
             # Skip SAOs
             if l[3:7] != ' SA ':
-                report = parser.parse(l)
-                # Only add the report if it's not empty
-                if report:
-                    self.reports.append(report)
+                try:
+                    report = parser.parse(l)
+                    # Only add the report if it's not empty
+                    if report:
+                        self.reports.append(report)
+                except ParseError as e:
+                    if self.strict:
+                        raise
+                    else:
+                        log.warning('Error parsing report: %s (%s)', l, e.message)
 
     def __str__(self):
         return (super(MetarProduct, self).__str__() + '\n\tReports:' +
@@ -56,7 +57,7 @@ def as_value(val, units):
         elif val == '/' * len(val):
             val = 'NaN'
         return float(val) * units
-    except (AttributeError, TypeError, ValueError) as e:
+    except (AttributeError, TypeError, ValueError):
         raise ParseError('Could not parse "%s" as a value' % val)
 
 
@@ -192,7 +193,7 @@ class MetarParser(object):
             try:
                 rng, data = group.parse(string, cursor, *context)
             except ParseError as e:
-                log.exception('Error while parsing (%s)', string, exc_info=e)
+                log.warning('Error while parsing: %s (%s)', string, e.message)
                 rng = data = None
 
             # If we got back a range, that means the group succeeded in parsing
@@ -446,7 +447,7 @@ wx = RegexParser(r'''(((?P<mod>[-+])|\b)  # Begin with one of these mods or noth
 def process_sky(matches):
     coverage_to_value = dict(VV=8, FEW=2, SCT=4, BKN=6, BKM=6, OVC=8)
     if matches.pop('clear'):
-        return float('nan'), 0, None
+        return 0, 0, None
     hgt = as_value(matches['height'], 100 * units.feet)
     return hgt, coverage_to_value[matches['coverage']], matches['cumulus']
 
@@ -604,8 +605,9 @@ def process_var_vis(matches, *args):
     vis2 = vis_to_float(matches['vis2'], units.mile)
     return vis1, vis2
 
-var_vis = RegexParser(r'''VIS\ (?P<vis1>M?[0-9 /]{1,5})V
-                          (?P<vis2>[0-9 /]{1,5})''', process_var_vis)
+# (([1-9]\d?)|(([12][ ]?)?1?[13579]/1?[2468]))
+var_vis = RegexParser(r'''VIS\ (?P<vis1>M?((([12][ ]?)?1?[13579]/1?[2468])|([1-9]\d?)))
+                          V(?P<vis2>((([12][ ]?)?1?[13579]/1?[2468])|([1-9]\d?)))''', process_var_vis)
 
 
 # Sector visibility (VIS DIR vvvvv)

@@ -28,7 +28,7 @@ metar_tests = [('K0CO 042354Z AUTO 01007KT M1/4SM -SN OVC001 M07/M13 A2992 RMK\n
                 [('visibility', 0.75 * units.mile), ('pilot', 'ATIS D; RWY 25 ILS; BK')]),
                ('METAR KQES 042350Z AUTO 1600 HZ CLR 12/9 A3037 RMK A02 TSNO',
                 [('visibility', 1600 * units.meter), ('automated', 'A02'),
-                 ('sky_coverage', ['clear']),
+                 ('sky_coverage', [(0, 0, None)]),
                  ('temperature', (12 * units.degC, 9 * units.degC)),
                  ('present_wx', [Weather.fillin(obscur='HZ')])]),
                ('KSSC 042258Z 02005KT 4SM BR OVC004 18/17 A3021 RMK AO2A PK WND 27018/2242 '
@@ -91,14 +91,14 @@ metar_tests = [('K0CO 042354Z AUTO 01007KT M1/4SM -SN OVC001 M07/M13 A2992 RMK\n
                  ('lightning', dict(dist='DSNT', loc='SE THRU SW')),
                  ('present_wx', [Weather.fillin(mod='VC', desc='TS')])]),
                ('METAR OJAM 050000Z 04004KT 4000 DU NSC 13/08 Q1013 A2991 R36/190095 NOSIG',
-                [('sky_coverage', ['clear']), ('present_wx', [Weather.fillin(obscur='DU')]),
+                [('sky_coverage', [(0, 0, None)]), ('present_wx', [Weather.fillin(obscur='DU')]),
                  ('altimeter', 29.91 * units.inHg), ('trend_forecast', 'NOSIG'),
                  ('visibility', 4000 * units.meter),
                  ('runway_state', dict(deposit='Damp', extent=1.0, braking='good',
                                        depth=0 * units.mm, runway='36', cleared=False))]),
                ('METAR UBBL 050000Z 00000KT 7000 NSC 06/05 Q1023 R33/CLRD70 RMK',
                 [('temperature', (6 * units.degC, 5 * units.degC)),
-                 ('sky_coverage', ['clear']),
+                 ('sky_coverage', [(0, 0, None)]),
                  ('runway_state', dict(deposit=None, extent=None, braking=0.7, depth=None,
                                        runway='33', cleared=True))]),
                ('METAR LLBG 042350Z 04004KT 5000 DU VV013 22/11 Q1010 TEMPO SHRA FEW050TCU',
@@ -188,7 +188,11 @@ metar_tests = [('K0CO 042354Z AUTO 01007KT M1/4SM -SN OVC001 M07/M13 A2992 RMK\n
                  ('temperature', (-7 * units.degC, -14 * units.degC))]),
                ('SPECI PADU 131511Z 030/05 9SM -RA SCT014 OVC020 02/01 A2898',
                 [('visibility', 9 * units.mile), ('unparsed', '030/05'),
-                 ('temperature', (2 * units.degC, 1 * units.degC))])]
+                 ('temperature', (2 * units.degC, 1 * units.degC))]),
+               ('KSFM 280346Z AUTO 06004KT 1 3/4SM BR OVC002 14/13 A3006 RMK AO2 VIS 3/4V5 '
+                '402110083 $',
+                [('variable_vis', (0.75 * units.mile, 5 * units.mile)),
+                 ('daily_temperature', (8.3 * units.degC, 21.1 * units.degC))])]
 
 
 @pytest.mark.parametrize('metar, params', metar_tests)

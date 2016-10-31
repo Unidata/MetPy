@@ -6,7 +6,9 @@ from ..cbook import is_string_like
 
 # Generic error for problems parsing text reports
 class ParseError(Exception):
-    pass
+    def __init__(self, *args, **kwargs):
+        super(Exception, self).__init__(self, args, kwargs)
+        self.message = args[0]
 
 
 def parse_wmo_time(s, ref_time=None):
@@ -154,8 +156,9 @@ class RegexParser(object):
 
 class WMOTextProduct(object):
     r'''Parses a WMO-formatted text product.'''
-    def __init__(self, text, ref_time=None):
+    def __init__(self, text, ref_time=None, strict=False):
         self.ref_time = ref_time
+        self.strict = strict
         line_iter = LineIter(text, skip_blank=True)
         self._parse_header(line_iter)
         self._parse(line_iter)
