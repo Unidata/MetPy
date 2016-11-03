@@ -194,6 +194,7 @@ class StationPlot(object):
         plot_parameter, plot_symbol, plot_text
         """
         # Handle transforming our center points. CartoPy doesn't like 1D barbs
+        # TODO: This can be removed for cartopy > 0.14.3
         if hasattr(self.ax, 'projection') and (self.transform or 'transform' in kwargs):
             trans = kwargs.pop('transform', None) or self.transform
             x, y, _ = self. ax.projection.transform_points(trans, self.x, self.y).T
