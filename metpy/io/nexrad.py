@@ -67,8 +67,8 @@ def bzip_blocks_decompress_all(data):
 
 def nexrad_to_datetime(julian_date, ms_midnight):
     # Subtracting one from julian_date is because epoch date is 1
-    return datetime.datetime.fromtimestamp((julian_date - 1) * day +
-                                           ms_midnight * milli)
+    return datetime.datetime.utcfromtimestamp((julian_date - 1) * day +
+                                              ms_midnight * milli)
 
 
 def remap_status(val):

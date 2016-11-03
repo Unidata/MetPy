@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
+from datetime import datetime
 import glob
 import logging
 import os.path
@@ -23,14 +24,19 @@ logging.getLogger('metpy.io.nexrad').setLevel(logging.CRITICAL)
 # 1999 file tests old message 1
 # KFTG tests bzip compression and newer format for a part of message 31
 # KTLX 2015 has missing segments for message 18, which was causing exception
-level2_files = ['KTLX20130520_201643_V06.gz', 'KTLX19990503_235621.gz',
-                'Level2_KFTG_20150430_1419.ar2v', 'KTLX20150530_000802_V06.bz2']
+level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46)),
+                ('KTLX19990503_235621.gz', datetime(1999, 5, 3, 23, 56, 21)),
+                ('Level2_KFTG_20150430_1419.ar2v', datetime(2015, 4, 30, 14, 19, 11)),
+                ('KTLX20150530_000802_V06.bz2', datetime(2015, 5, 30, 0, 8, 3))]
 
 
-@pytest.mark.parametrize('fname', level2_files)
-def test_level2(fname):
+# ids here fixes how things are presented in pycharm
+@pytest.mark.parametrize('fname,voltime', level2_files,
+                         ids=[i[0].replace('.', '_') for i in level2_files])
+def test_level2(fname, voltime):
     'Test reading NEXRAD level 2 files from the filename'
-    Level2File(get_test_data(fname, as_file_obj=False))
+    f = Level2File(get_test_data(fname, as_file_obj=False))
+    assert f.dt == voltime
 
 
 def test_level2_fobj():
@@ -62,13 +68,22 @@ def test_tdwr_nids(fname):
 
 def test_basic():
     'Basic test of reading one specific NEXRAD NIDS file based on the filename'
-    Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids', as_file_obj=False))
+    f = Level3File(get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids', as_file_obj=False))
+    assert f.metadata['prod_time'].replace(second=0) == datetime(2014, 4, 7, 18, 5)
+    assert f.metadata['vol_time'].replace(second=0) == datetime(2014, 4, 7, 18, 5)
+    assert f.metadata['msg_time'].replace(second=0) == datetime(2014, 4, 7, 18, 6)
 
 
 def test_tdwr():
     'Test reading a specific TDWR file'
     f = Level3File(get_test_data('nids/Level3_SLC_TV0_20160516_2359.nids'))
     assert f.prod_desc.prod_code == 182
+
+
+def test_dhr():
+    'Test reading a time field for DHR product'
+    f = Level3File(get_test_data('nids/KOUN_SDUS54_DHRTLX_201305202016'))
+    assert f.metadata['avg_time'] == datetime(2013, 5, 20, 20, 18)
 
 
 def test_nwstg():
@@ -101,6 +116,7 @@ def test_msg15():
     f = Level2File(get_test_data('KTLX20130520_201643_V06.gz', as_file_obj=False))
     data = f.clutter_filter_map['data']
     assert isinstance(data[0][0], list)
+    assert f.clutter_filter_map['datetime'] == datetime(2013, 5, 19, 0, 0, 0, 315000)
 
 
 def test_tracks():
