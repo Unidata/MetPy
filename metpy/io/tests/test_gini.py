@@ -132,8 +132,14 @@ def test_gini_dataset():
     'Test the dataset interface for GINI'
     f = GiniFile(get_test_data('WEST-CONUS_4km_WV_20151208_2200.gini'))
     ds = f.to_dataset()
-    assert 'x' in ds.variables
-    assert 'y' in ds.variables
+    x = ds.variables['x']
+    assert_almost_equal(x[0], -4226066.37649, 4)
+    assert_almost_equal(x[-1], 239720.12351, 4)
+
+    y = ds.variables['y']
+    assert_almost_equal(y[0], -832700.70519, 4)
+    assert_almost_equal(y[-1], 4364515.79481, 4)
+
     assert 'WV' in ds.variables
     assert hasattr(ds.variables['WV'], 'grid_mapping')
     assert ds.variables['WV'].grid_mapping in ds.variables
@@ -169,8 +175,14 @@ def test_gini_mercator_dataset():
     'Test the dataset interface for a GINI file with Mercator projection'
     f = GiniFile(get_test_data('HI-REGIONAL_4km_3.9_20160616_1715.gini'))
     ds = f.to_dataset()
-    assert 'x' in ds.variables
-    assert 'y' in ds.variables
+    x = ds.variables['x']
+    assert_almost_equal(x[0], 0.0, 4)
+    assert_almost_equal(x[-1], 2236000.0, 4)
+
+    y = ds.variables['y']
+    assert_almost_equal(y[0], 980627.44738, 4)
+    assert_almost_equal(y[-1], 3056627.44738, 4)
+
     assert 'IR' in ds.variables
     assert hasattr(ds.variables['IR'], 'grid_mapping')
     assert ds.variables['IR'].grid_mapping in ds.variables
