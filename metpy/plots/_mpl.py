@@ -283,6 +283,11 @@ if not hasattr(Axes, 'scattertext'):
             angle = self.get_rotation()
 
             for (posx, posy), t in zip(pts, self.text):
+                # Skip empty strings--not only is this a performance gain, but it fixes
+                # rendering with path effects below.
+                if not t:
+                    continue
+
                 self._text = t  # hack to allow self._get_layout to work
                 bbox, info, descent = self._get_layout(renderer)
                 self._text = ''
