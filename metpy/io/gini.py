@@ -262,9 +262,10 @@ class GiniFile(object):
         elif self.prod_desc.projection == GiniProjection.polar_stereographic:
             proj_var = ds.createVariable('Polar_Stereographic', np.int32)
             proj_var.grid_mapping_name = 'polar_stereographic'
-            proj_var.longitude_of_projection_origin = self.proj_info.lov
+            proj_var.straight_vertical_longitude_from_pole = self.proj_info.lov
             proj_var.latitude_of_projection_origin = -90 if self.proj_info.proj_center else 90
             proj_var.earth_radius = 6371200.0
+            proj_var.standard_parallel = 60.0  # See Note 2 for Table 4.4A in ICD
             _add_projection_coords(ds, self.prod_desc, proj_var, self.proj_info.dx,
                                    self.proj_info.dy)
         elif self.prod_desc.projection == GiniProjection.mercator:

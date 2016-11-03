@@ -145,17 +145,24 @@ def test_gini_ak_regional_dataset():
     'Test the dataset interface for GINI of a AK REGIONAL file'
     f = GiniFile(get_test_data('AK-REGIONAL_8km_3.9_20160408_1445.gini'))
     ds = f.to_dataset()
-    assert 'x' in ds.variables
-    assert 'y' in ds.variables
+    x = ds.variables['x']
+    assert_almost_equal(x[0], -2286001.13195, 4)
+    assert_almost_equal(x[-1], 2278061.36805, 4)
+
+    y = ds.variables['y']
+    assert_almost_equal(y[0], -4762503.5992, 4)
+    assert_almost_equal(y[-1], -1531941.0992, 4)
+
     assert 'IR' in ds.variables
     assert hasattr(ds.variables['IR'], 'grid_mapping')
     assert ds.variables['IR'].grid_mapping in ds.variables
     assert_almost_equal(ds.variables['lon'][0, 0], f.prod_desc.lo1, 4)
     assert_almost_equal(ds.variables['lat'][0, 0], f.prod_desc.la1, 4)
-    assert_almost_equal(ds.variables['Polar_Stereographic'].longitude_of_projection_origin,
-                        210.0)
-    assert_almost_equal(ds.variables['Polar_Stereographic'].latitude_of_projection_origin,
-                        90.0)
+
+    proj_var = ds.variables['Polar_Stereographic']
+    assert_almost_equal(proj_var.straight_vertical_longitude_from_pole, 210.0)
+    assert_almost_equal(proj_var.latitude_of_projection_origin, 90.0)
+    assert_almost_equal(proj_var.standard_parallel, 60.0)
 
 
 def test_gini_mercator_dataset():
