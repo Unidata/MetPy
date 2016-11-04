@@ -89,7 +89,11 @@ class NamedStruct(Struct):
                 items[ind] = conv(items[ind])
             if len(items) < len(self._tuple._fields):
                 items.extend([None] * (len(self._tuple._fields) - len(items)))
-        return self._tuple(*items)
+        return self.make_tuple(*items)
+
+    def make_tuple(self, *args, **kwargs):
+        'Construct the underlying tuple from values'
+        return self._tuple(*args, **kwargs)
 
     def unpack(self, s):
         return self._create(super(NamedStruct, self).unpack(s))
