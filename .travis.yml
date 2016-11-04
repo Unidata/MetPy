@@ -143,7 +143,7 @@ deploy:
   distributions: sdist bdist_wheel
   upload_docs: no
   on:
-    repo: metpy/MetPy
+    repo: Unidata/MetPy
     python: 3.5
     condition: '$TASK == "coverage"'
     tags: true
