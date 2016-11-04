@@ -10,8 +10,7 @@ Requirements
 - flake8
 - sphinx >= 1.3
 - sphinx-rtd-theme >= 0.1.7
-- IPython >= 3.1
-- pandoc (not a python package)
+- nbconvert>=4.1
 
 ~~~~~
 Conda
@@ -32,8 +31,8 @@ run directly out of the git repository.
 Making Changes
 --------------
 
-The changes to the MetPy source (and documentation) should be made via GitHub pull
-requestsagainst ``master``, even for those with administration rights. While it's tempting to
+The changes to the MetPy source (and documentation) should be made via GitHub pull requests
+against ``master``, even for those with administration rights. While it's tempting to
 make changes directly to ``master`` and push them up, it is better to make a pull request so
 that others can give feedback. If nothing else, this gives a chance for the automated tests to
 run on the PR. This can eliminate "brown paper bag" moments with buggy commits on the master
@@ -145,7 +144,7 @@ documentation. The examples can also be converted to standalone scripts using:
 .. parsed-literal::
     python setup.py examples
 
-The documentation is hosted by `Read the Docs <http://metpy.readthedocs.org>`_. The docs are
+The documentation is hosted by `Read the Docs <https://metpy.readthedocs.io>`_. The docs are
 built automatically from ``master`` as well as for the tagged versions on github. ``master`` is
 used for the ``latest`` documentation, and the latest tagged version is used for the ``stable``
 documentation. To see what the docs will look like on RTD, you also need to install the
@@ -155,35 +154,72 @@ documentation. To see what the docs will look like on RTD, you also need to inst
 Other Tools
 -----------
 
-Continuous integration is performed by `Travis CI <http://www.travis-ci.org/Unidata/MetPy>`_.
-This service runs the unit tests on all support versions, as well as runs against the minimum
-package versions. ``flake8`` is also run against the code to check formatting. Travis is also
-used to build the documentation and to run the examples to ensure they stay working.
+Continuous integration is performed by `Travis CI <http://www.travis-ci.org/Unidata/MetPy>`_
+and `AppVeyor <https://ci.appveyor.com/project/Unidata/metpy/branch/master>`_.
+Travis runs the unit tests on Linux for all supported versions of Python, as well as runs
+against the minimum package versions. ``flake8`` (with the ``pep8-naming`` and
+``flake8-quotes`` plugins) is also run against the code to check formatting. Travis is also
+used to build the documentation and to run the examples to ensure they stay working. AppVeyor
+is a similar service; here the tests and examples are run against Python 2 and 3 for both
+32- and 64-bit versions of Windows.
 
 Test coverage is monitored by `codecov.io <https://codecov.io/github/Unidata/MetPy>`_.
 
 The following services are used to track code quality:
+
 * `QuantifiedCode <https://www.quantifiedcode.com/app/project/gh:Unidata:MetPy>`_
 * `Codacy <https://www.codacy.com/app/Unidata/MetPy/dashboard>`_
+* `Code Climate <https://codeclimate.com/github/Unidata/MetPy>`_
+* `Scrutinizer <https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)>`_
 * `Landscape.io <https://landscape.io/github/Unidata/MetPy>`_
 
 ---------
 Releasing
 ---------
 
-To create a new release:
+To create a new release, go to the GitHub page and make a new release. The tag should be a
+sensible version number, like v1.0.0. Add a name (can just be the version) and add some release
+notes on what the big changes are. It's also possible to use
+`loghub <https://github.com/spyder-ide/loghub>`_ to get information on all the issues and PRs
+that were closed for the relevant milestone. Tagging a new version on GitHub should also
+update the `stable <https://metpy.readthedocs.io/en/stable>`_  docs on Read the Docs.
 
-1. Go to the GitHub page and make a new release. The tag should be a sensible version number,
-   like v1.0.0. Add a name (can just be the version) and add some notes on what the big
-   changes are.
-2. Do a pull locally to grab the new tag. This will ensure that ``versioneer`` will give you
+~~~~
+PyPI
+~~~~
+
+Once the new release is published on GitHub, this will create the tag, which will trigger
+new builds on Travis (and AppVeyor, but that's not relevant). When the main test build on
+Travis (currently Python 3 tests) succeeds, Travis will handle building the source
+distribution and wheels, and upload them to PyPI.
+
+To build and upload manually (if for some reason it is necessary):
+
+1. Do a pull locally to grab the new tag. This will ensure that ``versioneer`` will give you
    the proper version.
-3. (optional) Perform a ``git clean -f -x -d`` from the root of the repository. This will
+2. (optional) Perform a ``git clean -f -x -d`` from the root of the repository. This will
    **delete** everything not tracked by git, but will also ensure clean source distribution.
    ``MANIFEST.in`` is set to include/exclude mostly correctly, but could miss some things.
-4. Run ``python setup.py sdist bdist_wheel`` (this requires ``wheel`` is installed).
-5. Upload using ``twine``: ``twine upload dist/*``, assuming the ``dist/`` directory contains
+3. Run ``python setup.py sdist bdist_wheel`` (this requires that ``wheel`` is installed).
+4. Upload using ``twine``: ``twine upload dist/*``, assuming the ``dist/`` directory contains
    only files for this release. This upload process will include any changes to the ``README``
    as well as any updated flags from ``setup.py``.
-6. Tagging a new version on GitHub should also update the
-   `stable <http://metpy.readthedocs.org/en/stable>`_  docs on Read the Docs.
+
+~~~~~
+Conda
+~~~~~
+
+MetPy conda packages are automatically produced and uploaded to
+`Anaconda.org <https://anaconda.org/conda-forge/MetPy>`_ thanks to conda-forge. Once the
+release is built and uploaded to PyPI, then a Pull Request should be made against the
+`MetPy feedstock <http://github.com/conda-forge/metpy-feedstock>`_, which contains the
+recipe for building MetPy's conda packages. The Pull Request should:
+
+1. Update the version
+2. Update the hash to match that of the new source distribution **uploaded to PyPI**
+3. Reset the build number to 0 (if necessary)
+4. Update the dependencies (and their versions) as necessary
+
+The Pull Request will test building the packages on all the platforms. Once this succeeds,
+the Pull Request can be merged, which will trigger the final build and upload of the
+packages to anaconda.org.
