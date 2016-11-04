@@ -5,9 +5,9 @@ MetPy
 
 |PyPI| |Conda|
 
-|Travis| |AppVeyor|
+|Travis| |AppVeyor| |CodeCov|
 
-|CodeCov| |Codacy| |QuantifiedCode|
+|Codacy| |CodeClimate| |Scrutinizer| |QuantifiedCode|
 
 |LatestDocs| |StableDocs|
 
@@ -47,11 +47,19 @@ MetPy
 .. |QuantifiedCode|
     image:: https://www.quantifiedcode.com/api/v1/project/21ad9a03974148099ccb4729391688fd/badge.svg
     :target: https://www.quantifiedcode.com/app/project/21ad9a03974148099ccb4729391688fd
-    :alt: Code issues
+    :alt: Quantified Code issues
 
 .. |Codacy| image:: https://api.codacy.com/project/badge/Grade/e1ea0937eb4942e79a44bc9bb2de616d
     :target: https://www.codacy.com/app/dopplershift/MetPy
-    :alt: Codacy code issues
+    :alt: Codacy issues
+
+.. |CodeClimate| image:: https://codeclimate.com/github/Unidata/MetPy/badges/gpa.svg
+    :target: https://codeclimate.com/github/Unidata/MetPy
+    :alt: Code Climate
+
+.. |Scrutinizer| image:: https://scrutinizer-ci.com/g/Unidata/MetPy/badges/quality-score.png?b=master
+    :target: https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)
+    :alt: Scrutinizer Code Quality
 
 .. |LatestDocs| image:: https://readthedocs.org/projects/metpy/badge/?version=latest
     :target: http://metpy.readthedocs.org/en/latest/
