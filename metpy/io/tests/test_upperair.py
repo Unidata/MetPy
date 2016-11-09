@@ -31,3 +31,15 @@ def test_iastate():
     assert_almost_equal(data.variables['dewpoint'][3], 15.2 * units.degC, 2)
     assert_almost_equal(data.variables['u_wind'][3], 1.72 * units.knot, 2)
     assert_almost_equal(data.variables['v_wind'][3], 2.46 * units.knot, 2)
+
+
+def test_high_alt_wyoming():
+    r'Test Wyoming data that starts at pressure less than 925 hPa'
+    with UseSampleData():
+        data = get_upper_air_data(datetime(2010, 12, 9, 12), 'BOI', source='wyoming')
+
+    assert_almost_equal(data.variables['pressure'][2], 890.0 * units('hPa'), 2)
+    assert_almost_equal(data.variables['temperature'][2], 5.4 * units.degC, 2)
+    assert_almost_equal(data.variables['dewpoint'][2], 3.9 * units.degC, 2)
+    assert_almost_equal(data.variables['u_wind'][2], -0.42 * units.knot, 2)
+    assert_almost_equal(data.variables['v_wind'][2], 5.99 * units.knot, 2)

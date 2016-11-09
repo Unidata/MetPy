@@ -162,17 +162,36 @@ class WyomingUpperAir(object):
         -------
         dict of information used by :func:`get_upper_air_data`
         """
+        def to_float(s):
+            # Remove all whitespace and replace empty values with NaN
+            if not s.strip():
+                s = 'nan'
+            return float(s)
+
         # Skip the row of dashes and column names
         for _ in range(2):
             fobj.readline()
 
         # Parse the actual data, only grabbing the columns for pressure, T/Td, and wind
-        cols = (0, 2, 3, 6, 7)
         unit_strs = ['degC' if u == 'C' else u
                      for u in fobj.readline().decode('ascii').split()]
 
-        # Skip 2 header lines -- 1 for '----' and 1 for partial line at 1000mb
-        p, t, td, direc, spd = np.genfromtxt(fobj, usecols=cols, skip_header=2, unpack=True)
+        # Skip last header row of dashes
+        fobj.readline()
+
+        # Initiate lists for variables
+        arr_data = []
+
+        # Read all lines of data and append to lists only if there is some data
+        for row in fobj.readlines():
+            level = to_float(row[0:7])
+            values = (to_float(row[14:21]), to_float(row[21:28]), to_float(row[42:49]),
+                      to_float(row[49:56]))
+
+            if any(np.invert(np.isnan(values))):
+                arr_data.append((level,) + values)
+
+        p, t, td, direc, spd = np.array(arr_data).T
 
         return dict(p=(p, unit_strs[0]), t=(t, unit_strs[2]), td=(td, unit_strs[3]),
                     wind=(direc, spd, unit_strs[7]))
