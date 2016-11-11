@@ -85,7 +85,9 @@ class UseSampleData(object):
                r'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST'
                r'&YEAR=2013&MONTH=01&FROM=2012&TO=2012&STNM=OUN': 'sounding_data.txt',
                r'http://mesonet.agron.iastate.edu/json/raob.py?ts=201607301200'
-               r'&station=KDEN': 'sounding_iastate.txt'}
+               r'&station=KDEN': 'sounding_iastate.txt',
+               r'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST'
+               r'&YEAR=2010&MONTH=12&FROM=0912&TO=0912&STNM=BOI': 'sounding_wyoming_upper.txt'}
 
     def __init__(self):
         r"""Initialize the wrapper."""
@@ -183,7 +185,7 @@ class WyomingUpperAir(object):
         arr_data = []
 
         # Read all lines of data and append to lists only if there is some data
-        for row in fobj.readlines():
+        for row in fobj:
             level = to_float(row[0:7])
             values = (to_float(row[14:21]), to_float(row[21:28]), to_float(row[42:49]),
                       to_float(row[49:56]))
