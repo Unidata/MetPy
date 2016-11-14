@@ -1597,7 +1597,7 @@ class Level3File(object):
 
     def _process_end_bytes(self):
         check_bytes = self._buffer[-4:-1]
-        if check_bytes == b'\r\r\n' or check_bytes == b'\xff\xff\n':
+        if check_bytes in (b'\r\r\n', b'\xff\xff\n'):
             self._buffer.truncate(4)
 
     @staticmethod
