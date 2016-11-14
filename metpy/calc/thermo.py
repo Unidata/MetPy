@@ -210,11 +210,11 @@ def lfc(pressure, temperature, dewpt):
     Parameters
     ----------
     pressure : `pint.Quantity`
-        The starting atmospheric pressure
+        The atmospheric pressure
     temperature : `pint.Quantity`
-        The starting temperature
+        The temperature at the levels given by `pressure`
     dewpt : `pint.Quantity`
-        The starting dew point
+        The dew point at the levels given by `pressure`
 
     Returns
     -------
@@ -227,8 +227,8 @@ def lfc(pressure, temperature, dewpt):
     '''
 
     ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
-    intersections = find_intersections(pressure, ideal_profile, temperature)
-    return intersections[0]
+    x, y = find_intersections(pressure, ideal_profile, temperature)
+    return x[0], y[0]
 
 
 @exporter.export

@@ -58,7 +58,7 @@ def nearest_intersection_idx(a, b):
 
     # Determine the point just before the intersection of the lines
     # Will return multiple points for multiple intersections
-    sign_change_idx = np.where(np.diff(np.sign(difference)))[0]
+    sign_change_idx, = np.nonzero(np.diff(np.sign(difference)))
 
     return sign_change_idx
 
@@ -81,56 +81,36 @@ def find_intersections(x, a, b):
 
     Returns
     -------
-        An array of (x,y) intersections of the lines.
+        A tuple (x, y) of array-like with the x and y coordinates of the
+        intersections of the lines.
     """
 
     # Find the index of the points just before the intersection(s)
     nearest_idx = nearest_intersection_idx(a, b)
+    next_idx = nearest_idx + 1
 
-    # Make an empty array to hold what we'll need for calculating
-    # approximate intersections. Each row is an intersection
+    # x-values around each intersection
+    x0 = x[nearest_idx]
+    x1 = x[next_idx]
 
-    # x1, x2, ya1, ya2, yb1, yb2
-    line_data = np.zeros((np.size(nearest_idx), 6))
+    # y-values around each intersection for the first line
+    a0 = a[nearest_idx]
+    a1 = a[next_idx]
 
-    # m1, m2, b1, b2
-    line_fits = np.zeros((np.size(nearest_idx), 4))
+    # y-values around each intersection for the second line
+    b0 = b[nearest_idx]
+    b1 = b[next_idx]
 
-    # xi, yi
-    intersections = np.zeros((np.size(nearest_idx), 2))
+    # Calculate the x-intersection. This comes from finding the equations of the two lines,
+    # one through (x0, a0) and (x1, a1) and the other through (x0, b0) and (x1, b1),
+    # finding their intersection, and reducing with a bunch of algebra.
+    delta_y0 = a0 - b0
+    delta_y1 = a1 - b1
+    intersect_x = (delta_y1 * x0 - delta_y0 * x1) / (delta_y1 - delta_y0)
 
-    # Place x values for each intersection
-    line_data[:, 0] = x[nearest_idx]
-    line_data[:, 1] = x[nearest_idx + 1]
+    # Calculate the y-intersection of the lines. Just plug the x above into the equation
+    # for the line through the a points. One could solve for y like x above, but this
+    # causes weirder unit behavior and seems a little less good numerically.
+    intersect_y = ((intersect_x - x0) / (x1 - x0)) * (a1 - a0) + a0
 
-    # Place y values for the first line
-    line_data[:, 2] = a[nearest_idx]
-    line_data[:, 3] = a[nearest_idx + 1]
-
-    # Place y values for the second line
-    line_data[:, 4] = b[nearest_idx]
-    line_data[:, 5] = b[nearest_idx + 1]
-
-    # Calculate the slope of each line (delta y / delta x)
-    line_fits[:, 0] = ((line_data[:, 3] - line_data[:, 2]) /
-                       (line_data[:, 1] - line_data[:, 0]))
-
-    line_fits[:, 1] = ((line_data[:, 5] - line_data[:, 4]) /
-                       (line_data[:, 1] - line_data[:, 0]))
-
-    # Calculate the intercept of each line
-    # b = y - m * x
-    line_fits[:, 2] = line_data[:, 2] - line_fits[:, 0] * line_data[:, 0]
-
-    line_fits[:, 3] = line_data[:, 4] - line_fits[:, 1] * line_data[:, 0]
-
-    # Calculate the x-intersection of the lines
-    # (b2 - b1) / (m1 - m2)
-    intersections[:, 0] = ((line_fits[:, 3] - line_fits[:, 2]) /
-                           (line_fits[:, 0] - line_fits[:, 1]))
-
-    # Calculate the y-intersection of the lines
-    # y = m * x + b
-    intersections[:, 1] = line_fits[:, 0] * intersections[:, 0] + line_fits[:, 2]
-
-    return intersections
+    return intersect_x, intersect_y

@@ -35,7 +35,7 @@ def test_find_intersections():
     y2 = 100 * x - 650
     # Truth is what we will get with this sampling,
     # not the mathematical intersection
-    truth = np.array([[8.88, 238.84],
-                      [24.44, 1794.53]])
+    truth = np.array([[8.88, 24.44],
+                      [238.84, 1794.53]])
 
     assert_array_almost_equal(truth, find_intersections(x, y1, y2), 2)
