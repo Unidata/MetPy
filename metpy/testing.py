@@ -18,6 +18,25 @@ test_style = 'classic' if 'classic' in style.available else []
 
 
 def check_and_drop_units(actual, desired):
+    r"""Check that the units on the passed in arrays are compatible; return the magnitudes.
+
+    Parameters
+    ----------
+    actual : `pint.Quantity` or array-like
+
+    desired : `pint.Quantity` or array-like
+
+    Returns
+    -------
+    actual, desired
+        array-like versions of `actual` and `desired` once they have been
+        coerced to compatible units.
+
+    Raises
+    ------
+    AssertionError
+        If the units on the passed in objects are not compatible.
+    """
     try:
         # If the desired result has units, add dimensionless units if necessary, then
         # ensure that this is compatible to the desired result.
@@ -45,16 +64,19 @@ def check_and_drop_units(actual, desired):
 
 
 def assert_almost_equal(actual, desired, decimal=7):
+    'numpy.testing.assert_almost_equal that first handles units'
     actual, desired = check_and_drop_units(actual, desired)
     numpy.testing.assert_almost_equal(actual, desired, decimal)
 
 
 def assert_array_almost_equal(actual, desired, decimal=7):
+    'numpy.testing.assert_array_almost_equal that first handles units'
     actual, desired = check_and_drop_units(actual, desired)
     numpy.testing.assert_array_almost_equal(actual, desired, decimal)
 
 
 def assert_array_equal(actual, desired):
+    'numpy.testing.assert_array_equal that first handles units'
     actual, desired = check_and_drop_units(actual, desired)
     numpy.testing.assert_array_equal(actual, desired)
 
