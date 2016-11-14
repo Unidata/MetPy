@@ -89,6 +89,7 @@ def remap_status(val):
 
     return status | bad
 
+
 START_ELEVATION = 0x1
 END_ELEVATION = 0x2
 START_VOLUME = 0x4

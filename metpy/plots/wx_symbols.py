@@ -90,6 +90,7 @@ class CodePointMapping(object):
         """
         return code_point(ord(self(code)) + alt)
 
+
 #
 # Set up mapping objects for various groups of symbols. The integer values follow from
 # the WMO.
