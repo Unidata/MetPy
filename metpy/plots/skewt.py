@@ -145,6 +145,7 @@ class SkewXAxes(Axes):
             transforms.IdentityTransform()) +
             transforms.Affine2D().skew_deg(self.rot, 0)) + self.transAxes
 
+
 # Now register the projection with matplotlib so the user can select
 # it.
 register_projection(SkewXAxes)

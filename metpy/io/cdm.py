@@ -118,7 +118,8 @@ class Group(AttributeContainer):
         self.dimensions[name] = dim
         return dim
 
-    def createVariable(self, name, datatype, dimensions=(), fill_value=None, wrap_array=None):  # noqa: N802
+    def createVariable(self, name, datatype, dimensions=(), fill_value=None,  # noqa: N802
+                       wrap_array=None):
         """Create a new Variable in this Group.
 
         Parameters

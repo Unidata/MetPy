@@ -43,10 +43,10 @@ def test_level2_fobj():
     'Test reading NEXRAD level2 data from a file object'
     Level2File(get_test_data('Level2_KFTG_20150430_1419.ar2v'))
 
+
 #
 # NIDS/Level 3 Tests
 #
-
 nexrad_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=False), 'K???_*'))
 
 

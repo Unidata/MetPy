@@ -25,4 +25,5 @@ def get_test_data(fname, as_file_obj=True):
 
     return path
 
+
 __all__ = ['Bunch', 'get_test_data', 'is_string_like', 'iterable']
