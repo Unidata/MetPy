@@ -131,9 +131,8 @@ def test_find_natural_neighbors():
                        [18, 19, 20, 21, 22, 23, 26, 27],
                        []]
 
-    for i in range(len(neighbors)):
-
-        assert_array_almost_equal(neighbors_truth[i], neighbors[i])
+    for i, true_neighbor in enumerate(neighbors_truth):
+        assert_array_almost_equal(true_neighbor, neighbors[i])
 
     cc_truth = np.array([(2.0, 2.0), (2.0, 2.0), (14.0, 2.0),
                          (14.0, 2.0), (6.0, 2.0), (6.0, 2.0),
@@ -147,15 +146,12 @@ def test_find_natural_neighbors():
                          (10.0, 10.0), (6.0, 14.0), (6.0, 14.0),
                          (10.0, 14.0), (10.0, 14.0)])
 
-    r_truth = np.array([2.8284271247461916] * 32)
+    r_truth = np.empty((32,))
+    r_truth.fill(2.8284271247461916)
 
-    for i in range(len(tri_info)):
-
-        cc = tri_info[i]['cc']
-        r = tri_info[i]['r']
-
-        assert_almost_equal(cc_truth[i], cc)
-        assert_almost_equal(r_truth[i], r)
+    for key in tri_info:
+        assert_almost_equal(cc_truth[key], tri_info[key]['cc'])
+        assert_almost_equal(r_truth[key], tri_info[key]['r'])
 
 
 def test_find_nn_triangles_point():
@@ -186,8 +182,6 @@ def test_find_local_boundary():
     tri = Delaunay(pts)
 
     tri_match = tri.find_simplex([4.5, 4.5])
-
-    truth = [62, 63]
 
     nn = find_nn_triangles_point(tri, tri_match, [4.5, 4.5])
 
