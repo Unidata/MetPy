@@ -19,12 +19,17 @@ test_style = 'classic' if 'classic' in style.available else []
 
 def check_and_drop_units(actual, desired):
     try:
-        if not hasattr(desired, 'units'):
-            actual = actual.to('dimensionless')
-        elif not hasattr(actual, 'units'):
-            actual = units.Quantity(actual, 'dimensionless')
-        else:
+        # If the desired result has units, add dimensionless units if necessary, then
+        # ensure that this is compatible to the desired result.
+        if hasattr(desired, 'units'):
+            if not hasattr(actual, 'units'):
+                actual = units.Quantity(actual, 'dimensionless')
             actual = actual.to(desired.units)
+        # Otherwise, the desired result has no units. Convert the actual result to
+        # dimensionless units if it is a united quantity.
+        else:
+            if hasattr(actual, 'units'):
+                actual = actual.to('dimensionless')
     except DimensionalityError:
         raise AssertionError('Units are not compatible: %s should be %s' %
                              (actual.units, desired.units))
