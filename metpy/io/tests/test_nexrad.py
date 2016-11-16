@@ -53,7 +53,14 @@ nexrad_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=Fal
 @pytest.mark.parametrize('fname', nexrad_nids_files)
 def test_level3_files(fname):
     'Test opening a NEXRAD NIDS file'
-    Level3File(fname)
+    f = Level3File(fname)
+
+    # If we have some raster data in the symbology block, feed it into the mapper to make
+    # sure it's working properly (Checks for #253)
+    if hasattr(f, 'sym_block'):
+        block = f.sym_block[0][0]
+        if 'data' in block:
+            f.map_data(block['data'])
 
 
 tdwr_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=False),

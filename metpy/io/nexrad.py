@@ -799,12 +799,15 @@ class GenericDigitalMapper(DataMapper):
         max_data_val = prod.thresholds[5]
         leading_flags = prod.thresholds[6]
         trailing_flags = prod.thresholds[7]
-        self.lut = [self.MISSING] * max_data_val
+
+        # Values will be [0, max] inclusive, so need to add 1 to max value to get proper size.
+        self.lut = [self.MISSING] * (max_data_val + 1)
 
         if leading_flags > 1:
             self.lut[1] = self.RANGE_FOLD
 
-        for i in range(leading_flags, max_data_val - trailing_flags):
+        # Need to add 1 to the end of the range so that it's inclusive
+        for i in range(leading_flags, max_data_val - trailing_flags + 1):
             self.lut[i] = (i - offset) / scale
 
         self.lut = np.array(self.lut)
