@@ -53,10 +53,6 @@ class SkewXTick(maxis.XTick):
 # This class exists to provide two separate sets of intervals to the tick,
 # as well as create instances of the custom tick
 class SkewXAxis(maxis.XAxis):
-    def __init__(self, *args, **kwargs):
-        maxis.XAxis.__init__(self, *args, **kwargs)
-        self.upper_interval = 0.0, 1.0
-
     def _get_tick(self, major):
         return SkewXTick(self.axes, 0, '', major=major)
 
@@ -64,8 +60,12 @@ class SkewXAxis(maxis.XAxis):
     def lower_interval(self):
         return self.axes.viewLim.intervalx
 
+    @property
+    def upper_interval(self):
+        return self.axes.upper_xlim
+
     def get_view_interval(self):
-        return self.upper_interval[0], self.axes.viewLim.intervalx[1]
+        return self.upper_interval[0], self.lower_interval[1]
 
 
 # This class exists to calculate the separate data range of the
@@ -73,18 +73,11 @@ class SkewXAxis(maxis.XAxis):
 # to the X-axis artist for ticking and gridlines
 class SkewSpine(mspines.Spine):
     def _adjust_location(self):
-        trans = self.axes.transDataToAxes.inverted()
-        if self.spine_type == 'top':
-            yloc = 1.0
-        else:
-            yloc = 0.0
-        left = trans.transform_point((0.0, yloc))[0]
-        right = trans.transform_point((1.0, yloc))[0]
-
         pts = self._path.vertices
-        pts[0, 0] = left
-        pts[1, 0] = right
-        self.axis.upper_interval = (left, right)
+        if self.spine_type == 'top':
+            pts[:, 0] = self.axis.upper_interval
+        else:
+            pts[:, 0] = self.axis.lower_interval
 
 
 # This class handles registration of the skew-xaxes as a projection as well
@@ -144,6 +137,10 @@ class SkewXAxes(Axes):
             self.transScale + self.transLimits,
             transforms.IdentityTransform()) +
             transforms.Affine2D().skew_deg(self.rot, 0)) + self.transAxes
+
+    @property
+    def upper_xlim(self):
+        return self.transDataToAxes.inverted().transform([[0., 1.], [1., 1.]])[:, 0]
 
 
 # Now register the projection with matplotlib so the user can select
