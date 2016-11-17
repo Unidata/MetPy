@@ -10,7 +10,7 @@ from matplotlib.axes import Axes
 from matplotlib.collections import LineCollection
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
-from matplotlib.ticker import ScalarFormatter, MultipleLocator
+from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter
 from .util import colored_line
 from ..calc import dry_lapse, moist_lapse, dewpoint, vapor_pressure
 from ..units import units
@@ -235,6 +235,7 @@ class SkewT(object):
         # Disables the log-formatting that comes with semilogy
         self.ax.yaxis.set_major_formatter(ScalarFormatter())
         self.ax.yaxis.set_major_locator(MultipleLocator(100))
+        self.ax.yaxis.set_minor_formatter(NullFormatter())
         if not self.ax.yaxis_inverted():
             self.ax.invert_yaxis()
 
