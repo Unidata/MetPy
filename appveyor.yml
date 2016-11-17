@@ -45,4 +45,4 @@ test_script:
 
 after_test:
     - cmd: pip install codecov
-    - cmd: codecov
+    - cmd: codecov -e PYTHON_VERSION PLATFORM
