@@ -129,7 +129,7 @@ script:
 after_success:
   - if [[ $TASK == "coverage" ]]; then
       pip install codecov codacy-coverage codeclimate-test-reporter;
-      codecov;
+      codecov -e TRAVIS_PYTHON_VERSION;
       coverage xml;
       python-codacy-coverage -r coverage.xml;
       codeclimate-test-reporter;
