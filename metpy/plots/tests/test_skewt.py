@@ -12,7 +12,7 @@ from metpy.testing import hide_tick_labels, make_figure, test_style
 from metpy.units import units
 
 
-@pytest.mark.mpl_image_compare
+@pytest.mark.mpl_image_compare(tolerance=0.021)
 def test_skewt_api():
     'Test the SkewT api'
     with style.context(test_style):
@@ -36,7 +36,7 @@ def test_skewt_api():
         return fig
 
 
-@pytest.mark.mpl_image_compare
+@pytest.mark.mpl_image_compare(tolerance=0)
 def test_skewt_subplot():
     'Test using SkewT on a sub-plot'
     with style.context(test_style):
@@ -45,7 +45,7 @@ def test_skewt_subplot():
         return fig
 
 
-@pytest.mark.mpl_image_compare
+@pytest.mark.mpl_image_compare(tolerance=0)
 def test_skewt_gridspec():
     'Test using SkewT on a sub-plot'
     with style.context(test_style):
@@ -55,7 +55,7 @@ def test_skewt_gridspec():
         return fig
 
 
-@pytest.mark.mpl_image_compare
+@pytest.mark.mpl_image_compare(tolerance=0)
 def test_hodograph_api():
     'Basic test of Hodograph API'
     with style.context(test_style):
@@ -70,7 +70,7 @@ def test_hodograph_api():
         return fig
 
 
-@pytest.mark.mpl_image_compare
+@pytest.mark.mpl_image_compare(tolerance=0)
 def test_hodograph_units():
     'Test passing unit-ed quantities to Hodograph'
     with style.context(test_style):
