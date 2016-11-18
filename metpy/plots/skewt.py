@@ -26,16 +26,31 @@ class SkewXTick(maxis.XTick):
     for whether a top or bottom tick is actually within the data limits at that part
     and draw as appropriate. It also performs similar checking for gridlines.
     """
+    def update_position(self, loc):
+        'Set the location of tick in data coords with scalar *loc*'
+        # This ensures that the new value of the location is set before
+        # any other updates take place.
+        self._loc = loc
+        super(SkewXTick, self).update_position(loc)
+
+    def _has_default_loc(self):
+        return self.get_loc() is None
+
     def _need_lower(self):
-        return transforms.interval_contains(self.axes.lower_xlim, self.get_loc())
+        return (self._has_default_loc() or
+                transforms.interval_contains(self.axes.lower_xlim,
+                                             self.get_loc()))
 
     def _need_upper(self):
-        return transforms.interval_contains(self.axes.upper_xlim, self.get_loc())
+        return (self._has_default_loc() or
+                transforms.interval_contains(self.axes.upper_xlim,
+                                             self.get_loc()))
 
     @property
     def gridOn(self):
-        return (self._gridOn and transforms.interval_contains(self.get_view_interval(),
-                                                              self.get_loc()))
+        return (self._gridOn and (self._has_default_loc() or
+                transforms.interval_contains(self.get_view_interval(),
+                                             self.get_loc())))
 
     @gridOn.setter
     def gridOn(self, value):
@@ -84,7 +99,7 @@ class SkewXAxis(maxis.XAxis):
     upper and lower x-limits from the axes.
     """
     def _get_tick(self, major):
-        return SkewXTick(self.axes, 0, '', major=major)
+        return SkewXTick(self.axes, None, '', major=major)
 
     def get_view_interval(self):
         return self.axes.upper_xlim[0], self.axes.lower_xlim[1]
