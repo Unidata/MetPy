@@ -10,7 +10,7 @@ import versioneer
 
 class MakeExamples(Command):
     description = 'Create example scripts from IPython notebooks'
-    user_options=[]
+    user_options = []
 
     def initialize_options(self):
         pass

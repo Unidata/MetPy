@@ -181,12 +181,12 @@ class SkewXAxes(Axes):
 
     @property
     def lower_xlim(self):
-        r"The data limits for the x-axis along the bottom of the axes"
+        r'The data limits for the x-axis along the bottom of the axes'
         return self.axes.viewLim.intervalx
 
     @property
     def upper_xlim(self):
-        r"The data limits for the x-axis along the top of the axes"
+        r'The data limits for the x-axis along the top of the axes'
         return self.transDataToAxes.inverted().transform([[0., 1.], [1., 1.]])[:, 0]
 
 
