@@ -15,7 +15,7 @@ def _gradient(f, *args, **kwargs):
     if len(args) < f.ndim:
         args = list(args)
         args.extend([units.Quantity(1., 'dimensionless')] * (f.ndim - len(args)))
-    grad = np.gradient(f, *args, **kwargs)
+    grad = np.gradient(f, *(a.magnitude for a in args), **kwargs)
     if f.ndim == 1:
         return units.Quantity(grad, f.units / args[0].units)
     return [units.Quantity(g, f.units / dx.units) for dx, g in zip(args, grad)]
