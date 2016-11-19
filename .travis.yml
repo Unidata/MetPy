@@ -28,7 +28,6 @@ env:
   matrix:
     - TASK="coverage"
     - TASK="examples"
-    - TASK="lint"
 
 matrix:
   include:
@@ -59,9 +58,7 @@ matrix:
 
 before_install:
   - pip install --upgrade pip;
-  - if [[ $TASK == "lint" ]]; then
-      pip install flake8 pep8-naming flake8-quotes;
-    elif [[ $TASK == "docs" ]]; then
+  - if [[ $TASK == "docs" ]]; then
         pip install -r docs/requirements.txt -f $WHEELHOUSE;
     else
       if [[ $TASK == "examples" ]]; then
@@ -79,8 +76,7 @@ before_install:
         pkg-config --modversion proj;
         popd;
       else
-        export TEST_OPTS="--mpl";
-        pip install pytest-mpl;
+        export TEST_OPTS="--flake8 --mpl";
         if [[ $TASK == "coverage" ]]; then
           export TEST_OPTS="$TEST_OPTS --cov=metpy";
           pip install pytest-cov;
@@ -96,7 +92,7 @@ before_install:
     fi
 
 install:
-  - if [[ $TASK != "lint" && $TASK != "docs" ]]; then
+  - if [[ $TASK != "docs" ]]; then
       pip install ".[$EXTRA_INSTALLS]" --upgrade --no-index $PRE -f file://$PWD/$WHEELDIR $VERSIONS;
       if [[ $TASK == "examples" ]]; then
         python setup.py examples;
@@ -104,9 +100,7 @@ install:
     fi
 
 script:
-  - if [[ $TASK == "lint" ]]; then
-      flake8 metpy;
-    elif [[ $TASK == "docs" ]]; then
+  - if [[ $TASK == "docs" ]]; then
       pushd docs;
       make html 2>../docs.log;
       popd;
