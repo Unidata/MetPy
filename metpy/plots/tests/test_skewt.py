@@ -2,9 +2,9 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-import numpy as np
 from matplotlib import style
 from matplotlib.gridspec import GridSpec
+import numpy as np
 import pytest
 
 from metpy.plots.skewt import *  # noqa: F403

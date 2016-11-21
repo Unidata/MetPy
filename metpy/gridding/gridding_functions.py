@@ -5,13 +5,10 @@
 from __future__ import division
 
 import numpy as np
-
 from scipy.interpolate import griddata, Rbf
 from scipy.spatial.distance import cdist
 
-from metpy.gridding import interpolation
-from metpy.gridding import points
-
+from . import interpolation, points
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())

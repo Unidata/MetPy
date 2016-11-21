@@ -4,21 +4,16 @@
 
 from __future__ import division
 
-import pytest
-
-from metpy.gridding.gridding_functions import (calc_kappa,
-                                               remove_observations_below_value,
-                                               remove_nan_observations,
-                                               remove_repeat_coordinates,
-                                               interpolate)
-
 import numpy as np
-
+from numpy.testing import assert_almost_equal, assert_array_almost_equal
+import pytest
 from scipy.spatial.distance import cdist
 
-from numpy.testing import assert_array_almost_equal, assert_almost_equal
-
 from metpy.cbook import get_test_data
+from metpy.gridding.gridding_functions import (calc_kappa, interpolate,
+                                               remove_nan_observations,
+                                               remove_observations_below_value,
+                                               remove_repeat_coordinates)
 
 
 @pytest.fixture()

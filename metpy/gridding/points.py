@@ -4,11 +4,10 @@
 
 from __future__ import division
 
-import numpy as np
-
-from scipy.spatial import cKDTree
-
 import warnings
+
+import numpy as np
+from scipy.spatial import cKDTree
 
 
 def get_points_within_r(center_points, target_points, r, return_idx=False):

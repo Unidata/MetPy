@@ -2,11 +2,12 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-from metpy.testing import assert_array_equal, assert_almost_equal
 import numpy as np
+
 from metpy.calc.kinematics import *  # noqa: F403
-from metpy.constants import g, Re, omega
-from metpy.units import units, concatenate
+from metpy.constants import g, omega, Re
+from metpy.testing import assert_almost_equal, assert_array_equal
+from metpy.units import concatenate, units
 
 
 class TestGradients(object):

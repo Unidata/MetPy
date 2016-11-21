@@ -2,14 +2,14 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-import logging
 from datetime import datetime
+import logging
 
 from numpy.testing import assert_almost_equal
 import pytest
 
-from metpy.io.gini import GiniFile, GiniProjection
 from metpy.cbook import get_test_data
+from metpy.io.gini import GiniFile, GiniProjection
 
 log = logging.getLogger('metpy.io.gini')
 log.setLevel(logging.ERROR)

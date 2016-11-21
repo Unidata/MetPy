@@ -3,10 +3,12 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from __future__ import division
+
 import ast
 import glob
 import os.path
 import posixpath
+
 import matplotlib.colors as mcolors
 from pkg_resources import resource_listdir, resource_stream
 

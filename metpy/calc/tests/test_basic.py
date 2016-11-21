@@ -3,11 +3,10 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 import numpy as np
-from numpy.testing import assert_array_equal
 
-from metpy.units import units
-from metpy.testing import assert_almost_equal, assert_array_almost_equal
 from metpy.calc.basic import *  # noqa: F403
+from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
+from metpy.units import units
 
 
 def test_wind_comps_basic():

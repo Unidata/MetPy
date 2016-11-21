@@ -4,10 +4,9 @@
 
 from __future__ import division
 
-from metpy.gridding.polygons import (area, order_edges)
+from numpy.testing import assert_almost_equal, assert_array_equal
 
-from numpy import isclose
-from numpy.testing import assert_array_equal
+from metpy.gridding.polygons import (area, order_edges)
 
 
 def test_area():
@@ -19,7 +18,7 @@ def test_area():
 
     truth = 12.5
 
-    assert isclose(truth, area([pt0, pt1, pt2]))
+    assert_almost_equal(area([pt0, pt1, pt2]), truth)
 
 
 def test_order_edges():

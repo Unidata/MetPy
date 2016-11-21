@@ -3,22 +3,24 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from __future__ import print_function
+
 import bz2
+from collections import defaultdict, namedtuple, OrderedDict
 import datetime
 import gzip
 import logging
 import re
 import struct
-from collections import defaultdict, namedtuple, OrderedDict
 from struct import Struct
 from xdrlib import Unpacker
 
 import numpy as np
 from scipy.constants import day, milli
+
+from .tools import (Array, BitField, Bits, bits_to_code, DictStruct, Enum, IOBuffer,
+                    NamedStruct, zlib_decompress_all_frames)
 from ..cbook import is_string_like
 from ..package_tools import Exporter
-from .tools import (Array, BitField, Bits, DictStruct, Enum, IOBuffer, NamedStruct,
-                    bits_to_code, zlib_decompress_all_frames)
 
 exporter = Exporter(globals())
 

@@ -2,11 +2,11 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-import numpy as np
 from matplotlib import style
+import numpy as np
 import pytest
 
-from metpy.plots.station_plot import StationPlot, StationPlotLayout, nws_layout, simple_layout
+from metpy.plots.station_plot import nws_layout, simple_layout, StationPlot, StationPlotLayout
 from metpy.plots.wx_symbols import high_clouds, sky_cover
 from metpy.testing import hide_tick_labels, make_figure, test_style
 from metpy.units import units

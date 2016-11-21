@@ -8,9 +8,10 @@ r"""Collection of utilities for testing
     * code for testing matplotlib figures
 """
 
-import numpy.testing
 from matplotlib import style
+import numpy.testing
 from pint import DimensionalityError
+
 from .units import units
 
 # Our lowest supported matplotlib doesn't have the classic style, so fallback to empty list

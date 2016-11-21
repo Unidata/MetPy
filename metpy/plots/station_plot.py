@@ -9,10 +9,10 @@ except ImportError:
 
 import numpy as np
 
-from ..cbook import is_string_like
-from ..package_tools import Exporter
 from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
                          pressure_tendency, sky_cover, wx_symbol_font)
+from ..cbook import is_string_like
+from ..package_tools import Exporter
 
 exporter = Exporter(globals())
 
