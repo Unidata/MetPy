@@ -7,12 +7,11 @@ import glob
 import logging
 import os.path
 
+import numpy as np
 import pytest
 
-import numpy as np
-
-from metpy.io.nexrad import Level2File, Level3File, is_precip_mode
 from metpy.cbook import get_test_data
+from metpy.io.nexrad import is_precip_mode, Level2File, Level3File
 
 # Turn off the warnings for tests
 logging.getLogger('metpy.io.nexrad').setLevel(logging.CRITICAL)

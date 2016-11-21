@@ -12,6 +12,7 @@ except ImportError:
     buffer_args = dict(buffering=1)
 
 import numpy as np
+
 from metpy.plots.ctables import ColortableRegistry, convert_gempak_table
 
 

@@ -6,8 +6,8 @@
 See WMO manual 485 Vol 1 for more info on the symbols.
 """
 
-from pkg_resources import resource_filename
 import matplotlib.font_manager as fm
+from pkg_resources import resource_filename
 
 # Create a matplotlib font object pointing to our weather symbol font
 wx_symbol_font = fm.FontProperties(fname=resource_filename('metpy.plots',

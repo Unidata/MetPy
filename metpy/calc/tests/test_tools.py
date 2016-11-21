@@ -3,10 +3,9 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 import numpy as np
-from numpy.testing import assert_array_equal
-from metpy.testing import assert_array_almost_equal
 
 from metpy.calc.tools import *  # noqa: F403
+from metpy.testing import assert_array_almost_equal, assert_array_equal
 
 
 def test_resample_nn():

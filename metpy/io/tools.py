@@ -5,10 +5,11 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from __future__ import print_function
-import logging
-import zlib
+
 from collections import namedtuple
+import logging
 from struct import Struct
+import zlib
 
 from ..units import UndefinedUnitError, units
 

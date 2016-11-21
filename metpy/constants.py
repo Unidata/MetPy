@@ -1,3 +1,6 @@
+# Copyright (c) 2008-2015 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 r'''
 This is a collection of meteorologically significant constants.
 
@@ -67,12 +70,8 @@ molecular_weight_ratio   epsilon None     Ratio of molecular weight of water to
 ======================== ======= ======== =====================================
 '''
 
-# Copyright (c) 2008-2015 MetPy Developers.
-# Distributed under the terms of the BSD 3-Clause License.
-# SPDX-License-Identifier: BSD-3-Clause
-
-from .units import units
 from .package_tools import Exporter
+from .units import units
 
 exporter = Exporter(globals())
 

@@ -4,14 +4,12 @@
 
 from __future__ import division
 
-import numpy as np
-
 import warnings
 
-from scipy.spatial import Delaunay, ConvexHull, cKDTree, qhull
+import numpy as np
+from scipy.spatial import cKDTree, ConvexHull, Delaunay, qhull
 
-from metpy.gridding import triangles, polygons, points
-
+from . import points, polygons, triangles
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())

@@ -3,7 +3,8 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 import numpy as np
-from numpy.testing import assert_array_equal, assert_almost_equal
+from numpy.testing import assert_almost_equal, assert_array_equal
+
 from metpy.calc.turbulence import *  # noqa: F403
 
 

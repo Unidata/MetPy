@@ -4,23 +4,18 @@
 
 from __future__ import division
 
-import pytest
-
-from metpy.gridding.interpolation import (barnes_weights, nn_point, cressman_weights,
-                                          cressman_point, barnes_point, natural_neighbor,
-                                          inverse_distance)
-
-from metpy.gridding.triangles import find_natural_neighbors, dist_2
-from metpy.gridding.gridding_functions import calc_kappa
-from metpy.cbook import get_test_data
-from scipy.spatial import cKDTree, Delaunay
-
 import numpy as np
-
-from numpy.testing import assert_array_almost_equal
-from numpy.testing import assert_almost_equal
-
+from numpy.testing import assert_almost_equal, assert_array_almost_equal
+import pytest
+from scipy.spatial import cKDTree, Delaunay
 from scipy.spatial.distance import cdist
+
+from metpy.cbook import get_test_data
+from metpy.gridding.gridding_functions import calc_kappa
+from metpy.gridding.interpolation import (barnes_point, barnes_weights, cressman_point,
+                                          cressman_weights, inverse_distance,
+                                          natural_neighbor, nn_point)
+from metpy.gridding.triangles import dist_2, find_natural_neighbors
 
 
 @pytest.fixture()

@@ -3,9 +3,11 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from __future__ import division
+
 import numpy as np
-from ..package_tools import Exporter
+
 from ..constants import g
+from ..package_tools import Exporter
 from ..units import atleast_2d, concatenate, units
 
 exporter = Exporter(globals())

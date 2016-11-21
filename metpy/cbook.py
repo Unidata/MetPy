@@ -1,12 +1,12 @@
-'''Collection of generally useful utility code from the cookbook'''
-
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+'''Collection of generally useful utility code from the cookbook'''
 
 import os
 import os.path
-from matplotlib.cbook import iterable, is_string_like, Bunch
+
+from matplotlib.cbook import Bunch, is_string_like, iterable
 
 
 def get_test_data(fname, as_file_obj=True):

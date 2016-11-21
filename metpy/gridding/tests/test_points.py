@@ -4,13 +4,12 @@
 
 from __future__ import division
 
-from metpy.gridding.points import (get_points_within_r, get_point_count_within_r,
-                                   get_boundary_coords, get_xy_steps, get_xy_range,
-                                   generate_grid, generate_grid_coords)
-
+import numpy as np
 from numpy.testing import assert_array_almost_equal
 
-import numpy as np
+from metpy.gridding.points import (generate_grid, generate_grid_coords, get_boundary_coords,
+                                   get_point_count_within_r, get_points_within_r,
+                                   get_xy_range, get_xy_steps)
 
 
 def test_get_points_within_r():

@@ -2,20 +2,20 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-import numpy as np
-import matplotlib.transforms as transforms
-import matplotlib.axis as maxis
-import matplotlib.spines as mspines
 from matplotlib.axes import Axes
+import matplotlib.axis as maxis
 from matplotlib.collections import LineCollection
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
+import matplotlib.spines as mspines
 from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter
-from .util import colored_line
-from ..calc import dry_lapse, moist_lapse, dewpoint, vapor_pressure
-from ..units import units
+import matplotlib.transforms as transforms
+import numpy as np
 
+from .util import colored_line
+from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
 from ..package_tools import Exporter
+from ..units import units
 
 exporter = Exporter(globals())
 

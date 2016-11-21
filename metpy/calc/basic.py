@@ -3,12 +3,13 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from __future__ import division
+
 import numpy as np
 from numpy.ma import masked_array
-from ..constants import g, Rd, omega
+
+from ..constants import g, omega, Rd
 from ..package_tools import Exporter
 from ..units import atleast_1d, units
-
 
 exporter = Exporter(globals())
 

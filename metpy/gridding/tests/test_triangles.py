@@ -4,16 +4,14 @@
 
 from __future__ import division
 
-from metpy.gridding.triangles import (dist_2, distance, circumcircle_radius_2,
-                                      circumcircle_radius, circumcenter,
-                                      find_natural_neighbors, find_nn_triangles_point,
-                                      find_local_boundary, triangle_area)
-
-from numpy.testing import assert_array_almost_equal
-from numpy.testing import assert_almost_equal
+import numpy as np
+from numpy.testing import assert_almost_equal, assert_array_almost_equal
 from scipy.spatial import Delaunay
 
-import numpy as np
+from metpy.gridding.triangles import (circumcenter, circumcircle_radius, circumcircle_radius_2,
+                                      dist_2, distance, find_local_boundary,
+                                      find_natural_neighbors, find_nn_triangles_point,
+                                      triangle_area)
 
 
 def test_triangle_area():

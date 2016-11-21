@@ -3,11 +3,13 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from __future__ import division
+
 import numpy as np
 import scipy.integrate as si
+
 from .tools import find_intersections
+from ..constants import Cp_d, epsilon, kappa, Lv, P0, Rd
 from ..package_tools import Exporter
-from ..constants import epsilon, kappa, P0, Rd, Lv, Cp_d
 from ..units import atleast_1d, concatenate, units
 
 exporter = Exporter(globals())

@@ -2,18 +2,19 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-import logging
-import re
 from datetime import datetime
 try:
     from enum import Enum
 except ImportError:
     from enum34 import Enum
 from itertools import repeat
+import logging
+import re
 
 import numpy as np
+
+from .cdm import cf_to_proj, Dataset
 from .tools import Bits, IOBuffer, NamedStruct, zlib_decompress_all_frames
-from .cdm import Dataset, cf_to_proj
 from ..cbook import is_string_like
 from ..package_tools import Exporter
 

@@ -5,6 +5,7 @@ r"""This module contains calculations related to turbulence and time series pert
 """
 
 import numpy as np
+
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())

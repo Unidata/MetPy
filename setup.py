@@ -3,8 +3,10 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from __future__ import print_function
+
 import sys
-from setuptools import setup, find_packages, Command
+
+from setuptools import Command, find_packages, setup
 import versioneer
 
 
