@@ -47,45 +47,45 @@ class SkewXTick(maxis.XTick):
                                              self.get_loc()))
 
     @property
-    def gridOn(self):
+    def gridOn(self):  # noqa: N802
         return (self._gridOn and (self._has_default_loc() or
                 transforms.interval_contains(self.get_view_interval(),
                                              self.get_loc())))
 
     @gridOn.setter
-    def gridOn(self, value):
+    def gridOn(self, value):  # noqa: N802
         self._gridOn = value
 
     @property
-    def tick1On(self):
+    def tick1On(self):  # noqa: N802
         return self._tick1On and self._need_lower()
 
     @tick1On.setter
-    def tick1On(self, value):
+    def tick1On(self, value):  # noqa: N802
         self._tick1On = value
 
     @property
-    def label1On(self):
+    def label1On(self):  # noqa: N802
         return self._label1On and self._need_lower()
 
     @label1On.setter
-    def label1On(self, value):
+    def label1On(self, value):  # noqa: N802
         self._label1On = value
 
     @property
-    def tick2On(self):
+    def tick2On(self):  # noqa: N802
         return self._tick2On and self._need_upper()
 
     @tick2On.setter
-    def tick2On(self, value):
+    def tick2On(self, value):  # noqa: N802
         self._tick2On = value
 
     @property
-    def label2On(self):
+    def label2On(self):  # noqa: N802
         return self._label2On and self._need_upper()
 
     @label2On.setter
-    def label2On(self, value):
+    def label2On(self, value):  # noqa: N802
         self._label2On = value
 
     def get_view_interval(self):
