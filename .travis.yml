@@ -120,7 +120,7 @@ script:
       python setup.py test --addopts "$TEST_OPTS";
     fi
 
-after_success:
+after_script:
   - if [[ $TASK == "coverage" ]]; then
       pip install codecov codacy-coverage codeclimate-test-reporter;
       codecov -e TRAVIS_PYTHON_VERSION;
