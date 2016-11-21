@@ -18,6 +18,7 @@ dependencies:
   - pytest-runner
   - flake8 != 3.2.0
   - flake8-quotes
+  - flake8-import-order
   - pep8-naming
   - pyproj
   - cartopy
