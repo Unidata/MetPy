@@ -93,8 +93,10 @@ setup(
         'doc': ['sphinx>=1.3', 'ipython[all]>=3.1'],
         'examples': ['cartopy>=0.13.1'],
         'test': ['pytest', 'pytest-runner', 'pytest-mpl', 'pytest-flake8',
-                 'flake8>3.2.0', 'flake8-quotes',
-                 'flake8-import-order', 'pep8-naming']
+                 'flake8>3.2.0', 'flake8-builtins',
+                 'flake8-comprehensions', 'flake8-import-order',
+                 'flake8-mutable', 'flake8-pep3101', 'flake8-print',
+                 'flake8-quotes', 'pep8-naming']
     },
 
     cmdclass=commands,
