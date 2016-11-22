@@ -62,7 +62,7 @@ before_install:
         pip install -r docs/requirements.txt -f $WHEELHOUSE;
     else
       if [[ $TASK == "examples" ]]; then
-        export EXTRA_INSTALLS="$EXTRA_INSTALLS,examples";
+        export EXTRA_INSTALLS="cdm,examples";
         export EXTRA_PACKAGES="Cython nbconvert ipykernel";
         wget https://github.com/OSGeo/proj.4/archive/4.9.2.tar.gz;
         tar xf 4.9.2.tar.gz;
@@ -77,6 +77,9 @@ before_install:
         popd;
       else
         export TEST_OPTS="--flake8 --mpl";
+        if [[ $TRAVIS_PYTHON_VERSION == 3.5 ]]; then
+          pip install flake8-bugbear;
+        fi;
         if [[ $TASK == "coverage" ]]; then
           export TEST_OPTS="$TEST_OPTS --cov=metpy";
           pip install pytest-cov;
