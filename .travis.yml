@@ -120,6 +120,7 @@ script:
       fi;
       find examples/notebooks/ -name \*.ipynb -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=200 --to=notebook --stdout >| /dev/null;
     else
+      flake8 --version;
       python setup.py test --addopts "$TEST_OPTS";
     fi
 
