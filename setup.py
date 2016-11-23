@@ -36,7 +36,7 @@ class MakeExamples(Command):
             output, _ = exporter.from_filename(fname)
             out_fname = os.path.splitext(os.path.basename(fname))[0]
             out_name = os.path.join(script_dir, out_fname + '.py')
-            print(fname, '->', out_name)
+            print(fname, '->', out_name)  # noqa: T003
             with open(out_name, 'w') as outf:
                 outf.write(output)
 

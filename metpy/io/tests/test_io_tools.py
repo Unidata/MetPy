@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 from metpy.io.cdm import Dataset
-from metpy.io.tools import UnitLinker
+from metpy.io.tools import hexdump, UnitLinker
 from metpy.testing import assert_array_equal
 from metpy.units import units
 
@@ -69,3 +69,9 @@ def test_attribute_forwarding(test_var):
     test_var.att = 'abc'
     new_var = UnitLinker(test_var)
     assert new_var.att == test_var.att
+
+
+def test_hexdump():
+    r'Test hexdump tool'
+    data = bytearray([77, 101, 116, 80, 121])
+    assert hexdump(data, 4, width=8) == '4D657450 79------  0  0  MetPy'

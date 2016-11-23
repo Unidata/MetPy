@@ -259,7 +259,7 @@ def find_natural_neighbors(tri, grid_points):
 
     triangle_info = dict()
 
-    members = dict((key, []) for key in range(len(tree.data)))
+    members = {key: [] for key in range(len(tree.data))}
 
     for i, simplices in enumerate(tri.simplices):
 

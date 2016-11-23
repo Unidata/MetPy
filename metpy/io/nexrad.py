@@ -176,7 +176,7 @@ class Level2File(object):
         # See if we need to apply bz2 decompression
         try:
             self._buffer = IOBuffer(self._buffer.read_func(bzip_blocks_decompress_all))
-        except:
+        except Exception:
             self._buffer.jump_to(start)
 
         # Now we're all initialized, we can proceed with reading in data
