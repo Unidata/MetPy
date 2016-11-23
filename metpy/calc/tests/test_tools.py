@@ -4,7 +4,7 @@
 
 import numpy as np
 
-from metpy.calc.tools import *  # noqa: F403
+from metpy.calc import find_intersections, nearest_intersection_idx, resample_nn_1d
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 
 

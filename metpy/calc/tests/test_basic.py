@@ -4,7 +4,8 @@
 
 import numpy as np
 
-from metpy.calc.basic import *  # noqa: F403
+from metpy.calc import (coriolis_parameter, get_wind_components, get_wind_dir, get_wind_speed,
+                        heat_index, pressure_to_height_std, windchill)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 

@@ -7,7 +7,7 @@ from matplotlib.gridspec import GridSpec
 import numpy as np
 import pytest
 
-from metpy.plots.skewt import *  # noqa: F403
+from metpy.plots import Hodograph, SkewT
 from metpy.testing import hide_tick_labels, make_figure, test_style
 from metpy.units import units
 
