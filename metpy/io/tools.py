@@ -266,9 +266,6 @@ class IOBuffer(object):
     def __str__(self):
         return 'Size: {} Offset: {}'.format(len(self._data), self._offset)
 
-    def print_next(self, num_bytes):
-        print(' '.join('%02x' % c for c in self.get_next(num_bytes)))
-
     def __len__(self):
         return len(self._data)
 
@@ -316,10 +313,11 @@ def bits_to_code(val):
 def hexdump(buf, num_bytes, offset=0, width=32):
     ind = offset
     end = offset + num_bytes
+    lines = []
     while ind < end:
         chunk = buf[ind:ind + width]
         actual_width = len(chunk)
-        hexfmt = '%02X'
+        hexfmt = '{:02X}'
         blocksize = 4
         blocks = [hexfmt * blocksize for _ in range(actual_width // blocksize)]
 
@@ -331,7 +329,8 @@ def hexdump(buf, num_bytes, offset=0, width=32):
 
         hexoutput = ' '.join(blocks)
         printable = tuple(chunk)
-        print(hexoutput % printable, str(ind).ljust(len(str(end))),
-              str(ind - offset).ljust(len(str(end))),
-              ''.join(chr(c) if 31 < c < 128 else '.' for c in chunk), sep='  ')
+        lines.append('  '.join((hexoutput.format(*printable), str(ind).ljust(len(str(end))),
+                                str(ind - offset).ljust(len(str(end))),
+                                ''.join(chr(c) if 31 < c < 128 else '.' for c in chunk))))
         ind += width
+    return '\n'.join(lines)
