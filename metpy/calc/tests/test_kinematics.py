@@ -4,7 +4,8 @@
 
 import numpy as np
 
-from metpy.calc.kinematics import *  # noqa: F403
+from metpy.calc import (advection, convergence_vorticity, geostrophic_wind, h_convergence,
+                        v_vorticity)
 from metpy.constants import g, omega, Re
 from metpy.testing import assert_almost_equal, assert_array_equal
 from metpy.units import concatenate, units

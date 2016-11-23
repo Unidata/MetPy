@@ -5,7 +5,7 @@
 import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_equal
 
-from metpy.calc.turbulence import *  # noqa: F403
+from metpy.calc.turbulence import friction_velocity, get_perturbation, kinematic_flux, tke
 
 
 class TestTurbulenceKineticEnergy(object):
