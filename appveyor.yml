@@ -33,6 +33,7 @@ install:
     - cmd: if %PYTHON_VERSION% == 2.7 conda install -q enum34
     - cmd: python -m ipykernel install --user --name devel
     - cmd: pip install ".[test]"
+    - cmd: flake8 --version
 
 # Skip .NET project specific build phase.
 build: off
