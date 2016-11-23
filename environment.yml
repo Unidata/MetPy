@@ -28,5 +28,6 @@ dependencies:
   - pip
   - pip:
     - doc8
+    - flake8-copyright
     - flake8-pep3101
     - flake8-print
