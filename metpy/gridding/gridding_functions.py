@@ -1,6 +1,7 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2008-2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Tools and calculations for assigning values to a grid."""
 
 from __future__ import division
 
@@ -28,22 +29,21 @@ def calc_kappa(spacing, kappa_star=5.052):
     -------
         kappa: float
     """
-
     return kappa_star * (2.0 * spacing / np.pi)**2
 
 
 def remove_observations_below_value(x, y, z, val=0):
-    r"""Given (x,y) coordinates and an associated observation (z),
-    remove all x, y, and z where z is less than val. Will not destroy
-    original values.
+    r"""Remove all x, y, and z where z is less than val.
+
+    Will not destroy original values.
 
     Parameters
     ----------
-    x: float
+    x: array_like
         x coordinate.
-    y: float
+    y: array_like
         y coordinate.
-    z: float
+    z: array_like
         Observation value.
     val: float
         Value at which to threshold z.
@@ -54,7 +54,6 @@ def remove_observations_below_value(x, y, z, val=0):
         List of coordinate observation pairs without
         observation values less than val.
     """
-
     x_ = x[z >= val]
     y_ = y[z >= val]
     z_ = z[z >= val]
@@ -63,17 +62,17 @@ def remove_observations_below_value(x, y, z, val=0):
 
 
 def remove_nan_observations(x, y, z):
-    r"""Given (x,y) coordinates and an associated observation (z),
-    remove all x, y, and z where z is nan. Will not destroy
-    original values.
+    r"""Remove all x, y, and z where z is nan.
+
+    Will not destroy original values.
 
     Parameters
     ----------
-    x: float
+    x: array_like
         x coordinate
-    y: float
+    y: array_like
         y coordinate
-    z: float
+    z: array_like
         observation value
 
     Returns
@@ -82,7 +81,6 @@ def remove_nan_observations(x, y, z):
         List of coordinate observation pairs without
         nan valued observations.
     """
-
     x_ = x[~np.isnan(z)]
     y_ = y[~np.isnan(z)]
     z_ = z[~np.isnan(z)]
@@ -91,17 +89,17 @@ def remove_nan_observations(x, y, z):
 
 
 def remove_repeat_coordinates(x, y, z):
-    r"""Given x,y coordinates and an associated observation (z),
-    remove all x, y, and z where (x,y) is repeated and keep the
-    first occurrence only. Will not destroy original values.
+    r"""Remove all x, y, and z where (x,y) is repeated and keep the first occurrence only.
+
+    Will not destroy original values.
 
     Parameters
     ----------
-    x: float
+    x: array_like
         x coordinate
-    y: float
+    y: array_like
         y coordinate
-    z: float
+    z: array_like
         observation value
 
     Returns
@@ -110,7 +108,6 @@ def remove_repeat_coordinates(x, y, z):
         List of coordinate observation pairs without
         repeated coordinates.
     """
-
     coords = []
     variable = []
 
@@ -179,7 +176,6 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
     img: (M, N) ndarray
         2-dimensional array representing the interpolated values for each grid.
     """
-
     grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y))
 
     if interp_type in ['linear', 'nearest', 'cubic']:

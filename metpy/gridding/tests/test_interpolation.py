@@ -1,6 +1,7 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2008-2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Test the `interpolation` module."""
 
 from __future__ import division
 
@@ -20,8 +21,7 @@ from metpy.gridding.triangles import dist_2, find_natural_neighbors
 
 @pytest.fixture()
 def test_data():
-    r"""Test data used for tests in this file"""
-
+    r"""Return data used for tests in this file."""
     x = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58], dtype=float)
     y = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16], dtype=float)
     z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
@@ -32,8 +32,7 @@ def test_data():
 
 @pytest.fixture()
 def test_grid():
-    r"""Test grid locations used for tests in this file"""
-
+    r"""Return grid locations used for tests in this file."""
     xg = np.load(get_test_data('interpolation_test_grid.npz'))['xg']
     yg = np.load(get_test_data('interpolation_test_grid.npz'))['yg']
 
@@ -41,8 +40,7 @@ def test_grid():
 
 
 def test_natural_neighbor(test_data, test_grid):
-    r"""Tests natural neighbor interpolation function"""
-
+    r"""Test natural neighbor interpolation function."""
     xp, yp, z = test_data
     xg, yg = test_grid
 
@@ -58,8 +56,7 @@ interp_methods = ['cressman', 'barnes']
 
 @pytest.mark.parametrize('method', interp_methods)
 def test_inverse_distance(method, test_data, test_grid):
-    r"""Tests inverse distance interpolation function"""
-
+    r"""Test inverse distance interpolation function."""
     xp, yp, z = test_data
     xg, yg = test_grid
 
@@ -81,8 +78,7 @@ def test_inverse_distance(method, test_data, test_grid):
 
 
 def test_nn_point(test_data):
-    r"""Tests find natural neighbors for a point interpolation function"""
-
+    r"""Test find natural neighbors for a point interpolation function."""
     xp, yp, z = test_data
 
     tri = Delaunay(list(zip(xp, yp)))
@@ -102,8 +98,7 @@ def test_nn_point(test_data):
 
 
 def test_barnes_weights():
-    r"""Tests barnes weights function"""
-
+    r"""Test Barnes weights function."""
     kappa = 1000000
 
     gamma = 0.5
@@ -121,8 +116,7 @@ def test_barnes_weights():
 
 
 def test_cressman_weights():
-    r"""Tests cressman weights function"""
-
+    r"""Test Cressman weights function."""
     r = 5000
 
     dist = np.array([1000, 2000, 3000, 4000])**2
@@ -138,8 +132,7 @@ def test_cressman_weights():
 
 
 def test_cressman_point(test_data):
-    r"""Tests cressman interpolation for a point function"""
-
+    r"""Test Cressman interpolation for a point function."""
     xp, yp, z = test_data
 
     r = 40
@@ -159,8 +152,7 @@ def test_cressman_point(test_data):
 
 
 def test_barnes_point(test_data):
-    r"""Tests barnes interpolation for a point function"""
-
+    r"""Test Barnes interpolation for a point function."""
     xp, yp, z = test_data
 
     r = 40

@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Tests for the `_mpl` module."""
 
 from tempfile import TemporaryFile
 
@@ -16,7 +17,7 @@ import metpy.plots  # noqa: F401
 # Avoiding an image-based test here since that would involve text, which can be tricky
 # to handle robustly
 def test_scattertext_patheffect_empty():
-    'Test scattertext with empty strings and PathEffects (Issue #245)'
+    """Test scattertext with empty strings and PathEffects (Issue #245)."""
     strings = ['abc', '', 'def']
     x, y = np.arange(6).reshape(2, 3)
     fig = make_figure()

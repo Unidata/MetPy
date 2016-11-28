@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Tools to process GINI-formatted products."""
 
 from datetime import datetime
 try:
@@ -13,8 +14,8 @@ import re
 
 import numpy as np
 
-from .cdm import cf_to_proj, Dataset
 from ._tools import Bits, IOBuffer, NamedStruct, zlib_decompress_all_frames
+from .cdm import cf_to_proj, Dataset
 from ..cbook import is_string_like
 from ..package_tools import Exporter
 
@@ -26,14 +27,14 @@ log.setLevel(logging.WARN)
 
 
 def _make_datetime(s):
-    r'Converts 7 bytes from a GINI file to a `datetime` instance.'
+    r"""Convert 7 bytes from a GINI file to a `datetime` instance."""
     s = bytearray(s)  # For Python 2
     year, month, day, hour, minute, second, cs = s
     return datetime(1900 + year, month, day, hour, minute, second, 10000 * cs)
 
 
 def _scaled_int(s):
-    r'Converts a 3 byte string to a signed integer value'
+    r"""Convert a 3 byte string to a signed integer value."""
     s = bytearray(s)  # For Python 2
 
     # Get leftmost bit (sign) as 1 (if 0) or -1 (if 1)
@@ -48,7 +49,7 @@ def _scaled_int(s):
 
 
 def _name_lookup(names):
-    r'Creates an io helper to convert an integer to a named value.'
+    r"""Create an io helper to convert an integer to a named value."""
     mapper = dict(zip(range(len(names)), names))
 
     def lookup(val):
@@ -57,7 +58,8 @@ def _name_lookup(names):
 
 
 class GiniProjection(Enum):
-    r'Represents projection values in GINI files'
+    r"""Represents projection values in GINI files."""
+
     mercator = 1
     lambert_conformal = 3
     polar_stereographic = 5
@@ -65,7 +67,7 @@ class GiniProjection(Enum):
 
 @exporter.export
 class GiniFile(object):
-    r'''A class that handles reading the GINI format satellite images from the NWS.
+    """A class that handles reading the GINI format satellite images from the NWS.
 
     This class attempts to decode every byte that is in a given GINI file.
 
@@ -77,7 +79,8 @@ class GiniFile(object):
     See Also
     --------
     GiniFile.to_dataset
-    '''
+    """
+
     missing = 255
     wmo_finder = re.compile('(T\w{3}\d{2})[\s\w\d]+\w*(\w{3})\r\r\n')
 
@@ -136,7 +139,7 @@ class GiniFile(object):
                            ('ur_lon', '3s', _scaled_int)], '>', 'Navigation')
 
     def __init__(self, filename):
-        r'''Create instance of `GiniFile`.
+        r"""Create an instance of `GiniFile`.
 
         Parameters
         ----------
@@ -145,8 +148,7 @@ class GiniFile(object):
             recognized with the extension ``'.gz'``, as are bzip2-ed files with
             the extension ``'.bz2'`` If `filename` is a file-like object,
             this will be read from directly.
-        '''
-
+        """
         if is_string_like(filename):
             fobj = open(filename, 'rb')
             self.filename = filename
@@ -299,7 +301,7 @@ class GiniFile(object):
         return ds
 
     def _process_wmo_header(self):
-        'Read off the WMO header from the file, if necessary.'
+        """Read off the WMO header from the file, if necessary."""
         data = self._buffer.get_next(64).decode('utf-8', 'ignore')
         match = self.wmo_finder.search(data)
         if match:
@@ -308,6 +310,7 @@ class GiniFile(object):
             self._buffer.skip(match.end())
 
     def __str__(self):
+        """Return a string representation of the product."""
         parts = [self.__class__.__name__ + ': {0.creating_entity} {0.sector_id} {0.channel}',
                  'Time: {0.datetime}', 'Size: {0.ny}x{0.nx}',
                  'Projection: {0.projection.name}',
@@ -317,7 +320,7 @@ class GiniFile(object):
 
 
 def _add_projection_coords(ds, prod_desc, proj_var, dx, dy):
-    'Helper function for adding coordinate variables (projection and lon/lat) to a dataset'
+    """Add coordinate variables (projection and lon/lat) to a dataset."""
     proj = cf_to_proj(proj_var)
 
     # Get projected location of lower left point

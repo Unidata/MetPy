@@ -15,7 +15,6 @@ from .gini import *  # noqa: F403
 from .nexrad import *  # noqa: F403
 from .upperair import *  # noqa: F403
 
-__all__ = []
-__all__.extend(gini.__all__)  # pylint: disable=undefined-variable
+__all__ = gini.__all__[:]  # pylint: disable=undefined-variable
 __all__.extend(nexrad.__all__)  # pylint: disable=undefined-variable
 __all__.extend(upperair.__all__)  # pylint: disable=undefined-variable

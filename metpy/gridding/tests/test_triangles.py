@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Test the `triangles` module."""
 
 from __future__ import division
 
@@ -15,8 +16,7 @@ from metpy.gridding.triangles import (circumcenter, circumcircle_radius, circumc
 
 
 def test_triangle_area():
-    r"""Tests area of triangle function"""
-
+    r"""Test area of triangle function."""
     pt0 = [0, 0]
     pt1 = [10, 10]
     pt2 = [10, 0]
@@ -40,8 +40,7 @@ def test_triangle_area():
 
 
 def test_dist_2():
-    r"""Tests squared distance function"""
-
+    r"""Test squared distance function."""
     x0 = 0
     y0 = 0
 
@@ -56,8 +55,7 @@ def test_dist_2():
 
 
 def test_distance():
-    r"""Tests distance function"""
-
+    r"""Test distance function."""
     pt0 = [0, 0]
     pt1 = [10, 10]
 
@@ -69,8 +67,7 @@ def test_distance():
 
 
 def test_circumcircle_radius_2():
-    r"""Tests squared circumcircle radius function"""
-
+    r"""Test squared circumcircle radius function."""
     pt0 = [0, 0]
     pt1 = [10, 10]
     pt2 = [10, 0]
@@ -83,8 +80,7 @@ def test_circumcircle_radius_2():
 
 
 def test_circumcircle_radius():
-    r"""Tests circumcircle radius function"""
-
+    r"""Test circumcircle radius function."""
     pt0 = [0, 0]
     pt1 = [10, 10]
     pt2 = [10, 0]
@@ -97,8 +93,7 @@ def test_circumcircle_radius():
 
 
 def test_circumcenter():
-    r"""Tests circumcenter function"""
-
+    r"""Test circumcenter function."""
     pt0 = [0, 0]
     pt1 = [10, 10]
     pt2 = [10, 0]
@@ -111,8 +106,7 @@ def test_circumcenter():
 
 
 def test_find_natural_neighbors():
-    r"""Tests find natural neighbors function"""
-
+    r"""Test find natural neighbors function."""
     x = list(range(0, 20, 4))
     y = list(range(0, 20, 4))
     gx, gy = np.meshgrid(x, y)
@@ -153,8 +147,7 @@ def test_find_natural_neighbors():
 
 
 def test_find_nn_triangles_point():
-    r"""Tests find natural neighbors for a point function"""
-
+    r"""Test find natural neighbors for a point function."""
     x = list(range(10))
     y = list(range(10))
     gx, gy = np.meshgrid(x, y)
@@ -171,8 +164,7 @@ def test_find_nn_triangles_point():
 
 
 def test_find_local_boundary():
-    r"""Tests find edges of natural neighbor triangle group function"""
-
+    r"""Test find edges of natural neighbor triangle group function."""
     x = list(range(10))
     y = list(range(10))
     gx, gy = np.meshgrid(x, y)

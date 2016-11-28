@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Contains a collection of thermodynamic calculations."""
 
 from __future__ import division
 
@@ -19,7 +20,7 @@ sat_pressure_0c = 6.112 * units.millibar
 
 @exporter.export
 def potential_temperature(pressure, temperature):
-    r'''Calculate the potential temperature.
+    r"""Calculate the potential temperature.
 
     Uses the Poisson equation to calculation the potential temperature
     given `pressure` and `temperature`.
@@ -52,16 +53,13 @@ def potential_temperature(pressure, temperature):
     >>> from metpy.units import units
     >>> metpy.calc.potential_temperature(800. * units.mbar, 273. * units.kelvin)
     290.9814150577374
-
-    '''
-
+    """
     return temperature * (P0 / pressure).to('dimensionless')**kappa
 
 
 @exporter.export
 def dry_lapse(pressure, temperature):
-    r'''Calculate the temperature at a level assuming only dry processes
-    operating from the starting point.
+    r"""Calculate the temperature at a level assuming only dry processes.
 
     This function lifts a parcel starting at `temperature`, conserving
     potential temperature. The starting pressure should be the first item in
@@ -85,16 +83,13 @@ def dry_lapse(pressure, temperature):
                   processes
     parcel_profile : Calculate complete parcel profile
     potential_temperature
-    '''
-
+    """
     return temperature * (pressure / pressure[0])**kappa
 
 
 @exporter.export
 def moist_lapse(pressure, temperature):
-    r'''
-    Calculate the temperature at a level assuming liquid saturation processes
-    operating from the starting point.
+    r"""Calculate the temperature at a level assuming liquid saturation processes.
 
     This function lifts a parcel starting at `temperature`. The starting
     pressure should be the first item in the `pressure` array. Essentially,
@@ -133,8 +128,7 @@ def moist_lapse(pressure, temperature):
 
     .. [1] Bakhshaii, A. and R. Stull, 2013: Saturated Pseudoadiabats--A
            Noniterative Approximation. J. Appl. Meteor. Clim., 52, 5-15.
-    '''
-
+    """
     def dt(t, p):
         t = units.Quantity(t, temperature.units)
         p = units.Quantity(p, pressure.units)
@@ -148,8 +142,7 @@ def moist_lapse(pressure, temperature):
 
 @exporter.export
 def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
-    r'''Calculate the lifted condensation level (LCL) using from the starting
-    point.
+    r"""Calculate the lifted condensation level (LCL) using from the starting point.
 
     The starting state for the parcel is defined by `temperature`, `dewpt`,
     and `pressure`.
@@ -188,8 +181,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
     3. Iterate until convergence
 
     The function is guaranteed to finish by virtue of the `maxIters` counter.
-    '''
-
+    """
     w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
     new_p = p = pressure
     eps = units.Quantity(eps, p.units)
@@ -205,9 +197,10 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
 
 @exporter.export
 def lfc(pressure, temperature, dewpt):
-    r'''Calculate the level of free convection (LFC) by finding the first
-    intersection of the ideal parcel path and the measured parcel
-    temperature.
+    r"""Calculate the level of free convection (LFC).
+
+    This works by finding the first intersection of the ideal parcel path and
+    the measured parcel temperature.
 
     Parameters
     ----------
@@ -226,8 +219,7 @@ def lfc(pressure, temperature, dewpt):
     See Also
     --------
     parcel_profile
-    '''
-
+    """
     ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
     x, y = find_intersections(pressure, ideal_profile, temperature)
     return x[0], y[0]
@@ -235,8 +227,7 @@ def lfc(pressure, temperature, dewpt):
 
 @exporter.export
 def parcel_profile(pressure, temperature, dewpt):
-    r'''Calculate the profile a parcel takes through the atmosphere, lifting
-    from the starting point.
+    r"""Calculate the profile a parcel takes through the atmosphere.
 
     The parcel starts at `temperature`, and `dewpt`, lifted up
     dry adiabatically to the LCL, and then moist adiabatically from there.
@@ -260,8 +251,7 @@ def parcel_profile(pressure, temperature, dewpt):
     See Also
     --------
     lcl, moist_lapse, dry_lapse
-    '''
-
+    """
     # Find the LCL
     l = lcl(pressure[0], temperature, dewpt).to(pressure.units)
 
@@ -281,7 +271,7 @@ def parcel_profile(pressure, temperature, dewpt):
 
 @exporter.export
 def vapor_pressure(pressure, mixing):
-    r'''Calculate water vapor (partial) pressure
+    r"""Calculate water vapor (partial) pressure.
 
     Given total `pressure` and water vapor `mixing` ratio, calculates the
     partial pressure of water vapor.
@@ -302,14 +292,13 @@ def vapor_pressure(pressure, mixing):
     See Also
     --------
     saturation_vapor_pressure, dewpoint
-    '''
-
+    """
     return pressure * mixing / (epsilon + mixing)
 
 
 @exporter.export
 def saturation_vapor_pressure(temperature):
-    r'''Calculate the saturation water vapor (partial) pressure
+    r"""Calculate the saturation water vapor (partial) pressure.
 
     Parameters
     ----------
@@ -338,8 +327,7 @@ def saturation_vapor_pressure(temperature):
     ----------
     .. [2] Bolton, D., 1980: The Computation of Equivalent Potential
            Temperature. Mon. Wea. Rev., 108, 1046-1053.
-    '''
-
+    """
     # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
     # a formula plays havoc with units support.
     return sat_pressure_0c * np.exp(17.67 * (temperature - 273.15 * units.kelvin) /
@@ -348,8 +336,7 @@ def saturation_vapor_pressure(temperature):
 
 @exporter.export
 def dewpoint_rh(temperature, rh):
-    r'''Calculate the ambient dewpoint given air temperature and relative
-    humidity.
+    r"""Calculate the ambient dewpoint given air temperature and relative humidity.
 
     Parameters
     ----------
@@ -366,14 +353,13 @@ def dewpoint_rh(temperature, rh):
     See Also
     --------
     dewpoint, saturation_vapor_pressure
-    '''
-
+    """
     return dewpoint(rh * saturation_vapor_pressure(temperature))
 
 
 @exporter.export
 def dewpoint(e):
-    r'''Calculate the ambient dewpoint given the vapor pressure.
+    r"""Calculate the ambient dewpoint given the vapor pressure.
 
     Parameters
     ----------
@@ -401,18 +387,17 @@ def dewpoint(e):
     ----------
     .. [3] Bolton, D., 1980: The Computation of Equivalent Potential
            Temperature. Mon. Wea. Rev., 108, 1046-1053.
-    '''
-
+    """
     val = np.log(e / sat_pressure_0c)
     return 0. * units.degC + 243.5 * units.delta_degC * val / (17.67 - val)
 
 
 @exporter.export
 def mixing_ratio(part_press, tot_press):
-    r'''Calculates the mixing ratio of gas given its partial pressure
-    and the total pressure of the air.
+    r"""Calculate the mixing ratio of a gas.
 
-    There are no required units for the input arrays, other than that
+    This calculates mixing ratio given its partial pressure and the total pressure of
+    the air. There are no required units for the input arrays, other than that
     they have the same units.
 
     Parameters
@@ -430,17 +415,16 @@ def mixing_ratio(part_press, tot_press):
     See Also
     --------
     vapor_pressure
-    '''
-
+    """
     return epsilon * part_press / (tot_press - part_press)
 
 
 @exporter.export
 def saturation_mixing_ratio(tot_press, temperature):
-    r'''Calculates the saturation mixing ratio given total pressure
-    and the temperature.
+    r"""Calculate the saturation mixing ratio of water vapor.
 
-    The implementation uses the formula outlined in [4]
+    This calculation is given total pressure and the temperature. The implementation
+    uses the formula outlined in [4].
 
     Parameters
     ----------
@@ -458,16 +442,15 @@ def saturation_mixing_ratio(tot_press, temperature):
     ----------
     .. [4] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
             Survey. 73.
-    '''
-
+    """
     return mixing_ratio(saturation_vapor_pressure(temperature), tot_press)
 
 
 @exporter.export
 def equivalent_potential_temperature(pressure, temperature):
-    r'''Calculates equivalent potential temperature given an air parcel's
-    pressure and temperature.
+    r"""Calculate equivalent potential temperature.
 
+    This cacluation must be given an air parcel's pressure and temperature.
     The implementation uses the formula outlined in [5]
 
     Parameters
@@ -490,8 +473,7 @@ def equivalent_potential_temperature(pressure, temperature):
     ----------
     .. [5] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
             Survey. 78-79.
-    '''
-
+    """
     pottemp = potential_temperature(pressure, temperature)
     smixr = saturation_mixing_ratio(pressure, temperature)
     return pottemp * np.exp(Lv * smixr / (Cp_d * temperature))

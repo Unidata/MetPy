@@ -1,6 +1,7 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2008-2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Tools for working with polygons."""
 
 from __future__ import division
 
@@ -22,7 +23,6 @@ def area(poly):
     -------
     area: float
     """
-
     a = 0.0
     n = len(poly)
 
@@ -33,8 +33,7 @@ def area(poly):
 
 
 def order_edges(edges):
-    r"""Return an ordered traversal of the edges of a
-    two-dimensional polygon.
+    r"""Return an ordered traversal of the edges of a two-dimensional polygon.
 
     Parameters
     ----------
@@ -47,7 +46,6 @@ def order_edges(edges):
     -------
     ordered_edges: (2, N) ndarray
     """
-
     edge = edges[0]
     edges = edges[1:]
 

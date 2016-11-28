@@ -1,6 +1,7 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2008-2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Interpolate irregularly spaced points onto a regular grid."""
 
 from __future__ import division
 
@@ -17,8 +18,9 @@ exporter = Exporter(globals())
 
 @exporter.export
 def natural_neighbor(xp, yp, variable, grid_x, grid_y):
-    r"""Generate a natural neighbor interpolation of the given
-    points to the given grid using the Liang and Hale (2010)
+    r"""Generate a natural neighbor interpolation of the given points.
+
+    This assigns values to the given grid using the Liang and Hale (2010)
     approach.
 
     Liang, Luming, and Dave Hale. "A stable and fast implementation
@@ -43,7 +45,6 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
     img: (M, N) ndarray
         Interpolated values on a 2-dimensional grid
     """
-
     tri = Delaunay(list(zip(xp, yp)))
 
     grid_points = points.generate_grid_coords(grid_x, grid_y)
@@ -65,10 +66,10 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
 
 
 def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
-    r"""Generate a natural neighbor interpolation of the given
-    observations to the given point using the Liang and Hale (2010)
-    approach. The interpolation will fail if the grid point has no
-    natural neighbors.
+    r"""Generate a natural neighbor interpolation of the observations to the given point.
+
+    This uses the Liang and Hale (2010) approach. The interpolation will fail if
+    the grid point has no natural neighbors.
 
     Liang, Luming, and Dave Hale. A stable and fast implementation
     of natural neighbor interpolation. (2010).
@@ -100,7 +101,6 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
     value: float
        Interpolated value for the grid location
     """
-
     edges = triangles.find_local_boundary(tri, neighbors)
     edge_vertices = [segment[0] for segment in polygons.order_edges(edges)]
     num_vertices = len(edge_vertices)
@@ -154,8 +154,7 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
 
 
 def barnes_weights(sq_dist, kappa, gamma):
-    r"""Calculate the barnes weights for observation points
-    based on their distance from an interpolation point.
+    r"""Calculate the Barnes weights from squared distance values.
 
     Parameters
     ----------
@@ -173,13 +172,11 @@ def barnes_weights(sq_dist, kappa, gamma):
         Calculated weights for the given observations determined by their distance
         to the interpolation point.
     """
-
     return np.exp(-1.0 * sq_dist / (kappa * gamma))
 
 
 def cressman_weights(sq_dist, r):
-    r"""Calculate the cressman weights for observation points
-    based on their distance from an interpolation point.
+    r"""Calculate the Cressman weights from squared distance values.
 
     Parameters
     ----------
@@ -197,15 +194,15 @@ def cressman_weights(sq_dist, r):
         Calculated weights for the given observations determined by their distance
         to the interpolation point.
     """
-
     return (r * r - sq_dist) / (r * r + sq_dist)
 
 
 @exporter.export
 def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None,
                      min_neighbors=3, kind='cressman'):
-    r"""Generate an inverse distance weighting interpolation of the given
-    points to the given grid based on either Cressman (1959) or Barnes (1964).
+    r"""Generate an inverse distance weighting interpolation of the given points.
+
+    Values are assigned to the given grid based on either Cressman (1959) or Barnes (1964).
     The Barnes implementation used here based on Koch et al. (1983).
 
     Parameters
@@ -240,7 +237,6 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
     img: (M, N) ndarray
         Interpolated values on a 2-dimensional grid
     """
-
     obs_tree = cKDTree(list(zip(xp, yp)))
 
     grid_points = points.generate_grid_coords(grid_x, grid_y)
@@ -270,8 +266,9 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
 
 
 def cressman_point(sq_dist, values, radius):
-    r"""Generate a cressman interpolation value for a point based on
-    the given distances and search radius.
+    r"""Generate a Cressman interpolation value for a point.
+
+    The calculated value is based on the given distances and search radius.
 
     Parameters
     ----------
@@ -288,7 +285,6 @@ def cressman_point(sq_dist, values, radius):
     value: float
         Interpolation value for grid point.
     """
-
     weights = cressman_weights(sq_dist, radius)
     total_weights = np.sum(weights)
 
@@ -296,9 +292,9 @@ def cressman_point(sq_dist, values, radius):
 
 
 def barnes_point(sq_dist, values, kappa, gamma=1):
-    r"""Generate a single pass barnes interpolation value
-    for a point based on the given distances, kappa and
-    gamma values.
+    r"""Generate a single pass barnes interpolation value for a point.
+
+    The calculated value is based on the given distances, kappa and gamma values.
 
     Parameters
     ----------
@@ -316,7 +312,6 @@ def barnes_point(sq_dist, values, kappa, gamma=1):
     value: float
         Interpolation value for grid point.
     """
-
     weights = barnes_weights(sq_dist, kappa, gamma)
     total_weights = np.sum(weights)
 

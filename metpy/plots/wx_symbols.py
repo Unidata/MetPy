@@ -1,7 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""A module with utilities to simplify using the weather symbol font.
+"""Simplify using the weather symbol font.
 
 See WMO manual 485 Vol 1 for more info on the symbols.
 """
@@ -22,9 +22,10 @@ except NameError:
 
 
 class CodePointMapping(object):
-    r'Maps integer values to font code points.'
+    """Map integer values to font code points."""
+
     def __init__(self, num, font_start, font_jumps=None, char_jumps=None):
-        """
+        """Initialize the instance.
 
         Parameters
         ----------
@@ -64,10 +65,14 @@ class CodePointMapping(object):
 
     @staticmethod
     def _safe_pop(l):
-        'Safely pop from a list; returns None if list empty.'
+        """Safely pop from a list.
+
+        Returns None if list empty.
+        """
         return l.pop(0) if l else None
 
     def __call__(self, code):
+        """Return the Unicode code point corresponding to `code`."""
         return self.chrs[code]
 
     def alt_char(self, code, alt):

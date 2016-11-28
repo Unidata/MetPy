@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Contains calculation of kinematic parameters (e.g. divergence or vorticity)."""
 
 from __future__ import division
 
@@ -14,6 +15,7 @@ exporter = Exporter(globals())
 
 
 def _gradient(f, *args, **kwargs):
+    """Wrapper for :func:`numpy.gradient` that handles units."""
     if len(args) < f.ndim:
         args = list(args)
         args.extend([units.Quantity(1., 'dimensionless')] * (f.ndim - len(args)))
@@ -28,7 +30,7 @@ def _stack(arrs):
 
 
 def _get_gradients(u, v, dx, dy):
-    # Helper function for getting convergence and vorticity from 2D arrays
+    """Helper function for getting convergence and vorticity from 2D arrays."""
     dudx, dudy = _gradient(u, dx, dy)
     dvdx, dvdy = _gradient(v, dx, dy)
     return dudx, dudy, dvdx, dvdy
@@ -36,7 +38,7 @@ def _get_gradients(u, v, dx, dy):
 
 @exporter.export
 def v_vorticity(u, v, dx, dy):
-    r'''Calculate the vertical vorticity of the horizontal wind.
+    r"""Calculate the vertical vorticity of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
 
@@ -59,15 +61,14 @@ def v_vorticity(u, v, dx, dy):
     See Also
     --------
     h_convergence, convergence_vorticity
-    '''
-
+    """
     _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
     return dvdx - dudy
 
 
 @exporter.export
 def h_convergence(u, v, dx, dy):
-    r'''Calculate the horizontal convergence of the horizontal wind.
+    r"""Calculate the horizontal convergence of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
 
@@ -90,16 +91,14 @@ def h_convergence(u, v, dx, dy):
     See Also
     --------
     v_vorticity, convergence_vorticity
-    '''
-
+    """
     dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy
 
 
 @exporter.export
 def convergence_vorticity(u, v, dx, dy):
-    r'''Calculate the horizontal convergence and vertical vorticity of the
-    horizontal wind.
+    r"""Calculate the horizontal convergence and vertical vorticity of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
 
@@ -127,15 +126,14 @@ def convergence_vorticity(u, v, dx, dy):
     -----
     This is a convenience function that will do less work than calculating
     the horizontal convergence and vertical vorticity separately.
-    '''
-
+    """
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy, dvdx - dudy
 
 
 @exporter.export
 def advection(scalar, wind, deltas):
-    r'''Calculate the advection of a scalar field by the wind.
+    r"""Calculate the advection of a scalar field by the wind.
 
     The order of the dimensions of the arrays must match the order in which
     the wind components are given.  For example, if the winds are given [u, v],
@@ -158,8 +156,7 @@ def advection(scalar, wind, deltas):
     -------
     N-dimensional array
         An N-dimensional array containing the advection at all grid points.
-    '''
-
+    """
     # This allows passing in a list of wind components or an array
     wind = _stack(wind)
 
@@ -176,7 +173,7 @@ def advection(scalar, wind, deltas):
 
 @exporter.export
 def geostrophic_wind(heights, f, dx, dy):
-    r'''Calculate the geostrophic wind given from the heights or geopotential.
+    r"""Calculate the geostrophic wind given from the heights or geopotential.
 
     Parameters
     ----------
@@ -195,8 +192,7 @@ def geostrophic_wind(heights, f, dx, dy):
     -------
     A 2-item tuple of arrays
         A tuple of the u-component and v-component of the geostrophic wind.
-    '''
-
+    """
     if heights.dimensionality['[length]'] == 2.0:
         norm_factor = 1. / f
     else:

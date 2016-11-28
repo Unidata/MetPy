@@ -1,6 +1,7 @@
 # Copyright (c) 2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Read upper air data from remote archives."""
 
 from io import BytesIO
 import json
@@ -11,8 +12,8 @@ except ImportError:
 
 import numpy as np
 
-from .cdm import Dataset
 from ._tools import UnitLinker
+from .cdm import Dataset
 from ..calc import get_wind_components
 from ..package_tools import Exporter
 
@@ -80,6 +81,7 @@ def get_upper_air_data(time, site_id, source='wyoming', **kwargs):
 
 class UseSampleData(object):
     r"""Class to temporarily point to local sample data instead of downloading."""
+
     url_map = {r'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST'
                r'&YEAR=1999&MONTH=05&FROM=0400&TO=0400&STNM=OUN': 'may3_sounding.txt',
                r'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST'
@@ -105,10 +107,12 @@ class UseSampleData(object):
             return open(get_test_data(filename, False), 'rb')
 
     def __enter__(self):
+        """Set up our custom `urlopen` wrapper."""
         global urlopen
         urlopen = self._wrapped_urlopen
 
     def __exit__(self, exc_type, exc_val, exc_tb):
+        """Restore the normal `urlopen` functions."""
         global urlopen
         urlopen = self._urlopen
 
@@ -201,6 +205,7 @@ class WyomingUpperAir(object):
 
 class IAStateUpperAir(object):
     r"""Download and parse data from the Iowa State's upper air archive."""
+
     @staticmethod
     def get_data(time, site_id):
         r"""Download data from the Iowa State's upper air archive.

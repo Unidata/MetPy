@@ -1,7 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-r'''
+r"""
 This is a collection of meteorologically significant constants.
 
 Earth
@@ -68,7 +68,7 @@ dry_adiabatic_lapse_rate gamma_d K km^-1  The dry adiabatic lapse rate
 molecular_weight_ratio   epsilon None     Ratio of molecular weight of water to
                                           that of dry air
 ======================== ======= ======== =====================================
-'''
+"""
 
 from .package_tools import Exporter
 from .units import units

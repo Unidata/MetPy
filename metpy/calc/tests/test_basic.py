@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Test the `basic` module."""
 
 import numpy as np
 
@@ -11,7 +12,7 @@ from metpy.units import units
 
 
 def test_wind_comps_basic():
-    'Test the basic wind component calculation.'
+    """Test the basic wind component calculation."""
     speed = np.array([4, 4, 4, 4, 25, 25, 25, 25, 10.]) * units.mph
     dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
     s2 = np.sqrt(2.)
@@ -26,14 +27,14 @@ def test_wind_comps_basic():
 
 
 def test_wind_comps_scalar():
-    'Test scalar wind components'
+    """Test wind components calculation with scalars."""
     u, v = get_wind_components(8 * units('m/s'), 150 * units.deg)
     assert_almost_equal(u, -4 * units('m/s'), 3)
     assert_almost_equal(v, 6.9282 * units('m/s'), 3)
 
 
 def test_speed():
-    'Basic test of wind speed calculation'
+    """Test calculating wind speed."""
     u = np.array([4., 2., 0., 0.]) * units('m/s')
     v = np.array([0., 2., 4., 0.]) * units('m/s')
 
@@ -46,7 +47,7 @@ def test_speed():
 
 
 def test_dir():
-    'Basic test of wind direction calculation'
+    """Test calculating wind direction."""
     u = np.array([4., 2., 0., 0.]) * units('m/s')
     v = np.array([0., 2., 4., 0.]) * units('m/s')
 
@@ -58,7 +59,7 @@ def test_dir():
 
 
 def test_speed_dir_roundtrip():
-    'Convert from wind speed and direction to u,v and back'
+    """Test round-tripping between speed/direction and components."""
     # Test each quadrant of the whole circle
     wspd = np.array([15., 5., 2., 10.]) * units.meters / units.seconds
     wdir = np.array([160., 30., 225., 350.]) * units.degrees
@@ -73,25 +74,25 @@ def test_speed_dir_roundtrip():
 
 
 def test_scalar_speed():
-    'Test wind speed with scalars'
+    """Test wind speed with scalars."""
     s = get_wind_speed(-3. * units('m/s'), -4. * units('m/s'))
     assert_almost_equal(s, 5. * units('m/s'), 3)
 
 
 def test_scalar_dir():
-    'Test wind direction with scalars'
+    """Test wind direction with scalars."""
     d = get_wind_dir(3. * units('m/s'), 4. * units('m/s'))
     assert_almost_equal(d, 216.870 * units.deg, 3)
 
 
 def test_windchill_scalar():
-    'Test wind chill with scalars'
+    """Test wind chill with scalars."""
     wc = windchill(-5 * units.degC, 35 * units('m/s'))
     assert_almost_equal(wc, -18.9357 * units.degC, 0)
 
 
 def test_windchill_basic():
-    'Test the basic wind chill calculation.'
+    """Test the basic wind chill calculation."""
     temp = np.array([40, -10, -45, 20]) * units.degF
     speed = np.array([5, 55, 25, 15]) * units.mph
 
@@ -101,7 +102,7 @@ def test_windchill_basic():
 
 
 def test_windchill_invalid():
-    'Test for values that should be masked.'
+    """Test windchill for values that should be masked."""
     temp = np.array([10, 51, 49, 60, 80, 81]) * units.degF
     speed = np.array([4, 4, 3, 1, 10, 39]) * units.mph
 
@@ -111,7 +112,7 @@ def test_windchill_invalid():
 
 
 def test_windchill_undefined_flag():
-    'Tests whether masking values can be disabled.'
+    """Test whether masking values for windchill can be disabled."""
     temp = units.Quantity(np.ma.array([49, 50, 49, 60, 80, 81]), units.degF)
     speed = units.Quantity(([4, 4, 3, 1, 10, 39]), units.mph)
 
@@ -121,7 +122,7 @@ def test_windchill_undefined_flag():
 
 
 def test_windchill_face_level():
-    'Tests using the face_level flag'
+    """Test windchill using the face_level flag."""
     temp = np.array([20, 0, -20, -40]) * units.degF
     speed = np.array([15, 30, 45, 60]) * units.mph
 
@@ -131,7 +132,7 @@ def test_windchill_face_level():
 
 
 def test_heat_index_basic():
-    'Test the basic heat index calculation.'
+    """Test the basic heat index calculation."""
     temp = np.array([80, 88, 92, 110]) * units.degF
     rh = np.array([40, 100, 70, 40]) * units.percent
 
@@ -141,13 +142,13 @@ def test_heat_index_basic():
 
 
 def test_heat_index_scalar():
-    'Test heat index using scalars'
+    """Test heat index using scalars."""
     hi = heat_index(96 * units.degF, 65 * units.percent)
     assert_almost_equal(hi, 121 * units.degF, 0)
 
 
 def test_heat_index_invalid():
-    'Test for values that should be masked.'
+    """Test heat index for values that should be masked."""
     temp = np.array([80, 88, 92, 79, 30, 81]) * units.degF
     rh = np.array([40, 39, 2, 70, 50, 39]) * units.percent
 
@@ -157,7 +158,7 @@ def test_heat_index_invalid():
 
 
 def test_heat_index_undefined_flag():
-    'Tests whether masking values can be disabled.'
+    """Test whether masking values can be disabled for heat index."""
     temp = units.Quantity(np.ma.array([80, 88, 92, 79, 30, 81]), units.degF)
     rh = np.ma.array([40, 39, 2, 70, 50, 39]) * units.percent
 
@@ -167,7 +168,7 @@ def test_heat_index_undefined_flag():
 
 
 def test_heat_index_units():
-    'Test units coming out of heat index'
+    """Test units coming out of heat index."""
     temp = units.Quantity([35., 20.], units.degC)
     rh = 70 * units.percent
     hi = heat_index(temp, rh)
@@ -175,7 +176,7 @@ def test_heat_index_units():
 
 
 def test_heat_index_ratio():
-    'Test giving humidity as number [0, 1]'
+    """Test giving humidity as number [0, 1] to heat index."""
     temp = units.Quantity([35., 20.], units.degC)
     rh = 0.7
     hi = heat_index(temp, rh)
@@ -217,7 +218,7 @@ def test_heat_index_ratio():
 
 
 def test_pressure_to_heights_basic():
-    'Tests basic pressure to height calculation.'
+    """Test basic pressure to height calculation for standard atmosphere."""
     pressures = np.array([975.2, 987.5, 956., 943.]) * units.mbar
     heights = pressure_to_height_std(pressures)
     values = np.array([321.5, 216.5, 487.6, 601.7]) * units.meter
@@ -225,7 +226,7 @@ def test_pressure_to_heights_basic():
 
 
 def test_coriolis_force():
-    'Tests basic coriolis force calculation.'
+    """Test basic coriolis force calculation."""
     lat = np.array([-90., -30., 0., 30., 90.]) * units.degrees
     cor = coriolis_parameter(lat)
     values = np.array([-1.4584232E-4, -.72921159E-4, 0, .72921159E-4,

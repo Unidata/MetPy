@@ -1,6 +1,11 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Make Skew-T Log-P based plots.
+
+Contain tools for making Skew-T Log-P plots, including the base plotting class,
+`SkewT`, as well as a class for making a `Hodograph`.
+"""
 
 from matplotlib.axes import Axes
 import matplotlib.axis as maxis
@@ -21,13 +26,15 @@ exporter = Exporter(globals())
 
 
 class SkewXTick(maxis.XTick):
-    r"""
+    r"""Make x-axis ticks for Skew-T plots.
+
     This class adds to the standard :class:`matplotlib.axis.XTick` dynamic checking
     for whether a top or bottom tick is actually within the data limits at that part
     and draw as appropriate. It also performs similar checking for gridlines.
     """
+
     def update_position(self, loc):
-        'Set the location of tick in data coords with scalar *loc*'
+        """Set the location of tick in data coords with scalar *loc*."""
         # This ensures that the new value of the location is set before
         # any other updates take place.
         self._loc = loc
@@ -48,6 +55,7 @@ class SkewXTick(maxis.XTick):
 
     @property
     def gridOn(self):  # noqa: N802
+        """Control whether the gridline is drawn for this tick."""
         return (self._gridOn and (self._has_default_loc() or
                 transforms.interval_contains(self.get_view_interval(),
                                              self.get_loc())))
@@ -58,6 +66,7 @@ class SkewXTick(maxis.XTick):
 
     @property
     def tick1On(self):  # noqa: N802
+        """Control whether the lower tick mark is drawn for this tick."""
         return self._tick1On and self._need_lower()
 
     @tick1On.setter
@@ -66,6 +75,7 @@ class SkewXTick(maxis.XTick):
 
     @property
     def label1On(self):  # noqa: N802
+        """Control whether the lower tick label is drawn for this tick."""
         return self._label1On and self._need_lower()
 
     @label1On.setter
@@ -74,6 +84,7 @@ class SkewXTick(maxis.XTick):
 
     @property
     def tick2On(self):  # noqa: N802
+        """Control whether the upper tick mark is drawn for this tick."""
         return self._tick2On and self._need_upper()
 
     @tick2On.setter
@@ -82,6 +93,7 @@ class SkewXTick(maxis.XTick):
 
     @property
     def label2On(self):  # noqa: N802
+        """Control whether the upper tick label is drawn for this tick."""
         return self._label2On and self._need_upper()
 
     @label2On.setter
@@ -89,27 +101,33 @@ class SkewXTick(maxis.XTick):
         self._label2On = value
 
     def get_view_interval(self):
+        """Get the view interval."""
         return self.axes.xaxis.get_view_interval()
 
 
 class SkewXAxis(maxis.XAxis):
-    r"""
+    r"""Make an x-axis that works properly for Skew-T plots.
+
     This class exists to force the use of our custom :class:`SkewXTick` as well
     as provide a custom value for interview that combines the extents of the
     upper and lower x-limits from the axes.
     """
+
     def _get_tick(self, major):
         return SkewXTick(self.axes, None, '', major=major)
 
     def get_view_interval(self):
+        """Get the view interval."""
         return self.axes.upper_xlim[0], self.axes.lower_xlim[1]
 
 
 class SkewSpine(mspines.Spine):
-    r"""
+    r"""Make an x-axis spine that works properly for Skew-T plots.
+
     This class exists to use the separate x-limits from the axes to properly
     locate the spine.
     """
+
     def _adjust_location(self):
         pts = self._path.vertices
         if self.spine_type == 'top':
@@ -119,18 +137,33 @@ class SkewSpine(mspines.Spine):
 
 
 class SkewXAxes(Axes):
-    r"""
+    r"""Make a set of axes for Skew-T plots.
+
     This class handles registration of the skew-xaxes as a projection as well as setting up
     the appropriate transformations. It also makes sure we use our instances for spines
     and x-axis: :class:`SkewSpine` and :class:`SkewXAxis`. It provides properties to
     facilitate finding the x-limits for the bottom and top of the plot as well.
     """
+
     # The projection must specify a name.  This will be used be the
     # user to select the projection, i.e. ``subplot(111,
     # projection='skewx')``.
     name = 'skewx'
 
     def __init__(self, *args, **kwargs):
+        r"""Initialize `SkewXAxes`.
+
+        Parameters
+        ----------
+        args : Arbitrary positional arguments
+            Passed to :class:`matplotlib.axes.Axes`
+
+        position: int, optional
+            The rotation of the x-axis against the y-axis, in degrees.
+
+        kwargs : Arbitrary keyword arguments
+            Passed to :class:`matplotlib.axes.Axes`
+        """
         # This needs to be popped and set before moving on
         self.rot = kwargs.pop('rotation', 30)
         Axes.__init__(self, *args, **kwargs)
@@ -153,7 +186,8 @@ class SkewXAxes(Axes):
         return spines
 
     def _set_lim_and_transforms(self):
-        """
+        """Set limits and transforms.
+
         This is called once when the plot is created to set up all the
         transforms for the data, text and grids.
         """
@@ -181,12 +215,12 @@ class SkewXAxes(Axes):
 
     @property
     def lower_xlim(self):
-        r'The data limits for the x-axis along the bottom of the axes'
+        """Get the data limits for the x-axis along the bottom of the axes."""
         return self.axes.viewLim.intervalx
 
     @property
     def upper_xlim(self):
-        r'The data limits for the x-axis along the top of the axes'
+        """Get the data limits for the x-axis along the top of the axes."""
         return self.transDataToAxes.inverted().transform([[0., 1.], [1., 1.]])[:, 0]
 
 
@@ -197,7 +231,7 @@ register_projection(SkewXAxes)
 
 @exporter.export
 class SkewT(object):
-    r'''Make Skew-T log-P plots of data
+    r"""Make Skew-T log-P plots of data.
 
     This class simplifies the process of creating Skew-T log-P plots in
     using matplotlib. It handles requesting the appropriate skewed projection,
@@ -209,10 +243,10 @@ class SkewT(object):
     ax : `matplotlib.axes.Axes`
         The underlying Axes instance, which can be used for calling additional
         plot functions (e.g. `axvline`)
-    '''
+    """
 
     def __init__(self, fig=None, rotation=30, subplot=(1, 1, 1)):
-        r'''Creates SkewT - logP plots.
+        r"""Create SkewT - logP plots.
 
         Parameters
         ----------
@@ -229,8 +263,7 @@ class SkewT(object):
             :meth:`matplotlib.figure.Figure.add_subplot`. The
             :class:`matplotlib.gridspec.SubplotSpec`
             can be created by using :class:`matplotlib.gridspec.GridSpec`.
-        '''
-
+        """
         if fig is None:
             import matplotlib.pyplot as plt
             figsize = plt.rcParams.get('figure.figsize', (7, 7))
@@ -246,7 +279,7 @@ class SkewT(object):
         self.ax.grid(True)
 
     def plot(self, p, t, *args, **kwargs):
-        r'''Plot data.
+        r"""Plot data.
 
         Simple wrapper around plot so that pressure is the first (independent)
         input. This is essentially a wrapper around `semilogy`. It also
@@ -271,8 +304,7 @@ class SkewT(object):
         See Also
         --------
         :func:`matplotlib.pyplot.semilogy`
-        '''
-
+        """
         # Skew-T logP plotting
         l = self.ax.semilogy(t, p, *args, **kwargs)
 
@@ -290,7 +322,7 @@ class SkewT(object):
         return l
 
     def plot_barbs(self, p, u, v, xloc=1.0, x_clip_radius=0.08, y_clip_radius=0.08, **kwargs):
-        r'''Plot wind barbs.
+        r"""Plot wind barbs.
 
         Adds wind barbs to the skew-T plot. This is a wrapper around the
         `barbs` command that adds to appropriate transform to place the
@@ -324,8 +356,7 @@ class SkewT(object):
         See Also
         --------
         :func:`matplotlib.pyplot.barbs`
-        '''
-
+        """
         # Assemble array of x-locations in axes space
         x = np.empty_like(p)
         x.fill(xloc)
@@ -343,7 +374,7 @@ class SkewT(object):
         return b
 
     def plot_dry_adiabats(self, t0=None, p=None, **kwargs):
-        r'''Plot dry adiabats.
+        r"""Plot dry adiabats.
 
         Adds dry adiabats (lines of constant potential temperature) to the
         plot. The default style of these lines is dashed red lines with an alpha
@@ -372,8 +403,7 @@ class SkewT(object):
         :func:`~metpy.calc.thermo.dry_lapse`
         :meth:`plot_moist_adiabats`
         :class:`matplotlib.collections.LineCollection`
-        '''
-
+        """
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
@@ -394,7 +424,7 @@ class SkewT(object):
         return self.ax.add_collection(LineCollection(linedata, **kwargs))
 
     def plot_moist_adiabats(self, t0=None, p=None, **kwargs):
-        r'''Plot moist adiabats.
+        r"""Plot moist adiabats.
 
         Adds saturated pseudo-adiabats (lines of constant equivalent potential
         temperature) to the plot. The default style of these lines is dashed
@@ -424,8 +454,7 @@ class SkewT(object):
         :func:`~metpy.calc.thermo.moist_lapse`
         :meth:`plot_dry_adiabats`
         :class:`matplotlib.collections.LineCollection`
-        '''
-
+        """
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
@@ -447,7 +476,7 @@ class SkewT(object):
         return self.ax.add_collection(LineCollection(linedata, **kwargs))
 
     def plot_mixing_lines(self, w=None, p=None, **kwargs):
-        r'''Plot lines of constant mixing ratio.
+        r"""Plot lines of constant mixing ratio.
 
         Adds lines of constant mixing ratio (isohumes) to the
         plot. The default style of these lines is dashed green lines with an
@@ -473,8 +502,7 @@ class SkewT(object):
         See Also
         --------
         :class:`matplotlib.collections.LineCollection`
-        '''
-
+        """
         # Default mixing level values if necessary
         if w is None:
             w = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01,
@@ -497,8 +525,9 @@ class SkewT(object):
 
 @exporter.export
 class Hodograph(object):
-    r'''Make a hodograph of wind data--plots the u and v components of the wind along the
-    x and y axes, respectively.
+    r"""Make a hodograph of wind data.
+
+    Plots the u and v components of the wind along the x and y axes, respectively.
 
     This class simplifies the process of creating a hodograph using matplotlib.
     It provides helpers for creating a circular grid and for plotting the wind as a line
@@ -508,9 +537,10 @@ class Hodograph(object):
     ----------
     ax : `matplotlib.axes.Axes`
         The underlying Axes instance used for all plotting
-    '''
+    """
+
     def __init__(self, ax=None, component_range=80):
-        r'''Create a Hodograph instance.
+        r"""Create a Hodograph instance.
 
         Parameters
         ----------
@@ -519,7 +549,7 @@ class Hodograph(object):
         component_range : value
             The maximum range of the plot. Used to set plot bounds and control the maximum
             number of grid rings needed.
-        '''
+        """
         if ax is None:
             import matplotlib.pyplot as plt
             self.ax = plt.figure().add_subplot(1, 1, 1)
@@ -533,7 +563,7 @@ class Hodograph(object):
         self.max_range = 1.4142135 * component_range
 
     def add_grid(self, increment=10., **kwargs):
-        r'''Add grid lines to hodograph.
+        r"""Add grid lines to hodograph.
 
         Creates lines for the x- and y-axes, as well as circles denoting wind speed values.
 
@@ -549,7 +579,7 @@ class Hodograph(object):
         :class:`matplotlib.patches.Circle`
         :meth:`matplotlib.axes.Axes.axhline`
         :meth:`matplotlib.axes.Axes.axvline`
-        '''
+        """
         # Some default arguments. Take those, and update with any
         # arguments passed in
         grid_args = dict(color='grey', linestyle='dashed')
@@ -574,13 +604,13 @@ class Hodograph(object):
 
     @staticmethod
     def _form_line_args(kwargs):
-        r'Simple helper to take default line style and extend with kwargs'
+        """Simplify taking the default line style and extending with kwargs."""
         def_args = dict(linewidth=3)
         def_args.update(kwargs)
         return def_args
 
     def plot(self, u, v, **kwargs):
-        r'''Plot u, v data.
+        r"""Plot u, v data.
 
         Plots the wind data on the hodograph.
 
@@ -601,14 +631,14 @@ class Hodograph(object):
         See Also
         --------
         :meth:`Hodograph.plot_colormapped`
-        '''
+        """
         line_args = self._form_line_args(kwargs)
         return self.ax.plot(u, v, **line_args)
 
     def plot_colormapped(self, u, v, c, **kwargs):
-        r'''Plot u, v data, with line colored based on a third set of data.
+        r"""Plot u, v data, with line colored based on a third set of data.
 
-        Plots the wind data on the hodograph, but
+        Plots the wind data on the hodograph, but with a colormapped line.
 
         Simple wrapper around plot so that pressure is the first (independent)
         input. This is essentially a wrapper around `semilogy`. It also
@@ -633,7 +663,7 @@ class Hodograph(object):
         See Also
         --------
         :meth:`Hodograph.plot`
-        '''
+        """
         line_args = self._form_line_args(kwargs)
         lc = colored_line(u, v, c, **line_args)
         self.ax.add_collection(lc)
