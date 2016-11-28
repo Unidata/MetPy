@@ -17,8 +17,8 @@ from xdrlib import Unpacker
 import numpy as np
 from scipy.constants import day, milli
 
-from .tools import (Array, BitField, Bits, bits_to_code, DictStruct, Enum, IOBuffer,
-                    NamedStruct, zlib_decompress_all_frames)
+from ._tools import (Array, BitField, Bits, bits_to_code, DictStruct, Enum, IOBuffer,
+                     NamedStruct, zlib_decompress_all_frames)
 from ..cbook import is_string_like
 from ..package_tools import Exporter
 
@@ -353,7 +353,7 @@ class Level2File(object):
         self._check_size(msg_hdr, self.msg2_fmt.size)
 
     def _decode_msg3(self, msg_hdr):
-        from .nexrad_msgs.msg3 import descriptions, fields
+        from ._nexrad_msgs.msg3 import descriptions, fields
         self.maintenance_data_desc = descriptions
         msg_fmt = DictStruct(fields, '>')
         self.maintenance_data = self._buffer.read_struct(msg_fmt)
@@ -470,7 +470,7 @@ class Level2File(object):
         # will be returned concatenated when this is the case
         data = self._buffer_segment(msg_hdr)
         if data:
-            from .nexrad_msgs.msg18 import descriptions, fields
+            from ._nexrad_msgs.msg18 import descriptions, fields
             self.rda_adaptation_desc = descriptions
 
             # Can't use NamedStruct because we have more than 255 items--this

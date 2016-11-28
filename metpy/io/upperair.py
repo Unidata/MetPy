@@ -12,7 +12,7 @@ except ImportError:
 import numpy as np
 
 from .cdm import Dataset
-from .tools import UnitLinker
+from ._tools import UnitLinker
 from ..calc import get_wind_components
 from ..package_tools import Exporter
 

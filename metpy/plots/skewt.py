@@ -12,7 +12,7 @@ from matplotlib.ticker import MultipleLocator, NullFormatter, ScalarFormatter
 import matplotlib.transforms as transforms
 import numpy as np
 
-from .util import colored_line
+from ._util import colored_line
 from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
 from ..package_tools import Exporter
 from ..units import units

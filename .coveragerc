@@ -1,2 +1,2 @@
 [run]
-omit = metpy/_version.py,metpy/io/nexrad_msgs/parse_spec.py,*/tests/*
+omit = metpy/_version.py,metpy/io/_nexrad_msgs/parse_spec.py,*/tests/*
