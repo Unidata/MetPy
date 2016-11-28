@@ -93,7 +93,8 @@ def get_wind_components(speed, wdir):
 
     See Also
     --------
-    get_speed_dir
+    get_wind_speed
+    get_wind_dir
 
     Examples
     --------
