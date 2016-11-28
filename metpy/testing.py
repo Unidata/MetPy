@@ -51,8 +51,8 @@ def check_and_drop_units(actual, desired):
             if hasattr(actual, 'units'):
                 actual = actual.to('dimensionless')
     except DimensionalityError:
-        raise AssertionError('Units are not compatible: %s should be %s' %
-                             (actual.units, desired.units))
+        raise AssertionError('Units are not compatible: {} should be {}'.format(actual.units,
+                                                                                desired.units))
     except AttributeError:
         pass
 
