@@ -6,7 +6,7 @@
 import numpy as np
 import pytest
 
-from metpy.plots.station_plot import nws_layout, simple_layout, StationPlot, StationPlotLayout
+from metpy.plots import nws_layout, simple_layout, StationPlot, StationPlotLayout
 from metpy.plots.wx_symbols import high_clouds, sky_cover
 from metpy.testing import make_figure
 from metpy.units import units

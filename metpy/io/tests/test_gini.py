@@ -10,7 +10,8 @@ from numpy.testing import assert_almost_equal
 import pytest
 
 from metpy.cbook import get_test_data
-from metpy.io.gini import GiniFile, GiniProjection
+from metpy.io import GiniFile
+from metpy.io.gini import GiniProjection
 
 log = logging.getLogger('metpy.io.gini')
 log.setLevel(logging.ERROR)

@@ -5,7 +5,8 @@
 
 from datetime import datetime
 
-from metpy.io.upperair import get_upper_air_data, UseSampleData
+from metpy.io import get_upper_air_data
+from metpy.io.upperair import UseSampleData
 from metpy.testing import assert_almost_equal
 from metpy.units import units
 
