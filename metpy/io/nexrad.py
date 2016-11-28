@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Support reading information from various NEXRAD formats."""
 
 from __future__ import print_function
 
@@ -30,6 +31,7 @@ log.setLevel(logging.WARNING)
 
 
 def version(val):
+    """Calculate a string version from an integer value."""
     if val / 100. > 2.:
         ver = val / 100.
     else:
@@ -38,20 +40,27 @@ def version(val):
 
 
 def scaler(scale):
+    """Create a function that scales by a specific value."""
     def inner(val):
         return val * scale
     return inner
 
 
 def angle(val):
+    """Convert an integer value to a floating point angle."""
     return val * 360. / 2**16
 
 
 def az_rate(val):
+    """Convert an integer value to a floating point angular rate."""
     return val * 90. / 2**16
 
 
 def bzip_blocks_decompress_all(data):
+    """Decompress all of the bzip2-ed blocks.
+
+    Returns the decompressed data as a `bytearray`.
+    """
     frames = bytearray()
     offset = 0
     while offset < len(data):
@@ -68,12 +77,14 @@ def bzip_blocks_decompress_all(data):
 
 
 def nexrad_to_datetime(julian_date, ms_midnight):
+    """Convert NEXRAD date time format to python `datetime.datetime`."""
     # Subtracting one from julian_date is because epoch date is 1
     return datetime.datetime.utcfromtimestamp((julian_date - 1) * day +
                                               ms_midnight * milli)
 
 
 def remap_status(val):
+    """Convert status integer value to appropriate bitmask."""
     bad = BAD_DATA if val & 0xF0 else 0
     val = val & 0x0F
     if val == 0:
@@ -102,8 +113,7 @@ BAD_DATA = 0x20
 
 @exporter.export
 class Level2File(object):
-    r'''A class that handles reading the NEXRAD Level 2 data and the various
-    messages that are contained within.
+    r"""Handle reading the NEXRAD Level 2 data and its various messages.
 
     This class attempts to decode every byte that is in a given data file.
     It supports both external compression, as well as the internal BZ2
@@ -138,7 +148,7 @@ class Level2File(object):
     -----
     The internal data structure that things are decoded into is still to be
     determined.
-    '''
+    """
 
     # Number of bytes
     AR2_BLOCKSIZE = 2432  # 12 (CTM) + 2416 (Msg hdr + data) + 4 (FCS)
@@ -148,7 +158,7 @@ class Level2File(object):
     RANGE_FOLD = float('nan')  # TODO: Need to separate from missing
 
     def __init__(self, filename):
-        r'''Create instance of `Level2File`.
+        r"""Create instance of `Level2File`.
 
         Parameters
         ----------
@@ -157,8 +167,7 @@ class Level2File(object):
             recognized with the extension '.gz', as are bzip2-ed files with
             the extension `.bz2` If `fname` is a file-like object,
             this will be read from directly.
-        '''
-
+        """
         if is_string_like(filename):
             if filename.endswith('.bz2'):
                 fobj = bz2.BZ2File(filename, 'rb')
@@ -622,6 +631,7 @@ class Level2File(object):
 
 
 def reduce_lists(d):
+    """Replace single item lists in a dictionary with the single item."""
     for field in d:
         old_data = d[field]
         if len(old_data) == 1:
@@ -629,12 +639,14 @@ def reduce_lists(d):
 
 
 def two_comp16(val):
+    """Return the two's-complement signed representation of a 16-bit unsigned integer."""
     if val >> 15:
         val = -(~val & 0x7fff) - 1
     return val
 
 
 def float16(val):
+    """Convert a 16-bit floating point value to a standard Python float."""
     # Fraction is 10 LSB, Exponent middle 5, and Sign the MSB
     frac = val & 0x03ff
     exp = (val >> 10) & 0x1F
@@ -652,22 +664,26 @@ def float16(val):
 
 
 def float32(short1, short2):
+    """Unpack a pair of 16-bit integers as a Python float."""
     return struct.unpack('>f', struct.pack('>HH', short1, short2))[0]
 
 
 def date_elem(ind_days, ind_minutes):
+    """Create a function to parse a datetime from the product-specific blocks."""
     def inner(seq):
         return nexrad_to_datetime(seq[ind_days], seq[ind_minutes] * 60 * 1000)
     return inner
 
 
 def scaled_elem(index, scale):
+    """Create a function to scale a certain product-specific block."""
     def inner(seq):
         return seq[index] * scale
     return inner
 
 
 def combine_elem(ind1, ind2):
+    """Create a function to combine two specified product-specific blocks into a single int."""
     def inner(seq):
         shift = 2**16
         if seq[ind1] < 0:
@@ -679,17 +695,20 @@ def combine_elem(ind1, ind2):
 
 
 def float_elem(ind1, ind2):
+    """Create a function to combine two specified product-specific blocks into a float."""
     # Masking below in python will properly convert signed values to unsigned
     return lambda seq: float32(seq[ind1] & 0xFFFF, seq[ind2] & 0xFFFF)
 
 
 def high_byte(ind):
+    """Create a function to return the high-byte of a product-specific block."""
     def inner(seq):
         return seq[ind] >> 8
     return inner
 
 
 def low_byte(ind):
+    """Create a function to return the low-byte of a product-specific block."""
     def inner(seq):
         return seq[ind] & 0x00FF
     return inner
@@ -700,16 +719,21 @@ def low_byte(ind):
 # into physical values. Can also have a 'labels' attribute to give
 # categorical labels
 class DataMapper(object):
+    """Convert packed integer data into physical units."""
+
     # Need to find way to handle range folded
     # RANGE_FOLD = -9999
     RANGE_FOLD = float('nan')
     MISSING = float('nan')
 
     def __call__(self, data):
+        """Convert the values."""
         return self.lut[data]
 
 
 class DigitalMapper(DataMapper):
+    """Maps packed integers to floats using a scale and offset from the product."""
+
     _min_scale = 0.1
     _inc_scale = 0.1
     _min_data = 2
@@ -717,6 +741,7 @@ class DigitalMapper(DataMapper):
     range_fold = False
 
     def __init__(self, prod):
+        """Initialize the mapper and the lookup table."""
         min_val = two_comp16(prod.thresholds[0]) * self._min_scale
         inc = prod.thresholds[1] * self._inc_scale
         num_levels = prod.thresholds[2]
@@ -733,20 +758,28 @@ class DigitalMapper(DataMapper):
 
 
 class DigitalRefMapper(DigitalMapper):
+    """Mapper for digital reflectivity products."""
+
     units = 'dBZ'
 
 
 class DigitalVelMapper(DigitalMapper):
+    """Mapper for digital velocity products."""
+
     units = 'm/s'
     range_fold = True
 
 
 class DigitalSPWMapper(DigitalVelMapper):
+    """Mapper for digital spectrum width products."""
+
     _min_data = 129
     _max_data = 149
 
 
 class PrecipArrayMapper(DigitalMapper):
+    """Mapper for precipitation array products."""
+
     _inc_scale = 0.001
     _min_data = 1
     _max_data = 254
@@ -754,12 +787,17 @@ class PrecipArrayMapper(DigitalMapper):
 
 
 class DigitalStormPrecipMapper(DigitalMapper):
+    """Mapper for digital storm precipitation products."""
+
     units = 'inches'
     _inc_scale = 0.01
 
 
 class DigitalVILMapper(DataMapper):
+    """Mapper for digital VIL products."""
+
     def __init__(self, prod):
+        """Initialize the VIL mapper."""
         lin_scale = float16(prod.thresholds[0])
         lin_offset = float16(prod.thresholds[1])
         log_start = prod.thresholds[2]
@@ -776,7 +814,10 @@ class DigitalVILMapper(DataMapper):
 
 
 class DigitalEETMapper(DataMapper):
+    """Mapper for digital echo tops products."""
+
     def __init__(self, prod):
+        """Initialize the mapper."""
         data_mask = prod.thresholds[0]
         scale = prod.thresholds[1]
         offset = prod.thresholds[2]
@@ -791,11 +832,18 @@ class DigitalEETMapper(DataMapper):
         self.topped_lut = np.array(self.topped_lut)
 
     def __call__(self, data_vals):
+        """Convert the data values."""
         return self.lut[data_vals], self.topped_lut[data_vals]
 
 
 class GenericDigitalMapper(DataMapper):
+    """Maps packed integers to floats using a scale and offset from the product.
+
+    Also handles special data flags.
+    """
+
     def __init__(self, prod):
+        """Initialize the mapper by pulling out all the information from the product."""
         scale = float32(prod.thresholds[0], prod.thresholds[1])
         offset = float32(prod.thresholds[2], prod.thresholds[3])
         max_data_val = prod.thresholds[5]
@@ -816,10 +864,16 @@ class GenericDigitalMapper(DataMapper):
 
 
 class DigitalHMCMapper(DataMapper):
+    """Mapper for hydrometeor classification products.
+
+    Handles assigning string labels based on values.
+    """
+
     labels = ['ND', 'BI', 'GC', 'IC', 'DS', 'WS', 'RA', 'HR',
               'BD', 'GR', 'HA', 'UK', 'RF']
 
     def __init__(self, prod):
+        """Initialize the mapper."""
         self.lut = [self.MISSING] * 256
         for i in range(10, 256):
             self.lut[i] = i // 10
@@ -829,7 +883,10 @@ class DigitalHMCMapper(DataMapper):
 
 # 156, 157
 class EDRMapper(DataMapper):
+    """Mapper for eddy dissipation rate products."""
+
     def __init__(self, prod):
+        """Initialize the mapper based on the product."""
         scale = prod.thresholds[0] / 1000.
         offset = prod.thresholds[1] / 1000.
         data_levels = prod.thresholds[2]
@@ -841,10 +898,13 @@ class EDRMapper(DataMapper):
 
 
 class LegacyMapper(DataMapper):
+    """Mapper for legacy products."""
+
     lut_names = ['Blank', 'TH', 'ND', 'RF', 'BI', 'GC', 'IC', 'GR', 'WS',
                  'DS', 'RA', 'HR', 'BD', 'HA', 'UK']
 
     def __init__(self, prod):
+        """Initialize the values and labels from the product."""
         self.labels = []
         self.lut = []
         for t in prod.thresholds:
@@ -888,8 +948,7 @@ class LegacyMapper(DataMapper):
 
 @exporter.export
 class Level3File(object):
-    r'''A class that handles reading the wide array of NEXRAD Level 3 (NIDS)
-    product files.
+    r"""Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.
 
     This class attempts to decode every byte that is in a given product file.
     It supports all of the various compression formats that exist for these
@@ -928,7 +987,7 @@ class Level3File(object):
     -----
     The internal data structure that things are decoded into is still to be
     determined.
-    '''
+    """
 
     ij_to_km = 0.25
     wmo_finder = re.compile('((?:NX|SD|NO)US)\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
@@ -1450,15 +1509,14 @@ class Level3File(object):
                             ('max', 3)))}
 
     def __init__(self, filename):
-        r'''Create instance of `Level3File`.
+        r"""Create instance of `Level3File`.
 
         Parameters
         ----------
         filename : str or file-like object
             If str, the name of the file to be opened. If file-like object,
             this will be read from directly.
-        '''
-
+        """
         if is_string_like(filename):
             fobj = open(filename, 'rb')
             self.filename = filename
@@ -1617,6 +1675,7 @@ class Level3File(object):
 
     @staticmethod
     def pos_scale(is_sym_block):
+        """The scale of the position information in km."""
         return 0.25 if is_sym_block else 1
 
     def _unpack_rcm(self, start, offset):
@@ -1730,6 +1789,7 @@ class Level3File(object):
             assert self._buffer.offset_from(block_start) == header.block_len
 
     def __repr__(self):
+        """Return the string representation of the product."""
         items = [self.product_name, self.header, self.prod_desc, self.thresholds,
                  self.depVals, self.metadata, self.siteID]
         return self.filename + ': ' + '\n'.join(map(str, items))
@@ -2086,7 +2146,10 @@ class Level3File(object):
 
 
 class Level3XDRParser(Unpacker):
+    """Handle XDR-formatted Level 3 NEXRAD products."""
+
     def __call__(self, code):
+        """Perform the actual unpacking."""
         xdr = OrderedDict()
 
         if code == 28:
@@ -2099,6 +2162,7 @@ class Level3XDRParser(Unpacker):
         return xdr
 
     def unpack_string(self):
+        """Unpack the internal data as a string."""
         return Unpacker.unpack_string(self).decode('ascii')
 
     def _unpack_prod_desc(self):
@@ -2209,7 +2273,7 @@ class Level3XDRParser(Unpacker):
 
 @exporter.export
 def is_precip_mode(vcp_num):
-    r'''Determine if the NEXRAD radar is operating in precipitation mode
+    r"""Determine if the NEXRAD radar is operating in precipitation mode.
 
     Parameters
     ----------
@@ -2220,5 +2284,5 @@ def is_precip_mode(vcp_num):
     -------
     bool
         True if the VCP corresponds to precipitation mode, False otherwise
-    '''
+    """
     return not vcp_num // 10 == 3

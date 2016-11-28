@@ -1,11 +1,11 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-r"""Collection of utilities for testing
+r"""Collection of utilities for testing.
 
-    This includes:
-    * unit-aware test functions
-    * code for testing matplotlib figures
+This includes:
+* unit-aware test functions
+* code for testing matplotlib figures
 """
 
 from matplotlib import style
@@ -65,25 +65,34 @@ def check_and_drop_units(actual, desired):
 
 
 def assert_almost_equal(actual, desired, decimal=7):
-    'numpy.testing.assert_almost_equal that first handles units'
+    """Check that values are almost equal, including units.
+
+    Wrapper around :func:`numpy.testing.assert_almost_equal`
+    """
     actual, desired = check_and_drop_units(actual, desired)
     numpy.testing.assert_almost_equal(actual, desired, decimal)
 
 
 def assert_array_almost_equal(actual, desired, decimal=7):
-    'numpy.testing.assert_array_almost_equal that first handles units'
+    """Check that arrays are almost equal, including units.
+
+    Wrapper around :func:`numpy.testing.assert_array_almost_equal`
+    """
     actual, desired = check_and_drop_units(actual, desired)
     numpy.testing.assert_array_almost_equal(actual, desired, decimal)
 
 
 def assert_array_equal(actual, desired):
-    'numpy.testing.assert_array_equal that first handles units'
+    """Check that arrays are equal, including units.
+
+    Wrapper around :func:`numpy.testing.assert_array_equal`
+    """
     actual, desired = check_and_drop_units(actual, desired)
     numpy.testing.assert_array_equal(actual, desired)
 
 
 def make_figure(*args, **kwargs):
-    'Create an Agg figure for testing'
+    """Create an Agg figure for testing."""
     from matplotlib.figure import Figure
     from matplotlib.backends.backend_agg import FigureCanvasAgg
     if 'dpi' not in kwargs:
@@ -94,6 +103,6 @@ def make_figure(*args, **kwargs):
 
 
 def hide_tick_labels(ax):
-    'Hide the ticklabels on an axes'
+    """Hide the ticklabels on an axes."""
     ax.xaxis.set_ticklabels([])
     ax.yaxis.set_ticklabels([])

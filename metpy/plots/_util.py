@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Utilities for use in making plots."""
 
 from matplotlib.collections import LineCollection
 import numpy as np
@@ -10,8 +11,9 @@ from ..units import concatenate
 
 # Not part of public API
 def colored_line(x, y, c, **kwargs):
-    """Helper function to take a set of points and turn them into a collection of
-    lines colored by another array
+    """Create a multi-colored line.
+
+    Takes a set of points and turns them into a collection of lines colored by another array.
 
     Parameters
     ----------

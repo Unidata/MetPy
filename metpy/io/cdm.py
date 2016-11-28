@@ -1,10 +1,12 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-r'''The Common Data Model (CDM) is a data model for representing a wide array of data. The
+r"""Tools for mimicing the API of the Common Data Model (CDM).
+
+The CDM is a data model for representing a wide array of data. The
 goal is to be a simple, universal interface to different datasets. This API is a Python
 implementation in the spirit of the original Java interface in netCDF-Java.
-'''
+"""
 
 from collections import OrderedDict
 
@@ -12,8 +14,11 @@ import numpy as np
 
 
 class AttributeContainer(object):
-    r"""A class to handle maintaining a list of netCDF attributes. Implements the attribute
-    handling for other CDM classes."""
+    r"""Handle maintaining a list of netCDF attributes.
+
+    Implements the attribute handling for other CDM classes.
+    """
+
     def __init__(self):
         r"""Initialize an :class:`AttributeContainer`."""
         self._attrs = []
@@ -25,26 +30,32 @@ class AttributeContainer(object):
         -------
         List[str]
         """
-
         return self._attrs
 
     def __setattr__(self, key, value):
+        """Handle setting attributes."""
         if hasattr(self, '_attrs'):
             self._attrs.append(key)
         self.__dict__[key] = value
 
     def __delattr__(self, item):
+        """Handle attribute deletion."""
         self.__dict__.pop(item)
         if hasattr(self, '_attrs'):
             self._attrs.remove(item)
 
 
 class Group(AttributeContainer):
-    r"""A Group holds dimensions and variables. Every CDM dataset has at least a root group.
+    r"""Holds dimensions and variables.
+
+    Every CDM dataset has at least a root group.
     """
+
     def __init__(self, parent, name):
-        r"""Initialize this :class:`Group`. Instead of constructing a :class:`Group` directly,
-        you should use :meth:`~Group.createGroup`.
+        r"""Initialize this :class:`Group`.
+
+        Instead of constructing a :class:`Group` directly, you should use
+        :meth:`~Group.createGroup`.
 
         Parameters
         ----------
@@ -150,6 +161,7 @@ class Group(AttributeContainer):
         return var
 
     def __str__(self):
+        """Return a string representation of the Group."""
         print_groups = []
         if self.name:
             print_groups.append(self.name)
@@ -177,26 +189,29 @@ class Group(AttributeContainer):
 
 
 class Dataset(Group):
-    r"""A Dataset represents a set of data using the Common Data Model (CDM).
+    r"""Represents a set of data using the Common Data Model (CDM).
 
     This is currently only a wrapper around the root Group.
     """
+
     def __init__(self):
         """Initialize a Dataset."""
         super(Dataset, self).__init__(None, 'root')
 
 
 class Variable(AttributeContainer):
-    r"""A Variable holds typed data (using a :class:`numpy.ndarray`), as well as any relevant
-    attributes (e.g. units).
+    r"""Holds typed data (using a :class:`numpy.ndarray`), as well as attributes (e.g. units).
 
     In addition to its various attributes, the Variable supports getting *and* setting data
     using the ``[]`` operator and indices or slices. Getting data returns
     :class:`numpy.ndarray` instances.
     """
+
     def __init__(self, group, name, datatype, dimensions, fill_value, wrap_array):
-        """Initialize a Variable. Instead of constructing a Variable directly, you should
-        use :meth:`Group.createVariable`.
+        """Initialize a Variable.
+
+        Instead of constructing a Variable directly, you should use
+        :meth:`Group.createVariable`.
 
         Parameters
         ----------
@@ -254,49 +269,49 @@ class Variable(AttributeContainer):
 
     @property
     def name(self):
-        'str: the name of the variable'
+        """str: the name of the variable."""
         return self._name
 
     @property
     def size(self):
-        'int: the total number of elements'
+        """int: the total number of elements."""
         return self._data.size
 
     @property
     def shape(self):
-        """tuple[int]: a tuple of integers describing the size of the Variable along each
-        of its dimensions"""
+        """tuple[int]: Describes the size of the Variable along each of its dimensions."""
         return self._data.shape
 
     @property
     def ndim(self):
-        'int: the number of dimensions used by this variable'
+        """int: the number of dimensions used by this variable."""
         return self._data.ndim
 
     @property
     def dtype(self):
-        """numpy.dtype: a valid Numpy :class:`~numpy.dtype` that describes the layout of each
-        element of the data"""
+        """numpy.dtype: Describes the layout of each element of the data."""
         return self._data.dtype
 
     @property
     def datatype(self):
-        """numpy.dtype: a valid Numpy :class:`~numpy.dtype` that describes the layout of each
-        element of the data"""
+        """numpy.dtype: Describes the layout of each element of the data."""
         return self._data.dtype
 
     @property
     def dimensions(self):
-        'tuple[str]: all the names of :class:`Dimension` used by this :class:`Variable`'
+        """tuple[str]: all the names of :class:`Dimension` used by this :class:`Variable`."""
         return self._dimensions
 
     def __setitem__(self, ind, value):
+        """Handle setting values on the Variable."""
         self._data[ind] = value
 
     def __getitem__(self, ind):
+        """Handle getting values from the Variable."""
         return self._data[ind]
 
     def __str__(self):
+        """Return a string representation of the Variable."""
         groups = [str(type(self)) +
                   ': {0.datatype} {0.name}({1})'.format(self, ', '.join(self.dimensions))]
         for att in self.ncattrs():
@@ -314,12 +329,15 @@ class Variable(AttributeContainer):
 # We don't intend to be a full file API or anything, just need to be able to represent
 # other files using a common API.
 class Dimension(object):
-    r"""A Dimension is used to represent a shared dimension between different Variables.
+    r"""Represent a shared dimension between different Variables.
+
     For instance, variables that are dependent upon a common set of times.
     """
+
     def __init__(self, group, name, size=None):
-        """Initialize a Dimension. Instead of constructing a Dimension directly, you should
-        use ``Group.createDimension``.
+        """Initialize a Dimension.
+
+        Instead of constructing a Dimension directly, you should use ``Group.createDimension``.
 
         Parameters
         ----------
@@ -356,22 +374,26 @@ class Dimension(object):
         return self._group
 
     def __len__(self):
+        """Return the length of this Dimension."""
         return self.size
 
     def __str__(self):
+        """Return a string representation of this Dimension."""
         return '{0}: name = {1.name}, size = {1.size}'.format(type(self), self)
 
 
 # Not sure if this lives long-term or not
 def cf_to_proj(var):
-    r'''Converts a Variable with projection information conforming to the Climate and
-    Forecasting (CF) netCDF conventions to a Proj.4 Projection instance.
+    r"""Convert a Variable with projection information to a Proj.4 Projection instance.
+
+    The attributes of this Variable must conform to the Climate and Forecasting (CF)
+    netCDF conventions.
 
     Parameters
     ----------
     var : Variable
         The projection variable with appropriate attributes.
-    '''
+    """
     import pyproj
     kwargs = dict(lat_0=var.latitude_of_projection_origin,
                   a=var.earth_radius, b=var.earth_radius)

@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Test the `polygons` module."""
 
 from __future__ import division
 
@@ -10,8 +11,7 @@ from metpy.gridding.polygons import (area, order_edges)
 
 
 def test_area():
-    r"""Tests get area of polygon function"""
-
+    r"""Test get area of polygon function."""
     pt0 = [0, 0]
     pt1 = [5, 5]
     pt2 = [5, 0]
@@ -22,8 +22,7 @@ def test_area():
 
 
 def test_order_edges():
-    r"""Tests order edges of polygon function"""
-
+    r"""Test order edges of polygon function."""
     edges = [[1, 2], [5, 6], [4, 5], [2, 3], [6, 1], [3, 4]]
 
     truth = [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 1]]

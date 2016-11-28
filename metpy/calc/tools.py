@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Contains a collection of generally useful calculation tools."""
 
 import numpy as np
 
@@ -11,8 +12,7 @@ exporter = Exporter(globals())
 
 @exporter.export
 def resample_nn_1d(a, centers):
-    """Helper function that returns one-dimensional nearest-neighbor
-    indexes based on user-specified centers.
+    """Return one-dimensional nearest-neighbor indexes based on user-specified centers.
 
     Parameters
     ----------
@@ -25,7 +25,6 @@ def resample_nn_1d(a, centers):
     Returns
     -------
         An array of indexes representing values closest to given array values
-
     """
     ix = []
     for center in centers:
@@ -37,9 +36,7 @@ def resample_nn_1d(a, centers):
 
 @exporter.export
 def nearest_intersection_idx(a, b):
-    """
-    Determines the index of the point just before two lines with
-    common x values.
+    """Determine the index of the point just before two lines with common x values.
 
     Parameters
     ----------
@@ -65,9 +62,9 @@ def nearest_intersection_idx(a, b):
 
 @exporter.export
 def find_intersections(x, a, b):
+    """Calculate the best estimate of intersection.
 
-    """
-    Calculates the best estimate of the intersection(s) of two y-value
+    Calculates the best estimates of the intersection of two y-value
     data sets that share a common x-value set.
 
     Parameters
@@ -84,7 +81,6 @@ def find_intersections(x, a, b):
         A tuple (x, y) of array-like with the x and y coordinates of the
         intersections of the lines.
     """
-
     # Find the index of the points just before the intersection(s)
     nearest_idx = nearest_intersection_idx(a, b)
     next_idx = nearest_idx + 1

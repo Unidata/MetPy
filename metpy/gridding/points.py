@@ -1,6 +1,7 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2008-2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Tools for working with points."""
 
 from __future__ import division
 
@@ -11,9 +12,9 @@ from scipy.spatial import cKDTree
 
 
 def get_points_within_r(center_points, target_points, r, return_idx=False):
-    r"""Get all target_points within a specified radius
-    of a center point.  All data must be in same coord-
-    inate system, or you will get unpredictable results.
+    r"""Get all target_points within a specified radius of a center point.
+
+    All data must be in same coordinate system, or you will get undetermined results.
 
     Parameters
     ----------
@@ -33,16 +34,15 @@ def get_points_within_r(center_points, target_points, r, return_idx=False):
         A list of points within r distance of, and in the same
         order as, center_points
     """
-
     tree = cKDTree(target_points)
     indices = tree.query_ball_point(center_points, r)
     return tree.data[indices].T
 
 
 def get_point_count_within_r(center_points, target_points, r):
-    r"""Get count of target points within a specified radius
-    from center points.  All data must be in same coord-
-    inate system, or you will get unpredictable results.
+    r"""Get count of target points within a specified radius from center points.
+
+    All data must be in same coordinate system, or you will get undetermined results.
 
     Parameters
     ----------
@@ -59,14 +59,13 @@ def get_point_count_within_r(center_points, target_points, r):
         A list of point counts within r distance of, and in the same
         order as, center_points
     """
-
     tree = cKDTree(target_points)
     indices = tree.query_ball_point(center_points, r)
     return np.array([len(x) for x in indices])
 
 
 def generate_grid(horiz_dim, bbox, ignore_warnings=False):
-    r"""Generate a meshgrid based on bounding box and x & y resolution
+    r"""Generate a meshgrid based on bounding box and x & y resolution.
 
     Parameters
     ----------
@@ -85,7 +84,6 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
     grid_y: (X, Y) ndarray
         Y dimension meshgrid defined by given bounding box
     """
-
     if horiz_dim < 10000 and not ignore_warnings:
         warnings.warn('Grids less than 10km may be slow to load at synoptic scale.')
 
@@ -100,7 +98,7 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
 
 
 def generate_grid_coords(gx, gy):
-    r"""Calculate x,y coordinates of each grid cell
+    r"""Calculate x,y coordinates of each grid cell.
 
     Parameters
     ----------
@@ -114,12 +112,11 @@ def generate_grid_coords(gx, gy):
     (X, Y) ndarray
         List of coordinates in meshgrid
     """
-
     return np.vstack([gx.ravel(), gy.ravel()]).T
 
 
 def get_xy_range(bbox):
-    r"""Returns x and y ranges in meters based on bounding box
+    r"""Return x and y ranges in meters based on bounding box.
 
     bbox: dictionary
         dictionary containing coordinates for corners of study area
@@ -131,7 +128,6 @@ def get_xy_range(bbox):
     y_range: float
         Range in meters in y dimension.
     """
-
     x_range = bbox['east'] - bbox['west']
     y_range = bbox['north'] - bbox['south']
 
@@ -139,7 +135,7 @@ def get_xy_range(bbox):
 
 
 def get_xy_steps(bbox, h_dim):
-    r"""Return meshgrid spacing based on bounding box
+    r"""Return meshgrid spacing based on bounding box.
 
     bbox: dictionary
         Dictionary containing coordinates for corners of study area.
@@ -153,7 +149,6 @@ def get_xy_steps(bbox, h_dim):
     y_steps: (Y, ) ndarray
         Number of grids in y dimension.
     """
-
     x_range, y_range = get_xy_range(bbox)
 
     x_steps = np.ceil(x_range / h_dim)
@@ -163,8 +158,7 @@ def get_xy_steps(bbox, h_dim):
 
 
 def get_boundary_coords(x, y, spatial_pad=0):
-    r"""Return bounding box based on given x and y coordinates
-       assuming northern hemisphere.
+    r"""Return bounding box based on given x and y coordinates assuming northern hemisphere.
 
     x: numeric
         x coordinates.
@@ -179,7 +173,6 @@ def get_boundary_coords(x, y, spatial_pad=0):
     bbox: dictionary
         dictionary containing coordinates for corners of study area
     """
-
     west = np.min(x) - spatial_pad
     east = np.max(x) + spatial_pad
     north = np.max(y) + spatial_pad

@@ -1,7 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-'''Collection of generally useful utility code from the cookbook'''
+"""Collection of generally useful utility code from the cookbook."""
 
 import os
 import os.path
@@ -10,6 +10,7 @@ from matplotlib.cbook import Bunch, is_string_like, iterable
 
 
 def get_test_data(fname, as_file_obj=True):
+    """Access a file from MetPy's collection of test data."""
     # Look for an environment variable to point to the test data. If not, try looking at
     # the appropriate path relative to this file.
     data_dir = os.environ.get('TEST_DATA_DIR',
@@ -26,4 +27,4 @@ def get_test_data(fname, as_file_obj=True):
     return path
 
 
-__all__ = ['Bunch', 'get_test_data', 'is_string_like', 'iterable']
+__all__ = ('Bunch', 'get_test_data', 'is_string_like', 'iterable')

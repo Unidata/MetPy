@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Setup script for installing MetPy."""
 
 from __future__ import print_function
 
@@ -11,16 +12,21 @@ import versioneer
 
 
 class MakeExamples(Command):
-    description = 'Create example scripts from IPython notebooks'
+    """Create example scripts from IPython notebooks."""
+
+    description = __doc__
     user_options = []
 
     def initialize_options(self):
+        """Initialize command options (unused)."""
         pass
 
     def finalize_options(self):
+        """Finalize command options (unused)."""
         pass
 
     def run(self):
+        """Run the command."""
         import glob
         import os
         import os.path

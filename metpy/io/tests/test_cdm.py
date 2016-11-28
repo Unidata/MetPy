@@ -1,7 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-
+"""Test the `cdm` module."""
 import numpy as np
 import pytest
 
@@ -9,7 +9,7 @@ from metpy.io.cdm import Dataset
 
 
 def test_group():
-    r'Test Group/Dataset behavior'
+    """Test `Group`/`Dataset` behavior."""
     ds = Dataset()
     ds.createDimension('x', 5)
     ds.createVariable('data', 'f4', ('x',), 5)
@@ -26,7 +26,7 @@ def test_group():
 
 
 def test_dim():
-    r'Test Dimension behavior'
+    """Test `Dimension` behavior."""
     ds = Dataset()
     dim = ds.createDimension('x', 5)
     assert dim.size == 5
@@ -35,7 +35,7 @@ def test_dim():
 
 
 def test_var():
-    r'Test Variable behavior'
+    """Test `Variable` behavior."""
     ds = Dataset()
     ds.createDimension('x', 2)
     var = ds.createVariable('data', 'f4', ('x',), 5)
@@ -59,7 +59,7 @@ def test_var():
 
 
 def test_multidim_var():
-    r'Test multi-dim Variable'
+    """Test multi-dim `Variable`."""
     ds = Dataset()
     ds.createDimension('x', 2)
     ds.createDimension('y', 3)
@@ -75,7 +75,7 @@ def test_multidim_var():
 
 
 def test_remove_attr():
-    r'Test removing an attribute'
+    """Test removing an attribute."""
     ds = Dataset()
     ds.maker = 'me'
     assert 'maker' in ds.ncattrs()
@@ -86,7 +86,7 @@ def test_remove_attr():
 
 
 def test_add_group():
-    r'Test adding a group'
+    """Test adding a group."""
     ds = Dataset()
     grp = ds.createGroup('myGroup')
     assert grp.name == 'myGroup'
@@ -96,7 +96,7 @@ def test_add_group():
 
 
 def test_variable_size_check():
-    r'Test Variable checking size of passed array'
+    """Test `Variable` checking size of passed array."""
     ds = Dataset()
     xdim = ds.createDimension('x', 2)
     ydim = ds.createDimension('y', 3)

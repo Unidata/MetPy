@@ -1,7 +1,7 @@
-'This module fills in for functionality that we have (or will) upstreamed into matplotlib'
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Functionality that we have upstreamed or will upstream into matplotlib."""
 
 # See if we should monkey-patch Barbs for better pivot
 import matplotlib
@@ -14,8 +14,7 @@ if float(matplotlib.__version__[:3]) < 2.1:
 
     def _make_barbs(self, u, v, nflags, nbarbs, half_barb, empty_flag, length,
                     pivot, sizes, fill_empty, flip):
-        'Monkey-patched version of _make_barbs. Allows pivot to be a float value.'
-
+        """Monkey-patch _make_barbs. Allows pivot to be a float value."""
         # These control the spacing and size of barb elements relative to the
         # length of the shaft
         spacing = length * sizes.get('spacing', 0.125)
@@ -128,8 +127,7 @@ if not hasattr(Axes, 'scattertext'):
     from matplotlib.text import Text
 
     def scattertext(self, x, y, texts, loc=(0, 0), **kw):
-        """
-        Add text to the axes.
+        """Add text to the axes.
 
         Add text in string `s` to axis at location `x`, `y`, data
         coordinates.
@@ -212,12 +210,35 @@ if not hasattr(Axes, 'scattertext'):
         return text_obj
 
     class TextCollection(Text):
-        """Handles plotting a collection of text.
+        """Handle plotting a collection of text.
 
         Text Collection plots text with a collection of similar properties: font, color,
         and an offset relative to the x,y data location.
         """
+
         def __init__(self, x, y, text, offset=(0, 0), **kwargs):
+            """Initialize an instance of `TextCollection`.
+
+            This class encompasses drawing a collection of text values at a variety
+            of locations.
+
+            Parameters
+            ----------
+            x : array_like
+                The x locations, in data coordinates, for the text
+
+            y : array_like
+                The y locations, in data coordinates, for the text
+
+            text : array_like of str
+                The string values to draw
+
+            offset : tuple of (int, int)
+                The offset x and y, in normalized coordinates, to draw the text relative
+                to the data locations.
+
+            kwargs : arbitrary keywords arguments
+            """
             Text.__init__(self, **kwargs)
             self.x = x
             self.y = y
@@ -227,6 +248,7 @@ if not hasattr(Axes, 'scattertext'):
                 self._usetex = None
 
         def __str__(self):
+            """Make a string representation of `TextCollection`."""
             return 'TextCollection'
 
         def get_datalim(self, transData):  # noqa: N803
@@ -249,9 +271,7 @@ if not hasattr(Axes, 'scattertext'):
 
         @allow_rasterization
         def draw(self, renderer):
-            """
-            Draws the :class:`TextCollection` object to the given *renderer*.
-            """
+            """Draw the :class:`TextCollection` object to the given *renderer*."""
             if renderer is not None:
                 self._renderer = renderer
             if not self.get_visible():

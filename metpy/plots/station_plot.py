@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Create Station-model plots."""
 
 try:
     from enum import Enum
@@ -216,10 +217,10 @@ class StationPlot(object):
 
     @staticmethod
     def _to_string_list(vals, fmt):
-        'Convert a sequence of values to a list of strings'
+        """Convert a sequence of values to a list of strings."""
         if not callable(fmt):
             def formatter(s):
-                'Turning format string into a callable'
+                """Turn a format string into a callable."""
                 return format(s, fmt)
         else:
             formatter = fmt
@@ -227,7 +228,7 @@ class StationPlot(object):
         return [formatter(v) if np.isfinite(v) else '' for v in vals]
 
     def _handle_location(self, location):
-        'Process locations to get a consistent set of tuples for location'
+        """Process locations to get a consistent set of tuples for location."""
         if is_string_like(location):
             location = self.location_names[location]
         xoff, yoff = location
@@ -236,7 +237,7 @@ class StationPlot(object):
 
 @exporter.export
 class StationPlotLayout(dict):
-    r"""Encapsulates a standard layout for plotting using :class:`StationPlot`.
+    r"""make a layout to encapsulate plotting using :class:`StationPlot`.
 
     This class keeps a collection of offsets, plot formats, etc. for a parameter based
     on its name. This then allows a dictionary of data (or any object that allows looking
@@ -246,11 +247,13 @@ class StationPlotLayout(dict):
     --------
     StationPlot
     """
+
     class PlotTypes(Enum):
         r"""Different plotting types for the layout.
 
         Controls how items are displayed (e.g. converting values to symbols).
         """
+
         value = 1
         symbol = 2
         text = 3
@@ -453,7 +456,7 @@ class StationPlotLayout(dict):
                         plotter.plot_text(loc, data, **args)
 
     def __repr__(self):
-        """Return string representation of layout"""
+        """Return string representation of layout."""
         return ('{' +
                 ', '.join('{0}: ({1[0].name}, {1[1]}, ...)'.format(loc, info)
                           for loc, info in sorted(self.items())) +

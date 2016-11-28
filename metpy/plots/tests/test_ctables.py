@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Tests for the `ctables` module."""
 
 import os.path
 import tempfile
@@ -17,18 +18,19 @@ from metpy.plots.ctables import ColortableRegistry, convert_gempak_table
 
 
 class TestColortableRegistry(object):
-    'Tests for ColortableRegistry'
+    """Test the ColortableRegistry."""
+
     def setup_method(self, _):
-        'Set up a registry for use by the tests.'
+        """Set up a registry for use by the tests."""
         self.reg = ColortableRegistry()
 
     def test_package_resource(self):
-        'Test registry scanning package resource'
+        """Test registry scanning package resource."""
         self.reg.scan_resource('metpy.plots', 'nexrad_tables')
         assert 'cc_table' in self.reg
 
     def test_scan_dir(self):
-        'Test registry scanning a directory'
+        """Test registry scanning a directory."""
         try:
             with tempfile.NamedTemporaryFile(mode='w', dir='.', suffix='.tbl', delete=False,
                                              **buffer_args) as fobj:
@@ -45,7 +47,7 @@ class TestColortableRegistry(object):
             os.remove(fname)
 
     def test_read_file(self):
-        'Test reading a colortable from a file'
+        """Test reading a colortable from a file."""
         fobj = StringIO('(0., 0., 1.0)\n"red"\n"#0000FF" #Blue')
 
         self.reg.add_colortable(fobj, 'test_table')
@@ -54,7 +56,7 @@ class TestColortableRegistry(object):
         assert self.reg['test_table'] == [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 0.0, 1.0)]
 
     def test_get_colortable(self):
-        'Test getting a colortable from the registry'
+        """Test getting a colortable from the registry."""
         true_colors = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0)]
         self.reg['table'] = true_colors
 
@@ -63,7 +65,7 @@ class TestColortableRegistry(object):
         assert table.colors == true_colors
 
     def test_get_steps(self):
-        'Test getting a colortable and norm with appropriate steps'
+        """Test getting a colortable and norm with appropriate steps."""
         self.reg['table'] = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
         norm, cmap = self.reg.get_with_steps('table', 5., 10.)
         assert cmap(norm(np.array([6.]))).tolist() == [[0.0, 0.0, 1.0, 1.0]]
@@ -72,14 +74,14 @@ class TestColortableRegistry(object):
         assert cmap(norm(np.array([26.]))).tolist() == [[0.0, 1.0, 0.0, 1.0]]
 
     def test_get_steps_negative_start(self):
-        'Test for issue #81 (bad start for get with steps)'
+        """Test bad start for get with steps (issue #81)."""
         self.reg['table'] = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
         norm, cmap = self.reg.get_with_steps('table', -10, 5)
         assert norm.vmin == -10
         assert norm.vmax == 5
 
     def test_get_boundaries(self):
-        'Test getting a colortable with explicit boundaries'
+        """Test getting a colortable with explicit boundaries."""
         self.reg['table'] = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
         norm, cmap = self.reg.get_with_boundaries('table', [0., 8., 10., 20.])
         assert cmap(norm(np.array([7.]))).tolist() == [[0.0, 0.0, 1.0, 1.0]]
@@ -88,7 +90,7 @@ class TestColortableRegistry(object):
 
 
 def test_gempak():
-    'Test GEMPAK colortable conversion'
+    """Test GEMPAK colortable conversion."""
     infile = StringIO('''!   wvcolor.tbl
                          0      0      0
                        255    255    255

@@ -8,6 +8,5 @@ from .triangles import *  # noqa: F403
 from .polygons import *  # noqa: F403
 from .interpolation import *  # noqa: F403
 
-__all__ = []
-__all__.extend(gridding_functions.__all__)  # pylint: disable=undefined-variable
+__all__ = gridding_functions.__all__[:]  # pylint: disable=undefined-variable
 __all__.extend(interpolation.__all__)  # pylint: disable=undefined-variable

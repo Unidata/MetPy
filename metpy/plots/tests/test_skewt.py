@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Tests for the `skewt` module."""
 
 from matplotlib import style
 from matplotlib.gridspec import GridSpec
@@ -14,7 +15,7 @@ from metpy.units import units
 
 @pytest.mark.mpl_image_compare(tolerance=0.021)
 def test_skewt_api():
-    'Test the SkewT api'
+    """Test the SkewT API."""
     with style.context(test_style):
         fig = make_figure(figsize=(9, 9))
         skew = SkewT(fig)
@@ -38,7 +39,7 @@ def test_skewt_api():
 
 @pytest.mark.mpl_image_compare(tolerance=0)
 def test_skewt_subplot():
-    'Test using SkewT on a sub-plot'
+    """Test using SkewT on a sub-plot."""
     with style.context(test_style):
         fig = make_figure(figsize=(9, 9))
         hide_tick_labels(SkewT(fig, subplot=(2, 2, 1)).ax)
@@ -47,7 +48,7 @@ def test_skewt_subplot():
 
 @pytest.mark.mpl_image_compare(tolerance=0)
 def test_skewt_gridspec():
-    'Test using SkewT on a sub-plot'
+    """Test using SkewT on a sub-plot."""
     with style.context(test_style):
         fig = make_figure(figsize=(9, 9))
         gs = GridSpec(1, 2)
@@ -57,7 +58,7 @@ def test_skewt_gridspec():
 
 @pytest.mark.mpl_image_compare(tolerance=0)
 def test_hodograph_api():
-    'Basic test of Hodograph API'
+    """Basic test of Hodograph API."""
     with style.context(test_style):
         fig = make_figure(figsize=(9, 9))
         ax = fig.add_subplot(1, 1, 1)
@@ -72,7 +73,7 @@ def test_hodograph_api():
 
 @pytest.mark.mpl_image_compare(tolerance=0)
 def test_hodograph_units():
-    'Test passing unit-ed quantities to Hodograph'
+    """Test passing unit-ed quantities to Hodograph."""
     with style.context(test_style):
         fig = make_figure(figsize=(9, 9))
         ax = fig.add_subplot(1, 1, 1)

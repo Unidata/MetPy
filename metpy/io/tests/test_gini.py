@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Test the `gini` module."""
 
 from datetime import datetime
 import logging
@@ -53,7 +54,7 @@ raw_gini_info = [('WEST-CONUS_4km_WV_20151208_2200.gini',
 @pytest.mark.parametrize('filename,pdb,pdb2,proj_info', raw_gini_info,
                          ids=['LCC', 'Stereographic', 'Mercator'])
 def test_raw_gini(filename, pdb, pdb2, proj_info):
-    'Test of raw GINI parsing'
+    """Test raw GINI parsing."""
     f = GiniFile(get_test_data(filename))
     assert f.prod_desc == pdb
     assert f.prod_desc2 == pdb2
@@ -62,7 +63,7 @@ def test_raw_gini(filename, pdb, pdb2, proj_info):
 
 
 def test_gini_bad_size():
-    'Test reading a GINI file that reports a bad header size'
+    """Test reading a GINI file that reports a bad header size."""
     f = GiniFile(get_test_data('NHEM-MULTICOMP_1km_IR_20151208_2100.gini'))
     pdb2 = f.prod_desc2
     assert pdb2.pdb_size == 512  # Catching bad size
@@ -91,7 +92,7 @@ gini_dataset_info = [('WEST-CONUS_4km_WV_20151208_2200.gini',
 @pytest.mark.parametrize('filename,bounds,data_var,proj_attrs', gini_dataset_info,
                          ids=['LCC', 'Stereographic', 'Mercator'])
 def test_gini_dataset(filename, bounds, data_var, proj_attrs):
-    'Test the dataset interface for GINI'
+    """Test the dataset interface for GINI."""
     f = GiniFile(get_test_data(filename))
     ds = f.to_dataset()
 
@@ -117,7 +118,7 @@ def test_gini_dataset(filename, bounds, data_var, proj_attrs):
 
 
 def test_gini_mercator_upper_corner():
-    'Test that the upper corner of the Mercator coordinates is correct'
+    """Test that the upper corner of the Mercator coordinates is correct."""
     f = GiniFile(get_test_data('HI-REGIONAL_4km_3.9_20160616_1715.gini'))
     ds = f.to_dataset()
     lat = ds.variables['lat']
@@ -130,7 +131,7 @@ def test_gini_mercator_upper_corner():
 
 
 def test_gini_str():
-    'Test the str representation of GiniFile'
+    """Test the str representation of GiniFile."""
     f = GiniFile(get_test_data('WEST-CONUS_4km_WV_20151208_2200.gini'))
     truth = ('GiniFile: GOES-15 West CONUS WV (6.5/6.7 micron)\n'
              '\tTime: 2015-12-08 22:00:19\n\tSize: 1280x1100\n'

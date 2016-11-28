@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Test the `points` module."""
 
 from __future__ import division
 
@@ -13,8 +14,7 @@ from metpy.gridding.points import (generate_grid, generate_grid_coords, get_boun
 
 
 def test_get_points_within_r():
-    r"""Tests get points within a radius function"""
-
+    r"""Test get points within a radius function."""
     x = list(range(10))
     y = list(range(10))
 
@@ -30,8 +30,7 @@ def test_get_points_within_r():
 
 
 def test_get_point_count_within_r():
-    r"""Tests get point count within a radius function"""
-
+    r"""Test get point count within a radius function."""
     x = list(range(10))
     y = list(range(10))
 
@@ -48,8 +47,7 @@ def test_get_point_count_within_r():
 
 
 def test_get_boundary_coords():
-    r"""Tests get spatial corners of data positions function"""
-
+    r"""Test get spatial corners of data positions function."""
     x = list(range(10))
     y = list(range(10))
 
@@ -65,8 +63,7 @@ def test_get_boundary_coords():
 
 
 def test_get_xy_steps():
-    r"""Tests get count of grids function"""
-
+    r"""Test get count of grids function."""
     x = list(range(10))
     y = list(range(10))
 
@@ -82,8 +79,7 @@ def test_get_xy_steps():
 
 
 def test_get_xy_range():
-    r"""Tests get range of data positions function"""
-
+    r"""Test get range of data positions function."""
     x = list(range(10))
     y = list(range(10))
 
@@ -99,8 +95,7 @@ def test_get_xy_range():
 
 
 def test_generate_grid():
-    r"""Tests generate grid function"""
-
+    r"""Test generate grid function."""
     x = list(range(10))
     y = list(range(10))
 
@@ -121,8 +116,7 @@ def test_generate_grid():
 
 
 def test_generate_grid_coords():
-    r"""Tests generate grid coordinates function"""
-
+    r"""Test generate grid coordinates function."""
     x = list(range(10))
     y = list(range(10))
 

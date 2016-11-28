@@ -1,6 +1,13 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Contains a collection of basic calculations.
+
+These include:
+* wind components
+* heat index
+* windchill
+"""
 
 from __future__ import division
 
@@ -16,7 +23,7 @@ exporter = Exporter(globals())
 
 @exporter.export
 def get_wind_speed(u, v):
-    r'''Compute the wind speed from u and v-components.
+    r"""Compute the wind speed from u and v-components.
 
     Parameters
     ----------
@@ -33,14 +40,14 @@ def get_wind_speed(u, v):
     See Also
     --------
     get_wind_components
-    '''
+    """
     speed = np.sqrt(u * u + v * v)
     return speed
 
 
 @exporter.export
 def get_wind_dir(u, v):
-    r'''Compute the wind direction from u and v-components.
+    r"""Compute the wind direction from u and v-components.
 
     Parameters
     ----------
@@ -58,7 +65,7 @@ def get_wind_dir(u, v):
     See Also
     --------
     get_wind_components
-    '''
+    """
     wdir = 90. * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
     wdir = atleast_1d(wdir)
@@ -68,8 +75,7 @@ def get_wind_dir(u, v):
 
 @exporter.export
 def get_wind_components(speed, wdir):
-    r'''Calculate the U, V wind vector components from the speed and
-    direction.
+    r"""Calculate the U, V wind vector components from the speed and direction.
 
     Parameters
     ----------
@@ -95,8 +101,7 @@ def get_wind_components(speed, wdir):
     >>> metpy.calc.get_wind_components(10. * units('m/s'), 225. * units.deg)
     (<Quantity(7.071067811865475, 'meter / second')>,
      <Quantity(7.071067811865477, 'meter / second')>)
-    '''
-
+    """
     u = -speed * np.sin(wdir)
     v = -speed * np.cos(wdir)
     return u, v
@@ -104,8 +109,9 @@ def get_wind_components(speed, wdir):
 
 @exporter.export
 def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
-    r'''Calculate the Wind Chill Temperature Index (WCTI) from the current
-    temperature and wind speed.
+    r"""Calculate the Wind Chill Temperature Index (WCTI).
+
+    Calculates WCTI from the current temperature and wind speed.
 
     Specifically, these formulas assume that wind speed is measured at
     10m.  If, instead, the speeds are measured at face level, the winds
@@ -145,8 +151,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     References
     ----------
     .. [4] http://www.ofcm.gov/jagti/r19-ti-plan/pdf/03_chap3.pdf
-    '''
-
+    """
     # Correct for lower height measurement of winds if necessary
     if face_level_winds:
         speed = speed * 1.5
@@ -168,8 +173,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
 @exporter.export
 def heat_index(temperature, rh, mask_undefined=True):
-    r'''Calculate the Heat Index from the current temperature and relative
-    humidity.
+    r"""Calculate the Heat Index from the current temperature and relative humidity.
 
     The implementation uses the formula outlined in [6].
 
@@ -205,9 +209,7 @@ def heat_index(temperature, rh, mask_undefined=True):
            science. J. Appl. Meteor., 18, 861-873.
 
     .. [6] http://www.srh.noaa.gov/ffc/html/studies/ta_htindx.PDF
-
-    '''
-
+    """
     delta = temperature - 0. * units.degF
     rh2 = rh * rh
     delta2 = delta * delta
@@ -230,7 +232,7 @@ def heat_index(temperature, rh, mask_undefined=True):
 
 @exporter.export
 def pressure_to_height_std(pressure):
-    r'''Convert pressure data to heights using the U.S. standard atmosphere.
+    r"""Convert pressure data to heights using the U.S. standard atmosphere.
 
     The implementation uses the formula outlined in [7].
 
@@ -252,7 +254,7 @@ def pressure_to_height_std(pressure):
     ----------
     .. [7] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
             Survey. 60-61.
-    '''
+    """
     t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
     p0 = 1013.25 * units.mbar
@@ -261,7 +263,7 @@ def pressure_to_height_std(pressure):
 
 @exporter.export
 def coriolis_parameter(latitude):
-    r'''Calculate the coriolis parameter at each point.
+    r"""Calculate the coriolis parameter at each point.
 
     The implementation uses the formula outlined in [8].
 
@@ -279,5 +281,5 @@ def coriolis_parameter(latitude):
     ----------
     .. [8] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
             Survey. 370-371.
-    '''
+    """
     return 2. * omega * np.sin(latitude)

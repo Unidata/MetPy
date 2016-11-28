@@ -1,8 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-r"""This module contains calculations related to turbulence and time series perturbations.
-"""
+r"""Contains calculations related to turbulence and time series perturbations."""
 
 import numpy as np
 
@@ -37,7 +36,6 @@ def get_perturbation(ts, axis=-1):
     the perturbations about the mean:
 
     .. math:: x(t)^{\prime} = x(t) - \overline{x(t)}
-
     """
     slices = [slice(None)] * ts.ndim
     slices[axis] = None
@@ -52,7 +50,9 @@ def get_perturbation(ts, axis=-1):
 
 @exporter.export
 def tke(u, v, w, perturbation=False, axis=-1):
-    r"""Compute the turbulence kinetic energy (e) from the time series of the
+    r"""Compute turbulence kinetic energy.
+
+    Compute the turbulence kinetic energy (e) from the time series of the
     velocity components.
 
     Parameters
@@ -104,9 +104,7 @@ def tke(u, v, w, perturbation=False, axis=-1):
     ----------
     .. [1] Garratt, J.R., 1994: The Atmospheric Boundary Layer. Cambridge
            University Press, 316 pp.
-
     """
-
     if not perturbation:
         u = get_perturbation(u, axis=axis)
         v = get_perturbation(v, axis=axis)
@@ -121,22 +119,23 @@ def tke(u, v, w, perturbation=False, axis=-1):
 
 @exporter.export
 def kinematic_flux(vel, b, perturbation=False, axis=-1):
-    r"""Compute the kinematic flux from the time series of two variables `vel`
+    r"""Compute the kinematic flux from two time series.
+
+    Compute the kinematic flux from the time series of two variables `vel`
     and b. Note that to be a kinematic flux, at least one variable must be
     a component of velocity.
 
     Parameters
     ----------
     vel : array_like
-          A component of velocity
-    b   : array_like
-          May be a component of velocity or a scalar variable (e.g.
-          Temperature)
+        A component of velocity
 
-    perturbation : {False, True}, optional
-                   True if the `vel` and `b` variables are perturbations. If
-                   False, perturbations will be calculated by removing the
-                   mean value from each variable.
+    b : array_like
+        May be a component of velocity or a scalar variable (e.g. Temperature)
+
+    perturbation : bool, optional
+        `True` if the `vel` and `b` variables are perturbations. If `False`, perturbations
+        will be calculated by removing the mean value from each variable. Defaults to `False`.
 
     Returns
     -------
@@ -145,8 +144,9 @@ def kinematic_flux(vel, b, perturbation=False, axis=-1):
 
     Other Parameters
     ----------------
-    axis : int
-           The index of the time axis. Default is -1
+    axis : int, optional
+           The index of the time axis, along which the calculations will be
+           performed. Defaults to -1
 
     Notes
     -----
@@ -183,7 +183,6 @@ def kinematic_flux(vel, b, perturbation=False, axis=-1):
     .. [2] Garratt, J.R., 1994: The Atmospheric Boundary Layer. Cambridge
            University Press, 316 pp.
     """
-
     kf = np.mean(vel * b, axis=axis)
     if not perturbation:
         kf -= np.mean(vel, axis=axis) * np.mean(b, axis=axis)
@@ -192,7 +191,9 @@ def kinematic_flux(vel, b, perturbation=False, axis=-1):
 
 @exporter.export
 def friction_velocity(u, w, v=None, perturbation=False, axis=-1):
-    r"""Compute the friction velocity from the time series of the x, z,
+    r"""Compute the friction velocity from the time series of velocity components.
+
+    Compute the friction velocity from the time series of the x, z,
     and optionally y, velocity components.
 
     Parameters
@@ -248,9 +249,7 @@ def friction_velocity(u, w, v=None, perturbation=False, axis=-1):
     ----------
     .. [3] Garratt, J.R., 1994: The Atmospheric Boundary Layer. Cambridge
            University Press, 316 pp.
-
     """
-
     uw = kinematic_flux(u, w, perturbation=perturbation, axis=axis)
     kf = uw * uw
     if v is not None:

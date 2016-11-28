@@ -1,6 +1,7 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2008-2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Test the `gridding_functions` module."""
 
 from __future__ import division
 
@@ -18,8 +19,7 @@ from metpy.gridding.gridding_functions import (calc_kappa, interpolate,
 
 @pytest.fixture()
 def test_coords():
-    r"""Test data locations used for tests in this file"""
-
+    r"""Return data locations used for tests in this file."""
     x = np.array([8, 67, 79, 10, 52, 53, 98, 34, 15, 58], dtype=float)
     y = np.array([24, 87, 48, 94, 98, 66, 14, 24, 60, 16], dtype=float)
 
@@ -27,8 +27,7 @@ def test_coords():
 
 
 def test_calc_kappa(test_coords):
-    r"""Tests calculate kappa parameter function"""
-
+    r"""Test calculate kappa parameter function."""
     x, y = test_coords
 
     spacing = np.mean((cdist(list(zip(x, y)),
@@ -42,8 +41,7 @@ def test_calc_kappa(test_coords):
 
 
 def test_remove_observations_below_value(test_coords):
-    r"""Tests threshold observations function"""
-
+    r"""Test threshold observations function."""
     x, y = test_coords[0], test_coords[1]
 
     z = np.array(list(range(-10, 10, 2)))
@@ -60,8 +58,7 @@ def test_remove_observations_below_value(test_coords):
 
 
 def test_remove_nan_observations(test_coords):
-    r"""Tests remove observations equal to nan function"""
-
+    r"""Test remove observations equal to nan function."""
     x, y = test_coords[0], test_coords[1]
 
     z = np.array([np.nan, np.nan, np.nan, 1, 1, 1, 1, 1, 1, 1])
@@ -78,8 +75,7 @@ def test_remove_nan_observations(test_coords):
 
 
 def test_remove_repeat_coordinates(test_coords):
-    r"""Tests remove repeat coordinates function"""
-
+    r"""Test remove repeat coordinates function."""
     x, y = test_coords
 
     x[0] = 8.523
@@ -106,8 +102,7 @@ interp_methods = ['natural_neighbor', 'cressman', 'barnes',
 
 @pytest.mark.parametrize('method', interp_methods)
 def test_interpolate(method, test_coords):
-    r"""Tests main interpolate function"""
-
+    r"""Test main interpolate function."""
     xp, yp = test_coords
 
     xp *= 10

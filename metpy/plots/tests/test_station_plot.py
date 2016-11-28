@@ -1,6 +1,7 @@
 # Copyright (c) 2008-2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
+"""Tests for the `station_plot` module."""
 
 from matplotlib import style
 import numpy as np
@@ -13,7 +14,7 @@ from metpy.units import units
 
 
 def setup_font():
-    'Changes font settings for better test reliability.'
+    """Change font settings for better test reliability."""
     from matplotlib import rcParams
     rcParams['font.family'] = 'Bitstream Vera Sans'
     rcParams['text.hinting'] = False
@@ -22,7 +23,7 @@ def setup_font():
 
 @pytest.mark.mpl_image_compare(tolerance=6, savefig_kwargs={'dpi': 300})
 def test_stationplot_api():
-    'Test the StationPlot api'
+    """Test the StationPlot API."""
     setup_font()
     with style.context(test_style):
         fig = make_figure(figsize=(9, 9))
@@ -47,7 +48,7 @@ def test_stationplot_api():
 
 @pytest.mark.mpl_image_compare(tolerance=8, savefig_kwargs={'dpi': 300})
 def test_station_plot_replace():
-    'Test that locations are properly replaced'
+    """Test that locations are properly replaced."""
     setup_font()
     with style.context(test_style):
         fig = make_figure(figsize=(3, 3))
@@ -72,7 +73,7 @@ def test_station_plot_replace():
 
 @pytest.mark.mpl_image_compare(tolerance=4, savefig_kwargs={'dpi': 300})
 def test_stationlayout_api():
-    'Test the StationPlot api'
+    """Test the StationPlot API."""
     setup_font()
     with style.context(test_style):
         fig = make_figure(figsize=(9, 9))
@@ -107,7 +108,7 @@ def test_stationlayout_api():
 
 
 def test_station_layout_odd_data():
-    'Test more corner cases with data passed in'
+    """Test more corner cases with data passed in."""
     setup_font()
     fig = make_figure(figsize=(9, 9))
 
@@ -126,7 +127,7 @@ def test_station_layout_odd_data():
 
 
 def test_station_layout_replace():
-    'Test that layout locations are replaced'
+    """Test that layout locations are replaced."""
     layout = StationPlotLayout()
     layout.add_text('E', 'temperature')
     layout.add_value('E', 'dewpoint')
@@ -136,7 +137,7 @@ def test_station_layout_replace():
 
 
 def test_station_layout_names():
-    'Test getting station layout names'
+    """Test getting station layout names."""
     layout = StationPlotLayout()
     layout.add_barb('u', 'v')
     layout.add_text('E', 'stid')
@@ -147,7 +148,7 @@ def test_station_layout_names():
 
 @pytest.mark.mpl_image_compare(tolerance=6, savefig_kwargs={'dpi': 300})
 def test_simple_layout():
-    'Test metpy\'s simple layout for station plots'
+    """Test metpy's simple layout for station plots."""
     setup_font()
     with style.context(test_style):
         fig = make_figure(figsize=(9, 9))
@@ -178,7 +179,7 @@ def test_simple_layout():
 
 @pytest.mark.mpl_image_compare(tolerance=18.5, savefig_kwargs={'dpi': 300})
 def test_nws_layout():
-    'Test metpy\'s NWS layout for station plots'
+    """Test metpy's NWS layout for station plots."""
     setup_font()
     with style.context(test_style):
         fig = make_figure(figsize=(3, 3))
@@ -213,7 +214,7 @@ def test_nws_layout():
 
 
 def test_layout_str():
-    'Test layout string representation'
+    """Test layout string representation."""
     layout = StationPlotLayout()
     layout.add_barb('u', 'v')
     layout.add_text('E', 'stid')
