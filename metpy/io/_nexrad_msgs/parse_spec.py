@@ -34,11 +34,10 @@ def process_msg3(fname):
                 info.append({'name': var_name, 'desc': full_desc, 'fmt': fmt})
 
                 if ignored_item(info[-1]) and var_name != 'Spare':
-                    print('WARNING: %s has type %s. Setting as Spare' %
-                          (var_name, typ))
+                    print('WARNING: {} has type {}. Setting as Spare'.format(var_name, typ))
 
             except (ValueError, AssertionError):
-                print('%d > %s' % (lineno + 1, ':'.join(parts)))
+                print('{} > {}'.format(lineno + 1, ':'.join(parts)))
                 raise
         return info
 
@@ -61,9 +60,9 @@ def process_msg18(fname):
                                additional=[('See Note (5)', ('{size}s', 1172))])
 
                 if ' ' in var_name:
-                    print('WARNING: space in %s' % var_name)
+                    print('WARNING: space in {}'.format(var_name))
                 if not desc:
-                    print('WARNING: null description for %s' % var_name)
+                    print('WARNING: null description for {}'.format(var_name))
 
                 var_name = fix_var_name(var_name)
                 full_desc = fix_desc(desc, units)
@@ -72,10 +71,10 @@ def process_msg18(fname):
 
                 if (ignored_item(info[-1]) and var_name != 'SPARE' and
                         'SPARE' not in full_desc):
-                    print('WARNING: %s has type %s. Setting as SPARE' % (var_name, typ))
+                    print('WARNING: {} has type {}. Setting as SPARE'.format(var_name, typ))
 
             except (ValueError, AssertionError):
-                print('%d > %s' % (lineno + 1, ':'.join(parts)))
+                print('{} > {}'.format(lineno + 1, ':'.join(parts)))
                 raise
         return info
 
@@ -88,11 +87,11 @@ types = [('Real*4', ('f', 4)), ('Integer*4', ('L', 4)), ('SInteger*4', ('l', 4))
 
 def fix_type(typ, size, additional=None):
     if additional is not None:
-        myTypes = types + additional
+        my_types = types + additional
     else:
-        myTypes = types
+        my_types = types
 
-    for t, info in myTypes:
+    for t, info in my_types:
         if callable(t):
             matches = t(typ)
         else:
@@ -103,11 +102,11 @@ def fix_type(typ, size, additional=None):
                 fmtStr, trueSize = info(size)
             else:
                 fmtStr, trueSize = info
-            assert size == trueSize, ('Got size %d instead of %d for %s'
-                                      % (size, trueSize, typ))
+            assert size == trueSize, ('Got size {} instead of {} for {}'.format(size,
+                                                                                trueSize, typ))
             return fmtStr.format(size=size)
     else:
-        raise ValueError('No type match! (%s)' % typ)
+        raise ValueError('No type match! ({})'.format(typ))
 
 
 def fix_var_name(var_name):
@@ -140,17 +139,17 @@ def need_desc(item):
 
 
 def field_name(item):
-    return '"%s"' % item['name'] if not ignored_item(item) else None
+    return '"{:s}"'.format(item['name']) if not ignored_item(item) else None
 
 
 def field_fmt(item):
-    return '"%s"' % item['fmt'] if '"' not in item['fmt'] else item['fmt']
+    return '"{:s}"'.format(item['fmt']) if '"' not in item['fmt'] else item['fmt']
 
 
 def write_file(fname, info):
     with open(fname, 'w') as outfile:
         # File header
-        outfile.write('# Copyright (c) 2008-2015 MetPy Developers.\n')
+        outfile.write('# Copyright (c) 2008-2016 MetPy Developers.\n')
         outfile.write('# Distributed under the terms of the BSD 3-Clause License.\n')
         outfile.write('# SPDX-License-Identifier: BSD-3-Clause\n\n')
         outfile.write('# flake8: noqa\n')
@@ -174,7 +173,7 @@ if __name__ == '__main__':
     import os.path
 
     for num in [18, 3]:
-        fname = 'msg%d.spec' % num
+        fname = 'msg{:d}.spec'.format(num)
         print('Processing {}...'.format(fname))
         info = processors[num](fname)
         fname = os.path.splitext(fname)[0] + '.py'

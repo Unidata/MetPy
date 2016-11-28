@@ -270,7 +270,7 @@ class IOBuffer(object):
         else:
             order = '@'
 
-        return list(self.read_struct(Struct(order + '%d' % num + item_type)))
+        return list(self.read_struct(Struct(order + '{:d}'.format(int(num)) + item_type)))
 
     def read_int(self, code):
         """Parse the current buffer offset as the specified integer code."""
