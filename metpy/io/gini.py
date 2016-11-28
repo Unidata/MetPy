@@ -14,7 +14,7 @@ import re
 import numpy as np
 
 from .cdm import cf_to_proj, Dataset
-from .tools import Bits, IOBuffer, NamedStruct, zlib_decompress_all_frames
+from ._tools import Bits, IOBuffer, NamedStruct, zlib_decompress_all_frames
 from ..cbook import is_string_like
 from ..package_tools import Exporter
 

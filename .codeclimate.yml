@@ -19,6 +19,6 @@ ratings:
 exclude_paths:
 - "versioneer.py"
 - "metpy/_version.py"
-- "metpy/io/nexrad_msgs/msg*.py"
+- "metpy/io/_nexrad_msgs/msg*.py"
 - "docs/**/*"
 - "examples/notebooks/*"

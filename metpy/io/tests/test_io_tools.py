@@ -6,7 +6,7 @@ import numpy as np
 import pytest
 
 from metpy.io.cdm import Dataset
-from metpy.io.tools import hexdump, UnitLinker
+from metpy.io._tools import hexdump, UnitLinker
 from metpy.testing import assert_array_equal
 from metpy.units import units
 
