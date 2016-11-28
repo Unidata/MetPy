@@ -31,10 +31,9 @@ class Exporter(object):
 
     def __enter__(self):
         """Start a block tracking all instances created at global scope."""
-        self.cur_vars = list(self.globls.keys())
+        self.start_vars = set(self.globls)
 
     def __exit__(self, exc_type, exc_val, exc_tb):
         """Exit the instance tracking block."""
-        for k in self.globls.keys():
-            if k not in self.cur_vars:
-                self.exports.append(k)
+        self.exports.extend(set(self.globls) - self.start_vars)
+        del self.start_vars
