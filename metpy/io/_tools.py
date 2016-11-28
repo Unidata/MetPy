@@ -12,7 +12,7 @@ import zlib
 
 from ..units import UndefinedUnitError, units
 
-log = logging.getLogger('metpy.io.tools')
+log = logging.getLogger(__name__)
 log.setLevel(logging.WARNING)
 
 
