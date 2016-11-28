@@ -110,4 +110,4 @@ setup(
 
     zip_safe=True,
 
-    download_url='https://github.com/Unidata/MetPy/archive/v%s.tar.gz' % ver,)
+    download_url='https://github.com/Unidata/MetPy/archive/v{}.tar.gz'.format(ver),)

@@ -228,8 +228,9 @@ class Level2File(object):
             if msg_hdr.size_hw:
                 # Try to handle the message. If we don't handle it, skipping
                 # past it is handled at the end anyway.
-                if hasattr(self, '_decode_msg%d' % msg_hdr.msg_type):
-                    getattr(self, '_decode_msg%d' % msg_hdr.msg_type)(msg_hdr)
+                decoder = '_decode_msg{:d}'.format(msg_hdr.msg_type)
+                if hasattr(self, decoder):
+                    getattr(self, decoder)(msg_hdr)
                 else:
                     log.warning('Unknown message: %d', msg_hdr.msg_type)
 
@@ -413,7 +414,7 @@ class Level2File(object):
     def _decode_msg13(self, msg_hdr):
         data = self._buffer_segment(msg_hdr)
         if data:
-            data = list(Struct('>%dh' % (len(data) / 2)).unpack(data))
+            data = list(Struct('>{:d}h'.format(len(data) // 2)).unpack(data))
             bmap = dict()
             date, time, num_el = data[:3]
             bmap['datetime'] = nexrad_to_datetime(date, time)
@@ -425,7 +426,7 @@ class Level2File(object):
                 seg_num = data[offset]
                 offset += 1
                 assert seg_num == (e + 1), ('Message 13 segments out of sync --'
-                                            ' read %d but on %d' % (seg_num, e + 1))
+                                            ' read {} but on {}'.format(seg_num, e + 1))
 
                 az_data = []
                 for _ in range(360):
@@ -449,7 +450,7 @@ class Level2File(object):
         # will be returned concatenated when this is the case
         data = self._buffer_segment(msg_hdr)
         if data:
-            data = list(Struct('>%dh' % (len(data) / 2)).unpack(data))
+            data = list(Struct('>{:d}h'.format(len(data) // 2)).unpack(data))
             cmap = dict()
             date, time, num_el = data[:3]
             cmap['datetime'] = nexrad_to_datetime(date, time)
@@ -487,7 +488,7 @@ class Level2File(object):
             msg_fmt = DictStruct(fields, '>')
             self.rda = msg_fmt.unpack(data)
             for num in (11, 21, 31, 32, 300, 301):
-                attr = 'VCPAT%d' % num
+                attr = 'VCPAT' + str(num)
                 dat = self.rda[attr]
                 vcp_hdr = self.vcp_fmt.unpack_from(dat, 0)
                 off = self.vcp_fmt.size
@@ -626,8 +627,8 @@ class Level2File(object):
 
     def _check_size(self, msg_hdr, size):
         hdr_size = msg_hdr.size_hw * 2 - self.msg_hdr_fmt.size
-        assert size == hdr_size, ('Message type %d should be %d bytes but got %d' %
-                                  (msg_hdr.msg_type, size, hdr_size))
+        assert size == hdr_size, ('Message type {} should be {} bytes '
+                                  'but got {}'.format(msg_hdr.msg_type, size, hdr_size))
 
 
 def reduce_lists(d):
@@ -919,13 +920,13 @@ class LegacyMapper(DataMapper):
 
             elif codes >> 6:
                 val *= 0.01
-                label = '%.2f' % val
+                label = '{:.2f}'.format(val)
             elif codes >> 5:
                 val *= 0.05
-                label = '%.2f' % val
+                label = '{:.2f}'.format(val)
             elif codes >> 4:
                 val *= 0.1
-                label = '%.1f' % val
+                label = '{:.1f}'.format(val)
 
             if codes & 0x1:
                 val *= -1
@@ -1576,8 +1577,8 @@ class Level3File(object):
         self.prod_desc = self._buffer.read_struct(self.prod_desc_fmt)
 
         # Convert thresholds and dependent values to lists of values
-        self.thresholds = [getattr(self.prod_desc, 'thr%d' % i) for i in range(1, 17)]
-        self.depVals = [getattr(self.prod_desc, 'dep%d' % i) for i in range(1, 11)]
+        self.thresholds = [getattr(self.prod_desc, 'thr' + str(i)) for i in range(1, 17)]
+        self.depVals = [getattr(self.prod_desc, 'dep' + str(i)) for i in range(1, 11)]
 
         # Set up some time/location metadata
         self.metadata['msg_time'] = nexrad_to_datetime(self.header.date,
@@ -1697,10 +1698,10 @@ class Level3File(object):
         blk = self._buffer.read_struct(self.sym_block_fmt)
 
         self.sym_block = []
-        assert blk.divider == -1, ('Bad divider for symbology block: %d should be -1' %
-                                   blk.divider)
-        assert blk.block_id == 1, ('Bad block ID for symbology block: %d should be 1' %
-                                   blk.block_id)
+        assert blk.divider == -1, ('Bad divider for symbology block: {:d} should be -1'
+                                   .format(blk.divider))
+        assert blk.block_id == 1, ('Bad block ID for symbology block: {:d} should be 1'
+                                   .format(blk.block_id))
         for _ in range(blk.nlayer):
             layer_hdr = self._buffer.read_struct(self.sym_layer_fmt)
             assert layer_hdr.divider == -1
@@ -1720,10 +1721,10 @@ class Level3File(object):
     def _unpack_graphblock(self, start, offset):
         self._buffer.jump_to(start, offset)
         hdr = self._buffer.read_struct(self.graph_block_fmt)
-        assert hdr.divider == -1, ('Bad divider for graphical block: %d should be -1' %
-                                   hdr.divider)
-        assert hdr.block_id == 2, ('Bad block ID for graphical block: %d should be 1' %
-                                   hdr.block_id)
+        assert hdr.divider == -1, ('Bad divider for graphical block: {:d} should be -1'
+                                   .format(hdr.divider))
+        assert hdr.block_id == 2, ('Bad block ID for graphical block: {:d} should be 1'
+                                   .format(hdr.block_id))
         self.graph_pages = []
         for page in range(hdr.num_pages):
             page_num = self._buffer.read_int('>H')
@@ -1929,7 +1930,7 @@ class Level3File(object):
                 if kind not in point_feature_map:
                     log.warning('%s: Unknown graphic symbol point kind %d/%x.',
                                 self.filename, kind, kind)
-                    ret['type'].append('Unknown (%d)' % kind)
+                    ret['type'].append('Unknown ({:d})'.format(kind))
                 else:
                     ret['type'].append(point_feature_map[kind])
 
@@ -2098,7 +2099,7 @@ class Level3File(object):
                 scale = 1
             vals = self._read_trends()
             if code in (1, 2):
-                ret['%s Limited' % key] = [True if v > 700 else False for v in vals]
+                ret['{} Limited'.format(key)] = [True if v > 700 else False for v in vals]
                 vals = [v - 1000 if v > 700 else v for v in vals]
             ret[key] = [v * scale for v in vals]
 
