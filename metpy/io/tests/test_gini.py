@@ -13,8 +13,7 @@ from metpy.cbook import get_test_data
 from metpy.io import GiniFile
 from metpy.io.gini import GiniProjection
 
-log = logging.getLogger('metpy.io.gini')
-log.setLevel(logging.ERROR)
+logging.getLogger('metpy.io.gini').setLevel(logging.ERROR)
 
 # Reference contents of the named tuples from each file
 make_pdb = GiniFile.prod_desc_fmt.make_tuple
