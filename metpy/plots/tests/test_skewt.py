@@ -3,84 +3,75 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `skewt` module."""
 
-from matplotlib import style
 from matplotlib.gridspec import GridSpec
 import numpy as np
 import pytest
 
 from metpy.plots import Hodograph, SkewT
-from metpy.testing import hide_tick_labels, make_figure, test_style
+from metpy.testing import make_figure
 from metpy.units import units
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.021)
+@pytest.mark.mpl_image_compare(tolerance=0.021, remove_text=True)
 def test_skewt_api():
     """Test the SkewT API."""
-    with style.context(test_style):
-        fig = make_figure(figsize=(9, 9))
-        skew = SkewT(fig)
+    fig = make_figure(figsize=(9, 9))
+    skew = SkewT(fig)
 
-        # Plot the data using normal plotting functions, in this case using
-        # log scaling in Y, as dictated by the typical meteorological plot
-        p = np.linspace(1000, 100, 10)
-        t = np.linspace(20, -20, 10)
-        u = np.linspace(-10, 10, 10)
-        skew.plot(p, t, 'r')
-        skew.plot_barbs(p, u, u)
+    # Plot the data using normal plotting functions, in this case using
+    # log scaling in Y, as dictated by the typical meteorological plot
+    p = np.linspace(1000, 100, 10)
+    t = np.linspace(20, -20, 10)
+    u = np.linspace(-10, 10, 10)
+    skew.plot(p, t, 'r')
+    skew.plot_barbs(p, u, u)
 
-        # Add the relevant special lines
-        skew.plot_dry_adiabats()
-        skew.plot_moist_adiabats()
-        skew.plot_mixing_lines()
-        hide_tick_labels(skew.ax)
+    # Add the relevant special lines
+    skew.plot_dry_adiabats()
+    skew.plot_moist_adiabats()
+    skew.plot_mixing_lines()
 
-        return fig
+    return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_skewt_subplot():
     """Test using SkewT on a sub-plot."""
-    with style.context(test_style):
-        fig = make_figure(figsize=(9, 9))
-        hide_tick_labels(SkewT(fig, subplot=(2, 2, 1)).ax)
-        return fig
+    fig = make_figure(figsize=(9, 9))
+    SkewT(fig, subplot=(2, 2, 1))
+    return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_skewt_gridspec():
     """Test using SkewT on a sub-plot."""
-    with style.context(test_style):
-        fig = make_figure(figsize=(9, 9))
-        gs = GridSpec(1, 2)
-        hide_tick_labels(SkewT(fig, subplot=gs[0, 1]).ax)
-        return fig
+    fig = make_figure(figsize=(9, 9))
+    gs = GridSpec(1, 2)
+    SkewT(fig, subplot=gs[0, 1])
+    return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_api():
     """Basic test of Hodograph API."""
-    with style.context(test_style):
-        fig = make_figure(figsize=(9, 9))
-        ax = fig.add_subplot(1, 1, 1)
-        hodo = Hodograph(ax, component_range=60)
-        hodo.add_grid(increment=5, color='k')
-        hodo.plot([1, 10], [1, 10], color='red')
-        hodo.plot_colormapped(np.array([1, 3, 5, 10]), np.array([2, 4, 6, 11]),
-                              np.array([0.1, 0.3, 0.5, 0.9]), cmap='Greys')
-        hide_tick_labels(ax)
-        return fig
+    fig = make_figure(figsize=(9, 9))
+    ax = fig.add_subplot(1, 1, 1)
+    hodo = Hodograph(ax, component_range=60)
+    hodo.add_grid(increment=5, color='k')
+    hodo.plot([1, 10], [1, 10], color='red')
+    hodo.plot_colormapped(np.array([1, 3, 5, 10]), np.array([2, 4, 6, 11]),
+                          np.array([0.1, 0.3, 0.5, 0.9]), cmap='Greys')
+    return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0)
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_units():
     """Test passing unit-ed quantities to Hodograph."""
-    with style.context(test_style):
-        fig = make_figure(figsize=(9, 9))
-        ax = fig.add_subplot(1, 1, 1)
-        hodo = Hodograph(ax)
-        u = np.arange(10) * units.kt
-        v = np.arange(10) * units.kt
-        hodo.plot(u, v)
-        hodo.plot_colormapped(u, v, np.sqrt(u * u + v * v), cmap='Greys')
-        hide_tick_labels(ax)
-        return fig
+    fig = make_figure(figsize=(9, 9))
+    ax = fig.add_subplot(1, 1, 1)
+    hodo = Hodograph(ax)
+    u = np.arange(10) * units.kt
+    v = np.arange(10) * units.kt
+    hodo.plot(u, v)
+    hodo.plot_colormapped(u, v, np.sqrt(u * u + v * v), cmap='Greys')
+    return fig

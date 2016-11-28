@@ -8,14 +8,10 @@ This includes:
 * code for testing matplotlib figures
 """
 
-from matplotlib import style
 import numpy.testing
 from pint import DimensionalityError
 
 from .units import units
-
-# Our lowest supported matplotlib doesn't have the classic style, so fallback to empty list
-test_style = 'classic' if 'classic' in style.available else []
 
 
 def check_and_drop_units(actual, desired):
@@ -100,9 +96,3 @@ def make_figure(*args, **kwargs):
     fig = Figure(*args, **kwargs)
     fig.canvas = FigureCanvasAgg(fig)
     return fig
-
-
-def hide_tick_labels(ax):
-    """Hide the ticklabels on an axes."""
-    ax.xaxis.set_ticklabels([])
-    ax.yaxis.set_ticklabels([])
