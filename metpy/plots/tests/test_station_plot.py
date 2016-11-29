@@ -12,18 +12,9 @@ from metpy.plots.wx_symbols import high_clouds, sky_cover
 from metpy.units import units
 
 
-def setup_font():
-    """Change font settings for better test reliability."""
-    from matplotlib import rcParams
-    rcParams['font.family'] = 'Bitstream Vera Sans'
-    rcParams['text.hinting'] = False
-    rcParams['text.hinting_factor'] = 8
-
-
 @pytest.mark.mpl_image_compare(tolerance=6, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_stationplot_api():
     """Test the StationPlot API."""
-    setup_font()
     fig = plt.figure(figsize=(9, 9))
 
     # testing data
@@ -46,7 +37,6 @@ def test_stationplot_api():
 @pytest.mark.mpl_image_compare(tolerance=8, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_station_plot_replace():
     """Test that locations are properly replaced."""
-    setup_font()
     fig = plt.figure(figsize=(3, 3))
 
     # testing data
@@ -69,7 +59,6 @@ def test_station_plot_replace():
 @pytest.mark.mpl_image_compare(tolerance=4, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_stationlayout_api():
     """Test the StationPlot API."""
-    setup_font()
     fig = plt.figure(figsize=(9, 9))
 
     # testing data
@@ -102,7 +91,6 @@ def test_stationlayout_api():
 
 def test_station_layout_odd_data():
     """Test more corner cases with data passed in."""
-    setup_font()
     fig = plt.figure(figsize=(9, 9))
 
     # Set up test layout
@@ -142,7 +130,6 @@ def test_station_layout_names():
 @pytest.mark.mpl_image_compare(tolerance=6, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_simple_layout():
     """Test metpy's simple layout for station plots."""
-    setup_font()
     fig = plt.figure(figsize=(9, 9))
 
     # testing data
@@ -171,7 +158,6 @@ def test_simple_layout():
 @pytest.mark.mpl_image_compare(tolerance=18.5, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_nws_layout():
     """Test metpy's NWS layout for station plots."""
-    setup_font()
     fig = plt.figure(figsize=(3, 3))
 
     # testing data
