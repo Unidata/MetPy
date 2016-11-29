@@ -6,9 +6,8 @@
 from tempfile import TemporaryFile
 
 import matplotlib.patheffects as mpatheffects
+import matplotlib.pyplot as plt
 import numpy as np
-
-from metpy.testing import make_figure
 
 # Needed to trigger scattertext monkey-patching
 import metpy.plots  # noqa: F401
@@ -20,7 +19,7 @@ def test_scattertext_patheffect_empty():
     """Test scattertext with empty strings and PathEffects (Issue #245)."""
     strings = ['abc', '', 'def']
     x, y = np.arange(6).reshape(2, 3)
-    fig = make_figure()
+    fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
     ax.scattertext(x, y, strings, color='white',
                    path_effects=[mpatheffects.withStroke(linewidth=1, foreground='black')])
