@@ -4,18 +4,18 @@
 """Tests for the `skewt` module."""
 
 from matplotlib.gridspec import GridSpec
+import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
 from metpy.plots import Hodograph, SkewT
-from metpy.testing import make_figure
 from metpy.units import units
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.021, remove_text=True)
 def test_skewt_api():
     """Test the SkewT API."""
-    fig = make_figure(figsize=(9, 9))
+    fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig)
 
     # Plot the data using normal plotting functions, in this case using
@@ -37,7 +37,7 @@ def test_skewt_api():
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_skewt_subplot():
     """Test using SkewT on a sub-plot."""
-    fig = make_figure(figsize=(9, 9))
+    fig = plt.figure(figsize=(9, 9))
     SkewT(fig, subplot=(2, 2, 1))
     return fig
 
@@ -45,7 +45,7 @@ def test_skewt_subplot():
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_skewt_gridspec():
     """Test using SkewT on a sub-plot."""
-    fig = make_figure(figsize=(9, 9))
+    fig = plt.figure(figsize=(9, 9))
     gs = GridSpec(1, 2)
     SkewT(fig, subplot=gs[0, 1])
     return fig
@@ -54,7 +54,7 @@ def test_skewt_gridspec():
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_api():
     """Basic test of Hodograph API."""
-    fig = make_figure(figsize=(9, 9))
+    fig = plt.figure(figsize=(9, 9))
     ax = fig.add_subplot(1, 1, 1)
     hodo = Hodograph(ax, component_range=60)
     hodo.add_grid(increment=5, color='k')
@@ -67,7 +67,7 @@ def test_hodograph_api():
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_units():
     """Test passing unit-ed quantities to Hodograph."""
-    fig = make_figure(figsize=(9, 9))
+    fig = plt.figure(figsize=(9, 9))
     ax = fig.add_subplot(1, 1, 1)
     hodo = Hodograph(ax)
     u = np.arange(10) * units.kt

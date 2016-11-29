@@ -3,12 +3,12 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `station_plot` module."""
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
 from metpy.plots import nws_layout, simple_layout, StationPlot, StationPlotLayout
 from metpy.plots.wx_symbols import high_clouds, sky_cover
-from metpy.testing import make_figure
 from metpy.units import units
 
 
@@ -24,7 +24,7 @@ def setup_font():
 def test_stationplot_api():
     """Test the StationPlot API."""
     setup_font()
-    fig = make_figure(figsize=(9, 9))
+    fig = plt.figure(figsize=(9, 9))
 
     # testing data
     x = np.array([1, 5])
@@ -47,7 +47,7 @@ def test_stationplot_api():
 def test_station_plot_replace():
     """Test that locations are properly replaced."""
     setup_font()
-    fig = make_figure(figsize=(3, 3))
+    fig = plt.figure(figsize=(3, 3))
 
     # testing data
     x = np.array([1])
@@ -70,7 +70,7 @@ def test_station_plot_replace():
 def test_stationlayout_api():
     """Test the StationPlot API."""
     setup_font()
-    fig = make_figure(figsize=(9, 9))
+    fig = plt.figure(figsize=(9, 9))
 
     # testing data
     x = np.array([1, 5])
@@ -103,7 +103,7 @@ def test_stationlayout_api():
 def test_station_layout_odd_data():
     """Test more corner cases with data passed in."""
     setup_font()
-    fig = make_figure(figsize=(9, 9))
+    fig = plt.figure(figsize=(9, 9))
 
     # Set up test layout
     layout = StationPlotLayout()
@@ -143,7 +143,7 @@ def test_station_layout_names():
 def test_simple_layout():
     """Test metpy's simple layout for station plots."""
     setup_font()
-    fig = make_figure(figsize=(9, 9))
+    fig = plt.figure(figsize=(9, 9))
 
     # testing data
     x = np.array([1, 5])
@@ -172,7 +172,7 @@ def test_simple_layout():
 def test_nws_layout():
     """Test metpy's NWS layout for station plots."""
     setup_font()
-    fig = make_figure(figsize=(3, 3))
+    fig = plt.figure(figsize=(3, 3))
 
     # testing data
     x = np.array([1])

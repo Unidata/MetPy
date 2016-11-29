@@ -85,14 +85,3 @@ def assert_array_equal(actual, desired):
     """
     actual, desired = check_and_drop_units(actual, desired)
     numpy.testing.assert_array_equal(actual, desired)
-
-
-def make_figure(*args, **kwargs):
-    """Create an Agg figure for testing."""
-    from matplotlib.figure import Figure
-    from matplotlib.backends.backend_agg import FigureCanvasAgg
-    if 'dpi' not in kwargs:
-        kwargs['dpi'] = 100
-    fig = Figure(*args, **kwargs)
-    fig.canvas = FigureCanvasAgg(fig)
-    return fig
