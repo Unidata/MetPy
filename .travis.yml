@@ -25,6 +25,7 @@ env:
     - WHEELHOUSE="https://unidata-python.s3.amazonaws.com/wheelhouse/index.html"
     - WHEELDIR="wheelhouse/"
     - EXTRA_INSTALLS="test,cdm"
+    - TEST_OUTPUT_CONTROL="-s"
   matrix:
     - TASK="coverage"
     - TASK="examples"
@@ -32,7 +33,9 @@ env:
 matrix:
   include:
     - python: 2.7
-      env: VERSIONS="numpy==1.9.1 matplotlib==1.4.0 scipy==0.14.0 pint==0.7"
+      env:
+        - VERSIONS="numpy==1.9.1 matplotlib==1.4.0 scipy==0.14.0 pint==0.7"
+        - TEST_OUTPUT_CONTROL=""
     # Docs built on 2.7 because that's what readthedocs uses
     - python: 2.7
       env: TASK="docs"
@@ -76,7 +79,7 @@ before_install:
         pkg-config --modversion proj;
         popd;
       else
-        export TEST_OPTS="-s --flake8 --mpl";
+        export TEST_OPTS="--flake8 --mpl";
         if [[ $TRAVIS_PYTHON_VERSION == 3.5 ]]; then
           pip install flake8-bugbear;
         fi;
@@ -121,7 +124,7 @@ script:
       find examples/notebooks/ -name \*.ipynb -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=200 --to=notebook --stdout >| /dev/null;
     else
       flake8 --version;
-      python setup.py test --addopts "$TEST_OPTS";
+      python setup.py test --addopts "$TEST_OUTPUT_CONTROL $TEST_OPTS";
     fi
 
 after_script:
