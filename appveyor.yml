@@ -41,7 +41,7 @@ build: off
 test_script:
     - cmd: set TEST_DATA_DIR=%APPVEYOR_BUILD_FOLDER%\\testdata
     - cmd: if %PYTHON_VERSION% == 2.7 find examples\notebooks -name "*.ipynb" -exec sed -i -e s/python3/python2/ {} ;
-    - cmd: python setup.py test --addopts "--junitxml=tests.xml --flake8 --mpl --cov=metpy"
+    - cmd: python setup.py test --addopts "-s --junitxml=tests.xml --flake8 --mpl --cov=metpy"
     - cmd: find examples\notebooks\ -name "*.ipynb" -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=200 --ExecutePreprocessor.kernel_name=devel --inplace
 
 on_finish:

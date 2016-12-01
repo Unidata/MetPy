@@ -76,7 +76,7 @@ before_install:
         pkg-config --modversion proj;
         popd;
       else
-        export TEST_OPTS="--flake8 --mpl";
+        export TEST_OPTS="-s --flake8 --mpl";
         if [[ $TRAVIS_PYTHON_VERSION == 3.5 ]]; then
           pip install flake8-bugbear;
         fi;
