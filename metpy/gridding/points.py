@@ -15,7 +15,7 @@ log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
 log.setLevel(logging.WARNING)
 
 
-def get_points_within_r(center_points, target_points, r, return_idx=False):
+def get_points_within_r(center_points, target_points, r):
     r"""Get all target_points within a specified radius of a center point.
 
     All data must be in same coordinate system, or you will get undetermined results.
@@ -28,9 +28,6 @@ def get_points_within_r(center_points, target_points, r, return_idx=False):
         points from which to return if they are within r of center_points
     r: integer
         search radius around center_points to grab target_points
-    return_idx: bool
-        If true, function will return indices of winning points
-        If false (default), function will return list of winning points
 
     Returns
     -------
