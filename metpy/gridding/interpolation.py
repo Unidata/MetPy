@@ -5,7 +5,7 @@
 
 from __future__ import division
 
-import warnings
+import logging
 
 import numpy as np
 from scipy.spatial import cKDTree, ConvexHull, Delaunay, qhull
@@ -14,6 +14,10 @@ from . import points, polygons, triangles
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
+
+log = logging.getLogger(__name__)
+log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
+log.setLevel(logging.WARNING)
 
 
 @exporter.export
@@ -142,7 +146,7 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
                        'Interpolation will continue but be mindful '
                        'of errors in output. ') + str(e)
 
-            warnings.warn(message)
+            log.warning(message)
             return np.nan
 
         polygon = list()

@@ -5,10 +5,14 @@
 
 from __future__ import division
 
-import warnings
+import logging
 
 import numpy as np
 from scipy.spatial import cKDTree
+
+log = logging.getLogger(__name__)
+log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
+log.setLevel(logging.WARNING)
 
 
 def get_points_within_r(center_points, target_points, r, return_idx=False):
@@ -64,7 +68,7 @@ def get_point_count_within_r(center_points, target_points, r):
     return np.array([len(x) for x in indices])
 
 
-def generate_grid(horiz_dim, bbox, ignore_warnings=False):
+def generate_grid(horiz_dim, bbox):
     r"""Generate a meshgrid based on bounding box and x & y resolution.
 
     Parameters
@@ -73,9 +77,6 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
         Horizontal resolution in meters
     bbox: dictionary
         Dictionary containing coordinates for corners of study area.
-    ignore_warnings: bool
-        Toggle whether or not to display warning to prevent very large
-        number of grids. Default is False.
 
     Returns
     -------
@@ -84,8 +85,8 @@ def generate_grid(horiz_dim, bbox, ignore_warnings=False):
     grid_y: (X, Y) ndarray
         Y dimension meshgrid defined by given bounding box
     """
-    if horiz_dim < 10000 and not ignore_warnings:
-        warnings.warn('Grids less than 10km may be slow to load at synoptic scale.')
+    if horiz_dim < 10000:
+        log.warning('Grids less than 10km may be slow to load at synoptic scale.')
 
     x_steps, y_steps = get_xy_steps(bbox, horiz_dim)
 

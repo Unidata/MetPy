@@ -5,6 +5,8 @@
 
 from __future__ import division
 
+import logging
+
 import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_almost_equal
 import pytest
@@ -17,6 +19,8 @@ from metpy.gridding.interpolation import (barnes_point, barnes_weights, cressman
                                           cressman_weights, inverse_distance,
                                           natural_neighbor, nn_point)
 from metpy.gridding.triangles import dist_2, find_natural_neighbors
+
+logging.getLogger('metpy.gridding.interpolation').setLevel(logging.ERROR)
 
 
 @pytest.fixture()

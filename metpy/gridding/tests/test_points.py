@@ -5,12 +5,16 @@
 
 from __future__ import division
 
+import logging
+
 import numpy as np
 from numpy.testing import assert_array_almost_equal
 
 from metpy.gridding.points import (generate_grid, generate_grid_coords, get_boundary_coords,
                                    get_point_count_within_r, get_points_within_r,
                                    get_xy_range, get_xy_steps)
+
+logging.getLogger('metpy.gridding.points').setLevel(logging.ERROR)
 
 
 def test_get_points_within_r():
@@ -101,7 +105,7 @@ def test_generate_grid():
 
     bbox = get_boundary_coords(x, y)
 
-    gx, gy = generate_grid(3, bbox, ignore_warnings=True)
+    gx, gy = generate_grid(3, bbox)
 
     truth_x = np.array([[0.0, 4.5, 9.0],
                         [0.0, 4.5, 9.0],
@@ -122,7 +126,7 @@ def test_generate_grid_coords():
 
     bbox = get_boundary_coords(x, y)
 
-    gx, gy = generate_grid(3, bbox, ignore_warnings=True)
+    gx, gy = generate_grid(3, bbox)
 
     truth = [[0.0, 0.0],
              [4.5, 0.0],
