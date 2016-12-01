@@ -11,6 +11,7 @@ from __future__ import division
 
 import ast
 import glob
+import logging
 import os.path
 import posixpath
 
@@ -18,6 +19,10 @@ import matplotlib.colors as mcolors
 from pkg_resources import resource_listdir, resource_stream
 
 TABLE_EXT = '.tbl'
+
+log = logging.getLogger(__name__)
+log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
+log.setLevel(logging.WARNING)
 
 
 def _parse(s):
@@ -49,11 +54,14 @@ def read_colortable(fobj):
         range of [0, 1].
     """
     ret = list()
-    for line in fobj:
-        literal = _parse(line)
-        if literal:
-            ret.append(mcolors.colorConverter.to_rgb(literal))
-    return ret
+    try:
+        for line in fobj:
+            literal = _parse(line)
+            if literal:
+                ret.append(mcolors.colorConverter.to_rgb(literal))
+        return ret
+    except (SyntaxError, ValueError):
+        raise RuntimeError('Malformed colortable.')
 
 
 def convert_gempak_table(infile, outfile):
@@ -108,7 +116,12 @@ class ColortableRegistry(dict):
         for fname in glob.glob(os.path.join(path, '*' + TABLE_EXT)):
             if os.path.isfile(fname):
                 with open(fname, 'r') as fobj:
-                    self.add_colortable(fobj, os.path.splitext(os.path.basename(fname))[0])
+                    try:
+                        self.add_colortable(fobj, os.path.splitext(os.path.basename(fname))[0])
+                        log.debug('Added colortable from file: %s', fname)
+                    except RuntimeError:
+                        # If we get a file we can't handle, assume we weren't meant to.
+                        log.info('Skipping unparsable file: %s', fname)
 
     def add_colortable(self, fobj, name):
         r"""Add a color table from a file to the registry.

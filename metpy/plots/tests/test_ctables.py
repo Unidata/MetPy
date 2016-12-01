@@ -31,21 +31,27 @@ def test_package_resource(registry):
 
 
 def test_scan_dir(registry):
-    """Test registry scanning a directory."""
+    """Test registry scanning a directory and ignoring files it can't handle ."""
     try:
-        with tempfile.NamedTemporaryFile(mode='w', dir='.', suffix='.tbl', delete=False,
-                                         **buffer_args) as fobj:
+        kwargs = dict(mode='w', dir='.', suffix='.tbl', delete=False, **buffer_args)
+        with tempfile.NamedTemporaryFile(**kwargs) as fobj:
             fobj.write('"red"\n"lime"\n"blue"\n')
             fname = fobj.name
 
+        # Unrelated table file that *should not* impact the scan
+        with tempfile.NamedTemporaryFile(**kwargs) as fobj:
+            fobj.write('PADK     704540 ADAK NAS\n')
+            bad_file = fobj.name
+
         # Needs to be outside with so it's closed on windows
         registry.scan_dir(os.path.dirname(fname))
-        name = os.path.splitext(os.path.basename(fobj.name))[0]
+        name = os.path.splitext(os.path.basename(fname))[0]
 
         assert name in registry
         assert registry[name] == [(1.0, 0.0, 0.0), (0.0, 1.0, 0.0), (0.0, 0.0, 1.0)]
     finally:
         os.remove(fname)
+        os.remove(bad_file)
 
 
 def test_read_file(registry):
@@ -56,6 +62,14 @@ def test_read_file(registry):
 
     assert 'test_table' in registry
     assert registry['test_table'] == [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 0.0, 1.0)]
+
+
+def test_read_bad_file(registry):
+    """Test what error results when reading a malformed file."""
+    with pytest.raises(RuntimeError):
+        fobj = StringIO('PADK     704540 ADAK NAS                         '
+                        'AK US  5188 -17665     4  0')
+        registry.add_colortable(fobj, 'sfstns')
 
 
 def test_get_colortable(registry):
