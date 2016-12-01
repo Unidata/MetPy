@@ -9,6 +9,8 @@ import pytest
 
 from metpy.plots import nws_layout, simple_layout, StationPlot, StationPlotLayout
 from metpy.plots.wx_symbols import high_clouds, sky_cover
+# Fixture to make sure we have the right backend
+from metpy.testing import set_agg_backend  # noqa: F401
 from metpy.units import units
 
 

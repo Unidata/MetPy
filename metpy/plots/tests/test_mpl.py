@@ -11,6 +11,8 @@ import numpy as np
 
 # Needed to trigger scattertext monkey-patching
 import metpy.plots  # noqa: F401
+# Fixture to make sure we have the right backend
+from metpy.testing import set_agg_backend  # noqa: F401
 
 
 # Avoiding an image-based test here since that would involve text, which can be tricky

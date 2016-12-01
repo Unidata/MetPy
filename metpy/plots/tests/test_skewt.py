@@ -9,6 +9,8 @@ import numpy as np
 import pytest
 
 from metpy.plots import Hodograph, SkewT
+# Fixture to make sure we have the right backend
+from metpy.testing import set_agg_backend  # noqa: F401
 from metpy.units import units
 
 

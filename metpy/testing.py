@@ -10,6 +10,7 @@ This includes:
 
 import numpy.testing
 from pint import DimensionalityError
+import pytest
 
 from .units import units
 
@@ -85,3 +86,15 @@ def assert_array_equal(actual, desired):
     """
     actual, desired = check_and_drop_units(actual, desired)
     numpy.testing.assert_array_equal(actual, desired)
+
+
+@pytest.fixture(scope='module', autouse=True)
+def set_agg_backend():
+    """Fixture to ensure the Agg backend is active."""
+    import matplotlib.pyplot as plt
+    prev_backend = plt.get_backend()
+    try:
+        plt.switch_backend('agg')
+        yield
+    finally:
+        plt.switch_backend(prev_backend)
