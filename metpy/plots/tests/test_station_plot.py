@@ -36,7 +36,7 @@ def test_stationplot_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=8, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=8.07, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_station_plot_replace():
     """Test that locations are properly replaced."""
     fig = plt.figure(figsize=(3, 3))
@@ -157,7 +157,7 @@ def test_simple_layout():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=18.5, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=18.63, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_nws_layout():
     """Test metpy's NWS layout for station plots."""
     fig = plt.figure(figsize=(3, 3))
