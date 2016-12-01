@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `station_plot` module."""
 
+import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
@@ -14,7 +15,11 @@ from metpy.testing import patch_round, set_agg_backend  # noqa: F401
 from metpy.units import units
 
 
-@pytest.mark.mpl_image_compare(tolerance=6, savefig_kwargs={'dpi': 300}, remove_text=True)
+MPL_VERSION = matplotlib.__version__[:3]
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.04625, '1.4': 4.1}.get(MPL_VERSION, 0.0033),
+                               savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_stationplot_api():
     """Test the StationPlot API."""
     fig = plt.figure(figsize=(9, 9))
@@ -36,7 +41,8 @@ def test_stationplot_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=8.07, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05974, '1.4': 3.7}.get(MPL_VERSION, 0.0033),
+                               savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_station_plot_replace():
     """Test that locations are properly replaced."""
     fig = plt.figure(figsize=(3, 3))
@@ -58,7 +64,8 @@ def test_station_plot_replace():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=4, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.036, '1.4': 2.02}.get(MPL_VERSION, 0.00321),
+                               savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_stationlayout_api():
     """Test the StationPlot API."""
     fig = plt.figure(figsize=(9, 9))
@@ -129,7 +136,8 @@ def test_station_layout_names():
     assert sorted(layout.names()) == ['cover', 'stid', 'temp', 'u', 'v']
 
 
-@pytest.mark.mpl_image_compare(tolerance=6, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05447, '1.4': 3.0}.get(MPL_VERSION, 0.0039),
+                               savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_simple_layout():
     """Test metpy's simple layout for station plots."""
     fig = plt.figure(figsize=(9, 9))
@@ -157,7 +165,8 @@ def test_simple_layout():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=18.63, savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.1474, '1.4': 7.02}.get(MPL_VERSION, 0.0113),
+                               savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_nws_layout():
     """Test metpy's NWS layout for station plots."""
     fig = plt.figure(figsize=(3, 3))
