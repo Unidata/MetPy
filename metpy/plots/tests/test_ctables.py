@@ -6,11 +6,11 @@
 import os.path
 import tempfile
 try:
-    from StringIO import StringIO
     buffer_args = dict(bufsize=0)
+    from StringIO import StringIO
 except ImportError:
-    from io import StringIO
     buffer_args = dict(buffering=1)
+    from io import StringIO
 
 import numpy as np
 import pytest
