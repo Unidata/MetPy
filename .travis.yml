@@ -25,6 +25,7 @@ env:
     - WHEELHOUSE="https://unidata-python.s3.amazonaws.com/wheelhouse/index.html"
     - WHEELDIR="wheelhouse/"
     - EXTRA_INSTALLS="test,cdm"
+    - MPLLOCALFREETYPE="1"
     - TEST_OUTPUT_CONTROL="-s"
   matrix:
     - TASK="coverage"
