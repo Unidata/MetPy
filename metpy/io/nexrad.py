@@ -493,7 +493,7 @@ class Level2File(object):
                 vcp_hdr = self.vcp_fmt.unpack_from(dat, 0)
                 off = self.vcp_fmt.size
                 els = []
-                for i in range(vcp_hdr.num_el_cuts):
+                for _ in range(vcp_hdr.num_el_cuts):
                     els.append(self.vcp_el_fmt.unpack_from(dat, off))
                     off += self.vcp_el_fmt.size
                 self.rda[attr] = vcp_hdr._replace(els=els)
@@ -1826,7 +1826,7 @@ class Level3File(object):
                                ('angle_delta', 'h')], '>', 'DigitalRadialData')
         hdr = self._buffer.read_struct(hdr_fmt)
         rads = []
-        for i in range(hdr.num_rad):
+        for _ in range(hdr.num_rad):
             rad = self._buffer.read_struct(rad_fmt)
             start_az = rad.start_angle * 0.1
             end_az = start_az + rad.angle_delta * 0.1

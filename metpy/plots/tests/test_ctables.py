@@ -95,7 +95,7 @@ def test_get_steps(registry):
 def test_get_steps_negative_start(registry):
     """Test bad start for get with steps (issue #81)."""
     registry['table'] = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
-    norm, cmap = registry.get_with_steps('table', -10, 5)
+    norm, _ = registry.get_with_steps('table', -10, 5)
     assert norm.vmin == -10
     assert norm.vmax == 5
 
