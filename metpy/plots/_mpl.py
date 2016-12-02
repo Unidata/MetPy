@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Functionality that we have upstreamed or will upstream into matplotlib."""
+from __future__ import division
 
 # See if we should monkey-patch Barbs for better pivot
 import matplotlib
