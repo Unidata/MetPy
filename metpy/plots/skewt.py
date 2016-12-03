@@ -555,9 +555,9 @@ class Hodograph(object):
             self.ax = plt.figure().add_subplot(1, 1, 1)
         else:
             self.ax = ax
-        ax.set_aspect('equal', 'box')
-        ax.set_xlim(-component_range, component_range)
-        ax.set_ylim(-component_range, component_range)
+        self.ax.set_aspect('equal', 'box')
+        self.ax.set_xlim(-component_range, component_range)
+        self.ax.set_ylim(-component_range, component_range)
 
         # == sqrt(2) * max_range, which is the distance at the corner
         self.max_range = 1.4142135 * component_range
