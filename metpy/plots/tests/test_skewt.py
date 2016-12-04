@@ -80,7 +80,5 @@ def test_hodograph_units():
 
 
 def test_hodograph_alone():
-    """Test to create Hodograph without specifying axes"""
+    """Test to create Hodograph without specifying axes."""
     Hodograph()
-
-
