@@ -78,6 +78,9 @@ def test_hodograph_units():
     hodo.plot_colormapped(u, v, np.sqrt(u * u + v * v), cmap='Greys')
     return fig
 
+
 def test_hodograph_alone():
-    hodo = Hodograph()
+    """Test to create Hodograph without specifying axes"""
+    Hodograph()
+
 
