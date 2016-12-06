@@ -134,11 +134,11 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
 
     Parameters
     ----------
-    x: float
+    x: array_like
         x coordinate
-    y: float
+    y: array_like
         y coordinate
-    z: float
+    z: array_like
         observation value
     interp_type: str
         What type of interpolation to use. Available options include:
