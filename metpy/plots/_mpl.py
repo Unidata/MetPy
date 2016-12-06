@@ -198,10 +198,10 @@ if not hasattr(Axes, 'scattertext'):
         # to data coords to get the exact bounding box for efficiency
         # reasons.  It can be done right if this is deemed important.
         # Also, only bother with this padding if there is anything to draw.
-        if self._xmargin < 0.05 and x.size > 0:
+        if self._xmargin < 0.05:
             self.set_xmargin(0.05)
 
-        if self._ymargin < 0.05 and x.size > 0:
+        if self._ymargin < 0.05:
             self.set_ymargin(0.05)
 
         # Add it to the axes and update range
