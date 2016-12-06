@@ -8,6 +8,7 @@ This includes:
 * code for testing matplotlib figures
 """
 
+import numpy as np
 import numpy.testing
 from pint import DimensionalityError
 import pytest
@@ -98,3 +99,14 @@ def set_agg_backend():
         yield
     finally:
         plt.switch_backend(prev_backend)
+
+
+@pytest.fixture(autouse=True)
+def patch_round(monkeypatch):
+    """Fixture to patch builtin round using numpy's.
+
+    This works around the fact that built-in round changed between Python 2 and 3. This
+    is probably not needed once we're testing on matplotlib 2.0, which has been updated
+    to use numpy's throughout.
+    """
+    monkeypatch.setitem(__builtins__, 'round', np.round)
