@@ -234,7 +234,7 @@ if not hasattr(Axes, 'scattertext'):
             text : array_like of str
                 The string values to draw
 
-            offset : tuple of (int, int)
+            offset : (int, int)
                 The offset x and y, in normalized coordinates, to draw the text relative
                 to the data locations.
 
