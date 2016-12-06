@@ -118,6 +118,7 @@ def test_interpolate(method, test_coords):
     elif method == 'barnes':
         extra_kw['search_radius'] = 400
         extra_kw['minimum_neighbors'] = 1
+        extra_kw['gamma'] = 1
 
     _, _, img = interpolate(xp, yp, z, hres=10, interp_type=method, **extra_kw)
 

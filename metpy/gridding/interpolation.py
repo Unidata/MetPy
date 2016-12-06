@@ -260,7 +260,7 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
             if kind == 'cressman':
                 img[idx] = cressman_point(dists, values, r)
             elif kind == 'barnes':
-                img[idx] = barnes_point(dists, values, kappa)
+                img[idx] = barnes_point(dists, values, kappa, gamma)
 
             else:
                 raise ValueError(str(kind) + ' interpolation not supported.')
@@ -295,7 +295,7 @@ def cressman_point(sq_dist, values, radius):
     return sum(v * (w / total_weights) for (w, v) in zip(weights, values))
 
 
-def barnes_point(sq_dist, values, kappa, gamma=1):
+def barnes_point(sq_dist, values, kappa, gamma=None):
     r"""Generate a single pass barnes interpolation value for a point.
 
     The calculated value is based on the given distances, kappa and gamma values.
@@ -316,6 +316,8 @@ def barnes_point(sq_dist, values, kappa, gamma=1):
     value: float
         Interpolation value for grid point.
     """
+    if gamma is None:
+        gamma = 1
     weights = barnes_weights(sq_dist, kappa, gamma)
     total_weights = np.sum(weights)
 
