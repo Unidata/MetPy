@@ -6,7 +6,7 @@ Developer's Guide
 Requirements
 ------------
 
-- pytest
+- pytest >= 2.4
 - flake8
 - sphinx >= 1.3
 - sphinx-rtd-theme >= 0.1.7

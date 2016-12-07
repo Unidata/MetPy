@@ -11,12 +11,11 @@ dependencies:
   - netcdf4
   - jupyter
   - sphinx
-  - pytest
+  - pytest>=2.4
   - pytest-cov
   - pytest-flake8
   - pytest-mpl
   - pytest-runner
-  - flake8 != 3.2.0
   - flake8-builtins
   - flake8-comprehensions
   - flake8-copyright
