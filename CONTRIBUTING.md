@@ -50,7 +50,7 @@ Install metpy:
 
     pip install .
 
-Install py.test and make sure the tests pass:
+Install py.test (at least version 2.4) and make sure the tests pass:
 
     pip install pytest
     py.test
