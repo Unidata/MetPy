@@ -56,7 +56,7 @@ def write_nb(dest, output, resources):
     rst_file = os.path.join(dest,
                             resources['metadata']['basename'] + resources['output_extension'])
     name = resources['metadata']['name']
-    with open(rst_file, 'w') as rst:
+    with open(rst_file, 'wb') as rst:
         header = '=' * len(name)
         rst.write(header.encode('utf-8') + b'\n')
         rst.write(name.encode('utf-8') + b'\n')
