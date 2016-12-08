@@ -20,6 +20,8 @@ Other Contributions
 -------------------
 Kevin Goebbert
 Jonathan Helmus
+Will Holmgren
+Shawn Murdzek
 mmorello1
 
 Main Developers
