@@ -109,12 +109,11 @@ install:
 script:
   - if [[ $TASK == "docs" ]]; then
       pushd docs;
-      make html 2>../docs.log;
+      make clean html;
+      export DOC_BUILD_RESULT=$?;
       popd;
       doc8 README.rst docs/source;
-      if [ -s docs.log -o $? -ne 0 ]; then
-        echo Doc build produced warnings or errors:;
-        cat docs.log;
+      if [[ $DOC_BUILD_RESULT -ne 0 || $? -ne 0 ]]; then
         false;
       fi;
     elif [[ $TASK == "examples" ]]; then
