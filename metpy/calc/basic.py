@@ -152,7 +152,11 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
     References
     ----------
-    .. [4] http://www.ofcm.gov/jagti/r19-ti-plan/pdf/03_chap3.pdf
+    .. [4] Federal Coordinator for Meteorological Services and Supporting Research: Report on
+           Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
+           Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
+           Services and Supporting Research, 2003.
+           `FCM-R19-2003 <../_static/FCM-R19-2003-WindchillReport.pdf>`_
     """
     # Correct for lower height measurement of winds if necessary
     if face_level_winds:
@@ -210,7 +214,9 @@ def heat_index(temperature, rh, mask_undefined=True):
            temperature-humidity index based on human physiology and clothing
            science. J. Appl. Meteor., 18, 861-873.
 
-    .. [6] http://www.srh.noaa.gov/ffc/html/studies/ta_htindx.PDF
+    .. [6] Rothfusz, L.P.: The Heat Index "Equation". Fort Worth, TX: Scientific Services
+           Division, NWS Southern Region Headquarters, 1990.
+           `SR90-23 <http://www.weather.gov/media/ffc/ta_htindx.PDF>`_
     """
     delta = temperature - 0. * units.degF
     rh2 = rh * rh
