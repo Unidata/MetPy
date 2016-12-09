@@ -4,6 +4,7 @@
 """Contains a collection of basic calculations.
 
 These include:
+
 * wind components
 * heat index
 * windchill
