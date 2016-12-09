@@ -61,12 +61,12 @@ MetPy
     :target: https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)
     :alt: Scrutinizer Code Quality
 
-.. |LatestDocs| image:: https://readthedocs.org/projects/metpy/badge/?version=latest
-    :target: http://metpy.readthedocs.org/en/latest/
+.. |LatestDocs| image:: https://readthedocs.io/projects/metpy/badge/?version=latest
+    :target: http://metpy.readthedocs.io/en/latest/
     :alt: Latest Doc Build Status
 
-.. |StableDocs| image:: https://readthedocs.org/projects/metpy/badge/?version=stable
-    :target: http://metpy.readthedocs.org/en/stable/
+.. |StableDocs| image:: https://readthedocs.io/projects/metpy/badge/?version=stable
+    :target: http://metpy.readthedocs.io/en/stable/
     :alt: Stable Doc Build Status
 
 .. |Gitter| image:: https://badges.gitter.im/Unidata/MetPy.svg
@@ -93,8 +93,8 @@ Important Links
 ---------------
 
 - Source code repository: https://github.com/Unidata/MetPy
-- HTML Documentation (stable release): http://metpy.readthedocs.org/en/stable/
-- HTML Documentation (development): http://metpy.readthedocs.org/en/latest/
+- HTML Documentation (stable release): http://metpy.readthedocs.io/en/stable/
+- HTML Documentation (development): http://metpy.readthedocs.io/en/latest/
 - Issue tracker: http://github.com/Unidata/MetPy/issues
 - Gitter chat room: https://gitter.im/Unidata/MetPy
 

@@ -91,7 +91,7 @@ mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS
 
 # Set up mapping for other projects' docs
 intersphinx_mapping = {
-                       #'pint': ('http://pint.readthedocs.org/en/stable/', None),
+                       #'pint': ('http://pint.readthedocs.io/en/stable/', None),
                        'matplotlib': ('http://matplotlib.org/', None),
                        'python': ('https://docs.python.org/3/', None),
                        'numpy': ('https://docs.scipy.org/doc/numpy/', None),
