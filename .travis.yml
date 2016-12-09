@@ -109,7 +109,7 @@ install:
 script:
   - if [[ $TASK == "docs" ]]; then
       pushd docs;
-      make clean html;
+      make clean html linkcheck;
       export DOC_BUILD_RESULT=$?;
       popd;
       doc8 README.rst docs/source;
