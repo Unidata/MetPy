@@ -45,7 +45,7 @@ up-to-date packages for MetPy (as well as its dependencies) available from the
 .. parsed-literal::
     conda install -c conda-forge metpy
 
-The source code can also be grabbed from `GitHub <http://github.com/Unidata/MetPy>`_. From
+The source code can also be grabbed from `GitHub <https://github.com/Unidata/MetPy>`_. From
 the base of the source directory, run:
 
 .. parsed-literal::
