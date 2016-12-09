@@ -93,9 +93,9 @@ mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS
 intersphinx_mapping = {
                        #'pint': ('http://pint.readthedocs.org/en/stable/', None),
                        'matplotlib': ('http://matplotlib.org/', None),
-                       'python': ('http://docs.python.org/3/', None),
-                       'numpy': ('http://docs.scipy.org/doc/numpy/', None),
-                       'scipy': ('http://docs.scipy.org/doc/scipy/reference/', None)
+                       'python': ('https://docs.python.org/3/', None),
+                       'numpy': ('https://docs.scipy.org/doc/numpy/', None),
+                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None)
                        }
 
 # Tweak how docs are formatted
