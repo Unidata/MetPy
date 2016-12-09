@@ -182,7 +182,7 @@ sensible version number, like v1.0.0. Add a name (can just be the version) and a
 notes on what the big changes are. It's also possible to use
 `loghub <https://github.com/spyder-ide/loghub>`_ to get information on all the issues and PRs
 that were closed for the relevant milestone. Tagging a new version on GitHub should also
-update the `stable <https://metpy.readthedocs.io/en/stable>`_  docs on Read the Docs.
+update the `stable <http://metpy.readthedocs.io/en/stable>`_  docs on Read the Docs.
 
 ~~~~
 PyPI
@@ -212,7 +212,7 @@ Conda
 MetPy conda packages are automatically produced and uploaded to
 `Anaconda.org <https://anaconda.org/conda-forge/MetPy>`_ thanks to conda-forge. Once the
 release is built and uploaded to PyPI, then a Pull Request should be made against the
-`MetPy feedstock <http://github.com/conda-forge/metpy-feedstock>`_, which contains the
+`MetPy feedstock <https://github.com/conda-forge/metpy-feedstock>`_, which contains the
 recipe for building MetPy's conda packages. The Pull Request should:
 
 1. Update the version
