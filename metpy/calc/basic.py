@@ -59,9 +59,9 @@ def get_wind_dir(u, v):
 
     Returns
     -------
-    wind direction: array_like
-        The direction of the wind in degrees, specified as the direction from
-        which it is blowing
+    wind direction: `pint.Quantity`
+        The direction of the wind, specified as the direction from
+        which it is blowing, with 0 being North.
 
     See Also
     --------
@@ -84,7 +84,7 @@ def get_wind_components(speed, wdir):
         The wind speed (magnitude)
     wdir : array_like
         The wind direction, specified as the direction from which the wind is
-        blowing.
+        blowing, with 0 being North.
 
     Returns
     -------
@@ -118,33 +118,30 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     Specifically, these formulas assume that wind speed is measured at
     10m.  If, instead, the speeds are measured at face level, the winds
     need to be multiplied by a factor of 1.5 (this can be done by specifying
-    `face_level_winds` as True.)
+    `face_level_winds` as `True`.)
 
     Parameters
     ----------
-    temperature : array_like
+    temperature : `pint.Quantity`
         The air temperature
-    speed : array_like
+    speed : `pint.Quantity`
         The wind speed at 10m.  If instead the winds are at face level,
-        `face_level_winds` should be set to True and the 1.5 multiplicative
+        `face_level_winds` should be set to `True` and the 1.5 multiplicative
         correction will be applied automatically.
-
-    Returns
-    -------
-    array_like
-        The corresponding Wind Chill Temperature Index value(s)
-
-    Other Parameters
-    ----------------
     face_level_winds : bool, optional
         A flag indicating whether the wind speeds were measured at facial
         level instead of 10m, thus requiring a correction.  Defaults to
-        False.
+        `False`.
     mask_undefined : bool, optional
         A flag indicating whether a masked array should be returned with
         values where wind chill is undefined masked.  These are values where
         the temperature > 50F or wind speed <= 3 miles per hour. Defaults
-        to True.
+        to `True`.
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding Wind Chill Temperature Index value(s)
 
     See Also
     --------
@@ -160,6 +157,8 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     """
     # Correct for lower height measurement of winds if necessary
     if face_level_winds:
+        # No in-place so that we copy
+        # noinspection PyAugmentAssignment
         speed = speed * 1.5
 
     temp_limit, speed_limit = 10. * units.degC, 3 * units.mph
@@ -185,7 +184,7 @@ def heat_index(temperature, rh, mask_undefined=True):
 
     Parameters
     ----------
-    temperature : array_like
+    temperature : `pint.Quantity`
         Air temperature
     rh : array_like
         The relative humidity expressed as a unitless ratio in the range [0, 1].
@@ -193,7 +192,7 @@ def heat_index(temperature, rh, mask_undefined=True):
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The corresponding Heat Index value(s)
 
     Other Parameters
@@ -202,7 +201,7 @@ def heat_index(temperature, rh, mask_undefined=True):
         A flag indicating whether a masked array should be returned with
         values where heat index is undefined masked.  These are values where
         the temperature < 80F or relative humidity < 40 percent. Defaults
-        to True.
+        to `True`.
 
     See Also
     --------
@@ -246,12 +245,12 @@ def pressure_to_height_std(pressure):
 
     Parameters
     ----------
-    pressure : array_like
+    pressure : `pint.Quantity`
         Atmospheric pressure
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The corresponding height value(s)
 
     Notes
@@ -282,7 +281,7 @@ def coriolis_parameter(latitude):
 
     Returns
     -------
-    array_like
+    `pint.Quantity`
         The corresponding coriolis force at each point
 
     References
