@@ -112,7 +112,8 @@ def get_wind_components(speed, wdir):
 def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     r"""Calculate the Wind Chill Temperature Index (WCTI).
 
-    Calculates WCTI from the current temperature and wind speed.
+    Calculates WCTI from the current temperature and wind speed using the formula
+    outlined by the FCM [4]_.
 
     Specifically, these formulas assume that wind speed is measured at
     10m.  If, instead, the speeds are measured at face level, the winds
@@ -179,7 +180,8 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 def heat_index(temperature, rh, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.
 
-    The implementation uses the formula outlined in [6].
+    The implementation uses the formula outlined in [6]_. This equation is a multi-variable
+    least-squares regression of the values obtained in [5]_.
 
     Parameters
     ----------
@@ -240,7 +242,7 @@ def heat_index(temperature, rh, mask_undefined=True):
 def pressure_to_height_std(pressure):
     r"""Convert pressure data to heights using the U.S. standard atmosphere.
 
-    The implementation uses the formula outlined in [7].
+    The implementation uses the formula outlined in [7]_.
 
     Parameters
     ----------
@@ -271,7 +273,7 @@ def pressure_to_height_std(pressure):
 def coriolis_parameter(latitude):
     r"""Calculate the coriolis parameter at each point.
 
-    The implementation uses the formula outlined in [8].
+    The implementation uses the formula outlined in [8]_.
 
     Parameters
     ----------

@@ -125,7 +125,6 @@ def moist_lapse(pressure, temperature):
 
     References
     ----------
-
     .. [1] Bakhshaii, A. and R. Stull, 2013: Saturated Pseudoadiabats--A
            Noniterative Approximation. J. Appl. Meteor. Clim., 52, 5-15.
     """
@@ -176,11 +175,12 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
     -----
     This function is implemented using an iterative approach to solve for the
     LCL. The basic algorithm is:
+
     1. Find the dew point from the LCL pressure and starting mixing ratio
     2. Find the LCL pressure from the starting temperature and dewpoint
     3. Iterate until convergence
 
-    The function is guaranteed to finish by virtue of the `maxIters` counter.
+    The function is guaranteed to finish by virtue of the `max_iters` counter.
     """
     w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
     new_p = p = pressure
@@ -289,6 +289,18 @@ def vapor_pressure(pressure, mixing):
         The ambient water vapor (partial) pressure in the same units as
         `pressure`.
 
+    Notes
+    -----
+    This function is a straightforward implementation of the equation given in many places,
+    such as [2]_:
+
+    .. math:: e = p \frac{r}{r + \epsilon}
+
+    References
+    ----------
+    .. [2] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+           Survey. 71.
+
     See Also
     --------
     saturation_vapor_pressure, dewpoint
@@ -319,13 +331,13 @@ def saturation_vapor_pressure(temperature):
     Instead of temperature, dewpoint may be used in order to calculate
     the actual (ambient) water vapor (partial) pressure.
 
-    The formula used is that from Bolton 1980 [2] for T in degrees Celsius:
+    The formula used is that from Bolton 1980 [3]_ for T in degrees Celsius:
 
     .. math:: 6.112 e^\frac{17.67T}{T + 243.5}
 
     References
     ----------
-    .. [2] Bolton, D., 1980: The Computation of Equivalent Potential
+    .. [3] Bolton, D., 1980: The Computation of Equivalent Potential
            Temperature. Mon. Wea. Rev., 108, 1046-1053.
     """
     # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
@@ -377,7 +389,7 @@ def dewpoint(e):
 
     Notes
     -----
-    This function inverts the Bolton 1980 [3] formula for saturation vapor
+    This function inverts the Bolton 1980 [4]_ formula for saturation vapor
     pressure to instead calculate the temperature. This yield the following
     formula for dewpoint in degrees Celsius:
 
@@ -385,7 +397,7 @@ def dewpoint(e):
 
     References
     ----------
-    .. [3] Bolton, D., 1980: The Computation of Equivalent Potential
+    .. [4] Bolton, D., 1980: The Computation of Equivalent Potential
            Temperature. Mon. Wea. Rev., 108, 1046-1053.
     """
     val = np.log(e / sat_pressure_0c)
@@ -416,9 +428,21 @@ def mixing_ratio(part_press, tot_press, molecular_weight_ratio=epsilon):
     `pint.Quantity`
         The (mass) mixing ratio, dimensionless (e.g. Kg/Kg or g/g)
 
+    Notes
+    -----
+    This function is a straightforward implementation of the equation given in many places,
+    such as [5]_:
+
+    .. math:: r = \epsilon \frac{e}{p - e}
+
+    References
+    ----------
+    .. [5] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+           Survey. 73.
+
     See Also
     --------
-    vapor_pressure
+    saturation_mixing_ratio, vapor_pressure
     """
     return molecular_weight_ratio * part_press / (tot_press - part_press)
 
@@ -428,7 +452,7 @@ def saturation_mixing_ratio(tot_press, temperature):
     r"""Calculate the saturation mixing ratio of water vapor.
 
     This calculation is given total pressure and the temperature. The implementation
-    uses the formula outlined in [4].
+    uses the formula outlined in [6]_.
 
     Parameters
     ----------
@@ -444,8 +468,8 @@ def saturation_mixing_ratio(tot_press, temperature):
 
     References
     ----------
-    .. [4] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
-            Survey. 73.
+    .. [6] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+           Survey. 73.
     """
     return mixing_ratio(saturation_vapor_pressure(temperature), tot_press)
 
@@ -454,8 +478,8 @@ def saturation_mixing_ratio(tot_press, temperature):
 def equivalent_potential_temperature(pressure, temperature):
     r"""Calculate equivalent potential temperature.
 
-    This cacluation must be given an air parcel's pressure and temperature.
-    The implementation uses the formula outlined in [5]
+    This calculation must be given an air parcel's pressure and temperature.
+    The implementation uses the formula outlined in [7]_.
 
     Parameters
     ----------
@@ -475,8 +499,8 @@ def equivalent_potential_temperature(pressure, temperature):
 
     References
     ----------
-    .. [5] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
-            Survey. 78-79.
+    .. [7] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+           Survey. 78-79.
     """
     pottemp = potential_temperature(pressure, temperature)
     smixr = saturation_mixing_ratio(pressure, temperature)
