@@ -393,7 +393,7 @@ def dewpoint(e):
 
 
 @exporter.export
-def mixing_ratio(part_press, tot_press):
+def mixing_ratio(part_press, tot_press, molecular_weight_ratio=epsilon):
     r"""Calculate the mixing ratio of a gas.
 
     This calculates mixing ratio given its partial pressure and the total pressure of
@@ -406,6 +406,10 @@ def mixing_ratio(part_press, tot_press):
         Partial pressure of the constituent gas
     tot_press : `pint.Quantity`
         Total air pressure
+    molecular_weight_ratio : `pint.Quantity` or float, optional
+        The ratio of the molecular weight of the constituent gas to that assumed
+        for air. Defaults to the ratio for water vapor to dry air
+        (:math:`\epsilon\approx0.622`).
 
     Returns
     -------
@@ -416,7 +420,7 @@ def mixing_ratio(part_press, tot_press):
     --------
     vapor_pressure
     """
-    return epsilon * part_press / (tot_press - part_press)
+    return molecular_weight_ratio * part_press / (tot_press - part_press)
 
 
 @exporter.export
