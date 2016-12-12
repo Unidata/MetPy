@@ -107,7 +107,10 @@ def test_windchill_invalid():
     speed = np.array([4, 4, 3, 1, 10, 39]) * units.mph
 
     wc = windchill(temp, speed)
+    # We don't care about the masked values
+    truth = np.array([2.6230789, np.nan, np.nan, np.nan, np.nan, np.nan]) * units.degF
     mask = np.array([False, True, True, True, True, True])
+    assert_array_almost_equal(truth, wc)
     assert_array_equal(wc.mask, mask)
 
 
