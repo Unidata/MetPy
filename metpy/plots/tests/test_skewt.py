@@ -53,6 +53,13 @@ def test_skewt_gridspec():
     return fig
 
 
+def test_skewt_with_grid_enabled():
+    """Test using SkewT when gridlines are already enabled (#271)."""
+    with plt.rc_context(rc={'axes.grid': True}):
+        # Also tests when we don't pass in Figure
+        SkewT()
+
+
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_api():
     """Basic test of Hodograph API."""
