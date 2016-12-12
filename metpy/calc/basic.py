@@ -13,11 +13,10 @@ These include:
 from __future__ import division
 
 import numpy as np
-from numpy.ma import masked_array
 
 from ..constants import g, omega, Rd
 from ..package_tools import Exporter
-from ..units import atleast_1d, units
+from ..units import atleast_1d, masked_array, units
 
 exporter = Exporter(globals())
 
@@ -232,7 +231,7 @@ def heat_index(temperature, rh, mask_undefined=True):
     if mask_undefined:
         mask = np.array((temperature < 80. * units.degF) | (rh < 40 * units.percent))
         if mask.any():
-            hi = units.Quantity(masked_array(hi, mask=mask), hi.units)
+            hi = masked_array(hi, mask=mask)
 
     return hi
 

@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2008-2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Module to provide unit support.
@@ -113,6 +113,32 @@ def atleast_2d(*arrs):
     if len(mags) == 1:
         return units.Quantity(ret, orig_units[0])
     return [units.Quantity(m, u) for m, u in zip(ret, orig_units)]
+
+
+def masked_array(data, data_units=None, **kwargs):
+    """Create a :class:`numpy.ma.MaskedArray` with units attached.
+
+    This is a thin wrapper around :func:`numpy.ma.masked_array` that ensures that
+    units are properly attached to the result (otherwise units are silently lost). Units
+    are taken from the ``units`` argument, or if this is ``None``, the units on ``data``
+    are used.
+
+    Parameters
+    ----------
+    data : array_like
+        The source data. If ``units`` is `None`, this should be a `pint.Quantity` with
+        the desired units.
+    data_units : str or `pint.Unit`
+        The units for the resulting `pint.Quantity`
+    **kwargs : Arbitrary keyword arguments passed to `numpy.ma.masked_array`
+
+    Returns
+    -------
+    `pint.Quantity`
+    """
+    if data_units is None:
+        data_units = data.units
+    return units.Quantity(np.ma.masked_array(data, **kwargs), data_units)
 
 
 del pint
