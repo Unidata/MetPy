@@ -6,7 +6,9 @@ SPHINXOPTS    = -W
 SPHINXBUILD   = sphinx-build
 PAPER         =
 BUILDDIR      = build
+HTMLBUILDDIR  = $(BUILDDIR)/html
 SOURCEDIR     = .
+GITREMOTE     = $(shell git config --get remote.docs.url)
 
 # User-friendly check for sphinx-build
 ifeq ($(shell which $(SPHINXBUILD) >/dev/null 2>&1; echo $$?), 1)
@@ -51,9 +53,17 @@ clean:
 	rm -rf $(BUILDDIR)/* $(SOURCEDIR)/examples/generated
 
 html:
-	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(BUILDDIR)/html
+	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(HTMLBUILDDIR)
 	@echo
-	@echo "Build finished. The HTML pages are in $(BUILDDIR)/html."
+	@echo "Build finished. The HTML pages are in $(HTMLBUILDDIR)."
+
+deployhtml:
+	@echo Deploying to gh-pages
+	@touch $(HTMLBUILDDIR)/.nojekyll
+	@git init -q $(HTMLBUILDDIR)
+	@cd $(HTMLBUILDDIR) && git add -A . && GIT_COMMITTER_NAME="sphinx" GIT_COMMITTER_EMAIL="deploy@sphinx.none" git commit -q -m "Deploy to GHPages." --author "Sphinx <deploy@sphinx.none>"
+	@cd $(HTMLBUILDDIR) && git push --quiet --force $(GITREMOTE) master:gh-pages 2>&1 >deploy.log
+	@rm -rf $(HTMLBUILDDIR)/.git
 
 dirhtml:
 	$(SPHINXBUILD) -b dirhtml $(ALLSPHINXOPTS) $(BUILDDIR)/dirhtml
