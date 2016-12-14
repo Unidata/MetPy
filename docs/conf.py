@@ -22,52 +22,6 @@ import os
 sys.path.insert(0, os.path.abspath('.'))
 sys.path.insert(0, os.path.abspath('../..'))
 
-#
-# Read the docs fix
-# On read the docs, there is no $HOME now, which breaks pandoc. Set one,
-# which is unused, so that pandoc will run
-# 
-
-if 'READTHEDOCS' in os.environ or 'TRAVIS' in os.environ:
-    import mock
-
-    MOCK_MODULES = ['matplotlib', 'matplotlib.axis', 'matplotlib.axes',
-                    'matplotlib.backends', 'matplotlib.cbook',
-                    'matplotlib.collections', 'matplotlib.colors',
-                    'matplotlib.font_manager',
-                    'matplotlib.figure', 'matplotlib.patches',
-                    'matplotlib.projections', 'matplotlib.pyplot',
-                    'matplotlib.quiver', 'matplotlib.spines',
-                    'matplotlib.ticker', 'matplotlib.transforms',
-                    'numpy', 'numpy.ma', 'numpy.testing', 'pint', 'pint.unit',
-                    'scipy', 'scipy.constants', 'scipy.integrate']
-    for mod_name in MOCK_MODULES:
-        sys.modules[mod_name] = mock.Mock()
-
-    sys.modules['matplotlib'].__version__ = '1.5'
-
-    class MockUnit(float):
-        def to_base_units(self):
-            return self
-        def __call__(self, arg):
-            return self
-        def to(self, arg):
-            return self
-
-    class MockUnits(object):
-        def __getattr__(self, attr):
-            return MockUnit(1.0)
-
-        def Quantity(self, *args):
-            return MockUnit(1.0)
-
-    sys.modules['pint'].UnitRegistry = mock.Mock(return_value=MockUnits())
-
-
-    # Fixes pandoc
-    if 'HOME' not in os.environ:
-        os.environ['HOME'] = '/home/docs'  # Not sure what else to use
-
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
@@ -185,15 +139,12 @@ pygments_style = 'sphinx'
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
 #html_theme = 'default'
-on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
-
-if not on_rtd:  # only import and set the theme if we're building docs locally
-    try:
-        import sphinx_rtd_theme
-        html_theme = 'sphinx_rtd_theme'
-        html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
-    except ImportError:
-        pass
+try:
+    import sphinx_rtd_theme
+    html_theme = 'sphinx_rtd_theme'
+    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+except ImportError:
+    pass
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
