@@ -50,7 +50,7 @@ help:
 	@echo "  doctest    to run all doctests embedded in the documentation (if enabled)"
 
 clean:
-	rm -rf $(BUILDDIR)/* $(SOURCEDIR)/examples/generated $(SOURCEDIR)/examples $(SOURCEDIR)/modules/generated/*
+	rm -rf $(BUILDDIR)/* $(SOURCEDIR)/examples $(SOURCEDIR)/modules/generated/*
 
 html:
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(HTMLBUILDDIR)
