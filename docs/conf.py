@@ -83,8 +83,18 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
-    'notebook_gen_sphinxext'
+    'sphinx_gallery.gen_gallery'
 ]
+
+sphinx_gallery_conf = {
+    'reference_url':  {
+            'metpy': None,
+            'matplotlib': 'http://matplotlib.org',
+            'numpy': 'http://docs.scipy.org/doc/numpy-1.9.1'},
+    'examples_dirs': '../examples/scripts',
+    'gallery_dirs': 'examples',
+    'filename_pattern': '/'
+}
 
 mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 #autosummary_generate = True
