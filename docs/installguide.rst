@@ -57,11 +57,6 @@ This will build and install MetPy into your current Python installation.
 Examples
 --------
 
-The MetPy source comes with a set of example IPython notebooks in the ``examples/notebooks``
-directory. These can also be converted to standalone scripts (provided IPython is installed)
-using:
-
-.. parsed-literal::
-    python setup.py examples
-
-These examples are also seen within the documentation in the :doc:`examples/index`.
+The MetPy source comes with a set of example scripts in the ``examples``
+directory. These are also available as notebooks in the gallery in
+the :doc:`examples/index`.
