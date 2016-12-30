@@ -87,7 +87,7 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
     variable: (N, ) ndarray
         observation values associated with (xp, yp) pairs.
         IE, variable[i] is a unique observation at (xp[i], yp[i])
-    grid_loc: (N, 2) ndarray
+    grid_loc: (float, float)
         Coordinates of the grid point at which to calculate the
         interpolation.
     tri: object
