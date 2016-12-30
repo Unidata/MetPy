@@ -7,49 +7,10 @@ from __future__ import print_function
 
 import sys
 
-from setuptools import Command, find_packages, setup
+from setuptools import find_packages, setup
 import versioneer
 
-
-class MakeExamples(Command):
-    """Create example scripts from IPython notebooks."""
-
-    description = __doc__
-    user_options = []
-
-    def initialize_options(self):
-        """Initialize command options (unused)."""
-        pass
-
-    def finalize_options(self):
-        """Finalize command options (unused)."""
-        pass
-
-    def run(self):
-        """Run the command."""
-        import glob
-        import os
-        import os.path
-        from nbconvert.exporters import python
-        from traitlets.config import Config
-        examples_dir = os.path.join(os.path.dirname(__file__), 'examples')
-        script_dir = os.path.join(examples_dir, 'scripts')
-        if not os.path.exists(script_dir):
-            os.makedirs(script_dir)
-        c = Config({'Exporter': {'template_file': 'examples/python-scripts.tpl'}})
-        exporter = python.PythonExporter(config=c)
-        for fname in glob.glob(os.path.join(examples_dir, 'notebooks', '*.ipynb')):
-            output, _ = exporter.from_filename(fname)
-            out_fname = os.path.splitext(os.path.basename(fname))[0]
-            out_name = os.path.join(script_dir, out_fname + '.py')
-            print(fname, '->', out_name)  # noqa: T003
-            with open(out_name, 'w') as outf:
-                outf.write(output)
-
-
 ver = versioneer.get_version()
-commands = versioneer.get_cmdclass()
-commands.update(examples=MakeExamples)
 
 # Need to conditionally add enum support for older Python
 dependencies = ['matplotlib>=1.4', 'numpy>=1.9.1', 'scipy>=0.14', 'pint>=0.6']
@@ -106,7 +67,7 @@ setup(
                  'pep8-naming']
     },
 
-    cmdclass=commands,
+    cmdclass=versioneer.get_cmdclass(),
 
     zip_safe=True,
 
