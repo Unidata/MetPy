@@ -44,11 +44,12 @@ extensions = [
 ]
 
 sphinx_gallery_conf = {
-    'reference_url':  {
-            'metpy': None,
-            'matplotlib': 'http://matplotlib.org',
-            'numpy': 'http://docs.scipy.org/doc/numpy-1.9.1'},
-    'examples_dirs': '../examples/scripts',
+    'doc_module': ('metpy', 'numpy'),
+    'reference_url': {
+        'metpy': None,
+        'matplotlib': 'http://matplotlib.org',
+        'numpy': 'http://docs.scipy.org/doc/numpy-1.9.1'},
+    'examples_dirs': '../examples',
     'gallery_dirs': 'examples',
     'filename_pattern': '/'
 }
