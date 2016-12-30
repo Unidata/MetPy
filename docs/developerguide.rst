@@ -137,12 +137,9 @@ Documentation
 MetPy's documentation is built using sphinx >= 1.3. API documentation is automatically
 generated from docstrings, written using the
 `NumPy docstring standard <https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt>`_.
-There are also example IPython notebooks in the ``examples/notebooks`` directory. Using
-IPython's API, these are automatically converted to restructured text for inclusion in the
-documentation. The examples can also be converted to standalone scripts using:
-
-.. parsed-literal::
-    python setup.py examples
+There are also example scripts in the ``examples`` directory. Using the ``sphinx-gallery``
+extension, these examples are executed and turned into a gallery of thumbnails. The
+extension also makes these scripts available as Jupyter notebooks.
 
 The documentation is hosted by `Read the Docs <https://metpy.readthedocs.io>`_. The docs are
 built automatically from ``master`` as well as for the tagged versions on github. ``master`` is
