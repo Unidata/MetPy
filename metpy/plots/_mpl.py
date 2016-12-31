@@ -68,7 +68,7 @@ if float(matplotlib.__version__[:3]) < 2.1:
             offset = length
 
             # Add vertices for each flag
-            for i in range(nflags[index]):
+            for _ in range(nflags[index]):
                 # The spacing that works for the barbs is a little to much for
                 # the flags, but this only occurs when we have more than 1
                 # flag.
@@ -84,7 +84,7 @@ if float(matplotlib.__version__[:3]) < 2.1:
             # Add vertices for each barb.  These really are lines, but works
             # great adding 3 vertices that basically pull the polygon out and
             # back down the line
-            for i in range(nbarbs[index]):
+            for _ in range(nbarbs[index]):
                 poly_verts.extend(
                     [(endx, endy + offset),
                      (endx + full_height, endy + offset + full_width / 2),
@@ -313,7 +313,7 @@ if not hasattr(Axes, 'scattertext'):
                 bbox, info, descent = self._get_layout(renderer)
                 self._text = ''
 
-                for line, wh, x, y in info:
+                for line, _, x, y in info:
 
                     mtext = self if len(info) == 1 else None
                     x = x + posx
