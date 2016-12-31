@@ -1,3 +1,5 @@
+.. _calc_examples:
+
 Calculations
 ------------
 

@@ -1,3 +1,5 @@
+.. _formats_examples:
+
 File Formats
 ------------
 

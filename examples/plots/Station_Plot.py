@@ -1,10 +1,12 @@
-"""My title here.
-
-Some paragraphi here.
 """
-# coding: utf-8
+Station Plot
+============
 
-# This example makes a station plot, complete with sky cover and weather symbols. The station plot itself is pretty straightforward, but there is a bit of code to perform the data-wrangling (hopefully that situation will improve in the future). Certainly, if you have existing point data in a format you can work with trivially, the station plot will be simple.
+This example makes a station plot, complete with sky cover and weather symbols. The station
+plot itself is pretty straightforward, but there is a bit of code to perform the
+data-wrangling (hopefully that situation will improve in the future). Certainly, if you have
+existing point data in a format you can work with trivially, the station plot will be simple.
+"""
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -14,15 +16,13 @@ from metpy.plots import StationPlot
 from metpy.plots.wx_symbols import sky_cover, current_weather
 from metpy.units import units
 
-
-# Utility function for working with the text data we get back in arrays
-def make_string_list(arr):
-    return [s.decode('ascii') for s in arr]
-
-
-# # The setup
-
-# First read in the data. We use `numpy.loadtxt` to read in the data and use a structured `numpy.dtype` to allow different types for the various columns. This allows us to handle the columns with string data.
+###########################################
+# The setup
+# ---------
+#
+# First read in the data. We use `numpy.loadtxt` to read in the data and use a structured
+# `numpy.dtype` to allow different types for the various columns. This allows us to handle
+# the columns with string data.
 f = get_test_data('station_data.txt')
 
 all_data = np.loadtxt(f, skiprows=1, delimiter=',',
@@ -33,10 +33,12 @@ all_data = np.loadtxt(f, skiprows=1, delimiter=',',
                                       ('weather', '16S'),
                                       ('wind_dir', 'f'), ('wind_speed', 'f')]))
 
+###########################################
+# This sample data has *way* too many stations to plot all of them. Instead, we just select
+# a few from around the U.S. and pull those out of the data file.
 
-# This sample data has *way* too many stations to plot all of them. Instead, we just select a few from around the U.S. and pull those out of the data file.
 # Get the full list of stations in the data
-all_stids = make_string_list(all_data['stid'])
+all_stids = [s.decode('ascii') for s in all_data['stid']]
 
 # Pull out these specific stations
 whitelist = ['OKC', 'ICT', 'GLD', 'MEM', 'BOS', 'MIA', 'MOB', 'ABQ', 'PHX', 'TTF',
@@ -48,14 +50,16 @@ whitelist = ['OKC', 'ICT', 'GLD', 'MEM', 'BOS', 'MIA', 'MOB', 'ABQ', 'PHX', 'TTF
 # Loop over all the whitelisted sites, grab the first data, and concatenate them
 data = np.concatenate([all_data[all_stids.index(site)].reshape(1,) for site in whitelist])
 
-
+###########################################
 # Now that we have the data we want, we need to perform some conversions:
+#
 # - Get a list of strings for the station IDs
 # - Get wind components from speed and direction
 # - Convert cloud fraction values to integer codes [0 - 8]
 # - Map METAR weather codes to WMO codes for weather symbols
+
 # Get all of the station IDs as a list of strings
-stid = make_string_list(data['stid'])
+stid = [s.decode('ascii') for s in data['stid']]
 
 # Get the wind components, converting from m/s to knots as will be appropriate
 # for the station plot
@@ -68,12 +72,12 @@ cloud_frac = (8 * data['cloud_fraction']).astype(int)
 
 # Map weather strings to WMO codes, which we can use to convert to symbols
 # Only use the first symbol if there are multiple
-wx_text = make_string_list(data['weather'])
+wx_text = [s.decode('ascii') for s in data['weather']]
 wx_codes = {'':0, 'HZ':5, 'BR':10, '-DZ':51, 'DZ':53, '+DZ':55,
             '-RA':61, 'RA':63, '+RA':65, '-SN':71, 'SN':73, '+SN':75}
 wx = [wx_codes[s.split()[0] if ' ' in s else s] for s in wx_text]
 
-
+###########################################
 # Now all the data wrangling is finished, just need to set up plotting and go
 # Set up the map projection and set up a cartopy feature for state borders
 import cartopy.crs as ccrs
@@ -89,8 +93,10 @@ state_boundaries = feat.NaturalEarthFeature(category='cultural',
 from matplotlib import rcParams
 rcParams['savefig.dpi'] = 255
 
+###########################################
+# The payoff
+# ----------
 
-# # The payoff
 # Create the figure and an axes set to the projection
 fig = plt.figure(figsize=(20, 10))
 ax = fig.add_subplot(1, 1, 1, projection=proj)
@@ -142,3 +148,4 @@ stationplot.plot_barb(u, v)
 # plot further out by specifying a location of 2 increments in x and 0 in y.
 stationplot.plot_text((2, 0), stid)
 
+plt.show()

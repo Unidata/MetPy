@@ -1,24 +1,24 @@
-"""My title here.
-
-Some paragraphi here.
 """
-# coding: utf-8
+Inverse Distance Verification: Cressman and Barnes
+==================================================
+Two popular interpolation schemes that use inverse distance weighting of observations are the
+Barnes and Cressman analyses. The Cressman analysis is relatively straightforward and uses
+the ratio between distance of an observation from a grid cell and the maximum allowable
+distance to calculate the relative importance of an observation for calculating an
+interpolation value.  Barnes uses the inverse exponential ratio of each distance between
+an observation and a grid cell and the average spacing of the observations over the domain.
 
-# # Inverse Distance Verification: Cressman and Barnes
-# 
-# Two popular interpolation schemes that use inverse distance weighting of observations are the Barnes and Cressman analyses. The Cressman analysis is relatively straightforward and uses the ratio between distance of an observation from a grid cell and the maximum allowable distance to calculate the relative importance of an observation for calculating an interpolation value.  Barnes uses the inverse exponential ratio of each distance between an observation and a grid cell and the average spacing of the observations over the domain.
-#    
-# Algorithmically:
-# 
-# 1) A KDTree data structure is built using the locations of each observation.
-# 
-# 2) All observations within a maximum allowable distance of a particular grid cell are found in O(log n) time.
-# 
-# 3) Using the weighting rules for cressman or barnes analyses, the observations are given a proportional value, primarily based on their distance from the grid cell.
-# 
-# 4) The sum of these proportional values is calculated and this value is used as the interpolated value.
-# 
-# 5) Steps 2 through 4 are repeated for each grid cell.
+Algorithmically:
+
+1. A KDTree data structure is built using the locations of each observation.
+2. All observations within a maximum allowable distance of a particular grid cell are found in
+   O(log n) time.
+3. Using the weighting rules for cressman or barnes analyses, the observations are given a
+   proportional value, primarily based on their distance from the grid cell.
+4. The sum of these proportional values is calculated and this value is used as the
+   interpolated value.
+5. Steps 2 through 4 are repeated for each grid cell.
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -30,8 +30,8 @@ from metpy.gridding.gridding_functions import calc_kappa
 from metpy.gridding.interpolation import cressman_point, barnes_point
 from metpy.gridding.triangles import dist_2
 
-
 plt.rcParams['figure.figsize'] = (15, 10)
+
 
 def draw_circle(x, y, r, m, label):
     
@@ -40,7 +40,7 @@ def draw_circle(x, y, r, m, label):
 
     plt.plot(nx, ny, m, label=label)
 
-
+###########################################
 # Generate random x and y coordinates, and observation values proportional to x * y.
 # 
 # Set up two test grid locations at (30, 30) and (60, 60).
@@ -54,10 +54,11 @@ z = (pts[:, 0] * pts[:, 0]) / 1000
 sim_gridx = [30, 60]
 sim_gridy = [30, 60]
 
-
+###########################################
 # Set up a cKDTree object and query all of the observations within "radius" of each grid point.
 # 
-# The variable "indices" represents the index of each matched coordinate within the cKDTree's "data" list.
+# The variable "indices" represents the index of each matched coordinate within the
+# cKDTree's "data" list.
 obs_tree = cKDTree(list(zip(xp, yp)))
 
 grid_points = np.array(list(zip(sim_gridx, sim_gridy)))
@@ -66,15 +67,15 @@ radius = 40
 
 indices = obs_tree.query_ball_point(grid_points, r=radius)
 
-
-# For grid 0, we will use cressman to interpolate its value.
+###########################################
+# For grid 0, we will use Cressman to interpolate its value.
 x1, y1 = obs_tree.data[indices[0]].T
 cress_dist = dist_2(sim_gridx[0], sim_gridy[0], x1, y1)
 cress_obs = z[indices[0]]
 
 cress_val = cressman_point(cress_dist, cress_obs, radius)
 
-
+###########################################
 # For grid 1, we will use barnes to interpolate its value.
 # 
 # We need to calculate kappa--the average distance between observations over the domain.
@@ -88,7 +89,7 @@ kappa = calc_kappa(ave_spacing)
 
 barnes_val = barnes_point(barnes_dist, barnes_obs, kappa)
 
-
+###########################################
 # Plot all of the affilitated information and interpolation values.
 for i in range(len(z)):
     plt.plot(pts[i, 0], pts[i, 1], ".")
@@ -111,10 +112,12 @@ plt.annotate("grid 1: barnes "   + ("%.3f" % barnes_val), xy = (sim_gridx[1]+2, 
 plt.axes().set_aspect('equal', 'datalim')
 plt.legend()
 
-
-# For each point, we will do a manual check of the interpolation values by doing a step by step and visual breakdown.
+###########################################
+# For each point, we will do a manual check of the interpolation values by doing a step by
+# step and visual breakdown.
 # 
-# Plot the grid point, observations within radius of the grid point, their locations, and their distances from the grid point.
+# Plot the grid point, observations within radius of the grid point, their locations, and
+# their distances from the grid point.
 plt.annotate("grid 0: " + "(" + str(sim_gridx[0]) + ", " + str(sim_gridy[0]) + ")", xy = (sim_gridx[0]+2, sim_gridy[0]))
 plt.plot(sim_gridx[0], sim_gridy[0], "+", markersize=10)
 
@@ -136,7 +139,7 @@ plt.xlim(0, 80)
 plt.ylim(0, 80)
 plt.axes().set_aspect('equal', 'datalim')
 
-
+###########################################
 # Step through the cressman calculations.
 dists = np.array([22.803508502, 7.21110255093, 31.304951685, 33.5410196625])
 
@@ -156,7 +159,7 @@ print("Manual cressman value for grid 1: ", np.sum(value))
 
 print("Metpy cressman value for grid 1:  ", val)
 
-
+###########################################
 # Now repeat for grid 1, except use barnes interpolation.
 plt.annotate("grid 1: " + "(" + str(sim_gridx[1]) + ", " + str(sim_gridy[1]) + ")", xy = (sim_gridx[1]+2, sim_gridy[1]))
 plt.plot(sim_gridx[1], sim_gridy[1], "+", markersize=10)
@@ -179,7 +182,7 @@ plt.xlim(40, 80)
 plt.ylim(40, 100)
 plt.axes().set_aspect('equal', 'datalim')
 
-
+###########################################
 # Step through barnes calculations.
 dists = np.array([9.21954445729, 22.4722050542, 27.892651362, 38.8329756779])
 
@@ -194,4 +197,3 @@ val = barnes_point(barnes_dist, barnes_obs, kappa)
 
 print("Manual barnes value: ", value)
 print("Metpy barnes value:  ", val)
-

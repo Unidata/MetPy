@@ -1,3 +1,6 @@
+# Copyright (c) 2008-2016 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 """
 =================
 Advanced Sounding
@@ -15,12 +18,11 @@ import matplotlib.pyplot as plt
 
 import metpy.calc as mpcalc
 from metpy.io import get_upper_air_data
+from metpy.io.upperair import UseSampleData
 from metpy.plots import SkewT
 from metpy.units import concatenate
 
 ###########################################
-
-from metpy.io.upperair import UseSampleData
 with UseSampleData():  # Only needed to use our local sample data
     # Download and parse the data
     dataset = get_upper_air_data(datetime(1999, 5, 4, 0), 'OUN')
@@ -32,7 +34,6 @@ u = dataset.variables['u_wind'][:]
 v = dataset.variables['v_wind'][:]
 
 ###########################################
-
 # Create a new figure. The dimensions here give a good aspect ratio
 fig = plt.figure(figsize=(9, 9))
 skew = SkewT(fig, rotation=45)
@@ -55,8 +56,9 @@ prof = mpcalc.parcel_profile(p, T[0], Td[0]).to('degC')
 skew.plot(p, prof, 'k', linewidth=2)
 
 # Example of coloring area between profiles
-skew.ax.fill_betweenx(p, T, prof, where=T>=prof, facecolor='blue', alpha=0.4)
-skew.ax.fill_betweenx(p, T, prof, where=T<prof, facecolor='red', alpha=0.4)
+greater = T >= prof
+skew.ax.fill_betweenx(p, T, prof, where=greater, facecolor='blue', alpha=0.4)
+skew.ax.fill_betweenx(p, T, prof, where=~greater, facecolor='red', alpha=0.4)
 
 # An example of a slanted line at constant T -- in this case the 0
 # isotherm
