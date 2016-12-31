@@ -1,4 +1,12 @@
-MetPy Examples
---------------
+.. _examples-index:
 
-Examples of using MetPy
+MetPy Examples
+==============
+
+
+.. _general-examples:
+
+General Examples
+----------------
+
+Examples of using a variety of MetPy's functionality together.

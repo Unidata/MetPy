@@ -1,3 +1,5 @@
+.. _gridding_examples:
+
 Gridding
 --------
 

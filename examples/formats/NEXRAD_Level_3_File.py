@@ -1,8 +1,9 @@
-"""My title here.
-
-Some paragraphi here.
 """
-# coding: utf-8
+NEXRAD Level 3 File
+===================
+
+Demonstrates how to use MetPy to read information from a NEXRAD Level 3 (NIDS product) file.
+"""
 import numpy as np
 import matplotlib.pyplot as plt
 from numpy import ma
@@ -11,7 +12,7 @@ from metpy.cbook import get_test_data
 from metpy.io import Level3File
 from metpy.plots import ctables
 
-
+###########################################
 fig, axes = plt.subplots(1, 2, figsize=(15, 8))
 for v, ctable, ax in zip(('N0Q', 'N0U'), ('NWSReflectivity', 'NWSVelocity'), axes):
     # Open the file
@@ -41,6 +42,3 @@ for v, ctable, ax in zip(('N0Q', 'N0U'), ('NWSReflectivity', 'NWSVelocity'), axe
     ax.set_ylim(-30, 30)
 
 plt.show()
-
-
-

@@ -1,10 +1,9 @@
-"""My title here.
-
-Some paragraphi here.
 """
-# coding: utf-8
+Point Interpolation
+===================
 
-# # Comparing different point interpolation approaches.
+This example compares different point interpolation approaches.
+"""
 import numpy as np
 import sys
 import matplotlib.pyplot as plt
@@ -20,10 +19,8 @@ from matplotlib.colors import BoundaryNorm
 
 plt.rcParams['figure.figsize'] = (15, 10)
 
-def make_string_list(arr):
-    return [s.decode('ascii') for s in arr]
 
-
+###########################################
 def station_test_data(variable_names, proj_from=None, proj_to=None):
 
     f = get_test_data('station_data.txt')
@@ -36,7 +33,7 @@ def station_test_data(variable_names, proj_from=None, proj_to=None):
                                           ('weather', '16S'),
                                           ('wind_dir', 'f'), ('wind_speed', 'f')]))
 
-    all_stids = make_string_list(all_data['stid'])
+    all_stids = [s.decode('ascii') for s in all_data['stid']]
 
     data = np.concatenate([all_data[all_stids.index(site)].reshape(1, ) for site in all_stids])
 
@@ -74,8 +71,9 @@ x, y, temp = station_test_data("air_temperature", from_proj, to_proj)
 x, y, temp = remove_nan_observations(x, y, temp)
 x, y, temp = remove_repeat_coordinates(x, y, temp)
 
-
-# # Scipy.interpolate linear
+###########################################
+# Scipy.interpolate linear
+# ------------------------
 gx, gy, img = interpolate(x, y, temp, interp_type='linear', hres=75000)
 img = np.ma.masked_where(np.isnan(img), img)
 view = plt.axes([0,0,1,1], projection=to_proj)
@@ -93,9 +91,10 @@ mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
 plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
 
-# # Natural neighbor interpolation (MetPy implementation)
-# 
-# https://github.com/Unidata/MetPy/files/138653/cwp-657.pdf
+###########################################
+# Natural neighbor interpolation (MetPy implementation)
+# -----------------------------------------------------
+# `Reference <https://github.com/Unidata/MetPy/files/138653/cwp-657.pdf>`_
 gx, gy, img = interpolate(x, y, temp, interp_type='natural_neighbor', hres=75000)
 img = np.ma.masked_where(np.isnan(img), img)
 view = plt.axes([0,0,1,1], projection=to_proj)
@@ -112,9 +111,9 @@ view.add_feature(cartopy.feature.BORDERS, linestyle=':')
 mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
 plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
-
-# # Cressman interpolation
-# 
+###########################################
+# Cressman interpolation
+# ----------------------
 # search_radius = 100 km
 # 
 # grid resolution = 25 km
@@ -136,9 +135,9 @@ view.add_feature(cartopy.feature.BORDERS, linestyle=':')
 mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
 plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
-
-# # Barnes Interpolation
-# 
+###########################################
+# Barnes Interpolation
+# --------------------
 # search_radius = 100km
 # 
 # min_neighbors = 3
@@ -159,8 +158,9 @@ mmb = view.pcolormesh(gx, gy, img1, cmap=cmap, norm=norm)
 plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
 
-# # Radial basis functions interpolation
-# 
+###########################################
+# Radial basis function interpolation
+# ------------------------------------
 # linear
 gx, gy, img = interpolate(x, y, temp, interp_type='rbf', hres=75000, rbf_func='linear', rbf_smooth=0)
 img = np.ma.masked_where(np.isnan(img), img)
@@ -178,3 +178,4 @@ view.add_feature(cartopy.feature.BORDERS, linestyle=':')
 mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
 plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
+plt.show()

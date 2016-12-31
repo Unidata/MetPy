@@ -1,8 +1,9 @@
-"""My title here.
-
-Some paragraphi here.
 """
-# coding: utf-8
+Hodograph Inset
+===============
+
+Demonstrates how to layout a Skew-T plot with a hodograph inset into the plot.
+"""
 from datetime import datetime
 
 import numpy as np
@@ -13,7 +14,7 @@ from metpy.io import get_upper_air_data
 from metpy.plots import SkewT, Hodograph
 from metpy.units import units
 
-
+###########################################
 from metpy.io.upperair import UseSampleData
 with UseSampleData():  # Only needed to use our local sample data
     # Download and parse the data
@@ -24,6 +25,8 @@ T = dataset.variables['temperature'][:]
 Td = dataset.variables['dewpoint'][:]
 u = dataset.variables['u_wind'][:]
 v = dataset.variables['v_wind'][:]
+
+###########################################
 
 # Create a new figure. The dimensions here give a good aspect ratio
 fig = plt.figure(figsize=(9, 9))
@@ -54,4 +57,3 @@ h.plot_colormapped(u, v, np.hypot(u, v))
 
 # Show the plot
 plt.show()
-

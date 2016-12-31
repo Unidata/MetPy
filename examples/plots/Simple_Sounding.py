@@ -1,8 +1,9 @@
-"""My title here.
-
-Some paragraphi here.
 """
-# coding: utf-8
+Simple Sounding
+===============
+
+This is a bare bones example of using MetPy to make a Skew-T LogP plot.
+"""
 from datetime import datetime
 
 import matplotlib.pyplot as plt
@@ -14,7 +15,7 @@ from metpy.io import get_upper_air_data
 from metpy.plots import SkewT
 from metpy.units import units
 
-
+###########################################
 
 # Change default to be better for skew-T
 plt.rcParams['figure.figsize'] = (9, 9)
@@ -30,7 +31,7 @@ Td = dataset.variables['dewpoint'][:]
 u = dataset.variables['u_wind'][:]
 v = dataset.variables['v_wind'][:]
 
-# Create a skewT using matplotlib's default figure size
+###########################################
 skew = SkewT()
 
 # Plot the data using normal plotting functions, in this case using
@@ -45,8 +46,7 @@ skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
 skew.ax.set_ylim(1000, 100)
 
-# Show the plot
-plt.show()
+###########################################
 
 # Example of defining your own vertical barb spacing
 skew = SkewT()
@@ -56,8 +56,7 @@ skew = SkewT()
 skew.plot(p, T, 'r')
 skew.plot(p, Td, 'g')
 
-#Set spacing interval
-#Example: Every 50 mb from 1000 to 100 mb
+# Set spacing interval--Every 50 mb from 1000 to 100 mb
 my_interval = np.arange(100, 1000, 50) * units('mbar')
 
 #Get indexes of values closest to defined interval
@@ -74,4 +73,3 @@ skew.ax.set_ylim(1000, 100)
 
 # Show the plot
 plt.show()
-
