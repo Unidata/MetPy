@@ -1,4 +1,0 @@
-sphinx>=1.3
-sphinx-gallery
-enum34
-doc8

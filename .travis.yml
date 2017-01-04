@@ -29,17 +29,10 @@ env:
     - TEST_OUTPUT_CONTROL="-s"
   matrix:
     - TASK="coverage"
-    - TASK="examples"
+    - TASK="docs"
 
 matrix:
   include:
-    - python: 3.5
-      env: TASK="docs"
-      addons:
-        apt:
-          packages:
-            - *base_build
-            - pandoc
     - python: 2.7
       env:
         - VERSIONS="numpy==1.9.1 matplotlib==1.4.0 scipy==0.14.0 pint==0.7"
@@ -64,65 +57,52 @@ matrix:
 before_install:
   - pip install --upgrade pip;
   - if [[ $TASK == "docs" ]]; then
-        pip install -r docs/requirements.txt -f $WHEELHOUSE;
+      if ! git describe --tags; then git fetch --depth=150; fi;
+      export EXTRA_INSTALLS="cdm,doc,examples";
+      export EXTRA_PACKAGES="Cython pillow";
+      wget http://download.osgeo.org/proj/proj-4.9.3.tar.gz;
+      tar xf proj-4.9.3.tar.gz;
+      pushd proj-4.9.3;
+      ./configure --prefix=$HOME/local;
+      make;
+      sed -i "" -e s/-I// proj.pc;
+      make install;
+      export PKG_CONFIG_PATH="$HOME/local/lib/pkgconfig";
+      export LD_LIBRARY_PATH="$HOME/local/lib";
+      pkg-config --modversion proj;
+      popd;
     else
-      if [[ $TASK == "examples" ]]; then
-        export EXTRA_INSTALLS="cdm,examples";
-        export EXTRA_PACKAGES="Cython nbconvert ipykernel";
-        wget https://github.com/OSGeo/proj.4/archive/4.9.2.tar.gz;
-        tar xf 4.9.2.tar.gz;
-        pushd proj.4-4.9.2;
-        ./configure --prefix=$HOME/local;
-        make;
-        sed -i "" -e s/-I// proj.pc;
-        make install;
-        export PKG_CONFIG_PATH="$HOME/local/lib/pkgconfig";
-        export LD_LIBRARY_PATH="$HOME/local/lib";
-        pkg-config --modversion proj;
-        popd;
-      else
-        export TEST_OPTS="--flake8 --mpl";
-        if [[ $TRAVIS_PYTHON_VERSION == 3.5 ]]; then
-          pip install flake8-bugbear;
-        fi;
-        if [[ $TASK == "coverage" ]]; then
-          export TEST_OPTS="$TEST_OPTS --cov=metpy";
-          pip install pytest-cov;
-        fi;
+      export TEST_OPTS="--flake8 --mpl";
+      if [[ $TRAVIS_PYTHON_VERSION == 3.5 ]]; then
+        pip install flake8-bugbear;
       fi;
-      mkdir $WHEELDIR;
-      pip download -d $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-      touch $WHEELDIR/download_marker && ls -lrt $WHEELDIR;
-      travis_wait pip wheel -w $WHEELDIR $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-      pip install $EXTRA_PACKAGES --upgrade --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
-      travis_wait pip wheel -w $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-      rm -f $WHEELDIR/MetPy*.whl;
-    fi
+      if [[ $TASK == "coverage" ]]; then
+        export TEST_OPTS="$TEST_OPTS --cov=metpy";
+        pip install pytest-cov;
+      fi;
+    fi;
+  - mkdir $WHEELDIR;
+  - pip download -d $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
+  - touch $WHEELDIR/download_marker && ls -lrt $WHEELDIR;
+  - travis_wait pip wheel -w $WHEELDIR $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
+  - pip install $EXTRA_PACKAGES --upgrade --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
+  - travis_wait pip wheel -w $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
+  - rm -f $WHEELDIR/MetPy*.whl;
 
 install:
-  - if [[ $TASK != "docs" ]]; then
-      pip install ".[$EXTRA_INSTALLS]" --upgrade --no-index $PRE -f file://$PWD/$WHEELDIR $VERSIONS;
-      if [[ $TASK == "examples" ]]; then
-        python setup.py examples;
-      fi;
-    fi
+  - pip install ".[$EXTRA_INSTALLS]" --upgrade --no-index $PRE -f file://$PWD/$WHEELDIR $VERSIONS;
 
 script:
   - if [[ $TASK == "docs" ]]; then
+      export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata;
       pushd docs;
       make clean html linkcheck;
       export DOC_BUILD_RESULT=$?;
       popd;
-      doc8 README.rst docs/source;
+      doc8 README.rst docs/;
       if [[ $DOC_BUILD_RESULT -ne 0 || $? -ne 0 ]]; then
         false;
       fi;
-    elif [[ $TASK == "examples" ]]; then
-      export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata;
-      if [[ $TRAVIS_PYTHON_VERSION == 2* ]]; then
-        sed -i -e "s/python3/python2/" examples/notebooks/*.ipynb;
-      fi;
-      find examples/notebooks/ -name \*.ipynb -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=200 --to=notebook --stdout >| /dev/null;
     else
       flake8 --version;
       python setup.py test --addopts "$TEST_OUTPUT_CONTROL $TEST_OPTS";
@@ -136,6 +116,12 @@ after_script:
       python-codacy-coverage -r coverage.xml;
       codeclimate-test-reporter;
     fi
+  - if [[ $TASK == "docs" && $TRAVIS_PYTHON_VERSION == 3.5 && ! -z $GH_TOKEN ]]; then
+      pushd docs;
+      git remote add docs https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git;
+      make deployhtml;
+      popd;
+    fi;
 
 deploy:
   provider: pypi
@@ -147,5 +133,5 @@ deploy:
   on:
     repo: Unidata/MetPy
     python: 3.5
-    condition: '$TASK == "coverage"'
+    condition: '$TASK != "docs"'
     tags: true
