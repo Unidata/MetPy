@@ -1,17 +1,20 @@
+# Copyright (c) 2008-2016 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 """
 Simple Sounding
 ===============
 
-This is a bare bones example of using MetPy to make a Skew-T LogP plot.
+Use MetPy as straightforward as possible to make a Skew-T LogP plot.
 """
 from datetime import datetime
 
 import matplotlib.pyplot as plt
 import numpy as np
 
-from metpy.cbook import get_test_data
 from metpy.calc import resample_nn_1d
 from metpy.io import get_upper_air_data
+from metpy.io.upperair import UseSampleData
 from metpy.plots import SkewT
 from metpy.units import units
 
@@ -20,7 +23,6 @@ from metpy.units import units
 # Change default to be better for skew-T
 plt.rcParams['figure.figsize'] = (9, 9)
 
-from metpy.io.upperair import UseSampleData
 with UseSampleData():  # Only needed to use our local sample data
     # Download and parse the data
     dataset = get_upper_air_data(datetime(2013, 1, 20, 12), 'OUN')
@@ -59,10 +61,10 @@ skew.plot(p, Td, 'g')
 # Set spacing interval--Every 50 mb from 1000 to 100 mb
 my_interval = np.arange(100, 1000, 50) * units('mbar')
 
-#Get indexes of values closest to defined interval
+# Get indexes of values closest to defined interval
 ix = resample_nn_1d(p, my_interval)
 
-#Plot only values nearest to defined interval values
+# Plot only values nearest to defined interval values
 skew.plot_barbs(p[ix], u[ix], v[ix])
 
 # Add the relevant special lines

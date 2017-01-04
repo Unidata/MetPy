@@ -5,11 +5,11 @@
 GINI Water Vapor Imagery
 ========================
 
-This shows how to use MetPy's support for GINI files to read in a water vapor
-satellite image and plot the data using CartoPy.
+Use MetPy's support for GINI files to read in a water vapor satellite image and plot the
+data using CartoPy.
 """
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
+import matplotlib.pyplot as plt
 
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile

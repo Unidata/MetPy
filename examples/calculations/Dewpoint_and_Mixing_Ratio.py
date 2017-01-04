@@ -5,8 +5,9 @@
 Dewpoint and Mixing Ratio
 =========================
 
-This example demonstrates the use of functions from `metpy.calc` as well
-as pint's unit support. The code below converts the mixing ratio value into
+Use functions from `metpy.calc` as well as pint's unit support to perform calculations.
+
+The code below converts the mixing ratio value into
 a value for vapor pressure assuming both 1000mb and 850mb ambient air
 pressure values. It also demonstrates converting the resulting dewpoint
 temperature to degrees Fahrenheit.

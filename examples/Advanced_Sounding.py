@@ -6,10 +6,11 @@
 Advanced Sounding
 =================
 
-This is a more advanced example of plotting a sounding using MetPy. Beyond just plotting
-data, this uses calculations from `metpy.calc` to find the lifted condensation
-level (LCL) and the profile of a surface-based parcel. The area between the ambient profile
-and the parcel profile is colored as well.
+Plot a sounding using MetPy with more advanced features.
+
+Beyond just plotting data, this uses calculations from `metpy.calc` to find the lifted
+condensation level (LCL) and the profile of a surface-based parcel. The area between the
+ambient profile and the parcel profile is colored as well.
 """
 
 from datetime import datetime
