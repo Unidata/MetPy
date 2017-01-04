@@ -1,19 +1,25 @@
+# Copyright (c) 2008-2016 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 """
 Station Plot
 ============
 
-This example makes a station plot, complete with sky cover and weather symbols. The station
-plot itself is pretty straightforward, but there is a bit of code to perform the
+Make a station plot, complete with sky cover and weather symbols.
+
+The station plot itself is pretty straightforward, but there is a bit of code to perform the
 data-wrangling (hopefully that situation will improve in the future). Certainly, if you have
 existing point data in a format you can work with trivially, the station plot will be simple.
 """
+import cartopy.crs as ccrs
+import cartopy.feature as feat
 import matplotlib.pyplot as plt
 import numpy as np
 
 from metpy.calc import get_wind_components
 from metpy.cbook import get_test_data
 from metpy.plots import StationPlot
-from metpy.plots.wx_symbols import sky_cover, current_weather
+from metpy.plots.wx_symbols import current_weather, sky_cover
 from metpy.units import units
 
 ###########################################
@@ -73,29 +79,26 @@ cloud_frac = (8 * data['cloud_fraction']).astype(int)
 # Map weather strings to WMO codes, which we can use to convert to symbols
 # Only use the first symbol if there are multiple
 wx_text = [s.decode('ascii') for s in data['weather']]
-wx_codes = {'':0, 'HZ':5, 'BR':10, '-DZ':51, 'DZ':53, '+DZ':55,
-            '-RA':61, 'RA':63, '+RA':65, '-SN':71, 'SN':73, '+SN':75}
+wx_codes = {'': 0, 'HZ': 5, 'BR': 10, '-DZ': 51, 'DZ': 53, '+DZ': 55,
+            '-RA': 61, 'RA': 63, '+RA': 65, '-SN': 71, 'SN': 73, '+SN': 75}
 wx = [wx_codes[s.split()[0] if ' ' in s else s] for s in wx_text]
 
 ###########################################
 # Now all the data wrangling is finished, just need to set up plotting and go
 # Set up the map projection and set up a cartopy feature for state borders
-import cartopy.crs as ccrs
-import cartopy.feature as feat
 proj = ccrs.LambertConformal(central_longitude=-95, central_latitude=35,
                              standard_parallels=[35])
 state_boundaries = feat.NaturalEarthFeature(category='cultural',
                                             name='admin_1_states_provinces_lines',
                                             scale='110m', facecolor='none')
 
-# Change the DPI of the resulting figure. Higher DPI drastically improves the
-# look of the text rendering
-from matplotlib import rcParams
-rcParams['savefig.dpi'] = 255
-
 ###########################################
 # The payoff
 # ----------
+
+# Change the DPI of the resulting figure. Higher DPI drastically improves the
+# look of the text rendering
+plt.rcParams['savefig.dpi'] = 255
 
 # Create the figure and an axes set to the projection
 fig = plt.figure(figsize=(20, 10))

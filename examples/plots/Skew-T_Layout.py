@@ -1,22 +1,22 @@
+# Copyright (c) 2008-2016 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 """
 Skew-T with Complex Layout
 ==========================
 
-Demonstrates how to combine a Skew-T and a hodograph using Matplotlib's `GridSpec`
-layout capability.
+Combine a Skew-T and a hodograph using Matplotlib's `GridSpec` layout capability.
 """
 from datetime import datetime
 
-import numpy as np
-import matplotlib.pyplot as plt
 import matplotlib.gridspec as gridspec
+import matplotlib.pyplot as plt
 
-from metpy.cbook import get_test_data
 from metpy.io import get_upper_air_data
-from metpy.plots import SkewT, Hodograph
+from metpy.io.upperair import UseSampleData
+from metpy.plots import Hodograph, SkewT
 
 ###########################################
-from metpy.io.upperair import UseSampleData
 with UseSampleData():  # Only needed to use our local sample data
     # Download and parse the data
     dataset = get_upper_air_data(datetime(1999, 5, 4, 0), 'OUN')

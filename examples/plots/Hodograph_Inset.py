@@ -1,21 +1,23 @@
+# Copyright (c) 2008-2016 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 """
 Hodograph Inset
 ===============
 
-Demonstrates how to layout a Skew-T plot with a hodograph inset into the plot.
+Layout a Skew-T plot with a hodograph inset into the plot.
 """
 from datetime import datetime
 
-import numpy as np
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
+import numpy as np
 
 from metpy.io import get_upper_air_data
-from metpy.plots import SkewT, Hodograph
-from metpy.units import units
+from metpy.io.upperair import UseSampleData
+from metpy.plots import Hodograph, SkewT
 
 ###########################################
-from metpy.io.upperair import UseSampleData
 with UseSampleData():  # Only needed to use our local sample data
     # Download and parse the data
     dataset = get_upper_air_data(datetime(1999, 5, 4, 0), 'OUN')

@@ -1,12 +1,14 @@
+# Copyright (c) 2008-2016 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 """
 NEXRAD Level 2 File
 ===================
 
-Demonstrates how to use MetPy to read information from a NEXRAD Level 2 (volume) file.
+Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot
 """
-import numpy as np
 import matplotlib.pyplot as plt
-from numpy import ma
+import numpy as np
 
 from metpy.cbook import get_test_data
 from metpy.io import Level2File
@@ -42,13 +44,13 @@ rho = np.array([ray[4][b'RHO'][1] for ray in f.sweeps[sweep]])
 fig, axes = plt.subplots(1, 2, figsize=(15, 8))
 for var_data, var_range, ax in zip((ref, rho), (ref_range, rho_range), axes):
     # Turn into an array, then mask
-    data = ma.array(var_data)
-    data[np.isnan(data)] = ma.masked
+    data = np.ma.array(var_data)
+    data[np.isnan(data)] = np.ma.masked
 
     # Convert az,range to x,y
     xlocs = var_range * np.sin(np.deg2rad(az[:, np.newaxis]))
     ylocs = var_range * np.cos(np.deg2rad(az[:, np.newaxis]))
-   
+
     # Plot the data
     cmap = ctables.registry.get_colortable('viridis')
     ax.pcolormesh(xlocs, ylocs, data, cmap=cmap)
