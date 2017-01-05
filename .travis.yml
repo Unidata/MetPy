@@ -55,11 +55,13 @@ matrix:
     - python: nightly
 
 before_install:
+  # Shapely dependency needed to keep from using Shapely's manylinux wheels
+  # which use a different geos that what we build cartopy with on Travis
   - pip install --upgrade pip;
   - if [[ $TASK == "docs" ]]; then
       if ! git describe --tags; then git fetch --depth=150; fi;
       export EXTRA_INSTALLS="cdm,doc,examples";
-      export EXTRA_PACKAGES="Cython pillow";
+      export EXTRA_PACKAGES="Cython pillow shapely<1.5.17.post1";
       wget http://download.osgeo.org/proj/proj-4.9.3.tar.gz;
       tar xf proj-4.9.3.tar.gz;
       pushd proj-4.9.3;
