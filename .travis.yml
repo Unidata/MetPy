@@ -19,6 +19,11 @@ python:
   - 3.5
   - 2.7
 
+cache:
+  - pip
+  - directories:
+    - $HOME/local
+
 env:
   global:
     - secure: "MOw+6pAQ8s7XX1U9Pbgw8SIuz5MHODj6PXe6xCSIyGR14/0KFNiR9s6NEIa9i7qnp7HOq/V2M9ZFPPioQCrL8k5V4XzZfNz6kXGUT8DoSAAnAAnDWy4yMRxYMlEcjSY8l0KZ9B3szxypkLh0Qd9+pHZYvRSLt8A8UcZSVSNGDjg="
@@ -62,17 +67,20 @@ before_install:
       if ! git describe --tags; then git fetch --depth=150; fi;
       export EXTRA_INSTALLS="cdm,doc,examples";
       export EXTRA_PACKAGES="Cython pillow shapely<1.5.17.post1 sphinx_rtd_theme";
-      wget http://download.osgeo.org/proj/proj-4.9.3.tar.gz;
-      tar xf proj-4.9.3.tar.gz;
-      pushd proj-4.9.3;
-      ./configure --prefix=$HOME/local;
-      make;
-      sed -i "" -e s/-I// proj.pc;
-      make install;
+      ls $HOME/local/lib/;
+      if [[ ! -f $HOME/local/lib/libproj.so ]]; then
+        wget http://download.osgeo.org/proj/proj-4.9.3.tar.gz;
+        tar xf proj-4.9.3.tar.gz;
+        pushd proj-4.9.3;
+        ./configure --prefix=$HOME/local;
+        make;
+        sed -i "" -e s/-I// proj.pc;
+        make install;
+        popd;
+      fi;
       export PKG_CONFIG_PATH="$HOME/local/lib/pkgconfig";
       export LD_LIBRARY_PATH="$HOME/local/lib";
       pkg-config --modversion proj;
-      popd;
     else
       export TEST_OPTS="--flake8 --mpl";
       if [[ $TRAVIS_PYTHON_VERSION == 3.5 ]]; then
