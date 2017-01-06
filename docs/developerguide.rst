@@ -134,17 +134,17 @@ from the root of the source directory is as easy as:
 Documentation
 -------------
 
-MetPy's documentation is built using sphinx >= 1.3. API documentation is automatically
+MetPy's documentation is built using sphinx >= 1.4. API documentation is automatically
 generated from docstrings, written using the
 `NumPy docstring standard <https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt>`_.
 There are also example scripts in the ``examples`` directory. Using the ``sphinx-gallery``
 extension, these examples are executed and turned into a gallery of thumbnails. The
 extension also makes these scripts available as Jupyter notebooks.
 
-The documentation is hosted by `Read the Docs <https://metpy.readthedocs.io>`_. The docs are
-built automatically from ``master`` as well as for the tagged versions on github. ``master`` is
-used for the ``latest`` documentation, and the latest tagged version is used for the ``stable``
-documentation. To see what the docs will look like on RTD, you also need to install the
+The documentation is hosted on `GitHub Pages <https://unidata.github.io/MetPy>`_. The docs are
+built automatically from ``master`` with every build on Travis-CI; every merged PR will
+have the built docs upload to GitHub Pages. As part of the build, the documentation is also
+checked with ``doc8``. To see what the docs will look like, you also need to install the
 ``sphinx-rtd-theme`` package.
 
 -----------
@@ -178,8 +178,7 @@ To create a new release, go to the GitHub page and make a new release. The tag s
 sensible version number, like v1.0.0. Add a name (can just be the version) and add some release
 notes on what the big changes are. It's also possible to use
 `loghub <https://github.com/spyder-ide/loghub>`_ to get information on all the issues and PRs
-that were closed for the relevant milestone. Tagging a new version on GitHub should also
-update the `stable <http://metpy.readthedocs.io/en/stable>`_  docs on Read the Docs.
+that were closed for the relevant milestone.
 
 ~~~~
 PyPI
