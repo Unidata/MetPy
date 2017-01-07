@@ -18,5 +18,5 @@ MANIFEST
 
 docs/build/
 docs/examples
-docs/modules
+docs/api/generated
 examples/scripts
