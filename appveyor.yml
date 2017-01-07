@@ -31,7 +31,6 @@ install:
     - cmd: python --version
     - cmd: conda list
     - cmd: if %PYTHON_VERSION% == 2.7 conda install -q enum34
-    - cmd: python -m ipykernel install --user --name devel
     - cmd: pip install ".[test]"
     - cmd: flake8 --version
 
@@ -40,9 +39,9 @@ build: off
 
 test_script:
     - cmd: set TEST_DATA_DIR=%APPVEYOR_BUILD_FOLDER%\\testdata
-    - cmd: if %PYTHON_VERSION% == 2.7 find examples\notebooks -name "*.ipynb" -exec sed -i -e s/python3/python2/ {} ;
     - cmd: python setup.py test --addopts "-s --junitxml=tests.xml --flake8 --mpl --cov=metpy"
-    - cmd: find examples\notebooks\ -name "*.ipynb" -print0 | xargs -0 -n1 jupyter nbconvert --execute --ExecutePreprocessor.timeout=200 --ExecutePreprocessor.kernel_name=devel --inplace
+    - cmd: cd docs
+    - cmd: make html
 
 on_finish:
     - ps: $wc = New-Object 'System.Net.WebClient'

@@ -31,3 +31,4 @@ dependencies:
   - pip
   - pip:
     - doc8
+    - sphinx-gallery
