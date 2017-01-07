@@ -6,8 +6,11 @@ if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=sphinx-build
 )
 set BUILDDIR=build
-set ALLSPHINXOPTS=-d %BUILDDIR%/doctrees %SPHINXOPTS% source
-set I18NSPHINXOPTS=%SPHINXOPTS% source
+set HTMLBUILDDIR=%BUILDDIR%/html
+set SOURCEDIR=.
+set SPHINXOPTS=-W
+set ALLSPHINXOPTS=-d %BUILDDIR%/doctrees %SPHINXOPTS% %SOURCEDIR%
+set I18NSPHINXOPTS=%SPHINXOPTS% %SOURCEDIR%
 if NOT "%PAPER%" == "" (
 	set ALLSPHINXOPTS=-D latex_paper_size=%PAPER% %ALLSPHINXOPTS%
 	set I18NSPHINXOPTS=-D latex_paper_size=%PAPER% %I18NSPHINXOPTS%
@@ -42,7 +45,7 @@ if "%1" == "help" (
 
 if "%1" == "clean" (
 	for /d %%i in (%BUILDDIR%\*) do rmdir /q /s %%i
-	del /q /s %BUILDDIR%\*
+	del /q /s %BUILDDIR%\* %SOURCEDIR%/examples/ %SOURCEDIR%/api/generated/
 	goto end
 )
 
@@ -61,7 +64,8 @@ if errorlevel 9009 (
 )
 
 if "%1" == "html" (
-	%SPHINXBUILD% -b html %ALLSPHINXOPTS% %BUILDDIR%/html
+	echo.%SPHINXBUILD% -b html %ALLSPHINXOPTS% %HTMLBUILDDIR%
+	%SPHINXBUILD% -b html %ALLSPHINXOPTS% %HTMLBUILDDIR%
 	if errorlevel 1 exit /b 1
 	echo.
 	echo.Build finished. The HTML pages are in %BUILDDIR%/html.
