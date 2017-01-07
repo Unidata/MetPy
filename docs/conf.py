@@ -51,7 +51,8 @@ sphinx_gallery_conf = {
         'numpy': 'http://docs.scipy.org/doc/numpy-1.9.1'},
     'examples_dirs': '../examples',
     'gallery_dirs': 'examples',
-    'filename_pattern': '/'
+    'filename_pattern': '/',
+    'mod_example_dir': 'api/generated'
 }
 
 mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
