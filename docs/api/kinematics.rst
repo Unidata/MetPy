@@ -1,7 +1,15 @@
-**********************
-Kinematic Calculations
-**********************
+.. _kinematic_calculations:
 
-.. automodule:: metpy.calc.kinematics
-   :members:
-   :undoc-members:
+Kinematic Calculations
+======================
+
+.. automodule:: metpy.calc
+
+.. autosummary::
+   :toctree: generated/
+
+    v_vorticity
+    h_convergence
+    convergence_vorticity
+    advection
+    geostrophic_wind

@@ -1,7 +1,14 @@
-==================
-:mod:`metpy.units`
-==================
+.. _units:
+
+Units
+=====
 
 .. automodule:: metpy.units
-   :members:
-   :undoc-members:
+
+.. autosummary::
+   :toctree: generated/
+
+    concatenate
+    atleast_1d
+    atleast_2d
+    masked_array

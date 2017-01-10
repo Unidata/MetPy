@@ -1,30 +1,33 @@
-==================
-:mod:`metpy.plots`
-==================
+.. _plots:
+
+Plotting
+========
+
+Plots
+-----
 
 .. automodule:: metpy.plots
 
-Skew-T
-******
+.. autosummary::
+   :toctree: generated/
 
-.. automodule:: metpy.plots.skewt
-   :members:
-   :undoc-members:
-
-
-Station Plots
-*************
-
-.. automodule:: metpy.plots.station_plot
-   :members:
-   :undoc-members:
-
+   SkewT
+   StationPlot
 
 Colortables
-***********
-
+-----------
 :mod:`metpy.plots.ctables`
 
 .. automodule:: metpy.plots.ctables
-   :members:
-   :undoc-members:
+
+.. autosummary::
+  :toctree: generated/
+
+   read_colortable
+   convert_gempak_table
+   registry.scan_resource
+   registry.scan_dir
+   registry.add_colortable
+   registry.get_with_steps
+   registry.get_with_boundaries
+   registry.get_colortable

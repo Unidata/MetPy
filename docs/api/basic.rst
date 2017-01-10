@@ -1,7 +1,17 @@
-******************
-Basic Calculations
-******************
+.. _basic_calculations:
 
-.. automodule:: metpy.calc.basic
-   :members:
-   :undoc-members:
+Basic Calculations
+==================
+
+.. automodule:: metpy.calc
+
+.. autosummary::
+   :toctree: generated/
+
+    get_wind_speed
+    get_wind_dir
+    get_wind_components
+    windchill
+    heat_index
+    pressure_to_height_std
+    coriolis_parameter

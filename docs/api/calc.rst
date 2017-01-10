@@ -1,6 +1,7 @@
-=================
-:mod:`metpy.calc`
-=================
+.. _calculations:
+
+Calculations
+============
 
 .. automodule:: metpy.calc
 
