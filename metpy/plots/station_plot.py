@@ -167,7 +167,7 @@ class StationPlot(object):
             kwargs['transform'] = self.transform
 
         text_collection = self.ax.scattertext(self.x, self.y, text, loc=location,
-                                              size=self.fontsize, **kwargs)
+                                              size=kwargs.pop('size', self.fontsize), **kwargs)
         if location in self.items:
             self.items[location].remove()
         self.items[location] = text_collection
