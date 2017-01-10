@@ -40,7 +40,8 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.mathjax',
     'sphinx.ext.napoleon',
-    'sphinx_gallery.gen_gallery'
+    'sphinx_gallery.gen_gallery',
+    'matplotlib.sphinxext.plot_directive'
 ]
 
 sphinx_gallery_conf = {
@@ -55,6 +56,10 @@ sphinx_gallery_conf = {
     'filename_pattern': '/',
     'mod_example_dir': 'api/generated'
 }
+
+# Turn off code and image links for embedded mpl plots
+plot_html_show_source_link = False
+plot_html_show_formats = False
 
 mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
 # autosummary_generate = True

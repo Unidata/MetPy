@@ -75,6 +75,10 @@ class CodePointMapping(object):
         """Return the Unicode code point corresponding to `code`."""
         return self.chrs[code]
 
+    def __len__(self):
+        """Return the number of codes supported by this mapping."""
+        return len(self.chrs)
+
     def alt_char(self, code, alt):
         """Get one of the alternate code points for a given value.
 
