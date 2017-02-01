@@ -4,6 +4,7 @@ ignore-paths:
   - versioneer.py
   - metpy/_version.py
   - examples
+  - tutorials
 
 max-line-length: 95
 

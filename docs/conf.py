@@ -49,8 +49,8 @@ sphinx_gallery_conf = {
         'metpy': None,
         'matplotlib': 'http://matplotlib.org',
         'numpy': 'http://docs.scipy.org/doc/numpy-1.9.1'},
-    'examples_dirs': '../examples',
-    'gallery_dirs': 'examples',
+    'examples_dirs': ['../examples', '../tutorials'],
+    'gallery_dirs': ['examples', 'tutorials'],
     'filename_pattern': '/',
     'mod_example_dir': 'api/generated'
 }
