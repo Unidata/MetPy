@@ -133,8 +133,6 @@ skew = SkewT(fig, rotation=30)
 skew.plot(p, T, 'r')
 skew.plot(p, Td, 'g')
 skew.plot_barbs(p, u, v)
-skew.ax.set_ylim(1000, 100)
-skew.ax.set_xlim(-40, 60)
 
 # Plot LCL temperature as black dot
 skew.plot(parcel_lcl, lcl_temperature, 'ko', markerfacecolor='black')
@@ -177,8 +175,6 @@ skew = SkewT(fig, rotation=30)
 skew.plot(p, T, 'r')
 skew.plot(p, Td, 'g')
 skew.plot_barbs(p, u, v)
-skew.ax.set_ylim(1000, 100)
-skew.ax.set_xlim(-40, 60)
 
 # Plot LCL as black dot
 skew.plot(parcel_lcl, lcl_temperature, 'ko', markerfacecolor='black')

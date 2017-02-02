@@ -41,15 +41,11 @@ skew = SkewT(fig, rotation=45, subplot=gs[:, :2])
 skew.plot(p, T, 'r')
 skew.plot(p, Td, 'g')
 skew.plot_barbs(p, u, v)
-skew.ax.set_ylim(1000, 100)
 
 # Add the relevant special lines
 skew.plot_dry_adiabats()
 skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
-
-# Good bounds for aspect ratio
-skew.ax.set_xlim(-30, 40)
 
 # Create a hodograph
 ax = fig.add_subplot(gs[0, -1])

@@ -46,7 +46,6 @@ skew.plot_barbs(p, u, v)
 skew.plot_dry_adiabats()
 skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
-skew.ax.set_ylim(1000, 100)
 
 ###########################################
 
@@ -71,7 +70,6 @@ skew.plot_barbs(p[ix], u[ix], v[ix])
 skew.plot_dry_adiabats()
 skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
-skew.ax.set_ylim(1000, 100)
 
 # Show the plot
 plt.show()
