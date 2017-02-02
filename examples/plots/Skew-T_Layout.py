@@ -47,6 +47,9 @@ skew.plot_dry_adiabats()
 skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
 
+# Good bounds for aspect ratio
+skew.ax.set_xlim(-30, 40)
+
 # Create a hodograph
 ax = fig.add_subplot(gs[0, -1])
 h = Hodograph(ax, component_range=60.)
