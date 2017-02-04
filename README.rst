@@ -90,6 +90,7 @@ Important Links
 - HTML Documentation : http://unidata.github.io/MetPy
 - Issue tracker: http://github.com/Unidata/MetPy/issues
 - Gitter chat room: https://gitter.im/Unidata/MetPy
+- Say Thanks: https://saythanks.io/to/unidata
 
 Dependencies
 ------------
