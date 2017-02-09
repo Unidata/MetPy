@@ -8,6 +8,7 @@ Calculations
 These are the major groups of calculations available in MetPy:
 
 .. toctree::
+   :maxdepth: 1
 
    basic
    kinematics
