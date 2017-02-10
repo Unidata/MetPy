@@ -1,6 +1,7 @@
-======================
-:mod:`metpy.constants`
-======================
+.. _constants:
+
+Constants
+=========
 
 .. automodule:: metpy.constants
    :members:

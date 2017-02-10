@@ -1,9 +1,14 @@
-***********************************
+.. _turbulence_calculations:
+
 Turbulence Time Series Calculations
-***********************************
+===================================
 
-:mod:`metpy.calc.turbulence`
+.. automodule:: metpy.calc
 
-.. automodule:: metpy.calc.turbulence
-   :members:
-   :undoc-members:
+.. autosummary::
+   :toctree: generated/
+
+    get_perturbation
+    tke
+    kinematic_flux
+    friction_velocity

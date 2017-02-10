@@ -12,6 +12,7 @@ The MetPy API
    io
    calc
    plots
+   gridding
 
 * :ref:`modindex`
 * :ref:`genindex`

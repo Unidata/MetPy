@@ -1,8 +1,8 @@
-===
+.. _cdm:
+
+
 CDM
 ===
-
-:mod:`metpy.io.cdm`
 
 .. automodule:: metpy.io.cdm
    :members:

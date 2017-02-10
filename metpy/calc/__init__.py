@@ -7,9 +7,10 @@ from .basic import *  # noqa: F403
 from .kinematics import *  # noqa: F403
 from .thermo import *  # noqa: F403
 from .tools import *  # noqa: F403
-from . import turbulence  # noqa: F401
+from .turbulence import *  # noqa: F403
 
 __all__ = basic.__all__[:]  # pylint: disable=undefined-variable
 __all__.extend(kinematics.__all__)  # pylint: disable=undefined-variable
 __all__.extend(thermo.__all__)  # pylint: disable=undefined-variable
 __all__.extend(tools.__all__)  # pylint: disable=undefined-variable
+__all__.extend(turbulence.__all__)  # pylint: disable=undefined-variable

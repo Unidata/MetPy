@@ -44,11 +44,12 @@ extensions = [
 ]
 
 sphinx_gallery_conf = {
-    'doc_module': ('metpy', 'numpy'),
+    'doc_module': ('metpy',),
     'reference_url': {
         'metpy': None,
         'matplotlib': 'http://matplotlib.org',
-        'numpy': 'http://docs.scipy.org/doc/numpy-1.9.1'},
+        'numpy': 'http://docs.scipy.org/doc/numpy/',
+        'scipy': 'http://docs.scipy.org/doc/scipy/reference'},
     'examples_dirs': ['../examples', '../tutorials'],
     'gallery_dirs': ['examples', 'tutorials'],
     'filename_pattern': '/',
@@ -116,7 +117,7 @@ exclude_patterns = []
 
 # The reST default role (used for this markup: `text`) to use for all
 # documents.
-# default_role = None
+default_role = 'autolink'
 
 # If true, '()' will be appended to :func: etc. cross-reference text.
 # add_function_parentheses = True
@@ -151,6 +152,10 @@ try:
 except ImportError:
     pass
 
+
+def setup(app):
+    app.add_stylesheet('theme_override.css')
+    
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
@@ -306,3 +311,10 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
+
+# -----------------------------------------------------------------------------
+# Autosummary
+# -----------------------------------------------------------------------------
+
+import glob
+autosummary_generate = glob.glob("api/*.rst")
