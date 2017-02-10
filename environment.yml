@@ -11,6 +11,7 @@ dependencies:
   - netcdf4
   - jupyter
   - sphinx
+  - sphinx-gallery
   - pytest>=2.4
   - pytest-cov
   - pytest-flake8
@@ -32,4 +33,3 @@ dependencies:
   - freetype=2.6
   - pip:
     - doc8
-    - sphinx-gallery
