@@ -38,7 +38,7 @@ The easiest way to install MetPy is through ``pip``:
 .. parsed-literal::
     pip install metpy
 
-If you are a user of the `Conda <http://conda.pydata.org>`_ pacakge manager, there are also
+If you are a user of the `Conda <https://conda.io/docs/>`_ pacakge manager, there are also
 up-to-date packages for MetPy (as well as its dependencies) available from the
 `conda-forge <https://conda-forge.github.io>`_ channel:
 

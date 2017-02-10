@@ -21,4 +21,3 @@ exclude_paths:
 - "metpy/_version.py"
 - "metpy/io/_nexrad_msgs/msg*.py"
 - "docs/**/*"
-- "examples/notebooks/*"

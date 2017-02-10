@@ -20,6 +20,28 @@ For more information on contributing to open source projects,
 [GitHub's own guide](https://guides.github.com/activities/contributing-to-open-source/)
 is a great starting point.
 
+## Getting Started
+
+Interested in helping build MetPy? Have code from your research that you believe others will 
+find useful? Have a few minutes to tackle an issue? In this guide we will get you setup and
+integrated into contributing to MetPy!
+
+## What Can I Do?
+* Tackle any [issues](https://github.com/Unidata/MetPy/issues) you wish! We have a special 
+  label for issues that beginners might want to try. Have a look at our
+  [current beginner issues.](https://github.com/unidata/metpy/issues?q=is%3Aopen+is%3Aissue+label%3A%22Difficulty%3A+Beginner%22)
+
+* Contribute code you already have. It doesn’t need to be perfect! We will help you clean 
+  things up, test it, etc.
+  
+* Make a tutorial or example of how to do something.
+
+## How Can I Talk to You?
+Discussion of MetPy development often happens in the issue tracker and in pull requests.
+In addition, the developers monitor the
+[gitter chat room](https://gitter.im/Unidata/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+for the project as well.
+
 ## Ground Rules
 The goal is to maintain a diverse community that's pleasant for everyone. Please
 be considerate and respectful of others. Other items:
