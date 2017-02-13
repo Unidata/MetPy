@@ -199,6 +199,28 @@ def test_nws_layout():
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 6.68}.get(MPL_VERSION, 1.05),
+                               remove_text=True)
+def test_plot_text_fontsize():
+    """Test changing fontsize in plot_text."""
+    fig = plt.figure(figsize=(3, 3))
+    ax = plt.subplot(1, 1, 1)
+
+    # testing data
+    x = np.array([1])
+    y = np.array([2])
+
+    # Make the plot
+    sp = StationPlot(ax, x, y, fontsize=36)
+    sp.plot_text('NW', ['72'], fontsize=24)
+    sp.plot_text('SW', ['60'], fontsize=4)
+
+    sp.ax.set_xlim(0, 3)
+    sp.ax.set_ylim(0, 3)
+
+    return fig
+
+
 def test_layout_str():
     """Test layout string representation."""
     layout = StationPlotLayout()
