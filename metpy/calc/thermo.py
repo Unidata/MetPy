@@ -157,8 +157,8 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
 
     Returns
     -------
-    `pint.Quantity`
-        The LCL
+    `(pint.Quantity, pint.Quantity)`
+        The LCL pressure and temperature
 
     Other Parameters
     ----------------
@@ -192,7 +192,8 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
             break
         p = new_p
         max_iters -= 1
-    return new_p
+
+    return (new_p, td)
 
 
 @exporter.export
@@ -253,7 +254,7 @@ def parcel_profile(pressure, temperature, dewpt):
     lcl, moist_lapse, dry_lapse
     """
     # Find the LCL
-    l = lcl(pressure[0], temperature, dewpt).to(pressure.units)
+    l = lcl(pressure[0], temperature, dewpt)[0].to(pressure.units)
 
     # Find the dry adiabatic profile, *including* the LCL. We need >= the LCL in case the
     # LCL is included in the levels. It's slightly redundant in that case, but simplifies
