@@ -24,4 +24,9 @@ coverage:
         target: 100%
         paths: "metpy/.*/tests/.*"
 
+  notify:
+    gitter:
+      default:
+        url: "https://webhooks.gitter.im/e/301b8fd7792e1a48b034"
+
 comment: off

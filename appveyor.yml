@@ -49,3 +49,10 @@ on_finish:
     - ps: $wc.UploadFile("https://ci.appveyor.com/api/testresults/junit/$($env:APPVEYOR_JOB_ID)", (Resolve-Path .\tests.xml))
     - cmd: pip install codecov
     - cmd: codecov -e PYTHON_VERSION PLATFORM
+
+notifications:
+  - provider: Webhook
+    url: https://webhooks.gitter.im/e/0ea592876f591013ca9f
+    on_build_success: true
+    on_build_failure: true
+    on_build_status_changed: true
