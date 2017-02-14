@@ -145,3 +145,8 @@ deploy:
     python: 3.5
     condition: '$TASK != "docs"'
     tags: true
+
+notifications:
+  webhooks:
+    urls:
+      - https://webhooks.gitter.im/e/7d9db0e3c69256819df7
