@@ -155,8 +155,9 @@ def test_vapor_pressure():
 
 def test_lcl():
     """Test LCL calculation."""
-    l = lcl(1000. * units.mbar, 30. * units.degC, 20. * units.degC)
-    assert_almost_equal(l, 864.761 * units.mbar, 2)
+    lcl_pressure, lcl_temperature = lcl(1000. * units.mbar, 30. * units.degC, 20. * units.degC)
+    assert_almost_equal(lcl_pressure, 864.761 * units.mbar, 2)
+    assert_almost_equal(lcl_temperature, 17.676 * units.degC, 2)
 
 
 def test_lfc_basic():
