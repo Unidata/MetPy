@@ -3,11 +3,10 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import datetime as dt
-import numpy as np
 import matplotlib as mpl
-#from functions import C_to_F,calc_dewpoint,calc_mslp
 
 from metpy.units import units
+from metpy.calc import dewpoint_rh
 
 def calc_dewpoint(T,RH):
     RH = np.ma.masked_values(RH,-999.9)
@@ -189,14 +188,10 @@ hgt_example = 292.
 def parse_date(date):
     return dt.datetime.strptime(date,"%Y-%m-%d %H:%M:%S")
 
-testdata = pd.read_csv('test.csv',names=['DATE','P','RH','T','WD','WS','WSMAX'],
-                                         dtype={'DATE':dt.datetime,
-                                                'P':np.float,
-                                                'RH':np.float,
-                                                'T':np.float,
-                                                'WD':np.float,
-                                                'WS':np.float,
-                                                'WSMAX':np.float},header=0,index_col=0,date_parser=parse_date)
+testdata = np.genfromtxt(get_test_data('test.csv', False), names=True, dtype=None,
+                         usecols=list(range(1,8)),
+                         converters={'DATE': parse_date}, delimiter=',')
+
 # Temporary variables for ease
 temp = testdata['T']
 pres = testdata['P']
@@ -204,7 +199,7 @@ rh = testdata['RH']
 ws = testdata['WS']
 wsmax = testdata['WSMAX']
 wd = testdata['WD']
-date = [dt.datetime.strptime(dates,"%Y-%m-%d %H:%M:%S") for dates in testdata['DATE']]    
+date = testdata['DATE']    
 
 # ID For Plotting on Meteogram
 probe_id = '0102A'
@@ -213,7 +208,7 @@ data = dict()
 data['wind_speed'] = (np.array(ws)*units('m/s')).to(units('knots'))
 data['wind_speed_max'] = (np.array(wsmax)*units('m/s')).to(units('knots'))
 data['wind_direction'] = np.array(wd)*units('degrees')
-data['dewpoint'] = (calc_dewpoint(np.array(temp),np.array(rh))*units('celsius')).to(units('degF'))      
+data['dewpoint'] = dewpoint_rh((np.array(temp)*units('degC')).to(units('K')),np.array(rh)/100.).to(units('degF'))
 data['air_temperature'] = (np.array(temp)* units('degC')).to(units('degF')) 
 data['mean_slp'] = calc_mslp(np.array(temp),np.array(pres),hgt_example) * units('hPa')
 data['relative_humidity'] = np.array(rh)
@@ -226,7 +221,7 @@ meteogram.plot_thermo(data['air_temperature'],data['dewpoint'])
 meteogram.plot_rh(data['relative_humidity']) 
 meteogram.plot_pressure(data['mean_slp'])
 fig.subplots_adjust(hspace=0.5)
-
+plt.show()
 #plt.text(1,1.02,meteogram.title,horizontalalignment='right',verticalalignment='bottom')        
 
 
