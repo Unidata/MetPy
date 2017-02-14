@@ -21,7 +21,6 @@ import metpy.calc as mpcalc
 from metpy.io import get_upper_air_data
 from metpy.io.upperair import UseSampleData
 from metpy.plots import SkewT
-from metpy.units import concatenate
 
 ###########################################
 with UseSampleData():  # Only needed to use our local sample data
@@ -48,9 +47,8 @@ skew.ax.set_ylim(1000, 100)
 skew.ax.set_xlim(-40, 60)
 
 # Calculate LCL height and plot as black dot
-l = mpcalc.lcl(p[0], T[0], Td[0])
-lcl_temp = mpcalc.dry_lapse(concatenate((p[0], l)), T[0])[-1].to('degC')
-skew.plot(l, lcl_temp, 'ko', markerfacecolor='black')
+lcl_pressure, lcl_temperature = mpcalc.lcl(p[0], T[0], Td[0])
+skew.plot(lcl_pressure, lcl_temperature, 'ko', markerfacecolor='black')
 
 # Calculate full parcel profile and add to plot as black line
 prof = mpcalc.parcel_profile(p, T[0], Td[0]).to('degC')
@@ -63,7 +61,7 @@ skew.ax.fill_betweenx(p, T, prof, where=~greater, facecolor='red', alpha=0.4)
 
 # An example of a slanted line at constant T -- in this case the 0
 # isotherm
-l = skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
+skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
 
 # Add the relevant special lines
 skew.plot_dry_adiabats()
