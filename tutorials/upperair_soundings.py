@@ -23,7 +23,6 @@ import numpy as np
 import metpy.calc as mpcalc
 from metpy.io import get_upper_air_data
 from metpy.plots import Hodograph, SkewT
-from metpy.units import concatenate
 
 #########################################################################
 # Getting Data
@@ -65,14 +64,10 @@ v = dataset.variables['v_wind'][:]
 #   at the surface temperature/pressure and rising dry adiabatically until
 #   reaching the LCL, then rising moist adiabatially.
 
-# Calculate the LCL level
-parcel_lcl = mpcalc.lcl(p[0], T[0], Td[0])
+# Calculate the LCL
+lcl_pressure, lcl_temperature = mpcalc.lcl(p[0], T[0], Td[0])
 
-# Determine the LCL temperature by lifting a parcel from the surface
-# pressure and temperature via a dry adiabatic process.
-lcl_temperature = mpcalc.dry_lapse(concatenate((p[0], parcel_lcl)), T[0])[-1].to('degC')
-
-print(parcel_lcl, lcl_temperature)
+print(lcl_pressure, lcl_temperature)
 
 # Calculate the parcel profile.
 parcel_prof = mpcalc.parcel_profile(p, T[0], Td[0]).to('degC')
@@ -137,7 +132,7 @@ skew.ax.set_ylim(1000, 100)
 skew.ax.set_xlim(-40, 60)
 
 # Plot LCL temperature as black dot
-skew.plot(parcel_lcl, lcl_temperature, 'ko', markerfacecolor='black')
+skew.plot(lcl_pressure, lcl_temperature, 'ko', markerfacecolor='black')
 
 # Plot the parcel profile as a black line
 skew.plot(p, parcel_prof, 'k', linewidth=2)
@@ -181,7 +176,7 @@ skew.ax.set_ylim(1000, 100)
 skew.ax.set_xlim(-40, 60)
 
 # Plot LCL as black dot
-skew.plot(parcel_lcl, lcl_temperature, 'ko', markerfacecolor='black')
+skew.plot(lcl_pressure, lcl_temperature, 'ko', markerfacecolor='black')
 
 # Plot the parcel profile as a black line
 skew.plot(p, parcel_prof, 'k', linewidth=2)
