@@ -17,3 +17,8 @@ def test_alt_char():
     """Test alternate character functionality for mapper."""
     assert current_weather.alt_char(7, 1) == u'\ue9a6'
     assert current_weather.alt_char(7, 2) == u'\ue9a7'
+
+
+def test_mapper_len():
+    """Test getting the length of the mapper."""
+    assert len(current_weather) == 100
