@@ -314,6 +314,35 @@ def parcel_profile(pressure, temperature, dewpt):
 
 
 @exporter.export
+def virtual_temperature(pressure, temperature, dewpt):
+    r"""Calculate virtual temperature.
+
+    Description
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The atmospheric pressure level(s) of interest. The first entry should be the starting
+        point pressure.
+    temperature : `pint.Quantity`
+        The starting temperature
+    dewpt : `pint.Quantity`
+        The starting dew point
+
+    Returns
+    -------
+    `pint.Quantity`
+        The virtual temperature.
+
+    See Also
+    --------
+    mixing_ratio, saturation_vapor_pressure
+    """
+    Rv = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
+    return temperature * (1 + Rv / epsilon) / (1 + Rv)
+
+
+@exporter.export
 def vapor_pressure(pressure, mixing):
     r"""Calculate water vapor (partial) pressure.
 
