@@ -7,7 +7,8 @@ import numpy as np
 
 from metpy.calc import (dewpoint, dewpoint_rh, dry_lapse, equivalent_potential_temperature,
                         lcl, lfc, mixing_ratio, moist_lapse, parcel_profile,
-                        potential_temperature, saturation_mixing_ratio, el)
+                        potential_temperature, saturation_mixing_ratio, el,
+                        saturation_vapor_pressure, vapor_pressure, virtual_temperature)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal
 from metpy.units import units
 
