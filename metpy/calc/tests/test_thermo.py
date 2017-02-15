@@ -182,8 +182,6 @@ def test_equivalent_potential_temperature():
     t = 288. * units.kelvin
     ept = equivalent_potential_temperature(p, t)
     assert_almost_equal(ept, 315.9548 * units.kelvin, 3)
-<<<<<<< HEAD
-=======
 
 
 def test_virtual_temperature():
@@ -194,6 +192,7 @@ def test_virtual_temperature():
     assert_almost_equal(virtual_temperature(pressure, temperature, dewpt),
                         294.8569 * units.kelvin, 3)
 
+
 def test_el():
     """Test equilibrium layer calculation."""
     levels = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
@@ -202,4 +201,3 @@ def test_el():
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
     assert_almost_equal(el_pressure, 520.8420 * units.mbar, 3)
     assert_almost_equal(el_temperature, -11.7055 * units.degC, 3)
->>>>>>> c6ef656... [WIP]: Add test for el calculation
