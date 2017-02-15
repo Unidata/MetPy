@@ -75,6 +75,8 @@ def get_upper_air_data(time, site_id, source='wyoming', **kwargs):
     u, v = get_wind_components(spd, np.deg2rad(direc))
     add_unit_var('u_wind', 'eastward_wind', u, spd_units)
     add_unit_var('v_wind', 'northward_wind', v, spd_units)
+    add_unit_var('speed', 'wind_speed', spd, spd_units)
+    add_unit_var('direction', 'wind_from_direction', direc, 'deg')
 
     return ds
 
