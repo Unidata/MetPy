@@ -35,7 +35,7 @@ all_data = np.loadtxt(f, skiprows=1, delimiter=',',
                       usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
                       dtype=np.dtype([('stid', '3S'), ('lat', 'f'), ('lon', 'f'),
                                       ('slp', 'f'), ('air_temperature', 'f'),
-                                      ('cloud_fraction', 'f'), ('dewpoint', 'f'),
+                                      ('cloud_fraction', 'f'), ('dew_point_temperature', 'f'),
                                       ('weather', '16S'),
                                       ('wind_dir', 'f'), ('wind_speed', 'f')]))
 
@@ -127,7 +127,7 @@ stationplot = StationPlot(ax, data['lon'], data['lat'], transform=ccrs.PlateCarr
 # Plot the temperature and dew point to the upper and lower left, respectively, of
 # the center point. Each one uses a different color.
 stationplot.plot_parameter('NW', data['air_temperature'], color='red')
-stationplot.plot_parameter('SW', data['dewpoint'], color='darkgreen')
+stationplot.plot_parameter('SW', data['dew_point_temperature'], color='darkgreen')
 
 # A more complex example uses a custom formatter to control how the sea-level pressure
 # values are plotted. This uses the standard trailing 3-digits of the pressure value
