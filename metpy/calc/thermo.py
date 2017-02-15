@@ -230,6 +230,43 @@ def lfc(pressure, temperature, dewpt):
 
 
 @exporter.export
+def el(pressure, temperature, dewpt):
+    r"""Calculate the equilibrium level (EL).
+
+    This works by finding the last intersection of the ideal parcel path and
+    the measured parcel temperature. If there is one or fewer intersections, there is
+    no equilibrium level.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The atmospheric pressure
+    temperature : `pint.Quantity`
+        The temperature at the levels given by `pressure`
+    dewpt : `pint.Quantity`
+        The dew point at the levels given by `pressure`
+
+    Returns
+    -------
+    `pint.Quantity, pint.Quantity`
+        The EL pressure and temperature
+
+    See Also
+    --------
+    parcel_profile
+    """
+    ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
+    x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
+
+    # If there is only one intersection, it's the LFC and we return None.
+    if len(x) <= 1:
+        return None, None
+
+    else:
+        return x[-1], y[-1]
+
+
+@exporter.export
 def parcel_profile(pressure, temperature, dewpt):
     r"""Calculate the profile a parcel takes through the atmosphere.
 
