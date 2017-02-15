@@ -178,7 +178,7 @@ hgt_example = 292.
 def parse_date(date):
     return dt.datetime.strptime(date,"%Y-%m-%d %H:%M:%S")
 
-testdata = np.genfromtxt(get_test_data('test.csv', False), names=True, dtype=None,
+testdata = np.genfromtxt(get_test_data('timeseries.csv', False), names=True, dtype=None,
                          usecols=list(range(1,8)),
                          converters={'DATE': parse_date}, delimiter=',')
 
