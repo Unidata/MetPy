@@ -44,6 +44,7 @@ setup(
                  'Programming Language :: Python :: 3.5',
                  'Programming Language :: Python :: 3.6',
                  'Topic :: Scientific/Engineering',
+                 'Topic :: Scientific/Engineering :: Atmospheric Science',
                  'Intended Audience :: Science/Research',
                  'Operating System :: OS Independent',
                  'License :: OSI Approved :: BSD License'],
