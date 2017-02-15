@@ -343,6 +343,68 @@ def virtual_temperature(pressure, temperature, dewpt):
 
 
 @exporter.export
+def cape(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
+    r"""Calculate convective available potential energy (CAPE).
+
+        Description
+
+        Parameters
+        ----------
+        pressure : `pint.Quantity`
+            The atmospheric pressure level(s) of interest. The first entry should be the starting
+            point pressure.
+        temperature : `pint.Quantity`
+            The starting temperature
+        dewpt : `pint.Quantity`
+            The starting dew point
+        temperature_parcel : `pint.Quantity`
+            The temperature of the parcel
+
+        Returns
+        -------
+        `pint.Quantity`
+            Convective available potential energy (CAPE).
+
+        See Also
+        --------
+        virtual_temperature, find_intersections, lfc, el
+        """
+    if virtual_temp:
+        temperature = virtual_temperature(pressure, temperature, dewpt)
+        temperature_parcel = virtual_temperature(pressure, temperature_parcel, dewpt)
+
+    x = np.copy(pressure)
+    y = temperature_parcel - temperature
+
+    # Find and append crossings to the data
+    crossings = find_intersections(x[1:], y[1:], np.zeros_like(y[1:]))
+    x = np.concatenate((x, crossings[0]))
+    y = np.concatenate((y, crossings[1]))
+
+    # Resort so that data is in pressure order
+    sort_idx = np.argsort(x)
+    x = x[sort_idx]
+    y = y[sort_idx]
+
+    # Remove duplicate data points if there are any
+    keep_idx = np.ediff1d(x, to_end=[1]) >= 1
+    x = x[keep_idx]
+    y = y[keep_idx]
+
+    # Clip out negative area (temperature parcel < temperature environment)
+    y[y <= 0] = 0
+
+    # Only use data between the LFC and EL for calculation
+    lfc_pressure = lfc(pressure, temperature, dewpt)[0].magnitude
+    el_pressure = el(pressure, temperature, dewpt)[0].magnitude
+    p_mask = (x <= lfc_pressure) & (x >= el_pressure)
+    x = x[p_mask]
+    y = y[p_mask]
+
+    return Rd * np.trapz(y, np.log(x))
+
+
+@exporter.export
 def vapor_pressure(pressure, mixing):
     r"""Calculate water vapor (partial) pressure.
 
