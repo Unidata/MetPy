@@ -1,25 +1,15 @@
 
 import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
 import datetime as dt
 import matplotlib as mpl
 
+from metpy.cbook import get_test_data
 from metpy.units import units
 from metpy.calc import dewpoint_rh
 
-def calc_dewpoint(T,RH):
-    RH = np.ma.masked_values(RH,-999.9)
-    num = np.log(RH/100) + (17.625*T)/(243.04+T)
-    denom = 17.625 - np.log(RH/100) - (17.625*T)/(243.04+T)
-    return 243.04*num/denom
-
 def calc_mslp(T,P,h):
     return P*(1-(0.0065*h)/(T+0.0065*h+273.15))**(-5.257)
-
-def C_to_F(temp):
-    return temp*1.8 + 32
-
 
 # Make meteogram plot
 class Meteogram(object):
