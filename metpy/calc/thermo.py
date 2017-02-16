@@ -374,12 +374,12 @@ def cape(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
         temperature_parcel = virtual_temperature(pressure, temperature_parcel, dewpt)
 
     x = np.copy(pressure)
-    y = temperature_parcel - temperature
+    y = (temperature_parcel - temperature).to(units.degK)
 
     # Find and append crossings to the data
     crossings = find_intersections(x[1:], y[1:], np.zeros_like(y[1:]))
-    x = np.concatenate((x, crossings[0]))
-    y = np.concatenate((y, crossings[1]))
+    x = concatenate((x, crossings[0]))
+    y = concatenate((y, crossings[1]))
 
     # Resort so that data is in pressure order
     sort_idx = np.argsort(x)
@@ -392,7 +392,7 @@ def cape(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
     y = y[keep_idx]
 
     # Clip out negative area (temperature parcel < temperature environment)
-    y[y <= 0] = 0
+    y[y <= 0 * units.degK] = 0 * units.degK
 
     # Only use data between the LFC and EL for calculation
     lfc_pressure = lfc(pressure, temperature, dewpt)[0].magnitude
@@ -401,7 +401,7 @@ def cape(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
     x = x[p_mask]
     y = y[p_mask]
 
-    return Rd * np.trapz(y, np.log(x))
+    return (Rd * (np.trapz(y, np.log(x)) * units.degK)).to(units('J/kg'))
 
 
 @exporter.export
