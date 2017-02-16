@@ -405,6 +405,67 @@ def cape(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
 
 
 @exporter.export
+def cin(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
+    r"""Calculate convective inhibition (CIN).
+
+        Description
+
+        Parameters
+        ----------
+        pressure : `pint.Quantity`
+            The atmospheric pressure level(s) of interest. The first entry should be the starting
+            point pressure.
+        temperature : `pint.Quantity`
+            The starting temperature
+        dewpt : `pint.Quantity`
+            The starting dew point
+        temperature_parcel : `pint.Quantity`
+            The temperature of the parcel
+
+        Returns
+        -------
+        `pint.Quantity`
+            Convective inhibition (CIN).
+
+        See Also
+        --------
+        virtual_temperature, find_intersections, lfc
+        """
+    if virtual_temp:
+        temperature = virtual_temperature(pressure, temperature, dewpt)
+        temperature_parcel = virtual_temperature(pressure, temperature_parcel, dewpt)
+
+    x = np.copy(pressure)
+    y = (temperature_parcel - temperature).to(units.degK)
+
+    # Find and append crossings to the data
+    crossings = find_intersections(x[1:], y[1:], np.zeros_like(y[1:]))
+    x = concatenate((x, crossings[0]))
+    y = concatenate((y, crossings[1]))
+
+    # Resort so that data is in pressure order
+    sort_idx = np.argsort(x)
+    x = x[sort_idx]
+    y = y[sort_idx]
+
+    # Remove duplicate data points if there are any
+    keep_idx = np.ediff1d(x, to_end=[1]) >= 1
+    x = x[keep_idx]
+    y = y[keep_idx]
+
+    # Clip out positive area (temperature parcel > temperature environment)
+    y[y >= 0 * units.degK] = 0 * units.degK
+
+    # Only use data between the surface and the LFC for calculation
+    lfc_pressure = lfc(pressure, temperature, dewpt)[0].magnitude
+    p_mask = (x >= lfc_pressure)
+    x = x[p_mask]
+    y = y[p_mask]
+
+    return (Rd * (np.trapz(y, np.log(x)) * units.degK)).to(units('J/kg'))
+
+
+@exporter.export
 def vapor_pressure(pressure, mixing):
     r"""Calculate water vapor (partial) pressure.
 
