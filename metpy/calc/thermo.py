@@ -193,7 +193,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
         p = new_p
         max_iters -= 1
 
-    return (new_p, td)
+    return new_p, td
 
 
 @exporter.export
@@ -222,7 +222,10 @@ def lfc(pressure, temperature, dewpt):
     parcel_profile
     """
     ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
-    x, y = find_intersections(pressure, ideal_profile, temperature)
+
+    # The parcel profile and data have the same first data point, so we ignore
+    # that point to get the real first intersection for the LFC calculation.
+    x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
     return x[0], y[0]
 
 
