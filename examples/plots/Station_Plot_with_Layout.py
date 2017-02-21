@@ -39,7 +39,7 @@ all_data = np.loadtxt(f, skiprows=1, delimiter=',',
                       usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
                       dtype=np.dtype([('stid', '3S'), ('lat', 'f'), ('lon', 'f'),
                                       ('slp', 'f'), ('air_temperature', 'f'),
-                                      ('cloud_fraction', 'f'), ('dewpoint', 'f'),
+                                      ('cloud_fraction', 'f'), ('dew_point_temperature', 'f'),
                                       ('weather', '16S'),
                                       ('wind_dir', 'f'), ('wind_speed', 'f')]))
 
@@ -75,7 +75,7 @@ data = dict()
 data['longitude'] = data_arr['lon']
 data['latitude'] = data_arr['lat']
 data['air_temperature'] = data_arr['air_temperature'] * units.degC
-data['dew_point_temperature'] = data_arr['dewpoint'] * units.degC
+data['dew_point_temperature'] = data_arr['dew_point_temperature'] * units.degC
 data['air_pressure_at_sea_level'] = data_arr['slp'] * units('mbar')
 
 ###########################################
