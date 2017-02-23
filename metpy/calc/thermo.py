@@ -341,9 +341,46 @@ def virtual_temperature(pressure, temperature, dewpt):
     Rv = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
     return temperature * (1 + Rv / epsilon) / (1 + Rv)
 
+def _find_append_zero_crossings(x, y):
+    r"""
+    Find and interpolate zero crossings
+
+    Estimate the zero crossings of an x,y series and add estimated crossings to series,
+    returning a sorted array with no duplicate values.
+
+    Parameters
+    ----------
+    x : `pint.Quantity`
+        x values of data
+    y : `pint.Quantity`
+        y values of data
+
+    Returns
+    -------
+    x : `pint.Quantity`
+        x values of data
+    y : `pint.Quantity`
+        y values of data
+
+    """
+    # Find and append crossings to the data
+    crossings = find_intersections(x[1:], y[1:], np.zeros_like(y[1:]))
+    x = concatenate((x, crossings[0]))
+    y = concatenate((y, crossings[1]))
+
+    # Resort so that data are in order
+    sort_idx = np.argsort(x)
+    x = x[sort_idx]
+    y = y[sort_idx]
+
+    # Remove duplicate data points if there are any
+    keep_idx = np.ediff1d(x, to_end=[1]) > 0
+    x = x[keep_idx]
+    y = y[keep_idx]
+    return x, y
 
 @exporter.export
-def cape(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
+def cape(pressure, temperature, dewpt, parcel_temperature=None, use_virtual_temperature=False):
     r"""Calculate convective available potential energy (CAPE).
 
         Description
@@ -357,7 +394,7 @@ def cape(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
             The starting temperature
         dewpt : `pint.Quantity`
             The starting dew point
-        temperature_parcel : `pint.Quantity`
+        parcel_temperature : `pint.Quantity`
             The temperature of the parcel
 
         Returns
@@ -369,27 +406,16 @@ def cape(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
         --------
         virtual_temperature, find_intersections, lfc, el
         """
-    if virtual_temp:
+    if parcel_temperature is None:
+        parcel_temperature = parcel_profile(pressure, temperature[0], dewpt[0])
+
+    if use_virtual_temperature:
         temperature = virtual_temperature(pressure, temperature, dewpt)
-        temperature_parcel = virtual_temperature(pressure, temperature_parcel, dewpt)
+        parcel_temperature = virtual_temperature(pressure, parcel_temperature, dewpt)
 
-    x = np.copy(pressure)
-    y = (temperature_parcel - temperature).to(units.degK)
+    y = (parcel_temperature - temperature).to(units.degK)
 
-    # Find and append crossings to the data
-    crossings = find_intersections(x[1:], y[1:], np.zeros_like(y[1:]))
-    x = concatenate((x, crossings[0]))
-    y = concatenate((y, crossings[1]))
-
-    # Resort so that data is in pressure order
-    sort_idx = np.argsort(x)
-    x = x[sort_idx]
-    y = y[sort_idx]
-
-    # Remove duplicate data points if there are any
-    keep_idx = np.ediff1d(x, to_end=[1]) >= 1
-    x = x[keep_idx]
-    y = y[keep_idx]
+    x,y = _find_append_zero_crossings(np.copy(pressure),y)
 
     # Clip out negative area (temperature parcel < temperature environment)
     y[y <= 0 * units.degK] = 0 * units.degK
@@ -405,7 +431,7 @@ def cape(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
 
 
 @exporter.export
-def cin(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
+def cin(pressure, temperature, dewpt, parcel_temperature=None, use_virtual_temperature=False):
     r"""Calculate convective inhibition (CIN).
 
         Description
@@ -419,7 +445,7 @@ def cin(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
             The starting temperature
         dewpt : `pint.Quantity`
             The starting dew point
-        temperature_parcel : `pint.Quantity`
+        parcel_temperature : `pint.Quantity`
             The temperature of the parcel
 
         Returns
@@ -431,27 +457,16 @@ def cin(pressure, temperature, dewpt, temperature_parcel, virtual_temp=False):
         --------
         virtual_temperature, find_intersections, lfc
         """
-    if virtual_temp:
+    if parcel_temperature is None:
+        parcel_temperature = parcel_profile(pressure, temperature[0], dewpt[0])
+
+    if use_virtual_temperature:
         temperature = virtual_temperature(pressure, temperature, dewpt)
-        temperature_parcel = virtual_temperature(pressure, temperature_parcel, dewpt)
+        parcel_temperature = virtual_temperature(pressure, parcel_temperature, dewpt)
 
-    x = np.copy(pressure)
-    y = (temperature_parcel - temperature).to(units.degK)
+    y = (parcel_temperature - temperature).to(units.degK)
 
-    # Find and append crossings to the data
-    crossings = find_intersections(x[1:], y[1:], np.zeros_like(y[1:]))
-    x = concatenate((x, crossings[0]))
-    y = concatenate((y, crossings[1]))
-
-    # Resort so that data is in pressure order
-    sort_idx = np.argsort(x)
-    x = x[sort_idx]
-    y = y[sort_idx]
-
-    # Remove duplicate data points if there are any
-    keep_idx = np.ediff1d(x, to_end=[1]) >= 1
-    x = x[keep_idx]
-    y = y[keep_idx]
+    x,y = _find_append_zero_crossings(np.copy(pressure),y)
 
     # Clip out positive area (temperature parcel > temperature environment)
     y[y >= 0 * units.degK] = 0 * units.degK
