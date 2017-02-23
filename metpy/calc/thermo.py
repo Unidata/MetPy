@@ -406,9 +406,26 @@ def cape(pressure, temperature, dewpt, parcel_temperature=None, use_virtual_temp
         --------
         virtual_temperature, find_intersections, lfc, el
         """
+    # Calculate limits of integration
+    # If there is no LFC, no need to proceed. No EL and we use the top reading of the sounding.
+    lfc_pressure = lfc(pressure, temperature, dewpt)[0]
+    el_pressure = el(pressure, temperature, dewpt)[0]
+
+    if lfc_pressure is None:
+        return 0 * units('J/kg')
+    else:
+        lfc_pressure = lfc_pressure.magnitude
+
+    if el_pressure is None:
+        el_pressure = pressure[-1].magnitude
+    else:
+        el_pressure = el_pressure.magnitude
+
+    # If no parcel path is specified, calculated the surface based parcel path
     if parcel_temperature is None:
         parcel_temperature = parcel_profile(pressure, temperature[0], dewpt[0])
 
+    # Calculate virtual temperature if requested
     if use_virtual_temperature:
         temperature = virtual_temperature(pressure, temperature, dewpt)
         parcel_temperature = virtual_temperature(pressure, parcel_temperature, dewpt)
@@ -421,8 +438,7 @@ def cape(pressure, temperature, dewpt, parcel_temperature=None, use_virtual_temp
     y[y <= 0 * units.degK] = 0 * units.degK
 
     # Only use data between the LFC and EL for calculation
-    lfc_pressure = lfc(pressure, temperature, dewpt)[0].magnitude
-    el_pressure = el(pressure, temperature, dewpt)[0].magnitude
+
     p_mask = (x <= lfc_pressure) & (x >= el_pressure)
     x = x[p_mask]
     y = y[p_mask]
@@ -457,9 +473,19 @@ def cin(pressure, temperature, dewpt, parcel_temperature=None, use_virtual_tempe
         --------
         virtual_temperature, find_intersections, lfc
         """
+    # Calculate limits of integration
+    # If there is no LFC, no need to proceed.
+    lfc_pressure = lfc(pressure, temperature, dewpt)[0]
+    if lfc_pressure is None:
+        return 0 * units('J/kg')
+    else:
+        lfc_pressure = lfc_pressure.magnitude
+
+    # If no parcel path is specified, calculated the surface based parcel path
     if parcel_temperature is None:
         parcel_temperature = parcel_profile(pressure, temperature[0], dewpt[0])
 
+    # Calculate virtual temperature if requested
     if use_virtual_temperature:
         temperature = virtual_temperature(pressure, temperature, dewpt)
         parcel_temperature = virtual_temperature(pressure, parcel_temperature, dewpt)
@@ -472,7 +498,7 @@ def cin(pressure, temperature, dewpt, parcel_temperature=None, use_virtual_tempe
     y[y >= 0 * units.degK] = 0 * units.degK
 
     # Only use data between the surface and the LFC for calculation
-    lfc_pressure = lfc(pressure, temperature, dewpt)[0].magnitude
+
     p_mask = (x >= lfc_pressure)
     x = x[p_mask]
     y = y[p_mask]
