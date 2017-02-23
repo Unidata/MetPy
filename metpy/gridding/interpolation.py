@@ -24,11 +24,8 @@ log.setLevel(logging.WARNING)
 def natural_neighbor(xp, yp, variable, grid_x, grid_y):
     r"""Generate a natural neighbor interpolation of the given points.
 
-    This assigns values to the given grid using the Liang and Hale (2010)
+    This assigns values to the given grid using the Liang and Hale [1]_.
     approach.
-
-    Liang, Luming, and Dave Hale. "A stable and fast implementation
-    of natural neighbor interpolation." (2010).
 
     Parameters
     ----------
@@ -48,6 +45,11 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
     -------
     img: (M, N) ndarray
         Interpolated values on a 2-dimensional grid
+
+    References
+    ----------
+    .. [1] Liang, Luming, and Dave Hale. "A stable and fast implementation
+           of natural neighbor interpolation." (2010).
     """
     tri = Delaunay(list(zip(xp, yp)))
 
@@ -72,11 +74,8 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
 def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
     r"""Generate a natural neighbor interpolation of the observations to the given point.
 
-    This uses the Liang and Hale (2010) approach. The interpolation will fail if
+    This uses the Liang and Hale approach [1]_. The interpolation will fail if
     the grid point has no natural neighbors.
-
-    Liang, Luming, and Dave Hale. A stable and fast implementation
-    of natural neighbor interpolation. (2010).
 
     Parameters
     ----------
@@ -206,8 +205,8 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
                      min_neighbors=3, kind='cressman'):
     r"""Generate an inverse distance weighting interpolation of the given points.
 
-    Values are assigned to the given grid based on either Cressman (1959) or Barnes (1964).
-    The Barnes implementation used here based on Koch et al. (1983).
+    Values are assigned to the given grid based on either Cressman [2]_ or Barnes [3]_.
+    The Barnes implementation used here based on Koch et al. [4]_.
 
     Parameters
     ----------
@@ -240,6 +239,16 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
     -------
     img: (M, N) ndarray
         Interpolated values on a 2-dimensional grid
+
+    References
+    ----------
+    .. [2] Cressman, George P. "An operational objective analysis system." Mon.
+           Wea. Rev 87.10 (1959): 367-374.
+    .. [3] Barnes, Stanley L. "A technique for maximizing details in numerical weather
+           map analysis." Journal of Applied Meteorology 3.4 (1964): 396-409.
+    .. [4] Koch, Steven E., Mary DesJardins, and Paul J. Kocin. "An interactive Barnes
+           objective map analysis scheme for use with satellite and conventional data."
+           Journal of Climate and Applied Meteorology 22.9 (1983): 1487-1503.
     """
     obs_tree = cKDTree(list(zip(xp, yp)))
 
