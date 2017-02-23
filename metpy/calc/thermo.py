@@ -226,7 +226,10 @@ def lfc(pressure, temperature, dewpt):
     # The parcel profile and data have the same first data point, so we ignore
     # that point to get the real first intersection for the LFC calculation.
     x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
-    return x[0], y[0]
+    if len(x) == 0:
+        return None, None
+    else:
+        return x[0], y[0]
 
 
 @exporter.export
