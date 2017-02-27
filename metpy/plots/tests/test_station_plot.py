@@ -221,7 +221,7 @@ def test_plot_text_fontsize():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 6.68}.get(MPL_VERSION, 1.05),
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 26.8}.get(MPL_VERSION, 1.05),
                                remove_text=True)
 def test_plot_symbol_fontsize():
     """Test changing fontsize in plotting of symbols."""
