@@ -31,5 +31,4 @@ dependencies:
   - cartopy
   - pip
   - freetype=2.6
-  - pip:
-    - doc8
+  - doc8
