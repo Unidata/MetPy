@@ -9,7 +9,7 @@ import numpy as np
 import pytest
 
 from metpy.plots import nws_layout, simple_layout, StationPlot, StationPlotLayout
-from metpy.plots.wx_symbols import high_clouds, sky_cover
+from metpy.plots.wx_symbols import current_weather, high_clouds, sky_cover
 # Fixtures to make sure we have the right backend and consistent round
 from metpy.testing import patch_round, set_agg_backend  # noqa: F401
 from metpy.units import units
@@ -217,6 +217,20 @@ def test_plot_text_fontsize():
 
     sp.ax.set_xlim(0, 3)
     sp.ax.set_ylim(0, 3)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 26.8}.get(MPL_VERSION, 1.05),
+                               remove_text=True)
+def test_plot_symbol_fontsize():
+    """Test changing fontsize in plotting of symbols."""
+    fig = plt.figure(figsize=(3, 3))
+    ax = plt.subplot(1, 1, 1)
+
+    sp = StationPlot(ax, [0], [0], fontsize=8, spacing=32)
+    sp.plot_symbol('E', [92], current_weather)
+    sp.plot_symbol('W', [96], current_weather, fontsize=100)
 
     return fig
 
