@@ -151,7 +151,7 @@ class StationPlot(object):
         plot_barb, plot_parameter, plot_text
         """
         # Make sure we use our font for symbols
-        kwargs['fontproperties'] = wx_symbol_font
+        kwargs['fontproperties'] = wx_symbol_font.copy()
         return self.plot_parameter(location, codes, symbol_mapper, **kwargs)
 
     def plot_parameter(self, location, parameter, formatter='.0f', **kwargs):
