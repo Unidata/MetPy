@@ -4,6 +4,7 @@
 """Test the `thermo` module."""
 
 import numpy as np
+import pytest
 
 from metpy.calc import (dewpoint, dewpoint_rh, dry_lapse, equivalent_potential_temperature,
                         lcl, lfc, mixing_ratio, moist_lapse, parcel_profile,
@@ -158,6 +159,12 @@ def test_lcl():
     lcl_pressure, lcl_temperature = lcl(1000. * units.mbar, 30. * units.degC, 20. * units.degC)
     assert_almost_equal(lcl_pressure, 864.761 * units.mbar, 2)
     assert_almost_equal(lcl_temperature, 17.676 * units.degC, 2)
+
+
+def test_lcl_convergence():
+    """Test LCL calculation convergence failure."""
+    with pytest.raises(RuntimeError):
+        lcl(1000. * units.mbar, 30. * units.degC, 20. * units.degC, max_iters=2)
 
 
 def test_lfc_basic():
