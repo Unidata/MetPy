@@ -193,6 +193,10 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
         p = new_p
         max_iters -= 1
 
+    else:
+        # We have not converged
+        raise RuntimeError('LCL calculation has not converged.')
+
     return new_p, td
 
 
