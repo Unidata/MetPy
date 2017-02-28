@@ -109,7 +109,7 @@ ax.add_feature(feat.LAND, zorder=-1)
 ax.add_feature(feat.OCEAN, zorder=-1)
 ax.add_feature(feat.LAKES, zorder=-1)
 ax.coastlines(resolution='110m', zorder=2, color='black')
-ax.add_feature(state_boundaries)
+ax.add_feature(state_boundaries, edgecolor='black')
 ax.add_feature(feat.BORDERS, linewidth='2', edgecolor='black')
 
 # Set plot bounds
