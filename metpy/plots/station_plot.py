@@ -278,6 +278,8 @@ class StationPlot(object):
         if not callable(fmt):
             def formatter(s):
                 """Turn a format string into a callable."""
+                if hasattr(s, 'units'):
+                    s = np.asscalar(s.magnitude)
                 return format(s, fmt)
         else:
             formatter = fmt
