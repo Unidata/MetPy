@@ -32,7 +32,7 @@ def test_stationplot_api():
     sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=16)
     sp.plot_barb([20, 0], [0, -50])
     sp.plot_text('E', ['KOKC', 'ICT'], color='blue')
-    sp.plot_parameter('NW', [10.5, 15], color='red')
+    sp.plot_parameter('NW', [10.5, 15] * units.degC, color='red')
     sp.plot_symbol('S', [5, 7], high_clouds, color='green')
 
     sp.ax.set_xlim(0, 6)
