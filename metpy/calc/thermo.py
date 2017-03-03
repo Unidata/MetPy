@@ -230,7 +230,47 @@ def lfc(pressure, temperature, dewpt):
     # The parcel profile and data have the same first data point, so we ignore
     # that point to get the real first intersection for the LFC calculation.
     x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
-    return x[0], y[0]
+    if len(x) == 0:
+        return None, None
+    else:
+        return x[0], y[0]
+
+
+@exporter.export
+def el(pressure, temperature, dewpt):
+    r"""Calculate the equilibrium level (EL).
+
+    This works by finding the last intersection of the ideal parcel path and
+    the measured parcel temperature. If there is one or fewer intersections, there is
+    no equilibrium level.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The atmospheric pressure
+    temperature : `pint.Quantity`
+        The temperature at the levels given by `pressure`
+    dewpt : `pint.Quantity`
+        The dew point at the levels given by `pressure`
+
+    Returns
+    -------
+    `pint.Quantity, pint.Quantity`
+        The EL pressure and temperature
+
+    See Also
+    --------
+    parcel_profile
+    """
+    ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
+    x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
+
+    # If there is only one intersection, it's the LFC and we return None.
+    if len(x) <= 1:
+        return None, None
+
+    else:
+        return x[-1], y[-1]
 
 
 @exporter.export
@@ -275,6 +315,199 @@ def parcel_profile(pressure, temperature, dewpt):
 
     # Return LCL *without* the LCL point
     return concatenate((t1[:-1], t2[1:]))
+
+
+@exporter.export
+def virtual_temperature(pressure, temperature, dewpt):
+    r"""Calculate virtual temperature.
+
+    Description
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The atmospheric pressure level(s) of interest. The first entry should be the starting
+        point pressure.
+    temperature : `pint.Quantity`
+        The starting temperature
+    dewpt : `pint.Quantity`
+        The starting dew point
+
+    Returns
+    -------
+    `pint.Quantity`
+        The virtual temperature.
+
+    See Also
+    --------
+    mixing_ratio, saturation_vapor_pressure
+    """
+    Rv = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
+    return temperature * (1 + Rv / epsilon) / (1 + Rv)
+
+def _find_append_zero_crossings(x, y):
+    r"""
+    Find and interpolate zero crossings
+
+    Estimate the zero crossings of an x,y series and add estimated crossings to series,
+    returning a sorted array with no duplicate values.
+
+    Parameters
+    ----------
+    x : `pint.Quantity`
+        x values of data
+    y : `pint.Quantity`
+        y values of data
+
+    Returns
+    -------
+    x : `pint.Quantity`
+        x values of data
+    y : `pint.Quantity`
+        y values of data
+
+    """
+    # Find and append crossings to the data
+    crossings = find_intersections(x[1:], y[1:], np.zeros_like(y[1:]))
+    x = concatenate((x, crossings[0]))
+    y = concatenate((y, crossings[1]))
+
+    # Resort so that data are in order
+    sort_idx = np.argsort(x)
+    x = x[sort_idx]
+    y = y[sort_idx]
+
+    # Remove duplicate data points if there are any
+    keep_idx = np.ediff1d(x, to_end=[1]) > 0
+    x = x[keep_idx]
+    y = y[keep_idx]
+    return x, y
+
+@exporter.export
+def cape(pressure, temperature, dewpt, parcel_temperature=None, use_virtual_temperature=False):
+    r"""Calculate convective available potential energy (CAPE).
+
+        Description
+
+        Parameters
+        ----------
+        pressure : `pint.Quantity`
+            The atmospheric pressure level(s) of interest. The first entry should be the starting
+            point pressure.
+        temperature : `pint.Quantity`
+            The starting temperature
+        dewpt : `pint.Quantity`
+            The starting dew point
+        parcel_temperature : `pint.Quantity`
+            The temperature of the parcel
+
+        Returns
+        -------
+        `pint.Quantity`
+            Convective available potential energy (CAPE).
+
+        See Also
+        --------
+        virtual_temperature, find_intersections, lfc, el
+        """
+    # Calculate limits of integration
+    # If there is no LFC, no need to proceed. No EL and we use the top reading of the sounding.
+    lfc_pressure = lfc(pressure, temperature, dewpt)[0]
+    el_pressure = el(pressure, temperature, dewpt)[0]
+
+    if lfc_pressure is None:
+        return 0 * units('J/kg')
+    else:
+        lfc_pressure = lfc_pressure.magnitude
+
+    if el_pressure is None:
+        el_pressure = pressure[-1].magnitude
+    else:
+        el_pressure = el_pressure.magnitude
+
+    # If no parcel path is specified, calculated the surface based parcel path
+    if parcel_temperature is None:
+        parcel_temperature = parcel_profile(pressure, temperature[0], dewpt[0])
+
+    # Calculate virtual temperature if requested
+    if use_virtual_temperature:
+        temperature = virtual_temperature(pressure, temperature, dewpt)
+        parcel_temperature = virtual_temperature(pressure, parcel_temperature, dewpt)
+
+    y = (parcel_temperature - temperature).to(units.degK)
+
+    x,y = _find_append_zero_crossings(np.copy(pressure),y)
+
+    # Clip out negative area (temperature parcel < temperature environment)
+    y[y <= 0 * units.degK] = 0 * units.degK
+
+    # Only use data between the LFC and EL for calculation
+
+    p_mask = (x <= lfc_pressure) & (x >= el_pressure)
+    x = x[p_mask]
+    y = y[p_mask]
+
+    return (Rd * (np.trapz(y, np.log(x)) * units.degK)).to(units('J/kg'))
+
+
+@exporter.export
+def cin(pressure, temperature, dewpt, parcel_temperature=None, use_virtual_temperature=False):
+    r"""Calculate convective inhibition (CIN).
+
+        Description
+
+        Parameters
+        ----------
+        pressure : `pint.Quantity`
+            The atmospheric pressure level(s) of interest. The first entry should be the starting
+            point pressure.
+        temperature : `pint.Quantity`
+            The starting temperature
+        dewpt : `pint.Quantity`
+            The starting dew point
+        parcel_temperature : `pint.Quantity`
+            The temperature of the parcel
+
+        Returns
+        -------
+        `pint.Quantity`
+            Convective inhibition (CIN).
+
+        See Also
+        --------
+        virtual_temperature, find_intersections, lfc
+        """
+    # Calculate limits of integration
+    # If there is no LFC, no need to proceed.
+    lfc_pressure = lfc(pressure, temperature, dewpt)[0]
+    if lfc_pressure is None:
+        return 0 * units('J/kg')
+    else:
+        lfc_pressure = lfc_pressure.magnitude
+
+    # If no parcel path is specified, calculated the surface based parcel path
+    if parcel_temperature is None:
+        parcel_temperature = parcel_profile(pressure, temperature[0], dewpt[0])
+
+    # Calculate virtual temperature if requested
+    if use_virtual_temperature:
+        temperature = virtual_temperature(pressure, temperature, dewpt)
+        parcel_temperature = virtual_temperature(pressure, parcel_temperature, dewpt)
+
+    y = (parcel_temperature - temperature).to(units.degK)
+
+    x,y = _find_append_zero_crossings(np.copy(pressure),y)
+
+    # Clip out positive area (temperature parcel > temperature environment)
+    y[y >= 0 * units.degK] = 0 * units.degK
+
+    # Only use data between the surface and the LFC for calculation
+
+    p_mask = (x >= lfc_pressure)
+    x = x[p_mask]
+    y = y[p_mask]
+
+    return (Rd * (np.trapz(y, np.log(x)) * units.degK)).to(units('J/kg'))
 
 
 @exporter.export
@@ -452,7 +685,7 @@ def mixing_ratio(part_press, tot_press, molecular_weight_ratio=epsilon):
     --------
     saturation_mixing_ratio, vapor_pressure
     """
-    return molecular_weight_ratio * part_press / (tot_press - part_press)
+    return (molecular_weight_ratio * part_press / (tot_press - part_press)).to("dimensionless")
 
 
 @exporter.export

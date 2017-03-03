@@ -8,8 +8,8 @@ import pytest
 
 from metpy.calc import (dewpoint, dewpoint_rh, dry_lapse, equivalent_potential_temperature,
                         lcl, lfc, mixing_ratio, moist_lapse, parcel_profile,
-                        potential_temperature, saturation_mixing_ratio,
-                        saturation_vapor_pressure, vapor_pressure)
+                        potential_temperature, saturation_mixing_ratio, el,
+                        saturation_vapor_pressure, vapor_pressure, virtual_temperature)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal
 from metpy.units import units
 
@@ -190,3 +190,22 @@ def test_equivalent_potential_temperature():
     t = 288. * units.kelvin
     ept = equivalent_potential_temperature(p, t)
     assert_almost_equal(ept, 315.9548 * units.kelvin, 3)
+
+
+def test_virtual_temperature():
+    """Test virtual temperature calculation."""
+    pressure = 1013. * units.mbar
+    temperature = 293. * units.kelvin
+    dewpt = 288 * units.kelvin
+    assert_almost_equal(virtual_temperature(pressure, temperature, dewpt),
+                        294.8569 * units.kelvin, 3)
+
+
+def test_el():
+    """Test equilibrium layer calculation."""
+    levels = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperatures = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
+    dewpoints = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
+    el_pressure, el_temperature = el(levels, temperatures, dewpoints)
+    assert_almost_equal(el_pressure, 520.8420 * units.mbar, 3)
+    assert_almost_equal(el_temperature, -11.7055 * units.degC, 3)
