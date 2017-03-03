@@ -9,7 +9,8 @@ import pytest
 from metpy.calc import (dewpoint, dewpoint_rh, dry_lapse, equivalent_potential_temperature,
                         lcl, lfc, mixing_ratio, moist_lapse, parcel_profile,
                         potential_temperature, saturation_mixing_ratio,
-                        saturation_vapor_pressure, vapor_pressure)
+                        saturation_vapor_pressure, vapor_pressure, virtual_temperature,
+                        virtual_potential_temperature, density)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal
 from metpy.units import units
 
@@ -190,3 +191,30 @@ def test_equivalent_potential_temperature():
     t = 288. * units.kelvin
     ept = equivalent_potential_temperature(p, t)
     assert_almost_equal(ept, 315.9548 * units.kelvin, 3)
+
+
+def test_virtual_temperature():
+    """Test virtual temperature calculation."""
+    t = 288. * units.kelvin
+    qv = .0016 # kg/kg
+    tv = virtual_temperature(t, qv)
+    assert_almost_equal(tv, 288.2796 * units.kelvin, 3)
+
+
+def test_virtual_potential_temperature():
+    """Test virtual potential temperature calculation."""
+    p = 999. * units.mbar
+    t = 288. * units.kelvin
+    qv = .0016 # kg/kg
+    theta_v = virtual_potential_temperature(p, t, qv)
+    assert_almost_equal(theta_v, 288.3620 * units.kelvin, 3)
+
+
+def test_density():
+    """Test density calculation."""
+    p = 999. * units.mbar
+    t = 288. * units.kelvin
+    qv = .0016 # kg/kg
+    rho = density(p, t, qv).to(units.kilogram / units.meter ** 3)
+    assert_almost_equal(rho, 1.2072 * (units.kilogram / units.meter ** 3), 3)
+

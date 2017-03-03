@@ -513,3 +513,114 @@ def equivalent_potential_temperature(pressure, temperature):
     pottemp = potential_temperature(pressure, temperature)
     smixr = saturation_mixing_ratio(pressure, temperature)
     return pottemp * np.exp(Lv * smixr / (Cp_d * temperature))
+
+
+@exporter.export
+def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
+    r"""Calculate virtual temperature.
+
+    This calculation must be given an air parcel's temperature and mixing ratio.
+    The implementation uses the formula outlined in [8]_.
+
+    Parameters
+    ----------
+    temperature: `pint.Quantity`
+        The temperature
+    mixing : `pint.Quantity`
+        dimensionless mass mixing ratio
+    molecular_weight_ratio : `pint.Quantity` or float, optional
+        The ratio of the molecular weight of the constituent gas to that assumed
+        for air. Defaults to the ratio for water vapor to dry air
+        (:math:`\epsilon\approx0.622`).
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding virtual temperature of the parcel
+
+    Notes
+    -----
+    .. math:: T_v = T \frac{\textsl{w} + \epsilon}{\epsilon\,(1 + \textsl{w})}
+
+    References
+    ----------
+    .. [8] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
+           Survey. 2nd ed. 80.
+    """
+    return temperature * ((mixing + molecular_weight_ratio)/(molecular_weight_ratio * (1 + mixing)))
+
+@exporter.export
+def virtual_potential_temperature(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
+    r"""Calculate virtual potential temperature.
+
+    This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
+    The implementation uses the formula outlined in [9]_.
+
+    Parameters
+    ----------
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+    temperature: `pint.Quantity`
+        The temperature
+    mixing : `pint.Quantity`
+        dimensionless mass mixing ratio
+    molecular_weight_ratio : `pint.Quantity` or float, optional
+        The ratio of the molecular weight of the constituent gas to that assumed
+        for air. Defaults to the ratio for water vapor to dry air
+        (:math:`\epsilon\approx0.622`).
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding virtual potential temperature of the parcel
+
+    Notes
+    -----
+    .. math:: \Theta_v = \Theta \frac{\textsl{w} + \epsilon}{\epsilon\,(1 + \textsl{w})}
+
+    References
+    ----------
+    .. [9] Markowski, Paul and Richardson, Yvette, 2010: Mesoscale Meteorology in the 
+           Midlatitudes. 13.
+    """
+    pottemp = potential_temperature(pressure, temperature)
+    return virtual_temperature(pottemp, mixing, molecular_weight_ratio)
+
+
+@exporter.export
+def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
+    r"""Calculate density.
+
+    This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
+    The implementation uses the formula outlined in [10]_.
+
+    Parameters
+    ----------
+    temperature: `pint.Quantity`
+        The temperature
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+    mixing : `pint.Quantity`
+        dimensionless mass mixing ratio
+    molecular_weight_ratio : `pint.Quantity` or float, optional
+        The ratio of the molecular weight of the constituent gas to that assumed
+        for air. Defaults to the ratio for water vapor to dry air
+        (:math:`\epsilon\approx0.622`).
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding density of the parcel
+
+    Notes
+    -----
+    .. math:: \rho = \frac{p}{R_dT_v}
+
+    References
+    ----------
+    .. [10] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
+           Survey. 2nd ed. 67.
+    """
+    virttemp = virtual_temperature(temperature, mixing, molecular_weight_ratio)
+    return (pressure / (Rd * virttemp)).to(units.kilogram / units.meter ** 3)
+
