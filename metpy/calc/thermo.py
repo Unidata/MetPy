@@ -547,12 +547,12 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
     .. [8] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
            Survey. 2nd ed. 80.
     """
-    return temperature * ((mixing + molecular_weight_ratio) / 
+    return temperature * ((mixing + molecular_weight_ratio) /
                           (molecular_weight_ratio * (1 + mixing)))
 
 
 @exporter.export
-def virtual_potential_temperature(pressure, temperature, mixing, 
+def virtual_potential_temperature(pressure, temperature, mixing,
                                   molecular_weight_ratio=epsilon):
     r"""Calculate virtual potential temperature.
 

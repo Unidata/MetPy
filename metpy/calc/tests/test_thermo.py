@@ -6,11 +6,11 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (density, dewpoint, dewpoint_rh, dry_lapse, equivalent_potential_temperature,
-                        lcl, lfc, mixing_ratio, moist_lapse, parcel_profile,
-                        potential_temperature, saturation_mixing_ratio,
-                        saturation_vapor_pressure, vapor_pressure, virtual_temperature,
-                        virtual_potential_temperature)
+from metpy.calc import (density, dewpoint, dewpoint_rh, dry_lapse,
+                        equivalent_potential_temperature, lcl, lfc, mixing_ratio, moist_lapse,
+                        parcel_profile,potential_temperature, saturation_mixing_ratio,
+                        saturation_vapor_pressure, vapor_pressure,
+                        virtual_potential_temperature, virtual_potential_temperature)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal
 from metpy.units import units
 
