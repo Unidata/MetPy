@@ -547,10 +547,13 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
     .. [8] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
            Survey. 2nd ed. 80.
     """
-    return temperature * ((mixing + molecular_weight_ratio)/(molecular_weight_ratio * (1 + mixing)))
+    return temperature * ((mixing + molecular_weight_ratio) / 
+                          (molecular_weight_ratio * (1 + mixing)))
+
 
 @exporter.export
-def virtual_potential_temperature(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
+def virtual_potential_temperature(pressure, temperature, mixing, 
+                                  molecular_weight_ratio=epsilon):
     r"""Calculate virtual potential temperature.
 
     This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
@@ -580,7 +583,7 @@ def virtual_potential_temperature(pressure, temperature, mixing, molecular_weigh
 
     References
     ----------
-    .. [9] Markowski, Paul and Richardson, Yvette, 2010: Mesoscale Meteorology in the 
+    .. [9] Markowski, Paul and Richardson, Yvette, 2010: Mesoscale Meteorology in the
            Midlatitudes. 13.
     """
     pottemp = potential_temperature(pressure, temperature)
@@ -623,4 +626,3 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
     """
     virttemp = virtual_temperature(temperature, mixing, molecular_weight_ratio)
     return (pressure / (Rd * virttemp)).to(units.kilogram / units.meter ** 3)
-
