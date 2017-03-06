@@ -540,7 +540,7 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
 
     Notes
     -----
-    .. math:: T_v = T \frac{\textsl{w} + \epsilon}{\epsilon\,(1 + \textsl{w})}
+    .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
 
     References
     ----------
@@ -579,7 +579,7 @@ def virtual_potential_temperature(pressure, temperature, mixing,
 
     Notes
     -----
-    .. math:: \Theta_v = \Theta \frac{\textsl{w} + \epsilon}{\epsilon\,(1 + \textsl{w})}
+    .. math:: \Theta_v = \Theta \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
 
     References
     ----------
