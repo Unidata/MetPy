@@ -21,3 +21,6 @@ Thermodynamic Calculations
     mixing_ratio
     saturation_mixing_ratio
     equivalent_potential_temperature
+    virtual_temperature
+    virtual_potential_temperature
+    density
