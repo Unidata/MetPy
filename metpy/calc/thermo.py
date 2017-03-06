@@ -238,10 +238,10 @@ def lfc(pressure, temperature, dewpt):
 
 @exporter.export
 def el(pressure, temperature, dewpt):
-    r"""Calculate the equilibrium level (EL).
+    r"""Calculate the equilibrium level.
 
     This works by finding the last intersection of the ideal parcel path and
-    the measured parcel temperature. If there is one or fewer intersections, there is
+    the measured environmental temperature. If there is one or fewer intersections, there is
     no equilibrium level.
 
     Parameters
@@ -268,7 +268,6 @@ def el(pressure, temperature, dewpt):
     # If there is only one intersection, it's the LFC and we return None.
     if len(x) <= 1:
         return None, None
-
     else:
         return x[-1], y[-1]
 

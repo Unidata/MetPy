@@ -203,6 +203,7 @@ def test_equivalent_potential_temperature():
     ept = equivalent_potential_temperature(p, t)
     assert_almost_equal(ept, 315.9548 * units.kelvin, 3)
 
+
 def test_virtual_temperature():
     """Test virtual temperature calculation."""
     t = 288. * units.kelvin
@@ -238,3 +239,12 @@ def test_el():
     assert_almost_equal(el_pressure, 520.8420 * units.mbar, 3)
     assert_almost_equal(el_temperature, -11.7055 * units.degC, 3)
 
+
+def test_no_el():
+    """Test equilibrium layer calculation when there is no EL in the data."""
+    levels = np.array([959., 867.9, 779.2, 647.5, 472.5, 321.9, 251.]) * units.mbar
+    temperatures = np.array([22.2, 17.4, 14.6, 1.4, -17.6, -39.4, -52.5]) * units.celsius
+    dewpoints = np.array([19., 14.3, -11.2, -16.7, -21., -43.3, -56.7]) * units.celsius
+    el_pressure, el_temperature = el(levels, temperatures, dewpoints)
+    assert el_pressure is None
+    assert el_temperature is None
