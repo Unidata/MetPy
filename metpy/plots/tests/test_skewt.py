@@ -89,3 +89,19 @@ def test_hodograph_units():
 def test_hodograph_alone():
     """Test to create Hodograph without specifying axes."""
     Hodograph()
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_hodograph_plot_colormapped():
+    """Test hodograph colored line with NaN values."""
+    u = np.arange(5., 65., 5)
+    v = np.arange(-5., -65., -5)
+    u[3] = np.nan
+    v[6] = np.nan
+    fig = plt.figure(figsize=(9, 9))
+    ax = fig.add_subplot(1, 1, 1)
+    hodo = Hodograph(ax, component_range=80)
+    hodo.add_grid(increment=20, color='k')
+    hodo.plot_colormapped(u, v, np.hypot(u, v), cmap='Greys')
+
+    return fig
