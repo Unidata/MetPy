@@ -178,6 +178,16 @@ def test_lfc_basic():
     assert_almost_equal(l[1], 9.705 * units.celsius, 2)
 
 
+def test_no_lfc():
+    """Test LFC calculation when there is no LFC in the data."""
+    levels = np.array([959., 867.9, 779.2, 647.5, 472.5, 321.9, 251.]) * units.mbar
+    temperatures = np.array([22.2, 17.4, 14.6, 1.4, -17.6, -39.4, -52.5]) * units.celsius
+    dewpoints = np.array([9., 4.3, -21.2, -26.7, -31., -53.3, -66.7]) * units.celsius
+    lfc_pressure, lfc_temperature = lfc(levels, temperatures, dewpoints)
+    assert lfc_pressure is None
+    assert lfc_temperature is None
+
+
 def test_saturation_mixing_ratio():
     """Test saturation mixing ratio calculation."""
     p = 999. * units.mbar
