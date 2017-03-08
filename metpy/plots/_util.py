@@ -31,6 +31,12 @@ def colored_line(x, y, c, **kwargs):
         The created :class:`matplotlib.collections.LineCollection` instance.
 
     """
+    # Mask out any NaN values
+    nan_mask = ~(np.isnan(x) | np.isnan(y) | np.isnan(c))
+    x = x[nan_mask]
+    y = y[nan_mask]
+    c = c[nan_mask]
+
     # Paste values end to end
     points = concatenate([x, y])
 
