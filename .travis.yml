@@ -121,25 +121,28 @@ after_script:
       python-codacy-coverage -r coverage.xml;
       codeclimate-test-reporter;
     fi
-  - if [[ $TASK == "docs" && $TRAVIS_PYTHON_VERSION == 3.6 && ! -z $GH_TOKEN ]]; then
-      pushd docs;
-      git remote add docs https://${GH_TOKEN}@github.com/${TRAVIS_REPO_SLUG}.git;
-      make deployhtml;
-      popd;
-    fi;
 
 deploy:
-  provider: pypi
-  user: dopplershift
-  password:
-    secure: VYbxLZZnQ1hR2WZwe6+NXLNVbxceDQzlaVM/G3PW8mYlnyWgIVJBgCcgpH22wT4IsNQqo1r9ow9HiybzwcU1VTZ9KXjYsjre/kCZob0jmuPKlDtujOLaMJFf0XzOw7Y/AFXaMakFA8ZOYJLaMXc0WMLwGT7Hw/oP/e2ztpVLxRA=
-  distributions: sdist bdist_wheel
-  upload_docs: no
-  on:
-    repo: Unidata/MetPy
-    python: 3.6
-    condition: '$TASK != "docs"'
-    tags: true
+  - provider: pypi
+    user: dopplershift
+    password:
+      secure: VYbxLZZnQ1hR2WZwe6+NXLNVbxceDQzlaVM/G3PW8mYlnyWgIVJBgCcgpH22wT4IsNQqo1r9ow9HiybzwcU1VTZ9KXjYsjre/kCZob0jmuPKlDtujOLaMJFf0XzOw7Y/AFXaMakFA8ZOYJLaMXc0WMLwGT7Hw/oP/e2ztpVLxRA=
+    distributions: sdist bdist_wheel
+    upload_docs: no
+    on:
+      repo: Unidata/MetPy
+      python: 3.6
+      condition: '$TASK != "docs"'
+      tags: true
+  - provider: pages
+    skip_cleanup: true
+    github_token: $GH_TOKEN
+    local_dir: docs/build/html
+    target_branch: gh-pages
+    on:
+      branch: master
+      python: 3.6
+      condition: '$TASK == "docs"'
 
 notifications:
   webhooks:
