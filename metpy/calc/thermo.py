@@ -714,7 +714,7 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
 
 
 @exporter.export
-def psychrometric_vapor_pressure_wet(dry_bulb_temperature, web_bulb_temperature, pressure,
+def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature, pressure,
                                      psychrometer_coefficient=6.21e-4 / units.kelvin):
     r"""Calculate the vapor pressure with wet bulb and dry bulb temperatures.
 
@@ -763,5 +763,5 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, web_bulb_temperature,
     --------
     saturation_vapor_pressure
     """
-    return (saturation_vapor_pressure(web_bulb_temperature) - psychrometer_coefficient *
-            pressure * (dry_bulb_temperature - web_bulb_temperature).to('kelvin'))
+    return (saturation_vapor_pressure(wet_bulb_temperature) - psychrometer_coefficient *
+            pressure * (dry_bulb_temperature - wet_bulb_temperature).to('kelvin'))

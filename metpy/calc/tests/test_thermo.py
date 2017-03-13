@@ -8,8 +8,9 @@ import pytest
 
 from metpy.calc import (density, dewpoint, dewpoint_rh, dry_lapse, el,
                         equivalent_potential_temperature, lcl, lfc, mixing_ratio, moist_lapse,
-                        parcel_profile, potential_temperature, saturation_mixing_ratio,
-                        saturation_vapor_pressure, vapor_pressure,
+                        parcel_profile, potential_temperature,
+                        psychrometric_vapor_pressure_wet, relative_humidity_wet_psychrometric,
+                        saturation_mixing_ratio, saturation_vapor_pressure, vapor_pressure,
                         virtual_potential_temperature, virtual_temperature)
 
 from metpy.testing import assert_almost_equal, assert_array_almost_equal
@@ -248,3 +249,35 @@ def test_no_el():
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
     assert el_pressure is None
     assert el_temperature is None
+
+
+def test_wet_psychrometric_vapor_pressure():
+    """Test calculation of vapor pressure from wet and dry bulb temperatures."""
+    p = 1013.25 * units.mbar
+    dry_bulb_temperature = 20. * units.degC
+    wet_bulb_temperature = 18. * units.degC
+    psychrometric_vapor_pressure = psychrometric_vapor_pressure_wet(dry_bulb_temperature,
+                                                                    wet_bulb_temperature, p)
+    assert_almost_equal(psychrometric_vapor_pressure, 19.3673 * units.mbar, 3)
+
+
+def test_wet_psychrometric_rh():
+    """Test calculation of relative humidity from wet and dry bulb temperatures."""
+    p = 1013.25 * units.mbar
+    dry_bulb_temperature = 20. * units.degC
+    wet_bulb_temperature = 18. * units.degC
+    psychrometric_rh = relative_humidity_wet_psychrometric(dry_bulb_temperature,
+                                                           wet_bulb_temperature, p)
+    assert_almost_equal(psychrometric_rh, 82.8747 * units.percent, 3)
+
+
+def test_wet_psychrometric_rh_kwargs():
+    """Test calculation of relative humidity from wet and dry bulb temperatures."""
+    p = 1013.25 * units.mbar
+    dry_bulb_temperature = 20. * units.degC
+    wet_bulb_temperature = 18. * units.degC
+    coeff = 6.1e-4 / units.kelvin
+    psychrometric_rh = relative_humidity_wet_psychrometric(dry_bulb_temperature,
+                                                           wet_bulb_temperature, p,
+                                                           psychrometer_coefficient=coeff)
+    assert_almost_equal(psychrometric_rh, 82.9701 * units.percent, 3)
