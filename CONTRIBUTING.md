@@ -62,8 +62,7 @@ of the code you were using, as well as what operating system you are running.
 If possible, include complete, minimal example code that reproduces the problem.
 
 ## Pull Requests
-**Working on your first Pull Request?** You can learn how from this *free* video series [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github)
-or Aaron Meurer's [tutorial on the git workflow](http://www.asmeurer.com/git-workflow/).
+**Working on your first Pull Request?** You can learn how from this *free* video series [How to Contribute to an Open Source Project on GitHub](https://egghead.io/series/how-to-contribute-to-an-open-source-project-on-github), Aaron Meurer's [tutorial on the git workflow](http://www.asmeurer.com/git-workflow/), or the guide [“How to Contribute to Open Source"](https://opensource.guide/how-to-contribute/).
 We love pull requests from everyone. Fork, then clone the repo:
 
     git clone git@github.com:your-username/metpy.git
