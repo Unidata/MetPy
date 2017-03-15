@@ -57,19 +57,21 @@ Contact Us
 .. _Twitter: https://twitter.com/MetPy
 __ https://github.com/Unidata/MetPy/issues
 
--------------
-Presentations
--------------
+-----
+Media
+-----
 
-* Presentation on MetPy's build infrastructure by Ryan May at `SciPy 2016`_.
-* MetPy was included in tools presented at the `SSEC/Wisconsin AOS Python Workshop`_.
-* Presentation on MetPy at the `2016 AMS Annual Meeting`_ by Ryan May.
-* Ryan May's talk and tutorial on MetPy at the `2015 Unidata Users Workshop`_.
+* MetPy was features on `Episode 100 of Podcast.__init__`_
+* Presentation on MetPy's build infrastructure by Ryan May at `SciPy 2016`_
+* MetPy was included in tools presented at the `SSEC/Wisconsin AOS Python Workshop`_
+* Presentation on MetPy at the `2016 AMS Annual Meeting`_ by Ryan May
+* Ryan May's talk and tutorial on MetPy at the `2015 Unidata Users Workshop`_
 
 .. _`2015 Unidata Users Workshop`: https://www.youtube.com/watch?v=umwauHAL-0M
 .. _`2016 AMS Annual Meeting`: https://ams.confex.com/ams/96Annual/webprogram/Paper286983.html
-.. _`SciPy 2016`: https://youtu.be/moLKGjbXvgE
 .. _`SSEC/Wisconsin AOS Python Workshop`: https://youtu.be/RRvJI_vouQc
+.. _`SciPy 2016`: https://youtu.be/moLKGjbXvgE
+.. _`Episode 100 of Podcast.__init__`: https://www.podcastinit.com/episode-100-metpy-with-ryan-may-sean-arms-and-john-leeman/
 
 -------
 License
