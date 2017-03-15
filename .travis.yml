@@ -122,6 +122,9 @@ after_script:
       codeclimate-test-reporter;
     fi
 
+before_deploy:
+  - touch docs/build/html/.nojekyll
+
 deploy:
   - provider: pypi
     user: dopplershift
