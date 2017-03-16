@@ -12,7 +12,7 @@ except ImportError:
 
 import numpy as np
 
-from ._tools import UnitLinker
+from ._tools import UnitLinker, interpolate_nans
 from .cdm import Dataset
 from ..calc import get_wind_components
 from ..package_tools import Exporter
@@ -254,8 +254,12 @@ class IAStateUpperAir(object):
         # Make sure that the first entry has a valid temperature and dewpoint
         idx = np.argmax(~np.isnan(data['tmpc']) & ~np.isnan(data['tmpc']))
 
-        ret = dict(p=(np.array(data['pres'][idx:]), 'mbar'), t=(np.array(data['tmpc'][idx:]), 'degC'),
-                   td=(np.array(data['dwpc'][idx:]), 'degC'),
+        data['pres'] = np.array(data['pres'][idx:])
+        data['tmpc'] = interpolate_nans(data['pres'], np.array(data['tmpc'][idx:]))
+        data['dwpc'] = interpolate_nans(data['pres'], np.array(data['dwpc'][idx:]))
+
+        ret = dict(p=(np.array(data['pres']), 'mbar'), t=(np.array(data['tmpc']), 'degC'),
+                   td=(np.array(data['dwpc']), 'degC'),
                    wind=(np.array(data['drct'][idx:]), np.array(data['sknt'][idx:]), 'knot'))
 
         return ret
