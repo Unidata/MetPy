@@ -7,6 +7,7 @@ from __future__ import print_function
 
 from collections import namedtuple
 import logging
+import numpy as np
 from struct import Struct
 import zlib
 
@@ -390,3 +391,15 @@ def hexdump(buf, num_bytes, offset=0, width=32):
                                 ''.join(chr(c) if 31 < c < 128 else '.' for c in chunk))))
         ind += width
     return '\n'.join(lines)
+
+
+def interpolate_nans(x, y):
+    """
+    Interpolates nan values in y. Sorts if necessary.
+    """
+    x_sort_args = np.argsort(x)
+    x = x[x_sort_args]
+    y = y[x_sort_args]
+    nans = np.isnan(y)
+    y[nans]= np.interp(x[nans], x[~nans], y[~nans])
+    return y[x_sort_args]
