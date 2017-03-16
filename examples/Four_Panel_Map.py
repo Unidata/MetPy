@@ -96,7 +96,6 @@ heights_500 = ndimage.gaussian_filter(ds.variables['heights_500'][0], sigma=1.5,
 fig = plt.figure(figsize=(20, 15))
 gs = gridspec.GridSpec(5, 2, height_ratios=[1, .05, 1, .05, 0], bottom=.05, top=.95, wspace=.1)
 
-
 # Upper left plot - 300-hPa winds and geopotential heights
 ax1 = plt.subplot(gs[0, 0], projection=crs)
 plot_background(ax1)
