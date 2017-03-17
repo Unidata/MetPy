@@ -11,6 +11,7 @@ except ImportError:
     from urllib2 import urlopen
 
 import numpy as np
+import numpy.ma as ma
 
 from ._tools import UnitLinker
 from .cdm import Dataset
@@ -254,8 +255,10 @@ class IAStateUpperAir(object):
         # Make sure that the first entry has a valid temperature and dewpoint
         idx = np.argmax(~(np.isnan(data['tmpc']) | np.isnan(data['tmpc'])))
 
-        ret = dict(p=(np.array(data['pres'][idx:]), 'mbar'), t=(np.array(data['tmpc'][idx:]), 'degC'),
-                   td=(np.array(data['dwpc'][idx:]), 'degC'),
-                   wind=(np.array(data['drct'][idx:]), np.array(data['sknt'][idx:]), 'knot'))
+        ret = dict(p=(ma.masked_invalid(data['pres'][idx:]), 'mbar'),
+                   t=(ma.masked_invalid(data['tmpc'][idx:]), 'degC'),
+                   td=(ma.masked_invalid(data['dwpc'][idx:]), 'degC'),
+                   wind=(ma.masked_invalid(data['drct'][idx:]),
+                         ma.masked_invalid(data['sknt'][idx:]), 'knot'))
 
         return ret
