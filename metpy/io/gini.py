@@ -352,3 +352,5 @@ def _add_projection_coords(ds, prod_desc, proj_var, dx, dy):
     lat_var = ds.createVariable('lat', np.float64, dimensions=('y', 'x'), wrap_array=lat)
     lat_var.long_name = 'latitude'
     lat_var.units = 'degrees_north'
+
+    ds.img_extent = (x_var[:].min(), x_var[:].max(), y_var[:].min(), y_var[:].max())

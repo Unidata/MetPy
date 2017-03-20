@@ -106,6 +106,12 @@ def test_gini_dataset(filename, bounds, data_var, proj_attrs):
     assert_almost_equal(y[0], y0, 4)
     assert_almost_equal(y[-1], y1, 4)
 
+    xmin, xmax, ymin, ymax = ds.img_extent
+    assert_almost_equal(xmin, x0, 4)
+    assert_almost_equal(xmax, x1, 4)
+    assert_almost_equal(ymin, y0, 4)
+    assert_almost_equal(ymax, y1, 4)
+
     # Check the projection metadata
     proj_name = ds.variables[data_var].grid_mapping
     proj_var = ds.variables[proj_name]
