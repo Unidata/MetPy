@@ -190,6 +190,19 @@ def test_no_lfc():
     assert lfc_temperature is None
 
 
+def test_lfc_inversion():
+    """Test LFC when there is an inversion to be sure we don't pick that."""
+    levels = np.array([963., 789., 782.3, 754.8, 728.1, 727., 700.,
+                       571., 450., 300., 248.]) * units.mbar
+    temperatures = np.array([25.4, 18.4, 17.8, 15.4, 12.9, 12.8,
+                             10., -3.9, -16.3, -41.1, -51.5]) * units.celsius
+    dewpoints = np.array([20.4, 0.4, -0.5, -4.3, -8., -8.2, -9.,
+                          -23.9, -33.3, -54.1, -63.5]) * units.celsius
+    l = lfc(levels, temperatures, dewpoints)
+    assert_almost_equal(l[0], 706.0103 * units.mbar, 2)
+    assert_almost_equal(l[1], 10.6232 * units.celsius, 2)
+
+
 def test_saturation_mixing_ratio():
     """Test saturation mixing ratio calculation."""
     p = 999. * units.mbar
