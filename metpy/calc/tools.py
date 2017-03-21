@@ -61,7 +61,7 @@ def nearest_intersection_idx(a, b):
 
 
 @exporter.export
-def find_intersections(x, a, b):
+def find_intersections(x, a, b, direction='all'):
     """Calculate the best estimate of intersection.
 
     Calculates the best estimates of the intersection of two y-value
@@ -75,6 +75,9 @@ def find_intersections(x, a, b):
         1-dimensional array of y-values for line 1
     b : array-like
         1-dimensional array of y-values for line 2
+    direction : string
+        specifies direction of crossing. 'all', 'increasing' (a becoming greater than b),
+        or 'decreasing' (b becoming greater than a).
 
     Returns
     -------
@@ -84,6 +87,9 @@ def find_intersections(x, a, b):
     # Find the index of the points just before the intersection(s)
     nearest_idx = nearest_intersection_idx(a, b)
     next_idx = nearest_idx + 1
+
+    # Determine the sign of the change
+    sign_change = np.sign(a[next_idx] - b[next_idx])
 
     # x-values around each intersection
     x0 = x[nearest_idx]
@@ -109,4 +115,13 @@ def find_intersections(x, a, b):
     # causes weirder unit behavior and seems a little less good numerically.
     intersect_y = ((intersect_x - x0) / (x1 - x0)) * (a1 - a0) + a0
 
-    return intersect_x, intersect_y
+    # Make a mask based on the direction of sign change desired
+    if direction == 'increasing':
+        mask = sign_change > 0
+    elif direction == 'decreasing':
+        mask = sign_change < 0
+    elif direction == 'all':
+        return intersect_x, intersect_y
+    else:
+        raise ValueError('Unknown option for direction: {0}'.format(str(direction)))
+    return intersect_x[mask], intersect_y[mask]
