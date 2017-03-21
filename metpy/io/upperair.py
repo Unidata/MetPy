@@ -146,6 +146,12 @@ class WyomingUpperAir(object):
         fobj = urlopen(url)
         data = fobj.read()
 
+        # See if the return is valid, but has no data
+        if data.find(b'Can\'t') != -1:
+            raise ValueError('No data available for {time:%Y-%m-%d %HZ} from region {region} '
+                             'for station {stid}.'.format(time=time, region=region,
+                                                          stid=site_id))
+
         # Since the archive text format is embedded in HTML, look for the <PRE> tags
         data_start = data.find(b'<PRE>')
         data_end = data.find(b'</PRE>', data_start)
@@ -222,31 +228,34 @@ class IAStateUpperAir(object):
 
         Returns
         -------
-        a file-like object from which to read the data
+        list of json data
         """
         url = ('http://mesonet.agron.iastate.edu/json/raob.py?ts={time:%Y%m%d%H}00'
                '&station={stid}').format(time=time, stid=site_id)
 
-        return urlopen(url)
+        json_data = json.loads(urlopen(url).read().decode('utf-8'))['profiles'][0]['profile']
+
+        # See if the return is valid, but has no data
+        if not json_data:
+            raise ValueError('No data available for {time:%Y-%m-%d %HZ} '
+                             'for station {stid}.'.format(time=time, stid=site_id))
+        return json_data
 
     @staticmethod
-    def parse(fobj):
+    def parse(json_data):
         r"""Parse Iowa State Upper Air Data.
 
         This parses the JSON formatted data returned by the Iowa State upper air data archive.
 
         Parameters
         ----------
-        fobj : file-like object
-            The file-like object from which the data should be read. This needs to be set up
-            to return bytes when read, not strings.
+        json_data : list
+            list containing json data
 
         Returns
         -------
         dict of information used by :func:`get_upper_air_data`
         """
-        json_data = json.loads(fobj.read().decode('utf-8'))['profiles'][0]['profile']
-
         data = dict()
         for pt in json_data:
             for field in ('drct', 'dwpc', 'pres', 'sknt', 'tmpc'):
