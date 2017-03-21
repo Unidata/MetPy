@@ -24,3 +24,5 @@ Thermodynamic Calculations
     virtual_temperature
     virtual_potential_temperature
     density
+    relative_humidity_wet_psychrometric
+    psychrometric_vapor_pressure_wet

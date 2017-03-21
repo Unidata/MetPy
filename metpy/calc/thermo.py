@@ -665,3 +665,103 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
     """
     virttemp = virtual_temperature(temperature, mixing, molecular_weight_ratio)
     return (pressure / (Rd * virttemp)).to(units.kilogram / units.meter ** 3)
+
+
+@exporter.export
+def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperature,
+                                        pressure, **kwargs):
+    r"""Calculate the relative humidity with wet bulb and dry bulb temperatures.
+
+    Parameters
+    ----------
+    dry_bulb_temperature: `pint.Quantity`
+        Dry bulb temperature
+    web_bulb_temperature: `pint.Quantity`
+        Wet bulb temperature
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Relative humidity
+
+    Notes
+    -----
+    .. math:: RH = 100 \frac{e}{e_s}
+
+    * :math:`RH` is relative humidity
+    * :math:`e` is vapor pressure from the wet psychrometric calculation
+    * :math:`e_s` is the saturation vapor pressure
+
+    References
+    ----------
+    .. [10] WMO GUIDE TO METEOROLOGICAL INSTRUMENTS AND METHODS OF OBSERVATION WMO-No.8
+       (2008 edition, Updated in 2010) : PART 4
+       https://www.wmo.int/pages/prog/www/IMOP/CIMO-Guide.html
+
+    .. [11] Fan, Jinpeng. "Determination of the psychrometer coefficient A of the WMO
+       reference psychrometer by comparison with a standard gravimetric hygrometer."
+       Journal of Atmospheric and Oceanic Technology 4.1 (1987): 239-244.
+
+    See Also
+    --------
+    psychrometric_vapor_pressure_wet, saturation_vapor_pressure
+    """
+    return (100 * units.percent * psychrometric_vapor_pressure_wet(dry_bulb_temperature,
+            web_bulb_temperature, pressure, **kwargs) /
+            saturation_vapor_pressure(dry_bulb_temperature))
+
+
+@exporter.export
+def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature, pressure,
+                                     psychrometer_coefficient=6.21e-4 / units.kelvin):
+    r"""Calculate the vapor pressure with wet bulb and dry bulb temperatures.
+
+    Parameters
+    ----------
+    dry_bulb_temperature: `pint.Quantity`
+        Dry bulb temperature
+    web_bulb_temperature: `pint.Quantity`
+        Wet bulb temperature
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+    psychrometer coefficient: `pint.Quantity`
+        Psychrometer coefficient
+
+    Returns
+    -------
+    `pint.Quantity`
+        Vapor pressure
+
+    Notes
+    -----
+    .. math:: e' = e'_w(T_w) - A p (T - T_w)
+
+    * :math:`e'` is vapor pressure
+    * :math:`e'_w(T_w)` is the saturation vapor pressure with respect to water at temperature
+      :math:`T_w`
+    * :math:`p` is the pressure of the wet bulb
+    * :math:`T` is the temperature of the dry bulb
+    * :math:`T_w` is the temperature of the wet bulb
+    * :math:`A` is the psychrometer coefficient
+
+    Psychrometer coefficient depends on the specific instrument being used and the ventilation
+    of the instrument.
+
+    References
+    ----------
+    .. [12] WMO GUIDE TO METEOROLOGICAL INSTRUMENTS AND METHODS OF OBSERVATION WMO-No.8
+       (2008 edition, Updated in 2010) : PART 4
+       https://www.wmo.int/pages/prog/www/IMOP/CIMO-Guide.html
+
+    .. [13] Fan, Jinpeng. "Determination of the psychrometer coefficient A of the WMO reference
+       psychrometer by comparison with a standard gravimetric hygrometer."
+       Journal of Atmospheric and Oceanic Technology 4.1 (1987): 239-244.
+
+    See Also
+    --------
+    saturation_vapor_pressure
+    """
+    return (saturation_vapor_pressure(wet_bulb_temperature) - psychrometer_coefficient *
+            pressure * (dry_bulb_temperature - wet_bulb_temperature).to('kelvin'))
