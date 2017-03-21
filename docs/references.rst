@@ -15,7 +15,10 @@ References
            Wea. Rev 87.10 (1959): 367-374.
 
 .. [Hobbs1977] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an
-           Introductory Survey. 71.
+           Introductory Survey.
+
+.. [Hobbs2006] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
+           Survey. 2nd ed.
 
 .. [FCMR192003] Federal Coordinator for Meteorological Services and Supporting Research: Report on
            Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
@@ -32,6 +35,9 @@ References
 
 .. [Liang2010] Liang, Luming, and Dave Hale. "A stable and fast implementation
            of natural neighbor interpolation." (2010).
+
+.. [Markowski2010] Markowski, Paul and Richardson, Yvette, 2010: Mesoscale Meteorology in the
+           Midlatitudes.
 
 .. [Rothfusz1990] Rothfusz, L.P.: The Heat Index "Equation". Fort Worth, TX: Scientific Services
            Division, NWS Southern Region Headquarters, 1990.

@@ -528,7 +528,7 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
     r"""Calculate virtual temperature.
 
     This calculation must be given an air parcel's temperature and mixing ratio.
-    The implementation uses the formula outlined in [8]_.
+    The implementation uses the formula outlined in [Hobbs2006] pg.80.
 
     Parameters
     ----------
@@ -549,11 +549,6 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
     Notes
     -----
     .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
-
-    References
-    ----------
-    .. [8] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
-           Survey. 2nd ed. 80.
     """
     return temperature * ((mixing + molecular_weight_ratio) /
                           (molecular_weight_ratio * (1 + mixing)))
@@ -565,7 +560,7 @@ def virtual_potential_temperature(pressure, temperature, mixing,
     r"""Calculate virtual potential temperature.
 
     This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
-    The implementation uses the formula outlined in [9]_.
+    The implementation uses the formula outlined in [Markowski2010] pg.13.
 
     Parameters
     ----------
@@ -588,11 +583,6 @@ def virtual_potential_temperature(pressure, temperature, mixing,
     Notes
     -----
     .. math:: \Theta_v = \Theta \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
-
-    References
-    ----------
-    .. [9] Markowski, Paul and Richardson, Yvette, 2010: Mesoscale Meteorology in the
-           Midlatitudes. 13.
     """
     pottemp = potential_temperature(pressure, temperature)
     return virtual_temperature(pottemp, mixing, molecular_weight_ratio)
@@ -603,7 +593,7 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
     r"""Calculate density.
 
     This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
-    The implementation uses the formula outlined in [10]_.
+    The implementation uses the formula outlined in [Hobbs2006] pg.67.
 
     Parameters
     ----------
@@ -626,11 +616,6 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
     Notes
     -----
     .. math:: \rho = \frac{p}{R_dT_v}
-
-    References
-    ----------
-    .. [10] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
-           Survey. 2nd ed. 67.
     """
     virttemp = virtual_temperature(temperature, mixing, molecular_weight_ratio)
     return (pressure / (Rd * virttemp)).to(units.kilogram / units.meter ** 3)
