@@ -6,7 +6,8 @@
 import numpy as np
 import pytest
 
-from metpy.calc import find_intersections, nearest_intersection_idx, resample_nn_1d
+from metpy.calc import (find_intersections, interpolate_nans, nearest_intersection_idx,
+                        resample_nn_1d)
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 
 
@@ -61,3 +62,31 @@ def test_find_intersections_invalid_direction():
     y2 = 100 * x - 650
     with pytest.raises(ValueError):
         find_intersections(x, y1, y2, direction='increaing')
+
+
+def test_interpolate_nan_linear():
+    """Test linear interpolation of arrays with NaNs in the y-coordinate."""
+    x = np.linspace(0, 20, 15)
+    y = 5 * x + 3
+    nan_indexes = [1, 5, 11, 12]
+    y_with_nan = y.copy()
+    y_with_nan[nan_indexes] = np.nan
+    assert_array_almost_equal(y, interpolate_nans(x, y_with_nan), 2)
+
+
+def test_interpolate_nan_log():
+    """Test log interpolation of arrays with NaNs in the y-coordinate."""
+    x = np.logspace(1, 5, 15)
+    y = 5 * np.log(x) + 3
+    nan_indexes = [1, 5, 11, 12]
+    y_with_nan = y.copy()
+    y_with_nan[nan_indexes] = np.nan
+    assert_array_almost_equal(y, interpolate_nans(x, y_with_nan, kind='log'), 2)
+
+
+def test_interpolate_nan_invalid():
+    """Test log interpolation with invalid parameter."""
+    x = np.logspace(1, 5, 15)
+    y = 5 * np.log(x) + 3
+    with pytest.raises(ValueError):
+        interpolate_nans(x, y, kind='loog')

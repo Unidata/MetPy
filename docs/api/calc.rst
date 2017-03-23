@@ -11,6 +11,7 @@ These are the major groups of calculations available in MetPy:
    :maxdepth: 1
 
    basic
+   tools
    kinematics
    thermo
    turbulence

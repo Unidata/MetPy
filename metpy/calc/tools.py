@@ -125,3 +125,35 @@ def find_intersections(x, a, b, direction='all'):
     else:
         raise ValueError('Unknown option for direction: {0}'.format(str(direction)))
     return intersect_x[mask], intersect_y[mask]
+
+
+@exporter.export
+def interpolate_nans(x, y, kind='linear'):
+    """Interpolate NaN values in y.
+
+    Interpolate NaN values in the y dimension. Works with unsorted x values.
+
+    Parameters
+    ----------
+    x : array-like
+        1-dimensional array of numeric x-values
+    y : array-like
+        1-dimensional array of numeric y-values
+    kind : string
+        specifies the kind of interpolation x coordinate - 'linear' or 'log'
+
+    Returns
+    -------
+        An array of the y coordinate data with NaN values interpolated.
+    """
+    x_sort_args = np.argsort(x)
+    x = x[x_sort_args]
+    y = y[x_sort_args]
+    nans = np.isnan(y)
+    if kind is 'linear':
+        y[nans] = np.interp(x[nans], x[~nans], y[~nans])
+    elif kind is 'log':
+        y[nans] = np.interp(np.log(x[nans]), np.log(x[~nans]), y[~nans])
+    else:
+        raise ValueError('Unknown option for kind: {0}'.format(str(kind)))
+    return y[x_sort_args]
