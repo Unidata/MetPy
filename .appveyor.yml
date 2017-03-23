@@ -37,9 +37,9 @@ build: off
 test_script:
     - cmd: set TEST_DATA_DIR=%APPVEYOR_BUILD_FOLDER%\\testdata
     - cmd: python setup.py test --addopts "-s --junitxml=tests.xml --flake8 --mpl --cov=metpy"
-#    - cmd: cd docs
-#    - cmd: make html
-#    - cmd: cd ..
+    - cmd: cd docs
+    - cmd: make html
+    - cmd: cd ..
 
 on_finish:
     - ps: $wc = New-Object 'System.Net.WebClient'
