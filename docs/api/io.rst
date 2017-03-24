@@ -14,6 +14,8 @@ Formats
    :toctree: generated/
 
    GiniFile
+   GiniFile.to_dataset
    Level2File
    Level3File
    is_precip_mode
+   get_upper_air_data

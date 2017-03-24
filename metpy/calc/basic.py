@@ -113,7 +113,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     r"""Calculate the Wind Chill Temperature Index (WCTI).
 
     Calculates WCTI from the current temperature and wind speed using the formula
-    outlined by the FCM [4]_.
+    outlined by the FCM [FCMR192003]_.
 
     Specifically, these formulas assume that wind speed is measured at
     10m.  If, instead, the speeds are measured at face level, the winds
@@ -146,14 +146,6 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     See Also
     --------
     heat_index
-
-    References
-    ----------
-    .. [4] Federal Coordinator for Meteorological Services and Supporting Research: Report on
-           Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
-           Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
-           Services and Supporting Research, 2003.
-           `FCM-R19-2003 <../_static/FCM-R19-2003-WindchillReport.pdf>`_
     """
     # Correct for lower height measurement of winds if necessary
     if face_level_winds:
@@ -180,8 +172,8 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 def heat_index(temperature, rh, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.
 
-    The implementation uses the formula outlined in [6]_. This equation is a multi-variable
-    least-squares regression of the values obtained in [5]_.
+    The implementation uses the formula outlined in [Rothfusz1990]_. This equation is a
+    multi-variable least-squares regression of the values obtained in [Steadman1979]_.
 
     Parameters
     ----------
@@ -207,16 +199,6 @@ def heat_index(temperature, rh, mask_undefined=True):
     See Also
     --------
     windchill
-
-    References
-    ----------
-    .. [5] Steadman, R.G., 1979: The assessment of sultriness. Part I: A
-           temperature-humidity index based on human physiology and clothing
-           science. J. Appl. Meteor., 18, 861-873.
-
-    .. [6] Rothfusz, L.P.: The Heat Index "Equation". Fort Worth, TX: Scientific Services
-           Division, NWS Southern Region Headquarters, 1990.
-           `SR90-23 <http://www.weather.gov/media/ffc/ta_htindx.PDF>`_
     """
     delta = temperature - 0. * units.degF
     rh2 = rh * rh
@@ -242,7 +224,7 @@ def heat_index(temperature, rh, mask_undefined=True):
 def pressure_to_height_std(pressure):
     r"""Convert pressure data to heights using the U.S. standard atmosphere.
 
-    The implementation uses the formula outlined in [7]_.
+    The implementation uses the formula outlined in [Hobbs1977]_ pg.60-61.
 
     Parameters
     ----------
@@ -257,11 +239,6 @@ def pressure_to_height_std(pressure):
     Notes
     -----
     .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]
-
-    References
-    ----------
-    .. [7] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
-            Survey. 60-61.
     """
     t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
@@ -273,7 +250,7 @@ def pressure_to_height_std(pressure):
 def coriolis_parameter(latitude):
     r"""Calculate the coriolis parameter at each point.
 
-    The implementation uses the formula outlined in [8]_.
+    The implementation uses the formula outlined in [Hobbs1977]_ pg.370-371.
 
     Parameters
     ----------
@@ -284,10 +261,5 @@ def coriolis_parameter(latitude):
     -------
     `pint.Quantity`
         The corresponding coriolis force at each point
-
-    References
-    ----------
-    .. [8] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
-            Survey. 370-371.
     """
     return 2. * omega * np.sin(latitude)

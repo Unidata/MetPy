@@ -98,12 +98,7 @@ def tke(u, v, w, perturbation=False, axis=-1):
     .. math:: u^{\prime}, v^{\prime}, u^{\prime}
 
     are perturbation velocities. For more information on the subject, please
-    see [1]_.
-
-    References
-    ----------
-    .. [1] Garratt, J.R., 1994: The Atmospheric Boundary Layer. Cambridge
-           University Press, 316 pp.
+    see [Garratt1994]_.
     """
     if not perturbation:
         u = get_perturbation(u, axis=axis)
@@ -176,12 +171,7 @@ def kinematic_flux(vel, b, perturbation=False, axis=-1):
     which is computationally more efficient. This is how the kinematic flux
     is computed in this function if `perturbation` is False.
 
-    For more information on the subject, please see [2]_.
-
-    References
-    ----------
-    .. [2] Garratt, J.R., 1994: The Atmospheric Boundary Layer. Cambridge
-           University Press, 316 pp.
+    For more information on the subject, please see [Garratt1994]_.
     """
     kf = np.mean(vel * b, axis=axis)
     if not perturbation:
@@ -243,12 +233,7 @@ def friction_velocity(u, w, v=None, perturbation=False, axis=-1):
 
     .. math:: u_{*} = \sqrt[4]{\left(\overline{u^{\prime}w^{\prime}}\right)^2}
 
-    For more information on the subject, please see [3]_.
-
-    References
-    ----------
-    .. [3] Garratt, J.R., 1994: The Atmospheric Boundary Layer. Cambridge
-           University Press, 316 pp.
+    For more information on the subject, please see [Garratt1994]_.
     """
     uw = kinematic_flux(u, w, perturbation=perturbation, axis=axis)
     kf = uw * uw

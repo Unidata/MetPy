@@ -24,11 +24,8 @@ log.setLevel(logging.WARNING)
 def natural_neighbor(xp, yp, variable, grid_x, grid_y):
     r"""Generate a natural neighbor interpolation of the given points.
 
-    This assigns values to the given grid using the Liang and Hale (2010)
+    This assigns values to the given grid using the Liang and Hale [Liang2010]_.
     approach.
-
-    Liang, Luming, and Dave Hale. "A stable and fast implementation
-    of natural neighbor interpolation." (2010).
 
     Parameters
     ----------
@@ -72,11 +69,8 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
 def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
     r"""Generate a natural neighbor interpolation of the observations to the given point.
 
-    This uses the Liang and Hale (2010) approach. The interpolation will fail if
+    This uses the Liang and Hale approach [Liang2010]_. The interpolation will fail if
     the grid point has no natural neighbors.
-
-    Liang, Luming, and Dave Hale. A stable and fast implementation
-    of natural neighbor interpolation. (2010).
 
     Parameters
     ----------
@@ -206,8 +200,8 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
                      min_neighbors=3, kind='cressman'):
     r"""Generate an inverse distance weighting interpolation of the given points.
 
-    Values are assigned to the given grid based on either Cressman (1959) or Barnes (1964).
-    The Barnes implementation used here based on Koch et al. (1983).
+    Values are assigned to the given grid based on either [Cressman1959]_ or [Barnes1964]_.
+    The Barnes implementation used here based on [Koch1983]_.
 
     Parameters
     ----------

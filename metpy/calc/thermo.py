@@ -121,12 +121,7 @@ def moist_lapse(pressure, temperature):
     .. math:: \frac{dT}{dP} = \frac{1}{P} \frac{R_d T + L_v r_s}
                                 {C_{pd} + \frac{L_v^2 r_s \epsilon}{R_d T^2}}
 
-    This equation comes from [1]_.
-
-    References
-    ----------
-    .. [1] Bakhshaii, A. and R. Stull, 2013: Saturated Pseudoadiabats--A
-           Noniterative Approximation. J. Appl. Meteor. Clim., 52, 5-15.
+    This equation comes from [Bakhshaii2013]_.
     """
     def dt(t, p):
         t = units.Quantity(t, temperature.units)
@@ -340,14 +335,9 @@ def vapor_pressure(pressure, mixing):
     Notes
     -----
     This function is a straightforward implementation of the equation given in many places,
-    such as [2]_:
+    such as [Hobbs1977]_ pg.71:
 
     .. math:: e = p \frac{r}{r + \epsilon}
-
-    References
-    ----------
-    .. [2] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
-           Survey. 71.
 
     See Also
     --------
@@ -379,14 +369,10 @@ def saturation_vapor_pressure(temperature):
     Instead of temperature, dewpoint may be used in order to calculate
     the actual (ambient) water vapor (partial) pressure.
 
-    The formula used is that from Bolton 1980 [3]_ for T in degrees Celsius:
+    The formula used is that from [Bolton1980]_ for T in degrees Celsius:
 
     .. math:: 6.112 e^\frac{17.67T}{T + 243.5}
 
-    References
-    ----------
-    .. [3] Bolton, D., 1980: The Computation of Equivalent Potential
-           Temperature. Mon. Wea. Rev., 108, 1046-1053.
     """
     # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
     # a formula plays havoc with units support.
@@ -437,16 +423,12 @@ def dewpoint(e):
 
     Notes
     -----
-    This function inverts the Bolton 1980 [4]_ formula for saturation vapor
+    This function inverts the [Bolton1980]_ formula for saturation vapor
     pressure to instead calculate the temperature. This yield the following
     formula for dewpoint in degrees Celsius:
 
     .. math:: T = \frac{243.5 log(e / 6.112)}{17.67 - log(e / 6.112)}
 
-    References
-    ----------
-    .. [4] Bolton, D., 1980: The Computation of Equivalent Potential
-           Temperature. Mon. Wea. Rev., 108, 1046-1053.
     """
     val = np.log(e / sat_pressure_0c)
     return 0. * units.degC + 243.5 * units.delta_degC * val / (17.67 - val)
@@ -479,14 +461,9 @@ def mixing_ratio(part_press, tot_press, molecular_weight_ratio=epsilon):
     Notes
     -----
     This function is a straightforward implementation of the equation given in many places,
-    such as [5]_:
+    such as [Hobbs1977]_ pg.73:
 
     .. math:: r = \epsilon \frac{e}{p - e}
-
-    References
-    ----------
-    .. [5] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
-           Survey. 73.
 
     See Also
     --------
@@ -500,7 +477,7 @@ def saturation_mixing_ratio(tot_press, temperature):
     r"""Calculate the saturation mixing ratio of water vapor.
 
     This calculation is given total pressure and the temperature. The implementation
-    uses the formula outlined in [6]_.
+    uses the formula outlined in [Hobbs1977]_ pg.73.
 
     Parameters
     ----------
@@ -513,11 +490,6 @@ def saturation_mixing_ratio(tot_press, temperature):
     -------
     `pint.Quantity`
         The saturation mixing ratio, dimensionless
-
-    References
-    ----------
-    .. [6] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
-           Survey. 73.
     """
     return mixing_ratio(saturation_vapor_pressure(temperature), tot_press)
 
@@ -527,7 +499,7 @@ def equivalent_potential_temperature(pressure, temperature):
     r"""Calculate equivalent potential temperature.
 
     This calculation must be given an air parcel's pressure and temperature.
-    The implementation uses the formula outlined in [7]_.
+    The implementation uses the formula outlined in [Hobbs1977]_ pg.78-79.
 
     Parameters
     ----------
@@ -545,10 +517,6 @@ def equivalent_potential_temperature(pressure, temperature):
     -----
     .. math:: \Theta_e = \Theta e^\frac{L_v r_s}{C_{pd} T}
 
-    References
-    ----------
-    .. [7] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
-           Survey. 78-79.
     """
     pottemp = potential_temperature(pressure, temperature)
     smixr = saturation_mixing_ratio(pressure, temperature)
@@ -560,7 +528,7 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
     r"""Calculate virtual temperature.
 
     This calculation must be given an air parcel's temperature and mixing ratio.
-    The implementation uses the formula outlined in [8]_.
+    The implementation uses the formula outlined in [Hobbs2006] pg.80.
 
     Parameters
     ----------
@@ -581,11 +549,6 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
     Notes
     -----
     .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
-
-    References
-    ----------
-    .. [8] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
-           Survey. 2nd ed. 80.
     """
     return temperature * ((mixing + molecular_weight_ratio) /
                           (molecular_weight_ratio * (1 + mixing)))
@@ -597,7 +560,7 @@ def virtual_potential_temperature(pressure, temperature, mixing,
     r"""Calculate virtual potential temperature.
 
     This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
-    The implementation uses the formula outlined in [9]_.
+    The implementation uses the formula outlined in [Markowski2010] pg.13.
 
     Parameters
     ----------
@@ -620,11 +583,6 @@ def virtual_potential_temperature(pressure, temperature, mixing,
     Notes
     -----
     .. math:: \Theta_v = \Theta \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
-
-    References
-    ----------
-    .. [9] Markowski, Paul and Richardson, Yvette, 2010: Mesoscale Meteorology in the
-           Midlatitudes. 13.
     """
     pottemp = potential_temperature(pressure, temperature)
     return virtual_temperature(pottemp, mixing, molecular_weight_ratio)
@@ -635,7 +593,7 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
     r"""Calculate density.
 
     This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
-    The implementation uses the formula outlined in [10]_.
+    The implementation uses the formula outlined in [Hobbs2006] pg.67.
 
     Parameters
     ----------
@@ -658,11 +616,6 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
     Notes
     -----
     .. math:: \rho = \frac{p}{R_dT_v}
-
-    References
-    ----------
-    .. [10] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
-           Survey. 2nd ed. 67.
     """
     virttemp = virtual_temperature(temperature, mixing, molecular_weight_ratio)
     return (pressure / (Rd * virttemp)).to(units.kilogram / units.meter ** 3)
