@@ -4,6 +4,7 @@
 """Contains a collection of generally useful calculation tools."""
 
 import numpy as np
+import numpy.ma as ma
 
 from ..package_tools import Exporter
 
@@ -92,16 +93,16 @@ def find_intersections(x, a, b, direction='all'):
     sign_change = np.sign(a[next_idx] - b[next_idx])
 
     # x-values around each intersection
-    x0 = x[nearest_idx]
-    x1 = x[next_idx]
+    _, x0 = _next_non_masked_element(x, nearest_idx)
+    _, x1 = _next_non_masked_element(x, next_idx)
 
     # y-values around each intersection for the first line
-    a0 = a[nearest_idx]
-    a1 = a[next_idx]
+    _, a0 = _next_non_masked_element(a, nearest_idx)
+    _, a1 = _next_non_masked_element(a, next_idx)
 
     # y-values around each intersection for the second line
-    b0 = b[nearest_idx]
-    b1 = b[next_idx]
+    _, b0 = _next_non_masked_element(b, nearest_idx)
+    _, b1 = _next_non_masked_element(b, next_idx)
 
     # Calculate the x-intersection. This comes from finding the equations of the two lines,
     # one through (x0, a0) and (x1, a1) and the other through (x0, b0) and (x1, b1),
@@ -157,3 +158,30 @@ def interpolate_nans(x, y, kind='linear'):
     else:
         raise ValueError('Unknown option for kind: {0}'.format(str(kind)))
     return y[x_sort_args]
+
+
+def _next_non_masked_element(a, idx):
+    """Return the next non masked element of a masked array.
+
+    If an array is masked, return the next non-masked element (if the given index is masked).
+    If no other unmasked points are after the given masked point, returns none.
+
+    Parameters
+    ----------
+    a : array-like
+        1-dimensional array of numeric values
+    idx : integer
+        index of requested element
+
+    Returns
+    -------
+        Index of next non-masked element and next non-masked element
+    """
+    try:
+        next_idx = idx + a[idx:].mask.argmin()
+        if ma.is_masked(a[next_idx]):
+            return None, None
+        else:
+            return next_idx, a[next_idx]
+    except (AttributeError, TypeError, IndexError):
+        return idx, a[idx]
