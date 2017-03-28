@@ -5,3 +5,7 @@ div[class^="highlight"] a {
 div[class^="highlight"] a:hover {
     background-color: #ABECFC;
 }
+
+.wy-nav-content {
+    max-width: 100%
+}

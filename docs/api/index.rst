@@ -4,15 +4,19 @@
 The MetPy API
 #############
 
-.. toctree::
-   :maxdepth: 2
+.. currentmodule:: metpy
 
-   constants
-   units
-   io
-   calc
-   plots
-   gridding
+.. autosummary::
+   :toctree: generated/
+
+   metpy.constants
+   metpy.units
+   metpy.io
+   metpy.io.cdm
+   metpy.calc
+   metpy.plots
+   metpy.plots.ctables
+   metpy.gridding
 
 * :ref:`modindex`
 * :ref:`genindex`
