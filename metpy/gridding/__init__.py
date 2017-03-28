@@ -3,9 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 
 from .gridding_functions import *  # noqa: F403
-from .points import *  # noqa: F403
-from .triangles import *  # noqa: F403
-from .polygons import *  # noqa: F403
 from .interpolation import *  # noqa: F403
 
 __all__ = gridding_functions.__all__[:]  # pylint: disable=undefined-variable
