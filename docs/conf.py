@@ -64,9 +64,6 @@ sphinx_gallery_conf = {
 plot_html_show_source_link = False
 plot_html_show_formats = False
 
-mathjax_path = 'https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML'
-# autosummary_generate = True
-
 # Set up mapping for other projects' docs
 intersphinx_mapping = {
                        # 'pint': ('http://pint.readthedocs.io/en/stable/', None),
