@@ -15,10 +15,12 @@ units : :class:`pint.UnitRegistry`
 
 from __future__ import division
 
+import matplotlib.units as munits
 import numpy as np
 import pint
 import pint.unit
 
+from .cbook import iterable
 
 UndefinedUnitError = pint.UndefinedUnitError
 
@@ -141,4 +143,38 @@ def masked_array(data, data_units=None, **kwargs):
     return units.Quantity(np.ma.masked_array(data, **kwargs), data_units)
 
 
-del pint
+class PintConverter(munits.ConversionInterface):
+    """Implement support for pint within matplotlib's unit conversion framework."""
+
+    @staticmethod
+    def convert(value, unit, axis):
+        """Convert pint :`Quantity` instances for matplotlib to use.
+
+        Currently only strips off the units to avoid matplotlib errors since we can't reliably
+        have pint.Quantity instances not decay to numpy arrays.
+        """
+        if hasattr(value, 'magnitude'):
+            return value.magnitude
+        elif iterable(value):
+            try:
+                return [v.magnitude for v in value]
+            except AttributeError:
+                return value
+        else:
+            return value
+
+    # TODO: Once we get things properly squared away between pint and everything else
+    # these will need to be functional.
+    # @staticmethod
+    # def axisinfo(unit, axis):
+    #     return None
+    #
+    # @staticmethod
+    # def default_units(x, axis):
+    #     return x.to_base_units()
+
+
+# Register the class
+munits.registry[units.Quantity] = PintConverter()
+
+del munits, pint
