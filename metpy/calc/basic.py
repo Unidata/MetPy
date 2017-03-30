@@ -16,7 +16,7 @@ import numpy as np
 
 from ..constants import g, omega, Rd
 from ..package_tools import Exporter
-from ..units import atleast_1d, masked_array, units
+from ..units import atleast_1d, check_units, masked_array, units
 
 exporter = Exporter(globals())
 
@@ -109,6 +109,7 @@ def get_wind_components(speed, wdir):
 
 
 @exporter.export
+@check_units(temperature='[temperature]', speed='[speed]')
 def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     r"""Calculate the Wind Chill Temperature Index (WCTI).
 
@@ -169,6 +170,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
 
 @exporter.export
+@check_units('[temperature]')
 def heat_index(temperature, rh, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.
 
@@ -221,6 +223,7 @@ def heat_index(temperature, rh, mask_undefined=True):
 
 
 @exporter.export
+@check_units('[pressure]')
 def pressure_to_height_std(pressure):
     r"""Convert pressure data to heights using the U.S. standard atmosphere.
 
