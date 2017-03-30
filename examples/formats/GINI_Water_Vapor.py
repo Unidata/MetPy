@@ -50,7 +50,7 @@ fig = plt.figure(figsize=(10, 12))
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 wv_norm, wv_cmap = ctables.registry.get_with_steps('WVCIMSS', 0, 1)
 im = ax.imshow(dat[:], cmap=wv_cmap, norm=wv_norm, zorder=0,
-               extent=(x.min(), x.max(), y.min(), y.max()), origin='upper')
+               extent=ds.img_extent, origin='upper')
 ax.coastlines(resolution='50m', zorder=2, color='black')
 
 plt.show()
