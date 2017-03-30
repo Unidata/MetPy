@@ -193,6 +193,34 @@ class ColortableRegistry(dict):
         boundaries = arange(start, start + step * num_steps, step)
         return self.get_with_boundaries(name, boundaries)
 
+    def get_with_range(self, name, start, end):
+        r"""Get a color table from the registry with a corresponding norm.
+
+        Builds a `matplotlib.colors.BoundaryNorm` using `start`, `end`, and
+        the number of colors, based on the color table obtained from `name`.
+
+        Parameters
+        ----------
+        name : str
+            The name under which the color table will be stored
+        start : float
+            The starting boundary
+        end : float
+            The ending boundary
+
+        Returns
+        -------
+        `matplotlib.colors.BoundaryNorm`, `matplotlib.colors.ListedColormap`
+            The boundary norm based on `start` and `end` with the number of colors
+            from the number of entries matching the color table, and the color table itself.
+        """
+        from numpy import linspace
+
+        # Need one more boundary than color
+        num_steps = len(self[name]) + 1
+        boundaries = linspace(start, end, num_steps)
+        return self.get_with_boundaries(name, boundaries)
+
     def get_with_boundaries(self, name, boundaries):
         r"""Get a color table from the registry with a corresponding norm.
 
