@@ -19,6 +19,7 @@ import numpy as np
 
 from ._util import colored_line
 from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
+from ..calc.tools import delete_masked_points
 from ..package_tools import Exporter
 from ..units import units
 
