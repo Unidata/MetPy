@@ -100,6 +100,16 @@ def test_get_steps_negative_start(registry):
     assert norm.vmax == 5
 
 
+def test_get_range(registry):
+    """Test getting a colortable and norm with appropriate range."""
+    registry['table'] = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
+    norm, cmap = registry.get_with_range('table', 5., 35.)
+    assert cmap(norm(np.array([6.]))).tolist() == [[0.0, 0.0, 1.0, 1.0]]
+    assert cmap(norm(np.array([14.9]))).tolist() == [[0.0, 0.0, 1.0, 1.0]]
+    assert cmap(norm(np.array([15.1]))).tolist() == [[1.0, 0.0, 0.0, 1.0]]
+    assert cmap(norm(np.array([26.]))).tolist() == [[0.0, 1.0, 0.0, 1.0]]
+
+
 def test_get_boundaries(registry):
     """Test getting a colortable with explicit boundaries."""
     registry['table'] = [(0.0, 0.0, 1.0), (1.0, 0.0, 0.0), (0.0, 1.0, 0.0)]
