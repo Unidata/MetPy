@@ -4,10 +4,12 @@
 """Tests for `calc.tools` module."""
 
 import numpy as np
+import numpy.ma as ma
 import pytest
 
 from metpy.calc import (find_intersections, interpolate_nans, nearest_intersection_idx,
                         resample_nn_1d)
+from metpy.calc.tools import _next_non_masked_element
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 
 
@@ -90,3 +92,16 @@ def test_interpolate_nan_invalid():
     y = 5 * np.log(x) + 3
     with pytest.raises(ValueError):
         interpolate_nans(x, y, kind='loog')
+
+
+@pytest.mark.parametrize('mask, expected_idx, expected_element', [
+    ([False, False, False, False, False], 1, 1),
+    ([False, True, True, False, False], 3, 3),
+    ([False, True, True, True, True], None, None)
+])
+def test_non_masked_elements(mask, expected_idx, expected_element):
+    """Test with a valid element."""
+    a = ma.masked_array(np.arange(5), mask=mask)
+    idx, element = _next_non_masked_element(a, 1)
+    assert idx == expected_idx
+    assert element == expected_element
