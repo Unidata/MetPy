@@ -695,11 +695,11 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
     ----------
     dry_bulb_temperature: `pint.Quantity`
         Dry bulb temperature
-    web_bulb_temperature: `pint.Quantity`
+    wet_bulb_temperature: `pint.Quantity`
         Wet bulb temperature
     pressure: `pint.Quantity`
         Total atmospheric pressure
-    psychrometer coefficient: `pint.Quantity`
+    psychrometer_coefficient: `pint.Quantity`
         Psychrometer coefficient
 
     Returns
