@@ -15,6 +15,8 @@ units : :class:`pint.UnitRegistry`
 
 from __future__ import division
 
+import functools
+
 import matplotlib.units as munits
 import numpy as np
 import pint
@@ -23,6 +25,7 @@ import pint.unit
 from .cbook import iterable
 
 UndefinedUnitError = pint.UndefinedUnitError
+DimensionalityError = pint.DimensionalityError
 
 units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
 
@@ -141,6 +144,75 @@ def masked_array(data, data_units=None, **kwargs):
     if data_units is None:
         data_units = data.units
     return units.Quantity(np.ma.masked_array(data, **kwargs), data_units)
+
+
+def _check_argument_units(args, dimensionality):
+    """Yield arguments with improper dimensionality."""
+    for arg, val in args.items():
+        # Get the needed dimensionality (for printing) as well as cached, parsed version
+        # for this argument.
+        try:
+            need, parsed = dimensionality[arg]
+        except KeyError:
+            # Argument did not have units specified in decorator
+            continue
+
+        # See if the value passed in is appropriate
+        try:
+            if val.dimensionality != parsed:
+                yield arg, val.units, need
+        # No dimensionality
+        except AttributeError:
+            # If this argument is dimensionless, don't worry
+            if parsed != '':
+                yield arg, 'none', need
+
+
+def check_units(*units_by_pos, **units_by_name):
+    """Create a decorator to check units of function arguments."""
+    try:
+        from inspect import signature
+
+        def dec(func):
+            # Match the signature of the function to the arguments given to the decorator
+            sig = signature(func)
+            bound_units = sig.bind_partial(*units_by_pos, **units_by_name)
+
+            # Convert our specified dimensionality (e.g. "[pressure]") to one used by
+            # pint directly (e.g. "[mass] / [length] / [time]**2). This is for both efficiency
+            # reasons and to ensure that problems with the decorator are caught at import,
+            # rather than runtime.
+            dims = {name: (orig, units.get_dimensionality(orig.replace('dimensionless', '')))
+                    for name, orig in bound_units.arguments.items()}
+
+            @functools.wraps(func)
+            def wrapper(*args, **kwargs):
+                # Match all passed in value to their proper arguments so we can check units
+                bound_args = sig.bind(*args, **kwargs)
+                bad = list(_check_argument_units(bound_args.arguments, dims))
+
+                # If there are any bad units, emit a proper error message making it clear
+                # what went wrong.
+                if bad:
+                    msg = '`{0}` given arguments with incorrect units: {1}.'.format(
+                        func.__name__,
+                        ', '.join('`{}` requires "{}" but given "{}"'.format(arg, req, given)
+                                  for arg, given, req in bad))
+                    if 'none' in msg:
+                        msg += ('\nAny variable `x` can be assigned a unit as follows:\n'
+                                '    from metpy.units import units\n'
+                                '    x = x * units.meter / units.second')
+                    raise ValueError(msg)
+                return func(*args, **kwargs)
+
+            return wrapper
+
+    # signature() only available on Python >= 3.3, so for 2.7 we just do nothing.
+    except ImportError:
+        def dec(func):
+            return func
+
+    return dec
 
 
 class PintConverter(munits.ConversionInterface):
