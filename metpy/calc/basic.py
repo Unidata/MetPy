@@ -243,7 +243,7 @@ def pressure_to_height_std(pressure):
     t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
     p0 = 1013.25 * units.mbar
-    return (t0 / gamma) * (1 - (pressure / p0)**(Rd * gamma / g))
+    return (t0 / gamma) * (1 - (pressure / p0).to('dimensionless')**(Rd * gamma / g))
 
 
 @exporter.export

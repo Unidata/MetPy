@@ -228,6 +228,11 @@ def test_pressure_to_heights_basic():
     assert_almost_equal(heights, values, 1)
 
 
+def test_pressure_to_heights_units():
+    """Test that passing non-mbar units works."""
+    assert_almost_equal(pressure_to_height_std(29 * units.inHg), 262.859 * units.meter, 3)
+
+
 def test_coriolis_force():
     """Test basic coriolis force calculation."""
     lat = np.array([-90., -30., 0., 30., 90.]) * units.degrees
