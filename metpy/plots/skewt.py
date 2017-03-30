@@ -307,6 +307,7 @@ class SkewT(object):
         :func:`matplotlib.pyplot.semilogy`
         """
         # Skew-T logP plotting
+        t, p = delete_masked_points(t, p)
         l = self.ax.semilogy(t, p, *args, **kwargs)
 
         # Disables the log-formatting that comes with semilogy
