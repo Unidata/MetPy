@@ -305,8 +305,12 @@ class SkewT(object):
         --------
         :func:`matplotlib.pyplot.semilogy`
         """
+        # Mask and compress arrays for missing data
+        tm = np.ma.masked_array(t, mask=np.isnan(t)).compressed()
+        pm = np.ma.masked_array(p, mask=np.isnan(t)).compressed()
+
         # Skew-T logP plotting
-        l = self.ax.semilogy(t, p, *args, **kwargs)
+        l = self.ax.semilogy(tm, pm, *args, **kwargs)
 
         # Disables the log-formatting that comes with semilogy
         self.ax.yaxis.set_major_formatter(ScalarFormatter())
@@ -357,12 +361,17 @@ class SkewT(object):
         --------
         :func:`matplotlib.pyplot.barbs`
         """
+        # Mask and compress based in u-comp for missing data
+        um = np.ma.masked_array(u, mask=np.isnan(u)).compressed()
+        vm = np.ma.masked_array(v, mask=np.isnan(u)).compressed()
+        pm = np.ma.masked_array(p, mask=np.isnan(u)).compressed()
+
         # Assemble array of x-locations in axes space
-        x = np.empty_like(p)
+        x = np.empty_like(pm)
         x.fill(xloc)
 
         # Do barbs plot at this location
-        b = self.ax.barbs(x, p, u, v,
+        b = self.ax.barbs(x, pm, um, vm,
                           transform=self.ax.get_yaxis_transform(which='tick2'),
                           clip_on=True, **kwargs)
 
