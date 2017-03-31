@@ -1,32 +1,15 @@
-Contributors
-============
-
+Aaron Hill
 Alex Haberlie
-- Point Interpolation
-- resample_1d_nn
-
-kpozsonyi
-- Improved example gallery
-- Coriolis parameter
-- equivalent potential temperature
-- saturation mixing ratio
-- pressure to height using standard atmosphere
-- More examples
-
-J.R. Leeman
-- LFC/EL calculation, curve intersection
-
-Other Contributions
--------------------
-Kevin Goebbert
+Eric Bruning
+John Leeman
 Jonathan Helmus
-Will Holmgren
-Shawn Murdzek
+Kevin Goebbert
+kpozsonyi
+Michael James
 mmorello1
-
-Main Developers
----------------
+Nathan Wendt
+Patrick Marsh
 Ryan May
 Sean Arms
-Eric Bruning
-Patrick Marsh
+Shawn Murdzek
+Will Holmgren
