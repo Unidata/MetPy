@@ -1,10 +1,11 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2008-2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
 
 import numpy as np
 import numpy.ma as ma
+from scipy.spatial import cKDTree
 
 from ..package_tools import Exporter
 
@@ -185,3 +186,69 @@ def _next_non_masked_element(a, idx):
             return next_idx, a[next_idx]
     except (AttributeError, TypeError, IndexError):
         return idx, a[idx]
+
+
+@exporter.export
+def reduce_point_density(points, radius, priority=None):
+    r"""Return a mask to reduce the density of points in irregularly-spaced data.
+
+    This function is used to down-sample a collection of scattered points (e.g. surface
+    data), returning a mask that can be used to select the points from one or more arrays
+    (e.g. arrays of temperature and dew point). The points selected can be controlled by
+    providing an array of ``priority`` values (e.g. rainfall totals to ensure that
+    stations with higher precipitation remain in the mask).
+
+    Parameters
+    ----------
+    points : (N, K) array-like
+        N locations of the points in K dimensional space
+    radius : float
+        minimum radius allowed between points
+    priority : (N, K) array-like, optional
+        If given, this should have the same shape as ``points``; these values will
+        be used to control selection priority for points.
+
+    Returns
+    -------
+        (N,) array-like of boolean values indicating whether points should be kept. This
+        can be used directly to index numpy arrays to return only the desired points.
+
+    Examples
+    --------
+    >>> metpy.calc.reduce_point_density(np.array([1, 2, 3]), 1.)
+    array([ True, False,  True], dtype=bool)
+    >>> metpy.calc.reduce_point_density(np.array([1, 2, 3]), 1.,
+            priority=np.array([0.1, 0.9, 0.3]))
+    array([False,  True, False], dtype=bool)
+    """
+    # Handle 1D input
+    if points.ndim < 2:
+        points = points.reshape(-1, 1)
+
+    # Make a kd-tree to speed searching of data.
+    tree = cKDTree(points)
+
+    # Need to use sorted indices rather than sorting the position
+    # so that the keep mask matches *original* order.
+    if priority is not None:
+        # Need to sort the locations in decreasing priority.
+        sorted_indices = np.argsort(priority)[::-1]
+    else:
+        # Take advantage of iterator nature of range here to avoid making big lists
+        sorted_indices = range(len(points))
+
+    # Keep all points initially
+    keep = np.ones(len(points), dtype=np.bool)
+
+    # Loop over all the potential points
+    for ind in sorted_indices:
+        # Only proceed if we haven't already excluded this point
+        if keep[ind]:
+            # Find the neighbors and eliminate them
+            neighbors = tree.query_ball_point(points[ind], radius)
+            keep[neighbors] = False
+
+            # We just removed ourselves, so undo that
+            keep[ind] = True
+
+    return keep
