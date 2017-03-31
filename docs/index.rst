@@ -38,6 +38,7 @@ Documentation
    tutorials/index
    api/index
    developerguide
+   citing
    references
 
 ----------
@@ -51,6 +52,7 @@ Contact Us
   `GitHub issue tracker`__
 * MetPy has a Gitter_ chatroom for more "live" communication
 * MetPy can also be found on Twitter_
+* If you use MetPy in a publication, please see :ref:`Citing_MetPy`.
 
 .. _python-users: https://www.unidata.ucar.edu/support/#mailinglists
 .. _GitHub: https://github.com/Unidata/MetPy
