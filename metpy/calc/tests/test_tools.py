@@ -8,7 +8,7 @@ import numpy.ma as ma
 import pytest
 
 from metpy.calc import (find_intersections, interpolate_nans, nearest_intersection_idx,
-                        resample_nn_1d)
+                        reduce_point_density, resample_nn_1d)
 from metpy.calc.tools import _next_non_masked_element
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 
@@ -105,3 +105,54 @@ def test_non_masked_elements(mask, expected_idx, expected_element):
     idx, element = _next_non_masked_element(a, 1)
     assert idx == expected_idx
     assert element == expected_element
+
+
+@pytest.fixture
+def thin_point_data():
+    r"""Provide scattered points for testing."""
+    xy = np.array([[0.8793620, 0.9005706], [0.5382446, 0.8766988], [0.6361267, 0.1198620],
+                   [0.4127191, 0.0270573], [0.1486231, 0.3121822], [0.2607670, 0.4886657],
+                   [0.7132257, 0.2827587], [0.4371954, 0.5660840], [0.1318544, 0.6468250],
+                   [0.6230519, 0.0682618], [0.5069460, 0.2326285], [0.1324301, 0.5609478],
+                   [0.7975495, 0.2109974], [0.7513574, 0.9870045], [0.9305814, 0.0685815],
+                   [0.5271641, 0.7276889], [0.8116574, 0.4795037], [0.7017868, 0.5875983],
+                   [0.5591604, 0.5579290], [0.1284860, 0.0968003], [0.2857064, 0.3862123]])
+    return xy
+
+
+@pytest.mark.parametrize('radius, truth',
+                         [(2.0, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=np.bool)),
+                          (1.0, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                          0, 0, 0, 0, 0, 0, 0, 0, 1, 0], dtype=np.bool)),
+                          (0.3, np.array([1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0,
+                                          0, 0, 0, 0, 0, 1, 0, 0, 0, 0], dtype=np.bool)),
+                          (0.1, np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
+                                          0, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=np.bool))
+                          ])
+def test_reduce_point_density(thin_point_data, radius, truth):
+    r"""Test that reduce_point_density works."""
+    assert_array_equal(reduce_point_density(thin_point_data, radius=radius), truth)
+
+
+@pytest.mark.parametrize('radius, truth',
+                         [(2.0, np.array([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 1], dtype=np.bool)),
+                          (0.7, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+                                          0, 0, 0, 1, 0, 0, 0, 0, 0, 1], dtype=np.bool)),
+                          (0.3, np.array([1, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0,
+                                          0, 0, 0, 1, 0, 0, 0, 1, 0, 1], dtype=np.bool)),
+                          (0.1, np.array([1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1,
+                                          0, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=np.bool))
+                          ])
+def test_reduce_point_density_priority(thin_point_data, radius, truth):
+    r"""Test that reduce_point_density works properly with priority."""
+    key = np.array([8, 6, 2, 8, 6, 4, 4, 8, 8, 6, 3, 4, 3, 0, 7, 4, 3, 2, 3, 3, 9])
+    assert_array_equal(reduce_point_density(thin_point_data, radius, key), truth)
+
+
+def test_reduce_point_density_1d():
+    r"""Test that reduce_point_density works with 1D points."""
+    x = np.array([1, 3, 4, 8, 9, 10])
+    assert_array_equal(reduce_point_density(x, 2.5),
+                       np.array([1, 0, 1, 1, 0, 0], dtype=np.bool))
