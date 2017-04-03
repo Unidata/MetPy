@@ -88,6 +88,16 @@ def test_skewt_shade_area():
     return fig
 
 
+def test_skewt_shade_area_invalid():
+    """Test shading areas on a SkewT plot."""
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.plot(p, T, 'r')
+    skew.plot(p, Tp, 'k')
+    with pytest.raises(ValueError):
+        skew.shade_area(p, T, Tp, which='positve')
+
+
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_skewt_shade_area_kwargs():
     """Test shading areas on a SkewT plot with kwargs."""
