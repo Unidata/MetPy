@@ -3,6 +3,8 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
 
+import functools
+
 import numpy as np
 import numpy.ma as ma
 from scipy.spatial import cKDTree
@@ -186,6 +188,29 @@ def _next_non_masked_element(a, idx):
             return next_idx, a[next_idx]
     except (AttributeError, TypeError, IndexError):
         return idx, a[idx]
+
+
+def delete_masked_points(*arrs):
+    """Delete masked points from arrays.
+
+    Takes arrays and removes masked points to help with calculations and plotting.
+
+    Parameters
+    ----------
+    arrs : one or more array-like
+        source arrays
+
+    Returns
+    -------
+    arrs : one or more array-like
+        arrays with masked elements removed
+
+    """
+    if any(hasattr(a, 'mask') for a in arrs):
+        keep = ~functools.reduce(np.logical_or, (np.ma.getmaskarray(a) for a in arrs))
+        return tuple(ma.asarray(a[keep]) for a in arrs)
+    else:
+        return arrs
 
 
 @exporter.export

@@ -19,6 +19,7 @@ import numpy as np
 
 from ._util import colored_line
 from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
+from ..calc.tools import delete_masked_points
 from ..package_tools import Exporter
 from ..units import units
 
@@ -306,6 +307,7 @@ class SkewT(object):
         :func:`matplotlib.pyplot.semilogy`
         """
         # Skew-T logP plotting
+        t, p = delete_masked_points(t, p)
         l = self.ax.semilogy(t, p, *args, **kwargs)
 
         # Disables the log-formatting that comes with semilogy
@@ -633,6 +635,7 @@ class Hodograph(object):
         :meth:`Hodograph.plot_colormapped`
         """
         line_args = self._form_line_args(kwargs)
+        u, v = delete_masked_points(u, v)
         return self.ax.plot(u, v, **line_args)
 
     def plot_colormapped(self, u, v, c, **kwargs):
@@ -665,6 +668,7 @@ class Hodograph(object):
         :meth:`Hodograph.plot`
         """
         line_args = self._form_line_args(kwargs)
+        u, v, c = delete_masked_points(u, v, c)
         lc = colored_line(u, v, c, **line_args)
         self.ax.add_collection(lc)
         return lc
