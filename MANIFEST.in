@@ -5,12 +5,12 @@ include LICENSE
 include CONTRIBUTING.md
 include versioneer.py
 include metpy/_version.py
-recursive-include examples *
-recursive-include tutorials *
+recursive-include examples *.py *.txt
+recursive-include tutorials *.py *.txt
 recursive-include docs *
 prune docs/build
 prune docs/examples
 prune docs/tutorials
-prune docs/modules
-prune docs/source/__pycache__
+prune docs/api/generated
+prune **/__pycache__
 exclude .ipynb_checkpoints/*
