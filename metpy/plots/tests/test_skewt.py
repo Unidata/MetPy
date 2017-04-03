@@ -60,6 +60,45 @@ def test_skewt_with_grid_enabled():
         SkewT()
 
 
+p = np.linspace(1000, 100, 10)
+T = np.linspace(20, -20, 10)
+Tp = np.linspace(25, -30, 10)
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_skewt_shade_cape_cin():
+    """Test shading CAPE and CIN on a SkewT plot."""
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.plot(p, T, 'r')
+    skew.plot(p, Tp, 'k')
+    skew.shade_cape(p, T, Tp)
+    skew.shade_cin(p, T, Tp)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_skewt_shade_area():
+    """Test shading areas on a SkewT plot."""
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.plot(p, T, 'r')
+    skew.plot(p, Tp, 'k')
+    skew.shade_area(p, T, Tp)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_skewt_shade_area_kwargs():
+    """Test shading areas on a SkewT plot with kwargs."""
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.plot(p, T, 'r')
+    skew.plot(p, Tp, 'k')
+    skew.shade_area(p, T, Tp, facecolor='m')
+    return fig
+
+
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_api():
     """Basic test of Hodograph API."""
