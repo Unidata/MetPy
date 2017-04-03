@@ -9,7 +9,7 @@ import pytest
 
 from metpy.calc import (find_intersections, interpolate_nans, nearest_intersection_idx,
                         reduce_point_density, resample_nn_1d)
-from metpy.calc.tools import delete_masked_points, _next_non_masked_element
+from metpy.calc.tools import _next_non_masked_element, delete_masked_points
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 
 
@@ -158,15 +158,11 @@ def test_reduce_point_density_1d():
                        np.array([1, 0, 1, 1, 0, 0], dtype=np.bool))
 
 
-a = ma.masked_array(np.arange(5), mask=[False, True, False, False, False])
-b = ma.masked_array(np.arange(5), mask=[False, False, False, True, False])
-
-@pytest.mark.parametrize('arrs, expected', [
-    ((a, b), np.array([0, 2, 4])),
-    ((a), np.array([0, 1, 2, 4])),
-    ((a.compressed()), np.array([0, 1, 2, 4]))
-])
-def test_delete_masked_points(arrs, expected):
+def test_delete_masked_points():
     """Test deleting masked points."""
-    arrs = delete_masked_points(*arrs)
-    assert arrs == expected
+    a = ma.masked_array(np.arange(5), mask=[False, True, False, False, False])
+    b = ma.masked_array(np.arange(5), mask=[False, False, False, True, False])
+    expected = np.array([0, 2, 4])
+    a, b = delete_masked_points(a, b)
+    assert_array_equal(a, expected)
+    assert_array_equal(b, expected)
