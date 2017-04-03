@@ -60,52 +60,57 @@ def test_skewt_with_grid_enabled():
         SkewT()
 
 
-p = np.linspace(1000, 100, 10)
-T = np.linspace(20, -20, 10)
-Tp = np.linspace(25, -30, 10)
+@pytest.fixture()
+def test_profile():
+    """Return data for a test profile."""
+    return np.linspace(1000, 100, 10), np.linspace(20, -20, 10), np.linspace(25, -30, 10)
 
 
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
-def test_skewt_shade_cape_cin():
+def test_skewt_shade_cape_cin(test_profile):
     """Test shading CAPE and CIN on a SkewT plot."""
+    p, t, tp = test_profile
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig)
-    skew.plot(p, T, 'r')
-    skew.plot(p, Tp, 'k')
-    skew.shade_cape(p, T, Tp)
-    skew.shade_cin(p, T, Tp)
+    skew.plot(p, t, 'r')
+    skew.plot(p, tp, 'k')
+    skew.shade_cape(p, t, tp)
+    skew.shade_cin(p, t, tp)
     return fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
-def test_skewt_shade_area():
+def test_skewt_shade_area(test_profile):
     """Test shading areas on a SkewT plot."""
+    p, t, tp = test_profile
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig)
-    skew.plot(p, T, 'r')
-    skew.plot(p, Tp, 'k')
-    skew.shade_area(p, T, Tp)
+    skew.plot(p, t, 'r')
+    skew.plot(p, tp, 'k')
+    skew.shade_area(p, t, tp)
     return fig
 
 
-def test_skewt_shade_area_invalid():
+def test_skewt_shade_area_invalid(test_profile):
     """Test shading areas on a SkewT plot."""
+    p, t, tp = test_profile
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig)
-    skew.plot(p, T, 'r')
-    skew.plot(p, Tp, 'k')
+    skew.plot(p, t, 'r')
+    skew.plot(p, tp, 'k')
     with pytest.raises(ValueError):
-        skew.shade_area(p, T, Tp, which='positve')
+        skew.shade_area(p, t, tp, which='positve')
 
 
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
-def test_skewt_shade_area_kwargs():
+def test_skewt_shade_area_kwargs(test_profile):
     """Test shading areas on a SkewT plot with kwargs."""
+    p, t, tp = test_profile
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig)
-    skew.plot(p, T, 'r')
-    skew.plot(p, Tp, 'k')
-    skew.shade_area(p, T, Tp, facecolor='m')
+    skew.plot(p, t, 'r')
+    skew.plot(p, tp, 'k')
+    skew.shade_area(p, t, tp, facecolor='m')
     return fig
 
 
