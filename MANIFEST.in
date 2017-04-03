@@ -1,4 +1,6 @@
 include README.rst
+include CITATION.txt
+include AUTHORS.txt
 include LICENSE
 include CONTRIBUTING.md
 include versioneer.py
