@@ -524,6 +524,114 @@ class SkewT(object):
         kwargs.setdefault('alpha', 0.8)
         return self.ax.add_collection(LineCollection(linedata, **kwargs))
 
+    def shade_area(self, y, x1, x2=0, which='both', **kwargs):
+        r"""Shade area between two curves.
+
+        Shades areas between curves. Area can be where one is greater or less than the other
+        or all areas shaded.
+
+        Parameters
+        ----------
+        y : array_like
+            1-dimensional array of numeric y-values
+        x1 : array_like
+            1-dimensional array of numeric x-values
+        x2 : array_like
+            1-dimensional array of numeric x-values
+        which : string
+            Specifies if `positive`, `negative`, or `both` areas are being shaded.
+            Will be overridden by where.
+        kwargs
+            Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`
+
+        Returns
+        -------
+        :class:`matplotlib.collections.PolyCollection`
+
+        See Also
+        --------
+        :class:`matplotlib.collections.PolyCollection`
+        :func:`matplotlib.axes.Axes.fill_betweenx`
+        """
+        fill_properties = {'positive':
+                           {'facecolor': 'tab:red', 'alpha': 0.4, 'where': x1 > x2},
+                           'negative':
+                           {'facecolor': 'tab:blue', 'alpha': 0.4, 'where': x1 < x2},
+                           'both':
+                           {'facecolor': 'tab:green', 'alpha': 0.4, 'where': None}}
+
+        try:
+            fill_args = fill_properties[which]
+            fill_args.update(kwargs)
+        except KeyError:
+            raise ValueError('Unknown option for which: {0}'.format(str(which)))
+
+        arrs = y, x1, x2
+
+        if fill_args['where'] is not None:
+            arrs = arrs + (fill_args['where'],)
+            fill_args.pop('where', None)
+
+        arrs = delete_masked_points(*arrs)
+
+        return self.ax.fill_betweenx(*arrs, **fill_args)
+
+    def shade_cape(self, p, t, t_parcel, **kwargs):
+        r"""Shade areas of CAPE.
+
+        Shades areas where the parcel is warmer than the environment (areas of positive
+        buoyancy.
+
+        Parameters
+        ----------
+        p : array_like
+            Pressure values
+        t : array_like
+            Temperature values
+        t_parcel : array_like
+            Parcel path temperature values
+        kwargs
+            Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`
+
+        Returns
+        -------
+        :class:`matplotlib.collections.PolyCollection`
+
+        See Also
+        --------
+        :class:`matplotlib.collections.PolyCollection`
+        :func:`matplotlib.axes.Axes.fill_betweenx`
+        """
+        return self.shade_area(p, t_parcel, t, which='positive', **kwargs)
+
+    def shade_cin(self, p, t, t_parcel, **kwargs):
+        r"""Shade areas of CIN.
+
+        Shades areas where the parcel is cooler than the environment (areas of negative
+        buoyancy.
+
+        Parameters
+        ----------
+        p : array_like
+            Pressure values
+        t : array_like
+            Temperature values
+        t_parcel : array_like
+            Parcel path temperature values
+        kwargs
+            Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`
+
+        Returns
+        -------
+        :class:`matplotlib.collections.PolyCollection`
+
+        See Also
+        --------
+        :class:`matplotlib.collections.PolyCollection`
+        :func:`matplotlib.axes.Axes.fill_betweenx`
+        """
+        return self.shade_area(p, t_parcel, t, which='negative', **kwargs)
+
 
 @exporter.export
 class Hodograph(object):

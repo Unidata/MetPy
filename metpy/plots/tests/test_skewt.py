@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `skewt` module."""
 
+import matplotlib
 from matplotlib.gridspec import GridSpec
 import matplotlib.pyplot as plt
 import numpy as np
@@ -12,6 +13,8 @@ from metpy.plots import Hodograph, SkewT
 # Fixtures to make sure we have the right backend and consistent round
 from metpy.testing import patch_round, set_agg_backend  # noqa: F401
 from metpy.units import units
+
+MPL_VERSION = matplotlib.__version__[:3]
 
 
 @pytest.mark.mpl_image_compare(tolerance=0.021, remove_text=True)
@@ -58,6 +61,60 @@ def test_skewt_with_grid_enabled():
     with plt.rc_context(rc={'axes.grid': True}):
         # Also tests when we don't pass in Figure
         SkewT()
+
+
+@pytest.fixture()
+def test_profile():
+    """Return data for a test profile."""
+    return np.linspace(1000, 100, 10), np.linspace(20, -20, 10), np.linspace(25, -30, 10)
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.71}.get(MPL_VERSION, 0.), remove_text=True)
+def test_skewt_shade_cape_cin(test_profile):
+    """Test shading CAPE and CIN on a SkewT plot."""
+    p, t, tp = test_profile
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.plot(p, t, 'r')
+    skew.plot(p, tp, 'k')
+    skew.shade_cape(p, t, tp)
+    skew.shade_cin(p, t, tp)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.70}.get(MPL_VERSION, 0.), remove_text=True)
+def test_skewt_shade_area(test_profile):
+    """Test shading areas on a SkewT plot."""
+    p, t, tp = test_profile
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.plot(p, t, 'r')
+    skew.plot(p, tp, 'k')
+    skew.shade_area(p, t, tp)
+    return fig
+
+
+def test_skewt_shade_area_invalid(test_profile):
+    """Test shading areas on a SkewT plot."""
+    p, t, tp = test_profile
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.plot(p, t, 'r')
+    skew.plot(p, tp, 'k')
+    with pytest.raises(ValueError):
+        skew.shade_area(p, t, tp, which='positve')
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.75}.get(MPL_VERSION, 0.), remove_text=True)
+def test_skewt_shade_area_kwargs(test_profile):
+    """Test shading areas on a SkewT plot with kwargs."""
+    p, t, tp = test_profile
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.plot(p, t, 'r')
+    skew.plot(p, tp, 'k')
+    skew.shade_area(p, t, tp, facecolor='m')
+    return fig
 
 
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
