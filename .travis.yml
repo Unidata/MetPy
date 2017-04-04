@@ -124,10 +124,12 @@ after_script:
     fi
 
 before_deploy:
-  - touch docs/build/html/.nojekyll
   # Remove unused, unminified javascript from sphinx
-  - rm -f docs/build/html/_static/jquery-*.js
-  - rm -f docs/build/html/_static/underscore-*.js
+  - if [[ $TASK == "docs" ]]; then
+      touch docs/build/html/.nojekyll;
+      rm -f docs/build/html/_static/jquery-*.js;
+      rm -f docs/build/html/_static/underscore-*.js;
+    fi
 
 deploy:
   - provider: pypi
