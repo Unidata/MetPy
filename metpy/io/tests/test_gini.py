@@ -102,9 +102,11 @@ def test_gini_dataset(filename, bounds, data_var, proj_attrs):
     assert_almost_equal(x[0], x0, 4)
     assert_almost_equal(x[-1], x1, 4)
 
+    # Because the actual data raster has the top row first, the maximum y value is y[0],
+    # while the the minimum y value is y[-1]
     y = ds.variables['y']
-    assert_almost_equal(y[0], y0, 4)
-    assert_almost_equal(y[-1], y1, 4)
+    assert_almost_equal(y[-1], y0, 4)
+    assert_almost_equal(y[0], y1, 4)
 
     xmin, xmax, ymin, ymax = ds.img_extent
     assert_almost_equal(xmin, x0, 4)
@@ -118,9 +120,9 @@ def test_gini_dataset(filename, bounds, data_var, proj_attrs):
     for attr, val in proj_attrs.items():
         assert getattr(proj_var, attr) == val, 'Values mismatch for ' + attr
 
-    # Check the lon/lat corner
-    assert_almost_equal(ds.variables['lon'][0, 0], f.prod_desc.lo1, 4)
-    assert_almost_equal(ds.variables['lat'][0, 0], f.prod_desc.la1, 4)
+    # Check the lower left lon/lat corner
+    assert_almost_equal(ds.variables['lon'][-1, 0], f.prod_desc.lo1, 4)
+    assert_almost_equal(ds.variables['lat'][-1, 0], f.prod_desc.la1, 4)
 
 
 def test_gini_mercator_upper_corner():
@@ -132,8 +134,8 @@ def test_gini_mercator_upper_corner():
 
     # 2nd corner lat/lon are at the "upper right" corner of the pixel, so need to add one
     # more grid point
-    assert_almost_equal(lon[-1, -1] + (lon[-1, -1] - lon[-1, -2]), f.proj_info.lo2, 4)
-    assert_almost_equal(lat[-1, -1] + (lat[-1, -1] - lat[-2, -1]), f.proj_info.la2, 4)
+    assert_almost_equal(lon[0, -1] + (lon[0, -1] - lon[0, -2]), f.proj_info.lo2, 4)
+    assert_almost_equal(lat[0, -1] + (lat[0, -1] - lat[1, -1]), f.proj_info.la2, 4)
 
 
 def test_gini_str():
