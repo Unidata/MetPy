@@ -105,7 +105,7 @@ script:
       make clean html linkcheck;
       export DOC_BUILD_RESULT=$?;
       popd;
-      doc8 README.rst docs/;
+      doc8 --file-encoding utf8 README.rst docs/;
       if [[ $DOC_BUILD_RESULT -ne 0 || $? -ne 0 ]]; then
         false;
       fi;
