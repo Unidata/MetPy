@@ -101,6 +101,12 @@ def test_windchill_basic():
     assert_array_almost_equal(wc, values, 0)
 
 
+def test_windchill_kelvin():
+    """Test wind chill when given Kelvin temperatures."""
+    wc = windchill(268.15 * units.kelvin, 35 * units('m/s'))
+    assert_almost_equal(wc, -18.9357 * units.degC, 0)
+
+
 def test_windchill_invalid():
     """Test windchill for values that should be masked."""
     temp = np.array([10, 51, 49, 60, 80, 81]) * units.degF

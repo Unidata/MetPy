@@ -156,9 +156,8 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
     temp_limit, speed_limit = 10. * units.degC, 3 * units.mph
     speed_factor = speed.to('km/hr').magnitude ** 0.16
-    delta = temperature - 0. * units.degC
-    wcti = (13.12 * units.degC + 0.6215 * delta -
-            11.37 * units.delta_degC * speed_factor + 0.3965 * delta * speed_factor)
+    wcti = units.Quantity((0.6215 + 0.3965 * speed_factor) * temperature.to('degC').magnitude -
+                          11.37 * speed_factor + 13.12, units.degC).to(temperature.units)
 
     # See if we need to mask any undefined values
     if mask_undefined:
