@@ -340,7 +340,10 @@ def _add_projection_coords(ds, prod_desc, proj_var, dx, dy):
     y_var.units = 'm'
     y_var.long_name = 'y coordinate of projection'
     y_var.standard_name = 'projection_y_coordinate'
-    y_var[:] = y0 + np.arange(prod_desc.ny) * (1000. * dy)
+
+    # Need to flip y because we calculated from the lower left corner, but the raster data
+    # is stored with top row first.
+    y_var[::-1] = y0 + np.arange(prod_desc.ny) * (1000. * dy)
 
     # Get the two-D lon,lat grid as well
     x, y = np.meshgrid(x_var[:], y_var[:])
