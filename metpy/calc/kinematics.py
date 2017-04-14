@@ -44,9 +44,9 @@ def v_vorticity(u, v, dx, dy):
 
     Parameters
     ----------
-    u : (X, Y) ndarray
+    u : (M, N) ndarray
         x component of the wind
-    v : (X, Y) ndarray
+    v : (M, N) ndarray
         y component of the wind
     dx : float
         The grid spacing in the x-direction
@@ -55,7 +55,7 @@ def v_vorticity(u, v, dx, dy):
 
     Returns
     -------
-    (X, Y) ndarray
+    (M, N) ndarray
         vertical vorticity
 
     See Also
@@ -74,9 +74,9 @@ def h_convergence(u, v, dx, dy):
 
     Parameters
     ----------
-    u : (X, Y) ndarray
+    u : (M, N) ndarray
         x component of the wind
-    v : (X, Y) ndarray
+    v : (M, N) ndarray
         y component of the wind
     dx : float
         The grid spacing in the x-direction
@@ -85,7 +85,7 @@ def h_convergence(u, v, dx, dy):
 
     Returns
     -------
-    (X, Y) ndarray
+    (M, N) ndarray
         The horizontal convergence
 
     See Also
@@ -104,9 +104,9 @@ def convergence_vorticity(u, v, dx, dy):
 
     Parameters
     ----------
-    u : (X, Y) ndarray
+    u : (M, N) ndarray
         x component of the wind
-    v : (X, Y) ndarray
+    v : (M, N) ndarray
         y component of the wind
     dx : float
         The grid spacing in the x-direction
@@ -115,7 +115,7 @@ def convergence_vorticity(u, v, dx, dy):
 
     Returns
     -------
-    convergence, vorticity : tuple of (X, Y) ndarrays
+    convergence, vorticity : tuple of (M, N) ndarrays
         The horizontal convergence and vertical vorticity, respectively
 
     See Also
@@ -177,9 +177,9 @@ def geostrophic_wind(heights, f, dx, dy):
 
     Parameters
     ----------
-    heights : (x,y) ndarray
-        The height field, given with leading dimensions of x by y.  There
-        can be trailing dimensions on the array.
+    heights : (M, N) ndarray
+        The height field, with either leading dimensions of (x, y) or trailing dimensions
+        of (y, x), depending on the value of ``dim_order``.
     f : array_like
         The coriolis parameter.  This can be a scalar to be applied
         everywhere or an array of values.
