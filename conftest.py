@@ -6,7 +6,10 @@
 import matplotlib
 import numpy
 import pint
+import pytest
 import scipy
+
+import metpy.calc
 
 
 def pytest_report_header(config, startdir):
@@ -14,3 +17,11 @@ def pytest_report_header(config, startdir):
     return ('Dependencies: Matplotlib ({}), NumPy ({}), '
             'Pint ({}), SciPy ({})'.format(matplotlib.__version__, numpy.__version__,
                                            pint.__version__, scipy.__version__))
+
+
+@pytest.fixture(autouse=True)
+def doctest_available_modules(doctest_namespace):
+    """Make modules available automatically to doctests."""
+    doctest_namespace['metpy'] = metpy
+    doctest_namespace['metpy.calc'] = metpy.calc
+    doctest_namespace['plt'] = matplotlib.pyplot

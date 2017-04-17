@@ -243,7 +243,7 @@ def reduce_point_density(points, radius, priority=None):
     >>> metpy.calc.reduce_point_density(np.array([1, 2, 3]), 1.)
     array([ True, False,  True], dtype=bool)
     >>> metpy.calc.reduce_point_density(np.array([1, 2, 3]), 1.,
-            priority=np.array([0.1, 0.9, 0.3]))
+    ... priority=np.array([0.1, 0.9, 0.3]))
     array([False,  True, False], dtype=bool)
     """
     # Handle 1D input

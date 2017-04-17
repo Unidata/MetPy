@@ -53,7 +53,7 @@ def potential_temperature(pressure, temperature):
     --------
     >>> from metpy.units import units
     >>> metpy.calc.potential_temperature(800. * units.mbar, 273. * units.kelvin)
-    290.9814150577374
+    <Quantity(290.96653180346203, 'kelvin')>
     """
     return temperature * (P0 / pressure).to('dimensionless')**kappa
 
