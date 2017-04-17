@@ -155,15 +155,19 @@ if not hasattr(Axes, 'scattertext'):
         Individual keyword arguments can be used to override any given
         parameter::
 
-            >>> scattertext(x, y, texts, fontsize=12)
+            >>> ax = plt.axes()
+            >>> ax.scattertext([0.25, 0.75], [0.25, 0.75], ['aa', 'bb'],
+            ... fontsize=12)  #doctest: +ELLIPSIS
+            <metpy.plots._mpl.TextCollection object at 0x...>
 
-        The default setting to to center the text at the specified x,y
-        locations in data coordinates, and to take the data and format as
-        float without any decimal places. The example below places the text
-        above and to the right by 10 pixels, with 2 decimal places::
+        The default setting to to center the text at the specified x, y
+        locations in data coordinates. The example below places the text
+        above and to the right by 10 pixels::
 
-            >>> scattertext([0.25, 0.75], [0.25, 0.75], [0.5, 1.0],
-            ...             loc=(10, 10))
+            >>> ax = plt.axes()
+            >>> ax.scattertext([0.25, 0.75], [0.25, 0.75], ['aa', 'bb'],
+            ... loc=(10, 10))  #doctest: +ELLIPSIS
+            <metpy.plots._mpl.TextCollection object at 0x...>
         """
         # Start with default args and update from kw
         new_kw = {
