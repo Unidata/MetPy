@@ -574,7 +574,7 @@ class SkewT(object):
 
         arrs = delete_masked_points(*arrs)
 
-        return self.ax.fill_betweenx(*arrs, **fill_args)
+        return self.ax.fill_betweenx(interpolate=True, *arrs, **fill_args)
 
     def shade_cape(self, p, t, t_parcel, **kwargs):
         r"""Shade areas of CAPE.
