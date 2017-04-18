@@ -62,6 +62,15 @@ def check_and_drop_units(actual, desired):
     return actual, desired
 
 
+def assert_nan(value, units):
+    """Helper to check for nan with proper units."""
+    if not np.isnan(value):
+        pytest.fail('{} is not np.nan'.format(value))
+
+    check_and_drop_units(value, np.nan * units)
+    return True
+
+
 def assert_almost_equal(actual, desired, decimal=7):
     """Check that values are almost equal, including units.
 
