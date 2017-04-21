@@ -62,7 +62,7 @@ before_install:
   - if [[ $TASK == "docs" ]]; then
       if ! git describe --tags; then git fetch --depth=150; fi;
       export EXTRA_INSTALLS="cdm,doc,examples";
-      export EXTRA_PACKAGES="Cython pillow shapely<1.5.17.post1 sphinx_rtd_theme pytest";
+      export EXTRA_PACKAGES="Cython pillow shapely<1.5.17.post1 sphinx_rtd_theme pytest pydocstyle<2";
       ls $HOME/local/lib/;
       if [[ ! -f $HOME/local/lib/libproj.so ]]; then
         wget http://download.osgeo.org/proj/proj-4.9.3.tar.gz;
