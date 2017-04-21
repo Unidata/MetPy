@@ -78,13 +78,14 @@ before_install:
       export LD_LIBRARY_PATH="$HOME/local/lib";
       pkg-config --modversion proj;
     else
+      export EXTRA_PACKAGES="pydocstyle<2";
       export TEST_OPTS="--flake8 --mpl";
       if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then
-        pip install flake8-bugbear;
+        export EXTRA_PACKAGES="$EXTRA_PACKAGES flake8-bugbear";
       fi;
       if [[ $TASK == "coverage" ]]; then
         export TEST_OPTS="$TEST_OPTS --cov=metpy";
-        pip install pytest-cov;
+        export EXTRA_PACKAGES="$EXTRA_PACKAGES pytest-cov";
       fi;
     fi;
   - mkdir $WHEELDIR;
