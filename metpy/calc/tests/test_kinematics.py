@@ -7,7 +7,8 @@ import numpy as np
 import pytest
 
 from metpy.calc import (advection, convergence_vorticity, geostrophic_wind, h_convergence,
-                        v_vorticity)
+                        shearing_deformation, shearing_stretching_deformation,
+                        stretching_deformation, v_vorticity)
 from metpy.constants import g, omega, Re
 from metpy.testing import assert_almost_equal, assert_array_equal
 from metpy.units import concatenate, units
@@ -128,6 +129,86 @@ def test_convergence_asym():
     # Now try for xy ordered
     c = h_convergence(u.T, v.T, 1 * units.meters, 2 * units.meters, dim_order='xy')
     assert_array_equal(c, true_c.T)
+
+
+def test_shst_zero_gradient():
+    """Test shear_stretching_deformation when there is zero gradient."""
+    u = np.ones((3, 3)) * units('m/s')
+    sh, st = shearing_stretching_deformation(u, u, 1 * units.meter, 1 * units.meter,
+                                             dim_order='xy')
+    truth = np.zeros_like(u) / units.sec
+    assert_array_equal(sh, truth)
+    assert_array_equal(st, truth)
+
+
+def test_shst_zero_stretching():
+    """Test shear_stretching_deformation when there is only shearing."""
+    a = np.arange(3)
+    u = np.c_[a, a, a] * units('m/s')
+    sh, st = shearing_stretching_deformation(u, u.T, 1 * units.meter, 1 * units.meter,
+                                             dim_order='yx')
+    true_sh = 2. * np.ones_like(u) / units.sec
+    true_st = np.zeros_like(u) / units.sec
+    assert_array_equal(sh, true_sh)
+    assert_array_equal(st, true_st)
+
+
+def test_shst_deformation():
+    """Test of shearing and stretching deformation calculation for basic case."""
+    a = np.arange(3)
+    u = np.c_[a, a, a] * units('m/s')
+    sh, st = shearing_stretching_deformation(u, u, 1 * units.meter, 1 * units.meter,
+                                             dim_order='xy')
+    true_sh = np.ones_like(u) / units.sec
+    true_st = np.ones_like(u) / units.sec
+    assert_array_equal(sh, true_st)
+    assert_array_equal(st, true_sh)
+
+
+def test_shst_deformation_asym():
+    """Test vorticity and convergence calculation with a complicated field."""
+    u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
+    v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
+    sh, st = shearing_stretching_deformation(u, v, 1 * units.meters, 2 * units.meters,
+                                             dim_order='yx')
+    true_sh = np.array([[-3., 0., 1.], [4.5, -0.5, -6.], [2., 4., 7.]]) / units.sec
+    true_st = np.array([[4., 2., 8.], [3., 1.5, 0.5], [2., 4., -1.]]) / units.sec
+    assert_array_equal(sh, true_sh)
+    assert_array_equal(st, true_st)
+
+    # Now try for yx ordered
+    sh, st = shearing_stretching_deformation(u.T, v.T, 1 * units.meters, 2 * units.meters,
+                                             dim_order='xy')
+    assert_array_equal(sh, true_sh.T)
+    assert_array_equal(st, true_st.T)
+
+
+def test_shearing_deformation_asym():
+    """Test vorticity and convergence calculation with a complicated field."""
+    u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
+    v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
+    sh = shearing_deformation(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
+    true_sh = np.array([[-3., 0., 1.], [4.5, -0.5, -6.], [2., 4., 7.]]) / units.sec
+    assert_array_equal(sh, true_sh)
+
+    # Now try for yx ordered
+    sh = shearing_deformation(u.T, v.T, 1 * units.meters, 2 * units.meters,
+                              dim_order='xy')
+    assert_array_equal(sh, true_sh.T)
+
+
+def test_stretching_deformation_asym():
+    """Test vorticity and convergence calculation with a complicated field."""
+    u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
+    v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
+    st = stretching_deformation(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
+    true_st = np.array([[4., 2., 8.], [3., 1.5, 0.5], [2., 4., -1.]]) / units.sec
+    assert_array_equal(st, true_st)
+
+    # Now try for yx ordered
+    st = stretching_deformation(u.T, v.T, 1 * units.meters, 2 * units.meters,
+                                dim_order='xy')
+    assert_array_equal(st, true_st.T)
 
 
 def test_advection_uniform():
