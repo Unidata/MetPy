@@ -219,7 +219,7 @@ def lfc(pressure, temperature, dewpt):
     Returns
     -------
     `pint.Quantity`
-        The LFC
+        The LFC pressure and temperature
 
     See Also
     --------
@@ -232,7 +232,7 @@ def lfc(pressure, temperature, dewpt):
     x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:],
                               direction='increasing')
     if len(x) == 0:
-        return None, None
+        return np.nan * pressure.units, np.nan * temperature.units
     else:
         return x[0], y[0]
 
@@ -269,7 +269,7 @@ def el(pressure, temperature, dewpt):
 
     # If there is only one intersection, it's the LFC and we return None.
     if len(x) <= 1:
-        return None, None
+        return np.nan * pressure.units, np.nan * temperature.units
     else:
         return x[-1], y[-1]
 

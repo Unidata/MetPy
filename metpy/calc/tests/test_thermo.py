@@ -13,7 +13,7 @@ from metpy.calc import (density, dewpoint, dewpoint_rh, dry_lapse, el,
                         saturation_mixing_ratio, saturation_vapor_pressure, vapor_pressure,
                         virtual_potential_temperature, virtual_temperature)
 
-from metpy.testing import assert_almost_equal, assert_array_almost_equal
+from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import units
 
 
@@ -186,8 +186,8 @@ def test_no_lfc():
     temperatures = np.array([22.2, 17.4, 14.6, 1.4, -17.6, -39.4, -52.5]) * units.celsius
     dewpoints = np.array([9., 4.3, -21.2, -26.7, -31., -53.3, -66.7]) * units.celsius
     lfc_pressure, lfc_temperature = lfc(levels, temperatures, dewpoints)
-    assert lfc_pressure is None
-    assert lfc_temperature is None
+    assert assert_nan(lfc_pressure, levels.units)
+    assert assert_nan(lfc_temperature, temperatures.units)
 
 
 def test_lfc_inversion():
@@ -260,8 +260,8 @@ def test_no_el():
     temperatures = np.array([22.2, 17.4, 14.6, 1.4, -17.6, -39.4, -52.5]) * units.celsius
     dewpoints = np.array([19., 14.3, -11.2, -16.7, -21., -43.3, -56.7]) * units.celsius
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
-    assert el_pressure is None
-    assert el_temperature is None
+    assert assert_nan(el_pressure, levels.units)
+    assert assert_nan(el_temperature, temperatures.units)
 
 
 def test_wet_psychrometric_vapor_pressure():
