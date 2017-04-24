@@ -204,6 +204,104 @@ def convergence_vorticity(u, v, dx, dy):
 
 @exporter.export
 @ensure_yx_order
+def shearing_deformation(u, v, dx, dy):
+    r"""Calculate the shearing deformation of the horizontal wind.
+
+    The grid must have a constant spacing in each direction.
+
+    Parameters
+    ----------
+    u : (M, N) ndarray
+        x component of the wind
+    v : (M, N) ndarray
+        y component of the wind
+    dx : float
+        The grid spacing in the x-direction
+    dy : float
+        The grid spacing in the y-direction
+
+    Returns
+    -------
+    (M, N) ndarray
+        Shearing Deformation
+
+    See Also
+    --------
+    stretching_convergence, shearing_stretching_deformation
+    """
+    _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
+    return dvdx + dudy
+
+
+@exporter.export
+@ensure_yx_order
+def stretching_deformation(u, v, dx, dy):
+    r"""Calculate the stretching deformation of the horizontal wind.
+
+    The grid must have a constant spacing in each direction.
+
+    Parameters
+    ----------
+    u : (M, N) ndarray
+        x component of the wind
+    v : (M, N) ndarray
+        y component of the wind
+    dx : float
+        The grid spacing in the x-direction
+    dy : float
+        The grid spacing in the y-direction
+
+    Returns
+    -------
+    (M, N) ndarray
+        Stretching Deformation
+
+    See Also
+    --------
+    shearing_deformation, shearing_stretching_deformation
+    """
+    dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
+    return dudx - dvdy
+
+
+@exporter.export
+@ensure_yx_order
+def shearing_stretching_deformation(u, v, dx, dy):
+    r"""Calculate the horizontal shearing and stretching deformation of the horizontal wind.
+
+    The grid must have a constant spacing in each direction.
+
+    Parameters
+    ----------
+    u : (M, N) ndarray
+        x component of the wind
+    v : (M, N) ndarray
+        y component of the wind
+    dx : float
+        The grid spacing in the x-direction
+    dy : float
+        The grid spacing in the y-direction
+
+    Returns
+    -------
+    shearing, strectching : tuple of (M, N) ndarrays
+        The horizontal shearing and stretching deformation, respectively
+
+    See Also
+    --------
+    shearing_deformation, stretching_deformation
+
+    Notes
+    -----
+    This is a convenience function that will do less work than calculating
+    the shearing and streching deformation terms separately.
+    """
+    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    return dvdx + dudy, dudx - dvdy
+
+
+@exporter.export
+@ensure_yx_order
 def advection(scalar, wind, deltas):
     r"""Calculate the advection of a scalar field by the wind.
 
