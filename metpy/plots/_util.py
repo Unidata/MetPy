@@ -3,10 +3,81 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Utilities for use in making plots."""
 
+from datetime import datetime
+import os
+
 from matplotlib.collections import LineCollection
+from matplotlib.pyplot import imread
 import numpy as np
 
 from ..units import concatenate
+
+
+def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', **kwargs):
+    """Add a timestamp at plot creation time.
+
+    Adds an ISO format timestamp with the time of plot creation to the plot.
+
+    Parameters
+    ----------
+    ax : `matplotlib.axes.Axes`
+        The `Axes` instance used for plotting
+    time : `datetime.datetime`
+        Specific time to be plotted - datetime.utcnow will be use if not specified
+    x : float
+        Relative x position on the axes of the timestamp
+    y : float
+        Relative y position on the axes of the timestamp
+    ha : str
+        Horizontal alignment of the time stamp string
+
+    Returns
+    -------
+    ax : `matplotlib.axes.Axes`
+        The `Axes` instance used for plotting
+
+    """
+    if not time:
+        time = datetime.utcnow()
+    timestr = datetime.strftime(time, 'Created: %Y-%m-%dT%H:%M:%SZ')
+    ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **kwargs)
+    return ax
+
+
+def add_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
+    """Add the MetPy logo to a figure.
+
+    Adds an image of the MetPy logo to the figure.
+
+    Parameters
+    ----------
+    fig : `matplotlib.figure`
+       The `figure` instance used for plotting
+    x : int
+       x position padding in pixels
+    y : float
+       y position padding in pixels
+    zorder : int
+       The zorder of the logo
+    size : str
+       Size of logo to be used. Can be 'small' for 75 px square or 'large' for
+       150 px square.
+
+    Returns
+    -------
+    fig : `matplotlib.figure`
+       The `figure` instance used for plotting
+
+    """
+    fnames = {'small': 'metpy_75x75.png',
+              'large': 'metpy_150x150.png'}
+    try:
+        metpy_logo = imread(os.path.join(os.path.dirname(__file__), '_static', fnames[size]))
+    except KeyError:
+        raise ValueError('Unknown option for size: {0}'.format(str(size)))
+
+    fig.figimage(metpy_logo, x, y, zorder=zorder, **kwargs)
+    return fig
 
 
 # Not part of public API
