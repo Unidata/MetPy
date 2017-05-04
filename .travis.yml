@@ -78,7 +78,6 @@ before_install:
       export LD_LIBRARY_PATH="$HOME/local/lib";
       pkg-config --modversion proj;
     else
-      export EXTRA_PACKAGES="pydocstyle<2";
       export TEST_OPTS="--flake8 --mpl";
       if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then
         export EXTRA_PACKAGES="$EXTRA_PACKAGES flake8-bugbear";
