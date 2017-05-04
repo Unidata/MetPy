@@ -106,7 +106,7 @@ script:
       export DOC_BUILD_RESULT=$?;
       popd;
       if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then
-        pytest --doctest-modules -k "not test" metpy;
+        MPLBACKEND='agg' pytest --doctest-modules -k "not test" metpy;
         export DOC_TEST_RESULT=$?;
       else
         export DOC_TEST_RESULT=0;
