@@ -45,6 +45,7 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
     -------
     img: (M, N) ndarray
         Interpolated values on a 2-dimensional grid
+
     """
     tri = Delaunay(list(zip(xp, yp)))
 
@@ -98,6 +99,7 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
     -------
     value: float
        Interpolated value for the grid location
+
     """
     edges = triangles.find_local_boundary(tri, neighbors)
     edge_vertices = [segment[0] for segment in polygons.order_edges(edges)]
@@ -169,6 +171,7 @@ def barnes_weights(sq_dist, kappa, gamma):
     weights: (N, ) ndarray
         Calculated weights for the given observations determined by their distance
         to the interpolation point.
+
     """
     return np.exp(-1.0 * sq_dist / (kappa * gamma))
 
@@ -191,6 +194,7 @@ def cressman_weights(sq_dist, r):
     weights: (N, ) ndarray
         Calculated weights for the given observations determined by their distance
         to the interpolation point.
+
     """
     return (r * r - sq_dist) / (r * r + sq_dist)
 
@@ -234,6 +238,7 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
     -------
     img: (M, N) ndarray
         Interpolated values on a 2-dimensional grid
+
     """
     obs_tree = cKDTree(list(zip(xp, yp)))
 
@@ -282,6 +287,7 @@ def cressman_point(sq_dist, values, radius):
     -------
     value: float
         Interpolation value for grid point.
+
     """
     weights = cressman_weights(sq_dist, radius)
     total_weights = np.sum(weights)
@@ -309,6 +315,7 @@ def barnes_point(sq_dist, values, kappa, gamma=None):
     -------
     value: float
         Interpolation value for grid point.
+
     """
     if gamma is None:
         gamma = 1

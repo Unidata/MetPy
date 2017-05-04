@@ -29,6 +29,7 @@ def resample_nn_1d(a, centers):
     Returns
     -------
         An array of indexes representing values closest to given array values
+
     """
     ix = []
     for center in centers:
@@ -53,6 +54,7 @@ def nearest_intersection_idx(a, b):
     -------
         An array of indexes representing the index of the values
         just before the intersection(s) of the two lines.
+
     """
     # Difference in the two y-value sets
     difference = a - b
@@ -87,6 +89,7 @@ def find_intersections(x, a, b, direction='all'):
     -------
         A tuple (x, y) of array-like with the x and y coordinates of the
         intersections of the lines.
+
     """
     # Find the index of the points just before the intersection(s)
     nearest_idx = nearest_intersection_idx(a, b)
@@ -149,6 +152,7 @@ def interpolate_nans(x, y, kind='linear'):
     Returns
     -------
         An array of the y coordinate data with NaN values interpolated.
+
     """
     x_sort_args = np.argsort(x)
     x = x[x_sort_args]
@@ -179,6 +183,7 @@ def _next_non_masked_element(a, idx):
     Returns
     -------
         Index of next non-masked element and next non-masked element
+
     """
     try:
         next_idx = idx + a[idx:].mask.argmin()
@@ -245,6 +250,7 @@ def reduce_point_density(points, radius, priority=None):
     >>> metpy.calc.reduce_point_density(np.array([1, 2, 3]), 1.,
     ... priority=np.array([0.1, 0.9, 0.3]))
     array([False,  True, False], dtype=bool)
+
     """
     # Handle 1D input
     if points.ndim < 2:

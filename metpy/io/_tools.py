@@ -30,6 +30,7 @@ class UnitLinker(object):
 
     Converts any attached unit attribute to a class:`pint.Unit`. It also handles converting
     data returns to be instances of class:`pint.Quantity` rather than bare (unit-less) arrays.
+
     """
 
     def __init__(self, var):
@@ -39,6 +40,7 @@ class UnitLinker(object):
         ----------
         var : Variable
             The :class:`metpy.io.cdm.Variable` to be wrapped.
+
         """
         self._var = var
         try:
@@ -336,6 +338,7 @@ def zlib_decompress_all_frames(data):
     -------
         bytearray
             All decompressed bytes
+
     """
     frames = bytearray()
     data = bytes(data)

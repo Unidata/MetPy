@@ -40,6 +40,7 @@ def get_wind_speed(u, v):
     See Also
     --------
     get_wind_components
+
     """
     speed = np.sqrt(u * u + v * v)
     return speed
@@ -65,6 +66,7 @@ def get_wind_dir(u, v):
     See Also
     --------
     get_wind_components
+
     """
     wdir = 90. * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
@@ -102,6 +104,7 @@ def get_wind_components(speed, wdir):
     >>> metpy.calc.get_wind_components(10. * units('m/s'), 225. * units.deg)
     (<Quantity(7.071067811865475, 'meter / second')>,
      <Quantity(7.071067811865477, 'meter / second')>)
+
     """
     u = -speed * np.sin(wdir)
     v = -speed * np.cos(wdir)
@@ -147,6 +150,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     See Also
     --------
     heat_index
+
     """
     # Correct for lower height measurement of winds if necessary
     if face_level_winds:
@@ -200,6 +204,7 @@ def heat_index(temperature, rh, mask_undefined=True):
     See Also
     --------
     windchill
+
     """
     delta = temperature - 0. * units.degF
     rh2 = rh * rh
@@ -241,6 +246,7 @@ def pressure_to_height_std(pressure):
     Notes
     -----
     .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]
+
     """
     t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
@@ -263,5 +269,6 @@ def coriolis_parameter(latitude):
     -------
     `pint.Quantity`
         The corresponding coriolis force at each point
+
     """
     return 2. * omega * np.sin(latitude)

@@ -34,6 +34,7 @@ def get_points_within_r(center_points, target_points, r):
     matches: (X, Y) ndarray
         A list of points within r distance of, and in the same
         order as, center_points
+
     """
     tree = cKDTree(target_points)
     indices = tree.query_ball_point(center_points, r)
@@ -59,6 +60,7 @@ def get_point_count_within_r(center_points, target_points, r):
     matches: (N, ) ndarray
         A list of point counts within r distance of, and in the same
         order as, center_points
+
     """
     tree = cKDTree(target_points)
     indices = tree.query_ball_point(center_points, r)
@@ -81,6 +83,7 @@ def generate_grid(horiz_dim, bbox):
         X dimension meshgrid defined by given bounding box
     grid_y: (X, Y) ndarray
         Y dimension meshgrid defined by given bounding box
+
     """
     if horiz_dim < 10000:
         log.warning('Grids less than 10km may be slow to load at synoptic scale.')
@@ -109,6 +112,7 @@ def generate_grid_coords(gx, gy):
     -------
     (X, Y) ndarray
         List of coordinates in meshgrid
+
     """
     return np.vstack([gx.ravel(), gy.ravel()]).T
 
@@ -125,6 +129,7 @@ def get_xy_range(bbox):
         Range in meters in x dimension.
     y_range: float
         Range in meters in y dimension.
+
     """
     x_range = bbox['east'] - bbox['west']
     y_range = bbox['north'] - bbox['south']
@@ -146,6 +151,7 @@ def get_xy_steps(bbox, h_dim):
         Number of grids in x dimension.
     y_steps: (Y, ) ndarray
         Number of grids in y dimension.
+
     """
     x_range, y_range = get_xy_range(bbox)
 
@@ -170,6 +176,7 @@ def get_boundary_coords(x, y, spatial_pad=0):
     -------
     bbox: dictionary
         dictionary containing coordinates for corners of study area
+
     """
     west = np.min(x) - spatial_pad
     east = np.max(x) + spatial_pad

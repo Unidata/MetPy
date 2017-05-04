@@ -11,6 +11,7 @@ Attributes
 units : :class:`pint.UnitRegistry`
     The unit registry used throughout the package. Any use of units in MetPy should
     import this registry and use it to grab units.
+
 """
 
 from __future__ import division
@@ -54,6 +55,7 @@ def concatenate(arrs, axis=0):
     -------
     `pint.Quantity`
         New container with the value passed in and units corresponding to the first item.
+
     """
     dest = 'dimensionless'
     for a in arrs:
@@ -86,6 +88,7 @@ def atleast_1d(*arrs):
     -------
     `pint.Quantity`
         A single quantity or a list of quantities, matching the number of inputs.
+
     """
     mags = [a.magnitude for a in arrs]
     orig_units = [a.units for a in arrs]
@@ -111,6 +114,7 @@ def atleast_2d(*arrs):
     -------
     `pint.Quantity`
         A single quantity or a list of quantities, matching the number of inputs.
+
     """
     mags = [a.magnitude for a in arrs]
     orig_units = [a.units for a in arrs]
@@ -140,6 +144,7 @@ def masked_array(data, data_units=None, **kwargs):
     Returns
     -------
     `pint.Quantity`
+
     """
     if data_units is None:
         data_units = data.units

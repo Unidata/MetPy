@@ -82,6 +82,7 @@ def read_colortable(fobj):
     List of tuples
         A list of the RGB color values, where each RGB color is a tuple of 3 floats in the
         range of [0, 1].
+
     """
     ret = list()
     try:
@@ -106,6 +107,7 @@ def convert_gempak_table(infile, outfile):
         The file-like object to read from
     outfile : file-like object
         The file-like object to write to
+
     """
     for line in infile:
         if not line.startswith('!') and line.strip():
@@ -129,6 +131,7 @@ class ColortableRegistry(dict):
             The package containing the resource directory
         path : str
             The path to the directory with the color tables
+
         """
         for fname in resource_listdir(pkg, path):
             if fname.endswith(TABLE_EXT):
@@ -142,6 +145,7 @@ class ColortableRegistry(dict):
         ----------
         path : str
             The path to the directory with the color tables
+
         """
         for fname in glob.glob(os.path.join(path, '*' + TABLE_EXT)):
             if os.path.isfile(fname):
@@ -162,6 +166,7 @@ class ColortableRegistry(dict):
             The file to read the color table from
         name : str
             The name under which the color table will be stored
+
         """
         self[name] = read_colortable(fobj)
 
@@ -185,6 +190,7 @@ class ColortableRegistry(dict):
         `matplotlib.colors.BoundaryNorm`, `matplotlib.colors.ListedColormap`
             The boundary norm based on `start` and `step` with the number of colors
             from the number of entries matching the color table, and the color table itself.
+
         """
         from numpy import arange
 
@@ -213,6 +219,7 @@ class ColortableRegistry(dict):
         `matplotlib.colors.BoundaryNorm`, `matplotlib.colors.ListedColormap`
             The boundary norm based on `start` and `end` with the number of colors
             from the number of entries matching the color table, and the color table itself.
+
         """
         from numpy import linspace
 
@@ -237,6 +244,7 @@ class ColortableRegistry(dict):
         -------
         `matplotlib.colors.BoundaryNorm`, `matplotlib.colors.ListedColormap`
             The boundary norm based on `boundaries`, and the color table itself.
+
         """
         cmap = self.get_colortable(name)
         return mcolors.BoundaryNorm(boundaries, cmap.N), cmap
@@ -253,6 +261,7 @@ class ColortableRegistry(dict):
         -------
         `matplotlib.colors.ListedColormap`
             The color table corresponding to `name`
+
         """
         return mcolors.ListedColormap(self[name], name=name)
 

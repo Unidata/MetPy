@@ -43,6 +43,7 @@ class CodePointMapping(object):
             have a valid code point in the font. This usually comes from place in the WMO
             table where codes have no symbol. Defaults to :data:`None`, which indicates no
             jumps.
+
         """
         next_font_jump = self._safe_pop(font_jumps)
         next_char_jump = self._safe_pop(char_jumps)
@@ -68,6 +69,7 @@ class CodePointMapping(object):
         """Safely pop from a list.
 
         Returns None if list empty.
+
         """
         return l.pop(0) if l else None
 
@@ -96,6 +98,7 @@ class CodePointMapping(object):
         -------
         int
             The appropriate code point in the font
+
         """
         return code_point(ord(self(code)) + alt)
 

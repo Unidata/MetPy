@@ -17,6 +17,7 @@ class AttributeContainer(object):
     r"""Handle maintaining a list of netCDF attributes.
 
     Implements the attribute handling for other CDM classes.
+
     """
 
     def __init__(self):
@@ -29,6 +30,7 @@ class AttributeContainer(object):
         Returns
         -------
         List[str]
+
         """
         return self._attrs
 
@@ -49,6 +51,7 @@ class Group(AttributeContainer):
     r"""Holds dimensions and variables.
 
     Every CDM dataset has at least a root group.
+
     """
 
     def __init__(self, parent, name):
@@ -68,6 +71,7 @@ class Group(AttributeContainer):
         See Also
         --------
         Group.createGroup
+
         """
         self.parent = parent
         if parent:
@@ -105,6 +109,7 @@ class Group(AttributeContainer):
         -------
         Group
             The newly created :class:`Group`
+
         """
         grp = Group(self, name)
         self.groups[name] = grp
@@ -124,6 +129,7 @@ class Group(AttributeContainer):
         -------
         Dimension
             The newly created :class:`Dimension`
+
         """
         dim = Dimension(self, name, size)
         self.dimensions[name] = dim
@@ -155,6 +161,7 @@ class Group(AttributeContainer):
         -------
         Variable
             The newly created :class:`Variable`
+
         """
         var = Variable(self, name, datatype, dimensions, fill_value, wrap_array)
         self.variables[name] = var
@@ -192,6 +199,7 @@ class Dataset(Group):
     r"""Represents a set of data using the Common Data Model (CDM).
 
     This is currently only a wrapper around the root Group.
+
     """
 
     def __init__(self):
@@ -205,6 +213,7 @@ class Variable(AttributeContainer):
     In addition to its various attributes, the Variable supports getting *and* setting data
     using the ``[]`` operator and indices or slices. Getting data returns
     :class:`numpy.ndarray` instances.
+
     """
 
     def __init__(self, group, name, datatype, dimensions, fill_value, wrap_array):
@@ -236,6 +245,7 @@ class Variable(AttributeContainer):
         See Also
         --------
         Group.createVariable
+
         """
         # Initialize internal vars
         self._group = group
@@ -264,6 +274,7 @@ class Variable(AttributeContainer):
         -------
         Group
             The parent Group.
+
         """
         return self._group
 
@@ -332,6 +343,7 @@ class Dimension(object):
     r"""Represent a shared dimension between different Variables.
 
     For instance, variables that are dependent upon a common set of times.
+
     """
 
     def __init__(self, group, name, size=None):
@@ -351,6 +363,7 @@ class Dimension(object):
         See Also
         --------
         Group.createDimension
+
         """
         self._group = group
 
@@ -370,6 +383,7 @@ class Dimension(object):
         -------
         Group
             The parent Group.
+
         """
         return self._group
 
@@ -393,6 +407,7 @@ def cf_to_proj(var):
     ----------
     var : Variable
         The projection variable with appropriate attributes.
+
     """
     import pyproj
     kwargs = dict(lat_0=var.latitude_of_projection_origin,

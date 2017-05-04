@@ -18,7 +18,7 @@ exporter = Exporter(globals())
 
 
 def _gradient(f, *args, **kwargs):
-    """Wrapper for :func:`numpy.gradient` that handles units."""
+    """Wrap :func:`numpy.gradient` to handle units."""
     if len(args) < f.ndim:
         args = list(args)
         args.extend([units.Quantity(1., 'dimensionless')] * (f.ndim - len(args)))
@@ -33,7 +33,7 @@ def _stack(arrs):
 
 
 def _get_gradients(u, v, dx, dy):
-    """Helper function for getting convergence and vorticity from 2D arrays."""
+    """Return derivatives for components to simplify calculating convergence and vorticity."""
     dudy, dudx = _gradient(u, dy, dx)
     dvdy, dvdx = _gradient(v, dy, dx)
     return dudx, dudy, dvdx, dvdy
@@ -130,6 +130,7 @@ def v_vorticity(u, v, dx, dy):
     See Also
     --------
     h_convergence, convergence_vorticity
+
     """
     _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
     return dvdx - dudy
@@ -161,6 +162,7 @@ def h_convergence(u, v, dx, dy):
     See Also
     --------
     v_vorticity, convergence_vorticity
+
     """
     dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy
@@ -197,6 +199,7 @@ def convergence_vorticity(u, v, dx, dy):
     -----
     This is a convenience function that will do less work than calculating
     the horizontal convergence and vertical vorticity separately.
+
     """
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy, dvdx - dudy
@@ -228,6 +231,7 @@ def shearing_deformation(u, v, dx, dy):
     See Also
     --------
     stretching_convergence, shearing_stretching_deformation
+
     """
     _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
     return dvdx + dudy
@@ -259,6 +263,7 @@ def stretching_deformation(u, v, dx, dy):
     See Also
     --------
     shearing_deformation, shearing_stretching_deformation
+
     """
     dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
     return dudx - dvdy
@@ -295,6 +300,7 @@ def shearing_stretching_deformation(u, v, dx, dy):
     -----
     This is a convenience function that will do less work than calculating
     the shearing and streching deformation terms separately.
+
     """
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
     return dvdx + dudy, dudx - dvdy
@@ -326,6 +332,7 @@ def advection(scalar, wind, deltas):
     -------
     N-dimensional array
         An N-dimensional array containing the advection at all grid points.
+
     """
     # This allows passing in a list of wind components or an array.
     wind = _stack(wind)
@@ -370,6 +377,7 @@ def geostrophic_wind(heights, f, dx, dy):
     -------
     A 2-item tuple of arrays
         A tuple of the u-component and v-component of the geostrophic wind.
+
     """
     if heights.dimensionality['[length]'] == 2.0:
         norm_factor = 1. / f

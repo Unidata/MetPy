@@ -35,6 +35,7 @@ def check_and_drop_units(actual, desired):
     ------
     AssertionError
         If the units on the passed in objects are not compatible.
+
     """
     try:
         # If the desired result has units, add dimensionless units if necessary, then
@@ -63,7 +64,7 @@ def check_and_drop_units(actual, desired):
 
 
 def assert_nan(value, units):
-    """Helper to check for nan with proper units."""
+    """Check for nan with proper units."""
     if not np.isnan(value):
         pytest.fail('{} is not np.nan'.format(value))
 

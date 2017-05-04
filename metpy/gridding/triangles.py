@@ -25,9 +25,10 @@ def triangle_area(pt1, pt2, pt3):
         Ending vertex of a triangle
 
     Returns
-    --------
+    -------
     area: float
         Area of the given triangle.
+
     """
     a = 0.0
 
@@ -56,13 +57,14 @@ def dist_2(x0, y0, x1, y1):
         Ending y coordinate
 
     Returns
-    --------
+    -------
     d2: float
         squared distance
 
     See Also
     --------
     distance
+
     """
     d0 = x1 - x0
     d1 = y1 - y0
@@ -80,13 +82,14 @@ def distance(p0, p1):
         Ending coordinate
 
     Returns
-    --------
+    -------
     d: float
         distance
 
     See Also
     --------
     dist_2
+
     """
     return math.sqrt(dist_2(p0[0], p0[1], p1[0], p1[1]))
 
@@ -106,13 +109,14 @@ def circumcircle_radius_2(pt0, pt1, pt2):
         Final vertex of a triangle
 
     Returns
-    --------
+    -------
     r: float
         circumcircle radius
 
     See Also
     --------
     circumcenter
+
     """
     a = distance(pt0, pt1)
     b = distance(pt1, pt2)
@@ -142,13 +146,14 @@ def circumcircle_radius(pt0, pt1, pt2):
         Final vertex of a triangle
 
     Returns
-    --------
+    -------
     r: float
         circumcircle radius
 
     See Also
     --------
     circumcenter
+
     """
     a = distance(pt0, pt1)
     b = distance(pt1, pt2)
@@ -179,13 +184,14 @@ def circumcenter(pt0, pt1, pt2):
         Final vertex of a triangle
 
     Returns
-    --------
+    -------
     cc: (x, y)
         circumcenter coordinates
 
     See Also
     --------
     circumcenter
+
     """
     a_x = pt0[0]
     a_y = pt0[1]
@@ -233,13 +239,14 @@ def find_natural_neighbors(tri, grid_points):
         Locations of grids.
 
     Returns
-    --------
+    -------
     members: dictionary
         List of simplex codes for natural neighbor
         triangles in 'tri' for each grid cell.
     triangle_info: dictionary
         Circumcenter and radius information for each
         triangle in 'tri'.
+
     """
     tree = cKDTree(grid_points)
 
@@ -282,11 +289,13 @@ def find_nn_triangles_point(tri, cur_tri, point):
     point: (x, y)
         Coordinates used to calculate distances to
         simplexes in 'tri'.
+
     Returns
-    --------
+    -------
     nn: (N, ) array
         List of simplex codes for natural neighbor
         triangles in 'tri'.
+
     """
     nn = []
 
@@ -325,10 +334,11 @@ def find_local_boundary(tri, triangles):
         List of natural neighbor triangles.
 
     Returns
-    --------
+    -------
     edges: (2, N) ndarray
         List of vertex codes that form outer edges of
         a group of natural neighbor triangles.
+
     """
     edges = []
 
