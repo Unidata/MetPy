@@ -145,7 +145,7 @@ if not hasattr(Axes, 'scattertext'):
             Offset (in screen coordinates) from x,y position. Allows
             positioning text relative to original point.
 
-        Other parameters
+        Other Parameters
         ----------------
         kwargs : `~matplotlib.text.TextCollection` properties.
             Other miscellaneous text parameters.
@@ -168,6 +168,7 @@ if not hasattr(Axes, 'scattertext'):
             >>> ax.scattertext([0.25, 0.75], [0.25, 0.75], ['aa', 'bb'],
             ... loc=(10, 10))  #doctest: +ELLIPSIS
             <metpy.plots._mpl.TextCollection object at 0x...>
+
         """
         # Start with default args and update from kw
         new_kw = {
@@ -243,6 +244,7 @@ if not hasattr(Axes, 'scattertext'):
                 to the data locations.
 
             kwargs : arbitrary keywords arguments
+
             """
             Text.__init__(self, **kwargs)
             self.x = x
@@ -267,6 +269,7 @@ if not hasattr(Axes, 'scattertext'):
             -------
             matplotlib.transforms.Bbox
                 The bounding box of the data
+
             """
             full_transform = self.get_transform() - transData
             XY = full_transform.transform(np.vstack((self.x, self.y)).T)  # noqa: N806

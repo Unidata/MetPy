@@ -164,6 +164,7 @@ class SkewXAxes(Axes):
 
         kwargs : Arbitrary keyword arguments
             Passed to :class:`matplotlib.axes.Axes`
+
         """
         # This needs to be popped and set before moving on
         self.rot = kwargs.pop('rotation', 30)
@@ -191,6 +192,7 @@ class SkewXAxes(Axes):
 
         This is called once when the plot is created to set up all the
         transforms for the data, text and grids.
+
         """
         # Get the standard transform setup from the Axes base class
         Axes._set_lim_and_transforms(self)
@@ -244,6 +246,7 @@ class SkewT(object):
     ax : `matplotlib.axes.Axes`
         The underlying Axes instance, which can be used for calling additional
         plot functions (e.g. `axvline`)
+
     """
 
     def __init__(self, fig=None, rotation=30, subplot=(1, 1, 1)):
@@ -264,6 +267,7 @@ class SkewT(object):
             :meth:`matplotlib.figure.Figure.add_subplot`. The
             :class:`matplotlib.gridspec.SubplotSpec`
             can be created by using :class:`matplotlib.gridspec.GridSpec`.
+
         """
         if fig is None:
             import matplotlib.pyplot as plt
@@ -305,6 +309,7 @@ class SkewT(object):
         See Also
         --------
         :func:`matplotlib.pyplot.semilogy`
+
         """
         # Skew-T logP plotting
         t, p = delete_masked_points(t, p)
@@ -358,6 +363,7 @@ class SkewT(object):
         See Also
         --------
         :func:`matplotlib.pyplot.barbs`
+
         """
         # Assemble array of x-locations in axes space
         x = np.empty_like(p)
@@ -405,6 +411,7 @@ class SkewT(object):
         :func:`~metpy.calc.thermo.dry_lapse`
         :meth:`plot_moist_adiabats`
         :class:`matplotlib.collections.LineCollection`
+
         """
         # Determine set of starting temps if necessary
         if t0 is None:
@@ -456,6 +463,7 @@ class SkewT(object):
         :func:`~metpy.calc.thermo.moist_lapse`
         :meth:`plot_dry_adiabats`
         :class:`matplotlib.collections.LineCollection`
+
         """
         # Determine set of starting temps if necessary
         if t0 is None:
@@ -504,6 +512,7 @@ class SkewT(object):
         See Also
         --------
         :class:`matplotlib.collections.LineCollection`
+
         """
         # Default mixing level values if necessary
         if w is None:
@@ -552,6 +561,7 @@ class SkewT(object):
         --------
         :class:`matplotlib.collections.PolyCollection`
         :func:`matplotlib.axes.Axes.fill_betweenx`
+
         """
         fill_properties = {'positive':
                            {'facecolor': 'tab:red', 'alpha': 0.4, 'where': x1 > x2},
@@ -601,6 +611,7 @@ class SkewT(object):
         --------
         :class:`matplotlib.collections.PolyCollection`
         :func:`matplotlib.axes.Axes.fill_betweenx`
+
         """
         return self.shade_area(p, t_parcel, t, which='positive', **kwargs)
 
@@ -629,6 +640,7 @@ class SkewT(object):
         --------
         :class:`matplotlib.collections.PolyCollection`
         :func:`matplotlib.axes.Axes.fill_betweenx`
+
         """
         return self.shade_area(p, t_parcel, t, which='negative', **kwargs)
 
@@ -647,6 +659,7 @@ class Hodograph(object):
     ----------
     ax : `matplotlib.axes.Axes`
         The underlying Axes instance used for all plotting
+
     """
 
     def __init__(self, ax=None, component_range=80):
@@ -659,6 +672,7 @@ class Hodograph(object):
         component_range : value
             The maximum range of the plot. Used to set plot bounds and control the maximum
             number of grid rings needed.
+
         """
         if ax is None:
             import matplotlib.pyplot as plt
@@ -689,6 +703,7 @@ class Hodograph(object):
         :class:`matplotlib.patches.Circle`
         :meth:`matplotlib.axes.Axes.axhline`
         :meth:`matplotlib.axes.Axes.axvline`
+
         """
         # Some default arguments. Take those, and update with any
         # arguments passed in
@@ -741,6 +756,7 @@ class Hodograph(object):
         See Also
         --------
         :meth:`Hodograph.plot_colormapped`
+
         """
         line_args = self._form_line_args(kwargs)
         u, v = delete_masked_points(u, v)
@@ -774,6 +790,7 @@ class Hodograph(object):
         See Also
         --------
         :meth:`Hodograph.plot`
+
         """
         line_args = self._form_line_args(kwargs)
         u, v, c = delete_masked_points(u, v, c)

@@ -148,6 +148,7 @@ class Level2File(object):
     -----
     The internal data structure that things are decoded into is still to be
     determined.
+
     """
 
     # Number of bytes
@@ -167,6 +168,7 @@ class Level2File(object):
             recognized with the extension '.gz', as are bzip2-ed files with
             the extension `.bz2` If `fname` is a file-like object,
             this will be read from directly.
+
         """
         if is_string_like(filename):
             if filename.endswith('.bz2'):
@@ -988,6 +990,7 @@ class Level3File(object):
     -----
     The internal data structure that things are decoded into is still to be
     determined.
+
     """
 
     ij_to_km = 0.25
@@ -1517,6 +1520,7 @@ class Level3File(object):
         filename : str or file-like object
             If str, the name of the file to be opened. If file-like object,
             this will be read from directly.
+
         """
         if is_string_like(filename):
             fobj = open(filename, 'rb')
@@ -1676,7 +1680,7 @@ class Level3File(object):
 
     @staticmethod
     def pos_scale(is_sym_block):
-        """The scale of the position information in km."""
+        """Scale of the position information in km."""
         return 0.25 if is_sym_block else 1
 
     def _unpack_rcm(self, start, offset):
@@ -2285,5 +2289,6 @@ def is_precip_mode(vcp_num):
     -------
     bool
         True if the VCP corresponds to precipitation mode, False otherwise
+
     """
     return not vcp_num // 10 == 3

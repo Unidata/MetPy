@@ -51,6 +51,7 @@ class StationPlot(object):
             station plot elements.
         transform : matplotlib.transforms.Transform (or compatible)
             The default transform to apply to the x and y positions when plotting.
+
         """
         self.ax = ax
         self.x = x
@@ -149,6 +150,7 @@ class StationPlot(object):
         See Also
         --------
         plot_barb, plot_parameter, plot_text
+
         """
         # Make sure we use our font for symbols
         kwargs['fontproperties'] = wx_symbol_font.copy()
@@ -185,6 +187,7 @@ class StationPlot(object):
         See Also
         --------
         plot_barb, plot_symbol, plot_text
+
         """
         text = self._to_string_list(parameter, formatter)
         return self.plot_text(location, text, **kwargs)
@@ -215,6 +218,7 @@ class StationPlot(object):
         See Also
         --------
         plot_barb, plot_parameter, plot_symbol
+
         """
         location = self._handle_location(location)
 
@@ -250,6 +254,7 @@ class StationPlot(object):
         See Also
         --------
         plot_parameter, plot_symbol, plot_text
+
         """
         # Handle transforming our center points. CartoPy doesn't like 1D barbs
         # TODO: This can be removed for cartopy > 0.14.3
@@ -305,6 +310,7 @@ class StationPlotLayout(dict):
     See Also
     --------
     StationPlot
+
     """
 
     class PlotTypes(Enum):
@@ -352,6 +358,7 @@ class StationPlotLayout(dict):
         See Also
         --------
         add_barb, add_symbol, add_text
+
         """
         self[location] = (self.PlotTypes.value, name, (fmt, units, kwargs))
 
@@ -384,6 +391,7 @@ class StationPlotLayout(dict):
         See Also
         --------
         add_barb, add_text, add_value
+
         """
         self[location] = (self.PlotTypes.symbol, name, (symbol_mapper, kwargs))
 
@@ -412,6 +420,7 @@ class StationPlotLayout(dict):
         See Also
         --------
         add_barb, add_symbol, add_value
+
         """
         self[location] = (self.PlotTypes.text, name, kwargs)
 
@@ -444,6 +453,7 @@ class StationPlotLayout(dict):
         See Also
         --------
         add_symbol, add_text, add_value
+
         """
         # Not sure if putting the v_name as a plot-specific option is appropriate,
         # but it seems simpler than making name code in plot handle tuples
@@ -456,6 +466,7 @@ class StationPlotLayout(dict):
         -------
         list[str]
             the list of names of variables used by the layout
+
         """
         ret = []
         for item in self.values():
@@ -480,6 +491,7 @@ class StationPlotLayout(dict):
         data_dict : dict[str, array-like]
             Data container that maps a name to an array of data. Data from this object
             will be used to fill out the station plot.
+
         """
         def coerce_data(dat, u):
             try:

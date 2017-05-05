@@ -79,6 +79,7 @@ class GiniFile(object):
     See Also
     --------
     GiniFile.to_dataset
+
     """
 
     missing = 255
@@ -148,6 +149,7 @@ class GiniFile(object):
             recognized with the extension ``'.gz'``, as are bzip2-ed files with
             the extension ``'.bz2'`` If `filename` is a file-like object,
             this will be read from directly.
+
         """
         if is_string_like(filename):
             fobj = open(filename, 'rb')
@@ -241,6 +243,7 @@ class GiniFile(object):
         Returns
         -------
         Dataset
+
         """
         ds = Dataset()
 

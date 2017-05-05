@@ -54,6 +54,7 @@ def potential_temperature(pressure, temperature):
     >>> from metpy.units import units
     >>> metpy.calc.potential_temperature(800. * units.mbar, 273. * units.kelvin)
     <Quantity(290.96653180346203, 'kelvin')>
+
     """
     return temperature * (P0 / pressure).to('dimensionless')**kappa
 
@@ -85,6 +86,7 @@ def dry_lapse(pressure, temperature):
                   processes
     parcel_profile : Calculate complete parcel profile
     potential_temperature
+
     """
     return temperature * (pressure / pressure[0])**kappa
 
@@ -125,6 +127,7 @@ def moist_lapse(pressure, temperature):
                                 {C_{pd} + \frac{L_v^2 r_s \epsilon}{R_d T^2}}
 
     This equation comes from [Bakhshaii2013]_.
+
     """
     def dt(t, p):
         t = units.Quantity(t, temperature.units)
@@ -180,6 +183,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
     3. Iterate until convergence
 
     The function is guaranteed to finish by virtue of the `max_iters` counter.
+
     """
     w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
     new_p = p = pressure
@@ -224,6 +228,7 @@ def lfc(pressure, temperature, dewpt):
     See Also
     --------
     parcel_profile
+
     """
     ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
 
@@ -263,6 +268,7 @@ def el(pressure, temperature, dewpt):
     See Also
     --------
     parcel_profile
+
     """
     ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
     x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
@@ -301,6 +307,7 @@ def parcel_profile(pressure, temperature, dewpt):
     See Also
     --------
     lcl, moist_lapse, dry_lapse
+
     """
     # Find the LCL
     l = lcl(pressure[0], temperature, dewpt)[0].to(pressure.units)
@@ -350,6 +357,7 @@ def vapor_pressure(pressure, mixing):
     See Also
     --------
     saturation_vapor_pressure, dewpoint
+
     """
     return pressure * mixing / (epsilon + mixing)
 
@@ -409,6 +417,7 @@ def dewpoint_rh(temperature, rh):
     See Also
     --------
     dewpoint, saturation_vapor_pressure
+
     """
     return dewpoint(rh * saturation_vapor_pressure(temperature))
 
@@ -480,6 +489,7 @@ def mixing_ratio(part_press, tot_press, molecular_weight_ratio=epsilon):
     See Also
     --------
     saturation_mixing_ratio, vapor_pressure
+
     """
     return molecular_weight_ratio * part_press / (tot_press - part_press)
 
@@ -503,6 +513,7 @@ def saturation_mixing_ratio(tot_press, temperature):
     -------
     `pint.Quantity`
         The saturation mixing ratio, dimensionless
+
     """
     return mixing_ratio(saturation_vapor_pressure(temperature), tot_press)
 
@@ -564,6 +575,7 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
     Notes
     -----
     .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
+
     """
     return temperature * ((mixing + molecular_weight_ratio) /
                           (molecular_weight_ratio * (1 + mixing)))
@@ -599,6 +611,7 @@ def virtual_potential_temperature(pressure, temperature, mixing,
     Notes
     -----
     .. math:: \Theta_v = \Theta \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
+
     """
     pottemp = potential_temperature(pressure, temperature)
     return virtual_temperature(pottemp, mixing, molecular_weight_ratio)
@@ -633,6 +646,7 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
     Notes
     -----
     .. math:: \rho = \frac{p}{R_dT_v}
+
     """
     virttemp = virtual_temperature(temperature, mixing, molecular_weight_ratio)
     return (pressure / (Rd * virttemp)).to(units.kilogram / units.meter ** 3)
@@ -679,6 +693,7 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
     See Also
     --------
     psychrometric_vapor_pressure_wet, saturation_vapor_pressure
+
     """
     return (100 * units.percent * psychrometric_vapor_pressure_wet(dry_bulb_temperature,
             web_bulb_temperature, pressure, **kwargs) /
@@ -735,6 +750,7 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
     See Also
     --------
     saturation_vapor_pressure
+
     """
     return (saturation_vapor_pressure(wet_bulb_temperature) - psychrometer_coefficient *
             pressure * (dry_bulb_temperature - wet_bulb_temperature).to('kelvin'))

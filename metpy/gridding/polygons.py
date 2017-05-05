@@ -22,6 +22,7 @@ def area(poly):
     Returns
     -------
     area: float
+
     """
     a = 0.0
     n = len(poly)
@@ -45,6 +46,7 @@ def order_edges(edges):
     Returns
     -------
     ordered_edges: (2, N) ndarray
+
     """
     edge = edges[0]
     edges = edges[1:]

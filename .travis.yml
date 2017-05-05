@@ -78,7 +78,6 @@ before_install:
       export LD_LIBRARY_PATH="$HOME/local/lib";
       pkg-config --modversion proj;
     else
-      export EXTRA_PACKAGES="pydocstyle<2";
       export TEST_OPTS="--flake8 --mpl";
       if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then
         export EXTRA_PACKAGES="$EXTRA_PACKAGES flake8-bugbear";
@@ -107,7 +106,7 @@ script:
       export DOC_BUILD_RESULT=$?;
       popd;
       if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then
-        pytest --doctest-modules -k "not test" metpy;
+        MPLBACKEND='agg' pytest --doctest-modules -k "not test" metpy;
         export DOC_TEST_RESULT=$?;
       else
         export DOC_TEST_RESULT=0;

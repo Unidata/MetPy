@@ -28,6 +28,7 @@ def calc_kappa(spacing, kappa_star=5.052):
     Returns
     -------
         kappa: float
+
     """
     return kappa_star * (2.0 * spacing / np.pi)**2
 
@@ -53,6 +54,7 @@ def remove_observations_below_value(x, y, z, val=0):
     x, y, z
         List of coordinate observation pairs without
         observation values less than val.
+
     """
     x_ = x[z >= val]
     y_ = y[z >= val]
@@ -80,6 +82,7 @@ def remove_nan_observations(x, y, z):
     x, y, z
         List of coordinate observation pairs without
         nan valued observations.
+
     """
     x_ = x[~np.isnan(z)]
     y_ = y[~np.isnan(z)]
@@ -107,6 +110,7 @@ def remove_repeat_coordinates(x, y, z):
     x, y, z
         List of coordinate observation pairs without
         repeated coordinates.
+
     """
     coords = []
     variable = []
@@ -175,6 +179,7 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
         Meshgrid for the resulting interpolation in the y dimension ndarray
     img: (M, N) ndarray
         2-dimensional array representing the interpolated values for each grid.
+
     """
     grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y))
 

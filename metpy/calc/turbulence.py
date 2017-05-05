@@ -36,6 +36,7 @@ def get_perturbation(ts, axis=-1):
     the perturbations about the mean:
 
     .. math:: x(t)^{\prime} = x(t) - \overline{x(t)}
+
     """
     slices = [slice(None)] * ts.ndim
     slices[axis] = None
@@ -99,6 +100,7 @@ def tke(u, v, w, perturbation=False, axis=-1):
 
     are perturbation velocities. For more information on the subject, please
     see [Garratt1994]_.
+
     """
     if not perturbation:
         u = get_perturbation(u, axis=axis)
@@ -172,6 +174,7 @@ def kinematic_flux(vel, b, perturbation=False, axis=-1):
     is computed in this function if `perturbation` is False.
 
     For more information on the subject, please see [Garratt1994]_.
+
     """
     kf = np.mean(vel * b, axis=axis)
     if not perturbation:
@@ -234,6 +237,7 @@ def friction_velocity(u, w, v=None, perturbation=False, axis=-1):
     .. math:: u_{*} = \sqrt[4]{\left(\overline{u^{\prime}w^{\prime}}\right)^2}
 
     For more information on the subject, please see [Garratt1994]_.
+
     """
     uw = kinematic_flux(u, w, perturbation=perturbation, axis=axis)
     kf = uw * uw

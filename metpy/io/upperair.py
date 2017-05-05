@@ -44,6 +44,7 @@ def get_upper_air_data(time, site_id, source='wyoming', **kwargs):
     Returns
     -------
         :class:`metpy.io.cdm.Dataset` containing the data
+
     """
     sources = dict(wyoming=WyomingUpperAir, iastate=IAStateUpperAir)
     src = sources.get(source)
@@ -99,7 +100,7 @@ class UseSampleData(object):
         self._urlopen = urlopen
 
     def _wrapped_urlopen(self, url):
-        r"""Method to wrap urlopen and look to see if the request should be redirected."""
+        r"""Wrap urlopen and look to see if the request should be redirected."""
         from metpy.cbook import get_test_data
 
         filename = self.url_map.get(url)
@@ -139,6 +140,7 @@ class WyomingUpperAir(object):
         Returns
         -------
         a file-like object from which to read the data
+
         """
         url = ('http://weather.uwyo.edu/cgi-bin/sounding?region={region}&TYPE=TEXT%3ALIST'
                '&YEAR={time:%Y}&MONTH={time:%m}&FROM={time:%d%H}&TO={time:%d%H}'
@@ -176,6 +178,7 @@ class WyomingUpperAir(object):
         Returns
         -------
         dict of information used by :func:`get_upper_air_data`
+
         """
         def to_float(s):
             # Remove all whitespace and replace empty values with NaN
@@ -229,6 +232,7 @@ class IAStateUpperAir(object):
         Returns
         -------
         list of json data
+
         """
         url = ('http://mesonet.agron.iastate.edu/json/raob.py?ts={time:%Y%m%d%H}00'
                '&station={stid}').format(time=time, stid=site_id)
@@ -255,6 +259,7 @@ class IAStateUpperAir(object):
         Returns
         -------
         dict of information used by :func:`get_upper_air_data`
+
         """
         data = dict()
         for pt in json_data:
