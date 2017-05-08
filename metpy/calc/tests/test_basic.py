@@ -6,7 +6,7 @@
 import numpy as np
 
 from metpy.calc import (coriolis_parameter, get_wind_components, get_wind_dir, get_wind_speed,
-                        heat_index, pressure_to_height_std, windchill)
+                        heat_index, height_to_pressure_std, pressure_to_height_std, windchill)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -232,6 +232,14 @@ def test_pressure_to_heights_basic():
     heights = pressure_to_height_std(pressures)
     values = np.array([321.5, 216.5, 487.6, 601.7]) * units.meter
     assert_almost_equal(heights, values, 1)
+
+
+def test_heights_to_pressure_basic():
+    """Test basic height to pressure calculation for standard atmosphere."""
+    heights = np.array([321.5, 216.5, 487.6, 601.7]) * units.meter
+    pressures = height_to_pressure_std(heights)
+    values = np.array([975.2, 987.5, 956., 943.]) * units.mbar
+    assert_almost_equal(pressures, values, 1)
 
 
 def test_pressure_to_heights_units():
