@@ -162,3 +162,16 @@ def test_hodograph_plot_colormapped():
     hodo.plot_colormapped(u, v, np.hypot(u, v), cmap='Greys')
 
     return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.021, remove_text=True)
+def test_skewt_barb_color():
+    """Test plotting colored wind barbs on the Skew-T."""
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+
+    p = np.linspace(1000, 100, 10)
+    u = np.linspace(-10, 10, 10)
+    skew.plot_barbs(p, u, u, c=u)
+
+    return fig

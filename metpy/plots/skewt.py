@@ -328,7 +328,8 @@ class SkewT(object):
 
         return l
 
-    def plot_barbs(self, p, u, v, xloc=1.0, x_clip_radius=0.08, y_clip_radius=0.08, **kwargs):
+    def plot_barbs(self, p, u, v, c=None, xloc=1.0, x_clip_radius=0.08,
+                   y_clip_radius=0.08, **kwargs):
         r"""Plot wind barbs.
 
         Adds wind barbs to the skew-T plot. This is a wrapper around the
@@ -343,6 +344,8 @@ class SkewT(object):
             U (East-West) component of wind
         v : array_like
             V (North-South) component of wind
+        c:
+            An optional array used to map colors to the barbs
         xloc : float, optional
             Position for the barbs, in normalized axes coordinates, where 0.0
             denotes far left and 1.0 denotes far right. Defaults to far right.
@@ -370,9 +373,14 @@ class SkewT(object):
         x.fill(xloc)
 
         # Do barbs plot at this location
-        b = self.ax.barbs(x, p, u, v,
-                          transform=self.ax.get_yaxis_transform(which='tick2'),
-                          clip_on=True, **kwargs)
+        if c is not None:
+            b = self.ax.barbs(x, p, u, v, c,
+                              transform=self.ax.get_yaxis_transform(which='tick2'),
+                              clip_on=True, **kwargs)
+        else:
+            b = self.ax.barbs(x, p, u, v,
+                              transform=self.ax.get_yaxis_transform(which='tick2'),
+                              clip_on=True, **kwargs)
 
         # Override the default clip box, which is the axes rectangle, so we can have
         # barbs that extend outside.
