@@ -255,6 +255,34 @@ def pressure_to_height_std(pressure):
 
 
 @exporter.export
+@check_units('[length]')
+def height_to_pressure_std(height):
+    r"""Convert height data to pressures using the U.S. standard atmosphere.
+
+    The implementation inverts the formula outlined in [Hobbs1977]_ pg.60-61.
+
+    Parameters
+    ----------
+    height : `pint.Quantity`
+        Atmospheric height
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding pressure value(s)
+
+    Notes
+    -----
+    .. math:: p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}
+
+    """
+    t0 = 288. * units.kelvin
+    gamma = 6.5 * units('K/km')
+    p0 = 1013.25 * units.mbar
+    return p0 * (1 - (gamma / t0) * height) ** (g / (Rd * gamma))
+
+
+@exporter.export
 def coriolis_parameter(latitude):
     r"""Calculate the coriolis parameter at each point.
 
