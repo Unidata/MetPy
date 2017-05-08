@@ -5,15 +5,19 @@
 
 from datetime import datetime
 
+import matplotlib
 import matplotlib.pyplot as plt
 import pytest
 
 from metpy.plots import add_logo, add_timestamp
 # Fixture to make sure we have the right backend
-from metpy.testing import patch_round, set_agg_backend  # noqa: F401
+from metpy.testing import set_agg_backend  # noqa: F401
+
+MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.021, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 5.58}.get(MPL_VERSION, 0.01),
+                               remove_text=True)
 def test_add_timestamp():
     """Test adding a timestamp to an axes object."""
     fig = plt.figure(figsize=(9, 9))
@@ -22,7 +26,8 @@ def test_add_timestamp():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.021, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.004}.get(MPL_VERSION, 0.01),
+                               remove_text=True)
 def test_add_logo_small():
     """Test adding a logo to a figure."""
     fig = plt.figure(figsize=(9, 9))
@@ -30,7 +35,8 @@ def test_add_logo_small():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.021, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.004}.get(MPL_VERSION, 0.01),
+                               remove_text=True)
 def test_add_logo_large():
     """Test adding a logo to a figure."""
     fig = plt.figure(figsize=(9, 9))
