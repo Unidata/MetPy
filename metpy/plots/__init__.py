@@ -8,6 +8,8 @@ from . import _mpl  # noqa: F401
 
 from .skewt import *  # noqa: F403
 from .station_plot import *  # noqa: F403
+from ._util import add_logo, add_timestamp
 
 __all__ = skewt.__all__[:]  # pylint: disable=undefined-variable
 __all__.extend(station_plot.__all__)  # pylint: disable=undefined-variable
+__all__.extend([add_logo, add_timestamp])  # pylint: disable=undefined-variable
