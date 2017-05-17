@@ -8,7 +8,7 @@ import pytest
 
 from metpy.calc import (advection, convergence_vorticity, geostrophic_wind, h_convergence,
                         shearing_deformation, shearing_stretching_deformation,
-                        stretching_deformation, v_vorticity)
+                        stretching_deformation, total_deformation, v_vorticity)
 from metpy.constants import g, omega, Re
 from metpy.testing import assert_almost_equal, assert_array_equal
 from metpy.units import concatenate, units
@@ -209,6 +209,22 @@ def test_stretching_deformation_asym():
     st = stretching_deformation(u.T, v.T, 1 * units.meters, 2 * units.meters,
                                 dim_order='xy')
     assert_array_equal(st, true_st.T)
+
+
+def test_total_deformation_asym():
+    """Test vorticity and convergence calculation with a complicated field."""
+    u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
+    v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
+    tdef = total_deformation(u, v, 1 * units.meters, 2 * units.meters,
+                             dim_order='yx')
+    true_tdef = np.array([[5., 2., 8.06225775], [5.40832691, 1.58113883, 6.02079729],
+                          [2.82842712, 5.65685425, 7.07106781]]) / units.sec
+    assert_almost_equal(tdef, true_tdef)
+
+    # Now try for xy ordered
+    true_tdef = total_deformation(u.T, v.T, 1 * units.meters, 2 * units.meters,
+                                  dim_order='xy')
+    assert_almost_equal(tdef, true_tdef.T)
 
 
 def test_advection_uniform():

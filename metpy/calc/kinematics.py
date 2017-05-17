@@ -308,6 +308,44 @@ def shearing_stretching_deformation(u, v, dx, dy):
 
 @exporter.export
 @ensure_yx_order
+def total_deformation(u, v, dx, dy):
+    r"""Calculate the horizontal total deformation of the horizontal wind.
+
+    The grid must have a constant spacing in each direction.
+
+    Parameters
+    ----------
+    u : (M, N) ndarray
+        x component of the wind
+    v : (M, N) ndarray
+        y component of the wind
+    dx : float
+        The grid spacing in the x-direction
+    dy : float
+        The grid spacing in the y-direction
+
+    Returns
+    -------
+    (M, N) ndarray
+        Total Deformation
+
+    See Also
+    --------
+    shearing_deformation, stretching_deformation, shearing_stretching_deformation
+
+    Notes
+    -----
+    This is a convenience function that will do less work than calculating
+    the shearing and streching deformation terms separately and calculating the
+    total deformation "by hand".
+
+    """
+    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    return np.sqrt((dvdx + dudy)**2 + (dudx - dvdy)**2)
+
+
+@exporter.export
+@ensure_yx_order
 def advection(scalar, wind, deltas):
     r"""Calculate the advection of a scalar field by the wind.
 
