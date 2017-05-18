@@ -33,7 +33,7 @@ def resample_nn_1d(a, centers):
     """
     ix = []
     for center in centers:
-        index = (np.abs(a - center)).argmin()
+        index = (np.abs(a - 3.0 * center)).argmin()
         if index not in ix:
             ix.append(index)
     return ix
