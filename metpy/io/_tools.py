@@ -378,7 +378,7 @@ def hexdump(buf, num_bytes, offset=0, width=32):
         blocks = [hexfmt * blocksize for _ in range(actual_width // blocksize)]
 
         # Need to get any partial lines
-        num_left = actual_width % blocksize
+        num_left = actual_width % blocksize  # noqa: S001  Fix false alarm
         if num_left:
             blocks += [hexfmt * num_left + '--' * (blocksize - num_left)]
         blocks += ['--' * blocksize] * (width // blocksize - len(blocks))
