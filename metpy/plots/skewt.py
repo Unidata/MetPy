@@ -715,7 +715,7 @@ class Hodograph(object):
         """
         # Some default arguments. Take those, and update with any
         # arguments passed in
-        grid_args = dict(color='grey', linestyle='dashed')
+        grid_args = {'color': 'grey', 'linestyle': 'dashed'}
         if kwargs:
             grid_args.update(kwargs)
 
@@ -738,7 +738,7 @@ class Hodograph(object):
     @staticmethod
     def _form_line_args(kwargs):
         """Simplify taking the default line style and extending with kwargs."""
-        def_args = dict(linewidth=3)
+        def_args = {'linewidth': 3}
         def_args.update(kwargs)
         return def_args
 

@@ -51,8 +51,7 @@ def order_edges(edges):
     edge = edges[0]
     edges = edges[1:]
 
-    ordered_edges = list()
-    ordered_edges.append(edge)
+    ordered_edges = [edge]
 
     num_max = len(edges)
     while len(edges) > 0 and num_max > 0:

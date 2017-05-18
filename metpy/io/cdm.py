@@ -410,8 +410,8 @@ def cf_to_proj(var):
 
     """
     import pyproj
-    kwargs = dict(lat_0=var.latitude_of_projection_origin,
-                  a=var.earth_radius, b=var.earth_radius)
+    kwargs = {'lat_0': var.latitude_of_projection_origin, 'a': var.earth_radius,
+              'b': var.earth_radius}
     if var.grid_mapping_name == 'lambert_conformal_conic':
         kwargs['proj'] = 'lcc'
         kwargs['lon_0'] = var.longitude_of_central_meridian

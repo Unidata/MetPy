@@ -108,9 +108,8 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
     p1 = edge_vertices[0]
     p2 = edge_vertices[1]
 
-    polygon = list()
     c1 = triangles.circumcenter(grid_loc, tri.points[p1], tri.points[p2])
-    polygon.append(c1)
+    polygon = [c1]
 
     area_list = []
     total_area = 0.0
@@ -145,8 +144,7 @@ def nn_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
             log.warning(message)
             return np.nan
 
-        polygon = list()
-        polygon.append(c2)
+        polygon = [c2]
 
         p2 = p3
 

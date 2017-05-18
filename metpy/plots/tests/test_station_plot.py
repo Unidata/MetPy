@@ -73,12 +73,8 @@ def test_stationlayout_api():
     # testing data
     x = np.array([1, 5])
     y = np.array([2, 4])
-    data = dict()
-    data['temp'] = np.array([32., 212.]) * units.degF
-    data['u'] = np.array([2, 0]) * units.knots
-    data['v'] = np.array([0, 5]) * units.knots
-    data['stid'] = ['KDEN', 'KSHV']
-    data['cover'] = [3, 8]
+    data = {'temp': np.array([32., 212.]) * units.degF, 'u': np.array([2, 0]) * units.knots,
+            'v': np.array([0, 5]) * units.knots, 'stid': ['KDEN', 'KSHV'], 'cover': [3, 8]}
 
     # Set up the layout
     layout = StationPlotLayout()
@@ -108,7 +104,7 @@ def test_station_layout_odd_data():
     layout.add_value('W', 'temperature', units='degF')
 
     # Now only use data without wind and no units
-    data = dict(temperature=[25.])
+    data = {'temperature': [25.]}
 
     # Make the plot
     sp = StationPlot(fig.add_subplot(1, 1, 1), [1], [2], fontsize=12)
@@ -145,15 +141,12 @@ def test_simple_layout():
     # testing data
     x = np.array([1, 5])
     y = np.array([2, 4])
-    data = dict()
-    data['air_temperature'] = np.array([32., 212.]) * units.degF
-    data['dew_point_temperature'] = np.array([28., 80.]) * units.degF
-    data['air_pressure_at_sea_level'] = np.array([29.92, 28.00]) * units.inHg
-    data['eastward_wind'] = np.array([2, 0]) * units.knots
-    data['northward_wind'] = np.array([0, 5]) * units.knots
-    data['cloud_coverage'] = [3, 8]
-    data['present_weather'] = [65, 75]
-    data['unused'] = [1, 2]
+    data = {'air_temperature': np.array([32., 212.]) * units.degF,
+            'dew_point_temperature': np.array([28., 80.]) * units.degF,
+            'air_pressure_at_sea_level': np.array([29.92, 28.00]) * units.inHg,
+            'eastward_wind': np.array([2, 0]) * units.knots,
+            'northward_wind': np.array([0, 5]) * units.knots, 'cloud_coverage': [3, 8],
+            'present_weather': [65, 75], 'unused': [1, 2]}
 
     # Make the plot
     sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=12)
@@ -174,20 +167,15 @@ def test_nws_layout():
     # testing data
     x = np.array([1])
     y = np.array([2])
-    data = dict()
-    data['air_temperature'] = np.array([77]) * units.degF
-    data['dew_point_temperature'] = np.array([71]) * units.degF
-    data['air_pressure_at_sea_level'] = np.array([999.8]) * units('mbar')
-    data['eastward_wind'] = np.array([15.]) * units.knots
-    data['northward_wind'] = np.array([15.]) * units.knots
-    data['cloud_coverage'] = [7]
-    data['present_weather'] = [80]
-    data['high_cloud_type'] = [1]
-    data['medium_cloud_type'] = [3]
-    data['low_cloud_type'] = [2]
-    data['visibility_in_air'] = np.array([5.]) * units.mile
-    data['tendency_of_air_pressure'] = np.array([-0.3]) * units('mbar')
-    data['tendency_of_air_pressure_symbol'] = [8]
+    data = {'air_temperature': np.array([77]) * units.degF,
+            'dew_point_temperature': np.array([71]) * units.degF,
+            'air_pressure_at_sea_level': np.array([999.8]) * units('mbar'),
+            'eastward_wind': np.array([15.]) * units.knots,
+            'northward_wind': np.array([15.]) * units.knots, 'cloud_coverage': [7],
+            'present_weather': [80], 'high_cloud_type': [1], 'medium_cloud_type': [3],
+            'low_cloud_type': [2], 'visibility_in_air': np.array([5.]) * units.mile,
+            'tendency_of_air_pressure': np.array([-0.3]) * units('mbar'),
+            'tendency_of_air_pressure_symbol': [8]}
 
     # Make the plot
     sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=12, spacing=16)

@@ -146,14 +146,11 @@ class Enum(object):
 
     def __init__(self, *args, **kwargs):
         """Initialize the mapping."""
-        self.val_map = dict()
         # Assign values for args in order starting at 0
-        for ind, a in enumerate(args):
-            self.val_map[ind] = a
+        self.val_map = {ind: a for ind, a in enumerate(args)}
 
         # Invert the kwargs dict so that we can map from value to name
-        for k in kwargs:
-            self.val_map[kwargs[k]] = k
+        self.val_map.update(zip(kwargs.values(), kwargs.keys()))
 
     def __call__(self, val):
         """Map an integer to the string representation."""
