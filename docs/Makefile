@@ -4,6 +4,7 @@
 # You can set these variables from the command line.
 SPHINXOPTS    = -W
 SPHINXBUILD   = sphinx-build
+SPHINXAUTOGEN = sphinx-autogen
 PAPER         =
 BUILDDIR      = build
 HTMLBUILDDIR  = $(BUILDDIR)/html
@@ -52,7 +53,10 @@ help:
 clean:
 	rm -rf $(BUILDDIR)/* $(SOURCEDIR)/examples $(SOURCEDIR)/tutorials $(SOURCEDIR)/api/generated
 
-html:
+autogen:
+	$(SPHINXAUTOGEN) -i -t $(SOURCEDIR)/_templates -o $(SOURCEDIR)/api/generated $(SOURCEDIR)/api/*.rst
+
+html:	autogen
 	$(SPHINXBUILD) -b html $(ALLSPHINXOPTS) $(HTMLBUILDDIR)
 	@echo
 	@echo "Build finished. The HTML pages are in $(HTMLBUILDDIR)."
