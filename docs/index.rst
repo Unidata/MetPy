@@ -93,5 +93,5 @@ Related Projects
 
 .. _netCDF4-python: https://unidata.github.io/netcdf4-python/
 .. _netCDF: https://www.unidata.ucar.edu/software/netcdf/
-.. _siphon: http://siphon.readthedocs.io
+.. _siphon: https://unidata.github.io/siphon/
 __ https://www.unidata.ucar.edu/software/thredds/current/tds/
