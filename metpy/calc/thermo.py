@@ -554,7 +554,7 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
     r"""Calculate virtual temperature.
 
     This calculation must be given an air parcel's temperature and mixing ratio.
-    The implementation uses the formula outlined in [Hobbs2006] pg.80.
+    The implementation uses the formula outlined in [Hobbs2006]_ pg.80.
 
     Parameters
     ----------
@@ -588,7 +588,7 @@ def virtual_potential_temperature(pressure, temperature, mixing,
     r"""Calculate virtual potential temperature.
 
     This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
-    The implementation uses the formula outlined in [Markowski2010] pg.13.
+    The implementation uses the formula outlined in [Markowski2010]_ pg.13.
 
     Parameters
     ----------
@@ -623,7 +623,7 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
     r"""Calculate density.
 
     This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
-    The implementation uses the formula outlined in [Hobbs2006] pg.67.
+    The implementation uses the formula outlined in [Hobbs2006]_ pg.67.
 
     Parameters
     ----------
@@ -658,6 +658,9 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
                                         pressure, **kwargs):
     r"""Calculate the relative humidity with wet bulb and dry bulb temperatures.
 
+    This uses a psychrometric relationship as outlined in [WMO8-2008]_, with
+    coefficients from [Fan1987]_.
+
     Parameters
     ----------
     dry_bulb_temperature: `pint.Quantity`
@@ -680,16 +683,6 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
     * :math:`e` is vapor pressure from the wet psychrometric calculation
     * :math:`e_s` is the saturation vapor pressure
 
-    References
-    ----------
-    .. [10] WMO GUIDE TO METEOROLOGICAL INSTRUMENTS AND METHODS OF OBSERVATION WMO-No.8
-       (2008 edition, Updated in 2010) : PART 4
-       https://www.wmo.int/pages/prog/www/IMOP/CIMO-Guide.html
-
-    .. [11] Fan, Jinpeng. "Determination of the psychrometer coefficient A of the WMO
-       reference psychrometer by comparison with a standard gravimetric hygrometer."
-       Journal of Atmospheric and Oceanic Technology 4.1 (1987): 239-244.
-
     See Also
     --------
     psychrometric_vapor_pressure_wet, saturation_vapor_pressure
@@ -705,6 +698,9 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
 def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature, pressure,
                                      psychrometer_coefficient=6.21e-4 / units.kelvin):
     r"""Calculate the vapor pressure with wet bulb and dry bulb temperatures.
+
+    This uses a psychrometric relationship as outlined in [WMO8-2008]_, with
+    coefficients from [Fan1987]_.
 
     Parameters
     ----------
@@ -736,16 +732,6 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
 
     Psychrometer coefficient depends on the specific instrument being used and the ventilation
     of the instrument.
-
-    References
-    ----------
-    .. [12] WMO GUIDE TO METEOROLOGICAL INSTRUMENTS AND METHODS OF OBSERVATION WMO-No.8
-       (2008 edition, Updated in 2010) : PART 4
-       https://www.wmo.int/pages/prog/www/IMOP/CIMO-Guide.html
-
-    .. [13] Fan, Jinpeng. "Determination of the psychrometer coefficient A of the WMO reference
-       psychrometer by comparison with a standard gravimetric hygrometer."
-       Journal of Atmospheric and Oceanic Technology 4.1 (1987): 239-244.
 
     See Also
     --------

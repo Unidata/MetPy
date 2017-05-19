@@ -20,6 +20,10 @@ References
 .. [Hobbs2006] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
            Survey. 2nd ed.
 
+.. [Fan1987] Fan, Jinpeng, 1987: Determination of the psychrometer coefficient A of the WMO
+           reference psychrometer by comparison with a standard gravimetric hygrometer.
+           Journal of Atmospheric and Oceanic Technology, 4.1, 239-244.
+
 .. [FCMR192003] Federal Coordinator for Meteorological Services and Supporting Research: Report on
            Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
            Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
@@ -47,6 +51,5 @@ References
            temperature-humidity index based on human physiology and clothing
            science. J. Appl. Meteor., 18, 861-873.
 
-
-
-
+.. [WMO8-2008] WMO: WMO Guide to Meteorological Instruments and Methods of Observation,
+           2008. WMO No.8 Part 4. https://www.wmo.int/pages/prog/www/IMOP/CIMO-Guide.html
