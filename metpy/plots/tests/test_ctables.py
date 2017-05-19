@@ -122,10 +122,10 @@ def test_get_boundaries(registry):
 
 def test_gempak():
     """Test GEMPAK colortable conversion."""
-    infile = StringIO('''!   wvcolor.tbl
+    infile = StringIO("""!   wvcolor.tbl
                          0      0      0
                        255    255    255
-                       ''')
+                       """)
     outfile = StringIO()
 
     # Do the conversion
