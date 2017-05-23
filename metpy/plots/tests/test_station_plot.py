@@ -158,7 +158,7 @@ def test_simple_layout():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.1474, '1.4': 7.02}.get(MPL_VERSION, 0.0113),
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 7.02}.get(MPL_VERSION, 0.1848),
                                savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_nws_layout():
     """Test metpy's NWS layout for station plots."""
