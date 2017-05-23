@@ -6,10 +6,10 @@
 import os.path
 import tempfile
 try:
-    buffer_args = dict(bufsize=0)
+    buffer_args = {'bufsize': 0}
     from StringIO import StringIO
 except ImportError:
-    buffer_args = dict(buffering=1)
+    buffer_args = {'buffering': 1}
     from io import StringIO
 
 import numpy as np
@@ -33,7 +33,8 @@ def test_package_resource(registry):
 def test_scan_dir(registry):
     """Test registry scanning a directory and ignoring files it can't handle ."""
     try:
-        kwargs = dict(mode='w', dir='.', suffix='.tbl', delete=False, **buffer_args)
+        kwargs = {'mode': 'w', 'dir': '.', 'suffix': '.tbl', 'delete': False}
+        kwargs.update(**buffer_args)
         with tempfile.NamedTemporaryFile(**kwargs) as fobj:
             fobj.write('"red"\n"lime"\n"blue"\n')
             fname = fobj.name
@@ -121,10 +122,10 @@ def test_get_boundaries(registry):
 
 def test_gempak():
     """Test GEMPAK colortable conversion."""
-    infile = StringIO('''!   wvcolor.tbl
+    infile = StringIO("""!   wvcolor.tbl
                          0      0      0
                        255    255    255
-                       ''')
+                       """)
     outfile = StringIO()
 
     # Do the conversion

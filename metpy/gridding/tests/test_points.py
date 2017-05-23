@@ -57,12 +57,12 @@ def test_get_boundary_coords():
 
     bbox = get_boundary_coords(x, y)
 
-    truth = dict(east=9, north=9, south=0, west=0)
+    truth = {'east': 9, 'north': 9, 'south': 0, 'west': 0}
     assert bbox == truth
 
     bbox = get_boundary_coords(x, y, 10)
 
-    truth = dict(east=19, north=19, south=-10, west=-10)
+    truth = {'east': 19, 'north': 19, 'south': -10, 'west': -10}
     assert bbox == truth
 
 

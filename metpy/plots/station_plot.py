@@ -26,8 +26,8 @@ class StationPlot(object):
     barbs as the center of the location.
     """
 
-    location_names = dict(C=(0, 0), N=(0, 1), NE=(1, 1), E=(1, 0), SE=(1, -1), S=(0, -1),
-                          SW=(-1, -1), W=(-1, 0), NW=(-1, 1))
+    location_names = {'C': (0, 0), 'N': (0, 1), 'NE': (1, 1), 'E': (1, 0), 'SE': (1, -1),
+                      'S': (0, -1), 'SW': (-1, -1), 'W': (-1, 0), 'NW': (-1, 1)}
 
     def __init__(self, ax, x, y, fontsize=10, spacing=None, transform=None):
         """Initialize the StationPlot with items that do not change.
@@ -59,7 +59,7 @@ class StationPlot(object):
         self.fontsize = fontsize
         self.spacing = fontsize if spacing is None else spacing
         self.transform = transform
-        self.items = dict()
+        self.items = {}
         self.barbs = None
 
     def plot_symbol(self, location, codes, symbol_mapper, **kwargs):
@@ -267,8 +267,8 @@ class StationPlot(object):
         # Empirically determined
         pivot = 0.51 * np.sqrt(self.fontsize)
         length = 1.95 * np.sqrt(self.fontsize)
-        defaults = dict(sizes=dict(spacing=.15, height=0.5, emptybarb=0.35),
-                        length=length, pivot=pivot)
+        defaults = {'sizes': {'spacing': .15, 'height': 0.5, 'emptybarb': 0.35},
+                    'length': length, 'pivot': pivot}
         defaults.update(kwargs)
 
         # Remove old barbs

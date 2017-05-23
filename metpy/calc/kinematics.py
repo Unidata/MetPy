@@ -87,14 +87,14 @@ def ensure_yx_order(func):
             return ret
 
     # Inject a docstring for the dim_order argument into the function's docstring.
-    dim_order_doc = '''
+    dim_order_doc = """
     dim_order : str or ``None``, optional
         The ordering of dimensions in passed in arrays. Can be one of ``None``, ``'xy'``,
         or ``'yx'``. ``'xy'`` indicates that the dimension corresponding to x is the leading
         dimension, followed by y. ``'yx'`` indicates that x is the last dimension, preceded
         by y. ``None`` indicates that the default ordering should be assumed,
         which will change in version 0.6 from 'xy' to 'yx'. Can only be passed as a keyword
-        argument, i.e. func(..., dim_order='xy').'''
+        argument, i.e. func(..., dim_order='xy')."""
 
     # Find the first blank line after the start of the parameters section
     params = wrapper.__doc__.find('Parameters')

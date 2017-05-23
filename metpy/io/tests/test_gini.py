@@ -73,19 +73,20 @@ def test_gini_bad_size():
 # inclusion of correct projection metadata, etc.
 gini_dataset_info = [('WEST-CONUS_4km_WV_20151208_2200.gini',
                       (-4226066.37649, 239720.12351, -832700.70519, 4364515.79481), 'WV',
-                      dict(grid_mapping_name='lambert_conformal_conic', standard_parallel=25.0,
-                           earth_radius=6371200., latitude_of_projection_origin=25.0,
-                           longitude_of_central_meridian=-95.0)),
+                      {'grid_mapping_name': 'lambert_conformal_conic',
+                       'standard_parallel': 25.0, 'earth_radius': 6371200.,
+                       'latitude_of_projection_origin': 25.0,
+                       'longitude_of_central_meridian': -95.0}),
                      ('AK-REGIONAL_8km_3.9_20160408_1445.gini',
                       (-2286001.13195, 2278061.36805, -4762503.5992, -1531941.0992), 'IR',
-                      dict(grid_mapping_name='polar_stereographic', standard_parallel=60.0,
-                           earth_radius=6371200., latitude_of_projection_origin=90.,
-                           straight_vertical_longitude_from_pole=210.0)),
+                      {'grid_mapping_name': 'polar_stereographic', 'standard_parallel': 60.0,
+                       'earth_radius': 6371200., 'latitude_of_projection_origin': 90.,
+                       'straight_vertical_longitude_from_pole': 210.0}),
                      ('HI-REGIONAL_4km_3.9_20160616_1715.gini',
                       (0.0, 2236000.0, 980627.44738, 3056627.44738), 'IR',
-                      dict(grid_mapping_name='mercator', standard_parallel=20.0,
-                           earth_radius=6371200., latitude_of_projection_origin=9.343,
-                           longitude_of_projection_origin=-167.315))
+                      {'grid_mapping_name': 'mercator', 'standard_parallel': 20.0,
+                       'earth_radius': 6371200., 'latitude_of_projection_origin': 9.343,
+                       'longitude_of_projection_origin': -167.315})
                      ]
 
 

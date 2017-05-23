@@ -84,7 +84,7 @@ def read_colortable(fobj):
         range of [0, 1].
 
     """
-    ret = list()
+    ret = []
     try:
         for line in fobj:
             literal = _parse(line)

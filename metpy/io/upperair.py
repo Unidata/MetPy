@@ -46,7 +46,7 @@ def get_upper_air_data(time, site_id, source='wyoming', **kwargs):
         :class:`metpy.io.cdm.Dataset` containing the data
 
     """
-    sources = dict(wyoming=WyomingUpperAir, iastate=IAStateUpperAir)
+    sources = {'wyoming': WyomingUpperAir, 'iastate': IAStateUpperAir}
     src = sources.get(source)
     if src is None:
         raise ValueError('Unknown source for data: {0}'.format(str(source)))
@@ -211,8 +211,8 @@ class WyomingUpperAir(object):
 
         p, t, td, direc, spd = np.array(arr_data).T
 
-        return dict(p=(p, unit_strs[0]), t=(t, unit_strs[2]), td=(td, unit_strs[3]),
-                    wind=(direc, spd, unit_strs[7]))
+        return {'p': (p, unit_strs[0]), 't': (t, unit_strs[2]), 'td': (td, unit_strs[3]),
+                'wind': (direc, spd, unit_strs[7])}
 
 
 class IAStateUpperAir(object):
@@ -261,7 +261,7 @@ class IAStateUpperAir(object):
         dict of information used by :func:`get_upper_air_data`
 
         """
-        data = dict()
+        data = {}
         for pt in json_data:
             for field in ('drct', 'dwpc', 'pres', 'sknt', 'tmpc'):
                 data.setdefault(field, []).append(np.nan if pt[field] is None else pt[field])
@@ -269,10 +269,10 @@ class IAStateUpperAir(object):
         # Make sure that the first entry has a valid temperature and dewpoint
         idx = np.argmax(~(np.isnan(data['tmpc']) | np.isnan(data['tmpc'])))
 
-        ret = dict(p=(ma.masked_invalid(data['pres'][idx:]), 'mbar'),
-                   t=(ma.masked_invalid(data['tmpc'][idx:]), 'degC'),
-                   td=(ma.masked_invalid(data['dwpc'][idx:]), 'degC'),
-                   wind=(ma.masked_invalid(data['drct'][idx:]),
-                         ma.masked_invalid(data['sknt'][idx:]), 'knot'))
+        ret = {'p': (ma.masked_invalid(data['pres'][idx:]), 'mbar'),
+               't': (ma.masked_invalid(data['tmpc'][idx:]), 'degC'),
+               'td': (ma.masked_invalid(data['dwpc'][idx:]), 'degC'),
+               'wind': (ma.masked_invalid(data['drct'][idx:]),
+                        ma.masked_invalid(data['sknt'][idx:]), 'knot')}
 
         return ret

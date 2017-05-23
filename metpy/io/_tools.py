@@ -146,14 +146,11 @@ class Enum(object):
 
     def __init__(self, *args, **kwargs):
         """Initialize the mapping."""
-        self.val_map = dict()
         # Assign values for args in order starting at 0
-        for ind, a in enumerate(args):
-            self.val_map[ind] = a
+        self.val_map = {ind: a for ind, a in enumerate(args)}
 
         # Invert the kwargs dict so that we can map from value to name
-        for k in kwargs:
-            self.val_map[kwargs[k]] = k
+        self.val_map.update(zip(kwargs.values(), kwargs.keys()))
 
     def __call__(self, val):
         """Map an integer to the string representation."""
@@ -381,7 +378,7 @@ def hexdump(buf, num_bytes, offset=0, width=32):
         blocks = [hexfmt * blocksize for _ in range(actual_width // blocksize)]
 
         # Need to get any partial lines
-        num_left = actual_width % blocksize
+        num_left = actual_width % blocksize  # noqa: S001  Fix false alarm
         if num_left:
             blocks += [hexfmt * num_left + '--' * (blocksize - num_left)]
         blocks += ['--' * blocksize] * (width // blocksize - len(blocks))

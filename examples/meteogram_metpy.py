@@ -216,16 +216,14 @@ date = testdata['DATE']
 # ID For Plotting on Meteogram
 probe_id = '0102A'
 
-data = dict()
-data['wind_speed'] = (np.array(ws) * units('m/s')).to(units('knots'))
-data['wind_speed_max'] = (np.array(wsmax) * units('m/s')).to(units('knots'))
-data['wind_direction'] = np.array(wd) * units('degrees')
-data['dewpoint'] = dewpoint_rh((np.array(temp) * units('degC')).to(units('K')),
-                               np.array(rh) / 100.).to(units('degF'))
-data['air_temperature'] = (np.array(temp) * units('degC')).to(units('degF'))
-data['mean_slp'] = calc_mslp(np.array(temp), np.array(pres), hgt_example) * units('hPa')
-data['relative_humidity'] = np.array(rh)
-data['times'] = np.array(date)
+data = {'wind_speed': (np.array(ws) * units('m/s')).to(units('knots')),
+        'wind_speed_max': (np.array(wsmax) * units('m/s')).to(units('knots')),
+        'wind_direction': np.array(wd) * units('degrees'),
+        'dewpoint': dewpoint_rh((np.array(temp) * units('degC')).to(units('K')),
+                                np.array(rh) / 100.).to(units('degF')),
+        'air_temperature': (np.array(temp) * units('degC')).to(units('degF')),
+        'mean_slp': calc_mslp(np.array(temp), np.array(pres), hgt_example) * units('hPa'),
+        'relative_humidity': np.array(rh), 'times': np.array(date)}
 
 fig = plt.figure(figsize=(20, 16))
 meteogram = Meteogram(fig, data['times'], probe_id)

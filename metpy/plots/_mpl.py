@@ -24,7 +24,7 @@ if float(matplotlib.__version__[:3]) < 2.1:
         empty_rad = length * sizes.get('emptybarb', 0.15)
 
         # Controls y point where to pivot the barb.
-        pivot_points = dict(tip=0.0, middle=-length / 2.)
+        pivot_points = dict(tip=0.0, middle=-length / 2.)  # noqa: C408
 
         # Check for flip
         if flip:

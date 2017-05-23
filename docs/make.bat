@@ -5,6 +5,9 @@ REM Command file for Sphinx documentation
 if "%SPHINXBUILD%" == "" (
 	set SPHINXBUILD=sphinx-build
 )
+if "%SPHINXAUTOGEN%" == "" (
+	set SPHINXAUTOGEN=sphinx-autogen
+)
 set BUILDDIR=build
 set HTMLBUILDDIR=%BUILDDIR%/html
 set SOURCEDIR=.
@@ -61,6 +64,15 @@ if errorlevel 9009 (
 	echo.If you don't have Sphinx installed, grab it from
 	echo.http://sphinx-doc.org/
 	exit /b 1
+)
+
+if "%1" == "autogen" (
+	echo.%SPHINXAUTOGEN% -i -t %SOURCEDIR%/_templates -o %SOURCEDIR%/api/generated %SOURCEDIR%/api/*.rst
+	%SPHINXAUTOGEN% -i -t %SOURCEDIR%/_templates -o %SOURCEDIR%/api/generated %SOURCEDIR%/api/*.rst
+	if errorlevel 1 exit /b 1
+	echo.
+	echo.Autogen finished.
+	goto end
 )
 
 if "%1" == "html" (

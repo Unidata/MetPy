@@ -68,7 +68,7 @@ simple_layout.names()
 # put them into a dictionary that we will hand the plotting function later:
 
 # This is our container for the data
-data = dict()
+data = {}
 
 # Copy out to stage everything together. In an ideal world, this would happen on
 # the data reading side of things, but we're not there yet.
