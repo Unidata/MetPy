@@ -7,6 +7,7 @@ from __future__ import print_function
 
 import bz2
 from collections import defaultdict, namedtuple, OrderedDict
+import contextlib
 import datetime
 import gzip
 import logging
@@ -180,7 +181,9 @@ class Level2File(object):
         else:
             fobj = filename
 
-        self._buffer = IOBuffer.fromfile(fobj)
+        with contextlib.closing(fobj):
+            self._buffer = IOBuffer.fromfile(fobj)
+
         self._read_volume_header()
         start = self._buffer.set_mark()
 
@@ -1530,7 +1533,8 @@ class Level3File(object):
             self.filename = 'No Filename'
 
         # Just read in the entire set of data at once
-        self._buffer = IOBuffer.fromfile(fobj)
+        with contextlib.closing(fobj):
+            self._buffer = IOBuffer.fromfile(fobj)
 
         # Pop off the WMO header if we find it
         self._process_wmo_header()

@@ -40,6 +40,7 @@ specific set of constraints (e.g. step size) for mapping.
 from __future__ import division
 
 import ast
+import contextlib
 import glob
 import logging
 import os.path
@@ -135,8 +136,10 @@ class ColortableRegistry(dict):
         """
         for fname in resource_listdir(pkg, path):
             if fname.endswith(TABLE_EXT):
-                self.add_colortable(resource_stream(pkg, posixpath.join(path, fname)),
-                                    posixpath.splitext(posixpath.basename(fname))[0])
+                table_path = posixpath.join(path, fname)
+                with contextlib.closing(resource_stream(pkg, table_path)) as stream:
+                    self.add_colortable(stream,
+                                        posixpath.splitext(posixpath.basename(fname))[0])
 
     def scan_dir(self, path):
         r"""Scan a directory on disk for color table files and add them to the registry.
