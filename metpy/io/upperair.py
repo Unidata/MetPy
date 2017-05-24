@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Read upper air data from remote archives."""
 
+import contextlib
 from io import BytesIO
 import json
 try:
@@ -145,8 +146,8 @@ class WyomingUpperAir(object):
         url = ('http://weather.uwyo.edu/cgi-bin/sounding?region={region}&TYPE=TEXT%3ALIST'
                '&YEAR={time:%Y}&MONTH={time:%m}&FROM={time:%d%H}&TO={time:%d%H}'
                '&STNM={stid}').format(region=region, time=time, stid=site_id)
-        fobj = urlopen(url)
-        data = fobj.read()
+        with contextlib.closing(urlopen(url)) as fobj:
+            data = fobj.read()
 
         # See if the return is valid, but has no data
         if data.find(b'Can\'t') != -1:
@@ -237,7 +238,8 @@ class IAStateUpperAir(object):
         url = ('http://mesonet.agron.iastate.edu/json/raob.py?ts={time:%Y%m%d%H}00'
                '&station={stid}').format(time=time, stid=site_id)
 
-        json_data = json.loads(urlopen(url).read().decode('utf-8'))['profiles'][0]['profile']
+        with contextlib.closing(urlopen(url)) as fobj:
+            json_data = json.loads(fobj.read().decode('utf-8'))['profiles'][0]['profile']
 
         # See if the return is valid, but has no data
         if not json_data:

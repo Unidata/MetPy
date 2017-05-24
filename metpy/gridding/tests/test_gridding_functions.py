@@ -122,6 +122,7 @@ def test_interpolate(method, test_coords):
 
     _, _, img = interpolate(xp, yp, z, hres=10, interp_type=method, **extra_kw)
 
-    truth = np.load(get_test_data('{0}_test.npz'.format(method)))['img']
+    with get_test_data('{0}_test.npz'.format(method)) as fobj:
+        truth = np.load(fobj)['img']
 
     assert_array_almost_equal(truth, img)

@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools to process GINI-formatted products."""
 
+import contextlib
 from datetime import datetime
 try:
     from enum import Enum
@@ -159,7 +160,8 @@ class GiniFile(object):
             self.filename = 'No Filename'
 
         # Just read in the entire set of data at once
-        self._buffer = IOBuffer.fromfile(fobj)
+        with contextlib.closing(fobj):
+            self._buffer = IOBuffer.fromfile(fobj)
 
         # Pop off the WMO header if we find it
         self.wmo_code = ''

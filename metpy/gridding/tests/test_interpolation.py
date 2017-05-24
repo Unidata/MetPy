@@ -37,10 +37,9 @@ def test_data():
 @pytest.fixture()
 def test_grid():
     r"""Return grid locations used for tests in this file."""
-    xg = np.load(get_test_data('interpolation_test_grid.npz'))['xg']
-    yg = np.load(get_test_data('interpolation_test_grid.npz'))['yg']
-
-    return xg, yg
+    with get_test_data('interpolation_test_grid.npz') as fobj:
+        data = np.load(fobj)
+        return data['xg'], data['yg']
 
 
 def test_natural_neighbor(test_data, test_grid):
@@ -50,7 +49,8 @@ def test_natural_neighbor(test_data, test_grid):
 
     img = natural_neighbor(xp, yp, z, xg, yg)
 
-    truth = np.load(get_test_data('nn_bbox0to100.npz'))['img']
+    with get_test_data('nn_bbox0to100.npz') as fobj:
+        truth = np.load(fobj)['img']
 
     assert_array_almost_equal(truth, img)
 
@@ -76,7 +76,8 @@ def test_inverse_distance(method, test_data, test_grid):
 
     img = inverse_distance(xp, yp, z, xg, yg, kind=method, **extra_kw)
 
-    truth = np.load(get_test_data(test_file))['img']
+    with get_test_data(test_file) as fobj:
+        truth = np.load(fobj)['img']
 
     assert_array_almost_equal(truth, img)
 
