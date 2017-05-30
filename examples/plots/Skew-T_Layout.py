@@ -41,7 +41,6 @@ skew = SkewT(fig, rotation=45, subplot=gs[:, :2])
 skew.plot(p, T, 'r')
 skew.plot(p, Td, 'g')
 skew.plot_barbs(p, u, v)
-skew.ax.set_ylim(1000, 100)
 
 # Add the relevant special lines
 skew.plot_dry_adiabats()

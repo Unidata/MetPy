@@ -283,6 +283,10 @@ class SkewT(object):
         self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
         self.ax.grid(True)
 
+        # Set axis limits to reasonable values
+        self.ax.set_ylim(1000, 100)
+        self.ax.set_xlim(-40, 60)
+
     def plot(self, p, t, *args, **kwargs):
         r"""Plot data.
 

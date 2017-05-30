@@ -43,8 +43,6 @@ skew = SkewT(fig, rotation=45)
 skew.plot(p, T, 'r')
 skew.plot(p, Td, 'g')
 skew.plot_barbs(p, u, v)
-skew.ax.set_ylim(1000, 100)
-skew.ax.set_xlim(-40, 60)
 
 # Calculate LCL height and plot as black dot
 lcl_pressure, lcl_temperature = mpcalc.lcl(p[0], T[0], Td[0])
