@@ -734,3 +734,70 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
     """
     return (saturation_vapor_pressure(wet_bulb_temperature) - psychrometer_coefficient *
             pressure * (dry_bulb_temperature - wet_bulb_temperature).to('kelvin'))
+
+
+def pressure_at_height_above_pressure(sfc_pressure, height):
+    """
+    Calculate the pressure of a certain height above another pressure level.
+
+    Assumes a standard atmosphere.
+    """
+    sfc_height = pressure_to_height(sfc_pressure)
+    AGL_height = sfc_height + height
+    return pressure_at_height_above_pressure(AGL_height)
+
+
+def mixed_layer(p, variable):
+    depth = p[-1] - p[0]
+    return (1. / depth.m) * np.trapz(variable, p) * variable.units
+
+
+def mixed_layer_parcel(p, T, Td, bottom=None, depth=100 * units.hPa, parcel_pressure=p[0]):
+
+    # If no bottom is specified, use the first pressure value
+    if not bottom:
+        bottom_pressure = p[0]
+
+    # If bottom is specified as a height (AGL), convert to pressure
+    if bottom.dimensionality == {'[length]': 1.0}:
+        bottom_pressure = pressure_at_height_above_pressure(p[0], bottom)
+
+
+    # Calculate the pressure at the top of the mixed layer
+    if depth.dimensionality == {'[length]': 1.0}:
+        top_pressure = pressure_at_height_above_pressure(bottom, depth)
+    else:
+        top_pressure = p[0] - depth
+
+    # Clip out the pressure values we have data for in the layer
+    inds = (p <= bottom_pressure) & (p >= top_pressure)
+    p_interp = p[inds]
+
+    # If we don't have the bottom or top requested, append them
+    if top_pressure not in p_interp:
+        p_interp = np.sort(np.append(p_interp, top_pressure)) * units.hPa
+    if bottom_pressure not in p_interp:
+        p_interp = np.sort(np.append(p_interp, bottom_pressure)) * units.hPa
+
+    # Interpolate for the possibly missing bottom/top pressure values
+    sort_args = np.argsort(p)
+    T = np.interp(p_interp, p[sort_args], T[sort_args]) * units.degC
+    Td = np.interp(p_interp, p[sort_args], Td[sort_args]) * units.degC
+    p = p_interp
+
+    # Determine the mean potential temperature in the layer
+    theta = mpcalc.potential_temperature(p, T)
+    theta_mean = mixed_layer(p, theta)
+
+    # Determine the mean mixing ratio in the layer
+    mixing_ratio = mpcalc.saturation_mixing_ratio(p, Td)
+    mixing_ratio_mean = mixed_layer(p, mixing_ratio)
+
+    # Convert the mixing ratio back to a dewpoint
+    vapor_pressure_mean = mpcalc.vapor_pressure(parcel_pressure, mixing_ratio_mean)
+    dewpoint_mean = mpcalc.dewpoint(vapor_pressure_mean)
+
+    # Convert the potential temperature back to real temperature
+    temperature_mean = theta_mean / mpcalc.potential_temperature(parcel_pressure,
+                                                                 1 * units.degK).m
+    return parcel_pressure, temperature_mean.to('degC'), dewpoint_mean
