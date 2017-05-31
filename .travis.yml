@@ -102,7 +102,7 @@ script:
   - if [[ $TASK == "docs" ]]; then
       export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata;
       pushd docs;
-      make clean html;
+      make clean html linkcheck;
       export DOC_BUILD_RESULT=$?;
       popd;
       if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then

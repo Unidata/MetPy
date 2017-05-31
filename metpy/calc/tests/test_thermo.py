@@ -250,8 +250,8 @@ def test_el():
     temperatures = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoints = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
-    assert_almost_equal(el_pressure, 520.8420 * units.mbar, 3)
-    assert_almost_equal(el_temperature, -11.7055 * units.degC, 3)
+    assert_almost_equal(el_pressure, 520.8700 * units.mbar, 3)
+    assert_almost_equal(el_temperature, -11.7027 * units.degC, 3)
 
 
 def test_no_el():
