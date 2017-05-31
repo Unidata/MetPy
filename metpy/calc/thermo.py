@@ -7,6 +7,7 @@ from __future__ import division
 
 import numpy as np
 import scipy.integrate as si
+import scipy.optimize as so
 
 from .tools import find_intersections
 from ..constants import Cp_d, epsilon, kappa, Lv, P0, Rd
@@ -142,7 +143,7 @@ def moist_lapse(pressure, temperature):
 
 @exporter.export
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
+def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     r"""Calculate the lifted condensation level (LCL) using from the starting point.
 
     The starting state for the parcel is defined by `temperature`, `dewpt`,
@@ -167,7 +168,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
     max_iters : int, optional
         The maximum number of iterations to use in calculation, defaults to 50.
     eps : float, optional
-        The desired absolute error in the calculated value, defaults to 1e-2.
+        The desired relative error in the calculated value, defaults to 1e-5.
 
     See Also
     --------
@@ -185,22 +186,15 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-2):
     The function is guaranteed to finish by virtue of the `max_iters` counter.
 
     """
+    def _lcl_iter(p, p0, w, t):
+        td = dewpoint(vapor_pressure(units.Quantity(p, pressure.units), w))
+        return (p0 * (td / t) ** (1. / kappa)).m
+
     w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
-    new_p = p = pressure
-    eps = units.Quantity(eps, p.units)
-    while max_iters:
-        td = dewpoint(vapor_pressure(p, w))
-        new_p = pressure * (td / temperature) ** (1. / kappa)
-        if np.abs(new_p - p).max() < eps:
-            break
-        p = new_p
-        max_iters -= 1
-
-    else:
-        # We have not converged
-        raise RuntimeError('LCL calculation has not converged.')
-
-    return new_p, td
+    fp = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
+                        xtol=eps, maxiter=max_iters)
+    lcl_p = units.Quantity(fp, pressure.units)
+    return lcl_p, dewpoint(vapor_pressure(lcl_p, w))
 
 
 @exporter.export
