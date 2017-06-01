@@ -6,7 +6,8 @@
 import numpy as np
 
 from metpy.calc import (coriolis_parameter, get_wind_components, get_wind_dir, get_wind_speed,
-                        heat_index, height_to_pressure_std, pressure_to_height_std, windchill)
+                        heat_index, height_to_pressure_std, pressure_at_height_above_pressure,
+                        pressure_to_height_std, windchill)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -254,3 +255,9 @@ def test_coriolis_force():
     values = np.array([-1.4584232E-4, -.72921159E-4, 0, .72921159E-4,
                        1.4584232E-4]) * units('s^-1')
     assert_almost_equal(cor, values, 7)
+
+
+def test_pressure_at_height_above_pressure():
+    """Test the pressure at height above pressure calculation."""
+    pressure = pressure_at_height_above_pressure(1000 * units.hPa, 877.17421 * units.meter)
+    assert_almost_equal(pressure, 900 * units.hPa, 5)
