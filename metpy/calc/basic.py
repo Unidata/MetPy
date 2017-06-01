@@ -304,8 +304,8 @@ def coriolis_parameter(latitude):
 
 @exporter.export
 @check_units('[pressure]', '[length]')
-def pressure_at_height_above_pressure(pressure, height):
-    r"""Calculate the pressure of a certain height above another pressure level.
+def add_height_to_pressure(pressure, height):
+    r"""Calculate the pressure at a certain height above another pressure level.
 
     This assumes a standard atmosphere.
 
@@ -323,7 +323,7 @@ def pressure_at_height_above_pressure(pressure, height):
 
     See Also
     -----
-    pressure_to_height_std, height_to_pressure_std
+    pressure_to_height_std, height_to_pressure_std, add_pressure_to_height
 
     """
     pressure_level_height = pressure_to_height_std(pressure)
@@ -332,8 +332,8 @@ def pressure_at_height_above_pressure(pressure, height):
 
 @exporter.export
 @check_units('[length]', '[pressure]')
-def height_at_pressure_above_height(height, pressure):
-    r"""Calculate the height of a certain pressure above another height.
+def add_pressure_to_height(height, pressure):
+    r"""Calculate the height at a certain pressure above another height.
 
     This assumes a standard atmosphere.
 
@@ -351,7 +351,7 @@ def height_at_pressure_above_height(height, pressure):
 
     See Also
     -----
-    pressure_to_height_std, height_to_pressure_std
+    pressure_to_height_std, height_to_pressure_std, add_height_to_pressure
 
     """
     pressure_at_height = height_to_pressure_std(height)
