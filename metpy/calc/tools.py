@@ -9,7 +9,9 @@ import numpy as np
 import numpy.ma as ma
 from scipy.spatial import cKDTree
 
+from . import height_to_pressure_std, pressure_to_height_std
 from ..package_tools import Exporter
+from ..units import check_units, units
 
 exporter = Exporter(globals())
 
@@ -330,3 +332,185 @@ def log_interp(x, xp, fp, **kwargs):
         interpolated_vals = interpolated_vals * fp.units
 
     return interpolated_vals
+
+
+def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
+    """Calculate the bounding pressure and height in a layer.
+
+    Given pressure, optional heights, and a bound, return either the closest pressure/height
+    or interpolated pressure/height. If no heights are provided, a standard atmosphere is
+    assumed.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressures
+    bound : `pint.Quantity`
+        Bound to retrieve (in pressure or height)
+    heights : `pint.Quantity`
+        Atmospheric heights associated with the pressure levels
+    interpolate : boolean
+        Interpolate the bound or return the nearest
+
+    Returns
+    -------
+    `pint.Quantity`
+        The bound pressure and height.
+
+    """
+    # Bound is given in pressure
+    if bound.dimensionality == {'[length]': -1.0, '[mass]': 1.0, '[time]': -2.0}:
+        # If the bound is in the pressure data, we know the pressure bound exactly
+        if bound in pressure:
+            bound_pressure = bound
+            # If we have heights, we know the exact height value, otherwise return standard
+            # atmosphere height for the pressure
+            if heights is not None:
+                idx = np.where(pressure == bound_pressure)
+                bound_height = heights[idx]
+            else:
+                bound_height = pressure_to_height_std(bound_pressure)
+        # If bound is not in the data, return the nearest or interpolated values
+        else:
+            if interpolate:
+                bound_pressure = bound  # Use the user specified bound
+                if heights is not None:  # Interpolate heights from the height data
+                    bound_height = log_interp(bound_pressure, pressure, heights)
+                else:  # If not heights given, use the standard atmosphere
+                    bound_height = pressure_to_height_std(bound_pressure)
+            else:  # No interpolation, find the closest values
+                idx = (np.abs(pressure - bound)).argmin()
+                bound_pressure = pressure[idx]
+                if heights is not None:
+                    bound_height = heights[idx]
+                else:
+                    bound_height = pressure_to_height_std(bound_pressure)
+
+    # Bound is given in length
+    elif bound.dimensionality == {'[length]': 1.0}:
+        # If there is height data, see if we have the bound or need to interpolate/find nearest
+        if heights is not None:
+            if bound in heights:  # Bound is in the height data
+                bound_height = bound
+                idx = np.where(heights == bound)
+                bound_pressure = pressure[idx]
+            else:  # Bound is not in the data
+                if interpolate:
+                    bound_height = bound
+                    bound_pressure = height_to_pressure_std(bound_height)
+                else:
+                    idx = (np.abs(heights - bound)).argmin()
+                    bound_pressure = pressure[idx]
+                    bound_height = heights[idx]
+        else:  # Don't have heights, so assume a standard atmosphere
+            bound_height = bound
+            bound_pressure = height_to_pressure_std(bound)
+            # If interpolation is on, this is all we need, if not, we need to go back and
+            # find the pressure closest to this and refigure the bounds
+            if interpolate is False:
+                idx = (np.abs(pressure - bound_pressure)).argmin()
+                bound_pressure = pressure[idx]
+                bound_height = pressure_to_height_std(bound_pressure)
+
+    # Bound has invalid units
+    else:
+        raise ValueError('Bound must be specified in units of length or pressure.')
+
+    return bound_pressure, bound_height
+
+
+@exporter.export
+@check_units('[pressure]')
+def get_layer(p, *args, **kwargs):
+    r"""Return an atmospheric layer from upper air data with the requested bottom and depth.
+
+    This function will subset an upper air dataset to contain only the specified layer. The
+    bottom of the layer can be specified with a pressure or height above the surface
+    pressure. The bottom defaults to the surface pressure. The depth of the layer can be
+    specified in terms of pressure or height above the bottom of the layer. If the top and
+    bottom of the layer are not in the data, they are interpolated by default.
+
+    Parameters
+    ----------
+    p : array-like
+        Atmospheric pressure profile
+    *args : array-like
+        Atmospheric variable(s) measured at the given pressures
+    heights: array-like
+        Atmospheric heights corresponding to the given pressures
+    bottom : `pint.Quantity`
+        The bottom of the layer as a pressure or height above the surface pressure
+    depth : `pint.Quantity`
+        The thickness of the layer as a pressure or height above the bottom of the layer
+    interpolate : bool
+        Interpolate the top and bottom points if they are not in the given data
+
+    Returns
+    -------
+    `pint.Quantity, pint.Quantity`
+        The pressure and data variables of the layer
+
+    """
+    # Pop off keyword arguments
+    heights = kwargs.pop('heights', None)
+    bottom = kwargs.pop('bottom', None)
+    depth = kwargs.pop('depth', 100 * units.hPa)
+    interpolate = kwargs.pop('interpolate', True)
+
+    # Make sure pressure and datavar are the same length
+    for datavar in args:
+        if len(p) != len(datavar):
+            raise ValueError('Pressure and data variable must have the same length.')
+
+    # If the bottom is not specified, make it the surface pressure
+    if bottom is None:
+        bottom = p[0]
+
+    bottom_pressure, bottom_height = _get_bound_pressure_height(p, bottom, heights=heights,
+                                                                interpolate=interpolate)
+
+    # Calculate the top if whatever units depth is in
+    if depth.dimensionality == {'[length]': -1.0, '[mass]': 1.0, '[time]': -2.0}:
+        top = bottom_pressure - depth
+    elif depth.dimensionality == {'[length]': 1}:
+        top = bottom_height + depth
+    else:
+        raise ValueError('Depth must be specified in units of length or pressure')
+
+    top_pressure, _ = _get_bound_pressure_height(p, top, heights=heights,
+                                                 interpolate=interpolate)
+
+    ret = []  # returned data variables in layer
+
+    # Ensure pressures are sorted in ascending order
+    sort_inds = np.argsort(p)
+    p = p[sort_inds]
+
+    # Mask based on top and bottom pressure
+    inds = (p <= bottom_pressure) & (p >= top_pressure)
+    p_interp = p[inds]
+
+    # Interpolate pressures at bounds if necessary and sort
+    if interpolate:
+        # If we don't have the bottom or top requested, append them
+        if top_pressure not in p_interp:
+            p_interp = np.sort(np.append(p_interp, top_pressure)) * p.units
+        if bottom_pressure not in p_interp:
+            p_interp = np.sort(np.append(p_interp, bottom_pressure)) * p.units
+
+    ret.append(p_interp[::-1])
+
+    for datavar in args:
+        # Ensure that things are sorted in ascending order
+        datavar = datavar[sort_inds]
+
+        if interpolate:
+            # Interpolate for the possibly missing bottom/top values
+            datavar_interp = log_interp(p_interp, p, datavar)
+            datavar = datavar_interp
+        else:
+            datavar = datavar[inds]
+
+        ret.append(datavar[::-1])
+
+    return ret
