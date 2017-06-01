@@ -328,3 +328,31 @@ def pressure_at_height_above_pressure(pressure, height):
     """
     pressure_level_height = pressure_to_height_std(pressure)
     return height_to_pressure_std(pressure_level_height + height)
+
+
+@exporter.export
+@check_units('[length]', '[pressure]')
+def height_at_pressure_above_height(height, pressure):
+    r"""Calculate the height of a certain pressure above another height.
+
+    This assumes a standard atmosphere.
+
+    Parameters
+    ----------
+    height : `pint.Quantity`
+        Height level
+    pressure : `pint.Quantity`
+        Pressure above height level
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding height value for the pressure above the height level
+
+    See Also
+    -----
+    pressure_to_height_std, height_to_pressure_std
+
+    """
+    pressure_at_height = height_to_pressure_std(height)
+    return pressure_to_height_std(pressure_at_height - pressure)
