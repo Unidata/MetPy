@@ -1,3 +1,7 @@
+# Copyright (c) 2008-2016 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
+
 """
 Stove Ownership
 ===============
@@ -33,9 +37,9 @@ data[70:] -= np.arange(30)
 
 plt.annotate(
     'THE DAY I REALIZED\nI COULD COOK BACON\nWHENEVER I WANTED',
-    xy=(70, 1), arrowprops=dict(arrowstyle='->'), xytext=(15, -10))
+    xy=(70, 1), arrowprops={'arrowstyle': '->'}, xytext=(15, -10))
 
-plt.plot(data)
+plt.plot(data, color='tab:red')
 
 plt.xlabel('time')
 plt.ylabel('my overall health')
