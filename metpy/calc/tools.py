@@ -283,3 +283,42 @@ def reduce_point_density(points, radius, priority=None):
             keep[ind] = True
 
     return keep
+
+
+@exporter.export
+def log_interp(x, xp, fp, **kwargs):
+    r"""Interpolates data with logarithmic x-scale.
+
+    Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.
+
+    Parameters
+    ----------
+    x : array-like
+        The x-coordinates of the interpolated values.
+
+    xp : array-like
+        The x-coordinates of the data points.
+
+    fp : array-like
+        The y-coordinates of the data points, same length as cp.
+
+    Returns
+    -------
+    array-like
+        The interpolated values, same shape as x.
+
+    """
+    sort_args = np.argsort(xp)
+
+    if hasattr(x, 'units'):
+        x = x.m
+
+    if hasattr(xp, 'units'):
+        xp = xp.m
+
+    interpolated_vals = np.interp(np.log(x), np.log(xp[sort_args]), fp[sort_args], **kwargs)
+
+    if hasattr(fp, 'units'):
+        interpolated_vals = interpolated_vals * fp.units
+
+    return interpolated_vals
