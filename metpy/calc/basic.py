@@ -300,3 +300,59 @@ def coriolis_parameter(latitude):
 
     """
     return 2. * omega * np.sin(latitude)
+
+
+@exporter.export
+@check_units('[pressure]', '[length]')
+def add_height_to_pressure(pressure, height):
+    r"""Calculate the pressure at a certain height above another pressure level.
+
+    This assumes a standard atmosphere.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure level
+    height : `pint.Quantity`
+        Height above a pressure level
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding pressure value for the height above the pressure level
+
+    See Also
+    -----
+    pressure_to_height_std, height_to_pressure_std, add_pressure_to_height
+
+    """
+    pressure_level_height = pressure_to_height_std(pressure)
+    return height_to_pressure_std(pressure_level_height + height)
+
+
+@exporter.export
+@check_units('[length]', '[pressure]')
+def add_pressure_to_height(height, pressure):
+    r"""Calculate the height at a certain pressure above another height.
+
+    This assumes a standard atmosphere.
+
+    Parameters
+    ----------
+    height : `pint.Quantity`
+        Height level
+    pressure : `pint.Quantity`
+        Pressure above height level
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding height value for the pressure above the height level
+
+    See Also
+    -----
+    pressure_to_height_std, height_to_pressure_std, add_height_to_pressure
+
+    """
+    pressure_at_height = height_to_pressure_std(height)
+    return pressure_to_height_std(pressure_at_height - pressure)
