@@ -757,6 +757,7 @@ def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
 
     Notes
     -----
+    Formula from [Hobbs 1977]_ pg. 74.
     .. math:: RH = 100 \frac{w}{w_s}
 
     * :math:`RH` is relative humidity
@@ -779,8 +780,8 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
 
     Parameters
     ----------
-    mixing_ratio: `pint.Quantity`
-        Dimensionless mass water vapor ratio
+    specific_humidity: `pint.Quantity`
+        Specific humidity of air
 
     Returns
     -------
@@ -789,6 +790,7 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
 
     Notes
     -----
+    Formula from [Salby1996]_ pg. 118.
     .. math:: w = \frac{q}{1-q}
 
     * :math:`w` is mxing ratio
@@ -799,7 +801,7 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
     mixing_ratio
 
     """
-    return (specific_humidity / (1 - specific_humidity))
+    return specific_humidity / (1 - specific_humidity)
 
 
 @exporter.export
@@ -810,7 +812,7 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
     Parameters
     ----------
     specific_humidity: `pint.Quantity`
-        Dimensionless mass mixing ratio
+        Specific humidity of air
     temperature: `pint.Quantity`
         Air temperature
     pressure: `pint.Quantity`
@@ -823,6 +825,7 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
 
     Notes
     -----
+    Formula from [Hobbs 1977]_ pg. 74. and [Salby1996]_ pg. 118.
     .. math:: RH = 100 \frac{q}{(1-q)w_s}
 
     * :math:`RH` is relative humidity
