@@ -7,10 +7,11 @@ import numpy as np
 import numpy.ma as ma
 import pytest
 
-from metpy.calc import (find_intersections, interpolate_nans, nearest_intersection_idx,
-                        reduce_point_density, resample_nn_1d)
+from metpy.calc import (find_intersections, interpolate_nans, log_interp,
+                        nearest_intersection_idx, reduce_point_density, resample_nn_1d)
 from metpy.calc.tools import _next_non_masked_element, delete_masked_points
 from metpy.testing import assert_array_almost_equal, assert_array_equal
+from metpy.units import units
 
 
 def test_resample_nn():
@@ -166,3 +167,23 @@ def test_delete_masked_points():
     a, b = delete_masked_points(a, b)
     assert_array_equal(a, expected)
     assert_array_equal(b, expected)
+
+
+def test_log_interp():
+    """Test interpolating with log x-scale."""
+    x_log = np.array([1e3, 1e4, 1e5, 1e6])
+    y_log = np.log(x_log) * 2 + 3
+    x_interp = np.array([5e3, 5e4, 5e5])
+    y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
+    y_interp = log_interp(x_interp, x_log, y_log)
+    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+
+
+def test_log_interp_units():
+    """Test interpolating with log x-scale with units."""
+    x_log = np.array([1e3, 1e4, 1e5, 1e6]) * units.hPa
+    y_log = (np.log(x_log.m) * 2 + 3) * units.degC
+    x_interp = np.array([5e3, 5e4, 5e5]) * units.hPa
+    y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548]) * units.degC
+    y_interp = log_interp(x_interp, x_log, y_log)
+    assert_array_almost_equal(y_interp, y_interp_truth, 7)
