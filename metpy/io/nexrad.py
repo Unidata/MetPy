@@ -86,8 +86,9 @@ def nexrad_to_datetime(julian_date, ms_midnight):
 
 def remap_status(val):
     """Convert status integer value to appropriate bitmask."""
+    status = 0
     bad = BAD_DATA if val & 0xF0 else 0
-    val = val & 0x0F
+    val &= 0x0F
     if val == 0:
         status = START_ELEVATION
     elif val == 1:
@@ -671,7 +672,8 @@ def float16(val):
 
 def float32(short1, short2):
     """Unpack a pair of 16-bit integers as a Python float."""
-    return struct.unpack('>f', struct.pack('>HH', short1, short2))[0]
+    # Masking below in python will properly convert signed values to unsigned
+    return struct.unpack('>f', struct.pack('>HH', short1 & 0xFFFF, short2 & 0xFFFF))[0]
 
 
 def date_elem(ind_days, ind_minutes):
@@ -702,8 +704,7 @@ def combine_elem(ind1, ind2):
 
 def float_elem(ind1, ind2):
     """Create a function to combine two specified product-specific blocks into a float."""
-    # Masking below in python will properly convert signed values to unsigned
-    return lambda seq: float32(seq[ind1] & 0xFFFF, seq[ind2] & 0xFFFF)
+    return lambda seq: float32(seq[ind1], seq[ind2])
 
 
 def high_byte(ind):
@@ -1072,17 +1073,17 @@ class Level3File(object):
                                       ('spare', '84s')], '>', 'GSM')
     prod_desc_fmt = NamedStruct([('divider', 'h'), ('lat', 'l'), ('lon', 'l'),
                                  ('height', 'h'), ('prod_code', 'h'),
-                                 ('op_mode', 'h'), ('vcp', 'h'), ('seq_num', 'H'),
-                                 ('vol_num', 'H'), ('vol_date', 'H'),
-                                 ('vol_start_time', 'l'), ('prod_gen_date', 'H'),
+                                 ('op_mode', 'h'), ('vcp', 'h'), ('seq_num', 'h'),
+                                 ('vol_num', 'h'), ('vol_date', 'h'),
+                                 ('vol_start_time', 'l'), ('prod_gen_date', 'h'),
                                  ('prod_gen_time', 'l'), ('dep1', 'h'),
-                                 ('dep2', 'h'), ('el_num', 'H'), ('dep3', 'h'),
-                                 ('thr1', 'H'), ('thr2', 'H'), ('thr3', 'H'),
-                                 ('thr4', 'H'), ('thr5', 'H'), ('thr6', 'H'),
-                                 ('thr7', 'H'), ('thr8', 'H'), ('thr9', 'H'),
-                                 ('thr10', 'H'), ('thr11', 'H'), ('thr12', 'H'),
-                                 ('thr13', 'H'), ('thr14', 'H'), ('thr15', 'H'),
-                                 ('thr16', 'H'), ('dep4', 'h'), ('dep5', 'h'),
+                                 ('dep2', 'h'), ('el_num', 'h'), ('dep3', 'h'),
+                                 ('thr1', 'h'), ('thr2', 'h'), ('thr3', 'h'),
+                                 ('thr4', 'h'), ('thr5', 'h'), ('thr6', 'h'),
+                                 ('thr7', 'h'), ('thr8', 'h'), ('thr9', 'h'),
+                                 ('thr10', 'h'), ('thr11', 'h'), ('thr12', 'h'),
+                                 ('thr13', 'h'), ('thr14', 'h'), ('thr15', 'h'),
+                                 ('thr16', 'h'), ('dep4', 'h'), ('dep5', 'h'),
                                  ('dep6', 'h'), ('dep7', 'h'), ('dep8', 'h'),
                                  ('dep9', 'h'), ('dep10', 'h'), ('version', 'b'),
                                  ('spot_blank', 'b'), ('sym_off', 'L'), ('graph_off', 'L'),

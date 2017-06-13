@@ -187,7 +187,7 @@ skew.ax.fill_betweenx(p, T, parcel_prof, where=T >= parcel_prof, facecolor='blue
 skew.ax.fill_betweenx(p, T, parcel_prof, where=T < parcel_prof, facecolor='red', alpha=0.4)
 
 # Plot a zero degree isotherm
-l = skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
+skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
 
 # Add the relevant special lines
 skew.plot_dry_adiabats()

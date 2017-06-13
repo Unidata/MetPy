@@ -18,7 +18,7 @@ def test_default_order_warns():
     """Test that using the default array ordering issues a warning."""
     u = np.ones((3, 3)) * units('m/s')
     with pytest.warns(FutureWarning):
-        c, v = convergence_vorticity(u, u, 1 * units.meter, 1 * units.meter)
+        convergence_vorticity(u, u, 1 * units.meter, 1 * units.meter)
 
 
 def test_zero_gradient():
