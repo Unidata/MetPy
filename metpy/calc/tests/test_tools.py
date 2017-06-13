@@ -7,9 +7,10 @@ import numpy as np
 import numpy.ma as ma
 import pytest
 
-from metpy.calc import (find_intersections, interpolate_nans, log_interp,
+from metpy.calc import (find_intersections, get_layer, interpolate_nans, log_interp,
                         nearest_intersection_idx, reduce_point_density, resample_nn_1d)
-from metpy.calc.tools import _next_non_masked_element, delete_masked_points
+from metpy.calc.tools import (_get_bound_pressure_height, _next_non_masked_element,
+                              delete_masked_points)
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -187,3 +188,88 @@ def test_log_interp_units():
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548]) * units.degC
     y_interp = log_interp(x_interp, x_log, y_log)
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
+
+
+@pytest.fixture
+def get_bounds_data():
+    """Provide pressure and height data for testing layer bounds calculation."""
+    pressures = np.linspace(1000, 100, 10) * units.hPa
+    heights = np.array([0.11082868, 0.98800289, 1.94800715, 3.01066419,
+                        4.20430387, 5.5716246, 7.18180831, 9.15932561,
+                        11.76894096, 15.78930499]) * units.kilometer
+    return pressures, heights
+
+
+@pytest.mark.parametrize('pressure, bound, hgts, interp, expected', [
+    (get_bounds_data()[0], 900 * units.hPa, None, True,
+     (900 * units.hPa, 0.9880028 * units.kilometer)),
+    (get_bounds_data()[0], 900 * units.hPa, None, False,
+     (900 * units.hPa, 0.9880028 * units.kilometer)),
+    (get_bounds_data()[0], 870 * units.hPa, None, True,
+     (870 * units.hPa, 1.2665298 * units.kilometer)),
+    (get_bounds_data()[0], 870 * units.hPa, None, False,
+     (900 * units.hPa, 0.9880028 * units.kilometer)),
+    (get_bounds_data()[0], 0.9880028 * units.kilometer, None, True,
+     (900 * units.hPa, 0.9880028 * units.kilometer)),
+    (get_bounds_data()[0], 0.9880028 * units.kilometer, None, False,
+     (900 * units.hPa, 0.9880028 * units.kilometer)),
+    (get_bounds_data()[0], 1.2665298 * units.kilometer, None, True,
+     (870 * units.hPa, 1.2665298 * units.kilometer)),
+    (get_bounds_data()[0], 1.2665298 * units.kilometer, None, False,
+     (900 * units.hPa, 0.9880028 * units.kilometer)),
+    (get_bounds_data()[0], 900 * units.hPa, get_bounds_data()[1], True,
+     (900 * units.hPa, 0.9880028 * units.kilometer)),
+    (get_bounds_data()[0], 900 * units.hPa, get_bounds_data()[1], False,
+     (900 * units.hPa, 0.9880028 * units.kilometer)),
+    (get_bounds_data()[0], 870 * units.hPa, get_bounds_data()[1], True,
+     (870 * units.hPa, 1.2643214 * units.kilometer)),
+    (get_bounds_data()[0], 870 * units.hPa, get_bounds_data()[1], False,
+     (900 * units.hPa, 0.9880028 * units.kilometer)),
+    (get_bounds_data()[0], 0.9880028 * units.kilometer, get_bounds_data()[1], True,
+     (900 * units.hPa, 0.9880028 * units.kilometer)),
+    (get_bounds_data()[0], 0.9880028 * units.kilometer, get_bounds_data()[1], False,
+     (900 * units.hPa, 0.9880028 * units.kilometer)),
+    (get_bounds_data()[0], 1.2665298 * units.kilometer, get_bounds_data()[1], True,
+     (870 * units.hPa, 1.2665298 * units.kilometer)),
+    (get_bounds_data()[0], 1.2665298 * units.kilometer, get_bounds_data()[1], False,
+     (900 * units.hPa, 0.9880028 * units.kilometer))
+])
+def test_get_bound_pressure_height(pressure, bound, hgts, interp, expected):
+    """Test getting bounds in layers with various parameter combinations."""
+    bounds = _get_bound_pressure_height(pressure, bound, heights=hgts, interpolate=interp)
+    assert_array_almost_equal(bounds[0], expected[0], 5)
+    assert_array_almost_equal(bounds[1], expected[1], 5)
+
+
+def test_get_layer_ragged_data():
+    """Tests that error is raised for unequal length pressure and data arrays."""
+    p = np.arange(10) * units.hPa
+    y = np.arange(9) * units.degC
+    with pytest.raises(ValueError):
+        get_layer(p, y)
+
+
+@pytest.fixture
+def layer_test_data():
+    """Provide test data for testing of layer bounds."""
+    pressure = np.arange(1000, 10, -100) * units.hPa
+    temperature = np.linspace(25, -50, len(pressure)) * units.degC
+    return pressure, temperature
+
+
+@pytest.mark.parametrize('pressure, variable, heights, bottom, depth, interp, expected', [
+    (layer_test_data()[0], layer_test_data()[1], None, None, 150 * units.hPa, True,
+     (np.array([1000, 900, 850]) * units.hPa,
+      np.array([25.0, 16.666666, 12.62262]) * units.degC)),
+    (layer_test_data()[0], layer_test_data()[1], None, None, 150 * units.hPa, False,
+     (np.array([1000, 900]) * units.hPa, np.array([25.0, 16.666666]) * units.degC)),
+    (layer_test_data()[0], layer_test_data()[1], None, 2 * units.km, 3 * units.km, True,
+     (np.array([794.85264282, 700., 600., 540.01696548]) * units.hPa,
+      np.array([7.93049516, 0., -8.33333333, -13.14758845]) * units.degC))
+])
+def test_get_layer(pressure, variable, heights, bottom, depth, interp, expected):
+    """Tests get_layer functionality."""
+    p_layer, y_layer = get_layer(pressure, variable, heights=heights, bottom=bottom,
+                                 depth=depth, interpolate=interp)
+    assert_array_almost_equal(p_layer, expected[0], 5)
+    assert_array_almost_equal(y_layer, expected[1], 5)
