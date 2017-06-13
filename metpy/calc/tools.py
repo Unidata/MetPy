@@ -300,12 +300,20 @@ def log_interp(x, xp, fp, **kwargs):
         The x-coordinates of the data points.
 
     fp : array-like
-        The y-coordinates of the data points, same length as cp.
+        The y-coordinates of the data points, same length as xp.
 
     Returns
     -------
     array-like
         The interpolated values, same shape as x.
+
+    Examples
+    --------
+    >>> x_log = np.array([1e3, 1e4, 1e5, 1e6])
+    >>> y_log = np.log(x_log) * 2 + 3
+    >>> x_interp = np.array([5e3, 5e4, 5e5])
+    >>> metpy.calc.log_interp(x_interp, x_log, y_log)
+    array([ 20.03438638,  24.63955657,  29.24472675])
 
     """
     sort_args = np.argsort(xp)
