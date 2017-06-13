@@ -191,27 +191,22 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
         img = interpolation.natural_neighbor(x, y, z, grid_x, grid_y)
 
     elif interp_type in ['cressman', 'barnes']:
-
         ave_spacing = np.mean((cdist(list(zip(x, y)), list(zip(x, y)))))
 
         if search_radius is None:
             search_radius = ave_spacing
 
         if interp_type == 'cressman':
-
             img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius,
                                                  min_neighbors=minimum_neighbors,
                                                  kind=interp_type)
-
-        elif interp_type == 'barnes':
-
+        else:
             kappa = calc_kappa(ave_spacing, kappa_star)
             img = interpolation.inverse_distance(x, y, z, grid_x, grid_y, search_radius,
                                                  gamma, kappa, min_neighbors=minimum_neighbors,
                                                  kind=interp_type)
 
     elif interp_type == 'rbf':
-
         # 3-dimensional support not yet included.
         # Assign a zero to each z dimension for observations.
         h = np.zeros((len(x)))

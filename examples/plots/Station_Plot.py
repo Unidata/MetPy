@@ -29,15 +29,14 @@ from metpy.units import units
 # First read in the data. We use `numpy.loadtxt` to read in the data and use a structured
 # `numpy.dtype` to allow different types for the various columns. This allows us to handle
 # the columns with string data.
-f = get_test_data('station_data.txt')
-
-all_data = np.loadtxt(f, skiprows=1, delimiter=',',
-                      usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
-                      dtype=np.dtype([('stid', '3S'), ('lat', 'f'), ('lon', 'f'),
-                                      ('slp', 'f'), ('air_temperature', 'f'),
-                                      ('cloud_fraction', 'f'), ('dew_point_temperature', 'f'),
-                                      ('weather', '16S'),
-                                      ('wind_dir', 'f'), ('wind_speed', 'f')]))
+with get_test_data('station_data.txt') as f:
+    all_data = np.loadtxt(f, skiprows=1, delimiter=',',
+                          usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
+                          dtype=np.dtype([('stid', '3S'), ('lat', 'f'), ('lon', 'f'),
+                                          ('slp', 'f'), ('air_temperature', 'f'),
+                                          ('cloud_fraction', 'f'),
+                                          ('dew_point_temperature', 'f'), ('weather', '16S'),
+                                          ('wind_dir', 'f'), ('wind_speed', 'f')]))
 
 ###########################################
 # This sample data has *way* too many stations to plot all of them. Instead, we just select

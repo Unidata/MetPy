@@ -21,18 +21,18 @@ gx, gy = np.meshgrid(np.arange(0, 20, 4), np.arange(0, 20, 4))
 pts = np.vstack([gx.ravel(), gy.ravel()]).T
 tri = Delaunay(pts)
 
-fig = plt.figure(figsize=(15, 10))
+fig, ax = plt.subplots(figsize=(15, 10))
 for i, inds in enumerate(tri.simplices):
     pts = tri.points[inds]
     x, y = np.vstack((pts, pts[0])).T
-    plt.plot(x, y)
-    plt.annotate(i, xy=(np.mean(x), np.mean(y)))
+    ax.plot(x, y)
+    ax.annotate(i, xy=(np.mean(x), np.mean(y)))
 
 test_points = np.array([[2, 2], [5, 10], [12, 13.4], [12, 8], [20, 20]])
 
 for i, (x, y) in enumerate(test_points):
-    plt.plot(x, y, 'k.', markersize=6)
-    plt.annotate('test ' + str(i), xy=(x, y))
+    ax.plot(x, y, 'k.', markersize=6)
+    ax.annotate('test ' + str(i), xy=(x, y))
 
 ###########################################
 # Since finding natural neighbors already calculates circumcenters and circumradii, return
@@ -52,21 +52,21 @@ print(neighbors)
 # The dictionary key is the index of a particular triangle in the Delaunay triangulation data
 # structure. 'cc' is that triangle's circumcenter, and 'r' is the radius of the circumcircle
 # containing that triangle.
-fig = plt.figure(figsize=(15, 10))
+fig, ax = plt.subplots(figsize=(15, 10))
 for i, inds in enumerate(tri.simplices):
     pts = tri.points[inds]
     x, y = np.vstack((pts, pts[0])).T
-    plt.plot(x, y)
-    plt.annotate(i, xy=(np.mean(x), np.mean(y)))
+    ax.plot(x, y)
+    ax.annotate(i, xy=(np.mean(x), np.mean(y)))
 
 # Using circumcenter and radius information from tri_info, plot circumcircles and
 # circumcenters for each triangle.
 for _idx, item in tri_info.items():
-    plt.plot(item['cc'][0], item['cc'][1], 'k.', markersize=5)
+    ax.plot(item['cc'][0], item['cc'][1], 'k.', markersize=5)
     circ = plt.Circle(item['cc'], item['r'], edgecolor='k', facecolor='none',
                       transform=fig.axes[0].transData)
-    fig.axes[0].add_artist(circ)
+    ax.add_artist(circ)
 
-plt.axes().set_aspect('equal', 'datalim')
+ax.set_aspect('equal', 'datalim')
 
 plt.show()

@@ -158,9 +158,9 @@ def interpolate_nans(x, y, kind='linear'):
     x = x[x_sort_args]
     y = y[x_sort_args]
     nans = np.isnan(y)
-    if kind is 'linear':
+    if kind == 'linear':
         y[nans] = np.interp(x[nans], x[~nans], y[~nans])
-    elif kind is 'log':
+    elif kind == 'log':
         y[nans] = np.interp(np.log(x[nans]), np.log(x[~nans]), y[~nans])
     else:
         raise ValueError('Unknown option for kind: {0}'.format(str(kind)))

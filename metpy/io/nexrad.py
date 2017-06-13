@@ -86,8 +86,9 @@ def nexrad_to_datetime(julian_date, ms_midnight):
 
 def remap_status(val):
     """Convert status integer value to appropriate bitmask."""
+    status = 0
     bad = BAD_DATA if val & 0xF0 else 0
-    val = val & 0x0F
+    val &= 0x0F
     if val == 0:
         status = START_ELEVATION
     elif val == 1:

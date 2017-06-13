@@ -34,16 +34,14 @@ def basic_map(map_proj):
 
 
 def station_test_data(variable_names, proj_from=None, proj_to=None):
-
-    f = get_test_data('station_data.txt')
-
-    all_data = np.loadtxt(f, skiprows=1, delimiter=',',
-                          usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
-                          dtype=np.dtype([('stid', '3S'), ('lat', 'f'), ('lon', 'f'),
-                                          ('slp', 'f'), ('air_temperature', 'f'),
-                                          ('cloud_fraction', 'f'), ('dewpoint', 'f'),
-                                          ('weather', '16S'),
-                                          ('wind_dir', 'f'), ('wind_speed', 'f')]))
+    with get_test_data('station_data.txt') as f:
+        all_data = np.loadtxt(f, skiprows=1, delimiter=',',
+                              usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
+                              dtype=np.dtype([('stid', '3S'), ('lat', 'f'), ('lon', 'f'),
+                                              ('slp', 'f'), ('air_temperature', 'f'),
+                                              ('cloud_fraction', 'f'), ('dewpoint', 'f'),
+                                              ('weather', '16S'),
+                                              ('wind_dir', 'f'), ('wind_speed', 'f')]))
 
     all_stids = [s.decode('ascii') for s in all_data['stid']]
 
