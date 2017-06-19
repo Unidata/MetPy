@@ -205,16 +205,16 @@ class WyomingUpperAir(object):
         # Read all lines of data and append to lists only if there is some data
         for row in fobj:
             level = to_float(row[0:7])
-            values = (to_float(row[7:14]), to_float(row[14:21]), to_float(row[21:28]), to_float(row[42:49]),
-                      to_float(row[49:56]))
+            values = (to_float(row[7:14]), to_float(row[14:21]), to_float(row[21:28]),
+                      to_float(row[42:49]), to_float(row[49:56]))
 
-            if any(np.invert(np.isnan(values)) & (values[0] >= 0.)):
+            if any(np.invert(np.isnan(values[1:]))):
                 arr_data.append((level,) + values)
 
         p, z, t, td, direc, spd = np.array(arr_data).T
 
-        return {'p': (p, unit_strs[0]), 'z': (z, unit_strs[1]), 't': (t, unit_strs[2]), 'td': (td, unit_strs[3]),
-                'wind': (direc, spd, unit_strs[7])}
+        return {'p': (p, unit_strs[0]), 'z': (z, unit_strs[1]), 't': (t, unit_strs[2]),
+                'td': (td, unit_strs[3]), 'wind': (direc, spd, unit_strs[7])}
 
 
 class IAStateUpperAir(object):
