@@ -69,6 +69,7 @@ def get_upper_air_data(time, site_id, source='wyoming', **kwargs):
 
     # Add variables for all the data columns
     for key, name, std_name in [('p', 'pressure', 'air_pressure'),
+                                ('z', 'height', 'geopotential_height'),
                                 ('t', 'temperature', 'air_temperature'),
                                 ('td', 'dewpoint', 'dew_point_temperature')]:
         data, units = info[key]
@@ -204,16 +205,16 @@ class WyomingUpperAir(object):
         # Read all lines of data and append to lists only if there is some data
         for row in fobj:
             level = to_float(row[0:7])
-            values = (to_float(row[14:21]), to_float(row[21:28]), to_float(row[42:49]),
-                      to_float(row[49:56]))
+            values = (to_float(row[7:14]), to_float(row[14:21]), to_float(row[21:28]),
+                      to_float(row[42:49]), to_float(row[49:56]))
 
-            if any(np.invert(np.isnan(values))):
+            if any(np.invert(np.isnan(values[1:]))):
                 arr_data.append((level,) + values)
 
-        p, t, td, direc, spd = np.array(arr_data).T
+        p, z, t, td, direc, spd = np.array(arr_data).T
 
-        return {'p': (p, unit_strs[0]), 't': (t, unit_strs[2]), 'td': (td, unit_strs[3]),
-                'wind': (direc, spd, unit_strs[7])}
+        return {'p': (p, unit_strs[0]), 'z': (z, unit_strs[1]), 't': (t, unit_strs[2]),
+                'td': (td, unit_strs[3]), 'wind': (direc, spd, unit_strs[7])}
 
 
 class IAStateUpperAir(object):
@@ -265,13 +266,14 @@ class IAStateUpperAir(object):
         """
         data = {}
         for pt in json_data:
-            for field in ('drct', 'dwpc', 'pres', 'sknt', 'tmpc'):
+            for field in ('drct', 'dwpc', 'hght', 'pres', 'sknt', 'tmpc'):
                 data.setdefault(field, []).append(np.nan if pt[field] is None else pt[field])
 
         # Make sure that the first entry has a valid temperature and dewpoint
         idx = np.argmax(~(np.isnan(data['tmpc']) | np.isnan(data['tmpc'])))
 
         ret = {'p': (ma.masked_invalid(data['pres'][idx:]), 'mbar'),
+               'z': (ma.masked_invalid(data['hght'][idx:]), 'meter'),
                't': (ma.masked_invalid(data['tmpc'][idx:]), 'degC'),
                'td': (ma.masked_invalid(data['dwpc'][idx:]), 'degC'),
                'wind': (ma.masked_invalid(data['drct'][idx:]),

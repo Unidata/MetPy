@@ -17,6 +17,7 @@ def test_wyoming():
         data = get_upper_air_data(datetime(1999, 5, 4, 0), 'OUN', source='wyoming')
 
     assert_almost_equal(data.variables['pressure'][5], 867.9 * units('hPa'), 2)
+    assert_almost_equal(data.variables['height'][5], 1219. * units('meter'), 2)
     assert_almost_equal(data.variables['temperature'][5], 17.4 * units.degC, 2)
     assert_almost_equal(data.variables['dewpoint'][5], 14.3 * units.degC, 2)
     assert_almost_equal(data.variables['u_wind'][5], 6.60 * units.knot, 2)
@@ -31,6 +32,7 @@ def test_iastate():
         data = get_upper_air_data(datetime(2016, 7, 30, 12), 'KDEN', source='iastate')
 
     assert_almost_equal(data.variables['pressure'][0], 838.0 * units('hPa'), 2)
+    assert_almost_equal(data.variables['height'][0], 1611. * units('meter'), 2)
     assert_almost_equal(data.variables['temperature'][0], 17.0 * units.degC, 2)
     assert_almost_equal(data.variables['dewpoint'][0], 15.2 * units.degC, 2)
     assert_almost_equal(data.variables['u_wind'][0], 1.72 * units.knot, 2)
@@ -45,6 +47,7 @@ def test_high_alt_wyoming():
         data = get_upper_air_data(datetime(2010, 12, 9, 12), 'BOI', source='wyoming')
 
     assert_almost_equal(data.variables['pressure'][2], 890.0 * units('hPa'), 2)
+    assert_almost_equal(data.variables['height'][2], 1133. * units('meter'), 2)
     assert_almost_equal(data.variables['temperature'][2], 5.4 * units.degC, 2)
     assert_almost_equal(data.variables['dewpoint'][2], 3.9 * units.degC, 2)
     assert_almost_equal(data.variables['u_wind'][2], -0.42 * units.knot, 2)
