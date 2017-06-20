@@ -47,6 +47,8 @@ References
            Division, NWS Southern Region Headquarters, 1990.
            `SR90-23 <http://www.weather.gov/media/ffc/ta_htindx.PDF>`_
 
+.. [Salby1996] Salby, Murray L., 1996: Fundamentals of Atmospheric Physics.
+
 .. [Steadman1979] Steadman, R.G., 1979: The assessment of sultriness. Part I: A
            temperature-humidity index based on human physiology and clothing
            science. J. Appl. Meteor., 18, 861-873.

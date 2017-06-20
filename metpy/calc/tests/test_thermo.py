@@ -7,10 +7,15 @@ import numpy as np
 import pytest
 
 from metpy.calc import (density, dewpoint, dewpoint_rh, dry_lapse, el,
-                        equivalent_potential_temperature, lcl, lfc, mixing_ratio, moist_lapse,
+                        equivalent_potential_temperature, lcl, lfc, mixing_ratio,
+                        mixing_ratio_from_specific_humidity, moist_lapse,
                         parcel_profile, potential_temperature,
-                        psychrometric_vapor_pressure_wet, relative_humidity_wet_psychrometric,
-                        saturation_mixing_ratio, saturation_vapor_pressure, vapor_pressure,
+                        psychrometric_vapor_pressure_wet,
+                        relative_humidity_from_mixing_ratio,
+                        relative_humidity_from_specific_humidity,
+                        relative_humidity_wet_psychrometric,
+                        saturation_mixing_ratio,
+                        saturation_vapor_pressure, vapor_pressure,
                         virtual_potential_temperature, virtual_temperature)
 
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
@@ -294,3 +299,28 @@ def test_wet_psychrometric_rh_kwargs():
                                                            wet_bulb_temperature, p,
                                                            psychrometer_coefficient=coeff)
     assert_almost_equal(psychrometric_rh, 82.9701 * units.percent, 3)
+
+
+def test_rh_mixing_ratio():
+    """Tests relative humidity from mixing ratio."""
+    p = 1013.25 * units.mbar
+    temperature = 20. * units.degC
+    w = 0.012
+    rh = relative_humidity_from_mixing_ratio(w, temperature, p)
+    assert_almost_equal(rh, 81.7219 * units.percent, 3)
+
+
+def test_mixing_ratio_from_specific_humidity():
+    """Tests mixing ratio from specific humidity."""
+    q = 0.012
+    w = mixing_ratio_from_specific_humidity(q)
+    assert_almost_equal(w, 0.01215, 3)
+
+
+def test_rh_specific_humidity():
+    """Tests relative humidity from specific humidity."""
+    p = 1013.25 * units.mbar
+    temperature = 20. * units.degC
+    q = 0.012
+    rh = relative_humidity_from_specific_humidity(q, temperature, p)
+    assert_almost_equal(rh, 82.7145 * units.percent, 3)

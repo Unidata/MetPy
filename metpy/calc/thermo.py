@@ -734,3 +734,109 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
     """
     return (saturation_vapor_pressure(wet_bulb_temperature) - psychrometer_coefficient *
             pressure * (dry_bulb_temperature - wet_bulb_temperature).to('kelvin'))
+
+
+@exporter.export
+@check_units('[dimensionless]', '[temperature]', '[pressure]')
+def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
+    r"""Calculate the relative humidity from mixing ratio, temperature, and pressure.
+
+    Parameters
+    ----------
+    mixing_ratio: `pint.Quantity`
+        Dimensionless mass mixing ratio
+    temperature: `pint.Quantity`
+        Air temperature
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Relative humidity
+
+    Notes
+    -----
+    Formula from [Hobbs 1977]_ pg. 74.
+    .. math:: RH = 100 \frac{w}{w_s}
+
+    * :math:`RH` is relative humidity
+    * :math:`w` is mxing ratio
+    * :math:`w_s` is the saturation mixing ratio
+
+    See Also
+    --------
+    saturation_mixing_ratio
+
+    """
+    return (100 * units.percent *
+            mixing_ratio / saturation_mixing_ratio(pressure, temperature))
+
+
+@exporter.export
+@check_units('[dimensionless]')
+def mixing_ratio_from_specific_humidity(specific_humidity):
+    r"""Calculate the mixing ratio from specific humidity.
+
+    Parameters
+    ----------
+    specific_humidity: `pint.Quantity`
+        Specific humidity of air
+
+    Returns
+    -------
+    `pint.Quantity`
+        Mixing ratio
+
+    Notes
+    -----
+    Formula from [Salby1996]_ pg. 118.
+    .. math:: w = \frac{q}{1-q}
+
+    * :math:`w` is mxing ratio
+    * :math:`q` is the specific humidity
+
+    See Also
+    --------
+    mixing_ratio
+
+    """
+    return specific_humidity / (1 - specific_humidity)
+
+
+@exporter.export
+@check_units('[dimensionless]', '[temperature]', '[pressure]')
+def relative_humidity_from_specific_humidity(specific_humidity, temperature, pressure):
+    r"""Calculate the relative humidity from specific humidity, temperature, and pressure.
+
+    Parameters
+    ----------
+    specific_humidity: `pint.Quantity`
+        Specific humidity of air
+    temperature: `pint.Quantity`
+        Air temperature
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Relative humidity
+
+    Notes
+    -----
+    Formula from [Hobbs 1977]_ pg. 74. and [Salby1996]_ pg. 118.
+    .. math:: RH = 100 \frac{q}{(1-q)w_s}
+
+    * :math:`RH` is relative humidity
+    * :math:`q` is specific humidity
+    * :math:`w_s` is the saturation mixing ratio
+
+    See Also
+    --------
+    relative_humidity_from_mixing_ratio
+
+    """
+    return (100 * units.percent *
+            mixing_ratio_from_specific_humidity(specific_humidity) /
+            saturation_mixing_ratio(pressure, temperature))
