@@ -7,7 +7,8 @@ import numpy as np
 import pytest
 
 from metpy.calc import (advection, convergence_vorticity, geostrophic_wind, h_convergence,
-                        shearing_deformation, shearing_stretching_deformation,
+                        montgomery_streamfunction, shearing_deformation,
+                        shearing_stretching_deformation,
                         stretching_deformation, total_deformation, v_vorticity)
 from metpy.constants import g, omega, Re
 from metpy.testing import assert_almost_equal, assert_array_equal
@@ -363,3 +364,11 @@ def test_geostrophic_gempak():
                        [-8.66612, -5.27816, -1.45282]])
     assert_almost_equal(ug[1, 1], true_u[1, 1] * units('m/s'), 2)
     assert_almost_equal(vg[1, 1], true_v[1, 1] * units('m/s'), 2)
+
+
+def test_streamfunc():
+    """Test of Montgomery Streamfunction calculation."""
+    t = 287. * units.kelvin
+    hgt = 5000. * units.meter
+    msf = montgomery_streamfunction(hgt, t)
+    assert_almost_equal(msf, 337468.2500 * units('m^2 s^-2'), 4)

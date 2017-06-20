@@ -10,9 +10,9 @@ import warnings
 import numpy as np
 
 from ..cbook import is_string_like, iterable
-from ..constants import g
+from ..constants import Cp_d, g
 from ..package_tools import Exporter
-from ..units import atleast_2d, concatenate, units
+from ..units import atleast_2d, check_units, concatenate, units
 
 exporter = Exporter(globals())
 
@@ -432,3 +432,42 @@ def geostrophic_wind(heights, f, dx, dy):
     grad = _gradient(heights, *deltas)
     dy, dx = grad[-2:]  # Throw away unused gradient components
     return -norm_factor * dy, norm_factor * dx
+
+
+@exporter.export
+@check_units('[length]', '[temperature]')
+def montgomery_streamfunction(height, temperature):
+    r"""Compute the Montgomery Streamfunction on isentropic surfaces.
+
+    The Montgomery Streamfunction is the streamfunction of the geostrophic wind on an
+    isentropic surface. This quantity is proportional to the geostrophic wind in isentropic
+    coordinates, and its gradient can be interpreted similarly to the pressure gradient in
+    isobaric coordinates.
+
+    Parameters
+    ----------
+    height : `pint.Quantity`
+        Array of geopotential height of isentropic surfaces
+    temperature : `pint.Quantity`
+        Array of temperature on isentropic surfaces
+
+    Returns
+    -------
+    stream_func : `pint.Quantity`
+
+    Notes
+    -----
+    The formula used is that from [Lackmann2011]_ p. 69 for T in Kelvin and height in meters:
+    .. math:: sf = gZ + C_pT
+    * :math:`sf` is Montgomery Streamfunction
+    * :math:`g` is avg. gravitational acceleration on Earth
+    * :math:`Z` is geopotential height of the isentropic surface
+    * :math:`C_p` is specific heat at constant pressure for dry air
+    * :math:`T` is temperature of the isentropic surface
+
+    See Also
+    --------
+    get_isentropic_pressure
+
+    """
+    return (g * height) + (Cp_d * temperature)

@@ -20,6 +20,8 @@ References
 .. [Hobbs2006] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
            Survey. 2nd ed.
 
+.. [Lackmann2011] Lackmann, Gary., 2011: Midlatitude Synoptic Meteorology.
+
 .. [Fan1987] Fan, Jinpeng, 1987: Determination of the psychrometer coefficient A of the WMO
            reference psychrometer by comparison with a standard gravimetric hygrometer.
            Journal of Atmospheric and Oceanic Technology, 4.1, 239-244.
