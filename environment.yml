@@ -30,5 +30,4 @@ dependencies:
   - pyproj
   - cartopy
   - pip
-  - freetype=2.6
   - doc8
