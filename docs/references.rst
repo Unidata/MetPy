@@ -2,58 +2,74 @@
 References
 ==========
 
-.. [Bakhshaii2013] Bakhshaii, A. and R. Stull, 2013: Saturated Pseudoadiabats--A
-           Noniterative Approximation. J. Appl. Meteor. Clim., 52, 5-15.
+.. [Bakhshaii2013] Bakhshaii, A. and R. Stull, 2013: Saturated pseudoadiabats--A
+           noniterative approximation. *J. Appl. Meteor. Clim.*, **52**, 5-15,
+           doi:`10.1175/JAMC-D-12-062.1 <http://doi.org/10.1175/JAMC-D-12-062.1>`_.
 
-.. [Barnes1964] Barnes, Stanley L. "A technique for maximizing details in numerical weather
-           map analysis." Journal of Applied Meteorology 3.4 (1964): 396-409.
+.. [Barnes1964] Barnes, S. L., 1964: A technique for maximizing details in numerical weather
+           map analysis. *J. Appl. Meteor. Climatol.*, **3**, 396-409,
+           doi:`10.1175/1520-0450(1964)003%3C0396:ATFMDI%3E2.0.CO;2
+           <http://doi.org/10.1175/1520-0450(1964)003%3C0396:ATFMDI%3E2.0.CO;2>`_.
 
-.. [Bolton1980] Bolton, D., 1980: The Computation of Equivalent Potential
-           Temperature. Mon. Wea. Rev., 108, 1046-1053.
+.. [Bolton1980] Bolton, D., 1980: The computation of equivalent potential
+           temperature. *Mon. Wea. Rev.*, **108**, 1046-1053,
+           doi:`10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2
+           <http://doi.org/10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2>`_.
 
-.. [Cressman1959] Cressman, George P. "An operational objective analysis system." Mon.
-           Wea. Rev 87.10 (1959): 367-374.
+.. [Cressman1959] Cressman, G. P., 1959: An operational objective analysis system. *Mon.
+           Wea. Rev.*, **87**, 367-374,
+           doi:`10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2
+           <http://doi.org/10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2>`_.
 
-.. [Hobbs1977] Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an
-           Introductory Survey.
+.. [Hobbs1977] Hobbs, P. V., and J. M. Wallace, 1977: *Atmospheric Science: An
+           Introductory Survey*. Academic Press, 350 pp.
 
-.. [Hobbs2006] Hobbs, Peter V. and Wallace, John M., 2006: Atmospheric Science, an Introductory
-           Survey. 2nd ed.
+.. [Hobbs2006] Hobbs, P. V., and J. M. Wallace, 2006: *Atmospheric Science: An Introductory
+           Survey*. 2nd ed. Academic Press, 504 pp.
 
-.. [Lackmann2011] Lackmann, Gary., 2011: Midlatitude Synoptic Meteorology.
+.. [Lackmann2011] Lackmann, G., 2011: *Midlatitude Synoptic Meteorology*. Amer. Meteor. Soc.,
+           345 pp.
 
-.. [Fan1987] Fan, Jinpeng, 1987: Determination of the psychrometer coefficient A of the WMO
+.. [Fan1987] Fan, J., 1987: Determination of the psychrometer coefficient A of the WMO
            reference psychrometer by comparison with a standard gravimetric hygrometer.
-           Journal of Atmospheric and Oceanic Technology, 4.1, 239-244.
+           *J. Atmos. Oceanic Technol.*, **4**, 239-244,
+           doi:`10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2
+           <http://doi.org/10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2>`_.
 
 .. [FCMR192003] Federal Coordinator for Meteorological Services and Supporting Research: Report on
            Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
            Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
            Services and Supporting Research, 2003.
-           `FCM-R19-2003 <../_static/FCM-R19-2003-WindchillReport.pdf>`_
+           `FCM-R19-2003 <../_static/FCM-R19-2003-WindchillReport.pdf>`_, 75 pp.
 
-.. [Garratt1994] Garratt, J.R., 1994: The Atmospheric Boundary Layer. Cambridge
+.. [Garratt1994] Garratt, J.R., 1994: *The Atmospheric Boundary Layer*. Cambridge
            University Press, 316 pp.
 
-.. [Koch1983] Koch, Steven E., Mary DesJardins, and Paul J. Kocin. "An interactive Barnes
-           objective map analysis scheme for use with satellite and conventional data."
-           Journal of Climate and Applied Meteorology 22.9 (1983): 1487-1503.
+.. [Koch1983] Koch, S. E., M. DesJardins, and P. J. Kocin, 1983: An interactive Barnes
+           objective map analysis scheme for use with satellite and conventional data.
+           **J. Appl. Meteor. Climatol.**, *22*, 1487-1503,
+           doi:`10.1175/1520-0450(1983)022%3C1487:AIBOMA%3E2.0.CO;2
+           <http://doi.org/10.1175/1520-0450(1983)022%3C1487:AIBOMA%3E2.0.CO;2>`_.
 
-.. [Liang2010] Liang, Luming, and Dave Hale. "A stable and fast implementation
-           of natural neighbor interpolation." (2010).
+.. [Liang2010] Liang, L., and D. Hale, 2010: *A Stable and Fast Implementation
+           of Natural Neighbor Interpolation*. Center for Wave Phenomena `CWP-657
+           <http://www.cwp.mines.edu/Documents/cwpreports/cwp-657.pdf>`_, 14 pp.
 
-.. [Markowski2010] Markowski, Paul and Richardson, Yvette, 2010: Mesoscale Meteorology in the
-           Midlatitudes.
+.. [Markowski2010] Markowski, P. and Y. Richardson, 2010: *Mesoscale Meteorology in the
+           Midlatitudes*. Wiley, 430 pp.
 
-.. [Rothfusz1990] Rothfusz, L.P.: The Heat Index "Equation". Fort Worth, TX: Scientific Services
+.. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific Services
            Division, NWS Southern Region Headquarters, 1990.
-           `SR90-23 <http://www.weather.gov/media/ffc/ta_htindx.PDF>`_
+           `SR90-23 <http://www.weather.gov/media/ffc/ta_htindx.PDF>`_, 2 pp.
 
-.. [Salby1996] Salby, Murray L., 1996: Fundamentals of Atmospheric Physics.
+.. [Salby1996] Salby, M. L., 1996: *Fundamentals of Atmospheric Physics*.
+           Academic Press, 627 pp.
 
 .. [Steadman1979] Steadman, R.G., 1979: The assessment of sultriness. Part I: A
            temperature-humidity index based on human physiology and clothing
-           science. J. Appl. Meteor., 18, 861-873.
+           science. *J. Appl. Meteor.*, **18**, 861-873,
+           doi:`10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2
+           <https://doi.org/10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2>`_.
 
-.. [WMO8-2008] WMO: WMO Guide to Meteorological Instruments and Methods of Observation,
-           2008. WMO No.8 Part 4. https://www.wmo.int/pages/prog/www/IMOP/CIMO-Guide.html
+.. [WMO8-2008] WMO, 2008: *Guide to Meteorological Instruments and Methods of Observation*.
+           `WMO No.8 <http://www.wmo.int/pages/prog/gcos/documents/gruanmanuals/CIMO/CIMO_Guide-7th_Edition-2008.pdf>`_, 681 pp.
