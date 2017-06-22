@@ -6,7 +6,7 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (density, dewpoint, dewpoint_rh, dry_lapse, el,
+from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, el,
                         equivalent_potential_temperature, lcl, lfc, mixing_ratio,
                         mixing_ratio_from_specific_humidity, moist_lapse,
                         parcel_profile, potential_temperature,
@@ -18,6 +18,7 @@ from metpy.calc import (density, dewpoint, dewpoint_rh, dry_lapse, el,
                         saturation_vapor_pressure, vapor_pressure,
                         virtual_potential_temperature, virtual_temperature)
 
+from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import units
 
@@ -358,3 +359,49 @@ def test_rh_specific_humidity():
     q = 0.012
     rh = relative_humidity_from_specific_humidity(q, temperature, p)
     assert_almost_equal(rh, 82.7145 * units.percent, 3)
+
+
+def test_cape_cin():
+    """Tests the basic CAPE and CIN calculation."""
+    p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
+    dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
+    parcel_prof = parcel_profile(p, temperature[0], dewpoint[0]).to('degC')
+    cape, cin = cape_cin(p, temperature, dewpoint, parcel_prof)
+    assert_almost_equal(cape, 58.0368212 * units('joule / kilogram'), 6)
+    assert_almost_equal(cin, -89.8073512 * units('joule / kilogram'), 6)
+
+
+def test_cape_cin_no_el():
+    """Tests that CAPE works with no EL."""
+    p = np.array([959., 779.2, 751.3, 724.3]) * units.mbar
+    temperature = np.array([22.2, 14.6, 12., 9.4]) * units.celsius
+    dewpoint = np.array([19., -11.2, -10.8, -10.4]) * units.celsius
+    parcel_prof = parcel_profile(p, temperature[0], dewpoint[0]).to('degC')
+    cape, cin = cape_cin(p, temperature, dewpoint, parcel_prof)
+    assert_almost_equal(cape, 0.08750805 * units('joule / kilogram'), 6)
+    assert_almost_equal(cin, -89.8073512 * units('joule / kilogram'), 6)
+
+
+def test_cape_cin_no_lfc():
+    """Tests that CAPE is zero with no LFC."""
+    p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperature = np.array([22.2, 24.6, 22., 20.4, 18., -10.]) * units.celsius
+    dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
+    parcel_prof = parcel_profile(p, temperature[0], dewpoint[0]).to('degC')
+    cape, cin = cape_cin(p, temperature, dewpoint, parcel_prof)
+    assert_almost_equal(cape, 0.0 * units('joule / kilogram'), 6)
+    assert_almost_equal(cin, 0.0 * units('joule / kilogram'), 6)
+
+
+def test_find_append_zero_crossings():
+    """Tests finding and appending zero crossings of an x, y series."""
+    x = np.arange(11) * units.hPa
+    y = np.array([3, 2, 1, -1, 2, 2, 0, 1, 0, -1, 2]) * units.degC
+    x2, y2 = _find_append_zero_crossings(x, y)
+
+    x_truth = np.array([0., 1., 2., 2.5, 3., 3.33333333, 4., 5.,
+                        6., 7., 8., 9., 9.33333333, 10.]) * units.hPa
+    y_truth = np.array([3, 2, 1, 0, -1, 0, 2, 2, 0, 1, 0, -1, 0, 2]) * units.degC
+    assert_array_almost_equal(x2, x_truth, 6)
+    assert_almost_equal(y2, y_truth, 6)
