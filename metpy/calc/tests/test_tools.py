@@ -241,6 +241,25 @@ def test_get_bound_pressure_height(pressure, bound, hgts, interp, expected):
     assert_array_almost_equal(bounds[1], expected[1], 5)
 
 
+def test_get_bound_pressure_out_of_range():
+    """Test when bound is out of data range in pressure."""
+    p = np.arange(900, 300, -100) * units.hPa
+    with pytest.raises(ValueError):
+        _get_bound_pressure_height(p, 100 * units.hPa)
+    with pytest.raises(ValueError):
+        _get_bound_pressure_height(p, 1000 * units.hPa)
+
+
+def test_get_bound_height_out_of_range():
+    """Test when bound is out of data range in height."""
+    p = np.arange(900, 300, -100) * units.hPa
+    h = np.arange(1, 7) * units.kilometer
+    with pytest.raises(ValueError):
+        _get_bound_pressure_height(p, 8 * units.kilometer, heights=h)
+    with pytest.raises(ValueError):
+        _get_bound_pressure_height(p, 100 * units.meter, heights=h)
+
+
 def test_get_layer_ragged_data():
     """Tests that error is raised for unequal length pressure and data arrays."""
     p = np.arange(10) * units.hPa
