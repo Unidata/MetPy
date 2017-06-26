@@ -9,7 +9,7 @@ import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
 
-from .tools import find_intersections
+from .tools import find_intersections, get_layer
 from ..constants import Cp_d, epsilon, kappa, Lv, P0, Rd
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
@@ -996,3 +996,45 @@ def _find_append_zero_crossings(x, y):
     x = x[keep_idx]
     y = y[keep_idx]
     return x, y
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def most_unstable_parcel(p, temperature, dewpoint, heights=None,
+                         bottom=None, depth=300 * units.hPa):
+    """
+    Determine the most unstable parcel in a layer.
+
+    Determines the most unstable parcle of air by calculating the equivalent
+    potential temperature and finding its maximum in the specified layer.
+
+    Parameters
+    ----------
+    p: `pint.Quantity`
+        Atmospheric pressure profile
+    temperature: `pint.Quantity`
+        Atmospheric temperature profile
+    dewpoint: `pint.Quantity`
+        Atmospheric dewpoint profile
+    heights: `pint.Quantity`
+        Atmospheric height profile. Standard atmosphere assumed when None.
+    bottom: `pint.Quantity`
+        Bottom of the layer to consider for the calculation in pressure or height
+    depth: `pint.Quantity`
+        Depth of the layer to consider for the calculation in pressure or height
+
+    Returns
+    -------
+    `pint.Quantity`
+        Pressure, temperature, and dew point of most unstable parcel in the profile.
+
+    See Also
+    --------
+    get_layer
+
+    """
+    p_layer, T_layer, Td_layer = get_layer(p, temperature, dewpoint, bottom=bottom,
+                                           depth=depth, heights=heights)
+    theta_e = equivalent_potential_temperature(p_layer, T_layer)
+    max_idx = np.argmax(theta_e)
+    return p_layer[max_idx], T_layer[max_idx], Td_layer[max_idx]
