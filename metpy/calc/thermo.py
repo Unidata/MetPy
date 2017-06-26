@@ -230,8 +230,15 @@ def lfc(pressure, temperature, dewpt):
     # that point to get the real first intersection for the LFC calculation.
     x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:],
                               direction='increasing')
+    # Two possible cases here: LFC = LCL, or LFC doesn't exist
     if len(x) == 0:
-        return np.nan * pressure.units, np.nan * temperature.units
+        if np.any(ideal_profile > temperature):
+            # LFC = LCL
+            x, y = lcl(pressure[0], temperature[0], dewpt[0])
+            return x, y
+        # LFC doesn't exist
+        else:
+            return np.nan * pressure.units, np.nan * temperature.units
     else:
         return x[0], y[0]
 
@@ -267,9 +274,17 @@ def el(pressure, temperature, dewpt):
     ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
     x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
 
-    # If there is only one intersection, it's the LFC and we return None.
+    # If there is only one intersection, there are two possibilities:
+    # the dataset does not contain the EL, or the LFC = LCL.
     if len(x) <= 1:
-        return np.nan * pressure.units, np.nan * temperature.units
+        if (ideal_profile[-1] < temperature[-1]) and (len(x) == 1):
+            # Profile top colder than environment with one
+            # intersection, EL exists and LFC = LCL
+            return x[-1], y[-1]
+        else:
+            # The EL does not exist, either due to incomplete data
+            # or no intersection occurring.
+            return np.nan * pressure.units, np.nan * temperature.units
     else:
         return x[-1], y[-1]
 

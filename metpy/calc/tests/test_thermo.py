@@ -208,6 +208,19 @@ def test_lfc_inversion():
     assert_almost_equal(l[1], 10.6232 * units.celsius, 2)
 
 
+def test_lfc_equals_lcl():
+    """Test LFC when there is no cap and the lfc is equal to the lcl."""
+    levels = np.array([912., 905.3, 874.4, 850., 815.1, 786.6, 759.1,
+                       748., 732.2, 700., 654.8]) * units.mbar
+    temperatures = np.array([29.4, 28.7, 25.2, 22.4, 19.4, 16.8,
+                             14.3, 13.2, 12.6, 11.4, 7.1]) * units.celsius
+    dewpoints = np.array([18.4, 18.1, 16.6, 15.4, 13.2, 11.4, 9.6,
+                          8.8, 0., -18.6, -22.9]) * units.celsius
+    l = lfc(levels, temperatures, dewpoints)
+    assert_almost_equal(l[0], 777.0333 * units.mbar, 2)
+    assert_almost_equal(l[1], 15.8714 * units.celsius, 2)
+
+
 def test_saturation_mixing_ratio():
     """Test saturation mixing ratio calculation."""
     p = 999. * units.mbar
@@ -267,6 +280,27 @@ def test_no_el():
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
     assert assert_nan(el_pressure, levels.units)
     assert assert_nan(el_temperature, temperatures.units)
+
+
+def test_el_lfc_equals_lcl():
+    """Test equilibrium layer calculation when the lfc equals the lcl."""
+    levels = np.array([912., 905.3, 874.4, 850., 815.1, 786.6, 759.1, 748.,
+                       732.3, 700., 654.8, 606.8, 562.4, 501.8, 500., 482.,
+                       400., 393.3, 317.1, 307., 300., 252.7, 250., 200.,
+                       199.3, 197., 190., 172., 156.6, 150., 122.9, 112.,
+                       106.2, 100.]) * units.mbar
+    temperatures = np.array([29.4, 28.7, 25.2, 22.4, 19.4, 16.8, 14.3,
+                             13.2, 12.6, 11.4, 7.1, 2.2, -2.7, -10.1,
+                             -10.3, -12.4, -23.3, -24.4, -38., -40.1, -41.1,
+                             -49.8, -50.3, -59.1, -59.1, -59.3, -59.7, -56.3,
+                             -56.9, -57.1, -59.1, -60.1, -58.6, -56.9]) * units.celsius
+    dewpoints = np.array([18.4, 18.1, 16.6, 15.4, 13.2, 11.4, 9.6, 8.8, 0.,
+                          -18.6, -22.9, -27.8, -32.7, -40.1, -40.3, -42.4, -53.3,
+                          -54.4, -68., -70.1, -70., -70., -70., -70., -70., -70.,
+                          -70., -70., -70., -70., -70., -70., -70., -70.]) * units.celsius
+    el_pressure, el_temperature = el(levels, temperatures, dewpoints)
+    assert_almost_equal(el_pressure, 175.8684 * units.mbar, 3)
+    assert_almost_equal(el_temperature, -57.0307 * units.degC, 3)
 
 
 def test_wet_psychrometric_vapor_pressure():
