@@ -241,6 +241,13 @@ def test_get_bound_pressure_height(pressure, bound, hgts, interp, expected):
     assert_array_almost_equal(bounds[1], expected[1], 5)
 
 
+def test_get_bound_invalid_bound_units():
+    """Test that value error is raised with invalid bound units."""
+    p = np.arange(900, 300, -100) * units.hPa
+    with pytest.raises(ValueError):
+        _get_bound_pressure_height(p, 100 * units.degC)
+
+
 def test_get_bound_pressure_out_of_range():
     """Test when bound is out of data range in pressure."""
     p = np.arange(900, 300, -100) * units.hPa
@@ -266,6 +273,14 @@ def test_get_layer_ragged_data():
     y = np.arange(9) * units.degC
     with pytest.raises(ValueError):
         get_layer(p, y)
+
+
+def test_get_layer_invalid_depth_units():
+    """Tests that error is raised when depth has invalid units."""
+    p = np.arange(10) * units.hPa
+    y = np.arange(9) * units.degC
+    with pytest.raises(ValueError):
+        get_layer(p, y, depth=400 * units.degC)
 
 
 @pytest.fixture
