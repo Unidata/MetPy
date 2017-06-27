@@ -4,6 +4,7 @@
 """Contains a collection of generally useful calculation tools."""
 
 import functools
+import warnings
 
 import numpy as np
 import numpy.ma as ma
@@ -288,7 +289,7 @@ def reduce_point_density(points, radius, priority=None):
 
 
 @exporter.export
-def log_interp(x, xp, fp, **kwargs):
+def log_interp_1d(x, xp, fp, **kwargs):
     r"""Interpolates data with logarithmic x-scale.
 
     Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.
@@ -518,5 +519,129 @@ def get_layer(p, *args, **kwargs):
             datavar = datavar[inds]
 
         ret.append(datavar[::-1])
+    return ret
 
+
+@exporter.export
+def log_interp(x, xp, *args, **kwargs):
+    r"""Interpolates data on irregular pressure surfaces to desired isobaric levels.
+
+    Interpolation from coordinates such as sigma-p where pressure is not constant to
+    constant isobaric levels.
+
+    Parameters
+    ----------
+    x : array-like
+        1-D array of desired interpolated values.
+
+    xp : array-like
+        The x-coordinates of the data points.
+
+    args : array-like
+        The y-coordinates of the data points, same shape as xp.
+
+    Returns
+    -------
+    array-like
+        List of interpolated values for each point.
+
+    Notes
+    -----
+    xp and args must be the same shape.
+    """
+    # Pull out keyword args
+    extrap = kwargs.pop('extrap', 'set_nan')
+    axis = kwargs.pop('axis', 0)
+
+    # Remove units from x coords
+    if hasattr(x, 'units'):
+        x = x.m
+
+    if hasattr(xp, 'units'):
+        xp = xp.m
+
+    # Save number of dimensions in xp
+    ndim = xp.ndim
+
+    # Sort input data
+    sort_args = np.argsort(xp, axis=axis)
+    sort_x = np.argsort(x)
+
+    # indicies for sorting
+    sorter = broadcast_indicies(xp, sort_args, ndim, axis)
+
+    # Ensure pressure in increasing order
+    variables = []
+    for i in range(len(args)):
+        variables.append(args[i][sorter])
+
+    # Make x the same shape as xp
+    if ndim == 1:
+        x_array = x[sort_x]
+    else:
+        x_array = x[sort_x]
+        for i in range(0, ndim - axis - 1):
+            print(i)
+            x_array = x_array[..., np.newaxis]
+        shp = list(xp.shape)
+        shp[axis] = x.shape[0]
+        x_array = np.broadcast_to(x_array, shp)
+
+    # Log x and xp
+    log_x_array = np.log(x_array)
+    log_xp = np.log(xp[sorter])
+
+    # Calculate value above interpolated value
+    minv = np.apply_along_axis(np.searchsorted, axis, xp[sorter], x[sort_x])
+    minv2 = np.copy(minv)
+
+    # If extrap is none and data is out of bounds, raise value error
+    if ((np.max(minv) == xp.shape[axis]) or (np.min(minv) == 0)) and extrap == 'none':
+        raise ValueError('Interpolation point out of data bounds encountered')
+
+    # Warn if interpolated values are outside data bounds, will make these the values
+    # at end of data range.
+    if np.max(minv) == xp.shape[axis]:
+        warnings.warn('Interpolation point out of data bounds encountered')
+        minv2[minv == xp.shape[axis]] = xp.shape[axis] - 1
+    if np.max(minv) == 0:
+        warnings.warn('Interpolation point out of data bounds encountered')
+        minv2[minv == 0] = 1
+
+    # Create empty output list
+    ret = []
+
+    # Get indicies for broadcasting arrays
+    above = broadcast_indicies(xp, minv2, ndim, axis)
+    below = broadcast_indicies(xp, minv2 - 1, ndim, axis)
+
+    # Calculate interpolation for each variable
+    for i in range(len(args)):
+        var = variables[i][below] + ((log_x_array - log_xp[below]) /
+                                     (log_xp[above] - log_xp[below])) * (variables[i][above] -
+                                                                         variables[i][below])
+
+        # set to nan if extrap=set_nan
+        if extrap == 'set_nan':
+            var[minv == xp.shape[axis]] = np.nan
+            var[minv == 0] = np.nan
+
+        # Output to list
+        ret.append(var)
+    return ret
+
+
+def broadcast_indicies(x, minv, ndim, axis):
+    """Returns index values to properly broadcast index array within data array.
+    See usage in log_interp.
+    """
+    ret = []
+    for dim in range(ndim):
+        if dim == axis:
+            ret.append(minv)
+        else:
+            broadcast_slice = [np.newaxis] * ndim
+            broadcast_slice[dim] = slice(None)
+            dim_inds = np.arange(x.shape[dim])
+            ret.append(dim_inds[broadcast_slice])
     return ret

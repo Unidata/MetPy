@@ -178,7 +178,7 @@ def test_log_interp():
     x_interp = np.array([5e3, 5e4, 5e5])
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
     y_interp = log_interp(x_interp, x_log, y_log)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+    assert_array_almost_equal(y_interp[0], y_interp_truth, 7)
 
 
 def test_log_interp_units():
