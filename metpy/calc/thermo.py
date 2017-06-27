@@ -881,26 +881,50 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
         The starting dew point
     parcel_profile : `pint.Quantity`
         The temperature profile of the parcel
+
     Returns
     -------
     `pint.Quantity`
         Convective available potential energy (CAPE).
     `pint.Quantity`
         Convective inhibition (CIN).
+
+    Notes
+    -----
+    Formula adopted from [Hobbs1977]_.
+
+    .. math:: \text{CAPE} = -R_d \int_{LFC}^{EL} (T_{parcel} - T_{env}) d\text{ln}(p)
+
+    .. math:: \text{CIN} = -R_d \int_{SFC}^{LFC} (T_{parcel} - T_{env}) d\text{ln}(p)
+
+
+    * :math:`CAPE` Convective available potential energy
+    * :math:`CIN` Convective inhibition
+    * :math:`LFC` Pressure of the level of free convection
+    * :math:`EL` Pressure of the equilibrium level
+    * :math:`SFC` Level of the surface or beginning of parcel path
+    * :math:`R_d` Gas constant
+    * :math:`g` Gravitational acceleration
+    * :math:`T_{parcel}` Parcel temperature
+    * :math:`T_{env}` Environment temperature
+    * :math:`p` Atmospheric pressure
+
     See Also
     --------
     lfc, el
 
     """
-    # Calculate limits of integration
+    # Calculate LFC limit of integration
     lfc_pressure = lfc(pressure, temperature, dewpt)[0]
-    el_pressure = el(pressure, temperature, dewpt)[0]
 
     # If there is no LFC, no need to proceed.
     if np.isnan(lfc_pressure):
         return 0 * units('J/kg'), 0 * units('J/kg')
     else:
         lfc_pressure = lfc_pressure.magnitude
+
+    # Calculate the EL limit of integration
+    el_pressure = el(pressure, temperature, dewpt)[0]
 
     # No EL and we use the top reading of the sounding.
     if np.isnan(el_pressure):
@@ -948,6 +972,7 @@ def _find_append_zero_crossings(x, y):
         x values of data
     y : `pint.Quantity`
         y values of data
+
     Returns
     -------
     x : `pint.Quantity`
