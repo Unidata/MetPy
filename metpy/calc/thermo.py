@@ -772,7 +772,8 @@ def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
 
     Notes
     -----
-    Formula from [Hobbs 1977]_ pg. 74.
+    Formula from [Hobbs1977]_ pg. 74.
+
     .. math:: RH = 100 \frac{w}{w_s}
 
     * :math:`RH` is relative humidity
@@ -806,6 +807,7 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
     Notes
     -----
     Formula from [Salby1996]_ pg. 118.
+
     .. math:: w = \frac{q}{1-q}
 
     * :math:`w` is mxing ratio
@@ -840,7 +842,8 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
 
     Notes
     -----
-    Formula from [Hobbs 1977]_ pg. 74. and [Salby1996]_ pg. 118.
+    Formula from [Hobbs1977]_ pg. 74. and [Salby1996]_ pg. 118.
+
     .. math:: RH = 100 \frac{q}{(1-q)w_s}
 
     * :math:`RH` is relative humidity
