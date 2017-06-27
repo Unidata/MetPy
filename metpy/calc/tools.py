@@ -330,3 +330,50 @@ def log_interp(x, xp, fp, **kwargs):
         interpolated_vals = interpolated_vals * fp.units
 
     return interpolated_vals
+
+
+@exporter.export
+def convert_and_drop_units(x, *args, **kwargs):
+    r"""Convert to common units and drop units.
+
+    Check if multiple inputs has units and convert to common units.
+
+    Parameters
+    ----------
+    x : array-like
+        Input value to check.
+
+    args : array-like
+        Additional values to check
+
+    units : string, optional
+        Desired output units. If None, will convert to the units of x.
+
+    Returns
+    -------
+    array-like
+        The magnitude of the input values converted to common units
+
+    """
+    # Check for desired unit to convert to.
+    unit = kwargs.pop('units', None)
+    ret = []
+    if (unit is not None) and hasattr(x, 'units'):
+        x = x.to(unit)
+        ret.append(x.m)
+        for arr in args:
+            arr = arr.to(unit)
+            arr = arr.m
+            ret.append(arr)
+
+    elif hasattr(x, 'units'):
+        ret.append(x.m)
+        for arr in args:
+            arr = arr.to(x.units)
+            arr = arr.m
+            ret.append(arr)
+    else:
+        ret.append(x)
+        [ret.append(arr) for arr in args]
+
+    return ret
