@@ -858,3 +858,141 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
     return (100 * units.percent *
             mixing_ratio_from_specific_humidity(specific_humidity) /
             saturation_mixing_ratio(pressure, temperature))
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
+def cape_cin(pressure, temperature, dewpt, parcel_profile):
+    r"""Calculate CAPE and CIN.
+
+    Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
+    of a given upper air profile and parcel path. CIN is integrated between the surface and
+    LFC, CAPE is integrated between the LFC and EL (or top of sounding). Intersection points of
+    the measured temperature profile and parcel profile are linearly interpolated.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The atmospheric pressure level(s) of interest. The first entry should be the starting
+        point pressure.
+    temperature : `pint.Quantity`
+        The starting temperature
+    dewpt : `pint.Quantity`
+        The starting dew point
+    parcel_profile : `pint.Quantity`
+        The temperature profile of the parcel
+
+    Returns
+    -------
+    `pint.Quantity`
+        Convective available potential energy (CAPE).
+    `pint.Quantity`
+        Convective inhibition (CIN).
+
+    Notes
+    -----
+    Formula adopted from [Hobbs1977]_.
+
+    .. math:: \text{CAPE} = -R_d \int_{LFC}^{EL} (T_{parcel} - T_{env}) d\text{ln}(p)
+
+    .. math:: \text{CIN} = -R_d \int_{SFC}^{LFC} (T_{parcel} - T_{env}) d\text{ln}(p)
+
+
+    * :math:`CAPE` Convective available potential energy
+    * :math:`CIN` Convective inhibition
+    * :math:`LFC` Pressure of the level of free convection
+    * :math:`EL` Pressure of the equilibrium level
+    * :math:`SFC` Level of the surface or beginning of parcel path
+    * :math:`R_d` Gas constant
+    * :math:`g` Gravitational acceleration
+    * :math:`T_{parcel}` Parcel temperature
+    * :math:`T_{env}` Environment temperature
+    * :math:`p` Atmospheric pressure
+
+    See Also
+    --------
+    lfc, el
+
+    """
+    # Calculate LFC limit of integration
+    lfc_pressure = lfc(pressure, temperature, dewpt)[0]
+
+    # If there is no LFC, no need to proceed.
+    if np.isnan(lfc_pressure):
+        return 0 * units('J/kg'), 0 * units('J/kg')
+    else:
+        lfc_pressure = lfc_pressure.magnitude
+
+    # Calculate the EL limit of integration
+    el_pressure = el(pressure, temperature, dewpt)[0]
+
+    # No EL and we use the top reading of the sounding.
+    if np.isnan(el_pressure):
+        el_pressure = pressure[-1].magnitude
+    else:
+        el_pressure = el_pressure.magnitude
+
+    # Difference between the parcel path and measured temperature profiles
+    y = (parcel_profile - temperature).to(units.degK)
+
+    # Estimate zero crossings
+    x, y = _find_append_zero_crossings(np.copy(pressure), y)
+
+    # CAPE (temperature parcel < temperature environment)
+    # Only use data between the LFC and EL for calculation
+    p_mask = (x <= lfc_pressure) & (x >= el_pressure)
+    x_clipped = x[p_mask]
+    y_clipped = y[p_mask]
+
+    y_clipped[y_clipped <= 0 * units.degK] = 0 * units.degK
+    cape = (Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+
+    # CIN (temperature parcel < temperature environment)
+    # Only use data between the surface and LFC for calculation
+    p_mask = (x >= lfc_pressure)
+    x_clipped = x[p_mask]
+    y_clipped = y[p_mask]
+
+    y_clipped[y_clipped >= 0 * units.degK] = 0 * units.degK
+    cin = (Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+
+    return cape, cin
+
+
+def _find_append_zero_crossings(x, y):
+    r"""
+    Find and interpolate zero crossings.
+
+    Estimate the zero crossings of an x,y series and add estimated crossings to series,
+    returning a sorted array with no duplicate values.
+
+    Parameters
+    ----------
+    x : `pint.Quantity`
+        x values of data
+    y : `pint.Quantity`
+        y values of data
+
+    Returns
+    -------
+    x : `pint.Quantity`
+        x values of data
+    y : `pint.Quantity`
+        y values of data
+
+    """
+    # Find and append crossings to the data
+    crossings = find_intersections(x[1:], y[1:], np.zeros_like(y[1:]) * y.units)
+    x = concatenate((x, crossings[0]))
+    y = concatenate((y, crossings[1]))
+
+    # Resort so that data are in order
+    sort_idx = np.argsort(x)
+    x = x[sort_idx]
+    y = y[sort_idx]
+
+    # Remove duplicate data points if there are any
+    keep_idx = np.ediff1d(x, to_end=[1]) > 0
+    x = x[keep_idx]
+    y = y[keep_idx]
+    return x, y
