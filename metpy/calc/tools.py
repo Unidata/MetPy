@@ -395,7 +395,8 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
             else:  # Bound is not in the data
                 if interpolate:
                     bound_height = bound
-                    bound_pressure = height_to_pressure_std(bound_height)
+                    bound_pressure = np.interp(np.array(bound.m), heights,
+                                               pressure) * pressure.units
                 else:
                     idx = (np.abs(heights - bound)).argmin()
                     bound_pressure = pressure[idx]
