@@ -229,7 +229,7 @@ def get_bounds_data():
     (get_bounds_data()[0], 0.9880028 * units.kilometer, get_bounds_data()[1], False,
      (900 * units.hPa, 0.9880028 * units.kilometer)),
     (get_bounds_data()[0], 1.2665298 * units.kilometer, get_bounds_data()[1], True,
-     (870 * units.hPa, 1.2665298 * units.kilometer)),
+     (870.9869087 * units.hPa, 1.2665298 * units.kilometer)),
     (get_bounds_data()[0], 1.2665298 * units.kilometer, get_bounds_data()[1], False,
      (900 * units.hPa, 0.9880028 * units.kilometer)),
     (get_bounds_data()[0], 0.98800289 * units.kilometer, get_bounds_data()[1], True,
