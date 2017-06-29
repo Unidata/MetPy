@@ -8,7 +8,8 @@ import numpy.ma as ma
 import pytest
 
 from metpy.calc import (find_intersections, get_layer, interpolate_nans, log_interp,
-                        nearest_intersection_idx, reduce_point_density, resample_nn_1d)
+                        nearest_intersection_idx, pressure_to_height_std,
+                        reduce_point_density, resample_nn_1d)
 from metpy.calc.tools import (_get_bound_pressure_height, _next_non_masked_element,
                               delete_masked_points)
 from metpy.testing import assert_array_almost_equal, assert_array_equal
@@ -194,9 +195,7 @@ def test_log_interp_units():
 def get_bounds_data():
     """Provide pressure and height data for testing layer bounds calculation."""
     pressures = np.linspace(1000, 100, 10) * units.hPa
-    heights = np.array([0.11082868, 0.98800289, 1.94800715, 3.01066419,
-                        4.20430387, 5.5716246, 7.18180831, 9.15932561,
-                        11.76894096, 15.78930499]) * units.kilometer
+    heights = pressure_to_height_std(pressures)
     return pressures, heights
 
 
@@ -230,7 +229,7 @@ def get_bounds_data():
     (get_bounds_data()[0], 0.9880028 * units.kilometer, get_bounds_data()[1], False,
      (900 * units.hPa, 0.9880028 * units.kilometer)),
     (get_bounds_data()[0], 1.2665298 * units.kilometer, get_bounds_data()[1], True,
-     (870 * units.hPa, 1.2665298 * units.kilometer)),
+     (870.9869087 * units.hPa, 1.2665298 * units.kilometer)),
     (get_bounds_data()[0], 1.2665298 * units.kilometer, get_bounds_data()[1], False,
      (900 * units.hPa, 0.9880028 * units.kilometer)),
     (get_bounds_data()[0], 0.98800289 * units.kilometer, get_bounds_data()[1], True,
