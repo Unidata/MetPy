@@ -288,53 +288,6 @@ def reduce_point_density(points, radius, priority=None):
     return keep
 
 
-@exporter.export
-def log_interp_1d(x, xp, fp, **kwargs):
-    r"""Interpolates data with logarithmic x-scale.
-
-    Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.
-
-    Parameters
-    ----------
-    x : array-like
-        The x-coordinates of the interpolated values.
-
-    xp : array-like
-        The x-coordinates of the data points.
-
-    fp : array-like
-        The y-coordinates of the data points, same length as xp.
-
-    Returns
-    -------
-    array-like
-        The interpolated values, same shape as x.
-
-    Examples
-    --------
-    >>> x_log = np.array([1e3, 1e4, 1e5, 1e6])
-    >>> y_log = np.log(x_log) * 2 + 3
-    >>> x_interp = np.array([5e3, 5e4, 5e5])
-    >>> metpy.calc.log_interp(x_interp, x_log, y_log)
-    array([ 20.03438638,  24.63955657,  29.24472675])
-
-    """
-    sort_args = np.argsort(xp)
-
-    if hasattr(x, 'units'):
-        x = x.m
-
-    if hasattr(xp, 'units'):
-        xp = xp.m
-
-    interpolated_vals = np.interp(np.log(x), np.log(xp[sort_args]), fp[sort_args], **kwargs)
-
-    if hasattr(fp, 'units'):
-        interpolated_vals = interpolated_vals * fp.units
-
-    return interpolated_vals
-
-
 def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
     """Calculate the bounding pressure and height in a layer.
 
@@ -523,11 +476,11 @@ def get_layer(p, *args, **kwargs):
 
 
 @exporter.export
-def log_interp(x, xp, *args, **kwargs):
-    r"""Interpolates data on irregular pressure surfaces to desired isobaric levels.
+@units.wraps(None, ('=A', '=A'))
+def interp(x, xp, *args, **kwargs):
+    r"""Interpolates data with any shape over a specified axis.
 
-    Interpolation from coordinates such as sigma-p where pressure is not constant to
-    constant isobaric levels.
+    Interpolation over a specified axis for arrays of any shape.
 
     Parameters
     ----------
@@ -538,27 +491,40 @@ def log_interp(x, xp, *args, **kwargs):
         The x-coordinates of the data points.
 
     args : array-like
-        The y-coordinates of the data points, same shape as xp.
+        The data to be interpolated. Can be multiple arguments, all must be the same shape as
+        xp.
+
+    axis : int, optional
+        The axis to interpolate over. Defaults to 0.
+
+    fill_value: float, optional
+        Specify handling of interpolation points out of data bounds. If None, will return
+        ValueError if points are out of bounds. Defaults to nan.
 
     Returns
     -------
     array-like
-        List of interpolated values for each point.
+        Interpolated values for each point with coordinates sorted in ascending order.
+
+    Examples
+    --------
+     >>> x = np.array([1., 2., 3., 4.])
+     >>> y = np.array([1., 2., 3., 4.])
+     >>> x_interp = np.array([2.5, 3.5])
+     >>> metpy.calc.interp(x_interp, x, y)
+     array([ 2.5,  3.5])
 
     Notes
     -----
     xp and args must be the same shape.
+
     """
     # Pull out keyword args
-    extrap = kwargs.pop('extrap', 'set_nan')
+    fill_value = kwargs.pop('fill_value', np.nan)
     axis = kwargs.pop('axis', 0)
 
-    # Remove units from x coords
-    if hasattr(x, 'units'):
-        x = x.m
-
-    if hasattr(xp, 'units'):
-        xp = xp.m
+    # Make x an array
+    x = np.asanyarray(x).reshape(-1)
 
     # Save number of dimensions in xp
     ndim = xp.ndim
@@ -567,36 +533,26 @@ def log_interp(x, xp, *args, **kwargs):
     sort_args = np.argsort(xp, axis=axis)
     sort_x = np.argsort(x)
 
-    # indicies for sorting
-    sorter = broadcast_indicies(xp, sort_args, ndim, axis)
+    # indices for sorting
+    sorter = broadcast_indices(xp, sort_args, ndim, axis)
 
+    # sort xp
+    xp = xp[sorter]
     # Ensure pressure in increasing order
-    variables = []
-    for i in range(len(args)):
-        variables.append(args[i][sorter])
+    variables = [arr[sorter] for arr in args]
 
-    # Make x the same shape as xp
-    if ndim == 1:
-        x_array = x[sort_x]
-    else:
-        x_array = x[sort_x]
-        for i in range(0, ndim - axis - 1):
-            print(i)
-            x_array = x_array[..., np.newaxis]
-        shp = list(xp.shape)
-        shp[axis] = x.shape[0]
-        x_array = np.broadcast_to(x_array, shp)
-
-    # Log x and xp
-    log_x_array = np.log(x_array)
-    log_xp = np.log(xp[sorter])
+    # Make x broadcast with xp
+    x_array = x[sort_x]
+    expand = [np.newaxis] * ndim
+    expand[axis] = slice(None)
+    x_array = x_array[expand]
 
     # Calculate value above interpolated value
-    minv = np.apply_along_axis(np.searchsorted, axis, xp[sorter], x[sort_x])
+    minv = np.apply_along_axis(np.searchsorted, axis, xp, x[sort_x])
     minv2 = np.copy(minv)
 
     # If extrap is none and data is out of bounds, raise value error
-    if ((np.max(minv) == xp.shape[axis]) or (np.min(minv) == 0)) and extrap == 'none':
+    if ((np.max(minv) == xp.shape[axis]) or (np.min(minv) == 0)) and fill_value is None:
         raise ValueError('Interpolation point out of data bounds encountered')
 
     # Warn if interpolated values are outside data bounds, will make these the values
@@ -608,32 +564,38 @@ def log_interp(x, xp, *args, **kwargs):
         warnings.warn('Interpolation point out of data bounds encountered')
         minv2[minv == 0] = 1
 
+    # Get indices for broadcasting arrays
+    above = broadcast_indices(xp, minv2, ndim, axis)
+    below = broadcast_indices(xp, minv2 - 1, ndim, axis)
+
     # Create empty output list
     ret = []
 
-    # Get indicies for broadcasting arrays
-    above = broadcast_indicies(xp, minv2, ndim, axis)
-    below = broadcast_indicies(xp, minv2 - 1, ndim, axis)
-
     # Calculate interpolation for each variable
-    for i in range(len(args)):
-        var = variables[i][below] + ((log_x_array - log_xp[below]) /
-                                     (log_xp[above] - log_xp[below])) * (variables[i][above] -
-                                                                         variables[i][below])
+    for var in variables:
+        var_interp = var[below] + ((x_array - xp[below]) /
+                                   (xp[above] - xp[below])) * (var[above] -
+                                                               var[below])
 
-        # set to nan if extrap=set_nan
-        if extrap == 'set_nan':
-            var[minv == xp.shape[axis]] = np.nan
-            var[minv == 0] = np.nan
+        # Set points out of bounds to fill value.
+        var_interp[minv == xp.shape[axis]] = fill_value
+        var_interp[minv == 0] = fill_value
 
+        # Check for input points in decreasing order and return output to match.
+        if x[0] > x[-1]:
+            var_interp = np.swapaxes(np.swapaxes(var_interp, 0, axis)[::-1], 0, axis)
         # Output to list
-        ret.append(var)
-    return ret
+        ret.append(var_interp)
+    if len(ret) == 1:
+        return ret[0]
+    else:
+        return ret
 
 
-def broadcast_indicies(x, minv, ndim, axis):
-    """Returns index values to properly broadcast index array within data array.
-    See usage in log_interp.
+def broadcast_indices(x, minv, ndim, axis):
+    """Calculate index values to properly broadcast index array within data array.
+
+    See usage in interp.
     """
     ret = []
     for dim in range(ndim):
@@ -645,3 +607,57 @@ def broadcast_indicies(x, minv, ndim, axis):
             dim_inds = np.arange(x.shape[dim])
             ret.append(dim_inds[broadcast_slice])
     return ret
+
+
+@exporter.export
+@units.wraps(None, ('=A', '=A'))
+def log_interp(x, xp, *args, **kwargs):
+    r"""Interpolates data with logarithmic x-scale over a specified axis.
+
+    Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.
+
+    Parameters
+    ----------
+    x : array-like
+        1-D array of desired interpolated values.
+
+    xp : array-like
+        The x-coordinates of the data points.
+
+    args : array-like
+        The data to be interpolated. Can be multiple arguments, all must be the same shape as
+        xp.
+
+    axis : int, optional
+        The axis to interpolate over. Defaults to 0.
+
+    fill_value: float, optional
+        Specify handling of interpolation points out of data bounds. If None, will return
+        ValueError if points are out of bounds. Defaults to nan.
+
+    Returns
+    -------
+    array-like
+        Interpolated values for each point with coordinates sorted in ascending order.
+
+    Examples
+     --------
+     >>> x_log = np.array([1e3, 1e4, 1e5, 1e6])
+     >>> y_log = np.log(x_log) * 2 + 3
+     >>> x_interp = np.array([5e3, 5e4, 5e5])
+     >>> metpy.calc.log_interp(x_interp, x_log, y_log)
+     array([ 20.03438638,  24.63955657,  29.24472675])
+
+    Notes
+    -----
+    xp and args must be the same shape.
+
+    """
+    # Pull out kwargs
+    fill_value = kwargs.pop('fill_value', np.nan)
+    axis = kwargs.pop('axis', 0)
+
+    # Log x and xp
+    log_x = np.log(x)
+    log_xp = np.log(xp)
+    return interp(log_x, log_xp, *args, axis=axis, fill_value=fill_value)
