@@ -32,6 +32,7 @@ env:
     - EXTRA_INSTALLS="test,cdm"
     - MPLLOCALFREETYPE="1"
     - TEST_OUTPUT_CONTROL="-s"
+    - GH_PAGES_DIR="$HOME/gh-pages"
   matrix:
     - TASK="coverage"
     - TASK="docs"
@@ -132,7 +133,6 @@ after_script:
 before_deploy:
   # Remove unused, unminified javascript from sphinx
   - if [[ $TASK == "docs" ]]; then
-      touch docs/build/html/.nojekyll;
       rm -f docs/build/html/_static/jquery-*.js;
       rm -f docs/build/html/_static/underscore-*.js;
     fi
@@ -149,13 +149,11 @@ deploy:
       python: 3.6
       condition: '$TASK != "docs"'
       tags: true
-  - provider: pages
+  - provider: script
+    script: ci/deploy_docs.sh
     skip_cleanup: true
-    github_token: $GH_TOKEN
-    local_dir: docs/build/html
-    target_branch: gh-pages
     on:
-      branch: master
+      all_branches: true
       python: 3.6
       condition: '$TASK == "docs"'
 
