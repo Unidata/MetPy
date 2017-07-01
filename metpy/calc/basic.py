@@ -356,3 +356,45 @@ def add_pressure_to_height(height, pressure):
     """
     pressure_at_height = height_to_pressure_std(height)
     return pressure_to_height_std(pressure_at_height - pressure)
+
+
+@exporter.export
+@check_units('[dimensionless]', '[pressure]', '[pressure]')
+def sigma_to_pressure(sigma, psfc, ptop):
+    r"""Calculate pressure from sigma values.
+
+    Parameters
+    ----------
+    sigma : ndarray
+        The sigma levels to be converted to pressure levels.
+
+    psfc : `pint.Quantity`
+        The surface pressure value.
+
+    ptop : `pint.Quantity`
+        The pressure value at the top of the model domain.
+
+    Returns
+    -------
+    `pint.Quantity`
+        The pressure values at the given sigma levels.
+
+    Notes
+    -----
+    Sigma definition adapted from [Philips1957]_.
+
+    .. math:: p = \sigma * (p_{sfc} - p_{top}) + p_{top}
+
+    * :math:`p` is pressure at a given `\sigma` level
+    * :math:`\sigma` is non-dimensional, scaled pressure
+    * :math:`p_{sfc}` is pressure at the surface or model floor
+    * :math:`p_{top}` is pressure at the top of the model domain
+
+    """
+    if np.any(sigma < 0) or np.any(sigma > 1):
+        raise ValueError('Sigma values should be bounded by 0 and 1')
+
+    if psfc.magnitude < 0 or ptop.magnitude < 0:
+        raise ValueError('Pressure input should be non-negative')
+
+    return sigma * (psfc - ptop) + ptop
