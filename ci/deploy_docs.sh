@@ -28,8 +28,12 @@ if [[ "${VERSION}" != "dev" ]]; then
 fi
 
 git add -A .
-git commit -m "Deploy ${VERSION} to GitHub Pages"
+if [[ "${VERSION}" == "dev" && `git log -1 --format='%s'` == *"dev"* ]]; then
+    git commit --amend --reset-author --no-edit
+else
+    git commit -m "Deploy ${VERSION} to GitHub Pages"
+fi
 
 # Push up to gh-pages
 echo Pushing...
-git push --quiet origin gh-pages
+git push --force --quiet origin gh-pages
