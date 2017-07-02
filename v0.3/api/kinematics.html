@@ -1,0 +1,401 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Kinematic Calculations &mdash; MetPy 0.3.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/kinematics.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 0.3.1 documentation" href="../index.html"/>
+        <link rel="up" title="metpy.calc" href="calc.html"/>
+        <link rel="next" title="Thermodynamic Calculations" href="thermo.html"/>
+        <link rel="prev" title="Basic Calculations" href="basic.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html"><code class="docutils literal"><span class="pre">metpy.constants</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html"><code class="docutils literal"><span class="pre">metpy.units</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html"><code class="docutils literal"><span class="pre">metpy.io</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="calc.html"><code class="docutils literal"><span class="pre">metpy.calc</span></code></a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic.html">Basic Calculations</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Kinematic Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="thermo.html">Thermodynamic Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="turbulence.html">Turbulence Time Series Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html"><code class="docutils literal"><span class="pre">metpy.plots</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer&#8217;s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">The MetPy API</a> &raquo;</li>
+        
+          <li><a href="calc.html"><code class="docutils literal"><span class="pre">metpy.calc</span></code></a> &raquo;</li>
+        
+      <li>Kinematic Calculations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/kinematics.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-metpy.calc.kinematics">
+<span id="kinematic-calculations"></span><h1>Kinematic Calculations<a class="headerlink" href="#module-metpy.calc.kinematics" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="metpy.calc.kinematics.v_vorticity">
+<code class="descclassname">metpy.calc.kinematics.</code><code class="descname">v_vorticity</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>dx</em>, <em>dy</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.kinematics.v_vorticity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the vertical vorticity of the horizontal wind.</p>
+<p>The grid must have a constant spacing in each direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em></em><em>(</em><em>X</em><em>, </em><em>Y</em><em>) </em><em>ndarray</em>) &#8211; x component of the wind</li>
+<li><strong>v</strong> (<em></em><em>(</em><em>X</em><em>, </em><em>Y</em><em>) </em><em>ndarray</em>) &#8211; y component of the wind</li>
+<li><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) &#8211; The grid spacing in the x-direction</li>
+<li><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) &#8211; The grid spacing in the y-direction</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(X, Y) ndarray</em> &#8211; vertical vorticity</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.kinematics.h_convergence" title="metpy.calc.kinematics.h_convergence"><code class="xref py py-func docutils literal"><span class="pre">h_convergence()</span></code></a>, <a class="reference internal" href="#metpy.calc.kinematics.convergence_vorticity" title="metpy.calc.kinematics.convergence_vorticity"><code class="xref py py-func docutils literal"><span class="pre">convergence_vorticity()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.kinematics.h_convergence">
+<code class="descclassname">metpy.calc.kinematics.</code><code class="descname">h_convergence</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>dx</em>, <em>dy</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.kinematics.h_convergence" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the horizontal convergence of the horizontal wind.</p>
+<p>The grid must have a constant spacing in each direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em></em><em>(</em><em>X</em><em>, </em><em>Y</em><em>) </em><em>ndarray</em>) &#8211; x component of the wind</li>
+<li><strong>v</strong> (<em></em><em>(</em><em>X</em><em>, </em><em>Y</em><em>) </em><em>ndarray</em>) &#8211; y component of the wind</li>
+<li><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) &#8211; The grid spacing in the x-direction</li>
+<li><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) &#8211; The grid spacing in the y-direction</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(X, Y) ndarray</em> &#8211; The horizontal convergence</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.kinematics.v_vorticity" title="metpy.calc.kinematics.v_vorticity"><code class="xref py py-func docutils literal"><span class="pre">v_vorticity()</span></code></a>, <a class="reference internal" href="#metpy.calc.kinematics.convergence_vorticity" title="metpy.calc.kinematics.convergence_vorticity"><code class="xref py py-func docutils literal"><span class="pre">convergence_vorticity()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.kinematics.convergence_vorticity">
+<code class="descclassname">metpy.calc.kinematics.</code><code class="descname">convergence_vorticity</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>dx</em>, <em>dy</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.kinematics.convergence_vorticity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the horizontal convergence and vertical vorticity of the
+horizontal wind.</p>
+<p>The grid must have a constant spacing in each direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em></em><em>(</em><em>X</em><em>, </em><em>Y</em><em>) </em><em>ndarray</em>) &#8211; x component of the wind</li>
+<li><strong>v</strong> (<em></em><em>(</em><em>X</em><em>, </em><em>Y</em><em>) </em><em>ndarray</em>) &#8211; y component of the wind</li>
+<li><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) &#8211; The grid spacing in the x-direction</li>
+<li><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) &#8211; The grid spacing in the y-direction</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>convergence, vorticity</strong> (<em>tuple of (X, Y) ndarrays</em>) &#8211; The horizontal convergence and vertical vorticity, respectively</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.kinematics.v_vorticity" title="metpy.calc.kinematics.v_vorticity"><code class="xref py py-func docutils literal"><span class="pre">v_vorticity()</span></code></a>, <a class="reference internal" href="#metpy.calc.kinematics.h_convergence" title="metpy.calc.kinematics.h_convergence"><code class="xref py py-func docutils literal"><span class="pre">h_convergence()</span></code></a></p>
+</div>
+<p class="rubric">Notes</p>
+<p>This is a convenience function that will do less work than calculating
+the horizontal convergence and vertical vorticity separately.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.kinematics.advection">
+<code class="descclassname">metpy.calc.kinematics.</code><code class="descname">advection</code><span class="sig-paren">(</span><em>scalar</em>, <em>wind</em>, <em>deltas</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.kinematics.advection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the advection of a scalar field by the wind.</p>
+<p>The order of the dimensions of the arrays must match the order in which
+the wind components are given.  For example, if the winds are given [u, v],
+then the scalar and wind arrays must be indexed as x,y (which puts x as the
+rows, not columns).</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>scalar</strong> (<em>N-dimensional array</em>) &#8211; Array (with N-dimensions) with the quantity to be advected.</li>
+<li><strong>wind</strong> (<em>sequence of arrays</em>) &#8211; Length N sequence of N-dimensional arrays.  Represents the flow,
+with a component of the wind in each dimension.  For example, for
+horizontal advection, this could be a list: [u, v], where u and v
+are each a 2-dimensional array.</li>
+<li><strong>deltas</strong> (<em>sequence</em>) &#8211; A (length N) sequence containing the grid spacing in each dimension.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>N-dimensional array</em> &#8211; An N-dimensional array containing the advection at all grid points.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.kinematics.geostrophic_wind">
+<code class="descclassname">metpy.calc.kinematics.</code><code class="descname">geostrophic_wind</code><span class="sig-paren">(</span><em>heights</em>, <em>f</em>, <em>dx</em>, <em>dy</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.kinematics.geostrophic_wind" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the geostrophic wind given from the heights or geopotential.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>heights</strong> (<em></em><em>(</em><em>x</em><em>,</em><em>y</em><em>) </em><em>ndarray</em>) &#8211; The height field, given with leading dimensions of x by y.  There
+can be trailing dimensions on the array.</li>
+<li><strong>f</strong> (<em>array_like</em>) &#8211; The coriolis parameter.  This can be a scalar to be applied
+everywhere or an array of values.</li>
+<li><strong>dx</strong> (<em>scalar</em>) &#8211; The grid spacing in the x-direction</li>
+<li><strong>dy</strong> (<em>scalar</em>) &#8211; The grid spacing in the y-direction</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>A 2-item tuple of arrays</em> &#8211; A tuple of the u-component and v-component of the geostrophic wind.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="thermo.html" class="btn btn-neutral float-right" title="Thermodynamic Calculations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="basic.html" class="btn btn-neutral" title="Basic Calculations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, MetPy Developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

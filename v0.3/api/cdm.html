@@ -1,0 +1,667 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>CDM &mdash; MetPy 0.3.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/cdm.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 0.3.1 documentation" href="../index.html"/>
+        <link rel="up" title="metpy.io" href="io.html"/>
+        <link rel="next" title="File Formats" href="formats.html"/>
+        <link rel="prev" title="metpy.io" href="io.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html"><code class="docutils literal"><span class="pre">metpy.constants</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html"><code class="docutils literal"><span class="pre">metpy.units</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="io.html"><code class="docutils literal"><span class="pre">metpy.io</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">CDM</a></li>
+<li class="toctree-l3"><a class="reference internal" href="formats.html">File Formats</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="calc.html"><code class="docutils literal"><span class="pre">metpy.calc</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html"><code class="docutils literal"><span class="pre">metpy.plots</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer&#8217;s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">The MetPy API</a> &raquo;</li>
+        
+          <li><a href="io.html"><code class="docutils literal"><span class="pre">metpy.io</span></code></a> &raquo;</li>
+        
+      <li>CDM</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/cdm.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="cdm">
+<h1>CDM<a class="headerlink" href="#cdm" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference internal" href="#module-metpy.io.cdm" title="metpy.io.cdm"><code class="xref py py-mod docutils literal"><span class="pre">metpy.io.cdm</span></code></a></p>
+<span class="target" id="module-metpy.io.cdm"></span><p>The Common Data Model (CDM) is a data model for representing a wide array of data. The
+goal is to be a simple, universal interface to different datasets. This API is a Python
+implementation in the spirit of the original Java interface in netCDF-Java.</p>
+<dl class="class">
+<dt id="metpy.io.cdm.AttributeContainer">
+<em class="property">class </em><code class="descclassname">metpy.io.cdm.</code><code class="descname">AttributeContainer</code><a class="headerlink" href="#metpy.io.cdm.AttributeContainer" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class to handle maintaining a list of netCDF attributes. Implements the attribute
+handling for other CDM classes.</p>
+<p>Initialize an <a class="reference internal" href="#metpy.io.cdm.AttributeContainer" title="metpy.io.cdm.AttributeContainer"><code class="xref py py-class docutils literal"><span class="pre">AttributeContainer</span></code></a>.</p>
+<dl class="method">
+<dt id="metpy.io.cdm.AttributeContainer.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.AttributeContainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize an <a class="reference internal" href="#metpy.io.cdm.AttributeContainer" title="metpy.io.cdm.AttributeContainer"><code class="xref py py-class docutils literal"><span class="pre">AttributeContainer</span></code></a>.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.io.cdm.AttributeContainer.ncattrs">
+<code class="descname">ncattrs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.AttributeContainer.ncattrs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a list of the names of the netCDF attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>List[str]</em></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="metpy.io.cdm.Dataset">
+<em class="property">class </em><code class="descclassname">metpy.io.cdm.</code><code class="descname">Dataset</code><a class="headerlink" href="#metpy.io.cdm.Dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Dataset represents a set of data using the Common Data Model (CDM).</p>
+<p>This is currently only a wrapper around the root Group.</p>
+<p>Initialize a Dataset.</p>
+<dl class="method">
+<dt id="metpy.io.cdm.Dataset.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Dataset.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a Dataset.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="metpy.io.cdm.Dimension">
+<em class="property">class </em><code class="descclassname">metpy.io.cdm.</code><code class="descname">Dimension</code><span class="sig-paren">(</span><em>group</em>, <em>name</em>, <em>size=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Dimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Dimension is used to represent a shared dimension between different Variables.
+For instance, variables that are dependent upon a common set of times.</p>
+<p>Initialize a Dimension. Instead of constructing a Dimension directly, you should
+use <code class="docutils literal"><span class="pre">Group.createDimension</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>group</strong> (<a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><em>Group</em></a>) &#8211; The parent Group that owns this Variable.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of this Variable.</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a><em>, </em><em>optional</em>) &#8211; The size of the Dimension. Defaults to None, which implies an empty dimension.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.io.cdm.Group.createDimension" title="metpy.io.cdm.Group.createDimension"><code class="xref py py-class docutils literal"><span class="pre">Group.createDimension</span></code></a></p>
+</div>
+<dl class="method">
+<dt id="metpy.io.cdm.Dimension.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>group</em>, <em>name</em>, <em>size=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Dimension.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a Dimension. Instead of constructing a Dimension directly, you should
+use <code class="docutils literal"><span class="pre">Group.createDimension</span></code>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>group</strong> (<a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><em>Group</em></a>) &#8211; The parent Group that owns this Variable.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of this Variable.</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a><em>, </em><em>optional</em>) &#8211; The size of the Dimension. Defaults to None, which implies an empty dimension.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.io.cdm.Group.createDimension" title="metpy.io.cdm.Group.createDimension"><code class="xref py py-meth docutils literal"><span class="pre">Group.createDimension()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.io.cdm.Dimension.group">
+<code class="descname">group</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Dimension.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Group that owns this Dimension.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>Group</em> &#8211; The parent Group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Dimension.name">
+<code class="descname">name</code><em class="property"> = None</em><a class="headerlink" href="#metpy.io.cdm.Dimension.name" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>desc</em> &#8211; The name of the Dimension
+:type: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Dimension.size">
+<code class="descname">size</code><em class="property"> = None</em><a class="headerlink" href="#metpy.io.cdm.Dimension.size" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>desc</em> &#8211; The size of this Dimension
+:type: int</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="metpy.io.cdm.Group">
+<em class="property">class </em><code class="descclassname">metpy.io.cdm.</code><code class="descname">Group</code><span class="sig-paren">(</span><em>parent</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Group" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Group holds dimensions and variables. Every CDM dataset has at least a root group.</p>
+<p>Initialize this <a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a>. Instead of constructing a <a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a> directly,
+you should use <a class="reference internal" href="#metpy.io.cdm.Group.createGroup" title="metpy.io.cdm.Group.createGroup"><code class="xref py py-meth docutils literal"><span class="pre">createGroup()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><em>Group</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) &#8211; The parent Group for this one. Passing in <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a> implies that this is
+the root <a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a>.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of this group</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.io.cdm.Group.createGroup" title="metpy.io.cdm.Group.createGroup"><code class="xref py py-class docutils literal"><span class="pre">Group.createGroup</span></code></a></p>
+</div>
+<dl class="method">
+<dt id="metpy.io.cdm.Group.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>parent</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Group.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize this <a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a>. Instead of constructing a <a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a> directly,
+you should use <a class="reference internal" href="#metpy.io.cdm.Group.createGroup" title="metpy.io.cdm.Group.createGroup"><code class="xref py py-meth docutils literal"><span class="pre">createGroup()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>parent</strong> (<a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><em>Group</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><em>None</em></a>) &#8211; The parent Group for this one. Passing in <a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.6)"><code class="xref py py-data docutils literal"><span class="pre">None</span></code></a> implies that this is
+the root <a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a>.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of this group</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.io.cdm.Group.createGroup" title="metpy.io.cdm.Group.createGroup"><code class="xref py py-meth docutils literal"><span class="pre">Group.createGroup()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.io.cdm.Group.createDimension">
+<code class="descname">createDimension</code><span class="sig-paren">(</span><em>name</em>, <em>size</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Group.createDimension" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new <a class="reference internal" href="#metpy.io.cdm.Dimension" title="metpy.io.cdm.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> in this <a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of the new Dimension.</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The size of the Dimension</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>Dimension</em> &#8211; The newly created <a class="reference internal" href="#metpy.io.cdm.Dimension" title="metpy.io.cdm.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.io.cdm.Group.createGroup">
+<code class="descname">createGroup</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Group.createGroup" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new Group as a descendant of this one.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of the new Group.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>Group</em> &#8211; The newly created <a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.io.cdm.Group.createVariable">
+<code class="descname">createVariable</code><span class="sig-paren">(</span><em>name</em>, <em>datatype</em>, <em>dimensions=()</em>, <em>fill_value=None</em>, <em>wrap_array=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Group.createVariable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new Variable in this Group.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of the new Variable.</li>
+<li><strong>datatype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.13)"><em>numpy.dtype</em></a>) &#8211; A valid Numpy dtype that describes the layout of the data within the Variable.</li>
+<li><strong>dimensions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em><em></em><em>, </em><em>optional</em>) &#8211; The dimensions of this Variable. Defaults to empty, which implies a scalar
+variable.</li>
+<li><strong>fill_value</strong> (<em>number</em><em>, </em><em>optional</em>) &#8211; A scalar value that is used to fill the created storage. Defaults to None, which
+performs no filling, leaving the storage uninitialized.</li>
+<li><strong>wrap_array</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><em>numpy.ndarray</em></a><em>, </em><em>optional</em>) &#8211; Instead of creating an array, the Variable instance will assume ownership of the
+passed in array as its data storage. This is a performance optimization to avoid
+copying large data blocks. Defaults to None, which means a new array will be
+created.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>Variable</em> &#8211; The newly created <a class="reference internal" href="#metpy.io.cdm.Variable" title="metpy.io.cdm.Variable"><code class="xref py py-class docutils literal"><span class="pre">Variable</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Group.dimensions">
+<code class="descname">dimensions</code><em class="property"> = None</em><a class="headerlink" href="#metpy.io.cdm.Group.dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>desc</em> &#8211; Dimensions contained within this group
+:type: dict[str, Dimension]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Group.groups">
+<code class="descname">groups</code><em class="property"> = None</em><a class="headerlink" href="#metpy.io.cdm.Group.groups" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>desc</em> &#8211; Any Groups nested within this one
+:type: dict[str, Group]</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Group.name">
+<code class="descname">name</code><em class="property"> = None</em><a class="headerlink" href="#metpy.io.cdm.Group.name" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>desc</em> &#8211; The name of the <a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a>
+:type: str</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Group.variables">
+<code class="descname">variables</code><em class="property"> = None</em><a class="headerlink" href="#metpy.io.cdm.Group.variables" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>desc</em> &#8211; Variables contained within this group
+:type: dict[str, Variable]</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="metpy.io.cdm.Variable">
+<em class="property">class </em><code class="descclassname">metpy.io.cdm.</code><code class="descname">Variable</code><span class="sig-paren">(</span><em>group</em>, <em>name</em>, <em>datatype</em>, <em>dimensions</em>, <em>fill_value</em>, <em>wrap_array</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>A Variable holds typed data (using a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a>), as well as any relevant
+attributes (e.g. units).</p>
+<p>In addition to its various attributes, the Variable supports getting <em>and</em> setting data
+using the <code class="docutils literal"><span class="pre">[]</span></code> operator and indices or slices. Getting data returns
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a> instances.</p>
+<p>Initialize a Variable. Instead of constructing a Variable directly, you should
+use <a class="reference internal" href="#metpy.io.cdm.Group.createVariable" title="metpy.io.cdm.Group.createVariable"><code class="xref py py-meth docutils literal"><span class="pre">Group.createVariable()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>group</strong> (<a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><em>Group</em></a>) &#8211; The parent <a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a> that owns this Variable.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of this Variable.</li>
+<li><strong>datatype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.13)"><em>numpy.dtype</em></a>) &#8211; A valid Numpy dtype that describes the layout of each element of the data</li>
+<li><strong>dimensions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em><em></em><em>, </em><em>optional</em>) &#8211; The dimensions of this Variable. Defaults to empty, which implies a scalar
+variable.</li>
+<li><strong>fill_value</strong> (<em>scalar</em><em>, </em><em>optional</em>) &#8211; A scalar value that is used to fill the created storage. Defaults to None, which
+performs no filling, leaving the storage uninitialized.</li>
+<li><strong>wrap_array</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><em>numpy.ndarray</em></a><em>, </em><em>optional</em>) &#8211; Instead of creating an array, the Variable instance will assume ownership of the
+passed in array as its data storage. This is a performance optimization to avoid
+copying large data blocks. Defaults to None, which means a new array will be
+created.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.io.cdm.Group.createVariable" title="metpy.io.cdm.Group.createVariable"><code class="xref py py-class docutils literal"><span class="pre">Group.createVariable</span></code></a></p>
+</div>
+<dl class="method">
+<dt id="metpy.io.cdm.Variable.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>group</em>, <em>name</em>, <em>datatype</em>, <em>dimensions</em>, <em>fill_value</em>, <em>wrap_array</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Variable.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize a Variable. Instead of constructing a Variable directly, you should
+use <a class="reference internal" href="#metpy.io.cdm.Group.createVariable" title="metpy.io.cdm.Group.createVariable"><code class="xref py py-meth docutils literal"><span class="pre">Group.createVariable()</span></code></a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>group</strong> (<a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><em>Group</em></a>) &#8211; The parent <a class="reference internal" href="#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-class docutils literal"><span class="pre">Group</span></code></a> that owns this Variable.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of this Variable.</li>
+<li><strong>datatype</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.13)"><em>numpy.dtype</em></a>) &#8211; A valid Numpy dtype that describes the layout of each element of the data</li>
+<li><strong>dimensions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>]</em><em></em><em>, </em><em>optional</em>) &#8211; The dimensions of this Variable. Defaults to empty, which implies a scalar
+variable.</li>
+<li><strong>fill_value</strong> (<em>scalar</em><em>, </em><em>optional</em>) &#8211; A scalar value that is used to fill the created storage. Defaults to None, which
+performs no filling, leaving the storage uninitialized.</li>
+<li><strong>wrap_array</strong> (<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><em>numpy.ndarray</em></a><em>, </em><em>optional</em>) &#8211; Instead of creating an array, the Variable instance will assume ownership of the
+passed in array as its data storage. This is a performance optimization to avoid
+copying large data blocks. Defaults to None, which means a new array will be
+created.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.io.cdm.Group.createVariable" title="metpy.io.cdm.Group.createVariable"><code class="xref py py-meth docutils literal"><span class="pre">Group.createVariable()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Variable.datatype">
+<code class="descname">datatype</code><a class="headerlink" href="#metpy.io.cdm.Variable.datatype" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>numpy.dtype</em> &#8211; a valid Numpy <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.13)"><code class="xref py py-class docutils literal"><span class="pre">dtype</span></code></a> that describes the layout of each
+element of the data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Variable.dimensions">
+<code class="descname">dimensions</code><a class="headerlink" href="#metpy.io.cdm.Variable.dimensions" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>tuple[str]</em> &#8211; all the names of <a class="reference internal" href="#metpy.io.cdm.Dimension" title="metpy.io.cdm.Dimension"><code class="xref py py-class docutils literal"><span class="pre">Dimension</span></code></a> used by this <a class="reference internal" href="#metpy.io.cdm.Variable" title="metpy.io.cdm.Variable"><code class="xref py py-class docutils literal"><span class="pre">Variable</span></code></a></p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Variable.dtype">
+<code class="descname">dtype</code><a class="headerlink" href="#metpy.io.cdm.Variable.dtype" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>numpy.dtype</em> &#8211; a valid Numpy <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.13)"><code class="xref py py-class docutils literal"><span class="pre">dtype</span></code></a> that describes the layout of each
+element of the data</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.io.cdm.Variable.group">
+<code class="descname">group</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Variable.group" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the Group that owns this Variable.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>Group</em> &#8211; The parent Group.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Variable.name">
+<code class="descname">name</code><a class="headerlink" href="#metpy.io.cdm.Variable.name" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; the name of the variable</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Variable.ndim">
+<code class="descname">ndim</code><a class="headerlink" href="#metpy.io.cdm.Variable.ndim" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> &#8211; the number of dimensions used by this variable</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Variable.shape">
+<code class="descname">shape</code><a class="headerlink" href="#metpy.io.cdm.Variable.shape" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>tuple[int]</em> &#8211; a tuple of integers describing the size of the Variable along each
+of its dimensions</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.cdm.Variable.size">
+<code class="descname">size</code><a class="headerlink" href="#metpy.io.cdm.Variable.size" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>int</em> &#8211; the total number of elements</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.io.cdm.cf_to_proj">
+<code class="descclassname">metpy.io.cdm.</code><code class="descname">cf_to_proj</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.cf_to_proj" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts a Variable with projection information conforming to the Climate and
+Forecasting (CF) netCDF conventions to a Proj.4 Projection instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>var</strong> (<a class="reference internal" href="#metpy.io.cdm.Variable" title="metpy.io.cdm.Variable"><em>Variable</em></a>) &#8211; The projection variable with appropriate attributes.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="formats.html" class="btn btn-neutral float-right" title="File Formats" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="io.html" class="btn btn-neutral" title="metpy.io" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, MetPy Developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

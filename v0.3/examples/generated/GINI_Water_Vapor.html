@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>GINI Water Vapor &mdash; MetPy 0.3.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/generated/GINI_Water_Vapor.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 0.3.1 documentation" href="../../index.html"/>
+        <link rel="up" title="MetPy Examples" href="../index.html"/>
+        <link rel="next" title="Hodograph Inset" href="Hodograph_Inset.html"/>
+        <link rel="prev" title="Dewpoint and Mixing Ratio" href="Dewpoint_and_Mixing_Ratio.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Dewpoint_and_Mixing_Ratio.html">Dewpoint and Mixing Ratio</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">GINI Water Vapor</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Hodograph_Inset.html">Hodograph Inset</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NEXRAD_Level_2_File.html">NEXRAD Level 2 File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="NEXRAD_Level_3_File.html">NEXRAD Level 3 File</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Simple_Sounding.html">Simple Sounding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Skew-T_Layout.html">Skew-T Layout</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Station_Plot.html">Station Plot</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Station_Plot_with_Layout.html">Station Plot with Layout</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer&#8217;s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">MetPy Examples</a> &raquo;</li>
+        
+      <li>GINI Water Vapor</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/examples/generated/GINI_Water_Vapor.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="gini-water-vapor">
+<h1>GINI Water Vapor<a class="headerlink" href="#gini-water-vapor" title="Permalink to this headline">¶</a></h1>
+<p><a class="reference external" href="http://nbviewer.ipython.org/github/metpy/MetPy/blob/master/examples/notebooks/GINI_Water_Vapor.ipynb">Notebook</a></p>
+<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="k">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.io.gini</span> <span class="k">import</span> <span class="n">GiniFile</span>
+<span class="kn">from</span> <span class="nn">metpy.plots.ctables</span> <span class="k">import</span> <span class="n">registry</span>
+
+<span class="o">%</span><span class="n">matplotlib</span> <span class="n">inline</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Open the GINI file from the test data</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">GiniFile</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;WEST-CONUS_4km_WV_20151208_2200.gini&#39;</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">GiniFile</span><span class="p">:</span> <span class="n">GOES</span><span class="o">-</span><span class="mi">15</span> <span class="n">West</span> <span class="n">CONUS</span> <span class="n">WV</span> <span class="p">(</span><span class="mf">6.5</span><span class="o">/</span><span class="mf">6.7</span> <span class="n">micron</span><span class="p">)</span>
+    <span class="n">Time</span><span class="p">:</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">08</span> <span class="mi">22</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">19</span>
+    <span class="n">Size</span><span class="p">:</span> <span class="mi">1280</span><span class="n">x1100</span>
+    <span class="n">Projection</span><span class="p">:</span> <span class="n">lambert_conformal</span>
+    <span class="n">Lower</span> <span class="n">Left</span> <span class="n">Corner</span> <span class="p">(</span><span class="n">Lon</span><span class="p">,</span> <span class="n">Lat</span><span class="p">):</span> <span class="p">(</span><span class="o">-</span><span class="mf">133.4588</span><span class="p">,</span> <span class="mf">12.19</span><span class="p">)</span>
+    <span class="n">Resolution</span><span class="p">:</span> <span class="mi">4</span><span class="n">km</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Get a Dataset view of the data (essentially a NetCDF-like interface to the</span>
+<span class="c1"># underlying data). Pull out the data, (x, y) coordinates, and the projection</span>
+<span class="c1"># information.</span>
+<span class="n">ds</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">to_dataset</span><span class="p">()</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][:]</span>
+<span class="n">y</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][:]</span>
+<span class="n">dat</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;WV&#39;</span><span class="p">]</span>
+<span class="n">proj_var</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dat</span><span class="o">.</span><span class="n">grid_mapping</span><span class="p">]</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">proj_var</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span>&lt;class &#39;metpy.io.cdm.Variable&#39;&gt;: int32 Lambert_Conformal()
+    grid_mapping_name: lambert_conformal_conic
+    standard_parallel: 25.0
+    longitude_of_central_meridian: -95.0
+    latitude_of_projection_origin: 25.0
+    earth_radius: 6371200.0
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Create CartoPy projection information for the file</span>
+<span class="n">globe</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Globe</span><span class="p">(</span><span class="n">ellipse</span><span class="o">=</span><span class="s1">&#39;sphere&#39;</span><span class="p">,</span> <span class="n">semimajor_axis</span><span class="o">=</span><span class="n">proj_var</span><span class="o">.</span><span class="n">earth_radius</span><span class="p">,</span>
+                   <span class="n">semiminor_axis</span><span class="o">=</span><span class="n">proj_var</span><span class="o">.</span><span class="n">earth_radius</span><span class="p">)</span>
+<span class="n">proj</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=</span><span class="n">proj_var</span><span class="o">.</span><span class="n">longitude_of_central_meridian</span><span class="p">,</span>
+                             <span class="n">central_latitude</span><span class="o">=</span><span class="n">proj_var</span><span class="o">.</span><span class="n">latitude_of_projection_origin</span><span class="p">,</span>
+                             <span class="n">standard_parallels</span><span class="o">=</span><span class="p">[</span><span class="n">proj_var</span><span class="o">.</span><span class="n">standard_parallel</span><span class="p">],</span>
+                             <span class="n">globe</span><span class="o">=</span><span class="n">globe</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default"><div class="highlight"><pre><span></span><span class="c1"># Plot the image</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
+<span class="n">wv_norm</span><span class="p">,</span> <span class="n">wv_cmap</span> <span class="o">=</span> <span class="n">registry</span><span class="o">.</span><span class="n">get_with_steps</span><span class="p">(</span><span class="s1">&#39;WVCIMSS&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">im</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">dat</span><span class="p">[:],</span> <span class="n">cmap</span><span class="o">=</span><span class="n">wv_cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">wv_norm</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+               <span class="n">extent</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y</span><span class="o">.</span><span class="n">max</span><span class="p">()),</span> <span class="n">origin</span><span class="o">=</span><span class="s1">&#39;upper&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="n">resolution</span><span class="o">=</span><span class="s1">&#39;50m&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">cartopy</span><span class="o">.</span><span class="n">mpl</span><span class="o">.</span><span class="n">feature_artist</span><span class="o">.</span><span class="n">FeatureArtist</span> <span class="n">at</span> <span class="mh">0x10a62bcf8</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">Users</span><span class="o">/</span><span class="n">rmay</span><span class="o">/</span><span class="n">miniconda3</span><span class="o">/</span><span class="n">envs</span><span class="o">/</span><span class="n">metpy3</span><span class="o">/</span><span class="n">lib</span><span class="o">/</span><span class="n">python3</span><span class="o">.</span><span class="mi">4</span><span class="o">/</span><span class="n">site</span><span class="o">-</span><span class="n">packages</span><span class="o">/</span><span class="n">matplotlib</span><span class="o">/</span><span class="n">artist</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">221</span><span class="p">:</span> <span class="n">MatplotlibDeprecationWarning</span><span class="p">:</span> <span class="n">This</span> <span class="n">has</span> <span class="n">been</span> <span class="n">deprecated</span> <span class="ow">in</span> <span class="n">mpl</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">please</span> <span class="n">use</span> <span class="n">the</span>
+<span class="n">axes</span> <span class="nb">property</span><span class="o">.</span>  <span class="n">A</span> <span class="n">removal</span> <span class="n">date</span> <span class="n">has</span> <span class="ow">not</span> <span class="n">been</span> <span class="nb">set</span><span class="o">.</span>
+  <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">_get_axes_msg</span><span class="p">,</span> <span class="n">mplDeprecation</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</div>
+<img alt="../../_images/GINI_Water_Vapor_4_2.png" src="../../_images/GINI_Water_Vapor_4_2.png" />
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Hodograph_Inset.html" class="btn btn-neutral float-right" title="Hodograph Inset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Dewpoint_and_Mixing_Ratio.html" class="btn btn-neutral" title="Dewpoint and Mixing Ratio" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, MetPy Developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

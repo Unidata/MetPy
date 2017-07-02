@@ -1,0 +1,97 @@
+=========================
+Dewpoint and Mixing Ratio
+=========================
+`Notebook <http://nbviewer.ipython.org/github/metpy/MetPy/blob/master/examples/notebooks/Dewpoint_and_Mixing_Ratio.ipynb>`_
+
+The goal of this notebook is to show an example using the units support
+in MetPy. In this example, we calculate the dewpoint, corresponding to a
+fixed value of mixing ratio, at two different surface pressure values.
+
+.. code:: ipython3
+
+    # First import our calculation functions, as well as unit support
+    import metpy.calc as mcalc
+    from metpy.units import units
+
+.. code:: ipython3
+
+    # Create a test value of mixing ratio in grams per kilogram
+    mixing = 10 * units('g/kg')
+    print(mixing)
+
+
+.. parsed-literal::
+
+    10.0 gram / kilogram
+
+
+.. code:: ipython3
+
+    # Now throw that value with units into the function to calculate
+    # the corresponding vapor pressure, given a surface pressure of 1000 mb
+    e = mcalc.vapor_pressure(1000. * units.mbar, mixing)
+    print(e)
+
+
+.. parsed-literal::
+
+    15825.67178529092 gram * millibar / kilogram
+
+
+.. code:: ipython3
+
+    # Take the odd units and force them to millibars
+    print(e.to(units.mbar))
+
+
+.. parsed-literal::
+
+    15.82567178529092 millibar
+
+
+.. code:: ipython3
+
+    # Take the raw vapor pressure and throw into the dewpoint function
+    td = mcalc.dewpoint(e)
+    print(td)
+
+
+.. parsed-literal::
+
+    13.856458659577921 degC
+
+
+.. code:: ipython3
+
+    # Which can of course be converted to Farenheit
+    print(td.to('degF'))
+
+
+.. parsed-literal::
+
+    56.94162598724023 degF
+
+
+.. code:: ipython3
+
+    # Now do the same thing for 850 mb, approximately the pressure of Denver
+    e = mcalc.vapor_pressure(850. * units.mbar, mixing)
+    print(e.to(units.mbar))
+
+
+.. parsed-literal::
+
+    13.451821017497283 millibar
+
+
+.. code:: ipython3
+
+    # And print the corresponding dewpoint
+    td = mcalc.dewpoint(e)
+    print(td, td.to('degF'))
+
+
+.. parsed-literal::
+
+    11.378824018637602 degC 52.48188363354765 degF
+

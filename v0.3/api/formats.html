@@ -1,0 +1,594 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>File Formats &mdash; MetPy 0.3.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/formats.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 0.3.1 documentation" href="../index.html"/>
+        <link rel="up" title="metpy.io" href="io.html"/>
+        <link rel="next" title="metpy.calc" href="calc.html"/>
+        <link rel="prev" title="CDM" href="cdm.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html"><code class="docutils literal"><span class="pre">metpy.constants</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html"><code class="docutils literal"><span class="pre">metpy.units</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="io.html"><code class="docutils literal"><span class="pre">metpy.io</span></code></a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="cdm.html">CDM</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">File Formats</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#module-metpy.io.nexrad">NEXRAD</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#module-metpy.io.gini">GINI</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="calc.html"><code class="docutils literal"><span class="pre">metpy.calc</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html"><code class="docutils literal"><span class="pre">metpy.plots</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer&#8217;s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">The MetPy API</a> &raquo;</li>
+        
+          <li><a href="io.html"><code class="docutils literal"><span class="pre">metpy.io</span></code></a> &raquo;</li>
+        
+      <li>File Formats</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/formats.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="file-formats">
+<h1>File Formats<a class="headerlink" href="#file-formats" title="Permalink to this headline">¶</a></h1>
+<p>These classes provide support for reading data from specific formats.</p>
+<div class="section" id="module-metpy.io.nexrad">
+<span id="nexrad"></span><h2>NEXRAD<a class="headerlink" href="#module-metpy.io.nexrad" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="metpy.io.nexrad.Level2File">
+<em class="property">class </em><code class="descclassname">metpy.io.nexrad.</code><code class="descname">Level2File</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.nexrad.Level2File" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that handles reading the NEXRAD Level 2 data and the various
+messages that are contained within.</p>
+<p>This class attempts to decode every byte that is in a given data file.
+It supports both external compression, as well as the internal BZ2
+compression that is used.</p>
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.stid">
+<code class="descname">stid</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.stid" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; The ID of the radar station</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.dt">
+<code class="descname">dt</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.dt" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Datetime instance</em> &#8211; The date and time of the data</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.vol_hdr">
+<code class="descname">vol_hdr</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.vol_hdr" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>namedtuple</em> &#8211; The unpacked volume header</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.sweeps">
+<code class="descname">sweeps</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.sweeps" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list of tuples</em> &#8211; Data for each of the sweeps found in the file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.rda_status">
+<code class="descname">rda_status</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.rda_status" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>namedtuple, optional</em> &#8211; Unpacked RDA status information, if found</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.maintenance_data">
+<code class="descname">maintenance_data</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.maintenance_data" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>namedtuple, optional</em> &#8211; Unpacked maintenance data information, if found</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.maintenance_data_desc">
+<code class="descname">maintenance_data_desc</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.maintenance_data_desc" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict, optional</em> &#8211; Descriptions of maintenance data fields, if maintenance data present</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.vcp_info">
+<code class="descname">vcp_info</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.vcp_info" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>namedtuple, optional</em> &#8211; Unpacked VCP information, if found</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.clutter_filter_bypass_map">
+<code class="descname">clutter_filter_bypass_map</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.clutter_filter_bypass_map" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict, optional</em> &#8211; Unpacked clutter filter bypass map, if present</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.rda">
+<code class="descname">rda</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.rda" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict, optional</em> &#8211; Unpacked RDA adaptation data, if present</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.rda_adaptation_desc">
+<code class="descname">rda_adaptation_desc</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.rda_adaptation_desc" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict, optional</em> &#8211; Descriptions of RDA adaptation data, if adaptation data present</p>
+</dd></dl>
+
+<p class="rubric">Notes</p>
+<p>The internal data structure that things are decoded into is still to be
+determined.</p>
+<p>Create instance of <cite>Level2File</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>file-like object</em>) &#8211; If str, the name of the file to be opened. Gzip-ed files are
+recognized with the extension &#8216;.gz&#8217;, as are bzip2-ed files with
+the extension <cite>.bz2</cite> If <cite>fname</cite> is a file-like object,
+this will be read from directly.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="metpy.io.nexrad.Level2File.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.nexrad.Level2File.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create instance of <cite>Level2File</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>file-like object</em>) &#8211; If str, the name of the file to be opened. Gzip-ed files are
+recognized with the extension &#8216;.gz&#8217;, as are bzip2-ed files with
+the extension <cite>.bz2</cite> If <cite>fname</cite> is a file-like object,
+this will be read from directly.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level2File.msg1_data_hdr">
+<code class="descname">msg1_data_hdr</code><a class="headerlink" href="#metpy.io.nexrad.Level2File.msg1_data_hdr" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal"><span class="pre">Msg1DataHdr</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="metpy.io.nexrad.Level3File">
+<em class="property">class </em><code class="descclassname">metpy.io.nexrad.</code><code class="descname">Level3File</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.nexrad.Level3File" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that handles reading the wide array of NEXRAD Level 3 (NIDS)
+product files.</p>
+<p>This class attempts to decode every byte that is in a given product file.
+It supports all of the various compression formats that exist for these
+products in the wild.</p>
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.metadata">
+<code class="descname">metadata</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.metadata" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>dict</em> &#8211; Various general metadata available from the product</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.header">
+<code class="descname">header</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.header" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>namedtuple</em> &#8211; Decoded product header</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.prod_desc">
+<code class="descname">prod_desc</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.prod_desc" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>namedtuple</em> &#8211; Decoded product description block</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.siteID">
+<code class="descname">siteID</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.siteID" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; ID of the site found in the header, empty string if none found</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.lat">
+<code class="descname">lat</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.lat" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>float</em> &#8211; Radar site latitude</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.lon">
+<code class="descname">lon</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.lon" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>float</em> &#8211; Radar site longitude</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.height">
+<code class="descname">height</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.height" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>float</em> &#8211; Radar site height AMSL</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.product_name">
+<code class="descname">product_name</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.product_name" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>str</em> &#8211; Name of the product contained in file</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.max_range">
+<code class="descname">max_range</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.max_range" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>float</em> &#8211; Maximum range of the product, taken from the NIDS ICD</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.map_data">
+<code class="descname">map_data</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.map_data" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>Mapper</em> &#8211; Class instance mapping data int values to proper floating point values</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.sym_block">
+<code class="descname">sym_block</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.sym_block" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list, optional</em> &#8211; Any symbology block packets that were found</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.tab_pages">
+<code class="descname">tab_pages</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.tab_pages" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list, optional</em> &#8211; Any tabular pages that were found</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.nexrad.Level3File.graph_pages">
+<code class="descname">graph_pages</code><a class="headerlink" href="#metpy.io.nexrad.Level3File.graph_pages" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>list, optional</em> &#8211; Any graphical pages that were found</p>
+</dd></dl>
+
+<p class="rubric">Notes</p>
+<p>The internal data structure that things are decoded into is still to be
+determined.</p>
+<p>Create instance of <cite>Level3File</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>file-like object</em>) &#8211; If str, the name of the file to be opened. If file-like object,
+this will be read from directly.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="metpy.io.nexrad.Level3File.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.nexrad.Level3File.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create instance of <cite>Level3File</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>file-like object</em>) &#8211; If str, the name of the file to be opened. If file-like object,
+this will be read from directly.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.io.nexrad.is_precip_mode">
+<code class="descclassname">metpy.io.nexrad.</code><code class="descname">is_precip_mode</code><span class="sig-paren">(</span><em>vcp_num</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.nexrad.is_precip_mode" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determine if the NEXRAD radar is operating in precipitation mode</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>vcp_num</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The NEXRAD volume coverage pattern (VCP) number</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>bool</em> &#8211; True if the VCP corresponds to precipitation mode, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-metpy.io.gini">
+<span id="gini"></span><h2>GINI<a class="headerlink" href="#module-metpy.io.gini" title="Permalink to this headline">¶</a></h2>
+<dl class="class">
+<dt id="metpy.io.gini.GiniFile">
+<em class="property">class </em><code class="descclassname">metpy.io.gini.</code><code class="descname">GiniFile</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.gini.GiniFile" title="Permalink to this definition">¶</a></dt>
+<dd><p>A class that handles reading the GINI format satellite images from the NWS.</p>
+<p>This class attempts to decode every byte that is in a given GINI file.</p>
+<p class="rubric">Notes</p>
+<p>The internal data structures that things are decoded into are subject to change. For
+a more stable interface, use the <a class="reference internal" href="#metpy.io.gini.GiniFile.to_dataset" title="metpy.io.gini.GiniFile.to_dataset"><code class="xref py py-meth docutils literal"><span class="pre">to_dataset()</span></code></a> method.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.io.gini.GiniFile.to_dataset" title="metpy.io.gini.GiniFile.to_dataset"><code class="xref py py-class docutils literal"><span class="pre">GiniFile.to_dataset</span></code></a></p>
+</div>
+<p>Create instance of <cite>GiniFile</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>file-like object</em>) &#8211; If str, the name of the file to be opened. Gzip-ed files are
+recognized with the extension <code class="docutils literal"><span class="pre">'.gz'</span></code>, as are bzip2-ed files with
+the extension <code class="docutils literal"><span class="pre">'.bz2'</span></code> If <cite>filename</cite> is a file-like object,
+this will be read from directly.</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="metpy.io.gini.GiniFile.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.gini.GiniFile.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create instance of <cite>GiniFile</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>filename</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>file-like object</em>) &#8211; If str, the name of the file to be opened. Gzip-ed files are
+recognized with the extension <code class="docutils literal"><span class="pre">'.gz'</span></code>, as are bzip2-ed files with
+the extension <code class="docutils literal"><span class="pre">'.bz2'</span></code> If <cite>filename</cite> is a file-like object,
+this will be read from directly.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.gini.GiniFile.prod_desc">
+<code class="descname">prod_desc</code><em class="property"> = None</em><a class="headerlink" href="#metpy.io.gini.GiniFile.prod_desc" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>desc</em> &#8211; Decoded first section of product description block
+:type: namedtuple</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.gini.GiniFile.prod_desc2">
+<code class="descname">prod_desc2</code><em class="property"> = None</em><a class="headerlink" href="#metpy.io.gini.GiniFile.prod_desc2" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>desc</em> &#8211; Decoded second section of product description block
+:type: namedtuple</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.io.gini.GiniFile.proj_info">
+<code class="descname">proj_info</code><em class="property"> = None</em><a class="headerlink" href="#metpy.io.gini.GiniFile.proj_info" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>desc</em> &#8211; Decoded geographic projection information
+:type: namedtuple</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.io.gini.GiniFile.to_dataset">
+<code class="descname">to_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.gini.GiniFile.to_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a CDM dataset.</p>
+<p>Gives a representation of the data in a much more user-friendly manner, providing
+easy access to Variables and relevant attributes.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>Dataset</em></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="calc.html" class="btn btn-neutral float-right" title="metpy.calc" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="cdm.html" class="btn btn-neutral" title="CDM" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, MetPy Developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

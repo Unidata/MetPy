@@ -1,0 +1,473 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Basic Calculations &mdash; MetPy 0.3.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/basic.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 0.3.1 documentation" href="../index.html"/>
+        <link rel="up" title="metpy.calc" href="calc.html"/>
+        <link rel="next" title="Kinematic Calculations" href="kinematics.html"/>
+        <link rel="prev" title="metpy.calc" href="calc.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.3.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html"><code class="docutils literal"><span class="pre">metpy.constants</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html"><code class="docutils literal"><span class="pre">metpy.units</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html"><code class="docutils literal"><span class="pre">metpy.io</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="calc.html"><code class="docutils literal"><span class="pre">metpy.calc</span></code></a><ul class="current">
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Basic Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kinematics.html">Kinematic Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="thermo.html">Thermodynamic Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="turbulence.html">Turbulence Time Series Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html"><code class="docutils literal"><span class="pre">metpy.plots</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer&#8217;s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">The MetPy API</a> &raquo;</li>
+        
+          <li><a href="calc.html"><code class="docutils literal"><span class="pre">metpy.calc</span></code></a> &raquo;</li>
+        
+      <li>Basic Calculations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/basic.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-metpy.calc.basic">
+<span id="basic-calculations"></span><h1>Basic Calculations<a class="headerlink" href="#module-metpy.calc.basic" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="metpy.calc.basic.get_wind_speed">
+<code class="descclassname">metpy.calc.basic.</code><code class="descname">get_wind_speed</code><span class="sig-paren">(</span><em>u</em>, <em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.basic.get_wind_speed" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the wind speed from u and v-components.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>array_like</em>) &#8211; Wind component in the X (East-West) direction</li>
+<li><strong>v</strong> (<em>array_like</em>) &#8211; Wind component in the Y (North-South) direction</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>wind speed</strong> (<em>array_like</em>) &#8211; The speed of the wind</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.basic.get_wind_components" title="metpy.calc.basic.get_wind_components"><code class="xref py py-func docutils literal"><span class="pre">get_wind_components()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.basic.get_wind_dir">
+<code class="descclassname">metpy.calc.basic.</code><code class="descname">get_wind_dir</code><span class="sig-paren">(</span><em>u</em>, <em>v</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.basic.get_wind_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the wind direction from u and v-components.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>array_like</em>) &#8211; Wind component in the X (East-West) direction</li>
+<li><strong>v</strong> (<em>array_like</em>) &#8211; Wind component in the Y (North-South) direction</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>wind direction</strong> (<em>array_like</em>) &#8211; The direction of the wind in degrees</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.basic.get_wind_components" title="metpy.calc.basic.get_wind_components"><code class="xref py py-func docutils literal"><span class="pre">get_wind_components()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.basic.get_wind_components">
+<code class="descclassname">metpy.calc.basic.</code><code class="descname">get_wind_components</code><span class="sig-paren">(</span><em>speed</em>, <em>wdir</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.basic.get_wind_components" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the U, V wind vector components from the speed and
+direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>speed</strong> (<em>array_like</em>) &#8211; The wind speed (magnitude)</li>
+<li><strong>wdir</strong> (<em>array_like</em>) &#8211; The wind direction, specified as the direction from which the wind is
+blowing.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>u, v</strong> (<em>tuple of array_like</em>) &#8211; The wind components in the X (East-West) and Y (North-South)
+directions, respectively.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-func docutils literal"><span class="pre">get_speed_dir()</span></code></p>
+</div>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">get_wind_components</span><span class="p">(</span><span class="mf">10.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">),</span> <span class="mf">225.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span><span class="p">)</span>
+<span class="go">(&lt;Quantity(7.071067811865475, &#39;meter / second&#39;)&gt;,</span>
+<span class="go"> &lt;Quantity(7.071067811865477, &#39;meter / second&#39;)&gt;)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.basic.windchill">
+<code class="descclassname">metpy.calc.basic.</code><code class="descname">windchill</code><span class="sig-paren">(</span><em>temperature</em>, <em>speed</em>, <em>face_level_winds=False</em>, <em>mask_undefined=True</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.basic.windchill" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Wind Chill Temperature Index (WCTI) from the current
+temperature and wind speed.</p>
+<p>Specifically, these formulas assume that wind speed is measured at
+10m.  If, instead, the speeds are measured at face level, the winds
+need to be multiplied by a factor of 1.5 (this can be done by specifying
+<cite>face_level_winds</cite> as True.)</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>temperature</strong> (<em>array_like</em>) &#8211; The air temperature</li>
+<li><strong>speed</strong> (<em>array_like</em>) &#8211; The wind speed at 10m.  If instead the winds are at face level,
+<cite>face_level_winds</cite> should be set to True and the 1.5 multiplicative
+correction will be applied automatically.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em>array_like</em> &#8211; The corresponding Wind Chill Temperature Index value(s)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><strong>face_level_winds</strong> (<em>bool, optional</em>) &#8211; A flag indicating whether the wind speeds were measured at facial
+level instead of 10m, thus requiring a correction.  Defaults to
+False.</li>
+<li><strong>mask_undefined</strong> (<em>bool, optional</em>) &#8211; A flag indicating whether a masked array should be returned with
+values where wind chill is undefined masked.  These are values where
+the temperature &gt; 50F or wind speed &lt;= 3 miles per hour. Defaults
+to True.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.basic.heat_index" title="metpy.calc.basic.heat_index"><code class="xref py py-func docutils literal"><span class="pre">heat_index()</span></code></a></p>
+</div>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id1" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[4]</td><td><a class="reference external" href="http://www.ofcm.gov/jagti/r19-ti-plan/pdf/03_chap3.pdf">http://www.ofcm.gov/jagti/r19-ti-plan/pdf/03_chap3.pdf</a></td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.basic.heat_index">
+<code class="descclassname">metpy.calc.basic.</code><code class="descname">heat_index</code><span class="sig-paren">(</span><em>temperature</em>, <em>rh</em>, <em>mask_undefined=True</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.basic.heat_index" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the Heat Index from the current temperature and relative
+humidity.</p>
+<p>The implementation uses the formula outlined in [6].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>temperature</strong> (<em>array_like</em>) &#8211; Air temperature</li>
+<li><strong>rh</strong> (<em>array_like</em>) &#8211; The relative humidity expressed as a unitless ratio in the range [0, 1].
+Can also pass a percentage if proper units are attached.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em>array_like</em> &#8211; The corresponding Heat Index value(s)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last"><strong>mask_undefined</strong> (<em>bool, optional</em>) &#8211; A flag indicating whether a masked array should be returned with
+values where heat index is undefined masked.  These are values where
+the temperature &lt; 80F or relative humidity &lt; 40 percent. Defaults
+to True.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.basic.windchill" title="metpy.calc.basic.windchill"><code class="xref py py-func docutils literal"><span class="pre">windchill()</span></code></a></p>
+</div>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[5]</td><td>Steadman, R.G., 1979: The assessment of sultriness. Part I: A
+temperature-humidity index based on human physiology and clothing
+science. J. Appl. Meteor., 18, 861-873.</td></tr>
+</tbody>
+</table>
+<table class="docutils footnote" frame="void" id="id3" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[6]</td><td><a class="reference external" href="http://www.srh.noaa.gov/ffc/html/studies/ta_htindx.PDF">http://www.srh.noaa.gov/ffc/html/studies/ta_htindx.PDF</a></td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.basic.pressure_to_height_std">
+<code class="descclassname">metpy.calc.basic.</code><code class="descname">pressure_to_height_std</code><span class="sig-paren">(</span><em>pressure</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.basic.pressure_to_height_std" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert pressure data to heights using the U.S. standard atmosphere.</p>
+<p>The implementation uses the formula outlined in [7].</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>pressure</strong> (<em>array_like</em>) &#8211; Atmospheric pressure</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>array_like</em> &#8211; The corresponding height value(s)</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<div class="math">
+\[Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]\]</div>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label">[7]</td><td>Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+Survey. 60-61.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="kinematics.html" class="btn btn-neutral float-right" title="Kinematic Calculations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="calc.html" class="btn btn-neutral" title="metpy.calc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, MetPy Developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.3.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

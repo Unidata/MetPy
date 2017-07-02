@@ -1,0 +1,47 @@
+==============
+MetPy Examples
+==============
+.. toctree::
+   :glob:
+   :hidden:
+
+   generated/*
+
+.. image:: generated/Advanced_Sounding_files/Advanced_Sounding_4_0.png
+   :width: 220px
+   :target: generated/Advanced_Sounding.html
+
+.. image:: generated/GINI_Water_Vapor_files/GINI_Water_Vapor_4_2.png
+   :width: 220px
+   :target: generated/GINI_Water_Vapor.html
+
+.. image:: generated/Hodograph_Inset_files/Hodograph_Inset_4_0.png
+   :width: 220px
+   :target: generated/Hodograph_Inset.html
+
+.. image:: generated/NEXRAD_Level_2_File_files/NEXRAD_Level_2_File_4_1.png
+   :width: 220px
+   :target: generated/NEXRAD_Level_2_File.html
+
+.. image:: generated/NEXRAD_Level_3_File_files/NEXRAD_Level_3_File_1_0.png
+   :width: 220px
+   :target: generated/NEXRAD_Level_3_File.html
+
+.. image:: generated/Simple_Sounding_files/Simple_Sounding_2_0.png
+   :width: 220px
+   :target: generated/Simple_Sounding.html
+
+.. image:: generated/Skew-T_Layout_files/Skew-T_Layout_4_0.png
+   :width: 220px
+   :target: generated/Skew-T_Layout.html
+
+.. image:: generated/Station_Plot_files/Station_Plot_14_1.png
+   :width: 220px
+   :target: generated/Station_Plot.html
+
+.. image:: generated/Station_Plot_with_Layout_files/Station_Plot_with_Layout_18_1.png
+   :width: 220px
+   :target: generated/Station_Plot_with_Layout.html
+
+`Dewpoint and Mixing Ratio <generated/Dewpoint_and_Mixing_Ratio.html>`_
+
