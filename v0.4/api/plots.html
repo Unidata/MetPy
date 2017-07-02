@@ -1,0 +1,1142 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.plots &mdash; MetPy 0.4.3 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/plots.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 0.4.3 documentation" href="../index.html"/>
+        <link rel="up" title="The MetPy API" href="index.html"/>
+        <link rel="next" title="Developer’s Guide" href="../developerguide.html"/>
+        <link rel="prev" title="Turbulence Time Series Calculations" href="turbulence.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html"><code class="docutils literal"><span class="pre">metpy.constants</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html"><code class="docutils literal"><span class="pre">metpy.units</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html"><code class="docutils literal"><span class="pre">metpy.io</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="calc.html"><code class="docutils literal"><span class="pre">metpy.calc</span></code></a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#"><code class="docutils literal"><span class="pre">metpy.plots</span></code></a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-metpy.plots.skewt">Skew-T</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-metpy.plots.station_plot">Station Plots</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#colortables">Colortables</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer&#8217;s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">The MetPy API</a> &raquo;</li>
+        
+      <li><code class="docutils literal"><span class="pre">metpy.plots</span></code></li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/plots.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-metpy.plots">
+<span id="metpy-plots"></span><h1><a class="reference internal" href="#module-metpy.plots" title="metpy.plots"><code class="xref py py-mod docutils literal"><span class="pre">metpy.plots</span></code></a><a class="headerlink" href="#module-metpy.plots" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-metpy.plots.skewt">
+<span id="skew-t"></span><h2>Skew-T<a class="headerlink" href="#module-metpy.plots.skewt" title="Permalink to this headline">¶</a></h2>
+<p>Make Skew-T Log-P based plots.</p>
+<p>Contain tools for making Skew-T Log-P plots, including the base plotting class,
+<cite>SkewT</cite>, as well as a class for making a <cite>Hodograph</cite>.</p>
+<dl class="class">
+<dt id="metpy.plots.skewt.SkewT">
+<em class="property">class </em><code class="descclassname">metpy.plots.skewt.</code><code class="descname">SkewT</code><span class="sig-paren">(</span><em>fig=None</em>, <em>rotation=30</em>, <em>subplot=(1</em>, <em>1</em>, <em>1)</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.skewt.SkewT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make Skew-T log-P plots of data.</p>
+<p>This class simplifies the process of creating Skew-T log-P plots in
+using matplotlib. It handles requesting the appropriate skewed projection,
+and provides simplified wrappers to make it easy to plot data, add wind
+barbs, and add other lines to the plots (e.g. dry adiabats)</p>
+<dl class="attribute">
+<dt id="metpy.plots.skewt.SkewT.ax">
+<code class="descname">ax</code><a class="headerlink" href="#metpy.plots.skewt.SkewT.ax" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>matplotlib.axes.Axes</cite> &#8211; The underlying Axes instance, which can be used for calling additional
+plot functions (e.g. <cite>axvline</cite>)</p>
+</dd></dl>
+
+<p>Create SkewT - logP plots.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fig</strong> (<a class="reference external" href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v2.0.2)"><em>matplotlib.figure.Figure</em></a><em>, </em><em>optional</em>) &#8211; Source figure to use for plotting. If none is given, a new
+<a class="reference external" href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> instance will be created.</li>
+<li><strong>rotation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>, </em><em>optional</em>) &#8211; Controls the rotation of temperature relative to horizontal. Given
+in degrees counterclockwise from x-axis. Defaults to 30 degrees.</li>
+<li><strong>subplot</strong> (tuple[int, int, int] or <cite>matplotlib.gridspec.SubplotSpec</cite> instance, optional) &#8211; Controls the size/position of the created subplot. This allows creating
+the skewT as part of a collection of subplots. If subplot is a tuple, it
+should conform to the specification used for
+<a class="reference external" href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure.add_subplot" title="(in Matplotlib v2.0.2)"><code class="xref py py-meth docutils literal"><span class="pre">matplotlib.figure.Figure.add_subplot()</span></code></a>. The
+<a class="reference external" href="http://matplotlib.org/api/gridspec_api.html#matplotlib.gridspec.SubplotSpec" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.gridspec.SubplotSpec</span></code></a>
+can be created by using <a class="reference external" href="http://matplotlib.org/api/gridspec_api.html#matplotlib.gridspec.GridSpec" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.gridspec.GridSpec</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="metpy.plots.skewt.SkewT.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>p</em>, <em>t</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.skewt.SkewT.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot data.</p>
+<p>Simple wrapper around plot so that pressure is the first (independent)
+input. This is essentially a wrapper around <cite>semilogy</cite>. It also
+sets some appropriate ticking and plot ranges.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>p</strong> (<em>array_like</em>) &#8211; pressure values</li>
+<li><strong>t</strong> (<em>array_like</em>) &#8211; temperature values, can also be used for things like dew point</li>
+<li><strong>args</strong> &#8211; Other positional arguments to pass to <a class="reference external" href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.semilogy" title="(in Matplotlib v2.0.2)"><code class="xref py py-func docutils literal"><span class="pre">semilogy()</span></code></a></li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.semilogy" title="(in Matplotlib v2.0.2)"><code class="xref py py-func docutils literal"><span class="pre">semilogy()</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>list[matplotlib.lines.Line2D]</em> &#8211; lines plotted</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.semilogy" title="(in Matplotlib v2.0.2)"><code class="xref py py-func docutils literal"><span class="pre">matplotlib.pyplot.semilogy()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.skewt.SkewT.plot_barbs">
+<code class="descname">plot_barbs</code><span class="sig-paren">(</span><em>p</em>, <em>u</em>, <em>v</em>, <em>xloc=1.0</em>, <em>x_clip_radius=0.08</em>, <em>y_clip_radius=0.08</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.skewt.SkewT.plot_barbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot wind barbs.</p>
+<p>Adds wind barbs to the skew-T plot. This is a wrapper around the
+<cite>barbs</cite> command that adds to appropriate transform to place the
+barbs in a vertical line, located as a function of pressure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>p</strong> (<em>array_like</em>) &#8211; pressure values</li>
+<li><strong>u</strong> (<em>array_like</em>) &#8211; U (East-West) component of wind</li>
+<li><strong>v</strong> (<em>array_like</em>) &#8211; V (North-South) component of wind</li>
+<li><strong>xloc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><em>optional</em>) &#8211; Position for the barbs, in normalized axes coordinates, where 0.0
+denotes far left and 1.0 denotes far right. Defaults to far right.</li>
+<li><strong>x_clip_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><em>optional</em>) &#8211; Space, in normalized axes coordinates, to leave before clipping
+wind barbs in the x-direction. Defaults to 0.08.</li>
+<li><strong>y_clip_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><em>optional</em>) &#8211; Space, in normalized axes coordinates, to leave above/below plot
+before clipping wind barbs in the y-direction. Defaults to 0.08.</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.barbs" title="(in Matplotlib v2.0.2)"><code class="xref py py-func docutils literal"><span class="pre">barbs()</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.quiver.Barbs</em> &#8211; instance created</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.barbs" title="(in Matplotlib v2.0.2)"><code class="xref py py-func docutils literal"><span class="pre">matplotlib.pyplot.barbs()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.skewt.SkewT.plot_dry_adiabats">
+<code class="descname">plot_dry_adiabats</code><span class="sig-paren">(</span><em>t0=None</em>, <em>p=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.skewt.SkewT.plot_dry_adiabats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot dry adiabats.</p>
+<p>Adds dry adiabats (lines of constant potential temperature) to the
+plot. The default style of these lines is dashed red lines with an alpha
+value of 0.5. These can be overridden using keyword arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t0</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Starting temperature values in Kelvin. If none are given, they will be
+generated using the current temperature range at the bottom of
+the plot.</li>
+<li><strong>p</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Pressure values to be included in the dry adiabats. If not
+specified, they will be linearly distributed across the current
+plotted pressure range.</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.collections.LineCollection</em> &#8211; instance created</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="thermo.html#metpy.calc.thermo.dry_lapse" title="metpy.calc.thermo.dry_lapse"><code class="xref py py-func docutils literal"><span class="pre">dry_lapse()</span></code></a>
+<a class="reference internal" href="#metpy.plots.skewt.SkewT.plot_moist_adiabats" title="metpy.plots.skewt.SkewT.plot_moist_adiabats"><code class="xref py py-meth docutils literal"><span class="pre">plot_moist_adiabats()</span></code></a>
+<a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.skewt.SkewT.plot_mixing_lines">
+<code class="descname">plot_mixing_lines</code><span class="sig-paren">(</span><em>w=None</em>, <em>p=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.skewt.SkewT.plot_mixing_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot lines of constant mixing ratio.</p>
+<p>Adds lines of constant mixing ratio (isohumes) to the
+plot. The default style of these lines is dashed green lines with an
+alpha value of 0.8. These can be overridden using keyword arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>w</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Unitless mixing ratio values to plot. If none are given, default
+values are used.</li>
+<li><strong>p</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Pressure values to be included in the isohumes. If not
+specified, they will be linearly distributed across the current
+plotted pressure range up to 600 mb.</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.collections.LineCollection</em> &#8211; instance created</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.skewt.SkewT.plot_moist_adiabats">
+<code class="descname">plot_moist_adiabats</code><span class="sig-paren">(</span><em>t0=None</em>, <em>p=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.skewt.SkewT.plot_moist_adiabats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot moist adiabats.</p>
+<p>Adds saturated pseudo-adiabats (lines of constant equivalent potential
+temperature) to the plot. The default style of these lines is dashed
+blue lines with an alpha value of 0.5. These can be overridden using
+keyword arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t0</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Starting temperature values in Kelvin. If none are given, they will be
+generated using the current temperature range at the bottom of
+the plot.</li>
+<li><strong>p</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Pressure values to be included in the moist adiabats. If not
+specified, they will be linearly distributed across the current
+plotted pressure range.</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.collections.LineCollection</em> &#8211; instance created</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="thermo.html#metpy.calc.thermo.moist_lapse" title="metpy.calc.thermo.moist_lapse"><code class="xref py py-func docutils literal"><span class="pre">moist_lapse()</span></code></a>
+<a class="reference internal" href="#metpy.plots.skewt.SkewT.plot_dry_adiabats" title="metpy.plots.skewt.SkewT.plot_dry_adiabats"><code class="xref py py-meth docutils literal"><span class="pre">plot_dry_adiabats()</span></code></a>
+<a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="metpy.plots.skewt.Hodograph">
+<em class="property">class </em><code class="descclassname">metpy.plots.skewt.</code><code class="descname">Hodograph</code><span class="sig-paren">(</span><em>ax=None</em>, <em>component_range=80</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.skewt.Hodograph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a hodograph of wind data.</p>
+<p>Plots the u and v components of the wind along the x and y axes, respectively.</p>
+<p>This class simplifies the process of creating a hodograph using matplotlib.
+It provides helpers for creating a circular grid and for plotting the wind as a line
+colored by another value (such as wind speed).</p>
+<dl class="attribute">
+<dt id="metpy.plots.skewt.Hodograph.ax">
+<code class="descname">ax</code><a class="headerlink" href="#metpy.plots.skewt.Hodograph.ax" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>matplotlib.axes.Axes</cite> &#8211; The underlying Axes instance used for all plotting</p>
+</dd></dl>
+
+<p>Create a Hodograph instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ax</strong> (<cite>matplotlib.axes.Axes</cite>, optional) &#8211; The <cite>Axes</cite> instance used for plotting</li>
+<li><strong>component_range</strong> (<a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.PlotTypes.value" title="metpy.plots.station_plot.StationPlotLayout.PlotTypes.value"><em>value</em></a>) &#8211; The maximum range of the plot. Used to set plot bounds and control the maximum
+number of grid rings needed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="metpy.plots.skewt.Hodograph.add_grid">
+<code class="descname">add_grid</code><span class="sig-paren">(</span><em>increment=10.0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.skewt.Hodograph.add_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add grid lines to hodograph.</p>
+<p>Creates lines for the x- and y-axes, as well as circles denoting wind speed values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>increment</strong> (<a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.PlotTypes.value" title="metpy.plots.station_plot.StationPlotLayout.PlotTypes.value"><em>value</em></a><em>, </em><em>optional</em>) &#8211; The value increment between rings</li>
+<li><strong>kwargs</strong> &#8211; Other kwargs to control appearance of lines</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://matplotlib.org/api/patches_api.html#matplotlib.patches.Circle" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.patches.Circle</span></code></a>, <a class="reference external" href="http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axhline.html#matplotlib.axes.Axes.axhline" title="(in Matplotlib v2.0.2)"><code class="xref py py-meth docutils literal"><span class="pre">matplotlib.axes.Axes.axhline()</span></code></a>, <a class="reference external" href="http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axvline.html#matplotlib.axes.Axes.axvline" title="(in Matplotlib v2.0.2)"><code class="xref py py-meth docutils literal"><span class="pre">matplotlib.axes.Axes.axvline()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.skewt.Hodograph.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.skewt.Hodograph.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot u, v data.</p>
+<p>Plots the wind data on the hodograph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>array_like</em>) &#8211; u-component of wind</li>
+<li><strong>v</strong> (<em>array_like</em>) &#8211; v-component of wind</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.plot.html#matplotlib.axes.Axes.plot" title="(in Matplotlib v2.0.2)"><code class="xref py py-meth docutils literal"><span class="pre">matplotlib.axes.Axes.plot()</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>list[matplotlib.lines.Line2D]</em> &#8211; lines plotted</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.skewt.Hodograph.plot_colormapped" title="metpy.plots.skewt.Hodograph.plot_colormapped"><code class="xref py py-meth docutils literal"><span class="pre">Hodograph.plot_colormapped()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.skewt.Hodograph.plot_colormapped">
+<code class="descname">plot_colormapped</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>c</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.skewt.Hodograph.plot_colormapped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot u, v data, with line colored based on a third set of data.</p>
+<p>Plots the wind data on the hodograph, but with a colormapped line.</p>
+<p>Simple wrapper around plot so that pressure is the first (independent)
+input. This is essentially a wrapper around <cite>semilogy</cite>. It also
+sets some appropriate ticking and plot ranges.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>array_like</em>) &#8211; u-component of wind</li>
+<li><strong>v</strong> (<em>array_like</em>) &#8211; v-component of wind</li>
+<li><strong>c</strong> (<em>array_like</em>) &#8211; data to use for colormapping</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.collections.LineCollection</em> &#8211; instance created</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.skewt.Hodograph.plot" title="metpy.plots.skewt.Hodograph.plot"><code class="xref py py-meth docutils literal"><span class="pre">Hodograph.plot()</span></code></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-metpy.plots.station_plot">
+<span id="station-plots"></span><h2>Station Plots<a class="headerlink" href="#module-metpy.plots.station_plot" title="Permalink to this headline">¶</a></h2>
+<p>Create Station-model plots.</p>
+<dl class="class">
+<dt id="metpy.plots.station_plot.StationPlot">
+<em class="property">class </em><code class="descclassname">metpy.plots.station_plot.</code><code class="descname">StationPlot</code><span class="sig-paren">(</span><em>ax</em>, <em>x</em>, <em>y</em>, <em>fontsize=10</em>, <em>spacing=None</em>, <em>transform=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.station_plot.StationPlot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a standard meteorological station plot.</p>
+<p>Plots values, symbols, or text spaced around a central location. Can also plot wind
+barbs as the center of the location.</p>
+<p>Initialize the StationPlot with items that do not change.</p>
+<p>This sets up the axes and station locations. The <cite>fontsize</cite> and <cite>spacing</cite>
+are also specified here to ensure that they are consistent between individual
+station elements.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ax</strong> (<a class="reference external" href="http://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.0.2)"><em>matplotlib.axes.Axes</em></a>) &#8211; The <a class="reference external" href="http://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">Axes</span></code></a> for plotting</li>
+<li><strong>x</strong> (<em>array_like</em>) &#8211; The x location of the stations in the plot</li>
+<li><strong>y</strong> (<em>array_like</em>) &#8211; The y location of the stations in the plot</li>
+<li><strong>fontsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The fontsize to use for drawing text</li>
+<li><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) &#8211; The spacing, in points, that corresponds to a single increment between
+station plot elements.</li>
+<li><strong>transform</strong> (<a class="reference external" href="http://matplotlib.org/api/transformations.html#matplotlib.transforms.Transform" title="(in Matplotlib v2.0.2)"><em>matplotlib.transforms.Transform</em></a><em> (or </em><em>compatible</em><em>)</em><em></em>) &#8211; The default transform to apply to the x and y positions when plotting.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="attribute">
+<dt id="metpy.plots.station_plot.StationPlot.location_names">
+<code class="descname">location_names</code><em class="property"> = {'SW': (-1, -1), 'NW': (-1, 1), 'C': (0, 0), 'SE': (1, -1), 'E': (1, 0), 'NE': (1, 1), 'S': (0, -1), 'N': (0, 1), 'W': (-1, 0)}</em><a class="headerlink" href="#metpy.plots.station_plot.StationPlot.location_names" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.station_plot.StationPlot.plot_barb">
+<code class="descname">plot_barb</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.station_plot.StationPlot.plot_barb" title="Permalink to this definition">¶</a></dt>
+<dd><p>At the center of the station model plot wind barbs.</p>
+<p>Additional keyword arguments given will be passed onto matplotlib&#8217;s
+<a class="reference external" href="http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v2.0.2)"><code class="xref py py-meth docutils literal"><span class="pre">barbs()</span></code></a> function; this is useful for specifying things
+like color or line width.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>u</strong> (<em>array-like</em>) &#8211; The data to use for the u-component of the barbs.</li>
+<li><strong>v</strong> (<em>array-like</em>) &#8211; The data to use for the v-component of the barbs.</li>
+<li><strong>kwargs</strong> &#8211; Additional keyword arguments to pass to matplotlib&#8217;s
+<a class="reference external" href="http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v2.0.2)"><code class="xref py py-meth docutils literal"><span class="pre">barbs()</span></code></a> function.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_parameter" title="metpy.plots.station_plot.StationPlot.plot_parameter"><code class="xref py py-meth docutils literal"><span class="pre">plot_parameter()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_symbol" title="metpy.plots.station_plot.StationPlot.plot_symbol"><code class="xref py py-meth docutils literal"><span class="pre">plot_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_text" title="metpy.plots.station_plot.StationPlot.plot_text"><code class="xref py py-meth docutils literal"><span class="pre">plot_text()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.station_plot.StationPlot.plot_parameter">
+<code class="descname">plot_parameter</code><span class="sig-paren">(</span><em>location</em>, <em>parameter</em>, <em>formatter='.0f'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.station_plot.StationPlot.plot_parameter" title="Permalink to this definition">¶</a></dt>
+<dd><p>At the specified location in the station model plot a set of values.</p>
+<p>This specifies that at the offset <cite>location</cite>, the data in <cite>parameter</cite> should be
+plotted. The conversion of the data values to a string is controlled by <cite>formatter</cite>.</p>
+<p>Additional keyword arguments given will be passed onto the actual plotting
+code; this is useful for specifying things like color or font properties.</p>
+<p>If something has already been plotted at this location, it will be replaced.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em><em></em>) &#8211; The offset (relative to center) to plot this parameter. If str, should be one of
+&#8216;C&#8217;, &#8216;N&#8217;, &#8216;NE&#8217;, &#8216;E&#8217;, &#8216;SE&#8217;, &#8216;S&#8217;, &#8216;SW&#8217;, &#8216;W&#8217;, or &#8216;NW&#8217;. Otherwise, should be a tuple
+specifying the number of increments in the x and y directions; increments
+are multiplied by <cite>spacing</cite> to give offsets in x and y relative to the center.</li>
+<li><strong>parameter</strong> (<em>array_like</em>) &#8211; The numeric values that should be plotted</li>
+<li><strong>formatter</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a><em>, </em><em>optional</em>) &#8211; How to format the data as a string for plotting. If a string, it should be
+compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.6)"><code class="xref py py-func docutils literal"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
+value and return a string. Defaults to &#8216;0.f&#8217;.</li>
+<li><strong>kwargs</strong> &#8211; Additional keyword arguments to use for matplotlib&#8217;s plotting functions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_barb" title="metpy.plots.station_plot.StationPlot.plot_barb"><code class="xref py py-meth docutils literal"><span class="pre">plot_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_symbol" title="metpy.plots.station_plot.StationPlot.plot_symbol"><code class="xref py py-meth docutils literal"><span class="pre">plot_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_text" title="metpy.plots.station_plot.StationPlot.plot_text"><code class="xref py py-meth docutils literal"><span class="pre">plot_text()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.station_plot.StationPlot.plot_symbol">
+<code class="descname">plot_symbol</code><span class="sig-paren">(</span><em>location</em>, <em>codes</em>, <em>symbol_mapper</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.station_plot.StationPlot.plot_symbol" title="Permalink to this definition">¶</a></dt>
+<dd><p>At the specified location in the station model plot a set of symbols.</p>
+<p>This specifies that at the offset <cite>location</cite>, the data in <cite>codes</cite> should be
+converted to unicode characters (for our <code class="xref py py-data docutils literal"><span class="pre">wx_symbol_font</span></code>) using <cite>symbol_mapper</cite>,
+and plotted.</p>
+<p>Additional keyword arguments given will be passed onto the actual plotting
+code; this is useful for specifying things like color or font properties.</p>
+<p>If something has already been plotted at this location, it will be replaced.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em><em></em>) &#8211; The offset (relative to center) to plot this parameter. If str, should be one of
+&#8216;C&#8217;, &#8216;N&#8217;, &#8216;NE&#8217;, &#8216;E&#8217;, &#8216;SE&#8217;, &#8216;S&#8217;, &#8216;SW&#8217;, &#8216;W&#8217;, or &#8216;NW&#8217;. Otherwise, should be a tuple
+specifying the number of increments in the x and y directions; increments
+are multiplied by <cite>spacing</cite> to give offsets in x and y relative to the center.</li>
+<li><strong>codes</strong> (<em>array_like</em>) &#8211; The numeric values that should be converted to unicode characters for plotting.</li>
+<li><strong>symbol_mapper</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a>) &#8211; Controls converting data values to unicode code points for the
+<code class="xref py py-data docutils literal"><span class="pre">wx_symbol_font</span></code> font. This should take a value and return a single unicode
+character. See <code class="xref py py-mod docutils literal"><span class="pre">metpy.plots.wx_symbols</span></code> for included mappers.</li>
+<li><strong>kwargs</strong> &#8211; Additional keyword arguments to use for matplotlib&#8217;s plotting functions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_barb" title="metpy.plots.station_plot.StationPlot.plot_barb"><code class="xref py py-meth docutils literal"><span class="pre">plot_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_parameter" title="metpy.plots.station_plot.StationPlot.plot_parameter"><code class="xref py py-meth docutils literal"><span class="pre">plot_parameter()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_text" title="metpy.plots.station_plot.StationPlot.plot_text"><code class="xref py py-meth docutils literal"><span class="pre">plot_text()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.station_plot.StationPlot.plot_text">
+<code class="descname">plot_text</code><span class="sig-paren">(</span><em>location</em>, <em>text</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.station_plot.StationPlot.plot_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>At the specified location in the station model plot a collection of text.</p>
+<p>This specifies that at the offset <cite>location</cite>, the strings in <cite>text</cite> should be
+plotted.</p>
+<p>Additional keyword arguments given will be passed onto the actual plotting
+code; this is useful for specifying things like color or font properties.</p>
+<p>If something has already been plotted at this location, it will be replaced.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em><em></em>) &#8211; The offset (relative to center) to plot this parameter. If str, should be one of
+&#8216;C&#8217;, &#8216;N&#8217;, &#8216;NE&#8217;, &#8216;E&#8217;, &#8216;SE&#8217;, &#8216;S&#8217;, &#8216;SW&#8217;, &#8216;W&#8217;, or &#8216;NW&#8217;. Otherwise, should be a tuple
+specifying the number of increments in the x and y directions; increments
+are multiplied by <cite>spacing</cite> to give offsets in x and y relative to the center.</li>
+<li><strong>text</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em> (or </em><a class="reference external" href="https://docs.python.org/3/library/array.html#module-array" title="(in Python v3.6)"><em>array</em></a><em>) </em><em>of strings</em>) &#8211; The strings that should be plotted</li>
+<li><strong>kwargs</strong> &#8211; Additional keyword arguments to use for matplotlib&#8217;s plotting functions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_barb" title="metpy.plots.station_plot.StationPlot.plot_barb"><code class="xref py py-meth docutils literal"><span class="pre">plot_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_parameter" title="metpy.plots.station_plot.StationPlot.plot_parameter"><code class="xref py py-meth docutils literal"><span class="pre">plot_parameter()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlot.plot_symbol" title="metpy.plots.station_plot.StationPlot.plot_symbol"><code class="xref py py-meth docutils literal"><span class="pre">plot_symbol()</span></code></a></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="metpy.plots.station_plot.StationPlotLayout">
+<em class="property">class </em><code class="descclassname">metpy.plots.station_plot.</code><code class="descname">StationPlotLayout</code><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout" title="Permalink to this definition">¶</a></dt>
+<dd><p>make a layout to encapsulate plotting using <a class="reference internal" href="#metpy.plots.station_plot.StationPlot" title="metpy.plots.station_plot.StationPlot"><code class="xref py py-class docutils literal"><span class="pre">StationPlot</span></code></a>.</p>
+<p>This class keeps a collection of offsets, plot formats, etc. for a parameter based
+on its name. This then allows a dictionary of data (or any object that allows looking
+up of arrays based on a name) to be passed to <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.plot" title="metpy.plots.station_plot.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a> to plot the data all at once.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.station_plot.StationPlot" title="metpy.plots.station_plot.StationPlot"><code class="xref py py-class docutils literal"><span class="pre">StationPlot</span></code></a></p>
+</div>
+<dl class="class">
+<dt id="metpy.plots.station_plot.StationPlotLayout.PlotTypes">
+<em class="property">class </em><code class="descname">PlotTypes</code><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout.PlotTypes" title="Permalink to this definition">¶</a></dt>
+<dd><p>Different plotting types for the layout.</p>
+<p>Controls how items are displayed (e.g. converting values to symbols).</p>
+<dl class="attribute">
+<dt id="metpy.plots.station_plot.StationPlotLayout.PlotTypes.barb">
+<code class="descname">barb</code><em class="property"> = 4</em><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout.PlotTypes.barb" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.plots.station_plot.StationPlotLayout.PlotTypes.symbol">
+<code class="descname">symbol</code><em class="property"> = 2</em><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout.PlotTypes.symbol" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.plots.station_plot.StationPlotLayout.PlotTypes.text">
+<code class="descname">text</code><em class="property"> = 3</em><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout.PlotTypes.text" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.plots.station_plot.StationPlotLayout.PlotTypes.value">
+<code class="descname">value</code><em class="property"> = 1</em><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout.PlotTypes.value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.station_plot.StationPlotLayout.add_barb">
+<code class="descclassname">StationPlotLayout.</code><code class="descname">add_barb</code><span class="sig-paren">(</span><em>u_name</em>, <em>v_name</em>, <em>units=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout.add_barb" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a wind barb to the center of the station layout.</p>
+<p>This specifies that u- and v-component data should be pulled from the data
+container using the keys <cite>u_name</cite> and <cite>v_name</cite>, respectively, and plotted as
+a wind barb at the center of the station plot. If <cite>units</cite> are given, both
+components will be converted to these units.</p>
+<p>Additional keyword arguments given will be passed onto the actual plotting
+code; this is useful for specifying things like color or line width.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>u_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of the parameter for the u-component for <cite>barbs</cite>, which is used as
+a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.plot" title="metpy.plots.station_plot.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a>.</li>
+<li><strong>v_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of the parameter for the v-component for <cite>barbs</cite>, which is used as
+a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.plot" title="metpy.plots.station_plot.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a>.</li>
+<li><strong>units</strong> (<em>pint-compatible unit</em><em>, </em><em>optional</em>) &#8211; The units to use for plotting. Data will be converted to this unit before
+conversion to a string. If not specified, no conversion is done.</li>
+<li><strong>kwargs</strong> &#8211; Additional keyword arguments to use for matplotlib&#8217;s
+<a class="reference external" href="http://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v2.0.2)"><code class="xref py py-meth docutils literal"><span class="pre">barbs()</span></code></a> function.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_symbol" title="metpy.plots.station_plot.StationPlotLayout.add_symbol"><code class="xref py py-meth docutils literal"><span class="pre">add_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_text" title="metpy.plots.station_plot.StationPlotLayout.add_text"><code class="xref py py-meth docutils literal"><span class="pre">add_text()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_value" title="metpy.plots.station_plot.StationPlotLayout.add_value"><code class="xref py py-meth docutils literal"><span class="pre">add_value()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.station_plot.StationPlotLayout.add_symbol">
+<code class="descclassname">StationPlotLayout.</code><code class="descname">add_symbol</code><span class="sig-paren">(</span><em>location</em>, <em>name</em>, <em>symbol_mapper</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout.add_symbol" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a symbol to the station layout.</p>
+<p>This specifies that at the offset <cite>location</cite>, data should be pulled from the data
+container using the key <cite>name</cite> and plotted. Data values will converted to glyphs
+appropriate for MetPy&#8217;s symbol font using the callable <cite>symbol_mapper</cite>.</p>
+<p>Additional keyword arguments given will be passed onto the actual plotting
+code; this is useful for specifying things like color or font properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em><em></em>) &#8211; The offset (relative to center) to plot this value. If str, should be one of
+&#8216;C&#8217;, &#8216;N&#8217;, &#8216;NE&#8217;, &#8216;E&#8217;, &#8216;SE&#8217;, &#8216;S&#8217;, &#8216;SW&#8217;, &#8216;W&#8217;, or &#8216;NW&#8217;. Otherwise, should be a tuple
+specifying the number of increments in the x and y directions.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of the parameter, which is used as a key to pull data out of the
+data container passed to <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.plot" title="metpy.plots.station_plot.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a>.</li>
+<li><strong>symbol_mapper</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a>) &#8211; Controls converting data values to unicode code points for the
+<code class="xref py py-data docutils literal"><span class="pre">wx_symbol_font</span></code> font. This should take a value and return a single unicode
+character. See <code class="xref py py-mod docutils literal"><span class="pre">metpy.plots.wx_symbols</span></code> for included mappers.</li>
+<li><strong>kwargs</strong> &#8211; Additional keyword arguments to use for matplotlib&#8217;s plotting functions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_barb" title="metpy.plots.station_plot.StationPlotLayout.add_barb"><code class="xref py py-meth docutils literal"><span class="pre">add_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_text" title="metpy.plots.station_plot.StationPlotLayout.add_text"><code class="xref py py-meth docutils literal"><span class="pre">add_text()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_value" title="metpy.plots.station_plot.StationPlotLayout.add_value"><code class="xref py py-meth docutils literal"><span class="pre">add_value()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.station_plot.StationPlotLayout.add_text">
+<code class="descclassname">StationPlotLayout.</code><code class="descname">add_text</code><span class="sig-paren">(</span><em>location</em>, <em>name</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout.add_text" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a text field to the  station layout.</p>
+<p>This specifies that at the offset <cite>location</cite>, data should be pulled from the data
+container using the key <cite>name</cite> and plotted directly as text with no conversion
+applied.</p>
+<p>Additional keyword arguments given will be passed onto the actual plotting
+code; this is useful for specifying things like color or font properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>(</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>)</em><em></em>) &#8211; The offset (relative to center) to plot this value. If str, should be one of
+&#8216;C&#8217;, &#8216;N&#8217;, &#8216;NE&#8217;, &#8216;E&#8217;, &#8216;SE&#8217;, &#8216;S&#8217;, &#8216;SW&#8217;, &#8216;W&#8217;, or &#8216;NW&#8217;. Otherwise, should be a tuple
+specifying the number of increments in the x and y directions.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of the parameter, which is used as a key to pull data out of the
+data container passed to <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.plot" title="metpy.plots.station_plot.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a>.</li>
+<li><strong>kwargs</strong> &#8211; Additional keyword arguments to use for matplotlib&#8217;s plotting functions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_barb" title="metpy.plots.station_plot.StationPlotLayout.add_barb"><code class="xref py py-meth docutils literal"><span class="pre">add_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_symbol" title="metpy.plots.station_plot.StationPlotLayout.add_symbol"><code class="xref py py-meth docutils literal"><span class="pre">add_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_value" title="metpy.plots.station_plot.StationPlotLayout.add_value"><code class="xref py py-meth docutils literal"><span class="pre">add_value()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.station_plot.StationPlotLayout.add_value">
+<code class="descclassname">StationPlotLayout.</code><code class="descname">add_value</code><span class="sig-paren">(</span><em>location</em>, <em>name</em>, <em>fmt='.0f'</em>, <em>units=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout.add_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a numeric value to the station layout.</p>
+<p>This specifies that at the offset <cite>location</cite>, data should be pulled from the data
+container using the key <cite>name</cite> and plotted. The conversion of the data values to
+a string is controlled by <cite>fmt</cite>. The units required for plotting can also
+be passed in using <cite>units</cite>, which will cause the data to be converted before
+plotting.</p>
+<p>Additional keyword arguments given will be passed onto the actual plotting
+code; this is useful for specifying things like color or font properties.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>location</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.6)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>]</em><em></em>) &#8211; The offset (relative to center) to plot this value. If str, should be one of
+&#8216;C&#8217;, &#8216;N&#8217;, &#8216;NE&#8217;, &#8216;E&#8217;, &#8216;SE&#8217;, &#8216;S&#8217;, &#8216;SW&#8217;, &#8216;W&#8217;, or &#8216;NW&#8217;. Otherwise, should be a tuple
+specifying the number of increments in the x and y directions.</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name of the parameter, which is used as a key to pull data out of the
+data container passed to <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.plot" title="metpy.plots.station_plot.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a>.</li>
+<li><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a><em>, </em><em>optional</em>) &#8211; How to format the data as a string for plotting. If a string, it should be
+compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.6)"><code class="xref py py-func docutils literal"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
+value and return a string. Defaults to &#8216;0.f&#8217;.</li>
+<li><strong>units</strong> (<em>pint-compatible unit</em><em>, </em><em>optional</em>) &#8211; The units to use for plotting. Data will be converted to this unit before
+conversion to a string. If not specified, no conversion is done.</li>
+<li><strong>kwargs</strong> &#8211; Additional keyword arguments to use for matplotlib&#8217;s plotting functions.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_barb" title="metpy.plots.station_plot.StationPlotLayout.add_barb"><code class="xref py py-meth docutils literal"><span class="pre">add_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_symbol" title="metpy.plots.station_plot.StationPlotLayout.add_symbol"><code class="xref py py-meth docutils literal"><span class="pre">add_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.station_plot.StationPlotLayout.add_text" title="metpy.plots.station_plot.StationPlotLayout.add_text"><code class="xref py py-meth docutils literal"><span class="pre">add_text()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.station_plot.StationPlotLayout.names">
+<code class="descclassname">StationPlotLayout.</code><code class="descname">names</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout.names" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of names used by the layout.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>list[str]</em> &#8211; the list of names of variables used by the layout</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.station_plot.StationPlotLayout.plot">
+<code class="descclassname">StationPlotLayout.</code><code class="descname">plot</code><span class="sig-paren">(</span><em>plotter</em>, <em>data_dict</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.station_plot.StationPlotLayout.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot a collection of data using this layout for a station plot.</p>
+<p>This function iterates through the entire specified layout, pulling the fields named
+in the layout from <cite>data_dict</cite> and plotting them using <cite>plotter</cite> as specified
+in the layout. Fields present in the layout, but not in <cite>data_dict</cite>, are ignored.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>plotter</strong> (<a class="reference internal" href="#metpy.plots.station_plot.StationPlot" title="metpy.plots.station_plot.StationPlot"><em>StationPlot</em></a>) &#8211; <a class="reference internal" href="#metpy.plots.station_plot.StationPlot" title="metpy.plots.station_plot.StationPlot"><code class="xref py py-class docutils literal"><span class="pre">StationPlot</span></code></a> to use to plot the data. This controls the axes,
+spacing, station locations, etc.</li>
+<li><strong>data_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><em>array-like</em><em>]</em><em></em>) &#8211; Data container that maps a name to an array of data. Data from this object
+will be used to fill out the station plot.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="data">
+<dt id="metpy.plots.station_plot.nws_layout">
+<code class="descclassname">metpy.plots.station_plot.</code><code class="descname">nws_layout</code><a class="headerlink" href="#metpy.plots.station_plot.nws_layout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Full NWS station plot <a class="reference external" href="http://oceanservice.noaa.gov/education/yos/resource/JetStream/synoptic/wxmaps.htm">layout</a></p>
+</dd></dl>
+
+<dl class="data">
+<dt id="metpy.plots.station_plot.simple_layout">
+<code class="descclassname">metpy.plots.station_plot.</code><code class="descname">simple_layout</code><em class="property"> = {C: (symbol, cloud_coverage, ...), NE: (value, air_pressure_at_sea_level, ...), NW: (value, air_temperature, ...), SW: (value, dew_point_temperature, ...), W: (symbol, present_weather, ...), barb: (barb, ('eastward_wind', 'northward_wind'), ...)}</em><a class="headerlink" href="#metpy.plots.station_plot.simple_layout" title="Permalink to this definition">¶</a></dt>
+<dd><p><em>desc</em> &#8211; Simple station plot layout</p>
+</dd></dl>
+
+</div>
+<div class="section" id="colortables">
+<h2>Colortables<a class="headerlink" href="#colortables" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference internal" href="#module-metpy.plots.ctables" title="metpy.plots.ctables"><code class="xref py py-mod docutils literal"><span class="pre">metpy.plots.ctables</span></code></a></p>
+<span class="target" id="module-metpy.plots.ctables"></span><p>Work with custom color tables.</p>
+<p>Contains a tools for reading color tables from files, and creating instances based on a
+specific set of constraints (e.g. step size) for mapping.</p>
+<dl class="class">
+<dt id="metpy.plots.ctables.ColortableRegistry">
+<em class="property">class </em><code class="descclassname">metpy.plots.ctables.</code><code class="descname">ColortableRegistry</code><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages the collection of color tables.</p>
+<p>Provides access to color tables, read collections of files, and generates
+matplotlib&#8217;s Normalize instances to go with the colortable.</p>
+<dl class="method">
+<dt id="metpy.plots.ctables.ColortableRegistry.add_colortable">
+<code class="descname">add_colortable</code><span class="sig-paren">(</span><em>fobj</em>, <em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.add_colortable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a color table from a file to the registry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fobj</strong> (<em>file-like object</em>) &#8211; The file to read the color table from</li>
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name under which the color table will be stored</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.ctables.ColortableRegistry.get_colortable">
+<code class="descname">get_colortable</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get_colortable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a color table from the registry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name under which the color table will be stored</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>matplotlib.colors.ListedColormap</cite> &#8211; The color table corresponding to <cite>name</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.ctables.ColortableRegistry.get_with_boundaries">
+<code class="descname">get_with_boundaries</code><span class="sig-paren">(</span><em>name</em>, <em>boundaries</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get_with_boundaries" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a color table from the registry with a corresponding norm.</p>
+<p>Builds a <cite>matplotlib.colors.BoundaryNorm</cite> using <cite>boundaries</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name under which the color table will be stored</li>
+<li><strong>boundaries</strong> (<em>array_like</em>) &#8211; The list of boundaries for the norm</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>matplotlib.colors.BoundaryNorm</cite>, <cite>matplotlib.colors.ListedColormap</cite> &#8211; The boundary norm based on <cite>boundaries</cite>, and the color table itself.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.ctables.ColortableRegistry.get_with_steps">
+<code class="descname">get_with_steps</code><span class="sig-paren">(</span><em>name</em>, <em>start</em>, <em>step</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get_with_steps" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get a color table from the registry with a corresponding norm.</p>
+<p>Builds a <cite>matplotlib.colors.BoundaryNorm</cite> using <cite>start</cite>, <cite>step</cite>, and
+the number of colors, based on the color table obtained from <cite>name</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The name under which the color table will be stored</li>
+<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) &#8211; The starting boundary</li>
+<li><strong>step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) &#8211; The step between boundaries</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>matplotlib.colors.BoundaryNorm</cite>, <cite>matplotlib.colors.ListedColormap</cite> &#8211; The boundary norm based on <cite>start</cite> and <cite>step</cite> with the number of colors
+from the number of entries matching the color table, and the color table itself.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.ctables.ColortableRegistry.scan_dir">
+<code class="descname">scan_dir</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.scan_dir" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scan a directory on disk for color table files and add them to the registry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The path to the directory with the color tables</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.ctables.ColortableRegistry.scan_resource">
+<code class="descname">scan_resource</code><span class="sig-paren">(</span><em>pkg</em>, <em>path</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.scan_resource" title="Permalink to this definition">¶</a></dt>
+<dd><p>Scan a resource directory for colortable files and add them to the registry.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>pkg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The package containing the resource directory</li>
+<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) &#8211; The path to the directory with the color tables</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.plots.ctables.convert_gempak_table">
+<code class="descclassname">metpy.plots.ctables.</code><code class="descname">convert_gempak_table</code><span class="sig-paren">(</span><em>infile</em>, <em>outfile</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.convert_gempak_table" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert a GEMPAK color table to one MetPy can read.</p>
+<p>Reads lines from a GEMPAK-style color table file, and writes them to another file in
+a format that MetPy can parse.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>infile</strong> (<em>file-like object</em>) &#8211; The file-like object to read from</li>
+<li><strong>outfile</strong> (<em>file-like object</em>) &#8211; The file-like object to write to</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.plots.ctables.read_colortable">
+<code class="descclassname">metpy.plots.ctables.</code><code class="descname">read_colortable</code><span class="sig-paren">(</span><em>fobj</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.read_colortable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Read colortable information from a file.</p>
+<p>Reads a colortable, which consists of one color per line of the file, where
+a color can be one of: a tuple of 3 floats, a string with a HTML color name,
+or a string with a HTML hex color.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fobj</strong> (<em>a file-like object</em>) &#8211; A file-like object to read the colors from</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>List of tuples</em> &#8211; A list of the RGB color values, where each RGB color is a tuple of 3 floats in the
+range of [0, 1].</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../developerguide.html" class="btn btn-neutral float-right" title="Developer’s Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="turbulence.html" class="btn btn-neutral" title="Turbulence Time Series Calculations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 18:59:21.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.4.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

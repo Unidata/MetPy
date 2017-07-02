@@ -1,0 +1,531 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Natural Neighbor Verification &mdash; MetPy 0.4.3 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/gridding/Natural_Neighbor_Verification.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 0.4.3 documentation" href="../../index.html"/>
+        <link rel="up" title="MetPy Examples" href="../index.html"/>
+        <link rel="next" title="Skew-T with Complex Layout" href="../plots/Skew-T_Layout.html"/>
+        <link rel="prev" title="Inverse Distance Verification: Cressman and Barnes" href="Inverse_Distance_Verification.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#calculations">Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#file-formats">File Formats</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#gridding">Gridding</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Find_Natural_Neighbors_Verification.html">Find Natural Neighbors Verification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Wind_SLP_Interpolation.html">Wind and Sea Level Pressure Interpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Point_Interpolation.html">Point Interpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Inverse_Distance_Verification.html">Inverse Distance Verification: Cressman and Barnes</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Natural Neighbor Verification</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer&#8217;s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">MetPy Examples</a> &raquo;</li>
+        
+      <li>Natural Neighbor Verification</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/examples/gridding/Natural_Neighbor_Verification.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="natural-neighbor-verification">
+<span id="sphx-glr-examples-gridding-natural-neighbor-verification-py"></span><h1>Natural Neighbor Verification<a class="headerlink" href="#natural-neighbor-verification" title="Permalink to this headline">¶</a></h1>
+<p>Walks through the steps of Natural Neighbor interpolation to validate that the algorithmic
+approach taken in MetPy is correct.</p>
+<p>Find natural neighbors visual test</p>
+<p>A triangle is a natural neighbor for a point if the
+<a class="reference external" href="https://en.wikipedia.org/wiki/Circumscribed_circle">circumscribed circle</a> of the
+triangle contains that point. It is important that we correctly grab the correct triangles
+for each point before proceeding with the interpolation.</p>
+<p>Algorithmically:</p>
+<ol class="arabic">
+<li><p class="first">We place all of the grid points in a KDTree. These provide worst-case O(n) time
+complexity for spatial searches.</p>
+</li>
+<li><p class="first">We generate a <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/tutorial/spatial.html#delaunay-triangulations">Delaunay Triangulation</a>
+using the locations of the provided observations.</p>
+</li>
+<li><p class="first">For each triangle, we calculate its circumcenter and circumradius. Using
+KDTree, we then assign each grid a triangle that has a circumcenter within a
+circumradius of the grid&#8217;s location.</p>
+</li>
+<li><p class="first">The resulting dictionary uses the grid index as a key and a set of natural
+neighbor triangles in the form of triangle codes from the Delaunay triangulation.
+This dictionary is then iterated through to calculate interpolation values.</p>
+</li>
+<li><p class="first">We then traverse the ordered natural neighbor edge vertices for a particular
+grid cell in groups of 3 (n - 1, n, n + 1), and perform calculations to generate
+proportional polygon areas.</p>
+<p>Circumcenter of (n - 1), n, grid_location
+Circumcenter of (n + 1), n, grid_location</p>
+<p>Determine what existing circumcenters (ie, Delaunay circumcenters) are associated
+with vertex n, and add those as polygon vertices. Calculate the area of this polygon.</p>
+</li>
+<li><p class="first">Increment the current edges to be checked, i.e.:
+n - 1 = n, n = n + 1, n + 1 = n + 2</p>
+</li>
+<li><p class="first">Repeat steps 5 &amp; 6 until all of the edge combinations of 3 have been visited.</p>
+</li>
+<li><p class="first">Repeat steps 4 through 7 for each grid cell.</p>
+</li>
+</ol>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <span class="n">ConvexHull</span><span class="p">,</span> <span class="n">Delaunay</span><span class="p">,</span> <span class="n">delaunay_plot_2d</span><span class="p">,</span> <span class="n">Voronoi</span><span class="p">,</span> <span class="n">voronoi_plot_2d</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <span class="n">euclidean</span>
+
+<span class="kn">from</span> <span class="nn">metpy.gridding</span> <span class="kn">import</span> <span class="n">polygons</span><span class="p">,</span> <span class="n">triangles</span>
+<span class="kn">from</span> <span class="nn">metpy.gridding.interpolation</span> <span class="kn">import</span> <span class="n">nn_point</span>
+
+<a href="http://matplotlib.org/api/matplotlib_configuration_api.html#matplotlib.rcParams" title="View documentation for matplotlib.pyplot.rcParams"><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span></a><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>For a test case, we generate 10 random points and observations, where the
+observation values are just the x coordinate value times the y coordinate
+value divided by 1000.</p>
+<p>We then create two test points (grid 0 &amp; grid 1) at which we want to
+estimate a value using natural neighbor interpolation.</p>
+<p>The locations of these observations are then used to generate a Delaunay triangulation.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+
+<span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">xp</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">yp</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="n">zp</span> <span class="o">=</span> <span class="p">(</span><span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">1000</span>
+
+<span class="n">tri</span> <span class="o">=</span> <span class="n">Delaunay</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
+<span class="n">delaunay_plot_2d</span><span class="p">(</span><span class="n">tri</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">zval</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">zp</span><span class="p">):</span>
+    <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate" title="View documentation for matplotlib.pyplot.annotate"><span class="n">plt</span><span class="o">.</span><span class="n">annotate</span></a><span class="p">(</span><span class="s1">&#39;{} F&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">zval</span><span class="p">),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">pts</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">pts</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="mi">1</span><span class="p">]))</span>
+
+<span class="n">sim_gridx</span> <span class="o">=</span> <span class="p">[</span><span class="mf">30.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">]</span>
+<span class="n">sim_gridy</span> <span class="o">=</span> <span class="p">[</span><span class="mf">30.</span><span class="p">,</span> <span class="mf">60.</span><span class="p">]</span>
+
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">sim_gridx</span><span class="p">,</span> <span class="n">sim_gridy</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/axes_api.html#matplotlib.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Triangulation of observations and test grid cell &#39;</span>
+          <span class="s1">&#39;natural neighbor interpolation values&#39;</span><span class="p">)</span>
+
+<span class="n">members</span><span class="p">,</span> <span class="n">tri_info</span> <span class="o">=</span> <span class="n">triangles</span><span class="o">.</span><span class="n">find_natural_neighbors</span><span class="p">(</span><span class="n">tri</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">sim_gridx</span><span class="p">,</span> <span class="n">sim_gridy</span><span class="p">)))</span>
+
+<span class="n">val</span> <span class="o">=</span> <span class="n">nn_point</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">zp</span><span class="p">,</span> <span class="p">(</span><span class="n">sim_gridx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sim_gridy</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">tri</span><span class="p">,</span> <span class="n">members</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tri_info</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate" title="View documentation for matplotlib.pyplot.annotate"><span class="n">plt</span><span class="o">.</span><span class="n">annotate</span></a><span class="p">(</span><span class="s1">&#39;grid 0: {:.3f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">sim_gridx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sim_gridy</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+
+<span class="n">val</span> <span class="o">=</span> <span class="n">nn_point</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">zp</span><span class="p">,</span> <span class="p">(</span><span class="n">sim_gridx</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">sim_gridy</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">tri</span><span class="p">,</span> <span class="n">members</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">tri_info</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate" title="View documentation for matplotlib.pyplot.annotate"><span class="n">plt</span><span class="o">.</span><span class="n">annotate</span></a><span class="p">(</span><span class="s1">&#39;grid 1: {:.3f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">val</span><span class="p">),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">sim_gridx</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sim_gridy</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_Natural_Neighbor_Verification_001.png" class="align-center" src="../../_images/sphx_glr_Natural_Neighbor_Verification_001.png" />
+<p>Using the circumcenter and circumcircle radius information from
+<code class="xref py py-func docutils literal"><span class="pre">metpy.gridding.triangles.find_natural_neighbors()</span></code>, we can visually
+examine the results to see if they are correct.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">draw_circle</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
+    <span class="n">nx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.cos.html#numpy.cos" title="View documentation for numpy.cos"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.deg2rad.html#numpy.deg2rad" title="View documentation for numpy.deg2rad"><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span></a><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">360</span><span class="p">))))</span>
+    <span class="n">ny</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.sin.html#numpy.sin" title="View documentation for numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.deg2rad.html#numpy.deg2rad" title="View documentation for numpy.deg2rad"><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span></a><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">360</span><span class="p">))))</span>
+    <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
+
+
+<span class="n">members</span><span class="p">,</span> <span class="n">tri_info</span> <span class="o">=</span> <span class="n">triangles</span><span class="o">.</span><span class="n">find_natural_neighbors</span><span class="p">(</span><span class="n">tri</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">sim_gridx</span><span class="p">,</span> <span class="n">sim_gridy</span><span class="p">)))</span>
+<span class="n">delaunay_plot_2d</span><span class="p">(</span><span class="n">tri</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">sim_gridx</span><span class="p">,</span> <span class="n">sim_gridy</span><span class="p">,</span> <span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="n">tri_info</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">x_t</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;cc&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">y_t</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;cc&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">members</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">and</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">members</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">draw_circle</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">y_t</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">],</span> <span class="s1">&#39;m-&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: grid 1 &amp; 2&#39;</span><span class="p">)</span>
+        <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate" title="View documentation for matplotlib.pyplot.annotate"><span class="n">plt</span><span class="o">.</span><span class="n">annotate</span></a><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">y_t</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">members</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
+        <span class="n">draw_circle</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">y_t</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">],</span> <span class="s1">&#39;r-&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: grid 0&#39;</span><span class="p">)</span>
+        <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate" title="View documentation for matplotlib.pyplot.annotate"><span class="n">plt</span><span class="o">.</span><span class="n">annotate</span></a><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">y_t</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">members</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">draw_circle</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">y_t</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">],</span> <span class="s1">&#39;b-&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: grid 1&#39;</span><span class="p">)</span>
+        <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate" title="View documentation for matplotlib.pyplot.annotate"><span class="n">plt</span><span class="o">.</span><span class="n">annotate</span></a><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">y_t</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">draw_circle</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">y_t</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">],</span> <span class="s1">&#39;k:&#39;</span><span class="p">,</span> <span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;: no match&#39;</span><span class="p">)</span>
+        <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate" title="View documentation for matplotlib.pyplot.annotate"><span class="n">plt</span><span class="o">.</span><span class="n">annotate</span></a><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">i</span><span class="p">),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x_t</span><span class="p">,</span> <span class="n">y_t</span><span class="p">),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">9</span><span class="p">)</span>
+
+<a href="http://matplotlib.org/api/axes_api.html#matplotlib.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/legend_api.html#matplotlib.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_Natural_Neighbor_Verification_002.png" class="align-center" src="../../_images/sphx_glr_Natural_Neighbor_Verification_002.png" />
+<p>What?....the circle from triangle 8 looks pretty darn close. Why isn&#8217;t
+grid 0 included in that circle?</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">x_t</span><span class="p">,</span> <span class="n">y_t</span> <span class="o">=</span> <span class="n">tri_info</span><span class="p">[</span><span class="mi">8</span><span class="p">][</span><span class="s1">&#39;cc&#39;</span><span class="p">]</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">tri_info</span><span class="p">[</span><span class="mi">8</span><span class="p">][</span><span class="s1">&#39;r&#39;</span><span class="p">]</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Distance between grid0 and Triangle 8 circumcenter:&#39;</span><span class="p">,</span>
+      <span class="n">euclidean</span><span class="p">([</span><span class="n">x_t</span><span class="p">,</span> <span class="n">y_t</span><span class="p">],</span> <span class="p">[</span><span class="n">sim_gridx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sim_gridy</span><span class="p">[</span><span class="mi">0</span><span class="p">]]))</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;Triangle 8 circumradius:&#39;</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">Distance</span> <span class="n">between</span> <span class="n">grid0</span> <span class="ow">and</span> <span class="n">Triangle</span> <span class="mi">8</span> <span class="n">circumcenter</span><span class="p">:</span> <span class="mf">25.30650398368644</span>
+<span class="n">Triangle</span> <span class="mi">8</span> <span class="n">circumradius</span><span class="p">:</span> <span class="mf">25.2587678</span>
+</pre></div>
+</div>
+<p>Lets do a manual check of the above interpolation value for grid 0 (southernmost grid)
+Grab the circumcenters and radii for natural neighbors</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">cc</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="n">tri_info</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="s1">&#39;cc&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+<span class="n">r</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="n">tri_info</span><span class="p">[</span><span class="n">m</span><span class="p">][</span><span class="s1">&#39;r&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">members</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;circumcenters:</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">cc</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="s1">&#39;radii</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">r</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="n">circumcenters</span><span class="p">:</span>
+ <span class="p">[[</span> <span class="mf">36.32995951</span>  <span class="mf">48.24358974</span><span class="p">]</span>
+ <span class="p">[</span> <span class="mf">21.</span>          <span class="mf">40.15277778</span><span class="p">]]</span>
+<span class="n">radii</span>
+ <span class="p">[</span> <span class="mf">24.35529419</span>  <span class="mf">20.73432492</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Draw the natural neighbor triangles and their circumcenters. Also plot a <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/tutorial/spatial.html#voronoi-diagrams">Voronoi diagram</a>
+which serves as a complementary (but not necessary)
+spatial data structure that we use here simply to show areal ratios.
+Notice that the two natural neighbor triangle circumcenters are also vertices
+in the Voronoi plot (green dots), and the observations are in the the polygons (blue dots).</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">vor</span> <span class="o">=</span> <span class="n">Voronoi</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">)))</span>
+<span class="n">voronoi_plot_2d</span><span class="p">(</span><span class="n">vor</span><span class="p">)</span>
+
+<span class="n">nn_ind</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<span class="n">z_0</span> <span class="o">=</span> <span class="n">zp</span><span class="p">[</span><span class="n">nn_ind</span><span class="p">]</span>
+<span class="n">x_0</span> <span class="o">=</span> <span class="n">xp</span><span class="p">[</span><span class="n">nn_ind</span><span class="p">]</span>
+<span class="n">y_0</span> <span class="o">=</span> <span class="n">yp</span><span class="p">[</span><span class="n">nn_ind</span><span class="p">]</span>
+
+<span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x_0</span><span class="p">,</span> <span class="n">y_0</span><span class="p">,</span> <span class="n">z_0</span><span class="p">):</span>
+    <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate" title="View documentation for matplotlib.pyplot.annotate"><span class="n">plt</span><span class="o">.</span><span class="n">annotate</span></a><span class="p">(</span><span class="s1">&#39;{}, {}: {:.3f} F&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">sim_gridx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sim_gridy</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;k+&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate" title="View documentation for matplotlib.pyplot.annotate"><span class="n">plt</span><span class="o">.</span><span class="n">annotate</span></a><span class="p">(</span><span class="s1">&#39;{}, {}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">sim_gridx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sim_gridy</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">sim_gridx</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="n">sim_gridy</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">cc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">cc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">fillstyle</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">,</span>
+         <span class="n">label</span><span class="o">=</span><span class="s1">&#39;natural neighbor</span><span class="se">\n</span><span class="s1">circumcenters&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">center</span> <span class="ow">in</span> <span class="n">cc</span><span class="p">:</span>
+    <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate" title="View documentation for matplotlib.pyplot.annotate"><span class="n">plt</span><span class="o">.</span><span class="n">annotate</span></a><span class="p">(</span><span class="s1">&#39;{:.3f}, {:.3f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span>
+                 <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">center</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">center</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span>
+
+<span class="n">tris</span> <span class="o">=</span> <span class="n">tri</span><span class="o">.</span><span class="n">points</span><span class="p">[</span><span class="n">tri</span><span class="o">.</span><span class="n">simplices</span><span class="p">[</span><span class="n">members</span><span class="p">[</span><span class="mi">0</span><span class="p">]]]</span>
+<span class="k">for</span> <span class="n">triangle</span> <span class="ow">in</span> <span class="n">tris</span><span class="p">:</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">triangle</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">triangle</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">triangle</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">triangle</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">triangle</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]]</span>
+    <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="s1">&#39;:&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+
+<a href="http://matplotlib.org/api/legend_api.html#matplotlib.legend" title="View documentation for matplotlib.pyplot.legend"><span class="n">plt</span><span class="o">.</span><span class="n">legend</span></a><span class="p">()</span>
+<a href="http://matplotlib.org/api/axes_api.html#matplotlib.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">()</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">draw_polygon_with_info</span><span class="p">(</span><span class="n">polygon</span><span class="p">,</span> <span class="n">off_x</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">off_y</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Draw one of the natural neighbor polygons with some information.&quot;&quot;&quot;</span>
+    <span class="n">pts</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">polygon</span><span class="p">)[</span><span class="n">ConvexHull</span><span class="p">(</span><span class="n">polygon</span><span class="p">)</span><span class="o">.</span><span class="n">vertices</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">pt</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pts</span><span class="p">):</span>
+        <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.plot" title="View documentation for matplotlib.pyplot.plot"><span class="n">plt</span><span class="o">.</span><span class="n">plot</span></a><span class="p">([</span><span class="n">pt</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">pts</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)][</span><span class="mi">0</span><span class="p">]],</span>
+                 <span class="p">[</span><span class="n">pt</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pts</span><span class="p">[(</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">)][</span><span class="mi">1</span><span class="p">]],</span> <span class="s1">&#39;k-&#39;</span><span class="p">)</span>
+
+    <span class="n">avex</span><span class="p">,</span> <span class="n">avey</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.mean.html#numpy.mean" title="View documentation for numpy.mean"><span class="n">np</span><span class="o">.</span><span class="n">mean</span></a><span class="p">(</span><span class="n">pts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.annotate" title="View documentation for matplotlib.pyplot.annotate"><span class="n">plt</span><span class="o">.</span><span class="n">annotate</span></a><span class="p">(</span><span class="s1">&#39;area: {:.3f}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">polygons</span><span class="o">.</span><span class="n">area</span><span class="p">(</span><span class="n">pts</span><span class="p">)),</span> <span class="n">xy</span><span class="o">=</span><span class="p">(</span><span class="n">avex</span> <span class="o">+</span> <span class="n">off_x</span><span class="p">,</span> <span class="n">avey</span> <span class="o">+</span> <span class="n">off_y</span><span class="p">),</span>
+                 <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+
+
+<span class="n">cc1</span> <span class="o">=</span> <span class="n">triangles</span><span class="o">.</span><span class="n">circumcenter</span><span class="p">((</span><span class="mi">53</span><span class="p">,</span> <span class="mi">66</span><span class="p">),</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+<span class="n">cc2</span> <span class="o">=</span> <span class="n">triangles</span><span class="o">.</span><span class="n">circumcenter</span><span class="p">((</span><span class="mi">34</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="mi">53</span><span class="p">,</span> <span class="mi">66</span><span class="p">),</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+<span class="n">draw_polygon_with_info</span><span class="p">([</span><span class="n">cc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cc1</span><span class="p">,</span> <span class="n">cc2</span><span class="p">])</span>
+
+<span class="n">cc1</span> <span class="o">=</span> <span class="n">triangles</span><span class="o">.</span><span class="n">circumcenter</span><span class="p">((</span><span class="mi">53</span><span class="p">,</span> <span class="mi">66</span><span class="p">),</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+<span class="n">cc2</span> <span class="o">=</span> <span class="n">triangles</span><span class="o">.</span><span class="n">circumcenter</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+<span class="n">draw_polygon_with_info</span><span class="p">([</span><span class="n">cc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cc1</span><span class="p">,</span> <span class="n">cc2</span><span class="p">],</span> <span class="n">off_x</span><span class="o">=-</span><span class="mi">9</span><span class="p">,</span> <span class="n">off_y</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">cc1</span> <span class="o">=</span> <span class="n">triangles</span><span class="o">.</span><span class="n">circumcenter</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+<span class="n">cc2</span> <span class="o">=</span> <span class="n">triangles</span><span class="o">.</span><span class="n">circumcenter</span><span class="p">((</span><span class="mi">15</span><span class="p">,</span> <span class="mi">60</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+<span class="n">draw_polygon_with_info</span><span class="p">([</span><span class="n">cc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cc1</span><span class="p">,</span> <span class="n">cc2</span><span class="p">],</span> <span class="n">off_x</span><span class="o">=-</span><span class="mi">15</span><span class="p">)</span>
+
+<span class="n">cc1</span> <span class="o">=</span> <span class="n">triangles</span><span class="o">.</span><span class="n">circumcenter</span><span class="p">((</span><span class="mi">8</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+<span class="n">cc2</span> <span class="o">=</span> <span class="n">triangles</span><span class="o">.</span><span class="n">circumcenter</span><span class="p">((</span><span class="mi">34</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span> <span class="p">(</span><span class="mi">53</span><span class="p">,</span> <span class="mi">66</span><span class="p">),</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">))</span>
+<span class="n">draw_polygon_with_info</span><span class="p">([</span><span class="n">cc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cc</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cc1</span><span class="p">,</span> <span class="n">cc2</span><span class="p">])</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_Natural_Neighbor_Verification_003.png" class="align-center" src="../../_images/sphx_glr_Natural_Neighbor_Verification_003.png" />
+<p>Put all of the generated polygon areas and their affiliated values in arrays.
+Calculate the total area of all of the generated polygons.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">areas</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">60.434</span><span class="p">,</span> <span class="mf">448.296</span><span class="p">,</span> <span class="mf">25.916</span><span class="p">,</span> <span class="mf">70.647</span><span class="p">])</span>
+<span class="n">values</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">0.064</span><span class="p">,</span> <span class="mf">1.156</span><span class="p">,</span> <span class="mf">2.809</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
+<span class="n">total_area</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.sum.html#numpy.sum" title="View documentation for numpy.sum"><span class="n">np</span><span class="o">.</span><span class="n">sum</span></a><span class="p">(</span><span class="n">areas</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">total_area</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="mf">605.293</span>
+</pre></div>
+</div>
+<p>For each polygon area, calculate its percent of total area.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">proportions</span> <span class="o">=</span> <span class="n">areas</span> <span class="o">/</span> <span class="n">total_area</span>
+<span class="k">print</span><span class="p">(</span><span class="n">proportions</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="mf">0.09984256</span>  <span class="mf">0.74062644</span>  <span class="mf">0.04281563</span>  <span class="mf">0.11671538</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>Multiply the percent of total area by the respective values.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">contributions</span> <span class="o">=</span> <span class="n">proportions</span> <span class="o">*</span> <span class="n">values</span>
+<span class="k">print</span><span class="p">(</span><span class="n">contributions</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="mf">0.00638992</span>  <span class="mf">0.85616417</span>  <span class="mf">0.1202691</span>   <span class="mf">0.02626096</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>The sum of this array is the interpolation value!</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">interpolation_value</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.sum.html#numpy.sum" title="View documentation for numpy.sum"><span class="n">np</span><span class="o">.</span><span class="n">sum</span></a><span class="p">(</span><span class="n">contributions</span><span class="p">)</span>
+<span class="n">function_output</span> <span class="o">=</span> <span class="n">nn_point</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">zp</span><span class="p">,</span> <span class="p">(</span><span class="n">sim_gridx</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">sim_gridy</span><span class="p">[</span><span class="mi">0</span><span class="p">]),</span> <span class="n">tri</span><span class="p">,</span> <span class="n">members</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tri_info</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">interpolation_value</span><span class="p">,</span> <span class="n">function_output</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="mf">1.00908414768</span> <span class="mf">1.00908424443</span>
+</pre></div>
+</div>
+<p>The values are slightly different due to truncating the area values in
+the above visual example to the 3rd decimal place.</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.229 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/Natural_Neighbor_Verification.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Natural_Neighbor_Verification.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/Natural_Neighbor_Verification.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Natural_Neighbor_Verification.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../plots/Skew-T_Layout.html" class="btn btn-neutral float-right" title="Skew-T with Complex Layout" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Inverse_Distance_Verification.html" class="btn btn-neutral" title="Inverse Distance Verification: Cressman and Barnes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 18:59:21.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.4.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

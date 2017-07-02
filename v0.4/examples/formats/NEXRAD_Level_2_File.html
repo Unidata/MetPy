@@ -1,0 +1,327 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>NEXRAD Level 2 File &mdash; MetPy 0.4.3 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/formats/NEXRAD_Level_2_File.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 0.4.3 documentation" href="../../index.html"/>
+        <link rel="up" title="MetPy Examples" href="../index.html"/>
+        <link rel="next" title="Find Natural Neighbors Verification" href="../gridding/Find_Natural_Neighbors_Verification.html"/>
+        <link rel="prev" title="GINI Water Vapor Imagery" href="GINI_Water_Vapor.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#calculations">Calculations</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#file-formats">File Formats</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="NEXRAD_Level_3_File.html">NEXRAD Level 3 File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="GINI_Water_Vapor.html">GINI Water Vapor Imagery</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">NEXRAD Level 2 File</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#gridding">Gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer&#8217;s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">MetPy Examples</a> &raquo;</li>
+        
+      <li>NEXRAD Level 2 File</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/examples/formats/NEXRAD_Level_2_File.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="nexrad-level-2-file">
+<span id="sphx-glr-examples-formats-nexrad-level-2-file-py"></span><h1>NEXRAD Level 2 File<a class="headerlink" href="#nexrad-level-2-file" title="Permalink to this headline">¶</a></h1>
+<p>Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.io</span> <span class="kn">import</span> <span class="n">Level2File</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <span class="n">ctables</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Open the file</span>
+<span class="n">name</span> <span class="o">=</span> <span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;KTLX20130520_201643_V06.gz&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<span class="n">f</span> <span class="o">=</span> <span class="n">Level2File</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">sweeps</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="n">Msg31DataHdr</span><span class="p">(</span><span class="n">stid</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;KTLX&#39;</span><span class="p">,</span> <span class="n">time_ms</span><span class="o">=</span><span class="mi">73003850</span><span class="p">,</span> <span class="n">date</span><span class="o">=</span><span class="mi">15846</span><span class="p">,</span> <span class="n">az_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">az_angle</span><span class="o">=</span><span class="mf">123.20343017578125</span><span class="p">,</span> <span class="n">compression</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">rad_length</span><span class="o">=</span><span class="mi">6856</span><span class="p">,</span> <span class="n">az_spacing</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">rad_status</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">el_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">sector_num</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">el_angle</span><span class="o">=</span><span class="mf">0.5987548828125</span><span class="p">,</span> <span class="n">spot_blanking</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">az_index_mode</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">num_data_blks</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">vol_const_ptr</span><span class="o">=</span><span class="mi">68</span><span class="p">,</span> <span class="n">el_const_ptr</span><span class="o">=</span><span class="mi">112</span><span class="p">,</span> <span class="n">rad_const_ptr</span><span class="o">=</span><span class="mi">124</span><span class="p">),</span> <span class="n">VolConsts</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;VOL&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">44</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">minor</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">lat</span><span class="o">=</span><span class="mf">35.33305740356445</span><span class="p">,</span> <span class="n">lon</span><span class="o">=-</span><span class="mf">97.27748107910156</span><span class="p">,</span> <span class="n">site_amsl</span><span class="o">=</span><span class="mi">369</span><span class="p">,</span> <span class="n">feedhorn_agl</span><span class="o">=</span><span class="mi">19</span><span class="p">,</span> <span class="n">calib_dbz</span><span class="o">=-</span><span class="mf">43.72919845581055</span><span class="p">,</span> <span class="n">txpower_h</span><span class="o">=</span><span class="mf">185.05685424804688</span><span class="p">,</span> <span class="n">txpower_v</span><span class="o">=</span><span class="mf">181.45559692382812</span><span class="p">,</span> <span class="n">sys_zdr</span><span class="o">=-</span><span class="mf">0.08510557562112808</span><span class="p">,</span> <span class="n">phidp0</span><span class="o">=</span><span class="mf">25.0</span><span class="p">,</span> <span class="n">vcp</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">processing_status</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">ElConsts</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;ELV&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">atmos_atten</span><span class="o">=-</span><span class="mf">0.012</span><span class="p">,</span> <span class="n">calib_dbz0</span><span class="o">=-</span><span class="mf">42.4375</span><span class="p">),</span> <span class="n">RadConstsV1</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;R&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;RAD&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">unamb_range</span><span class="o">=</span><span class="mf">466.0</span><span class="p">,</span> <span class="n">noise_h</span><span class="o">=-</span><span class="mf">79.71426391601562</span><span class="p">,</span> <span class="n">noise_v</span><span class="o">=-</span><span class="mf">79.39848327636719</span><span class="p">,</span> <span class="n">nyq_vel</span><span class="o">=</span><span class="mf">8.3</span><span class="p">),</span> <span class="p">{</span><span class="sa">b</span><span class="s1">&#39;ZDR&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">DataBlockHdr</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;ZDR&#39;</span><span class="p">,</span> <span class="n">reserved</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_gates</span><span class="o">=</span><span class="mi">1192</span><span class="p">,</span> <span class="n">first_gate</span><span class="o">=</span><span class="mf">2.125</span><span class="p">,</span> <span class="n">gate_width</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">tover</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">snr_thresh</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">recombined</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_size</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">16.0</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">128.0</span><span class="p">),</span> <span class="n">array</span><span class="p">([</span> <span class="mf">2.375</span> <span class="p">,</span>  <span class="mf">6.1875</span><span class="p">,</span>  <span class="mf">3.75</span>  <span class="p">,</span> <span class="o">...</span><span class="p">,</span>     <span class="n">nan</span><span class="p">,</span>     <span class="n">nan</span><span class="p">,</span>     <span class="n">nan</span><span class="p">])),</span> <span class="sa">b</span><span class="s1">&#39;PHI&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">DataBlockHdr</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;PHI&#39;</span><span class="p">,</span> <span class="n">reserved</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_gates</span><span class="o">=</span><span class="mi">1192</span><span class="p">,</span> <span class="n">first_gate</span><span class="o">=</span><span class="mf">2.125</span><span class="p">,</span> <span class="n">gate_width</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">tover</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">snr_thresh</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">recombined</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_size</span><span class="o">=</span><span class="s1">&#39;H&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">2.8361001014709473</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">2.0</span><span class="p">),</span> <span class="n">array</span><span class="p">([</span> <span class="mf">32.79150829</span><span class="p">,</span>  <span class="mf">41.60642988</span><span class="p">,</span>  <span class="mf">30.32333025</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>          <span class="n">nan</span><span class="p">,</span>
+                <span class="n">nan</span><span class="p">,</span>          <span class="n">nan</span><span class="p">])),</span> <span class="sa">b</span><span class="s1">&#39;RHO&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">DataBlockHdr</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;RHO&#39;</span><span class="p">,</span> <span class="n">reserved</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_gates</span><span class="o">=</span><span class="mi">1192</span><span class="p">,</span> <span class="n">first_gate</span><span class="o">=</span><span class="mf">2.125</span><span class="p">,</span> <span class="n">gate_width</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">tover</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">snr_thresh</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">recombined</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_size</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">300.0</span><span class="p">,</span> <span class="n">offset</span><span class="o">=-</span><span class="mf">60.5</span><span class="p">),</span> <span class="n">array</span><span class="p">([</span> <span class="mf">0.995</span>     <span class="p">,</span>  <span class="mf">0.95833333</span><span class="p">,</span>  <span class="mf">0.99833333</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span>         <span class="n">nan</span><span class="p">,</span>
+               <span class="n">nan</span><span class="p">,</span>         <span class="n">nan</span><span class="p">])),</span> <span class="sa">b</span><span class="s1">&#39;REF&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">DataBlockHdr</span><span class="p">(</span><span class="nb">type</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;D&#39;</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="sa">b</span><span class="s1">&#39;REF&#39;</span><span class="p">,</span> <span class="n">reserved</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">num_gates</span><span class="o">=</span><span class="mi">1832</span><span class="p">,</span> <span class="n">first_gate</span><span class="o">=</span><span class="mf">2.125</span><span class="p">,</span> <span class="n">gate_width</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">tover</span><span class="o">=</span><span class="mf">5.0</span><span class="p">,</span> <span class="n">snr_thresh</span><span class="o">=</span><span class="mf">1.6</span><span class="p">,</span> <span class="n">recombined</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">data_size</span><span class="o">=</span><span class="s1">&#39;B&#39;</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">66.0</span><span class="p">),</span> <span class="n">array</span><span class="p">([</span>  <span class="mf">6.5</span><span class="p">,</span>   <span class="mf">2.5</span><span class="p">,</span>  <span class="mf">11.</span> <span class="p">,</span> <span class="o">...</span><span class="p">,</span>   <span class="n">nan</span><span class="p">,</span>   <span class="n">nan</span><span class="p">,</span>   <span class="n">nan</span><span class="p">]))})</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Pull data out of the file</span>
+<span class="n">sweep</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># First item in ray is header, which has azimuth angle</span>
+<span class="n">az</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="n">ray</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">az_angle</span> <span class="k">for</span> <span class="n">ray</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">sweeps</span><span class="p">[</span><span class="n">sweep</span><span class="p">]])</span>
+
+<span class="c1"># 5th item is a dict mapping a var name (byte string) to a tuple</span>
+<span class="c1"># of (header, data array)</span>
+<span class="n">ref_hdr</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">sweeps</span><span class="p">[</span><span class="n">sweep</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">][</span><span class="sa">b</span><span class="s1">&#39;REF&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">ref_range</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">ref_hdr</span><span class="o">.</span><span class="n">num_gates</span><span class="p">)</span> <span class="o">*</span> <span class="n">ref_hdr</span><span class="o">.</span><span class="n">gate_width</span> <span class="o">+</span> <span class="n">ref_hdr</span><span class="o">.</span><span class="n">first_gate</span>
+<span class="n">ref</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="n">ray</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="sa">b</span><span class="s1">&#39;REF&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">ray</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">sweeps</span><span class="p">[</span><span class="n">sweep</span><span class="p">]])</span>
+
+<span class="n">rho_hdr</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">sweeps</span><span class="p">[</span><span class="n">sweep</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="mi">4</span><span class="p">][</span><span class="sa">b</span><span class="s1">&#39;RHO&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">rho_range</span> <span class="o">=</span> <span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="n">rho_hdr</span><span class="o">.</span><span class="n">num_gates</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">*</span> <span class="n">rho_hdr</span><span class="o">.</span><span class="n">gate_width</span> <span class="o">+</span> <span class="n">rho_hdr</span><span class="o">.</span><span class="n">first_gate</span>
+<span class="n">rho</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="n">ray</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="sa">b</span><span class="s1">&#39;RHO&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">ray</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">sweeps</span><span class="p">[</span><span class="n">sweep</span><span class="p">]])</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">var_data</span><span class="p">,</span> <span class="n">var_range</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="n">ref</span><span class="p">,</span> <span class="n">rho</span><span class="p">),</span> <span class="p">(</span><span class="n">ref_range</span><span class="p">,</span> <span class="n">rho_range</span><span class="p">),</span> <span class="n">axes</span><span class="p">):</span>
+    <span class="c1"># Turn into an array, then mask</span>
+    <span class="n">data</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.ma.array"><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">var_data</span><span class="p">)</span>
+    <span class="n">data</span><span class="p">[</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.isnan.html#numpy.isnan" title="View documentation for numpy.isnan"><span class="n">np</span><span class="o">.</span><span class="n">isnan</span></a><span class="p">(</span><span class="n">data</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked</span>
+
+    <span class="c1"># Convert az,range to x,y</span>
+    <span class="n">xlocs</span> <span class="o">=</span> <span class="n">var_range</span> <span class="o">*</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.sin.html#numpy.sin" title="View documentation for numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.deg2rad.html#numpy.deg2rad" title="View documentation for numpy.deg2rad"><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span></a><span class="p">(</span><span class="n">az</span><span class="p">[:,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/arrays.indexing.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span></a><span class="p">]))</span>
+    <span class="n">ylocs</span> <span class="o">=</span> <span class="n">var_range</span> <span class="o">*</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.cos.html#numpy.cos" title="View documentation for numpy.cos"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/generated/numpy.deg2rad.html#numpy.deg2rad" title="View documentation for numpy.deg2rad"><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span></a><span class="p">(</span><span class="n">az</span><span class="p">[:,</span> <a href="http://docs.scipy.org/doc/numpy-1.9.1/reference/arrays.indexing.html#numpy.newaxis" title="View documentation for numpy.newaxis"><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span></a><span class="p">]))</span>
+
+    <span class="c1"># Plot the data</span>
+    <span class="n">cmap</span> <span class="o">=</span> <span class="n">ctables</span><span class="o">.</span><span class="n">registry</span><span class="o">.</span><span class="n">get_colortable</span><span class="p">(</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">xlocs</span><span class="p">,</span> <span class="n">ylocs</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../../_images/sphx_glr_NEXRAD_Level_2_File_001.png" class="align-center" src="../../_images/sphx_glr_NEXRAD_Level_2_File_001.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  3.046 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/NEXRAD_Level_2_File.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">NEXRAD_Level_2_File.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../../_downloads/NEXRAD_Level_2_File.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">NEXRAD_Level_2_File.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="http://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../gridding/Find_Natural_Neighbors_Verification.html" class="btn btn-neutral float-right" title="Find Natural Neighbors Verification" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="GINI_Water_Vapor.html" class="btn btn-neutral" title="GINI Water Vapor Imagery" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 18:59:21.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.4.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

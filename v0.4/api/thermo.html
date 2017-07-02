@@ -1,0 +1,729 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Thermodynamic Calculations &mdash; MetPy 0.4.3 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/thermo.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 0.4.3 documentation" href="../index.html"/>
+        <link rel="up" title="metpy.calc" href="calc.html"/>
+        <link rel="next" title="Turbulence Time Series Calculations" href="turbulence.html"/>
+        <link rel="prev" title="Kinematic Calculations" href="kinematics.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.4.3
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html"><code class="docutils literal"><span class="pre">metpy.constants</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html"><code class="docutils literal"><span class="pre">metpy.units</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html"><code class="docutils literal"><span class="pre">metpy.io</span></code></a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="calc.html"><code class="docutils literal"><span class="pre">metpy.calc</span></code></a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="basic.html">Basic Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="kinematics.html">Kinematic Calculations</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Thermodynamic Calculations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="turbulence.html">Turbulence Time Series Calculations</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html"><code class="docutils literal"><span class="pre">metpy.plots</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer&#8217;s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">The MetPy API</a> &raquo;</li>
+        
+          <li><a href="calc.html"><code class="docutils literal"><span class="pre">metpy.calc</span></code></a> &raquo;</li>
+        
+      <li>Thermodynamic Calculations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/thermo.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-metpy.calc.thermo">
+<span id="thermodynamic-calculations"></span><h1>Thermodynamic Calculations<a class="headerlink" href="#module-metpy.calc.thermo" title="Permalink to this headline">¶</a></h1>
+<p>Contains a collection of thermodynamic calculations.</p>
+<dl class="function">
+<dt id="metpy.calc.thermo.potential_temperature">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">potential_temperature</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.potential_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the potential temperature.</p>
+<p>Uses the Poisson equation to calculation the potential temperature
+given <cite>pressure</cite> and <cite>temperature</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pressure</strong> (<cite>pint.Quantity</cite>) &#8211; The total atmospheric pressure</li>
+<li><strong>temperature</strong> (<cite>pint.Quantity</cite>) &#8211; The temperature</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>pint.Quantity</cite> &#8211; The potential temperature corresponding to the the temperature and
+pressure.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.thermo.dry_lapse" title="metpy.calc.thermo.dry_lapse"><code class="xref py py-func docutils literal"><span class="pre">dry_lapse()</span></code></a></p>
+</div>
+<p class="rubric">Notes</p>
+<p>Formula:</p>
+<div class="math">
+\[\Theta = T (P_0 / P)^\kappa\]</div>
+<p class="rubric">Examples</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">potential_temperature</span><span class="p">(</span><span class="mf">800.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span><span class="p">,</span> <span class="mf">273.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span>
+<span class="go">290.9814150577374</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.dry_lapse">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">dry_lapse</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.dry_lapse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the temperature at a level assuming only dry processes.</p>
+<p>This function lifts a parcel starting at <cite>temperature</cite>, conserving
+potential temperature. The starting pressure should be the first item in
+the <cite>pressure</cite> array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pressure</strong> (<cite>pint.Quantity</cite>) &#8211; The atmospheric pressure level(s) of interest</li>
+<li><strong>temperature</strong> (<cite>pint.Quantity</cite>) &#8211; The starting temperature</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>pint.Quantity</cite> &#8211; The resulting parcel temperature at levels given by <cite>pressure</cite></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="docutils">
+<dt><a class="reference internal" href="#metpy.calc.thermo.moist_lapse" title="metpy.calc.thermo.moist_lapse"><code class="xref py py-func docutils literal"><span class="pre">moist_lapse()</span></code></a></dt>
+<dd>Calculate parcel temperature assuming liquid saturation processes</dd>
+<dt><a class="reference internal" href="#metpy.calc.thermo.parcel_profile" title="metpy.calc.thermo.parcel_profile"><code class="xref py py-func docutils literal"><span class="pre">parcel_profile()</span></code></a></dt>
+<dd>Calculate complete parcel profile</dd>
+</dl>
+<p class="last"><a class="reference internal" href="#metpy.calc.thermo.potential_temperature" title="metpy.calc.thermo.potential_temperature"><code class="xref py py-func docutils literal"><span class="pre">potential_temperature()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.moist_lapse">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">moist_lapse</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.moist_lapse" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the temperature at a level assuming liquid saturation processes.</p>
+<p>This function lifts a parcel starting at <cite>temperature</cite>. The starting
+pressure should be the first item in the <cite>pressure</cite> array. Essentially,
+this function is calculating moist pseudo-adiabats.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pressure</strong> (<cite>pint.Quantity</cite>) &#8211; The atmospheric pressure level(s) of interest</li>
+<li><strong>temperature</strong> (<cite>pint.Quantity</cite>) &#8211; The starting temperature</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>pint.Quantity</cite> &#8211; The temperature corresponding to the the starting temperature and
+pressure levels.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#metpy.calc.thermo.dry_lapse" title="metpy.calc.thermo.dry_lapse"><code class="xref py py-func docutils literal"><span class="pre">dry_lapse()</span></code></a></dt>
+<dd>Calculate parcel temperature assuming dry adiabatic processes</dd>
+<dt><a class="reference internal" href="#metpy.calc.thermo.parcel_profile" title="metpy.calc.thermo.parcel_profile"><code class="xref py py-func docutils literal"><span class="pre">parcel_profile()</span></code></a></dt>
+<dd>Calculate complete parcel profile</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>This function is implemented by integrating the following differential
+equation:</p>
+<div class="math">
+\[\frac{dT}{dP} = \frac{1}{P} \frac{R_d T + L_v r_s}
+{C_{pd} + \frac{L_v^2 r_s \epsilon}{R_d T^2}}\]</div>
+<p>This equation comes from <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Bakhshaii, A. and R. Stull, 2013: Saturated Pseudoadiabats&#8211;A
+Noniterative Approximation. J. Appl. Meteor. Clim., 52, 5-15.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.lcl">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">lcl</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>dewpt</em>, <em>max_iters=50</em>, <em>eps=0.01</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.lcl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the lifted condensation level (LCL) using from the starting point.</p>
+<p>The starting state for the parcel is defined by <cite>temperature</cite>, <cite>dewpt</cite>,
+and <cite>pressure</cite>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pressure</strong> (<cite>pint.Quantity</cite>) &#8211; The starting atmospheric pressure</li>
+<li><strong>temperature</strong> (<cite>pint.Quantity</cite>) &#8211; The starting temperature</li>
+<li><strong>dewpt</strong> (<cite>pint.Quantity</cite>) &#8211; The starting dew point</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><cite>pint.Quantity</cite> &#8211; The LCL</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
+<li><strong>max_iters</strong> (<em>int, optional</em>) &#8211; The maximum number of iterations to use in calculation, defaults to 50.</li>
+<li><strong>eps</strong> (<em>float, optional</em>) &#8211; The desired absolute error in the calculated value, defaults to 1e-2.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.thermo.parcel_profile" title="metpy.calc.thermo.parcel_profile"><code class="xref py py-func docutils literal"><span class="pre">parcel_profile()</span></code></a></p>
+</div>
+<p class="rubric">Notes</p>
+<p>This function is implemented using an iterative approach to solve for the
+LCL. The basic algorithm is:</p>
+<ol class="arabic simple">
+<li>Find the dew point from the LCL pressure and starting mixing ratio</li>
+<li>Find the LCL pressure from the starting temperature and dewpoint</li>
+<li>Iterate until convergence</li>
+</ol>
+<p>The function is guaranteed to finish by virtue of the <cite>max_iters</cite> counter.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.lfc">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">lfc</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>dewpt</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.lfc" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the level of free convection (LFC).</p>
+<p>This works by finding the first intersection of the ideal parcel path and
+the measured parcel temperature.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pressure</strong> (<cite>pint.Quantity</cite>) &#8211; The atmospheric pressure</li>
+<li><strong>temperature</strong> (<cite>pint.Quantity</cite>) &#8211; The temperature at the levels given by <cite>pressure</cite></li>
+<li><strong>dewpt</strong> (<cite>pint.Quantity</cite>) &#8211; The dew point at the levels given by <cite>pressure</cite></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>pint.Quantity</cite> &#8211; The LFC</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.thermo.parcel_profile" title="metpy.calc.thermo.parcel_profile"><code class="xref py py-func docutils literal"><span class="pre">parcel_profile()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.parcel_profile">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">parcel_profile</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>dewpt</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.parcel_profile" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the profile a parcel takes through the atmosphere.</p>
+<p>The parcel starts at <cite>temperature</cite>, and <cite>dewpt</cite>, lifted up
+dry adiabatically to the LCL, and then moist adiabatically from there.
+<cite>pressure</cite> specifies the pressure levels for the profile.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pressure</strong> (<cite>pint.Quantity</cite>) &#8211; The atmospheric pressure level(s) of interest. The first entry should be the starting
+point pressure.</li>
+<li><strong>temperature</strong> (<cite>pint.Quantity</cite>) &#8211; The starting temperature</li>
+<li><strong>dewpt</strong> (<cite>pint.Quantity</cite>) &#8211; The starting dew point</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>pint.Quantity</cite> &#8211; The parcel temperatures at the specified pressure levels.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.thermo.lcl" title="metpy.calc.thermo.lcl"><code class="xref py py-func docutils literal"><span class="pre">lcl()</span></code></a>, <a class="reference internal" href="#metpy.calc.thermo.moist_lapse" title="metpy.calc.thermo.moist_lapse"><code class="xref py py-func docutils literal"><span class="pre">moist_lapse()</span></code></a>, <a class="reference internal" href="#metpy.calc.thermo.dry_lapse" title="metpy.calc.thermo.dry_lapse"><code class="xref py py-func docutils literal"><span class="pre">dry_lapse()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.vapor_pressure">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">vapor_pressure</code><span class="sig-paren">(</span><em>pressure</em>, <em>mixing</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.vapor_pressure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate water vapor (partial) pressure.</p>
+<p>Given total <cite>pressure</cite> and water vapor <cite>mixing</cite> ratio, calculates the
+partial pressure of water vapor.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pressure</strong> (<cite>pint.Quantity</cite>) &#8211; total atmospheric pressure</li>
+<li><strong>mixing</strong> (<cite>pint.Quantity</cite>) &#8211; dimensionless mass mixing ratio</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>pint.Quantity</cite> &#8211; The ambient water vapor (partial) pressure in the same units as
+<cite>pressure</cite>.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This function is a straightforward implementation of the equation given in many places,
+such as <a class="footnote-reference" href="#id4" id="id3">[2]</a>:</p>
+<div class="math">
+\[e = p \frac{r}{r + \epsilon}\]</div>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+Survey. 71.</td></tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.thermo.saturation_vapor_pressure" title="metpy.calc.thermo.saturation_vapor_pressure"><code class="xref py py-func docutils literal"><span class="pre">saturation_vapor_pressure()</span></code></a>, <a class="reference internal" href="#metpy.calc.thermo.dewpoint" title="metpy.calc.thermo.dewpoint"><code class="xref py py-func docutils literal"><span class="pre">dewpoint()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.saturation_vapor_pressure">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">saturation_vapor_pressure</code><span class="sig-paren">(</span><em>temperature</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.saturation_vapor_pressure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the saturation water vapor (partial) pressure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>temperature</strong> (<cite>pint.Quantity</cite>) &#8211; The temperature</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>pint.Quantity</cite> &#8211; The saturation water vapor (partial) pressure</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.thermo.vapor_pressure" title="metpy.calc.thermo.vapor_pressure"><code class="xref py py-func docutils literal"><span class="pre">vapor_pressure()</span></code></a>, <a class="reference internal" href="#metpy.calc.thermo.dewpoint" title="metpy.calc.thermo.dewpoint"><code class="xref py py-func docutils literal"><span class="pre">dewpoint()</span></code></a></p>
+</div>
+<p class="rubric">Notes</p>
+<p>Instead of temperature, dewpoint may be used in order to calculate
+the actual (ambient) water vapor (partial) pressure.</p>
+<p>The formula used is that from Bolton 1980 <a class="footnote-reference" href="#id6" id="id5">[3]</a> for T in degrees Celsius:</p>
+<div class="math">
+\[6.112 e^\frac{17.67T}{T + 243.5}\]</div>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[3]</a></td><td>Bolton, D., 1980: The Computation of Equivalent Potential
+Temperature. Mon. Wea. Rev., 108, 1046-1053.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.dewpoint_rh">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">dewpoint_rh</code><span class="sig-paren">(</span><em>temperature</em>, <em>rh</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.dewpoint_rh" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the ambient dewpoint given air temperature and relative humidity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>temperature</strong> (<cite>pint.Quantity</cite>) &#8211; Air temperature</li>
+<li><strong>rh</strong> (<cite>pint.Quantity</cite>) &#8211; Relative humidity expressed as a ratio in the range [0, 1]</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>pint.Quantity</cite> &#8211; The dew point temperature</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.thermo.dewpoint" title="metpy.calc.thermo.dewpoint"><code class="xref py py-func docutils literal"><span class="pre">dewpoint()</span></code></a>, <a class="reference internal" href="#metpy.calc.thermo.saturation_vapor_pressure" title="metpy.calc.thermo.saturation_vapor_pressure"><code class="xref py py-func docutils literal"><span class="pre">saturation_vapor_pressure()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.dewpoint">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">dewpoint</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.dewpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the ambient dewpoint given the vapor pressure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>e</strong> (<cite>pint.Quantity</cite>) &#8211; Water vapor partial pressure</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><cite>pint.Quantity</cite> &#8211; Dew point temperature</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.thermo.dewpoint_rh" title="metpy.calc.thermo.dewpoint_rh"><code class="xref py py-func docutils literal"><span class="pre">dewpoint_rh()</span></code></a>, <a class="reference internal" href="#metpy.calc.thermo.saturation_vapor_pressure" title="metpy.calc.thermo.saturation_vapor_pressure"><code class="xref py py-func docutils literal"><span class="pre">saturation_vapor_pressure()</span></code></a>, <a class="reference internal" href="#metpy.calc.thermo.vapor_pressure" title="metpy.calc.thermo.vapor_pressure"><code class="xref py py-func docutils literal"><span class="pre">vapor_pressure()</span></code></a></p>
+</div>
+<p class="rubric">Notes</p>
+<p>This function inverts the Bolton 1980 <a class="footnote-reference" href="#id8" id="id7">[4]</a> formula for saturation vapor
+pressure to instead calculate the temperature. This yield the following
+formula for dewpoint in degrees Celsius:</p>
+<div class="math">
+\[T = \frac{243.5 log(e / 6.112)}{17.67 - log(e / 6.112)}\]</div>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id8" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id7">[4]</a></td><td>Bolton, D., 1980: The Computation of Equivalent Potential
+Temperature. Mon. Wea. Rev., 108, 1046-1053.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.mixing_ratio">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">mixing_ratio</code><span class="sig-paren">(</span><em>part_press</em>, <em>tot_press</em>, <em>molecular_weight_ratio=&lt;Quantity(0.6219800858985514</em>, <em>'dimensionless')&gt;</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.mixing_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the mixing ratio of a gas.</p>
+<p>This calculates mixing ratio given its partial pressure and the total pressure of
+the air. There are no required units for the input arrays, other than that
+they have the same units.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>part_press</strong> (<cite>pint.Quantity</cite>) &#8211; Partial pressure of the constituent gas</li>
+<li><strong>tot_press</strong> (<cite>pint.Quantity</cite>) &#8211; Total air pressure</li>
+<li><strong>molecular_weight_ratio</strong> (<cite>pint.Quantity</cite> or float, optional) &#8211; The ratio of the molecular weight of the constituent gas to that assumed
+for air. Defaults to the ratio for water vapor to dry air
+(<span class="math">\(\epsilon\approx0.622\)</span>).</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>pint.Quantity</cite> &#8211; The (mass) mixing ratio, dimensionless (e.g. Kg/Kg or g/g)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>This function is a straightforward implementation of the equation given in many places,
+such as <a class="footnote-reference" href="#id10" id="id9">[5]</a>:</p>
+<div class="math">
+\[r = \epsilon \frac{e}{p - e}\]</div>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id10" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id9">[5]</a></td><td>Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+Survey. 73.</td></tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.calc.thermo.saturation_mixing_ratio" title="metpy.calc.thermo.saturation_mixing_ratio"><code class="xref py py-func docutils literal"><span class="pre">saturation_mixing_ratio()</span></code></a>, <a class="reference internal" href="#metpy.calc.thermo.vapor_pressure" title="metpy.calc.thermo.vapor_pressure"><code class="xref py py-func docutils literal"><span class="pre">vapor_pressure()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.saturation_mixing_ratio">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">saturation_mixing_ratio</code><span class="sig-paren">(</span><em>tot_press</em>, <em>temperature</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.saturation_mixing_ratio" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the saturation mixing ratio of water vapor.</p>
+<p>This calculation is given total pressure and the temperature. The implementation
+uses the formula outlined in <a class="footnote-reference" href="#id12" id="id11">[6]</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>tot_press</strong> (<cite>pint.Quantity</cite>) &#8211; Total atmospheric pressure</li>
+<li><strong>temperature</strong> (<cite>pint.Quantity</cite>) &#8211; The temperature</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>pint.Quantity</cite> &#8211; The saturation mixing ratio, dimensionless</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id12" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id11">[6]</a></td><td>Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+Survey. 73.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.thermo.equivalent_potential_temperature">
+<code class="descclassname">metpy.calc.thermo.</code><code class="descname">equivalent_potential_temperature</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.thermo.equivalent_potential_temperature" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate equivalent potential temperature.</p>
+<p>This calculation must be given an air parcel&#8217;s pressure and temperature.
+The implementation uses the formula outlined in <a class="footnote-reference" href="#id14" id="id13">[7]</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>pressure</strong> (<cite>pint.Quantity</cite>) &#8211; Total atmospheric pressure</li>
+<li><strong>temperature</strong> (<cite>pint.Quantity</cite>) &#8211; The temperature</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><cite>pint.Quantity</cite> &#8211; The corresponding equivalent potential temperature of the parcel</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<div class="math">
+\[\Theta_e = \Theta e^\frac{L_v r_s}{C_{pd} T}\]</div>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id14" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id13">[7]</a></td><td>Hobbs, Peter V. and Wallace, John M., 1977: Atmospheric Science, an Introductory
+Survey. 78-79.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="turbulence.html" class="btn btn-neutral float-right" title="Turbulence Time Series Calculations" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="kinematics.html" class="btn btn-neutral" title="Kinematic Calculations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 18:59:21.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.4.3',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
