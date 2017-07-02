@@ -1,0 +1,480 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Turbulence Time Series Calculations &mdash; MetPy 0.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/turbulence.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 0.2.1 documentation" href="../index.html"/>
+        <link rel="up" title="Calculations" href="calc.html"/>
+        <link rel="next" title="Plotting" href="plots.html"/>
+        <link rel="prev" title="Thermodynamic Calculations" href="thermo.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html">Constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="units.html">Units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">File Formats (I/O)</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="calc.html">Calculations</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="calc.html#metpy-calc"><code class="docutils literal"><span class="pre">metpy.calc</span></code></a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="basic.html">Basic Calculations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="kinematics.html">Kinematic Calculations</a></li>
+<li class="toctree-l4"><a class="reference internal" href="thermo.html">Thermodynamic Calculations</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Turbulence Time Series Calculations</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html#colortables">Colortables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer&#8217;s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">The MetPy API</a> &raquo;</li>
+        
+          <li><a href="calc.html">Calculations</a> &raquo;</li>
+        
+      <li>Turbulence Time Series Calculations</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/turbulence.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="turbulence-time-series-calculations">
+<h1>Turbulence Time Series Calculations<a class="headerlink" href="#turbulence-time-series-calculations" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-metpy.calc.turbulence">
+<span id="metpy-calc-turbulence"></span><h2><a class="reference internal" href="#module-metpy.calc.turbulence" title="metpy.calc.turbulence"><code class="xref py py-mod docutils literal"><span class="pre">metpy.calc.turbulence</span></code></a><a class="headerlink" href="#module-metpy.calc.turbulence" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="metpy.calc.turbulence.get_perturbation">
+<code class="descclassname">metpy.calc.turbulence.</code><code class="descname">get_perturbation</code><span class="sig-paren">(</span><em>ts</em>, <em>axis=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.turbulence.get_perturbation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the perturbation from the mean of a time series.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>ts</strong> (<em>array_like</em>) &#8211; The time series from which you wish to find the perturbation
+time series (perturbation from the mean).</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The perturbation time series.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body">array_like</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><strong>axis</strong> (<em>int</em>) &#8211; The index of the time axis. Default is -1</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>The perturbation time series produced by this function is defined as
+the perturbations about the mean:</p>
+<div class="math">
+\[x(t)^{\prime} = x(t) - \overline{x(t)}\]</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.turbulence.tke">
+<code class="descclassname">metpy.calc.turbulence.</code><code class="descname">tke</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>w</em>, <em>perturbation=False</em>, <em>axis=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.turbulence.tke" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the turbulence kinetic energy (e) from the time series of the
+velocity components.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>array_like</em>) &#8211; The wind component along the x-axis</li>
+<li><strong>v</strong> (<em>array_like</em>) &#8211; The wind component along the y-axis</li>
+<li><strong>w</strong> (<em>array_like</em>) &#8211; The wind component along the z-axis</li>
+<li><strong>perturbation</strong> (<em>{False</em><em>, </em><em>True}</em><em>, </em><em>optional</em>) &#8211; True if the <cite>u</cite>, <cite>v</cite>, and <cite>w</cite> components of wind speed
+supplied to the function are perturbation velocities.
+If False, perturbation velocities will be calculated by
+removing the mean value from each component.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The corresponding turbulence kinetic energy value</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">array_like</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last"><strong>axis</strong> (<em>int</em>) &#8211; The index of the time axis. Default is -1</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#metpy.calc.turbulence.get_perturbation" title="metpy.calc.turbulence.get_perturbation"><code class="xref py py-func docutils literal"><span class="pre">get_perturbation()</span></code></a></dt>
+<dd>Used to compute perturbations if <cite>perturbation</cite> is False.</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>Turbulence Kinetic Energy is computed as:</p>
+<div class="math">
+\[e = 0.5 \sqrt{\overline{u^{\prime2}} +
+\overline{v^{\prime2}} +
+\overline{w^{\prime2}}},\]</div>
+<p>where the velocity components</p>
+<div class="math">
+\[u^{\prime}, v^{\prime}, u^{\prime}\]</div>
+<p>are perturbation velocities. For more information on the subject, please
+see <a class="footnote-reference" href="#id2" id="id1">[1]</a>.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id2" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id1">[1]</a></td><td>Garratt, J.R., 1994: The Atmospheric Boundary Layer. Cambridge
+University Press, 316 pp.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.turbulence.kinematic_flux">
+<code class="descclassname">metpy.calc.turbulence.</code><code class="descname">kinematic_flux</code><span class="sig-paren">(</span><em>vel</em>, <em>b</em>, <em>perturbation=False</em>, <em>axis=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.turbulence.kinematic_flux" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the kinematic flux from the time series of two variables <cite>vel</cite>
+and b. Note that to be a kinematic flux, at least one variable must be
+a component of velocity.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>vel</strong> (<em>array_like</em>) &#8211; A component of velocity</li>
+<li><strong>b</strong> (<em>array_like</em>) &#8211; May be a component of velocity or a scalar variable (e.g.
+Temperature)</li>
+<li><strong>perturbation</strong> (<em>{False</em><em>, </em><em>True}</em><em>, </em><em>optional</em>) &#8211; True if the <cite>vel</cite> and <cite>b</cite> variables are perturbations. If
+False, perturbations will be calculated by removing the
+mean value from each variable.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The corresponding kinematic flux</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">array_like</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last"><strong>axis</strong> (<em>int</em>) &#8211; The index of the time axis. Default is -1</p>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Notes</p>
+<p>A kinematic flux is computed as</p>
+<div class="math">
+\[\overline{u^{\prime} s^{\prime}}\]</div>
+<p>where at the prime notation denotes perturbation variables, and at least
+one variable is perturbation velocity. For example, the vertical kinematic
+momentum flux (two velocity components):</p>
+<div class="math">
+\[\overline{u^{\prime} w^{\prime}}\]</div>
+<p>or the the vertical kinematic heat flux (one velocity component, and one
+scalar):</p>
+<div class="math">
+\[\overline{w^{\prime} T^{\prime}}\]</div>
+<p>If perturbation variables are passed into this function (i.e.
+<cite>perturbation</cite> is True), the kinematic flux is computed using the equation
+above.</p>
+<p>However, the equation above can be rewritten as</p>
+<div class="math">
+\[\overline{us} - \overline{u}~\overline{s}\]</div>
+<p>which is computationally more efficient. This is how the kinematic flux
+is computed in this function if <cite>perturbation</cite> is False.</p>
+<p>For more information on the subject, please see <a class="footnote-reference" href="#id4" id="id3">[2]</a>.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id4" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id3">[2]</a></td><td>Garratt, J.R., 1994: The Atmospheric Boundary Layer. Cambridge
+University Press, 316 pp.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.calc.turbulence.friction_velocity">
+<code class="descclassname">metpy.calc.turbulence.</code><code class="descname">friction_velocity</code><span class="sig-paren">(</span><em>u</em>, <em>w</em>, <em>v=None</em>, <em>perturbation=False</em>, <em>axis=-1</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.calc.turbulence.friction_velocity" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute the friction velocity from the time series of the x, z,
+and optionally y, velocity components.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>array_like</em>) &#8211; The wind component along the x-axis</li>
+<li><strong>w</strong> (<em>array_like</em>) &#8211; The wind component along the z-axis</li>
+<li><strong>v</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; The wind component along the y-axis.</li>
+<li><strong>perturbation</strong> (<em>{False</em><em>, </em><em>True}</em><em>, </em><em>optional</em>) &#8211; True if the <cite>u</cite>, <cite>w</cite>, and <cite>v</cite> components of wind speed
+supplied to the function are perturbation velocities.
+If False, perturbation velocities will be calculated by
+removing the mean value from each component.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The corresponding friction velocity</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">array_like</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
+<tr class="field-even field"><td>&#160;</td><td class="field-body"><p class="first last"><strong>axis</strong> (<em>int</em>) &#8211; The index of the time axis. Default is -1</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<dl class="last docutils">
+<dt><a class="reference internal" href="#metpy.calc.turbulence.kinematic_flux" title="metpy.calc.turbulence.kinematic_flux"><code class="xref py py-func docutils literal"><span class="pre">kinematic_flux()</span></code></a></dt>
+<dd>Used to compute the x-component and y-component vertical kinematic momentum flux(es) used in the computation of the friction velocity.</dd>
+</dl>
+</div>
+<p class="rubric">Notes</p>
+<p>The Friction Velocity is computed as:</p>
+<div class="math">
+\[u_{*} = \sqrt[4]{\left(\overline{u^{\prime}w^{\prime}}\right)^2 +
+\left(\overline{v^{\prime}w^{\prime}}\right)^2},\]</div>
+<p>where :math: overline{u^{prime}w^{prime}} and
+:math: overline{v^{prime}w^{prime}}
+are the x-component and y-components of the vertical kinematic momentum
+flux, respectively. If the optional v component of velocity is not
+supplied to the function, the computation of the friction velocity is
+reduced to</p>
+<div class="math">
+\[u_{*} = \sqrt[4]{\left(\overline{u^{\prime}w^{\prime}}\right)^2}\]</div>
+<p>For more information on the subject, please see <a class="footnote-reference" href="#id6" id="id5">[3]</a>.</p>
+<p class="rubric">References</p>
+<table class="docutils footnote" frame="void" id="id6" rules="none">
+<colgroup><col class="label" /><col /></colgroup>
+<tbody valign="top">
+<tr><td class="label"><a class="fn-backref" href="#id5">[3]</a></td><td>Garratt, J.R., 1994: The Atmospheric Boundary Layer. Cambridge
+University Press, 316 pp.</td></tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="plots.html" class="btn btn-neutral float-right" title="Plotting" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="thermo.html" class="btn btn-neutral" title="Thermodynamic Calculations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, MetPy Developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

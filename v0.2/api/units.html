@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Units &mdash; MetPy 0.2.1 documentation</title>
+  
+
+  
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/units.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 0.2.1 documentation" href="../index.html"/>
+        <link rel="up" title="The MetPy API" href="index.html"/>
+        <link rel="next" title="File Formats (I/O)" href="io.html"/>
+        <link rel="prev" title="Constants" href="constants.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.2.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="constants.html">Constants</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Units</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#module-metpy.units"><code class="docutils literal"><span class="pre">metpy.units</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="io.html">File Formats (I/O)</a></li>
+<li class="toctree-l2"><a class="reference internal" href="calc.html">Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html">Plotting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="plots.html#colortables">Colortables</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer&#8217;s Guide</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">The MetPy API</a> &raquo;</li>
+        
+      <li>Units</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/api/units.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="units">
+<h1>Units<a class="headerlink" href="#units" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-metpy.units">
+<span id="metpy-units"></span><h2><a class="reference internal" href="#module-metpy.units" title="metpy.units"><code class="xref py py-mod docutils literal"><span class="pre">metpy.units</span></code></a><a class="headerlink" href="#module-metpy.units" title="Permalink to this headline">¶</a></h2>
+<p>Module to enable unit support.</p>
+<p>This makes use of the <cite>pint</cite> library and sets up the default settings
+for good temperature support.</p>
+<dl class="attribute">
+<dt id="metpy.units.units">
+<code class="descclassname">metpy.units.</code><code class="descname">units</code><a class="headerlink" href="#metpy.units.units" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>pint.UnitRegistry</cite> &#8211; The unit registry used throughout the package. Any use of units in MetPy should
+import this registry and use it to grab units.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.units.atleast_1d">
+<code class="descclassname">metpy.units.</code><code class="descname">atleast_1d</code><span class="sig-paren">(</span><em>*arrs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.units.atleast_1d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert inputs to arrays with at least one dimension</p>
+<p>Scalars are converted to 1-dimensional arrays, whilst other
+higher-dimensional inputs are preserved. This is a thin wrapper
+around <cite>numpy.atleast_1d</cite> to preserve units.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>arrs</strong> (<em>arbitrary positional arguments</em>) &#8211; Input arrays to be converted if necessary</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A single quantity or a list of quantities, matching the number of inputs.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><cite>pint.Quantity</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.units.atleast_2d">
+<code class="descclassname">metpy.units.</code><code class="descname">atleast_2d</code><span class="sig-paren">(</span><em>*arrs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.units.atleast_2d" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert inputs to arrays with at least two dimensions</p>
+<p>Scalars and 1-dimensional arrays are converted to 2-dimensional arrays,
+whilst other higher-dimensional inputs are preserved. This is a thin wrapper
+around <cite>numpy.atleast_2d</cite> to preserve units.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>arrs</strong> (<em>arbitrary positional arguments</em>) &#8211; Input arrays to be converted if necessary</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A single quantity or a list of quantities, matching the number of inputs.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><cite>pint.Quantity</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.units.concatenate">
+<code class="descclassname">metpy.units.</code><code class="descname">concatenate</code><span class="sig-paren">(</span><em>arrs</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.units.concatenate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Concatenate multiple values into a new unitized object.</p>
+<p>This is essentially a unit-aware version of <cite>numpy.concatenate</cite>. All items
+must be able to be converted to the same units. If an item has no units, it will be given
+those of the rest of the collection, without conversion. The first units found in the
+arguments is used as the final output units.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>arrs</strong> (<em>Sequence of arrays</em>) &#8211; The items to be joined together</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">New container with the value passed in and units corresponding to the first item.</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><cite>pint.Quantity</cite></td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="io.html" class="btn btn-neutral float-right" title="File Formats (I/O)" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="constants.html" class="btn btn-neutral" title="Constants" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2015, MetPy Developers.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.2.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
