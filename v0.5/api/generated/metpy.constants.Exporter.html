@@ -1,0 +1,332 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Exporter &mdash; MetPy 0.5.1</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.constants.Exporter.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 0.5.1" href="../../index.html"/>
+        <link rel="up" title="constants" href="metpy.constants.html"/>
+        <link rel="next" title="units" href="metpy.units.html"/>
+        <link rel="prev" title="constants" href="metpy.constants.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="metpy.constants.html">constants</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="metpy.constants.html#earth">Earth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.constants.html#water">Water</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.constants.html#dry-air">Dry Air</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="metpy.constants.html#general-meteorology-constants">General Meteorology Constants</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Exporter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">The MetPy API</a> &raquo;</li>
+        
+          <li><a href="metpy.constants.html">constants</a> &raquo;</li>
+        
+      <li>Exporter</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/generated/metpy.constants.Exporter.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="exporter">
+<h1>Exporter<a class="headerlink" href="#exporter" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="metpy.constants.Exporter">
+<em class="property">class </em><code class="descclassname">metpy.constants.</code><code class="descname">Exporter</code><span class="sig-paren">(</span><em>globls</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/package_tools.html#Exporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.constants.Exporter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Manages exporting of symbols from the module.</p>
+<p>Grabs a reference to <em class="xref py py-obj">globals()</em> for a module and provides a decorator to add
+functions and classes to <code class="xref py py-obj docutils literal"><span class="pre">__all__</span></code> rather than requiring a separately maintained list.
+Also provides a context manager to do this for instances by adding all instances added
+within a block to <code class="xref py py-obj docutils literal"><span class="pre">__all__</span></code>.</p>
+<p>Initialize the Exporter.</p>
+<p class="rubric">Methods Summary</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.constants.Exporter.__init__" title="metpy.constants.Exporter.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a>(globls)</td>
+<td>Initialize the Exporter.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.constants.Exporter.export" title="metpy.constants.Exporter.export"><code class="xref py py-obj docutils literal"><span class="pre">export</span></code></a>(defn)</td>
+<td>Declare a function or class as exported.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="metpy.constants.Exporter.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>globls</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/package_tools.html#Exporter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.constants.Exporter.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize the Exporter.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.constants.Exporter.export">
+<code class="descname">export</code><span class="sig-paren">(</span><em>defn</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/package_tools.html#Exporter.export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.constants.Exporter.export" title="Permalink to this definition">¶</a></dt>
+<dd><p>Declare a function or class as exported.</p>
+</dd></dl>
+
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="metpy.units.html" class="btn btn-neutral float-right" title="units" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="metpy.constants.html" class="btn btn-neutral" title="constants" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 19:04:50.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.5.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

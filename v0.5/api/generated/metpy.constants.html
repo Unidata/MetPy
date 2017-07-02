@@ -1,0 +1,540 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>constants &mdash; MetPy 0.5.1</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.constants.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 0.5.1" href="../../index.html"/>
+        <link rel="up" title="The MetPy API" href="../index.html"/>
+        <link rel="next" title="Exporter" href="metpy.constants.Exporter.html"/>
+        <link rel="prev" title="The MetPy API" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">constants</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#earth">Earth</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#water">Water</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#dry-air">Dry Air</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#general-meteorology-constants">General Meteorology Constants</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="metpy.constants.Exporter.html">Exporter</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">The MetPy API</a> &raquo;</li>
+        
+      <li>constants</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/generated/metpy.constants.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="module-metpy.constants">
+<span id="constants"></span><h1>constants<a class="headerlink" href="#module-metpy.constants" title="Permalink to this headline">¶</a></h1>
+<p>This is a collection of meteorologically significant constants. # noqa: E501.</p>
+<div class="section" id="earth">
+<h2>Earth<a class="headerlink" href="#earth" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="21%" />
+<col width="13%" />
+<col width="10%" />
+<col width="23%" />
+<col width="34%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Name</td>
+<td>Symbol</td>
+<td>Short Name</td>
+<td>Units</td>
+<td>Description</td>
+</tr>
+<tr class="row-even"><td>earth_avg_radius</td>
+<td><span class="math">\(R_e\)</span></td>
+<td>Re</td>
+<td><span class="math">\(\text{m}\)</span></td>
+<td>Avg. radius of the Earth</td>
+</tr>
+<tr class="row-odd"><td>earth_gravity</td>
+<td><span class="math">\(g\)</span></td>
+<td>g</td>
+<td><span class="math">\(\text{m s}^{-2}\)</span></td>
+<td>Avg. gravity acceleration on Earth</td>
+</tr>
+<tr class="row-even"><td>earth_avg_angular_vel</td>
+<td><span class="math">\(\Omega\)</span></td>
+<td>omega</td>
+<td><span class="math">\(\text{rad s}^{-1}\)</span></td>
+<td>Avg. angular velocity of Earth</td>
+</tr>
+<tr class="row-odd"><td>earth_sfc_avg_dist_sun</td>
+<td><span class="math">\(d\)</span></td>
+<td>d</td>
+<td><span class="math">\(\text{m}\)</span></td>
+<td>Avg. distance of the Earth from the Sun</td>
+</tr>
+<tr class="row-even"><td>earth_solar_irradiance</td>
+<td><span class="math">\(S\)</span></td>
+<td>S</td>
+<td><span class="math">\(\text{W m}^{-2}\)</span></td>
+<td>Avg. solar irradiance of Earth</td>
+</tr>
+<tr class="row-odd"><td>earth_max_declination</td>
+<td><span class="math">\(\delta\)</span></td>
+<td>delta</td>
+<td><span class="math">\(\text{degrees}\)</span></td>
+<td>Max. solar declination angle of Earth</td>
+</tr>
+<tr class="row-even"><td>earth_orbit_eccentricity</td>
+<td><span class="math">\(e\)</span></td>
+<td>&#160;</td>
+<td><span class="math">\(\text{None}\)</span></td>
+<td>Avg. eccentricity of Earth&#8217;s orbit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="water">
+<h2>Water<a class="headerlink" href="#water" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="12%" />
+<col width="8%" />
+<col width="22%" />
+<col width="40%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Name</td>
+<td>Symbol</td>
+<td>Short Name</td>
+<td>Units</td>
+<td>Description</td>
+</tr>
+<tr class="row-even"><td>water_molecular_weight</td>
+<td><span class="math">\(M_w\)</span></td>
+<td>Mw</td>
+<td><span class="math">\(\text{g mol}^{-1}\)</span></td>
+<td>Molecular weight of water</td>
+</tr>
+<tr class="row-odd"><td>water_gas_constant</td>
+<td><span class="math">\(R_v\)</span></td>
+<td>Rv</td>
+<td><span class="math">\(\text{J (K kg)}^{-1}\)</span></td>
+<td>Gas constant for water vapor</td>
+</tr>
+<tr class="row-even"><td>density_water</td>
+<td><span class="math">\(\rho_l\)</span></td>
+<td>rho_l</td>
+<td><span class="math">\(\text{kg m}^{-3}\)</span></td>
+<td>Nominal density of liquid water at 0C</td>
+</tr>
+<tr class="row-odd"><td>wv_specific_heat_press</td>
+<td><span class="math">\(C_{pv}\)</span></td>
+<td>Cp_v</td>
+<td><span class="math">\(\text{J (K kg)}^{-1}\)</span></td>
+<td>Specific heat at constant pressure for water vapor</td>
+</tr>
+<tr class="row-even"><td>wv_specific_heat_vol</td>
+<td><span class="math">\(C_{vv}\)</span></td>
+<td>Cv_v</td>
+<td><span class="math">\(\text{J (K kg)}^{-1}\)</span></td>
+<td>Specific heat at constant volume for water vapor</td>
+</tr>
+<tr class="row-odd"><td>water_specific_heat</td>
+<td><span class="math">\(Cp_l\)</span></td>
+<td>Cp_l</td>
+<td><span class="math">\(\text{J (K kg)}^{-1}\)</span></td>
+<td>Specific heat of liquid water at 0C</td>
+</tr>
+<tr class="row-even"><td>water_heat_vaporization</td>
+<td><span class="math">\(L_v\)</span></td>
+<td>Lv</td>
+<td><span class="math">\(\text{J kg}^{-1}\)</span></td>
+<td>Latent heat of vaporization for liquid water at 0C</td>
+</tr>
+<tr class="row-odd"><td>water_heat_fusion</td>
+<td><span class="math">\(L_f\)</span></td>
+<td>Lf</td>
+<td><span class="math">\(\text{J kg}^{-1}\)</span></td>
+<td>Latent heat of fusion for liquid water at 0C</td>
+</tr>
+<tr class="row-even"><td>ice_specific_heat</td>
+<td><span class="math">\(C_{pi}\)</span></td>
+<td>Cp_i</td>
+<td><span class="math">\(\text{J (K kg)}^{-1}\)</span></td>
+<td>Specific heat of ice at 0C</td>
+</tr>
+<tr class="row-odd"><td>density_ice</td>
+<td><span class="math">\(\rho_i\)</span></td>
+<td>rho_i</td>
+<td><span class="math">\(\text{kg m}^{-3}\)</span></td>
+<td>Density of ice at 0C</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="dry-air">
+<h2>Dry Air<a class="headerlink" href="#dry-air" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="17%" />
+<col width="11%" />
+<col width="9%" />
+<col width="19%" />
+<col width="44%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Name</td>
+<td>Symbol</td>
+<td>Short Name</td>
+<td>Units</td>
+<td>Description</td>
+</tr>
+<tr class="row-even"><td>dry_air_molecular_weight</td>
+<td><span class="math">\(M_d\)</span></td>
+<td>Md</td>
+<td><span class="math">\(\text{g / mol}\)</span></td>
+<td>Nominal molecular weight of dry air at the surface of th Earth</td>
+</tr>
+<tr class="row-odd"><td>dry_air_gas_constant</td>
+<td><span class="math">\(R_d\)</span></td>
+<td>Rd</td>
+<td><span class="math">\(\text{J (K kg)}^{-1}\)</span></td>
+<td>Gas constant for dry air at the surface of the Earth</td>
+</tr>
+<tr class="row-even"><td>dry_air_spec_heat_press</td>
+<td><span class="math">\(C_{pd}\)</span></td>
+<td>Cp_d</td>
+<td><span class="math">\(\text{J (K kg)}^{-1}\)</span></td>
+<td>Specific heat at constant pressure for dry air</td>
+</tr>
+<tr class="row-odd"><td>dry_air_spec_heat_vol</td>
+<td><span class="math">\(C_{vd}\)</span></td>
+<td>Cv_d</td>
+<td><span class="math">\(\text{J (K kg)}^{-1}\)</span></td>
+<td>Specific heat at constant volume for dry air</td>
+</tr>
+<tr class="row-even"><td>dry_air_density_stp</td>
+<td><span class="math">\(\rho_d\)</span></td>
+<td>rho_d</td>
+<td><span class="math">\(\text{kg m}^{-3}\)</span></td>
+<td>Density of dry air at 0C and 1000mb</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="general-meteorology-constants">
+<h2>General Meteorology Constants<a class="headerlink" href="#general-meteorology-constants" title="Permalink to this headline">¶</a></h2>
+<table border="1" class="docutils">
+<colgroup>
+<col width="18%" />
+<col width="13%" />
+<col width="8%" />
+<col width="19%" />
+<col width="42%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Name</td>
+<td>Symbol</td>
+<td>Short Name</td>
+<td>Units</td>
+<td>Description</td>
+</tr>
+<tr class="row-even"><td>pot_temp_ref_press</td>
+<td><span class="math">\(P_0\)</span></td>
+<td>P0</td>
+<td><span class="math">\(\text{Pa}\)</span></td>
+<td>Reference pressure for potential temperature</td>
+</tr>
+<tr class="row-odd"><td>poisson_exponent</td>
+<td><span class="math">\(\kappa\)</span></td>
+<td>kappa</td>
+<td><span class="math">\(\text{None}\)</span></td>
+<td>Exponent in Poisson&#8217;s equation (Rd/Cp_d)</td>
+</tr>
+<tr class="row-even"><td>dry_adiabatic_lapse_rate</td>
+<td><span class="math">\(\gamma_d\)</span></td>
+<td>gamma_d</td>
+<td><span class="math">\(\text{K km}^{-1}\)</span></td>
+<td>The dry adiabatic lapse rate</td>
+</tr>
+<tr class="row-odd"><td>molecular_weight_ratio</td>
+<td><span class="math">\(\epsilon\)</span></td>
+<td>epsilon</td>
+<td><span class="math">\(\text{None}\)</span></td>
+<td>Ratio of molecular weight of water to that of dry air</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Classes</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="metpy.constants.Exporter.html#metpy.constants.Exporter" title="metpy.constants.Exporter"><code class="xref py py-obj docutils literal"><span class="pre">Exporter</span></code></a>(globls)</td>
+<td>Manages exporting of symbols from the module.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="metpy.constants.Exporter.html" class="btn btn-neutral float-right" title="Exporter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../index.html" class="btn btn-neutral" title="The MetPy API" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 19:04:50.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.5.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

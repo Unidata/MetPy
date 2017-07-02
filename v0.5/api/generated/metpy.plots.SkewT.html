@@ -1,0 +1,675 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>SkewT &mdash; MetPy 0.5.1</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.SkewT.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 0.5.1" href="../../index.html"/>
+        <link rel="up" title="plots" href="metpy.plots.html"/>
+        <link rel="next" title="StationPlot" href="metpy.plots.StationPlot.html"/>
+        <link rel="prev" title="Hodograph" href="metpy.plots.Hodograph.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">SkewT</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-plots-skewt">Examples using <code class="docutils literal"><span class="pre">metpy.plots.SkewT</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">The MetPy API</a> &raquo;</li>
+        
+          <li><a href="metpy.plots.html">plots</a> &raquo;</li>
+        
+      <li>SkewT</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../../_sources/api/generated/metpy.plots.SkewT.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="skewt">
+<h1>SkewT<a class="headerlink" href="#skewt" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="metpy.plots.SkewT">
+<em class="property">class </em><code class="descclassname">metpy.plots.</code><code class="descname">SkewT</code><span class="sig-paren">(</span><em>fig=None</em>, <em>rotation=30</em>, <em>subplot=(1</em>, <em>1</em>, <em>1)</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make Skew-T log-P plots of data.</p>
+<p>This class simplifies the process of creating Skew-T log-P plots in
+using matplotlib. It handles requesting the appropriate skewed projection,
+and provides simplified wrappers to make it easy to plot data, add wind
+barbs, and add other lines to the plots (e.g. dry adiabats)</p>
+<dl class="attribute">
+<dt id="metpy.plots.SkewT.ax">
+<code class="descname">ax</code><a class="headerlink" href="#metpy.plots.SkewT.ax" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="http://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.0.2)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.axes.Axes</span></code></a> &#8211; The underlying Axes instance, which can be used for calling additional
+plot functions (e.g. <em class="xref py py-obj">axvline</em>)</p>
+</dd></dl>
+
+<p>Create SkewT - logP plots.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fig</strong> (<a class="reference external" href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v2.0.2)"><em>matplotlib.figure.Figure</em></a><em>, </em><em>optional</em>) &#8211; Source figure to use for plotting. If none is given, a new
+<a class="reference external" href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> instance will be created.</li>
+<li><strong>rotation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>, </em><em>optional</em>) &#8211; Controls the rotation of temperature relative to horizontal. Given
+in degrees counterclockwise from x-axis. Defaults to 30 degrees.</li>
+<li><strong>subplot</strong> (tuple[int, int, int] or <a class="reference external" href="http://matplotlib.org/api/gridspec_api.html#matplotlib.gridspec.SubplotSpec" title="(in Matplotlib v2.0.2)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.gridspec.SubplotSpec</span></code></a> instance, optional) &#8211; Controls the size/position of the created subplot. This allows creating
+the skewT as part of a collection of subplots. If subplot is a tuple, it
+should conform to the specification used for
+<a class="reference external" href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure.add_subplot" title="(in Matplotlib v2.0.2)"><code class="xref py py-meth docutils literal"><span class="pre">matplotlib.figure.Figure.add_subplot()</span></code></a>. The
+<a class="reference external" href="http://matplotlib.org/api/gridspec_api.html#matplotlib.gridspec.SubplotSpec" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.gridspec.SubplotSpec</span></code></a>
+can be created by using <a class="reference external" href="http://matplotlib.org/api/gridspec_api.html#matplotlib.gridspec.GridSpec" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.gridspec.GridSpec</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.SkewT.__init__" title="metpy.plots.SkewT.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a>([fig,&nbsp;rotation,&nbsp;subplot])</td>
+<td>Create SkewT - logP plots.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.SkewT.plot" title="metpy.plots.SkewT.plot"><code class="xref py py-obj docutils literal"><span class="pre">plot</span></code></a>(p,&nbsp;t,&nbsp;*args,&nbsp;**kwargs)</td>
+<td>Plot data.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.SkewT.plot_barbs" title="metpy.plots.SkewT.plot_barbs"><code class="xref py py-obj docutils literal"><span class="pre">plot_barbs</span></code></a>(p,&nbsp;u,&nbsp;v[,&nbsp;xloc,&nbsp;x_clip_radius,&nbsp;...])</td>
+<td>Plot wind barbs.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.SkewT.plot_dry_adiabats" title="metpy.plots.SkewT.plot_dry_adiabats"><code class="xref py py-obj docutils literal"><span class="pre">plot_dry_adiabats</span></code></a>([t0,&nbsp;p])</td>
+<td>Plot dry adiabats.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.SkewT.plot_mixing_lines" title="metpy.plots.SkewT.plot_mixing_lines"><code class="xref py py-obj docutils literal"><span class="pre">plot_mixing_lines</span></code></a>([w,&nbsp;p])</td>
+<td>Plot lines of constant mixing ratio.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.SkewT.plot_moist_adiabats" title="metpy.plots.SkewT.plot_moist_adiabats"><code class="xref py py-obj docutils literal"><span class="pre">plot_moist_adiabats</span></code></a>([t0,&nbsp;p])</td>
+<td>Plot moist adiabats.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.SkewT.shade_area" title="metpy.plots.SkewT.shade_area"><code class="xref py py-obj docutils literal"><span class="pre">shade_area</span></code></a>(y,&nbsp;x1[,&nbsp;x2,&nbsp;which])</td>
+<td>Shade area between two curves.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.SkewT.shade_cape" title="metpy.plots.SkewT.shade_cape"><code class="xref py py-obj docutils literal"><span class="pre">shade_cape</span></code></a>(p,&nbsp;t,&nbsp;t_parcel,&nbsp;**kwargs)</td>
+<td>Shade areas of CAPE.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.SkewT.shade_cin" title="metpy.plots.SkewT.shade_cin"><code class="xref py py-obj docutils literal"><span class="pre">shade_cin</span></code></a>(p,&nbsp;t,&nbsp;t_parcel,&nbsp;**kwargs)</td>
+<td>Shade areas of CIN.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="metpy.plots.SkewT.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>fig=None</em>, <em>rotation=30</em>, <em>subplot=(1</em>, <em>1</em>, <em>1)</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create SkewT - logP plots.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>fig</strong> (<a class="reference external" href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v2.0.2)"><em>matplotlib.figure.Figure</em></a><em>, </em><em>optional</em>) &#8211; Source figure to use for plotting. If none is given, a new
+<a class="reference external" href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.figure.Figure</span></code></a> instance will be created.</li>
+<li><strong>rotation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>, </em><em>optional</em>) &#8211; Controls the rotation of temperature relative to horizontal. Given
+in degrees counterclockwise from x-axis. Defaults to 30 degrees.</li>
+<li><strong>subplot</strong> (tuple[int, int, int] or <a class="reference external" href="http://matplotlib.org/api/gridspec_api.html#matplotlib.gridspec.SubplotSpec" title="(in Matplotlib v2.0.2)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.gridspec.SubplotSpec</span></code></a> instance, optional) &#8211; Controls the size/position of the created subplot. This allows creating
+the skewT as part of a collection of subplots. If subplot is a tuple, it
+should conform to the specification used for
+<a class="reference external" href="http://matplotlib.org/api/figure_api.html#matplotlib.figure.Figure.add_subplot" title="(in Matplotlib v2.0.2)"><code class="xref py py-meth docutils literal"><span class="pre">matplotlib.figure.Figure.add_subplot()</span></code></a>. The
+<a class="reference external" href="http://matplotlib.org/api/gridspec_api.html#matplotlib.gridspec.SubplotSpec" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.gridspec.SubplotSpec</span></code></a>
+can be created by using <a class="reference external" href="http://matplotlib.org/api/gridspec_api.html#matplotlib.gridspec.GridSpec" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.gridspec.GridSpec</span></code></a>.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.SkewT.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>p</em>, <em>t</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot data.</p>
+<p>Simple wrapper around plot so that pressure is the first (independent)
+input. This is essentially a wrapper around <em class="xref py py-obj">semilogy</em>. It also
+sets some appropriate ticking and plot ranges.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>p</strong> (<em>array_like</em>) &#8211; pressure values</li>
+<li><strong>t</strong> (<em>array_like</em>) &#8211; temperature values, can also be used for things like dew point</li>
+<li><strong>args</strong> &#8211; Other positional arguments to pass to <a class="reference external" href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.semilogy" title="(in Matplotlib v2.0.2)"><code class="xref py py-func docutils literal"><span class="pre">semilogy()</span></code></a></li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.semilogy" title="(in Matplotlib v2.0.2)"><code class="xref py py-func docutils literal"><span class="pre">semilogy()</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>list[matplotlib.lines.Line2D]</em> &#8211; lines plotted</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.semilogy" title="(in Matplotlib v2.0.2)"><code class="xref py py-func docutils literal"><span class="pre">matplotlib.pyplot.semilogy()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.SkewT.plot_barbs">
+<code class="descname">plot_barbs</code><span class="sig-paren">(</span><em>p</em>, <em>u</em>, <em>v</em>, <em>xloc=1.0</em>, <em>x_clip_radius=0.08</em>, <em>y_clip_radius=0.08</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_barbs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_barbs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot wind barbs.</p>
+<p>Adds wind barbs to the skew-T plot. This is a wrapper around the
+<em class="xref py py-obj">barbs</em> command that adds to appropriate transform to place the
+barbs in a vertical line, located as a function of pressure.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>p</strong> (<em>array_like</em>) &#8211; pressure values</li>
+<li><strong>u</strong> (<em>array_like</em>) &#8211; U (East-West) component of wind</li>
+<li><strong>v</strong> (<em>array_like</em>) &#8211; V (North-South) component of wind</li>
+<li><strong>xloc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><em>optional</em>) &#8211; Position for the barbs, in normalized axes coordinates, where 0.0
+denotes far left and 1.0 denotes far right. Defaults to far right.</li>
+<li><strong>x_clip_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><em>optional</em>) &#8211; Space, in normalized axes coordinates, to leave before clipping
+wind barbs in the x-direction. Defaults to 0.08.</li>
+<li><strong>y_clip_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><em>optional</em>) &#8211; Space, in normalized axes coordinates, to leave above/below plot
+before clipping wind barbs in the y-direction. Defaults to 0.08.</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.barbs" title="(in Matplotlib v2.0.2)"><code class="xref py py-func docutils literal"><span class="pre">barbs()</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.quiver.Barbs</em> &#8211; instance created</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.barbs" title="(in Matplotlib v2.0.2)"><code class="xref py py-func docutils literal"><span class="pre">matplotlib.pyplot.barbs()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.SkewT.plot_dry_adiabats">
+<code class="descname">plot_dry_adiabats</code><span class="sig-paren">(</span><em>t0=None</em>, <em>p=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_dry_adiabats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_dry_adiabats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot dry adiabats.</p>
+<p>Adds dry adiabats (lines of constant potential temperature) to the
+plot. The default style of these lines is dashed red lines with an alpha
+value of 0.5. These can be overridden using keyword arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t0</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Starting temperature values in Kelvin. If none are given, they will be
+generated using the current temperature range at the bottom of
+the plot.</li>
+<li><strong>p</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Pressure values to be included in the dry adiabats. If not
+specified, they will be linearly distributed across the current
+plotted pressure range.</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.collections.LineCollection</em> &#8211; instance created</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-func docutils literal"><span class="pre">dry_lapse()</span></code>
+<a class="reference internal" href="#metpy.plots.SkewT.plot_moist_adiabats" title="metpy.plots.SkewT.plot_moist_adiabats"><code class="xref py py-meth docutils literal"><span class="pre">plot_moist_adiabats()</span></code></a>
+<a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.SkewT.plot_mixing_lines">
+<code class="descname">plot_mixing_lines</code><span class="sig-paren">(</span><em>w=None</em>, <em>p=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_mixing_lines"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_mixing_lines" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot lines of constant mixing ratio.</p>
+<p>Adds lines of constant mixing ratio (isohumes) to the
+plot. The default style of these lines is dashed green lines with an
+alpha value of 0.8. These can be overridden using keyword arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>w</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Unitless mixing ratio values to plot. If none are given, default
+values are used.</li>
+<li><strong>p</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Pressure values to be included in the isohumes. If not
+specified, they will be linearly distributed across the current
+plotted pressure range up to 600 mb.</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.collections.LineCollection</em> &#8211; instance created</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.SkewT.plot_moist_adiabats">
+<code class="descname">plot_moist_adiabats</code><span class="sig-paren">(</span><em>t0=None</em>, <em>p=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot_moist_adiabats"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot_moist_adiabats" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot moist adiabats.</p>
+<p>Adds saturated pseudo-adiabats (lines of constant equivalent potential
+temperature) to the plot. The default style of these lines is dashed
+blue lines with an alpha value of 0.5. These can be overridden using
+keyword arguments.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>t0</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Starting temperature values in Kelvin. If none are given, they will be
+generated using the current temperature range at the bottom of
+the plot.</li>
+<li><strong>p</strong> (<em>array_like</em><em>, </em><em>optional</em>) &#8211; Pressure values to be included in the moist adiabats. If not
+specified, they will be linearly distributed across the current
+plotted pressure range.</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.collections.LineCollection</em> &#8211; instance created</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-func docutils literal"><span class="pre">moist_lapse()</span></code>
+<a class="reference internal" href="#metpy.plots.SkewT.plot_dry_adiabats" title="metpy.plots.SkewT.plot_dry_adiabats"><code class="xref py py-meth docutils literal"><span class="pre">plot_dry_adiabats()</span></code></a>
+<a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.LineCollection</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.SkewT.shade_area">
+<code class="descname">shade_area</code><span class="sig-paren">(</span><em>y</em>, <em>x1</em>, <em>x2=0</em>, <em>which='both'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.shade_area"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.shade_area" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shade area between two curves.</p>
+<p>Shades areas between curves. Area can be where one is greater or less than the other
+or all areas shaded.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>y</strong> (<em>array_like</em>) &#8211; 1-dimensional array of numeric y-values</li>
+<li><strong>x1</strong> (<em>array_like</em>) &#8211; 1-dimensional array of numeric x-values</li>
+<li><strong>x2</strong> (<em>array_like</em>) &#8211; 1-dimensional array of numeric x-values</li>
+<li><strong>which</strong> (<a class="reference external" href="https://docs.python.org/3/library/string.html#module-string" title="(in Python v3.6)"><em>string</em></a>) &#8211; Specifies if <em class="xref py py-obj">positive</em>, <em class="xref py py-obj">negative</em>, or <em class="xref py py-obj">both</em> areas are being shaded.
+Will be overridden by where.</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.PolyCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.PolyCollection</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.PolyCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.PolyCollection</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.PolyCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.PolyCollection</span></code></a>, <code class="xref py py-func docutils literal"><span class="pre">matplotlib.axes.Axes.fill_betweenx()</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.SkewT.shade_cape">
+<code class="descname">shade_cape</code><span class="sig-paren">(</span><em>p</em>, <em>t</em>, <em>t_parcel</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.shade_cape"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.shade_cape" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shade areas of CAPE.</p>
+<p>Shades areas where the parcel is warmer than the environment (areas of positive
+buoyancy.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>p</strong> (<em>array_like</em>) &#8211; Pressure values</li>
+<li><strong>t</strong> (<em>array_like</em>) &#8211; Temperature values</li>
+<li><strong>t_parcel</strong> (<em>array_like</em>) &#8211; Parcel path temperature values</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.PolyCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.PolyCollection</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.PolyCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.PolyCollection</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.PolyCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.PolyCollection</span></code></a>, <code class="xref py py-func docutils literal"><span class="pre">matplotlib.axes.Axes.fill_betweenx()</span></code></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.SkewT.shade_cin">
+<code class="descname">shade_cin</code><span class="sig-paren">(</span><em>p</em>, <em>t</em>, <em>t_parcel</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.shade_cin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.shade_cin" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shade areas of CIN.</p>
+<p>Shades areas where the parcel is cooler than the environment (areas of negative
+buoyancy.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>p</strong> (<em>array_like</em>) &#8211; Pressure values</li>
+<li><strong>t</strong> (<em>array_like</em>) &#8211; Temperature values</li>
+<li><strong>t_parcel</strong> (<em>array_like</em>) &#8211; Parcel path temperature values</li>
+<li><strong>kwargs</strong> &#8211; Other keyword arguments to pass to <a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.PolyCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.PolyCollection</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.PolyCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.PolyCollection</span></code></a></p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="http://matplotlib.org/api/collections_api.html#matplotlib.collections.PolyCollection" title="(in Matplotlib v2.0.2)"><code class="xref py py-class docutils literal"><span class="pre">matplotlib.collections.PolyCollection</span></code></a>, <code class="xref py py-func docutils literal"><span class="pre">matplotlib.axes.Axes.fill_betweenx()</span></code></p>
+</div>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="examples-using-metpy-plots-skewt">
+<h2>Examples using <code class="docutils literal"><span class="pre">metpy.plots.SkewT</span></code><a class="headerlink" href="#examples-using-metpy-plots-skewt" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Plot a sounding using MetPy with more advanced features."><div class="figure" id="id1">
+<img alt="../../_images/sphx_glr_Advanced_Sounding_thumb.png" src="../../_images/sphx_glr_Advanced_Sounding_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/Advanced_Sounding.html#sphx-glr-examples-advanced-sounding-py"><span class="std std-ref">Advanced Sounding</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot. "><div class="figure" id="id2">
+<img alt="../../_images/sphx_glr_Hodograph_Inset_thumb.png" src="../../_images/sphx_glr_Hodograph_Inset_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Hodograph_Inset.html#sphx-glr-examples-plots-hodograph-inset-py"><span class="std std-ref">Hodograph Inset</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy as straightforward as possible to make a Skew-T LogP plot. "><div class="figure" id="id3">
+<img alt="../../_images/sphx_glr_Simple_Sounding_thumb.png" src="../../_images/sphx_glr_Simple_Sounding_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Simple_Sounding.html#sphx-glr-examples-plots-simple-sounding-py"><span class="std std-ref">Simple Sounding</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib's `GridSpec` layout capability. "><div class="figure" id="id4">
+<img alt="../../_images/sphx_glr_Skew-T_Layout_thumb.png" src="../../_images/sphx_glr_Skew-T_Layout_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Skew-T_Layout.html#sphx-glr-examples-plots-skew-t-layout-py"><span class="std std-ref">Skew-T with Complex Layout</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori..."><div class="figure" id="id5">
+<img alt="../../_images/sphx_glr_upperair_soundings_thumb.png" src="../../_images/sphx_glr_upperair_soundings_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/upperair_soundings.html#sphx-glr-tutorials-upperair-soundings-py"><span class="std std-ref">Upper Air Sounding Tutorial</span></a></span></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="metpy.plots.StationPlot.html" class="btn btn-neutral float-right" title="StationPlot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="metpy.plots.Hodograph.html" class="btn btn-neutral" title="Hodograph" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 19:04:50.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.5.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

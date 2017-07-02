@@ -1,0 +1,12 @@
+inverse_distance
+===============================
+
+.. currentmodule:: metpy.gridding
+
+.. autofunction:: inverse_distance
+
+.. include:: metpy.gridding.inverse_distance.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,813 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.plots.station_plot &mdash; MetPy 0.5.1</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/plots/station_plot.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MetPy 0.5.1" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.plots.station_plot</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.plots.station_plot</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2008-2015 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sd">&quot;&quot;&quot;Create Station-model plots.&quot;&quot;&quot;</span>
+
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">enum34</span> <span class="k">import</span> <span class="n">Enum</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.wx_symbols</span> <span class="k">import</span> <span class="p">(</span><span class="n">current_weather</span><span class="p">,</span> <span class="n">high_clouds</span><span class="p">,</span> <span class="n">low_clouds</span><span class="p">,</span> <span class="n">mid_clouds</span><span class="p">,</span>
+                         <span class="n">pressure_tendency</span><span class="p">,</span> <span class="n">sky_cover</span><span class="p">,</span> <span class="n">wx_symbol_font</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..cbook</span> <span class="k">import</span> <span class="n">is_string_like</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="StationPlot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot">[docs]</a><span class="k">class</span> <span class="nc">StationPlot</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Make a standard meteorological station plot.</span>
+
+<span class="sd">    Plots values, symbols, or text spaced around a central location. Can also plot wind</span>
+<span class="sd">    barbs as the center of the location.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">location_names</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">N</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">NE</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">E</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">SE</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">S</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span>
+                          <span class="n">SW</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">W</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">NW</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+
+<div class="viewcode-block" id="StationPlot.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">spacing</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the StationPlot with items that do not change.</span>
+
+<span class="sd">        This sets up the axes and station locations. The `fontsize` and `spacing`</span>
+<span class="sd">        are also specified here to ensure that they are consistent between individual</span>
+<span class="sd">        station elements.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ax : matplotlib.axes.Axes</span>
+<span class="sd">            The :class:`~matplotlib.axes.Axes` for plotting</span>
+<span class="sd">        x : array_like</span>
+<span class="sd">            The x location of the stations in the plot</span>
+<span class="sd">        y : array_like</span>
+<span class="sd">            The y location of the stations in the plot</span>
+<span class="sd">        fontsize : int</span>
+<span class="sd">            The fontsize to use for drawing text</span>
+<span class="sd">        spacing : int</span>
+<span class="sd">            The spacing, in points, that corresponds to a single increment between</span>
+<span class="sd">            station plot elements.</span>
+<span class="sd">        transform : matplotlib.transforms.Transform (or compatible)</span>
+<span class="sd">            The default transform to apply to the x and y positions when plotting.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">x</span> <span class="o">=</span> <span class="n">x</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span> <span class="o">=</span> <span class="n">fontsize</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span> <span class="o">=</span> <span class="n">fontsize</span> <span class="k">if</span> <span class="n">spacing</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">spacing</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="o">=</span> <span class="n">transform</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">barbs</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="StationPlot.plot_symbol"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_symbol">[docs]</a>    <span class="k">def</span> <span class="nf">plot_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">codes</span><span class="p">,</span> <span class="n">symbol_mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;At the specified location in the station model plot a set of symbols.</span>
+
+<span class="sd">        This specifies that at the offset `location`, the data in `codes` should be</span>
+<span class="sd">        converted to unicode characters (for our :data:`wx_symbol_font`) using `symbol_mapper`,</span>
+<span class="sd">        and plotted.</span>
+
+<span class="sd">        Additional keyword arguments given will be passed onto the actual plotting</span>
+<span class="sd">        code; this is useful for specifying things like color or font properties.</span>
+
+<span class="sd">        If something has already been plotted at this location, it will be replaced.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        location : str or tuple[float, float]</span>
+<span class="sd">            The offset (relative to center) to plot this parameter. If str, should be one of</span>
+<span class="sd">            &#39;C&#39;, &#39;N&#39;, &#39;NE&#39;, &#39;E&#39;, &#39;SE&#39;, &#39;S&#39;, &#39;SW&#39;, &#39;W&#39;, or &#39;NW&#39;. Otherwise, should be a tuple</span>
+<span class="sd">            specifying the number of increments in the x and y directions; increments</span>
+<span class="sd">            are multiplied by `spacing` to give offsets in x and y relative to the center.</span>
+<span class="sd">        codes : array_like</span>
+<span class="sd">            The numeric values that should be converted to unicode characters for plotting.</span>
+<span class="sd">        symbol_mapper : callable</span>
+<span class="sd">            Controls converting data values to unicode code points for the</span>
+<span class="sd">            :data:`wx_symbol_font` font. This should take a value and return a single unicode</span>
+<span class="sd">            character. See :mod:`metpy.plots.wx_symbols` for included mappers.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to use for matplotlib&#39;s plotting functions.</span>
+
+
+<span class="sd">        .. plot::</span>
+
+<span class="sd">           import matplotlib.pyplot as plt</span>
+<span class="sd">           import numpy as np</span>
+<span class="sd">           from math import ceil</span>
+
+<span class="sd">           from metpy.plots import StationPlot</span>
+<span class="sd">           from metpy.plots.wx_symbols import current_weather, current_weather_auto</span>
+<span class="sd">           from metpy.plots.wx_symbols import low_clouds, mid_clouds, high_clouds</span>
+<span class="sd">           from metpy.plots.wx_symbols import sky_cover, pressure_tendency</span>
+
+
+<span class="sd">           def plot_symbols(mapper, name, nwrap=12, figsize=(10, 1.4)):</span>
+
+<span class="sd">               # Determine how many symbols there are and layout in rows of nwrap</span>
+<span class="sd">               # if there are more than nwrap symbols</span>
+<span class="sd">               num_symbols = len(mapper)</span>
+<span class="sd">               codes = np.arange(len(mapper))</span>
+<span class="sd">               ncols = nwrap</span>
+<span class="sd">               if num_symbols &lt;= nwrap:</span>
+<span class="sd">                   nrows = 1</span>
+<span class="sd">                   x = np.linspace(0, 1, len(mapper))</span>
+<span class="sd">                   y = np.ones_like(x)</span>
+<span class="sd">                   ax_height = 0.8</span>
+<span class="sd">               else:</span>
+<span class="sd">                   nrows = int(ceil(num_symbols / ncols))</span>
+<span class="sd">                   x = np.tile(np.linspace(0, 1, ncols), nrows)[:num_symbols]</span>
+<span class="sd">                   y = np.repeat(np.arange(nrows, 0, -1), ncols)[:num_symbols]</span>
+<span class="sd">                   figsize = (10, 1 * nrows + 0.4)</span>
+<span class="sd">                   ax_height = 0.8 + 0.018 * nrows</span>
+
+<span class="sd">               fig = plt.figure(figsize=figsize,  dpi=300)</span>
+<span class="sd">               ax = fig.add_axes([0, 0, 1, ax_height])</span>
+<span class="sd">               ax.set_title(name, size=20)</span>
+<span class="sd">               ax.xaxis.set_ticks([])</span>
+<span class="sd">               ax.yaxis.set_ticks([])</span>
+<span class="sd">               ax.set_frame_on(False)</span>
+
+<span class="sd">               # Plot</span>
+<span class="sd">               sp = StationPlot(ax, x, y, fontsize=36)</span>
+<span class="sd">               sp.plot_symbol(&#39;C&#39;, codes, mapper)</span>
+<span class="sd">               sp.plot_parameter((0, -1), codes, fontsize=18)</span>
+
+<span class="sd">               ax.set_ylim(-0.05, nrows + 0.5)</span>
+
+<span class="sd">               plt.show()</span>
+
+
+<span class="sd">           plot_symbols(current_weather, &quot;Current Weather Symbols&quot;)</span>
+<span class="sd">           plot_symbols(current_weather_auto, &quot;Current Weather Auto Reported Symbols&quot;)</span>
+<span class="sd">           plot_symbols(low_clouds, &quot;Low Cloud Symbols&quot;)</span>
+<span class="sd">           plot_symbols(mid_clouds, &quot;Mid Cloud Symbols&quot;)</span>
+<span class="sd">           plot_symbols(high_clouds, &quot;High Cloud Symbols&quot;)</span>
+<span class="sd">           plot_symbols(sky_cover, &quot;Sky Cover Symbols&quot;)</span>
+<span class="sd">           plot_symbols(pressure_tendency, &quot;Pressure Tendency Symbols&quot;)</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        plot_barb, plot_parameter, plot_text</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Make sure we use our font for symbols</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;fontproperties&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">wx_symbol_font</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">codes</span><span class="p">,</span> <span class="n">symbol_mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StationPlot.plot_parameter"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_parameter">[docs]</a>    <span class="k">def</span> <span class="nf">plot_parameter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">parameter</span><span class="p">,</span> <span class="n">formatter</span><span class="o">=</span><span class="s1">&#39;.0f&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;At the specified location in the station model plot a set of values.</span>
+
+<span class="sd">        This specifies that at the offset `location`, the data in `parameter` should be</span>
+<span class="sd">        plotted. The conversion of the data values to a string is controlled by `formatter`.</span>
+
+<span class="sd">        Additional keyword arguments given will be passed onto the actual plotting</span>
+<span class="sd">        code; this is useful for specifying things like color or font properties.</span>
+
+<span class="sd">        If something has already been plotted at this location, it will be replaced.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        location : str or tuple[float, float]</span>
+<span class="sd">            The offset (relative to center) to plot this parameter. If str, should be one of</span>
+<span class="sd">            &#39;C&#39;, &#39;N&#39;, &#39;NE&#39;, &#39;E&#39;, &#39;SE&#39;, &#39;S&#39;, &#39;SW&#39;, &#39;W&#39;, or &#39;NW&#39;. Otherwise, should be a tuple</span>
+<span class="sd">            specifying the number of increments in the x and y directions; increments</span>
+<span class="sd">            are multiplied by `spacing` to give offsets in x and y relative to the center.</span>
+<span class="sd">        parameter : array_like</span>
+<span class="sd">            The numeric values that should be plotted</span>
+<span class="sd">        formatter : str or callable, optional</span>
+<span class="sd">            How to format the data as a string for plotting. If a string, it should be</span>
+<span class="sd">            compatible with the :func:`format` builtin. If a callable, this should take a</span>
+<span class="sd">            value and return a string. Defaults to &#39;0.f&#39;.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to use for matplotlib&#39;s plotting functions.</span>
+
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        plot_barb, plot_symbol, plot_text</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_to_string_list</span><span class="p">(</span><span class="n">parameter</span><span class="p">,</span> <span class="n">formatter</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">plot_text</span><span class="p">(</span><span class="n">location</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StationPlot.plot_text"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_text">[docs]</a>    <span class="k">def</span> <span class="nf">plot_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;At the specified location in the station model plot a collection of text.</span>
+
+<span class="sd">        This specifies that at the offset `location`, the strings in `text` should be</span>
+<span class="sd">        plotted.</span>
+
+<span class="sd">        Additional keyword arguments given will be passed onto the actual plotting</span>
+<span class="sd">        code; this is useful for specifying things like color or font properties.</span>
+
+<span class="sd">        If something has already been plotted at this location, it will be replaced.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        location : str or tuple[float, float]</span>
+<span class="sd">            The offset (relative to center) to plot this parameter. If str, should be one of</span>
+<span class="sd">            &#39;C&#39;, &#39;N&#39;, &#39;NE&#39;, &#39;E&#39;, &#39;SE&#39;, &#39;S&#39;, &#39;SW&#39;, &#39;W&#39;, or &#39;NW&#39;. Otherwise, should be a tuple</span>
+<span class="sd">            specifying the number of increments in the x and y directions; increments</span>
+<span class="sd">            are multiplied by `spacing` to give offsets in x and y relative to the center.</span>
+<span class="sd">        text : list (or array) of strings</span>
+<span class="sd">            The strings that should be plotted</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to use for matplotlib&#39;s plotting functions.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        plot_barb, plot_parameter, plot_symbol</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handle_location</span><span class="p">(</span><span class="n">location</span><span class="p">)</span>
+
+        <span class="c1"># Pass transform if necessary</span>
+        <span class="k">if</span> <span class="s1">&#39;transform&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;transform&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span>
+
+        <span class="n">text_collection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">scattertext</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">text</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="n">location</span><span class="p">,</span>
+                                              <span class="n">size</span><span class="o">=</span><span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fontsize&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">),</span>
+                                              <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">location</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="n">location</span><span class="p">]</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="n">text_collection</span>
+        <span class="k">return</span> <span class="n">text_collection</span></div>
+
+<div class="viewcode-block" id="StationPlot.plot_barb"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot.plot_barb">[docs]</a>    <span class="k">def</span> <span class="nf">plot_barb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;At the center of the station model plot wind barbs.</span>
+
+<span class="sd">        Additional keyword arguments given will be passed onto matplotlib&#39;s</span>
+<span class="sd">        :meth:`~matplotlib.axes.Axes.barbs` function; this is useful for specifying things</span>
+<span class="sd">        like color or line width.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : array-like</span>
+<span class="sd">            The data to use for the u-component of the barbs.</span>
+<span class="sd">        v : array-like</span>
+<span class="sd">            The data to use for the v-component of the barbs.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to pass to matplotlib&#39;s</span>
+<span class="sd">            :meth:`~matplotlib.axes.Axes.barbs` function.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        plot_parameter, plot_symbol, plot_text</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Handle transforming our center points. CartoPy doesn&#39;t like 1D barbs</span>
+        <span class="c1"># TODO: This can be removed for cartopy &gt; 0.14.3</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="p">,</span> <span class="s1">&#39;projection&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transform</span> <span class="ow">or</span> <span class="s1">&#39;transform&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">):</span>
+            <span class="n">trans</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;transform&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span> <span class="n">ax</span><span class="o">.</span><span class="n">projection</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">trans</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y</span>
+
+        <span class="c1"># Empirically determined</span>
+        <span class="n">pivot</span> <span class="o">=</span> <span class="mf">0.51</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">)</span>
+        <span class="n">length</span> <span class="o">=</span> <span class="mf">1.95</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fontsize</span><span class="p">)</span>
+        <span class="n">defaults</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">sizes</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">spacing</span><span class="o">=.</span><span class="mi">15</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">emptybarb</span><span class="o">=</span><span class="mf">0.35</span><span class="p">),</span>
+                        <span class="n">length</span><span class="o">=</span><span class="n">length</span><span class="p">,</span> <span class="n">pivot</span><span class="o">=</span><span class="n">pivot</span><span class="p">)</span>
+        <span class="n">defaults</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Remove old barbs</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">barbs</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">barbs</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">barbs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">defaults</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_to_string_list</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">fmt</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert a sequence of values to a list of strings.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">callable</span><span class="p">(</span><span class="n">fmt</span><span class="p">):</span>
+            <span class="k">def</span> <span class="nf">formatter</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+                <span class="sd">&quot;&quot;&quot;Turn a format string into a callable.&quot;&quot;&quot;</span>
+                <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">):</span>
+                    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asscalar</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">format</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">fmt</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">formatter</span> <span class="o">=</span> <span class="n">fmt</span>
+
+        <span class="k">return</span> <span class="p">[</span><span class="n">formatter</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isfinite</span><span class="p">(</span><span class="n">v</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">vals</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_handle_location</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Process locations to get a consistent set of tuples for location.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">is_string_like</span><span class="p">(</span><span class="n">location</span><span class="p">):</span>
+            <span class="n">location</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">location_names</span><span class="p">[</span><span class="n">location</span><span class="p">]</span>
+        <span class="n">xoff</span><span class="p">,</span> <span class="n">yoff</span> <span class="o">=</span> <span class="n">location</span>
+        <span class="k">return</span> <span class="n">xoff</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span><span class="p">,</span> <span class="n">yoff</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">spacing</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="StationPlotLayout"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout">[docs]</a><span class="k">class</span> <span class="nc">StationPlotLayout</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;make a layout to encapsulate plotting using :class:`StationPlot`.</span>
+
+<span class="sd">    This class keeps a collection of offsets, plot formats, etc. for a parameter based</span>
+<span class="sd">    on its name. This then allows a dictionary of data (or any object that allows looking</span>
+<span class="sd">    up of arrays based on a name) to be passed to :meth:`plot()` to plot the data all at once.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    StationPlot</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">class</span> <span class="nc">PlotTypes</span><span class="p">(</span><span class="n">Enum</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Different plotting types for the layout.</span>
+
+<span class="sd">        Controls how items are displayed (e.g. converting values to symbols).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">value</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="n">symbol</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="mi">3</span>
+        <span class="n">barb</span> <span class="o">=</span> <span class="mi">4</span>
+
+<div class="viewcode-block" id="StationPlotLayout.add_value"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_value">[docs]</a>    <span class="k">def</span> <span class="nf">add_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.0f&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a numeric value to the station layout.</span>
+
+<span class="sd">        This specifies that at the offset `location`, data should be pulled from the data</span>
+<span class="sd">        container using the key `name` and plotted. The conversion of the data values to</span>
+<span class="sd">        a string is controlled by `fmt`. The units required for plotting can also</span>
+<span class="sd">        be passed in using `units`, which will cause the data to be converted before</span>
+<span class="sd">        plotting.</span>
+
+<span class="sd">        Additional keyword arguments given will be passed onto the actual plotting</span>
+<span class="sd">        code; this is useful for specifying things like color or font properties.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        location : str or tuple[float, float]</span>
+<span class="sd">            The offset (relative to center) to plot this value. If str, should be one of</span>
+<span class="sd">            &#39;C&#39;, &#39;N&#39;, &#39;NE&#39;, &#39;E&#39;, &#39;SE&#39;, &#39;S&#39;, &#39;SW&#39;, &#39;W&#39;, or &#39;NW&#39;. Otherwise, should be a tuple</span>
+<span class="sd">            specifying the number of increments in the x and y directions.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the parameter, which is used as a key to pull data out of the</span>
+<span class="sd">            data container passed to :meth:`plot`.</span>
+<span class="sd">        fmt : str or callable, optional</span>
+<span class="sd">            How to format the data as a string for plotting. If a string, it should be</span>
+<span class="sd">            compatible with the :func:`format` builtin. If a callable, this should take a</span>
+<span class="sd">            value and return a string. Defaults to &#39;0.f&#39;.</span>
+<span class="sd">        units : pint-compatible unit, optional</span>
+<span class="sd">            The units to use for plotting. Data will be converted to this unit before</span>
+<span class="sd">            conversion to a string. If not specified, no conversion is done.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to use for matplotlib&#39;s plotting functions.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        add_barb, add_symbol, add_text</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">fmt</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="StationPlotLayout.add_symbol"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_symbol">[docs]</a>    <span class="k">def</span> <span class="nf">add_symbol</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">symbol_mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a symbol to the station layout.</span>
+
+<span class="sd">        This specifies that at the offset `location`, data should be pulled from the data</span>
+<span class="sd">        container using the key `name` and plotted. Data values will converted to glyphs</span>
+<span class="sd">        appropriate for MetPy&#39;s symbol font using the callable `symbol_mapper`.</span>
+
+<span class="sd">        Additional keyword arguments given will be passed onto the actual plotting</span>
+<span class="sd">        code; this is useful for specifying things like color or font properties.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        location : str or tuple[float, float]</span>
+<span class="sd">            The offset (relative to center) to plot this value. If str, should be one of</span>
+<span class="sd">            &#39;C&#39;, &#39;N&#39;, &#39;NE&#39;, &#39;E&#39;, &#39;SE&#39;, &#39;S&#39;, &#39;SW&#39;, &#39;W&#39;, or &#39;NW&#39;. Otherwise, should be a tuple</span>
+<span class="sd">            specifying the number of increments in the x and y directions.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the parameter, which is used as a key to pull data out of the</span>
+<span class="sd">            data container passed to :meth:`plot`.</span>
+<span class="sd">        symbol_mapper : callable</span>
+<span class="sd">            Controls converting data values to unicode code points for the</span>
+<span class="sd">            :data:`wx_symbol_font` font. This should take a value and return a single unicode</span>
+<span class="sd">            character. See :mod:`metpy.plots.wx_symbols` for included mappers.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to use for matplotlib&#39;s plotting functions.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        add_barb, add_text, add_value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">symbol</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">symbol_mapper</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="StationPlotLayout.add_text"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_text">[docs]</a>    <span class="k">def</span> <span class="nf">add_text</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">location</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a text field to the  station layout.</span>
+
+<span class="sd">        This specifies that at the offset `location`, data should be pulled from the data</span>
+<span class="sd">        container using the key `name` and plotted directly as text with no conversion</span>
+<span class="sd">        applied.</span>
+
+<span class="sd">        Additional keyword arguments given will be passed onto the actual plotting</span>
+<span class="sd">        code; this is useful for specifying things like color or font properties.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        location : str or tuple(float, float)</span>
+<span class="sd">            The offset (relative to center) to plot this value. If str, should be one of</span>
+<span class="sd">            &#39;C&#39;, &#39;N&#39;, &#39;NE&#39;, &#39;E&#39;, &#39;SE&#39;, &#39;S&#39;, &#39;SW&#39;, &#39;W&#39;, or &#39;NW&#39;. Otherwise, should be a tuple</span>
+<span class="sd">            specifying the number of increments in the x and y directions.</span>
+<span class="sd">        name : str</span>
+<span class="sd">            The name of the parameter, which is used as a key to pull data out of the</span>
+<span class="sd">            data container passed to :meth:`plot`.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to use for matplotlib&#39;s plotting functions.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        add_barb, add_symbol, add_value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="p">[</span><span class="n">location</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="StationPlotLayout.add_barb"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.add_barb">[docs]</a>    <span class="k">def</span> <span class="nf">add_barb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u_name</span><span class="p">,</span> <span class="n">v_name</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add a wind barb to the center of the station layout.</span>
+
+<span class="sd">        This specifies that u- and v-component data should be pulled from the data</span>
+<span class="sd">        container using the keys `u_name` and `v_name`, respectively, and plotted as</span>
+<span class="sd">        a wind barb at the center of the station plot. If `units` are given, both</span>
+<span class="sd">        components will be converted to these units.</span>
+
+<span class="sd">        Additional keyword arguments given will be passed onto the actual plotting</span>
+<span class="sd">        code; this is useful for specifying things like color or line width.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u_name : str</span>
+<span class="sd">            The name of the parameter for the u-component for `barbs`, which is used as</span>
+<span class="sd">            a key to pull data out of the data container passed to :meth:`plot`.</span>
+<span class="sd">        v_name : str</span>
+<span class="sd">            The name of the parameter for the v-component for `barbs`, which is used as</span>
+<span class="sd">            a key to pull data out of the data container passed to :meth:`plot`.</span>
+<span class="sd">        units : pint-compatible unit, optional</span>
+<span class="sd">            The units to use for plotting. Data will be converted to this unit before</span>
+<span class="sd">            conversion to a string. If not specified, no conversion is done.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Additional keyword arguments to use for matplotlib&#39;s</span>
+<span class="sd">            :meth:`~matplotlib.axes.Axes.barbs` function.</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        add_symbol, add_text, add_value</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Not sure if putting the v_name as a plot-specific option is appropriate,</span>
+        <span class="c1"># but it seems simpler than making name code in plot handle tuples</span>
+        <span class="bp">self</span><span class="p">[</span><span class="s1">&#39;barb&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">barb</span><span class="p">,</span> <span class="p">(</span><span class="n">u_name</span><span class="p">,</span> <span class="n">v_name</span><span class="p">),</span> <span class="p">(</span><span class="n">units</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="StationPlotLayout.names"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.names">[docs]</a>    <span class="k">def</span> <span class="nf">names</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the list of names used by the layout.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[str]</span>
+<span class="sd">            the list of names of variables used by the layout</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">barb</span><span class="p">:</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+<div class="viewcode-block" id="StationPlotLayout.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">plotter</span><span class="p">,</span> <span class="n">data_dict</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot a collection of data using this layout for a station plot.</span>
+
+<span class="sd">        This function iterates through the entire specified layout, pulling the fields named</span>
+<span class="sd">        in the layout from `data_dict` and plotting them using `plotter` as specified</span>
+<span class="sd">        in the layout. Fields present in the layout, but not in `data_dict`, are ignored.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        plotter : StationPlot</span>
+<span class="sd">            :class:`StationPlot` to use to plot the data. This controls the axes,</span>
+<span class="sd">            spacing, station locations, etc.</span>
+<span class="sd">        data_dict : dict[str, array-like]</span>
+<span class="sd">            Data container that maps a name to an array of data. Data from this object</span>
+<span class="sd">            will be used to fill out the station plot.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">def</span> <span class="nf">coerce_data</span><span class="p">(</span><span class="n">dat</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">dat</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">dat</span>
+
+        <span class="k">for</span> <span class="n">loc</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">typ</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">args</span> <span class="o">=</span> <span class="n">info</span>
+            <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">barb</span><span class="p">:</span>
+                <span class="c1"># Try getting the data</span>
+                <span class="n">u_name</span><span class="p">,</span> <span class="n">v_name</span> <span class="o">=</span> <span class="n">name</span>
+                <span class="n">u_data</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">u_name</span><span class="p">)</span>
+                <span class="n">v_data</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">v_name</span><span class="p">)</span>
+
+                <span class="c1"># Plot if we have the data</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="p">(</span><span class="n">v_data</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">u_data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">):</span>
+                    <span class="n">units</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">args</span>
+                    <span class="n">plotter</span><span class="o">.</span><span class="n">plot_barb</span><span class="p">(</span><span class="n">coerce_data</span><span class="p">(</span><span class="n">u_data</span><span class="p">,</span> <span class="n">units</span><span class="p">),</span> <span class="n">coerce_data</span><span class="p">(</span><span class="n">v_data</span><span class="p">,</span> <span class="n">units</span><span class="p">),</span>
+                                      <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># Check that we have the data for this location</span>
+                <span class="n">data</span> <span class="o">=</span> <span class="n">data_dict</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="c1"># If we have it, hand it to the appropriate method</span>
+                    <span class="k">if</span> <span class="n">typ</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">value</span><span class="p">:</span>
+                        <span class="n">fmt</span><span class="p">,</span> <span class="n">units</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">args</span>
+                        <span class="n">plotter</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">coerce_data</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">units</span><span class="p">),</span> <span class="n">fmt</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">symbol</span><span class="p">:</span>
+                        <span class="n">mapper</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="n">args</span>
+                        <span class="n">plotter</span><span class="o">.</span><span class="n">plot_symbol</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">mapper</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                    <span class="k">elif</span> <span class="n">typ</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">PlotTypes</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+                        <span class="n">plotter</span><span class="o">.</span><span class="n">plot_text</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return string representation of layout.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="s1">&#39;{&#39;</span> <span class="o">+</span>
+                <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">{0}</span><span class="s1">: (</span><span class="si">{1[0].name}</span><span class="s1">, </span><span class="si">{1[1]}</span><span class="s1">, ...)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">loc</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+                          <span class="k">for</span> <span class="n">loc</span><span class="p">,</span> <span class="n">info</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span> <span class="o">+</span>
+                <span class="s1">&#39;}&#39;</span><span class="p">)</span></div>
+
+
+<span class="k">with</span> <span class="n">exporter</span><span class="p">:</span>
+    <span class="c1">#: :desc: Simple station plot layout</span>
+    <span class="n">simple_layout</span> <span class="o">=</span> <span class="n">StationPlotLayout</span><span class="p">()</span>
+    <span class="n">simple_layout</span><span class="o">.</span><span class="n">add_barb</span><span class="p">(</span><span class="s1">&#39;eastward_wind&#39;</span><span class="p">,</span> <span class="s1">&#39;northward_wind&#39;</span><span class="p">,</span> <span class="s1">&#39;knots&#39;</span><span class="p">)</span>
+    <span class="n">simple_layout</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;NW&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+    <span class="n">simple_layout</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;SW&#39;</span><span class="p">,</span> <span class="s1">&#39;dew_point_temperature&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+    <span class="n">simple_layout</span><span class="o">.</span><span class="n">add_value</span><span class="p">(</span><span class="s1">&#39;NE&#39;</span><span class="p">,</span> <span class="s1">&#39;air_pressure_at_sea_level&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;mbar&#39;</span><span class="p">,</span>
+                            <span class="n">fmt</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="nb">format</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">v</span><span class="p">,</span> <span class="s1">&#39;03.0f&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">:])</span>
+    <span class="n">simple_layout</span><span class="o">.</span><span class="n">add_symbol</span><span class="p">(</span><span class="s1">&#39;C&#39;</span><span class="p">,</span> <span class="s1">&#39;cloud_coverage&#39;</span><span class="p">,</span> <span class="n">sky_cover</span><span class="p">)</span>
+    <span class="n">simple_layout</span><span class="o">.</span><span class="n">add_symbol</span><span class="p">(</span><span class="s1">&#39;W&#39;</span><span class="p">,</span> <span class="s1">&#39;present_weather&#39;</span><span class="p">,</span> <span class="n">current_weather</span><span class="p">)</span>
+
+    <span class="c1">#: Full NWS station plot `layout`__</span>
+    <span class="c1">#:</span>
+    <span class="c1">#: __ http://oceanservice.noaa.gov/education/yos/resource/JetStream/synoptic/wxmaps.htm</span>
+    <span class="n">nws_layout</span> <span class="o">=</span> <span class="n">StationPlotLayout</span><span class="p">()</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_value</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;degF&#39;</span><span class="p">)</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_symbol</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;high_cloud_type&#39;</span><span class="p">,</span> <span class="n">high_clouds</span><span class="p">)</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_symbol</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;medium_cloud_type&#39;</span><span class="p">,</span> <span class="n">mid_clouds</span><span class="p">)</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_symbol</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;low_cloud_type&#39;</span><span class="p">,</span> <span class="n">low_clouds</span><span class="p">)</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_value</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;air_pressure_at_sea_level&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;mbar&#39;</span><span class="p">,</span>
+                         <span class="n">fmt</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="nb">format</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">v</span><span class="p">,</span> <span class="s1">&#39;03.0f&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">:])</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_value</span><span class="p">((</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;visibility_in_air&#39;</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;.0f&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;miles&#39;</span><span class="p">)</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_symbol</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;present_weather&#39;</span><span class="p">,</span> <span class="n">current_weather</span><span class="p">)</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_symbol</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;cloud_coverage&#39;</span><span class="p">,</span> <span class="n">sky_cover</span><span class="p">)</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_value</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;tendency_of_air_pressure&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;mbar&#39;</span><span class="p">,</span>
+                         <span class="n">fmt</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="k">if</span> <span class="n">v</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="o">+</span> <span class="nb">format</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="nb">abs</span><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="s1">&#39;02.0f&#39;</span><span class="p">))</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_symbol</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="s1">&#39;tendency_of_air_pressure_symbol&#39;</span><span class="p">,</span> <span class="n">pressure_tendency</span><span class="p">)</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_barb</span><span class="p">(</span><span class="s1">&#39;eastward_wind&#39;</span><span class="p">,</span> <span class="s1">&#39;northward_wind&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;knots&#39;</span><span class="p">)</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_value</span><span class="p">((</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;dew_point_temperature&#39;</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;degF&#39;</span><span class="p">)</span>
+
+    <span class="c1"># TODO: Fix once we have the past weather symbols converted</span>
+    <span class="n">nws_layout</span><span class="o">.</span><span class="n">add_symbol</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="s1">&#39;past_weather&#39;</span><span class="p">,</span> <span class="n">current_weather</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 19:04:50.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.5.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

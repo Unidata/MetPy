@@ -1,0 +1,1039 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.plots.skewt &mdash; MetPy 0.5.1</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/plots/skewt.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MetPy 0.5.1" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.plots.skewt</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.plots.skewt</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2008-2015 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sd">&quot;&quot;&quot;Make Skew-T Log-P based plots.</span>
+
+<span class="sd">Contain tools for making Skew-T Log-P plots, including the base plotting class,</span>
+<span class="sd">`SkewT`, as well as a class for making a `Hodograph`.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib.axes</span> <span class="k">import</span> <span class="n">Axes</span>
+<span class="kn">import</span> <span class="nn">matplotlib.axis</span> <span class="k">as</span> <span class="nn">maxis</span>
+<span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="k">import</span> <span class="n">LineCollection</span>
+<span class="kn">from</span> <span class="nn">matplotlib.patches</span> <span class="k">import</span> <span class="n">Circle</span>
+<span class="kn">from</span> <span class="nn">matplotlib.projections</span> <span class="k">import</span> <span class="n">register_projection</span>
+<span class="kn">import</span> <span class="nn">matplotlib.spines</span> <span class="k">as</span> <span class="nn">mspines</span>
+<span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="k">import</span> <span class="n">MultipleLocator</span><span class="p">,</span> <span class="n">NullFormatter</span><span class="p">,</span> <span class="n">ScalarFormatter</span>
+<span class="kn">import</span> <span class="nn">matplotlib.transforms</span> <span class="k">as</span> <span class="nn">transforms</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">._util</span> <span class="k">import</span> <span class="n">colored_line</span>
+<span class="kn">from</span> <span class="nn">..calc</span> <span class="k">import</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">dry_lapse</span><span class="p">,</span> <span class="n">moist_lapse</span><span class="p">,</span> <span class="n">vapor_pressure</span>
+<span class="kn">from</span> <span class="nn">..calc.tools</span> <span class="k">import</span> <span class="n">delete_masked_points</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">units</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+
+<span class="k">class</span> <span class="nc">SkewXTick</span><span class="p">(</span><span class="n">maxis</span><span class="o">.</span><span class="n">XTick</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make x-axis ticks for Skew-T plots.</span>
+
+<span class="sd">    This class adds to the standard :class:`matplotlib.axis.XTick` dynamic checking</span>
+<span class="sd">    for whether a top or bottom tick is actually within the data limits at that part</span>
+<span class="sd">    and draw as appropriate. It also performs similar checking for gridlines.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">update_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set the location of tick in data coords with scalar *loc*.&quot;&quot;&quot;</span>
+        <span class="c1"># This ensures that the new value of the location is set before</span>
+        <span class="c1"># any other updates take place.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_loc</span> <span class="o">=</span> <span class="n">loc</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SkewXTick</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">update_position</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_has_default_loc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">_need_lower</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_has_default_loc</span><span class="p">()</span> <span class="ow">or</span>
+                <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">lower_xlim</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">()))</span>
+
+    <span class="k">def</span> <span class="nf">_need_upper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_has_default_loc</span><span class="p">()</span> <span class="ow">or</span>
+                <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">upper_xlim</span><span class="p">,</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">()))</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">gridOn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
+        <span class="sd">&quot;&quot;&quot;Control whether the gridline is drawn for this tick.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gridOn</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_has_default_loc</span><span class="p">()</span> <span class="ow">or</span>
+                <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_view_interval</span><span class="p">(),</span>
+                                             <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())))</span>
+
+    <span class="nd">@gridOn</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">gridOn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_gridOn</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tick1On</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
+        <span class="sd">&quot;&quot;&quot;Control whether the lower tick mark is drawn for this tick.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick1On</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_lower</span><span class="p">()</span>
+
+    <span class="nd">@tick1On</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">tick1On</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tick1On</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">label1On</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
+        <span class="sd">&quot;&quot;&quot;Control whether the lower tick label is drawn for this tick.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label1On</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_lower</span><span class="p">()</span>
+
+    <span class="nd">@label1On</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">label1On</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_label1On</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">tick2On</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
+        <span class="sd">&quot;&quot;&quot;Control whether the upper tick mark is drawn for this tick.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick2On</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_upper</span><span class="p">()</span>
+
+    <span class="nd">@tick2On</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">tick2On</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_tick2On</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">label2On</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
+        <span class="sd">&quot;&quot;&quot;Control whether the upper tick label is drawn for this tick.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label2On</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_upper</span><span class="p">()</span>
+
+    <span class="nd">@label2On</span><span class="o">.</span><span class="n">setter</span>
+    <span class="k">def</span> <span class="nf">label2On</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_label2On</span> <span class="o">=</span> <span class="n">value</span>
+
+    <span class="k">def</span> <span class="nf">get_view_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the view interval.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_view_interval</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">SkewXAxis</span><span class="p">(</span><span class="n">maxis</span><span class="o">.</span><span class="n">XAxis</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make an x-axis that works properly for Skew-T plots.</span>
+
+<span class="sd">    This class exists to force the use of our custom :class:`SkewXTick` as well</span>
+<span class="sd">    as provide a custom value for interview that combines the extents of the</span>
+<span class="sd">    upper and lower x-limits from the axes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_get_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">major</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">SkewXTick</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="n">major</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_view_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the view interval.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">upper_xlim</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">lower_xlim</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+
+<span class="k">class</span> <span class="nc">SkewSpine</span><span class="p">(</span><span class="n">mspines</span><span class="o">.</span><span class="n">Spine</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make an x-axis spine that works properly for Skew-T plots.</span>
+
+<span class="sd">    This class exists to use the separate x-limits from the axes to properly</span>
+<span class="sd">    locate the spine.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">_adjust_location</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">pts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="o">.</span><span class="n">vertices</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">spine_type</span> <span class="o">==</span> <span class="s1">&#39;top&#39;</span><span class="p">:</span>
+            <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">upper_xlim</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">lower_xlim</span>
+
+
+<span class="k">class</span> <span class="nc">SkewXAxes</span><span class="p">(</span><span class="n">Axes</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make a set of axes for Skew-T plots.</span>
+
+<span class="sd">    This class handles registration of the skew-xaxes as a projection as well as setting up</span>
+<span class="sd">    the appropriate transformations. It also makes sure we use our instances for spines</span>
+<span class="sd">    and x-axis: :class:`SkewSpine` and :class:`SkewXAxis`. It provides properties to</span>
+<span class="sd">    facilitate finding the x-limits for the bottom and top of the plot as well.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1"># The projection must specify a name.  This will be used be the</span>
+    <span class="c1"># user to select the projection, i.e. ``subplot(111,</span>
+    <span class="c1"># projection=&#39;skewx&#39;)``.</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;skewx&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize `SkewXAxes`.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        args : Arbitrary positional arguments</span>
+<span class="sd">            Passed to :class:`matplotlib.axes.Axes`</span>
+
+<span class="sd">        position: int, optional</span>
+<span class="sd">            The rotation of the x-axis against the y-axis, in degrees.</span>
+
+<span class="sd">        kwargs : Arbitrary keyword arguments</span>
+<span class="sd">            Passed to :class:`matplotlib.axes.Axes`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># This needs to be popped and set before moving on</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">rot</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;rotation&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="n">Axes</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_init_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># Taken from Axes and modified to use our modified X-axis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="n">SkewXAxis</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;top&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">register_axis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;bottom&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">register_axis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="n">maxis</span><span class="o">.</span><span class="n">YAxis</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;left&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">register_axis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s1">&#39;right&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">register_axis</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_gen_axes_spines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locations</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">&#39;inches&#39;</span><span class="p">):</span>
+        <span class="c1"># pylint: disable=unused-argument</span>
+        <span class="n">spines</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;top&#39;</span><span class="p">:</span> <span class="n">SkewSpine</span><span class="o">.</span><span class="n">linear_spine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;top&#39;</span><span class="p">),</span>
+                  <span class="s1">&#39;bottom&#39;</span><span class="p">:</span> <span class="n">mspines</span><span class="o">.</span><span class="n">Spine</span><span class="o">.</span><span class="n">linear_spine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;bottom&#39;</span><span class="p">),</span>
+                  <span class="s1">&#39;left&#39;</span><span class="p">:</span> <span class="n">mspines</span><span class="o">.</span><span class="n">Spine</span><span class="o">.</span><span class="n">linear_spine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;left&#39;</span><span class="p">),</span>
+                  <span class="s1">&#39;right&#39;</span><span class="p">:</span> <span class="n">mspines</span><span class="o">.</span><span class="n">Spine</span><span class="o">.</span><span class="n">linear_spine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;right&#39;</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="n">spines</span>
+
+    <span class="k">def</span> <span class="nf">_set_lim_and_transforms</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Set limits and transforms.</span>
+
+<span class="sd">        This is called once when the plot is created to set up all the</span>
+<span class="sd">        transforms for the data, text and grids.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get the standard transform setup from the Axes base class</span>
+        <span class="n">Axes</span><span class="o">.</span><span class="n">_set_lim_and_transforms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="c1"># Need to put the skew in the middle, after the scale and limits,</span>
+        <span class="c1"># but before the transAxes. This way, the skew is done in Axes</span>
+        <span class="c1"># coordinates thus performing the transform around the proper origin</span>
+        <span class="c1"># We keep the pre-transAxes transform around for other users, like the</span>
+        <span class="c1"># spines for finding bounds</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transDataToAxes</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transScale</span> <span class="o">+</span>
+                                <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transLimits</span> <span class="o">+</span>
+                                 <span class="n">transforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">skew_deg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rot</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+
+        <span class="c1"># Create the full transform from Data to Pixels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transDataToAxes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transAxes</span>
+
+        <span class="c1"># Blended transforms like this need to have the skewing applied using</span>
+        <span class="c1"># both axes, in axes coords like before.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xaxis_transform</span> <span class="o">=</span> <span class="p">(</span><span class="n">transforms</span><span class="o">.</span><span class="n">blended_transform_factory</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">transScale</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transLimits</span><span class="p">,</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">IdentityTransform</span><span class="p">())</span> <span class="o">+</span>
+            <span class="n">transforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">skew_deg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rot</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transAxes</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lower_xlim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the data limits for the x-axis along the bottom of the axes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">viewLim</span><span class="o">.</span><span class="n">intervalx</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">upper_xlim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the data limits for the x-axis along the top of the axes.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transDataToAxes</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])[:,</span> <span class="mi">0</span><span class="p">]</span>
+
+
+<span class="c1"># Now register the projection with matplotlib so the user can select</span>
+<span class="c1"># it.</span>
+<span class="n">register_projection</span><span class="p">(</span><span class="n">SkewXAxes</span><span class="p">)</span>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="SkewT"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT">[docs]</a><span class="k">class</span> <span class="nc">SkewT</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make Skew-T log-P plots of data.</span>
+
+<span class="sd">    This class simplifies the process of creating Skew-T log-P plots in</span>
+<span class="sd">    using matplotlib. It handles requesting the appropriate skewed projection,</span>
+<span class="sd">    and provides simplified wrappers to make it easy to plot data, add wind</span>
+<span class="sd">    barbs, and add other lines to the plots (e.g. dry adiabats)</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ax : `matplotlib.axes.Axes`</span>
+<span class="sd">        The underlying Axes instance, which can be used for calling additional</span>
+<span class="sd">        plot functions (e.g. `axvline`)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="SkewT.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">subplot</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create SkewT - logP plots.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        fig : matplotlib.figure.Figure, optional</span>
+<span class="sd">            Source figure to use for plotting. If none is given, a new</span>
+<span class="sd">            :class:`matplotlib.figure.Figure` instance will be created.</span>
+<span class="sd">        rotation : float or int, optional</span>
+<span class="sd">            Controls the rotation of temperature relative to horizontal. Given</span>
+<span class="sd">            in degrees counterclockwise from x-axis. Defaults to 30 degrees.</span>
+<span class="sd">        subplot : tuple[int, int, int] or `matplotlib.gridspec.SubplotSpec` instance, optional</span>
+<span class="sd">            Controls the size/position of the created subplot. This allows creating</span>
+<span class="sd">            the skewT as part of a collection of subplots. If subplot is a tuple, it</span>
+<span class="sd">            should conform to the specification used for</span>
+<span class="sd">            :meth:`matplotlib.figure.Figure.add_subplot`. The</span>
+<span class="sd">            :class:`matplotlib.gridspec.SubplotSpec`</span>
+<span class="sd">            can be created by using :class:`matplotlib.gridspec.GridSpec`.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+            <span class="n">figsize</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">,</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+            <span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fig</span> <span class="o">=</span> <span class="n">fig</span>
+
+        <span class="c1"># Handle being passed a tuple for the subplot, or a GridSpec instance</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">len</span><span class="p">(</span><span class="n">subplot</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+            <span class="n">subplot</span> <span class="o">=</span> <span class="p">(</span><span class="n">subplot</span><span class="p">,)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="o">*</span><span class="n">subplot</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;skewx&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="n">rotation</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SkewT.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot data.</span>
+
+<span class="sd">        Simple wrapper around plot so that pressure is the first (independent)</span>
+<span class="sd">        input. This is essentially a wrapper around `semilogy`. It also</span>
+<span class="sd">        sets some appropriate ticking and plot ranges.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p : array_like</span>
+<span class="sd">            pressure values</span>
+<span class="sd">        t : array_like</span>
+<span class="sd">            temperature values, can also be used for things like dew point</span>
+<span class="sd">        args</span>
+<span class="sd">            Other positional arguments to pass to :func:`~matplotlib.pyplot.semilogy`</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Other keyword arguments to pass to :func:`~matplotlib.pyplot.semilogy`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[matplotlib.lines.Line2D]</span>
+<span class="sd">            lines plotted</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :func:`matplotlib.pyplot.semilogy`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Skew-T logP plotting</span>
+        <span class="n">t</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">delete_masked_points</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Disables the log-formatting that comes with semilogy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ScalarFormatter</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_formatter</span><span class="p">(</span><span class="n">NullFormatter</span><span class="p">())</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis_inverted</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
+
+        <span class="c1"># Try to make sane default temperature plotting</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">50</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">l</span></div>
+
+<div class="viewcode-block" id="SkewT.plot_barbs"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_barbs">[docs]</a>    <span class="k">def</span> <span class="nf">plot_barbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">xloc</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">x_clip_radius</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="n">y_clip_radius</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot wind barbs.</span>
+
+<span class="sd">        Adds wind barbs to the skew-T plot. This is a wrapper around the</span>
+<span class="sd">        `barbs` command that adds to appropriate transform to place the</span>
+<span class="sd">        barbs in a vertical line, located as a function of pressure.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p : array_like</span>
+<span class="sd">            pressure values</span>
+<span class="sd">        u : array_like</span>
+<span class="sd">            U (East-West) component of wind</span>
+<span class="sd">        v : array_like</span>
+<span class="sd">            V (North-South) component of wind</span>
+<span class="sd">        xloc : float, optional</span>
+<span class="sd">            Position for the barbs, in normalized axes coordinates, where 0.0</span>
+<span class="sd">            denotes far left and 1.0 denotes far right. Defaults to far right.</span>
+<span class="sd">        x_clip_radius : float, optional</span>
+<span class="sd">            Space, in normalized axes coordinates, to leave before clipping</span>
+<span class="sd">            wind barbs in the x-direction. Defaults to 0.08.</span>
+<span class="sd">        y_clip_radius : float, optional</span>
+<span class="sd">            Space, in normalized axes coordinates, to leave above/below plot</span>
+<span class="sd">            before clipping wind barbs in the y-direction. Defaults to 0.08.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Other keyword arguments to pass to :func:`~matplotlib.pyplot.barbs`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        matplotlib.quiver.Barbs</span>
+<span class="sd">            instance created</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :func:`matplotlib.pyplot.barbs`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Assemble array of x-locations in axes space</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty_like</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+        <span class="n">x</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">xloc</span><span class="p">)</span>
+
+        <span class="c1"># Do barbs plot at this location</span>
+        <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span>
+                          <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yaxis_transform</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;tick2&#39;</span><span class="p">),</span>
+                          <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Override the default clip box, which is the axes rectangle, so we can have</span>
+        <span class="c1"># barbs that extend outside.</span>
+        <span class="n">ax_bbox</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Bbox</span><span class="p">([[</span><span class="n">xloc</span> <span class="o">-</span> <span class="n">x_clip_radius</span><span class="p">,</span> <span class="o">-</span><span class="n">y_clip_radius</span><span class="p">],</span>
+                                   <span class="p">[</span><span class="n">xloc</span> <span class="o">+</span> <span class="n">x_clip_radius</span><span class="p">,</span> <span class="mf">1.0</span> <span class="o">+</span> <span class="n">y_clip_radius</span><span class="p">]])</span>
+        <span class="n">b</span><span class="o">.</span><span class="n">set_clip_box</span><span class="p">(</span><span class="n">transforms</span><span class="o">.</span><span class="n">TransformedBbox</span><span class="p">(</span><span class="n">ax_bbox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">b</span></div>
+
+<div class="viewcode-block" id="SkewT.plot_dry_adiabats"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_dry_adiabats">[docs]</a>    <span class="k">def</span> <span class="nf">plot_dry_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot dry adiabats.</span>
+
+<span class="sd">        Adds dry adiabats (lines of constant potential temperature) to the</span>
+<span class="sd">        plot. The default style of these lines is dashed red lines with an alpha</span>
+<span class="sd">        value of 0.5. These can be overridden using keyword arguments.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        t0 : array_like, optional</span>
+<span class="sd">            Starting temperature values in Kelvin. If none are given, they will be</span>
+<span class="sd">            generated using the current temperature range at the bottom of</span>
+<span class="sd">            the plot.</span>
+<span class="sd">        p : array_like, optional</span>
+<span class="sd">            Pressure values to be included in the dry adiabats. If not</span>
+<span class="sd">            specified, they will be linearly distributed across the current</span>
+<span class="sd">            plotted pressure range.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Other keyword arguments to pass to :class:`matplotlib.collections.LineCollection`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        matplotlib.collections.LineCollection</span>
+<span class="sd">            instance created</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :func:`~metpy.calc.thermo.dry_lapse`</span>
+<span class="sd">        :meth:`plot_moist_adiabats`</span>
+<span class="sd">        :class:`matplotlib.collections.LineCollection`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Determine set of starting temps if necessary</span>
+        <span class="k">if</span> <span class="n">t0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+            <span class="n">t0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+
+        <span class="c1"># Get pressure levels based on ylims if necessary</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
+
+        <span class="c1"># Assemble into data for plotting</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">dry_lapse</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t0</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ti</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">ti</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
+
+        <span class="c1"># Add to plot</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;linestyles&#39;</span><span class="p">,</span> <span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SkewT.plot_moist_adiabats"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_moist_adiabats">[docs]</a>    <span class="k">def</span> <span class="nf">plot_moist_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot moist adiabats.</span>
+
+<span class="sd">        Adds saturated pseudo-adiabats (lines of constant equivalent potential</span>
+<span class="sd">        temperature) to the plot. The default style of these lines is dashed</span>
+<span class="sd">        blue lines with an alpha value of 0.5. These can be overridden using</span>
+<span class="sd">        keyword arguments.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        t0 : array_like, optional</span>
+<span class="sd">            Starting temperature values in Kelvin. If none are given, they will be</span>
+<span class="sd">            generated using the current temperature range at the bottom of</span>
+<span class="sd">            the plot.</span>
+<span class="sd">        p : array_like, optional</span>
+<span class="sd">            Pressure values to be included in the moist adiabats. If not</span>
+<span class="sd">            specified, they will be linearly distributed across the current</span>
+<span class="sd">            plotted pressure range.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Other keyword arguments to pass to :class:`matplotlib.collections.LineCollection`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        matplotlib.collections.LineCollection</span>
+<span class="sd">            instance created</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :func:`~metpy.calc.thermo.moist_lapse`</span>
+<span class="sd">        :meth:`plot_dry_adiabats`</span>
+<span class="sd">        :class:`matplotlib.collections.LineCollection`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Determine set of starting temps if necessary</span>
+        <span class="k">if</span> <span class="n">t0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
+            <span class="n">t0</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">xmin</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span>
+                                 <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)))</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span>
+
+        <span class="c1"># Get pressure levels based on ylims if necessary</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">())</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
+
+        <span class="c1"># Assemble into data for plotting</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">moist_lapse</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t0</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ti</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">ti</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
+
+        <span class="c1"># Add to plot</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;linestyles&#39;</span><span class="p">,</span> <span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SkewT.plot_mixing_lines"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_mixing_lines">[docs]</a>    <span class="k">def</span> <span class="nf">plot_mixing_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot lines of constant mixing ratio.</span>
+
+<span class="sd">        Adds lines of constant mixing ratio (isohumes) to the</span>
+<span class="sd">        plot. The default style of these lines is dashed green lines with an</span>
+<span class="sd">        alpha value of 0.8. These can be overridden using keyword arguments.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        w : array_like, optional</span>
+<span class="sd">            Unitless mixing ratio values to plot. If none are given, default</span>
+<span class="sd">            values are used.</span>
+<span class="sd">        p : array_like, optional</span>
+<span class="sd">            Pressure values to be included in the isohumes. If not</span>
+<span class="sd">            specified, they will be linearly distributed across the current</span>
+<span class="sd">            plotted pressure range up to 600 mb.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Other keyword arguments to pass to :class:`matplotlib.collections.LineCollection`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        matplotlib.collections.LineCollection</span>
+<span class="sd">            instance created</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :class:`matplotlib.collections.LineCollection`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Default mixing level values if necessary</span>
+        <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0004</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.002</span><span class="p">,</span> <span class="mf">0.004</span><span class="p">,</span> <span class="mf">0.007</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span>
+                          <span class="mf">0.016</span><span class="p">,</span> <span class="mf">0.024</span><span class="p">,</span> <span class="mf">0.032</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+        <span class="c1"># Set pressure range if necessary</span>
+        <span class="k">if</span> <span class="n">p</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">600</span><span class="p">,</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()))</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
+
+        <span class="c1"># Assemble data for plotting</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="n">dewpoint</span><span class="p">(</span><span class="n">vapor_pressure</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span>
+        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">td</span><span class="p">]</span>
+
+        <span class="c1"># Add to plot</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;linestyles&#39;</span><span class="p">,</span> <span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+        <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="SkewT.shade_area"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_area">[docs]</a>    <span class="k">def</span> <span class="nf">shade_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade area between two curves.</span>
+
+<span class="sd">        Shades areas between curves. Area can be where one is greater or less than the other</span>
+<span class="sd">        or all areas shaded.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        y : array_like</span>
+<span class="sd">            1-dimensional array of numeric y-values</span>
+<span class="sd">        x1 : array_like</span>
+<span class="sd">            1-dimensional array of numeric x-values</span>
+<span class="sd">        x2 : array_like</span>
+<span class="sd">            1-dimensional array of numeric x-values</span>
+<span class="sd">        which : string</span>
+<span class="sd">            Specifies if `positive`, `negative`, or `both` areas are being shaded.</span>
+<span class="sd">            Will be overridden by where.</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`matplotlib.collections.PolyCollection`</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :class:`matplotlib.collections.PolyCollection`</span>
+<span class="sd">        :func:`matplotlib.axes.Axes.fill_betweenx`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">fill_properties</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;positive&#39;</span><span class="p">:</span>
+                           <span class="p">{</span><span class="s1">&#39;facecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;tab:red&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;where&#39;</span><span class="p">:</span> <span class="n">x1</span> <span class="o">&gt;</span> <span class="n">x2</span><span class="p">},</span>
+                           <span class="s1">&#39;negative&#39;</span><span class="p">:</span>
+                           <span class="p">{</span><span class="s1">&#39;facecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;tab:blue&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;where&#39;</span><span class="p">:</span> <span class="n">x1</span> <span class="o">&lt;</span> <span class="n">x2</span><span class="p">},</span>
+                           <span class="s1">&#39;both&#39;</span><span class="p">:</span>
+                           <span class="p">{</span><span class="s1">&#39;facecolor&#39;</span><span class="p">:</span> <span class="s1">&#39;tab:green&#39;</span><span class="p">,</span> <span class="s1">&#39;alpha&#39;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span> <span class="s1">&#39;where&#39;</span><span class="p">:</span> <span class="kc">None</span><span class="p">}}</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">fill_args</span> <span class="o">=</span> <span class="n">fill_properties</span><span class="p">[</span><span class="n">which</span><span class="p">]</span>
+            <span class="n">fill_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown option for which: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">which</span><span class="p">)))</span>
+
+        <span class="n">arrs</span> <span class="o">=</span> <span class="n">y</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span>
+
+        <span class="k">if</span> <span class="n">fill_args</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">arrs</span> <span class="o">=</span> <span class="n">arrs</span> <span class="o">+</span> <span class="p">(</span><span class="n">fill_args</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">],)</span>
+            <span class="n">fill_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;where&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+        <span class="n">arrs</span> <span class="o">=</span> <span class="n">delete_masked_points</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">,</span> <span class="o">**</span><span class="n">fill_args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SkewT.shade_cape"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cape">[docs]</a>    <span class="k">def</span> <span class="nf">shade_cape</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of CAPE.</span>
+
+<span class="sd">        Shades areas where the parcel is warmer than the environment (areas of positive</span>
+<span class="sd">        buoyancy.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p : array_like</span>
+<span class="sd">            Pressure values</span>
+<span class="sd">        t : array_like</span>
+<span class="sd">            Temperature values</span>
+<span class="sd">        t_parcel : array_like</span>
+<span class="sd">            Parcel path temperature values</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`matplotlib.collections.PolyCollection`</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :class:`matplotlib.collections.PolyCollection`</span>
+<span class="sd">        :func:`matplotlib.axes.Axes.fill_betweenx`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shade_area</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;positive&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SkewT.shade_cin"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_cin">[docs]</a>    <span class="k">def</span> <span class="nf">shade_cin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade areas of CIN.</span>
+
+<span class="sd">        Shades areas where the parcel is cooler than the environment (areas of negative</span>
+<span class="sd">        buoyancy.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        p : array_like</span>
+<span class="sd">            Pressure values</span>
+<span class="sd">        t : array_like</span>
+<span class="sd">            Temperature values</span>
+<span class="sd">        t_parcel : array_like</span>
+<span class="sd">            Parcel path temperature values</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        :class:`matplotlib.collections.PolyCollection`</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :class:`matplotlib.collections.PolyCollection`</span>
+<span class="sd">        :func:`matplotlib.axes.Axes.fill_betweenx`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">shade_area</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t_parcel</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;negative&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="Hodograph"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph">[docs]</a><span class="k">class</span> <span class="nc">Hodograph</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make a hodograph of wind data.</span>
+
+<span class="sd">    Plots the u and v components of the wind along the x and y axes, respectively.</span>
+
+<span class="sd">    This class simplifies the process of creating a hodograph using matplotlib.</span>
+<span class="sd">    It provides helpers for creating a circular grid and for plotting the wind as a line</span>
+<span class="sd">    colored by another value (such as wind speed).</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ax : `matplotlib.axes.Axes`</span>
+<span class="sd">        The underlying Axes instance used for all plotting</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Hodograph.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">component_range</span><span class="o">=</span><span class="mi">80</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create a Hodograph instance.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        ax : `matplotlib.axes.Axes`, optional</span>
+<span class="sd">            The `Axes` instance used for plotting</span>
+<span class="sd">        component_range : value</span>
+<span class="sd">            The maximum range of the plot. Used to set plot bounds and control the maximum</span>
+<span class="sd">            number of grid rings needed.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">ax</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;box&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="n">component_range</span><span class="p">,</span> <span class="n">component_range</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="n">component_range</span><span class="p">,</span> <span class="n">component_range</span><span class="p">)</span>
+
+        <span class="c1"># == sqrt(2) * max_range, which is the distance at the corner</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">max_range</span> <span class="o">=</span> <span class="mf">1.4142135</span> <span class="o">*</span> <span class="n">component_range</span></div>
+
+<div class="viewcode-block" id="Hodograph.add_grid"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.add_grid">[docs]</a>    <span class="k">def</span> <span class="nf">add_grid</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">increment</span><span class="o">=</span><span class="mf">10.</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Add grid lines to hodograph.</span>
+
+<span class="sd">        Creates lines for the x- and y-axes, as well as circles denoting wind speed values.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        increment : value, optional</span>
+<span class="sd">            The value increment between rings</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Other kwargs to control appearance of lines</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :class:`matplotlib.patches.Circle`</span>
+<span class="sd">        :meth:`matplotlib.axes.Axes.axhline`</span>
+<span class="sd">        :meth:`matplotlib.axes.Axes.axvline`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Some default arguments. Take those, and update with any</span>
+        <span class="c1"># arguments passed in</span>
+        <span class="n">grid_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">color</span><span class="o">=</span><span class="s1">&#39;grey&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="n">grid_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Take those args and make appropriate for a Circle</span>
+        <span class="n">circle_args</span> <span class="o">=</span> <span class="n">grid_args</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">color</span> <span class="o">=</span> <span class="n">circle_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">circle_args</span><span class="p">[</span><span class="s1">&#39;edgecolor&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">color</span>
+        <span class="n">circle_args</span><span class="p">[</span><span class="s1">&#39;fill&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">rings</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">increment</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_range</span><span class="p">,</span> <span class="n">increment</span><span class="p">):</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">Circle</span><span class="p">((</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">radius</span><span class="o">=</span><span class="n">r</span><span class="p">,</span> <span class="o">**</span><span class="n">circle_args</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_patch</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">rings</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+
+        <span class="c1"># Add lines for x=0 and y=0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">yaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">grid_args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">xaxis</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axhline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">**</span><span class="n">grid_args</span><span class="p">)</span></div>
+
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_form_line_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Simplify taking the default line style and extending with kwargs.&quot;&quot;&quot;</span>
+        <span class="n">def_args</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">linewidth</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">def_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">def_args</span>
+
+<div class="viewcode-block" id="Hodograph.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data.</span>
+
+<span class="sd">        Plots the wind data on the hodograph.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : array_like</span>
+<span class="sd">            u-component of wind</span>
+<span class="sd">        v : array_like</span>
+<span class="sd">            v-component of wind</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Other keyword arguments to pass to :meth:`matplotlib.axes.Axes.plot`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list[matplotlib.lines.Line2D]</span>
+<span class="sd">            lines plotted</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`Hodograph.plot_colormapped`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">line_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_form_line_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">delete_masked_points</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">line_args</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Hodograph.plot_colormapped"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.plot_colormapped">[docs]</a>    <span class="k">def</span> <span class="nf">plot_colormapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data, with line colored based on a third set of data.</span>
+
+<span class="sd">        Plots the wind data on the hodograph, but with a colormapped line.</span>
+
+<span class="sd">        Simple wrapper around plot so that pressure is the first (independent)</span>
+<span class="sd">        input. This is essentially a wrapper around `semilogy`. It also</span>
+<span class="sd">        sets some appropriate ticking and plot ranges.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        u : array_like</span>
+<span class="sd">            u-component of wind</span>
+<span class="sd">        v : array_like</span>
+<span class="sd">            v-component of wind</span>
+<span class="sd">        c : array_like</span>
+<span class="sd">            data to use for colormapping</span>
+<span class="sd">        kwargs</span>
+<span class="sd">            Other keyword arguments to pass to :class:`matplotlib.collections.LineCollection`</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        matplotlib.collections.LineCollection</span>
+<span class="sd">            instance created</span>
+
+<span class="sd">        See Also</span>
+<span class="sd">        --------</span>
+<span class="sd">        :meth:`Hodograph.plot`</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">line_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_form_line_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">delete_masked_points</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
+        <span class="n">lc</span> <span class="o">=</span> <span class="n">colored_line</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">line_args</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">lc</span></div></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 19:04:50.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.5.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

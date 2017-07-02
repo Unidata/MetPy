@@ -1,0 +1,12 @@
+interpolate
+==========================
+
+.. currentmodule:: metpy.gridding
+
+.. autofunction:: interpolate
+
+.. include:: metpy.gridding.interpolate.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,483 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.gridding.gridding_functions &mdash; MetPy 0.5.1</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/gridding/gridding_functions.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MetPy 0.5.1" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.gridding.gridding_functions</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.gridding.gridding_functions</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2008-2016 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sd">&quot;&quot;&quot;Tools and calculations for assigning values to a grid.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">griddata</span><span class="p">,</span> <span class="n">Rbf</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="k">import</span> <span class="n">cdist</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">interpolation</span><span class="p">,</span> <span class="n">points</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">calc_kappa</span><span class="p">(</span><span class="n">spacing</span><span class="p">,</span> <span class="n">kappa_star</span><span class="o">=</span><span class="mf">5.052</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the kappa parameter for barnes interpolation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    spacing: float</span>
+<span class="sd">        Average spacing between observations</span>
+<span class="sd">    kappa_star: float</span>
+<span class="sd">        Non-dimensional response parameter. Default 5.052.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        kappa: float</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">kappa_star</span> <span class="o">*</span> <span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">spacing</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+
+
+<span class="k">def</span> <span class="nf">remove_observations_below_value</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">val</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Remove all x, y, and z where z is less than val.</span>
+
+<span class="sd">    Will not destroy original values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x: array_like</span>
+<span class="sd">        x coordinate.</span>
+<span class="sd">    y: array_like</span>
+<span class="sd">        y coordinate.</span>
+<span class="sd">    z: array_like</span>
+<span class="sd">        Observation value.</span>
+<span class="sd">    val: float</span>
+<span class="sd">        Value at which to threshold z.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x, y, z</span>
+<span class="sd">        List of coordinate observation pairs without</span>
+<span class="sd">        observation values less than val.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">z</span> <span class="o">&gt;=</span> <span class="n">val</span><span class="p">]</span>
+    <span class="n">y_</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">z</span> <span class="o">&gt;=</span> <span class="n">val</span><span class="p">]</span>
+    <span class="n">z_</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="n">z</span> <span class="o">&gt;=</span> <span class="n">val</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">x_</span><span class="p">,</span> <span class="n">y_</span><span class="p">,</span> <span class="n">z_</span>
+
+
+<span class="k">def</span> <span class="nf">remove_nan_observations</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Remove all x, y, and z where z is nan.</span>
+
+<span class="sd">    Will not destroy original values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x: array_like</span>
+<span class="sd">        x coordinate</span>
+<span class="sd">    y: array_like</span>
+<span class="sd">        y coordinate</span>
+<span class="sd">    z: array_like</span>
+<span class="sd">        observation value</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x, y, z</span>
+<span class="sd">        List of coordinate observation pairs without</span>
+<span class="sd">        nan valued observations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">z</span><span class="p">)]</span>
+    <span class="n">y_</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">z</span><span class="p">)]</span>
+    <span class="n">z_</span> <span class="o">=</span> <span class="n">z</span><span class="p">[</span><span class="o">~</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">z</span><span class="p">)]</span>
+
+    <span class="k">return</span> <span class="n">x_</span><span class="p">,</span> <span class="n">y_</span><span class="p">,</span> <span class="n">z_</span>
+
+
+<span class="k">def</span> <span class="nf">remove_repeat_coordinates</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Remove all x, y, and z where (x,y) is repeated and keep the first occurrence only.</span>
+
+<span class="sd">    Will not destroy original values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x: array_like</span>
+<span class="sd">        x coordinate</span>
+<span class="sd">    y: array_like</span>
+<span class="sd">        y coordinate</span>
+<span class="sd">    z: array_like</span>
+<span class="sd">        observation value</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x, y, z</span>
+<span class="sd">        List of coordinate observation pairs without</span>
+<span class="sd">        repeated coordinates.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">coords</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">variable</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">y_</span><span class="p">,</span> <span class="n">t_</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x_</span><span class="p">,</span> <span class="n">y_</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">coords</span><span class="p">:</span>
+            <span class="n">coords</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x_</span><span class="p">,</span> <span class="n">y_</span><span class="p">))</span>
+            <span class="n">variable</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">t_</span><span class="p">)</span>
+
+    <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span>
+
+    <span class="n">x_</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
+    <span class="n">y_</span> <span class="o">=</span> <span class="n">coords</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">z_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">variable</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x_</span><span class="p">,</span> <span class="n">y_</span><span class="p">,</span> <span class="n">z_</span>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="interpolate"><a class="viewcode-back" href="../../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate">[docs]</a><span class="k">def</span> <span class="nf">interpolate</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">50000</span><span class="p">,</span>
+                <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">kappa_star</span><span class="o">=</span><span class="mf">5.052</span><span class="p">,</span>
+                <span class="n">search_radius</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rbf_func</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">rbf_smooth</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x: array_like</span>
+<span class="sd">        x coordinate</span>
+<span class="sd">    y: array_like</span>
+<span class="sd">        y coordinate</span>
+<span class="sd">    z: array_like</span>
+<span class="sd">        observation value</span>
+<span class="sd">    interp_type: str</span>
+<span class="sd">        What type of interpolation to use. Available options include:</span>
+<span class="sd">        1) &quot;linear&quot;, &quot;nearest&quot;, &quot;cubic&quot;, or &quot;rbf&quot; from Scipy.interpolate.</span>
+<span class="sd">        2) &quot;natural_neighbor&quot;, &quot;barnes&quot;, or &quot;cressman&quot; from Metpy.mapping .</span>
+<span class="sd">        Default &quot;linear&quot;.</span>
+<span class="sd">    hres: float</span>
+<span class="sd">        The horizontal resolution of the generated grid. Default 50000 meters.</span>
+<span class="sd">    minimum_neighbors: int</span>
+<span class="sd">        Minimum number of neighbors needed to perform barnes or cressman interpolation for a</span>
+<span class="sd">        point. Default is 3.</span>
+<span class="sd">    gamma: float</span>
+<span class="sd">        Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</span>
+<span class="sd">    kappa_star: float</span>
+<span class="sd">        Response parameter for barnes interpolation, specified nondimensionally</span>
+<span class="sd">        in terms of the Nyquist. Default 5.052</span>
+<span class="sd">    search_radius: float</span>
+<span class="sd">        A search radius to use for the barnes and cressman interpolation schemes.</span>
+<span class="sd">        If search_radius is not specified, it will default to the average spacing of</span>
+<span class="sd">        observations.</span>
+<span class="sd">    rbf_func: str</span>
+<span class="sd">        Specifies which function to use for Rbf interpolation.</span>
+<span class="sd">        Options include: &#39;multiquadric&#39;, &#39;inverse&#39;, &#39;gaussian&#39;, &#39;linear&#39;, &#39;cubic&#39;,</span>
+<span class="sd">        &#39;quintic&#39;, and &#39;thin_plate&#39;. Defualt &#39;linear&#39;. See scipy.interpolate.Rbf for more</span>
+<span class="sd">        information.</span>
+<span class="sd">    rbf_smooth: float</span>
+<span class="sd">        Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    grid_x: (N, 2) ndarray</span>
+<span class="sd">        Meshgrid for the resulting interpolation in the x dimension</span>
+<span class="sd">    grid_y: (N, 2) ndarray</span>
+<span class="sd">        Meshgrid for the resulting interpolation in the y dimension ndarray</span>
+<span class="sd">    img: (M, N) ndarray</span>
+<span class="sd">        2-dimensional array representing the interpolated values for each grid.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">generate_grid</span><span class="p">(</span><span class="n">hres</span><span class="p">,</span> <span class="n">points</span><span class="o">.</span><span class="n">get_boundary_coords</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">interp_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="s1">&#39;nearest&#39;</span><span class="p">,</span> <span class="s1">&#39;cubic&#39;</span><span class="p">]:</span>
+        <span class="n">points_zip</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">griddata</span><span class="p">(</span><span class="n">points_zip</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">),</span> <span class="n">method</span><span class="o">=</span><span class="n">interp_type</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">interp_type</span> <span class="o">==</span> <span class="s1">&#39;natural_neighbor&#39;</span><span class="p">:</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">interpolation</span><span class="o">.</span><span class="n">natural_neighbor</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">interp_type</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span> <span class="s1">&#39;barnes&#39;</span><span class="p">]:</span>
+
+        <span class="n">ave_spacing</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">cdist</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)),</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)))))</span>
+
+        <span class="k">if</span> <span class="n">search_radius</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">search_radius</span> <span class="o">=</span> <span class="n">ave_spacing</span>
+
+        <span class="k">if</span> <span class="n">interp_type</span> <span class="o">==</span> <span class="s1">&#39;cressman&#39;</span><span class="p">:</span>
+
+            <span class="n">img</span> <span class="o">=</span> <span class="n">interpolation</span><span class="o">.</span><span class="n">inverse_distance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">,</span>
+                                                 <span class="n">min_neighbors</span><span class="o">=</span><span class="n">minimum_neighbors</span><span class="p">,</span>
+                                                 <span class="n">kind</span><span class="o">=</span><span class="n">interp_type</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">interp_type</span> <span class="o">==</span> <span class="s1">&#39;barnes&#39;</span><span class="p">:</span>
+
+            <span class="n">kappa</span> <span class="o">=</span> <span class="n">calc_kappa</span><span class="p">(</span><span class="n">ave_spacing</span><span class="p">,</span> <span class="n">kappa_star</span><span class="p">)</span>
+            <span class="n">img</span> <span class="o">=</span> <span class="n">interpolation</span><span class="o">.</span><span class="n">inverse_distance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">,</span> <span class="n">search_radius</span><span class="p">,</span>
+                                                 <span class="n">gamma</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">min_neighbors</span><span class="o">=</span><span class="n">minimum_neighbors</span><span class="p">,</span>
+                                                 <span class="n">kind</span><span class="o">=</span><span class="n">interp_type</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">interp_type</span> <span class="o">==</span> <span class="s1">&#39;rbf&#39;</span><span class="p">:</span>
+
+        <span class="c1"># 3-dimensional support not yet included.</span>
+        <span class="c1"># Assign a zero to each z dimension for observations.</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)))</span>
+
+        <span class="n">rbfi</span> <span class="o">=</span> <span class="n">Rbf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">h</span><span class="p">,</span> <span class="n">z</span><span class="p">,</span> <span class="n">function</span><span class="o">=</span><span class="n">rbf_func</span><span class="p">,</span> <span class="n">smooth</span><span class="o">=</span><span class="n">rbf_smooth</span><span class="p">)</span>
+
+        <span class="c1"># 3-dimensional support not yet included.</span>
+        <span class="c1"># Assign a zero to each z dimension grid cell position.</span>
+        <span class="n">hi</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">grid_x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="n">rbfi</span><span class="p">(</span><span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">,</span> <span class="n">hi</span><span class="p">)</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Interpolation option not available. &#39;</span>
+                         <span class="s1">&#39;Try: linear, nearest, cubic, natural_neighbor, &#39;</span>
+                         <span class="s1">&#39;barnes, cressman, rbf&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">grid_x</span><span class="p">,</span> <span class="n">grid_y</span><span class="p">,</span> <span class="n">img</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 19:04:50.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.5.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

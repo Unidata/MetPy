@@ -1,0 +1,12 @@
+is_precip_mode
+=======================
+
+.. currentmodule:: metpy.io
+
+.. autofunction:: is_precip_mode
+
+.. include:: metpy.io.is_precip_mode.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

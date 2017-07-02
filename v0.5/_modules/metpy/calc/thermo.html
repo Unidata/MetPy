@@ -1,0 +1,997 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.calc.thermo &mdash; MetPy 0.5.1</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/calc/thermo.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MetPy 0.5.1" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.calc.thermo</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.calc.thermo</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2008-2015 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sd">&quot;&quot;&quot;Contains a collection of thermodynamic calculations.&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">scipy.integrate</span> <span class="k">as</span> <span class="nn">si</span>
+
+<span class="kn">from</span> <span class="nn">.tools</span> <span class="k">import</span> <span class="n">find_intersections</span>
+<span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">Cp_d</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">Lv</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">Rd</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+<span class="n">sat_pressure_0c</span> <span class="o">=</span> <span class="mf">6.112</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">millibar</span>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="potential_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.potential_temperature.html#metpy.calc.potential_temperature">[docs]</a><span class="k">def</span> <span class="nf">potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the potential temperature.</span>
+
+<span class="sd">    Uses the Poisson equation to calculation the potential temperature</span>
+<span class="sd">    given `pressure` and `temperature`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        The total atmospheric pressure</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The temperature</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The potential temperature corresponding to the the temperature and</span>
+<span class="sd">        pressure.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    dry_lapse</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Formula:</span>
+
+<span class="sd">    .. math:: \Theta = T (P_0 / P)^\kappa</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from metpy.units import units</span>
+<span class="sd">    &gt;&gt;&gt; metpy.calc.potential_temperature(800. * units.mbar, 273. * units.kelvin)</span>
+<span class="sd">    &lt;Quantity(290.96653180346203, &#39;kelvin&#39;)&gt;</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">temperature</span> <span class="o">*</span> <span class="p">(</span><span class="n">P0</span> <span class="o">/</span> <span class="n">pressure</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span><span class="o">**</span><span class="n">kappa</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="dry_lapse"><a class="viewcode-back" href="../../../api/generated/metpy.calc.dry_lapse.html#metpy.calc.dry_lapse">[docs]</a><span class="k">def</span> <span class="nf">dry_lapse</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the temperature at a level assuming only dry processes.</span>
+
+<span class="sd">    This function lifts a parcel starting at `temperature`, conserving</span>
+<span class="sd">    potential temperature. The starting pressure should be the first item in</span>
+<span class="sd">    the `pressure` array.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        The atmospheric pressure level(s) of interest</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The starting temperature</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">       The resulting parcel temperature at levels given by `pressure`</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    moist_lapse : Calculate parcel temperature assuming liquid saturation</span>
+<span class="sd">                  processes</span>
+<span class="sd">    parcel_profile : Calculate complete parcel profile</span>
+<span class="sd">    potential_temperature</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">temperature</span> <span class="o">*</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">/</span> <span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">**</span><span class="n">kappa</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="moist_lapse"><a class="viewcode-back" href="../../../api/generated/metpy.calc.moist_lapse.html#metpy.calc.moist_lapse">[docs]</a><span class="k">def</span> <span class="nf">moist_lapse</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the temperature at a level assuming liquid saturation processes.</span>
+
+<span class="sd">    This function lifts a parcel starting at `temperature`. The starting</span>
+<span class="sd">    pressure should be the first item in the `pressure` array. Essentially,</span>
+<span class="sd">    this function is calculating moist pseudo-adiabats.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        The atmospheric pressure level(s) of interest</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The starting temperature</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">       The temperature corresponding to the the starting temperature and</span>
+<span class="sd">       pressure levels.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    dry_lapse : Calculate parcel temperature assuming dry adiabatic processes</span>
+<span class="sd">    parcel_profile : Calculate complete parcel profile</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function is implemented by integrating the following differential</span>
+<span class="sd">    equation:</span>
+
+<span class="sd">    .. math:: \frac{dT}{dP} = \frac{1}{P} \frac{R_d T + L_v r_s}</span>
+<span class="sd">                                {C_{pd} + \frac{L_v^2 r_s \epsilon}{R_d T^2}}</span>
+
+<span class="sd">    This equation comes from [Bakhshaii2013]_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">dt</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">):</span>
+        <span class="n">t</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+        <span class="n">rs</span> <span class="o">=</span> <span class="n">saturation_mixing_ratio</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">)</span>
+        <span class="n">frac</span> <span class="o">=</span> <span class="p">((</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">t</span> <span class="o">+</span> <span class="n">Lv</span> <span class="o">*</span> <span class="n">rs</span><span class="p">)</span> <span class="o">/</span>
+                <span class="p">(</span><span class="n">Cp_d</span> <span class="o">+</span> <span class="p">(</span><span class="n">Lv</span> <span class="o">*</span> <span class="n">Lv</span> <span class="o">*</span> <span class="n">rs</span> <span class="o">*</span> <span class="n">epsilon</span> <span class="o">/</span> <span class="p">(</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">t</span> <span class="o">*</span> <span class="n">t</span><span class="p">))))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;kelvin&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">frac</span> <span class="o">/</span> <span class="n">p</span>
+    <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">si</span><span class="o">.</span><span class="n">odeint</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="n">atleast_1d</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span>
+                                    <span class="n">pressure</span><span class="o">.</span><span class="n">squeeze</span><span class="p">())</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(),</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span><span class="p">)</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="lcl"><a class="viewcode-back" href="../../../api/generated/metpy.calc.lcl.html#metpy.calc.lcl">[docs]</a><span class="k">def</span> <span class="nf">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">,</span> <span class="n">max_iters</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">eps</span><span class="o">=</span><span class="mf">1e-2</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the lifted condensation level (LCL) using from the starting point.</span>
+
+<span class="sd">    The starting state for the parcel is defined by `temperature`, `dewpt`,</span>
+<span class="sd">    and `pressure`.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        The starting atmospheric pressure</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The starting temperature</span>
+<span class="sd">    dewpt : `pint.Quantity`</span>
+<span class="sd">        The starting dew point</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `(pint.Quantity, pint.Quantity)`</span>
+<span class="sd">        The LCL pressure and temperature</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    max_iters : int, optional</span>
+<span class="sd">        The maximum number of iterations to use in calculation, defaults to 50.</span>
+<span class="sd">    eps : float, optional</span>
+<span class="sd">        The desired absolute error in the calculated value, defaults to 1e-2.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    parcel_profile</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function is implemented using an iterative approach to solve for the</span>
+<span class="sd">    LCL. The basic algorithm is:</span>
+
+<span class="sd">    1. Find the dew point from the LCL pressure and starting mixing ratio</span>
+<span class="sd">    2. Find the LCL pressure from the starting temperature and dewpoint</span>
+<span class="sd">    3. Iterate until convergence</span>
+
+<span class="sd">    The function is guaranteed to finish by virtue of the `max_iters` counter.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">mixing_ratio</span><span class="p">(</span><span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">dewpt</span><span class="p">),</span> <span class="n">pressure</span><span class="p">)</span>
+    <span class="n">new_p</span> <span class="o">=</span> <span class="n">p</span> <span class="o">=</span> <span class="n">pressure</span>
+    <span class="n">eps</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">eps</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">max_iters</span><span class="p">:</span>
+        <span class="n">td</span> <span class="o">=</span> <span class="n">dewpoint</span><span class="p">(</span><span class="n">vapor_pressure</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span>
+        <span class="n">new_p</span> <span class="o">=</span> <span class="n">pressure</span> <span class="o">*</span> <span class="p">(</span><span class="n">td</span> <span class="o">/</span> <span class="n">temperature</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="mf">1.</span> <span class="o">/</span> <span class="n">kappa</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">new_p</span> <span class="o">-</span> <span class="n">p</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">eps</span><span class="p">:</span>
+            <span class="k">break</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">new_p</span>
+        <span class="n">max_iters</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># We have not converged</span>
+        <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;LCL calculation has not converged.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_p</span><span class="p">,</span> <span class="n">td</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="lfc"><a class="viewcode-back" href="../../../api/generated/metpy.calc.lfc.html#metpy.calc.lfc">[docs]</a><span class="k">def</span> <span class="nf">lfc</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the level of free convection (LFC).</span>
+
+<span class="sd">    This works by finding the first intersection of the ideal parcel path and</span>
+<span class="sd">    the measured parcel temperature.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        The atmospheric pressure</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The temperature at the levels given by `pressure`</span>
+<span class="sd">    dewpt : `pint.Quantity`</span>
+<span class="sd">        The dew point at the levels given by `pressure`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The LFC pressure and temperature</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    parcel_profile</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ideal_profile</span> <span class="o">=</span> <span class="n">parcel_profile</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dewpt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+
+    <span class="c1"># The parcel profile and data have the same first data point, so we ignore</span>
+    <span class="c1"># that point to get the real first intersection for the LFC calculation.</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">find_intersections</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">ideal_profile</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
+                              <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;increasing&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="el"><a class="viewcode-back" href="../../../api/generated/metpy.calc.el.html#metpy.calc.el">[docs]</a><span class="k">def</span> <span class="nf">el</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the equilibrium level.</span>
+
+<span class="sd">    This works by finding the last intersection of the ideal parcel path and</span>
+<span class="sd">    the measured environmental temperature. If there is one or fewer intersections, there is</span>
+<span class="sd">    no equilibrium level.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        The atmospheric pressure</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The temperature at the levels given by `pressure`</span>
+<span class="sd">    dewpt : `pint.Quantity`</span>
+<span class="sd">        The dew point at the levels given by `pressure`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity, pint.Quantity`</span>
+<span class="sd">        The EL pressure and temperature</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    parcel_profile</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ideal_profile</span> <span class="o">=</span> <span class="n">parcel_profile</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dewpt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">find_intersections</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">ideal_profile</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+    <span class="c1"># If there is only one intersection, it&#39;s the LFC and we return None.</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="parcel_profile"><a class="viewcode-back" href="../../../api/generated/metpy.calc.parcel_profile.html#metpy.calc.parcel_profile">[docs]</a><span class="k">def</span> <span class="nf">parcel_profile</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the profile a parcel takes through the atmosphere.</span>
+
+<span class="sd">    The parcel starts at `temperature`, and `dewpt`, lifted up</span>
+<span class="sd">    dry adiabatically to the LCL, and then moist adiabatically from there.</span>
+<span class="sd">    `pressure` specifies the pressure levels for the profile.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        The atmospheric pressure level(s) of interest. The first entry should be the starting</span>
+<span class="sd">        point pressure.</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The starting temperature</span>
+<span class="sd">    dewpt : `pint.Quantity`</span>
+<span class="sd">        The starting dew point</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The parcel temperatures at the specified pressure levels.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    lcl, moist_lapse, dry_lapse</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Find the LCL</span>
+    <span class="n">l</span> <span class="o">=</span> <span class="n">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+
+    <span class="c1"># Find the dry adiabatic profile, *including* the LCL. We need &gt;= the LCL in case the</span>
+    <span class="c1"># LCL is included in the levels. It&#39;s slightly redundant in that case, but simplifies</span>
+    <span class="c1"># the logic for removing it later.</span>
+    <span class="n">press_lower</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">pressure</span><span class="p">[</span><span class="n">pressure</span> <span class="o">&gt;=</span> <span class="n">l</span><span class="p">],</span> <span class="n">l</span><span class="p">))</span>
+    <span class="n">t1</span> <span class="o">=</span> <span class="n">dry_lapse</span><span class="p">(</span><span class="n">press_lower</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+
+    <span class="c1"># Find moist pseudo-adiabatic profile starting at the LCL</span>
+    <span class="n">press_upper</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">l</span><span class="p">,</span> <span class="n">pressure</span><span class="p">[</span><span class="n">pressure</span> <span class="o">&lt;</span> <span class="n">l</span><span class="p">]))</span>
+    <span class="n">t2</span> <span class="o">=</span> <span class="n">moist_lapse</span><span class="p">(</span><span class="n">press_upper</span><span class="p">,</span> <span class="n">t1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">t1</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+
+    <span class="c1"># Return LCL *without* the LCL point</span>
+    <span class="k">return</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">t1</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">t2</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="vapor_pressure"><a class="viewcode-back" href="../../../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure">[docs]</a><span class="k">def</span> <span class="nf">vapor_pressure</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">mixing</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate water vapor (partial) pressure.</span>
+
+<span class="sd">    Given total `pressure` and water vapor `mixing` ratio, calculates the</span>
+<span class="sd">    partial pressure of water vapor.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        total atmospheric pressure</span>
+<span class="sd">    mixing : `pint.Quantity`</span>
+<span class="sd">        dimensionless mass mixing ratio</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The ambient water vapor (partial) pressure in the same units as</span>
+<span class="sd">        `pressure`.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function is a straightforward implementation of the equation given in many places,</span>
+<span class="sd">    such as [Hobbs1977]_ pg.71:</span>
+
+<span class="sd">    .. math:: e = p \frac{r}{r + \epsilon}</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    saturation_vapor_pressure, dewpoint</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">pressure</span> <span class="o">*</span> <span class="n">mixing</span> <span class="o">/</span> <span class="p">(</span><span class="n">epsilon</span> <span class="o">+</span> <span class="n">mixing</span><span class="p">)</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="saturation_vapor_pressure"><a class="viewcode-back" href="../../../api/generated/metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure">[docs]</a><span class="k">def</span> <span class="nf">saturation_vapor_pressure</span><span class="p">(</span><span class="n">temperature</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the saturation water vapor (partial) pressure.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The temperature</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The saturation water vapor (partial) pressure</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    vapor_pressure, dewpoint</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Instead of temperature, dewpoint may be used in order to calculate</span>
+<span class="sd">    the actual (ambient) water vapor (partial) pressure.</span>
+
+<span class="sd">    The formula used is that from [Bolton1980]_ for T in degrees Celsius:</span>
+
+<span class="sd">    .. math:: 6.112 e^\frac{17.67T}{T + 243.5}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Converted from original in terms of C to use kelvin. Using raw absolute values of C in</span>
+    <span class="c1"># a formula plays havoc with units support.</span>
+    <span class="k">return</span> <span class="n">sat_pressure_0c</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="mf">17.67</span> <span class="o">*</span> <span class="p">(</span><span class="n">temperature</span> <span class="o">-</span> <span class="mf">273.15</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span> <span class="o">/</span>
+                                    <span class="p">(</span><span class="n">temperature</span> <span class="o">-</span> <span class="mf">29.65</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span><span class="p">))</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="dewpoint_rh"><a class="viewcode-back" href="../../../api/generated/metpy.calc.dewpoint_rh.html#metpy.calc.dewpoint_rh">[docs]</a><span class="k">def</span> <span class="nf">dewpoint_rh</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">rh</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the ambient dewpoint given air temperature and relative humidity.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        Air temperature</span>
+<span class="sd">    rh : `pint.Quantity`</span>
+<span class="sd">        Relative humidity expressed as a ratio in the range [0, 1]</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The dew point temperature</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    dewpoint, saturation_vapor_pressure</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">dewpoint</span><span class="p">(</span><span class="n">rh</span> <span class="o">*</span> <span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">temperature</span><span class="p">))</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="dewpoint"><a class="viewcode-back" href="../../../api/generated/metpy.calc.dewpoint.html#metpy.calc.dewpoint">[docs]</a><span class="k">def</span> <span class="nf">dewpoint</span><span class="p">(</span><span class="n">e</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the ambient dewpoint given the vapor pressure.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    e : `pint.Quantity`</span>
+<span class="sd">        Water vapor partial pressure</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        Dew point temperature</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    dewpoint_rh, saturation_vapor_pressure, vapor_pressure</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function inverts the [Bolton1980]_ formula for saturation vapor</span>
+<span class="sd">    pressure to instead calculate the temperature. This yield the following</span>
+<span class="sd">    formula for dewpoint in degrees Celsius:</span>
+
+<span class="sd">    .. math:: T = \frac{243.5 log(e / 6.112)}{17.67 - log(e / 6.112)}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">e</span> <span class="o">/</span> <span class="n">sat_pressure_0c</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span> <span class="o">+</span> <span class="mf">243.5</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degC</span> <span class="o">*</span> <span class="n">val</span> <span class="o">/</span> <span class="p">(</span><span class="mf">17.67</span> <span class="o">-</span> <span class="n">val</span><span class="p">)</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="mixing_ratio"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mixing_ratio.html#metpy.calc.mixing_ratio">[docs]</a><span class="k">def</span> <span class="nf">mixing_ratio</span><span class="p">(</span><span class="n">part_press</span><span class="p">,</span> <span class="n">tot_press</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="o">=</span><span class="n">epsilon</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the mixing ratio of a gas.</span>
+
+<span class="sd">    This calculates mixing ratio given its partial pressure and the total pressure of</span>
+<span class="sd">    the air. There are no required units for the input arrays, other than that</span>
+<span class="sd">    they have the same units.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    part_press : `pint.Quantity`</span>
+<span class="sd">        Partial pressure of the constituent gas</span>
+<span class="sd">    tot_press : `pint.Quantity`</span>
+<span class="sd">        Total air pressure</span>
+<span class="sd">    molecular_weight_ratio : `pint.Quantity` or float, optional</span>
+<span class="sd">        The ratio of the molecular weight of the constituent gas to that assumed</span>
+<span class="sd">        for air. Defaults to the ratio for water vapor to dry air</span>
+<span class="sd">        (:math:`\epsilon\approx0.622`).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The (mass) mixing ratio, dimensionless (e.g. Kg/Kg or g/g)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    This function is a straightforward implementation of the equation given in many places,</span>
+<span class="sd">    such as [Hobbs1977]_ pg.73:</span>
+
+<span class="sd">    .. math:: r = \epsilon \frac{e}{p - e}</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    saturation_mixing_ratio, vapor_pressure</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">molecular_weight_ratio</span> <span class="o">*</span> <span class="n">part_press</span> <span class="o">/</span> <span class="p">(</span><span class="n">tot_press</span> <span class="o">-</span> <span class="n">part_press</span><span class="p">)</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="saturation_mixing_ratio"><a class="viewcode-back" href="../../../api/generated/metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio">[docs]</a><span class="k">def</span> <span class="nf">saturation_mixing_ratio</span><span class="p">(</span><span class="n">tot_press</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the saturation mixing ratio of water vapor.</span>
+
+<span class="sd">    This calculation is given total pressure and the temperature. The implementation</span>
+<span class="sd">    uses the formula outlined in [Hobbs1977]_ pg.73.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    tot_press: `pint.Quantity`</span>
+<span class="sd">        Total atmospheric pressure</span>
+<span class="sd">    temperature: `pint.Quantity`</span>
+<span class="sd">        The temperature</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The saturation mixing ratio, dimensionless</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">mixing_ratio</span><span class="p">(</span><span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">temperature</span><span class="p">),</span> <span class="n">tot_press</span><span class="p">)</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="equivalent_potential_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.equivalent_potential_temperature.html#metpy.calc.equivalent_potential_temperature">[docs]</a><span class="k">def</span> <span class="nf">equivalent_potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate equivalent potential temperature.</span>
+
+<span class="sd">    This calculation must be given an air parcel&#39;s pressure and temperature.</span>
+<span class="sd">    The implementation uses the formula outlined in [Hobbs1977]_ pg.78-79.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure: `pint.Quantity`</span>
+<span class="sd">        Total atmospheric pressure</span>
+<span class="sd">    temperature: `pint.Quantity`</span>
+<span class="sd">        The temperature</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding equivalent potential temperature of the parcel</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math:: \Theta_e = \Theta e^\frac{L_v r_s}{C_{pd} T}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pottemp</span> <span class="o">=</span> <span class="n">potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+    <span class="n">smixr</span> <span class="o">=</span> <span class="n">saturation_mixing_ratio</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pottemp</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">Lv</span> <span class="o">*</span> <span class="n">smixr</span> <span class="o">/</span> <span class="p">(</span><span class="n">Cp_d</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">))</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="virtual_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.virtual_temperature.html#metpy.calc.virtual_temperature">[docs]</a><span class="k">def</span> <span class="nf">virtual_temperature</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">mixing</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="o">=</span><span class="n">epsilon</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate virtual temperature.</span>
+
+<span class="sd">    This calculation must be given an air parcel&#39;s temperature and mixing ratio.</span>
+<span class="sd">    The implementation uses the formula outlined in [Hobbs2006] pg.80.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    temperature: `pint.Quantity`</span>
+<span class="sd">        The temperature</span>
+<span class="sd">    mixing : `pint.Quantity`</span>
+<span class="sd">        dimensionless mass mixing ratio</span>
+<span class="sd">    molecular_weight_ratio : `pint.Quantity` or float, optional</span>
+<span class="sd">        The ratio of the molecular weight of the constituent gas to that assumed</span>
+<span class="sd">        for air. Defaults to the ratio for water vapor to dry air</span>
+<span class="sd">        (:math:`\epsilon\approx0.622`).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding virtual temperature of the parcel</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">temperature</span> <span class="o">*</span> <span class="p">((</span><span class="n">mixing</span> <span class="o">+</span> <span class="n">molecular_weight_ratio</span><span class="p">)</span> <span class="o">/</span>
+                          <span class="p">(</span><span class="n">molecular_weight_ratio</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">mixing</span><span class="p">)))</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="virtual_potential_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.virtual_potential_temperature.html#metpy.calc.virtual_potential_temperature">[docs]</a><span class="k">def</span> <span class="nf">virtual_potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing</span><span class="p">,</span>
+                                  <span class="n">molecular_weight_ratio</span><span class="o">=</span><span class="n">epsilon</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate virtual potential temperature.</span>
+
+<span class="sd">    This calculation must be given an air parcel&#39;s pressure, temperature, and mixing ratio.</span>
+<span class="sd">    The implementation uses the formula outlined in [Markowski2010] pg.13.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure: `pint.Quantity`</span>
+<span class="sd">        Total atmospheric pressure</span>
+<span class="sd">    temperature: `pint.Quantity`</span>
+<span class="sd">        The temperature</span>
+<span class="sd">    mixing : `pint.Quantity`</span>
+<span class="sd">        dimensionless mass mixing ratio</span>
+<span class="sd">    molecular_weight_ratio : `pint.Quantity` or float, optional</span>
+<span class="sd">        The ratio of the molecular weight of the constituent gas to that assumed</span>
+<span class="sd">        for air. Defaults to the ratio for water vapor to dry air</span>
+<span class="sd">        (:math:`\epsilon\approx0.622`).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding virtual potential temperature of the parcel</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math:: \Theta_v = \Theta \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pottemp</span> <span class="o">=</span> <span class="n">potential_temperature</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">virtual_temperature</span><span class="p">(</span><span class="n">pottemp</span><span class="p">,</span> <span class="n">mixing</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="p">)</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="density"><a class="viewcode-back" href="../../../api/generated/metpy.calc.density.html#metpy.calc.density">[docs]</a><span class="k">def</span> <span class="nf">density</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="o">=</span><span class="n">epsilon</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate density.</span>
+
+<span class="sd">    This calculation must be given an air parcel&#39;s pressure, temperature, and mixing ratio.</span>
+<span class="sd">    The implementation uses the formula outlined in [Hobbs2006] pg.67.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    temperature: `pint.Quantity`</span>
+<span class="sd">        The temperature</span>
+<span class="sd">    pressure: `pint.Quantity`</span>
+<span class="sd">        Total atmospheric pressure</span>
+<span class="sd">    mixing : `pint.Quantity`</span>
+<span class="sd">        dimensionless mass mixing ratio</span>
+<span class="sd">    molecular_weight_ratio : `pint.Quantity` or float, optional</span>
+<span class="sd">        The ratio of the molecular weight of the constituent gas to that assumed</span>
+<span class="sd">        for air. Defaults to the ratio for water vapor to dry air</span>
+<span class="sd">        (:math:`\epsilon\approx0.622`).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding density of the parcel</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math:: \rho = \frac{p}{R_dT_v}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">virttemp</span> <span class="o">=</span> <span class="n">virtual_temperature</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">mixing</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">/</span> <span class="p">(</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">virttemp</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">kilogram</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">**</span> <span class="mi">3</span><span class="p">)</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="relative_humidity_wet_psychrometric"><a class="viewcode-back" href="../../../api/generated/metpy.calc.relative_humidity_wet_psychrometric.html#metpy.calc.relative_humidity_wet_psychrometric">[docs]</a><span class="k">def</span> <span class="nf">relative_humidity_wet_psychrometric</span><span class="p">(</span><span class="n">dry_bulb_temperature</span><span class="p">,</span> <span class="n">web_bulb_temperature</span><span class="p">,</span>
+                                        <span class="n">pressure</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the relative humidity with wet bulb and dry bulb temperatures.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dry_bulb_temperature: `pint.Quantity`</span>
+<span class="sd">        Dry bulb temperature</span>
+<span class="sd">    web_bulb_temperature: `pint.Quantity`</span>
+<span class="sd">        Wet bulb temperature</span>
+<span class="sd">    pressure: `pint.Quantity`</span>
+<span class="sd">        Total atmospheric pressure</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        Relative humidity</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math:: RH = 100 \frac{e}{e_s}</span>
+
+<span class="sd">    * :math:`RH` is relative humidity</span>
+<span class="sd">    * :math:`e` is vapor pressure from the wet psychrometric calculation</span>
+<span class="sd">    * :math:`e_s` is the saturation vapor pressure</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [10] WMO GUIDE TO METEOROLOGICAL INSTRUMENTS AND METHODS OF OBSERVATION WMO-No.8</span>
+<span class="sd">       (2008 edition, Updated in 2010) : PART 4</span>
+<span class="sd">       https://www.wmo.int/pages/prog/www/IMOP/CIMO-Guide.html</span>
+
+<span class="sd">    .. [11] Fan, Jinpeng. &quot;Determination of the psychrometer coefficient A of the WMO</span>
+<span class="sd">       reference psychrometer by comparison with a standard gravimetric hygrometer.&quot;</span>
+<span class="sd">       Journal of Atmospheric and Oceanic Technology 4.1 (1987): 239-244.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    psychrometric_vapor_pressure_wet, saturation_vapor_pressure</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span> <span class="o">*</span> <span class="n">psychrometric_vapor_pressure_wet</span><span class="p">(</span><span class="n">dry_bulb_temperature</span><span class="p">,</span>
+            <span class="n">web_bulb_temperature</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">/</span>
+            <span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">dry_bulb_temperature</span><span class="p">))</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="psychrometric_vapor_pressure_wet"><a class="viewcode-back" href="../../../api/generated/metpy.calc.psychrometric_vapor_pressure_wet.html#metpy.calc.psychrometric_vapor_pressure_wet">[docs]</a><span class="k">def</span> <span class="nf">psychrometric_vapor_pressure_wet</span><span class="p">(</span><span class="n">dry_bulb_temperature</span><span class="p">,</span> <span class="n">wet_bulb_temperature</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span>
+                                     <span class="n">psychrometer_coefficient</span><span class="o">=</span><span class="mf">6.21e-4</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the vapor pressure with wet bulb and dry bulb temperatures.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dry_bulb_temperature: `pint.Quantity`</span>
+<span class="sd">        Dry bulb temperature</span>
+<span class="sd">    wet_bulb_temperature: `pint.Quantity`</span>
+<span class="sd">        Wet bulb temperature</span>
+<span class="sd">    pressure: `pint.Quantity`</span>
+<span class="sd">        Total atmospheric pressure</span>
+<span class="sd">    psychrometer_coefficient: `pint.Quantity`</span>
+<span class="sd">        Psychrometer coefficient</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        Vapor pressure</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math:: e&#39; = e&#39;_w(T_w) - A p (T - T_w)</span>
+
+<span class="sd">    * :math:`e&#39;` is vapor pressure</span>
+<span class="sd">    * :math:`e&#39;_w(T_w)` is the saturation vapor pressure with respect to water at temperature</span>
+<span class="sd">      :math:`T_w`</span>
+<span class="sd">    * :math:`p` is the pressure of the wet bulb</span>
+<span class="sd">    * :math:`T` is the temperature of the dry bulb</span>
+<span class="sd">    * :math:`T_w` is the temperature of the wet bulb</span>
+<span class="sd">    * :math:`A` is the psychrometer coefficient</span>
+
+<span class="sd">    Psychrometer coefficient depends on the specific instrument being used and the ventilation</span>
+<span class="sd">    of the instrument.</span>
+
+<span class="sd">    References</span>
+<span class="sd">    ----------</span>
+<span class="sd">    .. [12] WMO GUIDE TO METEOROLOGICAL INSTRUMENTS AND METHODS OF OBSERVATION WMO-No.8</span>
+<span class="sd">       (2008 edition, Updated in 2010) : PART 4</span>
+<span class="sd">       https://www.wmo.int/pages/prog/www/IMOP/CIMO-Guide.html</span>
+
+<span class="sd">    .. [13] Fan, Jinpeng. &quot;Determination of the psychrometer coefficient A of the WMO reference</span>
+<span class="sd">       psychrometer by comparison with a standard gravimetric hygrometer.&quot;</span>
+<span class="sd">       Journal of Atmospheric and Oceanic Technology 4.1 (1987): 239-244.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    saturation_vapor_pressure</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">wet_bulb_temperature</span><span class="p">)</span> <span class="o">-</span> <span class="n">psychrometer_coefficient</span> <span class="o">*</span>
+            <span class="n">pressure</span> <span class="o">*</span> <span class="p">(</span><span class="n">dry_bulb_temperature</span> <span class="o">-</span> <span class="n">wet_bulb_temperature</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;kelvin&#39;</span><span class="p">))</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 19:04:50.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.5.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

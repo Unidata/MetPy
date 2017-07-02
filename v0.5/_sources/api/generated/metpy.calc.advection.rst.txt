@@ -1,0 +1,12 @@
+advection
+====================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: advection
+
+.. include:: metpy.calc.advection.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

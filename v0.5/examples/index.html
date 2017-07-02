@@ -1,0 +1,432 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>MetPy Examples &mdash; MetPy 0.5.1</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/index.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 0.5.1" href="../index.html"/>
+        <link rel="next" title="Advanced Sounding" href="Advanced_Sounding.html"/>
+        <link rel="prev" title="Unit Support" href="../units.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">MetPy Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#general-examples">General Examples</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Four_Panel_Map.html">Four Panel Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="meteogram_metpy.html">Meteogram</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#calculations">Calculations</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="calculations/Dewpoint_and_Mixing_Ratio.html">Dewpoint and Mixing Ratio</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#file-formats">File Formats</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="formats/NEXRAD_Level_3_File.html">NEXRAD Level 3 File</a></li>
+<li class="toctree-l3"><a class="reference internal" href="formats/GINI_Water_Vapor.html">GINI Water Vapor Imagery</a></li>
+<li class="toctree-l3"><a class="reference internal" href="formats/NEXRAD_Level_2_File.html">NEXRAD Level 2 File</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#gridding">Gridding</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="gridding/Find_Natural_Neighbors_Verification.html">Find Natural Neighbors Verification</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gridding/Wind_SLP_Interpolation.html">Wind and Sea Level Pressure Interpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gridding/Point_Interpolation.html">Point Interpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gridding/Inverse_Distance_Verification.html">Inverse Distance Verification: Cressman and Barnes</a></li>
+<li class="toctree-l3"><a class="reference internal" href="gridding/Natural_Neighbor_Verification.html">Natural Neighbor Verification</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#plotting">Plotting</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="plots/Skew-T_Layout.html">Skew-T with Complex Layout</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plots/Hodograph_Inset.html">Hodograph Inset</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plots/Simple_Sounding.html">Simple Sounding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plots/Station_Plot.html">Station Plot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="plots/Station_Plot_with_Layout.html">Station Plot with Layout</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+      <li>MetPy Examples</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/examples/index.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="metpy-examples">
+<span id="examples-index"></span><h1>MetPy Examples<a class="headerlink" href="#metpy-examples" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="general-examples">
+<span id="id1"></span><h2>General Examples<a class="headerlink" href="#general-examples" title="Permalink to this headline">¶</a></h2>
+<p>Examples of using a variety of MetPy&#8217;s functionality together.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="Plot a sounding using MetPy with more advanced features."><div class="figure" id="id2">
+<img alt="../_images/sphx_glr_Advanced_Sounding_thumb.png" src="../_images/sphx_glr_Advanced_Sounding_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="Advanced_Sounding.html#sphx-glr-examples-advanced-sounding-py"><span class="std std-ref">Advanced Sounding</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="By reading model output data from a netCDF file, we can create a four panel plot showing:"><div class="figure" id="id3">
+<img alt="../_images/sphx_glr_Four_Panel_Map_thumb.png" src="../_images/sphx_glr_Four_Panel_Map_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="Four_Panel_Map.html#sphx-glr-examples-four-panel-map-py"><span class="std std-ref">Four Panel Map</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Plots time series data as a meteogram. "><div class="figure" id="id4">
+<img alt="../_images/sphx_glr_meteogram_metpy_thumb.png" src="../_images/sphx_glr_meteogram_metpy_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="meteogram_metpy.html#sphx-glr-examples-meteogram-metpy-py"><span class="std std-ref">Meteogram</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div></div>
+<div class="section" id="calculations">
+<span id="calc-examples"></span><h2>Calculations<a class="headerlink" href="#calculations" title="Permalink to this headline">¶</a></h2>
+<p>Examples using various calculation functions from MetPy.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="Use functions from `metpy.calc` as well as pint's unit support to perform calculations."><div class="figure" id="id5">
+<img alt="../_images/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png" src="../_images/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="calculations/Dewpoint_and_Mixing_Ratio.html#sphx-glr-examples-calculations-dewpoint-and-mixing-ratio-py"><span class="std std-ref">Dewpoint and Mixing Ratio</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div></div>
+<div class="section" id="file-formats">
+<span id="formats-examples"></span><h2>File Formats<a class="headerlink" href="#file-formats" title="Permalink to this headline">¶</a></h2>
+<p>Examples using MetPy&#8217;s support for reading various file formats.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot "><div class="figure" id="id6">
+<img alt="../_images/sphx_glr_NEXRAD_Level_3_File_thumb.png" src="../_images/sphx_glr_NEXRAD_Level_3_File_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="formats/NEXRAD_Level_3_File.html#sphx-glr-examples-formats-nexrad-level-3-file-py"><span class="std std-ref">NEXRAD Level 3 File</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Use MetPy's support for GINI files to read in a water vapor satellite image and plot the data u..."><div class="figure" id="id7">
+<img alt="../_images/sphx_glr_GINI_Water_Vapor_thumb.png" src="../_images/sphx_glr_GINI_Water_Vapor_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="formats/GINI_Water_Vapor.html#sphx-glr-examples-formats-gini-water-vapor-py"><span class="std std-ref">GINI Water Vapor Imagery</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot "><div class="figure" id="id8">
+<img alt="../_images/sphx_glr_NEXRAD_Level_2_File_thumb.png" src="../_images/sphx_glr_NEXRAD_Level_2_File_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="formats/NEXRAD_Level_2_File.html#sphx-glr-examples-formats-nexrad-level-2-file-py"><span class="std std-ref">NEXRAD Level 2 File</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div></div>
+<div class="section" id="gridding">
+<span id="gridding-examples"></span><h2>Gridding<a class="headerlink" href="#gridding" title="Permalink to this headline">¶</a></h2>
+<p>Examples generating a grid of data from scattered point observations.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="Finding natural neighbors in a triangulation"><div class="figure" id="id9">
+<img alt="../_images/sphx_glr_Find_Natural_Neighbors_Verification_thumb.png" src="../_images/sphx_glr_Find_Natural_Neighbors_Verification_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="gridding/Find_Natural_Neighbors_Verification.html#sphx-glr-examples-gridding-find-natural-neighbors-verification-py"><span class="std std-ref">Find Natural Neighbors Verification</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking an..."><div class="figure" id="id10">
+<img alt="../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" src="../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="gridding/Wind_SLP_Interpolation.html#sphx-glr-examples-gridding-wind-slp-interpolation-py"><span class="std std-ref">Wind and Sea Level Pressure Interpolation</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Compares different point interpolation approaches. "><div class="figure" id="id11">
+<img alt="../_images/sphx_glr_Point_Interpolation_thumb.png" src="../_images/sphx_glr_Point_Interpolation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="gridding/Point_Interpolation.html#sphx-glr-examples-gridding-point-interpolation-py"><span class="std std-ref">Point Interpolation</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Compare inverse distance interpolation methods"><div class="figure" id="id12">
+<img alt="../_images/sphx_glr_Inverse_Distance_Verification_thumb.png" src="../_images/sphx_glr_Inverse_Distance_Verification_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="gridding/Inverse_Distance_Verification.html#sphx-glr-examples-gridding-inverse-distance-verification-py"><span class="std std-ref">Inverse Distance Verification: Cressman and Barnes</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Walks through the steps of Natural Neighbor interpolation to validate that the algorithmic appr..."><div class="figure" id="id13">
+<img alt="../_images/sphx_glr_Natural_Neighbor_Verification_thumb.png" src="../_images/sphx_glr_Natural_Neighbor_Verification_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="gridding/Natural_Neighbor_Verification.html#sphx-glr-examples-gridding-natural-neighbor-verification-py"><span class="std std-ref">Natural Neighbor Verification</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div></div>
+<div class="section" id="plotting">
+<span id="plotting-examples"></span><h2>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h2>
+<p>Examples using MetPy&#8217;s various specialty plotting routines.</p>
+<div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib's `GridSpec` layout capability. "><div class="figure" id="id14">
+<img alt="../_images/sphx_glr_Skew-T_Layout_thumb.png" src="../_images/sphx_glr_Skew-T_Layout_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plots/Skew-T_Layout.html#sphx-glr-examples-plots-skew-t-layout-py"><span class="std std-ref">Skew-T with Complex Layout</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot. "><div class="figure" id="id15">
+<img alt="../_images/sphx_glr_Hodograph_Inset_thumb.png" src="../_images/sphx_glr_Hodograph_Inset_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plots/Hodograph_Inset.html#sphx-glr-examples-plots-hodograph-inset-py"><span class="std std-ref">Hodograph Inset</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Use MetPy as straightforward as possible to make a Skew-T LogP plot. "><div class="figure" id="id16">
+<img alt="../_images/sphx_glr_Simple_Sounding_thumb.png" src="../_images/sphx_glr_Simple_Sounding_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plots/Simple_Sounding.html#sphx-glr-examples-plots-simple-sounding-py"><span class="std std-ref">Simple Sounding</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols."><div class="figure" id="id17">
+<img alt="../_images/sphx_glr_Station_Plot_thumb.png" src="../_images/sphx_glr_Station_Plot_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plots/Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b..."><div class="figure" id="id18">
+<img alt="../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" src="../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="plots/Station_Plot_with_Layout.html#sphx-glr-examples-plots-station-plot-with-layout-py"><span class="std std-ref">Station Plot with Layout</span></a></span></p>
+</div>
+</div><div class="toctree-wrapper compound">
+</div>
+<div style='clear:both'></div><div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/examples_python.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">examples_python.zip</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/examples_jupyter.zip" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">all</span> <span class="pre">examples</span> <span class="pre">in</span> <span class="pre">Jupyter</span> <span class="pre">notebooks:</span> <span class="pre">examples_jupyter.zip</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Advanced_Sounding.html" class="btn btn-neutral float-right" title="Advanced Sounding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="../units.html" class="btn btn-neutral" title="Unit Support" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 19:04:50.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.5.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

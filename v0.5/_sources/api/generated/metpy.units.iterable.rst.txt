@@ -1,0 +1,12 @@
+iterable
+====================
+
+.. currentmodule:: metpy.units
+
+.. autofunction:: iterable
+
+.. include:: metpy.units.iterable.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

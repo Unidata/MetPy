@@ -1,0 +1,63 @@
+calc
+==========
+
+.. automodule:: metpy.calc
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      advection
+      convergence_vorticity
+      coriolis_parameter
+      density
+      dewpoint
+      dewpoint_rh
+      dry_lapse
+      el
+      equivalent_potential_temperature
+      find_intersections
+      friction_velocity
+      geostrophic_wind
+      get_perturbation
+      get_wind_components
+      get_wind_dir
+      get_wind_speed
+      h_convergence
+      heat_index
+      interpolate_nans
+      kinematic_flux
+      lcl
+      lfc
+      mixing_ratio
+      moist_lapse
+      nearest_intersection_idx
+      parcel_profile
+      potential_temperature
+      pressure_to_height_std
+      psychrometric_vapor_pressure_wet
+      reduce_point_density
+      relative_humidity_wet_psychrometric
+      resample_nn_1d
+      saturation_mixing_ratio
+      saturation_vapor_pressure
+      tke
+      v_vorticity
+      vapor_pressure
+      virtual_potential_temperature
+      virtual_temperature
+      windchill
+   
+   
+
+   
+   
+   
+
+   
+   
+   

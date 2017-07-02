@@ -1,0 +1,504 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.calc.turbulence &mdash; MetPy 0.5.1</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/calc/turbulence.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MetPy 0.5.1" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.calc.turbulence</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.calc.turbulence</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2008-2015 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sa">r</span><span class="sd">&quot;&quot;&quot;Contains calculations related to turbulence and time series perturbations.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="get_perturbation"><a class="viewcode-back" href="../../../api/generated/metpy.calc.get_perturbation.html#metpy.calc.get_perturbation">[docs]</a><span class="k">def</span> <span class="nf">get_perturbation</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the perturbation from the mean of a time series.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ts : array_like</span>
+<span class="sd">         The time series from which you wish to find the perturbation</span>
+<span class="sd">         time series (perturbation from the mean).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array_like</span>
+<span class="sd">        The perturbation time series.</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    axis : int</span>
+<span class="sd">           The index of the time axis. Default is -1</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The perturbation time series produced by this function is defined as</span>
+<span class="sd">    the perturbations about the mean:</span>
+
+<span class="sd">    .. math:: x(t)^{\prime} = x(t) - \overline{x(t)}</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">ts</span><span class="o">.</span><span class="n">ndim</span>
+    <span class="n">slices</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="c1"># For numpy&lt;=1.8.0, can&#39;t slice on a scalar</span>
+    <span class="n">mean</span> <span class="o">=</span> <span class="n">ts</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ts</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">mean</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="n">mean</span><span class="p">[</span><span class="n">slices</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">ts</span> <span class="o">-</span> <span class="n">mean</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="tke"><a class="viewcode-back" href="../../../api/generated/metpy.calc.tke.html#metpy.calc.tke">[docs]</a><span class="k">def</span> <span class="nf">tke</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute turbulence kinetic energy.</span>
+
+<span class="sd">    Compute the turbulence kinetic energy (e) from the time series of the</span>
+<span class="sd">    velocity components.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : array_like</span>
+<span class="sd">        The wind component along the x-axis</span>
+<span class="sd">    v : array_like</span>
+<span class="sd">        The wind component along the y-axis</span>
+<span class="sd">    w : array_like</span>
+<span class="sd">        The wind component along the z-axis</span>
+
+<span class="sd">    perturbation : {False, True}, optional</span>
+<span class="sd">                   True if the `u`, `v`, and `w` components of wind speed</span>
+<span class="sd">                   supplied to the function are perturbation velocities.</span>
+<span class="sd">                   If False, perturbation velocities will be calculated by</span>
+<span class="sd">                   removing the mean value from each component.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array_like</span>
+<span class="sd">        The corresponding turbulence kinetic energy value</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    axis : int</span>
+<span class="sd">           The index of the time axis. Default is -1</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    get_perturbation : Used to compute perturbations if `perturbation`</span>
+<span class="sd">                       is False.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Turbulence Kinetic Energy is computed as:</span>
+
+<span class="sd">    .. math:: e = 0.5 \sqrt{\overline{u^{\prime2}} +</span>
+<span class="sd">                            \overline{v^{\prime2}} +</span>
+<span class="sd">                            \overline{w^{\prime2}}},</span>
+
+<span class="sd">    where the velocity components</span>
+
+<span class="sd">    .. math:: u^{\prime}, v^{\prime}, u^{\prime}</span>
+
+<span class="sd">    are perturbation velocities. For more information on the subject, please</span>
+<span class="sd">    see [Garratt1994]_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">perturbation</span><span class="p">:</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="n">get_perturbation</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+        <span class="n">v</span> <span class="o">=</span> <span class="n">get_perturbation</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+        <span class="n">w</span> <span class="o">=</span> <span class="n">get_perturbation</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+    <span class="n">u_cont</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">u</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">v_cont</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">v</span> <span class="o">*</span> <span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">w_cont</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="n">w</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">u_cont</span> <span class="o">+</span> <span class="n">v_cont</span> <span class="o">+</span> <span class="n">w_cont</span><span class="p">)</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="kinematic_flux"><a class="viewcode-back" href="../../../api/generated/metpy.calc.kinematic_flux.html#metpy.calc.kinematic_flux">[docs]</a><span class="k">def</span> <span class="nf">kinematic_flux</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the kinematic flux from two time series.</span>
+
+<span class="sd">    Compute the kinematic flux from the time series of two variables `vel`</span>
+<span class="sd">    and b. Note that to be a kinematic flux, at least one variable must be</span>
+<span class="sd">    a component of velocity.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    vel : array_like</span>
+<span class="sd">        A component of velocity</span>
+
+<span class="sd">    b : array_like</span>
+<span class="sd">        May be a component of velocity or a scalar variable (e.g. Temperature)</span>
+
+<span class="sd">    perturbation : bool, optional</span>
+<span class="sd">        `True` if the `vel` and `b` variables are perturbations. If `False`, perturbations</span>
+<span class="sd">        will be calculated by removing the mean value from each variable. Defaults to `False`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array_like</span>
+<span class="sd">        The corresponding kinematic flux</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    axis : int, optional</span>
+<span class="sd">           The index of the time axis, along which the calculations will be</span>
+<span class="sd">           performed. Defaults to -1</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    A kinematic flux is computed as</span>
+
+<span class="sd">    .. math:: \overline{u^{\prime} s^{\prime}}</span>
+
+<span class="sd">    where at the prime notation denotes perturbation variables, and at least</span>
+<span class="sd">    one variable is perturbation velocity. For example, the vertical kinematic</span>
+<span class="sd">    momentum flux (two velocity components):</span>
+
+<span class="sd">    .. math:: \overline{u^{\prime} w^{\prime}}</span>
+
+<span class="sd">    or the the vertical kinematic heat flux (one velocity component, and one</span>
+<span class="sd">    scalar):</span>
+
+<span class="sd">    .. math:: \overline{w^{\prime} T^{\prime}}</span>
+
+<span class="sd">    If perturbation variables are passed into this function (i.e.</span>
+<span class="sd">    `perturbation` is True), the kinematic flux is computed using the equation</span>
+<span class="sd">    above.</span>
+
+<span class="sd">    However, the equation above can be rewritten as</span>
+
+<span class="sd">    .. math:: \overline{us} - \overline{u}~\overline{s}</span>
+
+<span class="sd">    which is computationally more efficient. This is how the kinematic flux</span>
+<span class="sd">    is computed in this function if `perturbation` is False.</span>
+
+<span class="sd">    For more information on the subject, please see [Garratt1994]_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">kf</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span> <span class="o">*</span> <span class="n">b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">perturbation</span><span class="p">:</span>
+        <span class="n">kf</span> <span class="o">-=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">kf</span><span class="p">)</span></div>
+
+
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="friction_velocity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.friction_velocity.html#metpy.calc.friction_velocity">[docs]</a><span class="k">def</span> <span class="nf">friction_velocity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the friction velocity from the time series of velocity components.</span>
+
+<span class="sd">    Compute the friction velocity from the time series of the x, z,</span>
+<span class="sd">    and optionally y, velocity components.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : array_like</span>
+<span class="sd">        The wind component along the x-axis</span>
+<span class="sd">    w : array_like</span>
+<span class="sd">        The wind component along the z-axis</span>
+<span class="sd">    v : array_like, optional</span>
+<span class="sd">        The wind component along the y-axis.</span>
+
+<span class="sd">    perturbation : {False, True}, optional</span>
+<span class="sd">                   True if the `u`, `w`, and `v` components of wind speed</span>
+<span class="sd">                   supplied to the function are perturbation velocities.</span>
+<span class="sd">                   If False, perturbation velocities will be calculated by</span>
+<span class="sd">                   removing the mean value from each component.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array_like</span>
+<span class="sd">        The corresponding friction velocity</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    axis : int</span>
+<span class="sd">           The index of the time axis. Default is -1</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    kinematic_flux : Used to compute the x-component and y-component</span>
+<span class="sd">                     vertical kinematic momentum flux(es) used in the</span>
+<span class="sd">                     computation of the friction velocity.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The Friction Velocity is computed as:</span>
+
+<span class="sd">    .. math:: u_{*} = \sqrt[4]{\left(\overline{u^{\prime}w^{\prime}}\right)^2 +</span>
+<span class="sd">                               \left(\overline{v^{\prime}w^{\prime}}\right)^2},</span>
+
+<span class="sd">    where :math: \overline{u^{\prime}w^{\prime}} and</span>
+<span class="sd">    :math: \overline{v^{\prime}w^{\prime}}</span>
+<span class="sd">    are the x-component and y-components of the vertical kinematic momentum</span>
+<span class="sd">    flux, respectively. If the optional v component of velocity is not</span>
+<span class="sd">    supplied to the function, the computation of the friction velocity is</span>
+<span class="sd">    reduced to</span>
+
+<span class="sd">    .. math:: u_{*} = \sqrt[4]{\left(\overline{u^{\prime}w^{\prime}}\right)^2}</span>
+
+<span class="sd">    For more information on the subject, please see [Garratt1994]_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">uw</span> <span class="o">=</span> <span class="n">kinematic_flux</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="n">perturbation</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">kf</span> <span class="o">=</span> <span class="n">uw</span> <span class="o">*</span> <span class="n">uw</span>
+    <span class="k">if</span> <span class="n">v</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vw</span> <span class="o">=</span> <span class="n">kinematic_flux</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="n">perturbation</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+        <span class="n">kf</span> <span class="o">+=</span> <span class="n">vw</span> <span class="o">*</span> <span class="n">vw</span>
+    <span class="c1"># the friction velocity is the 4th root of the kinematic momentum flux</span>
+    <span class="c1"># As an optimization, first do inplace square root, then return the</span>
+    <span class="c1"># square root of that. This is faster than np.power(..., 0.25)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">kf</span><span class="p">,</span> <span class="n">out</span><span class="o">=</span><span class="n">kf</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">kf</span><span class="p">)</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 19:04:50.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.5.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

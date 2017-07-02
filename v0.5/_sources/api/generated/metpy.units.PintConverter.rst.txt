@@ -1,0 +1,49 @@
+PintConverter
+=========================
+
+.. currentmodule:: metpy.units
+
+.. autoclass:: PintConverter
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~PintConverter.axisinfo
+      ~PintConverter.convert
+      ~PintConverter.default_units
+      ~PintConverter.is_numlike
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: axisinfo
+   .. automethod:: convert
+   .. automethod:: default_units
+   .. automethod:: is_numlike
+
+   
+   
+
+.. include:: metpy.units.PintConverter.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

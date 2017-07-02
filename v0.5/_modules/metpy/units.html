@@ -1,0 +1,509 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.units &mdash; MetPy 0.5.1</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/units.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 0.5.1" href="../../index.html"/>
+        <link rel="up" title="Module code" href="../index.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.5.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer&#8217;s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.units</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.units</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2008-2016 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sa">r</span><span class="sd">&quot;&quot;&quot;Module to provide unit support.</span>
+
+<span class="sd">This makes use of the :mod:`pint` library and sets up the default settings</span>
+<span class="sd">for good temperature support.</span>
+
+<span class="sd">Attributes</span>
+<span class="sd">----------</span>
+<span class="sd">units : :class:`pint.UnitRegistry`</span>
+<span class="sd">    The unit registry used throughout the package. Any use of units in MetPy should</span>
+<span class="sd">    import this registry and use it to grab units.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.units</span> <span class="k">as</span> <span class="nn">munits</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pint</span>
+<span class="kn">import</span> <span class="nn">pint.unit</span>
+
+<span class="kn">from</span> <span class="nn">.cbook</span> <span class="k">import</span> <span class="n">iterable</span>
+
+<span class="n">UndefinedUnitError</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UndefinedUnitError</span>
+<span class="n">DimensionalityError</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">DimensionalityError</span>
+
+<span class="n">units</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UnitRegistry</span><span class="p">(</span><span class="n">autoconvert_offset_to_baseunit</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="c1"># For pint 0.6, this is the best way to define a dimensionless unit. See pint #185</span>
+<span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">pint</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">UnitDefinition</span><span class="p">(</span><span class="s1">&#39;percent&#39;</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="p">(),</span>
+             <span class="n">pint</span><span class="o">.</span><span class="n">converters</span><span class="o">.</span><span class="n">ScaleConverter</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)))</span>
+
+
+<div class="viewcode-block" id="concatenate"><a class="viewcode-back" href="../../api/generated/metpy.units.concatenate.html#metpy.units.concatenate">[docs]</a><span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span><span class="n">arrs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Concatenate multiple values into a new unitized object.</span>
+
+<span class="sd">    This is essentially a unit-aware version of `numpy.concatenate`. All items</span>
+<span class="sd">    must be able to be converted to the same units. If an item has no units, it will be given</span>
+<span class="sd">    those of the rest of the collection, without conversion. The first units found in the</span>
+<span class="sd">    arguments is used as the final output units.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arrs : Sequence of arrays</span>
+<span class="sd">        The items to be joined together</span>
+
+<span class="sd">    axis : integer, optional</span>
+<span class="sd">        The array axis along which to join the arrays. Defaults to 0 (the first dimension)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        New container with the value passed in and units corresponding to the first item.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dest</span> <span class="o">=</span> <span class="s1">&#39;dimensionless&#39;</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">):</span>
+            <span class="n">dest</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">units</span>
+            <span class="k">break</span>
+
+    <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;to&#39;</span><span class="p">):</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">),</span> <span class="n">dest</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="atleast_1d"><a class="viewcode-back" href="../../api/generated/metpy.units.atleast_1d.html#metpy.units.atleast_1d">[docs]</a><span class="k">def</span> <span class="nf">atleast_1d</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert inputs to arrays with at least one dimension.</span>
+
+<span class="sd">    Scalars are converted to 1-dimensional arrays, whilst other</span>
+<span class="sd">    higher-dimensional inputs are preserved. This is a thin wrapper</span>
+<span class="sd">    around `numpy.atleast_1d` to preserve units.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arrs : arbitrary positional arguments</span>
+<span class="sd">        Input arrays to be converted if necessary</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        A single quantity or a list of quantities, matching the number of inputs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mags</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">]</span>
+    <span class="n">orig_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">units</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">]</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="o">*</span><span class="n">mags</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">orig_units</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">orig_units</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="atleast_2d"><a class="viewcode-back" href="../../api/generated/metpy.units.atleast_2d.html#metpy.units.atleast_2d">[docs]</a><span class="k">def</span> <span class="nf">atleast_2d</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert inputs to arrays with at least two dimensions.</span>
+
+<span class="sd">    Scalars and 1-dimensional arrays are converted to 2-dimensional arrays,</span>
+<span class="sd">    whilst other higher-dimensional inputs are preserved. This is a thin wrapper</span>
+<span class="sd">    around `numpy.atleast_2d` to preserve units.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arrs : arbitrary positional arguments</span>
+<span class="sd">        Input arrays to be converted if necessary</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        A single quantity or a list of quantities, matching the number of inputs.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mags</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">]</span>
+    <span class="n">orig_units</span> <span class="o">=</span> <span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">units</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">]</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">atleast_2d</span><span class="p">(</span><span class="o">*</span><span class="n">mags</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">mags</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">orig_units</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">u</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ret</span><span class="p">,</span> <span class="n">orig_units</span><span class="p">)]</span></div>
+
+
+<div class="viewcode-block" id="masked_array"><a class="viewcode-back" href="../../api/generated/metpy.units.masked_array.html#metpy.units.masked_array">[docs]</a><span class="k">def</span> <span class="nf">masked_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">data_units</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a :class:`numpy.ma.MaskedArray` with units attached.</span>
+
+<span class="sd">    This is a thin wrapper around :func:`numpy.ma.masked_array` that ensures that</span>
+<span class="sd">    units are properly attached to the result (otherwise units are silently lost). Units</span>
+<span class="sd">    are taken from the ``units`` argument, or if this is ``None``, the units on ``data``</span>
+<span class="sd">    are used.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data : array_like</span>
+<span class="sd">        The source data. If ``units`` is `None`, this should be a `pint.Quantity` with</span>
+<span class="sd">        the desired units.</span>
+<span class="sd">    data_units : str or `pint.Unit`</span>
+<span class="sd">        The units for the resulting `pint.Quantity`</span>
+<span class="sd">    **kwargs : Arbitrary keyword arguments passed to `numpy.ma.masked_array`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">data_units</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">data_units</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">units</span>
+    <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_array</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="n">data_units</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_check_argument_units</span><span class="p">(</span><span class="n">args</span><span class="p">,</span> <span class="n">dimensionality</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Yield arguments with improper dimensionality.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">args</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># Get the needed dimensionality (for printing) as well as cached, parsed version</span>
+        <span class="c1"># for this argument.</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">need</span><span class="p">,</span> <span class="n">parsed</span> <span class="o">=</span> <span class="n">dimensionality</span><span class="p">[</span><span class="n">arg</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="c1"># Argument did not have units specified in decorator</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># See if the value passed in is appropriate</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">val</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">!=</span> <span class="n">parsed</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">arg</span><span class="p">,</span> <span class="n">val</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">need</span>
+        <span class="c1"># No dimensionality</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="c1"># If this argument is dimensionless, don&#39;t worry</span>
+            <span class="k">if</span> <span class="n">parsed</span> <span class="o">!=</span> <span class="s1">&#39;&#39;</span><span class="p">:</span>
+                <span class="k">yield</span> <span class="n">arg</span><span class="p">,</span> <span class="s1">&#39;none&#39;</span><span class="p">,</span> <span class="n">need</span>
+
+
+<div class="viewcode-block" id="check_units"><a class="viewcode-back" href="../../api/generated/metpy.units.check_units.html#metpy.units.check_units">[docs]</a><span class="k">def</span> <span class="nf">check_units</span><span class="p">(</span><span class="o">*</span><span class="n">units_by_pos</span><span class="p">,</span> <span class="o">**</span><span class="n">units_by_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Create a decorator to check units of function arguments.&quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="kn">from</span> <span class="nn">inspect</span> <span class="k">import</span> <span class="n">signature</span>
+
+        <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+            <span class="c1"># Match the signature of the function to the arguments given to the decorator</span>
+            <span class="n">sig</span> <span class="o">=</span> <span class="n">signature</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+            <span class="n">bound_units</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">bind_partial</span><span class="p">(</span><span class="o">*</span><span class="n">units_by_pos</span><span class="p">,</span> <span class="o">**</span><span class="n">units_by_name</span><span class="p">)</span>
+
+            <span class="c1"># Convert our specified dimensionality (e.g. &quot;[pressure]&quot;) to one used by</span>
+            <span class="c1"># pint directly (e.g. &quot;[mass] / [length] / [time]**2). This is for both efficiency</span>
+            <span class="c1"># reasons and to ensure that problems with the decorator are caught at import,</span>
+            <span class="c1"># rather than runtime.</span>
+            <span class="n">dims</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="p">:</span> <span class="p">(</span><span class="n">orig</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">get_dimensionality</span><span class="p">(</span><span class="n">orig</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)))</span>
+                    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">orig</span> <span class="ow">in</span> <span class="n">bound_units</span><span class="o">.</span><span class="n">arguments</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+            <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+            <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="c1"># Match all passed in value to their proper arguments so we can check units</span>
+                <span class="n">bound_args</span> <span class="o">=</span> <span class="n">sig</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                <span class="n">bad</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">_check_argument_units</span><span class="p">(</span><span class="n">bound_args</span><span class="o">.</span><span class="n">arguments</span><span class="p">,</span> <span class="n">dims</span><span class="p">))</span>
+
+                <span class="c1"># If there are any bad units, emit a proper error message making it clear</span>
+                <span class="c1"># what went wrong.</span>
+                <span class="k">if</span> <span class="n">bad</span><span class="p">:</span>
+                    <span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;`</span><span class="si">{0}</span><span class="s1">` given arguments with incorrect units: </span><span class="si">{1}</span><span class="s1">.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                        <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span><span class="p">,</span>
+                        <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;`</span><span class="si">{}</span><span class="s1">` requires &quot;</span><span class="si">{}</span><span class="s1">&quot; but given &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">arg</span><span class="p">,</span> <span class="n">req</span><span class="p">,</span> <span class="n">given</span><span class="p">)</span>
+                                  <span class="k">for</span> <span class="n">arg</span><span class="p">,</span> <span class="n">given</span><span class="p">,</span> <span class="n">req</span> <span class="ow">in</span> <span class="n">bad</span><span class="p">))</span>
+                    <span class="k">if</span> <span class="s1">&#39;none&#39;</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
+                        <span class="n">msg</span> <span class="o">+=</span> <span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">Any variable `x` can be assigned a unit as follows:</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                <span class="s1">&#39;    from metpy.units import units</span><span class="se">\n</span><span class="s1">&#39;</span>
+                                <span class="s1">&#39;    x = x * units.meter / units.second&#39;</span><span class="p">)</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+            <span class="k">return</span> <span class="n">wrapper</span>
+
+    <span class="c1"># signature() only available on Python &gt;= 3.3, so for 2.7 we just do nothing.</span>
+    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+        <span class="k">def</span> <span class="nf">dec</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">func</span>
+
+    <span class="k">return</span> <span class="n">dec</span></div>
+
+
+<div class="viewcode-block" id="PintConverter"><a class="viewcode-back" href="../../api/generated/metpy.units.PintConverter.html#metpy.units.PintConverter">[docs]</a><span class="k">class</span> <span class="nc">PintConverter</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">ConversionInterface</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Implement support for pint within matplotlib&#39;s unit conversion framework.&quot;&quot;&quot;</span>
+
+    <span class="nd">@staticmethod</span>
+<div class="viewcode-block" id="PintConverter.convert"><a class="viewcode-back" href="../../api/generated/metpy.units.PintConverter.html#metpy.units.PintConverter.convert">[docs]</a>    <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert pint :`Quantity` instances for matplotlib to use.</span>
+
+<span class="sd">        Currently only strips off the units to avoid matplotlib errors since we can&#39;t reliably</span>
+<span class="sd">        have pint.Quantity instances not decay to numpy arrays.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="s1">&#39;magnitude&#39;</span><span class="p">):</span>
+            <span class="k">return</span> <span class="n">value</span><span class="o">.</span><span class="n">magnitude</span>
+        <span class="k">elif</span> <span class="n">iterable</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="k">return</span> <span class="p">[</span><span class="n">v</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
+            <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">value</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">value</span></div></div>
+
+    <span class="c1"># TODO: Once we get things properly squared away between pint and everything else</span>
+    <span class="c1"># these will need to be functional.</span>
+    <span class="c1"># @staticmethod</span>
+    <span class="c1"># def axisinfo(unit, axis):</span>
+    <span class="c1">#     return None</span>
+    <span class="c1">#</span>
+    <span class="c1"># @staticmethod</span>
+    <span class="c1"># def default_units(x, axis):</span>
+    <span class="c1">#     return x.to_base_units()</span>
+
+
+<span class="c1"># Register the class</span>
+<span class="n">munits</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">PintConverter</span><span class="p">()</span>
+
+<span class="k">del</span> <span class="n">munits</span><span class="p">,</span> <span class="n">pint</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Jul 01, 2017 at 19:04:50.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.5.1',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
