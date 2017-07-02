@@ -135,6 +135,7 @@ before_deploy:
   - if [[ $TASK == "docs" ]]; then
       rm -f docs/build/html/_static/jquery-*.js;
       rm -f docs/build/html/_static/underscore-*.js;
+      rm -f docs/build/html/.buildinfo;
     fi
 
 deploy:
