@@ -157,6 +157,13 @@ deploy:
       all_branches: true
       python: 3.6
       condition: '$TASK == "docs"'
+  - provider: script
+    script: ci/deploy_docs.sh
+    skip_cleanup: true
+    on:
+      tags: true
+      python: 3.6
+      condition: '$TASK == "docs"'
 
 notifications:
   webhooks:
