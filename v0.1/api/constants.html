@@ -1,0 +1,521 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Constants &#8212; MetPy 0.1.1 documentation</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="File Formats (I/O)" href="io.html" />
+    <link rel="prev" title="The MetPy API" href="index.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="constants">
+<h1>Constants<a class="headerlink" href="#constants" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="module-metpy.constants">
+<span id="metpy-constants"></span><h2><a class="reference internal" href="#module-metpy.constants" title="metpy.constants"><code class="xref py py-mod docutils literal"><span class="pre">metpy.constants</span></code></a><a class="headerlink" href="#module-metpy.constants" title="Permalink to this headline">¶</a></h2>
+<p>This is a collection of meteorologically significant constants.</p>
+<div class="section" id="earth">
+<h3>Earth<a class="headerlink" href="#earth" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="7%" />
+<col width="11%" />
+<col width="51%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Name</td>
+<td>Abbr.</td>
+<td>Units</td>
+<td>Description</td>
+</tr>
+<tr class="row-even"><td>earth_avg_radius</td>
+<td>Re</td>
+<td>m</td>
+<td>Avg. radius of the Earth</td>
+</tr>
+<tr class="row-odd"><td>earth_gravity</td>
+<td>g</td>
+<td>m s^-2</td>
+<td>Avg. gravity acceleration on Earth</td>
+</tr>
+<tr class="row-even"><td>earth_avg_angular_vel</td>
+<td>omega</td>
+<td>rad s^-1</td>
+<td>Avg. angular velocity of Earth</td>
+</tr>
+<tr class="row-odd"><td>earth_sfc_avg_dist_sun</td>
+<td>d</td>
+<td>m</td>
+<td>Avg. distance of the Earth from the Sun</td>
+</tr>
+<tr class="row-even"><td>earth_solar_irradiance</td>
+<td>S</td>
+<td>W m^-2</td>
+<td>Avg. solar irradiance of Earth</td>
+</tr>
+<tr class="row-odd"><td>earth_max_declination</td>
+<td>delta</td>
+<td>degrees</td>
+<td>Max. solar declination angle of Earth</td>
+</tr>
+<tr class="row-even"><td>earth_orbit_eccentricity</td>
+<td>&#160;</td>
+<td>None</td>
+<td>Avg. eccentricity of Earth&#8217;s orbit</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="water">
+<h3>Water<a class="headerlink" href="#water" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="30%" />
+<col width="7%" />
+<col width="14%" />
+<col width="49%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Name</td>
+<td>Abbr.</td>
+<td>Units</td>
+<td>Description</td>
+</tr>
+<tr class="row-even"><td>water_molecular_weight</td>
+<td>Mw</td>
+<td>g mol^-1</td>
+<td>Molecular weight of water</td>
+</tr>
+<tr class="row-odd"><td>water_gas_constant</td>
+<td>Rv</td>
+<td>J (K kg)^-1</td>
+<td>Gas constant for water vapor</td>
+</tr>
+<tr class="row-even"><td>density_water</td>
+<td>rho_l</td>
+<td>kg m^-3</td>
+<td>Nominal density of liquid water at 0C</td>
+</tr>
+<tr class="row-odd"><td>wv_specific_heat_press</td>
+<td>Cp_v</td>
+<td>J (K kg)^-1</td>
+<td>Specific heat at constant pressure
+for water vapor</td>
+</tr>
+<tr class="row-even"><td>wv_specific_heat_vol</td>
+<td>Cv_v</td>
+<td>J (K kg)^-1</td>
+<td>Specific heat at constant volume for
+water vapor</td>
+</tr>
+<tr class="row-odd"><td>water_specific_heat</td>
+<td>Cp_l</td>
+<td>J (K kg)^-1</td>
+<td>Specific heat of liquid water at 0C</td>
+</tr>
+<tr class="row-even"><td>water_heat_vaporization</td>
+<td>Lv</td>
+<td>J kg^-1</td>
+<td>Latent heat of vaporization for
+liquid water at 0C</td>
+</tr>
+<tr class="row-odd"><td>water_heat_fusion</td>
+<td>Lf</td>
+<td>J kg^-1</td>
+<td>Latent heat of fusion for liquid
+water at 0C</td>
+</tr>
+<tr class="row-even"><td>ice_specific_heat</td>
+<td>Cp_i</td>
+<td>J (K kg)^-1</td>
+<td>Specific heat of ice at 0C</td>
+</tr>
+<tr class="row-odd"><td>density_ice</td>
+<td>rho_i</td>
+<td>kg m^-3</td>
+<td>Density of ice at 0C</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="dry-air">
+<h3>Dry Air<a class="headerlink" href="#dry-air" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="7%" />
+<col width="14%" />
+<col width="47%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Name</td>
+<td>Abbr.</td>
+<td>Units</td>
+<td>Description</td>
+</tr>
+<tr class="row-even"><td>dry_air_molecular_weight</td>
+<td>Md</td>
+<td>g / mol</td>
+<td>Nominal molecular weight of dry air
+at the surface of th Earth</td>
+</tr>
+<tr class="row-odd"><td>dry_air_gas_constant</td>
+<td>Rd</td>
+<td>J (K kg)^-1</td>
+<td>Gas constant for dry air at the
+surface of the Earth</td>
+</tr>
+<tr class="row-even"><td>dry_air_spec_heat_press</td>
+<td>Cp_d</td>
+<td>J (K kg)^-1</td>
+<td>Specific heat at constant pressure
+for dry air</td>
+</tr>
+<tr class="row-odd"><td>dry_air_spec_heat_vol</td>
+<td>Cv_d</td>
+<td>J (K kg)^-1</td>
+<td>Specific heat at constant volume
+for dry air</td>
+</tr>
+<tr class="row-even"><td>dry_air_density_stp</td>
+<td>rho_d</td>
+<td>kg m^-3</td>
+<td>Density of dry air at 0C and 1000mb</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="general-meteorology-constants">
+<h3>General Meteorology Constants<a class="headerlink" href="#general-meteorology-constants" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="docutils">
+<colgroup>
+<col width="32%" />
+<col width="9%" />
+<col width="11%" />
+<col width="49%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td>Name</td>
+<td>Abbr.</td>
+<td>Units</td>
+<td>Description</td>
+</tr>
+<tr class="row-even"><td>pot_temp_ref_press</td>
+<td>P0</td>
+<td>Pa</td>
+<td>Reference pressure for potential
+temperature</td>
+</tr>
+<tr class="row-odd"><td>poisson_exponent</td>
+<td>kappa</td>
+<td>None</td>
+<td>Exponent in Poisson&#8217;s equation
+(Rd/Cp_d)</td>
+</tr>
+<tr class="row-even"><td>dry_adiabatic_lapse_rate</td>
+<td>gamma_d</td>
+<td>K km^-1</td>
+<td>The dry adiabatic lapse rate</td>
+</tr>
+<tr class="row-odd"><td>molecular_weight_ratio</td>
+<td>epsilon</td>
+<td>None</td>
+<td>Ratio of molecular weight of water to
+that of dry air</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="temperature-conversion-functions">
+<h3>Temperature Conversion Functions<a class="headerlink" href="#temperature-conversion-functions" title="Permalink to this headline">¶</a></h3>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.constants.F2C" title="metpy.constants.F2C"><code class="xref py py-obj docutils literal"><span class="pre">F2C</span></code></a>(*args,&nbsp;**kwds)</td>
+<td><cite>F2C</cite> is deprecated!</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.constants.F2K" title="metpy.constants.F2K"><code class="xref py py-obj docutils literal"><span class="pre">F2K</span></code></a>(*args,&nbsp;**kwds)</td>
+<td><cite>F2K</cite> is deprecated!</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.constants.C2F" title="metpy.constants.C2F"><code class="xref py py-obj docutils literal"><span class="pre">C2F</span></code></a>(*args,&nbsp;**kwds)</td>
+<td><cite>C2F</cite> is deprecated!</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.constants.K2F" title="metpy.constants.K2F"><code class="xref py py-obj docutils literal"><span class="pre">K2F</span></code></a>(*args,&nbsp;**kwds)</td>
+<td><cite>K2F</cite> is deprecated!</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.constants.C2K" title="metpy.constants.C2K"><code class="xref py py-obj docutils literal"><span class="pre">C2K</span></code></a>(*args,&nbsp;**kwds)</td>
+<td><cite>C2K</cite> is deprecated!</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.constants.K2C" title="metpy.constants.K2C"><code class="xref py py-obj docutils literal"><span class="pre">K2C</span></code></a>(*args,&nbsp;**kwds)</td>
+<td><cite>K2C</cite> is deprecated!</td>
+</tr>
+</tbody>
+</table>
+<dl class="function">
+<dt id="metpy.constants.C2K">
+<code class="descclassname">metpy.constants.</code><code class="descname">C2K</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.constants.C2K" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>C2K</cite> is deprecated!
+scipy.constants.C2K is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.</p>
+<blockquote>
+<div><p>Convert Celsius to Kelvin</p>
+<dl class="docutils">
+<dt>C <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Celsius temperature(s) to be converted.</dd>
+</dl>
+<dl class="docutils">
+<dt>K <span class="classifier-delimiter">:</span> <span class="classifier">float or array of floats</span></dt>
+<dd>Equivalent Kelvin temperature(s).</dd>
+</dl>
+<p>convert_temperature</p>
+<p>Computes <code class="docutils literal"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">C</span> <span class="pre">+</span> <span class="pre">zero_Celsius</span></code> where <cite>zero_Celsius</cite> = 273.15, i.e.,
+(the absolute value of) temperature &#8220;absolute zero&#8221; as measured in Celsius.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="k">import</span> <span class="n">C2K</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C2K</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">]))</span>
+<span class="go">array([ 233.15,  313.15])</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.constants.F2K">
+<code class="descclassname">metpy.constants.</code><code class="descname">F2K</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.constants.F2K" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>F2K</cite> is deprecated!
+scipy.constants.F2K is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.</p>
+<blockquote>
+<div><p>Convert Fahrenheit to Kelvin</p>
+<dl class="docutils">
+<dt>F <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Fahrenheit temperature(s) to be converted.</dd>
+</dl>
+<dl class="docutils">
+<dt>K <span class="classifier-delimiter">:</span> <span class="classifier">float or array of floats</span></dt>
+<dd>Equivalent Kelvin temperature(s).</dd>
+</dl>
+<p>convert_temperature</p>
+<p>Computes <code class="docutils literal"><span class="pre">K</span> <span class="pre">=</span> <span class="pre">(F</span> <span class="pre">-</span> <span class="pre">32)/1.8</span> <span class="pre">+</span> <span class="pre">zero_Celsius</span></code> where <cite>zero_Celsius</cite> =
+273.15, i.e., (the absolute value of) temperature &#8220;absolute zero&#8221; as
+measured in Celsius.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="k">import</span> <span class="n">F2K</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">F2K</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">104</span><span class="p">]))</span>
+<span class="go">array([ 233.15,  313.15])</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.constants.C2F">
+<code class="descclassname">metpy.constants.</code><code class="descname">C2F</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.constants.C2F" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>C2F</cite> is deprecated!
+scipy.constants.C2F is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.</p>
+<blockquote>
+<div><p>Convert Celsius to Fahrenheit</p>
+<dl class="docutils">
+<dt>C <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Celsius temperature(s) to be converted.</dd>
+</dl>
+<dl class="docutils">
+<dt>F <span class="classifier-delimiter">:</span> <span class="classifier">float or array of floats</span></dt>
+<dd>Equivalent Fahrenheit temperature(s).</dd>
+</dl>
+<p>convert_temperature</p>
+<p>Computes <code class="docutils literal"><span class="pre">F</span> <span class="pre">=</span> <span class="pre">1.8</span> <span class="pre">*</span> <span class="pre">C</span> <span class="pre">+</span> <span class="pre">32</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="k">import</span> <span class="n">C2F</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">C2F</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">]))</span>
+<span class="go">array([ -40.,  104.])</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.constants.F2C">
+<code class="descclassname">metpy.constants.</code><code class="descname">F2C</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.constants.F2C" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>F2C</cite> is deprecated!
+scipy.constants.F2C is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.</p>
+<blockquote>
+<div><p>Convert Fahrenheit to Celsius</p>
+<dl class="docutils">
+<dt>F <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Fahrenheit temperature(s) to be converted.</dd>
+</dl>
+<dl class="docutils">
+<dt>C <span class="classifier-delimiter">:</span> <span class="classifier">float or array of floats</span></dt>
+<dd>Equivalent Celsius temperature(s).</dd>
+</dl>
+<p>convert_temperature</p>
+<p>Computes <code class="docutils literal"><span class="pre">C</span> <span class="pre">=</span> <span class="pre">(F</span> <span class="pre">-</span> <span class="pre">32)</span> <span class="pre">/</span> <span class="pre">1.8</span></code>.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="k">import</span> <span class="n">F2C</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">F2C</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mf">40.0</span><span class="p">]))</span>
+<span class="go">array([-40.        ,   4.44444444])</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.constants.K2C">
+<code class="descclassname">metpy.constants.</code><code class="descname">K2C</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.constants.K2C" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>K2C</cite> is deprecated!
+scipy.constants.K2C is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.</p>
+<blockquote>
+<div><p>Convert Kelvin to Celsius</p>
+<dl class="docutils">
+<dt>K <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Kelvin temperature(s) to be converted.</dd>
+</dl>
+<dl class="docutils">
+<dt>C <span class="classifier-delimiter">:</span> <span class="classifier">float or array of floats</span></dt>
+<dd>Equivalent Celsius temperature(s).</dd>
+</dl>
+<p>convert_temperature</p>
+<p>Computes <code class="docutils literal"><span class="pre">C</span> <span class="pre">=</span> <span class="pre">K</span> <span class="pre">-</span> <span class="pre">zero_Celsius</span></code> where <cite>zero_Celsius</cite> = 273.15, i.e.,
+(the absolute value of) temperature &#8220;absolute zero&#8221; as measured in Celsius.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="k">import</span> <span class="n">K2C</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">K2C</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">233.15</span><span class="p">,</span> <span class="mf">313.15</span><span class="p">]))</span>
+<span class="go">array([-40.,  40.])</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+<dl class="function">
+<dt id="metpy.constants.K2F">
+<code class="descclassname">metpy.constants.</code><code class="descname">K2F</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwds</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.constants.K2F" title="Permalink to this definition">¶</a></dt>
+<dd><p><cite>K2F</cite> is deprecated!
+scipy.constants.K2F is deprecated in scipy 0.18.0. Use scipy.constants.convert_temperature instead. Note that the new function has a different signature.</p>
+<blockquote>
+<div><p>Convert Kelvin to Fahrenheit</p>
+<dl class="docutils">
+<dt>K <span class="classifier-delimiter">:</span> <span class="classifier">array_like</span></dt>
+<dd>Kelvin temperature(s) to be converted.</dd>
+</dl>
+<dl class="docutils">
+<dt>F <span class="classifier-delimiter">:</span> <span class="classifier">float or array of floats</span></dt>
+<dd>Equivalent Fahrenheit temperature(s).</dd>
+</dl>
+<p>convert_temperature</p>
+<p>Computes <code class="docutils literal"><span class="pre">F</span> <span class="pre">=</span> <span class="pre">1.8</span> <span class="pre">*</span> <span class="pre">(K</span> <span class="pre">-</span> <span class="pre">zero_Celsius)</span> <span class="pre">+</span> <span class="pre">32</span></code> where <cite>zero_Celsius</cite> =
+273.15, i.e., (the absolute value of) temperature &#8220;absolute zero&#8221; as
+measured in Celsius.</p>
+<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">scipy.constants</span> <span class="k">import</span> <span class="n">K2F</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">K2F</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">233.15</span><span class="p">,</span>  <span class="mf">313.15</span><span class="p">]))</span>
+<span class="go">array([ -40.,  104.])</span>
+</pre></div>
+</div>
+</div></blockquote>
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Constants</a><ul>
+<li><a class="reference internal" href="#module-metpy.constants"><code class="docutils literal"><span class="pre">metpy.constants</span></code></a><ul>
+<li><a class="reference internal" href="#earth">Earth</a></li>
+<li><a class="reference internal" href="#water">Water</a></li>
+<li><a class="reference internal" href="#dry-air">Dry Air</a></li>
+<li><a class="reference internal" href="#general-meteorology-constants">General Meteorology Constants</a></li>
+<li><a class="reference internal" href="#temperature-conversion-functions">Temperature Conversion Functions</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">The MetPy API</a><ul>
+      <li>Previous: <a href="index.html" title="previous chapter">The MetPy API</a></li>
+      <li>Next: <a href="io.html" title="next chapter">File Formats (I/O)</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/api/constants.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="../search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2015, MetPy Developers.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.5.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="../_sources/api/constants.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
