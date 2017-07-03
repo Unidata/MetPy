@@ -4,22 +4,22 @@ References
 
 .. [Bakhshaii2013] Bakhshaii, A. and R. Stull, 2013: Saturated pseudoadiabats--A
            noniterative approximation. *J. Appl. Meteor. Clim.*, **52**, 5-15,
-           doi:`10.1175/JAMC-D-12-062.1 <http://doi.org/10.1175/JAMC-D-12-062.1>`_.
+           doi:`10.1175/JAMC-D-12-062.1 <https://doi.org/10.1175/JAMC-D-12-062.1>`_.
 
 .. [Barnes1964] Barnes, S. L., 1964: A technique for maximizing details in numerical weather
            map analysis. *J. Appl. Meteor. Climatol.*, **3**, 396-409,
            doi:`10.1175/1520-0450(1964)003%3C0396:ATFMDI%3E2.0.CO;2
-           <http://doi.org/10.1175/1520-0450(1964)003%3C0396:ATFMDI%3E2.0.CO;2>`_.
+           <https://doi.org/10.1175/1520-0450(1964)003%3C0396:ATFMDI%3E2.0.CO;2>`_.
 
 .. [Bolton1980] Bolton, D., 1980: The computation of equivalent potential
            temperature. *Mon. Wea. Rev.*, **108**, 1046-1053,
            doi:`10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2
-           <http://doi.org/10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2>`_.
+           <https://doi.org/10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2>`_.
 
 .. [Cressman1959] Cressman, G. P., 1959: An operational objective analysis system. *Mon.
            Wea. Rev.*, **87**, 367-374,
            doi:`10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2
-           <http://doi.org/10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2>`_.
+           <https://doi.org/10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2>`_.
 
 .. [Hobbs1977] Hobbs, P. V., and J. M. Wallace, 1977: *Atmospheric Science: An
            Introductory Survey*. Academic Press, 350 pp.
@@ -34,7 +34,7 @@ References
            reference psychrometer by comparison with a standard gravimetric hygrometer.
            *J. Atmos. Oceanic Technol.*, **4**, 239-244,
            doi:`10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2
-           <http://doi.org/10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2>`_.
+           <https://doi.org/10.1175/1520-0426(1987)004%3C0239:DOTPCO%3E2.0.CO;2>`_.
 
 .. [FCMR192003] Federal Coordinator for Meteorological Services and Supporting Research: Report on
            Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
@@ -49,7 +49,7 @@ References
            objective map analysis scheme for use with satellite and conventional data.
            **J. Appl. Meteor. Climatol.**, *22*, 1487-1503,
            doi:`10.1175/1520-0450(1983)022%3C1487:AIBOMA%3E2.0.CO;2
-           <http://doi.org/10.1175/1520-0450(1983)022%3C1487:AIBOMA%3E2.0.CO;2>`_.
+           <https://doi.org/10.1175/1520-0450(1983)022%3C1487:AIBOMA%3E2.0.CO;2>`_.
 
 .. [Liang2010] Liang, L., and D. Hale, 2010: *A Stable and Fast Implementation
            of Natural Neighbor Interpolation*. Center for Wave Phenomena `CWP-657
@@ -58,9 +58,14 @@ References
 .. [Markowski2010] Markowski, P. and Y. Richardson, 2010: *Mesoscale Meteorology in the
            Midlatitudes*. Wiley, 430 pp.
 
+.. [Philips1957] Philips, N. A., 1957: A coordinate system having some special
+           advantages for numerical forecasting. *J. Meteor.*, **14**, 184-185,
+           doi:`10.1175/1520-0469(1957)014%3C0184:ACSHSS%3E2.0.CO;2
+           <https://doi.org/10.1175/1520-0469(1957)014%3C0184:ACSHSS%3E2.0.CO;2>`_.
+
 .. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific Services
            Division, NWS Southern Region Headquarters, 1990.
-           `SR90-23 <http://www.weather.gov/media/ffc/ta_htindx.PDF>`_, 2 pp.
+           `SR90-23 <https://www.weather.gov/media/ffc/ta_htindx.PDF>`_, 2 pp.
 
 .. [Salby1996] Salby, M. L., 1996: *Fundamentals of Atmospheric Physics*.
            Academic Press, 627 pp.
@@ -72,4 +77,4 @@ References
            <https://doi.org/10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2>`_.
 
 .. [WMO8-2008] WMO, 2008: *Guide to Meteorological Instruments and Methods of Observation*.
-           `WMO No.8 <http://www.wmo.int/pages/prog/gcos/documents/gruanmanuals/CIMO/CIMO_Guide-7th_Edition-2008.pdf>`_, 681 pp.
+           `WMO No.8 <https://www.wmo.int/pages/prog/gcos/documents/gruanmanuals/CIMO/CIMO_Guide-7th_Edition-2008.pdf>`_, 681 pp.

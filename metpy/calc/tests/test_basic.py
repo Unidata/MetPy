@@ -7,7 +7,8 @@ import numpy as np
 
 from metpy.calc import (add_height_to_pressure, add_pressure_to_height, coriolis_parameter,
                         get_wind_components, get_wind_dir, get_wind_speed, heat_index,
-                        height_to_pressure_std, pressure_to_height_std, windchill)
+                        height_to_pressure_std, pressure_to_height_std, sigma_to_pressure,
+                        windchill)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -267,3 +268,13 @@ def test_add_pressure_to_height():
     """Test the height at pressure above height calculation."""
     height = add_pressure_to_height(110.8286757 * units.m, 100 * units.hPa)
     assert_almost_equal(height, 988.0028867 * units.meter, 5)
+
+
+def test_sigma_to_pressure():
+    """Test sigma_to_pressure."""
+    surface_pressure = 1000. * units.hPa
+    model_top_pressure = 0. * units.hPa
+    sigma = np.arange(0., 1.1, 0.1)
+    expected = np.arange(0., 1100., 100.) * units.hPa
+    pressure = sigma_to_pressure(sigma, surface_pressure, model_top_pressure)
+    assert_array_almost_equal(pressure, expected, 5)
