@@ -9,7 +9,7 @@ import pytest
 from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, el,
                         equivalent_potential_temperature, lcl, lfc, mixing_ratio,
                         mixing_ratio_from_specific_humidity, moist_lapse,
-                        parcel_profile, potential_temperature,
+                        most_unstable_parcel, parcel_profile, potential_temperature,
                         psychrometric_vapor_pressure_wet,
                         relative_humidity_from_mixing_ratio,
                         relative_humidity_from_specific_humidity,
@@ -405,3 +405,14 @@ def test_find_append_zero_crossings():
     y_truth = np.array([3, 2, 1, 0, -1, 0, 2, 2, 0, 1, 0, -1, 0, 2]) * units.degC
     assert_array_almost_equal(x2, x_truth, 6)
     assert_almost_equal(y2, y_truth, 6)
+
+
+def test_most_unstable_parcel():
+    """Tests calculating the most unstable parcel."""
+    levels = np.array([1000., 959., 867.9]) * units.mbar
+    temperatures = np.array([18.2, 22.2, 17.4]) * units.celsius
+    dewpoints = np.array([19., 19., 14.3]) * units.celsius
+    ret = most_unstable_parcel(levels, temperatures, dewpoints, depth=100 * units.hPa)
+    assert_almost_equal(ret[0], 959.0 * units.hPa, 6)
+    assert_almost_equal(ret[1], 22.2 * units.degC, 6)
+    assert_almost_equal(ret[2], 19.0 * units.degC, 6)
