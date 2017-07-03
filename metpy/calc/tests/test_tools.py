@@ -7,7 +7,7 @@ import numpy as np
 import numpy.ma as ma
 import pytest
 
-from metpy.calc import (find_intersections, get_layer, interpolate_nans, log_interp,
+from metpy.calc import (find_intersections, get_layer, interp, interpolate_nans, log_interp,
                         nearest_intersection_idx, pressure_to_height_std,
                         reduce_point_density, resample_nn_1d)
 from metpy.calc.tools import (_get_bound_pressure_height, _next_non_masked_element,
@@ -185,7 +185,7 @@ def test_log_interp_units():
     """Test interpolating with log x-scale with units."""
     x_log = np.array([1e3, 1e4, 1e5, 1e6]) * units.hPa
     y_log = (np.log(x_log.m) * 2 + 3) * units.degC
-    x_interp = np.array([5e3, 5e4, 5e5]) * units.hPa
+    x_interp = np.array([5e5, 5e6, 5e7]) * units.Pa
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548]) * units.degC
     y_interp = log_interp(x_interp, x_log, y_log)
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
@@ -308,3 +308,108 @@ def test_get_layer(pressure, variable, heights, bottom, depth, interp, expected)
                                  depth=depth, interpolate=interp)
     assert_array_almost_equal(p_layer, expected[0], 5)
     assert_array_almost_equal(y_layer, expected[1], 5)
+
+
+def test_log_interp_2d():
+    """Test interpolating with log x-scale in 2 dimensions."""
+    x_log = np.array([[1e3, 1e4, 1e5, 1e6], [1e3, 1e4, 1e5, 1e6]])
+    y_log = np.log(x_log) * 2 + 3
+    x_interp = np.array([5e3, 5e4, 5e5])
+    y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
+    y_interp = log_interp(x_interp, x_log, y_log, axis=1)
+    assert_array_almost_equal(y_interp[1], y_interp_truth, 7)
+
+
+def test_log_interp_3d():
+    """Test interpolating with log x-scale 3 dimensions along second axis."""
+    x_log = np.ones((3, 4, 3)) * np.array([1e3, 1e4, 1e5, 1e6]).reshape(-1, 1)
+    y_log = np.log(x_log) * 2 + 3
+    x_interp = np.array([5e3, 5e4, 5e5])
+    y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
+    y_interp = log_interp(x_interp, x_log, y_log, axis=1)
+    assert_array_almost_equal(y_interp[0, :, 0], y_interp_truth, 7)
+
+
+def test_log_interp_4d():
+    """Test interpolating with log x-scale 4 dimensions."""
+    x_log = np.ones((2, 2, 3, 4)) * np.array([1e3, 1e4, 1e5, 1e6])
+    y_log = np.log(x_log) * 2 + 3
+    x_interp = np.array([5e3, 5e4, 5e5])
+    y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
+    y_interp = log_interp(x_interp, x_log, y_log, axis=3)
+    assert_array_almost_equal(y_interp[0, 0, 0, :], y_interp_truth, 7)
+
+
+def test_log_interp_2args():
+    """Test interpolating with log x-scale with 2 arguments."""
+    x_log = np.array([1e3, 1e4, 1e5, 1e6])
+    y_log = np.log(x_log) * 2 + 3
+    y_log2 = np.log(x_log) * 2 + 3
+    x_interp = np.array([5e3, 5e4, 5e5])
+    y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
+    y_interp = log_interp(x_interp, x_log, y_log, y_log2)
+    assert_array_almost_equal(y_interp[1], y_interp_truth, 7)
+    assert_array_almost_equal(y_interp[0], y_interp_truth, 7)
+
+
+def test_log_interp_set_nan_above():
+    """Test interpolating with log x-scale setting out of bounds above data to nan."""
+    x_log = np.array([1e3, 1e4, 1e5, 1e6])
+    y_log = np.log(x_log) * 2 + 3
+    x_interp = np.array([1e7])
+    y_interp_truth = np.nan
+    with pytest.warns(Warning):
+        y_interp = log_interp(x_interp, x_log, y_log)
+    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+
+
+def test_log_interp_no_extrap():
+    """Test interpolating with log x-scale setting out of bounds value error."""
+    x_log = np.array([1e3, 1e4, 1e5, 1e6])
+    y_log = np.log(x_log) * 2 + 3
+    x_interp = np.array([1e7])
+    with pytest.raises(ValueError):
+        log_interp(x_interp, x_log, y_log, fill_value=None)
+
+
+def test_log_interp_set_nan_below():
+    """Test interpolating with log x-scale setting out of bounds below data to nan."""
+    x_log = np.array([1e3, 1e4, 1e5, 1e6])
+    y_log = np.log(x_log) * 2 + 3
+    x_interp = 1e2
+    y_interp_truth = np.nan
+    with pytest.warns(Warning):
+        y_interp = log_interp(x_interp, x_log, y_log)
+    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+
+
+def test_interp_2args():
+    """Test interpolation with 2 arguments."""
+    x = np.array([1., 2., 3., 4.])
+    y = x
+    y2 = x
+    x_interp = np.array([2.5000000, 3.5000000])
+    y_interp_truth = np.array([2.5000000, 3.5000000])
+    y_interp = interp(x_interp, x, y, y2)
+    assert_array_almost_equal(y_interp[0], y_interp_truth, 7)
+    assert_array_almost_equal(y_interp[1], y_interp_truth, 7)
+
+
+def test_interp_decrease():
+    """Test interpolation with 2 arguments."""
+    x = np.array([1., 2., 3., 4.])
+    y = x
+    x_interp = np.array([3.5000000, 2.5000000])
+    y_interp_truth = np.array([3.5000000, 2.5000000])
+    y_interp = interp(x_interp, x, y)
+    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+
+
+def test_interp_decrease_xp():
+    """Test interpolation with 2 arguments."""
+    x = np.array([4., 3., 2., 1.])
+    y = x
+    x_interp = np.array([3.5000000, 2.5000000])
+    y_interp_truth = np.array([3.5000000, 2.5000000])
+    y_interp = interp(x_interp, x, y)
+    assert_array_almost_equal(y_interp, y_interp_truth, 7)
