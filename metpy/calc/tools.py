@@ -551,7 +551,7 @@ def interp(x, xp, *args, **kwargs):
     minv = np.apply_along_axis(np.searchsorted, axis, xp, x[sort_x])
     minv2 = np.copy(minv)
 
-    # If extrap is none and data is out of bounds, raise value error
+    # If fill_value is none and data is out of bounds, raise value error
     if ((np.max(minv) == xp.shape[axis]) or (np.min(minv) == 0)) and fill_value is None:
         raise ValueError('Interpolation point out of data bounds encountered')
 
@@ -560,13 +560,15 @@ def interp(x, xp, *args, **kwargs):
     if np.max(minv) == xp.shape[axis]:
         warnings.warn('Interpolation point out of data bounds encountered')
         minv2[minv == xp.shape[axis]] = xp.shape[axis] - 1
-    if np.max(minv) == 0:
-        warnings.warn('Interpolation point out of data bounds encountered')
+    if np.min(minv) == 0:
         minv2[minv == 0] = 1
 
     # Get indices for broadcasting arrays
     above = broadcast_indices(xp, minv2, ndim, axis)
     below = broadcast_indices(xp, minv2 - 1, ndim, axis)
+
+    if np.any(x_array < xp[below]):
+        warnings.warn('Interpolation point out of data bounds encountered')
 
     # Create empty output list
     ret = []
@@ -579,7 +581,7 @@ def interp(x, xp, *args, **kwargs):
 
         # Set points out of bounds to fill value.
         var_interp[minv == xp.shape[axis]] = fill_value
-        var_interp[minv == 0] = fill_value
+        var_interp[x_array < xp[below]] = fill_value
 
         # Check for input points in decreasing order and return output to match.
         if x[0] > x[-1]:

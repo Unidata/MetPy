@@ -396,7 +396,7 @@ def test_interp_2args():
 
 
 def test_interp_decrease():
-    """Test interpolation with 2 arguments."""
+    """Test interpolation with decreasing interpolation points."""
     x = np.array([1., 2., 3., 4.])
     y = x
     x_interp = np.array([3.5000000, 2.5000000])
@@ -406,10 +406,20 @@ def test_interp_decrease():
 
 
 def test_interp_decrease_xp():
-    """Test interpolation with 2 arguments."""
+    """Test interpolation with decreasing order."""
     x = np.array([4., 3., 2., 1.])
     y = x
     x_interp = np.array([3.5000000, 2.5000000])
     y_interp_truth = np.array([3.5000000, 2.5000000])
+    y_interp = interp(x_interp, x, y)
+    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+
+
+def test_interp_end_point():
+    """Test interpolation with point at data endpoints."""
+    x = np.array([1., 2., 3., 4.])
+    y = x
+    x_interp = np.array([1.0, 4.0])
+    y_interp_truth = np.array([1.0, 4.0])
     y_interp = interp(x_interp, x, y)
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
