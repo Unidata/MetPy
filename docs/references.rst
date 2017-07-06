@@ -76,5 +76,9 @@ References
            doi:`10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2>`_.
 
+.. [Tsonis2008] Tsonis, A. A., 2008: An introduction to atmospheric thermodynamics.
+           Cambridge Univ. Press, Cambridge.
+
+
 .. [WMO8-2008] WMO, 2008: *Guide to Meteorological Instruments and Methods of Observation*.
            `WMO No.8 <https://www.wmo.int/pages/prog/gcos/documents/gruanmanuals/CIMO/CIMO_Guide-7th_Edition-2008.pdf>`_, 681 pp.
