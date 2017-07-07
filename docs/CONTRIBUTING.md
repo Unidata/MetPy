@@ -92,7 +92,7 @@ See [here](https://github.com/Unidata/MetPy/blob/master/CLA.md) for more
 explanation and rationale behind MetPy's CLA.
 
 As part of the Pull Request, be sure to add yourself to the
-[list of contributors](https://github.com/Unidata/MetPy/blob/master/CONTRIBUTORS.md).
+[list of contributors](https://github.com/Unidata/MetPy/blob/master/AUTHORS.txt).
 We want to make sure we acknowledge the hard work you've generously contributed
 here.
 
