@@ -268,6 +268,23 @@ def test_get_bound_height_out_of_range():
         _get_bound_pressure_height(p, 100 * units.meter, heights=h)
 
 
+def test_get_layer_float32():
+    """Test that get_layer works properly with float32 data."""
+    p = np.asarray([940.85083008, 923.78851318, 911.42022705, 896.07220459,
+                    876.89404297, 781.63330078], np.float32) * units('hPa')
+    hgt = np.asarray([563.671875, 700.93817139, 806.88098145, 938.51745605,
+                      1105.25854492, 2075.04443359], dtype=np.float32) * units.meter
+
+    true_p_layer = np.asarray([940.85083008, 923.78851318, 911.42022705, 896.07220459,
+                               876.89404297, 831.86472819], np.float32) * units('hPa')
+    true_hgt_layer = np.asarray([563.671875, 700.93817139, 806.88098145, 938.51745605,
+                                 1105.25854492, 1549.8079], dtype=np.float32) * units.meter
+
+    p_layer, hgt_layer = get_layer(p, hgt, heights=hgt, depth=1000. * units.meter)
+    assert_array_almost_equal(p_layer, true_p_layer, 4)
+    assert_array_almost_equal(hgt_layer, true_hgt_layer, 4)
+
+
 def test_get_layer_ragged_data():
     """Tests that error is raised for unequal length pressure and data arrays."""
     p = np.arange(10) * units.hPa

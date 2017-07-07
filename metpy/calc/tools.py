@@ -349,8 +349,12 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
             else:  # Bound is not in the data
                 if interpolate:
                     bound_height = bound
-                    bound_pressure = np.interp(np.array(bound.m), heights,
-                                               pressure) * pressure.units
+
+                    # Need to cast back to the input type since interp (up to at least numpy
+                    # 1.13 always returns float64. This can cause upstream users problems,
+                    # resulting in something like np.append() to upcast.
+                    bound_pressure = np.interp(np.atleast_1d(bound), heights,
+                                               pressure).astype(bound.dtype) * pressure.units
                 else:
                     idx = (np.abs(heights - bound)).argmin()
                     bound_pressure = pressure[idx]
