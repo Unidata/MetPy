@@ -65,7 +65,7 @@ __ https://github.com/Unidata/MetPy/issues
 Media
 -----
 
-* MetPy was features on `Episode 100 of Podcast.__init__`_
+* MetPy was featured on `Episode 100 of Podcast.__init__`_
 * Presentation on MetPy's build infrastructure by Ryan May at `SciPy 2016`_
 * MetPy was included in tools presented at the `SSEC/Wisconsin AOS Python Workshop`_
 * Presentation on MetPy at the `2016 AMS Annual Meeting`_ by Ryan May
