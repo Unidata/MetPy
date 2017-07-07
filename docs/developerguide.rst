@@ -116,7 +116,7 @@ Code Style
 ----------
 
 MetPy uses the Python code style outlined in `PEP8
-<https://www.python.org/dev/peps/pep-0008/>`_. For better or worse, this is what the majority
+<http://pep8.org>`_. For better or worse, this is what the majority
 of the Python world uses. The one deviation is that line length limit is 95 characters. 80 is a
 good target, but some times longer lines are needed.
 

@@ -53,7 +53,7 @@ References
 
 .. [Liang2010] Liang, L., and D. Hale, 2010: *A Stable and Fast Implementation
            of Natural Neighbor Interpolation*. Center for Wave Phenomena `CWP-657
-           <http://www.cwp.mines.edu/Documents/cwpreports/cwp-657.pdf>`_, 14 pp.
+           <https://github.com/Unidata/MetPy/files/138653/cwp-657.pdf>`_, 14 pp.
 
 .. [Markowski2010] Markowski, P. and Y. Richardson, 2010: *Mesoscale Meteorology in the
            Midlatitudes*. Wiley, 430 pp.

@@ -29,5 +29,6 @@ dependencies:
   - pep8-naming
   - pyproj
   - cartopy
-  - pip
   - doc8
+  - pip:
+     - recommonmark

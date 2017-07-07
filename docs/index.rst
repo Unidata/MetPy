@@ -38,6 +38,7 @@ Documentation
    tutorials/index
    api/index
    developerguide
+   CONTRIBUTING
    citing
    references
 
