@@ -157,6 +157,13 @@ def test_mixing_ratio():
     assert_almost_equal(mixing_ratio(e, p), 0.04963, 2)
 
 
+def test_mixing_ratio_dimensions():
+    """Verify mixing ratio returns a dimensionless number."""
+    p = 998. * units.mbar
+    e = 73.75 * units.hPa
+    assert str(mixing_ratio(e, p).units) == 'dimensionless'
+
+
 def test_vapor_pressure():
     """Test vapor pressure calculation."""
     assert_almost_equal(vapor_pressure(998. * units.mbar, 0.04963),
