@@ -19,10 +19,10 @@ from metpy.gridding.gridding_functions import (interpolate, remove_nan_observati
 
 
 ###########################################
-def basic_map(map_proj):
+def basic_map(proj):
     """Make our basic default map for plotting"""
     fig = plt.figure(figsize=(15, 10))
-    view = fig.add_axes([0, 0, 1, 1], projection=to_proj)
+    view = fig.add_axes([0, 0, 1, 1], projection=proj)
     view.set_extent([-120, -70, 20, 50])
     view.add_feature(cartopy.feature.NaturalEarthFeature(category='cultural',
                                                          name='admin_1_states_provinces_lakes',
