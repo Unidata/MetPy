@@ -60,6 +60,12 @@ sphinx_gallery_conf = {
     'abort_on_example_error': True
 }
 
+source_parsers = {
+   '.md': 'recommonmark.parser.CommonMarkParser',
+}
+
+
+
 # Turn off code and image links for embedded mpl plots
 plot_html_show_source_link = False
 plot_html_show_formats = False
@@ -83,7 +89,7 @@ autoclass_content = 'both'
 templates_path = ['_templates']
 
 # The suffix of source filenames.
-source_suffix = '.rst'
+source_suffix = ['.rst', '.md']
 
 # The encoding of source files.
 # source_encoding = 'utf-8-sig'
