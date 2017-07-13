@@ -7,7 +7,8 @@ import numpy as np
 import pytest
 
 from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, el,
-                        equivalent_potential_temperature, lcl, lfc, mixing_ratio,
+                        equivalent_potential_temperature_fromLCL, 
+                        equivalent_potential_temperature_fromTd, lcl, lfc, mixing_ratio,
                         mixing_ratio_from_specific_humidity, moist_lapse,
                         most_unstable_parcel, parcel_profile, potential_temperature,
                         psychrometric_vapor_pressure_wet,
@@ -229,13 +230,22 @@ def test_saturation_mixing_ratio():
     assert_almost_equal(saturation_mixing_ratio(p, t), .01068, 3)
 
 
-def test_equivalent_potential_temperature():
-    """Test equivalent potential temperature calculation."""
+def test_equivalent_potential_temperature_fromLCL():
+    """Test equivalent potential temperature_fromLCL calculation."""
     p = 999. * units.mbar
     t = 288. * units.kelvin
-    ept = equivalent_potential_temperature(p, t)
+    ept = equivalent_potential_temperature_fromLCL(p, t)
     assert_almost_equal(ept, 315.9548 * units.kelvin, 3)
 
+def test_equivalent_potential_temperature_fromTd():
+    """Test equivalent potential temperature_fromTd calculation."""
+    # Bolton 1980 Table 3 has a test value used here 
+    # http://journals.ametsoc.org/doi/pdf/10.1175/ 
+    #   1520-0493%281980%29108%3C1046%3ATCOEPT%3E2.0.CO%3B2
+    p = 1000. * units.mbar    t = 293.15 * units.kelvin
+    td= 293.15 * units.kelvin
+    ept = equivalent_potential_temperature_fromTd(p, t, td)
+    assert_almost_equal(ept, 335.61 * units.kelvin, 3)
 
 def test_virtual_temperature():
     """Test virtual temperature calculation."""

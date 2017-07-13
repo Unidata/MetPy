@@ -582,9 +582,10 @@ def equivalent_potential_temperature_fromTd(pressure, temperature, dewpoint):
     Notes
     -----
     See https://en.wikipedia.org/wiki/Equivalent_potential_temperature
-
+    Bolton is most accurate according to 
+       http://journals.ametsoc.org/doi/pdf/10.1175/2009MWR2774.1
     """
-    # Formulas from Bolton (1980), transcribed from Wikipedia page
+    # Formulas from Bolton (1980), transcribed from Wikipedia page above
 
     T = temperature/units.kelvin
     Td = dewpoint/units.kelvin
@@ -597,7 +598,6 @@ def equivalent_potential_temperature_fromTd(pressure, temperature, dewpoint):
     Th_e= Th_L * exp( (3036./T_L -1.78)*r*(1+0.448*r) )
 
     return Th_e *units.kelvin
-
 
 @exporter.export
 @check_units('[temperature]', '[dimensionless]', '[dimensionless]')
@@ -1077,6 +1077,6 @@ def most_unstable_parcel(p, temperature, dewpoint, heights=None,
     """
     p_layer, T_layer, Td_layer = get_layer(p, temperature, dewpoint, bottom=bottom,
                                            depth=depth, heights=heights)
-    theta_e = equivalent_potential_temperature(p_layer, T_layer)
+    theta_e = equivalent_potential_temperature_fromLCL(p_layer, T_layer)
     max_idx = np.argmax(theta_e)
     return p_layer[max_idx], T_layer[max_idx], Td_layer[max_idx]
