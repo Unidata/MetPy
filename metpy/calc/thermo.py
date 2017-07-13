@@ -557,7 +557,7 @@ def equivalent_potential_temperature_fromLCL(pressure_LCL, temperature_LCL):
     return pottemp_LCL * np.exp(Lv * smixr_LCL / (Cp_d * temperature_LCL))
 
 @exporter.export
-@check_units('[pressure]', '[temperature]', '[dewpoint]')
+@check_units('[pressure]', '[temperature]', '[temperature]')
 def equivalent_potential_temperature_fromTd(pressure, temperature, dewpoint):
     r"""Calculate equivalent potential temperature.
 
@@ -595,7 +595,7 @@ def equivalent_potential_temperature_fromTd(pressure, temperature, dewpoint):
 
     T_L = 56 + 1./( 1./(Td-56) + np.log(T/Td)/800. )
     Th_L= T * (1000/(p-e))**kappa * (T/T_L)**(0.28*r)
-    Th_e= Th_L * exp( (3036./T_L -1.78)*r*(1+0.448*r) )
+    Th_e= Th_L * np.exp( (3036./T_L -1.78)*r*(1+0.448*r) )
 
     return Th_e *units.kelvin
 
