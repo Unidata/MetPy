@@ -556,6 +556,48 @@ def equivalent_potential_temperature_fromLCL(pressure_LCL, temperature_LCL):
     smixr_LCL = saturation_mixing_ratio(pressure_LCL, temperature_LCL)
     return pottemp_LCL * np.exp(Lv * smixr_LCL / (Cp_d * temperature_LCL))
 
+@exporter.export
+@check_units('[pressure]', '[temperature]', '[dewpoint]')
+def equivalent_potential_temperature_fromTd(pressure, temperature, dewpoint):
+    r"""Calculate equivalent potential temperature.
+
+    This calculation must be given an air parcel's pressure, temperature, dewpoint
+    The implementation uses the formula outlined in Bolton 1980 with mixing ratio 
+    r(Td,p) computed by a formula saturation_mixing_ratio(pressure, dewpoint)
+
+    Parameters
+    ----------
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+    temperature: `pint.Quantity`
+        The temperature
+    dewpoint: `pint.Quantity`
+        The dewpoint
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding equivalent potential temperature of the parcel
+
+    Notes
+    -----
+    See https://en.wikipedia.org/wiki/Equivalent_potential_temperature
+
+    """
+    # Formulas from Bolton (1980), transcribed from Wikipedia page
+
+    T = temperature/units.kelvin
+    Td = dewpoint/units.kelvin
+    p = pressure/units.hPa 
+    e = saturation_vapor_pressure(dewpoint)/units.hPa
+    r = saturation_mixing_ratio(pressure, dewpoint) # /units.dimensionless
+
+    T_L = 56 + 1./( 1./(Td-56) + np.log(T/Td)/800. )
+    Th_L= T * (1000/(p-e))**kappa * (T/T_L)**(0.28*r)
+    Th_e= Th_L * exp( (3036./T_L -1.78)*r*(1+0.448*r) )
+
+    return Th_e *units.kelvin
+
 
 @exporter.export
 @check_units('[temperature]', '[dimensionless]', '[dimensionless]')
