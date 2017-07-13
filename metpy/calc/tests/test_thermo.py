@@ -242,10 +242,11 @@ def test_equivalent_potential_temperature_fromTd():
     # Bolton 1980 Table 3 has a test value used here 
     # http://journals.ametsoc.org/doi/pdf/10.1175/ 
     #   1520-0493%281980%29108%3C1046%3ATCOEPT%3E2.0.CO%3B2
-    p = 1000. * units.mbar    t = 293.15 * units.kelvin
+    p = 1000. * units.mbar    
+    t = 293.15 * units.kelvin
     td= 293.15 * units.kelvin
     ept = equivalent_potential_temperature_fromTd(p, t, td)
-    assert_almost_equal(ept, 335.61 * units.kelvin, 3)
+    assert_almost_equal(ept, 335.61 * units.kelvin, 1)
 
 def test_virtual_temperature():
     """Test virtual temperature calculation."""
