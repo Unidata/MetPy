@@ -22,3 +22,5 @@ docs/examples
 docs/tutorials
 docs/api/generated
 examples/scripts
+
+*.py~
