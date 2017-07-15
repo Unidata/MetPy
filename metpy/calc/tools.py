@@ -667,3 +667,47 @@ def log_interp(x, xp, *args, **kwargs):
     log_x = np.log(x)
     log_xp = np.log(xp)
     return interp(log_x, log_xp, *args, axis=axis, fill_value=fill_value)
+
+
+def _greater_or_close(a, value, **kwargs):
+    r"""Compare values for greater or close to boolean masks.
+
+    Returns a boolean mask for values greater than or equal to a target within a specified
+    absolute or relative tolerance (as in :func:`numpy.isclose`).
+
+    Parameters
+    ----------
+    a : array-like
+        Array of values to be compared
+    value : float
+        Comparison value
+
+    Returns
+    -------
+    array-like
+        Boolean array where values are greater than or nearly equal to value.
+
+    """
+    return np.greater(a, value) | np.isclose(a, value, **kwargs)
+
+
+def _less_or_close(a, value, **kwargs):
+    r"""Compare values for less or close to boolean masks.
+
+    Returns a boolean mask for values less than or equal to a target within a specified
+    absolute or relative tolerance (as in :func:`numpy.isclose`).
+
+    Parameters
+    ----------
+    a : array-like
+        Array of values to be compared
+    value : float
+        Comparison value
+
+    Returns
+    -------
+    array-like
+        Boolean array where values are less than or nearly equal to value.
+
+    """
+    return np.less(a, value) | np.isclose(a, value, **kwargs)
