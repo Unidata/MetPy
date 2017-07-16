@@ -24,19 +24,20 @@ logging.getLogger('metpy.io.nexrad').setLevel(logging.CRITICAL)
 # 1999 file tests old message 1
 # KFTG tests bzip compression and newer format for a part of message 31
 # KTLX 2015 has missing segments for message 18, which was causing exception
-level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46)),
-                ('KTLX19990503_235621.gz', datetime(1999, 5, 3, 23, 56, 21)),
-                ('Level2_KFTG_20150430_1419.ar2v', datetime(2015, 4, 30, 14, 19, 11)),
-                ('KTLX20150530_000802_V06.bz2', datetime(2015, 5, 30, 0, 8, 3))]
+level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46), 17),
+                ('KTLX19990503_235621.gz', datetime(1999, 5, 3, 23, 56, 21), 16),
+                ('Level2_KFTG_20150430_1419.ar2v', datetime(2015, 4, 30, 14, 19, 11), 12),
+                ('KTLX20150530_000802_V06.bz2', datetime(2015, 5, 30, 0, 8, 3), 14)]
 
 
 # ids here fixes how things are presented in pycharm
-@pytest.mark.parametrize('fname,voltime', level2_files,
+@pytest.mark.parametrize('fname, voltime, num_sweeps', level2_files,
                          ids=[i[0].replace('.', '_') for i in level2_files])
-def test_level2(fname, voltime):
+def test_level2(fname, voltime, num_sweeps):
     """Test reading NEXRAD level 2 files from the filename."""
     f = Level2File(get_test_data(fname, as_file_obj=False))
     assert f.dt == voltime
+    assert len(f.sweeps) == num_sweeps
 
 
 def test_level2_fobj():
