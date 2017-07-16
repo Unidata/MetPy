@@ -68,12 +68,18 @@ def bzip_blocks_decompress_all(data):
         size_bytes = data[offset:offset + 4]
         offset += 4
         block_cmp_bytes = abs(Struct('>l').unpack(size_bytes)[0])
-        if block_cmp_bytes:
+        try:
             frames.extend(bz2.decompress(data[offset:offset + block_cmp_bytes]))
             offset += block_cmp_bytes
-        else:
-            frames.extend(size_bytes)
-            frames.extend(data[offset:])
+        except IOError:
+            # If we've decompressed any frames, this is an error mid-stream, so warn, stop
+            # trying to decompress and let processing proceed
+            if frames:
+                logging.warning('Error decompressing bz2 block stream at offset: %d',
+                                offset - 4)
+                break
+            else:  # Otherwise, this isn't a bzip2 stream, so bail
+                raise ValueError('Not a bz2 stream.')
     return frames
 
 
@@ -191,7 +197,7 @@ class Level2File(object):
         # See if we need to apply bz2 decompression
         try:
             self._buffer = IOBuffer(self._buffer.read_func(bzip_blocks_decompress_all))
-        except Exception:
+        except ValueError:
             self._buffer.jump_to(start)
 
         # Now we're all initialized, we can proceed with reading in data
@@ -228,6 +234,7 @@ class Level2File(object):
 
             # Read the message header
             msg_hdr = self._buffer.read_struct(self.msg_hdr_fmt)
+            log.debug('Got message: %s', str(msg_hdr))
 
             # If the size is 0, this is just padding, which is for certain
             # done in the metadata messages. Just handle generally here

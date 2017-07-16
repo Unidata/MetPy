@@ -5,6 +5,7 @@
 
 from datetime import datetime
 import glob
+from io import BytesIO
 import logging
 import os.path
 
@@ -43,6 +44,14 @@ def test_level2(fname, voltime, num_sweeps):
 def test_level2_fobj():
     """Test reading NEXRAD level2 data from a file object."""
     Level2File(get_test_data('Level2_KFTG_20150430_1419.ar2v'))
+
+
+def test_doubled_file():
+    """Test for #489 where doubled-up files didn't parse at all."""
+    data = get_test_data('Level2_KFTG_20150430_1419.ar2v').read()
+    fobj = BytesIO(data + data)
+    f = Level2File(fobj)
+    assert len(f.sweeps) == 12
 
 
 #
