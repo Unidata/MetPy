@@ -13,7 +13,8 @@ import pandas as pd
 
 from metpy.io import Level3File
 
-def plot_vad(filelist, storm_relative=False, storm_motion=[0., 0.]):
+
+def plot_vad(filelist, storm_motion=None):
     '''INPUT: list of NEXRAD VAD files
        OUTPUT: color-coded wind barbs plotted with height for
                the times given in the list of files
@@ -41,7 +42,7 @@ def plot_vad(filelist, storm_relative=False, storm_motion=[0., 0.]):
     time_plot = mpl.dates.date2num(vad_pd['TIME'].astype(dt.datetime))
 
     # Subtract storm motion vector from winds for storm-relative VAD
-    if storm_relative:
+    if storm_motion is not None:
         uplot, vplot = vad_pd['U']-storm_motion[0], vad_pd['V']-storm_motion[1]
 
     # Set color params
