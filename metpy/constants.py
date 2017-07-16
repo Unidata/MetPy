@@ -107,3 +107,5 @@ with exporter:
     kappa = poisson_exponent = Rd / Cp_d
     gamma_d = dry_adiabatic_lapse_rate = g / Cp_d
     epsilon = molecular_weight_ratio = Mw / Md
+
+del Exporter
