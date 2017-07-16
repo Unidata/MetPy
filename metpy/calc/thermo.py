@@ -273,6 +273,8 @@ def el(pressure, temperature, dewpt):
     """
     ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
     x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
+    # Find LFC to make sure that the function isn't passing off the LFC as the EL
+    lfc_pressure, _ = lfc(pressure, temperature, dewpt)
 
     # If there is only one intersection, there are two possibilities:
     # the dataset does not contain the EL, or the LFC = LCL.
@@ -286,7 +288,12 @@ def el(pressure, temperature, dewpt):
             # or no intersection occurring.
             return np.nan * pressure.units, np.nan * temperature.units
     else:
-        return x[-1], y[-1]
+        # Checking to make sure the LFC is not returned as the EL
+        # when data is truncated below the EL
+        if np.isclose(x[-1], lfc_pressure, atol=1e-6):
+            return np.nan * pressure.units, np.nan * temperature.units
+        else:
+            return x[-1], y[-1]
 
 
 @exporter.export
