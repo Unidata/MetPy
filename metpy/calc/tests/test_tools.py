@@ -10,8 +10,8 @@ import pytest
 from metpy.calc import (find_intersections, get_layer, interp, interpolate_nans, log_interp,
                         nearest_intersection_idx, pressure_to_height_std,
                         reduce_point_density, resample_nn_1d)
-from metpy.calc.tools import (_get_bound_pressure_height, _next_non_masked_element,
-                              delete_masked_points)
+from metpy.calc.tools import (_get_bound_pressure_height, _greater_or_close, _less_or_close,
+                              _next_non_masked_element, delete_masked_points)
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -440,3 +440,21 @@ def test_interp_end_point():
     y_interp_truth = np.array([1.0, 4.0])
     y_interp = interp(x_interp, x, y)
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
+
+
+def test_greater_or_close():
+    """Test floating point greater or close to."""
+    x = np.array([0.0, 1.0, 1.49999, 1.5, 1.5000, 1.7])
+    comparison_value = 1.5
+    truth = np.array([False, False, True, True, True, True])
+    res = _greater_or_close(x, comparison_value)
+    assert_array_equal(res, truth)
+
+
+def test_less_or_close():
+    """Test floating point less or close to."""
+    x = np.array([0.0, 1.0, 1.49999, 1.5, 1.5000, 1.7])
+    comparison_value = 1.5
+    truth = np.array([True, True, True, True, True, False])
+    res = _less_or_close(x, comparison_value)
+    assert_array_equal(res, truth)

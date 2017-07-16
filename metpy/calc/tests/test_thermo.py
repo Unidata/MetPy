@@ -366,7 +366,7 @@ def test_cape_cin():
     p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
-    parcel_prof = parcel_profile(p, temperature[0], dewpoint[0]).to('degC')
+    parcel_prof = parcel_profile(p, temperature[0], dewpoint[0])
     cape, cin = cape_cin(p, temperature, dewpoint, parcel_prof)
     assert_almost_equal(cape, 58.0368212 * units('joule / kilogram'), 6)
     assert_almost_equal(cin, -89.8073512 * units('joule / kilogram'), 6)

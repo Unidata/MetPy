@@ -9,7 +9,7 @@ import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
 
-from .tools import find_intersections, get_layer
+from .tools import _greater_or_close, _less_or_close, find_intersections, get_layer
 from ..constants import Cp_d, epsilon, kappa, Lv, P0, Rd
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
@@ -940,20 +940,20 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
 
     # CAPE (temperature parcel < temperature environment)
     # Only use data between the LFC and EL for calculation
-    p_mask = (x <= lfc_pressure) & (x >= el_pressure)
+    p_mask = _less_or_close(x, lfc_pressure) & _greater_or_close(x, el_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
 
-    y_clipped[y_clipped <= 0 * units.degK] = 0 * units.degK
+    y_clipped[_less_or_close(y_clipped, 0 * units.degK)] = 0 * units.degK
     cape = (Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
     # CIN (temperature parcel < temperature environment)
     # Only use data between the surface and LFC for calculation
-    p_mask = (x >= lfc_pressure)
+    p_mask = _greater_or_close(x, lfc_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
 
-    y_clipped[y_clipped >= 0 * units.degK] = 0 * units.degK
+    y_clipped[_greater_or_close(y_clipped, 0 * units.degK)] = 0 * units.degK
     cin = (Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
     return cape, cin
