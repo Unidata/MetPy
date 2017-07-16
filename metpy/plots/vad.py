@@ -27,7 +27,7 @@ def plot_vad(filelist, storm_motion=None):
         vad_ft = vad_f.tab_pages
         lst = np.arange(0, len(vad_ft)-2)
         vad_list = [pd.read_table(StringIO(vad_ft[i]), sep='\s+', header=1,
-                                           skiprows=[2]) for i in lst]
+                    skiprows=[2]) for i in lst]
         vad = pd.concat(vad_list, axis=0)
         vad['TIME'] = vad_f.metadata['vol_time']
         # convert from altitude in feet to AGL in meters
