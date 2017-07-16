@@ -2,7 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 
-r"""A collection of meteorologically significant constants. # noqa: E501.
+r"""A collection of meteorologically significant constants.
 
 Earth
 -----
@@ -57,7 +57,7 @@ poisson_exponent         :math:`\kappa`    kappa       :math:`\text{None}`      
 dry_adiabatic_lapse_rate :math:`\gamma_d`  gamma_d     :math:`\text{K km}^{-1}`  The dry adiabatic lapse rate
 molecular_weight_ratio   :math:`\epsilon`  epsilon     :math:`\text{None}`       Ratio of molecular weight of water to that of dry air
 ======================== ================= =========== ========================= =======================================================
-"""
+"""  # noqa: E501
 
 from .package_tools import Exporter
 from .units import units
@@ -107,3 +107,5 @@ with exporter:
     kappa = poisson_exponent = Rd / Cp_d
     gamma_d = dry_adiabatic_lapse_rate = g / Cp_d
     epsilon = molecular_weight_ratio = Mw / Md
+
+del Exporter
