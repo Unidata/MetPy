@@ -10,6 +10,7 @@ Contain tools for making Skew-T Log-P plots, including the base plotting class,
 from matplotlib.axes import Axes
 import matplotlib.axis as maxis
 from matplotlib.collections import LineCollection
+import matplotlib.colors as mcolors
 from matplotlib.patches import Circle
 from matplotlib.projections import register_projection
 import matplotlib.spines as mspines
@@ -19,7 +20,7 @@ import numpy as np
 
 from ._util import colored_line
 from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
-from ..calc.tools import delete_masked_points
+from ..calc.tools import delete_masked_points, interp
 from ..package_tools import Exporter
 from ..units import units
 
@@ -770,10 +771,16 @@ class Hodograph(object):
         u, v = delete_masked_points(u, v)
         return self.ax.plot(u, v, **line_args)
 
-    def plot_colormapped(self, u, v, c, **kwargs):
+    def plot_colormapped(self, u, v, c, bounds=None, colors=None, **kwargs):
         r"""Plot u, v data, with line colored based on a third set of data.
 
-        Plots the wind data on the hodograph, but with a colormapped line.
+        Plots the wind data on the hodograph, but with a colormapped line. Takes a third
+        variable besides the winds and either a colormap to color it with or a series of
+        bounds and colors to create a colormap and norm to control colormapping.
+        The bounds must always be in increasing order. For using custom bounds with
+        height data, the function will automatically interpolate to the actual bounds from the
+        height and wind data, as well as convert the input bounds from
+        height AGL to height above MSL to work with the provided heights.
 
         Simple wrapper around plot so that pressure is the first (independent)
         input. This is essentially a wrapper around `semilogy`. It also
@@ -787,6 +794,10 @@ class Hodograph(object):
             v-component of wind
         c : array_like
             data to use for colormapping
+        bounds: array-like, optional
+            Array of bounds for c to use in coloring the hodograph.
+        colors: list, optional
+            Array of strings representing colors for the hodograph segments.
         kwargs
             Other keyword arguments to pass to :class:`matplotlib.collections.LineCollection`
 
@@ -800,8 +811,28 @@ class Hodograph(object):
         :meth:`Hodograph.plot`
 
         """
-        line_args = self._form_line_args(kwargs)
         u, v, c = delete_masked_points(u, v, c)
+
+        if colors:
+            cmap = mcolors.ListedColormap(colors)
+            if bounds.dimensionality == {'[length]': 1.0}:
+                bounds = np.asarray(bounds + c[0]) * bounds.units
+                interp_vert = interp(bounds, c, c, u, v)
+                inds = np.searchsorted(c.magnitude, bounds.magnitude)
+                u = np.insert(u.magnitude, inds, interp_vert[1].magnitude)
+                v = np.insert(v.magnitude, inds, interp_vert[2].magnitude)
+                c = np.insert(c.magnitude, inds, interp_vert[0].magnitude)
+            else:
+                bounds = np.asarray(bounds) * bounds.units
+
+            norm = mcolors.BoundaryNorm(bounds.magnitude, cmap.N)
+            cmap.set_over('none')
+            cmap.set_under('none')
+            kwargs['cmap'] = cmap
+            kwargs['norm'] = norm
+            line_args = self._form_line_args(kwargs)
+        else:
+            line_args = self._form_line_args(kwargs)
         lc = colored_line(u, v, c, **line_args)
         self.ax.add_collection(lc)
         return lc
