@@ -283,6 +283,20 @@ def test_no_el():
     assert assert_nan(el_temperature, temperatures.units)
 
 
+def test_no_el_multi_crossing():
+    """Test el calculation with no el and severel parcel path-profile crossings."""
+    levels = np.array([918., 911., 880., 873.9, 850., 848., 843.5, 818., 813.8, 785.,
+                       773., 763., 757.5, 730.5, 700., 679., 654.4, 645.,
+                       643.9]) * units.mbar
+    temperatures = np.array([24.2, 22.8, 19.6, 19.1, 17., 16.8, 16.5, 15., 14.9, 14.4, 16.4,
+                             16.2, 15.7, 13.4, 10.6, 8.4, 5.7, 4.6, 4.5]) * units.celsius
+    dewpoints = np.array([19.5, 17.8, 16.7, 16.5, 15.8, 15.7, 15.3, 13.1, 12.9, 11.9, 6.4,
+                          3.2, 2.6, -0.6, -4.4, -6.6, -9.3, -10.4, -10.5]) * units.celsius
+    el_pressure, el_temperature = el(levels, temperatures, dewpoints)
+    assert assert_nan(el_pressure, levels.units)
+    assert assert_nan(el_temperature, temperatures.units)
+
+
 def test_el_lfc_equals_lcl():
     """Test equilibrium layer calculation when the lfc equals the lcl."""
     levels = np.array([912., 905.3, 874.4, 850., 815.1, 786.6, 759.1, 748.,

@@ -70,6 +70,7 @@ def nearest_intersection_idx(a, b):
 
 
 @exporter.export
+@units.wraps(('=A', '=B'), ('=A', '=B', '=B'))
 def find_intersections(x, a, b, direction='all'):
     """Calculate the best estimate of intersection.
 
