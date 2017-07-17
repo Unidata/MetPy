@@ -17,6 +17,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 from metpy.calc import get_wind_components
+from metpy.calc import reduce_point_density
 from metpy.cbook import get_test_data
 from metpy.plots import StationPlot
 from metpy.plots.wx_symbols import current_weather, sky_cover
@@ -39,21 +40,26 @@ with get_test_data('station_data.txt') as f:
                                           ('wind_dir', 'f'), ('wind_speed', 'f')]))
 
 ###########################################
-# This sample data has *way* too many stations to plot all of them. Instead, we just select
-# a few from around the U.S. and pull those out of the data file.
+# This sample data has *way* too many stations to plot all of them. The number
+# of stations plotted will be reduced using reduce_point_density
 
 # Get the full list of stations in the data
 all_stids = [s.decode('ascii') for s in all_data['stid']]
 
-# Pull out these specific stations
-whitelist = ['OKC', 'ICT', 'GLD', 'MEM', 'BOS', 'MIA', 'MOB', 'ABQ', 'PHX', 'TTF',
-             'ORD', 'BIL', 'BIS', 'CPR', 'LAX', 'ATL', 'MSP', 'SLC', 'DFW', 'NYC', 'PHL',
-             'PIT', 'IND', 'OLY', 'SYR', 'LEX', 'CHS', 'TLH', 'HOU', 'GJT', 'LBB', 'LSV',
-             'GRB', 'CLT', 'LNK', 'DSM', 'BOI', 'FSD', 'RAP', 'RIC', 'JAN', 'HSV', 'CRW',
-             'SAT', 'BUY', '0CO', 'ZPC', 'VIH']
+# Loop over all the  sites, grab the first data, and concatenate them
+fulldata = np.concatenate([all_data[all_stids.index(site)].reshape(1,) for site in all_stids])
 
-# Loop over all the whitelisted sites, grab the first data, and concatenate them
-data = np.concatenate([all_data[all_stids.index(site)].reshape(1,) for site in whitelist])
+# Set up the map projection and set up a cartopy feature for state borders
+proj = ccrs.LambertConformal(central_longitude=-95, central_latitude=35,
+                             standard_parallels=[35])
+state_boundaries = feat.NaturalEarthFeature(category='cultural',
+                                            name='admin_1_states_provinces_lines',
+                                            scale='110m', facecolor='none')
+
+# Use the cartopy map projection to transform station locations to the map and
+# then refine the number of stations plotted by setting a 300km radius
+point_locs = proj.transform_points(ccrs.PlateCarree(), fulldata['lon'], fulldata['lat'])
+data = fulldata[reduce_point_density(point_locs, 300000.)]
 
 ###########################################
 # Now that we have the data we want, we need to perform some conversions:
@@ -71,9 +77,11 @@ stid = [s.decode('ascii') for s in data['stid']]
 u, v = get_wind_components((data['wind_speed'] * units('m/s')).to('knots'),
                            data['wind_dir'] * units.degree)
 
-# Convert the fraction value into a code of 0-8, which can be used to pull out
-# the appropriate symbol
-cloud_frac = (8 * data['cloud_fraction']).astype(int)
+# Convert the fraction value into a code of 0-8 and compensate for NaN values,
+# which can be used to pull out the appropriate symbol
+cloud_frac = (8 * data['cloud_fraction'])
+cloud_frac[np.isnan(cloud_frac)] = 10
+cloud_frac = cloud_frac.astype(int)
 
 # Map weather strings to WMO codes, which we can use to convert to symbols
 # Only use the first symbol if there are multiple
@@ -82,14 +90,6 @@ wx_codes = {'': 0, 'HZ': 5, 'BR': 10, '-DZ': 51, 'DZ': 53, '+DZ': 55,
             '-RA': 61, 'RA': 63, '+RA': 65, '-SN': 71, 'SN': 73, '+SN': 75}
 wx = [wx_codes[s.split()[0] if ' ' in s else s] for s in wx_text]
 
-###########################################
-# Now all the data wrangling is finished, just need to set up plotting and go
-# Set up the map projection and set up a cartopy feature for state borders
-proj = ccrs.LambertConformal(central_longitude=-95, central_latitude=35,
-                             standard_parallels=[35])
-state_boundaries = feat.NaturalEarthFeature(category='cultural',
-                                            name='admin_1_states_provinces_lines',
-                                            scale='110m', facecolor='none')
 
 ###########################################
 # The payoff
@@ -125,29 +125,30 @@ stationplot = StationPlot(ax, data['lon'], data['lat'], transform=ccrs.PlateCarr
 
 # Plot the temperature and dew point to the upper and lower left, respectively, of
 # the center point. Each one uses a different color.
-stationplot.plot_parameter('NW', data['air_temperature'], color='red')
-stationplot.plot_parameter('SW', data['dew_point_temperature'], color='darkgreen')
+stationplot.plot_parameter('NW', data['air_temperature'], color='red', clip_on=True)
+stationplot.plot_parameter('SW', data['dew_point_temperature'],
+                           color='darkgreen', clip_on=True)
 
 # A more complex example uses a custom formatter to control how the sea-level pressure
 # values are plotted. This uses the standard trailing 3-digits of the pressure value
 # in tenths of millibars.
-stationplot.plot_parameter('NE', data['slp'],
+stationplot.plot_parameter('NE', data['slp'], clip_on=True,
                            formatter=lambda v: format(10 * v, '.0f')[-3:])
 
 # Plot the cloud cover symbols in the center location. This uses the codes made above and
 # uses the `sky_cover` mapper to convert these values to font codes for the
 # weather symbol font.
-stationplot.plot_symbol('C', cloud_frac, sky_cover)
+stationplot.plot_symbol('C', cloud_frac, sky_cover, clip_on=True)
 
 # Same this time, but plot current weather to the left of center, using the
 # `current_weather` mapper to convert symbols to the right glyphs.
-stationplot.plot_symbol('W', wx, current_weather)
+stationplot.plot_symbol('W', wx, current_weather, clip_on=True)
 
 # Add wind barbs
 stationplot.plot_barb(u, v)
 
 # Also plot the actual text of the station id. Instead of cardinal directions,
 # plot further out by specifying a location of 2 increments in x and 0 in y.
-stationplot.plot_text((2, 0), stid)
+stationplot.plot_text((2, 0), stid, clip_on=True)
 
 plt.show()
