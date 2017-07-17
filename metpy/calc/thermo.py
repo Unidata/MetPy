@@ -233,7 +233,7 @@ def lfc(pressure, temperature, dewpt):
                               direction='increasing')
     # Two possible cases here: LFC = LCL, or LFC doesn't exist
     if len(x) == 0:
-        if np.any(ideal_profile > temperature):
+        if np.any(_less_or_close(ideal_profile[1:], temperature[1:])==False):
             # LFC = LCL
             x, y = lcl(pressure[0], temperature[0], dewpt[0])
             return x, y
