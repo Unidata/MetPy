@@ -68,12 +68,18 @@ def bzip_blocks_decompress_all(data):
         size_bytes = data[offset:offset + 4]
         offset += 4
         block_cmp_bytes = abs(Struct('>l').unpack(size_bytes)[0])
-        if block_cmp_bytes:
+        try:
             frames.extend(bz2.decompress(data[offset:offset + block_cmp_bytes]))
             offset += block_cmp_bytes
-        else:
-            frames.extend(size_bytes)
-            frames.extend(data[offset:])
+        except IOError:
+            # If we've decompressed any frames, this is an error mid-stream, so warn, stop
+            # trying to decompress and let processing proceed
+            if frames:
+                logging.warning('Error decompressing bz2 block stream at offset: %d',
+                                offset - 4)
+                break
+            else:  # Otherwise, this isn't a bzip2 stream, so bail
+                raise ValueError('Not a bz2 stream.')
     return frames
 
 
@@ -191,7 +197,7 @@ class Level2File(object):
         # See if we need to apply bz2 decompression
         try:
             self._buffer = IOBuffer(self._buffer.read_func(bzip_blocks_decompress_all))
-        except Exception:
+        except ValueError:
             self._buffer.jump_to(start)
 
         # Now we're all initialized, we can proceed with reading in data
@@ -228,10 +234,31 @@ class Level2File(object):
 
             # Read the message header
             msg_hdr = self._buffer.read_struct(self.msg_hdr_fmt)
+            log.debug('Got message: %s', str(msg_hdr))
+
+            # The AR2_BLOCKSIZE accounts for the CTM header before the
+            # data, as well as the Frame Check Sequence (4 bytes) after
+            # the end of the data.
+            msg_bytes = self.AR2_BLOCKSIZE
 
             # If the size is 0, this is just padding, which is for certain
-            # done in the metadata messages. Just handle generally here
+            # done in the metadata messages. Let the default block size handle rather
+            # than any specific heuristic to skip.
             if msg_hdr.size_hw:
+                # For new packets, the message size isn't on the fixed size boundaries,
+                # so we use header to figure out. For these, we need to include the
+                # CTM header but not FCS, in addition to the size.
+
+                # As of 2620002P, this is a special value used to indicate that the segment
+                # number/count bytes are used to indicate total size in bytes.
+                if msg_hdr.size_hw == 65535:
+                    msg_bytes = (msg_hdr.num_segments << 16 | msg_hdr.segment_num +
+                                 self.CTM_HEADER_SIZE)
+                elif msg_hdr.msg_type in (29, 31):
+                    msg_bytes = self.CTM_HEADER_SIZE + 2 * msg_hdr.size_hw
+
+                log.debug('Total message size: %d', msg_bytes)
+
                 # Try to handle the message. If we don't handle it, skipping
                 # past it is handled at the end anyway.
                 decoder = '_decode_msg{:d}'.format(msg_hdr.msg_type)
@@ -242,15 +269,7 @@ class Level2File(object):
 
             # Jump to the start of the next message. This depends on whether
             # the message was legacy with fixed block size or not.
-            if msg_hdr.msg_type != 31:
-                # The AR2_BLOCKSIZE accounts for the CTM header before the
-                # data, as well as the Frame Check Sequence (4 bytes) after
-                # the end of the data
-                self._buffer.jump_to(msg_start, self.AR2_BLOCKSIZE)
-            else:
-                # Need to include the CTM header but not FCS
-                self._buffer.jump_to(msg_start,
-                                     self.CTM_HEADER_SIZE + 2 * msg_hdr.size_hw)
+            self._buffer.jump_to(msg_start, msg_bytes)
 
         # Check if we have any message segments still in the buffer
         if self._msg_buf:
