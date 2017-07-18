@@ -536,18 +536,19 @@ def saturation_mixing_ratio(tot_press, temperature):
 
 @exporter.export
 @check_units('[pressure]', '[temperature]')
-def equivalent_potential_temperature(pressure, temperature):
+def equivalent_potential_temperature(pressure_LCL, temperature_LCL):
     r"""Calculate equivalent potential temperature.
 
-    This calculation must be given an air parcel's pressure and temperature.
+    This calculation must be given an air parcel's pressure and temperature
+    ** at its LCL **, not its ambient pressure and temperature.
     The implementation uses the formula outlined in [Hobbs1977]_ pg.78-79.
 
     Parameters
     ----------
     pressure: `pint.Quantity`
-        Total atmospheric pressure
+        atmospheric pressure **at the parcel's LCL**
     temperature: `pint.Quantity`
-        The temperature
+        The temperature **at the parcel's LCL**
 
     Returns
     -------
@@ -559,9 +560,9 @@ def equivalent_potential_temperature(pressure, temperature):
     .. math:: \Theta_e = \Theta e^\frac{L_v r_s}{C_{pd} T}
 
     """
-    pottemp = potential_temperature(pressure, temperature)
-    smixr = saturation_mixing_ratio(pressure, temperature)
-    return pottemp * np.exp(Lv * smixr / (Cp_d * temperature))
+    pottemp = potential_temperature(pressure_LCL, temperature_LCL)
+    smixr = saturation_mixing_ratio(pressure_LCL, temperature_LCL)
+    return pottemp_LCL * np.exp(Lv * smixr / (Cp_d * temperature_LCL))
 
 
 @exporter.export
