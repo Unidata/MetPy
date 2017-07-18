@@ -13,7 +13,7 @@ import versioneer
 ver = versioneer.get_version()
 
 # Need to conditionally add enum support for older Python
-dependencies = ['matplotlib>=1.4', 'numpy>=1.9.1', 'scipy>=0.14', 'pint>=0.8']
+dependencies = ['matplotlib>=1.4', 'numpy>=1.10.0', 'scipy>=0.14', 'pint>=0.8']
 if sys.version_info < (3, 4):
     dependencies.append('enum34')
 
