@@ -65,6 +65,10 @@ __ https://github.com/Unidata/MetPy/issues
 Media
 -----
 
+* `SciPy 2017 talk`_ and `slides
+  <http://nbviewer.jupyter.org/format/slides/github/dopplershift/
+  Talks/blob/master/SciPy2017/MetPy%20Units.ipynb>`_
+  about challenges developing MetPy with units
 * MetPy was featured on `Episode 100 of Podcast.__init__`_
 * Presentation on MetPy's build infrastructure by Ryan May at `SciPy 2016`_
 * MetPy was included in tools presented at the `SSEC/Wisconsin AOS Python Workshop`_
@@ -76,6 +80,7 @@ Media
 .. _`SSEC/Wisconsin AOS Python Workshop`: https://youtu.be/RRvJI_vouQc
 .. _`SciPy 2016`: https://youtu.be/moLKGjbXvgE
 .. _`Episode 100 of Podcast.__init__`: https://www.podcastinit.com/episode-100-metpy-with-ryan-may-sean-arms-and-john-leeman/
+.. _`SciPy 2017 talk`: https://youtu.be/qCo9bkT9sow
 
 -------
 License
