@@ -79,6 +79,10 @@ References
 .. [Tsonis2008] Tsonis, A. A., 2008: An introduction to atmospheric thermodynamics.
            Cambridge Univ. Press, Cambridge.
 
+.. [Ziv1994] Ziv, B., and Alpert, P., 1994: Isobaric to Isentropic Interpolation Errors
+           and Implication to Potential Vorticity Analysis. *J. Appl. Meteor.*, **33**,
+           694-703, doi:`10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2
+           <https://doi.org/10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2>`_.
 
 .. [WMO8-2008] WMO, 2008: *Guide to Meteorological Instruments and Methods of Observation*.
            `WMO No.8 <https://www.wmo.int/pages/prog/gcos/documents/gruanmanuals/CIMO/CIMO_Guide-7th_Edition-2008.pdf>`_, 681 pp.
