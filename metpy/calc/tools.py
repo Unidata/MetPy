@@ -719,3 +719,59 @@ def _less_or_close(a, value, **kwargs):
 
     """
     return np.less(a, value) | np.isclose(a, value, **kwargs)
+
+
+@exporter.export
+def extract_cross_section(left_index, right_index, lat, lon, *args, **kwargs):
+    r"""Extract the data in a vertical cross-section along a line from two given endpoints
+
+    Parameters
+    ----------
+    left_index : array
+        Array of index values corresponding to latitude and longitude of the first
+        (north/west) point.
+    right_index : array
+        Array of index values corresponding to latitude and longitude of the second
+        (south/east) point.
+    lat : array
+        Array of latitude points
+    lon : array
+        Array of longitude points
+    args : array
+        Variables to subset along the cross-section
+    num : int, optional
+        Number of sampling points
+
+    Returns
+    -------
+    List with latitude and longitude arrays subset along cross-section line followed by
+    additional variables.
+
+    Notes
+    -----
+    Nearest neighbor sampling is used to subset along line. Expects data in 3-dimensions.
+
+    """
+    # get number of sampling points
+    num = kwargs.pop('num', 80)
+
+    # Check if lat/lon arrays are one or two dimensions, raise error if neither
+    if lat.ndim == 1:
+        lon, lat = np.meshgrid(lon, lat)
+    elif lat.ndim != 1 and lat.ndim != 2:
+        raise ValueError('X and Y must be 1-D or 2-D')
+
+    # Pull out col and row endpoints
+    col = [left_index[1], right_index[1]]
+    row = [left_index[0], right_index[0]]
+
+    # Nearest neighbor sampling points
+    row, col = [np.linspace(item[0], item[1], num) for item in [row, col]]
+
+    # Pull cross-section points from each arg
+    ret = []
+    ret.append(lat[np.round(row).astype(int), np.round(col).astype(int)])
+    ret.append(lon[np.round(row).astype(int), np.round(col).astype(int)])
+    for arr in args:
+        ret.append(arr[:, np.round(row).astype(int), np.round(col).astype(int)])
+    return ret
