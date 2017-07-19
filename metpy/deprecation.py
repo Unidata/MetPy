@@ -1,7 +1,3 @@
-# Copyright (c) 2008-2017 MetPy Developers.
-# Distributed under the terms of the BSD 3-Clause License.
-# SPDX-License-Identifier: BSD-3-Clause
-
 """Matplotlib license for the deprecation module.
 
 License agreement for matplotlib versions 1.3.0 and later
@@ -269,7 +265,7 @@ def deprecated(since, message='', name='', alternative='', pending=False,
             def finalize(wrapper, new_doc):
                 try:
                     pass
-                    #obj.__doc = new_doc
+                    # obj.__doc = new_doc
                 except (AttributeError, TypeError):
                     # cls.__doc__ is not writeable on Py2.
                     # TypeError occurs on PyPy
@@ -284,7 +280,7 @@ def deprecated(since, message='', name='', alternative='', pending=False,
 
                 def finalize(wrapper, new_doc):
                     wrapper = functools.wraps(func)(wrapper)
-                    #wrapper.__doc__ = new_doc
+                    # wrapper.__doc__ = new_doc
                     return classmethod(wrapper)
             else:
                 func = obj
@@ -292,7 +288,7 @@ def deprecated(since, message='', name='', alternative='', pending=False,
 
                 def finalize(wrapper, new_doc):
                     wrapper = functools.wraps(func)(wrapper)
-                    #wrapper.__doc__ = new_doc
+                    # wrapper.__doc__ = new_doc
                     return wrapper
 
         message = _generate_deprecation_message(since, message, name,
