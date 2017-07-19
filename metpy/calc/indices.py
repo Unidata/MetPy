@@ -53,59 +53,51 @@ def precipitable_water(dewpt, pressure, top=400 * units('hPa')):
     return pw.to('millimeters')
 
 
-def mean_wind_pressure_weighted(u, v, p, hgt, top, bottom=None, interp=False):
-    r"""Calculate pressure-weighted mean wind through a layer.
+@exporter.export
+@check_units('[pressure]')
+def mean_pressure_weighted(pressure, *args, **kwargs):
+    r"""Calculate pressure-weighted mean of an arbitrary variable through a layer.
 
-    Layer top and bottom specified in meters AGL.
+    Layer top and bottom specified in height or pressure.
 
     Parameters
     ----------
-    u : array-like
-        U-component of wind.
-    v : array-like
-        V-component of wind.
-    p : array-like
+    pressure : `pint.Quantity`
         Atmospheric pressure profile
-    hgt : array-like
-        Heights from sounding
-    top: `pint.Quantity`
-        The top of the layer in meters AGL
-    bottom: `pint.Quantity`
-        The bottom of the layer in meters AGL.
-        Default is the surface.
+    *args : `pint.Quantity`
+        Parameters for which the pressure-weighted mean is to be calculated.
+    heights : `pint.Quantity`, optional
+        Heights from sounding. Standard atmosphere heights assumed (if needed)
+        if no heights are given.
+    bottom: `pint.Quantity`, optional
+        The bottom of the layer in either the provided height coordinate
+        or in pressure. Don't provide in meters AGL unless the provided
+        height coordinate is meters AGL. Default is the first observation,
+        assumed to be the surface.
+    depth: `pint.Quantity`, optional
+        The depth of the layer in meters or hPa.
 
     Returns
     -------
     `pint.Quantity`
-        u_mean: u-component of layer mean wind, in m/s
+        u_mean: u-component of layer mean wind.
     `pint.Quantity`
-        v_mean: v-component of layer mean wind, in m/s
+        v_mean: v-component of layer mean wind.
 
     """
-    u = u.to('meters/second')
-    v = v.to('meters/second')
+    heights = kwargs.pop('heights', None)
+    bottom = kwargs.pop('bottom', None)
+    depth = kwargs.pop('depth', None)
+    ret = []  # Returned variable means in layer
+    layer_arg = get_layer(pressure, *args, heights=heights,
+                          bottom=bottom, depth=depth)
+    layer_p = layer_arg[0]
+    layer_arg = layer_arg[1:]
+    # Taking the integral of the weights (pressure) to feed into the weighting
+    # function. Said integral works out to this function:
+    pres_int = 0.5 * (layer_p[-1].magnitude**2 - layer_p[0].magnitude**2)
+    for i, datavar in enumerate(args):
+        arg_mean = np.trapz(layer_arg[i] * layer_p, x=layer_p) / pres_int
+        ret.append(arg_mean * datavar.units)
 
-    if bottom:
-        depth_s = top - bottom
-        bottom = bottom + hgt[0]
-    else:
-        depth_s = top
-
-    if interp:
-        dp = -1
-        pressure_top = np.interp(top.magnitude, hgt.magnitude - hgt[0].magnitude,
-                                 np.log(p.magnitude))
-        pressure_top = np.exp(pressure_top)
-        interp_levels = (np.arange(p[0].magnitude, pressure_top + dp, dp)) * units('hPa')
-        u_int = log_interp(interp_levels, p, u)
-        v_int = log_interp(interp_levels, p, v)
-        h_int = log_interp(interp_levels, p, hgt)
-        w_int = get_layer(interp_levels, u_int, v_int, heights=h_int,
-                          bottom=bottom, depth=depth_s)
-    else:
-        w_int = get_layer(p, u, v, heights=hgt, bottom=bottom, depth=depth_s)
-
-    u_mean = ma.average(w_int[1], weights = w_int[0]) * units('m/s')
-    v_mean = ma.average(w_int[2], weights = w_int[0]) * units('m/s')
-
-    return u_mean, v_mean
+    return ret
