@@ -723,7 +723,7 @@ def _less_or_close(a, value, **kwargs):
 
 @exporter.export
 def extract_cross_section(left_index, right_index, lat, lon, *args, **kwargs):
-    r"""Extract the data in a vertical cross-section along a line from two given endpoints
+    r"""Extract the data in a vertical cross-section along a line from two given endpoints.
 
     Parameters
     ----------
@@ -756,10 +756,10 @@ def extract_cross_section(left_index, right_index, lat, lon, *args, **kwargs):
     num = kwargs.pop('num', 80)
 
     # Check if lat/lon arrays are one or two dimensions, raise error if neither
+    if (lat.ndim > 2) or (lat.ndim != lon.ndim):
+        raise ValueError('X and Y must be 1-D or 2-D')
     if lat.ndim == 1:
         lon, lat = np.meshgrid(lon, lat)
-    elif lat.ndim != 1 and lat.ndim != 2:
-        raise ValueError('X and Y must be 1-D or 2-D')
 
     # Pull out col and row endpoints
     col = [left_index[1], right_index[1]]

@@ -7,7 +7,8 @@ import numpy as np
 import numpy.ma as ma
 import pytest
 
-from metpy.calc import (find_intersections, get_layer, interp, interpolate_nans, log_interp,
+from metpy.calc import (extract_cross_section, find_intersections, get_layer, interp,
+                        interpolate_nans, log_interp,
                         nearest_intersection_idx, pressure_to_height_std,
                         reduce_point_density, resample_nn_1d)
 from metpy.calc.tools import (_get_bound_pressure_height, _greater_or_close, _less_or_close,
@@ -458,3 +459,58 @@ def test_less_or_close():
     truth = np.array([True, True, True, True, True, False])
     res = _less_or_close(x, comparison_value)
     assert_array_equal(res, truth)
+
+
+def test_cross_section():
+    """Test extracting cross section from model data."""
+    lat = np.array([85., 84.5, 84., 83.5, 83.])
+    lon = np.array([215., 215.5, 216., 216.5, 217.])
+    tmp = np.array([[[241.5, 241.6000061, 241.6000061, 241.6000061, 241.6000061],
+                     [240.80000305, 240.80000305, 240.80000305, 240.80000305, 240.8999939],
+                     [240.1000061, 240.1000061, 240.19999695, 240.19999695, 240.19999695],
+                     [239.3999939, 239.5, 239.5, 239.5, 239.6000061],
+                     [238.8999939, 238.8999939, 239., 239., 239.]],
+                    [[244., 244.1000061, 244.1000061, 244.1000061, 244.19999695],
+                     [243.5, 243.5, 243.5, 243.6000061, 243.6000061],
+                     [242.8999939, 243., 243., 243.1000061, 243.1000061],
+                     [242.5, 242.6000061, 242.6000061, 242.6000061, 242.69999695],
+                     [242.30000305, 242.3999939, 242.3999939, 242.3999939, 242.5]],
+                    [[246.19999695, 246.19999695, 246.19999695, 246.19999695, 246.30000305],
+                     [245.69999695, 245.80000305, 245.80000305, 245.80000305, 245.8999939],
+                     [245.30000305, 245.30000305, 245.3999939, 245.3999939, 245.5],
+                     [244.80000305, 244.8999939, 244.8999939, 245., 245.],
+                     [244.6000061, 244.6000061, 244.69999695, 244.80000305, 244.80000305]],
+                    [[247.80000305, 247.80000305, 247.80000305, 247.8999939, 247.8999939],
+                     [247.3999939, 247.3999939, 247.5, 247.5, 247.6000061],
+                     [246.8999939, 246.8999939, 246.8999939, 247., 247.],
+                     [246.30000305, 246.30000305, 246.3999939, 246.3999939, 246.5],
+                     [245.80000305, 245.80000305, 245.8999939, 245.8999939, 246.]],
+                    [[248.80000305, 248.8999939, 248.8999939, 248.8999939, 249.],
+                     [248.30000305, 248.3999939, 248.3999939, 248.5, 248.5],
+                     [247.80000305, 247.80000305, 247.80000305, 247.8999939, 247.8999939],
+                     [247., 247.1000061, 247.1000061, 247.1000061, 247.19999695],
+                     [246.5, 246.5, 246.5, 246.6000061, 246.6000061]]])
+    cross_section = extract_cross_section([1, 1], [3, 3], lat, lon, tmp, num=5)
+    cross_section_truth = np.array([[240.80000305, 240.19999695, 240.19999695, 240.19999695,
+                                     239.5],
+                                    [243.5, 243., 243., 243, 242.6000061],
+                                    [245.80000305, 245.3999939, 245.3999939, 245.3999939,
+                                     245.],
+                                    [247.3999939, 246.8999939, 246.8999939, 246.8999939,
+                                     246.3999939],
+                                    [248.3999939, 247.80000305, 247.80000305, 247.80000305,
+                                     247.1000061]])
+    assert_array_almost_equal(cross_section[2], cross_section_truth, 4)
+    lat_truth = np.array([84.5, 84., 84., 84., 83.5])
+    assert_array_almost_equal(cross_section[0], lat_truth, 4)
+    lon_truth = np.array([215.5, 216., 216., 216., 216.5])
+    assert_array_almost_equal(cross_section[1], lon_truth, 4)
+
+
+def test_cross_section_non_3d():
+    """Tests that error is given if x and y are not 1 or 2 dimensions."""
+    lat = np.array([85., 84.5, 84., 83.5, 83.])
+    lon = np.ones((3, 2, 4))
+    tmp = np.ones(5)
+    with pytest.raises(ValueError):
+        extract_cross_section([1, 1], [3, 3], lat, lon, tmp)
