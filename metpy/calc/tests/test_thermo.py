@@ -7,7 +7,9 @@ import numpy as np
 import pytest
 
 from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, el,
-                        equivalent_potential_temperature, lcl, lfc, mixing_ratio,
+                        equivalent_potential_temperature,
+                        isentropic_interpolation,
+                        lcl, lfc, mixing_ratio,
                         mixing_ratio_from_specific_humidity, moist_lapse,
                         most_unstable_parcel, parcel_profile, potential_temperature,
                         psychrometric_vapor_pressure_wet,
@@ -430,3 +432,184 @@ def test_most_unstable_parcel():
     assert_almost_equal(ret[0], 959.0 * units.hPa, 6)
     assert_almost_equal(ret[1], 22.2 * units.degC, 6)
     assert_almost_equal(ret[2], 19.0 * units.degC, 6)
+
+
+def test_isentropic_pressure():
+    """Test calculation of isentropic pressure function."""
+    lev = [100000., 95000., 90000., 85000.] * units.Pa
+    tmp = np.ones((4, 5, 5))
+    tmp[0, :] = 296.
+    tmp[1, :] = 292.
+    tmp[2, :] = 290
+    tmp[3, :] = 288.
+    tmpk = tmp * units.kelvin
+    isentlev = [296.] * units.kelvin
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk)
+    trueprs = 1000. * units.hPa
+    assert_almost_equal(isentprs[0].shape, (1, 5, 5), 3)
+    assert_almost_equal(isentprs[0], trueprs, 3)
+
+
+def test_isentropic_pressure_p_increase():
+    """Test calculation of isentropic pressure function, p increasing order."""
+    lev = [85000, 90000., 95000., 100000.] * units.Pa
+    tmp = np.ones((4, 5, 5))
+    tmp[0, :] = 288.
+    tmp[1, :] = 290.
+    tmp[2, :] = 292.
+    tmp[3, :] = 296.
+    tmpk = tmp * units.kelvin
+    isentlev = [296.] * units.kelvin
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk)
+    trueprs = 1000. * units.hPa
+    assert_almost_equal(isentprs[0], trueprs, 3)
+
+
+def test_isentropic_pressure_adition_args():
+    """Test calculation of isentropic pressure function, additional args."""
+    lev = [100000., 95000., 90000., 85000.] * units.Pa
+    tmp = np.ones((4, 5, 5))
+    tmp[0, :] = 296.
+    tmp[1, :] = 292.
+    tmp[2, :] = 290.
+    tmp[3, :] = 288.
+    rh = np.ones((4, 5, 5))
+    rh[0, :] = 100.
+    rh[1, :] = 80.
+    rh[2, :] = 40.
+    rh[3, :] = 20.
+    relh = rh * units.percent
+    tmpk = tmp * units.kelvin
+    isentlev = [296.] * units.kelvin
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk, relh)
+    truerh = 100. * units.percent
+    assert_almost_equal(isentprs[1], truerh, 3)
+
+
+def test_isentropic_pressure_tmp_out():
+    """Test calculation of isentropic pressure function, temperature output."""
+    lev = [100000., 95000., 90000., 85000.] * units.Pa
+    tmp = np.ones((4, 5, 5))
+    tmp[0, :] = 296.
+    tmp[1, :] = 292.
+    tmp[2, :] = 290.
+    tmp[3, :] = 288.
+    tmpk = tmp * units.kelvin
+    isentlev = [296.] * units.kelvin
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk, tmpk_out=True)
+    truetmp = 296. * units.kelvin
+    assert_almost_equal(isentprs[1], truetmp, 3)
+
+
+def test_isentropic_pressure_p_increase_rh_out():
+    """Test calculation of isentropic pressure function, p increasing order."""
+    lev = [85000., 90000., 95000., 100000.] * units.Pa
+    tmp = np.ones((4, 5, 5))
+    tmp[0, :] = 288.
+    tmp[1, :] = 290.
+    tmp[2, :] = 292.
+    tmp[3, :] = 296.
+    tmpk = tmp * units.kelvin
+    rh = np.ones((4, 5, 5))
+    rh[0, :] = 20.
+    rh[1, :] = 40.
+    rh[2, :] = 80.
+    rh[3, :] = 100.
+    relh = rh * units.percent
+    isentlev = 296. * units.kelvin
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk, relh)
+    truerh = 100. * units.percent
+    assert_almost_equal(isentprs[1], truerh, 3)
+
+
+def test_isentropic_pressure_interp():
+    """Test calculation of isentropic pressure function."""
+    lev = [100000., 95000., 90000., 85000.] * units.Pa
+    tmp = np.ones((4, 5, 5))
+    tmp[0, :] = 296.
+    tmp[1, :] = 292.
+    tmp[2, :] = 290
+    tmp[3, :] = 288.
+    tmpk = tmp * units.kelvin
+    isentlev = [296., 297] * units.kelvin
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk)
+    trueprs = 936.18057 * units.hPa
+    assert_almost_equal(isentprs[0][1], trueprs, 3)
+
+
+def test_isentropic_pressure_adition_args_interp():
+    """Test calculation of isentropic pressure function, additional args."""
+    lev = [100000., 95000., 90000., 85000.] * units.Pa
+    tmp = np.ones((4, 5, 5))
+    tmp[0, :] = 296.
+    tmp[1, :] = 292.
+    tmp[2, :] = 290.
+    tmp[3, :] = 288.
+    rh = np.ones((4, 5, 5))
+    rh[0, :] = 100.
+    rh[1, :] = 80.
+    rh[2, :] = 40.
+    rh[3, :] = 20.
+    relh = rh * units.percent
+    tmpk = tmp * units.kelvin
+    isentlev = [296., 297.] * units.kelvin
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk, relh)
+    truerh = 69.171 * units.percent
+    assert_almost_equal(isentprs[1][1], truerh, 3)
+
+
+def test_isentropic_pressure_tmp_out_interp():
+    """Test calculation of isentropic pressure function, temperature output."""
+    lev = [100000., 95000., 90000., 85000.] * units.Pa
+    tmp = np.ones((4, 5, 5))
+    tmp[0, :] = 296.
+    tmp[1, :] = 292.
+    tmp[2, :] = 290.
+    tmp[3, :] = 288.
+    tmpk = tmp * units.kelvin
+    isentlev = [296., 297.] * units.kelvin
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk, tmpk_out=True)
+    truetmp = 291.4579 * units.kelvin
+    assert_almost_equal(isentprs[1][1], truetmp, 3)
+
+
+def test_isentropic_pressure_data_bounds_error():
+    """Test calculation of isentropic pressure function, error for data out of bounds."""
+    lev = [100000., 95000., 90000., 85000.] * units.Pa
+    tmp = np.ones((4, 5, 5))
+    tmp[0, :] = 296.
+    tmp[1, :] = 292.
+    tmp[2, :] = 290.
+    tmp[3, :] = 288.
+    tmpk = tmp * units.kelvin
+    isentlev = [296., 350.] * units.kelvin
+    with pytest.raises(ValueError):
+        isentropic_interpolation(isentlev, lev, tmpk)
+
+
+def test_isentropic_pressure_4d():
+    """Test calculation of isentropic pressure function."""
+    lev = [100000., 95000., 90000., 85000.] * units.Pa
+    tmp = np.ones((3, 4, 5, 5))
+    tmp[:, 0, :] = 296.
+    tmp[:, 1, :] = 292.
+    tmp[:, 2, :] = 290
+    tmp[:, 3, :] = 288.
+    tmpk = tmp * units.kelvin
+    rh = np.ones((3, 4, 5, 5))
+    rh[:, 0, :] = 100.
+    rh[:, 1, :] = 80.
+    rh[:, 2, :] = 40.
+    rh[:, 3, :] = 20.
+    relh = rh * units.percent
+    isentlev = [296., 297., 300.] * units.kelvin
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk, relh, axis=1)
+    trueprs = 1000. * units.hPa
+    trueprs2 = 936.18057 * units.hPa
+    trueprs3 = 879.446 * units.hPa
+    truerh = 69.171 * units.percent
+    assert_almost_equal(isentprs[0].shape, (3, 3, 5, 5), 3)
+    assert_almost_equal(isentprs[0][:, 0, :], trueprs, 3)
+    assert_almost_equal(isentprs[0][:, 1, :], trueprs2, 3)
+    assert_almost_equal(isentprs[0][:, 2, :], trueprs3, 3)
+    assert_almost_equal(isentprs[1][:, 1, ], truerh, 3)
