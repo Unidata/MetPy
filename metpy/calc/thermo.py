@@ -382,7 +382,7 @@ def vapor_pressure(pressure, mixing):
 
 @exporter.export
 @check_units('[temperature]')
-def saturation_vapor_pressure_old_constants(temperature):
+def saturation_vapor_pressure(temperature):
     r"""Calculate the saturation water vapor (partial) pressure.
 
     Parameters
@@ -414,6 +414,45 @@ def saturation_vapor_pressure_old_constants(temperature):
     sat_pressure = 6.11657 * units.hPa
     T0 = 273.16 * units.kelvin
     alpha = (Lv + (Cp_l - Cp_v) * T0) / (Rv * T0)
+    c = (Cp_l - Cp_v) / Rv
+    return sat_pressure * np.exp(alpha * (1 - (T0 / temperature))) * (T0 / temperature) ** (c)
+
+
+@exporter.export
+@check_units('[temperature]')
+def saturation_vapor_pressure_lv(temperature):
+    r"""Calculate the saturation water vapor (partial) pressure.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+        The temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        The saturation water vapor (partial) pressure
+
+    See Also
+    --------
+    vapor_pressure, dewpoint
+
+    Notes
+    -----
+    Instead of temperature, dewpoint may be used in order to calculate
+    the actual (ambient) water vapor (partial) pressure.
+
+    The formula used is that from [Koutsoyiannis2012]_ for T in degrees Celsius:
+
+    .. math:: 6.112 e^\frac{17.67T}{T + 243.5}
+
+    """
+    # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
+    # a formula plays havoc with units support.
+    sat_pressure = 6.11657 * units.hPa
+    T0 = 273.16 * units.kelvin
+    L = (3.139e6 - 2366 * temperature.to('kelvin').m) * units('m^2 / s^2')
+    alpha = (L + (Cp_l - Cp_v) * T0) / (Rv * T0)
     c = (Cp_l - Cp_v) / Rv
     return sat_pressure * np.exp(alpha * (1 - (T0 / temperature))) * (T0 / temperature) ** (c)
 
@@ -458,7 +497,7 @@ def saturation_vapor_pressure_Koutsoyiannis(temperature):
 
 @exporter.export
 @check_units('[temperature]')
-def saturation_vapor_pressure(temperature):
+def saturation_vapor_pressure_metpy_orig(temperature):
     r"""Calculate the saturation water vapor (partial) pressure.
 
     Parameters
