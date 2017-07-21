@@ -5,12 +5,14 @@
 
 from __future__ import division
 
+import warnings
+
 import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
 
-from .tools import _greater_or_close, _less_or_close, broadcast_indices, find_intersections, \
-    get_layer, interp
+from .tools import (_greater_or_close, _less_or_close, broadcast_indices, find_intersections,
+                    get_layer, interp)
 from ..constants import Cp_d, epsilon, kappa, Lv, P0, Rd
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
@@ -423,7 +425,7 @@ def dewpoint_rh(temperature, rh):
     temperature : `pint.Quantity`
         Air temperature
     rh : `pint.Quantity`
-        Relative humidity expressed as a ratio in the range [0, 1]
+        Relative humidity expressed as a ratio in the range (0, 1]
 
     Returns
     -------
@@ -435,6 +437,8 @@ def dewpoint_rh(temperature, rh):
     dewpoint, saturation_vapor_pressure
 
     """
+    if np.any(rh > 1.2):
+        warnings.warn('Relative humidity >120%, ensure proper units.')
     return dewpoint(rh * saturation_vapor_pressure(temperature))
 
 
