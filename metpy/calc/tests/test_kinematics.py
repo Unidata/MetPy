@@ -6,7 +6,7 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (advection, convergence_vorticity, geostrophic_wind,
+from metpy.calc import (advection, convergence_vorticity, frontogenesis, geostrophic_wind,
                         get_wind_components, h_convergence,
                         montgomery_streamfunction, shearing_deformation,
                         shearing_stretching_deformation, storm_relative_helicity,
@@ -224,9 +224,28 @@ def test_total_deformation_asym():
     assert_almost_equal(tdef, true_tdef)
 
     # Now try for xy ordered
-    true_tdef = total_deformation(u.T, v.T, 1 * units.meters, 2 * units.meters,
-                                  dim_order='xy')
+    tdef = total_deformation(u.T, v.T, 1 * units.meters, 2 * units.meters,
+                             dim_order='xy')
     assert_almost_equal(tdef, true_tdef.T)
+
+
+def test_frontogenesis_asym():
+    """Test vorticity and convergence calculation with a complicated field."""
+    u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
+    v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
+    theta = np.array([[303, 295, 305], [308, 310, 312], [299, 293, 289]]) * units('K')
+    fronto = frontogenesis(theta, u, v, 1 * units.meters, 2 * units.meters,
+                           dim_order='yx')
+    true_fronto = np.array([[-20.93890452, -7.83070042, -36.43293256],
+                            [0.89442719, -2.12218672, -8.94427191],
+                            [-16.8, -7.65600391, -61.65921479]]
+                           ) * units.K / units.meter / units.sec
+    assert_almost_equal(fronto, true_fronto)
+
+    # Now try for xy ordered
+    fronto = frontogenesis(theta.T, u.T, v.T, 1 * units.meters, 2 * units.meters,
+                           dim_order='xy')
+    assert_almost_equal(fronto, true_fronto.T)
 
 
 def test_advection_uniform():
