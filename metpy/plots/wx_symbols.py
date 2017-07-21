@@ -131,3 +131,18 @@ sky_cover = CodePointMapping(12, 0xE90A)
 
 #: Pressure tendency
 pressure_tendency = CodePointMapping(10, 0xE900)
+
+#####################################################################
+# This dictionary is for mapping METAR present weather text codes
+# to WMO codes for plotting wx symbols along with the station plots
+
+wx_code_map = {'': 0, 'FU': 4, 'HZ': 5, 'DU': 6, 'BLDU': 7, 'PO': 8, 'BR': 10,
+               '-UP': 16, 'UP': 16, 'THDR': 17, 'SQ': 18, 'FC': 19,
+               'DS': 31, 'SS': 31, '+DS': 34, '+SS': 34, 'DRSN': 36, '+DRSN': 37,
+               'FG': 45, 'FZFG': 49,
+               '-DZ': 51, 'DZ': 53, '+DZ': 55, '-FZDZ': 56, 'FZDZ': 57, '-DZRA': 58,
+               'DZRA': 59, '-RA': 61, 'RA': 63, '+RA': 65, '-FZRA': 66, 'FZRA': 67,
+               '-SN': 71, 'SN': 73, '+SN': 75, 'SG': 79, 'PL': 79,
+               '-SHRA': 80, 'SHRA': 81, '+SHRA': 82, '-SHSN': 85, 'SHSN': 86,
+               '-TSRA': 95, 'TSRA': 95, 'TSGS': 96, 'TSGR': 96, '+TSRA': 97,
+               'TSDS': 98, '+TSGS': 99, '+TSGR': 99}
