@@ -84,5 +84,6 @@ References
            694-703, doi:`10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2>`_.
 
-.. [WMO8-2008] WMO, 2008: *Guide to Meteorological Instruments and Methods of Observation*.
-           `WMO No.8 <https://www.wmo.int/pages/prog/gcos/documents/gruanmanuals/CIMO/CIMO_Guide-7th_Edition-2008.pdf>`_, 681 pp.
+.. [WMO8-2014] WMO, 2014: *Guide to Meteorological Instruments and Methods of Observation*.
+           `WMO No.8 <https://library.wmo.int/opac/doc_num.php?explnum_id=3121>`_.
+

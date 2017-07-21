@@ -675,7 +675,7 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
                                         pressure, **kwargs):
     r"""Calculate the relative humidity with wet bulb and dry bulb temperatures.
 
-    This uses a psychrometric relationship as outlined in [WMO8-2008]_, with
+    This uses a psychrometric relationship as outlined in [WMO8-2014]_, with
     coefficients from [Fan1987]_.
 
     Parameters
@@ -716,7 +716,7 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
                                      psychrometer_coefficient=6.21e-4 / units.kelvin):
     r"""Calculate the vapor pressure with wet bulb and dry bulb temperatures.
 
-    This uses a psychrometric relationship as outlined in [WMO8-2008]_, with
+    This uses a psychrometric relationship as outlined in [WMO8-2014]_, with
     coefficients from [Fan1987]_.
 
     Parameters
