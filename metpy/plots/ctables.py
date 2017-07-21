@@ -172,6 +172,7 @@ class ColortableRegistry(dict):
 
         """
         self[name] = read_colortable(fobj)
+        self[name + '_r'] = self[name][::-1]
 
     def get_with_steps(self, name, start, step):
         r"""Get a color table from the registry with a corresponding norm.
