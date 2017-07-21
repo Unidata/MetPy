@@ -83,6 +83,13 @@ design issues.
 
 We support Python 2.7 as well as Python >= 3.4.
 
+Need Help?
+----------
+Need help using MetPy? Found an issue? Have a feature request? Checkout our
+`support page`__ .
+
+__ https://github.com/Unidata/MetPy/blob/master/SUPPORT.md
+
 Important Links
 ---------------
 

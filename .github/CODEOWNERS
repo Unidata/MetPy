@@ -1,0 +1,9 @@
+# These owners will be the default owners for everything in the repo.
+# Unless a later match takes precedence, global owners
+# will be requested for review when someone opens a pull request.
+*       @dopplershift @jrleeman
+
+# Order is important; the last matching pattern takes the most precedence.
+# When someone opens a pull request that only modifies specified file types, only
+# that owner will be requested for a review, not the global owner(s).
+# Email addresses can be used as well as GitHub user names.
