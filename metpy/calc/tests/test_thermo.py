@@ -224,6 +224,18 @@ def test_lfc_equals_lcl():
     assert_almost_equal(l[1], 15.8714 * units.celsius, 2)
 
 
+def test_lfc_sfc_precision():
+    """Test LFC when there are precision issues with the parcel path."""
+    levels = np.array([839., 819.4, 816., 807., 790.7, 763., 736.2,
+                       722., 710.1, 700.]) * units.mbar
+    temperatures = np.array([20.6, 22.3, 22.6, 22.2, 20.9, 18.7, 16.4,
+                             15.2, 13.9, 12.8]) * units.celsius
+    dewpoints = np.array([10.6, 8., 7.6, 6.2, 5.7, 4.7, 3.7, 3.2, 3., 2.8]) * units.celsius
+    l = lfc(levels, temperatures, dewpoints)
+    assert assert_nan(l[0], levels.units)
+    assert assert_nan(l[1], temperatures.units)
+
+
 def test_saturation_mixing_ratio():
     """Test saturation mixing ratio calculation."""
     p = 999. * units.mbar
