@@ -539,75 +539,59 @@ def saturation_mixing_ratio(tot_press, temperature):
 
 
 @exporter.export
-@check_units('[pressure]', '[temperature]')
-def equivalent_potential_temperature_fromLCL(pressure_LCL, temperature_LCL):
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def equivalent_potential_temperature(pressure, temperature, dewpoint):
     r"""Calculate equivalent potential temperature.
 
-    This calculation must be given an air parcel's pressure and temperature.
-    The implementation uses the formula outlined in [Hobbs1977]_ pg.78-79.
+    This calculation must be given an air parcel's pressure, temperature, and dewpoint.
+    The implementation uses the formula outlined in [Bolton1980]_:
 
-    Parameters
-    ----------
-    pressure: `pint.Quantity`
-        Total atmospheric pressure at the LCL
-    temperature: `pint.Quantity`
-        The temperature at the LCL
+    First, the LCL temperature is calculated:
 
-    Returns
-    -------
-    `pint.Quantity`
-        The corresponding equivalent potential temperature of the parcel
+    .. math:: T_{L}=\frac{1}{\frac{1}{T_{D}-56}+\frac{(T_{K}/T_{D})}{800}}+56
 
-    Notes
-    -----
-    .. math:: \Theta_e = \Theta e^\frac{L_v r_s}{C_{pd} T}
+    Which is then used to calculate the potential temperature at the LCL:
 
-    """
-    pottemp_LCL = potential_temperature(pressure_LCL, temperature_LCL)
-    smixr_LCL = saturation_mixing_ratio(pressure_LCL, temperature_LCL)
-    return pottemp_LCL * np.exp(Lv * smixr_LCL / (Cp_d * temperature_LCL))
+    .. math:: \theta_{DL}=T_{K}\left(\frac{1000}{p-e}\right)^k
+              \left(\frac{T_{K}}{T_{L}}\right)^{.28r}
 
-@exporter.export
-@check_units('[pressure]', '[temperature]', '[dewpoint]')
-def equivalent_potential_temperature_fromTd(pressure, temperature, dewpoint):
-    r"""Calculate equivalent potential temperature.
+    Both of these are used to calculate the final equivalent potential temperature:
 
-    This calculation must be given an air parcel's pressure, temperature, dewpoint
-    The implementation uses the formula outlined in Bolton 1980 with mixing ratio 
-    r(Td,p) computed by a formula saturation_mixing_ratio(pressure, dewpoint)
+    .. math:: \theta_{E}=\theta_{DL}\exp[\left(\left\frac{3036.}{T_{L}}
+                                        -1.78\right)*r(1+.448r)\right]
 
     Parameters
     ----------
     pressure: `pint.Quantity`
         Total atmospheric pressure
     temperature: `pint.Quantity`
-        The temperature
+        Temperature of parcel
     dewpoint: `pint.Quantity`
-        The dewpoint
+        Dewpoint of parcel
 
     Returns
     -------
     `pint.Quantity`
-        The corresponding equivalent potential temperature of the parcel
+        The equivalent potential temperature of the parcel
 
     Notes
     -----
-    See https://en.wikipedia.org/wiki/Equivalent_potential_temperature
+    [Bolton1980]_ formula for Theta-e is used, since according to
+    [Davies-Jones2009]_ it is the most accurate non-iterative formulation
+    available.
 
     """
-    # Formulas from Bolton (1980), transcribed from Wikipedia page
+    t = temperature.to('kelvin').magnitude
+    td = dewpoint.to('kelvin').magnitude
+    p = pressure.to('hPa').magnitude
+    e = saturation_vapor_pressure(dewpoint).to('hPa').magnitude
+    r = saturation_mixing_ratio(pressure, dewpoint).magnitude
 
-    T = temperature/units.kelvin
-    Td = dewpoint/units.kelvin
-    p = pressure/units.hPa 
-    e = saturation_vapor_pressure(dewpoint)/units.hPa
-    r = saturation_mixing_ratio(pressure, dewpoint) # /units.dimensionless
+    t_l = 56 + 1. / (1. / (td - 56) + np.log(t / td) / 800.)
+    th_l = t * (1000 / (p - e)) ** kappa * (t / t_l) ** (0.28 * r)
+    th_e = th_l * np.exp((3036. / t_l - 1.78) * r * (1 + 0.448 * r))
 
-    T_L = 56 + 1./( 1./(Td-56) + np.log(T/Td)/800. )
-    Th_L= T * (1000/(p-e))**kappa * (T/T_L)**(0.28*r)
-    Th_e= Th_L * exp( (3036./T_L -1.78)*r*(1+0.448*r) )
-
-    return Th_e *units.kelvin
+    return th_e * units.kelvin
 
 
 @exporter.export
@@ -1090,7 +1074,7 @@ def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
     """
     p_layer, T_layer, Td_layer = get_layer(pressure, temperature, dewpoint, bottom=bottom,
                                            depth=depth, heights=heights)
-    theta_e = equivalent_potential_temperature(p_layer, T_layer)
+    theta_e = equivalent_potential_temperature(p_layer, T_layer, Td_layer)
     max_idx = np.argmax(theta_e)
     return p_layer[max_idx], T_layer[max_idx], Td_layer[max_idx]
 

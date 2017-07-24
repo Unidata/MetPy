@@ -257,10 +257,11 @@ def test_saturation_mixing_ratio():
 
 def test_equivalent_potential_temperature():
     """Test equivalent potential temperature calculation."""
-    p = 999. * units.mbar
-    t = 288. * units.kelvin
-    ept = equivalent_potential_temperature(p, t)
-    assert_almost_equal(ept, 315.9548 * units.kelvin, 3)
+    p = 1000 * units.mbar
+    t = 293. * units.kelvin
+    td = 280. * units.kelvin
+    ept = equivalent_potential_temperature(p, t, td)
+    assert_almost_equal(ept, 311.18586467284007 * units.kelvin, 3)
 
 
 def test_virtual_temperature():
