@@ -451,10 +451,12 @@ def saturation_vapor_pressure_lv(temperature):
     # a formula plays havoc with units support.
     sat_pressure = 6.11657 * units.hPa
     T0 = 273.16 * units.kelvin
-    L = (3.139e6 - 2366 * temperature.to('kelvin').m) * units('m^2 / s^2')
-    alpha = (L + (Cp_l - Cp_v) * T0) / (Rv * T0)
+    alpha = Lv + (Cp_l - Cp_v) * T0
+    L = alpha - (Cp_l - Cp_v) * temperature.to('kelvin')
+    alpha_Rd = (L + (Cp_l - Cp_v) * T0) / (Rv * T0)
     c = (Cp_l - Cp_v) / Rv
-    return sat_pressure * np.exp(alpha * (1 - (T0 / temperature))) * (T0 / temperature) ** (c)
+    return (sat_pressure * np.exp(alpha_Rd * (1 - (T0 / temperature))) *
+            (T0 / temperature) ** c)
 
 
 @exporter.export
