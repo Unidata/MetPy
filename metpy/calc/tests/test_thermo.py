@@ -137,6 +137,18 @@ def test_scalar_dewpoint_rh():
     assert_almost_equal(td, 26. * units.degF, 0)
 
 
+def test_percent_dewpoint_rh():
+    """Test dewpoint_rh with rh in percent."""
+    td = dewpoint_rh(10.6 * units.degC, 37 * units.percent)
+    assert_almost_equal(td, 26. * units.degF, 0)
+
+
+def test_warning_dewpoint_rh():
+    """Test that warning is raised for >120% RH."""
+    with pytest.warns(UserWarning):
+        dewpoint_rh(10.6 * units.degC, 50)
+
+
 def test_dewpoint():
     """Test dewpoint calculation."""
     assert_almost_equal(dewpoint(6.112 * units.mbar), 0. * units.degC, 2)
