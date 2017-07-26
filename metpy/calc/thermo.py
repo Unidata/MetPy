@@ -1011,7 +1011,7 @@ def _find_append_zero_crossings(x, y):
 
 @exporter.export
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def most_unstable_parcel(p, temperature, dewpoint, heights=None,
+def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
                          bottom=None, depth=300 * units.hPa):
     """
     Determine the most unstable parcel in a layer.
@@ -1021,7 +1021,7 @@ def most_unstable_parcel(p, temperature, dewpoint, heights=None,
 
     Parameters
     ----------
-    p: `pint.Quantity`
+    pressure: `pint.Quantity`
         Atmospheric pressure profile
     temperature: `pint.Quantity`
         Atmospheric temperature profile
@@ -1046,7 +1046,7 @@ def most_unstable_parcel(p, temperature, dewpoint, heights=None,
     get_layer
 
     """
-    p_layer, T_layer, Td_layer = get_layer(p, temperature, dewpoint, bottom=bottom,
+    p_layer, T_layer, Td_layer = get_layer(pressure, temperature, dewpoint, bottom=bottom,
                                            depth=depth, heights=heights)
     theta_e = equivalent_potential_temperature(p_layer, T_layer)
     max_idx = np.argmax(theta_e)
