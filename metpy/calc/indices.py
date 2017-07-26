@@ -1,7 +1,7 @@
 # Copyright (c) 2008-2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Contains calculation of various derived indicies."""
+"""Contains calculation of various derived indices."""
 import numpy as np
 
 from .thermo import mixing_ratio, saturation_vapor_pressure
@@ -26,17 +26,17 @@ def precipitable_water(dewpt, p, top=400 * units('hPa')):
 
     Parameters
     ----------
-    dewpt : array-like
+    dewpt : `pint.Quantity`
         Atmospheric dewpoint profile
-    p : array-like
+    p : `pint.Quantity`
         Atmospheric pressure profile
-    top: `pint.Quantity`
-        The top of the layer, specified in pressure.
+    top: `pint.Quantity`, optional
+        The top of the layer, specified in pressure. Defaults to 400 hPa.
 
     Returns
     -------
     `pint.Quantity`
-        The precipitable water in the layer, in inches
+        The precipitable water in the layer
 
     """
     sort_inds = np.argsort(p[::-1])

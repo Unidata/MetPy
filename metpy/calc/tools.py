@@ -85,9 +85,9 @@ def find_intersections(x, a, b, direction='all'):
         1-dimensional array of y-values for line 1
     b : array-like
         1-dimensional array of y-values for line 2
-    direction : string
+    direction : string, optional
         specifies direction of crossing. 'all', 'increasing' (a becoming greater than b),
-        or 'decreasing' (b becoming greater than a).
+        or 'decreasing' (b becoming greater than a). Defaults to 'all'.
 
     Returns
     -------
@@ -151,7 +151,8 @@ def interpolate_nans(x, y, kind='linear'):
     y : array-like
         1-dimensional array of numeric y-values
     kind : string
-        specifies the kind of interpolation x coordinate - 'linear' or 'log'
+        specifies the kind of interpolation x coordinate - 'linear' or 'log', optional.
+        Defaults to 'linear'.
 
     Returns
     -------
@@ -302,10 +303,11 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
         Atmospheric pressures
     bound : `pint.Quantity`
         Bound to retrieve (in pressure or height)
-    heights : `pint.Quantity`
-        Atmospheric heights associated with the pressure levels
-    interpolate : boolean
-        Interpolate the bound or return the nearest
+    heights : `pint.Quantity`, optional
+        Atmospheric heights associated with the pressure levels. Defaults to using
+        heights calculated from ``pressure`` assuming a standard atmosphere.
+    interpolate : boolean, optional
+        Interpolate the bound or return the nearest. Defaults to True.
 
     Returns
     -------
@@ -401,14 +403,18 @@ def get_layer(p, *args, **kwargs):
         Atmospheric pressure profile
     *args : array-like
         Atmospheric variable(s) measured at the given pressures
-    heights: array-like
-        Atmospheric heights corresponding to the given pressures
-    bottom : `pint.Quantity`
-        The bottom of the layer as a pressure or height above the surface pressure
-    depth : `pint.Quantity`
-        The thickness of the layer as a pressure or height above the bottom of the layer
-    interpolate : bool
-        Interpolate the top and bottom points if they are not in the given data
+    heights: array-like, optional
+        Atmospheric heights corresponding to the given pressures. Defaults to using
+        heights calculated from ``p`` assuming a standard atmosphere.
+    bottom : `pint.Quantity`, optional
+        The bottom of the layer as a pressure or height above the surface pressure. Defaults
+        to the lowest pressure or height given.
+    depth : `pint.Quantity`, optional
+        The thickness of the layer as a pressure or height above the bottom of the layer.
+        Defaults to 100 hPa.
+    interpolate : bool, optional
+        Interpolate the top and bottom points if they are not in the given data. Defaults
+        to True.
 
     Returns
     -------

@@ -584,7 +584,7 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
         The ratio of the molecular weight of the constituent gas to that assumed
-        for air. Defaults to the ratio for water vapor to dry air
+        for air. Defaults to the ratio for water vapor to dry air.
         (:math:`\epsilon\approx0.622`).
 
     Returns
@@ -620,7 +620,7 @@ def virtual_potential_temperature(pressure, temperature, mixing,
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
         The ratio of the molecular weight of the constituent gas to that assumed
-        for air. Defaults to the ratio for water vapor to dry air
+        for air. Defaults to the ratio for water vapor to dry air.
         (:math:`\epsilon\approx0.622`).
 
     Returns
@@ -655,7 +655,7 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
         The ratio of the molecular weight of the constituent gas to that assumed
-        for air. Defaults to the ratio for water vapor to dry air
+        for air. Defaults to the ratio for water vapor to dry air.
         (:math:`\epsilon\approx0.622`).
 
     Returns
@@ -730,8 +730,8 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
         Wet bulb temperature
     pressure: `pint.Quantity`
         Total atmospheric pressure
-    psychrometer_coefficient: `pint.Quantity`
-        Psychrometer coefficient
+    psychrometer_coefficient: `pint.Quantity`, optional
+        Psychrometer coefficient. Defaults to 6.21e-4 K^-1.
 
     Returns
     -------
@@ -1027,12 +1027,14 @@ def most_unstable_parcel(p, temperature, dewpoint, heights=None,
         Atmospheric temperature profile
     dewpoint: `pint.Quantity`
         Atmospheric dewpoint profile
-    heights: `pint.Quantity`
-        Atmospheric height profile. Standard atmosphere assumed when None.
-    bottom: `pint.Quantity`
-        Bottom of the layer to consider for the calculation in pressure or height
-    depth: `pint.Quantity`
-        Depth of the layer to consider for the calculation in pressure or height
+    heights: `pint.Quantity`, optional
+        Atmospheric height profile. Standard atmosphere assumed when None (the default).
+    bottom: `pint.Quantity`, optional
+        Bottom of the layer to consider for the calculation in pressure or height.
+        Defaults to using the bottom pressure or height.
+    depth: `pint.Quantity`, optional
+        Depth of the layer to consider for the calculation in pressure or height. Defaults
+        to 300 hPa.
 
     Returns
     -------
