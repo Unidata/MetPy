@@ -85,9 +85,9 @@ def find_intersections(x, a, b, direction='all'):
         1-dimensional array of y-values for line 1
     b : array-like
         1-dimensional array of y-values for line 2
-    direction : string
+    direction : string, optional
         specifies direction of crossing. 'all', 'increasing' (a becoming greater than b),
-        or 'decreasing' (b becoming greater than a).
+        or 'decreasing' (b becoming greater than a). Defaults to 'all'.
 
     Returns
     -------
@@ -151,7 +151,8 @@ def interpolate_nans(x, y, kind='linear'):
     y : array-like
         1-dimensional array of numeric y-values
     kind : string
-        specifies the kind of interpolation x coordinate - 'linear' or 'log'
+        specifies the kind of interpolation x coordinate - 'linear' or 'log', optional.
+        Defaults to 'linear'.
 
     Returns
     -------
@@ -302,10 +303,11 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
         Atmospheric pressures
     bound : `pint.Quantity`
         Bound to retrieve (in pressure or height)
-    heights : `pint.Quantity`
-        Atmospheric heights associated with the pressure levels
-    interpolate : boolean
-        Interpolate the bound or return the nearest
+    heights : `pint.Quantity`, optional
+        Atmospheric heights associated with the pressure levels. Defaults to using
+        heights calculated from ``pressure`` assuming a standard atmosphere.
+    interpolate : boolean, optional
+        Interpolate the bound or return the nearest. Defaults to True.
 
     Returns
     -------
@@ -386,7 +388,7 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
 
 @exporter.export
 @check_units('[pressure]')
-def get_layer(p, *args, **kwargs):
+def get_layer(pressure, *args, **kwargs):
     r"""Return an atmospheric layer from upper air data with the requested bottom and depth.
 
     This function will subset an upper air dataset to contain only the specified layer. The
@@ -397,18 +399,22 @@ def get_layer(p, *args, **kwargs):
 
     Parameters
     ----------
-    p : array-like
+    pressure : array-like
         Atmospheric pressure profile
     *args : array-like
         Atmospheric variable(s) measured at the given pressures
-    heights: array-like
-        Atmospheric heights corresponding to the given pressures
-    bottom : `pint.Quantity`
-        The bottom of the layer as a pressure or height above the surface pressure
-    depth : `pint.Quantity`
-        The thickness of the layer as a pressure or height above the bottom of the layer
-    interpolate : bool
-        Interpolate the top and bottom points if they are not in the given data
+    heights: array-like, optional
+        Atmospheric heights corresponding to the given pressures. Defaults to using
+        heights calculated from ``p`` assuming a standard atmosphere.
+    bottom : `pint.Quantity`, optional
+        The bottom of the layer as a pressure or height above the surface pressure. Defaults
+        to the lowest pressure or height given.
+    depth : `pint.Quantity`, optional
+        The thickness of the layer as a pressure or height above the bottom of the layer.
+        Defaults to 100 hPa.
+    interpolate : bool, optional
+        Interpolate the top and bottom points if they are not in the given data. Defaults
+        to True.
 
     Returns
     -------
@@ -424,14 +430,15 @@ def get_layer(p, *args, **kwargs):
 
     # Make sure pressure and datavars are the same length
     for datavar in args:
-        if len(p) != len(datavar):
+        if len(pressure) != len(datavar):
             raise ValueError('Pressure and data variables must have the same length.')
 
     # If the bottom is not specified, make it the surface pressure
     if bottom is None:
-        bottom = p[0]
+        bottom = pressure[0]
 
-    bottom_pressure, bottom_height = _get_bound_pressure_height(p, bottom, heights=heights,
+    bottom_pressure, bottom_height = _get_bound_pressure_height(pressure, bottom,
+                                                                heights=heights,
                                                                 interpolate=interpolate)
 
     # Calculate the top if whatever units depth is in
@@ -442,26 +449,26 @@ def get_layer(p, *args, **kwargs):
     else:
         raise ValueError('Depth must be specified in units of length or pressure')
 
-    top_pressure, _ = _get_bound_pressure_height(p, top, heights=heights,
+    top_pressure, _ = _get_bound_pressure_height(pressure, top, heights=heights,
                                                  interpolate=interpolate)
 
     ret = []  # returned data variables in layer
 
     # Ensure pressures are sorted in ascending order
-    sort_inds = np.argsort(p)
-    p = p[sort_inds]
+    sort_inds = np.argsort(pressure)
+    pressure = pressure[sort_inds]
 
     # Mask based on top and bottom pressure
-    inds = (p <= bottom_pressure) & (p >= top_pressure)
-    p_interp = p[inds]
+    inds = (pressure <= bottom_pressure) & (pressure >= top_pressure)
+    p_interp = pressure[inds]
 
     # Interpolate pressures at bounds if necessary and sort
     if interpolate:
         # If we don't have the bottom or top requested, append them
         if top_pressure not in p_interp:
-            p_interp = np.sort(np.append(p_interp, top_pressure)) * p.units
+            p_interp = np.sort(np.append(p_interp, top_pressure)) * pressure.units
         if bottom_pressure not in p_interp:
-            p_interp = np.sort(np.append(p_interp, bottom_pressure)) * p.units
+            p_interp = np.sort(np.append(p_interp, bottom_pressure)) * pressure.units
 
     ret.append(p_interp[::-1])
 
@@ -471,7 +478,7 @@ def get_layer(p, *args, **kwargs):
 
         if interpolate:
             # Interpolate for the possibly missing bottom/top values
-            datavar_interp = log_interp(p_interp, p, datavar)
+            datavar_interp = log_interp(p_interp, pressure, datavar)
             datavar = datavar_interp
         else:
             datavar = datavar[inds]

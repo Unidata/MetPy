@@ -1,7 +1,7 @@
 # Copyright (c) 2008-2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Contains calculation of various derived indicies."""
+"""Contains calculation of various derived indices."""
 import numpy as np
 
 from .thermo import mixing_ratio, saturation_vapor_pressure
@@ -15,7 +15,7 @@ exporter = Exporter(globals())
 
 @exporter.export
 @check_units('[temperature]', '[pressure]', '[pressure]')
-def precipitable_water(dewpt, p, top=400 * units('hPa')):
+def precipitable_water(dewpt, pressure, top=400 * units('hPa')):
     r"""Calculate precipitable water through the depth of a sounding.
 
     Default layer depth is sfc-400 hPa. Formula used is:
@@ -26,24 +26,24 @@ def precipitable_water(dewpt, p, top=400 * units('hPa')):
 
     Parameters
     ----------
-    dewpt : array-like
+    dewpt : `pint.Quantity`
         Atmospheric dewpoint profile
-    p : array-like
+    pressure : `pint.Quantity`
         Atmospheric pressure profile
-    top: `pint.Quantity`
-        The top of the layer, specified in pressure.
+    top: `pint.Quantity`, optional
+        The top of the layer, specified in pressure. Defaults to 400 hPa.
 
     Returns
     -------
     `pint.Quantity`
-        The precipitable water in the layer, in inches
+        The precipitable water in the layer
 
     """
-    sort_inds = np.argsort(p[::-1])
-    p = p[sort_inds]
+    sort_inds = np.argsort(pressure[::-1])
+    pressure = pressure[sort_inds]
     dewpt = dewpt[sort_inds]
 
-    pres_layer, dewpt_layer = get_layer(p, dewpt, depth=p[0] - top)
+    pres_layer, dewpt_layer = get_layer(pressure, dewpt, depth=pressure[0] - top)
 
     w = mixing_ratio(saturation_vapor_pressure(dewpt_layer), pres_layer)
     # Since pressure is in decreasing order, pw will be the negative of what we want.

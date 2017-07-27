@@ -584,7 +584,7 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
         The ratio of the molecular weight of the constituent gas to that assumed
-        for air. Defaults to the ratio for water vapor to dry air
+        for air. Defaults to the ratio for water vapor to dry air.
         (:math:`\epsilon\approx0.622`).
 
     Returns
@@ -620,7 +620,7 @@ def virtual_potential_temperature(pressure, temperature, mixing,
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
         The ratio of the molecular weight of the constituent gas to that assumed
-        for air. Defaults to the ratio for water vapor to dry air
+        for air. Defaults to the ratio for water vapor to dry air.
         (:math:`\epsilon\approx0.622`).
 
     Returns
@@ -655,7 +655,7 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
         The ratio of the molecular weight of the constituent gas to that assumed
-        for air. Defaults to the ratio for water vapor to dry air
+        for air. Defaults to the ratio for water vapor to dry air.
         (:math:`\epsilon\approx0.622`).
 
     Returns
@@ -730,8 +730,8 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
         Wet bulb temperature
     pressure: `pint.Quantity`
         Total atmospheric pressure
-    psychrometer_coefficient: `pint.Quantity`
-        Psychrometer coefficient
+    psychrometer_coefficient: `pint.Quantity`, optional
+        Psychrometer coefficient. Defaults to 6.21e-4 K^-1.
 
     Returns
     -------
@@ -1011,7 +1011,7 @@ def _find_append_zero_crossings(x, y):
 
 @exporter.export
 @check_units('[pressure]', '[temperature]', '[temperature]')
-def most_unstable_parcel(p, temperature, dewpoint, heights=None,
+def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
                          bottom=None, depth=300 * units.hPa):
     """
     Determine the most unstable parcel in a layer.
@@ -1021,18 +1021,20 @@ def most_unstable_parcel(p, temperature, dewpoint, heights=None,
 
     Parameters
     ----------
-    p: `pint.Quantity`
+    pressure: `pint.Quantity`
         Atmospheric pressure profile
     temperature: `pint.Quantity`
         Atmospheric temperature profile
     dewpoint: `pint.Quantity`
         Atmospheric dewpoint profile
-    heights: `pint.Quantity`
-        Atmospheric height profile. Standard atmosphere assumed when None.
-    bottom: `pint.Quantity`
-        Bottom of the layer to consider for the calculation in pressure or height
-    depth: `pint.Quantity`
-        Depth of the layer to consider for the calculation in pressure or height
+    heights: `pint.Quantity`, optional
+        Atmospheric height profile. Standard atmosphere assumed when None (the default).
+    bottom: `pint.Quantity`, optional
+        Bottom of the layer to consider for the calculation in pressure or height.
+        Defaults to using the bottom pressure or height.
+    depth: `pint.Quantity`, optional
+        Depth of the layer to consider for the calculation in pressure or height. Defaults
+        to 300 hPa.
 
     Returns
     -------
@@ -1044,7 +1046,7 @@ def most_unstable_parcel(p, temperature, dewpoint, heights=None,
     get_layer
 
     """
-    p_layer, T_layer, Td_layer = get_layer(p, temperature, dewpoint, bottom=bottom,
+    p_layer, T_layer, Td_layer = get_layer(pressure, temperature, dewpoint, bottom=bottom,
                                            depth=depth, heights=heights)
     theta_e = equivalent_potential_temperature(p_layer, T_layer)
     max_idx = np.argmax(theta_e)
