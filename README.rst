@@ -7,7 +7,7 @@ MetPy
 
 |Travis| |AppVeyor| |CodeCov|
 
-|Codacy| |CodeClimate| |Scrutinizer| |QuantifiedCode|
+|Codacy| |CodeClimate| |Scrutinizer|
 
 .. |License| image:: https://img.shields.io/pypi/l/metpy.svg
     :target: https://pypi.python.org/pypi/MetPy/
@@ -41,11 +41,6 @@ MetPy
 .. |CodeCov| image:: https://codecov.io/github/Unidata/MetPy/coverage.svg?branch=master
     :target: https://codecov.io/github/Unidata/MetPy?branch=master
     :alt: Code Coverage Status
-
-.. |QuantifiedCode|
-    image:: https://www.quantifiedcode.com/api/v1/project/21ad9a03974148099ccb4729391688fd/badge.svg
-    :target: https://www.quantifiedcode.com/app/project/21ad9a03974148099ccb4729391688fd
-    :alt: Quantified Code issues
 
 .. |Codacy| image:: https://api.codacy.com/project/badge/Grade/e1ea0937eb4942e79a44bc9bb2de616d
     :target: https://www.codacy.com/app/dopplershift/MetPy
