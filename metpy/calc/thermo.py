@@ -411,6 +411,8 @@ def saturation_vapor_pressure(temperature):
     """
     # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
     # a formula plays havoc with units support.
+    #######
+    # This version uses MetPy constants with the Koutsoyiannis2012 formula
     sat_pressure = 6.11657 * units.hPa
     T0 = 273.16 * units.kelvin
     alpha = (Lv + (Cp_l - Cp_v) * T0) / (Rv * T0)
@@ -449,6 +451,9 @@ def saturation_vapor_pressure_lv(temperature):
     """
     # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
     # a formula plays havoc with units support.
+
+    ###################
+    # This is the same as above, but incorporates a variable Lv
     sat_pressure = 6.11657 * units.hPa
     T0 = 273.16 * units.kelvin
     alpha = Lv + (Cp_l - Cp_v) * T0
@@ -490,6 +495,9 @@ def saturation_vapor_pressure_Koutsoyiannis(temperature):
     """
     # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
     # a formula plays havoc with units support.
+
+    ###################
+    # This is the formulation exactly as in the paper
     sat_pressure = 6.11657 * units.hPa
     T0 = 273.16 * units.kelvin
     alpha = 24.921
@@ -528,6 +536,7 @@ def saturation_vapor_pressure_metpy_orig(temperature):
     """
     # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
     # a formula plays havoc with units support.
+    # Original implementation
     return sat_pressure_0c * np.exp(17.67 * (temperature - 273.15 * units.kelvin) /
                                     (temperature - 29.65 * units.kelvin))
 
