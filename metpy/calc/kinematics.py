@@ -595,6 +595,7 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
             (positive_srh + negative_srh).to('meter ** 2 / second ** 2'))
 
 
+@exporter.export
 def calc_dx_dy(longitude, latitude, shape='sphere', radius=6370997.):
     r"""Calculate the distance between grid points that are in a latitude/longitude format.
 
