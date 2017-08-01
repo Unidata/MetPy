@@ -396,6 +396,70 @@ def advection(scalar, wind, deltas):
 
 @exporter.export
 @ensure_yx_order
+def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
+    r"""Calculate the 2D kinematic frontogenesis of a temperature field.
+
+    The implementation is a form of the Petterssen Frontogenesis and uses the formula
+    outlined in [Bluestein1993]_ pg.248-253.
+
+    .. math:: F=\frac{1}{2}\left|\nabla \theta\right|[D cos(2\beta)-\delta]
+
+    * :math:`F` is 2D kinematic frontogenesis
+    * :math:`\theta` is potential temperature
+    * :math:`D` is the total deformation
+    * :math:`\beta` is the angle between the axis of dilitation and the isentropes
+    * :math:`\delta` is the divergence
+
+    Notes
+    -----
+    Assumes dim_order='yx', unless otherwise specified.
+
+    Parameters
+    ----------
+    thta : (M, N) ndarray
+        Potential temperature
+    u : (M, N) ndarray
+        x component of the wind
+    v : (M, N) ndarray
+        y component of the wind
+    dx : float
+        The grid spacing in the x-direction
+    dy : float
+        The grid spacing in the y-direction
+
+    Returns
+    -------
+    (M, N) ndarray
+        2D Frotogenesis in [temperature units]/m/s
+
+
+    Conversion factor to go from [temperature units]/m/s to [tempature units/100km/3h]
+    :math:`1.08e4*1.e5`
+
+    """
+    # Get gradients of potential temperature in both x and y
+    grad = _gradient(thta, dy, dx)
+    ddy_thta, ddx_thta = grad[-2:]  # Throw away unused gradient components
+
+    # Compute the magnitude of the potential temperature gradient
+    mag_thta = np.sqrt(ddx_thta**2 + ddy_thta**2)
+
+    # Get the shearing, stretching, and total deformation of the wind field
+    shrd, strd = shearing_stretching_deformation(u, v, dx, dy, dim_order=dim_order)
+    tdef = total_deformation(u, v, dx, dy, dim_order=dim_order)
+
+    # Get the divergence of the wind field
+    div = h_convergence(u, v, dx, dy, dim_order=dim_order)
+
+    # Compute the angle (beta) between the wind field and the gradient of potential temperature
+    psi = 0.5 * np.arctan2(shrd, strd)
+    beta = np.arcsin((-ddx_thta * np.cos(psi) - ddy_thta * np.sin(psi)) / mag_thta)
+
+    return 0.5 * mag_thta * (tdef * np.cos(2 * beta) - div)
+
+
+@exporter.export
+@ensure_yx_order
 def geostrophic_wind(heights, f, dx, dy):
     r"""Calculate the geostrophic wind given from the heights or geopotential.
 
