@@ -8,6 +8,7 @@ import functools
 import warnings
 
 import numpy as np
+from pyproj import Geod
 
 from ..calc.tools import get_layer_heights
 from ..cbook import is_string_like, iterable
@@ -592,3 +593,60 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
     return (positive_srh.to('meter ** 2 / second ** 2'),
             negative_srh.to('meter ** 2 / second ** 2'),
             (positive_srh + negative_srh).to('meter ** 2 / second ** 2'))
+
+
+def calc_dx_dy(longitude, latitude, shape='sphere', radius=6370997.):
+    r"""Calculate the distance between grid points that are in a latitude/longitude format.
+
+    Calculate the distance between grid points when the grid spacing is defined by
+    delta lat/lon rather than delta x/y
+
+    Parameters
+    ----------
+    longitude : array_like
+        array of longitudes defining the grid
+    latitude : array_like
+        array of latitudes defining the grid
+    shape : optional
+        the shape of the model globe
+        common shapes: 'sphere', 'WGS84', 'GRS80'
+    radius : float, optional
+        the radius of the earth
+
+    Returns
+    -------
+     dx, dy: 2D arrays of distances between grid points
+             in the x and y direction with units of meters
+
+    Notes
+    -----
+    Accepts, 1D or 2D arrays for latitude and longitude
+    Assumes [Y, X] for 2D arrays
+
+    """
+    if radius != 6370997.:
+        g = Geod(a=radius, b=radius)
+    else:
+        g = Geod(ellps=shape)
+
+    if latitude.ndim == 1:
+        longitude, latitude = np.meshgrid(longitude, latitude)
+
+    dy = np.zeros(latitude.shape)
+    dx = np.zeros(longitude.shape)
+
+    for i in range(longitude.shape[1]):
+        for j in range(latitude.shape[0] - 1):
+            _, _, dy[j, i] = g.inv(longitude[j, i], latitude[j, i],
+                                   longitude[j + 1, i], latitude[j + 1, i])
+    dy[j + 1, :] = dy[j, :]
+
+    for i in range(longitude.shape[1] - 1):
+        for j in range(latitude.shape[0]):
+            _, _, dx[j, i] = g.inv(longitude[j, i], latitude[j, i],
+                                   longitude[j, i + 1], latitude[j, i + 1])
+    dx[:, i + 1] = dx[:, i]
+
+    xdiff_sign = np.sign(longitude[0, 1] - longitude[0, 0])
+    ydiff_sign = np.sign(latitude[1, 0] - latitude[0, 0])
+    return xdiff_sign * dx * units.meter, ydiff_sign * dy * units.meter
