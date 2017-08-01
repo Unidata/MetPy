@@ -21,6 +21,10 @@ References
            doi:`10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2>`_.
 
+.. [Davies-Jones2009] Davies-Jones, R., 2009: On Formulas for Equivalent Potential Temperature.
+           *Mon. Wea. Rev.*, **137**, 3137-3148,
+           doi: `10.1175/2009mwr2774.1 <https://doi.org/10.1175/2009MWR2774.1>`_.
+
 .. [Hobbs1977] Hobbs, P. V., and J. M. Wallace, 1977: *Atmospheric Science: An
            Introductory Survey*. Academic Press, 350 pp.
 
@@ -86,4 +90,3 @@ References
 
 .. [WMO8-2014] WMO, 2014: *Guide to Meteorological Instruments and Methods of Observation*.
            `WMO No.8 <https://library.wmo.int/opac/doc_num.php?explnum_id=3121>`_.
-
