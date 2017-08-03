@@ -134,15 +134,19 @@ pressure_tendency = CodePointMapping(10, 0xE900)
 
 #####################################################################
 # This dictionary is for mapping METAR present weather text codes
-# to WMO codes for plotting wx symbols along with the station plots
+# to WMO codes for plotting wx symbols along with the station plots.
+# Pages II-4-3 and II-4-4 of this document describes the difference between manned and automated stations:
+# https://github.com/Unidata/MetPy/files/1151142/485_Vol_I_en.pdf
+# It may become necessary to add automated station wx_codes in the future, 
+# but that will also require knowing the status of all stations.
 
-wx_code_map = {'': 0, 'FU': 4, 'HZ': 5, 'DU': 6, 'BLDU': 7, 'PO': 8, 'BR': 10,
-               '-UP': 16, 'UP': 16, 'THDR': 17, 'SQ': 18, 'FC': 19,
-               'DS': 31, 'SS': 31, '+DS': 34, '+SS': 34, 'DRSN': 36, '+DRSN': 37,
-               'FG': 45, 'FZFG': 49,
-               '-DZ': 51, 'DZ': 53, '+DZ': 55, '-FZDZ': 56, 'FZDZ': 57, '-DZRA': 58,
-               'DZRA': 59, '-RA': 61, 'RA': 63, '+RA': 65, '-FZRA': 66, 'FZRA': 67,
-               '-SN': 71, 'SN': 73, '+SN': 75, 'SG': 79, 'PL': 79,
-               '-SHRA': 80, 'SHRA': 81, '+SHRA': 82, '-SHSN': 85, 'SHSN': 86,
-               '-TSRA': 95, 'TSRA': 95, 'TSGS': 96, 'TSGR': 96, '+TSRA': 97,
-               'TSDS': 98, '+TSGS': 99, '+TSGR': 99}
+wx_code_map = {'': 0, 'M':0, 'TSNO':0, 'TS':0, 'VA': 4, 'FU': 4, 'HZ': 5, 'DU': 6, 'BLDU': 7, 'PO': 8, 'VCSS':9, 'BR': 10,
+               'MIFG':11, 'VCTS':13, 'VIRGA':14, '-UP': 16, 'UP': 16, 'VCSH':16, '-VCTSRA':17, 'VCTSRA':17, '+VCTSRA':17, 'THDR': 17, 'SQ': 18, 'FC': 19,
+               'DS': 31, 'SS': 31, '+DS': 34, '+SS': 34, 'DRSN': 36, '+DRSN': 37, 'BLSN':38, '+BLSN':39,
+               'VCFG':40, 'BCFG':41, 'PRFG':44, 'FG': 45, 'FZFG': 49,
+               '-DZ': 51, 'DZ': 53, '+DZ': 55, '-FZDZ': 56, 'FZDZ': 57, '+FZDZ':57, '-DZRA': 58, 'DZRA': 59, 
+               '-RA': 61, 'RA': 63, '+RA': 65, '-FZRA': 66, 'FZRA': 67, '+FZRA':67, '-RASN':68, 'RASN':69, '+RASN':69, 
+               '-SN': 71, 'SN': 73, '+SN': 75, 'IN':76, '-UP':76, 'UP':76, '+UP':76, 'SG': 77, 'IC':78, '-PL': 79, 'PL': 79,
+               '-SH': 80, '-SHRA': 80, 'SH': 81, 'SHRA': 81, '+SH': 81, '+SHRA': 81, '-SHRASN':83, '-SHSNRA':83, 'SHRASN':84, '+SHRASN':84, 'SHSNRA':84, '+SHSNRA':84, '-SHSN': 85, 
+               'SHSN': 86, '+SHSN':86, '-GS': 87, '-SHGS': 87, 'GS': 88, 'SHGS': 88, '+GS': 88, '+SHGS':88, '-GR': 89, '-SHGR':89, 'GR': 90, 'SHGR': 90, '+GR': 90, '+SHGR': 90,
+               '-TSRA': 95, 'TSRA': 95, 'TSSN': 95, 'TSPL': 95, 'TSGS': 96, 'TSGR': 96, '+TSRA': 97, '+TSSN': 97, '+TSPL': 97, 'TSSA':98, 'TSDS': 98, '+TSGS': 99, '+TSGR': 99}
