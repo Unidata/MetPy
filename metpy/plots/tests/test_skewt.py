@@ -175,3 +175,38 @@ def test_skewt_barb_color():
     skew.plot_barbs(p, u, u, c=u)
 
     return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_hodograph_plot_layers():
+    """Test hodograph colored height layers with interpolation."""
+    u = np.arange(5, 65, 5) * units('knot')
+    v = np.arange(-5, -65, -5) * units('knot')
+    h = [178, 213, 610, 656, 721, 914, 1060,
+         1219, 1372, 1412, 1512, 1524] * units('meter')
+    colors = ['red', 'green']
+    levels = [0, 500, 1000] * units('meter')
+    fig = plt.figure(figsize=(9, 9))
+    ax = fig.add_subplot(1, 1, 1)
+    hodo = Hodograph(ax, component_range=80)
+    hodo.add_grid(increment=20, color='k')
+    hodo.plot_colormapped(u, v, h, bounds=levels, colors=colors)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_hodograph_plot_arbitrary_layer():
+    """Test hodograph colored layers for arbitrary variables without interpolation."""
+    u = np.arange(5, 65, 5) * units('knot')
+    v = np.arange(-5, -65, -5) * units('knot')
+    speed = np.sqrt(u ** 2 + v ** 2)
+    colors = ['red', 'green', 'blue']
+    levels = [0, 10, 20, 30] * units('knot')
+    fig = plt.figure(figsize=(9, 9))
+    ax = fig.add_subplot(1, 1, 1)
+    hodo = Hodograph(ax, component_range=80)
+    hodo.add_grid(increment=20, color='k')
+    hodo.plot_colormapped(u, v, speed, bounds=levels, colors=colors)
+
+    return fig
