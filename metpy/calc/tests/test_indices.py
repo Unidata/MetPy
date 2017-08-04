@@ -5,11 +5,12 @@
 
 from datetime import datetime
 
-from metpy.calc import mean_pressure_weighted, precipitable_water
+from metpy.calc import (bulk_shear, bunkers_storm_motion, mean_pressure_weighted,
+                        precipitable_water)
 from metpy.io import get_upper_air_data
 from metpy.io.upperair import UseSampleData
 from metpy.testing import assert_almost_equal, assert_array_equal
-from metpy.units import units
+from metpy.units import concatenate, units
 
 
 def test_precipitable_water():
@@ -46,3 +47,40 @@ def test_mean_pressure_weighted_elevated():
                                   bottom=data.variables['height'][0] + 3000 * units('meter'))
     assert_almost_equal(u, 8.270829843626476 * units('m/s'), 7)
     assert_almost_equal(v, 1.7392601775853547 * units('m/s'), 7)
+
+
+def test_bunkers_motion():
+    """Test Bunkers storm motion with observed sounding."""
+    with UseSampleData():
+        data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC', source='wyoming')
+    motion = concatenate(bunkers_storm_motion(data.variables['pressure'][:],
+                         data.variables['u_wind'][:], data.variables['v_wind'][:],
+                         data.variables['height'][:]))
+    truth = [1.4537892577864744, 2.0169333025630616, 10.587950761120482, 13.915130377372801,
+             6.0208700094534775, 7.9660318399679308] * units('m/s')
+    assert_almost_equal(motion.flatten(), truth, 8)
+
+
+def test_bulk_shear():
+    """Test bulk shear with observed sounding."""
+    with UseSampleData():
+        data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC', source='wyoming')
+    u, v = bulk_shear(data.variables['pressure'][:], data.variables['u_wind'][:],
+                      data.variables['v_wind'][:], heights=data.variables['height'][:],
+                      depth=6000 * units('meter'))
+    truth = [29.899581266946115, -14.389225800205509] * units('knots')
+    assert_almost_equal(u.to('knots'), truth[0], 8)
+    assert_almost_equal(v.to('knots'), truth[1], 8)
+
+
+def test_bulk_shear_elevated():
+    """Test bulk shear with observed sounding and a base above the surface."""
+    with UseSampleData():
+        data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC', source='wyoming')
+    u, v = bulk_shear(data.variables['pressure'][:], data.variables['u_wind'][:],
+                      data.variables['v_wind'][:], heights=data.variables['height'][:],
+                      bottom=data.variables['height'][0] + 3000 * units('meter'),
+                      depth=3000 * units('meter'))
+    truth = [0.9655943923302139, -3.8405428777944466] * units('m/s')
+    assert_almost_equal(u, truth[0], 8)
+    assert_almost_equal(v, truth[1], 8)

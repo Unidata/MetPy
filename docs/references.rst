@@ -20,6 +20,12 @@ References
            doi:`10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2>`_.
 
+.. [Bunkers2000] Bunkers, M. J., B. A. Klimowski, J. W. Zeitler, R. L. Thompson,
+           and M. L. Weisman, 2000: Predicting supercell motion using a new hodograph
+           technique. *Wea. Forecasting.*, **15**, 61–79,
+           doi:`10.1175/1520-0434(2000)015\<0061:PSMUAN\>2.0.CO;2
+           <https://doi.org/10.1175/1520-0434(2000)015\<0061:PSMUAN\>2.0.CO;2>`_.
+
 .. [Cressman1959] Cressman, G. P., 1959: An operational objective analysis system. *Mon.
            Wea. Rev.*, **87**, 367-374,
            doi:`10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2

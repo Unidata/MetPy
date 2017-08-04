@@ -8,7 +8,7 @@ from .thermo import mixing_ratio, saturation_vapor_pressure
 from .tools import get_layer
 from ..constants import g, rho_l
 from ..package_tools import Exporter
-from ..units import check_units, units
+from ..units import check_units, concatenate, units
 
 exporter = Exporter(globals())
 
@@ -101,3 +101,104 @@ def mean_pressure_weighted(pressure, *args, **kwargs):
         ret.append(arg_mean * datavar.units)
 
     return ret
+
+
+@exporter.export
+@check_units('[pressure]', '[speed]', '[speed]', '[length]')
+def bunkers_storm_motion(pressure, u, v, heights):
+    r"""Calculate the Bunkers right-mover and left-mover storm motions and sfc-6km mean flow.
+
+    Uses the storm motion calculation from [Bunkers2000]_.
+
+    Parameters
+    ----------
+    pressure : array-like
+        Pressure from sounding
+    u : array-like
+        U component of the wind
+    v : array-like
+        V component of the wind
+    heights : array-like
+        Heights from sounding
+
+    Returns
+    -------
+    right_mover: `pint.Quantity`
+        U and v component of Bunkers RM storm motion
+    left_mover: `pint.Quantity`
+        U and v component of Bunkers LM storm motion
+    wind_mean: `pint.Quantity`
+        U and v component of sfc-6km mean flow
+
+    """
+    # mean wind from sfc-6km
+    wind_mean = concatenate(mean_pressure_weighted(pressure, u, v, heights=heights,
+                                                   depth=6000 * units('meter')))
+
+    # mean wind from sfc-500m
+    wind_500m = concatenate(mean_pressure_weighted(pressure, u, v, heights=heights,
+                                                   depth=500 * units('meter')))
+
+    # mean wind from 5.5-6km
+    wind_5500m = concatenate(mean_pressure_weighted(pressure, u, v, heights=heights,
+                                                    depth=500 * units('meter'),
+                                                    bottom=heights[0] +
+                                                    5500 * units('meter')))
+
+    # Calculate the shear vector from sfc-500m to 5.5-6km
+    shear = wind_5500m - wind_500m
+
+    # Take the cross product of the wind shear and k, and divide by the vector magnitude and
+    # multiply by the deviaton empirically calculated in Bunkers (2000) (7.5 m/s)
+    shear_cross = concatenate([shear[1], -shear[0]])
+    rdev = shear_cross * (7.5 * units('m/s').to(u.units) / np.hypot(*shear))
+
+    # Add the deviations to the layer average wind to get the RM motion
+    right_mover = wind_mean + rdev
+
+    # Subtract the deviations to get the LM motion
+    left_mover = wind_mean - rdev
+
+    return right_mover, left_mover, wind_mean
+
+
+@exporter.export
+@check_units('[pressure]', '[speed]', '[speed]')
+def bulk_shear(pressure, u, v, heights=None, bottom=None, depth=None):
+    r"""Calculate bulk shear through a layer.
+
+    Layer top and bottom specified in meters or pressure.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure profile
+    u : `pint.Quantity`
+        U-component of wind.
+    v : `pint.Quantity`
+        V-component of wind.
+    height : `pint.Quantity`, optional
+        Heights from sounding
+    depth: `pint.Quantity`, optional
+        The depth of the layer in meters or hPa
+    bottom: `pint.Quantity`, optional
+        The bottom of the layer in meters or hPa.
+        If in meters, must be in the same coordinates as the given
+        heights (i.e., don't use meters AGL unless given heights
+        are in meters AGL.) Default is the surface (1st observation.)
+
+    Returns
+    -------
+    u_shr: `pint.Quantity`
+        u-component of layer bulk shear
+    v_shr: `pint.Quantity`
+        v-component of layer bulk shear
+
+    """
+    _, u_layer, v_layer = get_layer(pressure, u, v, heights=heights,
+                                    bottom=bottom, depth=depth)
+
+    u_shr = u_layer[-1] - u_layer[0]
+    v_shr = v_layer[-1] - v_layer[0]
+
+    return u_shr, v_shr
