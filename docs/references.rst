@@ -39,6 +39,14 @@ References
            doi:`10.1175/1520-0434(2000)015\<0061:PSMUAN\>2.0.CO;2
            <https://doi.org/10.1175/1520-0434(2000)015\<0061:PSMUAN\>2.0.CO;2>`_.
 
+.. [Chase1998] Chase, M.W., Jr., 1998: NIST-JANAF Thermochemical Tables, Fourth Edition,
+           *J. Phys. Chem. Ref. Data*, **monograph 9**, 1-1951.
+
+.. [Coddington2016] Coddington, O., J.L. Lean, P. Pilewskie, M. Snow, and D. Lindholm, 2016:
+           A Solar Irradiance Climate Data Record. *Bull. Amer. Meteor. Soc.*, **97**,
+           1265–1282, doi:`10.1175/BAMS-D-14-00265.1
+           <https://doi.org/10.1175/BAMS-D-14-00265.1>`_.
+
 .. [Cressman1959] Cressman, G. P., 1959: An operational objective analysis system. *Mon.
            Wea. Rev.*, **87**, 367-374,
            doi:`10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2
@@ -68,6 +76,9 @@ References
               Forecasting Applications. *Bulletin of the American Meteorological Society*,
               **98.9**, 1897-1906, doi:
               `10.1175/BAMS-D-16-0246.1 <https://doi.org/10.1175/BAMS-D-16-0246.1>`_.
+
+.. [ICAO] ICAO, 1993: Manual of the ICAO Standard Atmosphere (extended to 80 kilometres (262 500 feet)),
+           Doc 7488-CD, Third Edition, ISBN 92-9194-004-6
 
 .. [Lackmann2011] Lackmann, G., 2011: *Midlatitude Synoptic Meteorology*. Amer. Meteor. Soc.,
            345 pp.
@@ -114,6 +125,15 @@ References
 
 .. [NWS10201] 2017: `National Weather Service Instruction 10-201 <_static/NWS_10-201.pdf>`_.
 
+.. [NASA2016] NASA, 2016: Earth Fact Sheet. Accessed 20 July 2017. [Available online at
+           https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html.]
+
+.. [NASA2017] NASA, 2017: Earth: By the Numbers. Accessed 20 July 2017. [Available online at
+           https://solarsystem.nasa.gov/planets/earth/facts.]
+
+.. [NIST] NIST, 2017: NIST Chemistry WebBook. Accessed 20 July 2017. [Available online at
+           webbook.nist.gov.]
+
 .. [Philips1957] Philips, N. A., 1957: A coordinate system having some special
            advantages for numerical forecasting. *J. Meteor.*, **14**, 184-185,
            doi:`10.1175/1520-0469(1957)014%3C0184:ACSHSS%3E2.0.CO;2
@@ -121,6 +141,9 @@ References
 
 .. [Rochette2006] Rochette, Scott M., and Patrick S. Market. "A primer on the
                   ageostrophic wind." Natl. Weather Dig. 30 (2006): 17-28.
+
+.. [Pint] Pint, 2017: Pint: Makes Units Easy. Accessed 20 July 2017. [Available online at
+           http://pint.readthedocs.io/en/0.8.1.]
 
 .. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific Services
            Division, NWS Southern Region Headquarters, 1990.
@@ -152,10 +175,19 @@ References
             Forecasting <_static/USAF_SkewT_manual.pdf>`_, Scott AFB,
             Illinois.
 
+.. [Wagner2002] Wagner, W. and Prub, A., 2002: The IAPWS Formulation 1995 for the Thermodynamic
+                Properties of Ordinary Water Substance for General and Scientific Use.
+                *J. Phys. Chem. Ref. Data*, **31**, 387-535,
+                doi:`10.1063/1.1461829
+                <http://doi.org/10.1063/1.1461829>`_.
+
 .. [Ziv1994] Ziv, B., and Alpert, P., 1994: Isobaric to Isentropic Interpolation Errors
            and Implication to Potential Vorticity Analysis. *J. Appl. Meteor.*, **33**,
            694-703, doi:`10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2>`_.
 
 .. [WMO8-2014] WMO, 2014: *Guide to Meteorological Instruments and Methods of Observation*.
-           `WMO No.8 <https://library.wmo.int/doc_num.php?explnum_id=4147>`_.
+           `WMO No.8 <https://library.wmo.int/opac/doc_num.php?explnum_id=3121>`_.
+
+.. [WMO-1966] WMO, 1966: *International Meteorological Tables*.
+           `WMO No.188 TP.94. <https://library.wmo.int/pmb_ged/wmo_188e.pdf>`_.
