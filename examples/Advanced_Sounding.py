@@ -54,10 +54,9 @@ skew.plot(lcl_pressure, lcl_temperature, 'ko', markerfacecolor='black')
 prof = mpcalc.parcel_profile(p, T[0], Td[0]).to('degC')
 skew.plot(p, prof, 'k', linewidth=2)
 
-# Example of coloring area between profiles
-greater = T >= prof
-skew.ax.fill_betweenx(p, T, prof, where=greater, facecolor='blue', alpha=0.4)
-skew.ax.fill_betweenx(p, T, prof, where=~greater, facecolor='red', alpha=0.4)
+# Shade areas of CAPE and CIN
+skew.shade_cin(p, T, prof)
+skew.shade_cape(p, T, prof)
 
 # An example of a slanted line at constant T -- in this case the 0
 # isotherm
