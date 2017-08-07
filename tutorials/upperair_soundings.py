@@ -137,10 +137,9 @@ skew.plot(lcl_pressure, lcl_temperature, 'ko', markerfacecolor='black')
 # Plot the parcel profile as a black line
 skew.plot(p, parcel_prof, 'k', linewidth=2)
 
-# Color regions of CAPE and CIN (the area between the actual temperature and
-# the parcel path).
-skew.ax.fill_betweenx(p, T, parcel_prof, where=T >= parcel_prof, facecolor='blue', alpha=0.4)
-skew.ax.fill_betweenx(p, T, parcel_prof, where=T < parcel_prof, facecolor='red', alpha=0.4)
+# Shade areas of CAPE and CIN
+skew.shade_cin(p, T, parcel_prof)
+skew.shade_cape(p, T, parcel_prof)
 
 # Plot a zero degree isotherm
 l = skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
@@ -181,10 +180,9 @@ skew.plot(lcl_pressure, lcl_temperature, 'ko', markerfacecolor='black')
 # Plot the parcel profile as a black line
 skew.plot(p, parcel_prof, 'k', linewidth=2)
 
-# Color regions of CAPE and CIN (the area between the actual temperature and
-# the parcel path).
-skew.ax.fill_betweenx(p, T, parcel_prof, where=T >= parcel_prof, facecolor='blue', alpha=0.4)
-skew.ax.fill_betweenx(p, T, parcel_prof, where=T < parcel_prof, facecolor='red', alpha=0.4)
+# Shade areas of CAPE and CIN
+skew.shade_cin(p, T, parcel_prof)
+skew.shade_cape(p, T, parcel_prof)
 
 # Plot a zero degree isotherm
 skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
