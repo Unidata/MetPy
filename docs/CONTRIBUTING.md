@@ -18,7 +18,8 @@ or contact us at one of the other channels mentioned below.
 
 For more information on contributing to open source projects,
 [GitHub's own guide](https://guides.github.com/activities/contributing-to-open-source/)
-is a great starting point.
+is a great starting point. Also, checkout the [Zen of Scientific Software Maintenance](https://jrleeman.github.io/ScientificSoftwareMaintenance/)
+for some guiding principles on how to create high quality scientific software contributions.
 
 ## Getting Started
 
