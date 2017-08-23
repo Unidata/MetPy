@@ -6,7 +6,7 @@
 from datetime import datetime
 
 from metpy.calc import (bulk_shear, bunkers_storm_motion, mean_pressure_weighted,
-                        precipitable_water)
+                        precipitable_water, significant_tornado, supercell_composite)
 from metpy.io import get_upper_air_data
 from metpy.io.upperair import UseSampleData
 from metpy.testing import assert_almost_equal, assert_array_equal
@@ -84,3 +84,24 @@ def test_bulk_shear_elevated():
     truth = [0.9655943923302139, -3.8405428777944466] * units('m/s')
     assert_almost_equal(u, truth[0], 8)
     assert_almost_equal(v, truth[1], 8)
+
+
+def test_supercell_composite():
+    """Test supercell composite function."""
+    mucape = [2000., 1000., 500., 2000.] * units('J/kg')
+    esrh = [400., 150., 45., 45.] * units('m^2/s^2')
+    ebwd = [30., 15., 5., 5.] * units('m/s')
+    truth = [16., 2.25, 0., 0.]
+    supercell_comp = supercell_composite(mucape, esrh, ebwd)
+    assert_array_equal(supercell_comp, truth)
+
+
+def test_sigtor():
+    """Test significant tornado parameter function."""
+    sbcape = [2000., 2000., 2000., 2000., 3000, 4000] * units('J/kg')
+    sblcl = [3000., 1500., 500., 1500., 1500, 800] * units('meter')
+    srh1 = [200., 200., 200., 200., 300, 400] * units('m^2/s^2')
+    shr6 = [20., 5., 20., 35., 20., 35] * units('m/s')
+    truth = [0., 0, 1.777778, 1.333333, 2., 10.666667]
+    sigtor = significant_tornado(sbcape, sblcl, srh1, shr6)
+    assert_almost_equal(sigtor, truth, 6)

@@ -202,3 +202,88 @@ def bulk_shear(pressure, u, v, heights=None, bottom=None, depth=None):
     v_shr = v_layer[-1] - v_layer[0]
 
     return u_shr, v_shr
+
+
+@exporter.export
+def supercell_composite(mucape, effective_storm_helicity, effective_shear):
+    r"""Calculate the supercell composite parameter.
+
+    The supercell composite parameter is designed to identify
+    environments favorable for the development of supercells,
+    and is calculated using the formula developed by
+    [Thompson2004]_:
+
+    SCP = (mucape / 1000 J/kg) * (effective_storm_helicity / 50 m^2/s^2) *
+          (effective_shear / 20 m/s)
+
+    The effective_shear term is set to zero below 10 m/s and
+    capped at 1 when effective_shear exceeds 20 m/s.
+
+    Parameters
+    ----------
+    mucape : `pint.Quantity`
+        Most-unstable CAPE
+    effective_storm_helicity : `pint.Quantity`
+        Effective-layer storm-relative helicity
+    effective_shear : `pint.Quantity`
+        Effective bulk shear
+
+    Returns
+    -------
+    array-like
+        supercell composite
+
+    """
+    effective_shear = np.clip(effective_shear, None, 20 * units('m/s'))
+    effective_shear[effective_shear < 10 * units('m/s')] = 0 * units('m/s')
+    effective_shear = effective_shear / (20 * units('m/s'))
+
+    return ((mucape / (1000 * units('J/kg'))) *
+            (effective_storm_helicity / (50 * units('m^2/s^2'))) *
+            effective_shear).to('dimensionless')
+
+
+@exporter.export
+def significant_tornado(sbcape, sblcl, storm_helicity_1km, shear_6km):
+    r"""Calculate the significant tornado parameter (fixed layer).
+
+    The significant tornado parameter is designed to identify
+    environments favorable for the production of significant
+    tornadoes contingent upon the development of supercells.
+    It's calculated according to the formula used on the SPC
+    mesoanalysis page, updated in [Thompson2004]_:
+
+    sigtor = (sbcape / 1500 J/kg) * ((2000 m - sblcl) / 1000 m) *
+             (storm_helicity_1km / 150 m^s/s^2) * (shear_6km6 / 20 m/s)
+
+    The sblcl term is set to zero when the lcl is above 2000m and
+    capped at 1 when below 1000m, and the shr6 term is set to 0
+    when shr6 is below 12.5 m/s and maxed out at 1.5 when shr6
+    exceeds 30 m/s.
+
+    Parameters
+    ----------
+    sbcape : `pint.Quantity`
+        Surface-based CAPE
+    sblcl : `pint.Quantity`
+        Surface-based lifted condensation level
+    storm_helicity_1km : `pint.Quantity`
+        Surface-1km storm-relative helicity
+    shear_6km : `pint.Quantity`
+        Surface-6km bulk shear
+
+    Returns
+    -------
+    array-like
+        significant tornado parameter
+
+    """
+    sblcl = np.clip(sblcl, 1000 * units('meter'), 2000 * units('meter'))
+    sblcl[sblcl > 2000 * units('meter')] = 0 * units('meter')
+    sblcl = (2000. * units('meter') - sblcl) / (1000. * units('meter'))
+    shear_6km = np.clip(shear_6km, None, 30 * units('m/s'))
+    shear_6km[shear_6km < 12.5 * units('m/s')] = 0 * units('m/s')
+    shear_6km = shear_6km / (20 * units('m/s'))
+
+    return ((sbcape / (1500. * units('J/kg'))) *
+            sblcl * (storm_helicity_1km / (150. * units('m^2/s^2'))) * shear_6km)
