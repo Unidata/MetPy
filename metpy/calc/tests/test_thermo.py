@@ -17,7 +17,8 @@ from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, el,
                         relative_humidity_from_specific_humidity,
                         relative_humidity_wet_psychrometric,
                         saturation_mixing_ratio,
-                        saturation_vapor_pressure, vapor_pressure,
+                        saturation_vapor_pressure,
+                        surface_based_cape_cin, vapor_pressure,
                         virtual_potential_temperature, virtual_temperature)
 
 from metpy.calc.thermo import _find_append_zero_crossings
@@ -638,3 +639,13 @@ def test_isentropic_pressure_4d():
     assert_almost_equal(isentprs[0][:, 1, :], trueprs2, 3)
     assert_almost_equal(isentprs[0][:, 2, :], trueprs3, 3)
     assert_almost_equal(isentprs[1][:, 1, ], truerh, 3)
+
+
+def test_surface_based_cape_cin():
+    """Tests the surface-based CAPE and CIN calculation."""
+    p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
+    dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
+    cape, cin = surface_based_cape_cin(p, temperature, dewpoint)
+    assert_almost_equal(cape, 58.0368212 * units('joule / kilogram'), 6)
+    assert_almost_equal(cin, -89.8073512 * units('joule / kilogram'), 6)
