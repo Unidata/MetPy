@@ -1,0 +1,6 @@
+linters:
+    flake8:
+        ignore: 'F405'
+        max-line-length: 95
+files:
+    ignore: ['metpy/_version.py']
