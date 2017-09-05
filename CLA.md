@@ -81,7 +81,7 @@ MetPy Individual Contributor License Agreement
 ==============================================
 
 Thank you for your interest in contributing to MetPy ("We" or "Us").
-This contributor agreement ("Agreement") documents the rights granted by contributors to Us. To make this document effective, please sign it and send it to Us by electronic submission, following the instructions at https://www.clahub.com/agreements/Unidata/MetPy. This is a legally binding document, so please read it carefully before agreeing to it. The Agreement may cover more than one software project managed by Us.
+This contributor agreement ("Agreement") documents the rights granted by contributors to Us. To make this document effective, please sign it and send it to Us by electronic submission on https://cla-assistant.io. This is a legally binding document, so please read it carefully before agreeing to it. The Agreement may cover more than one software project managed by Us.
 
 1.Definitions
 -------------
