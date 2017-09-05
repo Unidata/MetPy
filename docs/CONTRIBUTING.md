@@ -22,18 +22,18 @@ is a great starting point.
 
 ## Getting Started
 
-Interested in helping build MetPy? Have code from your research that you believe others will 
+Interested in helping build MetPy? Have code from your research that you believe others will
 find useful? Have a few minutes to tackle an issue? In this guide we will get you setup and
 integrated into contributing to MetPy!
 
 ## What Can I Do?
-* Tackle any [issues](https://github.com/Unidata/MetPy/issues) you wish! We have a special 
+* Tackle any [issues](https://github.com/Unidata/MetPy/issues) you wish! We have a special
   label for issues that beginners might want to try. Have a look at our
   [current beginner issues.](https://github.com/unidata/metpy/issues?q=is%3Aopen+is%3Aissue+label%3A%22Difficulty%3A+Beginner%22)
 
-* Contribute code you already have. It doesn’t need to be perfect! We will help you clean 
+* Contribute code you already have. It doesn’t need to be perfect! We will help you clean
   things up, test it, etc.
-  
+
 * Make a tutorial or example of how to do something.
 
 ## How Can I Talk to You?
@@ -87,7 +87,8 @@ Push to your fork and [submit a pull request][pr].
 [pr]: https://github.com/Unidata/metpy/compare/
 
 For the Pull Request to be accepted, you need to agree to the
-[MetPy Contributor License Agreement (CLA)](https://www.clahub.com/agreements/Unidata/MetPy).
+MetPy Contributor License Agreement (CLA). This will be handled automatically
+upon submission of a Pull Request.
 See [here](https://github.com/Unidata/MetPy/blob/master/CLA.md) for more
 explanation and rationale behind MetPy's CLA.
 
