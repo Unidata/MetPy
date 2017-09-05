@@ -913,9 +913,9 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
         The atmospheric pressure level(s) of interest. The first entry should be the starting
         point pressure.
     temperature : `pint.Quantity`
-        The starting temperature
+        The atmospheric temperature corresponding to pressure.
     dewpt : `pint.Quantity`
-        The starting dew point
+        The atmospheric dew point corresponding to pressure.
     parcel_profile : `pint.Quantity`
         The temperature profile of the parcel
 
@@ -1066,6 +1066,8 @@ def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
     -------
     `pint.Quantity`
         Pressure, temperature, and dew point of most unstable parcel in the profile.
+    integer
+        Index of the most unstable parcel in the given profile
 
     See Also
     --------
@@ -1073,10 +1075,10 @@ def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
 
     """
     p_layer, T_layer, Td_layer = get_layer(pressure, temperature, dewpoint, bottom=bottom,
-                                           depth=depth, heights=heights)
+                                           depth=depth, heights=heights, interpolate=False)
     theta_e = equivalent_potential_temperature(p_layer, T_layer, Td_layer)
     max_idx = np.argmax(theta_e)
-    return p_layer[max_idx], T_layer[max_idx], Td_layer[max_idx]
+    return p_layer[max_idx], T_layer[max_idx], Td_layer[max_idx], max_idx
 
 
 @exporter.export
@@ -1274,3 +1276,44 @@ def surface_based_cape_cin(pressure, temperature, dewpoint):
     """
     profile = parcel_profile(pressure, temperature[0], dewpoint[0])
     return cape_cin(pressure, temperature, dewpoint, profile)
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
+    r"""Calculate most unstable CAPE/CIN.
+
+    Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
+    of a given upper air profile and most unstable parcel path. CIN is integrated between the
+    surface and LFC, CAPE is integrated between the LFC and EL (or top of sounding).
+    Intersection points of the measured temperature profile and parcel profile are linearly
+    interpolated.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure profile
+    temperature : `pint.Quantity`
+        Temperature profile
+    dewpoint : `pint.Quantity`
+        Dewpoint profile
+
+    Returns
+    -------
+    `pint.Quantity`
+        Most unstable Convective Available Potential Energy (CAPE).
+    `pint.Quantity`
+        Most unstable Convective INhibition (CIN).
+
+    See Also
+    --------
+    cape_cin, most_unstable_parcel, parcel_profile
+
+    """
+    _, parcel_temperature, parcel_dewpoint, parcel_idx = most_unstable_parcel(pressure,
+                                                                              temperature,
+                                                                              dewpoint,
+                                                                              **kwargs)
+    mu_profile = parcel_profile(pressure[parcel_idx:], parcel_temperature, parcel_dewpoint)
+    return cape_cin(pressure[parcel_idx:], temperature[parcel_idx:],
+                    dewpoint[parcel_idx:], mu_profile)

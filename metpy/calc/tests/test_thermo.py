@@ -11,7 +11,8 @@ from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, el,
                         isentropic_interpolation,
                         lcl, lfc, mixing_ratio,
                         mixing_ratio_from_specific_humidity, moist_lapse,
-                        most_unstable_parcel, parcel_profile, potential_temperature,
+                        most_unstable_cape_cin, most_unstable_parcel,
+                        parcel_profile, potential_temperature,
                         psychrometric_vapor_pressure_wet,
                         relative_humidity_from_mixing_ratio,
                         relative_humidity_from_specific_humidity,
@@ -649,3 +650,23 @@ def test_surface_based_cape_cin():
     cape, cin = surface_based_cape_cin(p, temperature, dewpoint)
     assert_almost_equal(cape, 58.0368212 * units('joule / kilogram'), 6)
     assert_almost_equal(cin, -89.8073512 * units('joule / kilogram'), 6)
+
+
+def test_most_unstable_cape_cin_surface():
+    """Tests the most unstable CAPE/CIN calculation when surface is most unstable."""
+    pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
+    dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
+    mucape, mucin = most_unstable_cape_cin(pressure, temperature, dewpoint)
+    assert_almost_equal(mucape, 58.0368212 * units('joule / kilogram'), 6)
+    assert_almost_equal(mucin, -89.8073512 * units('joule / kilogram'), 6)
+
+
+def test_most_unstable_cape_cin():
+    """Tests the most unstable CAPE/CIN calculation."""
+    pressure = np.array([1000., 959., 867.9, 850., 825., 800.]) * units.mbar
+    temperature = np.array([18.2, 22.2, 17.4, 10., 0., 15]) * units.celsius
+    dewpoint = np.array([19., 19., 14.3, 0., -10., 0.]) * units.celsius
+    mucape, mucin = most_unstable_cape_cin(pressure, temperature, dewpoint)
+    assert_almost_equal(mucape, 157.07111 * units('joule / kilogram'), 4)
+    assert_almost_equal(mucin, -15.74772 * units('joule / kilogram'), 4)
