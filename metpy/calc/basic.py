@@ -12,6 +12,8 @@ These include:
 
 from __future__ import division
 
+import warnings
+
 import numpy as np
 
 from ..constants import g, omega, Rd
@@ -106,6 +108,12 @@ def get_wind_components(speed, wdir):
      <Quantity(7.071067811865477, 'meter / second')>)
 
     """
+    try:
+        wdir = wdir.to('radians').m
+    except AttributeError:
+        pass
+    if np.greater(np.nanmax(wdir), 4 * np.pi):
+        warnings.warn('Wind direction >4Pi. Ensure proper units are given.')
     u = -speed * np.sin(wdir)
     v = -speed * np.cos(wdir)
     return u, v
