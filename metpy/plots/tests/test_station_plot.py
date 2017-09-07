@@ -41,6 +41,29 @@ def test_stationplot_api():
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 2.81}.get(MPL_VERSION, 0.003),
+                               savefig_kwargs={'dpi': 300}, remove_text=True)
+def test_stationplot_clipping():
+    """Test the that clipping can be enabled as a default parameter."""
+    fig = plt.figure(figsize=(9, 9))
+
+    # testing data
+    x = np.array([1, 5])
+    y = np.array([2, 4])
+
+    # Make the plot
+    sp = StationPlot(fig.add_subplot(1, 1, 1), x, y, fontsize=16, clip_on=True)
+    sp.plot_barb([20, 0], [0, -50])
+    sp.plot_text('E', ['KOKC', 'ICT'], color='blue')
+    sp.plot_parameter('NW', [10.5, 15] * units.degC, color='red')
+    sp.plot_symbol('S', [5, 7], high_clouds, color='green')
+
+    sp.ax.set_xlim(1, 5)
+    sp.ax.set_ylim(1.75, 4.25)
+
+    return fig
+
+
 @pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05974, '1.4': 3.7}.get(MPL_VERSION, 0.0033),
                                savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_station_plot_replace():
