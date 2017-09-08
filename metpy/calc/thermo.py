@@ -1317,3 +1317,114 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     mu_profile = parcel_profile(pressure[parcel_idx:], parcel_temperature, parcel_dewpoint)
     return cape_cin(pressure[parcel_idx:], temperature[parcel_idx:],
                     dewpoint[parcel_idx:], mu_profile)
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
+                 heights=None, bottom=None, depth=100 * units.hPa, interpolate=True):
+    r"""Calculate the properties of a parcel mixed from a layer.
+
+    Determines the properties of an air parcel that is the result of complete mixing of a
+    given atmospheric layer.
+
+    Parameters
+    ----------
+    p : `pint.Quantity`
+        Atmospheric pressure profile
+    temperature : `pint.Quantity`
+        Atmospheric temperature profile
+    dewpt : `pint.Quantity`
+        Atmospheric dewpoint profile
+    parcel_start_pressure : `pint.Quantity`, optional
+        Pressure at which the mixed parcel should begin (default None)
+    heights: `pint.Quantity`, optional
+        Atmospheric heights corresponding to the given pressures (default None)
+    bottom : `pint.Quantity`, optional
+        The bottom of the layer as a pressure or height above the surface pressure
+        (default None)
+    depth : `pint.Quantity`, optional
+        The thickness of the layer as a pressure or height above the bottom of the layer
+        (default 100 hPa)
+    interpolate : bool, optional
+        Interpolate the top and bottom points if they are not in the given data
+
+    Returns
+    -------
+    `pint.Quantity, pint.Quantity, pint.Quantity`
+        The pressure, temperature, and dewpoint of the mixed parcel.
+
+    """
+    # If a parcel starting pressure is not provided, use the surface
+    if not parcel_start_pressure:
+        parcel_start_pressure = p[0]
+
+    # Calculate the potential temperature and mixing ratio over the layer
+    theta = potential_temperature(p, temperature)
+    mixing_ratio = saturation_mixing_ratio(p, dewpt)
+
+    # Mix the variables over the layer
+    mean_theta, mean_mixing_ratio = mixed_layer(p, theta, mixing_ratio, bottom=bottom,
+                                                heights=heights, depth=depth,
+                                                interpolate=interpolate)
+
+    # Convert back to temperature
+    mean_temperature = (mean_theta / potential_temperature(parcel_start_pressure,
+                                                           1 * units.kelvin)) * units.kelvin
+
+    # Convert back to dewpoint
+    mean_vapor_pressure = vapor_pressure(parcel_start_pressure, mean_mixing_ratio)
+    mean_dewpoint = dewpoint(mean_vapor_pressure)
+
+    return (parcel_start_pressure, mean_temperature.to(temperature.units),
+            mean_dewpoint.to(dewpt.units))
+
+
+@exporter.export
+@check_units('[pressure]')
+def mixed_layer(p, *args, **kwargs):
+    r"""Mix variable(s) over a layer, yielding a mass-weighted average.
+
+    This function will integrate a data variable with respect to pressure and determine the
+    average value using the mean value theorem.
+
+    Parameters
+    ----------
+    p : array-like
+        Atmospheric pressure profile
+    datavar : array-like
+        Atmospheric variable measured at the given pressures
+    heights: array-like, optional
+        Atmospheric heights corresponding to the given pressures (default None)
+    bottom : `pint.Quantity`, optional
+        The bottom of the layer as a pressure or height above the surface pressure
+        (default None)
+    depth : `pint.Quantity`, optional
+        The thickness of the layer as a pressure or height above the bottom of the layer
+        (default 100 hPa)
+    interpolate : bool, optional
+        Interpolate the top and bottom points if they are not in the given data
+
+    Returns
+    -------
+    `pint.Quantity`
+        The mixed value of the data variable.
+
+    """
+    # Pull out keyword arguments, remove when we drop Python 2.7
+    heights = kwargs.pop('heights', None)
+    bottom = kwargs.pop('bottom', None)
+    depth = kwargs.pop('depth', 100 * units.hPa)
+    interpolate = kwargs.pop('interpolate', True)
+
+    layer = get_layer(p, *args, heights=heights, bottom=bottom,
+                      depth=depth, interpolate=interpolate)
+    p_layer = layer[0]
+    datavars_layer = layer[1:]
+
+    ret = []
+    for datavar_layer in datavars_layer:
+        actual_depth = abs(p_layer[0] - p_layer[-1])
+        ret.append((-1. / actual_depth.m) * np.trapz(datavar_layer, p_layer) *
+                   datavar_layer.units)
+    return ret

@@ -9,7 +9,7 @@ import pytest
 from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, el,
                         equivalent_potential_temperature,
                         isentropic_interpolation,
-                        lcl, lfc, mixing_ratio,
+                        lcl, lfc, mixed_layer, mixed_parcel, mixing_ratio,
                         mixing_ratio_from_specific_humidity, moist_lapse,
                         most_unstable_cape_cin, most_unstable_parcel,
                         parcel_profile, potential_temperature,
@@ -670,3 +670,24 @@ def test_most_unstable_cape_cin():
     mucape, mucin = most_unstable_cape_cin(pressure, temperature, dewpoint)
     assert_almost_equal(mucape, 157.07111 * units('joule / kilogram'), 4)
     assert_almost_equal(mucin, -15.74772 * units('joule / kilogram'), 4)
+
+
+def test_mixed_parcel():
+    """Tests the mixed parcel calculation."""
+    pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
+    dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.degC
+    parcel_pressure, parcel_temperature, parcel_dewpoint = mixed_parcel(pressure, temperature,
+                                                                        dewpoint,
+                                                                        depth=250 * units.hPa)
+    assert_almost_equal(parcel_pressure, 959. * units.hPa, 6)
+    assert_almost_equal(parcel_temperature, 28.7363771 * units.degC, 6)
+    assert_almost_equal(parcel_dewpoint, 7.1534658 * units.degC, 6)
+
+
+def test_mixed_layer():
+    """Tests the mixed layer calculation."""
+    pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
+    mixed_layer_temperature = mixed_layer(pressure, temperature, depth=250 * units.hPa)[0]
+    assert_almost_equal(mixed_layer_temperature, 16.4024930 * units.degC, 6)
