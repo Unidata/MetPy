@@ -6,10 +6,11 @@ from __future__ import division
 
 # See if we should monkey-patch Barbs for better pivot
 import matplotlib
+import matplotlib.transforms as transforms
+import numpy as np
+
 if float(matplotlib.__version__[:3]) < 2.1:
-    import numpy as np
     from numpy import ma
-    import matplotlib.transforms as transforms
     from matplotlib.patches import CirclePolygon
     from matplotlib.quiver import Barbs
 

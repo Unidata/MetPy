@@ -29,7 +29,7 @@ class StationPlot(object):
     location_names = {'C': (0, 0), 'N': (0, 1), 'NE': (1, 1), 'E': (1, 0), 'SE': (1, -1),
                       'S': (0, -1), 'SW': (-1, -1), 'W': (-1, 0), 'NW': (-1, 1)}
 
-    def __init__(self, ax, x, y, fontsize=10, spacing=None, transform=None):
+    def __init__(self, ax, x, y, fontsize=10, spacing=None, transform=None, **kwargs):
         """Initialize the StationPlot with items that do not change.
 
         This sets up the axes and station locations. The `fontsize` and `spacing`
@@ -51,6 +51,10 @@ class StationPlot(object):
             station plot elements.
         transform : matplotlib.transforms.Transform (or compatible)
             The default transform to apply to the x and y positions when plotting.
+        kwargs
+            Additional keyword arguments to use for matplotlib's plotting functions.
+            These will be passed to all the plotting methods, and thus need to be valid
+            for all plot types, such as `clip_on`.
 
         """
         self.ax = ax
@@ -61,6 +65,7 @@ class StationPlot(object):
         self.transform = transform
         self.items = {}
         self.barbs = None
+        self.default_kwargs = kwargs
 
     def plot_symbol(self, location, codes, symbol_mapper, **kwargs):
         """At the specified location in the station model plot a set of symbols.
@@ -222,10 +227,7 @@ class StationPlot(object):
         """
         location = self._handle_location(location)
 
-        # Pass transform if necessary
-        if 'transform' not in kwargs and self.transform:
-            kwargs['transform'] = self.transform
-
+        kwargs = self._make_kwargs(kwargs)
         text_collection = self.ax.scattertext(self.x, self.y, text, loc=location,
                                               size=kwargs.pop('fontsize', self.fontsize),
                                               **kwargs)
@@ -256,10 +258,12 @@ class StationPlot(object):
         plot_parameter, plot_symbol, plot_text
 
         """
+        kwargs = self._make_kwargs(kwargs)
+
         # Handle transforming our center points. CartoPy doesn't like 1D barbs
         # TODO: This can be removed for cartopy > 0.14.3
-        if hasattr(self.ax, 'projection') and (self.transform or 'transform' in kwargs):
-            trans = kwargs.pop('transform', None) or self.transform
+        if hasattr(self.ax, 'projection') and 'transform' in kwargs:
+            trans = kwargs.pop('transform')
             x, y, _ = self. ax.projection.transform_points(trans, self.x, self.y).T
         else:
             x, y = self.x, self.y
@@ -276,6 +280,21 @@ class StationPlot(object):
             self.barbs.remove()
 
         self.barbs = self.ax.barbs(x, y, u, v, **defaults)
+
+    def _make_kwargs(self, kwargs):
+        """Assemble kwargs as necessary.
+
+        Inserts our defaults as well as ensures transform is present when appropriate.
+        """
+        # Use default kwargs and update with additional ones
+        all_kw = self.default_kwargs.copy()
+        all_kw.update(kwargs)
+
+        # Pass transform if necessary
+        if 'transform' not in all_kw and self.transform:
+            all_kw['transform'] = self.transform
+
+        return all_kw
 
     @staticmethod
     def _to_string_list(vals, fmt):
