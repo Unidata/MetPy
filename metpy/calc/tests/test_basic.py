@@ -4,6 +4,7 @@
 """Test the `basic` module."""
 
 import numpy as np
+import pytest
 
 from metpy.calc import (add_height_to_pressure, add_pressure_to_height, coriolis_parameter,
                         get_wind_components, get_wind_dir, get_wind_speed, heat_index,
@@ -278,3 +279,9 @@ def test_sigma_to_pressure():
     expected = np.arange(0., 1100., 100.) * units.hPa
     pressure = sigma_to_pressure(sigma, surface_pressure, model_top_pressure)
     assert_array_almost_equal(pressure, expected, 5)
+
+
+def test_warning_dir():
+    """Test that warning is raised wind direction > 2Pi."""
+    with pytest.warns(UserWarning):
+        get_wind_components(3. * units('m/s'), 270)
