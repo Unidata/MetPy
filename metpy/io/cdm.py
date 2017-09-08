@@ -328,10 +328,12 @@ class Variable(AttributeContainer):
         for att in self.ncattrs():
             groups.append('\t{0}: {1}'.format(att, getattr(self, att)))
         if self.ndim:
+            # Ensures we get the same string output on windows where shape contains longs
+            shape = tuple(int(s) for s in self.shape)
             if self.ndim > 1:
-                shape_str = str(self.shape)
+                shape_str = str(shape)
             else:
-                shape_str = str(self.shape[0])
+                shape_str = str(shape[0])
             groups.append('\tshape = ' + shape_str)
         return '\n'.join(groups)
 
