@@ -7,9 +7,12 @@ import contextlib
 from io import BytesIO
 import json
 try:
+    from urllib.error import URLError
     from urllib.request import urlopen
 except ImportError:
-    from urllib2 import urlopen
+    from urllib2 import URLError, urlopen
+
+from time import sleep
 
 import numpy as np
 import numpy.ma as ma
@@ -112,7 +115,9 @@ class UseSampleData(object):
         if filename is None:
             return self._urlopen(url)
         else:
-            return open(get_test_data(filename, False), 'rb')
+            fobj = open(get_test_data(filename, False), 'rb')
+            fobj.getcode = lambda: 200
+            return fobj
 
     def __enter__(self):
         """Set up our custom `urlopen` wrapper."""
@@ -129,7 +134,7 @@ class WyomingUpperAir(object):
     r"""Download and parse data from the University of Wyoming's upper air archive."""
 
     @staticmethod
-    def get_data(time, site_id, region='naconf'):
+    def get_data(time, site_id, region='naconf', retries=3, retry_delay=100):
         r"""Download data from the University of Wyoming's upper air archive.
 
         Parameters
@@ -140,6 +145,10 @@ class WyomingUpperAir(object):
             Site id for which data should be downloaded
         region : str
             The region in which the station resides. Defaults to `naconf`.
+        retries : int
+            The number of times a server connection will be reattempted after initial failure.
+        retry_delay : int
+            Number of milliseconds to wait between server reconnect attempts.
 
         Returns
         -------
@@ -150,6 +159,16 @@ class WyomingUpperAir(object):
                '&YEAR={time:%Y}&MONTH={time:%m}&FROM={time:%d%H}&TO={time:%d%H}'
                '&STNM={stid}').format(region=region, time=time, stid=site_id)
         with contextlib.closing(urlopen(url)) as fobj:
+            # If the server is busy, try again
+            if fobj.getcode() == 503:
+                if retries > 0:
+                    sleep(retry_delay / 1000.)
+                    return WyomingUpperAir.get_data(time, site_id, region, retries=retries - 1,
+                                                    retry_delay=retry_delay)
+                else:
+                    raise URLError('Sorry, the Wyoming server is too busy to process '
+                                   'your request. Please try the Iowa archive or try '
+                                   'again later.')
             data = fobj.read()
 
         # See if the return is valid, but has no data
