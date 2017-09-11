@@ -9,7 +9,6 @@ import bz2
 from collections import defaultdict, namedtuple, OrderedDict
 import contextlib
 import datetime
-import gzip
 import logging
 import re
 import struct
@@ -20,8 +19,7 @@ import numpy as np
 from scipy.constants import day, milli
 
 from ._tools import (Array, BitField, Bits, bits_to_code, DictStruct, Enum, IOBuffer,
-                     NamedStruct, zlib_decompress_all_frames)
-from ..cbook import is_string_like
+                     NamedStruct, open_as_needed, zlib_decompress_all_frames)
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -178,15 +176,7 @@ class Level2File(object):
             this will be read from directly.
 
         """
-        if is_string_like(filename):
-            if filename.endswith('.bz2'):
-                fobj = bz2.BZ2File(filename, 'rb')
-            elif filename.endswith('.gz'):
-                fobj = gzip.GzipFile(filename, 'rb')
-            else:
-                fobj = open(filename, 'rb')
-        else:
-            fobj = filename
+        fobj = open_as_needed(filename)
 
         with contextlib.closing(fobj):
             self._buffer = IOBuffer.fromfile(fobj)
@@ -1545,12 +1535,7 @@ class Level3File(object):
             this will be read from directly.
 
         """
-        if is_string_like(filename):
-            fobj = open(filename, 'rb')
-            self.filename = filename
-        else:
-            fobj = filename
-            self.filename = 'No Filename'
+        fobj = open_as_needed(filename)
 
         # Just read in the entire set of data at once
         with contextlib.closing(fobj):
