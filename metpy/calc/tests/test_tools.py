@@ -69,6 +69,23 @@ def test_find_intersections_invalid_direction():
         find_intersections(x, y1, y2, direction='increaing')
 
 
+@pytest.mark.parametrize('direction, expected', [
+    ('all', np.array([[0., 3.5, 4.33333333, 7., 9., 10., 11.5, 13.], np.zeros(8)])),
+    ('increasing', np.array([[0., 4.333, 7., 11.5], np.zeros(4)])),
+    ('decreasing', np.array([[3.5, 10.], np.zeros(2)]))
+])
+def test_find_intersections_intersections_in_data_at_ends(direction, expected):
+    """Test finding intersections when intersections are in the data.
+
+    Test data includes points of intersection, sequential points of intersection, intersection
+    at the ends of the data, and intersections in increasing/decreasing direction.
+    """
+    x = np.arange(14)
+    y1 = np.array([0, 3, 2, 1, -1, 2, 2, 0, 1, 0, 0, -2, 2, 0])
+    y2 = np.zeros_like(y1)
+    assert_array_almost_equal(expected, find_intersections(x, y1, y2, direction=direction), 2)
+
+
 def test_interpolate_nan_linear():
     """Test linear interpolation of arrays with NaNs in the y-coordinate."""
     x = np.linspace(0, 20, 15)
