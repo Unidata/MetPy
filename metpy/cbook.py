@@ -6,7 +6,19 @@
 import os
 import os.path
 
-from matplotlib.cbook import Bunch, is_string_like, iterable
+from matplotlib.cbook import iterable
+
+
+try:
+    string_type = basestring
+except NameError:
+    string_type = str
+
+
+# TODO: This can go away when we remove Python 2
+def is_string_like(s):
+    """Check if an object is a string."""
+    return isinstance(s, string_type)
 
 
 def get_test_data(fname, as_file_obj=True):
@@ -27,4 +39,4 @@ def get_test_data(fname, as_file_obj=True):
     return path
 
 
-__all__ = ('Bunch', 'get_test_data', 'is_string_like', 'iterable')
+__all__ = ('get_test_data', 'is_string_like', 'iterable')

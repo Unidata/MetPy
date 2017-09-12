@@ -5,7 +5,9 @@
 
 from __future__ import print_function
 
+import bz2
 from collections import namedtuple
+import gzip
 import logging
 from struct import Struct
 import zlib
@@ -23,6 +25,23 @@ try:
     bytearray_to_buff = buffer
 except NameError:
     bytearray_to_buff = memoryview
+
+
+def open_as_needed(filename):
+    """Return a file-object given either a filename or an object.
+
+    Handles opening with the right class based on the file extension.
+
+    """
+    if hasattr(filename, 'read'):
+        return filename
+
+    if filename.endswith('.bz2'):
+        return bz2.BZ2File(filename, 'rb')
+    elif filename.endswith('.gz'):
+        return gzip.GzipFile(filename, 'rb')
+    else:
+        return open(filename, 'rb')
 
 
 class UnitLinker(object):

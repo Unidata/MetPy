@@ -15,9 +15,8 @@ import re
 
 import numpy as np
 
-from ._tools import Bits, IOBuffer, NamedStruct, zlib_decompress_all_frames
+from ._tools import Bits, IOBuffer, NamedStruct, open_as_needed, zlib_decompress_all_frames
 from .cdm import cf_to_proj, Dataset
-from ..cbook import is_string_like
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -152,12 +151,7 @@ class GiniFile(object):
             this will be read from directly.
 
         """
-        if is_string_like(filename):
-            fobj = open(filename, 'rb')
-            self.filename = filename
-        else:
-            fobj = filename
-            self.filename = 'No Filename'
+        fobj = open_as_needed(filename)
 
         # Just read in the entire set of data at once
         with contextlib.closing(fobj):
