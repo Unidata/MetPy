@@ -90,6 +90,10 @@ References
            doi:`10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0450(1979)018%3C0861:TAOSPI%3E2.0.CO;2>`_.
 
+.. [Thompson2004] Thompson, R.L., R. Edwards, and C. M. Mead, 2004b: An update to the supercell
+           composite and significant tornado parameters. Preprints, 22nd Conf. on Severe Local
+           Storms, Hyannis, MA, Amer. Meteor. Soc.
+
 .. [Tsonis2008] Tsonis, A. A., 2008: An introduction to atmospheric thermodynamics.
            Cambridge Univ. Press, Cambridge.
 
