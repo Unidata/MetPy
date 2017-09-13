@@ -4,13 +4,17 @@
 """Test the `indices` module."""
 
 from datetime import datetime
+import warnings
 
 from metpy.calc import (bulk_shear, bunkers_storm_motion, mean_pressure_weighted,
                         precipitable_water, significant_tornado, supercell_composite)
+from metpy.deprecation import MetpyDeprecationWarning
 from metpy.io import get_upper_air_data
 from metpy.io.upperair import UseSampleData
 from metpy.testing import assert_almost_equal, assert_array_equal
 from metpy.units import concatenate, units
+
+warnings.simplefilter('ignore', MetpyDeprecationWarning)
 
 
 def test_precipitable_water():
