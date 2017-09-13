@@ -285,3 +285,11 @@ def test_warning_dir():
     """Test that warning is raised wind direction > 2Pi."""
     with pytest.warns(UserWarning):
         get_wind_components(3. * units('m/s'), 270)
+
+
+def test_coriolis_warning():
+    """Test that warning is raise when latitude larger than pi radians."""
+    with pytest.warns(UserWarning):
+        coriolis_parameter(50)
+    with pytest.warns(UserWarning):
+        coriolis_parameter(-50)
