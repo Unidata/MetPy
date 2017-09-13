@@ -325,7 +325,6 @@ class SkewT(object):
 
         # Try to make sane default temperature plotting
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
-        self.ax.set_xlim(-50, 50)
 
         return l
 

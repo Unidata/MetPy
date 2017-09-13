@@ -79,6 +79,7 @@ def test_skewt_shade_cape_cin(test_profile):
     skew.plot(p, tp, 'k')
     skew.shade_cape(p, t, tp)
     skew.shade_cin(p, t, tp)
+    skew.ax.set_xlim(-50, 50)
     return fig
 
 
@@ -91,6 +92,7 @@ def test_skewt_shade_area(test_profile):
     skew.plot(p, t, 'r')
     skew.plot(p, tp, 'k')
     skew.shade_area(p, t, tp)
+    skew.ax.set_xlim(-50, 50)
     return fig
 
 
@@ -114,6 +116,7 @@ def test_skewt_shade_area_kwargs(test_profile):
     skew.plot(p, t, 'r')
     skew.plot(p, tp, 'k')
     skew.shade_area(p, t, tp, facecolor='m')
+    skew.ax.set_xlim(-50, 50)
     return fig
 
 
