@@ -17,11 +17,14 @@ import numpy.ma as ma
 from ._tools import UnitLinker
 from .cdm import Dataset
 from ..calc import get_wind_components
+from ..deprecation import deprecated
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
 
 
+@deprecated('0.6', addendum=' This function is being moved to the Siphon package.',
+            pending=False)
 @exporter.export
 def get_upper_air_data(time, site_id, source='wyoming', **kwargs):
     r"""Download and parse upper air observations from an online archive.
@@ -45,6 +48,9 @@ def get_upper_air_data(time, site_id, source='wyoming', **kwargs):
     Returns
     -------
         :class:`metpy.io.cdm.Dataset` containing the data
+
+    .. deprecated:: 0.6.0
+      Function has been moved to the Siphon library and will be removed from MetPy in 0.8.0.
 
     """
     sources = {'wyoming': WyomingUpperAir, 'iastate': IAStateUpperAir}
