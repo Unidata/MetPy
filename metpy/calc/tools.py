@@ -126,16 +126,24 @@ def find_intersections(x, a, b, direction='all'):
     # causes weirder unit behavior and seems a little less good numerically.
     intersect_y = ((intersect_x - x0) / (x1 - x0)) * (a1 - a0) + a0
 
+    # If there's no intersections, return
+    if len(intersect_x) == 0:
+        return intersect_x, intersect_y
+
+    # Check for duplicates
+    duplicate_mask = (np.ediff1d(intersect_x, to_end=1) != 0)
+
     # Make a mask based on the direction of sign change desired
     if direction == 'increasing':
         mask = sign_change > 0
     elif direction == 'decreasing':
         mask = sign_change < 0
     elif direction == 'all':
-        return intersect_x, intersect_y
+        return intersect_x[duplicate_mask], intersect_y[duplicate_mask]
     else:
         raise ValueError('Unknown option for direction: {0}'.format(str(direction)))
-    return intersect_x[mask], intersect_y[mask]
+
+    return intersect_x[mask & duplicate_mask], intersect_y[mask & duplicate_mask]
 
 
 @exporter.export
