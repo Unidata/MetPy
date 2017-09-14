@@ -18,12 +18,9 @@ from __future__ import division
 
 import functools
 
-import matplotlib.units as munits
 import numpy as np
 import pint
 import pint.unit
-
-from .cbook import iterable
 
 UndefinedUnitError = pint.UndefinedUnitError
 DimensionalityError = pint.DimensionalityError
@@ -220,38 +217,56 @@ def check_units(*units_by_pos, **units_by_name):
     return dec
 
 
-class PintConverter(munits.ConversionInterface):
-    """Implement support for pint within matplotlib's unit conversion framework."""
+try:
+    # Try to enable pint's built-in support
+    units.setup_matplotlib()
+except (AttributeError, RuntimeError):  # Pint's not available, try to enable our own
+    import matplotlib.units as munits
 
-    @staticmethod
-    def convert(value, unit, axis):
-        """Convert pint :`Quantity` instances for matplotlib to use.
+    # Inheriting from object fixes the fact that matplotlib 1.4 doesn't
+    # TODO: Remove object when we drop support for matplotlib 1.4
+    class PintAxisInfo(munits.AxisInfo, object):
+        """Support default axis and tick labeling and default limits."""
 
-        Currently only strips off the units to avoid matplotlib errors since we can't reliably
-        have pint.Quantity instances not decay to numpy arrays.
-        """
-        if hasattr(value, 'magnitude'):
-            return value.magnitude
-        elif iterable(value):
-            try:
-                return [v.magnitude for v in value]
-            except AttributeError:
-                return value
-        else:
-            return value
+        def __init__(self, units):
+            """Set the default label to the pretty-print of the unit."""
+            super(PintAxisInfo, self).__init__(label='{:P}'.format(units))
 
-    # TODO: Once we get things properly squared away between pint and everything else
-    # these will need to be functional.
-    # @staticmethod
-    # def axisinfo(unit, axis):
-    #     return None
-    #
-    # @staticmethod
-    # def default_units(x, axis):
-    #     return x.to_base_units()
+    # TODO: Remove object when we drop support for matplotlib 1.4
+    class PintConverter(munits.ConversionInterface, object):
+        """Implement support for pint within matplotlib's unit conversion framework."""
 
+        def __init__(self, registry):
+            """Initialize converter for pint units."""
+            super(PintConverter, self).__init__()
+            self._reg = registry
 
-# Register the class
-munits.registry[units.Quantity] = PintConverter()
+        def convert(self, value, unit, axis):
+            """Convert :`Quantity` instances for matplotlib to use."""
+            if isinstance(value, (tuple, list)):
+                return [self._convert_value(v, unit, axis) for v in value]
+            else:
+                return self._convert_value(value, unit, axis)
 
-del munits, pint
+        def _convert_value(self, value, unit, axis):
+            """Handle converting using attached unit or falling back to axis units."""
+            if hasattr(value, 'units'):
+                return value.to(unit).magnitude
+            else:
+                return self._reg.Quantity(value, axis.get_units()).to(unit).magnitude
+
+        @staticmethod
+        def axisinfo(unit, axis):
+            """Return axis information for this particular unit."""
+            return PintAxisInfo(unit)
+
+        @staticmethod
+        def default_units(x, axis):
+            """Get the default unit to use for the given combination of unit and axis."""
+            return getattr(x, 'units', None)
+
+    # Register the class
+    munits.registry[units.Quantity] = PintConverter(units)
+    del munits
+
+del pint
