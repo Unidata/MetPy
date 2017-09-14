@@ -108,12 +108,7 @@ def get_wind_components(speed, wdir):
      <Quantity(7.071067811865477, 'meter / second')>)
 
     """
-    try:
-        wdir = wdir.to('radians').m
-    except AttributeError:
-        pass
-    if np.greater(np.nanmax(wdir), 4 * np.pi):
-        warnings.warn('Wind direction >4Pi. Ensure proper units are given.')
+    wdir = _check_radians(wdir, max_radians=4 * np.pi)
     u = -speed * np.sin(wdir)
     v = -speed * np.cos(wdir)
     return u, v
@@ -307,6 +302,7 @@ def coriolis_parameter(latitude):
         The corresponding coriolis force at each point
 
     """
+    latitude = _check_radians(latitude, max_radians=np.pi / 2)
     return 2. * omega * np.sin(latitude)
 
 
@@ -406,3 +402,30 @@ def sigma_to_pressure(sigma, psfc, ptop):
         raise ValueError('Pressure input should be non-negative')
 
     return sigma * (psfc - ptop) + ptop
+
+
+def _check_radians(value, max_radians=2 * np.pi):
+    """Input validation of values that could be in degrees instead of radians.
+
+    Parameters
+    ----------
+    value : `pint.Quantity`
+        The input value to check.
+
+    max_radians : float
+        Maximum absolute value of radians before warning.
+
+    Returns
+    -------
+    `pint.Quantity`
+        The input value
+
+    """
+    try:
+        value = value.to('radians').m
+    except AttributeError:
+        pass
+    if np.greater(np.nanmax(np.abs(value)), max_radians):
+        warnings.warn('Input over {} radians. '
+                      'Ensure proper units are given.'.format(max_radians))
+    return value
