@@ -4,11 +4,12 @@
 """Utilities for use in making plots."""
 
 from datetime import datetime
-import os
+import posixpath
 
 from matplotlib.collections import LineCollection
 from matplotlib.pyplot import imread
 import numpy as np
+import pkg_resources
 
 from ..units import concatenate
 
@@ -44,7 +45,49 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', **kwargs):
     return ax
 
 
-def add_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
+def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs):
+    """Add the MetPy or Unidata logo to a figure.
+
+    Adds an image to the figure.
+
+    Parameters
+    ----------
+    fig : `matplotlib.figure`
+       The `figure` instance used for plotting
+    x : int
+       x position padding in pixels
+    y : float
+       y position padding in pixels
+    zorder : int
+       The zorder of the logo
+    which : str
+       Which logo to plot 'metpy' or 'unidata'
+    size : str
+       Size of logo to be used. Can be 'small' for 75 px square or 'large' for
+       150 px square.
+
+    Returns
+    -------
+    fig : `matplotlib.figure`
+       The `figure` instance used for plotting
+
+    """
+    fname_suffix = {'small': '_75x75.png',
+                    'large': '_150x150.png'}
+    fname_prefix = {'unidata': 'unidata',
+                    'metpy': 'metpy'}
+    try:
+        fname = fname_prefix[which] + fname_suffix[size]
+        fpath = posixpath.join('_static', fname)
+    except KeyError:
+        raise ValueError('Unknown logo size or selection')
+
+    logo = imread(pkg_resources.resource_stream('metpy.plots', fpath))
+    fig.figimage(logo, x, y, zorder=zorder, **kwargs)
+    return fig
+
+
+def add_metpy_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
     """Add the MetPy logo to a figure.
 
     Adds an image of the MetPy logo to the figure.
@@ -69,15 +112,35 @@ def add_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
        The `figure` instance used for plotting
 
     """
-    fnames = {'small': 'metpy_75x75.png',
-              'large': 'metpy_150x150.png'}
-    try:
-        metpy_logo = imread(os.path.join(os.path.dirname(__file__), '_static', fnames[size]))
-    except KeyError:
-        raise ValueError('Unknown option for size: {0}'.format(str(size)))
+    _add_logo(fig, x=x, y=y, zorder=zorder, which='metpy', size=size, **kwargs)
 
-    fig.figimage(metpy_logo, x, y, zorder=zorder, **kwargs)
-    return fig
+
+def add_unidata_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
+    """Add the Unidata logo to a figure.
+
+    Adds an image of the MetPy logo to the figure.
+
+    Parameters
+    ----------
+    fig : `matplotlib.figure`
+       The `figure` instance used for plotting
+    x : int
+       x position padding in pixels
+    y : float
+       y position padding in pixels
+    zorder : int
+       The zorder of the logo
+    size : str
+       Size of logo to be used. Can be 'small' for 75 px square or 'large' for
+       150 px square.
+
+    Returns
+    -------
+    fig : `matplotlib.figure`
+       The `figure` instance used for plotting
+
+    """
+    _add_logo(fig, x=x, y=y, zorder=zorder, which='unidata', size=size, **kwargs)
 
 
 # Not part of public API
