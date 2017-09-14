@@ -223,14 +223,17 @@ try:
 except (AttributeError, RuntimeError):  # Pint's not available, try to enable our own
     import matplotlib.units as munits
 
-    class PintAxisInfo(munits.AxisInfo):
+    # Inheriting from object fixes the fact that matplotlib 1.4 doesn't
+    # TODO: Remove object when we drop support for matplotlib 1.4
+    class PintAxisInfo(munits.AxisInfo, object):
         """Support default axis and tick labeling and default limits."""
 
         def __init__(self, units):
             """Set the default label to the pretty-print of the unit."""
             super(PintAxisInfo, self).__init__(label='{:P}'.format(units))
 
-    class PintConverter(munits.ConversionInterface):
+    # TODO: Remove object when we drop support for matplotlib 1.4
+    class PintConverter(munits.ConversionInterface, object):
         """Implement support for pint within matplotlib's unit conversion framework."""
 
         def __init__(self, registry):
