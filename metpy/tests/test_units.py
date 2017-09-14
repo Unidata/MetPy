@@ -18,6 +18,7 @@ def test_axhline():
     fig, ax = plt.subplots()
     ax.axhline(930 * units('mbar'))
     ax.set_ylim(900, 950)
+    ax.set_ylabel('')
     return fig
 
 
@@ -27,6 +28,7 @@ def test_axvline():
     fig, ax = plt.subplots()
     ax.axvline(0 * units('degC'))
     ax.set_xlim(-1, 1)
+    ax.set_xlabel('')
     return fig
 
 #
