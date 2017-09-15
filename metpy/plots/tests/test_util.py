@@ -9,7 +9,7 @@ import matplotlib
 import matplotlib.pyplot as plt
 import pytest
 
-from metpy.plots import add_logo, add_timestamp
+from metpy.plots import add_metpy_logo, add_timestamp, add_unidata_logo
 # Fixture to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401
 
@@ -28,19 +28,28 @@ def test_add_timestamp():
 
 @pytest.mark.mpl_image_compare(tolerance={'1.4': 0.004}.get(MPL_VERSION, 0.01),
                                remove_text=True)
-def test_add_logo_small():
-    """Test adding a logo to a figure."""
+def test_add_metpy_logo_small():
+    """Test adding a MetPy logo to a figure."""
     fig = plt.figure(figsize=(9, 9))
-    add_logo(fig)
+    add_metpy_logo(fig)
     return fig
 
 
 @pytest.mark.mpl_image_compare(tolerance={'1.4': 0.004}.get(MPL_VERSION, 0.01),
                                remove_text=True)
-def test_add_logo_large():
-    """Test adding a logo to a figure."""
+def test_add_metpy_logo_large():
+    """Test adding a large MetPy logo to a figure."""
     fig = plt.figure(figsize=(9, 9))
-    add_logo(fig, size='large')
+    add_metpy_logo(fig, size='large')
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.004}.get(MPL_VERSION, 0.01),
+                               remove_text=True)
+def test_add_unidata_logo():
+    """Test adding a Unidata logo to a figure."""
+    fig = plt.figure(figsize=(9, 9))
+    add_unidata_logo(fig)
     return fig
 
 
@@ -48,4 +57,4 @@ def test_add_logo_invalid_size():
     """Test adding a logo to a figure with an invalid size specification."""
     fig = plt.figure(figsize=(9, 9))
     with pytest.raises(ValueError):
-        add_logo(fig, size='jumbo')
+        add_metpy_logo(fig, size='jumbo')

@@ -52,7 +52,9 @@ setup(
 
     packages=find_packages(exclude=['doc', 'examples']),
     package_data={'metpy.plots': ['colortables/*.tbl', 'nexrad_tables/*.tbl',
-                                  'fonts/*.ttf']},
+                                  'fonts/*.ttf', '_static/metpy_75x75.png',
+                                  '_static/metpy_150x150.png', '_static/unidata_75x75.png',
+                                  '_static/unidata_150x150.png']},
 
     install_requires=dependencies,
     extras_require={
