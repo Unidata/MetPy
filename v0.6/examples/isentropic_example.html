@@ -1,0 +1,497 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Isentropic Analysis &mdash; MetPy 0.6.0</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/isentropic_example.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 0.6.0" href="../index.html"/>
+        <link rel="up" title="MetPy Examples" href="index.html"/>
+        <link rel="next" title="Meteogram" href="meteogram_metpy.html"/>
+        <link rel="prev" title="Four Panel Map" href="Four_Panel_Map.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.6.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Four_Panel_Map.html">Four Panel Map</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Isentropic Analysis</a></li>
+<li class="toctree-l3"><a class="reference internal" href="meteogram_metpy.html">Meteogram</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#calculations">Calculations</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#file-formats">File Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#gridding">Gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="index.html#plotting">Plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">MetPy Examples</a> &raquo;</li>
+        
+      <li>Isentropic Analysis</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="../_sources/examples/isentropic_example.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="isentropic-analysis">
+<span id="sphx-glr-examples-isentropic-example-py"></span><h1>Isentropic Analysis<a class="headerlink" href="#isentropic-analysis" title="Permalink to this headline">¶</a></h1>
+<p>The MetPy function <em class="xref py py-obj">mcalc.isentropic_interpolation</em> allows for isentropic analysis from model
+analysis data in isobaric coordinates.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="kn">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">num2date</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="kn">as</span> <span class="nn">mcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
+</pre></div>
+</div>
+<p><strong>Getting the data</strong></p>
+<p>In this example, NARR reanalysis data for 18 UTC 04 April 1987 from the National Centers
+for Environmental Information (<a class="reference external" href="https://nomads.ncdc.noaa.gov">https://nomads.ncdc.noaa.gov</a>) will be used.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;isobaric&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;Lambert_Conformal&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;u_wind&#39;</span><span class="p">,</span> <span class="s1">&#39;v_wind&#39;</span><span class="p">,</span> <span class="s1">&#39;Geopotential_height&#39;</span><span class="p">,</span> <span class="s1">&#39;Specific_humidity&#39;</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>We will reduce the dimensionality of the data as it is pulled in to remove an empty time
+dimension. Additionally, units are required for input data, so the proper units will also
+be attached.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Assign data to variable names</span>
+<span class="n">dtime</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;Geopotential_height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">dlev</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;Geopotential_height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">dimensions</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">lat</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][:]</span>
+<span class="n">lon</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][:]</span>
+<span class="n">lev</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dlev</span><span class="p">][:]</span> <span class="o">*</span> <a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dlev</span><span class="p">]</span><span class="o">.</span><a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">)</span>
+<span class="n">times</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="n">dtime</span><span class="p">]</span>
+<span class="n">vtimes</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">times</span><span class="p">[:],</span> <span class="n">times</span><span class="o">.</span><a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">)</span>
+
+<span class="n">temps</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">]</span>
+<span class="n">tmp</span> <span class="o">=</span> <span class="n">temps</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span>
+<span class="n">uwnd</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">]</span><span class="o">.</span><a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">)</span>
+<span class="n">vwnd</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;v_wind&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;v_wind&#39;</span><span class="p">]</span><span class="o">.</span><a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">)</span>
+<span class="n">hgt</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;Geopotential_height&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span> <a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">meter</span>
+<span class="n">spech</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;Specific_humidity&#39;</span><span class="p">][</span><span class="mi">0</span><span class="p">,</span> <span class="p">:]</span> <span class="o">*</span>
+         <a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;Specific_humidity&#39;</span><span class="p">]</span><span class="o">.</span><a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">))</span>
+</pre></div>
+</div>
+<p>To properly interpolate to isentropic coordinates, the function must know the desired output
+isentropic levels. An array with these levels will be created below.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">isentlevs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">296.</span><span class="p">]</span> <span class="o">*</span> <a href="../api/generated/metpy.units.DimensionalityError.html#metpy.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span>
+</pre></div>
+</div>
+<p><strong>Conversion to Isentropic Coordinates</strong></p>
+<p>Once three dimensional data in isobaric coordinates has been pulled and the desired
+isentropic levels created, the conversion to isentropic coordinates can begin. Data will be
+passed to the function as below. The function requires that isentropic levels, isobaric
+levels, and temperature be input. Any additional inputs (in this case relative humidity, u,
+and v wind components) will be linearly interpolated to isentropic space.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">isent_anal</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.isentropic_interpolation.html#metpy.calc.isentropic_interpolation" title="View documentation for metpy.calc.isentropic_interpolation"><span class="n">mcalc</span><span class="o">.</span><span class="n">isentropic_interpolation</span></a><span class="p">(</span><span class="n">isentlevs</span><span class="p">,</span>
+                                            <span class="n">lev</span><span class="p">,</span>
+                                            <span class="n">tmp</span><span class="p">,</span>
+                                            <span class="n">spech</span><span class="p">,</span>
+                                            <span class="n">uwnd</span><span class="p">,</span>
+                                            <span class="n">vwnd</span><span class="p">,</span>
+                                            <span class="n">hgt</span><span class="p">,</span>
+                                            <span class="n">tmpk_out</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The output is a list, so now we will separate the variables to different names before
+plotting.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">isentprs</span> <span class="o">=</span> <span class="n">isent_anal</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+<span class="n">isenttmp</span> <span class="o">=</span> <span class="n">isent_anal</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">isentspech</span> <span class="o">=</span> <span class="n">isent_anal</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">isentu</span> <span class="o">=</span> <span class="n">isent_anal</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;kt&#39;</span><span class="p">)</span>
+<span class="n">isentv</span> <span class="o">=</span> <span class="n">isent_anal</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;kt&#39;</span><span class="p">)</span>
+<span class="n">isenthgt</span> <span class="o">=</span> <span class="n">isent_anal</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span>
+</pre></div>
+</div>
+<p>A quick look at the shape of these variables will show that the data is now in isentropic
+coordinates, with the number of vertical levels as specified above.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">isentprs</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">isentspech</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">isentu</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">isentv</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">isenttmp</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">isenthgt</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-default"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Converting to Relative Humidity</strong></p>
+<p>The NARR only gives specific humidity on isobaric vertical levels, so relative humidity will
+have to be calculated after the interpolation to isentropic space.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">isentrh</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.relative_humidity_from_specific_humidity.html#metpy.calc.relative_humidity_from_specific_humidity" title="View documentation for metpy.calc.relative_humidity_from_specific_humidity"><span class="n">mcalc</span><span class="o">.</span><span class="n">relative_humidity_from_specific_humidity</span></a><span class="p">(</span><span class="n">isentspech</span><span class="p">,</span> <span class="n">isenttmp</span><span class="p">,</span> <span class="n">isentprs</span><span class="p">)</span>
+</pre></div>
+</div>
+<p><strong>Plotting the Isentropic Analysis</strong></p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Set up our projection</span>
+<span class="n">crs</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">central_latitude</span><span class="o">=</span><span class="mf">45.0</span><span class="p">)</span>
+
+
+<span class="c1"># Set up our array of latitude and longitude values and transform to</span>
+<span class="c1"># the desired projection.</span>
+<span class="n">tlatlons</span> <span class="o">=</span> <span class="n">crs</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
+<span class="n">tlons</span> <span class="o">=</span> <span class="n">tlatlons</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
+<span class="n">tlats</span> <span class="o">=</span> <span class="n">tlatlons</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># Coordinates to limit map area</span>
+<span class="n">bounds</span> <span class="o">=</span> <span class="p">[(</span><span class="o">-</span><span class="mf">122.</span><span class="p">,</span> <span class="o">-</span><span class="mf">75.</span><span class="p">,</span> <span class="mf">25.</span><span class="p">,</span> <span class="mf">50.</span><span class="p">)]</span>
+<span class="c1"># Choose a level to plot, in this case 296 K</span>
+<span class="n">level</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="c1"># Get data to plot state and province boundaries</span>
+<span class="n">states_provinces</span> <span class="o">=</span> <span class="n">cfeature</span><span class="o">.</span><span class="n">NaturalEarthFeature</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;cultural&#39;</span><span class="p">,</span>
+                                                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;admin_1_states_provinces_lakes&#39;</span><span class="p">,</span>
+                                                <span class="n">scale</span><span class="o">=</span><span class="s1">&#39;50m&#39;</span><span class="p">,</span>
+                                                <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
+
+<span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/figure_api.html#matplotlib.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="o">*</span><span class="n">bounds</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">states_provinces</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Plot the surface</span>
+<span class="n">clevisent</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">25</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">tlons</span><span class="p">,</span> <span class="n">tlats</span><span class="p">,</span> <span class="n">isentprs</span><span class="p">[</span><span class="n">level</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">clevisent</span><span class="p">,</span>
+                <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.clabel" title="View documentation for matplotlib.pyplot.clabel"><span class="n">plt</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+<span class="c1"># Plot RH</span>
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">tlons</span><span class="p">,</span> <span class="n">tlats</span><span class="p">,</span> <span class="n">isentrh</span><span class="p">[</span><span class="n">level</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+                 <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gist_earth_r</span><span class="p">)</span>
+<span class="n">cb</span> <span class="o">=</span> <a href="http://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="nb">max</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                  <span class="n">extendrect</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+<span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Relative Humidity&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+
+<span class="c1"># Transform Vectors before plotting, then plot wind barbs.</span>
+<span class="n">ut</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">crs</span><span class="o">.</span><span class="n">transform_vectors</span><span class="p">(</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">isentu</span><span class="p">[</span><span class="n">level</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+                               <span class="n">isentv</span><span class="p">[</span><span class="n">level</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">tlons</span><span class="p">,</span> <span class="n">tlats</span><span class="p">,</span> <span class="n">ut</span><span class="p">,</span> <span class="n">vt</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">regrid_shape</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1"># Make some titles</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;{:.0f} K Isentropic Pressure (hPa), Wind (kt), Relative Humidity (percent)&#39;</span>
+          <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">isentlevs</span><span class="p">[</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">),</span>
+          <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;VALID: {:s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">vtimes</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/tight_layout_api.html#matplotlib.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_isentropic_example_001.png" class="align-center" src="../_images/sphx_glr_isentropic_example_001.png" />
+<p><strong>Montgomery Streamfunction</strong></p>
+<p>The Montgomery Streamfunction, <span class="math">\({\psi} = gdz + CpT\)</span>, is often desired because its
+gradient is proportional to the geostrophic wind in isentropic space. This can be easily
+calculated with <em class="xref py py-obj">mcalc.montgomery_streamfunction</em>.</p>
+<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Calculate Montgomery Streamfunction and scale by 10^-2 for plotting</span>
+<span class="n">msf</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.montgomery_streamfunction.html#metpy.calc.montgomery_streamfunction" title="View documentation for metpy.calc.montgomery_streamfunction"><span class="n">mcalc</span><span class="o">.</span><span class="n">montgomery_streamfunction</span></a><span class="p">(</span><span class="n">isenthgt</span><span class="p">,</span> <span class="n">isenttmp</span><span class="p">)</span> <span class="o">/</span> <span class="mf">100.</span>
+
+<span class="c1"># Choose a level to plot, in this case 296 K</span>
+<span class="n">level</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/figure_api.html#matplotlib.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">))</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="o">*</span><span class="n">bounds</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">states_provinces</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="c1"># Plot the surface</span>
+<span class="n">clevmsf</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">tlons</span><span class="p">,</span> <span class="n">tlats</span><span class="p">,</span> <span class="n">msf</span><span class="p">[</span><span class="n">level</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">clevmsf</span><span class="p">,</span>
+                <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.clabel" title="View documentation for matplotlib.pyplot.clabel"><span class="n">plt</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+           <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="c1"># Plot RH</span>
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">tlons</span><span class="p">,</span> <span class="n">tlats</span><span class="p">,</span> <span class="n">isentrh</span><span class="p">[</span><span class="n">level</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">106</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+                 <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">gist_earth_r</span><span class="p">)</span>
+<span class="n">cb</span> <span class="o">=</span> <a href="http://matplotlib.org/api/colorbar_api.html#matplotlib.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="nb">max</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+                  <span class="n">extendrect</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+<span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Relative Humidity&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
+
+<span class="c1"># Transform Vectors before plotting, then plot wind barbs.</span>
+<span class="n">ut</span><span class="p">,</span> <span class="n">vt</span> <span class="o">=</span> <span class="n">crs</span><span class="o">.</span><span class="n">transform_vectors</span><span class="p">(</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">isentu</span><span class="p">[</span><span class="n">level</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+                               <span class="n">isentv</span><span class="p">[</span><span class="n">level</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:]</span><span class="o">.</span><span class="n">m</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">tlons</span><span class="p">,</span> <span class="n">tlats</span><span class="p">,</span> <span class="n">ut</span><span class="p">,</span> <span class="n">vt</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">regrid_shape</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+
+<span class="c1"># Make some titles</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;{:.0f} K Montgomery Streamfunction &#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">isentlevs</span><span class="p">[</span><span class="n">level</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="o">+</span>
+          <span class="sa">r</span><span class="s1">&#39;($10^{-2} m^2 s^{-2}$), &#39;</span> <span class="o">+</span>
+          <span class="s1">&#39;Wind (kt), Relative Humidity (percent)&#39;</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;left&#39;</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;VALID: {:s}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">vtimes</span><span class="p">[</span><span class="mi">0</span><span class="p">])),</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">)</span>
+<a href="http://matplotlib.org/api/tight_layout_api.html#matplotlib.tight_layout" title="View documentation for matplotlib.pyplot.tight_layout"><span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span></a><span class="p">()</span>
+</pre></div>
+</div>
+<img alt="../_images/sphx_glr_isentropic_example_002.png" class="align-center" src="../_images/sphx_glr_isentropic_example_002.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  7.985 seconds)</p>
+<div class="sphx-glr-footer docutils container">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/isentropic_example.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">isentropic_example.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/isentropic_example.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">isentropic_example.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="meteogram_metpy.html" class="btn btn-neutral float-right" title="Meteogram" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Four_Panel_Map.html" class="btn btn-neutral" title="Four Panel Map" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Sep 15, 2017 at 18:25:57.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.6.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

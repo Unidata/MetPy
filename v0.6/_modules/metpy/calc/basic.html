@@ -1,0 +1,689 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.calc.basic &mdash; MetPy 0.6.0</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/calc/basic.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MetPy 0.6.0" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.6.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.calc.basic</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.calc.basic</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2008-2015 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sd">&quot;&quot;&quot;Contains a collection of basic calculations.</span>
+
+<span class="sd">These include:</span>
+
+<span class="sd">* wind components</span>
+<span class="sd">* heat index</span>
+<span class="sd">* windchill</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">g</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">Rd</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">masked_array</span><span class="p">,</span> <span class="n">units</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+
+<div class="viewcode-block" id="get_wind_speed"><a class="viewcode-back" href="../../../api/generated/metpy.calc.get_wind_speed.html#metpy.calc.get_wind_speed">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">get_wind_speed</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the wind speed from u and v-components.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : array_like</span>
+<span class="sd">        Wind component in the X (East-West) direction</span>
+<span class="sd">    v : array_like</span>
+<span class="sd">        Wind component in the Y (North-South) direction</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    wind speed: array_like</span>
+<span class="sd">        The speed of the wind</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    get_wind_components</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">speed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">u</span> <span class="o">+</span> <span class="n">v</span> <span class="o">*</span> <span class="n">v</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">speed</span></div>
+
+
+<div class="viewcode-block" id="get_wind_dir"><a class="viewcode-back" href="../../../api/generated/metpy.calc.get_wind_dir.html#metpy.calc.get_wind_dir">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">get_wind_dir</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the wind direction from u and v-components.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : array_like</span>
+<span class="sd">        Wind component in the X (East-West) direction</span>
+<span class="sd">    v : array_like</span>
+<span class="sd">        Wind component in the Y (North-South) direction</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    wind direction: `pint.Quantity`</span>
+<span class="sd">        The direction of the wind, specified as the direction from</span>
+<span class="sd">        which it is blowing, with 0 being North.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    get_wind_components</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">wdir</span> <span class="o">=</span> <span class="mf">90.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="o">-</span><span class="n">v</span><span class="p">,</span> <span class="o">-</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">origshape</span> <span class="o">=</span> <span class="n">wdir</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">wdir</span> <span class="o">=</span> <span class="n">atleast_1d</span><span class="p">(</span><span class="n">wdir</span><span class="p">)</span>
+    <span class="n">wdir</span><span class="p">[</span><span class="n">wdir</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="mf">360.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">deg</span>
+    <span class="k">return</span> <span class="n">wdir</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">origshape</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="get_wind_components"><a class="viewcode-back" href="../../../api/generated/metpy.calc.get_wind_components.html#metpy.calc.get_wind_components">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">get_wind_components</span><span class="p">(</span><span class="n">speed</span><span class="p">,</span> <span class="n">wdir</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the U, V wind vector components from the speed and direction.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    speed : array_like</span>
+<span class="sd">        The wind speed (magnitude)</span>
+<span class="sd">    wdir : array_like</span>
+<span class="sd">        The wind direction, specified as the direction from which the wind is</span>
+<span class="sd">        blowing, with 0 being North.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    u, v : tuple of array_like</span>
+<span class="sd">        The wind components in the X (East-West) and Y (North-South)</span>
+<span class="sd">        directions, respectively.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    get_wind_speed</span>
+<span class="sd">    get_wind_dir</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from metpy.units import units</span>
+<span class="sd">    &gt;&gt;&gt; metpy.calc.get_wind_components(10. * units(&#39;m/s&#39;), 225. * units.deg)</span>
+<span class="sd">    (&lt;Quantity(7.071067811865475, &#39;meter / second&#39;)&gt;,</span>
+<span class="sd">     &lt;Quantity(7.071067811865477, &#39;meter / second&#39;)&gt;)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">wdir</span> <span class="o">=</span> <span class="n">_check_radians</span><span class="p">(</span><span class="n">wdir</span><span class="p">,</span> <span class="n">max_radians</span><span class="o">=</span><span class="mi">4</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="n">speed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">wdir</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="o">-</span><span class="n">speed</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">wdir</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span></div>
+
+
+<div class="viewcode-block" id="windchill"><a class="viewcode-back" href="../../../api/generated/metpy.calc.windchill.html#metpy.calc.windchill">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="n">temperature</span><span class="o">=</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">windchill</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">face_level_winds</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">mask_undefined</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the Wind Chill Temperature Index (WCTI).</span>
+
+<span class="sd">    Calculates WCTI from the current temperature and wind speed using the formula</span>
+<span class="sd">    outlined by the FCM [FCMR192003]_.</span>
+
+<span class="sd">    Specifically, these formulas assume that wind speed is measured at</span>
+<span class="sd">    10m.  If, instead, the speeds are measured at face level, the winds</span>
+<span class="sd">    need to be multiplied by a factor of 1.5 (this can be done by specifying</span>
+<span class="sd">    `face_level_winds` as `True`.)</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The air temperature</span>
+<span class="sd">    speed : `pint.Quantity`</span>
+<span class="sd">        The wind speed at 10m.  If instead the winds are at face level,</span>
+<span class="sd">        `face_level_winds` should be set to `True` and the 1.5 multiplicative</span>
+<span class="sd">        correction will be applied automatically.</span>
+<span class="sd">    face_level_winds : bool, optional</span>
+<span class="sd">        A flag indicating whether the wind speeds were measured at facial</span>
+<span class="sd">        level instead of 10m, thus requiring a correction.  Defaults to</span>
+<span class="sd">        `False`.</span>
+<span class="sd">    mask_undefined : bool, optional</span>
+<span class="sd">        A flag indicating whether a masked array should be returned with</span>
+<span class="sd">        values where wind chill is undefined masked.  These are values where</span>
+<span class="sd">        the temperature &gt; 50F or wind speed &lt;= 3 miles per hour. Defaults</span>
+<span class="sd">        to `True`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding Wind Chill Temperature Index value(s)</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    heat_index</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Correct for lower height measurement of winds if necessary</span>
+    <span class="k">if</span> <span class="n">face_level_winds</span><span class="p">:</span>
+        <span class="c1"># No in-place so that we copy</span>
+        <span class="c1"># noinspection PyAugmentAssignment</span>
+        <span class="n">speed</span> <span class="o">=</span> <span class="n">speed</span> <span class="o">*</span> <span class="mf">1.5</span>
+
+    <span class="n">temp_limit</span><span class="p">,</span> <span class="n">speed_limit</span> <span class="o">=</span> <span class="mf">10.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">,</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mph</span>
+    <span class="n">speed_factor</span> <span class="o">=</span> <span class="n">speed</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;km/hr&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">**</span> <span class="mf">0.16</span>
+    <span class="n">wcti</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">((</span><span class="mf">0.6215</span> <span class="o">+</span> <span class="mf">0.3965</span> <span class="o">*</span> <span class="n">speed_factor</span><span class="p">)</span> <span class="o">*</span> <span class="n">temperature</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">-</span>
+                          <span class="mf">11.37</span> <span class="o">*</span> <span class="n">speed_factor</span> <span class="o">+</span> <span class="mf">13.12</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+
+    <span class="c1"># See if we need to mask any undefined values</span>
+    <span class="k">if</span> <span class="n">mask_undefined</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">temperature</span> <span class="o">&gt;</span> <span class="n">temp_limit</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">speed</span> <span class="o">&lt;=</span> <span class="n">speed_limit</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="n">wcti</span> <span class="o">=</span> <span class="n">masked_array</span><span class="p">(</span><span class="n">wcti</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">wcti</span></div>
+
+
+<div class="viewcode-block" id="heat_index"><a class="viewcode-back" href="../../../api/generated/metpy.calc.heat_index.html#metpy.calc.heat_index">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">heat_index</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">rh</span><span class="p">,</span> <span class="n">mask_undefined</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the Heat Index from the current temperature and relative humidity.</span>
+
+<span class="sd">    The implementation uses the formula outlined in [Rothfusz1990]_. This equation is a</span>
+<span class="sd">    multi-variable least-squares regression of the values obtained in [Steadman1979]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        Air temperature</span>
+<span class="sd">    rh : array_like</span>
+<span class="sd">        The relative humidity expressed as a unitless ratio in the range [0, 1].</span>
+<span class="sd">        Can also pass a percentage if proper units are attached.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding Heat Index value(s)</span>
+
+<span class="sd">    Other Parameters</span>
+<span class="sd">    ----------------</span>
+<span class="sd">    mask_undefined : bool, optional</span>
+<span class="sd">        A flag indicating whether a masked array should be returned with</span>
+<span class="sd">        values where heat index is undefined masked.  These are values where</span>
+<span class="sd">        the temperature &lt; 80F or relative humidity &lt; 40 percent. Defaults</span>
+<span class="sd">        to `True`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    windchill</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">temperature</span> <span class="o">-</span> <span class="mf">0.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span>
+    <span class="n">rh2</span> <span class="o">=</span> <span class="n">rh</span> <span class="o">*</span> <span class="n">rh</span>
+    <span class="n">delta2</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">delta</span>
+
+    <span class="c1"># Calculate the Heat Index -- constants converted for RH in [0, 1]</span>
+    <span class="n">hi</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mf">42.379</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span> <span class="o">+</span> <span class="mf">2.04901523</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">+</span>
+          <span class="mf">1014.333127</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">rh</span> <span class="o">-</span> <span class="mf">22.475541</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">rh</span> <span class="o">-</span>
+          <span class="mf">6.83783e-3</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">delta2</span> <span class="o">-</span> <span class="mf">5.481717e2</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">rh2</span> <span class="o">+</span>
+          <span class="mf">1.22874e-1</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">delta2</span> <span class="o">*</span> <span class="n">rh</span> <span class="o">+</span> <span class="mf">8.5282</span> <span class="o">*</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">rh2</span> <span class="o">-</span>
+          <span class="mf">1.99e-2</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">delta_degF</span> <span class="o">*</span> <span class="n">delta2</span> <span class="o">*</span> <span class="n">rh2</span><span class="p">)</span>
+
+    <span class="c1"># See if we need to mask any undefined values</span>
+    <span class="k">if</span> <span class="n">mask_undefined</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">((</span><span class="n">temperature</span> <span class="o">&lt;</span> <span class="mf">80.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">degF</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">rh</span> <span class="o">&lt;</span> <span class="mi">40</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">mask</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+            <span class="n">hi</span> <span class="o">=</span> <span class="n">masked_array</span><span class="p">(</span><span class="n">hi</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">mask</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">hi</span></div>
+
+
+<div class="viewcode-block" id="pressure_to_height_std"><a class="viewcode-back" href="../../../api/generated/metpy.calc.pressure_to_height_std.html#metpy.calc.pressure_to_height_std">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">pressure_to_height_std</span><span class="p">(</span><span class="n">pressure</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert pressure data to heights using the U.S. standard atmosphere.</span>
+
+<span class="sd">    The implementation uses the formula outlined in [Hobbs1977]_ pg.60-61.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        Atmospheric pressure</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding height value(s)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="mf">288.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="mf">6.5</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;K/km&#39;</span><span class="p">)</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="mf">1013.25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">t0</span> <span class="o">/</span> <span class="n">gamma</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">/</span> <span class="n">p0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">/</span> <span class="n">g</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="height_to_pressure_std"><a class="viewcode-back" href="../../../api/generated/metpy.calc.height_to_pressure_std.html#metpy.calc.height_to_pressure_std">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">height_to_pressure_std</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert height data to pressures using the U.S. standard atmosphere.</span>
+
+<span class="sd">    The implementation inverts the formula outlined in [Hobbs1977]_ pg.60-61.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    height : `pint.Quantity`</span>
+<span class="sd">        Atmospheric height</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding pressure value(s)</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math:: p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="mf">288.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kelvin</span>
+    <span class="n">gamma</span> <span class="o">=</span> <span class="mf">6.5</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;K/km&#39;</span><span class="p">)</span>
+    <span class="n">p0</span> <span class="o">=</span> <span class="mf">1013.25</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span>
+    <span class="k">return</span> <span class="n">p0</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">gamma</span> <span class="o">/</span> <span class="n">t0</span><span class="p">)</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span> <span class="o">**</span> <span class="p">(</span><span class="n">g</span> <span class="o">/</span> <span class="p">(</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">gamma</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="coriolis_parameter"><a class="viewcode-back" href="../../../api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">coriolis_parameter</span><span class="p">(</span><span class="n">latitude</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the coriolis parameter at each point.</span>
+
+<span class="sd">    The implementation uses the formula outlined in [Hobbs1977]_ pg.370-371.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    latitude : array_like</span>
+<span class="sd">        Latitude at each point</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding coriolis force at each point</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">latitude</span> <span class="o">=</span> <span class="n">_check_radians</span><span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">max_radians</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="mf">2.</span> <span class="o">*</span> <span class="n">omega</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">latitude</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="add_height_to_pressure"><a class="viewcode-back" href="../../../api/generated/metpy.calc.add_height_to_pressure.html#metpy.calc.add_height_to_pressure">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_height_to_pressure</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">height</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the pressure at a certain height above another pressure level.</span>
+
+<span class="sd">    This assumes a standard atmosphere.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        Pressure level</span>
+<span class="sd">    height : `pint.Quantity`</span>
+<span class="sd">        Height above a pressure level</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding pressure value for the height above the pressure level</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    -----</span>
+<span class="sd">    pressure_to_height_std, height_to_pressure_std, add_pressure_to_height</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pressure_level_height</span> <span class="o">=</span> <span class="n">pressure_to_height_std</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">height_to_pressure_std</span><span class="p">(</span><span class="n">pressure_level_height</span> <span class="o">+</span> <span class="n">height</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="add_pressure_to_height"><a class="viewcode-back" href="../../../api/generated/metpy.calc.add_pressure_to_height.html#metpy.calc.add_pressure_to_height">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">add_pressure_to_height</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">pressure</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the height at a certain pressure above another height.</span>
+
+<span class="sd">    This assumes a standard atmosphere.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    height : `pint.Quantity`</span>
+<span class="sd">        Height level</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        Pressure above height level</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding height value for the pressure above the height level</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    -----</span>
+<span class="sd">    pressure_to_height_std, height_to_pressure_std, add_height_to_pressure</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pressure_at_height</span> <span class="o">=</span> <span class="n">height_to_pressure_std</span><span class="p">(</span><span class="n">height</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pressure_to_height_std</span><span class="p">(</span><span class="n">pressure_at_height</span> <span class="o">-</span> <span class="n">pressure</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="sigma_to_pressure"><a class="viewcode-back" href="../../../api/generated/metpy.calc.sigma_to_pressure.html#metpy.calc.sigma_to_pressure">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[dimensionless]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">sigma_to_pressure</span><span class="p">(</span><span class="n">sigma</span><span class="p">,</span> <span class="n">psfc</span><span class="p">,</span> <span class="n">ptop</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate pressure from sigma values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    sigma : ndarray</span>
+<span class="sd">        The sigma levels to be converted to pressure levels.</span>
+
+<span class="sd">    psfc : `pint.Quantity`</span>
+<span class="sd">        The surface pressure value.</span>
+
+<span class="sd">    ptop : `pint.Quantity`</span>
+<span class="sd">        The pressure value at the top of the model domain.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The pressure values at the given sigma levels.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Sigma definition adapted from [Philips1957]_.</span>
+
+<span class="sd">    .. math:: p = \sigma * (p_{sfc} - p_{top}) + p_{top}</span>
+
+<span class="sd">    * :math:`p` is pressure at a given `\sigma` level</span>
+<span class="sd">    * :math:`\sigma` is non-dimensional, scaled pressure</span>
+<span class="sd">    * :math:`p_{sfc}` is pressure at the surface or model floor</span>
+<span class="sd">    * :math:`p_{top}` is pressure at the top of the model domain</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">sigma</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">or</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">sigma</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Sigma values should be bounded by 0 and 1&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">psfc</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">ptop</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Pressure input should be non-negative&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">sigma</span> <span class="o">*</span> <span class="p">(</span><span class="n">psfc</span> <span class="o">-</span> <span class="n">ptop</span><span class="p">)</span> <span class="o">+</span> <span class="n">ptop</span></div>
+
+
+<span class="k">def</span> <span class="nf">_check_radians</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">max_radians</span><span class="o">=</span><span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Input validation of values that could be in degrees instead of radians.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    value : `pint.Quantity`</span>
+<span class="sd">        The input value to check.</span>
+
+<span class="sd">    max_radians : float</span>
+<span class="sd">        Maximum absolute value of radians before warning.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The input value</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">value</span> <span class="o">=</span> <span class="n">value</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;radians&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">m</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">value</span><span class="p">)),</span> <span class="n">max_radians</span><span class="p">):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Input over </span><span class="si">{}</span><span class="s1"> radians. &#39;</span>
+                      <span class="s1">&#39;Ensure proper units are given.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">max_radians</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">value</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Sep 15, 2017 at 18:25:57.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.6.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

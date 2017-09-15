@@ -1,0 +1,12 @@
+shearing_stretching_deformation
+==========================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: shearing_stretching_deformation
+
+.. include:: metpy.calc.shearing_stretching_deformation.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

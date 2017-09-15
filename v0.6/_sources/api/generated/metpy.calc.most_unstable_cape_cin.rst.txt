@@ -1,0 +1,12 @@
+most_unstable_cape_cin
+=================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: most_unstable_cape_cin
+
+.. include:: metpy.calc.most_unstable_cape_cin.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

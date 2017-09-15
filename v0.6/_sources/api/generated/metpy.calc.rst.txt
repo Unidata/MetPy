@@ -1,0 +1,93 @@
+calc
+==========
+
+.. automodule:: metpy.calc
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      add_height_to_pressure
+      add_pressure_to_height
+      advection
+      bulk_shear
+      bunkers_storm_motion
+      cape_cin
+      convergence_vorticity
+      coriolis_parameter
+      density
+      dewpoint
+      dewpoint_rh
+      dry_lapse
+      el
+      equivalent_potential_temperature
+      find_intersections
+      friction_velocity
+      frontogenesis
+      geostrophic_wind
+      get_layer
+      get_perturbation
+      get_wind_components
+      get_wind_dir
+      get_wind_speed
+      h_convergence
+      heat_index
+      height_to_pressure_std
+      interp
+      interpolate_nans
+      isentropic_interpolation
+      kinematic_flux
+      lcl
+      lfc
+      log_interp
+      mean_pressure_weighted
+      mixed_layer
+      mixed_parcel
+      mixing_ratio
+      mixing_ratio_from_specific_humidity
+      moist_lapse
+      montgomery_streamfunction
+      most_unstable_cape_cin
+      most_unstable_parcel
+      nearest_intersection_idx
+      parcel_profile
+      potential_temperature
+      precipitable_water
+      pressure_to_height_std
+      psychrometric_vapor_pressure_wet
+      reduce_point_density
+      relative_humidity_from_mixing_ratio
+      relative_humidity_from_specific_humidity
+      relative_humidity_wet_psychrometric
+      resample_nn_1d
+      saturation_mixing_ratio
+      saturation_vapor_pressure
+      shearing_deformation
+      shearing_stretching_deformation
+      sigma_to_pressure
+      significant_tornado
+      storm_relative_helicity
+      stretching_deformation
+      supercell_composite
+      surface_based_cape_cin
+      tke
+      total_deformation
+      v_vorticity
+      vapor_pressure
+      virtual_potential_temperature
+      virtual_temperature
+      windchill
+   
+   
+
+   
+   
+   
+
+   
+   
+   

@@ -1,0 +1,12 @@
+tke
+==============
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: tke
+
+.. include:: metpy.calc.tke.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

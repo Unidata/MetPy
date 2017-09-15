@@ -1,0 +1,45 @@
+Level3File
+===================
+
+.. currentmodule:: metpy.io
+
+.. autoclass:: Level3File
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~Level3File.__init__
+      ~Level3File.pos_scale
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: pos_scale
+
+   
+   
+
+.. include:: metpy.io.Level3File.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

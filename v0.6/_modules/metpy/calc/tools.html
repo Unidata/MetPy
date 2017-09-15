@@ -1,0 +1,987 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.calc.tools &mdash; MetPy 0.6.0</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/calc/tools.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MetPy 0.6.0" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.6.0
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.calc.tools</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.calc.tools</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2008-2017 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sd">&quot;&quot;&quot;Contains a collection of generally useful calculation tools.&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="nn">ma</span>
+<span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">cKDTree</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">height_to_pressure_std</span><span class="p">,</span> <span class="n">pressure_to_height_std</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">units</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+
+<div class="viewcode-block" id="resample_nn_1d"><a class="viewcode-back" href="../../../api/generated/metpy.calc.resample_nn_1d.html#metpy.calc.resample_nn_1d">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">resample_nn_1d</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">centers</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return one-dimensional nearest-neighbor indexes based on user-specified centers.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : array-like</span>
+<span class="sd">        1-dimensional array of numeric values from which to</span>
+<span class="sd">        extract indexes of nearest-neighbors</span>
+<span class="sd">    centers : array-like</span>
+<span class="sd">        1-dimensional array of numeric values representing a subset of values to approximate</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        An array of indexes representing values closest to given array values</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ix</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">center</span> <span class="ow">in</span> <span class="n">centers</span><span class="p">:</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">a</span> <span class="o">-</span> <span class="n">center</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">index</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ix</span><span class="p">:</span>
+            <span class="n">ix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ix</span></div>
+
+
+<div class="viewcode-block" id="nearest_intersection_idx"><a class="viewcode-back" href="../../../api/generated/metpy.calc.nearest_intersection_idx.html#metpy.calc.nearest_intersection_idx">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">nearest_intersection_idx</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine the index of the point just before two lines with common x values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : array-like</span>
+<span class="sd">        1-dimensional array of y-values for line 1</span>
+<span class="sd">    b : array-like</span>
+<span class="sd">        1-dimensional array of y-values for line 2</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        An array of indexes representing the index of the values</span>
+<span class="sd">        just before the intersection(s) of the two lines.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Difference in the two y-value sets</span>
+    <span class="n">difference</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+
+    <span class="c1"># Determine the point just before the intersection of the lines</span>
+    <span class="c1"># Will return multiple points for multiple intersections</span>
+    <span class="n">sign_change_idx</span><span class="p">,</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">difference</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">sign_change_idx</span></div>
+
+
+<div class="viewcode-block" id="find_intersections"><a class="viewcode-back" href="../../../api/generated/metpy.calc.find_intersections.html#metpy.calc.find_intersections">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@units</span><span class="o">.</span><span class="n">wraps</span><span class="p">((</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="s1">&#39;=B&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="s1">&#39;=B&#39;</span><span class="p">,</span> <span class="s1">&#39;=B&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">find_intersections</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the best estimate of intersection.</span>
+
+<span class="sd">    Calculates the best estimates of the intersection of two y-value</span>
+<span class="sd">    data sets that share a common x-value set.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array-like</span>
+<span class="sd">        1-dimensional array of numeric x-values</span>
+<span class="sd">    a : array-like</span>
+<span class="sd">        1-dimensional array of y-values for line 1</span>
+<span class="sd">    b : array-like</span>
+<span class="sd">        1-dimensional array of y-values for line 2</span>
+<span class="sd">    direction : string, optional</span>
+<span class="sd">        specifies direction of crossing. &#39;all&#39;, &#39;increasing&#39; (a becoming greater than b),</span>
+<span class="sd">        or &#39;decreasing&#39; (b becoming greater than a). Defaults to &#39;all&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        A tuple (x, y) of array-like with the x and y coordinates of the</span>
+<span class="sd">        intersections of the lines.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Find the index of the points just before the intersection(s)</span>
+    <span class="n">nearest_idx</span> <span class="o">=</span> <span class="n">nearest_intersection_idx</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span>
+    <span class="n">next_idx</span> <span class="o">=</span> <span class="n">nearest_idx</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="c1"># Determine the sign of the change</span>
+    <span class="n">sign_change</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">next_idx</span><span class="p">]</span> <span class="o">-</span> <span class="n">b</span><span class="p">[</span><span class="n">next_idx</span><span class="p">])</span>
+
+    <span class="c1"># x-values around each intersection</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">x0</span> <span class="o">=</span> <span class="n">_next_non_masked_element</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">nearest_idx</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="n">_next_non_masked_element</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">next_idx</span><span class="p">)</span>
+
+    <span class="c1"># y-values around each intersection for the first line</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">a0</span> <span class="o">=</span> <span class="n">_next_non_masked_element</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">nearest_idx</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">a1</span> <span class="o">=</span> <span class="n">_next_non_masked_element</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">next_idx</span><span class="p">)</span>
+
+    <span class="c1"># y-values around each intersection for the second line</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">b0</span> <span class="o">=</span> <span class="n">_next_non_masked_element</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">nearest_idx</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">b1</span> <span class="o">=</span> <span class="n">_next_non_masked_element</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="n">next_idx</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the x-intersection. This comes from finding the equations of the two lines,</span>
+    <span class="c1"># one through (x0, a0) and (x1, a1) and the other through (x0, b0) and (x1, b1),</span>
+    <span class="c1"># finding their intersection, and reducing with a bunch of algebra.</span>
+    <span class="n">delta_y0</span> <span class="o">=</span> <span class="n">a0</span> <span class="o">-</span> <span class="n">b0</span>
+    <span class="n">delta_y1</span> <span class="o">=</span> <span class="n">a1</span> <span class="o">-</span> <span class="n">b1</span>
+    <span class="n">intersect_x</span> <span class="o">=</span> <span class="p">(</span><span class="n">delta_y1</span> <span class="o">*</span> <span class="n">x0</span> <span class="o">-</span> <span class="n">delta_y0</span> <span class="o">*</span> <span class="n">x1</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta_y1</span> <span class="o">-</span> <span class="n">delta_y0</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the y-intersection of the lines. Just plug the x above into the equation</span>
+    <span class="c1"># for the line through the a points. One could solve for y like x above, but this</span>
+    <span class="c1"># causes weirder unit behavior and seems a little less good numerically.</span>
+    <span class="n">intersect_y</span> <span class="o">=</span> <span class="p">((</span><span class="n">intersect_x</span> <span class="o">-</span> <span class="n">x0</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">x1</span> <span class="o">-</span> <span class="n">x0</span><span class="p">))</span> <span class="o">*</span> <span class="p">(</span><span class="n">a1</span> <span class="o">-</span> <span class="n">a0</span><span class="p">)</span> <span class="o">+</span> <span class="n">a0</span>
+
+    <span class="c1"># If there&#39;s no intersections, return</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">intersect_x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">intersect_x</span><span class="p">,</span> <span class="n">intersect_y</span>
+
+    <span class="c1"># Check for duplicates</span>
+    <span class="n">duplicate_mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ediff1d</span><span class="p">(</span><span class="n">intersect_x</span><span class="p">,</span> <span class="n">to_end</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Make a mask based on the direction of sign change desired</span>
+    <span class="k">if</span> <span class="n">direction</span> <span class="o">==</span> <span class="s1">&#39;increasing&#39;</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">sign_change</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s1">&#39;decreasing&#39;</span><span class="p">:</span>
+        <span class="n">mask</span> <span class="o">=</span> <span class="n">sign_change</span> <span class="o">&lt;</span> <span class="mi">0</span>
+    <span class="k">elif</span> <span class="n">direction</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">intersect_x</span><span class="p">[</span><span class="n">duplicate_mask</span><span class="p">],</span> <span class="n">intersect_y</span><span class="p">[</span><span class="n">duplicate_mask</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown option for direction: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">direction</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">intersect_x</span><span class="p">[</span><span class="n">mask</span> <span class="o">&amp;</span> <span class="n">duplicate_mask</span><span class="p">],</span> <span class="n">intersect_y</span><span class="p">[</span><span class="n">mask</span> <span class="o">&amp;</span> <span class="n">duplicate_mask</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="interpolate_nans"><a class="viewcode-back" href="../../../api/generated/metpy.calc.interpolate_nans.html#metpy.calc.interpolate_nans">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">interpolate_nans</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Interpolate NaN values in y.</span>
+
+<span class="sd">    Interpolate NaN values in the y dimension. Works with unsorted x values.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array-like</span>
+<span class="sd">        1-dimensional array of numeric x-values</span>
+<span class="sd">    y : array-like</span>
+<span class="sd">        1-dimensional array of numeric y-values</span>
+<span class="sd">    kind : string</span>
+<span class="sd">        specifies the kind of interpolation x coordinate - &#39;linear&#39; or &#39;log&#39;, optional.</span>
+<span class="sd">        Defaults to &#39;linear&#39;.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        An array of the y coordinate data with NaN values interpolated.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x_sort_args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">x_sort_args</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">x_sort_args</span><span class="p">]</span>
+    <span class="n">nans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+        <span class="n">y</span><span class="p">[</span><span class="n">nans</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">nans</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">nans</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">nans</span><span class="p">])</span>
+    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
+        <span class="n">y</span><span class="p">[</span><span class="n">nans</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">nans</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">nans</span><span class="p">]),</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">nans</span><span class="p">])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown option for kind: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">kind</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="n">y</span><span class="p">[</span><span class="n">x_sort_args</span><span class="p">]</span></div>
+
+
+<span class="k">def</span> <span class="nf">_next_non_masked_element</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Return the next non masked element of a masked array.</span>
+
+<span class="sd">    If an array is masked, return the next non-masked element (if the given index is masked).</span>
+<span class="sd">    If no other unmasked points are after the given masked point, returns none.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : array-like</span>
+<span class="sd">        1-dimensional array of numeric values</span>
+<span class="sd">    idx : integer</span>
+<span class="sd">        index of requested element</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Index of next non-masked element and next non-masked element</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">next_idx</span> <span class="o">=</span> <span class="n">idx</span> <span class="o">+</span> <span class="n">a</span><span class="p">[</span><span class="n">idx</span><span class="p">:]</span><span class="o">.</span><span class="n">mask</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">ma</span><span class="o">.</span><span class="n">is_masked</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">next_idx</span><span class="p">]):</span>
+            <span class="k">return</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">next_idx</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="n">next_idx</span><span class="p">]</span>
+    <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">,</span> <span class="ne">IndexError</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">idx</span><span class="p">,</span> <span class="n">a</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">delete_masked_points</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Delete masked points from arrays.</span>
+
+<span class="sd">    Takes arrays and removes masked points to help with calculations and plotting.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    arrs : one or more array-like</span>
+<span class="sd">        source arrays</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    arrs : one or more array-like</span>
+<span class="sd">        arrays with masked elements removed</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">any</span><span class="p">(</span><span class="nb">hasattr</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="s1">&#39;mask&#39;</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">):</span>
+        <span class="n">keep</span> <span class="o">=</span> <span class="o">~</span><span class="n">functools</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">logical_or</span><span class="p">,</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">getmaskarray</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">ma</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">keep</span><span class="p">])</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">arrs</span>
+
+
+<div class="viewcode-block" id="reduce_point_density"><a class="viewcode-back" href="../../../api/generated/metpy.calc.reduce_point_density.html#metpy.calc.reduce_point_density">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">reduce_point_density</span><span class="p">(</span><span class="n">points</span><span class="p">,</span> <span class="n">radius</span><span class="p">,</span> <span class="n">priority</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return a mask to reduce the density of points in irregularly-spaced data.</span>
+
+<span class="sd">    This function is used to down-sample a collection of scattered points (e.g. surface</span>
+<span class="sd">    data), returning a mask that can be used to select the points from one or more arrays</span>
+<span class="sd">    (e.g. arrays of temperature and dew point). The points selected can be controlled by</span>
+<span class="sd">    providing an array of ``priority`` values (e.g. rainfall totals to ensure that</span>
+<span class="sd">    stations with higher precipitation remain in the mask).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    points : (N, K) array-like</span>
+<span class="sd">        N locations of the points in K dimensional space</span>
+<span class="sd">    radius : float</span>
+<span class="sd">        minimum radius allowed between points</span>
+<span class="sd">    priority : (N, K) array-like, optional</span>
+<span class="sd">        If given, this should have the same shape as ``points``; these values will</span>
+<span class="sd">        be used to control selection priority for points.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        (N,) array-like of boolean values indicating whether points should be kept. This</span>
+<span class="sd">        can be used directly to index numpy arrays to return only the desired points.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; metpy.calc.reduce_point_density(np.array([1, 2, 3]), 1.)</span>
+<span class="sd">    array([ True, False,  True], dtype=bool)</span>
+<span class="sd">    &gt;&gt;&gt; metpy.calc.reduce_point_density(np.array([1, 2, 3]), 1.,</span>
+<span class="sd">    ... priority=np.array([0.1, 0.9, 0.3]))</span>
+<span class="sd">    array([False,  True, False], dtype=bool)</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Handle 1D input</span>
+    <span class="k">if</span> <span class="n">points</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">points</span> <span class="o">=</span> <span class="n">points</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Make a kd-tree to speed searching of data.</span>
+    <span class="n">tree</span> <span class="o">=</span> <span class="n">cKDTree</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+    <span class="c1"># Need to use sorted indices rather than sorting the position</span>
+    <span class="c1"># so that the keep mask matches *original* order.</span>
+    <span class="k">if</span> <span class="n">priority</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="c1"># Need to sort the locations in decreasing priority.</span>
+        <span class="n">sorted_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">priority</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="c1"># Take advantage of iterator nature of range here to avoid making big lists</span>
+        <span class="n">sorted_indices</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">))</span>
+
+    <span class="c1"># Keep all points initially</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">),</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">bool</span><span class="p">)</span>
+
+    <span class="c1"># Loop over all the potential points</span>
+    <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="n">sorted_indices</span><span class="p">:</span>
+        <span class="c1"># Only proceed if we haven&#39;t already excluded this point</span>
+        <span class="k">if</span> <span class="n">keep</span><span class="p">[</span><span class="n">ind</span><span class="p">]:</span>
+            <span class="c1"># Find the neighbors and eliminate them</span>
+            <span class="n">neighbors</span> <span class="o">=</span> <span class="n">tree</span><span class="o">.</span><span class="n">query_ball_point</span><span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="n">ind</span><span class="p">],</span> <span class="n">radius</span><span class="p">)</span>
+            <span class="n">keep</span><span class="p">[</span><span class="n">neighbors</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+
+            <span class="c1"># We just removed ourselves, so undo that</span>
+            <span class="n">keep</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="k">return</span> <span class="n">keep</span></div>
+
+
+<span class="k">def</span> <span class="nf">_get_bound_pressure_height</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">bound</span><span class="p">,</span> <span class="n">heights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the bounding pressure and height in a layer.</span>
+
+<span class="sd">    Given pressure, optional heights, and a bound, return either the closest pressure/height</span>
+<span class="sd">    or interpolated pressure/height. If no heights are provided, a standard atmosphere is</span>
+<span class="sd">    assumed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        Atmospheric pressures</span>
+<span class="sd">    bound : `pint.Quantity`</span>
+<span class="sd">        Bound to retrieve (in pressure or height)</span>
+<span class="sd">    heights : `pint.Quantity`, optional</span>
+<span class="sd">        Atmospheric heights associated with the pressure levels. Defaults to using</span>
+<span class="sd">        heights calculated from ``pressure`` assuming a standard atmosphere.</span>
+<span class="sd">    interpolate : boolean, optional</span>
+<span class="sd">        Interpolate the bound or return the nearest. Defaults to True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The bound pressure and height.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Bound is given in pressure</span>
+    <span class="k">if</span> <span class="n">bound</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;[mass]&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;[time]&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">}:</span>
+        <span class="c1"># If the bound is in the pressure data, we know the pressure bound exactly</span>
+        <span class="k">if</span> <span class="n">bound</span> <span class="ow">in</span> <span class="n">pressure</span><span class="p">:</span>
+            <span class="n">bound_pressure</span> <span class="o">=</span> <span class="n">bound</span>
+            <span class="c1"># If we have heights, we know the exact height value, otherwise return standard</span>
+            <span class="c1"># atmosphere height for the pressure</span>
+            <span class="k">if</span> <span class="n">heights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">bound_height</span> <span class="o">=</span> <span class="n">heights</span><span class="p">[</span><span class="n">pressure</span> <span class="o">==</span> <span class="n">bound_pressure</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">bound_height</span> <span class="o">=</span> <span class="n">pressure_to_height_std</span><span class="p">(</span><span class="n">bound_pressure</span><span class="p">)</span>
+        <span class="c1"># If bound is not in the data, return the nearest or interpolated values</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
+                <span class="n">bound_pressure</span> <span class="o">=</span> <span class="n">bound</span>  <span class="c1"># Use the user specified bound</span>
+                <span class="k">if</span> <span class="n">heights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Interpolate heights from the height data</span>
+                    <span class="n">bound_height</span> <span class="o">=</span> <span class="n">log_interp</span><span class="p">(</span><span class="n">bound_pressure</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">heights</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>  <span class="c1"># If not heights given, use the standard atmosphere</span>
+                    <span class="n">bound_height</span> <span class="o">=</span> <span class="n">pressure_to_height_std</span><span class="p">(</span><span class="n">bound_pressure</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># No interpolation, find the closest values</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pressure</span> <span class="o">-</span> <span class="n">bound</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+                <span class="n">bound_pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">heights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">bound_height</span> <span class="o">=</span> <span class="n">heights</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">bound_height</span> <span class="o">=</span> <span class="n">pressure_to_height_std</span><span class="p">(</span><span class="n">bound_pressure</span><span class="p">)</span>
+
+    <span class="c1"># Bound is given in height</span>
+    <span class="k">elif</span> <span class="n">bound</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}:</span>
+        <span class="c1"># If there is height data, see if we have the bound or need to interpolate/find nearest</span>
+        <span class="k">if</span> <span class="n">heights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">bound</span> <span class="ow">in</span> <span class="n">heights</span><span class="p">:</span>  <span class="c1"># Bound is in the height data</span>
+                <span class="n">bound_height</span> <span class="o">=</span> <span class="n">bound</span>
+                <span class="n">bound_pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">heights</span> <span class="o">==</span> <span class="n">bound</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># Bound is not in the data</span>
+                <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
+                    <span class="n">bound_height</span> <span class="o">=</span> <span class="n">bound</span>
+
+                    <span class="c1"># Need to cast back to the input type since interp (up to at least numpy</span>
+                    <span class="c1"># 1.13 always returns float64. This can cause upstream users problems,</span>
+                    <span class="c1"># resulting in something like np.append() to upcast.</span>
+                    <span class="n">bound_pressure</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">bound</span><span class="p">),</span> <span class="n">heights</span><span class="p">,</span>
+                                               <span class="n">pressure</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">bound</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">heights</span> <span class="o">-</span> <span class="n">bound</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+                    <span class="n">bound_pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                    <span class="n">bound_height</span> <span class="o">=</span> <span class="n">heights</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>  <span class="c1"># Don&#39;t have heights, so assume a standard atmosphere</span>
+            <span class="n">bound_height</span> <span class="o">=</span> <span class="n">bound</span>
+            <span class="n">bound_pressure</span> <span class="o">=</span> <span class="n">height_to_pressure_std</span><span class="p">(</span><span class="n">bound</span><span class="p">)</span>
+            <span class="c1"># If interpolation is on, this is all we need, if not, we need to go back and</span>
+            <span class="c1"># find the pressure closest to this and refigure the bounds</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">interpolate</span><span class="p">:</span>
+                <span class="n">idx</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">pressure</span> <span class="o">-</span> <span class="n">bound_pressure</span><span class="p">))</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span>
+                <span class="n">bound_pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+                <span class="n">bound_height</span> <span class="o">=</span> <span class="n">pressure_to_height_std</span><span class="p">(</span><span class="n">bound_pressure</span><span class="p">)</span>
+
+    <span class="c1"># Bound has invalid units</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Bound must be specified in units of length or pressure.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># If the bound is out of the range of the data, we shouldn&#39;t extrapolate</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">bound_pressure</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">pressure</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">bound_pressure</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">pressure</span><span class="p">)):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Specified bound is outside pressure range.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">heights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">bound_height</span> <span class="o">&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">heights</span><span class="p">))</span> <span class="ow">or</span> <span class="p">(</span><span class="n">bound_height</span> <span class="o">&lt;</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">heights</span><span class="p">)):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Specified bound is outside height range.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">bound_pressure</span><span class="p">,</span> <span class="n">bound_height</span>
+
+
+<div class="viewcode-block" id="get_layer"><a class="viewcode-back" href="../../../api/generated/metpy.calc.get_layer.html#metpy.calc.get_layer">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Return an atmospheric layer from upper air data with the requested bottom and depth.</span>
+
+<span class="sd">    This function will subset an upper air dataset to contain only the specified layer. The</span>
+<span class="sd">    bottom of the layer can be specified with a pressure or height above the surface</span>
+<span class="sd">    pressure. The bottom defaults to the surface pressure. The depth of the layer can be</span>
+<span class="sd">    specified in terms of pressure or height above the bottom of the layer. If the top and</span>
+<span class="sd">    bottom of the layer are not in the data, they are interpolated by default.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : array-like</span>
+<span class="sd">        Atmospheric pressure profile</span>
+<span class="sd">    *args : array-like</span>
+<span class="sd">        Atmospheric variable(s) measured at the given pressures</span>
+<span class="sd">    heights: array-like, optional</span>
+<span class="sd">        Atmospheric heights corresponding to the given pressures. Defaults to using</span>
+<span class="sd">        heights calculated from ``p`` assuming a standard atmosphere.</span>
+<span class="sd">    bottom : `pint.Quantity`, optional</span>
+<span class="sd">        The bottom of the layer as a pressure or height above the surface pressure. Defaults</span>
+<span class="sd">        to the lowest pressure or height given.</span>
+<span class="sd">    depth : `pint.Quantity`, optional</span>
+<span class="sd">        The thickness of the layer as a pressure or height above the bottom of the layer.</span>
+<span class="sd">        Defaults to 100 hPa.</span>
+<span class="sd">    interpolate : bool, optional</span>
+<span class="sd">        Interpolate the top and bottom points if they are not in the given data. Defaults</span>
+<span class="sd">        to True.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity, pint.Quantity`</span>
+<span class="sd">        The pressure and data variables of the layer</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Pop off keyword arguments</span>
+    <span class="n">heights</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;heights&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">bottom</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)</span>
+    <span class="n">interpolate</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;interpolate&#39;</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
+
+    <span class="c1"># Make sure pressure and datavars are the same length</span>
+    <span class="k">for</span> <span class="n">datavar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">datavar</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Pressure and data variables must have the same length.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># If the bottom is not specified, make it the surface pressure</span>
+    <span class="k">if</span> <span class="n">bottom</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">bottom_pressure</span><span class="p">,</span> <span class="n">bottom_height</span> <span class="o">=</span> <span class="n">_get_bound_pressure_height</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">bottom</span><span class="p">,</span>
+                                                                <span class="n">heights</span><span class="o">=</span><span class="n">heights</span><span class="p">,</span>
+                                                                <span class="n">interpolate</span><span class="o">=</span><span class="n">interpolate</span><span class="p">)</span>
+
+    <span class="c1"># Calculate the top if whatever units depth is in</span>
+    <span class="k">if</span> <span class="n">depth</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;[mass]&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">,</span> <span class="s1">&#39;[time]&#39;</span><span class="p">:</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">}:</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">bottom_pressure</span> <span class="o">-</span> <span class="n">depth</span>
+    <span class="k">elif</span> <span class="n">depth</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">}:</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">bottom_height</span> <span class="o">+</span> <span class="n">depth</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Depth must be specified in units of length or pressure&#39;</span><span class="p">)</span>
+
+    <span class="n">top_pressure</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">_get_bound_pressure_height</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">heights</span><span class="o">=</span><span class="n">heights</span><span class="p">,</span>
+                                                 <span class="n">interpolate</span><span class="o">=</span><span class="n">interpolate</span><span class="p">)</span>
+
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>  <span class="c1"># returned data variables in layer</span>
+
+    <span class="c1"># Ensure pressures are sorted in ascending order</span>
+    <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span>
+    <span class="n">pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
+
+    <span class="c1"># Mask based on top and bottom pressure</span>
+    <span class="n">inds</span> <span class="o">=</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">&lt;=</span> <span class="n">bottom_pressure</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">&gt;=</span> <span class="n">top_pressure</span><span class="p">)</span>
+    <span class="n">p_interp</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
+
+    <span class="c1"># Interpolate pressures at bounds if necessary and sort</span>
+    <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
+        <span class="c1"># If we don&#39;t have the bottom or top requested, append them</span>
+        <span class="k">if</span> <span class="n">top_pressure</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">p_interp</span><span class="p">:</span>
+            <span class="n">p_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_interp</span><span class="p">,</span> <span class="n">top_pressure</span><span class="p">))</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
+        <span class="k">if</span> <span class="n">bottom_pressure</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">p_interp</span><span class="p">:</span>
+            <span class="n">p_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_interp</span><span class="p">,</span> <span class="n">bottom_pressure</span><span class="p">))</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
+
+    <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">p_interp</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">for</span> <span class="n">datavar</span> <span class="ow">in</span> <span class="n">args</span><span class="p">:</span>
+        <span class="c1"># Ensure that things are sorted in ascending order</span>
+        <span class="n">datavar</span> <span class="o">=</span> <span class="n">datavar</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
+            <span class="c1"># Interpolate for the possibly missing bottom/top values</span>
+            <span class="n">datavar_interp</span> <span class="o">=</span> <span class="n">log_interp</span><span class="p">(</span><span class="n">p_interp</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">datavar</span><span class="p">)</span>
+            <span class="n">datavar</span> <span class="o">=</span> <span class="n">datavar_interp</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">datavar</span> <span class="o">=</span> <span class="n">datavar</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
+
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">datavar</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<div class="viewcode-block" id="interp"><a class="viewcode-back" href="../../../api/generated/metpy.calc.interp.html#metpy.calc.interp">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@units</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="s1">&#39;=A&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Interpolates data with any shape over a specified axis.</span>
+
+<span class="sd">    Interpolation over a specified axis for arrays of any shape.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array-like</span>
+<span class="sd">        1-D array of desired interpolated values.</span>
+
+<span class="sd">    xp : array-like</span>
+<span class="sd">        The x-coordinates of the data points.</span>
+
+<span class="sd">    args : array-like</span>
+<span class="sd">        The data to be interpolated. Can be multiple arguments, all must be the same shape as</span>
+<span class="sd">        xp.</span>
+
+<span class="sd">    axis : int, optional</span>
+<span class="sd">        The axis to interpolate over. Defaults to 0.</span>
+
+<span class="sd">    fill_value: float, optional</span>
+<span class="sd">        Specify handling of interpolation points out of data bounds. If None, will return</span>
+<span class="sd">        ValueError if points are out of bounds. Defaults to nan.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        Interpolated values for each point with coordinates sorted in ascending order.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">     &gt;&gt;&gt; x = np.array([1., 2., 3., 4.])</span>
+<span class="sd">     &gt;&gt;&gt; y = np.array([1., 2., 3., 4.])</span>
+<span class="sd">     &gt;&gt;&gt; x_interp = np.array([2.5, 3.5])</span>
+<span class="sd">     &gt;&gt;&gt; metpy.calc.interp(x_interp, x, y)</span>
+<span class="sd">     array([ 2.5,  3.5])</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    xp and args must be the same shape.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Pull out keyword args</span>
+    <span class="n">fill_value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fill_value&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Make x an array</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asanyarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Save number of dimensions in xp</span>
+    <span class="n">ndim</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">ndim</span>
+
+    <span class="c1"># Sort input data</span>
+    <span class="n">sort_args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="n">sort_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+
+    <span class="c1"># indices for sorting</span>
+    <span class="n">sorter</span> <span class="o">=</span> <span class="n">broadcast_indices</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">sort_args</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+
+    <span class="c1"># sort xp</span>
+    <span class="n">xp</span> <span class="o">=</span> <span class="n">xp</span><span class="p">[</span><span class="n">sorter</span><span class="p">]</span>
+    <span class="c1"># Ensure pressure in increasing order</span>
+    <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span><span class="p">[</span><span class="n">sorter</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
+
+    <span class="c1"># Make x broadcast with xp</span>
+    <span class="n">x_array</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">sort_x</span><span class="p">]</span>
+    <span class="n">expand</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
+    <span class="n">expand</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">x_array</span> <span class="o">=</span> <span class="n">x_array</span><span class="p">[</span><span class="n">expand</span><span class="p">]</span>
+
+    <span class="c1"># Calculate value above interpolated value</span>
+    <span class="n">minv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">sort_x</span><span class="p">])</span>
+    <span class="n">minv2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span>
+
+    <span class="c1"># If fill_value is none and data is out of bounds, raise value error</span>
+    <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span> <span class="o">==</span> <span class="n">xp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">])</span> <span class="ow">or</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="ow">and</span> <span class="n">fill_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Interpolation point out of data bounds encountered&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Warn if interpolated values are outside data bounds, will make these the values</span>
+    <span class="c1"># at end of data range.</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span> <span class="o">==</span> <span class="n">xp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Interpolation point out of data bounds encountered&#39;</span><span class="p">)</span>
+        <span class="n">minv2</span><span class="p">[</span><span class="n">minv</span> <span class="o">==</span> <span class="n">xp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]]</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">minv2</span><span class="p">[</span><span class="n">minv</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="c1"># Get indices for broadcasting arrays</span>
+    <span class="n">above</span> <span class="o">=</span> <span class="n">broadcast_indices</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">minv2</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+    <span class="n">below</span> <span class="o">=</span> <span class="n">broadcast_indices</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">minv2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">x_array</span> <span class="o">&lt;</span> <span class="n">xp</span><span class="p">[</span><span class="n">below</span><span class="p">]):</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Interpolation point out of data bounds encountered&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Create empty output list</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="c1"># Calculate interpolation for each variable</span>
+    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
+        <span class="n">var_interp</span> <span class="o">=</span> <span class="n">var</span><span class="p">[</span><span class="n">below</span><span class="p">]</span> <span class="o">+</span> <span class="p">((</span><span class="n">x_array</span> <span class="o">-</span> <span class="n">xp</span><span class="p">[</span><span class="n">below</span><span class="p">])</span> <span class="o">/</span>
+                                   <span class="p">(</span><span class="n">xp</span><span class="p">[</span><span class="n">above</span><span class="p">]</span> <span class="o">-</span> <span class="n">xp</span><span class="p">[</span><span class="n">below</span><span class="p">]))</span> <span class="o">*</span> <span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">above</span><span class="p">]</span> <span class="o">-</span>
+                                                               <span class="n">var</span><span class="p">[</span><span class="n">below</span><span class="p">])</span>
+
+        <span class="c1"># Set points out of bounds to fill value.</span>
+        <span class="n">var_interp</span><span class="p">[</span><span class="n">minv</span> <span class="o">==</span> <span class="n">xp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]]</span> <span class="o">=</span> <span class="n">fill_value</span>
+        <span class="n">var_interp</span><span class="p">[</span><span class="n">x_array</span> <span class="o">&lt;</span> <span class="n">xp</span><span class="p">[</span><span class="n">below</span><span class="p">]]</span> <span class="o">=</span> <span class="n">fill_value</span>
+
+        <span class="c1"># Check for input points in decreasing order and return output to match.</span>
+        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+            <span class="n">var_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">var_interp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
+        <span class="c1"># Output to list</span>
+        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_interp</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<span class="k">def</span> <span class="nf">broadcast_indices</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">minv</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate index values to properly broadcast index array within data array.</span>
+
+<span class="sd">    See usage in interp.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndim</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">dim</span> <span class="o">==</span> <span class="n">axis</span><span class="p">:</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">broadcast_slice</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
+            <span class="n">broadcast_slice</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+            <span class="n">dim_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span>
+            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dim_inds</span><span class="p">[</span><span class="n">broadcast_slice</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">ret</span>
+
+
+<div class="viewcode-block" id="log_interp"><a class="viewcode-back" href="../../../api/generated/metpy.calc.log_interp.html#metpy.calc.log_interp">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@units</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="s1">&#39;=A&#39;</span><span class="p">))</span>
+<span class="k">def</span> <span class="nf">log_interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Interpolates data with logarithmic x-scale over a specified axis.</span>
+
+<span class="sd">    Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    x : array-like</span>
+<span class="sd">        1-D array of desired interpolated values.</span>
+
+<span class="sd">    xp : array-like</span>
+<span class="sd">        The x-coordinates of the data points.</span>
+
+<span class="sd">    args : array-like</span>
+<span class="sd">        The data to be interpolated. Can be multiple arguments, all must be the same shape as</span>
+<span class="sd">        xp.</span>
+
+<span class="sd">    axis : int, optional</span>
+<span class="sd">        The axis to interpolate over. Defaults to 0.</span>
+
+<span class="sd">    fill_value: float, optional</span>
+<span class="sd">        Specify handling of interpolation points out of data bounds. If None, will return</span>
+<span class="sd">        ValueError if points are out of bounds. Defaults to nan.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        Interpolated values for each point with coordinates sorted in ascending order.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">     --------</span>
+<span class="sd">     &gt;&gt;&gt; x_log = np.array([1e3, 1e4, 1e5, 1e6])</span>
+<span class="sd">     &gt;&gt;&gt; y_log = np.log(x_log) * 2 + 3</span>
+<span class="sd">     &gt;&gt;&gt; x_interp = np.array([5e3, 5e4, 5e5])</span>
+<span class="sd">     &gt;&gt;&gt; metpy.calc.log_interp(x_interp, x_log, y_log)</span>
+<span class="sd">     array([ 20.03438638,  24.63955657,  29.24472675])</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    xp and args must be the same shape.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Pull out kwargs</span>
+    <span class="n">fill_value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fill_value&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="c1"># Log x and xp</span>
+    <span class="n">log_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">log_xp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">xp</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">interp</span><span class="p">(</span><span class="n">log_x</span><span class="p">,</span> <span class="n">log_xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">_greater_or_close</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compare values for greater or close to boolean masks.</span>
+
+<span class="sd">    Returns a boolean mask for values greater than or equal to a target within a specified</span>
+<span class="sd">    absolute or relative tolerance (as in :func:`numpy.isclose`).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : array-like</span>
+<span class="sd">        Array of values to be compared</span>
+<span class="sd">    value : float</span>
+<span class="sd">        Comparison value</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        Boolean array where values are greater than or nearly equal to value.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">greater</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_less_or_close</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compare values for less or close to boolean masks.</span>
+
+<span class="sd">    Returns a boolean mask for values less than or equal to a target within a specified</span>
+<span class="sd">    absolute or relative tolerance (as in :func:`numpy.isclose`).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    a : array-like</span>
+<span class="sd">        Array of values to be compared</span>
+<span class="sd">    value : float</span>
+<span class="sd">        Comparison value</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        Boolean array where values are less than or nearly equal to value.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">less</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2016, MetPy Developers.
+      Last updated on Sep 15, 2017 at 18:25:57.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+
+</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+</p>
+     
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.6.0',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>
