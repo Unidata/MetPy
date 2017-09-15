@@ -32,7 +32,7 @@ rm -rf ${VERSION}
 cp -R ${TRAVIS_BUILD_DIR}/docs/build/html/ ${VERSION}/
 touch .nojekyll
 if [[ "${VERSION}" != "dev" ]]; then
-    ln -sf ${VERSION} latest
+    ln -snf ${VERSION} latest
 fi
 
 echo Staging...
