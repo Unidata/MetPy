@@ -112,7 +112,7 @@ def add_metpy_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
        The `figure` instance used for plotting
 
     """
-    _add_logo(fig, x=x, y=y, zorder=zorder, which='metpy', size=size, **kwargs)
+    return _add_logo(fig, x=x, y=y, zorder=zorder, which='metpy', size=size, **kwargs)
 
 
 def add_unidata_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
@@ -140,7 +140,7 @@ def add_unidata_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
        The `figure` instance used for plotting
 
     """
-    _add_logo(fig, x=x, y=y, zorder=zorder, which='unidata', size=size, **kwargs)
+    return _add_logo(fig, x=x, y=y, zorder=zorder, which='unidata', size=size, **kwargs)
 
 
 # Not part of public API
