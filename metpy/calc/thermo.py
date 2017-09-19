@@ -274,28 +274,16 @@ def el(pressure, temperature, dewpt):
 
     """
     ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
-    x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
-    # Find LFC to make sure that the function isn't passing off the LFC as the EL
-    lfc_pressure, _ = lfc(pressure, temperature, dewpt)
+    # If the top of the sounding parcel is warmer than the environment, there is no EL
+    if ideal_profile[-1] > temperature[-1]:
+        return np.nan * pressure.units, np.nan * temperature.units
 
-    # If there is only one intersection, there are two possibilities:
-    # the dataset does not contain the EL, or the LFC = LCL.
-    if len(x) <= 1:
-        if (ideal_profile[-1] < temperature[-1]) and (len(x) == 1):
-            # Profile top colder than environment with one
-            # intersection, EL exists and LFC = LCL
-            return x[-1], y[-1]
-        else:
-            # The EL does not exist, either due to incomplete data
-            # or no intersection occurring.
-            return np.nan * pressure.units, np.nan * temperature.units
+    # Otherwise the last intersection (as long as there is one) is the EL
+    x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
+    if len(x) > 0:
+        return x[-1], y[-1]
     else:
-        # Checking to make sure the LFC is not returned as the EL
-        # when data is truncated below the EL
-        if np.isclose(x[-1], lfc_pressure, atol=1e-6):
-            return np.nan * pressure.units, np.nan * temperature.units
-        else:
-            return x[-1], y[-1]
+        return np.nan * pressure.units, np.nan * temperature.units
 
 
 @exporter.export
