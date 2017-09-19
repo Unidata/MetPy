@@ -10,7 +10,8 @@ addons:
       - $(find $WHEELDIR -newer $WHEELDIR/download_marker -name *.whl | tr [:space:] :)
   apt:
     packages: &base_build
-    - libblas-dev
+    - libatlas-dev
+    - libatlas-base-dev
     - liblapack-dev
     - gfortran
     - libproj-dev
