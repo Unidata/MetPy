@@ -103,7 +103,9 @@ class UseSampleData(object):
                r'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST'
                r'&YEAR=2010&MONTH=12&FROM=0912&TO=0912&STNM=BOI': 'sounding_wyoming_upper.txt',
                r'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST'
-               r'&YEAR=2016&MONTH=05&FROM=2200&TO=2200&STNM=DDC': 'may22_sounding.txt'}
+               r'&YEAR=2016&MONTH=05&FROM=2200&TO=2200&STNM=DDC': 'may22_sounding.txt',
+               r'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST'
+               r'&YEAR=2002&MONTH=11&FROM=1100&TO=1100&STNM=BNA': 'nov11_sounding.txt'}
 
     def __init__(self):
         r"""Initialize the wrapper."""

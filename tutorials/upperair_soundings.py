@@ -18,38 +18,32 @@ from datetime import datetime
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
-import numpy as np
 
 import metpy.calc as mpcalc
 from metpy.io import get_upper_air_data
+from metpy.io.upperair import UseSampleData
 from metpy.plots import Hodograph, SkewT
 
 #########################################################################
 # Getting Data
 # ------------
 #
-# We will download data from the
-# `University of Wyoming sounding data page <http://weather.uwyo.edu/upperair/sounding.html>`_
-# , which has an extensive archive of data available, as well as current data.
-#
-# In this case, we will download the sounding data from the Veterans Day
-# tornado outbreak in 2002 by passing a ``datetime`` object and station name to the
-# ``get_upper_air_data`` function.
+# Upper air data can be obtained using the siphon package, but for this tutorial we will use
+# some of MetPy's sample data. This event is the Veterans Day tornado outbreak in 2002.
 
-dataset = get_upper_air_data(datetime(2002, 11, 11, 0), 'BNA')
+with UseSampleData():  # Only needed to use our local sample data
+    dataset = get_upper_air_data(datetime(2002, 11, 11, 0), 'BNA')
 
 ##########################################################################
 
-# We can view the fields available in the dataset. We will create some simple
-# variables to make the rest of the code more concise.
-
-print(dataset.variables.keys())
+# We will pull the data out of the example dataset into individual variables.
 
 p = dataset.variables['pressure'][:]
 T = dataset.variables['temperature'][:]
 Td = dataset.variables['dewpoint'][:]
 u = dataset.variables['u_wind'][:]
 v = dataset.variables['v_wind'][:]
+wind_speed = dataset.variables['speed'][:]
 
 ##########################################################################
 # Thermodynamic Calculations
@@ -198,7 +192,7 @@ skew.plot_mixing_lines()
 ax_hod = inset_axes(skew.ax, '40%', '40%', loc=1)
 h = Hodograph(ax_hod, component_range=80.)
 h.add_grid(increment=20)
-h.plot_colormapped(u, v, np.hypot(u, v))  # Plot a line colored by wind speed
+h.plot_colormapped(u, v, wind_speed)  # Plot a line colored by wind speed
 
 # Show the plot
 plt.show()
