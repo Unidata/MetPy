@@ -347,6 +347,22 @@ def test_el_lfc_equals_lcl():
     assert_almost_equal(el_temperature, -57.0307 * units.degC, 3)
 
 
+def test_el_small_surface_instability():
+    """Test that no EL is found when there is a small pocket of instability at the sfc."""
+    levels = np.array([959., 931.3, 925., 899.3, 892., 867.9, 850., 814.,
+                       807.9, 790., 779.2, 751.3, 724.3, 700., 655., 647.5,
+                       599.4, 554.7, 550., 500.]) * units.mbar
+    temperatures = np.array([22.2, 20.2, 19.8, 18.4, 18., 17.4, 17., 15.4, 15.4,
+                             15.6, 14.6, 12., 9.4, 7., 2.2, 1.4, -4.2, -9.7,
+                             -10.3, -14.9]) * units.degC
+    dewpoints = np.array([20., 18.5, 18.1, 17.9, 17.8, 15.3, 13.5, 6.4, 2.2,
+                          -10.4, -10.2, -9.8, -9.4, -9., -15.8, -15.7, -14.8, -14.,
+                          -13.9, -17.9]) * units.degC
+    el_pressure, el_temperature = el(levels, temperatures, dewpoints)
+    assert assert_nan(el_pressure, levels.units)
+    assert assert_nan(el_temperature, temperatures.units)
+
+
 def test_wet_psychrometric_vapor_pressure():
     """Test calculation of vapor pressure from wet and dry bulb temperatures."""
     p = 1013.25 * units.mbar
