@@ -61,6 +61,7 @@ before_install:
   # Shapely dependency needed to keep from using Shapely's manylinux wheels
   # which use a different geos that what we build cartopy with on Travis
   - pip install --upgrade pip;
+  - pip install --upgrade setuptools;
   - if [[ $TASK == "docs" ]]; then
       if ! git describe --tags; then git fetch --depth=150; fi;
       export EXTRA_INSTALLS="cdm,doc,examples";
