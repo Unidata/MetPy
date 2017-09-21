@@ -14,42 +14,46 @@ forecasting, checkout `this <http://homes.comet.ucar.edu/~alanbol/aws-tr-79-006.
 air weather service guide.
 """
 
-from datetime import datetime
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import numpy as np
-
+import pandas as pd
 import metpy.calc as mpcalc
-from metpy.io import get_upper_air_data
+from metpy.cbook import get_test_data
 from metpy.plots import Hodograph, SkewT
+from metpy.units import units
 
 #########################################################################
 # Getting Data
 # ------------
 #
-# We will download data from the
-# `University of Wyoming sounding data page <http://weather.uwyo.edu/upperair/sounding.html>`_
-# , which has an extensive archive of data available, as well as current data.
-#
-# In this case, we will download the sounding data from the Veterans Day
-# tornado outbreak in 2002 by passing a ``datetime`` object and station name to the
-# ``get_upper_air_data`` function.
+# Upper air data can be obtained using the siphon package, but for this tutorial we will use
+# some of MetPy's sample data. This event is the Veterans Day tornado outbreak in 2002.
 
-dataset = get_upper_air_data(datetime(2002, 11, 11, 0), 'BNA')
+col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'speed']
+
+df = pd.read_fwf(get_test_data('nov11_sounding.txt', as_file_obj=False),
+                 skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
+
+df['u_wind'], df['v_wind'] = mpcalc.get_wind_components(df['speed'],
+                                                        np.deg2rad(df['direction']))
+
+# Drop any rows with all NaN values for T, Td, winds
+df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
+                       'u_wind', 'v_wind'), how='all').reset_index(drop=True)
 
 ##########################################################################
 
-# We can view the fields available in the dataset. We will create some simple
-# variables to make the rest of the code more concise.
+# We will pull the data out of the example dataset into individual variables and
+# assign units.
 
-print(dataset.variables.keys())
-
-p = dataset.variables['pressure'][:]
-T = dataset.variables['temperature'][:]
-Td = dataset.variables['dewpoint'][:]
-u = dataset.variables['u_wind'][:]
-v = dataset.variables['v_wind'][:]
+p = df['pressure'].values * units.hPa
+T = df['temperature'].values * units.degC
+Td = df['dewpoint'].values * units.degC
+wind_speed = df['speed'].values * units.knots
+wind_dir = df['direction'].values * units.degrees
+u, v = mpcalc.get_wind_components(wind_speed, wind_dir)
 
 ##########################################################################
 # Thermodynamic Calculations
@@ -198,7 +202,7 @@ skew.plot_mixing_lines()
 ax_hod = inset_axes(skew.ax, '40%', '40%', loc=1)
 h = Hodograph(ax_hod, component_range=80.)
 h.add_grid(increment=20)
-h.plot_colormapped(u, v, np.hypot(u, v))  # Plot a line colored by wind speed
+h.plot_colormapped(u, v, wind_speed)  # Plot a line colored by wind speed
 
 # Show the plot
 plt.show()
