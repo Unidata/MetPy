@@ -95,7 +95,7 @@ class UseSampleData(object):
     r"""Class to temporarily point to local sample data instead of downloading."""
 
     url_map = {r'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST'
-               r'&YEAR=1999&MONTH=05&FROM=0400&TO=0400&STNM=OUN': 'may3_sounding.txt',
+               r'&YEAR=1999&MONTH=05&FROM=0400&TO=0400&STNM=OUN': 'may4_sounding.txt',
                r'http://weather.uwyo.edu/cgi-bin/sounding?region=naconf&TYPE=TEXT%3ALIST'
                r'&YEAR=2013&MONTH=01&FROM=2012&TO=2012&STNM=OUN': 'sounding_data.txt',
                r'http://mesonet.agron.iastate.edu/json/raob.py?ts=201607301200'
