@@ -7,25 +7,42 @@ Skew-T with Complex Layout
 
 Combine a Skew-T and a hodograph using Matplotlib's `GridSpec` layout capability.
 """
-from datetime import datetime
 
 import matplotlib.gridspec as gridspec
 import matplotlib.pyplot as plt
-
-from metpy.io import get_upper_air_data
-from metpy.io.upperair import UseSampleData
+import numpy as np
+import pandas as pd
+import metpy.calc as mpcalc
+from metpy.cbook import get_test_data
 from metpy.plots import Hodograph, SkewT
+from metpy.units import units
 
 ###########################################
-with UseSampleData():  # Only needed to use our local sample data
-    # Download and parse the data
-    dataset = get_upper_air_data(datetime(1999, 5, 4, 0), 'OUN')
+# Upper air data can be obtained using the siphon package, but for this example we will use
+# some of MetPy's sample data.
 
-p = dataset.variables['pressure'][:]
-T = dataset.variables['temperature'][:]
-Td = dataset.variables['dewpoint'][:]
-u = dataset.variables['u_wind'][:]
-v = dataset.variables['v_wind'][:]
+col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'speed']
+
+df = pd.read_fwf(get_test_data('may4_sounding.txt', as_file_obj=False),
+                 skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
+
+df['u_wind'], df['v_wind'] = mpcalc.get_wind_components(df['speed'],
+                                                        np.deg2rad(df['direction']))
+
+# Drop any rows with all NaN values for T, Td, winds
+df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
+                       'u_wind', 'v_wind'), how='all').reset_index(drop=True)
+
+###########################################
+# We will pull the data out of the example dataset into individual variables and
+# assign units.
+
+p = df['pressure'].values * units.hPa
+T = df['temperature'].values * units.degC
+Td = df['dewpoint'].values * units.degC
+wind_speed = df['speed'].values * units.knots
+wind_dir = df['direction'].values * units.degrees
+u, v = mpcalc.get_wind_components(wind_speed, wind_dir)
 
 ###########################################
 
