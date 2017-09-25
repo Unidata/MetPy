@@ -347,6 +347,41 @@ def test_el_lfc_equals_lcl():
     assert_almost_equal(el_temperature, -57.0307 * units.degC, 3)
 
 
+def test_el_small_surface_instability():
+    """Test that no EL is found when there is a small pocket of instability at the sfc."""
+    levels = np.array([959., 931.3, 925., 899.3, 892., 867.9, 850., 814.,
+                       807.9, 790., 779.2, 751.3, 724.3, 700., 655., 647.5,
+                       599.4, 554.7, 550., 500.]) * units.mbar
+    temperatures = np.array([22.2, 20.2, 19.8, 18.4, 18., 17.4, 17., 15.4, 15.4,
+                             15.6, 14.6, 12., 9.4, 7., 2.2, 1.4, -4.2, -9.7,
+                             -10.3, -14.9]) * units.degC
+    dewpoints = np.array([20., 18.5, 18.1, 17.9, 17.8, 15.3, 13.5, 6.4, 2.2,
+                          -10.4, -10.2, -9.8, -9.4, -9., -15.8, -15.7, -14.8, -14.,
+                          -13.9, -17.9]) * units.degC
+    el_pressure, el_temperature = el(levels, temperatures, dewpoints)
+    assert assert_nan(el_pressure, levels.units)
+    assert assert_nan(el_temperature, temperatures.units)
+
+
+def test_no_el_parcel_colder():
+    """Tests no EL when parcel stays colder than environment. INL 20170925-12Z."""
+    levels = np.array([974., 946., 925., 877.2, 866., 850., 814.6, 785.,
+                       756.6, 739., 729.1, 700., 686., 671., 641., 613.,
+                       603., 586., 571., 559.3, 539., 533., 500., 491.,
+                       477.9, 413., 390., 378., 345., 336.]) * units.mbar
+    temperatures = np.array([10., 8.4, 7.6, 5.9, 7.2, 7.6, 6.8, 7.1, 7.7,
+                             7.8, 7.7, 5.6, 4.6, 3.4, 0.6, -0.9, -1.1, -3.1,
+                             -4.7, -4.7, -6.9, -7.5, -11.1, -10.9, -12.1, -20.5, -23.5,
+                             -24.7, -30.5, -31.7]) * units.celsius
+    dewpoints = np.array([8.9, 8.4, 7.6, 5.9, 7.2, 7., 5., 3.6, 0.3,
+                          -4.2, -12.8, -12.4, -8.4, -8.6, -6.4, -7.9, -11.1, -14.1,
+                          -8.8, -28.1, -18.9, -14.5, -15.2, -15.1, -21.6, -41.5, -45.5,
+                          -29.6, -30.6, -32.1]) * units.celsius
+    el_pressure, el_temperature = el(levels, temperatures, dewpoints)
+    assert assert_nan(el_pressure, levels.units)
+    assert assert_nan(el_temperature, temperatures.units)
+
+
 def test_wet_psychrometric_vapor_pressure():
     """Test calculation of vapor pressure from wet and dry bulb temperatures."""
     p = 1013.25 * units.mbar
