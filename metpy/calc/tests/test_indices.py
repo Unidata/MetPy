@@ -77,6 +77,17 @@ def test_bulk_shear():
     assert_almost_equal(v.to('knots'), truth[1], 8)
 
 
+def test_bulk_shear_no_depth():
+    """Test bulk shear with observed sounding and no depth given. Issue #568."""
+    with UseSampleData():
+        data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC', source='wyoming')
+    u, v = bulk_shear(data.variables['pressure'][:], data.variables['u_wind'][:],
+                      data.variables['v_wind'][:], heights=data.variables['height'][:])
+    truth = [20.225018939, 22.602359692] * units('knots')
+    assert_almost_equal(u.to('knots'), truth[0], 8)
+    assert_almost_equal(v.to('knots'), truth[1], 8)
+
+
 def test_bulk_shear_elevated():
     """Test bulk shear with observed sounding and a base above the surface."""
     with UseSampleData():
