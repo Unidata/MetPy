@@ -7,6 +7,7 @@ Contain tools for making Skew-T Log-P plots, including the base plotting class,
 `SkewT`, as well as a class for making a `Hodograph`.
 """
 
+import matplotlib
 from matplotlib.axes import Axes
 import matplotlib.axis as maxis
 from matplotlib.collections import LineCollection
@@ -589,6 +590,9 @@ class SkewT(object):
         if fill_args['where'] is not None:
             arrs = arrs + (fill_args['where'],)
             fill_args.pop('where', None)
+
+        if matplotlib.__version__ >= '2.1':
+            fill_args['interpolate'] = True
 
         arrs = delete_masked_points(*arrs)
 
