@@ -436,6 +436,10 @@ def get_layer(pressure, *args, **kwargs):
     depth = kwargs.pop('depth', 100 * units.hPa)
     interpolate = kwargs.pop('interpolate', True)
 
+    # If we get the depth kwarg, but it's None, set it to the default as well
+    if depth is None:
+        depth = 100 * units.hPa
+
     # Make sure pressure and datavars are the same length
     for datavar in args:
         if len(pressure) != len(datavar):
