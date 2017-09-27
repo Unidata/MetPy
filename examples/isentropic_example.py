@@ -136,7 +136,7 @@ states_provinces = cfeature.NaturalEarthFeature(category='cultural',
                                                 facecolor='none')
 
 fig = plt.figure(1, figsize=(17., 12.))
-ax = plt.subplot(111, projection=crs)
+ax = fig.add_subplot(1, 1, 1, projection=crs)
 ax.set_extent(*bounds, crs=ccrs.PlateCarree())
 ax.coastlines('50m', edgecolor='black', linewidth=0.75)
 ax.add_feature(states_provinces, edgecolor='black', linewidth=0.5)
