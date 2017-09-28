@@ -105,8 +105,8 @@ def fix_type(typ, size, additional=None):
             assert size == trueSize, ('Got size {} instead of {} for {}'.format(size,
                                                                                 trueSize, typ))
             return fmtStr.format(size=size)
-    else:
-        raise ValueError('No type match! ({})'.format(typ))
+
+    raise ValueError('No type match! ({})'.format(typ))
 
 
 def fix_var_name(var_name):
