@@ -60,12 +60,14 @@ matrix:
 before_install:
   # Shapely dependency needed to keep from using Shapely's manylinux wheels
   # which use a different geos that what we build cartopy with on Travis
+  # We hardcode the sphinx_rtd_theme to lock in our build with patch for
+  # version chooser
   - pip install --upgrade pip;
   - pip install --upgrade setuptools;
   - if [[ $TASK == "docs" ]]; then
       if ! git describe --tags; then git fetch --depth=150; fi;
       export EXTRA_INSTALLS="cdm,doc,examples";
-      export EXTRA_PACKAGES="Cython pillow shapely<1.5.17.post1 sphinx_rtd_theme pytest recommonmark";
+      export EXTRA_PACKAGES="Cython pillow shapely<1.5.17.post1 sphinx_rtd_theme==0.2.5b1.post1 pytest recommonmark";
       ls $HOME/local/lib/;
       if [[ ! -f $HOME/local/lib/libproj.so ]]; then
         wget http://download.osgeo.org/proj/proj-4.9.3.tar.gz;

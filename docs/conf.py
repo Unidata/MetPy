@@ -65,7 +65,6 @@ source_parsers = {
 }
 
 
-
 # Turn off code and image links for embedded mpl plots
 plot_html_show_source_link = False
 plot_html_show_formats = False
@@ -108,7 +107,7 @@ copyright = '2016, MetPy Developers'
 #
 # The short X.Y version.
 verinfo = metpy.__version__
-version = verinfo.split('+')[0]
+version = verinfo.split('+')[0].rsplit('.', maxsplit=1)[0]
 # The full version, including alpha/beta/rc tags.
 release = verinfo
 
@@ -167,10 +166,12 @@ except ImportError:
 def setup(app):
     app.add_stylesheet('theme_override.css')
 
+
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {'canonical_url': 'https://unidata.github.io/MetPy/latest/'}
+html_theme_options = {'canonical_url': 'https://unidata.github.io/MetPy/latest/',
+                      'versions': {'latest': '../latest', 'dev': '../dev'}}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
