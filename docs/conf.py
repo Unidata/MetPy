@@ -107,7 +107,7 @@ copyright = '2016, MetPy Developers'
 #
 # The short X.Y version.
 verinfo = metpy.__version__
-version = verinfo.split('+')[0].rsplit('.', maxsplit=1)[0]
+version = verinfo.split('+')[0].rsplit('.', 1)[0]
 # The full version, including alpha/beta/rc tags.
 release = verinfo
 
