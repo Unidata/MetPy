@@ -35,6 +35,10 @@ if [[ "${VERSION}" != "dev" ]]; then
     ln -snf ${VERSION} latest
 fi
 
+# Generate our json list of versions
+echo Generating versions.json...
+${TRAVIS_BUILD_DIR}/ci/gen_versions_json.py
+
 echo Staging...
 git add -A .
 if [[ "${VERSION}" == "dev" && `git log -1 --format='%s'` == *"dev"* ]]; then
