@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -12,9 +12,10 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import numpy as np
 import pandas as pd
+
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
-from metpy.plots import Hodograph, SkewT
+from metpy.plots import add_metpy_logo, Hodograph, SkewT
 from metpy.units import units
 
 ###########################################
@@ -26,8 +27,8 @@ col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'spee
 df = pd.read_fwf(get_test_data('may4_sounding.txt', as_file_obj=False),
                  skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
-df['u_wind'], df['v_wind'] = mpcalc.get_wind_components(df['speed'],
-                                                        np.deg2rad(df['direction']))
+df['u_wind'], df['v_wind'] = mpcalc.wind_components(df['speed'],
+                                                    np.deg2rad(df['direction']))
 
 # Drop any rows with all NaN values for T, Td, winds
 df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
@@ -42,12 +43,13 @@ T = df['temperature'].values * units.degC
 Td = df['dewpoint'].values * units.degC
 wind_speed = df['speed'].values * units.knots
 wind_dir = df['direction'].values * units.degrees
-u, v = mpcalc.get_wind_components(wind_speed, wind_dir)
+u, v = mpcalc.wind_components(wind_speed, wind_dir)
 
 ###########################################
 
 # Create a new figure. The dimensions here give a good aspect ratio
 fig = plt.figure(figsize=(9, 9))
+add_metpy_logo(fig, 115, 100)
 
 # Grid for plots
 skew = SkewT(fig, rotation=45)

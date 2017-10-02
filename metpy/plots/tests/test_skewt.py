@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2015,2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `skewt` module."""
@@ -11,30 +11,34 @@ import pytest
 
 from metpy.plots import Hodograph, SkewT
 # Fixtures to make sure we have the right backend and consistent round
-from metpy.testing import patch_round, set_agg_backend  # noqa: F401
+from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.021, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.224, remove_text=True)
 def test_skewt_api():
     """Test the SkewT API."""
-    fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
 
-    # Plot the data using normal plotting functions, in this case using
-    # log scaling in Y, as dictated by the typical meteorological plot
-    p = np.linspace(1000, 100, 10)
-    t = np.linspace(20, -20, 10)
-    u = np.linspace(-10, 10, 10)
-    skew.plot(p, t, 'r')
-    skew.plot_barbs(p, u, u)
+        # Plot the data using normal plotting functions, in this case using
+        # log scaling in Y, as dictated by the typical meteorological plot
+        p = np.linspace(1000, 100, 10)
+        t = np.linspace(20, -20, 10)
+        u = np.linspace(-10, 10, 10)
+        skew.plot(p, t, 'r')
+        skew.plot_barbs(p, u, u)
 
-    # Add the relevant special lines
-    skew.plot_dry_adiabats()
-    skew.plot_moist_adiabats()
-    skew.plot_mixing_lines()
+        skew.ax.set_xlim(-20, 30)
+        skew.ax.set_ylim(1000, 100)
+
+        # Add the relevant special lines
+        skew.plot_dry_adiabats()
+        skew.plot_moist_adiabats()
+        skew.plot_mixing_lines()
 
     return fig
 
@@ -63,36 +67,58 @@ def test_skewt_with_grid_enabled():
         SkewT()
 
 
+@pytest.mark.mpl_image_compare(tolerance=0., remove_text=True)
+def test_skewt_arbitrary_rect():
+    """Test placing the SkewT in an arbitrary rectangle."""
+    fig = plt.figure(figsize=(9, 9))
+    SkewT(fig, rect=(0.15, 0.35, 0.8, 0.3))
+    return fig
+
+
+def test_skewt_subplot_rect_conflict():
+    """Test the subplot/rect conflict failure."""
+    with pytest.raises(ValueError):
+        SkewT(rect=(0.15, 0.35, 0.8, 0.3), subplot=(1, 1, 1))
+
+
 @pytest.fixture()
 def test_profile():
     """Return data for a test profile."""
     return np.linspace(1000, 100, 10), np.linspace(20, -20, 10), np.linspace(25, -30, 10)
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.71}.get(MPL_VERSION, 0.), remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'2.0': 1.12}.get(MPL_VERSION, 0.2432),
+                               remove_text=True)
 def test_skewt_shade_cape_cin(test_profile):
     """Test shading CAPE and CIN on a SkewT plot."""
     p, t, tp = test_profile
-    fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
-    skew.plot(p, t, 'r')
-    skew.plot(p, tp, 'k')
-    skew.shade_cape(p, t, tp)
-    skew.shade_cin(p, t, tp)
-    skew.ax.set_xlim(-50, 50)
+
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
+        skew.plot(p, t, 'r')
+        skew.plot(p, tp, 'k')
+        skew.shade_cape(p, t, tp)
+        skew.shade_cin(p, t, tp)
+        skew.ax.set_xlim(-50, 50)
+
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.70}.get(MPL_VERSION, 0.), remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.70}.get(MPL_VERSION, 0.2432),
+                               remove_text=True)
 def test_skewt_shade_area(test_profile):
     """Test shading areas on a SkewT plot."""
     p, t, tp = test_profile
-    fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
-    skew.plot(p, t, 'r')
-    skew.plot(p, tp, 'k')
-    skew.shade_area(p, t, tp)
-    skew.ax.set_xlim(-50, 50)
+
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
+        skew.plot(p, t, 'r')
+        skew.plot(p, tp, 'k')
+        skew.shade_area(p, t, tp)
+        skew.ax.set_xlim(-50, 50)
+
     return fig
 
 
@@ -107,16 +133,19 @@ def test_skewt_shade_area_invalid(test_profile):
         skew.shade_area(p, t, tp, which='positve')
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.75}.get(MPL_VERSION, 0.), remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.75}.get(MPL_VERSION, 0.2432),
+                               remove_text=True)
 def test_skewt_shade_area_kwargs(test_profile):
     """Test shading areas on a SkewT plot with kwargs."""
     p, t, tp = test_profile
-    fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
-    skew.plot(p, t, 'r')
-    skew.plot(p, tp, 'k')
-    skew.shade_area(p, t, tp, facecolor='m')
-    skew.ax.set_xlim(-50, 50)
+
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
+        skew.plot(p, t, 'r')
+        skew.plot(p, tp, 'k')
+        skew.shade_area(p, t, tp, facecolor='m')
+        skew.ax.set_xlim(-50, 50)
     return fig
 
 
@@ -182,21 +211,104 @@ def test_skewt_barb_color():
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance=0.2, remove_text=True)
+def test_skewt_barb_unit_conversion():
+    """Test that barbs units can be converted at plot time (#737)."""
+    u_wind = np.array([3.63767155210412]) * units('m/s')
+    v_wind = np.array([3.63767155210412]) * units('m/s')
+    p_wind = np.array([500]) * units.hPa
+
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.ax.set_ylabel('')  # remove_text doesn't do this as of pytest 0.9
+    skew.plot_barbs(p_wind, u_wind, v_wind, plot_units='knots')
+    skew.ax.set_ylim(1000, 500)
+    skew.ax.set_yticks([1000, 750, 500])
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.88}.get(MPL_VERSION, 0), remove_text=True)
+def test_skewt_barb_no_default_unit_conversion():
+    """Test that barbs units are left alone by default (#737)."""
+    u_wind = np.array([3.63767155210412]) * units('m/s')
+    v_wind = np.array([3.63767155210412]) * units('m/s')
+    p_wind = np.array([500]) * units.hPa
+
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.ax.set_ylabel('')  # remove_text doesn't do this as of pytest 0.9
+    skew.plot_barbs(p_wind, u_wind, v_wind)
+    skew.ax.set_ylim(1000, 500)
+    skew.ax.set_yticks([1000, 750, 500])
+
+    return fig
+
+
+@pytest.mark.parametrize('u,v', [(np.array([3]) * units('m/s'), np.array([3])),
+                                 (np.array([3]), np.array([3]) * units('m/s'))])
+def test_skewt_barb_unit_conversion_exception(u, v):
+    """Test that errors are raise if unit conversion is requested on un-united data."""
+    p_wind = np.array([500]) * units.hPa
+
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    with pytest.raises(ValueError):
+        skew.plot_barbs(p_wind, u, v, plot_units='knots')
+
+
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_plot_layers():
     """Test hodograph colored height layers with interpolation."""
-    u = np.arange(5, 65, 5) * units('knot')
-    v = np.arange(-5, -65, -5) * units('knot')
-    h = [178, 213, 610, 656, 721, 914, 1060,
-         1219, 1372, 1412, 1512, 1524] * units('meter')
-    colors = ['red', 'green']
-    levels = [0, 500, 1000] * units('meter')
-    fig = plt.figure(figsize=(9, 9))
-    ax = fig.add_subplot(1, 1, 1)
-    hodo = Hodograph(ax, component_range=80)
-    hodo.add_grid(increment=20, color='k')
-    hodo.plot_colormapped(u, v, h, bounds=levels, colors=colors)
+    u = np.zeros((6)) * units.knots
+    v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
+    heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
+    bounds = np.array([500, 1500, 2500, 3500, 4500]) * units.m
+    colors = ['r', 'g', 'b', 'r']
+    fig = plt.figure(figsize=(7, 7))
+    ax1 = fig.add_subplot(1, 1, 1)
+    h = Hodograph(ax1)
+    h.add_grid(increment=10)
+    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    ax1.set_xlim(-50, 50)
+    ax1.set_ylim(-5, 50)
 
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_hodograph_plot_layers_different_units():
+    """Test hodograph colored height layers with interpolation and different units."""
+    u = np.zeros((6)) * units.knots
+    v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
+    heights = np.array([0, 1, 2, 3, 4, 5]) * units.km
+    bounds = np.array([500, 1500, 2500, 3500, 4500]) * units.m
+    colors = ['r', 'g', 'b', 'r']
+    fig = plt.figure(figsize=(7, 7))
+    ax1 = fig.add_subplot(1, 1, 1)
+    h = Hodograph(ax1)
+    h.add_grid(increment=10)
+    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    ax1.set_xlim(-50, 50)
+    ax1.set_ylim(-5, 50)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_hodograph_plot_layers_bound_units():
+    """Test hodograph colored height layers with interpolation and different units."""
+    u = np.zeros((6)) * units.knots
+    v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
+    heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
+    bounds = np.array([0.5, 1.5, 2.5, 3.5, 4.5]) * units.km
+    colors = ['r', 'g', 'b', 'r']
+    fig = plt.figure(figsize=(7, 7))
+    ax1 = fig.add_subplot(1, 1, 1)
+    h = Hodograph(ax1)
+    h.add_grid(increment=10)
+    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    ax1.set_xlim(-50, 50)
+    ax1.set_ylim(-5, 50)
     return fig
 
 
@@ -215,3 +327,24 @@ def test_hodograph_plot_arbitrary_layer():
     hodo.plot_colormapped(u, v, speed, bounds=levels, colors=colors)
 
     return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_hodograph_wind_vectors():
+    """Test plotting wind vectors onto a hodograph."""
+    u_wind = np.array([-10, -7, 0, 7, 10, 7, 0, -7])
+    v_wind = np.array([0, 7, 10, 7, 0, -7, -10, -7])
+    fig = plt.figure(figsize=(6, 6))
+    ax = fig.add_subplot(1, 1, 1)
+    h = Hodograph(ax, component_range=20)
+    h.plot(u_wind, v_wind, linewidth=3)
+    h.wind_vectors(u_wind, v_wind)
+    return fig
+
+
+@pytest.mark.xfail
+def test_united_hodograph_range():
+    """Tests making a hodograph with a united ranged."""
+    fig = plt.figure(figsize=(6, 6))
+    ax = fig.add_subplot(1, 1, 1)
+    Hodograph(ax, component_range=60. * units.knots)

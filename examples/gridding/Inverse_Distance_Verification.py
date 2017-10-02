@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -30,17 +30,16 @@ import numpy as np
 from scipy.spatial import cKDTree
 from scipy.spatial.distance import cdist
 
-from metpy.gridding.gridding_functions import calc_kappa
-from metpy.gridding.interpolation import barnes_point, cressman_point
-from metpy.gridding.triangles import dist_2
-
-plt.rcParams['figure.figsize'] = (15, 10)
+from metpy.interpolate.geometry import dist_2
+from metpy.interpolate.points import barnes_point, cressman_point
+from metpy.interpolate.tools import calc_kappa
 
 
-def draw_circle(x, y, r, m, label):
-    nx = x + r * np.cos(np.deg2rad(list(range(360))))
-    ny = y + r * np.sin(np.deg2rad(list(range(360))))
-    plt.plot(nx, ny, m, label=label)
+def draw_circle(ax, x, y, r, m, label):
+    th = np.linspace(0, 2 * np.pi, 100)
+    nx = x + r * np.cos(th)
+    ny = y + r * np.sin(th)
+    ax.plot(nx, ny, m, label=label)
 
 
 ###########################################
@@ -91,23 +90,24 @@ barnes_val = barnes_point(barnes_dist, barnes_obs, kappa)
 
 ###########################################
 # Plot all of the affiliated information and interpolation values.
+fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 for i, zval in enumerate(zp):
-    plt.plot(pts[i, 0], pts[i, 1], '.')
-    plt.annotate(str(zval) + ' F', xy=(pts[i, 0] + 2, pts[i, 1]))
+    ax.plot(pts[i, 0], pts[i, 1], '.')
+    ax.annotate(str(zval) + ' F', xy=(pts[i, 0] + 2, pts[i, 1]))
 
-plt.plot(sim_gridx, sim_gridy, '+', markersize=10)
+ax.plot(sim_gridx, sim_gridy, '+', markersize=10)
 
-plt.plot(x1, y1, 'ko', fillstyle='none', markersize=10, label='grid 0 matches')
-plt.plot(x2, y2, 'ks', fillstyle='none', markersize=10, label='grid 1 matches')
+ax.plot(x1, y1, 'ko', fillstyle='none', markersize=10, label='grid 0 matches')
+ax.plot(x2, y2, 'ks', fillstyle='none', markersize=10, label='grid 1 matches')
 
-draw_circle(sim_gridx[0], sim_gridy[0], m='k-', r=radius, label='grid 0 radius')
-draw_circle(sim_gridx[1], sim_gridy[1], m='b-', r=radius, label='grid 1 radius')
+draw_circle(ax, sim_gridx[0], sim_gridy[0], m='k-', r=radius, label='grid 0 radius')
+draw_circle(ax, sim_gridx[1], sim_gridy[1], m='b-', r=radius, label='grid 1 radius')
 
-plt.annotate('grid 0: cressman {:.3f}'.format(cress_val), xy=(sim_gridx[0] + 2, sim_gridy[0]))
-plt.annotate('grid 1: barnes {:.3f}'.format(barnes_val), xy=(sim_gridx[1] + 2, sim_gridy[1]))
+ax.annotate('grid 0: cressman {:.3f}'.format(cress_val), xy=(sim_gridx[0] + 2, sim_gridy[0]))
+ax.annotate('grid 1: barnes {:.3f}'.format(barnes_val), xy=(sim_gridx[1] + 2, sim_gridy[1]))
 
-plt.axes().set_aspect('equal', 'datalim')
-plt.legend()
+ax.set_aspect('equal', 'datalim')
+ax.legend()
 
 ###########################################
 # For each point, we will do a manual check of the interpolation values by doing a step by
@@ -115,26 +115,27 @@ plt.legend()
 #
 # Plot the grid point, observations within radius of the grid point, their locations, and
 # their distances from the grid point.
-plt.annotate('grid 0: ({}, {})'.format(sim_gridx[0], sim_gridy[0]),
-             xy=(sim_gridx[0] + 2, sim_gridy[0]))
-plt.plot(sim_gridx[0], sim_gridy[0], '+', markersize=10)
+fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+ax.annotate('grid 0: ({}, {})'.format(sim_gridx[0], sim_gridy[0]),
+            xy=(sim_gridx[0] + 2, sim_gridy[0]))
+ax.plot(sim_gridx[0], sim_gridy[0], '+', markersize=10)
 
 mx, my = obs_tree.data[indices[0]].T
 mz = zp[indices[0]]
 
 for x, y, z in zip(mx, my, mz):
     d = np.sqrt((sim_gridx[0] - x)**2 + (y - sim_gridy[0])**2)
-    plt.plot([sim_gridx[0], x], [sim_gridy[0], y], '--')
+    ax.plot([sim_gridx[0], x], [sim_gridy[0], y], '--')
 
     xave = np.mean([sim_gridx[0], x])
     yave = np.mean([sim_gridy[0], y])
 
-    plt.annotate('distance: {}'.format(d), xy=(xave, yave))
-    plt.annotate('({}, {}) : {} F'.format(x, y, z), xy=(x, y))
+    ax.annotate('distance: {}'.format(d), xy=(xave, yave))
+    ax.annotate('({}, {}) : {} F'.format(x, y, z), xy=(x, y))
 
-plt.xlim(0, 80)
-plt.ylim(0, 80)
-plt.axes().set_aspect('equal', 'datalim')
+ax.set_xlim(0, 80)
+ax.set_ylim(0, 80)
+ax.set_aspect('equal', 'datalim')
 
 ###########################################
 # Step through the cressman calculations.
@@ -154,26 +155,27 @@ print('Metpy cressman value for grid 1:\t', val)
 ###########################################
 # Now repeat for grid 1, except use barnes interpolation.
 
-plt.annotate('grid 1: ({}, {})'.format(sim_gridx[1], sim_gridy[1]),
-             xy=(sim_gridx[1] + 2, sim_gridy[1]))
-plt.plot(sim_gridx[1], sim_gridy[1], '+', markersize=10)
+fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+ax.annotate('grid 1: ({}, {})'.format(sim_gridx[1], sim_gridy[1]),
+            xy=(sim_gridx[1] + 2, sim_gridy[1]))
+ax.plot(sim_gridx[1], sim_gridy[1], '+', markersize=10)
 
 mx, my = obs_tree.data[indices[1]].T
 mz = zp[indices[1]]
 
 for x, y, z in zip(mx, my, mz):
     d = np.sqrt((sim_gridx[1] - x)**2 + (y - sim_gridy[1])**2)
-    plt.plot([sim_gridx[1], x], [sim_gridy[1], y], '--')
+    ax.plot([sim_gridx[1], x], [sim_gridy[1], y], '--')
 
     xave = np.mean([sim_gridx[1], x])
     yave = np.mean([sim_gridy[1], y])
 
-    plt.annotate('distance: {}'.format(d), xy=(xave, yave))
-    plt.annotate('({}, {}) : {} F'.format(x, y, z), xy=(x, y))
+    ax.annotate('distance: {}'.format(d), xy=(xave, yave))
+    ax.annotate('({}, {}) : {} F'.format(x, y, z), xy=(x, y))
 
-plt.xlim(40, 80)
-plt.ylim(40, 100)
-plt.axes().set_aspect('equal', 'datalim')
+ax.set_xlim(40, 80)
+ax.set_ylim(40, 100)
+ax.set_aspect('equal', 'datalim')
 
 ###########################################
 # Step through barnes calculations.
@@ -186,3 +188,5 @@ value = np.sum(values * (weights / total_weights))
 
 print('Manual barnes value:\t', value)
 print('Metpy barnes value:\t', barnes_point(barnes_dist, barnes_obs, kappa))
+
+plt.show()

@@ -1,3 +1,9 @@
+{% if fullname in ['metpy.calc'] %}
+
+{% include 'overrides/' ~ fullname ~ '.rst' with context %}
+
+{% else %}
+
 {{ objname }}
 {{ underline }}
 
@@ -41,3 +47,5 @@
    {%- endfor %}
    {% endif %}
    {% endblock %}
+
+{% endif %}

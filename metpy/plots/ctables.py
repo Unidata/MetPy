@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2014,2015,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Work with custom color tables.
@@ -28,7 +28,7 @@ specific set of constraints (e.g. step size) for mapping.
        for ax in axes:
            ax.set_axis_off()
 
-   cmaps = list(ctables.registry.keys())
+   cmaps = list(ctables.registry)
    cmaps = [name for name in cmaps if name[-2:]!='_r']
    nrows = len(cmaps)
    gradient = np.linspace(0, 1, 256)
@@ -50,11 +50,13 @@ import posixpath
 import matplotlib.colors as mcolors
 from pkg_resources import resource_listdir, resource_stream
 
+from ..package_tools import Exporter
+
+exporter = Exporter(globals())
+
 TABLE_EXT = '.tbl'
 
 log = logging.getLogger(__name__)
-log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
-log.setLevel(logging.WARNING)
 
 
 def _parse(s):
@@ -67,6 +69,7 @@ def _parse(s):
     return None
 
 
+@exporter.export
 def read_colortable(fobj):
     r"""Read colortable information from a file.
 
@@ -272,5 +275,8 @@ class ColortableRegistry(dict):
 
 
 registry = ColortableRegistry()
-registry.scan_resource('metpy.plots', 'colortables')
+registry.scan_resource('metpy.plots', 'colortable_files')
 registry.scan_dir(os.path.curdir)
+
+with exporter:
+    colortables = registry

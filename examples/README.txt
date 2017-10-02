@@ -1,7 +1,7 @@
 .. _examples-index:
 
-MetPy Examples
-==============
+Examples
+========
 
 
 .. _general-examples:

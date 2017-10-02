@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2014,2015,2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Make Skew-T Log-P based plots.
@@ -7,6 +7,12 @@ Contain tools for making Skew-T Log-P plots, including the base plotting class,
 `SkewT`, as well as a class for making a `Hodograph`.
 """
 
+try:
+    from contextlib import ExitStack
+except ImportError:
+    from contextlib2 import ExitStack
+
+import matplotlib
 from matplotlib.axes import Axes
 import matplotlib.axis as maxis
 from matplotlib.collections import LineCollection
@@ -20,9 +26,10 @@ import numpy as np
 
 from ._util import colored_line
 from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
-from ..calc.tools import delete_masked_points, interp
+from ..calc.tools import _delete_masked_points
+from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
-from ..units import units
+from ..units import concatenate, units
 
 exporter = Exporter(globals())
 
@@ -35,72 +42,31 @@ class SkewXTick(maxis.XTick):
     and draw as appropriate. It also performs similar checking for gridlines.
     """
 
-    def update_position(self, loc):
-        """Set the location of tick in data coords with scalar *loc*."""
-        # This ensures that the new value of the location is set before
-        # any other updates take place.
-        self._loc = loc
-        super(SkewXTick, self).update_position(loc)
-
-    def _has_default_loc(self):
-        return self.get_loc() is None
-
-    def _need_lower(self):
-        return (self._has_default_loc() or
-                transforms.interval_contains(self.axes.lower_xlim,
-                                             self.get_loc()))
-
-    def _need_upper(self):
-        return (self._has_default_loc() or
-                transforms.interval_contains(self.axes.upper_xlim,
-                                             self.get_loc()))
-
-    @property
-    def gridOn(self):  # noqa: N802
-        """Control whether the gridline is drawn for this tick."""
-        return (self._gridOn and (self._has_default_loc() or
-                transforms.interval_contains(self.get_view_interval(),
-                                             self.get_loc())))
-
-    @gridOn.setter
-    def gridOn(self, value):  # noqa: N802
-        self._gridOn = value
-
-    @property
-    def tick1On(self):  # noqa: N802
-        """Control whether the lower tick mark is drawn for this tick."""
-        return self._tick1On and self._need_lower()
-
-    @tick1On.setter
-    def tick1On(self, value):  # noqa: N802
-        self._tick1On = value
-
-    @property
-    def label1On(self):  # noqa: N802
-        """Control whether the lower tick label is drawn for this tick."""
-        return self._label1On and self._need_lower()
-
-    @label1On.setter
-    def label1On(self, value):  # noqa: N802
-        self._label1On = value
-
-    @property
-    def tick2On(self):  # noqa: N802
-        """Control whether the upper tick mark is drawn for this tick."""
-        return self._tick2On and self._need_upper()
-
-    @tick2On.setter
-    def tick2On(self, value):  # noqa: N802
-        self._tick2On = value
-
-    @property
-    def label2On(self):  # noqa: N802
-        """Control whether the upper tick label is drawn for this tick."""
-        return self._label2On and self._need_upper()
-
-    @label2On.setter
-    def label2On(self, value):  # noqa: N802
-        self._label2On = value
+    # Taken from matplotlib's SkewT example to update for matplotlib 3.1's changes to
+    # state management for ticks. See matplotlib/matplotlib#10088
+    def draw(self, renderer):
+        """Draw the tick."""
+        # When adding the callbacks with `stack.callback`, we fetch the current
+        # visibility state of the artist with `get_visible`; the ExitStack will
+        # restore these states (`set_visible`) at the end of the block (after
+        # the draw).
+        with ExitStack() as stack:
+            for artist in [self.gridline, self.tick1line, self.tick2line,
+                           self.label1, self.label2]:
+                stack.callback(artist.set_visible, artist.get_visible())
+            needs_lower = transforms.interval_contains(
+                self.axes.lower_xlim, self.get_loc())
+            needs_upper = transforms.interval_contains(
+                self.axes.upper_xlim, self.get_loc())
+            self.tick1line.set_visible(
+                self.tick1line.get_visible() and needs_lower)
+            self.label1.set_visible(
+                self.label1.get_visible() and needs_lower)
+            self.tick2line.set_visible(
+                self.tick2line.get_visible() and needs_upper)
+            self.label2.set_visible(
+                self.label2.get_visible() and needs_upper)
+            super(SkewXTick, self).draw(renderer)
 
     def get_view_interval(self):
         """Get the view interval."""
@@ -169,7 +135,7 @@ class SkewXAxes(Axes):
         """
         # This needs to be popped and set before moving on
         self.rot = kwargs.pop('rotation', 30)
-        Axes.__init__(self, *args, **kwargs)
+        super(Axes, self).__init__(*args, **kwargs)
 
     def _init_axis(self):
         # Taken from Axes and modified to use our modified X-axis
@@ -196,26 +162,26 @@ class SkewXAxes(Axes):
 
         """
         # Get the standard transform setup from the Axes base class
-        Axes._set_lim_and_transforms(self)
+        super(Axes, self)._set_lim_and_transforms()
 
         # Need to put the skew in the middle, after the scale and limits,
         # but before the transAxes. This way, the skew is done in Axes
         # coordinates thus performing the transform around the proper origin
         # We keep the pre-transAxes transform around for other users, like the
         # spines for finding bounds
-        self.transDataToAxes = (self.transScale +
-                                (self.transLimits +
-                                 transforms.Affine2D().skew_deg(self.rot, 0)))
+        self.transDataToAxes = (self.transScale
+                                + (self.transLimits
+                                   + transforms.Affine2D().skew_deg(self.rot, 0)))
 
         # Create the full transform from Data to Pixels
         self.transData = self.transDataToAxes + self.transAxes
 
         # Blended transforms like this need to have the skewing applied using
         # both axes, in axes coords like before.
-        self._xaxis_transform = (transforms.blended_transform_factory(
-            self.transScale + self.transLimits,
-            transforms.IdentityTransform()) +
-            transforms.Affine2D().skew_deg(self.rot, 0)) + self.transAxes
+        self._xaxis_transform = (
+            transforms.blended_transform_factory(self.transScale + self.transLimits,
+                                                 transforms.IdentityTransform())
+            + transforms.Affine2D().skew_deg(self.rot, 0)) + self.transAxes
 
     @property
     def lower_xlim(self):
@@ -250,7 +216,7 @@ class SkewT(object):
 
     """
 
-    def __init__(self, fig=None, rotation=30, subplot=(1, 1, 1)):
+    def __init__(self, fig=None, rotation=30, subplot=None, rect=None):
         r"""Create SkewT - logP plots.
 
         Parameters
@@ -268,6 +234,9 @@ class SkewT(object):
             :meth:`matplotlib.figure.Figure.add_subplot`. The
             :class:`matplotlib.gridspec.SubplotSpec`
             can be created by using :class:`matplotlib.gridspec.GridSpec`.
+        rect : tuple[float, float, float, float], optional
+            Rectangle (left, bottom, width, height) in which to place the axes. This
+            allows the user to place the axes at an arbitrary point on the figure.
 
         """
         if fig is None:
@@ -276,12 +245,23 @@ class SkewT(object):
             fig = plt.figure(figsize=figsize)
         self._fig = fig
 
-        # Handle being passed a tuple for the subplot, or a GridSpec instance
-        try:
-            len(subplot)
-        except TypeError:
-            subplot = (subplot,)
-        self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
+        if rect and subplot:
+            raise ValueError("Specify only one of `rect' and `subplot', but not both")
+
+        elif rect:
+            self.ax = fig.add_axes(rect, projection='skewx', rotation=rotation)
+
+        else:
+            if subplot is not None:
+                # Handle being passed a tuple for the subplot, or a GridSpec instance
+                try:
+                    len(subplot)
+                except TypeError:
+                    subplot = (subplot,)
+            else:
+                subplot = (1, 1, 1)
+
+            self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
         self.ax.grid(True)
 
     def plot(self, p, t, *args, **kwargs):
@@ -313,8 +293,8 @@ class SkewT(object):
 
         """
         # Skew-T logP plotting
-        t, p = delete_masked_points(t, p)
-        l = self.ax.semilogy(t, p, *args, **kwargs)
+        t, p = _delete_masked_points(t, p)
+        lines = self.ax.semilogy(t, p, *args, **kwargs)
 
         # Disables the log-formatting that comes with semilogy
         self.ax.yaxis.set_major_formatter(ScalarFormatter())
@@ -326,9 +306,9 @@ class SkewT(object):
         # Try to make sane default temperature plotting
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
 
-        return l
+        return lines
 
-    def plot_barbs(self, p, u, v, c=None, xloc=1.0, x_clip_radius=0.08,
+    def plot_barbs(self, p, u, v, c=None, xloc=1.0, x_clip_radius=0.1,
                    y_clip_radius=0.08, **kwargs):
         r"""Plot wind barbs.
 
@@ -351,10 +331,12 @@ class SkewT(object):
             denotes far left and 1.0 denotes far right. Defaults to far right.
         x_clip_radius : float, optional
             Space, in normalized axes coordinates, to leave before clipping
-            wind barbs in the x-direction. Defaults to 0.08.
+            wind barbs in the x-direction. Defaults to 0.1.
         y_clip_radius : float, optional
             Space, in normalized axes coordinates, to leave above/below plot
             before clipping wind barbs in the y-direction. Defaults to 0.08.
+        plot_units: `pint.unit`
+            Units to plot in (performing conversion if necessary). Defaults to given units.
         kwargs
             Other keyword arguments to pass to :func:`~matplotlib.pyplot.barbs`
 
@@ -368,6 +350,16 @@ class SkewT(object):
         :func:`matplotlib.pyplot.barbs`
 
         """
+        # If plot_units specified, convert the data to those units
+        plotting_units = kwargs.pop('plot_units', None)
+        if plotting_units:
+            if hasattr(u, 'units') and hasattr(v, 'units'):
+                u = u.to(plotting_units)
+                v = v.to(plotting_units)
+            else:
+                raise ValueError('To convert to plotting units, units must be attached to '
+                                 'u and v wind components.')
+
         # Assemble array of x-locations in axes space
         x = np.empty_like(p)
         x.fill(xloc)
@@ -431,7 +423,7 @@ class SkewT(object):
             p = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = dry_lapse(p, t0[:, np.newaxis]).to(units.degC)
+        t = dry_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
         linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
@@ -484,7 +476,7 @@ class SkewT(object):
             p = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = moist_lapse(p, t0[:, np.newaxis]).to(units.degC)
+        t = moist_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
         linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
@@ -590,7 +582,10 @@ class SkewT(object):
             arrs = arrs + (fill_args['where'],)
             fill_args.pop('where', None)
 
-        arrs = delete_masked_points(*arrs)
+        if matplotlib.__version__ >= '2.1':
+            fill_args['interpolate'] = True
+
+        arrs = _delete_masked_points(*arrs)
 
         return self.ax.fill_betweenx(*arrs, **fill_args)
 
@@ -767,8 +762,34 @@ class Hodograph(object):
 
         """
         line_args = self._form_line_args(kwargs)
-        u, v = delete_masked_points(u, v)
+        u, v = _delete_masked_points(u, v)
         return self.ax.plot(u, v, **line_args)
+
+    def wind_vectors(self, u, v, **kwargs):
+        r"""Plot u, v data as wind vectors.
+
+        Plot the wind data as vectors for each level, beginning at the origin.
+
+        Parameters
+        ----------
+        u : array_like
+            u-component of wind
+        v : array_like
+            v-component of wind
+        kwargs
+            Other keyword arguments to pass to :meth:`matplotlib.axes.Axes.quiver`
+
+        Returns
+        -------
+        matplotlib.quiver.Quiver
+            arrows plotted
+
+        """
+        quiver_args = {'units': 'xy', 'scale': 1}
+        quiver_args.update(**kwargs)
+        center_position = np.zeros_like(u)
+        return self.ax.quiver(center_position, center_position,
+                              u, v, **quiver_args)
 
     def plot_colormapped(self, u, v, c, bounds=None, colors=None, **kwargs):
         r"""Plot u, v data, with line colored based on a third set of data.
@@ -810,17 +831,36 @@ class Hodograph(object):
         :meth:`Hodograph.plot`
 
         """
-        u, v, c = delete_masked_points(u, v, c)
+        u, v, c = _delete_masked_points(u, v, c)
 
+        # Plotting a color segmented hodograph
         if colors:
             cmap = mcolors.ListedColormap(colors)
+            # If we are segmenting by height (a length), interpolate the bounds
             if bounds.dimensionality == {'[length]': 1.0}:
-                bounds = np.asarray(bounds + c[0]) * bounds.units
-                interp_vert = interp(bounds, c, c, u, v)
-                inds = np.searchsorted(c.magnitude, bounds.magnitude)
-                u = np.insert(u.magnitude, inds, interp_vert[1].magnitude)
-                v = np.insert(v.magnitude, inds, interp_vert[2].magnitude)
-                c = np.insert(c.magnitude, inds, interp_vert[0].magnitude)
+
+                # Find any bounds not in the data and interpolate them
+                interpolation_heights = [bound.m for bound in bounds if bound not in c]
+                interpolation_heights = np.array(interpolation_heights) * bounds.units
+                interpolation_heights = (np.sort(interpolation_heights)
+                                         * interpolation_heights.units)
+                (interpolated_heights, interpolated_u,
+                 interpolated_v) = interpolate_1d(interpolation_heights, c, c, u, v)
+
+                # Combine the interpolated data with the actual data
+                c = concatenate([c, interpolated_heights])
+                u = concatenate([u, interpolated_u])
+                v = concatenate([v, interpolated_v])
+                sort_inds = np.argsort(c)
+                c = c[sort_inds]
+                u = u[sort_inds]
+                v = v[sort_inds]
+
+                # Unit conversion required for coloring of bounds/data in dissimilar units
+                # to work properly.
+                c = c.to_base_units()  # TODO: This shouldn't be required!
+                bounds = bounds.to_base_units()
+            # If segmenting by anything else, do not interpolate, just use the data
             else:
                 bounds = np.asarray(bounds) * bounds.units
 
@@ -830,8 +870,12 @@ class Hodograph(object):
             kwargs['cmap'] = cmap
             kwargs['norm'] = norm
             line_args = self._form_line_args(kwargs)
+
+        # Plotting a continuously colored line
         else:
             line_args = self._form_line_args(kwargs)
+
+        # Do the plotting
         lc = colored_line(u, v, c, **line_args)
         self.ax.add_collection(lc)
         return lc

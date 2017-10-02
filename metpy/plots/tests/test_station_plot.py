@@ -1,17 +1,18 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `station_plot` module."""
 
+import cartopy.crs as ccrs
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
-from metpy.plots import nws_layout, simple_layout, StationPlot, StationPlotLayout
-from metpy.plots.wx_symbols import current_weather, high_clouds, sky_cover
+from metpy.plots import (current_weather, high_clouds, nws_layout, simple_layout,
+                         sky_cover, StationPlot, StationPlotLayout)
 # Fixtures to make sure we have the right backend and consistent round
-from metpy.testing import patch_round, set_agg_backend  # noqa: F401
+from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 
@@ -64,7 +65,7 @@ def test_stationplot_clipping():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05974, '1.4': 3.7}.get(MPL_VERSION, 0.0033),
+@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05974, '1.4': 3.7}.get(MPL_VERSION, 0.25),
                                savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_station_plot_replace():
     """Test that locations are properly replaced."""
@@ -87,7 +88,7 @@ def test_station_plot_replace():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.036, '1.4': 2.02}.get(MPL_VERSION, 0.00321),
+@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.036, '1.4': 2.02}.get(MPL_VERSION, 0.00413),
                                savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_stationlayout_api():
     """Test the StationPlot API."""
@@ -155,7 +156,7 @@ def test_station_layout_names():
     assert sorted(layout.names()) == ['cover', 'stid', 'temp', 'u', 'v']
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05447, '1.4': 3.0}.get(MPL_VERSION, 0.0039),
+@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05447, '1.4': 3.0}.get(MPL_VERSION, 0.0072),
                                savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_simple_layout():
     """Test metpy's simple layout for station plots."""
@@ -254,4 +255,75 @@ def test_layout_str():
     layout.add_value('W', 'temp')
     layout.add_symbol('C', 'cover', lambda x: x)
     assert str(layout) == ('{C: (symbol, cover, ...), E: (text, stid, ...), '
-                           'W: (value, temp, ...), barb: (barb, (\'u\', \'v\'), ...)}')
+                           "W: (value, temp, ...), barb: (barb, ('u', 'v'), ...)}")
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.08}.get(MPL_VERSION, 0.00145),
+                               remove_text=True)
+def test_barb_projection():
+    """Test that barbs are properly projected (#598)."""
+    # Test data of all southerly winds
+    v = np.full((5, 5), 10, dtype=np.float64)
+    u = np.zeros_like(v)
+    x, y = np.meshgrid(np.linspace(-120, -60, 5), np.linspace(25, 50, 5))
+
+    # Plot and check barbs (they should align with grid lines)
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1, projection=ccrs.LambertConformal())
+    ax.gridlines(xlocs=[-135, -120, -105, -90, -75, -60, -45])
+    sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree())
+    sp.plot_barb(u, v)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 2.28}.get(MPL_VERSION, 0.0048),
+                               remove_text=True)
+def test_barb_unit_conversion():
+    """Test that barbs units can be converted at plot time (#737)."""
+    x_pos = np.array([0])
+    y_pos = np.array([0])
+    u_wind = np.array([3.63767155210412]) * units('m/s')
+    v_wind = np.array([3.63767155210412]) * units('m/s')
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    stnplot = StationPlot(ax, x_pos, y_pos)
+    stnplot.plot_barb(u_wind, v_wind, plot_units='knots')
+    ax.set_xlim(-5, 5)
+    ax.set_ylim(-5, 5)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 2.22}.get(MPL_VERSION, 0.0048),
+                               remove_text=True)
+def test_barb_no_default_unit_conversion():
+    """Test that barbs units are left alone by default (#737)."""
+    x_pos = np.array([0])
+    y_pos = np.array([0])
+    u_wind = np.array([3.63767155210412]) * units('m/s')
+    v_wind = np.array([3.63767155210412]) * units('m/s')
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    stnplot = StationPlot(ax, x_pos, y_pos)
+    stnplot.plot_barb(u_wind, v_wind)
+    ax.set_xlim(-5, 5)
+    ax.set_ylim(-5, 5)
+
+    return fig
+
+
+@pytest.mark.parametrize('u,v', [(np.array([3]) * units('m/s'), np.array([3])),
+                                 (np.array([3]), np.array([3]) * units('m/s'))])
+def test_barb_unit_conversion_exception(u, v):
+    """Test that errors are raise if unit conversion is requested on un-united data."""
+    x_pos = np.array([0])
+    y_pos = np.array([0])
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    stnplot = StationPlot(ax, x_pos, y_pos)
+    with pytest.raises(ValueError):
+        stnplot.plot_barb(u, v, plot_units='knots')

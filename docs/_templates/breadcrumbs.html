@@ -1,0 +1,30 @@
+{# Extend the RTD template to include links to Github instead of "View page
+   source" #}
+{% extends "!breadcrumbs.html" %}
+
+
+{% block breadcrumbs_aside %}
+    <li class="source-link">
+        {% if hasdoc(pagename) %}
+            {% if pagename.startswith(api_dir) %}
+                {% set title = "Suggested improvement for " + pagename %}
+                {% set body = "Please describe what could be improved about this page or the typo/mistake that you found:" %}
+                <a href="https://github.com/{{ github_repo }}/issues/new?title={{ title|urlencode }}&body={{ body|urlencode }}"
+                   class="fa fa-github"> Improve this page</a>
+            {% elif pagename.split("/")[0] in galleries %}
+                {% set gallery_path = gallery_dir[pagename.split("/")[0]] %}
+                {% set example_script = pagename|replace(pagename.split("/")[0], gallery_dir[pagename.split("/")[0]]) %}
+                {% if pagename.split("/")[-1] == "index" %}
+                    {% set example_script = example_script|replace("index", "README.txt") %}
+                {% else %}
+                    {% set example_script = example_script + ".py" %}
+                {% endif %}
+                <a href="https://github.com/{{ github_repo }}/edit/{{ github_version }}/{{ doc_path }}/{{ example_script }}"
+                   class="fa fa-github"> Improve this page</a>
+            {% else %}
+                <a href="https://github.com/{{ github_repo }}/edit/{{ github_version }}/{{ doc_path }}/{{ pagename }}{{ suffix }}"
+                   class="fa fa-github"> Improve this page</a>
+            {% endif %}
+        {% endif %}
+    </li>
+{% endblock %}

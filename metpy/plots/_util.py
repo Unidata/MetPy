@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2015,2017,2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Utilities for use in making plots."""
@@ -7,6 +7,7 @@ from datetime import datetime
 import posixpath
 
 from matplotlib.collections import LineCollection
+import matplotlib.patheffects as mpatheffects
 from matplotlib.pyplot import imread
 import numpy as np
 import pkg_resources
@@ -14,10 +15,11 @@ import pkg_resources
 from ..units import concatenate
 
 
-def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', **kwargs):
-    """Add a timestamp at plot creation time.
+def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=False,
+                  pretext='Created: ', time_format='%Y-%m-%dT%H:%M:%SZ', **kwargs):
+    """Add a timestamp to a plot.
 
-    Adds an ISO format timestamp with the time of plot creation to the plot.
+    Adds a timestamp to a plot, defaulting to the time of plot creation in ISO format.
 
     Parameters
     ----------
@@ -31,18 +33,30 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', **kwargs):
         Relative y position on the axes of the timestamp
     ha : str
         Horizontal alignment of the time stamp string
+    high_contrast : bool
+        Outline text for increased contrast
+    pretext : str
+        Text to appear before the timestamp, optional. Defaults to 'Created: '
+    time_format : str
+        Display format of time, optional. Defaults to ISO format.
 
     Returns
     -------
-    ax : `matplotlib.axes.Axes`
-        The `Axes` instance used for plotting
+    `matplotlib.text.Text`
+        The `matplotlib.text.Text` instance created
 
     """
+    if high_contrast:
+        text_args = {'color': 'white',
+                     'path_effects':
+                         [mpatheffects.withStroke(linewidth=2, foreground='black')]}
+    else:
+        text_args = {}
+    text_args.update(**kwargs)
     if not time:
         time = datetime.utcnow()
-    timestr = datetime.strftime(time, 'Created: %Y-%m-%dT%H:%M:%SZ')
-    ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **kwargs)
-    return ax
+    timestr = pretext + time.strftime(time_format)
+    return ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **text_args)
 
 
 def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs):
@@ -68,8 +82,8 @@ def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs
 
     Returns
     -------
-    fig : `matplotlib.figure`
-       The `figure` instance used for plotting
+    `matplotlib.image.FigureImage`
+       The `matplotlib.image.FigureImage` instance created
 
     """
     fname_suffix = {'small': '_75x75.png',
@@ -83,8 +97,7 @@ def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs
         raise ValueError('Unknown logo size or selection')
 
     logo = imread(pkg_resources.resource_stream('metpy.plots', fpath))
-    fig.figimage(logo, x, y, zorder=zorder, **kwargs)
-    return fig
+    return fig.figimage(logo, x, y, zorder=zorder, **kwargs)
 
 
 def add_metpy_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
@@ -108,8 +121,8 @@ def add_metpy_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
 
     Returns
     -------
-    fig : `matplotlib.figure`
-       The `figure` instance used for plotting
+    `matplotlib.image.FigureImage`
+       The `matplotlib.image.FigureImage` instance created
 
     """
     return _add_logo(fig, x=x, y=y, zorder=zorder, which='metpy', size=size, **kwargs)
@@ -136,8 +149,8 @@ def add_unidata_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
 
     Returns
     -------
-    fig : `matplotlib.figure`
-       The `figure` instance used for plotting
+    `matplotlib.image.FigureImage`
+       The `matplotlib.image.FigureImage` instance created
 
     """
     return _add_logo(fig, x=x, y=y, zorder=zorder, which='unidata', size=size, **kwargs)
@@ -188,3 +201,82 @@ def colored_line(x, y, c, **kwargs):
     lc = LineCollection(segments, **kwargs)
     lc.set_array(c)
     return lc
+
+
+def convert_gempak_color(c, style='psc'):
+    """Convert GEMPAK color numbers into corresponding Matplotlib colors.
+
+    Takes a sequence of GEMPAK color numbers and turns them into
+    equivalent Matplotlib colors. Various GEMPAK quirks are respected,
+    such as treating negative values as equivalent to 0.
+
+    Parameters
+    ----------
+    c : int or sequence of ints
+        GEMPAK color number(s)
+    style : str, optional
+        The GEMPAK 'device' to use to interpret color numbers. May be 'psc'
+        (the default; best for a white background) or 'xw' (best for a black background).
+
+    Returns
+    -------
+        List of strings of Matplotlib colors, or a single string if only one color requested.
+
+    """
+    def normalize(x):
+        """Transform input x to an int in range 0 to 31 consistent with GEMPAK color quirks."""
+        x = int(x)
+        if x < 0 or x == 101:
+            x = 0
+        else:
+            x = x % 32
+        return x
+
+    # Define GEMPAK colors (Matplotlib doesn't appear to like numbered variants)
+    cols = ['white',       # 0/32
+            'black',       # 1
+            'red',         # 2
+            'green',       # 3
+            'blue',        # 4
+            'yellow',      # 5
+            'cyan',        # 6
+            'magenta',     # 7
+            '#CD6839',     # 8 (sienna3)
+            '#FF8247',     # 9 (sienna1)
+            '#FFA54F',     # 10 (tan1)
+            '#FFAEB9',     # 11 (LightPink1)
+            '#FF6A6A',     # 12 (IndianRed1)
+            '#EE2C2C',     # 13 (firebrick2)
+            '#8B0000',     # 14 (red4)
+            '#CD0000',     # 15 (red3)
+            '#EE4000',     # 16 (OrangeRed2)
+            '#FF7F00',     # 17 (DarkOrange1)
+            '#CD8500',     # 18 (orange3)
+            'gold',        # 19
+            '#EEEE00',     # 20 (yellow2)
+            'chartreuse',  # 21
+            '#00CD00',     # 22 (green3)
+            '#008B00',     # 23 (green4)
+            '#104E8B',     # 24 (DodgerBlue4)
+            'DodgerBlue',  # 25
+            '#00B2EE',     # 26 (DeepSkyBlue2)
+            '#00EEEE',     # 27 (cyan2)
+            '#8968CD',     # 28 (MediumPurple3)
+            '#912CEE',     # 29 (purple2)
+            '#8B008B',     # 30 (magenta4)
+            'bisque']      # 31
+
+    if style != 'psc':
+        if style == 'xw':
+            cols[0] = 'black'
+            cols[1] = 'bisque'
+            cols[31] = 'white'
+        else:
+            raise ValueError('Unknown style parameter')
+
+    try:
+        c_list = list(c)
+        res = [cols[normalize(x)] for x in c_list]
+    except TypeError:
+        res = cols[normalize(c)]
+    return res

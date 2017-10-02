@@ -6,12 +6,38 @@ r"""Tests the operation of MetPy's unit support code."""
 import sys
 
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
+import pint
 import pytest
 
+from metpy.testing import assert_array_almost_equal, assert_array_equal
 from metpy.testing import set_agg_backend  # noqa: F401
-from metpy.units import check_units, units
+from metpy.units import (atleast_1d, atleast_2d, check_units, concatenate, diff,
+                         pandas_dataframe_to_unit_arrays, units)
 
 
+def test_concatenate():
+    """Test basic functionality of unit-aware concatenate."""
+    result = concatenate((3 * units.meter, 400 * units.cm))
+    assert_array_equal(result, np.array([3, 4]) * units.meter)
+    assert not isinstance(result.m, np.ma.MaskedArray)
+
+
+def test_concatenate_masked():
+    """Test concatenate preserves masks."""
+    d1 = units.Quantity(np.ma.array([1, 2, 3], mask=[False, True, False]), 'degC')
+    result = concatenate((d1, 32 * units.degF))
+
+    truth = np.ma.array([1, np.inf, 3, 0])
+    truth[1] = np.ma.masked
+
+    assert_array_almost_equal(result, units.Quantity(truth, 'degC'), 6)
+    assert_array_equal(result.mask, np.array([False, True, False, False]))
+
+
+@pytest.mark.skipif(pint.__version__ == '0.9', reason=('Currently broken upstream (see '
+                                                       'pint#751'))
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_axhline():
     r"""Ensure that passing a quantity to axhline does not error."""
@@ -22,6 +48,8 @@ def test_axhline():
     return fig
 
 
+@pytest.mark.skipif(pint.__version__ == '0.9', reason=('Currently broken upstream (see '
+                                                       'pint#751'))
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_axvline():
     r"""Ensure that passing a quantity to axvline does not error."""
@@ -30,6 +58,30 @@ def test_axvline():
     ax.set_xlim(-1, 1)
     ax.set_xlabel('')
     return fig
+
+
+def test_atleast1d_without_units():
+    """Test that atleast_1d wrapper can handle plain arrays."""
+    assert_array_equal(atleast_1d(1), np.array([1]))
+    assert_array_equal(atleast_1d([1, ], [2, ]), np.array([[1, ], [2, ]]))
+
+
+def test_atleast2d_without_units():
+    """Test that atleast_2d wrapper can handle plain arrays."""
+    assert_array_equal(atleast_2d(1), np.array([[1]]))
+
+
+def test_atleast2d_with_units():
+    """Test that atleast_2d wrapper can handle plain array with units."""
+    assert_array_equal(
+        atleast_2d(1 * units.degC), np.array([[1]]) * units.degC)
+
+
+def test_units_diff():
+    """Test our diff handles units properly."""
+    assert_array_equal(diff(np.arange(20, 22) * units.degC),
+                       np.array([1]) * units.delta_degC)
+
 
 #
 # Tests for unit-checking decorator
@@ -84,3 +136,72 @@ def test_bad(func, args, kwargs, bad_parts):
 
         # Should never complain about the const argument
         assert 'unitless_const' not in message
+
+
+def test_pandas_units_simple():
+    """Simple unit attachment to two columns."""
+    df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
+    df_units = {'cola': 'kilometers', 'colb': 'degC'}
+    res = pandas_dataframe_to_unit_arrays(df, column_units=df_units)
+    cola_truth = np.array([1, 2, 3]) * units.km
+    colb_truth = np.array([4, 5, 6]) * units.degC
+    assert_array_equal(res['cola'], cola_truth)
+    assert_array_equal(res['colb'], colb_truth)
+
+
+@pytest.mark.filterwarnings("ignore:Pandas doesn't allow columns to be created")
+def test_pandas_units_on_dataframe():
+    """Unit attachment based on a units attribute to a dataframe."""
+    df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
+    df.units = {'cola': 'kilometers', 'colb': 'degC'}
+    res = pandas_dataframe_to_unit_arrays(df)
+    cola_truth = np.array([1, 2, 3]) * units.km
+    colb_truth = np.array([4, 5, 6]) * units.degC
+    assert_array_equal(res['cola'], cola_truth)
+    assert_array_equal(res['colb'], colb_truth)
+
+
+@pytest.mark.filterwarnings("ignore:Pandas doesn't allow columns to be created")
+def test_pandas_units_on_dataframe_not_all_united():
+    """Unit attachment with units attribute with a column with no units."""
+    df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
+    df.units = {'cola': 'kilometers'}
+    res = pandas_dataframe_to_unit_arrays(df)
+    cola_truth = np.array([1, 2, 3]) * units.km
+    colb_truth = np.array([4, 5, 6])
+    assert_array_equal(res['cola'], cola_truth)
+    assert_array_equal(res['colb'], colb_truth)
+
+
+def test_pandas_units_no_units_given():
+    """Ensure unit attachment fails if no unit information is given."""
+    df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
+    with pytest.raises(ValueError):
+        pandas_dataframe_to_unit_arrays(df)
+
+
+def test_added_degrees_units():
+    """Test that our added degrees units are present in the registry."""
+    # Test equivalence of abbreviations/aliases to our defined names
+    assert str(units('degrees_N').units) == 'degrees_north'
+    assert str(units('degreesN').units) == 'degrees_north'
+    assert str(units('degree_north').units) == 'degrees_north'
+    assert str(units('degree_N').units) == 'degrees_north'
+    assert str(units('degreeN').units) == 'degrees_north'
+    assert str(units('degrees_E').units) == 'degrees_east'
+    assert str(units('degreesE').units) == 'degrees_east'
+    assert str(units('degree_east').units) == 'degrees_east'
+    assert str(units('degree_E').units) == 'degrees_east'
+    assert str(units('degreeE').units) == 'degrees_east'
+
+    # Test equivalence of our defined units to base units
+    assert units('degrees_north') == units('degrees')
+    assert units('degrees_north').to_base_units().units == units.radian
+    assert units('degrees_east') == units('degrees')
+    assert units('degrees_east').to_base_units().units == units.radian
+
+
+def test_gpm_unit():
+    """Test that the gpm unit does alias to meters."""
+    x = 1 * units('gpm')
+    assert str(x.units) == 'meter'

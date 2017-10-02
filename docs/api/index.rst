@@ -1,8 +1,8 @@
 .. _api-index:
 
-#############
-The MetPy API
-#############
+###############
+Reference Guide
+###############
 
 .. currentmodule:: metpy
 
@@ -12,10 +12,10 @@ The MetPy API
    metpy.constants
    metpy.units
    metpy.io
-   metpy.io.cdm
    metpy.calc
    metpy.plots
    metpy.plots.ctables
+   metpy.interpolate
    metpy.gridding
 
 * :ref:`modindex`

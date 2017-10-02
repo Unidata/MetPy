@@ -1,22 +1,39 @@
-engines:
-#  duplication:
-#    enabled: true
-#    config:
-#      languages:
-#      - python
+version: "2"
+checks:
+  file-lines:
+    enabled: false
+  similar-code:
+    enabled: false
+  method-lines:
+    enabled: false
+  argument-count:
+    config:
+      threshold: 10
+  method-complexity:
+    config:
+      threshold: 15
+
+plugins:
+  sonar-python:
+    enabled: true
+    config:
+      test_patterns:
+        - "metpy/**/tests/*.py"
+    checks:
+      python:S3776:
+        enabled: false
+      python:S107:
+        enabled: false
+      python:S1542:
+        enabled: false
+
   pep8:
     enabled: true
     checks:
       E501:
         enabled: false
-  radon:
-    enabled: true
 
-ratings:
-  paths:
-  - "**/*.py"
-
-exclude_paths:
+exclude_patterns:
 - "versioneer.py"
 - "metpy/_version.py"
 - "metpy/io/_nexrad_msgs/msg*.py"

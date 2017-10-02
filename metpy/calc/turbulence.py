@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2008,2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Contains calculations related to turbulence and time series perturbations."""
@@ -6,11 +6,13 @@ r"""Contains calculations related to turbulence and time series perturbations.""
 import numpy as np
 
 from ..package_tools import Exporter
+from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
 
 
 @exporter.export
+@preprocess_xarray
 def get_perturbation(ts, axis=-1):
     r"""Compute the perturbation from the mean of a time series.
 
@@ -40,16 +42,12 @@ def get_perturbation(ts, axis=-1):
     """
     slices = [slice(None)] * ts.ndim
     slices[axis] = None
-    # For numpy<=1.8.0, can't slice on a scalar
-    mean = ts.mean(axis=axis)
-    if ts.ndim == 1:
-        mean = np.atleast_1d(mean)
-    else:
-        mean = mean[slices]
+    mean = ts.mean(axis=axis)[tuple(slices)]
     return ts - mean
 
 
 @exporter.export
+@preprocess_xarray
 def tke(u, v, w, perturbation=False, axis=-1):
     r"""Compute turbulence kinetic energy.
 
@@ -115,6 +113,7 @@ def tke(u, v, w, perturbation=False, axis=-1):
 
 
 @exporter.export
+@preprocess_xarray
 def kinematic_flux(vel, b, perturbation=False, axis=-1):
     r"""Compute the kinematic flux from two time series.
 
@@ -157,7 +156,7 @@ def kinematic_flux(vel, b, perturbation=False, axis=-1):
 
     .. math:: \overline{u^{\prime} w^{\prime}}
 
-    or the the vertical kinematic heat flux (one velocity component, and one
+    or the vertical kinematic heat flux (one velocity component, and one
     scalar):
 
     .. math:: \overline{w^{\prime} T^{\prime}}
@@ -183,6 +182,7 @@ def kinematic_flux(vel, b, perturbation=False, axis=-1):
 
 
 @exporter.export
+@preprocess_xarray
 def friction_velocity(u, w, v=None, perturbation=False, axis=-1):
     r"""Compute the friction velocity from the time series of velocity components.
 

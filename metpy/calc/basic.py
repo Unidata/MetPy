@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2008,2015,2016,2017,2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of basic calculations.
@@ -15,16 +15,24 @@ from __future__ import division
 import warnings
 
 import numpy as np
+from scipy.ndimage import gaussian_filter
 
-from ..constants import g, omega, Rd
+from .. import constants as mpconsts
+from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, masked_array, units
+from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
 
+# The following variables are constants for a standard atmosphere
+t0 = 288. * units.kelvin
+p0 = 1013.25 * units.hPa
+
 
 @exporter.export
-def get_wind_speed(u, v):
+@preprocess_xarray
+def wind_speed(u, v):
     r"""Compute the wind speed from u and v-components.
 
     Parameters
@@ -41,7 +49,7 @@ def get_wind_speed(u, v):
 
     See Also
     --------
-    get_wind_components
+    wind_components
 
     """
     speed = np.sqrt(u * u + v * v)
@@ -49,7 +57,8 @@ def get_wind_speed(u, v):
 
 
 @exporter.export
-def get_wind_dir(u, v):
+@preprocess_xarray
+def wind_direction(u, v):
     r"""Compute the wind direction from u and v-components.
 
     Parameters
@@ -61,24 +70,35 @@ def get_wind_dir(u, v):
 
     Returns
     -------
-    wind direction: `pint.Quantity`
-        The direction of the wind, specified as the direction from
-        which it is blowing, with 0 being North.
+    direction: `pint.Quantity`
+        The direction of the wind in interval [0, 360] degrees, specified as the direction from
+        which it is blowing, with 360 being North.
 
     See Also
     --------
-    get_wind_components
+    wind_components
+
+    Notes
+    -----
+    In the case of calm winds (where `u` and `v` are zero), this function returns a direction
+    of 0.
 
     """
     wdir = 90. * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
     wdir = atleast_1d(wdir)
-    wdir[wdir < 0] += 360. * units.deg
-    return wdir.reshape(origshape)
+    wdir[wdir <= 0] += 360. * units.deg
+    # Need to be able to handle array-like u and v (with or without units)
+    # np.any check required for legacy numpy which treats 0-d False boolean index as zero
+    calm_mask = (np.asarray(u) == 0.) & (np.asarray(v) == 0.)
+    if np.any(calm_mask):
+        wdir[calm_mask] = 0. * units.deg
+    return wdir.reshape(origshape).to('degrees')
 
 
 @exporter.export
-def get_wind_components(speed, wdir):
+@preprocess_xarray
+def wind_components(speed, wdir):
     r"""Calculate the U, V wind vector components from the speed and direction.
 
     Parameters
@@ -87,7 +107,7 @@ def get_wind_components(speed, wdir):
         The wind speed (magnitude)
     wdir : array_like
         The wind direction, specified as the direction from which the wind is
-        blowing, with 0 being North.
+        blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.
 
     Returns
     -------
@@ -97,13 +117,13 @@ def get_wind_components(speed, wdir):
 
     See Also
     --------
-    get_wind_speed
-    get_wind_dir
+    wind_speed
+    wind_direction
 
     Examples
     --------
     >>> from metpy.units import units
-    >>> metpy.calc.get_wind_components(10. * units('m/s'), 225. * units.deg)
+    >>> metpy.calc.wind_components(10. * units('m/s'), 225. * units.deg)
     (<Quantity(7.071067811865475, 'meter / second')>,
      <Quantity(7.071067811865477, 'meter / second')>)
 
@@ -115,6 +135,50 @@ def get_wind_components(speed, wdir):
 
 
 @exporter.export
+@preprocess_xarray
+@deprecated('0.9', addendum=' This function has been renamed wind_speed.',
+            pending=False)
+def get_wind_speed(u, v):
+    """Wrap wind_speed for deprecated get_wind_speed function."""
+    return wind_speed(u, v)
+
+
+get_wind_speed.__doc__ = (wind_speed.__doc__
+                          + '\n    .. deprecated:: 0.9.0\n        Function has been renamed to'
+                            ' `wind_speed` and will be removed from MetPy in 0.12.0.')
+
+
+@exporter.export
+@preprocess_xarray
+@deprecated('0.9', addendum=' This function has been renamed wind_direction.',
+            pending=False)
+def get_wind_dir(u, v):
+    """Wrap wind_direction for deprecated get_wind_dir function."""
+    return wind_direction(u, v)
+
+
+get_wind_dir.__doc__ = (wind_direction.__doc__
+                        + '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
+                          '`wind_direction` and will be removed from MetPy in 0.12.0.')
+
+
+@exporter.export
+@preprocess_xarray
+@deprecated('0.9', addendum=' This function has been renamed wind_components.',
+            pending=False)
+def get_wind_components(u, v):
+    """Wrap wind_components for deprecated get_wind_components function."""
+    return wind_components(u, v)
+
+
+get_wind_components.__doc__ = (wind_components.__doc__
+                               + '\n    .. deprecated:: 0.9.0\n        Function has been '
+                                 'renamed to `wind_components` and will be removed from MetPy '
+                                 'in 0.12.0.')
+
+
+@exporter.export
+@preprocess_xarray
 @check_units(temperature='[temperature]', speed='[speed]')
 def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     r"""Calculate the Wind Chill Temperature Index (WCTI).
@@ -163,8 +227,8 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
     temp_limit, speed_limit = 10. * units.degC, 3 * units.mph
     speed_factor = speed.to('km/hr').magnitude ** 0.16
-    wcti = units.Quantity((0.6215 + 0.3965 * speed_factor) * temperature.to('degC').magnitude -
-                          11.37 * speed_factor + 13.12, units.degC).to(temperature.units)
+    wcti = units.Quantity((0.6215 + 0.3965 * speed_factor) * temperature.to('degC').magnitude
+                          - 11.37 * speed_factor + 13.12, units.degC).to(temperature.units)
 
     # See if we need to mask any undefined values
     if mask_undefined:
@@ -176,6 +240,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[temperature]')
 def heat_index(temperature, rh, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.
@@ -209,16 +274,20 @@ def heat_index(temperature, rh, mask_undefined=True):
     windchill
 
     """
-    delta = temperature - 0. * units.degF
+    delta = temperature.to(units.degF) - 0. * units.degF
     rh2 = rh * rh
     delta2 = delta * delta
 
     # Calculate the Heat Index -- constants converted for RH in [0, 1]
-    hi = (-42.379 * units.degF + 2.04901523 * delta +
-          1014.333127 * units.delta_degF * rh - 22.475541 * delta * rh -
-          6.83783e-3 / units.delta_degF * delta2 - 5.481717e2 * units.delta_degF * rh2 +
-          1.22874e-1 / units.delta_degF * delta2 * rh + 8.5282 * delta * rh2 -
-          1.99e-2 / units.delta_degF * delta2 * rh2)
+    hi = (-42.379 * units.degF
+          + 2.04901523 * delta
+          + 1014.333127 * units.delta_degF * rh
+          - 22.475541 * delta * rh
+          - 6.83783e-3 / units.delta_degF * delta2
+          - 5.481717e2 * units.delta_degF * rh2
+          + 1.22874e-1 / units.delta_degF * delta2 * rh
+          + 8.5282 * delta * rh2
+          - 1.99e-2 / units.delta_degF * delta2 * rh2)
 
     # See if we need to mask any undefined values
     if mask_undefined:
@@ -230,6 +299,70 @@ def heat_index(temperature, rh, mask_undefined=True):
 
 
 @exporter.export
+@preprocess_xarray
+@check_units(temperature='[temperature]', speed='[speed]')
+def apparent_temperature(temperature, rh, speed, face_level_winds=False):
+    r"""Calculate the current apparent temperature.
+
+    Calculates the current apparent temperature based on the wind chill or heat index
+    as appropriate for the current conditions. Follows [NWS10201]_.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+        The air temperature
+    rh : `pint.Quantity`
+        The relative humidity expressed as a unitless ratio in the range [0, 1].
+        Can also pass a percentage if proper units are attached.
+    speed : `pint.Quantity`
+        The wind speed at 10m.  If instead the winds are at face level,
+        `face_level_winds` should be set to `True` and the 1.5 multiplicative
+        correction will be applied automatically.
+    face_level_winds : bool, optional
+        A flag indicating whether the wind speeds were measured at facial
+        level instead of 10m, thus requiring a correction.  Defaults to
+        `False`.
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding apparent temperature value(s)
+
+    See Also
+    --------
+    heat_index, windchill
+
+    """
+    is_not_scalar = isinstance(temperature.m, (list, tuple, np.ndarray))
+
+    temperature = atleast_1d(temperature)
+    rh = atleast_1d(rh)
+    speed = atleast_1d(speed)
+
+    wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
+                                       mask_undefined=True).to(temperature.units)
+
+    heat_index_temperature = heat_index(temperature, rh,
+                                        mask_undefined=True).to(temperature.units)
+
+    # Combine the heat index and wind chill arrays (no point has a value in both)
+    app_temperature = np.ma.where(masked_array(wind_chill_temperature).mask,
+                                  heat_index_temperature,
+                                  wind_chill_temperature)
+
+    if is_not_scalar:
+        # Fill in missing areas where neither wind chill or heat index are applicable with the
+        # ambient temperature.
+        app_temperature[app_temperature.mask] = temperature[app_temperature.mask]
+        return np.array(app_temperature) * temperature.units
+    else:
+        if app_temperature.mask:
+            app_temperature = temperature.m
+        return atleast_1d(app_temperature)[0] * temperature.units
+
+
+@exporter.export
+@preprocess_xarray
 @check_units('[pressure]')
 def pressure_to_height_std(pressure):
     r"""Convert pressure data to heights using the U.S. standard atmosphere.
@@ -251,13 +384,101 @@ def pressure_to_height_std(pressure):
     .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]
 
     """
-    t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
-    p0 = 1013.25 * units.mbar
-    return (t0 / gamma) * (1 - (pressure / p0).to('dimensionless')**(Rd * gamma / g))
+    return (t0 / gamma) * (1 - (pressure / p0).to('dimensionless')**(
+        mpconsts.Rd * gamma / mpconsts.g))
 
 
 @exporter.export
+@preprocess_xarray
+@check_units('[length]')
+def height_to_geopotential(height):
+    r"""Compute geopotential for a given height.
+
+    Calculates the geopotential from height using the following formula, which is derived from
+    the definition of geopotential as given in [Hobbs2006]_ Pg. 69 Eq 3.21:
+
+    .. math:: \Phi = G m_e \left( \frac{1}{R_e} - \frac{1}{R_e + z}\right)
+
+    (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth
+    radius, :math:`G` is the (universal) gravitational constant, and :math:`m_e` is the
+    approximate mass of Earth.)
+
+    Parameters
+    ----------
+    height : `pint.Quantity`
+        Height above sea level (array_like)
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding geopotential value(s)
+
+    Examples
+    --------
+    >>> import metpy.calc
+    >>> from metpy.units import units
+    >>> height = np.linspace(0, 10000, num=11) * units.m
+    >>> geopot = metpy.calc.height_to_geopotential(height)
+    >>> geopot
+    <Quantity([     0.           9817.46806283  19631.85526579  29443.16305887
+    39251.39289118  49056.54621087  58858.62446524  68657.62910064
+    78453.56156252  88246.42329544  98036.21574305], 'meter ** 2 / second ** 2')>
+
+    """
+    # Direct implementation of formula from Hobbs yields poor numerical results (see
+    # gh-1075), so was replaced with algebraic equivalent.
+    return (mpconsts.G * mpconsts.me / mpconsts.Re) * (height / (mpconsts.Re + height))
+
+
+@exporter.export
+@preprocess_xarray
+def geopotential_to_height(geopot):
+    r"""Compute height from a given geopotential.
+
+    Calculates the height from geopotential using the following formula, which is derived from
+    the definition of geopotential as given in [Hobbs2006]_ Pg. 69 Eq 3.21:
+
+    .. math:: z = \frac{1}{\frac{1}{R_e} - \frac{\Phi}{G m_e}} - R_e
+
+    (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth
+    radius, :math:`G` is the (universal) gravitational constant, and :math:`m_e` is the
+    approximate mass of Earth.)
+
+    Parameters
+    ----------
+    geopotential : `pint.Quantity`
+        Geopotential (array_like)
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding height value(s)
+
+    Examples
+    --------
+    >>> import metpy.calc
+    >>> from metpy.units import units
+    >>> height = np.linspace(0, 10000, num=11) * units.m
+    >>> geopot = metpy.calc.height_to_geopotential(height)
+    >>> geopot
+    <Quantity([     0.           9817.46806283  19631.85526579  29443.16305887
+    39251.39289118  49056.54621087  58858.62446524  68657.62910064
+    78453.56156252  88246.42329544  98036.21574305], 'meter ** 2 / second ** 2')>
+    >>> height = metpy.calc.geopotential_to_height(geopot)
+    >>> height
+    <Quantity([     0.   1000.   2000.   3000.   4000.   5000.   6000.   7000.   8000.
+    9000.  10000.], 'meter')>
+
+    """
+    # Direct implementation of formula from Hobbs yields poor numerical results (see
+    # gh-1075), so was replaced with algebraic equivalent.
+    scaled = geopot * mpconsts.Re
+    return scaled * mpconsts.Re / (mpconsts.G * mpconsts.me - scaled)
+
+
+@exporter.export
+@preprocess_xarray
 @check_units('[length]')
 def height_to_pressure_std(height):
     r"""Convert height data to pressures using the U.S. standard atmosphere.
@@ -279,13 +500,12 @@ def height_to_pressure_std(height):
     .. math:: p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}
 
     """
-    t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
-    p0 = 1013.25 * units.mbar
-    return p0 * (1 - (gamma / t0) * height) ** (g / (Rd * gamma))
+    return p0 * (1 - (gamma / t0) * height) ** (mpconsts.g / (mpconsts.Rd * gamma))
 
 
 @exporter.export
+@preprocess_xarray
 def coriolis_parameter(latitude):
     r"""Calculate the coriolis parameter at each point.
 
@@ -303,10 +523,11 @@ def coriolis_parameter(latitude):
 
     """
     latitude = _check_radians(latitude, max_radians=np.pi / 2)
-    return 2. * omega * np.sin(latitude)
+    return (2. * mpconsts.omega * np.sin(latitude)).to('1/s')
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[pressure]', '[length]')
 def add_height_to_pressure(pressure, height):
     r"""Calculate the pressure at a certain height above another pressure level.
@@ -326,7 +547,7 @@ def add_height_to_pressure(pressure, height):
         The corresponding pressure value for the height above the pressure level
 
     See Also
-    -----
+    --------
     pressure_to_height_std, height_to_pressure_std, add_pressure_to_height
 
     """
@@ -335,6 +556,7 @@ def add_height_to_pressure(pressure, height):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[length]', '[pressure]')
 def add_pressure_to_height(height, pressure):
     r"""Calculate the height at a certain pressure above another height.
@@ -354,7 +576,7 @@ def add_pressure_to_height(height, pressure):
         The corresponding height value for the pressure above the height level
 
     See Also
-    -----
+    --------
     pressure_to_height_std, height_to_pressure_std, add_height_to_pressure
 
     """
@@ -363,6 +585,7 @@ def add_pressure_to_height(height, pressure):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[dimensionless]', '[pressure]', '[pressure]')
 def sigma_to_pressure(sigma, psfc, ptop):
     r"""Calculate pressure from sigma values.
@@ -402,6 +625,310 @@ def sigma_to_pressure(sigma, psfc, ptop):
         raise ValueError('Pressure input should be non-negative')
 
     return sigma * (psfc - ptop) + ptop
+
+
+@exporter.export
+@preprocess_xarray
+def smooth_gaussian(scalar_grid, n):
+    """Filter with normal distribution of weights.
+
+    Parameters
+    ----------
+    scalar_grid : `pint.Quantity`
+        Some n-dimensional scalar grid. If more than two axes, smoothing
+        is only done across the last two.
+
+    n : int
+        Degree of filtering
+
+    Returns
+    -------
+    `pint.Quantity`
+        The filtered 2D scalar grid
+
+    Notes
+    -----
+    This function is a close replication of the GEMPAK function GWFS,
+    but is not identical.  The following notes are incorporated from
+    the GEMPAK source code:
+
+    This function smoothes a scalar grid using a moving average
+    low-pass filter whose weights are determined by the normal
+    (Gaussian) probability distribution function for two dimensions.
+    The weight given to any grid point within the area covered by the
+    moving average for a target grid point is proportional to
+
+                    EXP [ -( D ** 2 ) ],
+
+    where D is the distance from that point to the target point divided
+    by the standard deviation of the normal distribution.  The value of
+    the standard deviation is determined by the degree of filtering
+    requested.  The degree of filtering is specified by an integer.
+    This integer is the number of grid increments from crest to crest
+    of the wave for which the theoretical response is 1/e = .3679.  If
+    the grid increment is called delta_x, and the value of this integer
+    is represented by N, then the theoretical filter response function
+    value for the N * delta_x wave will be 1/e.  The actual response
+    function will be greater than the theoretical value.
+
+    The larger N is, the more severe the filtering will be, because the
+    response function for all wavelengths shorter than N * delta_x
+    will be less than 1/e.  Furthermore, as N is increased, the slope
+    of the filter response function becomes more shallow; so, the
+    response at all wavelengths decreases, but the amount of decrease
+    lessens with increasing wavelength.  (The theoretical response
+    function can be obtained easily--it is the Fourier transform of the
+    weight function described above.)
+
+    The area of the patch covered by the moving average varies with N.
+    As N gets bigger, the smoothing gets stronger, and weight values
+    farther from the target grid point are larger because the standard
+    deviation of the normal distribution is bigger.  Thus, increasing
+    N has the effect of expanding the moving average window as well as
+    changing the values of weights.  The patch is a square covering all
+    points whose weight values are within two standard deviations of the
+    mean of the two dimensional normal distribution.
+
+    The key difference between GEMPAK's GWFS and this function is that,
+    in GEMPAK, the leftover weight values representing the fringe of the
+    distribution are applied to the target grid point.  In this
+    function, the leftover weights are not used.
+
+    When this function is invoked, the first argument is the grid to be
+    smoothed, the second is the value of N as described above:
+
+                        GWFS ( S, N )
+
+    where N > 1.  If N <= 1, N = 2 is assumed.  For example, if N = 4,
+    then the 4 delta x wave length is passed with approximate response
+    1/e.
+
+    """
+    # Compute standard deviation in a manner consistent with GEMPAK
+    n = int(round(n))
+    if n < 2:
+        n = 2
+    sgma = n / (2 * np.pi)
+
+    # Construct sigma sequence so smoothing occurs only in horizontal direction
+    nax = len(scalar_grid.shape)
+    # Assume the last two axes represent the horizontal directions
+    sgma_seq = [sgma if i > nax - 3 else 0 for i in range(nax)]
+
+    # Compute smoothed field and reattach units
+    res = gaussian_filter(scalar_grid, sgma_seq, truncate=2 * np.sqrt(2))
+    if hasattr(scalar_grid, 'units'):
+        res = res * scalar_grid.units
+    return res
+
+
+@exporter.export
+@preprocess_xarray
+def smooth_n_point(scalar_grid, n=5, passes=1):
+    """Filter with normal distribution of weights.
+
+    Parameters
+    ----------
+    scalar_grid : array-like or `pint.Quantity`
+        Some 2D scalar grid to be smoothed.
+
+    n: int
+        The number of points to use in smoothing, only valid inputs
+        are 5 and 9. Defaults to 5.
+
+    passes : int
+        The number of times to apply the filter to the grid. Defaults
+        to 1.
+
+    Returns
+    -------
+    array-like or `pint.Quantity`
+        The filtered 2D scalar grid.
+
+    Notes
+    -----
+    This function is a close replication of the GEMPAK function SM5S
+    and SM9S depending on the choice of the number of points to use
+    for smoothing. This function can be applied multiple times to
+    create a more smoothed field and will only smooth the interior
+    points, leaving the end points with their original values. If a
+    masked value or NaN values exists in the array, it will propagate
+    to any point that uses that particular grid point in the smoothing
+    calculation. Applying the smoothing function multiple times will
+    propogate NaNs further throughout the domain.
+
+    """
+    if n == 9:
+        p = 0.25
+        q = 0.125
+        r = 0.0625
+    elif n == 5:
+        p = 0.5
+        q = 0.125
+        r = 0.0
+    else:
+        raise ValueError('The number of points to use in the smoothing '
+                         'calculation must be either 5 or 9.')
+
+    smooth_grid = scalar_grid[:].copy()
+    for _i in range(passes):
+        smooth_grid[1:-1, 1:-1] = (p * smooth_grid[1:-1, 1:-1]
+                                   + q * (smooth_grid[2:, 1:-1] + smooth_grid[1:-1, 2:]
+                                          + smooth_grid[:-2, 1:-1] + smooth_grid[1:-1, :-2])
+                                   + r * (smooth_grid[2:, 2:] + smooth_grid[2:, :-2] +
+                                          + smooth_grid[:-2, 2:] + smooth_grid[:-2, :-2]))
+    return smooth_grid
+
+
+@exporter.export
+@preprocess_xarray
+def altimeter_to_station_pressure(altimeter_value, height):
+    r"""Convert the altimeter measurement to station pressure.
+
+    This function is useful for working with METARs since they do not provide
+    altimeter values, but not sea-level pressure or station pressure.
+    The following definitions of altimeter setting and station pressure
+    are taken from [Smithsonian1951]_ Altimeter setting is the
+    pressure value to which an aircraft altimeter scale is set so that it will
+    indicate the altitude above mean sea-level of an aircraft on the ground at the
+    location for which the value is determined. It assumes a standard atmosphere.
+    Station pressure is the atmospheric pressure at the designated station elevation.
+    Finding the station pressure can be helpful for calculating sea-level pressure
+    or other parameters.
+
+    Parameters
+    ----------
+    altimeter_value : `pint.Quantity`
+        The altimeter setting value as defined by the METAR or other observation,
+        which can be measured in either inches of mercury (in. Hg) or millibars (mb)
+    height: `pint.Quantity`
+        Elevation of the station measuring pressure.
+
+    Returns
+    --------
+    station_pressure: `pint.Quantity`
+        The station pressure in hPa, which can be used to calculate sea-level pressure
+
+    See Also
+    ---------
+    altimeter_to_sea_level_pressure
+
+    Notes
+    -------
+    This function is implemented using the following equations from the
+    Smithsonian Handbook (1951) p. 269
+
+    Equation 1:
+     .. math:: A_{mb} = (p_{mb} - 0.3)F
+
+    Equation 3:
+     .. math::  F = \left [1 + \left(\frac{p_{0}^n a}{T_{0}} \right)
+                   \frac{H_{b}}{p_{1}^n} \right ] ^ \frac{1}{n}
+
+    Where
+
+    :math:`p_{0}` = standard sea-level pressure = 1013.25 mb
+
+    :math:`p_{1} = p_{mb} - 0.3` when :math:`p_{0} = 1013.25 mb`
+
+    gamma = lapse rate in NACA standard atmosphere below the isothermal layer
+    :math:`6.5^{\circ}C. km.^{-1}`
+
+    :math:`t_{0}` = standard sea-level temperature 288 K
+
+    :math:`H_{b} =` station elevation in meters (elevation for which station
+      pressure is given)
+
+    :math:`n = \frac{a R_{d}}{g} = 0.190284` where :math:`R_{d}` is the gas
+      constant for dry air
+
+    And solving for :math:`p_{mb}` results in the equation below, which is used to
+    calculate station pressure :math:`(p_{mb})`
+
+    .. math:: p_{mb} = \left [A_{mb} ^ n - \left (\frac{p_{0} a H_{b}}{T_0}
+                       \right) \right] ^ \frac{1}{n} + 0.3
+
+    """
+    # Units for pressure need to be in hectopascals for correct calculation
+    altim = altimeter_value.to('hPa')
+
+    # Gamma Value for this case
+    gamma = 0.0065 * units('K/m')
+
+    # N-Value
+    n = (mpconsts.Rd * gamma / mpconsts.g).to_base_units()
+
+    return (altim ** n - ((p0 ** n * gamma * height) / t0)) ** (1 / n) + (0.3 * units.hPa)
+
+
+@exporter.export
+@preprocess_xarray
+def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
+    r"""Convert the altimeter setting to sea-level pressure.
+
+    This function is useful for working with METARs since most provide
+    altimeter values, but not sea-level pressure, which is often plotted
+    on surface maps. The following definitions of altimeter setting, station pressure, and
+    sea-level pressure are taken from [Smithsonian1951]_
+    Altimeter setting is the pressure value to which an aircraft altimeter scale
+    is set so that it will indicate the altitude above mean sea-level of an aircraft
+    on the ground at the location for which the value is determined. It assumes a standard
+    atmosphere. Station pressure is the atmospheric pressure at the designated station
+    elevation. Sea-level pressure is a pressure value obtained by the theoretical reduction
+    of barometric pressure to sea level. It is assumed that atmosphere extends to sea level
+    below the station and that the properties of the atmosphere are related to conditions
+    observed at the station. This value is recorded by some surface observation stations,
+    but not all. If the value is recorded, it can be found in the remarks section. Finding
+    the sea-level pressure is helpful for plotting purposes and different calculations.
+
+    Parameters
+    ----------
+    altimeter_value : 'pint.Quantity'
+        The altimeter setting value is defined by the METAR or other observation,
+        with units of inches of mercury (in Hg) or millibars (hPa)
+    height  : 'pint.Quantity'
+        Elevation of the station measuring pressure. Often times measured in meters
+    temperature : 'pint.Quantity'
+        Temperature at the station
+
+    Returns
+    -------
+    pressure_at_sea_level: 'pint.Quantity'
+        The sea-level pressure in hPa and makes pressure values easier to compare
+        between different stations
+
+    See Also
+    --------
+    altimeter_to_station_pressure
+
+    Notes
+    -------
+    This function is implemented using the following equations from Wallace and Hobbs (1977)
+
+    Equation 2.29:
+     .. math::
+       \Delta z = Z_{2} - Z_{1}
+       = \frac{R_{d} \bar T_{v}}{g_0}ln\left(\frac{p_{1}}{p_{2}}\right)
+       = \bar H ln \left (\frac {p_{1}}{p_{2}} \right)
+
+    Equation 2.31:
+     .. math::
+       p_{0} = p_{g}exp \left(\frac{Z_{g}}{\bar H} \right) \\
+       = p_{g}exp \left(\frac{g_{0}Z_{g}}{R_{d}\bar T_{v}} \right)
+
+    Then by substituting :math:`Delta_{Z}` for :math:`Z_{g}` in Equation 2.31:
+     .. math:: p_{sea_level} = p_{station} exp\left(\frac{\Delta z}{H}\right)
+
+    where :math:`Delta_{Z}` is the elevation in meters and :math:`H = \frac{R_{d}T}{g}`
+
+    """
+    # Calculate the station pressure using function altimeter_to_station_pressure()
+    psfc = altimeter_to_station_pressure(altimeter_value, height)
+
+    # Calculate the scale height
+    h = mpconsts.Rd * temperature / mpconsts.g
+
+    return psfc * np.exp(height / h)
 
 
 def _check_radians(value, max_radians=2 * np.pi):

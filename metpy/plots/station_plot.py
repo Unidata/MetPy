@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Create Station-model plots."""
@@ -8,6 +8,7 @@ try:
 except ImportError:
     from enum34 import Enum
 
+import matplotlib
 import numpy as np
 
 from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
@@ -249,6 +250,8 @@ class StationPlot(object):
             The data to use for the u-component of the barbs.
         v : array-like
             The data to use for the v-component of the barbs.
+        plot_units: `pint.unit`
+            Units to plot in (performing conversion if necessary). Defaults to given units.
         kwargs
             Additional keyword arguments to pass to matplotlib's
             :meth:`~matplotlib.axes.Axes.barbs` function.
@@ -260,13 +263,19 @@ class StationPlot(object):
         """
         kwargs = self._make_kwargs(kwargs)
 
-        # Handle transforming our center points. CartoPy doesn't like 1D barbs
-        # TODO: This can be removed for cartopy > 0.14.3
-        if hasattr(self.ax, 'projection') and 'transform' in kwargs:
-            trans = kwargs.pop('transform')
-            x, y, _ = self. ax.projection.transform_points(trans, self.x, self.y).T
-        else:
-            x, y = self.x, self.y
+        # If plot_units specified, convert the data to those units
+        plotting_units = kwargs.pop('plot_units', None)
+        if plotting_units:
+            if hasattr(u, 'units') and hasattr(v, 'units'):
+                u = u.to(plotting_units)
+                v = v.to(plotting_units)
+            else:
+                raise ValueError('To convert to plotting units, units must be attached to '
+                                 'u and v wind components.')
+
+        # Strip units, CartoPy transform doesn't like
+        u = np.array(u)
+        v = np.array(v)
 
         # Empirically determined
         pivot = 0.51 * np.sqrt(self.fontsize)
@@ -279,7 +288,20 @@ class StationPlot(object):
         if self.barbs:
             self.barbs.remove()
 
-        self.barbs = self.ax.barbs(x, y, u, v, **defaults)
+        # Handle transforming our center points. CartoPy doesn't like 1D barbs
+        # TODO: This can be removed for cartopy > 0.14.3
+        if hasattr(self.ax, 'projection') and 'transform' in kwargs:
+            trans = kwargs['transform']
+            try:
+                kwargs['transform'] = trans._as_mpl_transform(self.ax)
+            except AttributeError:
+                pass
+            u, v = self.ax.projection.transform_vectors(trans, self.x, self.y, u, v)
+
+            # Since we've re-implemented CartoPy's barbs, we need to skip calling it here
+            self.barbs = matplotlib.axes.Axes.barbs(self.ax, self.x, self.y, u, v, **defaults)
+        else:
+            self.barbs = self.ax.barbs(self.x, self.y, u, v, **defaults)
 
     def _make_kwargs(self, kwargs):
         """Assemble kwargs as necessary.
@@ -303,7 +325,7 @@ class StationPlot(object):
             def formatter(s):
                 """Turn a format string into a callable."""
                 if hasattr(s, 'units'):
-                    s = np.asscalar(s)
+                    s = s.item()
                 return format(s, fmt)
         else:
             formatter = fmt
@@ -547,10 +569,10 @@ class StationPlotLayout(dict):
 
     def __repr__(self):
         """Return string representation of layout."""
-        return ('{' +
-                ', '.join('{0}: ({1[0].name}, {1[1]}, ...)'.format(loc, info)
-                          for loc, info in sorted(self.items())) +
-                '}')
+        return ('{'
+                + ', '.join('{0}: ({1[0].name}, {1[1]}, ...)'.format(loc, info)
+                            for loc, info in sorted(self.items()))
+                + '}')
 
 
 with exporter:

@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2009,2015,2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Support reading information from various NEXRAD formats."""
@@ -20,13 +20,12 @@ from scipy.constants import day, milli
 
 from ._tools import (Array, BitField, Bits, bits_to_code, DictStruct, Enum, IOBuffer,
                      NamedStruct, open_as_needed, zlib_decompress_all_frames)
+from ..cbook import is_string_like
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
 
 log = logging.getLogger(__name__)
-log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
-log.setLevel(logging.WARNING)
 
 
 def version(val):
@@ -84,8 +83,7 @@ def bzip_blocks_decompress_all(data):
 def nexrad_to_datetime(julian_date, ms_midnight):
     """Convert NEXRAD date time format to python `datetime.datetime`."""
     # Subtracting one from julian_date is because epoch date is 1
-    return datetime.datetime.utcfromtimestamp((julian_date - 1) * day +
-                                              ms_midnight * milli)
+    return datetime.datetime.utcfromtimestamp((julian_date - 1) * day + ms_midnight * milli)
 
 
 def remap_status(val):
@@ -242,8 +240,8 @@ class Level2File(object):
                 # As of 2620002P, this is a special value used to indicate that the segment
                 # number/count bytes are used to indicate total size in bytes.
                 if msg_hdr.size_hw == 65535:
-                    msg_bytes = (msg_hdr.num_segments << 16 | msg_hdr.segment_num +
-                                 self.CTM_HEADER_SIZE)
+                    msg_bytes = (msg_hdr.num_segments << 16 | msg_hdr.segment_num
+                                 + self.CTM_HEADER_SIZE)
                 elif msg_hdr.msg_type in (29, 31):
                     msg_bytes = self.CTM_HEADER_SIZE + 2 * msg_hdr.size_hw
 
@@ -264,7 +262,7 @@ class Level2File(object):
         # Check if we have any message segments still in the buffer
         if self._msg_buf:
             log.warning('Remaining buffered messages segments for message type(s): %s',
-                        ' '.join(map(str, self._msg_buf.keys())))
+                        ' '.join(map(str, self._msg_buf)))
 
         del self._msg_buf
 
@@ -375,7 +373,11 @@ class Level2File(object):
 
     def _decode_msg2(self, msg_hdr):
         self.rda_status.append(self._buffer.read_struct(self.msg2_fmt))
-        self._check_size(msg_hdr, self.msg2_fmt.size)
+
+        # RDA Build 18.0 expanded the size, but only with spares for now
+        extra_size = 40 if self.rda_status[-1].rda_build >= '18.0' else 0
+
+        self._check_size(msg_hdr, self.msg2_fmt.size + extra_size)
 
     def _decode_msg3(self, msg_hdr):
         from ._nexrad_msgs.msg3 import descriptions, fields
@@ -614,8 +616,8 @@ class Level2File(object):
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer
         bufs = self._msg_buf.setdefault(msg_hdr.msg_type, {})
-        bufs[msg_hdr.segment_num] = self._buffer.read(2 * msg_hdr.size_hw -
-                                                      self.msg_hdr_fmt.size)
+        bufs[msg_hdr.segment_num] = self._buffer.read(2 * msg_hdr.size_hw
+                                                      - self.msg_hdr_fmt.size)
 
         # Warn for badly formatted data
         if len(bufs) != msg_hdr.segment_num:
@@ -642,8 +644,9 @@ class Level2File(object):
 
     def _check_size(self, msg_hdr, size):
         hdr_size = msg_hdr.size_hw * 2 - self.msg_hdr_fmt.size
-        assert size == hdr_size, ('Message type {} should be {} bytes '
-                                  'but got {}'.format(msg_hdr.msg_type, size, hdr_size))
+        if size != hdr_size:
+            log.warning('Message type %d should be %d bytes but got %d',
+                        msg_hdr.msg_type, size, hdr_size)
 
 
 def reduce_lists(d):
@@ -1007,7 +1010,7 @@ class Level3File(object):
     """
 
     ij_to_km = 0.25
-    wmo_finder = re.compile('((?:NX|SD|NO)US)\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
+    wmo_finder = re.compile('((?:NX|SD|NO)US)\\d{2}[\\s\\w\\d]+\\w*(\\w{3})\r\r\n')
     header_fmt = NamedStruct([('code', 'H'), ('date', 'H'), ('time', 'l'),
                               ('msg_len', 'L'), ('src_id', 'h'), ('dest_id', 'h'),
                               ('num_blks', 'H')], '>', 'MsgHdr')
@@ -1536,6 +1539,7 @@ class Level3File(object):
 
         """
         fobj = open_as_needed(filename)
+        self.filename = filename if is_string_like(filename) else 'No File'
 
         # Just read in the entire set of data at once
         with contextlib.closing(fobj):
@@ -1573,8 +1577,14 @@ class Level3File(object):
         # Unpack the message header and the product description block
         msg_start = self._buffer.set_mark()
         self.header = self._buffer.read_struct(self.header_fmt)
-        # print(self.header, len(self._buffer), self.header.msg_len - self.header_fmt.size)
-        assert self._buffer.check_remains(self.header.msg_len - self.header_fmt.size)
+        log.debug('Buffer size: %d (%d expected) Header: %s', len(self._buffer),
+                  self.header.msg_len, self.header)
+
+        if not self._buffer.check_remains(self.header.msg_len - self.header_fmt.size):
+            log.warning('Product contains an unexpected amount of data remaining--have: %d '
+                        'expected: %d. This product may not parse correctly.',
+                        len(self._buffer) - self._buffer._offset,
+                        self.header.msg_len - self.header_fmt.size)
 
         # Handle GSM and jump out
         if self.header.code == 2:
@@ -1664,8 +1674,9 @@ class Level3File(object):
 
     def _process_wmo_header(self):
         # Read off the WMO header if necessary
-        data = self._buffer.get_next(64).decode('utf-8', 'ignore')
+        data = self._buffer.get_next(64).decode('ascii', 'ignore')
         match = self.wmo_finder.search(data)
+        log.debug('WMO Header: %s', match)
         if match:
             self.wmo_code = match.groups()[0]
             self.siteID = match.groups()[-1]
@@ -1675,6 +1686,7 @@ class Level3File(object):
 
     def _process_end_bytes(self):
         check_bytes = self._buffer[-4:-1]
+        log.debug('End Bytes: %s', check_bytes)
         if check_bytes in (b'\r\r\n', b'\xff\xff\n'):
             self._buffer.truncate(4)
 

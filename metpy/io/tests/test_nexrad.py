@@ -1,18 +1,16 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2015,2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `nexrad` module."""
 
 from datetime import datetime
-import glob
 from io import BytesIO
 import logging
-import os.path
 
 import numpy as np
 import pytest
 
-from metpy.cbook import get_test_data
+from metpy.cbook import get_test_data, POOCH
 from metpy.io import is_precip_mode, Level2File, Level3File
 
 # Turn off the warnings for tests
@@ -58,7 +56,8 @@ def test_doubled_file():
 #
 # NIDS/Level 3 Tests
 #
-nexrad_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=False), 'K???_*'))
+nexrad_nids_files = [get_test_data(fname, as_file_obj=False)
+                     for fname in POOCH.registry if fname.startswith('nids/K')]
 
 
 @pytest.mark.parametrize('fname', nexrad_nids_files)
@@ -73,9 +72,11 @@ def test_level3_files(fname):
         if 'data' in block:
             f.map_data(block['data'])
 
+    assert f.filename == fname
 
-tdwr_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=False),
-                                         'Level3_MCI_*'))
+
+tdwr_nids_files = [get_test_data(fname, as_file_obj=False)
+                   for fname in POOCH.registry if fname.startswith('nids/Level3_MCI_')]
 
 
 @pytest.mark.parametrize('fname', tdwr_nids_files)
@@ -90,6 +91,25 @@ def test_basic():
     assert f.metadata['prod_time'].replace(second=0) == datetime(2014, 4, 7, 18, 5)
     assert f.metadata['vol_time'].replace(second=0) == datetime(2014, 4, 7, 18, 5)
     assert f.metadata['msg_time'].replace(second=0) == datetime(2014, 4, 7, 18, 6)
+    assert f.filename == get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids',
+                                       as_file_obj=False)
+
+    # At this point, really just want to make sure that __str__ is able to run and produce
+    # something not empty, the format is still up for grabs.
+    assert str(f)
+
+
+def test_bad_length(caplog):
+    """Test reading a product with too many bytes produces a log message."""
+    fname = get_test_data('nids/KOUN_SDUS84_DAATLX_201305202016', as_file_obj=False)
+    with open(fname, 'rb') as inf:
+        data = inf.read()
+        fobj = BytesIO(data + data)
+
+    with caplog.at_level(logging.WARNING, 'metpy.io.nexrad'):
+        Level3File(fobj)
+        assert len(caplog.records) == 1
+        assert 'This product may not parse correctly' in caplog.records[0].message
 
 
 def test_tdwr():

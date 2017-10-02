@@ -1,53 +1,32 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2009,2017,2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of kinematic parameters (e.g. divergence or vorticity)."""
 from __future__ import division
 
 import functools
-import warnings
 
 import numpy as np
 
-from ..calc.tools import get_layer
+from . import coriolis_parameter
+from .tools import first_derivative, get_layer_heights, gradient
+from .. import constants as mpconsts
 from ..cbook import is_string_like, iterable
-from ..constants import Cp_d, g
 from ..package_tools import Exporter
 from ..units import atleast_2d, check_units, concatenate, units
+from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
-
-
-def _gradient(f, *args, **kwargs):
-    """Wrap :func:`numpy.gradient` to handle units."""
-    if len(args) < f.ndim:
-        args = list(args)
-        args.extend([units.Quantity(1., 'dimensionless')] * (f.ndim - len(args)))
-    grad = np.gradient(f, *(a.magnitude for a in args), **kwargs)
-    if f.ndim == 1:
-        return units.Quantity(grad, f.units / args[0].units)
-    return [units.Quantity(g, f.units / dx.units) for dx, g in zip(args, grad)]
 
 
 def _stack(arrs):
     return concatenate([a[np.newaxis] for a in arrs], axis=0)
 
 
-def _get_gradients(u, v, dx, dy):
-    """Return derivatives for components to simplify calculating convergence and vorticity."""
-    dudy, dudx = _gradient(u, dy, dx)
-    dvdy, dvdx = _gradient(v, dy, dx)
-    return dudx, dudy, dvdx, dvdy
-
-
 def _is_x_first_dim(dim_order):
     """Determine whether x is the first dimension based on the value of dim_order."""
     if dim_order is None:
-        warnings.warn('dim_order is using the default setting (currently "xy"). This will '
-                      'change to "yx" in the next version. It is recommended that you '
-                      'specify the appropriate ordering ("xy", "yx") for your data by '
-                      'passing the `dim_order` argument to the calculation.', FutureWarning)
-        dim_order = 'xy'
+        dim_order = 'yx'
     return dim_order == 'xy'
 
 
@@ -94,8 +73,8 @@ def ensure_yx_order(func):
         or ``'yx'``. ``'xy'`` indicates that the dimension corresponding to x is the leading
         dimension, followed by y. ``'yx'`` indicates that x is the last dimension, preceded
         by y. ``None`` indicates that the default ordering should be assumed,
-        which will change in version 0.6 from 'xy' to 'yx'. Can only be passed as a keyword
-        argument, i.e. func(..., dim_order='xy')."""
+        which is 'yx'. Can only be passed as a keyword argument, i.e.
+        func(..., dim_order='xy')."""
 
     # Find the first blank line after the start of the parameters section
     params = wrapper.__doc__.find('Parameters')
@@ -106,11 +85,10 @@ def ensure_yx_order(func):
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
-def v_vorticity(u, v, dx, dy):
+def vorticity(u, v, dx, dy):
     r"""Calculate the vertical vorticity of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -118,10 +96,12 @@ def v_vorticity(u, v, dx, dy):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
@@ -130,19 +110,24 @@ def v_vorticity(u, v, dx, dy):
 
     See Also
     --------
-    h_convergence, convergence_vorticity
+    divergence
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
-    _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
+    dudy = first_derivative(u, delta=dy, axis=-2)
+    dvdx = first_derivative(v, delta=dx, axis=-1)
     return dvdx - dudy
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
-def h_convergence(u, v, dx, dy):
-    r"""Calculate the horizontal convergence of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
+def divergence(u, v, dx, dy):
+    r"""Calculate the horizontal divergence of the horizontal wind.
 
     Parameters
     ----------
@@ -150,79 +135,51 @@ def h_convergence(u, v, dx, dy):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
     (M, N) ndarray
-        The horizontal convergence
+        The horizontal divergence
 
     See Also
     --------
-    v_vorticity, convergence_vorticity
+    vorticity
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
-    dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=-1)
+    dvdy = first_derivative(v, delta=dy, axis=-2)
     return dudx + dvdy
 
 
 @exporter.export
-@ensure_yx_order
-def convergence_vorticity(u, v, dx, dy):
-    r"""Calculate the horizontal convergence and vertical vorticity of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
-
-    Parameters
-    ----------
-    u : (M, N) ndarray
-        x component of the wind
-    v : (M, N) ndarray
-        y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
-
-    Returns
-    -------
-    convergence, vorticity : tuple of (M, N) ndarrays
-        The horizontal convergence and vertical vorticity, respectively
-
-    See Also
-    --------
-    v_vorticity, h_convergence
-
-    Notes
-    -----
-    This is a convenience function that will do less work than calculating
-    the horizontal convergence and vertical vorticity separately.
-
-    """
-    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
-    return dudx + dvdy, dvdx - dudy
-
-
-@exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def shearing_deformation(u, v, dx, dy):
     r"""Calculate the shearing deformation of the horizontal wind.
 
-    The grid must have a constant spacing in each direction.
-
     Parameters
     ----------
     u : (M, N) ndarray
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
@@ -231,19 +188,24 @@ def shearing_deformation(u, v, dx, dy):
 
     See Also
     --------
-    stretching_convergence, shearing_stretching_deformation
+    stretching_deformation, total_deformation
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
-    _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
+    dudy = first_derivative(u, delta=dy, axis=-2)
+    dvdx = first_derivative(v, delta=dx, axis=-1)
     return dvdx + dudy
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def stretching_deformation(u, v, dx, dy):
     r"""Calculate the stretching deformation of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -251,10 +213,12 @@ def stretching_deformation(u, v, dx, dy):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
@@ -263,67 +227,37 @@ def stretching_deformation(u, v, dx, dy):
 
     See Also
     --------
-    shearing_deformation, shearing_stretching_deformation
+    shearing_deformation, total_deformation
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
-    dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=-1)
+    dvdy = first_derivative(v, delta=dy, axis=-2)
     return dudx - dvdy
 
 
 @exporter.export
-@ensure_yx_order
-def shearing_stretching_deformation(u, v, dx, dy):
-    r"""Calculate the horizontal shearing and stretching deformation of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
-
-    Parameters
-    ----------
-    u : (M, N) ndarray
-        x component of the wind
-    v : (M, N) ndarray
-        y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
-
-    Returns
-    -------
-    shearing, strectching : tuple of (M, N) ndarrays
-        The horizontal shearing and stretching deformation, respectively
-
-    See Also
-    --------
-    shearing_deformation, stretching_deformation
-
-    Notes
-    -----
-    This is a convenience function that will do less work than calculating
-    the shearing and streching deformation terms separately.
-
-    """
-    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
-    return dvdx + dudy, dudx - dvdy
-
-
-@exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def total_deformation(u, v, dx, dy):
     r"""Calculate the horizontal total deformation of the horizontal wind.
 
-    The grid must have a constant spacing in each direction.
-
     Parameters
     ----------
     u : (M, N) ndarray
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
@@ -332,20 +266,21 @@ def total_deformation(u, v, dx, dy):
 
     See Also
     --------
-    shearing_deformation, stretching_deformation, shearing_stretching_deformation
+    shearing_deformation, stretching_deformation
 
     Notes
     -----
-    This is a convenience function that will do less work than calculating
-    the shearing and streching deformation terms separately and calculating the
-    total deformation "by hand".
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
-    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(-2, -1))
+    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(-2, -1))
     return np.sqrt((dvdx + dudy)**2 + (dudx - dvdy)**2)
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def advection(scalar, wind, deltas):
     r"""Calculate the advection of a scalar field by the wind.
@@ -360,12 +295,14 @@ def advection(scalar, wind, deltas):
     scalar : N-dimensional array
         Array (with N-dimensions) with the quantity to be advected.
     wind : sequence of arrays
-        Length N sequence of N-dimensional arrays.  Represents the flow,
+        Length M sequence of N-dimensional arrays.  Represents the flow,
         with a component of the wind in each dimension.  For example, for
         horizontal advection, this could be a list: [u, v], where u and v
         are each a 2-dimensional array.
-    deltas : sequence
-        A (length N) sequence containing the grid spacing in each dimension.
+    deltas : sequence of float or ndarray
+        A (length M) sequence containing the grid spacing(s) in each dimension. If using
+        arrays, in each array there should be one item less than the size of `scalar` along the
+        applicable axis.
 
     Returns
     -------
@@ -385,7 +322,7 @@ def advection(scalar, wind, deltas):
     # Gradient returns a list of derivatives along each dimension. We convert
     # this to an array with dimension as the first index. Reverse the deltas to line up
     # with the order of the dimensions.
-    grad = _stack(_gradient(scalar, *deltas[::-1]))
+    grad = _stack(gradient(scalar, deltas=deltas[::-1]))
 
     # Make them be at least 2D (handling the 1D case) so that we can do the
     # multiply and sum below
@@ -395,6 +332,7 @@ def advection(scalar, wind, deltas):
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
@@ -410,10 +348,6 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     * :math:`\beta` is the angle between the axis of dilitation and the isentropes
     * :math:`\delta` is the divergence
 
-    Notes
-    -----
-    Assumes dim_order='yx', unless otherwise specified.
-
     Parameters
     ----------
     thta : (M, N) ndarray
@@ -422,34 +356,41 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
     (M, N) ndarray
-        2D Frotogenesis in [temperature units]/m/s
+        2D Frontogenesis in [temperature units]/m/s
 
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
-    Conversion factor to go from [temperature units]/m/s to [tempature units/100km/3h]
+    Conversion factor to go from [temperature units]/m/s to [temperature units/100km/3h]
     :math:`1.08e4*1.e5`
 
     """
     # Get gradients of potential temperature in both x and y
-    grad = _gradient(thta, dy, dx)
-    ddy_thta, ddx_thta = grad[-2:]  # Throw away unused gradient components
+    ddy_thta = first_derivative(thta, delta=dy, axis=-2)
+    ddx_thta = first_derivative(thta, delta=dx, axis=-1)
 
     # Compute the magnitude of the potential temperature gradient
     mag_thta = np.sqrt(ddx_thta**2 + ddy_thta**2)
 
     # Get the shearing, stretching, and total deformation of the wind field
-    shrd, strd = shearing_stretching_deformation(u, v, dx, dy, dim_order=dim_order)
+    shrd = shearing_deformation(u, v, dx, dy, dim_order=dim_order)
+    strd = stretching_deformation(u, v, dx, dy, dim_order=dim_order)
     tdef = total_deformation(u, v, dx, dy, dim_order=dim_order)
 
     # Get the divergence of the wind field
-    div = h_convergence(u, v, dx, dy, dim_order=dim_order)
+    div = divergence(u, v, dx, dy, dim_order=dim_order)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
@@ -459,6 +400,7 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def geostrophic_wind(heights, f, dx, dy):
     r"""Calculate the geostrophic wind given from the heights or geopotential.
@@ -471,35 +413,75 @@ def geostrophic_wind(heights, f, dx, dy):
     f : array_like
         The coriolis parameter.  This can be a scalar to be applied
         everywhere or an array of values.
-    dx : scalar
-        The grid spacing in the x-direction
-    dy : scalar
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `heights` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `heights` along the applicable axis.
 
     Returns
     -------
     A 2-item tuple of arrays
         A tuple of the u-component and v-component of the geostrophic wind.
 
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
+
     """
     if heights.dimensionality['[length]'] == 2.0:
         norm_factor = 1. / f
     else:
-        norm_factor = g / f
+        norm_factor = mpconsts.g / f
 
-    # If heights has more than 2 dimensions, we need to pass in some dummy
-    # grid deltas so that we can still use np.gradient. It may be better to
-    # to loop in this case, but that remains to be done.
-    deltas = [dy, dx]
-    if heights.ndim > 2:
-        deltas = [units.Quantity(1., units.m)] * (heights.ndim - 2) + deltas
-
-    grad = _gradient(heights, *deltas)
-    dy, dx = grad[-2:]  # Throw away unused gradient components
-    return -norm_factor * dy, norm_factor * dx
+    dhdy = first_derivative(heights, delta=dy, axis=-2)
+    dhdx = first_derivative(heights, delta=dx, axis=-1)
+    return -norm_factor * dhdy, norm_factor * dhdx
 
 
 @exporter.export
+@preprocess_xarray
+@ensure_yx_order
+def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
+    r"""Calculate the ageostrophic wind given from the heights or geopotential.
+
+    Parameters
+    ----------
+    heights : (M, N) ndarray
+        The height field.
+    f : array_like
+        The coriolis parameter.  This can be a scalar to be applied
+        everywhere or an array of values.
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `heights` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `heights` along the applicable axis.
+    u : (M, N) ndarray
+        The u wind field.
+    v : (M, N) ndarray
+        The u wind field.
+
+    Returns
+    -------
+    A 2-item tuple of arrays
+        A tuple of the u-component and v-component of the ageostrophic wind.
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
+
+    """
+    u_geostrophic, v_geostrophic = geostrophic_wind(heights, f, dx, dy, dim_order=dim_order)
+    return u - u_geostrophic, v - v_geostrophic
+
+
+@exporter.export
+@preprocess_xarray
 @check_units('[length]', '[temperature]')
 def montgomery_streamfunction(height, temperature):
     r"""Compute the Montgomery Streamfunction on isentropic surfaces.
@@ -522,9 +504,11 @@ def montgomery_streamfunction(height, temperature):
 
     Notes
     -----
-    The formula used is that from [Lackmann2011]_ p. 69 for T in Kelvin and height in meters:
-    .. math:: sf = gZ + C_pT
-    * :math:`sf` is Montgomery Streamfunction
+    The formula used is that from [Lackmann2011]_ p. 69.
+
+    .. math:: \Psi = gZ + C_pT
+
+    * :math:`\Psi` is Montgomery Streamfunction
     * :math:`g` is avg. gravitational acceleration on Earth
     * :math:`Z` is geopotential height of the isentropic surface
     * :math:`C_p` is specific heat at constant pressure for dry air
@@ -535,22 +519,19 @@ def montgomery_streamfunction(height, temperature):
     get_isentropic_pressure
 
     """
-    return (g * height) + (Cp_d * temperature)
+    return (mpconsts.g * height) + (mpconsts.Cp_d * temperature)
 
 
 @exporter.export
-@check_units('[speed]', '[speed]', '[pressure]', '[length]',
-             '[length]', '[length]', '[speed]', '[speed]')
-def storm_relative_helicity(u, v, p, hgt, top, bottom=0 * units('meter'),
+@preprocess_xarray
+@check_units('[speed]', '[speed]', '[length]', '[length]', '[length]',
+             '[speed]', '[speed]')
+def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
                             storm_u=0 * units('m/s'), storm_v=0 * units('m/s')):
     # Partially adapted from similar SharpPy code
     r"""Calculate storm relative helicity.
 
-    Needs u and v wind components, heights and pressures,
-    and top and bottom of SRH layer. An optional storm
-    motion vector can be specified. SRH is calculated using the
-    equation specified on p. 230-231 in the Markowski and Richardson
-    meso textbook [Markowski2010].
+    Calculates storm relatively helicity following [Markowski2010] 230-231.
 
     .. math:: \int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz
 
@@ -562,48 +543,331 @@ def storm_relative_helicity(u, v, p, hgt, top, bottom=0 * units('meter'),
     Parameters
     ----------
     u : array-like
-        The u components of winds, same length as hgts
+        u component winds
     v : array-like
-        The u components of winds, same length as hgts
-    p : array-like
-        Pressure in hPa, same length as hgts
-    hgt : array-like
-        The heights associatd with the data, provided in meters above mean
-        sea level and converted into meters AGL.
-    top : number
-        The height of the top of the desired layer for SRH.
+        v component winds
+    heights : array-like
+        atmospheric heights, will be converted to AGL
+    depth : number
+        depth of the layer
     bottom : number
-        The height at the bottom of the SRH layer. Default is sfc (None).
+        height of layer bottom AGL (default is surface)
     storm_u : number
-        u component of storm motion
+        u component of storm motion (default is 0 m/s)
     storm_v : number
-        v component of storm motion
+        v component of storm motion (default is 0 m/s)
 
     Returns
     -------
-    number
-        p_srh : positive storm-relative helicity
-    number
-        n_srh : negative storm-relative helicity
-    number
-        t_srh : total storm-relative helicity
+    `pint.Quantity, pint.Quantity, pint.Quantity`
+        positive, negative, total storm-relative helicity
 
     """
-    # Converting to m/s to make sure output is in m^2/s^2
-    u = u.to('meters/second')
-    v = v.to('meters/second')
-    storm_u = storm_u.to('meters/second')
-    storm_v = storm_v.to('meters/second')
+    _, u, v = get_layer_heights(heights, depth, u, v, with_agl=True, bottom=bottom)
 
-    w_int = get_layer(p, u, v, heights=hgt, bottom=bottom, depth=top - bottom)
+    storm_relative_u = u - storm_u
+    storm_relative_v = v - storm_v
 
-    sru = w_int[1] - storm_u
-    srv = w_int[2] - storm_v
+    int_layers = (storm_relative_u[1:] * storm_relative_v[:-1]
+                  - storm_relative_u[:-1] * storm_relative_v[1:])
 
-    int_layers = sru[1:] * srv[:-1] - sru[:-1] * srv[1:]
+    # Need to manually check for masked value because sum() on masked array with non-default
+    # mask will return a masked value rather than 0. See numpy/numpy#11736
+    positive_srh = int_layers[int_layers.magnitude > 0.].sum()
+    if np.ma.is_masked(positive_srh):
+        positive_srh = 0.0 * units('meter**2 / second**2')
+    negative_srh = int_layers[int_layers.magnitude < 0.].sum()
+    if np.ma.is_masked(negative_srh):
+        negative_srh = 0.0 * units('meter**2 / second**2')
 
-    p_srh = int_layers[int_layers.magnitude > 0.].sum()
-    n_srh = int_layers[int_layers.magnitude < 0.].sum()
-    t_srh = p_srh + n_srh
+    return (positive_srh.to('meter ** 2 / second ** 2'),
+            negative_srh.to('meter ** 2 / second ** 2'),
+            (positive_srh + negative_srh).to('meter ** 2 / second ** 2'))
 
-    return p_srh, n_srh, t_srh
+
+@exporter.export
+@preprocess_xarray
+@check_units('[speed]', '[speed]', '[length]', '[length]')
+def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
+    """Calculate the absolute vorticity of the horizontal wind.
+
+    Parameters
+    ----------
+    u : (M, N) ndarray
+        x component of the wind
+    v : (M, N) ndarray
+        y component of the wind
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    lats : (M, N) ndarray
+        latitudes of the wind data in radians or with appropriate unit information attached
+
+    Returns
+    -------
+    (M, N) ndarray
+        absolute vorticity
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
+
+    """
+    f = coriolis_parameter(lats)
+    relative_vorticity = vorticity(u, v, dx, dy, dim_order=dim_order)
+    return relative_vorticity + f
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
+             '[length]', '[length]', '[dimensionless]')
+def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, lats):
+    r"""Calculate the baroclinic potential vorticity.
+
+    .. math:: PV = -g \left(\frac{\partial u}{\partial p}\frac{\partial \theta}{\partial y}
+              - \frac{\partial v}{\partial p}\frac{\partial \theta}{\partial x}
+              + \frac{\partial \theta}{\partial p}(\zeta + f) \right)
+
+    This formula is based on equation 4.5.93 [Bluestein1993]_.
+
+    Parameters
+    ----------
+    potential_temperature : (P, M, N) ndarray
+        potential temperature
+    pressure : (P, M, N) ndarray
+        vertical pressures
+    u : (P, M, N) ndarray
+        x component of the wind
+    v : (P, M, N) ndarray
+        y component of the wind
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    lats : (M, N) ndarray
+        latitudes of the wind data in radians or with appropriate unit information attached
+
+    Returns
+    -------
+    (P, M, N) ndarray
+        baroclinic potential vorticity
+
+    Notes
+    -----
+    This function will only work with data that is in (P, Y, X) format. If your data
+    is in a different order you will need to re-order your data in order to get correct
+    results from this function.
+
+    The same function can be used for isobaric and isentropic PV analysis. Provide winds
+    for vorticity calculations on the desired isobaric or isentropic surface. At least three
+    layers of pressure/potential temperature are required in order to calculate the vertical
+    derivative (one above and below the desired surface). The first two terms will be zero if
+    isentropic level data is used due to the gradient of theta in both the x and y-directions
+    will be zero since you are on an isentropic surface.
+
+    This function expects pressure/isentropic level to increase with increasing array element
+    (e.g., from higher in the atmosphere to closer to the surface. If the pressure array is
+    one-dimensional p[:, None, None] can be used to make it appear multi-dimensional.)
+
+    """
+    if ((np.shape(potential_temperature)[-3] < 3) or (np.shape(pressure)[-3] < 3)
+       or (np.shape(potential_temperature)[-3] != (np.shape(pressure)[-3]))):
+        raise ValueError('Length of potential temperature along the pressure axis '
+                         '{} must be at least 3.'.format(-3))
+
+    avor = absolute_vorticity(u, v, dx, dy, lats, dim_order='yx')
+    dthtadp = first_derivative(potential_temperature, x=pressure, axis=-3)
+
+    if ((np.shape(potential_temperature)[-2] == 1)
+       and (np.shape(potential_temperature)[-1] == 1)):
+        dthtady = 0 * units.K / units.m  # axis=-2 only has one dimension
+        dthtadx = 0 * units.K / units.m  # axis=-1 only has one dimension
+    else:
+        dthtady = first_derivative(potential_temperature, delta=dy, axis=-2)
+        dthtadx = first_derivative(potential_temperature, delta=dx, axis=-1)
+    dudp = first_derivative(u, x=pressure, axis=-3)
+    dvdp = first_derivative(v, x=pressure, axis=-3)
+
+    return (-mpconsts.g * (dudp * dthtady - dvdp * dthtadx
+                           + avor * dthtadp)).to(units.kelvin * units.meter**2
+                                                 / (units.second * units.kilogram))
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
+def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
+    r"""Calculate the barotropic (Rossby) potential vorticity.
+
+    .. math:: PV = \frac{f + \zeta}{H}
+
+    This formula is based on equation 7.27 [Hobbs2006]_.
+
+    Parameters
+    ----------
+    heights : (M, N) ndarray
+        atmospheric heights
+    u : (M, N) ndarray
+        x component of the wind
+    v : (M, N) ndarray
+        y component of the wind
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    lats : (M, N) ndarray
+        latitudes of the wind data in radians or with appropriate unit information attached
+
+    Returns
+    -------
+    (M, N) ndarray
+        barotropic potential vorticity
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
+
+    """
+    avor = absolute_vorticity(u, v, dx, dy, lats, dim_order=dim_order)
+    return (avor / heights).to('meter**-1 * second**-1')
+
+
+@exporter.export
+@preprocess_xarray
+def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
+    r"""Calculate the inertial advective wind.
+
+    .. math:: \frac{\hat k}{f} \times (\vec V \cdot \nabla)\hat V_g
+
+    .. math:: \frac{\hat k}{f} \times \left[ \left( u \frac{\partial u_g}{\partial x} + v
+              \frac{\partial u_g}{\partial y} \right) \hat i + \left( u \frac{\partial v_g}
+              {\partial x} + v \frac{\partial v_g}{\partial y} \right) \hat j \right]
+
+    .. math:: \left[ -\frac{1}{f}\left(u \frac{\partial v_g}{\partial x} + v
+              \frac{\partial v_g}{\partial y} \right) \right] \hat i + \left[ \frac{1}{f}
+              \left( u \frac{\partial u_g}{\partial x} + v \frac{\partial u_g}{\partial y}
+              \right) \right] \hat j
+
+    This formula is based on equation 27 of [Rochette2006]_.
+
+    Parameters
+    ----------
+    u : (M, N) ndarray
+        x component of the advecting wind
+    v : (M, N) ndarray
+        y component of the advecting wind
+    u_geostrophic : (M, N) ndarray
+        x component of the geostrophic (advected) wind
+    v_geostrophic : (M, N) ndarray
+        y component of the geostrophic (advected) wind
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    lats : (M, N) ndarray
+        latitudes of the wind data in radians or with appropriate unit information attached
+
+    Returns
+    -------
+    (M, N) ndarray
+        x component of inertial advective wind
+    (M, N) ndarray
+        y component of inertial advective wind
+
+    Notes
+    -----
+    Many forms of the inertial advective wind assume the advecting and advected
+    wind to both be the geostrophic wind. To do so, pass the x and y components
+    of the geostrophic with for u and u_geostrophic/v and v_geostrophic.
+
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
+
+    """
+    f = coriolis_parameter(lats)
+
+    dugdy, dugdx = gradient(u_geostrophic, deltas=(dy, dx), axes=(-2, -1))
+    dvgdy, dvgdx = gradient(v_geostrophic, deltas=(dy, dx), axes=(-2, -1))
+
+    u_component = -(u * dvgdx + v * dvgdy) / f
+    v_component = (u * dugdx + v * dugdy) / f
+
+    return u_component, v_component
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]')
+def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
+    r"""Calculate Q-vector at a given pressure level using the u, v winds and temperature.
+
+    .. math:: \vec{Q} = (Q_1, Q_2)
+                      =  - \frac{R}{\sigma p}\left(
+                               \frac{\partial \vec{v}_g}{\partial x} \cdot \nabla_p T,
+                               \frac{\partial \vec{v}_g}{\partial y} \cdot \nabla_p T
+                           \right)
+
+    This formula follows equation 5.7.55 from [Bluestein1992]_, and can be used with the
+    the below form of the quasigeostrophic omega equation to assess vertical motion
+    ([Bluestein1992]_ equation 5.7.54):
+
+    .. math:: \left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2}
+                  \right) \omega =
+              - 2 \nabla_p \cdot \vec{Q} -
+                  \frac{R}{\sigma p} \beta \frac{\partial T}{\partial x}.
+
+    Parameters
+    ----------
+    u : (M, N) ndarray
+        x component of the wind (geostrophic in QG-theory)
+    v : (M, N) ndarray
+        y component of the wind (geostrophic in QG-theory)
+    temperature : (M, N) ndarray
+        Array of temperature at pressure level
+    pressure : `pint.Quantity`
+        Pressure at level
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    static_stability : `pint.Quantity`, optional
+        The static stability at the pressure level. Defaults to 1 if not given to calculate
+        the Q-vector without factoring in static stability.
+
+    Returns
+    -------
+    tuple of (M, N) ndarrays
+        The components of the Q-vector in the u- and v-directions respectively
+
+    See Also
+    --------
+    static_stability
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
+
+    """
+    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(-2, -1))
+    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(-2, -1))
+    dtempdy, dtempdx = gradient(temperature, deltas=(dy, dx), axes=(-2, -1))
+
+    q1 = -mpconsts.Rd / (pressure * static_stability) * (dudx * dtempdx + dvdx * dtempdy)
+    q2 = -mpconsts.Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)
+
+    return q1.to_base_units(), q2.to_base_units()
