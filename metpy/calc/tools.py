@@ -395,6 +395,97 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
 
 
 @exporter.export
+@check_units('[length]')
+def get_layer_heights(heights, depth, *args, **kwargs):
+    """Return an atmospheric layer from upper air data with the requested bottom and depth.
+
+    This function will subset an upper air dataset to contain only the specified layer using
+    the heights only.
+
+    Parameters
+    ----------
+    heights : array-like
+        Atmospheric heights
+    depth : `pint.Quantity`
+        The thickness of the layer
+    *args : array-like
+        Atmospheric variable(s) measured at the given pressures
+    bottom : `pint.Quantity`, optional
+        The bottom of the layer
+    interpolate : bool, optional
+        Interpolate the top and bottom points if they are not in the given data. Defaults
+        to True.
+    with_agl : bool, optional
+        Returns the heights as above ground level by subtracting the minimum height in the
+        provided heights. Defaults to False.
+
+    Returns
+    -------
+    `pint.Quantity, pint.Quantity`
+        The height and data variables of the layer
+
+    """
+    bottom = kwargs.pop('bottom', None)
+    interpolate = kwargs.pop('interpolate', True)
+    with_agl = kwargs.pop('with_agl', False)
+
+    # Make sure pressure and datavars are the same length
+    for datavar in args:
+        if len(heights) != len(datavar):
+            raise ValueError('Height and data variables must have the same length.')
+
+    # If we want things in AGL, subtract the minimum height from all height values
+    if with_agl:
+        sfc_height = np.min(heights)
+        heights -= sfc_height
+
+    # If the bottom is not specified, make it the surface
+    if bottom is None:
+        bottom = heights[0]
+
+    # Make heights and arguments base units
+    heights = heights.to_base_units()
+    bottom = bottom.to_base_units()
+
+    # Calculate the top of the layer
+    top = bottom + depth
+
+    ret = []  # returned data variables in layer
+
+    # Ensure heights are sorted in ascending order
+    sort_inds = np.argsort(heights)
+    heights = heights[sort_inds]
+
+    # Mask based on top and bottom
+    inds = (heights >= bottom) & (heights <= top)
+    heights_interp = heights[inds]
+
+    # Interpolate heights at bounds if necessary and sort
+    if interpolate:
+        # If we don't have the bottom or top requested, append them
+        if top not in heights_interp:
+            heights_interp = np.sort(np.append(heights_interp, top)) * heights.units
+        if bottom not in heights_interp:
+            heights_interp = np.sort(np.append(heights_interp, bottom)) * heights.units
+
+    ret.append(heights_interp)
+
+    for datavar in args:
+        # Ensure that things are sorted in ascending order
+        datavar = datavar[sort_inds]
+
+        if interpolate:
+            # Interpolate for the possibly missing bottom/top values
+            datavar_interp = interp(heights_interp, heights, datavar)
+            datavar = datavar_interp
+        else:
+            datavar = datavar[inds]
+
+        ret.append(datavar)
+    return ret
+
+
+@exporter.export
 @check_units('[pressure]')
 def get_layer(pressure, *args, **kwargs):
     r"""Return an atmospheric layer from upper air data with the requested bottom and depth.
