@@ -9,7 +9,7 @@ import warnings
 
 import numpy as np
 
-from ..calc.tools import get_layer
+from ..calc.tools import get_layer_heights
 from ..cbook import is_string_like, iterable
 from ..constants import Cp_d, g
 from ..package_tools import Exporter
@@ -539,9 +539,9 @@ def montgomery_streamfunction(height, temperature):
 
 
 @exporter.export
-@check_units('[speed]', '[speed]', '[pressure]', '[length]',
-             '[length]', '[length]', '[speed]', '[speed]')
-def storm_relative_helicity(u, v, p, heights, top, bottom=0 * units('meter'),
+@check_units('[speed]', '[speed]', '[length]', '[length]', '[length]',
+             '[speed]', '[speed]')
+def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
                             storm_u=0 * units('m/s'), storm_v=0 * units('m/s')):
     # Partially adapted from similar SharpPy code
     r"""Calculate storm relative helicity.
@@ -561,18 +561,16 @@ def storm_relative_helicity(u, v, p, heights, top, bottom=0 * units('meter'),
         u component winds
     v : array-like
         v component winds
-    p : array-like
-        atmospheric pressure
     heights : array-like
-        atmospheric heights
-    top : number
-        layer top
+        atmospheric heights, will be converted to AGL
+    depth : number
+        depth of the layer
     bottom : number
-        layer bottom (default is surface)
+        height of layer bottom AGL (default is surface)
     storm_u : number
-        u component of storm motion
+        u component of storm motion (default is 0 m/s)
     storm_v : number
-        v component of storm motion
+        v component of storm motion (default is 0 m/s)
 
     Returns
     -------
@@ -580,11 +578,10 @@ def storm_relative_helicity(u, v, p, heights, top, bottom=0 * units('meter'),
         positive, negative, total storm-relative helicity
 
     """
-    _, layer_u, layer_v = get_layer(p, u, v, heights=heights,
-                                    bottom=bottom, depth=top - bottom)
+    _, u, v = get_layer_heights(heights, depth, u, v, with_agl=True, bottom=bottom)
 
-    storm_relative_u = layer_u - storm_u
-    storm_relative_v = layer_v - storm_v
+    storm_relative_u = u - storm_u
+    storm_relative_v = v - storm_v
 
     int_layers = (storm_relative_u[1:] * storm_relative_v[:-1] -
                   storm_relative_u[:-1] * storm_relative_v[1:])
