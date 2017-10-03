@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -20,7 +20,7 @@ of a station plot.
 import cartopy.crs as ccrs
 import cartopy.feature as feat
 import matplotlib.pyplot as plt
-import numpy as np
+import pandas as pd
 
 from metpy.calc import get_wind_components
 from metpy.cbook import get_test_data
@@ -35,30 +35,26 @@ from metpy.units import units
 # `numpy.dtype` to allow different types for the various columns. This allows us to handle
 # the columns with string data.
 with get_test_data('station_data.txt') as f:
-    all_data = np.loadtxt(f, skiprows=1, delimiter=',',
-                          usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
-                          dtype=np.dtype([('stid', '3S'), ('lat', 'f'), ('lon', 'f'),
-                                          ('slp', 'f'), ('air_temperature', 'f'),
-                                          ('cloud_fraction', 'f'),
-                                          ('dew_point_temperature', 'f'), ('weather', '16S'),
-                                          ('wind_dir', 'f'), ('wind_speed', 'f')]))
+    data_arr = pd.read_csv(f, header=0, usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
+                           names=['stid', 'lat', 'lon', 'slp', 'air_temperature',
+                                  'cloud_fraction', 'dew_point_temperature', 'weather',
+                                  'wind_dir', 'wind_speed'],
+                           na_values=-99999)
+    data_arr.set_index('stid', inplace=True)
 
 ###########################################
 # This sample data has *way* too many stations to plot all of them. Instead, we just select
 # a few from around the U.S. and pull those out of the data file.
 
-# Get the full list of stations in the data
-all_stids = [s.decode('ascii') for s in all_data['stid']]
-
 # Pull out these specific stations
-whitelist = ['OKC', 'ICT', 'GLD', 'MEM', 'BOS', 'MIA', 'MOB', 'ABQ', 'PHX', 'TTF',
-             'ORD', 'BIL', 'BIS', 'CPR', 'LAX', 'ATL', 'MSP', 'SLC', 'DFW', 'NYC', 'PHL',
-             'PIT', 'IND', 'OLY', 'SYR', 'LEX', 'CHS', 'TLH', 'HOU', 'GJT', 'LBB', 'LSV',
-             'GRB', 'CLT', 'LNK', 'DSM', 'BOI', 'FSD', 'RAP', 'RIC', 'JAN', 'HSV', 'CRW',
-             'SAT', 'BUY', '0CO', 'ZPC', 'VIH']
+selected = ['OKC', 'ICT', 'GLD', 'MEM', 'BOS', 'MIA', 'MOB', 'ABQ', 'PHX', 'TTF',
+            'ORD', 'BIL', 'BIS', 'CPR', 'LAX', 'ATL', 'MSP', 'SLC', 'DFW', 'NYC', 'PHL',
+            'PIT', 'IND', 'OLY', 'SYR', 'LEX', 'CHS', 'TLH', 'HOU', 'GJT', 'LBB', 'LSV',
+            'GRB', 'CLT', 'LNK', 'DSM', 'BOI', 'FSD', 'RAP', 'RIC', 'JAN', 'HSV', 'CRW',
+            'SAT', 'BUY', '0CO', 'ZPC', 'VIH']
 
 # Loop over all the whitelisted sites, grab the first data, and concatenate them
-data_arr = np.concatenate([all_data[all_stids.index(site)].reshape(1,) for site in whitelist])
+data_arr = data_arr.loc[selected]
 
 # First, look at the names of variables that the layout is expecting:
 simple_layout.names()
@@ -72,11 +68,11 @@ data = {}
 
 # Copy out to stage everything together. In an ideal world, this would happen on
 # the data reading side of things, but we're not there yet.
-data['longitude'] = data_arr['lon']
-data['latitude'] = data_arr['lat']
-data['air_temperature'] = data_arr['air_temperature'] * units.degC
-data['dew_point_temperature'] = data_arr['dew_point_temperature'] * units.degC
-data['air_pressure_at_sea_level'] = data_arr['slp'] * units('mbar')
+data['longitude'] = data_arr['lon'].values
+data['latitude'] = data_arr['lat'].values
+data['air_temperature'] = data_arr['air_temperature'].values * units.degC
+data['dew_point_temperature'] = data_arr['dew_point_temperature'].values * units.degC
+data['air_pressure_at_sea_level'] = data_arr['slp'].values * units('mbar')
 
 ###########################################
 # Notice that the names (the keys) in the dictionary are the same as those that the
@@ -90,17 +86,17 @@ data['air_pressure_at_sea_level'] = data_arr['slp'] * units('mbar')
 
 # Get the wind components, converting from m/s to knots as will be appropriate
 # for the station plot
-u, v = get_wind_components(data_arr['wind_speed'] * units('m/s'),
-                           data_arr['wind_dir'] * units.degree)
+u, v = get_wind_components(data_arr['wind_speed'].values * units('m/s'),
+                           data_arr['wind_dir'].values * units.degree)
 data['eastward_wind'], data['northward_wind'] = u, v
 
 # Convert the fraction value into a code of 0-8, which can be used to pull out
 # the appropriate symbol
-data['cloud_coverage'] = (8 * data_arr['cloud_fraction']).astype(int)
+data['cloud_coverage'] = (8 * data_arr['cloud_fraction'].values).astype(int)
 
 # Map weather strings to WMO codes, which we can use to convert to symbols
 # Only use the first symbol if there are multiple
-wx_text = [s.decode('ascii') for s in data_arr['weather']]
+wx_text = data_arr['weather'].fillna('')
 wx_codes = {'': 0, 'HZ': 5, 'BR': 10, '-DZ': 51, 'DZ': 53, '+DZ': 55,
             '-RA': 61, 'RA': 63, '+RA': 65, '-SN': 71, 'SN': 73, '+SN': 75}
 data['present_weather'] = [wx_codes[s.split()[0] if ' ' in s else s] for s in wx_text]
