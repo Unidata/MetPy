@@ -398,11 +398,10 @@ def test_storm_relative_helicity_no_storm_motion():
     u = np.array([0, 20, 10, 0]) * units('m/s')
     v = np.array([20, 0, 0, 10]) * units('m/s')
     u = u.to('knots')
-    pressure = np.array([1000, 900, 800, 700]) * units.hPa
     heights = np.array([0, 250, 500, 750]) * units.m
 
-    positive_srh, negative_srh, total_srh = storm_relative_helicity(u, v, pressure, heights,
-                                                                    top=750 * units.meters)
+    positive_srh, negative_srh, total_srh = storm_relative_helicity(u, v, heights,
+                                                                    depth=750 * units.meters)
 
     assert_almost_equal(positive_srh, 400. * units('meter ** 2 / second ** 2 '), 6)
     assert_almost_equal(negative_srh, -100. * units('meter ** 2 / second ** 2 '), 6)
@@ -414,11 +413,28 @@ def test_storm_relative_helicity_storm_motion():
     u = np.array([5, 25, 15, 5]) * units('m/s')
     v = np.array([30, 10, 10, 20]) * units('m/s')
     u = u.to('knots')
-    pressure = np.array([1000, 900, 800, 700]) * units.hPa
     heights = np.array([0, 250, 500, 750]) * units.m
 
-    pos_srh, neg_srh, total_srh = storm_relative_helicity(u, v, pressure, heights,
-                                                          top=750 * units.meters,
+    pos_srh, neg_srh, total_srh = storm_relative_helicity(u, v, heights,
+                                                          depth=750 * units.meters,
+                                                          storm_u=5 * units('m/s'),
+                                                          storm_v=10 * units('m/s'))
+
+    assert_almost_equal(pos_srh, 400. * units('meter ** 2 / second ** 2 '), 6)
+    assert_almost_equal(neg_srh, -100. * units('meter ** 2 / second ** 2 '), 6)
+    assert_almost_equal(total_srh, 300. * units('meter ** 2 / second ** 2 '), 6)
+
+
+def test_storm_relative_helicity_with_interpolation():
+    """Test storm relative helicity with interpolation."""
+    u = np.array([-5, 15, 25, 15, -5]) * units('m/s')
+    v = np.array([40, 20, 10, 10, 30]) * units('m/s')
+    u = u.to('knots')
+    heights = np.array([0, 100, 200, 300, 400]) * units.m
+
+    pos_srh, neg_srh, total_srh = storm_relative_helicity(u, v, heights,
+                                                          bottom=50 * units.meters,
+                                                          depth=300 * units.meters,
                                                           storm_u=5 * units('m/s'),
                                                           storm_v=10 * units('m/s'))
 
