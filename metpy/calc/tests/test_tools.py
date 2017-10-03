@@ -7,7 +7,8 @@ import numpy as np
 import numpy.ma as ma
 import pytest
 
-from metpy.calc import (find_intersections, get_layer, interp, interpolate_nans, log_interp,
+from metpy.calc import (find_intersections, get_layer, get_layer_heights,
+                        interp, interpolate_nans, log_interp,
                         nearest_intersection_idx, pressure_to_height_std,
                         reduce_point_density, resample_nn_1d)
 from metpy.calc.tools import (_get_bound_pressure_height, _greater_or_close, _less_or_close,
@@ -475,3 +476,49 @@ def test_less_or_close():
     truth = np.array([True, True, True, True, True, False])
     res = _less_or_close(x, comparison_value)
     assert_array_equal(res, truth)
+
+
+def test_get_layer_heights_interpolation():
+    """Test get_layer_heights with interpolation."""
+    heights = np.arange(10) * units.km
+    data = heights.m * 2 * units.degC
+    heights, data = get_layer_heights(heights, 5000 * units.m, data, bottom=1500 * units.m)
+    heights_true = np.array([1.5, 2, 3, 4, 5, 6, 6.5]) * units.km
+    data_true = heights_true.m * 2 * units.degC
+    assert_array_almost_equal(heights_true, heights, 6)
+    assert_array_almost_equal(data_true, data, 6)
+
+
+def test_get_layer_heights_no_interpolation():
+    """Test get_layer_heights without interpolation."""
+    heights = np.arange(10) * units.km
+    data = heights.m * 2 * units.degC
+    heights, data = get_layer_heights(heights, 5000 * units.m, data,
+                                      bottom=1500 * units.m, interpolate=False)
+    heights_true = np.array([2, 3, 4, 5, 6]) * units.km
+    data_true = heights_true.m * 2 * units.degC
+    assert_array_almost_equal(heights_true, heights, 6)
+    assert_array_almost_equal(data_true, data, 6)
+
+
+def test_get_layer_heights_agl():
+    """Test get_layer_heights with interpolation."""
+    heights = np.arange(300, 1200, 100) * units.m
+    data = heights.m * 0.1 * units.degC
+    heights, data = get_layer_heights(heights, 500 * units.m, data, with_agl=True)
+    heights_true = np.array([0, 0.1, 0.2, 0.3, 0.4, 0.5]) * units.km
+    data_true = np.array([30, 40, 50, 60, 70, 80]) * units.degC
+    assert_array_almost_equal(heights_true, heights, 6)
+    assert_array_almost_equal(data_true, data, 6)
+
+
+def test_get_layer_heights_agl_bottom_no_interp():
+    """Test get_layer_heights with no interpolation and a bottom."""
+    heights = np.arange(300, 1200, 100) * units.m
+    data = heights.m * 0.1 * units.degC
+    heights, data = get_layer_heights(heights, 500 * units.m, data, with_agl=True,
+                                      interpolation=False, bottom=200 * units.m)
+    heights_true = np.array([0.2, 0.3, 0.4, 0.5, 0.6, 0.7]) * units.km
+    data_true = np.array([50, 60, 70, 80, 90, 100]) * units.degC
+    assert_array_almost_equal(heights_true, heights, 6)
+    assert_array_almost_equal(data_true, data, 6)
