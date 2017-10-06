@@ -1,0 +1,12 @@
+get_wind_dir
+=======================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: get_wind_dir
+
+.. include:: metpy.calc.get_wind_dir.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

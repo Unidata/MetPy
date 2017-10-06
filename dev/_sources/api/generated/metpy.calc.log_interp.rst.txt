@@ -1,0 +1,12 @@
+log_interp
+=====================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: log_interp
+
+.. include:: metpy.calc.log_interp.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

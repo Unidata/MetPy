@@ -1,0 +1,12 @@
+friction_velocity
+============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: friction_velocity
+
+.. include:: metpy.calc.friction_velocity.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

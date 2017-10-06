@@ -1,0 +1,12 @@
+windchill
+====================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: windchill
+
+.. include:: metpy.calc.windchill.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

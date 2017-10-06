@@ -1,0 +1,43 @@
+Level2File
+===================
+
+.. currentmodule:: metpy.io
+
+.. autoclass:: Level2File
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~Level2File.__init__
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+
+   
+   
+
+.. include:: metpy.io.Level2File.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

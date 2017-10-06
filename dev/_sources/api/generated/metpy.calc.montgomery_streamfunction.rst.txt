@@ -1,0 +1,12 @@
+montgomery_streamfunction
+====================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: montgomery_streamfunction
+
+.. include:: metpy.calc.montgomery_streamfunction.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

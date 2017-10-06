@@ -1,0 +1,12 @@
+nearest_intersection_idx
+===================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: nearest_intersection_idx
+
+.. include:: metpy.calc.nearest_intersection_idx.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

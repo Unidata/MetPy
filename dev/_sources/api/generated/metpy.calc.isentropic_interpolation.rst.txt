@@ -1,0 +1,12 @@
+isentropic_interpolation
+===================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: isentropic_interpolation
+
+.. include:: metpy.calc.isentropic_interpolation.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

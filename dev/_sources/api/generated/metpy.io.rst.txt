@@ -1,0 +1,36 @@
+io
+========
+
+.. automodule:: metpy.io
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      get_upper_air_data
+      is_precip_mode
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      GiniFile
+      Level2File
+      Level3File
+
+   
+   
+
+   
+   
+   
