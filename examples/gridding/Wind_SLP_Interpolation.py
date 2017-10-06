@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -13,68 +13,47 @@ import cartopy.crs as ccrs
 from matplotlib.colors import BoundaryNorm
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 from metpy.calc import get_wind_components
 from metpy.cbook import get_test_data
 from metpy.gridding.gridding_functions import interpolate, remove_nan_observations
 from metpy.units import units
 
-from_proj = ccrs.Geodetic()
 to_proj = ccrs.AlbersEqualArea(central_longitude=-97., central_latitude=38.)
 
-
-def station_test_data(variable_names, proj_from=None, proj_to=None):
-    with get_test_data('station_data.txt') as f:
-        all_data = np.loadtxt(f, skiprows=1, delimiter=',',
-                              usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
-                              dtype=np.dtype([('stid', '3S'), ('lat', 'f'), ('lon', 'f'),
-                                              ('slp', 'f'), ('air_temperature', 'f'),
-                                              ('cloud_fraction', 'f'), ('dewpoint', 'f'),
-                                              ('weather', '16S'),
-                                              ('wind_dir', 'f'), ('wind_speed', 'f')]))
-
-    all_stids = [s.decode('ascii') for s in all_data['stid']]
-    data = np.concatenate([all_data[all_stids.index(site)].reshape(1, ) for site in all_stids])
-
-    value = data[variable_names]
-    lon = data['lon']
-    lat = data['lat']
-
-    if proj_from is not None and proj_to is not None:
-            proj_points = proj_to.transform_points(proj_from, lon, lat)
-            return proj_points[:, 0], proj_points[:, 1], value
-
-    return lon, lat, value
-
+###########################################
+# Read in data
+with get_test_data('station_data.txt') as f:
+    data = pd.read_csv(f, header=0, usecols=(2, 3, 4, 5, 18, 19),
+                       names=['latitude', 'longitude', 'slp', 'temperature', 'wind_dir',
+                              'wind_speed'],
+                       na_values=-99999)
 
 ###########################################
-# Get pressure information using the sample station data
-xp, yp, pres = station_test_data(['slp'], from_proj, to_proj)
+# Project the lon/lat locations to our final projection
+lon = data['longitude'].values
+lat = data['latitude'].values
+xp, yp, _ = to_proj.transform_points(ccrs.Geodetic(), lon, lat).T
 
 ###########################################
 # Remove all missing data from pressure
-pres = np.array([p[0] for p in pres])
-
-xp, yp, pres = remove_nan_observations(xp, yp, pres)
+x_masked, y_masked, pres = remove_nan_observations(xp, yp, data['slp'].values)
 
 ###########################################
-# Interpolate pressure as usual
-slpgridx, slpgridy, slp = interpolate(xp, yp, pres, interp_type='cressman',
+# Interpolate pressure using Cressman interpolation
+slpgridx, slpgridy, slp = interpolate(x_masked, y_masked, pres, interp_type='cressman',
                                       minimum_neighbors=1, search_radius=400000, hres=100000)
 
-###########################################
-# Get wind information
-x, y, wind = station_test_data(['wind_speed', 'wind_dir'], from_proj, to_proj)
-
-###########################################
-# Remove bad data from wind information
-wind_speed = np.array([w[0] for w in wind])
-wind_dir = np.array([w[1] for w in wind])
+##########################################
+# Get wind information and mask where either speed or direction is unavailable
+wind_speed = (data['wind_speed'].values * units('m/s')).to('knots')
+wind_dir = data['wind_dir'].values * units.degree
 
 good_indices = np.where((~np.isnan(wind_dir)) & (~np.isnan(wind_speed)))
 
-x = x[good_indices]
-y = y[good_indices]
+x_masked = xp[good_indices]
+y_masked = yp[good_indices]
 wind_speed = wind_speed[good_indices]
 wind_dir = wind_dir[good_indices]
 
@@ -82,31 +61,29 @@ wind_dir = wind_dir[good_indices]
 # Calculate u and v components of wind and then interpolate both.
 #
 # Both will have the same underlying grid so throw away grid returned from v interpolation.
-u, v = get_wind_components((wind_speed * units('m/s')).to('knots'),
-                           wind_dir * units.degree)
+u, v = get_wind_components(wind_speed, wind_dir)
 
-windgridx, windgridy, uwind = interpolate(x, y, np.array(u), interp_type='cressman',
-                                          search_radius=400000, hres=100000)
+windgridx, windgridy, uwind = interpolate(x_masked, y_masked, np.array(u),
+                                          interp_type='cressman', search_radius=400000,
+                                          hres=100000)
 
-_, _, vwind = interpolate(x, y, np.array(v), interp_type='cressman', search_radius=400000,
-                          hres=100000)
+_, _, vwind = interpolate(x_masked, y_masked, np.array(v), interp_type='cressman',
+                          search_radius=400000, hres=100000)
 
 ###########################################
 # Get temperature information
-levels = list(range(-20, 20, 1))
-cmap = plt.get_cmap('viridis')
-norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
-
-xt, yt, t = station_test_data('air_temperature', from_proj, to_proj)
-xt, yt, t = remove_nan_observations(xt, yt, t)
-
-tempx, tempy, temp = interpolate(xt, yt, t, interp_type='cressman', minimum_neighbors=3,
-                                 search_radius=400000, hres=35000)
+x_masked, y_masked, t = remove_nan_observations(xp, yp, data['temperature'].values)
+tempx, tempy, temp = interpolate(x_masked, y_masked, t, interp_type='cressman',
+                                 minimum_neighbors=3, search_radius=400000, hres=35000)
 
 temp = np.ma.masked_where(np.isnan(temp), temp)
 
 ###########################################
 # Set up the map and plot the interpolated grids appropriately.
+levels = list(range(-20, 20, 1))
+cmap = plt.get_cmap('viridis')
+norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
+
 fig = plt.figure(figsize=(20, 10))
 view = fig.add_subplot(1, 1, 1, projection=to_proj)
 

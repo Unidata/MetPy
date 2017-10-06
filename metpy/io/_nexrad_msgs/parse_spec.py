@@ -1,4 +1,7 @@
 #!/usr/bin/env python
+# Copyright (c) 2015 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 from __future__ import print_function
 
 
@@ -149,7 +152,7 @@ def field_fmt(item):
 def write_file(fname, info):
     with open(fname, 'w') as outfile:
         # File header
-        outfile.write('# Copyright (c) 2008-2016 MetPy Developers.\n')
+        outfile.write('# Copyright (c) 2014,2015 MetPy Developers.\n')
         outfile.write('# Distributed under the terms of the BSD 3-Clause License.\n')
         outfile.write('# SPDX-License-Identifier: BSD-3-Clause\n\n')
         outfile.write('# flake8: noqa\n')
