@@ -7,9 +7,10 @@ import numpy as np
 import pytest
 
 from metpy.calc import (advection, convergence_vorticity, frontogenesis, geostrophic_wind,
-                        h_convergence, montgomery_streamfunction, shearing_deformation,
-                        shearing_stretching_deformation, storm_relative_helicity,
-                        stretching_deformation, total_deformation, v_vorticity)
+                        get_wind_components, h_convergence, montgomery_streamfunction,
+                        shearing_deformation, shearing_stretching_deformation,
+                        storm_relative_helicity, stretching_deformation, total_deformation,
+                        v_vorticity)
 from metpy.constants import g, omega, Re
 from metpy.testing import assert_almost_equal, assert_array_equal
 from metpy.units import concatenate, units
@@ -441,3 +442,31 @@ def test_storm_relative_helicity_with_interpolation():
     assert_almost_equal(pos_srh, 400. * units('meter ** 2 / second ** 2 '), 6)
     assert_almost_equal(neg_srh, -100. * units('meter ** 2 / second ** 2 '), 6)
     assert_almost_equal(total_srh, 300. * units('meter ** 2 / second ** 2 '), 6)
+
+
+def test_storm_relative_helicity():
+    """Test function for SRH calculations on an eigth-circle hodograph."""
+    # Create larger arrays for everything except pressure to make a smoother graph
+    hgt_int = np.arange(0, 2050, 50)
+    hgt_int = hgt_int * units('meter')
+    dir_int = np.arange(180, 272.25, 2.25)
+    spd_int = np.zeros((hgt_int.shape[0]))
+    spd_int[:] = 2.
+    u_int, v_int = get_wind_components(spd_int * units('m/s'), dir_int * units.degree)
+
+    # Put in the correct value of SRH for a eighth-circle, 2 m/s hodograph
+    # (SRH = 2 * area under hodo, in this case...)
+    srh_true_p = (.25 * np.pi * (2 ** 2)) * units('m^2/s^2')
+
+    # Since there's only positive SRH in this case, total SRH will be equal to positive SRH and
+    # negative SRH will be zero.
+    srh_true_t = srh_true_p
+    srh_true_n = 0 * units('m^2/s^2')
+    p_srh, n_srh, T_srh = storm_relative_helicity(u_int, v_int,
+                                                  hgt_int, 1000 * units('meter'),
+                                                  bottom=0 * units('meter'),
+                                                  storm_u=0 * units.knot,
+                                                  storm_v=0 * units.knot)
+    assert_almost_equal(p_srh, srh_true_p, 2)
+    assert_almost_equal(n_srh, srh_true_n, 2)
+    assert_almost_equal(T_srh, srh_true_t, 2)
