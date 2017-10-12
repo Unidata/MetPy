@@ -99,7 +99,8 @@ Related Projects
 
 * netCDF4-python_ is the officially blessed Python API for netCDF_
 * siphon_ is an API for accessing remote data on `THREDDS Data Server`__
-* pythongallery_ is a collection of examples for using Python for various meteorological tasks, across many different libraries.
+* pythongallery_ is a collection of examples for using Python for various
+  meteorological tasks, across many different libraries.
 
 .. _netCDF4-python: https://unidata.github.io/netcdf4-python/
 .. _netCDF: https://www.unidata.ucar.edu/software/netcdf/
