@@ -90,6 +90,7 @@ Important Links
 
 - Source code repository: https://github.com/Unidata/MetPy
 - HTML Documentation : http://unidata.github.io/MetPy
+- Unidata Python Gallery: https://unidata.github.io/python-gallery/
 - Issue tracker: http://github.com/Unidata/MetPy/issues
 - Gitter chat room: https://gitter.im/Unidata/MetPy
 - Say Thanks: https://saythanks.io/to/unidata
