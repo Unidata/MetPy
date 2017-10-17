@@ -193,6 +193,10 @@ cs = ax.contour(tlons, tlats, msf[level, :, :], clevmsf,
                 colors='k', linewidths=1.0, linestyles='solid')
 plt.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
            fmt='%i', rightside_up=True, use_clabeltext=True)
+
+# Add metpy logo
+add_metpy_logo()
+
 # Plot RH
 cf = ax.contourf(tlons, tlats, isentrh[level, :, :], range(10, 106, 5),
                  cmap=plt.cm.gist_earth_r)
