@@ -74,5 +74,8 @@ h = Hodograph(ax, component_range=60.)
 h.add_grid(increment=20)
 h.plot(u, v)
 
+# Add metpy logo
+add_metpy_logo()
+
 # Show the plot
 plt.show()
