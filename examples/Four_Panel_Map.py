@@ -25,6 +25,7 @@ import scipy.ndimage as ndimage
 
 from metpy.cbook import get_test_data
 from metpy.units import units
+from metpy.plots import add_metpy_logo
 
 ###########################################
 
