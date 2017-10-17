@@ -83,5 +83,8 @@ skew.plot_dry_adiabats()
 skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
 
+# Add metpy logo
+add_metpy_logo()
+
 # Show the plot
 plt.show()
