@@ -146,5 +146,8 @@ ax7.set_title('Precipitable Water', fontsize=16)
 
 fig.suptitle('{0:%d %B %Y %H:%MZ}'.format(time_vals), fontsize=24)
 
+# Add metpy logo
+add_metpy_logo()
+
 # Display the plot
 plt.show()
