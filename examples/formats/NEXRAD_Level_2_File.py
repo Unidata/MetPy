@@ -58,4 +58,8 @@ for var_data, var_range, ax in zip((ref, rho), (ref_range, rho_range), axes):
     ax.set_xlim(-40, 20)
     ax.set_ylim(-30, 30)
 
+# Add metpy logo
+add_metpy_logo()
+
+# Show plot
 plt.show()
