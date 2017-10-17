@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -48,7 +48,8 @@ proj = ccrs.LambertConformal(central_longitude=proj_var.longitude_of_central_mer
 # Plot the image
 fig = plt.figure(figsize=(10, 12))
 ax = fig.add_subplot(1, 1, 1, projection=proj)
-wv_norm, wv_cmap = ctables.registry.get_with_steps('WVCIMSS', 0, 1)
+wv_norm, wv_cmap = ctables.registry.get_with_range('WVCIMSS', 100, 260)
+wv_cmap.set_under('k')
 im = ax.imshow(dat[:], cmap=wv_cmap, norm=wv_norm, zorder=0,
                extent=ds.img_extent, origin='upper')
 ax.coastlines(resolution='50m', zorder=2, color='black')
