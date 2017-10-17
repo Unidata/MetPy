@@ -232,4 +232,9 @@ meteogram.plot_thermo(data['air_temperature'], data['dewpoint'])
 meteogram.plot_rh(data['relative_humidity'])
 meteogram.plot_pressure(data['mean_slp'])
 fig.subplots_adjust(hspace=0.5)
+
+# Add metpy logo
+add_metpy_logo()
+
+# Plot meteogram
 plt.show()
