@@ -91,5 +91,8 @@ skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
 skew.ax.set_ylim(1000, 100)
 
+# Add metpy logo
+add_metpy_logo()
+
 # Show the plot
 plt.show()
