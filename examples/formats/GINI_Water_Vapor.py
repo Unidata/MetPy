@@ -54,4 +54,8 @@ im = ax.imshow(dat[:], cmap=wv_cmap, norm=wv_norm, zorder=0,
                extent=ds.img_extent, origin='upper')
 ax.coastlines(resolution='50m', zorder=2, color='black')
 
+# Add metpy logo
+add_metpy_logo()
+
+# Show plopt
 plt.show()
