@@ -25,7 +25,8 @@ from metpy.units import units
 # **Getting the data**
 #
 # In this example, NARR reanalysis data for 18 UTC 04 April 1987 from the National Centers
-# for Environmental Information (https://nomads.ncdc.noaa.gov) will be used.
+# for Environmental Information (https://www.ncdc.noaa.gov/data-access/model-data)
+# will be used.
 
 data = Dataset(get_test_data('narr_example.nc', False))
 
