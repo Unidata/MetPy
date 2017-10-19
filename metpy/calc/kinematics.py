@@ -9,7 +9,7 @@ import warnings
 
 import numpy as np
 
-from ..calc.tools import get_layer
+from ..calc.tools import get_layer_heights
 from ..cbook import is_string_like, iterable
 from ..constants import Cp_d, g
 from ..package_tools import Exporter
@@ -539,18 +539,14 @@ def montgomery_streamfunction(height, temperature):
 
 
 @exporter.export
-@check_units('[speed]', '[speed]', '[pressure]', '[length]',
-             '[length]', '[length]', '[speed]', '[speed]')
-def storm_relative_helicity(u, v, p, hgt, top, bottom=0 * units('meter'),
+@check_units('[speed]', '[speed]', '[length]', '[length]', '[length]',
+             '[speed]', '[speed]')
+def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
                             storm_u=0 * units('m/s'), storm_v=0 * units('m/s')):
     # Partially adapted from similar SharpPy code
     r"""Calculate storm relative helicity.
 
-    Needs u and v wind components, heights and pressures,
-    and top and bottom of SRH layer. An optional storm
-    motion vector can be specified. SRH is calculated using the
-    equation specified on p. 230-231 in the Markowski and Richardson
-    meso textbook [Markowski2010].
+    Calculates storm relatively helicity following [Markowski2010] 230-231.
 
     .. math:: \int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz
 
@@ -562,48 +558,37 @@ def storm_relative_helicity(u, v, p, hgt, top, bottom=0 * units('meter'),
     Parameters
     ----------
     u : array-like
-        The u components of winds, same length as hgts
+        u component winds
     v : array-like
-        The u components of winds, same length as hgts
-    p : array-like
-        Pressure in hPa, same length as hgts
-    hgt : array-like
-        The heights associatd with the data, provided in meters above mean
-        sea level and converted into meters AGL.
-    top : number
-        The height of the top of the desired layer for SRH.
+        v component winds
+    heights : array-like
+        atmospheric heights, will be converted to AGL
+    depth : number
+        depth of the layer
     bottom : number
-        The height at the bottom of the SRH layer. Default is sfc (None).
+        height of layer bottom AGL (default is surface)
     storm_u : number
-        u component of storm motion
+        u component of storm motion (default is 0 m/s)
     storm_v : number
-        v component of storm motion
+        v component of storm motion (default is 0 m/s)
 
     Returns
     -------
-    number
-        p_srh : positive storm-relative helicity
-    number
-        n_srh : negative storm-relative helicity
-    number
-        t_srh : total storm-relative helicity
+    `pint.Quantity, pint.Quantity, pint.Quantity`
+        positive, negative, total storm-relative helicity
 
     """
-    # Converting to m/s to make sure output is in m^2/s^2
-    u = u.to('meters/second')
-    v = v.to('meters/second')
-    storm_u = storm_u.to('meters/second')
-    storm_v = storm_v.to('meters/second')
+    _, u, v = get_layer_heights(heights, depth, u, v, with_agl=True, bottom=bottom)
 
-    w_int = get_layer(p, u, v, heights=hgt, bottom=bottom, depth=top - bottom)
+    storm_relative_u = u - storm_u
+    storm_relative_v = v - storm_v
 
-    sru = w_int[1] - storm_u
-    srv = w_int[2] - storm_v
+    int_layers = (storm_relative_u[1:] * storm_relative_v[:-1] -
+                  storm_relative_u[:-1] * storm_relative_v[1:])
 
-    int_layers = sru[1:] * srv[:-1] - sru[:-1] * srv[1:]
+    positive_srh = int_layers[int_layers.magnitude > 0.].sum()
+    negative_srh = int_layers[int_layers.magnitude < 0.].sum()
 
-    p_srh = int_layers[int_layers.magnitude > 0.].sum()
-    n_srh = int_layers[int_layers.magnitude < 0.].sum()
-    t_srh = p_srh + n_srh
-
-    return p_srh, n_srh, t_srh
+    return (positive_srh.to('meter ** 2 / second ** 2'),
+            negative_srh.to('meter ** 2 / second ** 2'),
+            (positive_srh + negative_srh).to('meter ** 2 / second ** 2'))

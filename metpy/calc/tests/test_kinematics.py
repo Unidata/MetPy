@@ -7,10 +7,10 @@ import numpy as np
 import pytest
 
 from metpy.calc import (advection, convergence_vorticity, frontogenesis, geostrophic_wind,
-                        get_wind_components, h_convergence,
-                        montgomery_streamfunction, shearing_deformation,
-                        shearing_stretching_deformation, storm_relative_helicity,
-                        stretching_deformation, total_deformation, v_vorticity)
+                        get_wind_components, h_convergence, montgomery_streamfunction,
+                        shearing_deformation, shearing_stretching_deformation,
+                        storm_relative_helicity, stretching_deformation, total_deformation,
+                        v_vorticity)
 from metpy.constants import g, omega, Re
 from metpy.testing import assert_almost_equal, assert_array_equal
 from metpy.units import concatenate, units
@@ -394,12 +394,58 @@ def test_streamfunc():
     assert_almost_equal(msf, 337468.2500 * units('m^2 s^-2'), 4)
 
 
-def test_helicity():
-    """Test function for SRH calculations on an eigth-circle hodograph."""
-    pres_test = np.asarray([1013.25, 954.57955706, 898.690770743,
-                            845.481604002, 794.85264282]) * units('hPa')
-    hgt_test = hgt_test = np.asarray([0, 500, 1000, 1500, 2000])
+def test_storm_relative_helicity_no_storm_motion():
+    """Test storm relative helicity with no storm motion and differing input units."""
+    u = np.array([0, 20, 10, 0]) * units('m/s')
+    v = np.array([20, 0, 0, 10]) * units('m/s')
+    u = u.to('knots')
+    heights = np.array([0, 250, 500, 750]) * units.m
 
+    positive_srh, negative_srh, total_srh = storm_relative_helicity(u, v, heights,
+                                                                    depth=750 * units.meters)
+
+    assert_almost_equal(positive_srh, 400. * units('meter ** 2 / second ** 2 '), 6)
+    assert_almost_equal(negative_srh, -100. * units('meter ** 2 / second ** 2 '), 6)
+    assert_almost_equal(total_srh, 300. * units('meter ** 2 / second ** 2 '), 6)
+
+
+def test_storm_relative_helicity_storm_motion():
+    """Test storm relative helicity with storm motion and differing input units."""
+    u = np.array([5, 25, 15, 5]) * units('m/s')
+    v = np.array([30, 10, 10, 20]) * units('m/s')
+    u = u.to('knots')
+    heights = np.array([0, 250, 500, 750]) * units.m
+
+    pos_srh, neg_srh, total_srh = storm_relative_helicity(u, v, heights,
+                                                          depth=750 * units.meters,
+                                                          storm_u=5 * units('m/s'),
+                                                          storm_v=10 * units('m/s'))
+
+    assert_almost_equal(pos_srh, 400. * units('meter ** 2 / second ** 2 '), 6)
+    assert_almost_equal(neg_srh, -100. * units('meter ** 2 / second ** 2 '), 6)
+    assert_almost_equal(total_srh, 300. * units('meter ** 2 / second ** 2 '), 6)
+
+
+def test_storm_relative_helicity_with_interpolation():
+    """Test storm relative helicity with interpolation."""
+    u = np.array([-5, 15, 25, 15, -5]) * units('m/s')
+    v = np.array([40, 20, 10, 10, 30]) * units('m/s')
+    u = u.to('knots')
+    heights = np.array([0, 100, 200, 300, 400]) * units.m
+
+    pos_srh, neg_srh, total_srh = storm_relative_helicity(u, v, heights,
+                                                          bottom=50 * units.meters,
+                                                          depth=300 * units.meters,
+                                                          storm_u=5 * units('m/s'),
+                                                          storm_v=10 * units('m/s'))
+
+    assert_almost_equal(pos_srh, 400. * units('meter ** 2 / second ** 2 '), 6)
+    assert_almost_equal(neg_srh, -100. * units('meter ** 2 / second ** 2 '), 6)
+    assert_almost_equal(total_srh, 300. * units('meter ** 2 / second ** 2 '), 6)
+
+
+def test_storm_relative_helicity():
+    """Test function for SRH calculations on an eigth-circle hodograph."""
     # Create larger arrays for everything except pressure to make a smoother graph
     hgt_int = np.arange(0, 2050, 50)
     hgt_int = hgt_int * units('meter')
@@ -407,10 +453,6 @@ def test_helicity():
     spd_int = np.zeros((hgt_int.shape[0]))
     spd_int[:] = 2.
     u_int, v_int = get_wind_components(spd_int * units('m/s'), dir_int * units.degree)
-
-    # Interpolate pressure to that graph
-    pres_int = np.interp(hgt_int, hgt_test, np.log(pres_test.magnitude))
-    pres_int = np.exp(pres_int) * units('hPa')
 
     # Put in the correct value of SRH for a eighth-circle, 2 m/s hodograph
     # (SRH = 2 * area under hodo, in this case...)
@@ -420,7 +462,7 @@ def test_helicity():
     # negative SRH will be zero.
     srh_true_t = srh_true_p
     srh_true_n = 0 * units('m^2/s^2')
-    p_srh, n_srh, T_srh = storm_relative_helicity(u_int, v_int, pres_int,
+    p_srh, n_srh, T_srh = storm_relative_helicity(u_int, v_int,
                                                   hgt_int, 1000 * units('meter'),
                                                   bottom=0 * units('meter'),
                                                   storm_u=0 * units.knot,
