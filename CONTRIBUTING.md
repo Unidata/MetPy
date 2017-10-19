@@ -10,7 +10,7 @@ should reciprocate that respect in addressing your issue, assessing changes, and
 helping you finalize your pull requests.
 
 We love contributions from community members, just like you! There are many ways
-to contribute, from writing tutorial or example Jupyter notebooks, improvements
+to contribute, from writing tutorials or examples, improvements
 to the documentation, submitting bug report and feature requests, or even writing
 code which can be incorporated into MetPy for everyone to use. If you get stuck at
 any point you can create an [issue on GitHub](https://github.com/Unidata/MetPy/issues)
@@ -40,7 +40,7 @@ integrated into contributing to MetPy!
 ## How Can I Talk to You?
 Discussion of MetPy development often happens in the issue tracker and in pull requests.
 In addition, the developers monitor the
-[gitter chat room](https://gitter.im/Unidata/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[Gitter chat room](https://gitter.im/Unidata/MetPy?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 for the project as well.
 
 ## Ground Rules
