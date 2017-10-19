@@ -185,18 +185,37 @@ def test_skewt_barb_color():
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_plot_layers():
     """Test hodograph colored height layers with interpolation."""
-    u = np.arange(5, 65, 5) * units('knot')
-    v = np.arange(-5, -65, -5) * units('knot')
-    h = [178, 213, 610, 656, 721, 914, 1060,
-         1219, 1372, 1412, 1512, 1524] * units('meter')
-    colors = ['red', 'green']
-    levels = [0, 500, 1000] * units('meter')
-    fig = plt.figure(figsize=(9, 9))
-    ax = fig.add_subplot(1, 1, 1)
-    hodo = Hodograph(ax, component_range=80)
-    hodo.add_grid(increment=20, color='k')
-    hodo.plot_colormapped(u, v, h, bounds=levels, colors=colors)
+    u = np.zeros((6)) * units.knots
+    v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
+    heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
+    bounds = np.array([500, 1500, 2500, 3500, 4500]) * units.m
+    colors = ['r', 'g', 'b', 'r']
+    fig = plt.figure(figsize=(7, 7))
+    ax1 = fig.add_subplot(1, 1, 1)
+    h = Hodograph(ax1)
+    h.add_grid(increment=10)
+    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    ax1.set_xlim(-50, 50)
+    ax1.set_ylim(-5, 50)
 
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_hodograph_plot_layers_different_units():
+    """Test hodograph colored height layers with interpolation and different units."""
+    u = np.zeros((6)) * units.knots
+    v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
+    heights = np.array([0, 1, 2, 3, 4, 5]) * units.km
+    bounds = np.array([500, 1500, 2500, 3500, 4500]) * units.m
+    colors = ['r', 'g', 'b', 'r']
+    fig = plt.figure(figsize=(7, 7))
+    ax1 = fig.add_subplot(1, 1, 1)
+    h = Hodograph(ax1)
+    h.add_grid(increment=10)
+    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    ax1.set_xlim(-50, 50)
+    ax1.set_ylim(-5, 50)
     return fig
 
 

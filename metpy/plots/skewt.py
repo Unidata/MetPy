@@ -22,7 +22,7 @@ from ._util import colored_line
 from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
 from ..calc.tools import delete_masked_points, interp
 from ..package_tools import Exporter
-from ..units import units
+from ..units import concatenate, units
 
 exporter = Exporter(globals())
 
@@ -812,15 +812,18 @@ class Hodograph(object):
         """
         u, v, c = delete_masked_points(u, v, c)
 
+        # Plotting a color segmented hodograph
         if colors:
             cmap = mcolors.ListedColormap(colors)
+            # If we are segmenting by height (a length), interpolate the bounds
             if bounds.dimensionality == {'[length]': 1.0}:
-                bounds = np.asarray(bounds + c[0]) * bounds.units
-                interp_vert = interp(bounds, c, c, u, v)
-                inds = np.searchsorted(c.magnitude, bounds.magnitude)
-                u = np.insert(u.magnitude, inds, interp_vert[1].magnitude)
-                v = np.insert(v.magnitude, inds, interp_vert[2].magnitude)
-                c = np.insert(c.magnitude, inds, interp_vert[0].magnitude)
+                bounds = bounds + c[0]  # Make all heights AGL
+                interpolation_heights = concatenate((bounds, c))
+                interpolation_heights = (np.sort(interpolation_heights) *
+                                         interpolation_heights.units)
+                c, u, v = interp(interpolation_heights, c, c, u, v)
+                c = c.to_base_units()  # TODO: This shouldn't be required!
+            # If segmenting by anything else, do not interpolate, just use the data
             else:
                 bounds = np.asarray(bounds) * bounds.units
 
@@ -830,8 +833,12 @@ class Hodograph(object):
             kwargs['cmap'] = cmap
             kwargs['norm'] = norm
             line_args = self._form_line_args(kwargs)
+
+        # Plotting a continuously colored line
         else:
             line_args = self._form_line_args(kwargs)
+
+        # Do the plotting
         lc = colored_line(u, v, c, **line_args)
         self.ax.add_collection(lc)
         return lc
