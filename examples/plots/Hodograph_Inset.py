@@ -73,5 +73,8 @@ h = Hodograph(ax_hod, component_range=80.)
 h.add_grid(increment=20)
 h.plot_colormapped(u, v, np.hypot(u, v))
 
+# Add metpy logo
+add_metpy_logo()
+
 # Show the plot
 plt.show()

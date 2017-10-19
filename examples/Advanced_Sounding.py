@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
-from metpy.plots import SkewT
+from metpy.plots import SkewT, add_metpy_logo
 from metpy.units import units
 
 ###########################################
@@ -82,6 +82,9 @@ skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
 skew.plot_dry_adiabats()
 skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
+
+# Add metpy logo
+add_metpy_logo()
 
 # Show the plot
 plt.show()

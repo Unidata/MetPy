@@ -104,6 +104,9 @@ ax.set_extent([-106.5, -90.4, 34.5, 46.75], crs=ccrs.PlateCarree())
 ax.set_title('{:.0f} hPa Heights (m) and Temperature (C)'.format(plevs[0].m), loc='center',
              fontsize=10)
 
+# Add metpy logo
+add_metpy_logo()
+
 # Set the figure title
 fig.suptitle('WRF-ARW Forecast VALID: {:s} UTC'.format(str(vtimes[FH])), fontsize=14)
 plt.show()

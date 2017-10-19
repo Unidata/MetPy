@@ -43,4 +43,8 @@ for v, ctable, ax in zip(('N0Q', 'N0U'), ('NWSReflectivity', 'NWSVelocity'), axe
     ax.set_xlim(-40, 20)
     ax.set_ylim(-30, 30)
 
+# Add metpy logo
+add_metpy_logo()
+
+# Show plot
 plt.show()

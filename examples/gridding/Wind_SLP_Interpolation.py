@@ -105,4 +105,8 @@ view.barbs(windgridx, windgridy, uwind, vwind, alpha=.4, length=5)
 
 plt.title('Surface Temperature (shaded), SLP, and Wind.')
 
+# Add metpy logo
+add_metpy_logo()
+
+# Show plot
 plt.show()

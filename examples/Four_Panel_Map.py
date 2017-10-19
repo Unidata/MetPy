@@ -25,6 +25,7 @@ import scipy.ndimage as ndimage
 
 from metpy.cbook import get_test_data
 from metpy.units import units
+from metpy.plots import add_metpy_logo
 
 ###########################################
 
@@ -145,6 +146,9 @@ cb4.set_label('in.', size='x-large')
 ax7.set_title('Precipitable Water', fontsize=16)
 
 fig.suptitle('{0:%d %B %Y %H:%MZ}'.format(time_vals), fontsize=24)
+
+# Add metpy logo
+add_metpy_logo()
 
 # Display the plot
 plt.show()

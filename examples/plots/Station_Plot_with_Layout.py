@@ -192,4 +192,8 @@ stationplot = StationPlot(ax, data['longitude'], data['latitude'],
 # using `stationplot`.
 custom_layout.plot(stationplot, data)
 
+# Add metpy logo
+add_metpy_logo()
+
+# Show plot
 plt.show()

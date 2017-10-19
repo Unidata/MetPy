@@ -138,4 +138,8 @@ stationplot.plot_barb(u, v)
 # plot further out by specifying a location of 2 increments in x and 0 in y.
 stationplot.plot_text((2, 0), data['stid'])
 
+# Add metpy logo
+add_metpy_logo()
+
+# Show plot
 plt.show()
