@@ -11,6 +11,20 @@
    :width: 150 px
    :align: left
 
+.. toctree::
+   :maxdepth: 1
+   :hidden:
+
+   installguide
+   units
+   examples/index
+   tutorials/index
+   api/index
+   developerguide
+   CONTRIBUTING
+   citing
+   references
+
 =====
 MetPy
 =====
@@ -24,23 +38,6 @@ just for fun, many things may still change as we work through
 design issues.
 
 We support Python 2.7 as well as Python >= 3.4.
-
--------------
-Documentation
--------------
-
-.. toctree::
-   :maxdepth: 1
-
-   installguide
-   units
-   examples/index
-   tutorials/index
-   api/index
-   developerguide
-   CONTRIBUTING
-   citing
-   references
 
 ----------
 Contact Us
