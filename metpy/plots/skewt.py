@@ -314,7 +314,7 @@ class SkewT(object):
         """
         # Skew-T logP plotting
         t, p = delete_masked_points(t, p)
-        l = self.ax.semilogy(t, p, *args, **kwargs)
+        lines = self.ax.semilogy(t, p, *args, **kwargs)
 
         # Disables the log-formatting that comes with semilogy
         self.ax.yaxis.set_major_formatter(ScalarFormatter())
@@ -326,7 +326,7 @@ class SkewT(object):
         # Try to make sane default temperature plotting
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
 
-        return l
+        return lines
 
     def plot_barbs(self, p, u, v, c=None, xloc=1.0, x_clip_radius=0.08,
                    y_clip_radius=0.08, **kwargs):
