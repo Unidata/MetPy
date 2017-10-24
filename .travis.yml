@@ -51,6 +51,8 @@ matrix:
       env:
     - python: "3.6-dev"
       env: PRE="--pre"
+    - python: "3.6-dev"
+      env: TASK="docs" PRE="--pre"
     - python: nightly
       env: PRE="--pre"
   allow_failures:
@@ -111,7 +113,7 @@ script:
       make clean html linkcheck;
       export DOC_BUILD_RESULT=$?;
       popd;
-      if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then
+      if [[ $TRAVIS_PYTHON_VERSION == 3.6* ]]; then
         MPLBACKEND='agg' pytest --doctest-modules -k "not test" metpy;
         export DOC_TEST_RESULT=$?;
       else
