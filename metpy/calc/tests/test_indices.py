@@ -39,6 +39,19 @@ def test_mean_pressure_weighted():
     assert_almost_equal(v, 7.966031839967931 * units('m/s'), 7)
 
 
+def test_mean_pressure_weighted_backwards():
+    """Test pressure-weighted mean wind function with data in increasing-pressure order."""
+    with UseSampleData():
+        data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC', source='wyoming')
+    u, v = mean_pressure_weighted(data.variables['pressure'][:][::-1],
+                                  data.variables['u_wind'][:][::-1],
+                                  data.variables['v_wind'][:][::-1],
+                                  heights=data.variables['height'][:][::-1],
+                                  depth=6000 * units('meter'))
+    assert_almost_equal(u, 6.0208700094534775 * units('m/s'), 7)
+    assert_almost_equal(v, 7.966031839967931 * units('m/s'), 7)
+
+
 def test_mean_pressure_weighted_elevated():
     """Test pressure-weighted mean wind function with a base above the surface."""
     with UseSampleData():
@@ -72,6 +85,18 @@ def test_bulk_shear():
     u, v = bulk_shear(data.variables['pressure'][:], data.variables['u_wind'][:],
                       data.variables['v_wind'][:], heights=data.variables['height'][:],
                       depth=6000 * units('meter'))
+    truth = [29.899581266946115, -14.389225800205509] * units('knots')
+    assert_almost_equal(u.to('knots'), truth[0], 8)
+    assert_almost_equal(v.to('knots'), truth[1], 8)
+
+
+def test_bulk_shear_backward():
+    """Test bulk shear with observed sounding and data in increasing-pressure order."""
+    with UseSampleData():
+        data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC', source='wyoming')
+    u, v = bulk_shear(data.variables['pressure'][:][::-1], data.variables['u_wind'][:][::-1],
+                      data.variables['v_wind'][:][::-1],
+                      heights=data.variables['height'][:][::-1], depth=6000 * units('meter'))
     truth = [29.899581266946115, -14.389225800205509] * units('knots')
     assert_almost_equal(u.to('knots'), truth[0], 8)
     assert_almost_equal(v.to('knots'), truth[1], 8)

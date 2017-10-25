@@ -88,17 +88,18 @@ def mean_pressure_weighted(pressure, *args, **kwargs):
     heights = kwargs.pop('heights', None)
     bottom = kwargs.pop('bottom', None)
     depth = kwargs.pop('depth', None)
-    #Sort in correct order by pressure
+    # Sort in decreasing pressure order
     sort_inds = np.argsort(pressure[::-1])
     pressure = pressure[sort_inds]
     heights = heights[sort_inds]
-    for datavar in args:
-        datavar = datavar[sort_inds]
     ret = []  # Returned variable means in layer
-    layer_arg = get_layer(pressure, *args, heights=heights,
-                          bottom=bottom, depth=depth)
-    layer_p = layer_arg[0]
-    layer_arg = layer_arg[1:]
+    layer_arg = []
+    for i, datavar in enumerate(args):
+        datavar = datavar[sort_inds]
+        layer_var = get_layer(pressure, datavar, heights=heights,
+                              bottom=bottom, depth=depth)
+        layer_p = layer_var[0]
+        layer_arg.append(layer_var[1])
     # Taking the integral of the weights (pressure) to feed into the weighting
     # function. Said integral works out to this function:
     pres_int = 0.5 * (layer_p[-1].magnitude**2 - layer_p[0].magnitude**2)
@@ -137,6 +138,11 @@ def bunkers_storm_motion(pressure, u, v, heights):
         U and v component of sfc-6km mean flow
 
     """
+    sort_inds = np.argsort(pressure[::-1])
+    pressure = pressure[sort_inds]
+    heights = heights[sort_inds]
+    u = u[sort_inds]
+    v = v[sort_inds]
     # mean wind from sfc-6km
     wind_mean = concatenate(mean_pressure_weighted(pressure, u, v, heights=heights,
                                                    depth=6000 * units('meter')))
