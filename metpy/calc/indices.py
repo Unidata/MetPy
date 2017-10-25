@@ -88,6 +88,12 @@ def mean_pressure_weighted(pressure, *args, **kwargs):
     heights = kwargs.pop('heights', None)
     bottom = kwargs.pop('bottom', None)
     depth = kwargs.pop('depth', None)
+    #Sort in correct order by pressure
+    sort_inds = np.argsort(pressure[::-1])
+    pressure = pressure[sort_inds]
+    heights = heights[sort_inds]
+    for datavar in args:
+        datavar = datavar[sort_inds]
     ret = []  # Returned variable means in layer
     layer_arg = get_layer(pressure, *args, heights=heights,
                           bottom=bottom, depth=depth)
@@ -195,6 +201,11 @@ def bulk_shear(pressure, u, v, heights=None, bottom=None, depth=None):
         v-component of layer bulk shear
 
     """
+    sort_inds = np.argsort(pressure[::-1])
+    pressure = pressure[sort_inds]
+    heights = heights[sort_inds]
+    u = u[sort_inds]
+    v = v[sort_inds]
     _, u_layer, v_layer = get_layer(pressure, u, v, heights=heights,
                                     bottom=bottom, depth=depth)
 
