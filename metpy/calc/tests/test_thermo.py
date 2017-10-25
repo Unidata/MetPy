@@ -197,9 +197,9 @@ def test_lfc_basic():
     levels = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
     temperatures = np.array([22.2, 14.6, 12., 9.4, 7., -49.]) * units.celsius
     dewpoints = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
-    l = lfc(levels, temperatures, dewpoints)
-    assert_almost_equal(l[0], 727.468 * units.mbar, 2)
-    assert_almost_equal(l[1], 9.705 * units.celsius, 2)
+    lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints)
+    assert_almost_equal(lfc_pressure, 727.468 * units.mbar, 2)
+    assert_almost_equal(lfc_temp, 9.705 * units.celsius, 2)
 
 
 def test_no_lfc():
@@ -220,9 +220,9 @@ def test_lfc_inversion():
                              10., -3.9, -16.3, -41.1, -51.5]) * units.celsius
     dewpoints = np.array([20.4, 0.4, -0.5, -4.3, -8., -8.2, -9.,
                           -23.9, -33.3, -54.1, -63.5]) * units.celsius
-    l = lfc(levels, temperatures, dewpoints)
-    assert_almost_equal(l[0], 706.0103 * units.mbar, 2)
-    assert_almost_equal(l[1], 10.6232 * units.celsius, 2)
+    lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints)
+    assert_almost_equal(lfc_pressure, 706.0103 * units.mbar, 2)
+    assert_almost_equal(lfc_temp, 10.6232 * units.celsius, 2)
 
 
 def test_lfc_equals_lcl():
@@ -233,9 +233,9 @@ def test_lfc_equals_lcl():
                              14.3, 13.2, 12.6, 11.4, 7.1]) * units.celsius
     dewpoints = np.array([18.4, 18.1, 16.6, 15.4, 13.2, 11.4, 9.6,
                           8.8, 0., -18.6, -22.9]) * units.celsius
-    l = lfc(levels, temperatures, dewpoints)
-    assert_almost_equal(l[0], 777.0333 * units.mbar, 2)
-    assert_almost_equal(l[1], 15.8714 * units.celsius, 2)
+    lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints)
+    assert_almost_equal(lfc_pressure, 777.0333 * units.mbar, 2)
+    assert_almost_equal(lfc_temp, 15.8714 * units.celsius, 2)
 
 
 def test_lfc_sfc_precision():
@@ -245,9 +245,9 @@ def test_lfc_sfc_precision():
     temperatures = np.array([20.6, 22.3, 22.6, 22.2, 20.9, 18.7, 16.4,
                              15.2, 13.9, 12.8]) * units.celsius
     dewpoints = np.array([10.6, 8., 7.6, 6.2, 5.7, 4.7, 3.7, 3.2, 3., 2.8]) * units.celsius
-    l = lfc(levels, temperatures, dewpoints)
-    assert assert_nan(l[0], levels.units)
-    assert assert_nan(l[1], temperatures.units)
+    lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints)
+    assert assert_nan(lfc_pressure, levels.units)
+    assert assert_nan(lfc_temp, temperatures.units)
 
 
 def test_saturation_mixing_ratio():

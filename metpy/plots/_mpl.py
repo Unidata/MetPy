@@ -156,19 +156,19 @@ if not hasattr(Axes, 'scattertext'):
         Individual keyword arguments can be used to override any given
         parameter::
 
-            >>> ax = plt.axes()
+            >>> ax = plt.gca()
             >>> ax.scattertext([0.25, 0.75], [0.25, 0.75], ['aa', 'bb'],
             ... fontsize=12)  #doctest: +ELLIPSIS
-            <metpy.plots._mpl.TextCollection object at 0x...>
+            TextCollection
 
         The default setting to to center the text at the specified x, y
         locations in data coordinates. The example below places the text
         above and to the right by 10 pixels::
 
-            >>> ax = plt.axes()
+            >>> ax = plt.gca()
             >>> ax.scattertext([0.25, 0.75], [0.25, 0.75], ['aa', 'bb'],
             ... loc=(10, 10))  #doctest: +ELLIPSIS
-            <metpy.plots._mpl.TextCollection object at 0x...>
+            TextCollection
 
         """
         # Start with default args and update from kw
@@ -258,6 +258,8 @@ if not hasattr(Axes, 'scattertext'):
         def __str__(self):
             """Make a string representation of `TextCollection`."""
             return 'TextCollection'
+
+        __repr__ = __str__
 
         def get_datalim(self, transData):  # noqa: N803
             """Return the limits of the data.
