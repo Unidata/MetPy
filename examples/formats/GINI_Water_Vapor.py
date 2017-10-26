@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
-from metpy.plots import ctables, add_metpy_logo
+from metpy.plots import add_metpy_logo, ctables
 
 ###########################################
 
