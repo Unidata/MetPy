@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
-from metpy.plots import SkewT, add_metpy_logo
+from metpy.plots import add_metpy_logo, SkewT
 from metpy.units import units
 
 ###########################################
