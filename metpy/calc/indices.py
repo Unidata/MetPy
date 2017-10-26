@@ -15,12 +15,12 @@ exporter = Exporter(globals())
 
 @exporter.export
 @check_units('[temperature]', '[pressure]', '[pressure]')
-def precipitable_water(dewpt, pressure, top=400 * units('hPa')):
+def precipitable_water(dewpt, pressure, bottom=None, top=None):
     r"""Calculate precipitable water through the depth of a sounding.
 
-    Default layer depth is sfc-400 hPa. Formula used is:
+    Formula used is:
 
-    .. math:: \frac{1}{pg} \int\limits_0^d x \,dp
+    .. math::  -\frac{1}{\rho_l g} \int\limits_{p_\text{bottom}}^{p_\text{top}} r dp
 
     from [Tsonis2008]_, p. 170.
 
@@ -30,8 +30,10 @@ def precipitable_water(dewpt, pressure, top=400 * units('hPa')):
         Atmospheric dewpoint profile
     pressure : `pint.Quantity`
         Atmospheric pressure profile
+    bottom: `pint.Quantity`, optional
+        Bottom of the layer, specified in pressure. Defaults to None (highest pressure).
     top: `pint.Quantity`, optional
-        The top of the layer, specified in pressure. Defaults to 400 hPa.
+        The top of the layer, specified in pressure. Defaults to None (lowest pressure).
 
     Returns
     -------
@@ -39,15 +41,22 @@ def precipitable_water(dewpt, pressure, top=400 * units('hPa')):
         The precipitable water in the layer
 
     """
-    sort_inds = np.argsort(pressure[::-1])
+    # Sort pressure and dewpoint to be in decreasing pressure order (increasing height)
+    sort_inds = np.argsort(pressure)[::-1]
     pressure = pressure[sort_inds]
     dewpt = dewpt[sort_inds]
 
-    pres_layer, dewpt_layer = get_layer(pressure, dewpt, depth=pressure[0] - top)
+    if top is None:
+        top = np.nanmin(pressure) * pressure.units
+
+    if bottom is None:
+        bottom = np.nanmax(pressure) * pressure.units
+
+    pres_layer, dewpt_layer = get_layer(pressure, dewpt, bottom=bottom, depth=bottom - top)
 
     w = mixing_ratio(saturation_vapor_pressure(dewpt_layer), pres_layer)
-    # Since pressure is in decreasing order, pw will be the negative of what we want.
-    # Thus the *-1
+
+    # Since pressure is in decreasing order, pw will be the opposite sign of that expected.
     pw = -1. * (np.trapz(w.magnitude, pres_layer.magnitude) * (w.units * pres_layer.units) /
                 (g * rho_l))
     return pw.to('millimeters')
