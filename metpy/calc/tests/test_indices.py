@@ -27,6 +27,18 @@ def test_precipitable_water():
     assert_array_equal(pw, truth)
 
 
+def test_precipitable_water_no_bounds():
+    """Test precipitable water with observed sounding and no bounds given."""
+    with UseSampleData():
+        data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC', source='wyoming')
+    dewpoint = data.variables['dewpoint'][:]
+    pressure = data.variables['pressure'][:]
+    inds = pressure >= 400 * units.hPa
+    pw = precipitable_water(dewpoint[inds], pressure[inds])
+    truth = (0.8899441949243486 * units('inches')).to('millimeters')
+    assert_array_equal(pw, truth)
+
+
 def test_mean_pressure_weighted():
     """Test pressure-weighted mean wind function with vertical interpolation."""
     with UseSampleData():
