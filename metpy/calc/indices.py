@@ -22,7 +22,7 @@ def precipitable_water(dewpt, pressure, bottom=None, top=None):
 
     .. math::  -\frac{1}{\rho_l g} \int\limits_{p_\text{bottom}}^{p_\text{top}} r dp
 
-    from [Tsonis2008]_, p. 170.
+    from [Salby1996]_, p. 28.
 
     Parameters
     ----------
