@@ -200,16 +200,16 @@ class BitField(object):
         if not val:
             return None
 
-        l = []
+        bits = []
         for n in self._names:
             if val & 0x1:
-                l.append(n)
+                bits.append(n)
             val >>= 1
             if not val:
                 break
 
         # Return whole list if empty or multiple items, otherwise just single item
-        return l[0] if len(l) == 1 else l
+        return bits[0] if len(bits) == 1 else bits
 
 
 class Array(object):

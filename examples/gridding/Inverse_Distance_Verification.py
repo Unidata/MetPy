@@ -106,7 +106,7 @@ draw_circle(sim_gridx[1], sim_gridy[1], m='b-', r=radius, label='grid 1 radius')
 plt.annotate('grid 0: cressman {:.3f}'.format(cress_val), xy=(sim_gridx[0] + 2, sim_gridy[0]))
 plt.annotate('grid 1: barnes {:.3f}'.format(barnes_val), xy=(sim_gridx[1] + 2, sim_gridy[1]))
 
-plt.axes().set_aspect('equal', 'datalim')
+plt.gca().set_aspect('equal', 'datalim')
 plt.legend()
 
 ###########################################
@@ -134,7 +134,7 @@ for x, y, z in zip(mx, my, mz):
 
 plt.xlim(0, 80)
 plt.ylim(0, 80)
-plt.axes().set_aspect('equal', 'datalim')
+plt.gca().set_aspect('equal', 'datalim')
 
 ###########################################
 # Step through the cressman calculations.
@@ -173,7 +173,7 @@ for x, y, z in zip(mx, my, mz):
 
 plt.xlim(40, 80)
 plt.ylim(40, 100)
-plt.axes().set_aspect('equal', 'datalim')
+plt.gca().set_aspect('equal', 'datalim')
 
 ###########################################
 # Step through barnes calculations.

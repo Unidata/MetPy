@@ -60,7 +60,7 @@ setup(
     extras_require={
         'cdm': ['pyproj>=1.9.4'],
         'dev': ['ipython[all]>=3.1'],
-        'doc': ['sphinx>=1.4', 'sphinx-gallery', 'doc8', 'netCDF4', 'pandas'],
+        'doc': ['sphinx>=1.4', 'sphinx-gallery', 'doc8', 'recommonmark', 'netCDF4', 'pandas'],
         'examples': ['cartopy>=0.13.1', 'pandas'],
         'test': ['pytest>=2.4', 'pytest-runner', 'pytest-mpl', 'pytest-flake8',
                  'flake8>3.2.0', 'flake8-builtins',
