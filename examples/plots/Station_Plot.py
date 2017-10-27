@@ -36,6 +36,9 @@ with get_test_data('station_data.txt') as f:
                               'dew_point_temperature', 'weather', 'wind_dir', 'wind_speed'],
                        na_values=-99999)
 
+    # Drop rows with missing winds
+    data = data.dropna(how='any', subset=['wind_dir', 'wind_speed'])
+
 ###########################################
 # This sample data has *way* too many stations to plot all of them. The number
 # of stations plotted will be reduced using `reduce_point_density`.

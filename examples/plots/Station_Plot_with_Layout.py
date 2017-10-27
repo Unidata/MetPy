@@ -41,6 +41,7 @@ with get_test_data('station_data.txt') as f:
                                   'cloud_fraction', 'dew_point_temperature', 'weather',
                                   'wind_dir', 'wind_speed'],
                            na_values=-99999)
+
     data_arr.set_index('stid', inplace=True)
 
 ###########################################
@@ -56,6 +57,9 @@ selected = ['OKC', 'ICT', 'GLD', 'MEM', 'BOS', 'MIA', 'MOB', 'ABQ', 'PHX', 'TTF'
 
 # Loop over all the whitelisted sites, grab the first data, and concatenate them
 data_arr = data_arr.loc[selected]
+
+# Drop rows with missing winds
+data_arr = data_arr.dropna(how='any', subset=['wind_dir', 'wind_speed'])
 
 # First, look at the names of variables that the layout is expecting:
 simple_layout.names()
@@ -93,7 +97,7 @@ data['eastward_wind'], data['northward_wind'] = u, v
 
 # Convert the fraction value into a code of 0-8, which can be used to pull out
 # the appropriate symbol
-data['cloud_coverage'] = (8 * data_arr['cloud_fraction'].values).astype(int)
+data['cloud_coverage'] = (8 * data_arr['cloud_fraction']).fillna(10).values.astype(int)
 
 # Map weather strings to WMO codes, which we can use to convert to symbols
 # Only use the first symbol if there are multiple
