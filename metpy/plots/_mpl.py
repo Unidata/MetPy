@@ -9,7 +9,7 @@ import matplotlib
 import matplotlib.transforms as transforms
 import numpy as np
 
-if float(matplotlib.__version__[:3]) < 2.1:
+if matplotlib.__version__ < '2.1':
     from numpy import ma
     from matplotlib.patches import CirclePolygon
     from matplotlib.quiver import Barbs
