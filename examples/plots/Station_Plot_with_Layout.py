@@ -25,6 +25,7 @@ import pandas as pd
 from metpy.calc import get_wind_components
 from metpy.cbook import get_test_data
 from metpy.plots import simple_layout, StationPlot, StationPlotLayout
+from metpy.plots.wx_symbols import wx_code_map
 from metpy.units import units
 
 ###########################################
@@ -97,9 +98,7 @@ data['cloud_coverage'] = (8 * data_arr['cloud_fraction'].values).astype(int)
 # Map weather strings to WMO codes, which we can use to convert to symbols
 # Only use the first symbol if there are multiple
 wx_text = data_arr['weather'].fillna('')
-wx_codes = {'': 0, 'HZ': 5, 'BR': 10, '-DZ': 51, 'DZ': 53, '+DZ': 55,
-            '-RA': 61, 'RA': 63, '+RA': 65, '-SN': 71, 'SN': 73, '+SN': 75}
-data['present_weather'] = [wx_codes[s.split()[0] if ' ' in s else s] for s in wx_text]
+data['present_weather'] = [wx_code_map[s.split()[0] if ' ' in s else s] for s in wx_text]
 
 ###########################################
 # All the data wrangling is finished, just need to set up plotting and go:
