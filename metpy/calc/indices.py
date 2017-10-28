@@ -15,7 +15,7 @@ exporter = Exporter(globals())
 
 @exporter.export
 @check_units('[temperature]', '[pressure]', '[pressure]')
-def precipitable_water(dewpt, pressure, top=400 * units('hPa')):
+def precipitable_water(dewpt, pressure, top=None):
     r"""Calculate precipitable water through the depth of a sounding.
 
     Default layer depth is sfc-400 hPa. Formula used is:
@@ -42,6 +42,13 @@ def precipitable_water(dewpt, pressure, top=400 * units('hPa')):
     sort_inds = np.argsort(pressure[::-1])
     pressure = pressure[sort_inds]
     dewpt = dewpt[sort_inds]
+
+    if top == None:
+        pres_layer, dewpt_layer = get_layer(pressure, dewpt, depth=pressure[0])
+        w = mixing_ratio(saturation_vapor_pressure(dewpt_layer), pres_layer)
+        pw = -1. * (np.trapz(w.magnitude, pres_layer.magnitude) * (w.units * pres_layer.units) /
+                    (g * rho_l))
+        return pw.to('millimeters')
 
     pres_layer, dewpt_layer = get_layer(pressure, dewpt, depth=pressure[0] - top)
 
