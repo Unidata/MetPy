@@ -94,7 +94,7 @@ References
            composite and significant tornado parameters. Preprints, 22nd Conf. on Severe Local
            Storms, Hyannis, MA, Amer. Meteor. Soc.
 
-.. [Tsonis2008] Tsonis, A. A., 2008: An introduction to atmospheric thermodynamics.
+.. [Tsonis2007] Tsonis, A. A., 2007: An introduction to atmospheric thermodynamics.
            Cambridge Univ. Press, Cambridge.
 
 .. [Ziv1994] Ziv, B., and Alpert, P., 1994: Isobaric to Isentropic Interpolation Errors
