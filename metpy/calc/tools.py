@@ -323,6 +323,10 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
         The bound pressure and height.
 
     """
+    sort_inds = np.argsort(pressure)[::-1]
+    pressure = pressure[sort_inds]
+    if heights is not None:
+        heights = heights[sort_inds]
     # Bound is given in pressure
     if bound.dimensionality == {'[length]': -1.0, '[mass]': 1.0, '[time]': -2.0}:
         # If the bound is in the pressure data, we know the pressure bound exactly
@@ -538,7 +542,7 @@ def get_layer(pressure, *args, **kwargs):
 
     # If the bottom is not specified, make it the surface pressure
     if bottom is None:
-        bottom = pressure[0]
+        bottom = np.nanmax(pressure) * pressure.units
 
     bottom_pressure, bottom_height = _get_bound_pressure_height(pressure, bottom,
                                                                 heights=heights,
