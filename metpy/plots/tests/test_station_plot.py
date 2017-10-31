@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `station_plot` module."""
 
+import cartopy.crs as ccrs
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
@@ -255,3 +256,22 @@ def test_layout_str():
     layout.add_symbol('C', 'cover', lambda x: x)
     assert str(layout) == ('{C: (symbol, cover, ...), E: (text, stid, ...), '
                            'W: (value, temp, ...), barb: (barb, (\'u\', \'v\'), ...)}')
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.08}.get(MPL_VERSION, 0.00145),
+                               remove_text=True)
+def test_barb_projection():
+    """Test that barbs are properly projected (#598)."""
+    # Test data of all southerly winds
+    v = np.full((5, 5), 10, dtype=np.float64)
+    u = np.zeros_like(v)
+    x, y = np.meshgrid(np.linspace(-120, -60, 5), np.linspace(25, 50, 5))
+
+    # Plot and check barbs (they should align with grid lines)
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1, projection=ccrs.LambertConformal())
+    ax.gridlines()
+    sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree())
+    sp.plot_barb(u, v)
+
+    return fig
