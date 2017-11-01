@@ -963,22 +963,18 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     # Estimate zero crossings
     x, y = _find_append_zero_crossings(np.copy(pressure), y)
 
-    # CAPE (temperature parcel < temperature environment)
+    # CAPE
     # Only use data between the LFC and EL for calculation
     p_mask = _less_or_close(x, lfc_pressure) & _greater_or_close(x, el_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
-
-    y_clipped[_less_or_close(y_clipped, 0 * units.degK)] = 0 * units.degK
     cape = (Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
-    # CIN (temperature parcel < temperature environment)
+    # CIN
     # Only use data between the surface and LFC for calculation
     p_mask = _greater_or_close(x, lfc_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
-
-    y_clipped[_greater_or_close(y_clipped, 0 * units.degK)] = 0 * units.degK
     cin = (Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
     return cape, cin
