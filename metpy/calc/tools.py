@@ -391,10 +391,12 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
         raise ValueError('Bound must be specified in units of length or pressure.')
 
     # If the bound is out of the range of the data, we shouldn't extrapolate
-    if (bound_pressure < np.min(pressure)) or (bound_pressure > np.max(pressure)):
+    if not (_greater_or_close(bound_pressure, np.nanmin(pressure) * pressure.units) and
+            _less_or_close(bound_pressure, np.nanmax(pressure) * pressure.units)):
         raise ValueError('Specified bound is outside pressure range.')
     if heights is not None:
-        if (bound_height > np.max(heights)) or (bound_height < np.min(heights)):
+        if not (_less_or_close(bound_height, np.nanmax(heights) * heights.units) and
+                _greater_or_close(bound_height, np.nanmin(heights) * heights.units)):
             raise ValueError('Specified bound is outside height range.')
 
     return bound_pressure, bound_height
@@ -463,7 +465,7 @@ def get_layer_heights(heights, depth, *args, **kwargs):
     heights = heights[sort_inds]
 
     # Mask based on top and bottom
-    inds = (heights >= bottom) & (heights <= top)
+    inds = _greater_or_close(heights, bottom) & _less_or_close(heights, top)
     heights_interp = heights[inds]
 
     # Interpolate heights at bounds if necessary and sort
@@ -568,15 +570,16 @@ def get_layer(pressure, *args, **kwargs):
     pressure = pressure[sort_inds]
 
     # Mask based on top and bottom pressure
-    inds = (pressure <= bottom_pressure) & (pressure >= top_pressure)
+    inds = (_less_or_close(pressure, bottom_pressure) &
+            _greater_or_close(pressure, top_pressure))
     p_interp = pressure[inds]
 
     # Interpolate pressures at bounds if necessary and sort
     if interpolate:
         # If we don't have the bottom or top requested, append them
-        if top_pressure not in p_interp:
+        if not np.any(np.isclose(top_pressure, p_interp)):
             p_interp = np.sort(np.append(p_interp, top_pressure)) * pressure.units
-        if bottom_pressure not in p_interp:
+        if not np.any(np.isclose(bottom_pressure, p_interp)):
             p_interp = np.sort(np.append(p_interp, bottom_pressure)) * pressure.units
 
     ret.append(p_interp[::-1])
