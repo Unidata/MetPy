@@ -6,6 +6,7 @@
 from datetime import datetime
 import warnings
 
+import numpy as np
 from metpy.calc import (bulk_shear, bunkers_storm_motion, mean_pressure_weighted,
                         precipitable_water, significant_tornado, supercell_composite)
 from metpy.deprecation import MetpyDeprecationWarning
@@ -36,6 +37,17 @@ def test_precipitable_water_no_bounds():
     inds = pressure >= 400 * units.hPa
     pw = precipitable_water(dewpoint[inds], pressure[inds])
     truth = (0.8899441949243486 * units('inches')).to('millimeters')
+    assert_array_equal(pw, truth)
+
+
+def test_precipitable_water_bound_error():
+    """Test with no top bound given and data that produced floating point issue #596."""
+    pressure = np.array([993., 978., 960.5, 927.6, 925., 895.8, 892., 876., 45.9, 39.9, 36.,
+                         36., 34.3]) * units.hPa
+    dewpoint = np.array([25.5, 24.1, 23.1, 21.2, 21.1, 19.4, 19.2, 19.2, -87.1, -86.5, -86.5,
+                         -86.5, -88.1]) * units.degC
+    pw = precipitable_water(dewpoint, pressure)
+    truth = 89.86955998646951 * units('millimeters')
     assert_array_equal(pw, truth)
 
 
