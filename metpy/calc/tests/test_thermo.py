@@ -19,6 +19,7 @@ from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, el,
                         relative_humidity_wet_psychrometric,
                         saturation_mixing_ratio,
                         saturation_vapor_pressure,
+                        specific_humidity_from_mixing_ratio,
                         surface_based_cape_cin, vapor_pressure,
                         virtual_potential_temperature, virtual_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
@@ -427,6 +428,13 @@ def test_mixing_ratio_from_specific_humidity():
     q = 0.012
     w = mixing_ratio_from_specific_humidity(q)
     assert_almost_equal(w, 0.01215, 3)
+
+
+def test_specific_humidity_from_mixing_ratio():
+    """Tests specific humidity from mixing ratio."""
+    w = 0.01215
+    q = specific_humidity_from_mixing_ratio(w)
+    assert_almost_equal(q, 0.01200, 5)
 
 
 def test_rh_specific_humidity():
