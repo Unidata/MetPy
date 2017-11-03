@@ -6,12 +6,11 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, el,
-                        equivalent_potential_temperature,
-                        isentropic_interpolation,
+from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, dry_static_energy,
+                        el, equivalent_potential_temperature, isentropic_interpolation,
                         lcl, lfc, mixed_layer, mixed_parcel, mixing_ratio,
                         mixing_ratio_from_specific_humidity, moist_lapse,
-                        most_unstable_cape_cin, most_unstable_parcel,
+                        moist_static_energy, most_unstable_cape_cin, most_unstable_parcel,
                         parcel_profile, potential_temperature,
                         psychrometric_vapor_pressure_wet,
                         relative_humidity_from_mixing_ratio,
@@ -733,3 +732,15 @@ def test_mixed_layer():
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     mixed_layer_temperature = mixed_layer(pressure, temperature, depth=250 * units.hPa)[0]
     assert_almost_equal(mixed_layer_temperature, 16.4024930 * units.degC, 6)
+
+
+def test_dry_static_energy():
+    """Tests the dry static energy calculation."""
+    dse = dry_static_energy(1000 * units.m, 25 * units.degC)
+    assert_almost_equal(dse, 309.4474 * units('kJ/kg'), 6)
+
+
+def test_moist_static_energy():
+    """Tests the moist static energy calculation."""
+    mse = moist_static_energy(1000 * units.m, 25 * units.degC, 0.012 * units.dimensionless)
+    assert_almost_equal(mse, 339.4594 * units('kJ/kg'), 6)
