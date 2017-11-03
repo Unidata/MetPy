@@ -81,7 +81,7 @@ FH = 1
 
 # Create the figure and grid for subplots
 fig = plt.figure(figsize=(17, 12))
-add_metpy_logo(fig)
+add_metpy_logo(fig, 470, 320, size='large')
 
 # Plot 700 hPa
 ax = plt.subplot(111, projection=crs)

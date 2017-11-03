@@ -19,6 +19,7 @@ import numpy as np
 
 import metpy.calc as mcalc
 from metpy.cbook import get_test_data
+from metpy.plots import add_metpy_logo
 from metpy.units import units
 
 #######################################
@@ -137,6 +138,7 @@ states_provinces = cfeature.NaturalEarthFeature(category='cultural',
                                                 facecolor='none')
 
 fig = plt.figure(1, figsize=(17., 12.))
+add_metpy_logo(fig, 120, 245, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=crs)
 ax.set_extent(*bounds, crs=ccrs.PlateCarree())
 ax.coastlines('50m', edgecolor='black', linewidth=0.75)
@@ -152,7 +154,7 @@ plt.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
 # Plot RH
 cf = ax.contourf(tlons, tlats, isentrh[level, :, :], range(10, 106, 5),
                  cmap=plt.cm.gist_earth_r)
-cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0,
+cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0.05,
                   extendrect='True')
 cb.set_label('Relative Humidity', size='x-large')
 
@@ -183,6 +185,7 @@ msf = mcalc.montgomery_streamfunction(isenthgt, isenttmp) / 100.
 level = 0
 
 fig = plt.figure(1, figsize=(17., 12.))
+add_metpy_logo(fig, 120, 250, size='large')
 ax = plt.subplot(111, projection=crs)
 ax.set_extent(*bounds, crs=ccrs.PlateCarree())
 ax.coastlines('50m', edgecolor='black', linewidth=0.75)
@@ -197,7 +200,7 @@ plt.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
 # Plot RH
 cf = ax.contourf(tlons, tlats, isentrh[level, :, :], range(10, 106, 5),
                  cmap=plt.cm.gist_earth_r)
-cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0,
+cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0.05,
                   extendrect='True')
 cb.set_label('Relative Humidity', size='x-large')
 

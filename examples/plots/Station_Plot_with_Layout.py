@@ -24,7 +24,7 @@ import pandas as pd
 
 from metpy.calc import get_wind_components
 from metpy.cbook import get_test_data
-from metpy.plots import simple_layout, StationPlot, StationPlotLayout
+from metpy.plots import add_metpy_logo, simple_layout, StationPlot, StationPlotLayout
 from metpy.plots.wx_symbols import wx_code_map
 from metpy.units import units
 
@@ -123,6 +123,7 @@ plt.rcParams['savefig.dpi'] = 255
 
 # Create the figure and an axes set to the projection
 fig = plt.figure(figsize=(20, 10))
+add_metpy_logo(fig, 1080, 290, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Add some various map elements to the plot to make it recognizable
@@ -168,6 +169,7 @@ custom_layout.add_value('E', 'precipitation', fmt='0.2f', units='inch', color='b
 
 # Create the figure and an axes set to the projection
 fig = plt.figure(figsize=(20, 10))
+add_metpy_logo(fig, 1080, 290, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Add some various map elements to the plot to make it recognizable

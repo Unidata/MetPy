@@ -20,7 +20,7 @@ import pandas as pd
 from metpy.calc import get_wind_components
 from metpy.calc import reduce_point_density
 from metpy.cbook import get_test_data
-from metpy.plots import StationPlot
+from metpy.plots import add_metpy_logo, StationPlot
 from metpy.plots.wx_symbols import current_weather, sky_cover, wx_code_map
 from metpy.units import units
 
@@ -85,6 +85,7 @@ plt.rcParams['savefig.dpi'] = 255
 
 # Create the figure and an axes set to the projection.
 fig = plt.figure(figsize=(20, 10))
+add_metpy_logo(fig, 1080, 290, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Set up a cartopy feature for state borders.

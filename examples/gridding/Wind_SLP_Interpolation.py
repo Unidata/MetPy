@@ -86,7 +86,7 @@ cmap = plt.get_cmap('viridis')
 norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
 
 fig = plt.figure(figsize=(20, 10))
-add_metpy_logo(fig)
+add_metpy_logo(fig, 360, 120, size='large')
 view = fig.add_subplot(1, 1, 1, projection=to_proj)
 
 view.set_extent([-120, -70, 20, 50])

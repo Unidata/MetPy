@@ -95,7 +95,7 @@ heights_500 = ndimage.gaussian_filter(ds.variables['heights_500'][0], sigma=1.5,
 
 # Create the figure
 fig = plt.figure(figsize=(20, 15))
-add_metpy_logo(fig)
+add_metpy_logo(fig, 80, 100, size='large')
 gs = gridspec.GridSpec(5, 2, height_ratios=[1, .05, 1, .05, 0], bottom=.05, top=.95, wspace=.1)
 
 # Upper left plot - 300-hPa winds and geopotential heights
