@@ -835,7 +835,7 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
 
     .. math:: w = \frac{q}{1-q}
 
-    * :math:`w` is mxing ratio
+    * :math:`w` is mixing ratio
     * :math:`q` is the specific humidity
 
     See Also
