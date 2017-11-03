@@ -13,7 +13,7 @@ import scipy.optimize as so
 
 from .tools import (_greater_or_close, _less_or_close, broadcast_indices, find_intersections,
                     get_layer, interp)
-from ..constants import Cp_d, epsilon, kappa, Lv, P0, Rd
+from ..constants import Cp_d, epsilon, g, kappa, Lv, P0, Rd
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
 
@@ -1444,3 +1444,67 @@ def mixed_layer(p, *args, **kwargs):
         ret.append((-1. / actual_depth.m) * np.trapz(datavar_layer, p_layer) *
                    datavar_layer.units)
     return ret
+
+
+@exporter.export
+@check_units('[length]', '[temperature]')
+def dry_static_energy(heights, temperature):
+    r"""Calculate the dry static energy of parcels.
+
+    This function will calculate the dry static energy following the first two terms of
+    equation 3.72 in [Hobbs2006]_.
+
+    Notes
+    -----
+    .. math::\text{dry static energy} = c_{pd} * T + gz
+
+    * :math:`T` is temperature
+    * :math:`z` is height
+
+    Parameters
+    ----------
+    heights : array-like
+        Atmospheric height
+    temperature : array-like
+        Atmospheric temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        The dry static energy
+
+    """
+    return (g * heights + Cp_d * temperature).to('kJ/kg')
+
+
+@exporter.export
+@check_units('[length]', '[temperature]', '[dimensionless]')
+def moist_static_energy(heights, temperature, specific_humidity):
+    r"""Calculate the moist static energy of parcels.
+
+    This function will calculate the moist static energy following
+    equation 3.72 in [Hobbs2006]_.
+    Notes
+    -----
+    .. math::\text{moist static energy} = c_{pd} * T + gz + L_v q
+
+    * :math:`T` is temperature
+    * :math:`z` is height
+    * :math:`q` is specific humidity
+
+    Parameters
+    ----------
+    heights : array-like
+        Atmospheric height
+    temperature : array-like
+        Atmospheric temperature
+    specific_humidity : array-like
+        Atmospheric specific humidity
+
+    Returns
+    -------
+    `pint.Quantity`
+        The moist static energy
+
+    """
+    return (dry_static_energy(heights, temperature) + Lv * specific_humidity).to('kJ/kg')
