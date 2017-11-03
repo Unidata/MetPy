@@ -840,10 +840,42 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
 
     See Also
     --------
-    mixing_ratio
+    mixing_ratio, specific_humidity_from_mixing_ratio
 
     """
     return specific_humidity / (1 - specific_humidity)
+
+
+@exporter.export
+@check_units('[dimensionless]')
+def specific_humidity_from_mixing_ratio(mixing_ratio):
+    r"""Calculate the specific humidity from the mixing ratio.
+
+    Parameters
+    ----------
+    mixing_ratio: `pint.Quantity`
+        mixing ratio
+
+    Returns
+    -------
+    `pint.Quantity`
+        Specific humidity
+
+    Notes
+    -----
+    Formula from [Salby1996]_ pg. 118.
+
+    .. math:: q = \frac{w}{1+w}
+
+    * :math:`w` is mixing ratio
+    * :math:`q` is the specific humidity
+
+    See Also
+    --------
+    mixing_ratio, mixing_ratio_from_specific_humidity
+
+    """
+    return mixing_ratio / (1 + mixing_ratio)
 
 
 @exporter.export
