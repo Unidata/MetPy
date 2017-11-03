@@ -294,7 +294,7 @@ the independent variable, is first even though it is plotted on the y-axis).</li
 components.</li>
 </ol>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/figure_api.html#matplotlib.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
 <span class="n">skew</span> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
@@ -304,7 +304,7 @@ components.</li>
 <span class="n">skew</span><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 <span class="c1"># Show the plot</span>
-<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_upperair_soundings_001.png" class="align-center" src="../_images/sphx_glr_upperair_soundings_001.png" />
@@ -315,7 +315,7 @@ components.</li>
 useful when performing further analysis on the Skew-T diagram. Often the
 0C isotherm is emphasized and areas of CAPE and CIN are shaded.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/figure_api.html#matplotlib.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
 <span class="n">skew</span> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
@@ -337,7 +337,7 @@ useful when performing further analysis on the Skew-T diagram. Often the
 <span class="n">skew</span><span class="o">.</span><span class="n">shade_cape</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">parcel_prof</span><span class="p">)</span>
 
 <span class="c1"># Plot a zero degree isotherm</span>
-<span class="n">l</span> <span class="o">=</span> <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;c&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 
 <span class="c1"># Add the relevant special lines</span>
 <span class="n">skew</span><span class="o">.</span><span class="n">plot_dry_adiabats</span><span class="p">()</span>
@@ -345,7 +345,7 @@ useful when performing further analysis on the Skew-T diagram. Often the
 <span class="n">skew</span><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
 
 <span class="c1"># Show the plot</span>
-<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_upperair_soundings_002.png" class="align-center" src="../_images/sphx_glr_upperair_soundings_002.png" />
@@ -358,7 +358,7 @@ from the vertical axes representing the direction, and the length representing t
 The line plotted on the hodograph is a line connecting the tips of these vectors,
 which are not drawn.</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/figure_api.html#matplotlib.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
 <span class="n">skew</span> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
@@ -396,18 +396,18 @@ which are not drawn.</p>
 <span class="n">h</span><span class="o">.</span><span class="n">plot_colormapped</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">wind_speed</span><span class="p">)</span>  <span class="c1"># Plot a line colored by wind speed</span>
 
 <span class="c1"># Show the plot</span>
-<a href="http://matplotlib.org/api/pyplot_api.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_upperair_soundings_003.png" class="align-center" src="../_images/sphx_glr_upperair_soundings_003.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.515 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  2.992 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/upperair_soundings.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">upperair_soundings.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/upperair_soundings.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">upperair_soundings.ipynb</span></code></a></div>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Generated by Sphinx-Gallery</a></p>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 </div>
 
@@ -434,7 +434,7 @@ which are not drawn.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016, MetPy Developers.
-      Last updated on Oct 06, 2017 at 19:43:38.
+      Last updated on Nov 03, 2017 at 16:03:50.
 
     </p>
   </div>
@@ -472,7 +472,7 @@ which are not drawn.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.6.0+34.g081a410',
+            VERSION:'0.6.0+96.gd290880',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

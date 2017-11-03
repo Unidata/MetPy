@@ -18,7 +18,7 @@ import numpy as np
 import pandas as pd
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
-from metpy.plots import SkewT
+from metpy.plots import add_metpy_logo, SkewT
 from metpy.units import units
 
 ###########################################
@@ -52,6 +52,7 @@ u, v = mpcalc.get_wind_components(wind_speed, wind_dir)
 # Create a new figure. The dimensions here give a good aspect ratio.
 
 fig = plt.figure(figsize=(9, 9))
+add_metpy_logo(fig, 115, 100)
 skew = SkewT(fig, rotation=45)
 
 # Plot the data using normal plotting functions, in this case using

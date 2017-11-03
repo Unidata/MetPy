@@ -204,14 +204,14 @@
 
 <div class="viewcode-block" id="precipitable_water"><a class="viewcode-back" href="../../../api/generated/metpy.calc.precipitable_water.html#metpy.calc.precipitable_water">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">precipitable_water</span><span class="p">(</span><span class="n">dewpt</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="mi">400</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;hPa&#39;</span><span class="p">)):</span>
+<span class="k">def</span> <span class="nf">precipitable_water</span><span class="p">(</span><span class="n">dewpt</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate precipitable water through the depth of a sounding.</span>
 
-<span class="sd">    Default layer depth is sfc-400 hPa. Formula used is:</span>
+<span class="sd">    Formula used is:</span>
 
-<span class="sd">    .. math:: \frac{1}{pg} \int\limits_0^d x \,dp</span>
+<span class="sd">    .. math::  -\frac{1}{\rho_l g} \int\limits_{p_\text{bottom}}^{p_\text{top}} r dp</span>
 
-<span class="sd">    from [Tsonis2008]_, p. 170.</span>
+<span class="sd">    from [Salby1996]_, p. 28.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -219,8 +219,10 @@
 <span class="sd">        Atmospheric dewpoint profile</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Atmospheric pressure profile</span>
+<span class="sd">    bottom: `pint.Quantity`, optional</span>
+<span class="sd">        Bottom of the layer, specified in pressure. Defaults to None (highest pressure).</span>
 <span class="sd">    top: `pint.Quantity`, optional</span>
-<span class="sd">        The top of the layer, specified in pressure. Defaults to 400 hPa.</span>
+<span class="sd">        The top of the layer, specified in pressure. Defaults to None (lowest pressure).</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -228,15 +230,22 @@
 <span class="sd">        The precipitable water in the layer</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pressure</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="c1"># Sort pressure and dewpoint to be in decreasing pressure order (increasing height)</span>
+    <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pressure</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
     <span class="n">dewpt</span> <span class="o">=</span> <span class="n">dewpt</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
 
-    <span class="n">pres_layer</span><span class="p">,</span> <span class="n">dewpt_layer</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">top</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">top</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
+
+    <span class="k">if</span> <span class="n">bottom</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
+
+    <span class="n">pres_layer</span><span class="p">,</span> <span class="n">dewpt_layer</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">top</span><span class="p">)</span>
 
     <span class="n">w</span> <span class="o">=</span> <span class="n">mixing_ratio</span><span class="p">(</span><span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">dewpt_layer</span><span class="p">),</span> <span class="n">pres_layer</span><span class="p">)</span>
-    <span class="c1"># Since pressure is in decreasing order, pw will be the negative of what we want.</span>
-    <span class="c1"># Thus the *-1</span>
+
+    <span class="c1"># Since pressure is in decreasing order, pw will be the opposite sign of that expected.</span>
     <span class="n">pw</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">pres_layer</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">w</span><span class="o">.</span><span class="n">units</span> <span class="o">*</span> <span class="n">pres_layer</span><span class="o">.</span><span class="n">units</span><span class="p">)</span> <span class="o">/</span>
                 <span class="p">(</span><span class="n">g</span> <span class="o">*</span> <span class="n">rho_l</span><span class="p">))</span>
     <span class="k">return</span> <span class="n">pw</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;millimeters&#39;</span><span class="p">)</span></div>
@@ -491,7 +500,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016, MetPy Developers.
-      Last updated on Oct 06, 2017 at 19:43:38.
+      Last updated on Nov 03, 2017 at 16:03:50.
 
     </p>
   </div>
@@ -529,7 +538,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.0+34.g081a410',
+            VERSION:'0.6.0+96.gd290880',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

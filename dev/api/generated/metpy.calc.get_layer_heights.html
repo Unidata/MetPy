@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>log_interp &mdash; MetPy 0.6</title>
+  <title>get_layer_heights &mdash; MetPy 0.6</title>
   
 
   
@@ -17,7 +17,7 @@
   
   
   
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.log_interp.html"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.get_layer_heights.html"/>
   
 
   
@@ -45,8 +45,8 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="MetPy 0.6" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
-        <link rel="next" title="mean_pressure_weighted" href="metpy.calc.mean_pressure_weighted.html"/>
-        <link rel="prev" title="lfc" href="metpy.calc.lfc.html"/> 
+        <link rel="next" title="get_perturbation" href="metpy.calc.get_perturbation.html"/>
+        <link rel="prev" title="get_layer" href="metpy.calc.get_layer.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -147,7 +147,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.frontogenesis.html">frontogenesis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.geostrophic_wind.html">geostrophic_wind</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_layer.html">get_layer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_layer_heights.html">get_layer_heights</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">get_layer_heights</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_perturbation.html">get_perturbation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_wind_components.html">get_wind_components</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_wind_dir.html">get_wind_dir</a></li>
@@ -161,10 +161,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.kinematic_flux.html">kinematic_flux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.lcl.html">lcl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.lfc.html">lfc</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">log_interp</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-calc-log-interp">Examples using <code class="docutils literal"><span class="pre">metpy.calc.log_interp</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.log_interp.html">log_interp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.mean_pressure_weighted.html">mean_pressure_weighted</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.mixed_layer.html">mixed_layer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.mixed_parcel.html">mixed_parcel</a></li>
@@ -261,13 +258,13 @@
         
           <li><a href="metpy.calc.html">calc</a> &raquo;</li>
         
-      <li>log_interp</li>
+      <li>get_layer_heights</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="../../_sources/api/generated/metpy.calc.log_interp.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../../_sources/api/generated/metpy.calc.get_layer_heights.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -280,54 +277,38 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="log-interp">
-<h1>log_interp<a class="headerlink" href="#log-interp" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="get-layer-heights">
+<h1>get_layer_heights<a class="headerlink" href="#get-layer-heights" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="metpy.calc.log_interp">
-<code class="descclassname">metpy.calc.</code><code class="descname">log_interp</code><span class="sig-paren">(</span><em>x</em>, <em>xp</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#log_interp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.log_interp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Interpolates data with logarithmic x-scale over a specified axis.</p>
-<p>Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.</p>
+<dt id="metpy.calc.get_layer_heights">
+<code class="descclassname">metpy.calc.</code><code class="descname">get_layer_heights</code><span class="sig-paren">(</span><em>heights</em>, <em>depth</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#get_layer_heights"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.get_layer_heights" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return an atmospheric layer from upper air data with the requested bottom and depth.</p>
+<p>This function will subset an upper air dataset to contain only the specified layer using
+the heights only.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>array-like</em>) – 1-D array of desired interpolated values.</li>
-<li><strong>xp</strong> (<em>array-like</em>) – The x-coordinates of the data points.</li>
-<li><strong>args</strong> (<em>array-like</em>) – The data to be interpolated. Can be multiple arguments, all must be the same shape as
-xp.</li>
-<li><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a><em>, </em><em>optional</em>) – The axis to interpolate over. Defaults to 0.</li>
-<li><strong>fill_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a><em>, </em><em>optional</em>) – Specify handling of interpolation points out of data bounds. If None, will return
-ValueError if points are out of bounds. Defaults to nan.</li>
+<li><strong>heights</strong> (<em>array-like</em>) – Atmospheric heights</li>
+<li><strong>depth</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The thickness of the layer</li>
+<li><strong>*args</strong> (<em>array-like</em>) – Atmospheric variable(s) measured at the given pressures</li>
+<li><strong>bottom</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The bottom of the layer</li>
+<li><strong>interpolate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a><em>, </em><em>optional</em>) – Interpolate the top and bottom points if they are not in the given data. Defaults
+to True.</li>
+<li><strong>with_agl</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a><em>, </em><em>optional</em>) – Returns the heights as above ground level by subtracting the minimum height in the
+provided heights. Defaults to False.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>array-like</em> – Interpolated values for each point with coordinates sorted in ascending order.</li>
-<li><em>Examples</em> – ——–
-&gt;&gt;&gt; x_log = np.array([1e3, 1e4, 1e5, 1e6])
-&gt;&gt;&gt; y_log = np.log(x_log) * 2 + 3
-&gt;&gt;&gt; x_interp = np.array([5e3, 5e4, 5e5])
-&gt;&gt;&gt; metpy.calc.log_interp(x_interp, x_log, y_log)
-array([ 20.03438638,  24.63955657,  29.24472675])</li>
-</ul>
-</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity, pint.Quantity</em> – The height and data variables of the layer</p>
 </td>
 </tr>
 </tbody>
 </table>
-<p class="rubric">Notes</p>
-<p>xp and args must be the same shape.</p>
 </dd></dl>
 
-<div class="section" id="examples-using-metpy-calc-log-interp">
-<h2>Examples using <code class="docutils literal"><span class="pre">metpy.calc.log_interp</span></code><a class="headerlink" href="#examples-using-metpy-calc-log-interp" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="By using `metpy.calc.log_interp`, data with sigma as the vertical coordinate can be interpolate..."><div class="figure" id="id1">
-<img alt="../../_images/sphx_glr_sigma_to_pressure_interpolation_thumb.png" src="../../_images/sphx_glr_sigma_to_pressure_interpolation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/sigma_to_pressure_interpolation.html#sphx-glr-examples-sigma-to-pressure-interpolation-py"><span class="std std-ref">Sigma to Pressure Interpolation</span></a></span></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<div style='clear:both'></div></div>
 
 
            </div>
@@ -339,10 +320,10 @@ array([ 20.03438638,  24.63955657,  29.24472675])</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.calc.mean_pressure_weighted.html" class="btn btn-neutral float-right" title="mean_pressure_weighted" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.calc.get_perturbation.html" class="btn btn-neutral float-right" title="get_perturbation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.calc.lfc.html" class="btn btn-neutral" title="lfc" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.calc.get_layer.html" class="btn btn-neutral" title="get_layer" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

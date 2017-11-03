@@ -24,7 +24,8 @@ import pandas as pd
 
 from metpy.calc import get_wind_components
 from metpy.cbook import get_test_data
-from metpy.plots import simple_layout, StationPlot, StationPlotLayout
+from metpy.plots import add_metpy_logo, simple_layout, StationPlot, StationPlotLayout
+from metpy.plots.wx_symbols import wx_code_map
 from metpy.units import units
 
 ###########################################
@@ -40,6 +41,7 @@ with get_test_data('station_data.txt') as f:
                                   'cloud_fraction', 'dew_point_temperature', 'weather',
                                   'wind_dir', 'wind_speed'],
                            na_values=-99999)
+
     data_arr.set_index('stid', inplace=True)
 
 ###########################################
@@ -55,6 +57,9 @@ selected = ['OKC', 'ICT', 'GLD', 'MEM', 'BOS', 'MIA', 'MOB', 'ABQ', 'PHX', 'TTF'
 
 # Loop over all the whitelisted sites, grab the first data, and concatenate them
 data_arr = data_arr.loc[selected]
+
+# Drop rows with missing winds
+data_arr = data_arr.dropna(how='any', subset=['wind_dir', 'wind_speed'])
 
 # First, look at the names of variables that the layout is expecting:
 simple_layout.names()
@@ -92,14 +97,12 @@ data['eastward_wind'], data['northward_wind'] = u, v
 
 # Convert the fraction value into a code of 0-8, which can be used to pull out
 # the appropriate symbol
-data['cloud_coverage'] = (8 * data_arr['cloud_fraction'].values).astype(int)
+data['cloud_coverage'] = (8 * data_arr['cloud_fraction']).fillna(10).values.astype(int)
 
 # Map weather strings to WMO codes, which we can use to convert to symbols
 # Only use the first symbol if there are multiple
 wx_text = data_arr['weather'].fillna('')
-wx_codes = {'': 0, 'HZ': 5, 'BR': 10, '-DZ': 51, 'DZ': 53, '+DZ': 55,
-            '-RA': 61, 'RA': 63, '+RA': 65, '-SN': 71, 'SN': 73, '+SN': 75}
-data['present_weather'] = [wx_codes[s.split()[0] if ' ' in s else s] for s in wx_text]
+data['present_weather'] = [wx_code_map[s.split()[0] if ' ' in s else s] for s in wx_text]
 
 ###########################################
 # All the data wrangling is finished, just need to set up plotting and go:
@@ -120,6 +123,7 @@ plt.rcParams['savefig.dpi'] = 255
 
 # Create the figure and an axes set to the projection
 fig = plt.figure(figsize=(20, 10))
+add_metpy_logo(fig, 1080, 290, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Add some various map elements to the plot to make it recognizable
@@ -128,7 +132,7 @@ ax.add_feature(feat.OCEAN, zorder=-1)
 ax.add_feature(feat.LAKES, zorder=-1)
 ax.coastlines(resolution='110m', zorder=2, color='black')
 ax.add_feature(state_boundaries, edgecolor='black')
-ax.add_feature(feat.BORDERS, linewidth='2', edgecolor='black')
+ax.add_feature(feat.BORDERS, linewidth=2, edgecolor='black')
 
 # Set plot bounds
 ax.set_extent((-118, -73, 23, 50))
@@ -165,6 +169,7 @@ custom_layout.add_value('E', 'precipitation', fmt='0.2f', units='inch', color='b
 
 # Create the figure and an axes set to the projection
 fig = plt.figure(figsize=(20, 10))
+add_metpy_logo(fig, 1080, 290, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Add some various map elements to the plot to make it recognizable
@@ -173,7 +178,7 @@ ax.add_feature(feat.OCEAN, zorder=-1)
 ax.add_feature(feat.LAKES, zorder=-1)
 ax.coastlines(resolution='110m', zorder=2, color='black')
 ax.add_feature(state_boundaries, edgecolor='black')
-ax.add_feature(feat.BORDERS, linewidth='2', edgecolor='black')
+ax.add_feature(feat.BORDERS, linewidth=2, edgecolor='black')
 
 # Set plot bounds
 ax.set_extent((-118, -73, 23, 50))

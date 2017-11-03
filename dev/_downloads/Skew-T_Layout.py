@@ -14,7 +14,7 @@ import numpy as np
 import pandas as pd
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
-from metpy.plots import Hodograph, SkewT
+from metpy.plots import add_metpy_logo, Hodograph, SkewT
 from metpy.units import units
 
 ###########################################
@@ -48,6 +48,7 @@ u, v = mpcalc.get_wind_components(wind_speed, wind_dir)
 
 # Create a new figure. The dimensions here give a good aspect ratio
 fig = plt.figure(figsize=(9, 9))
+add_metpy_logo(fig, 630, 80, size='large')
 
 # Grid for plots
 gs = gridspec.GridSpec(3, 3)

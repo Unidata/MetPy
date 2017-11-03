@@ -146,7 +146,7 @@ skew.shade_cin(p, T, parcel_prof)
 skew.shade_cape(p, T, parcel_prof)
 
 # Plot a zero degree isotherm
-l = skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
+skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
 
 # Add the relevant special lines
 skew.plot_dry_adiabats()

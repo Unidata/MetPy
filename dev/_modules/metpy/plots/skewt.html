@@ -196,6 +196,7 @@
 <span class="sd">`SkewT`, as well as a class for making a `Hodograph`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="kn">from</span> <span class="nn">matplotlib.axes</span> <span class="k">import</span> <span class="n">Axes</span>
 <span class="kn">import</span> <span class="nn">matplotlib.axis</span> <span class="k">as</span> <span class="nn">maxis</span>
 <span class="kn">from</span> <span class="nn">matplotlib.collections</span> <span class="k">import</span> <span class="n">LineCollection</span>
@@ -211,7 +212,7 @@
 <span class="kn">from</span> <span class="nn">..calc</span> <span class="k">import</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">dry_lapse</span><span class="p">,</span> <span class="n">moist_lapse</span><span class="p">,</span> <span class="n">vapor_pressure</span>
 <span class="kn">from</span> <span class="nn">..calc.tools</span> <span class="k">import</span> <span class="n">delete_masked_points</span><span class="p">,</span> <span class="n">interp</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -503,7 +504,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Skew-T logP plotting</span>
         <span class="n">t</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">delete_masked_points</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Disables the log-formatting that comes with semilogy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ScalarFormatter</span><span class="p">())</span>
@@ -515,7 +516,7 @@
         <span class="c1"># Try to make sane default temperature plotting</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 
-        <span class="k">return</span> <span class="n">l</span></div>
+        <span class="k">return</span> <span class="n">lines</span></div>
 
 <div class="viewcode-block" id="SkewT.plot_barbs"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_barbs">[docs]</a>    <span class="k">def</span> <span class="nf">plot_barbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xloc</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">x_clip_radius</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span>
                    <span class="n">y_clip_radius</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -779,6 +780,9 @@
             <span class="n">arrs</span> <span class="o">=</span> <span class="n">arrs</span> <span class="o">+</span> <span class="p">(</span><span class="n">fill_args</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">],)</span>
             <span class="n">fill_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;where&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span> <span class="o">&gt;=</span> <span class="s1">&#39;2.1&#39;</span><span class="p">:</span>
+            <span class="n">fill_args</span><span class="p">[</span><span class="s1">&#39;interpolate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+
         <span class="n">arrs</span> <span class="o">=</span> <span class="n">delete_masked_points</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">fill_betweenx</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">,</span> <span class="o">**</span><span class="n">fill_args</span><span class="p">)</span></div>
@@ -1001,15 +1005,18 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">delete_masked_points</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 
+        <span class="c1"># Plotting a color segmented hodograph</span>
         <span class="k">if</span> <span class="n">colors</span><span class="p">:</span>
             <span class="n">cmap</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
+            <span class="c1"># If we are segmenting by height (a length), interpolate the bounds</span>
             <span class="k">if</span> <span class="n">bounds</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}:</span>
-                <span class="n">bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">bounds</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="o">*</span> <span class="n">bounds</span><span class="o">.</span><span class="n">units</span>
-                <span class="n">interp_vert</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">bounds</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
-                <span class="n">inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">bounds</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
-                <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">inds</span><span class="p">,</span> <span class="n">interp_vert</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
-                <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">v</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">inds</span><span class="p">,</span> <span class="n">interp_vert</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
-                <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">c</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">inds</span><span class="p">,</span> <span class="n">interp_vert</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
+                <span class="n">bounds</span> <span class="o">=</span> <span class="n">bounds</span> <span class="o">+</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>  <span class="c1"># Make all heights AGL</span>
+                <span class="n">interpolation_heights</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">bounds</span><span class="p">,</span> <span class="n">c</span><span class="p">))</span>
+                <span class="n">interpolation_heights</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">interpolation_heights</span><span class="p">)</span> <span class="o">*</span>
+                                         <span class="n">interpolation_heights</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+                <span class="n">c</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">interpolation_heights</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>  <span class="c1"># TODO: This shouldn&#39;t be required!</span>
+            <span class="c1"># If segmenting by anything else, do not interpolate, just use the data</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span> <span class="o">*</span> <span class="n">bounds</span><span class="o">.</span><span class="n">units</span>
 
@@ -1019,8 +1026,12 @@
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;cmap&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmap</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;norm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">norm</span>
             <span class="n">line_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_form_line_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Plotting a continuously colored line</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">line_args</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_form_line_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># Do the plotting</span>
         <span class="n">lc</span> <span class="o">=</span> <span class="n">colored_line</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="o">**</span><span class="n">line_args</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">lc</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">lc</span></div></div>
@@ -1039,7 +1050,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016, MetPy Developers.
-      Last updated on Oct 06, 2017 at 19:43:38.
+      Last updated on Nov 03, 2017 at 16:03:50.
 
     </p>
   </div>
@@ -1077,7 +1088,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.0+34.g081a410',
+            VERSION:'0.6.0+96.gd290880',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

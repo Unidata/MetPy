@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
-from metpy.plots import SkewT
+from metpy.plots import add_metpy_logo, SkewT
 from metpy.units import units
 
 
@@ -66,6 +66,10 @@ skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
 skew.ax.set_ylim(1000, 100)
 
+# Add the MetPy logo!
+fig = plt.gcf()
+add_metpy_logo(fig, 115, 100)
+
 ###########################################
 
 # Example of defining your own vertical barb spacing
@@ -90,6 +94,10 @@ skew.plot_dry_adiabats()
 skew.plot_moist_adiabats()
 skew.plot_mixing_lines()
 skew.ax.set_ylim(1000, 100)
+
+# Add the MetPy logo!
+fig = plt.gcf()
+add_metpy_logo(fig, 115, 100)
 
 # Show the plot
 plt.show()

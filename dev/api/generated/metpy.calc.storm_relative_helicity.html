@@ -147,6 +147,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.frontogenesis.html">frontogenesis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.geostrophic_wind.html">geostrophic_wind</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_layer.html">get_layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_layer_heights.html">get_layer_heights</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_perturbation.html">get_perturbation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_wind_components.html">get_wind_components</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_wind_dir.html">get_wind_dir</a></li>
@@ -280,13 +281,9 @@
 <h1>storm_relative_helicity<a class="headerlink" href="#storm-relative-helicity" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.storm_relative_helicity">
-<code class="descclassname">metpy.calc.</code><code class="descname">storm_relative_helicity</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>p</em>, <em>hgt</em>, <em>top</em>, <em>bottom=&lt;Quantity(0</em>, <em>'meter')&gt;</em>, <em>storm_u=&lt;Quantity(0.0</em>, <em>'meter / second')&gt;</em>, <em>storm_v=&lt;Quantity(0.0</em>, <em>'meter / second')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#storm_relative_helicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.storm_relative_helicity" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">metpy.calc.</code><code class="descname">storm_relative_helicity</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>heights</em>, <em>depth</em>, <em>bottom=&lt;Quantity(0</em>, <em>'meter')&gt;</em>, <em>storm_u=&lt;Quantity(0.0</em>, <em>'meter / second')&gt;</em>, <em>storm_v=&lt;Quantity(0.0</em>, <em>'meter / second')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#storm_relative_helicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.storm_relative_helicity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate storm relative helicity.</p>
-<p>Needs u and v wind components, heights and pressures,
-and top and bottom of SRH layer. An optional storm
-motion vector can be specified. SRH is calculated using the
-equation specified on p. 230-231 in the Markowski and Richardson
-meso textbook [Markowski2010].</p>
+<p>Calculates storm relatively helicity following [Markowski2010] 230-231.</p>
 <div class="math">
 \[\int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz\]</div>
 <p>This is applied to the data from a hodograph with the following summation:</p>
@@ -298,24 +295,17 @@ meso textbook [Markowski2010].</p>
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u</strong> (<em>array-like</em>) – The u components of winds, same length as hgts</li>
-<li><strong>v</strong> (<em>array-like</em>) – The u components of winds, same length as hgts</li>
-<li><strong>p</strong> (<em>array-like</em>) – Pressure in hPa, same length as hgts</li>
-<li><strong>hgt</strong> (<em>array-like</em>) – The heights associatd with the data, provided in meters above mean
-sea level and converted into meters AGL.</li>
-<li><strong>top</strong> (<em>number</em>) – The height of the top of the desired layer for SRH.</li>
-<li><strong>bottom</strong> (<em>number</em>) – The height at the bottom of the SRH layer. Default is sfc (None).</li>
-<li><strong>storm_u</strong> (<em>number</em>) – u component of storm motion</li>
-<li><strong>storm_v</strong> (<em>number</em>) – v component of storm motion</li>
+<li><strong>u</strong> (<em>array-like</em>) – u component winds</li>
+<li><strong>v</strong> (<em>array-like</em>) – v component winds</li>
+<li><strong>heights</strong> (<em>array-like</em>) – atmospheric heights, will be converted to AGL</li>
+<li><strong>depth</strong> (<em>number</em>) – depth of the layer</li>
+<li><strong>bottom</strong> (<em>number</em>) – height of layer bottom AGL (default is surface)</li>
+<li><strong>storm_u</strong> (<em>number</em>) – u component of storm motion (default is 0 m/s)</li>
+<li><strong>storm_v</strong> (<em>number</em>) – v component of storm motion (default is 0 m/s)</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>number</em> – p_srh : positive storm-relative helicity</li>
-<li><em>number</em> – n_srh : negative storm-relative helicity</li>
-<li><em>number</em> – t_srh : total storm-relative helicity</li>
-</ul>
-</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity, pint.Quantity, pint.Quantity</em> – positive, negative, total storm-relative helicity</p>
 </td>
 </tr>
 </tbody>
@@ -347,7 +337,7 @@ sea level and converted into meters AGL.</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016, MetPy Developers.
-      Last updated on Oct 06, 2017 at 19:43:38.
+      Last updated on Nov 03, 2017 at 16:03:50.
 
     </p>
   </div>
@@ -385,7 +375,7 @@ sea level and converted into meters AGL.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.0+34.g081a410',
+            VERSION:'0.6.0+96.gd290880',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

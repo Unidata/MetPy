@@ -20,8 +20,8 @@ import pandas as pd
 from metpy.calc import get_wind_components
 from metpy.calc import reduce_point_density
 from metpy.cbook import get_test_data
-from metpy.plots import StationPlot
-from metpy.plots.wx_symbols import current_weather, sky_cover
+from metpy.plots import add_metpy_logo, StationPlot
+from metpy.plots.wx_symbols import current_weather, sky_cover, wx_code_map
 from metpy.units import units
 
 ###########################################
@@ -35,6 +35,9 @@ with get_test_data('station_data.txt') as f:
                        names=['stid', 'lat', 'lon', 'slp', 'air_temperature', 'cloud_fraction',
                               'dew_point_temperature', 'weather', 'wind_dir', 'wind_speed'],
                        na_values=-99999)
+
+    # Drop rows with missing winds
+    data = data.dropna(how='any', subset=['wind_dir', 'wind_speed'])
 
 ###########################################
 # This sample data has *way* too many stations to plot all of them. The number
@@ -69,9 +72,7 @@ cloud_frac = cloud_frac.astype(int)
 
 # Map weather strings to WMO codes, which we can use to convert to symbols
 # Only use the first symbol if there are multiple
-wx_codes = {'': 0, 'HZ': 5, 'BR': 10, '-DZ': 51, 'DZ': 53, '+DZ': 55,
-            '-RA': 61, 'RA': 63, '+RA': 65, '-SN': 71, 'SN': 73, '+SN': 75}
-wx = [wx_codes[s.split()[0] if ' ' in s else s] for s in data['weather'].fillna('')]
+wx = [wx_code_map[s.split()[0] if ' ' in s else s] for s in data['weather'].fillna('')]
 
 
 ###########################################
@@ -84,6 +85,7 @@ plt.rcParams['savefig.dpi'] = 255
 
 # Create the figure and an axes set to the projection.
 fig = plt.figure(figsize=(20, 10))
+add_metpy_logo(fig, 1080, 290, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Set up a cartopy feature for state borders.
@@ -97,7 +99,7 @@ ax.add_feature(feat.OCEAN, zorder=-1)
 ax.add_feature(feat.LAKES, zorder=-1)
 ax.coastlines(resolution='110m', zorder=2, color='black')
 ax.add_feature(state_boundaries, edgecolor='black')
-ax.add_feature(feat.BORDERS, linewidth='2', edgecolor='black')
+ax.add_feature(feat.BORDERS, linewidth=2, edgecolor='black')
 
 # Set plot bounds
 ax.set_extent((-118, -73, 23, 50))

@@ -147,6 +147,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.frontogenesis.html">frontogenesis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.geostrophic_wind.html">geostrophic_wind</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_layer.html">get_layer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_layer_heights.html">get_layer_heights</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_perturbation.html">get_perturbation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_wind_components.html">get_wind_components</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_wind_dir.html">get_wind_dir</a></li>
@@ -280,12 +281,12 @@
 <h1>precipitable_water<a class="headerlink" href="#precipitable-water" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.precipitable_water">
-<code class="descclassname">metpy.calc.</code><code class="descname">precipitable_water</code><span class="sig-paren">(</span><em>dewpt</em>, <em>pressure</em>, <em>top=&lt;Quantity(400</em>, <em>'hectopascal')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/indices.html#precipitable_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.precipitable_water" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">metpy.calc.</code><code class="descname">precipitable_water</code><span class="sig-paren">(</span><em>dewpt</em>, <em>pressure</em>, <em>bottom=None</em>, <em>top=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/indices.html#precipitable_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.precipitable_water" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate precipitable water through the depth of a sounding.</p>
-<p>Default layer depth is sfc-400 hPa. Formula used is:</p>
+<p>Formula used is:</p>
 <div class="math">
-\[\frac{1}{pg} \int\limits_0^d x \,dp\]</div>
-<p>from <a class="reference internal" href="../../references.html#tsonis2008" id="id1">[Tsonis2008]</a>, p. 170.</p>
+\[-\frac{1}{\rho_l g} \int\limits_{p_\text{bottom}}^{p_\text{top}} r dp\]</div>
+<p>from <a class="reference internal" href="../../references.html#salby1996" id="id1">[Salby1996]</a>, p. 28.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -293,7 +294,8 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric dewpoint profile</li>
 <li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric pressure profile</li>
-<li><strong>top</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The top of the layer, specified in pressure. Defaults to 400 hPa.</li>
+<li><strong>bottom</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Bottom of the layer, specified in pressure. Defaults to None (highest pressure).</li>
+<li><strong>top</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The top of the layer, specified in pressure. Defaults to None (lowest pressure).</li>
 </ul>
 </td>
 </tr>
@@ -329,7 +331,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016, MetPy Developers.
-      Last updated on Oct 06, 2017 at 19:43:38.
+      Last updated on Nov 03, 2017 at 16:03:50.
 
     </p>
   </div>
@@ -367,7 +369,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.0+34.g081a410',
+            VERSION:'0.6.0+96.gd290880',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
