@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -12,10 +12,11 @@ import numpy as np
 
 from metpy.cbook import get_test_data
 from metpy.io import Level3File
-from metpy.plots import ctables
+from metpy.plots import add_metpy_logo, ctables
 
 ###########################################
 fig, axes = plt.subplots(1, 2, figsize=(15, 8))
+add_metpy_logo(fig, 1200, 85, size='large')
 for v, ctable, ax in zip(('N0Q', 'N0U'), ('NWSReflectivity', 'NWSVelocity'), axes):
     # Open the file
     name = get_test_data('nids/KOUN_SDUS54_{}TLX_201305202016'.format(v), as_file_obj=False)

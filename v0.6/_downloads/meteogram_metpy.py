@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -16,6 +16,7 @@ import numpy as np
 
 from metpy.calc import dewpoint_rh
 from metpy.cbook import get_test_data
+from metpy.plots import add_metpy_logo
 from metpy.units import units
 
 
@@ -226,6 +227,7 @@ data = {'wind_speed': (np.array(ws) * units('m/s')).to(units('knots')),
         'relative_humidity': np.array(rh), 'times': np.array(date)}
 
 fig = plt.figure(figsize=(20, 16))
+add_metpy_logo(fig, 250, 180)
 meteogram = Meteogram(fig, data['times'], probe_id)
 meteogram.plot_winds(data['wind_speed'], data['wind_direction'], data['wind_speed_max'])
 meteogram.plot_thermo(data['air_temperature'], data['dewpoint'])

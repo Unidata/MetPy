@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -24,6 +24,7 @@ import numpy as np
 import scipy.ndimage as ndimage
 
 from metpy.cbook import get_test_data
+from metpy.plots import add_metpy_logo
 from metpy.units import units
 
 ###########################################
@@ -94,13 +95,14 @@ heights_500 = ndimage.gaussian_filter(ds.variables['heights_500'][0], sigma=1.5,
 
 # Create the figure
 fig = plt.figure(figsize=(20, 15))
+add_metpy_logo(fig, 80, 100, size='large')
 gs = gridspec.GridSpec(5, 2, height_ratios=[1, .05, 1, .05, 0], bottom=.05, top=.95, wspace=.1)
 
 # Upper left plot - 300-hPa winds and geopotential heights
 ax1 = plt.subplot(gs[0, 0], projection=crs)
 plot_background(ax1)
 cf1 = ax1.contourf(lon_2d, lat_2d, winds_300, cmap='cool', transform=ccrs.PlateCarree())
-c1 = ax1.contour(lon_2d, lat_2d, heights_300, colors='black', linewidth=2,
+c1 = ax1.contour(lon_2d, lat_2d, heights_300, colors='black', linewidths=2,
                  transform=ccrs.PlateCarree())
 plt.clabel(c1, fontsize=10, inline=1, inline_spacing=1, fmt='%i', rightside_up=True)
 
@@ -113,8 +115,9 @@ ax1.set_title('300-hPa Wind Speeds and Heights', fontsize=16)
 ax3 = plt.subplot(gs[0, 1], projection=crs)
 plot_background(ax3)
 cf2 = ax3.contourf(lon_2d, lat_2d, vort_500, cmap='BrBG', transform=ccrs.PlateCarree(),
-                   zorder=0, norm=plt.Normalize(-32, 32), latlon=True)
-c2 = ax3.contour(lon_2d, lat_2d, heights_500, colors='k', lw=2, transform=ccrs.PlateCarree())
+                   zorder=0, norm=plt.Normalize(-32, 32))
+c2 = ax3.contour(lon_2d, lat_2d, heights_500, colors='k', linewidths=2,
+                 transform=ccrs.PlateCarree())
 plt.clabel(c2, fontsize=10, inline=1, inline_spacing=1, fmt='%i', rightside_up=True)
 
 ax4 = plt.subplot(gs[1, 1])

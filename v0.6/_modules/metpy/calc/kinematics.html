@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.kinematics &mdash; MetPy 0.6.0</title>
+  <title>metpy.calc.kinematics &mdash; MetPy 0.6</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.6.0" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.6" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -76,7 +76,22 @@
             
             
               <div class="version">
-                0.6.0
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>0.6</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
               </div>
             
           
@@ -161,8 +176,6 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
-        
       </li>
     
   </ul>
@@ -174,7 +187,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for metpy.calc.kinematics</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright (c) 2008-2015 MetPy Developers.</span>
+<span></span><span class="c1"># Copyright (c) 2009,2017 MetPy Developers.</span>
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Contains calculation of kinematic parameters (e.g. divergence or vorticity).&quot;&quot;&quot;</span>
@@ -185,7 +198,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">..calc.tools</span> <span class="k">import</span> <span class="n">get_layer</span>
+<span class="kn">from</span> <span class="nn">..calc.tools</span> <span class="k">import</span> <span class="n">get_layer_heights</span>
 <span class="kn">from</span> <span class="nn">..cbook</span> <span class="k">import</span> <span class="n">is_string_like</span><span class="p">,</span> <span class="n">iterable</span>
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">Cp_d</span><span class="p">,</span> <span class="n">g</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
@@ -715,18 +728,14 @@
 
 
 <div class="viewcode-block" id="storm_relative_helicity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.storm_relative_helicity.html#metpy.calc.storm_relative_helicity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span>
-             <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">storm_relative_helicity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">hgt</span><span class="p">,</span> <span class="n">top</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">),</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">storm_relative_helicity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">heights</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
                             <span class="n">storm_u</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">),</span> <span class="n">storm_v</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)):</span>
     <span class="c1"># Partially adapted from similar SharpPy code</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate storm relative helicity.</span>
 
-<span class="sd">    Needs u and v wind components, heights and pressures,</span>
-<span class="sd">    and top and bottom of SRH layer. An optional storm</span>
-<span class="sd">    motion vector can be specified. SRH is calculated using the</span>
-<span class="sd">    equation specified on p. 230-231 in the Markowski and Richardson</span>
-<span class="sd">    meso textbook [Markowski2010].</span>
+<span class="sd">    Calculates storm relatively helicity following [Markowski2010] 230-231.</span>
 
 <span class="sd">    .. math:: \int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz</span>
 
@@ -738,51 +747,40 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    u : array-like</span>
-<span class="sd">        The u components of winds, same length as hgts</span>
+<span class="sd">        u component winds</span>
 <span class="sd">    v : array-like</span>
-<span class="sd">        The u components of winds, same length as hgts</span>
-<span class="sd">    p : array-like</span>
-<span class="sd">        Pressure in hPa, same length as hgts</span>
-<span class="sd">    hgt : array-like</span>
-<span class="sd">        The heights associatd with the data, provided in meters above mean</span>
-<span class="sd">        sea level and converted into meters AGL.</span>
-<span class="sd">    top : number</span>
-<span class="sd">        The height of the top of the desired layer for SRH.</span>
+<span class="sd">        v component winds</span>
+<span class="sd">    heights : array-like</span>
+<span class="sd">        atmospheric heights, will be converted to AGL</span>
+<span class="sd">    depth : number</span>
+<span class="sd">        depth of the layer</span>
 <span class="sd">    bottom : number</span>
-<span class="sd">        The height at the bottom of the SRH layer. Default is sfc (None).</span>
+<span class="sd">        height of layer bottom AGL (default is surface)</span>
 <span class="sd">    storm_u : number</span>
-<span class="sd">        u component of storm motion</span>
+<span class="sd">        u component of storm motion (default is 0 m/s)</span>
 <span class="sd">    storm_v : number</span>
-<span class="sd">        v component of storm motion</span>
+<span class="sd">        v component of storm motion (default is 0 m/s)</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    number</span>
-<span class="sd">        p_srh : positive storm-relative helicity</span>
-<span class="sd">    number</span>
-<span class="sd">        n_srh : negative storm-relative helicity</span>
-<span class="sd">    number</span>
-<span class="sd">        t_srh : total storm-relative helicity</span>
+<span class="sd">    `pint.Quantity, pint.Quantity, pint.Quantity`</span>
+<span class="sd">        positive, negative, total storm-relative helicity</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Converting to m/s to make sure output is in m^2/s^2</span>
-    <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meters/second&#39;</span><span class="p">)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meters/second&#39;</span><span class="p">)</span>
-    <span class="n">storm_u</span> <span class="o">=</span> <span class="n">storm_u</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meters/second&#39;</span><span class="p">)</span>
-    <span class="n">storm_v</span> <span class="o">=</span> <span class="n">storm_v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meters/second&#39;</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">get_layer_heights</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">with_agl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">)</span>
 
-    <span class="n">w_int</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">heights</span><span class="o">=</span><span class="n">hgt</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">top</span> <span class="o">-</span> <span class="n">bottom</span><span class="p">)</span>
+    <span class="n">storm_relative_u</span> <span class="o">=</span> <span class="n">u</span> <span class="o">-</span> <span class="n">storm_u</span>
+    <span class="n">storm_relative_v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">storm_v</span>
 
-    <span class="n">sru</span> <span class="o">=</span> <span class="n">w_int</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">storm_u</span>
-    <span class="n">srv</span> <span class="o">=</span> <span class="n">w_int</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">storm_v</span>
+    <span class="n">int_layers</span> <span class="o">=</span> <span class="p">(</span><span class="n">storm_relative_u</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="n">storm_relative_v</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span>
+                  <span class="n">storm_relative_u</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">storm_relative_v</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 
-    <span class="n">int_layers</span> <span class="o">=</span> <span class="n">sru</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="n">srv</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">sru</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">srv</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+    <span class="n">positive_srh</span> <span class="o">=</span> <span class="n">int_layers</span><span class="p">[</span><span class="n">int_layers</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">negative_srh</span> <span class="o">=</span> <span class="n">int_layers</span><span class="p">[</span><span class="n">int_layers</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mf">0.</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
-    <span class="n">p_srh</span> <span class="o">=</span> <span class="n">int_layers</span><span class="p">[</span><span class="n">int_layers</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="n">n_srh</span> <span class="o">=</span> <span class="n">int_layers</span><span class="p">[</span><span class="n">int_layers</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mf">0.</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
-    <span class="n">t_srh</span> <span class="o">=</span> <span class="n">p_srh</span> <span class="o">+</span> <span class="n">n_srh</span>
-
-    <span class="k">return</span> <span class="n">p_srh</span><span class="p">,</span> <span class="n">n_srh</span><span class="p">,</span> <span class="n">t_srh</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">positive_srh</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meter ** 2 / second ** 2&#39;</span><span class="p">),</span>
+            <span class="n">negative_srh</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meter ** 2 / second ** 2&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">positive_srh</span> <span class="o">+</span> <span class="n">negative_srh</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meter ** 2 / second ** 2&#39;</span><span class="p">))</span></div>
 </pre></div>
 
            </div>
@@ -798,11 +796,12 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2016, MetPy Developers.
-      Last updated on Sep 15, 2017 at 18:25:57.
+      Last updated on Nov 05, 2017 at 06:18:53.
 
     </p>
   </div>
   Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -811,12 +810,12 @@
 
   ga('create', 'UA-92978945-1', 'auto');
   ga('send', 'pageview');
-
 </script>
+<script type="text/javascript" src="_static/jquery.js"></script>
+<script type="text/javascript" src="_static/pop_ver.js"></script>
 <p>Do you enjoy using MetPy?
   <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
 </p>
-     
 
 
 </footer>
@@ -835,7 +834,8 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.0',
+            VERSION:'0.6.1',
+            LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
             HAS_SOURCE:  true,

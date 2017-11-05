@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -19,13 +19,15 @@ import numpy as np
 
 import metpy.calc as mcalc
 from metpy.cbook import get_test_data
+from metpy.plots import add_metpy_logo
 from metpy.units import units
 
 #######################################
 # **Getting the data**
 #
 # In this example, NARR reanalysis data for 18 UTC 04 April 1987 from the National Centers
-# for Environmental Information (https://nomads.ncdc.noaa.gov) will be used.
+# for Environmental Information (https://www.ncdc.noaa.gov/data-access/model-data)
+# will be used.
 
 data = Dataset(get_test_data('narr_example.nc', False))
 
@@ -136,7 +138,8 @@ states_provinces = cfeature.NaturalEarthFeature(category='cultural',
                                                 facecolor='none')
 
 fig = plt.figure(1, figsize=(17., 12.))
-ax = plt.subplot(111, projection=crs)
+add_metpy_logo(fig, 120, 245, size='large')
+ax = fig.add_subplot(1, 1, 1, projection=crs)
 ax.set_extent(*bounds, crs=ccrs.PlateCarree())
 ax.coastlines('50m', edgecolor='black', linewidth=0.75)
 ax.add_feature(states_provinces, edgecolor='black', linewidth=0.5)
@@ -151,7 +154,7 @@ plt.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
 # Plot RH
 cf = ax.contourf(tlons, tlats, isentrh[level, :, :], range(10, 106, 5),
                  cmap=plt.cm.gist_earth_r)
-cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0,
+cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0.05,
                   extendrect='True')
 cb.set_label('Relative Humidity', size='x-large')
 
@@ -182,6 +185,7 @@ msf = mcalc.montgomery_streamfunction(isenthgt, isenttmp) / 100.
 level = 0
 
 fig = plt.figure(1, figsize=(17., 12.))
+add_metpy_logo(fig, 120, 250, size='large')
 ax = plt.subplot(111, projection=crs)
 ax.set_extent(*bounds, crs=ccrs.PlateCarree())
 ax.coastlines('50m', edgecolor='black', linewidth=0.75)
@@ -196,7 +200,7 @@ plt.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
 # Plot RH
 cf = ax.contourf(tlons, tlats, isentrh[level, :, :], range(10, 106, 5),
                  cmap=plt.cm.gist_earth_r)
-cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0,
+cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0.05,
                   extendrect='True')
 cb.set_label('Relative Humidity', size='x-large')
 

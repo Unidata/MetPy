@@ -30,6 +30,7 @@ calc
       frontogenesis
       geostrophic_wind
       get_layer
+      get_layer_heights
       get_perturbation
       get_wind_components
       get_wind_dir
