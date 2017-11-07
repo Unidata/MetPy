@@ -5,7 +5,6 @@ r"""Contains functionality for making meteorological plots."""
 
 # Trigger matplotlib wrappers
 from . import _mpl  # noqa: F401
-
 from ._util import add_metpy_logo, add_timestamp, add_unidata_logo
 from .skewt import *  # noqa: F403
 from .station_plot import *  # noqa: F403

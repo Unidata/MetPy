@@ -21,7 +21,6 @@ from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, el,
                         saturation_vapor_pressure,
                         surface_based_cape_cin, vapor_pressure,
                         virtual_potential_temperature, virtual_temperature)
-
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import units

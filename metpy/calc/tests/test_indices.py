@@ -7,6 +7,7 @@ from datetime import datetime
 import warnings
 
 import numpy as np
+
 from metpy.calc import (bulk_shear, bunkers_storm_motion, mean_pressure_weighted,
                         precipitable_water, significant_tornado, supercell_composite)
 from metpy.deprecation import MetpyDeprecationWarning

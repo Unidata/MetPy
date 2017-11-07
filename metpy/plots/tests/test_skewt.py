@@ -11,7 +11,7 @@ import pytest
 
 from metpy.plots import Hodograph, SkewT
 # Fixtures to make sure we have the right backend and consistent round
-from metpy.testing import patch_round, set_agg_backend  # noqa: F401
+from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 MPL_VERSION = matplotlib.__version__[:3]

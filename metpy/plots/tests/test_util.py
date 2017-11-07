@@ -11,7 +11,7 @@ import pytest
 
 from metpy.plots import add_metpy_logo, add_timestamp, add_unidata_logo
 # Fixture to make sure we have the right backend
-from metpy.testing import set_agg_backend  # noqa: F401
+from metpy.testing import set_agg_backend  # noqa: F401, I202
 
 MPL_VERSION = matplotlib.__version__[:3]
 

@@ -12,7 +12,7 @@ import pytest
 from metpy.plots import nws_layout, simple_layout, StationPlot, StationPlotLayout
 from metpy.plots.wx_symbols import current_weather, high_clouds, sky_cover
 # Fixtures to make sure we have the right backend and consistent round
-from metpy.testing import patch_round, set_agg_backend  # noqa: F401
+from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 
