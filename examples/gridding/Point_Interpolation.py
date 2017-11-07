@@ -16,12 +16,10 @@ import numpy as np
 from metpy.cbook import get_test_data
 from metpy.gridding.gridding_functions import (interpolate, remove_nan_observations,
                                                remove_repeat_coordinates)
-
-
-###########################################
 from metpy.plots import add_metpy_logo
 
 
+###########################################
 def basic_map(proj):
     """Make our basic default map for plotting"""
     fig = plt.figure(figsize=(15, 10))

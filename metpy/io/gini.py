@@ -9,7 +9,7 @@ try:
     from enum import Enum
 except ImportError:
     from enum34 import Enum
-from itertools import repeat
+from itertools import repeat  # noqa: I202
 import logging
 import re
 
