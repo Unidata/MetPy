@@ -34,15 +34,14 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', **kwargs):
 
     Returns
     -------
-    ax : `matplotlib.axes.Axes`
-        The `Axes` instance used for plotting
+    `matplotlib.text.Text`
+        The `matplotlib.text.Text` instance created
 
     """
     if not time:
         time = datetime.utcnow()
     timestr = datetime.strftime(time, 'Created: %Y-%m-%dT%H:%M:%SZ')
-    ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **kwargs)
-    return ax
+    return ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **kwargs)
 
 
 def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs):
@@ -68,8 +67,8 @@ def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs
 
     Returns
     -------
-    fig : `matplotlib.figure`
-       The `figure` instance used for plotting
+    `matplotlib.image.FigureImage`
+       The `matplotlib.image.FigureImage` instance created
 
     """
     fname_suffix = {'small': '_75x75.png',
@@ -83,8 +82,7 @@ def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs
         raise ValueError('Unknown logo size or selection')
 
     logo = imread(pkg_resources.resource_stream('metpy.plots', fpath))
-    fig.figimage(logo, x, y, zorder=zorder, **kwargs)
-    return fig
+    return fig.figimage(logo, x, y, zorder=zorder, **kwargs)
 
 
 def add_metpy_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
