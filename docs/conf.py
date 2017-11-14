@@ -99,7 +99,7 @@ master_doc = 'index'
 # General information about the project.
 project = 'MetPy'
 # noinspection PyShadowingBuiltins
-copyright = '2016, MetPy Developers'
+copyright = '2017, MetPy Developers'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
