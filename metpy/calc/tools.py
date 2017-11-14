@@ -767,7 +767,7 @@ def log_interp(x, xp, *args, **kwargs):
         Interpolated values for each point with coordinates sorted in ascending order.
 
     Examples
-     --------
+    --------
      >>> x_log = np.array([1e3, 1e4, 1e5, 1e6])
      >>> y_log = np.log(x_log) * 2 + 3
      >>> x_interp = np.array([5e3, 5e4, 5e5])

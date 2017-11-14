@@ -326,7 +326,7 @@ def add_height_to_pressure(pressure, height):
         The corresponding pressure value for the height above the pressure level
 
     See Also
-    -----
+    --------
     pressure_to_height_std, height_to_pressure_std, add_pressure_to_height
 
     """
@@ -354,7 +354,7 @@ def add_pressure_to_height(height, pressure):
         The corresponding height value for the pressure above the height level
 
     See Also
-    -----
+    --------
     pressure_to_height_std, height_to_pressure_std, add_height_to_pressure
 
     """
