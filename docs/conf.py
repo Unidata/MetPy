@@ -54,7 +54,7 @@ sphinx_gallery_conf = {
         'scipy': 'http://docs.scipy.org/doc/scipy/reference'},
     'examples_dirs': [os.path.join('..', 'examples'), os.path.join('..', 'tutorials')],
     'gallery_dirs': ['examples', 'tutorials'],
-    'filename_pattern': os.path.join('.', '*'),
+    'filename_pattern': '\.py',
     'backreferences_dir': os.path.join('api', 'generated'),
     'default_thumb_file': os.path.join('_static', 'metpy_150x150_white_bg.png'),
     'abort_on_example_error': True
