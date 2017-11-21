@@ -231,7 +231,7 @@ def shearing_deformation(u, v, dx, dy):
 
     See Also
     --------
-    shearing_stretching_deformation
+    stretching_deformation, shearing_stretching_deformation
 
     """
     _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)

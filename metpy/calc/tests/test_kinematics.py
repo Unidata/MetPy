@@ -66,7 +66,7 @@ def test_vorticity_divergence_asym():
 
     # Now try for xy ordered
     c, vort = divergence_vorticity(u.T, v.T, 1 * units.meters, 2 * units.meters,
-                                    dim_order='xy')
+                                   dim_order='xy')
     assert_array_equal(c, true_c.T)
     assert_array_equal(vort, true_vort.T)
 
