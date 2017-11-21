@@ -34,7 +34,7 @@ def _stack(arrs):
 
 
 def _get_gradients(u, v, dx, dy):
-    """Return derivatives for components to simplify calculating convergence and vorticity."""
+    """Return derivatives for components to simplify calculating divergence and vorticity."""
     dudy, dudx = _gradient(u, dy, dx)
     dvdy, dvdx = _gradient(v, dy, dx)
     return dudx, dudy, dvdx, dvdy
@@ -130,7 +130,7 @@ def v_vorticity(u, v, dx, dy):
 
     See Also
     --------
-    h_convergence, convergence_vorticity
+    h_divergence, divergence_vorticity
 
     """
     _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
@@ -139,8 +139,8 @@ def v_vorticity(u, v, dx, dy):
 
 @exporter.export
 @ensure_yx_order
-def h_convergence(u, v, dx, dy):
-    r"""Calculate the horizontal convergence of the horizontal wind.
+def h_divergence(u, v, dx, dy):
+    r"""Calculate the horizontal divergence of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
 
@@ -158,11 +158,11 @@ def h_convergence(u, v, dx, dy):
     Returns
     -------
     (M, N) ndarray
-        The horizontal convergence
+        The horizontal divergence
 
     See Also
     --------
-    v_vorticity, convergence_vorticity
+    v_vorticity, divergence_vorticity
 
     """
     dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
@@ -171,8 +171,8 @@ def h_convergence(u, v, dx, dy):
 
 @exporter.export
 @ensure_yx_order
-def convergence_vorticity(u, v, dx, dy):
-    r"""Calculate the horizontal convergence and vertical vorticity of the horizontal wind.
+def divergence_vorticity(u, v, dx, dy):
+    r"""Calculate the horizontal divergence and vertical vorticity of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
 
@@ -189,17 +189,17 @@ def convergence_vorticity(u, v, dx, dy):
 
     Returns
     -------
-    convergence, vorticity : tuple of (M, N) ndarrays
-        The horizontal convergence and vertical vorticity, respectively
+    divergence, vorticity : tuple of (M, N) ndarrays
+        The horizontal divergence and vertical vorticity, respectively
 
     See Also
     --------
-    v_vorticity, h_convergence
+    v_vorticity, h_divergence
 
     Notes
     -----
     This is a convenience function that will do less work than calculating
-    the horizontal convergence and vertical vorticity separately.
+    the horizontal divergence and vertical vorticity separately.
 
     """
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
@@ -231,7 +231,7 @@ def shearing_deformation(u, v, dx, dy):
 
     See Also
     --------
-    stretching_convergence, shearing_stretching_deformation
+    stretching_deformation, shearing_stretching_deformation
 
     """
     _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
@@ -449,7 +449,7 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     tdef = total_deformation(u, v, dx, dy, dim_order=dim_order)
 
     # Get the divergence of the wind field
-    div = h_convergence(u, v, dx, dy, dim_order=dim_order)
+    div = h_divergence(u, v, dx, dy, dim_order=dim_order)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
