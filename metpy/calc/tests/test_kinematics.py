@@ -6,8 +6,8 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (advection, convergence_vorticity, frontogenesis, geostrophic_wind,
-                        get_wind_components, h_convergence, montgomery_streamfunction,
+from metpy.calc import (advection, divergence_vorticity, frontogenesis, geostrophic_wind,
+                        get_wind_components, h_divergence, montgomery_streamfunction,
                         shearing_deformation, shearing_stretching_deformation,
                         storm_relative_helicity, stretching_deformation, total_deformation,
                         v_vorticity)
@@ -20,52 +20,52 @@ def test_default_order_warns():
     """Test that using the default array ordering issues a warning."""
     u = np.ones((3, 3)) * units('m/s')
     with pytest.warns(FutureWarning):
-        convergence_vorticity(u, u, 1 * units.meter, 1 * units.meter)
+        divergence_vorticity(u, u, 1 * units.meter, 1 * units.meter)
 
 
 def test_zero_gradient():
-    """Test convergence_vorticity when there is no gradient in the field."""
+    """Test divergence_vorticity when there is no gradient in the field."""
     u = np.ones((3, 3)) * units('m/s')
-    c, v = convergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    c, v = divergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
     truth = np.zeros_like(u) / units.sec
     assert_array_equal(c, truth)
     assert_array_equal(v, truth)
 
 
 def test_cv_zero_vorticity():
-    """Test convergence_vorticity when there is only convergence."""
+    """Test divergence_vorticity when there is only divergence."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c, v = convergence_vorticity(u, u.T, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    c, v = divergence_vorticity(u, u.T, 1 * units.meter, 1 * units.meter, dim_order='xy')
     true_c = 2. * np.ones_like(u) / units.sec
     true_v = np.zeros_like(u) / units.sec
     assert_array_equal(c, true_c)
     assert_array_equal(v, true_v)
 
 
-def test_convergence_vorticity():
+def test_divergence_vorticity():
     """Test of vorticity and divergence calculation for basic case."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c, v = convergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    c, v = divergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
     true_c = np.ones_like(u) / units.sec
     true_v = np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
     assert_array_equal(v, true_v)
 
 
-def test_vorticity_convergence_asym():
-    """Test vorticity and convergence calculation with a complicated field."""
+def test_vorticity_divergence_asym():
+    """Test vorticity and divergence calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    c, vort = convergence_vorticity(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
+    c, vort = divergence_vorticity(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
     true_c = np.array([[0., 4., 0.], [1., 0.5, -0.5], [2., 0., 5.]]) / units.sec
     true_vort = np.array([[-1., 2., 7.], [3.5, -1.5, -6.], [-2., 0., 1.]]) / units.sec
     assert_array_equal(c, true_c)
     assert_array_equal(vort, true_vort)
 
     # Now try for xy ordered
-    c, vort = convergence_vorticity(u.T, v.T, 1 * units.meters, 2 * units.meters,
+    c, vort = divergence_vorticity(u.T, v.T, 1 * units.meters, 2 * units.meters,
                                     dim_order='xy')
     assert_array_equal(c, true_c.T)
     assert_array_equal(vort, true_vort.T)
@@ -102,34 +102,34 @@ def test_vorticity_asym():
     assert_array_equal(vort, true_vort.T)
 
 
-def test_zero_convergence():
-    """Test convergence calculation when zeros should be returned."""
+def test_zero_divergence():
+    """Test divergence calculation when zeros should be returned."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c = h_convergence(u, u.T, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    c = h_divergence(u, u.T, 1 * units.meter, 1 * units.meter, dim_order='xy')
     true_c = 2. * np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
 
 
-def test_convergence():
-    """Test convergence for simple case."""
+def test_divergence():
+    """Test divergence for simple case."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c = h_convergence(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    c = h_divergence(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
     true_c = np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
 
 
-def test_convergence_asym():
-    """Test convergence calculation with a complicated field."""
+def test_divergence_asym():
+    """Test divergence calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    c = h_convergence(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
+    c = h_divergence(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
     true_c = np.array([[0., 4., 0.], [1., 0.5, -0.5], [2., 0., 5.]]) / units.sec
     assert_array_equal(c, true_c)
 
     # Now try for xy ordered
-    c = h_convergence(u.T, v.T, 1 * units.meters, 2 * units.meters, dim_order='xy')
+    c = h_divergence(u.T, v.T, 1 * units.meters, 2 * units.meters, dim_order='xy')
     assert_array_equal(c, true_c.T)
 
 
@@ -168,7 +168,7 @@ def test_shst_deformation():
 
 
 def test_shst_deformation_asym():
-    """Test vorticity and convergence calculation with a complicated field."""
+    """Test shearing and stretching deformation calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
     sh, st = shearing_stretching_deformation(u, v, 1 * units.meters, 2 * units.meters,
@@ -186,7 +186,7 @@ def test_shst_deformation_asym():
 
 
 def test_shearing_deformation_asym():
-    """Test vorticity and convergence calculation with a complicated field."""
+    """Test shearing deformation calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
     sh = shearing_deformation(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
@@ -200,7 +200,7 @@ def test_shearing_deformation_asym():
 
 
 def test_stretching_deformation_asym():
-    """Test vorticity and convergence calculation with a complicated field."""
+    """Test stretching deformation calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
     st = stretching_deformation(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
@@ -214,7 +214,7 @@ def test_stretching_deformation_asym():
 
 
 def test_total_deformation_asym():
-    """Test vorticity and convergence calculation with a complicated field."""
+    """Test total deformation calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
     tdef = total_deformation(u, v, 1 * units.meters, 2 * units.meters,
@@ -230,7 +230,7 @@ def test_total_deformation_asym():
 
 
 def test_frontogenesis_asym():
-    """Test vorticity and convergence calculation with a complicated field."""
+    """Test frontogensis calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
     theta = np.array([[303, 295, 305], [308, 310, 312], [299, 293, 289]]) * units('K')
