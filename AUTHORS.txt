@@ -8,6 +8,7 @@ Bryan Guarente
 Eric Bruning
 John Leeman
 Jonathan Helmus
+Jon Thielen
 Kevin Goebbert
 Kristen Pozsonyi
 Matt Wilson
