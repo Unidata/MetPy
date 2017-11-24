@@ -19,7 +19,7 @@ from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, dry
                         saturation_mixing_ratio,
                         saturation_vapor_pressure,
                         specific_humidity_from_mixing_ratio,
-                        surface_based_cape_cin, vapor_pressure,
+                        surface_based_cape_cin, thickness_hydrostatic, vapor_pressure,
                         virtual_potential_temperature, virtual_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
@@ -744,3 +744,20 @@ def test_moist_static_energy():
     """Tests the moist static energy calculation."""
     mse = moist_static_energy(1000 * units.m, 25 * units.degC, 0.012 * units.dimensionless)
     assert_almost_equal(mse, 339.4594 * units('kJ/kg'), 6)
+
+
+def test_thickness_hydrostatic():
+    """Tests the thickness calculation."""
+    pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
+    mixing = np.array([0.01458, 0.00209, 0.00224, 0.00240, 0.00256, 0.00010])
+    thickness = thickness_hydrostatic(pressure, temperature, mixing=mixing)
+    assert_almost_equal(thickness, 10725.92 * units.m, 2)
+
+
+def test_thickness_hydrostatic_isothermal():
+    """Tests the thickness calculation for an isothermal layer at 0 degC."""
+    pressure = np.arange(1000, 500 - 1e-10, -1) * units.hPa
+    temperature = np.zeros_like(pressure) * units.degC
+    thickness = thickness_hydrostatic(pressure, temperature)
+    assert_almost_equal(thickness, 5542.11 * units.m, 2)

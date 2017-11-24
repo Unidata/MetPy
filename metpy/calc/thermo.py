@@ -1508,3 +1508,60 @@ def moist_static_energy(heights, temperature, specific_humidity):
 
     """
     return (dry_static_energy(heights, temperature) + Lv * specific_humidity).to('kJ/kg')
+
+
+@check_units('[pressure]', '[temperature]')
+def thickness_hydrostatic(pressure, temperature, **kwargs):
+    r"""Calculate the thickness of a layer via the hypsometric equation.
+
+    This thickness calculation uses the pressure and temperature profiles (and optionally
+    mixing ratio) via the hypsometric equation with virtual temperature adjustment
+
+    .. math:: \Delta z = -\frac{R_d}{g} \int_{p_0}^{p_1} T_v d\ln p
+
+    This assumes a hydrostatic atmosphere.
+
+    Layer bottom and depth specified in pressure.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure profile
+    temperature : `pint.Quantity`
+        Atmospheric temperature profile
+    mixing : `pint.Quantity`, optional
+        Profile of dimensionless mass mixing ratio. Defaults to zero, so that virtual
+        temperature is simply the temperature.
+    molecular_weight_ratio : `pint.Quantity` or float, optional
+        The ratio of the molecular weight of the constituent gas to that assumed
+        for air. Defaults to the ratio for water vapor to dry air.
+        (:math:`\epsilon\approx0.622`).
+    bottom: `pint.Quantity`, optional
+        The bottom of the layer in pressure. Default is the first observation, assumed
+        to be the surface.
+    depth: `pint.Quantity`, optional
+        The depth of the layer in hPa. Defaults to full range of given pressure values.
+
+    Returns
+    -------
+    `pint.Quantity`
+        The thickness of the layer in meters.
+
+    See Also
+    --------
+    pressure_to_height_std, virtual_temperature
+
+    """
+    mixing = kwargs.pop('mixing', np.zeros_like(temperature))
+    molecular_weight_ratio = kwargs.pop('molecular_weight_ratio', epsilon)
+    bottom = kwargs.pop('bottom', None)
+    depth = kwargs.pop('depth', pressure.max() - pressure.min())
+
+    # Get the data for the layer
+    layer_p, layer_temp, layer_w = get_layer(pressure, temperature, mixing,
+                                             bottom=bottom, depth=depth)
+    layer_virttemp = virtual_temperature(layer_temp, layer_w, molecular_weight_ratio)
+
+    # Take the integral and return the result in meters
+    return (- Rd / g * np.trapz(layer_virttemp / layer_p, x=layer_p) *
+            layer_virttemp.units).to('m')
