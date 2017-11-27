@@ -1563,5 +1563,5 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
     layer_virttemp = virtual_temperature(layer_temp, layer_w, molecular_weight_ratio)
 
     # Take the integral and return the result in meters
-    return (- Rd / g * np.trapz(layer_virttemp / layer_p, x=layer_p) *
+    return (- Rd / g * np.trapz(layer_virttemp, x=np.log(layer_p / units.hPa)) *
             layer_virttemp.units).to('m')

@@ -752,12 +752,12 @@ def test_thickness_hydrostatic():
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     mixing = np.array([0.01458, 0.00209, 0.00224, 0.00240, 0.00256, 0.00010])
     thickness = thickness_hydrostatic(pressure, temperature, mixing=mixing)
-    assert_almost_equal(thickness, 10725.92 * units.m, 2)
+    assert_almost_equal(thickness, 9892.07 * units.m, 2)
 
 
 def test_thickness_hydrostatic_isothermal():
     """Tests the thickness calculation for an isothermal layer at 0 degC."""
-    pressure = np.arange(1000, 500 - 1e-10, -1) * units.hPa
+    pressure = np.arange(1000, 500 - 1e-10, -10) * units.hPa
     temperature = np.zeros_like(pressure) * units.degC
     thickness = thickness_hydrostatic(pressure, temperature)
-    assert_almost_equal(thickness, 5542.11 * units.m, 2)
+    assert_almost_equal(thickness, 5542.12 * units.m, 2)
