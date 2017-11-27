@@ -214,6 +214,7 @@ def bulk_shear(pressure, u, v, heights=None, bottom=None, depth=None):
 
 
 @exporter.export
+@check_units('[energy] / [mass]', '[speed] * [speed]', '[speed]')
 def supercell_composite(mucape, effective_storm_helicity, effective_shear):
     r"""Calculate the supercell composite parameter.
 
@@ -254,6 +255,7 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
 
 
 @exporter.export
+@check_units('[energy] / [mass]', '[length]', '[speed] * [speed]', '[speed]')
 def significant_tornado(sbcape, sblcl, storm_helicity_1km, shear_6km):
     r"""Calculate the significant tornado parameter (fixed layer).
 
