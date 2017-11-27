@@ -8,7 +8,7 @@ from .thermo import mixing_ratio, saturation_vapor_pressure
 from .tools import get_layer
 from ..constants import g, rho_l
 from ..package_tools import Exporter
-from ..units import check_units, concatenate, units
+from ..units import atleast_1d, check_units, concatenate, units
 
 exporter = Exporter(globals())
 
@@ -244,7 +244,7 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
         supercell composite
 
     """
-    effective_shear = np.clip(effective_shear, None, 20 * units('m/s'))
+    effective_shear = np.clip(atleast_1d(effective_shear), None, 20 * units('m/s'))
     effective_shear[effective_shear < 10 * units('m/s')] = 0 * units('m/s')
     effective_shear = effective_shear / (20 * units('m/s'))
 
@@ -290,10 +290,10 @@ def significant_tornado(sbcape, sblcl, storm_helicity_1km, shear_6km):
         significant tornado parameter
 
     """
-    sblcl = np.clip(sblcl, 1000 * units('meter'), 2000 * units('meter'))
+    sblcl = np.clip(atleast_1d(sblcl), 1000 * units('meter'), 2000 * units('meter'))
     sblcl[sblcl > 2000 * units('meter')] = 0 * units('meter')
     sblcl = (2000. * units('meter') - sblcl) / (1000. * units('meter'))
-    shear_6km = np.clip(shear_6km, None, 30 * units('m/s'))
+    shear_6km = np.clip(atleast_1d(shear_6km), None, 30 * units('m/s'))
     shear_6km[shear_6km < 12.5 * units('m/s')] = 0 * units('m/s')
     shear_6km = shear_6km / (20 * units('m/s'))
 
