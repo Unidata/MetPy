@@ -222,8 +222,9 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
     and is calculated using the formula developed by
     [Thompson2004]_:
 
-    SCP = (mucape / 1000 J/kg) * (effective_storm_helicity / 50 m^2/s^2) *
-          (effective_shear / 20 m/s)
+    .. math::  \text{SCP} = \frac{\text{MUCAPE}}{1000 \text{J/kg}} *
+               \frac{\text{Effective SRH}}{50 \text{m}^2/\text{s}^2} *
+               \frac{\text{Effective Shear}}{20 \text{m/s}}
 
     The effective_shear term is set to zero below 10 m/s and
     capped at 1 when effective_shear exceeds 20 m/s.
@@ -262,8 +263,10 @@ def significant_tornado(sbcape, sblcl, storm_helicity_1km, shear_6km):
     It's calculated according to the formula used on the SPC
     mesoanalysis page, updated in [Thompson2004]_:
 
-    sigtor = (sbcape / 1500 J/kg) * ((2000 m - sblcl) / 1000 m) *
-             (storm_helicity_1km / 150 m^s/s^2) * (shear_6km6 / 20 m/s)
+    .. math::  \text{SIGTOR} = \frac{\text{SBCAPE}}{1500 \text{J/kg}} * \frac{(2000 \text{m} -
+               \text{LCL}_\text{SB})}{1000 \text{m}} *
+               \frac{SRH_{\text{1km}}}{150 \text{m}^\text{s}/\text{s}^2} *
+               \frac{\text{Shear}_\text{6km}}{20 \text{m/s}}
 
     The sblcl term is set to zero when the lcl is above 2000m and
     capped at 1 when below 1000m, and the shr6 term is set to 0
