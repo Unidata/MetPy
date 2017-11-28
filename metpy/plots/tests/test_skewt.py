@@ -220,6 +220,24 @@ def test_hodograph_plot_layers_different_units():
 
 
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_hodograph_plot_layers_bound_units():
+    """Test hodograph colored height layers with interpolation and different units."""
+    u = np.zeros((6)) * units.knots
+    v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
+    heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
+    bounds = np.array([0.5, 1.5, 2.5, 3.5, 4.5]) * units.km
+    colors = ['r', 'g', 'b', 'r']
+    fig = plt.figure(figsize=(7, 7))
+    ax1 = fig.add_subplot(1, 1, 1)
+    h = Hodograph(ax1)
+    h.add_grid(increment=10)
+    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    ax1.set_xlim(-50, 50)
+    ax1.set_ylim(-5, 50)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_plot_arbitrary_layer():
     """Test hodograph colored layers for arbitrary variables without interpolation."""
     u = np.arange(5, 65, 5) * units('knot')
