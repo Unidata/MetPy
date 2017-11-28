@@ -1517,7 +1517,9 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
     This thickness calculation uses the pressure and temperature profiles (and optionally
     mixing ratio) via the hypsometric equation with virtual temperature adjustment
 
-    .. math:: \Delta z = -\frac{R_d}{g} \int_{p_0}^{p_1} T_v d\ln p
+    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,
+
+    which is based off of Equation 3.24 in [Hobbs2006]_.
 
     This assumes a hydrostatic atmosphere.
 
@@ -1530,17 +1532,17 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
     temperature : `pint.Quantity`
         Atmospheric temperature profile
     mixing : `pint.Quantity`, optional
-        Profile of dimensionless mass mixing ratio. Defaults to zero, so that virtual
-        temperature is simply the temperature.
+        Profile of dimensionless mass mixing ratio. If none is given, virtual temperature
+        is simply set to be the given temperature.
     molecular_weight_ratio : `pint.Quantity` or float, optional
         The ratio of the molecular weight of the constituent gas to that assumed
         for air. Defaults to the ratio for water vapor to dry air.
         (:math:`\epsilon\approx0.622`).
-    bottom: `pint.Quantity`, optional
-        The bottom of the layer in pressure. Default is the first observation, assumed
-        to be the surface.
-    depth: `pint.Quantity`, optional
-        The depth of the layer in hPa. Defaults to full range of given pressure values.
+    bottom : `pint.Quantity`, optional
+        The bottom of the layer in pressure. Defaults to the first observation.
+    depth : `pint.Quantity`, optional
+        The depth of the layer in hPa. Defaults to the full profile if bottom is not given,
+        and 100 hPa if bottom is given.
 
     Returns
     -------
@@ -1552,16 +1554,28 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
     pressure_to_height_std, virtual_temperature
 
     """
-    mixing = kwargs.pop('mixing', np.zeros_like(temperature))
+    mixing = kwargs.pop('mixing', None)
     molecular_weight_ratio = kwargs.pop('molecular_weight_ratio', epsilon)
     bottom = kwargs.pop('bottom', None)
-    depth = kwargs.pop('depth', pressure.max() - pressure.min())
+    depth = kwargs.pop('depth', None)
 
-    # Get the data for the layer
-    layer_p, layer_temp, layer_w = get_layer(pressure, temperature, mixing,
-                                             bottom=bottom, depth=depth)
-    layer_virttemp = virtual_temperature(layer_temp, layer_w, molecular_weight_ratio)
+    # Get the data for the layer, conditional upon bottom/depth being specified and mixing
+    # ratio being given
+    if bottom is None and depth is None:
+        if mixing is None:
+            layer_p, layer_virttemp = pressure, temperature
+        else:
+            layer_p = pressure
+            layer_virttemp = virtual_temperature(temperature, mixing, molecular_weight_ratio)
+    else:
+        if mixing is None:
+            layer_p, layer_virttemp = get_layer(pressure, temperature, bottom=bottom,
+                                                depth=depth)
+        else:
+            layer_p, layer_temp, layer_w = get_layer(pressure, temperature, mixing,
+                                                     bottom=bottom, depth=depth)
+            layer_virttemp = virtual_temperature(layer_temp, layer_w, molecular_weight_ratio)
 
-    # Take the integral and return the result in meters
-    return (- Rd / g * np.trapz(layer_virttemp, x=np.log(layer_p / units.hPa)) *
-            layer_virttemp.units).to('m')
+    # Take the integral (with unit handling) and return the result in meters
+    return (- Rd / g * np.trapz(layer_virttemp.to('K'), x=np.log(layer_p / units.hPa)) *
+            units.K).to('m')
