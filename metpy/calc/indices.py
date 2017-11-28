@@ -256,7 +256,7 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
 
 @exporter.export
 @check_units('[energy] / [mass]', '[length]', '[speed] * [speed]', '[speed]')
-def significant_tornado(sbcape, sblcl, storm_helicity_1km, shear_6km):
+def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, shear_6km):
     r"""Calculate the significant tornado parameter (fixed layer).
 
     The significant tornado parameter is designed to identify
@@ -270,7 +270,7 @@ def significant_tornado(sbcape, sblcl, storm_helicity_1km, shear_6km):
                \frac{SRH_{\text{1km}}}{150 \text{m}^\text{s}/\text{s}^2} *
                \frac{\text{Shear}_\text{6km}}{20 \text{m/s}}
 
-    The sblcl term is set to zero when the lcl is above 2000m and
+    The lcl height is set to zero when the lcl is above 2000m and
     capped at 1 when below 1000m, and the shr6 term is set to 0
     when shr6 is below 12.5 m/s and maxed out at 1.5 when shr6
     exceeds 30 m/s.
@@ -279,7 +279,7 @@ def significant_tornado(sbcape, sblcl, storm_helicity_1km, shear_6km):
     ----------
     sbcape : `pint.Quantity`
         Surface-based CAPE
-    sblcl : `pint.Quantity`
+    surface_based_lcl_height : `pint.Quantity`
         Surface-based lifted condensation level
     storm_helicity_1km : `pint.Quantity`
         Surface-1km storm-relative helicity
@@ -292,12 +292,16 @@ def significant_tornado(sbcape, sblcl, storm_helicity_1km, shear_6km):
         significant tornado parameter
 
     """
-    sblcl = np.clip(atleast_1d(sblcl), 1000 * units('meter'), 2000 * units('meter'))
-    sblcl[sblcl > 2000 * units('meter')] = 0 * units('meter')
-    sblcl = (2000. * units('meter') - sblcl) / (1000. * units('meter'))
+    surface_based_lcl_height = np.clip(atleast_1d(surface_based_lcl_height),
+                                       1000 * units('meter'), 2000 * units('meter'))
+    surface_based_lcl_height[surface_based_lcl_height >
+                             2000 * units('meter')] = 0 * units('meter')
+    surface_based_lcl_height = ((2000. * units('meter') - surface_based_lcl_height) /
+                                (1000. * units('meter')))
     shear_6km = np.clip(atleast_1d(shear_6km), None, 30 * units('m/s'))
     shear_6km[shear_6km < 12.5 * units('m/s')] = 0 * units('m/s')
-    shear_6km = shear_6km / (20 * units('m/s'))
+    shear_6km /= 20 * units('m/s')
 
     return ((sbcape / (1500. * units('J/kg'))) *
-            sblcl * (storm_helicity_1km / (150. * units('m^2/s^2'))) * shear_6km)
+            surface_based_lcl_height *
+            (storm_helicity_1km / (150. * units('m^2/s^2'))) * shear_6km)
