@@ -1510,6 +1510,7 @@ def moist_static_energy(heights, temperature, specific_humidity):
     return (dry_static_energy(heights, temperature) + Lv * specific_humidity).to('kJ/kg')
 
 
+@exporter.export
 @check_units('[pressure]', '[temperature]')
 def thickness_hydrostatic(pressure, temperature, **kwargs):
     r"""Calculate the thickness of a layer via the hypsometric equation.
