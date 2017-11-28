@@ -9,6 +9,7 @@ dependencies:
   - matplotlib
   - pint
   - netcdf4
+  - pandas
   - jupyter
   - sphinx
   - sphinx-gallery
