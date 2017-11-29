@@ -827,6 +827,7 @@ class Hodograph(object):
                                          interpolation_heights.units)
                 c, u, v = interp(interpolation_heights, c, c, u, v)
                 c = c.to_base_units()  # TODO: This shouldn't be required!
+                bounds = bounds.to_base_units()
             # If segmenting by anything else, do not interpolate, just use the data
             else:
                 bounds = np.asarray(bounds) * bounds.units
