@@ -137,6 +137,16 @@ def test_supercell_composite():
     assert_array_equal(supercell_comp, truth)
 
 
+def test_supercell_composite_scalar():
+    """Test supercell composite function with a single value."""
+    mucape = 2000. * units('J/kg')
+    esrh = 400. * units('m^2/s^2')
+    ebwd = 30. * units('m/s')
+    truth = 16.
+    supercell_comp = supercell_composite(mucape, esrh, ebwd)
+    assert_almost_equal(supercell_comp, truth, 6)
+
+
 def test_sigtor():
     """Test significant tornado parameter function."""
     sbcape = [2000., 2000., 2000., 2000., 3000, 4000] * units('J/kg')
@@ -144,5 +154,16 @@ def test_sigtor():
     srh1 = [200., 200., 200., 200., 300, 400] * units('m^2/s^2')
     shr6 = [20., 5., 20., 35., 20., 35] * units('m/s')
     truth = [0., 0, 1.777778, 1.333333, 2., 10.666667]
+    sigtor = significant_tornado(sbcape, sblcl, srh1, shr6)
+    assert_almost_equal(sigtor, truth, 6)
+
+
+def test_sigtor_scalar():
+    """Test significant tornado parameter function with a single value."""
+    sbcape = 4000 * units('J/kg')
+    sblcl = 800 * units('meter')
+    srh1 = 400 * units('m^2/s^2')
+    shr6 = 35 * units('m/s')
+    truth = 10.666667
     sigtor = significant_tornado(sbcape, sblcl, srh1, shr6)
     assert_almost_equal(sigtor, truth, 6)
