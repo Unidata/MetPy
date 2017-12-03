@@ -10,6 +10,7 @@ Earth
 Name                     Symbol          Short Name  Units                      Description
 ------------------------ --------------- ----------- -------------------------- ---------------------------------------
 earth_avg_radius         :math:`R_e`     Re          :math:`\text{m}`           Avg. radius of the Earth
+earth_rot_speed          :math:`s`       s           :math:`\text{m s}^{-1}`    Rotational Speed of the Earth
 earth_gravity            :math:`g`       g           :math:`\text{m s}^{-2}`    Avg. gravity acceleration on Earth
 earth_avg_angular_vel    :math:`\Omega`  omega       :math:`\text{rad s}^{-1}`  Avg. angular velocity of Earth
 earth_sfc_avg_dist_sun   :math:`d`       d           :math:`\text{m}`           Avg. distance of the Earth from the Sun
@@ -70,6 +71,7 @@ with exporter:
     earth_gravity = g = units.Quantity(1.0, units.gravity).to('m / s^2')
     # Taken from GEMPAK constants
     Re = earth_avg_radius = 6.3712e6 * units.m
+    s = earth_rot_speed = units.Quantity(460, 'm/ s^2')
     omega = earth_avg_angular_vel = 2 * units.pi / units.sidereal_day
     d = earth_sfc_avg_dist_sun = 1.496e11 * units.m
     S = earth_solar_irradiance = units.Quantity(1.368e3, 'W / m^2')
