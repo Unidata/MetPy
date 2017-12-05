@@ -472,7 +472,7 @@ def test_storm_relative_helicity():
     assert_almost_equal(T_srh, srh_true_t, 2)
 
 
-def test_calc_dx_dy():
+def test_calc_dx_dy_1d():
     """Test for calc_dx_dy for variable grid."""
     lat = np.arange(40, 50, 2.5)
     lon = np.arange(-100, -90, 2.5)
@@ -486,3 +486,30 @@ def test_calc_dx_dy():
                          [277987.1857, 277987.1857, 277987.1857, 277987.1857]]) * units.meter
     assert_almost_equal(dx, dx_truth, 4)
     assert_almost_equal(dy, dy_truth, 4)
+
+
+def test_calc_dx_dy_2d():
+    """Test for calc_dx_dy for variable grid."""
+    lat = np.arange(40, 50, 2.5)
+    lon = np.arange(-100, -90, 2.5)
+    lon, lat = np.meshgrid(lon, lat)
+    dx, dy = calc_dx_dy(lon, lat)
+    dx_truth = np.array([[212943.5585, 212943.5585, 212943.5585],
+                         [204946.2305, 204946.2305, 204946.2305],
+                         [196558.8269, 196558.8269, 196558.8269],
+                         [187797.3216, 187797.3216, 187797.3216]]) * units.meter
+    dy_truth = np.array([[277987.1857, 277987.1857, 277987.1857, 277987.1857],
+                         [277987.1857, 277987.1857, 277987.1857, 277987.1857],
+                         [277987.1857, 277987.1857, 277987.1857, 277987.1857]]) * units.meter
+    assert_almost_equal(dx, dx_truth, 4)
+    assert_almost_equal(dy, dy_truth, 4)
+
+def test_calc_dx_dy_mismatched_shape():
+    """Test for calc_dx_dy for variable grid."""
+    lat = np.arange(40, 50, 2.5)
+    lon = np.array([[-100., -97.5, -95., -92.5],
+                    [-100., -97.5, -95., -92.5],
+                    [-100., -97.5, -95., -92.5],
+                    [-100., -97.5, -95., -92.5]])
+    with pytest.raises(ValueError):
+        dx, dy = calc_dx_dy(lon, lat)
