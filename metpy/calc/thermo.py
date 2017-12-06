@@ -499,8 +499,8 @@ def mixing_ratio(part_press, tot_press, molecular_weight_ratio=epsilon):
     saturation_mixing_ratio, vapor_pressure
 
     """
-    return (molecular_weight_ratio
-            * part_press / (tot_press - part_press)).to('dimensionless')
+    return (molecular_weight_ratio *
+            part_press / (tot_press - part_press)).to('dimensionless')
 
 
 @exporter.export
@@ -844,7 +844,11 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
     mixing_ratio, specific_humidity_from_mixing_ratio
 
     """
-    return specific_humidity.to('dimensionless') / (1 - specific_humidity.to('dimensionless'))
+    try:
+        specific_humidity = specific_humidity.to('dimensionless')
+    except AttributeError:
+        pass
+    return specific_humidity / (1 - specific_humidity)
 
 
 @exporter.export
@@ -876,7 +880,11 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
     mixing_ratio, mixing_ratio_from_specific_humidity
 
     """
-    return mixing_ratio.to('dimensionless') / (1 + mixing_ratio.to('dimensionless'))
+    try:
+        mixing_ratio = mixing_ratio.to('dimensionless')
+    except AttributeError:
+        pass
+    return mixing_ratio / (1 + mixing_ratio)
 
 
 @exporter.export
@@ -1508,5 +1516,5 @@ def moist_static_energy(heights, temperature, specific_humidity):
         The moist static energy
 
     """
-    return (dry_static_energy(heights, temperature)
-            + Lv * specific_humidity.to('dimensionless')).to('kJ/kg')
+    return (dry_static_energy(heights, temperature) +
+            Lv * specific_humidity.to('dimensionless')).to('kJ/kg')
