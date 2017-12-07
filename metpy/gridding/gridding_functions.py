@@ -150,7 +150,8 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
         2) "natural_neighbor", "barnes", or "cressman" from Metpy.mapping .
         Default "linear".
     hres: float
-        The horizontal resolution of the generated grid. Default 50000 meters.
+        The horizontal resolution of the generated grid, given in the same units as the
+        x and y parameters. Default 50000 meters.
     minimum_neighbors: int
         Minimum number of neighbors needed to perform barnes or cressman interpolation for a
         point. Default is 3.
