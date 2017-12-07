@@ -778,6 +778,44 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
 
 @exporter.export
 @check_units('[dimensionless]', '[temperature]', '[pressure]')
+def mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure):
+    r"""Calculate the mixing ratio from relative humidity, temperature, and pressure.
+
+    Parameters
+    ----------
+    relative_humidity: `pint.Quantity`
+        Relative humidity in percent
+    temperature: `pint.Quantity`
+        Air temperature
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Dimensionless mixing ratio
+
+    Notes
+    -----
+    Formula adapted from [Hobbs1977]_ pg. 74.
+
+    .. math:: w = \frac{RH}{100} w_s
+
+    * :math:`w` is mixing ratio
+    * :math:`RH` is relative humidity
+    * :math:`w_s` is the saturation mixing ratio
+
+    See Also
+    --------
+    relative_humidity_from_mixing_ratio, saturation_mixing_ratio
+
+    """
+    return (relative_humidity / (100 * units.percent) *
+            saturation_mixing_ratio(pressure, temperature))
+
+
+@exporter.export
+@check_units('[dimensionless]', '[temperature]', '[pressure]')
 def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
     r"""Calculate the relative humidity from mixing ratio, temperature, and pressure.
 
@@ -807,7 +845,7 @@ def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
 
     See Also
     --------
-    saturation_mixing_ratio
+    mixing_ratio_from_relative_humidity, saturation_mixing_ratio
 
     """
     return (100 * units.percent *

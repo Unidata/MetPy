@@ -9,6 +9,7 @@ import pytest
 from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, dry_static_energy,
                         el, equivalent_potential_temperature, isentropic_interpolation,
                         lcl, lfc, mixed_layer, mixed_parcel, mixing_ratio,
+                        mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse,
                         moist_static_energy, most_unstable_cape_cin, most_unstable_parcel,
                         parcel_profile, potential_temperature,
@@ -411,6 +412,15 @@ def test_wet_psychrometric_rh_kwargs():
                                                            wet_bulb_temperature, p,
                                                            psychrometer_coefficient=coeff)
     assert_almost_equal(psychrometric_rh, 82.9701 * units.percent, 3)
+
+
+def test_mixing_ratio_from_relative_humidity():
+    """Tests relative humidity from mixing ratio."""
+    p = 1013.25 * units.mbar
+    temperature = 20. * units.degC
+    rh = 81.7219 * units.percent
+    w = mixing_ratio_from_relative_humidity(rh, temperature, p)
+    assert_almost_equal(w, 0.012 * units.dimensionless, 3)
 
 
 def test_rh_mixing_ratio():
