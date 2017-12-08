@@ -20,7 +20,8 @@ from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, dry
                         saturation_mixing_ratio,
                         saturation_vapor_pressure,
                         specific_humidity_from_mixing_ratio,
-                        surface_based_cape_cin, thickness_hydrostatic, vapor_pressure,
+                        surface_based_cape_cin, thickness_hydrostatic,
+                        thickness_hydrostatic_from_relative_humidity, vapor_pressure,
                         virtual_potential_temperature, virtual_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
@@ -790,3 +791,13 @@ def test_thickness_hydrostatic_isothermal_subset():
     thickness = thickness_hydrostatic(pressure, temperature, bottom=850 * units.hPa,
                                       depth=350 * units.hPa)
     assert_almost_equal(thickness, 4242.68 * units.m, 2)
+
+
+def test_thickness_hydrostatic_from_relative_humidity():
+    """Tests the thickness calculation for a moist layer."""
+    pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
+    relative_humidity = np.array([81.69, 15.43, 18.95, 23.32, 28.36, 18.55]) * units.percent
+    thickness = thickness_hydrostatic_from_relative_humidity(pressure, temperature,
+                                                             relative_humidity)
+    assert_almost_equal(thickness, 9892.07 * units.m, 2)
