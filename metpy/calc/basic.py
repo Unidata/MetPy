@@ -16,7 +16,7 @@ import warnings
 
 import numpy as np
 
-from ..constants import g, omega, Rd
+from ..constants import g, omega, Rd, Re, G, me
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, masked_array, units
 
@@ -255,6 +255,50 @@ def pressure_to_height_std(pressure):
     gamma = 6.5 * units('K/km')
     p0 = 1013.25 * units.mbar
     return (t0 / gamma) * (1 - (pressure / p0).to('dimensionless')**(Rd * gamma / g))
+
+
+@exporter.export
+@check_units('[length]')
+def height_to_geopotential(height):
+    r"""Computes geopotential and geopotential height for a given height in meters
+
+    Parameters
+    ----------
+    height : `pint.Quantity`
+        Height above sea level (array_like)
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding geopotential value(s)
+    `pint.Qantity`
+        The corresponding geopotential height value(s)
+
+    Examples
+    --------
+    >>> from metpy.constants import g,Re,G,me
+    >>> import metpy.calc
+    >>> from metpy.units import units
+    >>> height = np.linspace(0,10000, num = 11) * units.m
+    >>> geopot,geopot_height = metpy.calc.height_to_geopotential(height)
+    >>> geopot
+    <Quantity([     0.           9817.70342881  19632.32592389  29443.86893527
+    39252.33391207  49057.72230251  58860.0355539   68659.27511263
+    78455.4424242   88248.53893319  98038.56608327],
+    'meter ** 2 / second ** 2')>
+
+    >>> geopot_height
+    <Quantity([    0.          1001.12713606  2001.94010431  3002.43905261
+    4002.62412874 5002.49548036  6002.05325508  7001.29760037  8000.22866363
+    8998.84659218  9997.15153322], 'meter')>
+
+    """
+    # Calculate geopotential
+    geopot = G * me * ((1 / Re) - (1 / (Re + height)))
+    # Normalize geopotential by standard gravitational acceleration
+    geopot_height = geopot / g
+
+    return geopot, geopot_height
 
 
 @exporter.export
