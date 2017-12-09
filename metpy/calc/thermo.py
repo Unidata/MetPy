@@ -783,8 +783,9 @@ def mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure
 
     Parameters
     ----------
-    relative_humidity: `pint.Quantity`
-        Relative humidity in percent
+    relative_humidity: array_like
+        The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass
+        a percentage if proper units are attached.
     temperature: `pint.Quantity`
         Air temperature
     pressure: `pint.Quantity`
@@ -799,10 +800,10 @@ def mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure
     -----
     Formula adapted from [Hobbs1977]_ pg. 74.
 
-    .. math:: w = \frac{RH}{100} w_s
+    .. math:: w = (RH)(w_s)
 
     * :math:`w` is mixing ratio
-    * :math:`RH` is relative humidity
+    * :math:`RH` is relative humidity as a unitless ratio
     * :math:`w_s` is the saturation mixing ratio
 
     See Also
@@ -810,8 +811,7 @@ def mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure
     relative_humidity_from_mixing_ratio, saturation_mixing_ratio
 
     """
-    return (relative_humidity / (100 * units.percent) *
-            saturation_mixing_ratio(pressure, temperature))
+    return relative_humidity * saturation_mixing_ratio(pressure, temperature)
 
 
 @exporter.export
@@ -1646,7 +1646,9 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
     temperature : `pint.Quantity`
         Atmospheric temperature profile
     relative_humidity : `pint.Quantity`
-        Atmospheric relative humidity profile
+        Atmospheric relative humidity profile. The relative humidity is expressed as a
+        unitless ratio in the range [0, 1]. Can also pass a percentage if proper units are
+        attached.
     bottom : `pint.Quantity`, optional
         The bottom of the layer in pressure. Defaults to the first observation.
     depth : `pint.Quantity`, optional

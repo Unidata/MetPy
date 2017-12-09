@@ -794,7 +794,7 @@ def test_thickness_hydrostatic_isothermal_subset():
 
 
 def test_thickness_hydrostatic_from_relative_humidity():
-    """Test the thickness calculation for a moist layer."""
+    """Test the thickness calculation for a moist layer using RH data."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     relative_humidity = np.array([81.69, 15.43, 18.95, 23.32, 28.36, 18.55]) * units.percent
