@@ -365,7 +365,7 @@ def test_el_small_surface_instability():
 
 
 def test_no_el_parcel_colder():
-    """Tests no EL when parcel stays colder than environment. INL 20170925-12Z."""
+    """Test no EL when parcel stays colder than environment. INL 20170925-12Z."""
     levels = np.array([974., 946., 925., 877.2, 866., 850., 814.6, 785.,
                        756.6, 739., 729.1, 700., 686., 671., 641., 613.,
                        603., 586., 571., 559.3, 539., 533., 500., 491.,
@@ -416,7 +416,7 @@ def test_wet_psychrometric_rh_kwargs():
 
 
 def test_mixing_ratio_from_relative_humidity():
-    """Tests relative humidity from mixing ratio."""
+    """Test relative humidity from mixing ratio."""
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     rh = 81.7219 * units.percent
@@ -425,7 +425,7 @@ def test_mixing_ratio_from_relative_humidity():
 
 
 def test_rh_mixing_ratio():
-    """Tests relative humidity from mixing ratio."""
+    """Test relative humidity from mixing ratio."""
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     w = 0.012
@@ -434,21 +434,21 @@ def test_rh_mixing_ratio():
 
 
 def test_mixing_ratio_from_specific_humidity():
-    """Tests mixing ratio from specific humidity."""
+    """Test mixing ratio from specific humidity."""
     q = 0.012
     w = mixing_ratio_from_specific_humidity(q)
     assert_almost_equal(w, 0.01215, 3)
 
 
 def test_specific_humidity_from_mixing_ratio():
-    """Tests specific humidity from mixing ratio."""
+    """Test specific humidity from mixing ratio."""
     w = 0.01215
     q = specific_humidity_from_mixing_ratio(w)
     assert_almost_equal(q, 0.01200, 5)
 
 
 def test_rh_specific_humidity():
-    """Tests relative humidity from specific humidity."""
+    """Test relative humidity from specific humidity."""
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
     q = 0.012
@@ -457,7 +457,7 @@ def test_rh_specific_humidity():
 
 
 def test_cape_cin():
-    """Tests the basic CAPE and CIN calculation."""
+    """Test the basic CAPE and CIN calculation."""
     p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
@@ -468,7 +468,7 @@ def test_cape_cin():
 
 
 def test_cape_cin_no_el():
-    """Tests that CAPE works with no EL."""
+    """Test that CAPE works with no EL."""
     p = np.array([959., 779.2, 751.3, 724.3]) * units.mbar
     temperature = np.array([22.2, 14.6, 12., 9.4]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4]) * units.celsius
@@ -479,7 +479,7 @@ def test_cape_cin_no_el():
 
 
 def test_cape_cin_no_lfc():
-    """Tests that CAPE is zero with no LFC."""
+    """Test that CAPE is zero with no LFC."""
     p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
     temperature = np.array([22.2, 24.6, 22., 20.4, 18., -10.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
@@ -490,7 +490,7 @@ def test_cape_cin_no_lfc():
 
 
 def test_find_append_zero_crossings():
-    """Tests finding and appending zero crossings of an x, y series."""
+    """Test finding and appending zero crossings of an x, y series."""
     x = np.arange(11) * units.hPa
     y = np.array([3, 2, 1, -1, 2, 2, 0, 1, 0, -1, 2]) * units.degC
     x2, y2 = _find_append_zero_crossings(x, y)
@@ -503,7 +503,7 @@ def test_find_append_zero_crossings():
 
 
 def test_most_unstable_parcel():
-    """Tests calculating the most unstable parcel."""
+    """Test calculating the most unstable parcel."""
     levels = np.array([1000., 959., 867.9]) * units.mbar
     temperatures = np.array([18.2, 22.2, 17.4]) * units.celsius
     dewpoints = np.array([19., 19., 14.3]) * units.celsius
@@ -695,7 +695,7 @@ def test_isentropic_pressure_4d():
 
 
 def test_surface_based_cape_cin():
-    """Tests the surface-based CAPE and CIN calculation."""
+    """Test the surface-based CAPE and CIN calculation."""
     p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
@@ -705,7 +705,7 @@ def test_surface_based_cape_cin():
 
 
 def test_most_unstable_cape_cin_surface():
-    """Tests the most unstable CAPE/CIN calculation when surface is most unstable."""
+    """Test the most unstable CAPE/CIN calculation when surface is most unstable."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
@@ -715,7 +715,7 @@ def test_most_unstable_cape_cin_surface():
 
 
 def test_most_unstable_cape_cin():
-    """Tests the most unstable CAPE/CIN calculation."""
+    """Test the most unstable CAPE/CIN calculation."""
     pressure = np.array([1000., 959., 867.9, 850., 825., 800.]) * units.mbar
     temperature = np.array([18.2, 22.2, 17.4, 10., 0., 15]) * units.celsius
     dewpoint = np.array([19., 19., 14.3, 0., -10., 0.]) * units.celsius
@@ -725,7 +725,7 @@ def test_most_unstable_cape_cin():
 
 
 def test_mixed_parcel():
-    """Tests the mixed parcel calculation."""
+    """Test the mixed parcel calculation."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.degC
@@ -738,7 +738,7 @@ def test_mixed_parcel():
 
 
 def test_mixed_layer():
-    """Tests the mixed layer calculation."""
+    """Test the mixed layer calculation."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     mixed_layer_temperature = mixed_layer(pressure, temperature, depth=250 * units.hPa)[0]
@@ -746,19 +746,19 @@ def test_mixed_layer():
 
 
 def test_dry_static_energy():
-    """Tests the dry static energy calculation."""
+    """Test the dry static energy calculation."""
     dse = dry_static_energy(1000 * units.m, 25 * units.degC)
     assert_almost_equal(dse, 309.4474 * units('kJ/kg'), 6)
 
 
 def test_moist_static_energy():
-    """Tests the moist static energy calculation."""
+    """Test the moist static energy calculation."""
     mse = moist_static_energy(1000 * units.m, 25 * units.degC, 0.012 * units.dimensionless)
     assert_almost_equal(mse, 339.4594 * units('kJ/kg'), 6)
 
 
 def test_thickness_hydrostatic():
-    """Tests the thickness calculation for a moist layer."""
+    """Test the thickness calculation for a moist layer."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     mixing = np.array([0.01458, 0.00209, 0.00224, 0.00240, 0.00256, 0.00010])
@@ -767,7 +767,7 @@ def test_thickness_hydrostatic():
 
 
 def test_thickness_hydrostatic_subset():
-    """Tests the thickness calculation with a subset of the moist layer."""
+    """Test the thickness calculation with a subset of the moist layer."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     mixing = np.array([0.01458, 0.00209, 0.00224, 0.00240, 0.00256, 0.00010])
@@ -777,7 +777,7 @@ def test_thickness_hydrostatic_subset():
 
 
 def test_thickness_hydrostatic_isothermal():
-    """Tests the thickness calculation for a dry isothermal layer at 0 degC."""
+    """Test the thickness calculation for a dry isothermal layer at 0 degC."""
     pressure = np.arange(1000, 500 - 1e-10, -10) * units.hPa
     temperature = np.zeros_like(pressure) * units.degC
     thickness = thickness_hydrostatic(pressure, temperature)
@@ -785,7 +785,7 @@ def test_thickness_hydrostatic_isothermal():
 
 
 def test_thickness_hydrostatic_isothermal_subset():
-    """Tests the thickness calculation for a dry isothermal layer subset at 0 degC."""
+    """Test the thickness calculation for a dry isothermal layer subset at 0 degC."""
     pressure = np.arange(1000, 500 - 1e-10, -10) * units.hPa
     temperature = np.zeros_like(pressure) * units.degC
     thickness = thickness_hydrostatic(pressure, temperature, bottom=850 * units.hPa,
@@ -794,7 +794,7 @@ def test_thickness_hydrostatic_isothermal_subset():
 
 
 def test_thickness_hydrostatic_from_relative_humidity():
-    """Tests the thickness calculation for a moist layer."""
+    """Test the thickness calculation for a moist layer."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     relative_humidity = np.array([81.69, 15.43, 18.95, 23.32, 28.36, 18.55]) * units.percent
