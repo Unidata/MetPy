@@ -21,6 +21,45 @@ exporter = Exporter(globals())
 
 sat_pressure_0c = 6.112 * units.millibar
 
+@exporter.export
+@check_units('[temperature]', '[temperature]')
+def relative_humidity_from_dewpoint(temperature, dewpt):
+    r""" Calculates the relative humidity
+
+    Uses temperature and dewpoint in celsius to calculate relative
+    humidity using the ratio of vapor pressure to saturation vapor pressures
+    and the Magnus Tetens equation
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+        The temperature
+    dew point : `pint.Quantity`
+        The dew point temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        The relative humidity
+
+    Notes
+    -----
+    Formula:
+    .. math :: e = \exp{(17.269*\frac{T_{d}-273.16}{T_{d}-35.86}})}
+    .. math :: e_{s} = \exp{(17.269*\frac{T-273.16}{T-35.86}})
+
+    .. math :: RH = \frac{e}{e_{s}} * 100
+
+    """
+
+    a = 17.269
+    e = 6.1078 * units.mb * np.exp(a * (dewpt - (273.16 * units.kelvin)) /
+                                   (dewpt - (35.86 * units.kelvin)))
+    e_s = 6.1078 * units.mb * np.exp(a * (temperature - 273.16 * units.kelvin) /
+                                     (temperature - 35.86 * units.kelvin))
+
+    return 100. * (e/e_s) * units.percent
+
 
 @exporter.export
 @check_units('[pressure]', '[temperature]')
