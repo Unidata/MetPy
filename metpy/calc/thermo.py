@@ -23,6 +23,36 @@ sat_pressure_0c = 6.112 * units.millibar
 
 
 @exporter.export
+@check_units('[temperature]', '[temperature]')
+def relative_humidity_from_dewpoint(temperature, dewpt):
+    r"""Calculate the relative humidity.
+
+    Uses temperature and dewpoint in celsius to calculate relative
+    humidity using the ratio of vapor pressure to saturation vapor pressures.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+        The temperature
+    dew point : `pint.Quantity`
+        The dew point temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        The relative humidity
+
+    See Also
+    --------
+    saturation_vapor_pressure
+
+    """
+    e = saturation_vapor_pressure(dewpt)
+    e_s = saturation_vapor_pressure(temperature)
+    return (e / e_s)
+
+
+@exporter.export
 @check_units('[pressure]', '[temperature]')
 def potential_temperature(pressure, temperature):
     r"""Calculate the potential temperature.
