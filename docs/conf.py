@@ -174,6 +174,14 @@ html_theme_options = {'canonical_url': 'https://unidata.github.io/MetPy/latest/'
 if 'sphinx_rtd_theme' in vars() and sphinx_rtd_theme.__version__ == '0.2.5b1.post1':
     html_theme_options['versions'] = {'latest': '../latest', 'dev': '../dev'}
 
+# Extra variables that will be available to the templates. Used to create the
+# links to the Github repository sources and issues
+html_context = {
+    'doc_path': 'docs',
+    'github_repo': 'Unidata/MetPy',
+    'github_version': 'master',  # Make changes to the master branch
+}
+
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []
 
