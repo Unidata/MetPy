@@ -260,7 +260,7 @@ def pressure_to_height_std(pressure):
 @exporter.export
 @check_units('[length]')
 def height_to_geopotential(height):
-    r"""Computes geopotential and geopotential height for a given height in meters
+    r"""Computes geopotential for a given height in meters
 
     Parameters
     ----------
@@ -271,8 +271,6 @@ def height_to_geopotential(height):
     -------
     `pint.Quantity`
         The corresponding geopotential value(s)
-    `pint.Qantity`
-        The corresponding geopotential height value(s)
 
     Examples
     --------
@@ -280,25 +278,54 @@ def height_to_geopotential(height):
     >>> import metpy.calc
     >>> from metpy.units import units
     >>> height = np.linspace(0,10000, num = 11) * units.m
-    >>> geopot,geopot_height = metpy.calc.height_to_geopotential(height)
+    >>> geopot = metpy.calc.height_to_geopotential(height)
     >>> geopot
     <Quantity([     0.           9817.70342881  19632.32592389  29443.86893527
     39252.33391207  49057.72230251  58860.0355539   68659.27511263
     78455.4424242   88248.53893319  98038.56608327],
     'meter ** 2 / second ** 2')>
-
-    >>> geopot_height
-    <Quantity([    0.          1001.12713606  2001.94010431  3002.43905261
-    4002.62412874 5002.49548036  6002.05325508  7001.29760037  8000.22866363
-    8998.84659218  9997.15153322], 'meter')>
-
     """
     # Calculate geopotential
     geopot = G * me * ((1 / Re) - (1 / (Re + height)))
-    # Normalize geopotential by standard gravitational acceleration
-    geopot_height = geopot / g
 
-    return geopot, geopot_height
+    return geopot
+
+
+@exporter.export
+def geopotential_to_height(geopot):
+    r"""Computes height from a given geopotential
+
+    Parameters
+    ----------
+    geopotential : `pint.Quantity`
+        Geopotential (array_like)
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding height value(s)
+
+    Examples
+    --------
+    >>> from metpy.constants import g,Re,G,me
+    >>> import metpy.calc
+    >>> from metpy.units import units
+    >>> height = np.linspace(0,10000, num = 11) * units.m
+    >>> geopot = metpy.calc.height_to_geopotential(height)
+    >>> geopot
+    <Quantity([     0.     9817.70342881  19632.32592389  29443.86893527
+    39252.33391207  49057.72230251  58860.0355539   68659.27511263
+    78455.4424242   88248.53893319  98038.56608327],
+    'meter ** 2 / second ** 2')>
+    >>> height = metpy.calc.geopotential_to_height(geopot)
+    >>> height
+    <Quantity([     0.   1000.   2000.   3000.   4000.   5000.   6000.   7000.
+    8000. 9000.10000.], 'meter')>
+    """
+    # Calculate geopotential
+    height = (((1 / Re) - (geopot / (G * me))) ** -1) - Re
+
+    return height
 
 
 @exporter.export
