@@ -778,6 +778,44 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
 
 @exporter.export
 @check_units('[dimensionless]', '[temperature]', '[pressure]')
+def mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure):
+    r"""Calculate the mixing ratio from relative humidity, temperature, and pressure.
+
+    Parameters
+    ----------
+    relative_humidity: array_like
+        The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass
+        a percentage if proper units are attached.
+    temperature: `pint.Quantity`
+        Air temperature
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Dimensionless mixing ratio
+
+    Notes
+    -----
+    Formula adapted from [Hobbs1977]_ pg. 74.
+
+    .. math:: w = (RH)(w_s)
+
+    * :math:`w` is mixing ratio
+    * :math:`RH` is relative humidity as a unitless ratio
+    * :math:`w_s` is the saturation mixing ratio
+
+    See Also
+    --------
+    relative_humidity_from_mixing_ratio, saturation_mixing_ratio
+
+    """
+    return relative_humidity * saturation_mixing_ratio(pressure, temperature)
+
+
+@exporter.export
+@check_units('[dimensionless]', '[temperature]', '[pressure]')
 def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
     r"""Calculate the relative humidity from mixing ratio, temperature, and pressure.
 
@@ -807,7 +845,7 @@ def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
 
     See Also
     --------
-    saturation_mixing_ratio
+    mixing_ratio_from_relative_humidity, saturation_mixing_ratio
 
     """
     return (100 * units.percent *
@@ -1552,7 +1590,7 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
 
     See Also
     --------
-    pressure_to_height_std, virtual_temperature
+    thickness_hydrostatic_from_relative_humidity, pressure_to_height_std, virtual_temperature
 
     """
     mixing = kwargs.pop('mixing', None)
@@ -1580,3 +1618,57 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
     # Take the integral (with unit handling) and return the result in meters
     return (- Rd / g * np.trapz(layer_virttemp.to('K'), x=np.log(layer_p / units.hPa)) *
             units.K).to('m')
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]')
+def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative_humidity,
+                                                 **kwargs):
+    r"""Calculate the thickness of a layer given pressure, temperature and relative humidity.
+
+    Similar to ``thickness_hydrostatic``, this thickness calculation uses the pressure,
+    temperature, and relative humidity profiles via the hypsometric equation with virtual
+    temperature adjustment.
+
+    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,
+
+    which is based off of Equation 3.24 in [Hobbs2006]_. Virtual temperature is calculated
+    from the profiles of temperature and relative humidity.
+
+    This assumes a hydrostatic atmosphere.
+
+    Layer bottom and depth specified in pressure.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure profile
+    temperature : `pint.Quantity`
+        Atmospheric temperature profile
+    relative_humidity : `pint.Quantity`
+        Atmospheric relative humidity profile. The relative humidity is expressed as a
+        unitless ratio in the range [0, 1]. Can also pass a percentage if proper units are
+        attached.
+    bottom : `pint.Quantity`, optional
+        The bottom of the layer in pressure. Defaults to the first observation.
+    depth : `pint.Quantity`, optional
+        The depth of the layer in hPa. Defaults to the full profile if bottom is not given,
+        and 100 hPa if bottom is given.
+
+    Returns
+    -------
+    `pint.Quantity`
+        The thickness of the layer in meters.
+
+    See Also
+    --------
+    thickness_hydrostatic, pressure_to_height_std, virtual_temperature,
+    mixing_ratio_from_relative_humidity
+
+    """
+    bottom = kwargs.pop('bottom', None)
+    depth = kwargs.pop('depth', None)
+    mixing = mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure)
+
+    return thickness_hydrostatic(pressure, temperature, mixing=mixing, bottom=bottom,
+                                 depth=depth)
