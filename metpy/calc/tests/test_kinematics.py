@@ -6,9 +6,9 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (advection, calc_dx_dy, divergence_vorticity, frontogenesis,
+from metpy.calc import (advection, divergence_vorticity, frontogenesis,
                         geostrophic_wind, get_wind_components, h_divergence,
-                        montgomery_streamfunction, shearing_deformation,
+                        lat_lon_grid_spacing, montgomery_streamfunction, shearing_deformation,
                         shearing_stretching_deformation, storm_relative_helicity,
                         stretching_deformation, total_deformation, v_vorticity)
 from metpy.constants import g, omega, Re
@@ -472,11 +472,11 @@ def test_storm_relative_helicity():
     assert_almost_equal(T_srh, srh_true_t, 2)
 
 
-def test_calc_dx_dy_1d():
-    """Test for calc_dx_dy for variable grid."""
+def test_lat_lon_grid_spacing_1d():
+    """Test for lat_lon_grid_spacing for variable grid."""
     lat = np.arange(40, 50, 2.5)
     lon = np.arange(-100, -90, 2.5)
-    dx, dy = calc_dx_dy(lon, lat)
+    dx, dy = lat_lon_grid_spacing(lon, lat)
     dx_truth = np.array([[212943.5585, 212943.5585, 212943.5585],
                          [204946.2305, 204946.2305, 204946.2305],
                          [196558.8269, 196558.8269, 196558.8269],
@@ -488,12 +488,12 @@ def test_calc_dx_dy_1d():
     assert_almost_equal(dy, dy_truth, 4)
 
 
-def test_calc_dx_dy_2d():
-    """Test for calc_dx_dy for variable grid."""
+def test_lat_lon_grid_spacing_2d():
+    """Test for lat_lon_grid_spacing for variable grid."""
     lat = np.arange(40, 50, 2.5)
     lon = np.arange(-100, -90, 2.5)
     lon, lat = np.meshgrid(lon, lat)
-    dx, dy = calc_dx_dy(lon, lat)
+    dx, dy = lat_lon_grid_spacing(lon, lat)
     dx_truth = np.array([[212943.5585, 212943.5585, 212943.5585],
                          [204946.2305, 204946.2305, 204946.2305],
                          [196558.8269, 196558.8269, 196558.8269],
@@ -504,12 +504,13 @@ def test_calc_dx_dy_2d():
     assert_almost_equal(dx, dx_truth, 4)
     assert_almost_equal(dy, dy_truth, 4)
 
-def test_calc_dx_dy_mismatched_shape():
-    """Test for calc_dx_dy for variable grid."""
+
+def test_lat_lon_grid_spacing_mismatched_shape():
+    """Test for lat_lon_grid_spacing for variable grid."""
     lat = np.arange(40, 50, 2.5)
     lon = np.array([[-100., -97.5, -95., -92.5],
                     [-100., -97.5, -95., -92.5],
                     [-100., -97.5, -95., -92.5],
                     [-100., -97.5, -95., -92.5]])
     with pytest.raises(ValueError):
-        dx, dy = calc_dx_dy(lon, lat)
+        dx, dy = lat_lon_grid_spacing(lon, lat)

@@ -596,7 +596,7 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
 
 
 @exporter.export
-def calc_dx_dy(longitude, latitude, **kwargs):
+def lat_lon_grid_spacing(longitude, latitude, **kwargs):
     r"""Calculate the distance between grid points that are in a latitude/longitude format.
 
     Calculate the distance between grid points when the grid spacing is defined by
@@ -626,7 +626,7 @@ def calc_dx_dy(longitude, latitude, **kwargs):
         raise ValueError('Latitude and longitude must have the same number of dimensions.')
 
     # If we were given 1D arrays, make a mesh grid
-    if latitude.ndim == 1:
+    if latitude.ndim < 2:
         longitude, latitude = np.meshgrid(longitude, latitude)
 
     geod_args = {'ellps': 'sphere'}
