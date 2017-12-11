@@ -52,14 +52,14 @@ def relative_humidity_from_dewpoint(temperature, dewpt):
 
     """
 
-
     a = 17.269
-    e = 6.1078 * units.mb * np.exp(a * (dewpt - (273.16 * units.kelvin))
-        / (dewpt - (35.86 * units.kelvin)))
-    e_s = 6.1078 * units.mb * np.exp(a * (temperature - 273.16 * units.kelvin)
-          / (temperature - 35.86 * units.kelvin))
+    e = 6.1078 * units.mb * np.exp(a * (dewpt - (273.16 * units.kelvin)) /
+                                   (dewpt - (35.86 * units.kelvin)))
+    e_s = 6.1078 * units.mb * np.exp(a * (temperature - 273.16 * units.kelvin) /
+                                     (temperature - 35.86 * units.kelvin))
 
     return 100. * (e/e_s) * units.percent
+
 
 @exporter.export
 @check_units('[pressure]', '[temperature]')

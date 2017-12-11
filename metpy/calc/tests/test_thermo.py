@@ -29,13 +29,13 @@ from metpy.units import units
 def test_relative_humidity_from_dewpoint():
     """Test Relative Humidity calculation"""
     assert_almost_equal(relative_humidity_from_dewpoint(25. * units.degC, 15. * units.degC),
-        53.83 * units.percent, 2)
+                        53.83 * units.percent, 2)
 
 
 def test_relative_humidity_from_dewpoint_with_f():
     """Test Relative Humidity accepts temperature in Fahrenheit"""
     assert_almost_equal(relative_humidity_from_dewpoint(70. * units.degF, 55. * units.degF),
-        58.96 * units.percent, 2)
+                        58.96 * units.percent, 2)
 
 
 def test_potential_temperature():
