@@ -13,7 +13,7 @@ import scipy.optimize as so
 
 from .tools import (_greater_or_close, _less_or_close, broadcast_indices, find_intersections,
                     get_layer, interp)
-from ..constants import Cp_d, epsilon, g, kappa, Lv, P0, Rd, Rv
+from ..constants import Cp_d, epsilon, g, kappa, Lv, P0, Rd
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
 
