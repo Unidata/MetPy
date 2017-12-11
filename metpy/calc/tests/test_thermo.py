@@ -801,3 +801,17 @@ def test_thickness_hydrostatic_from_relative_humidity():
     thickness = thickness_hydrostatic_from_relative_humidity(pressure, temperature,
                                                              relative_humidity)
     assert_almost_equal(thickness, 9892.07 * units.m, 2)
+
+
+def test_mixing_ratio_dimensions():
+    """Verify mixing ratio returns a dimensionless number."""
+    p = 998. * units.mbar
+    e = 73.75 * units.hPa
+    assert str(mixing_ratio(e, p).units) == 'dimensionless'
+
+
+def test_saturation_mixing_ratio_dimensions():
+    """Verify saturation mixing ratio returns a dimensionless number."""
+    p = 998. * units.mbar
+    temp = 20 * units.celsius
+    assert str(saturation_mixing_ratio(p, temp).units) == 'dimensionless'

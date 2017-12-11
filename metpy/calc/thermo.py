@@ -523,7 +523,7 @@ def saturation_mixing_ratio(tot_press, temperature):
         The saturation mixing ratio, dimensionless
 
     """
-    return mixing_ratio(saturation_vapor_pressure(temperature), tot_press).to('dimensionless')
+    return mixing_ratio(saturation_vapor_pressure(temperature), tot_press)
 
 
 @exporter.export
