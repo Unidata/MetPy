@@ -807,11 +807,15 @@ def test_mixing_ratio_dimensions():
     """Verify mixing ratio returns a dimensionless number."""
     p = 998. * units.mbar
     e = 73.75 * units.hPa
-    assert str(mixing_ratio(e, p).units) == 'dimensionless'
+    assert not p.dimensionless
+    assert not e.dimensionless
+    assert mixing_ratio(e, p).dimensionless
 
 
 def test_saturation_mixing_ratio_dimensions():
     """Verify saturation mixing ratio returns a dimensionless number."""
     p = 998. * units.mbar
     temp = 20 * units.celsius
-    assert str(saturation_mixing_ratio(p, temp).units) == 'dimensionless'
+    assert not p.dimensionless
+    assert not temp.dimensionless
+    assert saturation_mixing_ratio(p, temp).dimensionless
