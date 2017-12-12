@@ -1,7 +1,7 @@
 # Copyright (c) 2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Tests for `calc.tools` module."""
+"""Test the `tools` module."""
 
 import numpy as np
 import numpy.ma as ma
@@ -308,7 +308,7 @@ def test_get_layer_float32(flip_order):
 
 
 def test_get_layer_ragged_data():
-    """Tests that error is raised for unequal length pressure and data arrays."""
+    """Test that an error is raised for unequal length pressure and data arrays."""
     p = np.arange(10) * units.hPa
     y = np.arange(9) * units.degC
     with pytest.raises(ValueError):
@@ -316,7 +316,7 @@ def test_get_layer_ragged_data():
 
 
 def test_get_layer_invalid_depth_units():
-    """Tests that error is raised when depth has invalid units."""
+    """Test that an error is raised when depth has invalid units."""
     p = np.arange(10) * units.hPa
     y = np.arange(9) * units.degC
     with pytest.raises(ValueError):
@@ -342,7 +342,7 @@ def layer_test_data():
       np.array([7.93049516, 0., -8.33333333, -13.14758845]) * units.degC))
 ])
 def test_get_layer(pressure, variable, heights, bottom, depth, interp, expected):
-    """Tests get_layer functionality."""
+    """Test get_layer functionality."""
     p_layer, y_layer = get_layer(pressure, variable, heights=heights, bottom=bottom,
                                  depth=depth, interpolate=interp)
     assert_array_almost_equal(p_layer, expected[0], 5)
