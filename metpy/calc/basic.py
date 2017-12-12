@@ -1,14 +1,14 @@
 # Copyright (c) 2008,2015,2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-'''Contains a collection of basic calculations.
+"""Contains a collection of basic calculations.
 
 These include:
 
 * wind components
 * heat index
 * windchill
-'''
+"""
 
 from __future__ import division
 
@@ -25,7 +25,7 @@ exporter = Exporter(globals())
 
 @exporter.export
 def get_wind_speed(u, v):
-    r'''Compute the wind speed from u and v-components.
+    r"""Compute the wind speed from u and v-components.
 
     Parameters
     ----------
@@ -43,14 +43,14 @@ def get_wind_speed(u, v):
     --------
     get_wind_components
 
-    '''
+    """
     speed = np.sqrt(u * u + v * v)
     return speed
 
 
 @exporter.export
 def get_wind_dir(u, v):
-    r'''Compute the wind direction from u and v-components.
+    r"""Compute the wind direction from u and v-components.
 
     Parameters
     ----------
@@ -69,7 +69,7 @@ def get_wind_dir(u, v):
     --------
     get_wind_components
 
-    '''
+    """
     wdir = 90. * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
     wdir = atleast_1d(wdir)
@@ -79,7 +79,7 @@ def get_wind_dir(u, v):
 
 @exporter.export
 def get_wind_components(speed, wdir):
-    r'''Calculate the U, V wind vector components from the speed and direction.
+    r"""Calculate the U, V wind vector components from the speed and direction.
 
     Parameters
     ----------
@@ -107,7 +107,7 @@ def get_wind_components(speed, wdir):
     (<Quantity(7.071067811865475, 'meter / second')>,
      <Quantity(7.071067811865477, 'meter / second')>)
 
-    '''
+    """
     wdir = _check_radians(wdir, max_radians=4 * np.pi)
     u = -speed * np.sin(wdir)
     v = -speed * np.cos(wdir)
@@ -117,7 +117,7 @@ def get_wind_components(speed, wdir):
 @exporter.export
 @check_units(temperature='[temperature]', speed='[speed]')
 def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
-    r'''Calculate the Wind Chill Temperature Index (WCTI).
+    r"""Calculate the Wind Chill Temperature Index (WCTI).
 
     Calculates WCTI from the current temperature and wind speed using the formula
     outlined by the FCM [FCMR192003]_.
@@ -154,7 +154,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     --------
     heat_index
 
-    '''
+    """
     # Correct for lower height measurement of winds if necessary
     if face_level_winds:
         # No in-place so that we copy
@@ -178,7 +178,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 @exporter.export
 @check_units('[temperature]')
 def heat_index(temperature, rh, mask_undefined=True):
-    r'''Calculate the Heat Index from the current temperature and relative humidity.
+    r"""Calculate the Heat Index from the current temperature and relative humidity.
 
     The implementation uses the formula outlined in [Rothfusz1990]_. This equation is a
     multi-variable least-squares regression of the values obtained in [Steadman1979]_.
@@ -208,7 +208,7 @@ def heat_index(temperature, rh, mask_undefined=True):
     --------
     windchill
 
-    '''
+    """
     delta = temperature - 0. * units.degF
     rh2 = rh * rh
     delta2 = delta * delta
@@ -232,7 +232,7 @@ def heat_index(temperature, rh, mask_undefined=True):
 @exporter.export
 @check_units('[pressure]')
 def pressure_to_height_std(pressure):
-    r'''Convert pressure data to heights using the U.S. standard atmosphere.
+    r"""Convert pressure data to heights using the U.S. standard atmosphere.
 
     The implementation uses the formula outlined in [Hobbs1977]_ pg.60-61.
 
@@ -250,7 +250,7 @@ def pressure_to_height_std(pressure):
     -----
     .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]
 
-    '''
+    """
     t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
     p0 = 1013.25 * units.mbar
@@ -260,7 +260,7 @@ def pressure_to_height_std(pressure):
 @exporter.export
 @check_units('[length]')
 def height_to_geopotential(height):
-    r'''Compute geopotential for a given height.
+    r"""Compute geopotential for a given height.
 
     Parameters
     ----------
@@ -289,7 +289,7 @@ def height_to_geopotential(height):
     -----
     Derived from definition of geopotential in [Hobbs2006]_ pg.14 Eq.1.8.
 
-    '''
+    """
     # Calculate geopotential
     geopot = G * me * ((1 / Re) - (1 / (Re + height)))
 
@@ -298,7 +298,7 @@ def height_to_geopotential(height):
 
 @exporter.export
 def geopotential_to_height(geopot):
-    r'''Compute height from a given geopotential.
+    r"""Compute height from a given geopotential.
 
     Parameters
     ----------
@@ -331,7 +331,7 @@ def geopotential_to_height(geopot):
     -----
     Derived from definition of geopotential in [Hobbs2006]_ pg.14 Eq.1.8.
 
-    '''
+    """
     # Calculate geopotential
     height = (((1 / Re) - (geopot / (G * me))) ** -1) - Re
 
@@ -341,7 +341,7 @@ def geopotential_to_height(geopot):
 @exporter.export
 @check_units('[length]')
 def height_to_pressure_std(height):
-    r'''Convert height data to pressures using the U.S. standard atmosphere.
+    r"""Convert height data to pressures using the U.S. standard atmosphere.
 
     The implementation inverts the formula outlined in [Hobbs1977]_ pg.60-61.
 
@@ -359,7 +359,7 @@ def height_to_pressure_std(height):
     -----
     .. math:: p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}
 
-    '''
+    """
     t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
     p0 = 1013.25 * units.mbar
@@ -368,7 +368,7 @@ def height_to_pressure_std(height):
 
 @exporter.export
 def coriolis_parameter(latitude):
-    r'''Calculate the coriolis parameter at each point.
+    r"""Calculate the coriolis parameter at each point.
 
     The implementation uses the formula outlined in [Hobbs1977]_ pg.370-371.
 
@@ -382,7 +382,7 @@ def coriolis_parameter(latitude):
     `pint.Quantity`
         The corresponding coriolis force at each point
 
-    '''
+    """
     latitude = _check_radians(latitude, max_radians=np.pi / 2)
     return 2. * omega * np.sin(latitude)
 
@@ -390,7 +390,7 @@ def coriolis_parameter(latitude):
 @exporter.export
 @check_units('[pressure]', '[length]')
 def add_height_to_pressure(pressure, height):
-    r'''Calculate the pressure at a certain height above another pressure level.
+    r"""Calculate the pressure at a certain height above another pressure level.
 
     This assumes a standard atmosphere.
 
@@ -410,7 +410,7 @@ def add_height_to_pressure(pressure, height):
     --------
     pressure_to_height_std, height_to_pressure_std, add_pressure_to_height
 
-    '''
+    """
     pressure_level_height = pressure_to_height_std(pressure)
     return height_to_pressure_std(pressure_level_height + height)
 
@@ -418,7 +418,7 @@ def add_height_to_pressure(pressure, height):
 @exporter.export
 @check_units('[length]', '[pressure]')
 def add_pressure_to_height(height, pressure):
-    r'''Calculate the height at a certain pressure above another height.
+    r"""Calculate the height at a certain pressure above another height.
 
     This assumes a standard atmosphere.
 
@@ -438,7 +438,7 @@ def add_pressure_to_height(height, pressure):
     --------
     pressure_to_height_std, height_to_pressure_std, add_height_to_pressure
 
-    '''
+    """
     pressure_at_height = height_to_pressure_std(height)
     return pressure_to_height_std(pressure_at_height - pressure)
 
@@ -446,7 +446,7 @@ def add_pressure_to_height(height, pressure):
 @exporter.export
 @check_units('[dimensionless]', '[pressure]', '[pressure]')
 def sigma_to_pressure(sigma, psfc, ptop):
-    r'''Calculate pressure from sigma values.
+    r"""Calculate pressure from sigma values.
 
     Parameters
     ----------
@@ -475,7 +475,7 @@ def sigma_to_pressure(sigma, psfc, ptop):
     * :math:`p_{sfc}` is pressure at the surface or model floor
     * :math:`p_{top}` is pressure at the top of the model domain
 
-    '''
+    """
     if np.any(sigma < 0) or np.any(sigma > 1):
         raise ValueError('Sigma values should be bounded by 0 and 1')
 
@@ -486,7 +486,7 @@ def sigma_to_pressure(sigma, psfc, ptop):
 
 
 def _check_radians(value, max_radians=2 * np.pi):
-    '''Input validation of values that could be in degrees instead of radians.
+    """Input validation of values that could be in degrees instead of radians.
 
     Parameters
     ----------
@@ -501,7 +501,7 @@ def _check_radians(value, max_radians=2 * np.pi):
     `pint.Quantity`
         The input value
 
-    '''
+    """
     try:
         value = value.to('radians').m
     except AttributeError:
