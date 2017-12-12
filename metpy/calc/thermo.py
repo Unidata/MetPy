@@ -1682,3 +1682,4 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
 
     return thickness_hydrostatic(pressure, temperature, mixing=mixing, bottom=bottom,
                                  depth=depth)
+
