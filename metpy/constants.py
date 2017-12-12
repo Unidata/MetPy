@@ -6,9 +6,9 @@ r"""A collection of meteorologically significant constants.
 
 Earth
 -----
-======================== =============== =========== ======================================= ======================================
+======================== =============== =========== ======================================= ========================================
 Name                     Symbol          Short Name  Units                                   Description
------------------------- --------------- ----------- --------------------------------------- --------------------------------------
+------------------------ --------------- ----------- --------------------------------------- ----------------------------------------
 earth_avg_radius         :math:`R_e`     Re          :math:`\text{m}`                        Avg. radius of the Earth
 earth_gravity            :math:`g`       g           :math:`\text{m s}^{-2}`                 Avg. gravity acceleration on Earth
 gravitational_constant   :math:`G`       G           :math:`\text{m}^{3} {kg}^{-1} {s}^{-2}` Gravitational constant
@@ -18,7 +18,7 @@ earth_solar_irradiance   :math:`S`       S           :math:`\text{W m}^{-2}`    
 earth_max_declination    :math:`\delta`  delta       :math:`\text{degrees}`                  Max. solar declination angle of Earth
 earth_orbit_eccentricity :math:`e`                   :math:`\text{None}`                     Avg. eccentricity of Earth's orbit
 earth_mass               :math:`m_e`     me          :math:`\text{kg}`                       Total mass of the Earth (approx)
-======================== =============== =========== ======================================= =======================================
+======================== =============== =========== ======================================= ========================================
 
 Water
 -----
@@ -72,7 +72,9 @@ with exporter:
     earth_gravity = g = units.Quantity(1.0, units.gravity).to('m / s^2')
     # Taken from GEMPAK constants
     Re = earth_avg_radius = 6.3712e6 * units.m
-    G = gravitational_constant = units.Quantity(6.674e-11, 'm^3 / kg / s^2')
+    G = gravit_constant = units.Quantity(1, units.
+                                         newtonian_constant_of_gravitation) \
+        .to('m^3 / kg / s^2')
     omega = earth_avg_angular_vel = 2 * units.pi / units.sidereal_day
     d = earth_sfc_avg_dist_sun = 1.496e11 * units.m
     S = earth_solar_irradiance = units.Quantity(1.368e3, 'W / m^2')
