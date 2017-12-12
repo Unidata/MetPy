@@ -13,7 +13,7 @@ from metpy.calc import (bulk_shear, bunkers_storm_motion, mean_pressure_weighted
 from metpy.deprecation import MetpyDeprecationWarning
 from metpy.io import get_upper_air_data
 from metpy.io.upperair import UseSampleData
-from metpy.testing import assert_almost_equal, assert_array_equal
+from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import concatenate, units
 
 warnings.simplefilter('ignore', MetpyDeprecationWarning)
@@ -49,7 +49,7 @@ def test_precipitable_water_bound_error():
                          -86.5, -88.1]) * units.degC
     pw = precipitable_water(dewpoint, pressure)
     truth = 89.86955998646951 * units('millimeters')
-    assert_array_equal(pw, truth)
+    assert_array_almost_equal(pw, truth)
 
 
 def test_mean_pressure_weighted():

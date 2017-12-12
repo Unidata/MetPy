@@ -499,7 +499,7 @@ def mixing_ratio(part_press, tot_press, molecular_weight_ratio=epsilon):
     saturation_mixing_ratio, vapor_pressure
 
     """
-    return molecular_weight_ratio * part_press / (tot_press - part_press)
+    return (molecular_weight_ratio * part_press / (tot_press - part_press)).to('dimensionless')
 
 
 @exporter.export
