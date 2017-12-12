@@ -9,7 +9,7 @@ import pytest
 from metpy.calc import (add_height_to_pressure, add_pressure_to_height, coriolis_parameter,
                         get_wind_components, get_wind_dir, get_wind_speed, heat_index,
                         height_to_pressure_std, pressure_to_height_std, sigma_to_pressure,
-                        windchill)
+                        windchill, height_to_geopotential, geopotential_to_height)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -193,6 +193,22 @@ def test_heat_index_ratio():
     rh = 0.7
     hi = heat_index(temp, rh)
     assert_almost_equal(hi.to('degC'), units.Quantity([50.3405, np.nan], units.degC), 4)
+
+
+def test_height_to_geopotential():
+    """Test conversion from height to geopotential."""
+    height = units.Quantity([0, 1000, 2000, 3000], units.m)
+    geopot = height_to_geopotential(height)
+    assert_array_almost_equal(geopot, units.Quantity([0., 9817, 19632,
+                              29443], units('m**2 / second**2')), 0)
+
+
+def test_geopotential_to_height():
+    """Test conversion from geopotential to height."""
+    geopotential = units.Quantity([0, 9817.70342881, 19632.32592389,
+                                  29443.86893527], units('m**2 / second**2'))
+    height = geopotential_to_height(geopotential)
+    assert_array_almost_equal(height, units.Quantity([0, 1000, 2000, 3000], units.m), 0)
 
 # class TestIrrad(object):
 #    def test_basic(self):
