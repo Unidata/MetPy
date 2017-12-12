@@ -108,7 +108,7 @@ def ensure_yx_order(func):
 
 @exporter.export
 @ensure_yx_order
-def v_vorticity(u, v, dx, dy):
+def vorticity(u, v, dx, dy):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
@@ -131,7 +131,7 @@ def v_vorticity(u, v, dx, dy):
 
     See Also
     --------
-    h_divergence, divergence_vorticity
+    divergence, divergence_vorticity
 
     """
     _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
@@ -140,7 +140,7 @@ def v_vorticity(u, v, dx, dy):
 
 @exporter.export
 @ensure_yx_order
-def h_divergence(u, v, dx, dy):
+def divergence(u, v, dx, dy):
     r"""Calculate the horizontal divergence of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
@@ -163,7 +163,7 @@ def h_divergence(u, v, dx, dy):
 
     See Also
     --------
-    v_vorticity, divergence_vorticity
+    vorticity, divergence_vorticity
 
     """
     dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
@@ -195,7 +195,7 @@ def divergence_vorticity(u, v, dx, dy):
 
     See Also
     --------
-    v_vorticity, h_divergence
+    vorticity, divergence
 
     Notes
     -----
@@ -450,7 +450,7 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     tdef = total_deformation(u, v, dx, dy, dim_order=dim_order)
 
     # Get the divergence of the wind field
-    div = h_divergence(u, v, dx, dy, dim_order=dim_order)
+    div = divergence(u, v, dx, dy, dim_order=dim_order)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
