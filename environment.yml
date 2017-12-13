@@ -13,6 +13,7 @@ dependencies:
   - jupyter
   - sphinx
   - sphinx-gallery
+  - sphinx_rtd_theme
   - pytest>=2.4
   - pytest-cov
   - pytest-flake8
