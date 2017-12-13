@@ -36,7 +36,7 @@ def test_relative_humidity_from_dewpoint():
 def test_relative_humidity_from_dewpoint_with_f():
     """Test Relative Humidity accepts temperature in Fahrenheit."""
     assert_almost_equal(relative_humidity_from_dewpoint(70. * units.degF, 55. * units.degF),
-                        58.95 * units.percent, 2)
+                        58.935 * units.percent, 3)
 
 
 def test_potential_temperature():
