@@ -6,12 +6,12 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (advection, divergence, divergence_vorticity, frontogenesis,
-                        geostrophic_wind, get_wind_components,  lat_lon_grid_spacing,
-                        montgomery_streamfunction, shearing_deformation,
-                        shearing_stretching_deformation, storm_relative_helicity,
-                        stretching_deformation, total_deformation, vorticity)
-
+from metpy.calc import (advection, convergence, convergence_vorticity, divergence,
+                        divergence_vorticity, frontogenesis, geostrophic_wind,
+                        get_wind_components, lat_lon_grid_spacing, montgomery_streamfunction,
+                        shearing_deformation, shearing_stretching_deformation,
+                        storm_relative_helicity, stretching_deformation, total_deformation,
+                        v_vorticity, vorticity)
 from metpy.constants import g, omega, Re
 from metpy.testing import assert_almost_equal, assert_array_equal
 from metpy.units import concatenate, units
@@ -515,3 +515,32 @@ def test_lat_lon_grid_spacing_mismatched_shape():
                     [-100., -97.5, -95., -92.5]])
     with pytest.raises(ValueError):
         dx, dy = lat_lon_grid_spacing(lon, lat)
+
+
+def test_v_vorticity():
+    """Test that v_vorticity wrapper works (deprecated in 0.7)."""
+    a = np.arange(3)
+    u = np.c_[a, a, a] * units('m/s')
+    v = v_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    true_v = np.ones_like(u) / units.sec
+    assert_array_equal(v, true_v)
+
+
+def test_convergence():
+    """Test that convergence wrapper works (deprecated in 0.7)."""
+    a = np.arange(3)
+    u = np.c_[a, a, a] * units('m/s')
+    c = convergence(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    true_c = np.ones_like(u) / units.sec
+    assert_array_equal(c, true_c)
+
+
+def test_convergence_vorticity():
+    """Test that convergence_vorticity wrapper works (deprecated in 0.7)."""
+    a = np.arange(3)
+    u = np.c_[a, a, a] * units('m/s')
+    c, v = convergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    true_c = np.ones_like(u) / units.sec
+    true_v = np.ones_like(u) / units.sec
+    assert_array_equal(c, true_c)
+    assert_array_equal(v, true_v)
