@@ -7,9 +7,9 @@ import numpy as np
 import pytest
 
 from metpy.calc import (add_height_to_pressure, add_pressure_to_height, coriolis_parameter,
-                        get_wind_components, get_wind_dir, get_wind_speed, heat_index,
-                        height_to_pressure_std, pressure_to_height_std, sigma_to_pressure,
-                        windchill, height_to_geopotential, geopotential_to_height)
+                        geopotential_to_height, get_wind_components, get_wind_dir, get_wind_speed,
+                        heat_index, height_to_geopotential, height_to_pressure_std,
+                        pressure_to_height_std, sigma_to_pressure, windchill)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
