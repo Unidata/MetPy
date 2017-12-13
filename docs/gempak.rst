@@ -685,11 +685,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">RELH(TMPC, DWPT)</td>
-        <td class="tg-notimplemented">Relative humidity</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/648">Issue #648</a></td>
+        <td class="tg-implemented">RELH(TMPC, DWPT)</td>
+        <td class="tg-implemented">Relative humidity</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint">metpy.calc.relative_humidity_from_dewpoint</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
