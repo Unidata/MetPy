@@ -40,7 +40,7 @@ def potential_temperature(pressure, temperature):
     Returns
     -------
     `pint.Quantity`
-        The potential temperature corresponding to the the temperature and
+        The potential temperature corresponding to the temperature and
         pressure.
 
     See Also
@@ -114,7 +114,7 @@ def moist_lapse(pressure, temperature):
     Returns
     -------
     `pint.Quantity`
-       The temperature corresponding to the the starting temperature and
+       The temperature corresponding to the starting temperature and
        pressure levels.
 
     See Also
