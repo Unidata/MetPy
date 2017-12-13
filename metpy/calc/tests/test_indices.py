@@ -49,7 +49,7 @@ def test_precipitable_water_bound_error():
                          -86.5, -88.1]) * units.degC
     pw = precipitable_water(dewpoint, pressure)
     truth = 89.86955998646951 * units('millimeters')
-    assert_array_equal(pw, truth)
+    assert_almost_equal(pw, truth, 8)
 
 
 def test_mean_pressure_weighted():
