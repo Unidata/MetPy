@@ -157,7 +157,7 @@ def kinematic_flux(vel, b, perturbation=False, axis=-1):
 
     .. math:: \overline{u^{\prime} w^{\prime}}
 
-    or the the vertical kinematic heat flux (one velocity component, and one
+    or the vertical kinematic heat flux (one velocity component, and one
     scalar):
 
     .. math:: \overline{w^{\prime} T^{\prime}}
