@@ -20,6 +20,7 @@
    examples/index
    tutorials/index
    api/index
+   gempak
    developerguide
    CONTRIBUTING
    citing
