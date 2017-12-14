@@ -23,6 +23,36 @@ sat_pressure_0c = 6.112 * units.millibar
 
 
 @exporter.export
+@check_units('[temperature]', '[temperature]')
+def relative_humidity_from_dewpoint(temperature, dewpt):
+    r"""Calculate the relative humidity.
+
+    Uses temperature and dewpoint in celsius to calculate relative
+    humidity using the ratio of vapor pressure to saturation vapor pressures.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+        The temperature
+    dew point : `pint.Quantity`
+        The dew point temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        The relative humidity
+
+    See Also
+    --------
+    saturation_vapor_pressure
+
+    """
+    e = saturation_vapor_pressure(dewpt)
+    e_s = saturation_vapor_pressure(temperature)
+    return (e / e_s)
+
+
+@exporter.export
 @check_units('[pressure]', '[temperature]')
 def potential_temperature(pressure, temperature):
     r"""Calculate the potential temperature.
@@ -40,7 +70,7 @@ def potential_temperature(pressure, temperature):
     Returns
     -------
     `pint.Quantity`
-        The potential temperature corresponding to the the temperature and
+        The potential temperature corresponding to the temperature and
         pressure.
 
     See Also
@@ -114,7 +144,7 @@ def moist_lapse(pressure, temperature):
     Returns
     -------
     `pint.Quantity`
-       The temperature corresponding to the the starting temperature and
+       The temperature corresponding to the starting temperature and
        pressure levels.
 
     See Also
@@ -712,9 +742,9 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
 
     Notes
     -----
-    .. math:: RH = 100 \frac{e}{e_s}
+    .. math:: RH = \frac{e}{e_s}
 
-    * :math:`RH` is relative humidity
+    * :math:`RH` is relative humidity as a unitless ratio
     * :math:`e` is vapor pressure from the wet psychrometric calculation
     * :math:`e_s` is the saturation vapor pressure
 
@@ -723,8 +753,8 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
     psychrometric_vapor_pressure_wet, saturation_vapor_pressure
 
     """
-    return (100 * units.percent * psychrometric_vapor_pressure_wet(dry_bulb_temperature,
-            web_bulb_temperature, pressure, **kwargs) /
+    return (psychrometric_vapor_pressure_wet(dry_bulb_temperature, web_bulb_temperature,
+                                             pressure, **kwargs) /
             saturation_vapor_pressure(dry_bulb_temperature))
 
 
@@ -836,11 +866,11 @@ def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
 
     Notes
     -----
-    Formula from [Hobbs1977]_ pg. 74.
+    Formula based on that from [Hobbs1977]_ pg. 74.
 
-    .. math:: RH = 100 \frac{w}{w_s}
+    .. math:: RH = \frac{w}{w_s}
 
-    * :math:`RH` is relative humidity
+    * :math:`RH` is relative humidity as a unitless ratio
     * :math:`w` is mixing ratio
     * :math:`w_s` is the saturation mixing ratio
 
@@ -849,8 +879,7 @@ def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
     mixing_ratio_from_relative_humidity, saturation_mixing_ratio
 
     """
-    return (100 * units.percent *
-            mixing_ratio / saturation_mixing_ratio(pressure, temperature))
+    return mixing_ratio / saturation_mixing_ratio(pressure, temperature)
 
 
 @exporter.export
@@ -946,11 +975,11 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
 
     Notes
     -----
-    Formula from [Hobbs1977]_ pg. 74. and [Salby1996]_ pg. 118.
+    Formula based on that from [Hobbs1977]_ pg. 74. and [Salby1996]_ pg. 118.
 
-    .. math:: RH = 100 \frac{q}{(1-q)w_s}
+    .. math:: RH = \frac{q}{(1-q)w_s}
 
-    * :math:`RH` is relative humidity
+    * :math:`RH` is relative humidity as a unitless ratio
     * :math:`q` is specific humidity
     * :math:`w_s` is the saturation mixing ratio
 
@@ -959,8 +988,7 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
     relative_humidity_from_mixing_ratio
 
     """
-    return (100 * units.percent *
-            mixing_ratio_from_specific_humidity(specific_humidity) /
+    return (mixing_ratio_from_specific_humidity(specific_humidity) /
             saturation_mixing_ratio(pressure, temperature))
 
 

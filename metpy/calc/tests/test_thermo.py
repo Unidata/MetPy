@@ -14,6 +14,7 @@ from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, dry
                         moist_static_energy, most_unstable_cape_cin, most_unstable_parcel,
                         parcel_profile, potential_temperature,
                         psychrometric_vapor_pressure_wet,
+                        relative_humidity_from_dewpoint,
                         relative_humidity_from_mixing_ratio,
                         relative_humidity_from_specific_humidity,
                         relative_humidity_wet_psychrometric,
@@ -26,6 +27,18 @@ from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, dry
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import units
+
+
+def test_relative_humidity_from_dewpoint():
+    """Test Relative Humidity calculation."""
+    assert_almost_equal(relative_humidity_from_dewpoint(25. * units.degC, 15. * units.degC),
+                        53.80 * units.percent, 2)
+
+
+def test_relative_humidity_from_dewpoint_with_f():
+    """Test Relative Humidity accepts temperature in Fahrenheit."""
+    assert_almost_equal(relative_humidity_from_dewpoint(70. * units.degF, 55. * units.degF),
+                        58.935 * units.percent, 3)
 
 
 def test_potential_temperature():
