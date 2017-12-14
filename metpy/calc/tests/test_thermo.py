@@ -434,14 +434,14 @@ def test_rh_mixing_ratio():
 
 
 def test_mixing_ratio_from_specific_humidity():
-    """Tests mixing ratio from specific humidity."""
+    """Test mixing ratio from specific humidity."""
     q = 0.012 * units.dimensionless
     w = mixing_ratio_from_specific_humidity(q)
     assert_almost_equal(w, 0.01215, 3)
 
 
 def test_specific_humidity_from_mixing_ratio():
-    """Tests specific humidity from mixing ratio."""
+    """Test specific humidity from mixing ratio."""
     w = 0.01215 * units.dimensionless
     q = specific_humidity_from_mixing_ratio(w)
     assert_almost_equal(q, 0.01200, 5)
