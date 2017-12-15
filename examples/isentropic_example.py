@@ -86,7 +86,7 @@ isent_anal = mcalc.isentropic_interpolation(isentlevs,
 # plotting.
 
 
-isentprs, isenttmp, isentspech, isentu, isentv, isenthgt =  isent_anal[0]
+isentprs, isenttmp, isentspech, isentu, isentv, isenthgt = isent_anal[0]
 isentu.ito('kt')
 isentv.ito('kt')
 
@@ -213,4 +213,3 @@ plt.title('{:.0f} K Montgomery Streamfunction '.format(isentlevs[level].m) +
 plt.title('VALID: {:s}'.format(str(vtimes[0])), loc='right')
 plt.tight_layout()
 plt.show()
-
