@@ -86,7 +86,7 @@ isent_anal = mcalc.isentropic_interpolation(isentlevs,
 # plotting.
 
 
-isentprs, isenttmp, isentspech, isentu, isentv, isenthgt = isent_anal[0]
+isentprs, isenttmp, isentspech, isentu, isentv, isenthgt = isent_anal
 isentu.ito('kt')
 isentv.ito('kt')
 
