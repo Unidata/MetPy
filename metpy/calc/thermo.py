@@ -529,7 +529,8 @@ def mixing_ratio(part_press, tot_press, molecular_weight_ratio=epsilon):
     saturation_mixing_ratio, vapor_pressure
 
     """
-    return (molecular_weight_ratio * part_press / (tot_press - part_press)).to('dimensionless')
+    return (molecular_weight_ratio *
+            part_press / (tot_press - part_press)).to('dimensionless')
 
 
 @exporter.export
@@ -566,7 +567,7 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
 
     First, the LCL temperature is calculated:
 
-    .. math:: T_{L}=\frac{1}{\frac{1}{T_{D}-56}+\frac{(T_{K}/T_{D})}{800}}+56
+    .. math:: T_{L}=\frac{1}{\frac{1}{T_{D}-56}+\frac{ln(T_{K}/T_{D})}{800}}+56
 
     Which is then used to calculate the potential temperature at the LCL:
 
@@ -575,8 +576,8 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
 
     Both of these are used to calculate the final equivalent potential temperature:
 
-    .. math:: \theta_{E}=\theta_{DL}\exp[\left(\left\frac{3036.}{T_{L}}
-                                        -1.78\right)*r(1+.448r)\right]
+    .. math:: \theta_{E}=\theta_{DL}\exp\left[\left(\frac{3036.}{T_{L}}
+                                              -1.78\right)*r(1+.448r)\right]
 
     Parameters
     ----------
@@ -870,7 +871,7 @@ def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
     .. math:: RH = \frac{w}{w_s}
 
     * :math:`RH` is relative humidity as a unitless ratio
-    * :math:`w` is mxing ratio
+    * :math:`w` is mixing ratio
     * :math:`w_s` is the saturation mixing ratio
 
     See Also
@@ -910,6 +911,10 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
     mixing_ratio, specific_humidity_from_mixing_ratio
 
     """
+    try:
+        specific_humidity = specific_humidity.to('dimensionless')
+    except AttributeError:
+        pass
     return specific_humidity / (1 - specific_humidity)
 
 
@@ -942,6 +947,10 @@ def specific_humidity_from_mixing_ratio(mixing_ratio):
     mixing_ratio, mixing_ratio_from_specific_humidity
 
     """
+    try:
+        mixing_ratio = mixing_ratio.to('dimensionless')
+    except AttributeError:
+        pass
     return mixing_ratio / (1 + mixing_ratio)
 
 
@@ -1573,7 +1582,8 @@ def moist_static_energy(heights, temperature, specific_humidity):
         The moist static energy
 
     """
-    return (dry_static_energy(heights, temperature) + Lv * specific_humidity).to('kJ/kg')
+    return (dry_static_energy(heights, temperature) +
+            Lv * specific_humidity.to('dimensionless')).to('kJ/kg')
 
 
 @exporter.export

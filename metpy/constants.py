@@ -104,8 +104,8 @@ with exporter:
 
     # General meteorology constants
     P0 = pot_temp_ref_press = 1000. * units.mbar
-    kappa = poisson_exponent = Rd / Cp_d
+    kappa = poisson_exponent = (Rd / Cp_d).to('dimensionless')
     gamma_d = dry_adiabatic_lapse_rate = g / Cp_d
-    epsilon = molecular_weight_ratio = Mw / Md
+    epsilon = molecular_weight_ratio = (Mw / Md).to('dimensionless')
 
 del Exporter
