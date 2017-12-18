@@ -72,9 +72,9 @@ with exporter:
     earth_gravity = g = units.Quantity(1.0, units.gravity).to('m / s^2')
     # Taken from GEMPAK constants
     Re = earth_avg_radius = 6.3712e6 * units.m
-    G = gravitational_constant = units.Quantity(1, units.
-                                                newtonian_constant_of_gravitation) \
-        .to('m^3 / kg / s^2')
+    G = gravitational_constant = (units.Quantity(1, units.
+                                                 newtonian_constant_of_gravitation)
+                                  .to('m^3 / kg / s^2'))
     omega = earth_avg_angular_vel = 2 * units.pi / units.sidereal_day
     d = earth_sfc_avg_dist_sun = 1.496e11 * units.m
     S = earth_solar_irradiance = units.Quantity(1.368e3, 'W / m^2')
