@@ -8,6 +8,7 @@ import functools
 import warnings
 
 import numpy as np
+from pyproj import Geod
 
 from ..calc.tools import get_layer_heights
 from ..cbook import is_string_like, iterable
@@ -592,3 +593,47 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
     return (positive_srh.to('meter ** 2 / second ** 2'),
             negative_srh.to('meter ** 2 / second ** 2'),
             (positive_srh + negative_srh).to('meter ** 2 / second ** 2'))
+
+
+@exporter.export
+def lat_lon_grid_spacing(longitude, latitude, **kwargs):
+    r"""Calculate the distance between grid points that are in a latitude/longitude format.
+
+    Calculate the distance between grid points when the grid spacing is defined by
+    delta lat/lon rather than delta x/y
+
+    Parameters
+    ----------
+    longitude : array_like
+        array of longitudes defining the grid
+    latitude : array_like
+        array of latitudes defining the grid
+    kwargs
+        Other keyword arguments to pass to :class:`~pyproj.Geod`
+
+    Returns
+    -------
+     dx, dy: 2D arrays of distances between grid points in the x and y direction
+
+    Notes
+    -----
+    Accepts, 1D or 2D arrays for latitude and longitude
+    Assumes [Y, X] for 2D arrays
+
+    """
+    # Inputs must be the same number of dimensions
+    if latitude.ndim != longitude.ndim:
+        raise ValueError('Latitude and longitude must have the same number of dimensions.')
+
+    # If we were given 1D arrays, make a mesh grid
+    if latitude.ndim < 2:
+        longitude, latitude = np.meshgrid(longitude, latitude)
+
+    geod_args = {'ellps': 'sphere'}
+    geod_args.update(**kwargs)
+    g = Geod(**geod_args)
+
+    _, _, dy = g.inv(longitude[:-1, :], latitude[:-1, :], longitude[1:, :], latitude[1:, :])
+    _, _, dx = g.inv(longitude[:, :-1], latitude[:, :-1], longitude[:, 1:], latitude[:, 1:])
+
+    return dx * units.meter, dy * units.meter
