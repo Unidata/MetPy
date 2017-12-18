@@ -13,6 +13,7 @@ from pyproj import Geod
 from ..calc.tools import get_layer_heights
 from ..cbook import is_string_like, iterable
 from ..constants import Cp_d, g
+from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..units import atleast_2d, check_units, concatenate, units
 
@@ -108,7 +109,7 @@ def ensure_yx_order(func):
 
 @exporter.export
 @ensure_yx_order
-def v_vorticity(u, v, dx, dy):
+def vorticity(u, v, dx, dy):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
@@ -131,7 +132,7 @@ def v_vorticity(u, v, dx, dy):
 
     See Also
     --------
-    h_divergence, divergence_vorticity
+    divergence, divergence_vorticity
 
     """
     _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
@@ -139,8 +140,19 @@ def v_vorticity(u, v, dx, dy):
 
 
 @exporter.export
+@deprecated('0.7', addendum=' This function has been renamed vorticity.',
+            pending=False)
+def v_vorticity(u, v, dx, dy, dim_order='xy'):
+    """Wrap vorticity for deprecated v_vorticity function."""
+    return vorticity(u, v, dx, dy, dim_order=dim_order)
+
+
+v_vorticity.__doc__ = vorticity.__doc__
+
+
+@exporter.export
 @ensure_yx_order
-def h_divergence(u, v, dx, dy):
+def divergence(u, v, dx, dy):
     r"""Calculate the horizontal divergence of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
@@ -163,11 +175,22 @@ def h_divergence(u, v, dx, dy):
 
     See Also
     --------
-    v_vorticity, divergence_vorticity
+    vorticity, divergence_vorticity
 
     """
     dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy
+
+
+@exporter.export
+@deprecated('0.7', addendum=' This function has been replaced by divergence.',
+            pending=False)
+def convergence(u, v, dx, dy, dim_order='xy'):
+    """Wrap divergence for deprecated convergence function."""
+    return divergence(u, v, dx, dy, dim_order=dim_order)
+
+
+convergence.__doc__ = divergence.__doc__
 
 
 @exporter.export
@@ -195,7 +218,7 @@ def divergence_vorticity(u, v, dx, dy):
 
     See Also
     --------
-    v_vorticity, h_divergence
+    vorticity, divergence
 
     Notes
     -----
@@ -205,6 +228,17 @@ def divergence_vorticity(u, v, dx, dy):
     """
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy, dvdx - dudy
+
+
+@exporter.export
+@deprecated('0.7', addendum=' This function has been replaced by divergence_vorticity.',
+            pending=False)
+def convergence_vorticity(u, v, dx, dy, dim_order='xy'):
+    """Wrap divergence_vorticity for deprecated convergence vorticity function."""
+    return divergence_vorticity(u, v, dx, dy, dim_order=dim_order)
+
+
+convergence_vorticity.__doc__ = divergence_vorticity.__doc__
 
 
 @exporter.export
@@ -450,7 +484,7 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     tdef = total_deformation(u, v, dx, dy, dim_order=dim_order)
 
     # Get the divergence of the wind field
-    div = h_divergence(u, v, dx, dy, dim_order=dim_order)
+    div = divergence(u, v, dx, dy, dim_order=dim_order)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
