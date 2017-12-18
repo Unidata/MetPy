@@ -226,7 +226,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
     fp = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
                         xtol=eps, maxiter=max_iters)
-    lcl_p = units.Quantity(fp, pressure.units)
+    lcl_p = fp * pressure.units
     return lcl_p, dewpoint(vapor_pressure(lcl_p, w))
 
 
