@@ -28,6 +28,7 @@ dependencies:
   - flake8-pep3101
   - flake8-print
   - flake8-quotes
+  - freetype=2.7
   - pep8-naming
   - pyproj
   - cartopy

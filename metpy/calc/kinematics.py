@@ -8,10 +8,12 @@ import functools
 import warnings
 
 import numpy as np
+from pyproj import Geod
 
 from ..calc.tools import get_layer_heights
 from ..cbook import is_string_like, iterable
 from ..constants import Cp_d, g
+from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..units import atleast_2d, check_units, concatenate, units
 
@@ -107,7 +109,7 @@ def ensure_yx_order(func):
 
 @exporter.export
 @ensure_yx_order
-def v_vorticity(u, v, dx, dy):
+def vorticity(u, v, dx, dy):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
@@ -130,7 +132,7 @@ def v_vorticity(u, v, dx, dy):
 
     See Also
     --------
-    h_divergence, divergence_vorticity
+    divergence, divergence_vorticity
 
     """
     _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
@@ -138,8 +140,19 @@ def v_vorticity(u, v, dx, dy):
 
 
 @exporter.export
+@deprecated('0.7', addendum=' This function has been renamed vorticity.',
+            pending=False)
+def v_vorticity(u, v, dx, dy, dim_order='xy'):
+    """Wrap vorticity for deprecated v_vorticity function."""
+    return vorticity(u, v, dx, dy, dim_order=dim_order)
+
+
+v_vorticity.__doc__ = vorticity.__doc__
+
+
+@exporter.export
 @ensure_yx_order
-def h_divergence(u, v, dx, dy):
+def divergence(u, v, dx, dy):
     r"""Calculate the horizontal divergence of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
@@ -162,11 +175,22 @@ def h_divergence(u, v, dx, dy):
 
     See Also
     --------
-    v_vorticity, divergence_vorticity
+    vorticity, divergence_vorticity
 
     """
     dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy
+
+
+@exporter.export
+@deprecated('0.7', addendum=' This function has been replaced by divergence.',
+            pending=False)
+def convergence(u, v, dx, dy, dim_order='xy'):
+    """Wrap divergence for deprecated convergence function."""
+    return divergence(u, v, dx, dy, dim_order=dim_order)
+
+
+convergence.__doc__ = divergence.__doc__
 
 
 @exporter.export
@@ -194,7 +218,7 @@ def divergence_vorticity(u, v, dx, dy):
 
     See Also
     --------
-    v_vorticity, h_divergence
+    vorticity, divergence
 
     Notes
     -----
@@ -204,6 +228,17 @@ def divergence_vorticity(u, v, dx, dy):
     """
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy, dvdx - dudy
+
+
+@exporter.export
+@deprecated('0.7', addendum=' This function has been replaced by divergence_vorticity.',
+            pending=False)
+def convergence_vorticity(u, v, dx, dy, dim_order='xy'):
+    """Wrap divergence_vorticity for deprecated convergence vorticity function."""
+    return divergence_vorticity(u, v, dx, dy, dim_order=dim_order)
+
+
+convergence_vorticity.__doc__ = divergence_vorticity.__doc__
 
 
 @exporter.export
@@ -449,7 +484,7 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     tdef = total_deformation(u, v, dx, dy, dim_order=dim_order)
 
     # Get the divergence of the wind field
-    div = h_divergence(u, v, dx, dy, dim_order=dim_order)
+    div = divergence(u, v, dx, dy, dim_order=dim_order)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
@@ -592,3 +627,47 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
     return (positive_srh.to('meter ** 2 / second ** 2'),
             negative_srh.to('meter ** 2 / second ** 2'),
             (positive_srh + negative_srh).to('meter ** 2 / second ** 2'))
+
+
+@exporter.export
+def lat_lon_grid_spacing(longitude, latitude, **kwargs):
+    r"""Calculate the distance between grid points that are in a latitude/longitude format.
+
+    Calculate the distance between grid points when the grid spacing is defined by
+    delta lat/lon rather than delta x/y
+
+    Parameters
+    ----------
+    longitude : array_like
+        array of longitudes defining the grid
+    latitude : array_like
+        array of latitudes defining the grid
+    kwargs
+        Other keyword arguments to pass to :class:`~pyproj.Geod`
+
+    Returns
+    -------
+     dx, dy: 2D arrays of distances between grid points in the x and y direction
+
+    Notes
+    -----
+    Accepts, 1D or 2D arrays for latitude and longitude
+    Assumes [Y, X] for 2D arrays
+
+    """
+    # Inputs must be the same number of dimensions
+    if latitude.ndim != longitude.ndim:
+        raise ValueError('Latitude and longitude must have the same number of dimensions.')
+
+    # If we were given 1D arrays, make a mesh grid
+    if latitude.ndim < 2:
+        longitude, latitude = np.meshgrid(longitude, latitude)
+
+    geod_args = {'ellps': 'sphere'}
+    geod_args.update(**kwargs)
+    g = Geod(**geod_args)
+
+    _, _, dy = g.inv(longitude[:-1, :], latitude[:-1, :], longitude[1:, :], latitude[1:, :])
+    _, _, dx = g.inv(longitude[:, :-1], latitude[:, :-1], longitude[:, 1:], latitude[:, 1:])
+
+    return dx * units.meter, dy * units.meter
