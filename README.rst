@@ -110,6 +110,13 @@ of the standard library enum module.
 There is also an optional dependency on the pyproj library for geographic
 projections (used with CDM interface).
 
+Code of Conduct
+---------------
+We want everyone to feel welcome to contribute to MetPy and participate in discussions. In that
+spirit please have a look at our `code of conduct`__.
+
+__ https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md
+
 Contributing
 ------------
 **Imposter syndrome disclaimer**: We want your help. No, really.
