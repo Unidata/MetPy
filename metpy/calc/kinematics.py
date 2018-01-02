@@ -194,8 +194,10 @@ h_convergence.__doc__ = divergence.__doc__
 
 
 @exporter.export
+@deprecated('0.7', addendum=' Use divergence and/or vorticity instead.',
+            pending=False)
 @ensure_yx_order
-def divergence_vorticity(u, v, dx, dy):
+def convergence_vorticity(u, v, dx, dy, dim_order='xy'):
     r"""Calculate the horizontal divergence and vertical vorticity of the horizontal wind.
 
     The grid must have a constant spacing in each direction.
@@ -228,17 +230,6 @@ def divergence_vorticity(u, v, dx, dy):
     """
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
     return dudx + dvdy, dvdx - dudy
-
-
-@exporter.export
-@deprecated('0.7', addendum=' This function has been replaced by divergence_vorticity.',
-            pending=False)
-def convergence_vorticity(u, v, dx, dy, dim_order='xy'):
-    """Wrap divergence_vorticity for deprecated convergence vorticity function."""
-    return divergence_vorticity(u, v, dx, dy, dim_order=dim_order)
-
-
-convergence_vorticity.__doc__ = divergence_vorticity.__doc__
 
 
 @exporter.export

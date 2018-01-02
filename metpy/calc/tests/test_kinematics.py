@@ -7,7 +7,7 @@ import numpy as np
 import pytest
 
 from metpy.calc import (advection, h_convergence, convergence_vorticity, divergence,
-                        divergence_vorticity, frontogenesis, geostrophic_wind,
+                        frontogenesis, geostrophic_wind,
                         get_wind_components, lat_lon_grid_spacing, montgomery_streamfunction,
                         shearing_deformation, shearing_stretching_deformation,
                         storm_relative_helicity, stretching_deformation, total_deformation,
@@ -21,13 +21,13 @@ def test_default_order_warns():
     """Test that using the default array ordering issues a warning."""
     u = np.ones((3, 3)) * units('m/s')
     with pytest.warns(FutureWarning):
-        divergence_vorticity(u, u, 1 * units.meter, 1 * units.meter)
+        vorticity(u, u, 1 * units.meter, 1 * units.meter)
 
 
 def test_zero_gradient():
     """Test divergence_vorticity when there is no gradient in the field."""
     u = np.ones((3, 3)) * units('m/s')
-    c, v = divergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    c, v = convergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
     truth = np.zeros_like(u) / units.sec
     assert_array_equal(c, truth)
     assert_array_equal(v, truth)
@@ -37,7 +37,7 @@ def test_cv_zero_vorticity():
     """Test divergence_vorticity when there is only divergence."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c, v = divergence_vorticity(u, u.T, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    c, v = convergence_vorticity(u, u.T, 1 * units.meter, 1 * units.meter, dim_order='xy')
     true_c = 2. * np.ones_like(u) / units.sec
     true_v = np.zeros_like(u) / units.sec
     assert_array_equal(c, true_c)
@@ -48,7 +48,7 @@ def test_divergence_vorticity():
     """Test of vorticity and divergence calculation for basic case."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c, v = divergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    c, v = convergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
     true_c = np.ones_like(u) / units.sec
     true_v = np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
@@ -59,14 +59,14 @@ def test_vorticity_divergence_asym():
     """Test vorticity and divergence calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
     v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    c, vort = divergence_vorticity(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
+    c, vort = convergence_vorticity(u, v, 1 * units.meters, 2 * units.meters, dim_order='yx')
     true_c = np.array([[0., 4., 0.], [1., 0.5, -0.5], [2., 0., 5.]]) / units.sec
     true_vort = np.array([[-1., 2., 7.], [3.5, -1.5, -6.], [-2., 0., 1.]]) / units.sec
     assert_array_equal(c, true_c)
     assert_array_equal(vort, true_vort)
 
     # Now try for xy ordered
-    c, vort = divergence_vorticity(u.T, v.T, 1 * units.meters, 2 * units.meters,
+    c, vort = convergence_vorticity(u.T, v.T, 1 * units.meters, 2 * units.meters,
                                    dim_order='xy')
     assert_array_equal(c, true_c.T)
     assert_array_equal(vort, true_vort.T)
