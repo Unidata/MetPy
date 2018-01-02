@@ -132,7 +132,7 @@ def vorticity(u, v, dx, dy):
 
     See Also
     --------
-    divergence, divergence_vorticity
+    divergence
 
     """
     _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
@@ -147,7 +147,9 @@ def v_vorticity(u, v, dx, dy, dim_order='xy'):
     return vorticity(u, v, dx, dy, dim_order=dim_order)
 
 
-v_vorticity.__doc__ = vorticity.__doc__
+v_vorticity.__doc__ = (vorticity.__doc__ +
+                       '\n    .. deprecated:: 0.7.0\n        Function has been renamed to '
+                       '`vorticity` and will be removed from MetPy in 0.9.0.')
 
 
 @exporter.export
@@ -175,7 +177,7 @@ def divergence(u, v, dx, dy):
 
     See Also
     --------
-    vorticity, divergence_vorticity
+    vorticity
 
     """
     dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
@@ -190,7 +192,9 @@ def h_convergence(u, v, dx, dy, dim_order='xy'):
     return divergence(u, v, dx, dy, dim_order=dim_order)
 
 
-h_convergence.__doc__ = divergence.__doc__
+h_convergence.__doc__ = (divergence.__doc__ +
+                         '\n    .. deprecated:: 0.7.0\n        Function has been renamed to '
+                         '`divergence` and will be removed from MetPy in 0.9.0.')
 
 
 @exporter.export
@@ -222,10 +226,10 @@ def convergence_vorticity(u, v, dx, dy, dim_order='xy'):
     --------
     vorticity, divergence
 
-    Notes
-    -----
-    This is a convenience function that will do less work than calculating
-    the horizontal divergence and vertical vorticity separately.
+    .. deprecated:: 0.7.0
+        Function no longer has any performance benefit over individual calls to
+        `divergence` and `vorticity` and will be removed from MetPy in 0.9.0.
+
 
     """
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
@@ -257,7 +261,7 @@ def shearing_deformation(u, v, dx, dy):
 
     See Also
     --------
-    stretching_deformation, shearing_stretching_deformation
+    stretching_deformation, total_deformation
 
     """
     _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
@@ -289,14 +293,17 @@ def stretching_deformation(u, v, dx, dy):
 
     See Also
     --------
-    shearing_deformation, shearing_stretching_deformation
+    shearing_deformation, total_deformation
 
     """
-    dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=1)
+    dvdy = first_derivative(v, delta=dy, axis=0)
     return dudx - dvdy
 
 
 @exporter.export
+@deprecated('0.7', addendum=' Use stretching_deformation and/or shearing_deformation instead.',
+            pending=False)
 @ensure_yx_order
 def shearing_stretching_deformation(u, v, dx, dy):
     r"""Calculate the horizontal shearing and stretching deformation of the horizontal wind.
@@ -323,10 +330,11 @@ def shearing_stretching_deformation(u, v, dx, dy):
     --------
     shearing_deformation, stretching_deformation
 
-    Notes
-    -----
-    This is a convenience function that will do less work than calculating
-    the shearing and streching deformation terms separately.
+
+    .. deprecated:: 0.7.0
+        Function no longer has any performance benefit over individual calls to
+        `shearing_deformation` and `stretching_deformation` and will be removed from
+        MetPy in 0.9.0.
 
     """
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
@@ -358,13 +366,7 @@ def total_deformation(u, v, dx, dy):
 
     See Also
     --------
-    shearing_deformation, stretching_deformation, shearing_stretching_deformation
-
-    Notes
-    -----
-    This is a convenience function that will do less work than calculating
-    the shearing and streching deformation terms separately and calculating the
-    total deformation "by hand".
+    shearing_deformation, stretching_deformation
 
     """
     dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
@@ -436,10 +438,6 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     * :math:`\beta` is the angle between the axis of dilitation and the isentropes
     * :math:`\delta` is the divergence
 
-    Notes
-    -----
-    Assumes dim_order='yx', unless otherwise specified.
-
     Parameters
     ----------
     thta : (M, N) ndarray
@@ -459,6 +457,10 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
         2D Frotogenesis in [temperature units]/m/s
 
 
+    Notes
+    -----
+    Assumes dim_order='yx', unless otherwise specified.
+
     Conversion factor to go from [temperature units]/m/s to [tempature units/100km/3h]
     :math:`1.08e4*1.e5`
 
@@ -471,7 +473,8 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     mag_thta = np.sqrt(ddx_thta**2 + ddy_thta**2)
 
     # Get the shearing, stretching, and total deformation of the wind field
-    shrd, strd = shearing_stretching_deformation(u, v, dx, dy, dim_order=dim_order)
+    shrd = shearing_deformation(u, v, dx, dy, dim_order=dim_order)
+    strd = stretching_deformation(u, v, dx, dy, dim_order=dim_order)
     tdef = total_deformation(u, v, dx, dy, dim_order=dim_order)
 
     # Get the divergence of the wind field
