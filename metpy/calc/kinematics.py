@@ -185,12 +185,12 @@ def divergence(u, v, dx, dy):
 @exporter.export
 @deprecated('0.7', addendum=' This function has been replaced by divergence.',
             pending=False)
-def convergence(u, v, dx, dy, dim_order='xy'):
+def h_convergence(u, v, dx, dy, dim_order='xy'):
     """Wrap divergence for deprecated convergence function."""
     return divergence(u, v, dx, dy, dim_order=dim_order)
 
 
-convergence.__doc__ = divergence.__doc__
+h_convergence.__doc__ = divergence.__doc__
 
 
 @exporter.export

@@ -6,7 +6,7 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (advection, convergence, convergence_vorticity, divergence,
+from metpy.calc import (advection, h_convergence, convergence_vorticity, divergence,
                         divergence_vorticity, frontogenesis, geostrophic_wind,
                         get_wind_components, lat_lon_grid_spacing, montgomery_streamfunction,
                         shearing_deformation, shearing_stretching_deformation,
@@ -530,7 +530,7 @@ def test_convergence():
     """Test that convergence wrapper works (deprecated in 0.7)."""
     a = np.arange(3)
     u = np.c_[a, a, a] * units('m/s')
-    c = convergence(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
+    c = h_convergence(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
     true_c = np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
 
