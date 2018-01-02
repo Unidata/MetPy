@@ -87,12 +87,15 @@ def atleast_1d(*arrs):
         A single quantity or a list of quantities, matching the number of inputs.
 
     """
-    mags = [a.magnitude for a in arrs]
-    orig_units = [a.units for a in arrs]
+    mags = [a.magnitude if hasattr(a, 'magnitude') else a for a in arrs]
+    orig_units = [a.units if hasattr(a, 'units') else None for a in arrs]
     ret = np.atleast_1d(*mags)
     if len(mags) == 1:
-        return units.Quantity(ret, orig_units[0])
-    return [units.Quantity(m, u) for m, u in zip(ret, orig_units)]
+        if orig_units[0] is not None:
+            return units.Quantity(ret, orig_units[0])
+        else:
+            return ret
+    return [units.Quantity(m, u) if u is not None else m for m, u in zip(ret, orig_units)]
 
 
 def atleast_2d(*arrs):
@@ -113,12 +116,15 @@ def atleast_2d(*arrs):
         A single quantity or a list of quantities, matching the number of inputs.
 
     """
-    mags = [a.magnitude for a in arrs]
-    orig_units = [a.units for a in arrs]
+    mags = [a.magnitude if hasattr(a, 'magnitude') else a for a in arrs]
+    orig_units = [a.units if hasattr(a, 'units') else None for a in arrs]
     ret = np.atleast_2d(*mags)
     if len(mags) == 1:
-        return units.Quantity(ret, orig_units[0])
-    return [units.Quantity(m, u) for m, u in zip(ret, orig_units)]
+        if orig_units[0] is not None:
+            return units.Quantity(ret, orig_units[0])
+        else:
+            return ret
+    return [units.Quantity(m, u) if u is not None else m for m, u in zip(ret, orig_units)]
 
 
 def masked_array(data, data_units=None, **kwargs):
