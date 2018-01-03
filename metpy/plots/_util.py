@@ -7,6 +7,7 @@ from datetime import datetime
 import posixpath
 
 from matplotlib.collections import LineCollection
+import matplotlib.patheffects as mpatheffects
 from matplotlib.pyplot import imread
 import numpy as np
 import pkg_resources
@@ -14,7 +15,7 @@ import pkg_resources
 from ..units import concatenate
 
 
-def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', **kwargs):
+def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=False, **kwargs):
     """Add a timestamp at plot creation time.
 
     Adds an ISO format timestamp with the time of plot creation to the plot.
@@ -31,6 +32,8 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', **kwargs):
         Relative y position on the axes of the timestamp
     ha : str
         Horizontal alignment of the time stamp string
+    high_contrast : bool
+        Outline text for increased contrast
 
     Returns
     -------
@@ -38,10 +41,17 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', **kwargs):
         The `matplotlib.text.Text` instance created
 
     """
+    if high_contrast:
+        text_args = {'color': 'white',
+                     'path_effects':
+                         [mpatheffects.withStroke(linewidth=2, foreground='black')]}
+    else:
+        text_args = {}
+    text_args.update(**kwargs)
     if not time:
         time = datetime.utcnow()
     timestr = datetime.strftime(time, 'Created: %Y-%m-%dT%H:%M:%SZ')
-    return ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **kwargs)
+    return ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **text_args)
 
 
 def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs):
