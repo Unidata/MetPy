@@ -10,7 +10,7 @@ import numpy as np
 import pytest
 
 from metpy.testing import assert_array_equal, set_agg_backend  # noqa: F401
-from metpy.units import atleast_1d, atleast_2d, check_units, units
+from metpy.units import atleast_1d, atleast_2d, check_units, diff, units
 
 
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
@@ -41,6 +41,13 @@ def test_atleast1d_without_units():
 def test_atleast2d_without_units():
     """Test that atleast_2d wrapper can handle plain arrays."""
     assert_array_equal(atleast_2d(1), np.array([[1]]))
+
+
+def test_units_diff():
+    """Test our diff handles units properly."""
+    assert_array_equal(diff(np.arange(20, 22) * units.degC),
+                       np.array([1]) * units.delta_degC)
+
 
 #
 # Tests for unit-checking decorator

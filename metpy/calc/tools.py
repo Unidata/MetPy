@@ -14,7 +14,7 @@ from scipy.spatial import cKDTree
 
 from . import height_to_pressure_std, pressure_to_height_std
 from ..package_tools import Exporter
-from ..units import atleast_1d, check_units, concatenate, units
+from ..units import atleast_1d, check_units, concatenate, diff, units
 
 exporter = Exporter(globals())
 
@@ -1115,19 +1115,8 @@ def _process_deriv_args(f, kwargs):
             delta = _broadcast_to_axis(delta, axis, n)
     elif 'x' in kwargs:
         x = _broadcast_to_axis(kwargs['x'], axis, n)
-        delta = _diff(x, axis=axis)
+        delta = diff(x, axis=axis)
     else:
         raise ValueError('Must specify either "x" or "delta" for value positions.')
 
     return n, axis, delta
-
-
-def _diff(x, **kwargs):
-    """Wrap :func:`numpy.diff` to handle units."""
-    ret = np.diff(x, **kwargs)
-    if hasattr(x, 'units'):
-        # Can't just use units because of how things like temperature work
-        it = x.flat
-        true_units = (next(it) - next(it)).units
-        ret = ret * true_units
-    return ret
