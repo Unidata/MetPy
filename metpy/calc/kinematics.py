@@ -10,7 +10,7 @@ import warnings
 import numpy as np
 from pyproj import Geod
 
-from ..calc.tools import get_layer_heights
+from ..calc.tools import first_derivative, get_layer_heights, gradient
 from ..cbook import is_string_like, iterable
 from ..constants import Cp_d, g
 from ..deprecation import deprecated
@@ -20,26 +20,8 @@ from ..units import atleast_2d, check_units, concatenate, units
 exporter = Exporter(globals())
 
 
-def _gradient(f, *args, **kwargs):
-    """Wrap :func:`numpy.gradient` to handle units."""
-    if len(args) < f.ndim:
-        args = list(args)
-        args.extend([units.Quantity(1., 'dimensionless')] * (f.ndim - len(args)))
-    grad = np.gradient(f, *(a.magnitude for a in args), **kwargs)
-    if f.ndim == 1:
-        return units.Quantity(grad, f.units / args[0].units)
-    return [units.Quantity(g, f.units / dx.units) for dx, g in zip(args, grad)]
-
-
 def _stack(arrs):
     return concatenate([a[np.newaxis] for a in arrs], axis=0)
-
-
-def _get_gradients(u, v, dx, dy):
-    """Return derivatives for components to simplify calculating divergence and vorticity."""
-    dudy, dudx = _gradient(u, dy, dx)
-    dvdy, dvdx = _gradient(v, dy, dx)
-    return dudx, dudy, dvdx, dvdy
 
 
 def _is_x_first_dim(dim_order):
@@ -112,8 +94,6 @@ def ensure_yx_order(func):
 def vorticity(u, v, dx, dy):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
-    The grid must have a constant spacing in each direction.
-
     Parameters
     ----------
     u : (M, N) ndarray
@@ -135,7 +115,8 @@ def vorticity(u, v, dx, dy):
     divergence
 
     """
-    _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
+    dudy = first_derivative(u, delta=dy, axis=0)
+    dvdx = first_derivative(v, delta=dx, axis=1)
     return dvdx - dudy
 
 
@@ -156,8 +137,6 @@ v_vorticity.__doc__ = (vorticity.__doc__ +
 @ensure_yx_order
 def divergence(u, v, dx, dy):
     r"""Calculate the horizontal divergence of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -180,7 +159,8 @@ def divergence(u, v, dx, dy):
     vorticity
 
     """
-    dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=1)
+    dvdy = first_derivative(v, delta=dy, axis=0)
     return dudx + dvdy
 
 
@@ -203,8 +183,6 @@ h_convergence.__doc__ = (divergence.__doc__ +
 @ensure_yx_order
 def convergence_vorticity(u, v, dx, dy, dim_order='xy'):
     r"""Calculate the horizontal divergence and vertical vorticity of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -232,7 +210,10 @@ def convergence_vorticity(u, v, dx, dy, dim_order='xy'):
 
 
     """
-    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=1)
+    dudy = first_derivative(u, delta=dy, axis=0)
+    dvdx = first_derivative(v, delta=dx, axis=1)
+    dvdy = first_derivative(v, delta=dy, axis=0)
     return dudx + dvdy, dvdx - dudy
 
 
@@ -240,8 +221,6 @@ def convergence_vorticity(u, v, dx, dy, dim_order='xy'):
 @ensure_yx_order
 def shearing_deformation(u, v, dx, dy):
     r"""Calculate the shearing deformation of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -264,7 +243,8 @@ def shearing_deformation(u, v, dx, dy):
     stretching_deformation, total_deformation
 
     """
-    _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
+    dudy = first_derivative(u, delta=dy, axis=0)
+    dvdx = first_derivative(v, delta=dx, axis=1)
     return dvdx + dudy
 
 
@@ -272,8 +252,6 @@ def shearing_deformation(u, v, dx, dy):
 @ensure_yx_order
 def stretching_deformation(u, v, dx, dy):
     r"""Calculate the stretching deformation of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -308,8 +286,6 @@ def stretching_deformation(u, v, dx, dy):
 def shearing_stretching_deformation(u, v, dx, dy):
     r"""Calculate the horizontal shearing and stretching deformation of the horizontal wind.
 
-    The grid must have a constant spacing in each direction.
-
     Parameters
     ----------
     u : (M, N) ndarray
@@ -337,7 +313,10 @@ def shearing_stretching_deformation(u, v, dx, dy):
         MetPy in 0.9.0.
 
     """
-    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=1)
+    dudy = first_derivative(u, delta=dy, axis=0)
+    dvdx = first_derivative(v, delta=dx, axis=1)
+    dvdy = first_derivative(v, delta=dy, axis=0)
     return dvdx + dudy, dudx - dvdy
 
 
@@ -345,8 +324,6 @@ def shearing_stretching_deformation(u, v, dx, dy):
 @ensure_yx_order
 def total_deformation(u, v, dx, dy):
     r"""Calculate the horizontal total deformation of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -369,7 +346,10 @@ def total_deformation(u, v, dx, dy):
     shearing_deformation, stretching_deformation
 
     """
-    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=1)
+    dudy = first_derivative(u, delta=dy, axis=0)
+    dvdx = first_derivative(v, delta=dx, axis=1)
+    dvdy = first_derivative(v, delta=dy, axis=0)
     return np.sqrt((dvdx + dudy)**2 + (dudx - dvdy)**2)
 
 
@@ -413,7 +393,7 @@ def advection(scalar, wind, deltas):
     # Gradient returns a list of derivatives along each dimension. We convert
     # this to an array with dimension as the first index. Reverse the deltas to line up
     # with the order of the dimensions.
-    grad = _stack(_gradient(scalar, *deltas[::-1]))
+    grad = _stack(gradient(scalar, deltas=deltas[::-1]))
 
     # Make them be at least 2D (handling the 1D case) so that we can do the
     # multiply and sum below
@@ -465,8 +445,8 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
 
     """
     # Get gradients of potential temperature in both x and y
-    grad = _gradient(thta, dy, dx)
-    ddy_thta, ddx_thta = grad[-2:]  # Throw away unused gradient components
+    ddy_thta = first_derivative(thta, delta=dy, axis=-2)
+    ddx_thta = first_derivative(thta, delta=dx, axis=-1)
 
     # Compute the magnitude of the potential temperature gradient
     mag_thta = np.sqrt(ddx_thta**2 + ddy_thta**2)
@@ -515,16 +495,9 @@ def geostrophic_wind(heights, f, dx, dy):
     else:
         norm_factor = g / f
 
-    # If heights has more than 2 dimensions, we need to pass in some dummy
-    # grid deltas so that we can still use np.gradient. It may be better to
-    # to loop in this case, but that remains to be done.
-    deltas = [dy, dx]
-    if heights.ndim > 2:
-        deltas = [units.Quantity(1., units.m)] * (heights.ndim - 2) + deltas
-
-    grad = _gradient(heights, *deltas)
-    dy, dx = grad[-2:]  # Throw away unused gradient components
-    return -norm_factor * dy, norm_factor * dx
+    dhdy = first_derivative(heights, delta=dy, axis=-2)
+    dhdx = first_derivative(heights, delta=dx, axis=-1)
+    return -norm_factor * dhdy, norm_factor * dhdx
 
 
 @exporter.export
