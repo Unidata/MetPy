@@ -8,7 +8,12 @@ import functools
 import warnings
 
 import numpy as np
-from numpy.core.numeric import normalize_axis_index
+try:
+    from numpy.core.numeric import normalize_axis_index
+except ImportError:  # Only available in numpy >=1.13.0
+    def normalize_axis_index(a, n):
+        """No op version of :func:`numpy.core.numeric.normalize_axis_index`."""
+        return a
 import numpy.ma as ma
 from scipy.spatial import cKDTree
 
