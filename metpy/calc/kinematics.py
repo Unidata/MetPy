@@ -454,14 +454,13 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     Returns
     -------
     (M, N) ndarray
-        2D Frotogenesis in [temperature units]/m/s
-
+        2D Frontogenesis in [temperature units]/m/s
 
     Notes
     -----
     Assumes dim_order='yx', unless otherwise specified.
 
-    Conversion factor to go from [temperature units]/m/s to [tempature units/100km/3h]
+    Conversion factor to go from [temperature units]/m/s to [temperature units/100km/3h]
     :math:`1.08e4*1.e5`
 
     """
