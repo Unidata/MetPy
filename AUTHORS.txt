@@ -5,12 +5,17 @@ Abby Kenyon
 Alex Haberlie
 Brian Mapes
 Bryan Guarente
+Daryl Herzmann
+Denis Sergeev
 Eric Bruning
 John Leeman
-Jonathan Helmus
 Jon Thielen
+Jonathan Helmus
 Kevin Goebbert
+Kishan Mehta
 Kristen Pozsonyi
+Leonardo Uieda
+Lucas Sterzinger
 Matt Wilson
 Michael James
 Nathan Wendt
@@ -18,6 +23,10 @@ Patrick Marsh
 Ryan May
 Sean Arms
 Shawn Murdzek
+Stefan Hofer
 Tyler Wixtrom
+Warren Pettee
 Will Holmgren
+eliteuser26
+kstilwell
 mmorello1
