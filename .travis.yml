@@ -35,7 +35,7 @@ env:
     - WHEELDIR="wheelhouse/"
     # Shapely dependency needed to keep from using Shapely's manylinux wheels
     # which use a different geos that what we build cartopy with on Travis
-    - EXTRA_PACKAGES="shapely<1.5.17.post1 flake8-docstrings!=1.2.0"
+    - EXTRA_PACKAGES="shapely<1.5.17.post1"
     - EXTRA_INSTALLS="test,cdm"
     - MPLLOCALFREETYPE="1"
     - TEST_OUTPUT_CONTROL="-s"
@@ -88,7 +88,6 @@ before_install:
       export EXTRA_PACKAGES="$EXTRA_PACKAGES Cython pillow sphinx_rtd_theme==0.2.5b1.post1 pytest";
     else
       export TEST_OPTS="--flake8 --mpl";
-      export EXTRA_PACKAGES="$EXTRA_PACKAGES pydocstyle<2.1";
       if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then
         export EXTRA_PACKAGES="$EXTRA_PACKAGES flake8-bugbear";
       fi;
