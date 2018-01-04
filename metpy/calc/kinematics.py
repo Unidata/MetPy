@@ -27,11 +27,11 @@ def _stack(arrs):
 def _is_x_first_dim(dim_order):
     """Determine whether x is the first dimension based on the value of dim_order."""
     if dim_order is None:
-        warnings.warn('dim_order is using the default setting (currently "xy"). This will '
-                      'change to "yx" in the next version. It is recommended that you '
+        warnings.warn('dim_order is using the default setting ("yx"). This changed in '
+                      'version 0.7. It is recommended that you '
                       'specify the appropriate ordering ("xy", "yx") for your data by '
-                      'passing the `dim_order` argument to the calculation.', FutureWarning)
-        dim_order = 'xy'
+                      'passing the `dim_order` argument to the calculation.', UserWarning)
+        dim_order = 'yx'
     return dim_order == 'xy'
 
 
@@ -78,7 +78,7 @@ def ensure_yx_order(func):
         or ``'yx'``. ``'xy'`` indicates that the dimension corresponding to x is the leading
         dimension, followed by y. ``'yx'`` indicates that x is the last dimension, preceded
         by y. ``None`` indicates that the default ordering should be assumed,
-        which will change in version 0.6 from 'xy' to 'yx'. Can only be passed as a keyword
+        which changed in version 0.7 from 'xy' to 'yx'. Can only be passed as a keyword
         argument, i.e. func(..., dim_order='xy')."""
 
     # Find the first blank line after the start of the parameters section
