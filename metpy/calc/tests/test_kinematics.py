@@ -21,7 +21,7 @@ from metpy.units import concatenate, units
 def test_default_order_warns():
     """Test that using the default array ordering issues a warning."""
     u = np.ones((3, 3)) * units('m/s')
-    with pytest.warns(FutureWarning):
+    with pytest.warns(UserWarning):
         vorticity(u, u, 1 * units.meter, 1 * units.meter)
 
 
