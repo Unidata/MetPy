@@ -596,7 +596,7 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
     Notes
     -----
     [Bolton1980]_ formula for Theta-e is used, since according to
-    [Davies-Jones2009]_ it is the most accurate non-iterative formulation
+    [DaviesJones2009]_ it is the most accurate non-iterative formulation
     available.
 
     """

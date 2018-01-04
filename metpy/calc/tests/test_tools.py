@@ -3,14 +3,16 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `tools` module."""
 
+from collections import namedtuple
+
 import numpy as np
 import numpy.ma as ma
 import pytest
 
-from metpy.calc import (find_intersections, get_layer, get_layer_heights,
-                        interp, interpolate_nans, log_interp,
+from metpy.calc import (find_intersections, first_derivative, get_layer, get_layer_heights,
+                        interp, interpolate_nans, laplacian, log_interp,
                         nearest_intersection_idx, pressure_to_height_std,
-                        reduce_point_density, resample_nn_1d)
+                        reduce_point_density, resample_nn_1d, second_derivative)
 from metpy.calc.tools import (_get_bound_pressure_height, _greater_or_close, _less_or_close,
                               _next_non_masked_element, delete_masked_points)
 from metpy.testing import assert_array_almost_equal, assert_array_equal
@@ -526,3 +528,103 @@ def test_get_layer_heights_agl_bottom_no_interp():
     data_true = np.array([50, 60, 70, 80, 90, 100]) * units.degC
     assert_array_almost_equal(heights_true, heights, 6)
     assert_array_almost_equal(data_true, data, 6)
+
+
+@pytest.fixture()
+def deriv_1d_data():
+    """Return 1-dimensional data for testing derivative functions."""
+    return namedtuple('D_1D_Test_Data', 'x values')(np.array([0, 1.25, 3.75]) * units.cm,
+                                                    np.array([13.5, 12, 10]) * units.degC)
+
+
+@pytest.fixture()
+def deriv_2d_data():
+    """Return 2-dimensional data for analytic function for testing derivative functions."""
+    ret = namedtuple('D_2D_Test_Data', 'x y x0 y0 a b f')(
+        np.array([0., 2., 7.]), np.array([1., 5., 11., 13.]), 3, 1.5, 0.5, 0.25, 0)
+
+    # Makes a value array with y changing along rows (axis 0) and x along columns (axis 1)
+    return ret._replace(f=ret.a * (ret.x - ret.x0)**2 + ret.b * (ret.y[:, None] - ret.y0)**2)
+
+
+def test_first_derivative(deriv_1d_data):
+    """Test first_derivative with a simple 1D array."""
+    dv_dx = first_derivative(deriv_1d_data.values, x=deriv_1d_data.x)
+
+    # Worked by hand and taken from Chapra and Canale 23.2
+    truth = np.array([-1.333333, -1.06666667, -0.5333333]) * units('delta_degC / cm')
+    assert_array_almost_equal(dv_dx, truth, 5)
+
+
+def test_first_derivative_2d(deriv_2d_data):
+    """Test first_derivative with a full 2D array."""
+    df_dx = first_derivative(deriv_2d_data.f, x=deriv_2d_data.x, axis=1)
+    df_dx_analytic = np.tile(2 * deriv_2d_data.a * (deriv_2d_data.x - deriv_2d_data.x0),
+                             (deriv_2d_data.f.shape[0], 1))
+    assert_array_almost_equal(df_dx, df_dx_analytic, 5)
+
+    df_dy = first_derivative(deriv_2d_data.f, x=deriv_2d_data.y, axis=0)
+    # Repeat each row, then flip to get variation along rows
+    df_dy_analytic = np.tile(2 * deriv_2d_data.b * (deriv_2d_data.y - deriv_2d_data.y0),
+                             (deriv_2d_data.f.shape[1], 1)).T
+    assert_array_almost_equal(df_dy, df_dy_analytic, 5)
+
+
+def test_first_derivative_too_small(deriv_1d_data):
+    """Test first_derivative with too small an array."""
+    with pytest.raises(ValueError):
+        first_derivative(deriv_1d_data.values[None, :].T, x=deriv_1d_data.x, axis=1)
+
+
+def test_first_derivative_scalar_delta():
+    """Test first_derivative with a scalar passed for a delta."""
+    df_dx = first_derivative(np.arange(3), delta=1)
+    assert_array_almost_equal(df_dx, np.array([1., 1., 1.]), 6)
+
+
+def test_second_derivative(deriv_1d_data):
+    """Test second_derivative with a simple 1D array."""
+    d2v_dx2 = second_derivative(deriv_1d_data.values, x=deriv_1d_data.x)
+
+    # Worked by hand
+    truth = np.ones_like(deriv_1d_data.values) * 0.2133333 * units('delta_degC/cm**2')
+    assert_array_almost_equal(d2v_dx2, truth, 5)
+
+
+def test_second_derivative_2d(deriv_2d_data):
+    """Test second_derivative with a full 2D array."""
+    df2_dx2 = second_derivative(deriv_2d_data.f, x=deriv_2d_data.x, axis=1)
+    assert_array_almost_equal(df2_dx2,
+                              np.ones_like(deriv_2d_data.f) * (2 * deriv_2d_data.a), 5)
+
+    df2_dy2 = second_derivative(deriv_2d_data.f, x=deriv_2d_data.y, axis=0)
+    assert_array_almost_equal(df2_dy2,
+                              np.ones_like(deriv_2d_data.f) * (2 * deriv_2d_data.b), 5)
+
+
+def test_second_derivative_too_small(deriv_1d_data):
+    """Test second_derivative with too small an array."""
+    with pytest.raises(ValueError):
+        second_derivative(deriv_1d_data.values[None, :].T, x=deriv_1d_data.x, axis=1)
+
+
+def test_second_derivative_scalar_delta():
+    """Test second_derivative with a scalar passed for a delta."""
+    df_dx = second_derivative(np.arange(3), delta=1)
+    assert_array_almost_equal(df_dx, np.array([0., 0., 0.]), 6)
+
+
+def test_laplacian(deriv_1d_data):
+    """Test laplacian with simple 1D data."""
+    laplac = laplacian(deriv_1d_data.values, x=(deriv_1d_data.x,))
+
+    # Worked by hand
+    truth = np.ones_like(deriv_1d_data.values) * 0.2133333 * units('delta_degC/cm**2')
+    assert_array_almost_equal(laplac, truth, 5)
+
+
+def test_laplacian_2d(deriv_2d_data):
+    """Test lapacian with full 2D arrays."""
+    laplac_true = 2 * (np.ones_like(deriv_2d_data.f) * (deriv_2d_data.a + deriv_2d_data.b))
+    laplac = laplacian(deriv_2d_data.f, x=(deriv_2d_data.y, deriv_2d_data.x))
+    assert_array_almost_equal(laplac, laplac_true, 5)

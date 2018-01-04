@@ -2,17 +2,24 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
+from __future__ import division
 
 import functools
 import warnings
 
 import numpy as np
+try:
+    from numpy.core.numeric import normalize_axis_index
+except ImportError:  # Only available in numpy >=1.13.0
+    def normalize_axis_index(a, n):
+        """No op version of :func:`numpy.core.numeric.normalize_axis_index`."""
+        return a
 import numpy.ma as ma
 from scipy.spatial import cKDTree
 
 from . import height_to_pressure_std, pressure_to_height_std
 from ..package_tools import Exporter
-from ..units import check_units, units
+from ..units import atleast_1d, check_units, concatenate, diff, units
 
 exporter = Exporter(globals())
 
@@ -831,3 +838,290 @@ def _less_or_close(a, value, **kwargs):
 
     """
     return np.less(a, value) | np.isclose(a, value, **kwargs)
+
+
+@exporter.export
+def first_derivative(f, **kwargs):
+    """Calculate the first derivative of a grid of values.
+
+    Works for both regularly-spaced data and grids with varying spacing.
+
+    Either `x` or `delta` must be specified. This uses 3 points to calculate the
+    derivative, using forward or backward at the edges of the grid as appropriate, and
+    centered elsewhere. The irregular spacing is handled explicitly, using the formulation
+    as specified by [Bowen2005]_.
+
+    Parameters
+    ----------
+    f : array-like
+        Array of values of which to calculate the derivative
+    axis : int, optional
+        The array axis along which to take the derivative. Defaults to 0.
+    x : array-like, optional
+        The coordinate values corresponding to the grid points in `f`.
+    delta : array-like, optional
+        Spacing between the grid points in `f`. Should be one item less than the size
+        of `f` along `axis`.
+
+    Returns
+    -------
+    array-like
+        The first derivative calculated along the selected axis.
+
+    See Also
+    --------
+    second_derivative
+
+    """
+    n, axis, delta = _process_deriv_args(f, kwargs)
+
+    # create slice objects --- initially all are [:, :, ..., :]
+    slice0 = [slice(None)] * n
+    slice1 = [slice(None)] * n
+    slice2 = [slice(None)] * n
+    delta_slice0 = [slice(None)] * n
+    delta_slice1 = [slice(None)] * n
+
+    # First handle centered case
+    slice0[axis] = slice(None, -2)
+    slice1[axis] = slice(1, -1)
+    slice2[axis] = slice(2, None)
+    delta_slice0[axis] = slice(None, -1)
+    delta_slice1[axis] = slice(1, None)
+
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    delta_diff = delta[delta_slice1] - delta[delta_slice0]
+    center = (- delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0] +
+              delta_diff / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1] +
+              delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2])
+
+    # Fill in "left" edge with forward difference
+    slice0[axis] = slice(None, 1)
+    slice1[axis] = slice(1, 2)
+    slice2[axis] = slice(2, 3)
+    delta_slice0[axis] = slice(None, 1)
+    delta_slice1[axis] = slice(1, 2)
+
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    big_delta = combined_delta + delta[delta_slice0]
+    left = (- big_delta / (combined_delta * delta[delta_slice0]) * f[slice0] +
+            combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1] -
+            delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2])
+
+    # Now the "right" edge with backward difference
+    slice0[axis] = slice(-3, -2)
+    slice1[axis] = slice(-2, -1)
+    slice2[axis] = slice(-1, None)
+    delta_slice0[axis] = slice(-2, -1)
+    delta_slice1[axis] = slice(-1, None)
+
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    big_delta = combined_delta + delta[delta_slice1]
+    right = (delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0] -
+             combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1] +
+             big_delta / (combined_delta * delta[delta_slice1]) * f[slice2])
+
+    return concatenate((left, center, right), axis=axis)
+
+
+@exporter.export
+def second_derivative(f, **kwargs):
+    """Calculate the second derivative of a grid of values.
+
+    Works for both regularly-spaced data and grids with varying spacing.
+
+    Either `x` or `delta` must be specified.
+
+    Either `x` or `delta` must be specified. This uses 3 points to calculate the
+    derivative, using forward or backward at the edges of the grid as appropriate, and
+    centered elsewhere. The irregular spacing is handled explicitly, using the formulation
+    as specified by [Bowen2005]_.
+
+    Parameters
+    ----------
+    f : array-like
+        Array of values of which to calculate the derivative
+    axis : int, optional
+        The array axis along which to take the derivative. Defaults to 0.
+    x : array-like, optional
+        The coordinate values corresponding to the grid points in `f`.
+    delta : array-like, optional
+        Spacing between the grid points in `f`. There should be one item less than the size
+        of `f` along `axis`.
+
+    Returns
+    -------
+    array-like
+        The second derivative calculated along the selected axis.
+
+    See Also
+    --------
+    first_derivative
+
+    """
+    n, axis, delta = _process_deriv_args(f, kwargs)
+
+    # create slice objects --- initially all are [:, :, ..., :]
+    slice0 = [slice(None)] * n
+    slice1 = [slice(None)] * n
+    slice2 = [slice(None)] * n
+    delta_slice0 = [slice(None)] * n
+    delta_slice1 = [slice(None)] * n
+
+    # First handle centered case
+    slice0[axis] = slice(None, -2)
+    slice1[axis] = slice(1, -1)
+    slice2[axis] = slice(2, None)
+    delta_slice0[axis] = slice(None, -1)
+    delta_slice1[axis] = slice(1, None)
+
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    center = 2 * (f[slice0] / (combined_delta * delta[delta_slice0]) -
+                  f[slice1] / (delta[delta_slice0] * delta[delta_slice1]) +
+                  f[slice2] / (combined_delta * delta[delta_slice1]))
+
+    # Fill in "left" edge
+    slice0[axis] = slice(None, 1)
+    slice1[axis] = slice(1, 2)
+    slice2[axis] = slice(2, 3)
+    delta_slice0[axis] = slice(None, 1)
+    delta_slice1[axis] = slice(1, 2)
+
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    left = 2 * (f[slice0] / (combined_delta * delta[delta_slice0]) -
+                f[slice1] / (delta[delta_slice0] * delta[delta_slice1]) +
+                f[slice2] / (combined_delta * delta[delta_slice1]))
+
+    # Now the "right" edge
+    slice0[axis] = slice(-3, -2)
+    slice1[axis] = slice(-2, -1)
+    slice2[axis] = slice(-1, None)
+    delta_slice0[axis] = slice(-2, -1)
+    delta_slice1[axis] = slice(-1, None)
+
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    right = 2 * (f[slice0] / (combined_delta * delta[delta_slice0]) -
+                 f[slice1] / (delta[delta_slice0] * delta[delta_slice1]) +
+                 f[slice2] / (combined_delta * delta[delta_slice1]))
+
+    return concatenate((left, center, right), axis=axis)
+
+
+def gradient(f, **kwargs):
+    """Calculate the gradient of a grid of values.
+
+    Works for both regularly-spaced data, and grids with varying spacing.
+
+    Either `x` or `deltas` must be specified.
+
+    Parameters
+    ----------
+    f : array-like
+        Array of values of which to calculate the derivative
+    x : array-like, optional
+        The coordinate values corresponding to the grid points in `f`
+    deltas : array-like, optional
+        Spacing between the grid points in `f`. There should be one item less than the size
+        of `f` along `axis`.
+
+    Returns
+    -------
+    array-like
+        The first derivative calculated along each axis in the original array
+
+    See Also
+    --------
+    laplacian
+
+    """
+    pos_kwarg, positions = _process_gradient_args(kwargs)
+    return tuple(first_derivative(f, axis=ind, **{pos_kwarg: positions[ind]})
+                 for ind, pos in enumerate(positions))
+
+
+@exporter.export
+def laplacian(f, **kwargs):
+    """Calculate the laplacian of a grid of values.
+
+    Works for both regularly-spaced data, and grids with varying spacing.
+
+    Either `x` or `deltas` must be specified.
+
+    Parameters
+    ----------
+    f : array-like
+        Array of values of which to calculate the derivative
+    x : array-like, optional
+        The coordinate values corresponding to the grid points in `f`
+    deltas : array-like, optional
+        Spacing between the grid points in `f`. There should be one item less than the size
+        of `f` along `axis`.
+
+    Returns
+    -------
+    array-like
+        The laplacian
+
+    See Also
+    --------
+    gradient
+
+    """
+    pos_kwarg, positions = _process_gradient_args(kwargs)
+    return sum(second_derivative(f, axis=ind, **{pos_kwarg: positions[ind]})
+               for ind, pos in enumerate(positions))
+
+
+def _broadcast_to_axis(arr, axis, ndim):
+    """Handle reshaping coordinate array to have proper dimensionality.
+
+    This puts the values along the specified axis.
+    """
+    if arr.ndim == 1 and arr.ndim < ndim:
+        new_shape = [1] * ndim
+        new_shape[axis] = arr.size
+        arr = arr.reshape(*new_shape)
+    return arr
+
+
+def _process_gradient_args(kwargs):
+    """Handle common processing of arguments for gradient and gradient-like functions."""
+    if 'deltas' in kwargs:
+        if 'x' in kwargs:
+            raise ValueError('Cannot specify both "x" and "deltas".')
+        return 'delta', kwargs['deltas']
+    elif 'x' in kwargs:
+        return 'x', kwargs['x']
+    else:
+        raise ValueError('Must specify either "x" or "delta" for value positions.')
+
+
+def _process_deriv_args(f, kwargs):
+    """Handle common processing of arguments for derivative functions."""
+    n = f.ndim
+    axis = normalize_axis_index(kwargs.get('axis', 0), n)
+
+    if f.shape[axis] < 3:
+        raise ValueError('f must have at least 3 point along the desired axis.')
+
+    if 'delta' in kwargs:
+        if 'x' in kwargs:
+            raise ValueError('Cannot specify both "x" and "delta".')
+
+        delta = atleast_1d(kwargs['delta'])
+        if delta.size == 1:
+            diff_size = list(f.shape)
+            diff_size[axis] -= 1
+            delta_units = getattr(delta, 'units', None)
+            delta = np.broadcast_to(delta, diff_size, subok=True)
+            if delta_units is not None:
+                delta = delta * delta_units
+        else:
+            delta = _broadcast_to_axis(delta, axis, n)
+    elif 'x' in kwargs:
+        x = _broadcast_to_axis(kwargs['x'], axis, n)
+        delta = diff(x, axis=axis)
+    else:
+        raise ValueError('Must specify either "x" or "delta" for value positions.')
+
+    return n, axis, delta
