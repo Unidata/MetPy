@@ -67,7 +67,7 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
 
 
-**Total running time of the script:** ( 0 minutes  0.285 seconds)
+**Total running time of the script:** ( 0 minutes  0.293 seconds)
 
 
 

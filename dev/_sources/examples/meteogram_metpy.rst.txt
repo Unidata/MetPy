@@ -249,7 +249,7 @@ Plots time series data as a meteogram.
     fig.subplots_adjust(hspace=0.5)
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  0.468 seconds)
+**Total running time of the script:** ( 0 minutes  0.487 seconds)
 
 
 

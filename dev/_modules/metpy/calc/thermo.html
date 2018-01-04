@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
@@ -163,6 +164,7 @@
 
 
 
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -174,10 +176,10 @@
       <li>metpy.calc.thermo</li>
     
     
-      <li class="wy-breadcrumbs-aside">
+    <li class="source-link">
         
-      </li>
-    
+    </li>
+
   </ul>
 
   
@@ -202,13 +204,43 @@
 
 <span class="kn">from</span> <span class="nn">.tools</span> <span class="k">import</span> <span class="p">(</span><span class="n">_greater_or_close</span><span class="p">,</span> <span class="n">_less_or_close</span><span class="p">,</span> <span class="n">broadcast_indices</span><span class="p">,</span> <span class="n">find_intersections</span><span class="p">,</span>
                     <span class="n">get_layer</span><span class="p">,</span> <span class="n">interp</span><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">Cp_d</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">Lv</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">Rd</span>
+<span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">Cp_d</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">Lv</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">Rd</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
 <span class="n">sat_pressure_0c</span> <span class="o">=</span> <span class="mf">6.112</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">millibar</span>
+
+
+<div class="viewcode-block" id="relative_humidity_from_dewpoint"><a class="viewcode-back" href="../../../api/generated/metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">relative_humidity_from_dewpoint</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the relative humidity.</span>
+
+<span class="sd">    Uses temperature and dewpoint in celsius to calculate relative</span>
+<span class="sd">    humidity using the ratio of vapor pressure to saturation vapor pressures.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The temperature</span>
+<span class="sd">    dew point : `pint.Quantity`</span>
+<span class="sd">        The dew point temperature</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The relative humidity</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    saturation_vapor_pressure</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">e</span> <span class="o">=</span> <span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">dewpt</span><span class="p">)</span>
+    <span class="n">e_s</span> <span class="o">=</span> <span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">temperature</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">e</span> <span class="o">/</span> <span class="n">e_s</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="potential_temperature"><a class="viewcode-back" href="../../../api/generated/metpy.calc.potential_temperature.html#metpy.calc.potential_temperature">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -229,7 +261,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The potential temperature corresponding to the the temperature and</span>
+<span class="sd">        The potential temperature corresponding to the temperature and</span>
 <span class="sd">        pressure.</span>
 
 <span class="sd">    See Also</span>
@@ -303,7 +335,7 @@
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">       The temperature corresponding to the the starting temperature and</span>
+<span class="sd">       The temperature corresponding to the starting temperature and</span>
 <span class="sd">       pressure levels.</span>
 
 <span class="sd">    See Also</span>
@@ -385,7 +417,7 @@
     <span class="n">w</span> <span class="o">=</span> <span class="n">mixing_ratio</span><span class="p">(</span><span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">dewpt</span><span class="p">),</span> <span class="n">pressure</span><span class="p">)</span>
     <span class="n">fp</span> <span class="o">=</span> <span class="n">so</span><span class="o">.</span><span class="n">fixed_point</span><span class="p">(</span><span class="n">_lcl_iter</span><span class="p">,</span> <span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">temperature</span><span class="p">),</span>
                         <span class="n">xtol</span><span class="o">=</span><span class="n">eps</span><span class="p">,</span> <span class="n">maxiter</span><span class="o">=</span><span class="n">max_iters</span><span class="p">)</span>
-    <span class="n">lcl_p</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">fp</span><span class="p">,</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+    <span class="n">lcl_p</span> <span class="o">=</span> <span class="n">fp</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
     <span class="k">return</span> <span class="n">lcl_p</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">(</span><span class="n">vapor_pressure</span><span class="p">(</span><span class="n">lcl_p</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span></div>
 
 
@@ -688,7 +720,8 @@
 <span class="sd">    saturation_mixing_ratio, vapor_pressure</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="n">molecular_weight_ratio</span> <span class="o">*</span> <span class="n">part_press</span> <span class="o">/</span> <span class="p">(</span><span class="n">tot_press</span> <span class="o">-</span> <span class="n">part_press</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">molecular_weight_ratio</span> <span class="o">*</span>
+            <span class="n">part_press</span> <span class="o">/</span> <span class="p">(</span><span class="n">tot_press</span> <span class="o">-</span> <span class="n">part_press</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="saturation_mixing_ratio"><a class="viewcode-back" href="../../../api/generated/metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -725,7 +758,7 @@
 
 <span class="sd">    First, the LCL temperature is calculated:</span>
 
-<span class="sd">    .. math:: T_{L}=\frac{1}{\frac{1}{T_{D}-56}+\frac{(T_{K}/T_{D})}{800}}+56</span>
+<span class="sd">    .. math:: T_{L}=\frac{1}{\frac{1}{T_{D}-56}+\frac{ln(T_{K}/T_{D})}{800}}+56</span>
 
 <span class="sd">    Which is then used to calculate the potential temperature at the LCL:</span>
 
@@ -734,8 +767,8 @@
 
 <span class="sd">    Both of these are used to calculate the final equivalent potential temperature:</span>
 
-<span class="sd">    .. math:: \theta_{E}=\theta_{DL}\exp[\left(\left\frac{3036.}{T_{L}}</span>
-<span class="sd">                                        -1.78\right)*r(1+.448r)\right]</span>
+<span class="sd">    .. math:: \theta_{E}=\theta_{DL}\exp\left[\left(\frac{3036.}{T_{L}}</span>
+<span class="sd">                                              -1.78\right)*r(1+.448r)\right]</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -754,7 +787,7 @@
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
 <span class="sd">    [Bolton1980]_ formula for Theta-e is used, since according to</span>
-<span class="sd">    [Davies-Jones2009]_ it is the most accurate non-iterative formulation</span>
+<span class="sd">    [DaviesJones2009]_ it is the most accurate non-iterative formulation</span>
 <span class="sd">    available.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -900,9 +933,9 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    .. math:: RH = 100 \frac{e}{e_s}</span>
+<span class="sd">    .. math:: RH = \frac{e}{e_s}</span>
 
-<span class="sd">    * :math:`RH` is relative humidity</span>
+<span class="sd">    * :math:`RH` is relative humidity as a unitless ratio</span>
 <span class="sd">    * :math:`e` is vapor pressure from the wet psychrometric calculation</span>
 <span class="sd">    * :math:`e_s` is the saturation vapor pressure</span>
 
@@ -911,8 +944,8 @@
 <span class="sd">    psychrometric_vapor_pressure_wet, saturation_vapor_pressure</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span> <span class="o">*</span> <span class="n">psychrometric_vapor_pressure_wet</span><span class="p">(</span><span class="n">dry_bulb_temperature</span><span class="p">,</span>
-            <span class="n">web_bulb_temperature</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">/</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">psychrometric_vapor_pressure_wet</span><span class="p">(</span><span class="n">dry_bulb_temperature</span><span class="p">,</span> <span class="n">web_bulb_temperature</span><span class="p">,</span>
+                                             <span class="n">pressure</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span> <span class="o">/</span>
             <span class="n">saturation_vapor_pressure</span><span class="p">(</span><span class="n">dry_bulb_temperature</span><span class="p">))</span></div>
 
 
@@ -965,6 +998,44 @@
             <span class="n">pressure</span> <span class="o">*</span> <span class="p">(</span><span class="n">dry_bulb_temperature</span> <span class="o">-</span> <span class="n">wet_bulb_temperature</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;kelvin&#39;</span><span class="p">))</span></div>
 
 
+<div class="viewcode-block" id="mixing_ratio_from_relative_humidity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mixing_ratio_from_relative_humidity.html#metpy.calc.mixing_ratio_from_relative_humidity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[dimensionless]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">mixing_ratio_from_relative_humidity</span><span class="p">(</span><span class="n">relative_humidity</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">pressure</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the mixing ratio from relative humidity, temperature, and pressure.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    relative_humidity: array_like</span>
+<span class="sd">        The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass</span>
+<span class="sd">        a percentage if proper units are attached.</span>
+<span class="sd">    temperature: `pint.Quantity`</span>
+<span class="sd">        Air temperature</span>
+<span class="sd">    pressure: `pint.Quantity`</span>
+<span class="sd">        Total atmospheric pressure</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        Dimensionless mixing ratio</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Formula adapted from [Hobbs1977]_ pg. 74.</span>
+
+<span class="sd">    .. math:: w = (RH)(w_s)</span>
+
+<span class="sd">    * :math:`w` is mixing ratio</span>
+<span class="sd">    * :math:`RH` is relative humidity as a unitless ratio</span>
+<span class="sd">    * :math:`w_s` is the saturation mixing ratio</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    relative_humidity_from_mixing_ratio, saturation_mixing_ratio</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">relative_humidity</span> <span class="o">*</span> <span class="n">saturation_mixing_ratio</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="relative_humidity_from_mixing_ratio"><a class="viewcode-back" href="../../../api/generated/metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[dimensionless]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">relative_humidity_from_mixing_ratio</span><span class="p">(</span><span class="n">mixing_ratio</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">pressure</span><span class="p">):</span>
@@ -986,21 +1057,20 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    Formula from [Hobbs1977]_ pg. 74.</span>
+<span class="sd">    Formula based on that from [Hobbs1977]_ pg. 74.</span>
 
-<span class="sd">    .. math:: RH = 100 \frac{w}{w_s}</span>
+<span class="sd">    .. math:: RH = \frac{w}{w_s}</span>
 
-<span class="sd">    * :math:`RH` is relative humidity</span>
-<span class="sd">    * :math:`w` is mxing ratio</span>
+<span class="sd">    * :math:`RH` is relative humidity as a unitless ratio</span>
+<span class="sd">    * :math:`w` is mixing ratio</span>
 <span class="sd">    * :math:`w_s` is the saturation mixing ratio</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    saturation_mixing_ratio</span>
+<span class="sd">    mixing_ratio_from_relative_humidity, saturation_mixing_ratio</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span> <span class="o">*</span>
-            <span class="n">mixing_ratio</span> <span class="o">/</span> <span class="n">saturation_mixing_ratio</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">))</span></div>
+    <span class="k">return</span> <span class="n">mixing_ratio</span> <span class="o">/</span> <span class="n">saturation_mixing_ratio</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="mixing_ratio_from_specific_humidity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mixing_ratio_from_specific_humidity.html#metpy.calc.mixing_ratio_from_specific_humidity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1024,15 +1094,55 @@
 
 <span class="sd">    .. math:: w = \frac{q}{1-q}</span>
 
-<span class="sd">    * :math:`w` is mxing ratio</span>
+<span class="sd">    * :math:`w` is mixing ratio</span>
 <span class="sd">    * :math:`q` is the specific humidity</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    mixing_ratio</span>
+<span class="sd">    mixing_ratio, specific_humidity_from_mixing_ratio</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">specific_humidity</span> <span class="o">=</span> <span class="n">specific_humidity</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
     <span class="k">return</span> <span class="n">specific_humidity</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">specific_humidity</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="specific_humidity_from_mixing_ratio"><a class="viewcode-back" href="../../../api/generated/metpy.calc.specific_humidity_from_mixing_ratio.html#metpy.calc.specific_humidity_from_mixing_ratio">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">specific_humidity_from_mixing_ratio</span><span class="p">(</span><span class="n">mixing_ratio</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the specific humidity from the mixing ratio.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mixing_ratio: `pint.Quantity`</span>
+<span class="sd">        mixing ratio</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        Specific humidity</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Formula from [Salby1996]_ pg. 118.</span>
+
+<span class="sd">    .. math:: q = \frac{w}{1+w}</span>
+
+<span class="sd">    * :math:`w` is mixing ratio</span>
+<span class="sd">    * :math:`q` is the specific humidity</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    mixing_ratio, mixing_ratio_from_specific_humidity</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">mixing_ratio</span> <span class="o">=</span> <span class="n">mixing_ratio</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+        <span class="k">pass</span>
+    <span class="k">return</span> <span class="n">mixing_ratio</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">mixing_ratio</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="relative_humidity_from_specific_humidity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.relative_humidity_from_specific_humidity.html#metpy.calc.relative_humidity_from_specific_humidity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1056,11 +1166,11 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    Formula from [Hobbs1977]_ pg. 74. and [Salby1996]_ pg. 118.</span>
+<span class="sd">    Formula based on that from [Hobbs1977]_ pg. 74. and [Salby1996]_ pg. 118.</span>
 
-<span class="sd">    .. math:: RH = 100 \frac{q}{(1-q)w_s}</span>
+<span class="sd">    .. math:: RH = \frac{q}{(1-q)w_s}</span>
 
-<span class="sd">    * :math:`RH` is relative humidity</span>
+<span class="sd">    * :math:`RH` is relative humidity as a unitless ratio</span>
 <span class="sd">    * :math:`q` is specific humidity</span>
 <span class="sd">    * :math:`w_s` is the saturation mixing ratio</span>
 
@@ -1069,8 +1179,7 @@
 <span class="sd">    relative_humidity_from_mixing_ratio</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="mi">100</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">percent</span> <span class="o">*</span>
-            <span class="n">mixing_ratio_from_specific_humidity</span><span class="p">(</span><span class="n">specific_humidity</span><span class="p">)</span> <span class="o">/</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">mixing_ratio_from_specific_humidity</span><span class="p">(</span><span class="n">specific_humidity</span><span class="p">)</span> <span class="o">/</span>
             <span class="n">saturation_mixing_ratio</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">))</span></div>
 
 
@@ -1601,6 +1710,197 @@
         <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="o">-</span><span class="mf">1.</span> <span class="o">/</span> <span class="n">actual_depth</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">datavar_layer</span><span class="p">,</span> <span class="n">p_layer</span><span class="p">)</span> <span class="o">*</span>
                    <span class="n">datavar_layer</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ret</span></div>
+
+
+<div class="viewcode-block" id="dry_static_energy"><a class="viewcode-back" href="../../../api/generated/metpy.calc.dry_static_energy.html#metpy.calc.dry_static_energy">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">dry_static_energy</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the dry static energy of parcels.</span>
+
+<span class="sd">    This function will calculate the dry static energy following the first two terms of</span>
+<span class="sd">    equation 3.72 in [Hobbs2006]_.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math::\text{dry static energy} = c_{pd} * T + gz</span>
+
+<span class="sd">    * :math:`T` is temperature</span>
+<span class="sd">    * :math:`z` is height</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    heights : array-like</span>
+<span class="sd">        Atmospheric height</span>
+<span class="sd">    temperature : array-like</span>
+<span class="sd">        Atmospheric temperature</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The dry static energy</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">g</span> <span class="o">*</span> <span class="n">heights</span> <span class="o">+</span> <span class="n">Cp_d</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;kJ/kg&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="moist_static_energy"><a class="viewcode-back" href="../../../api/generated/metpy.calc.moist_static_energy.html#metpy.calc.moist_static_energy">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">moist_static_energy</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">specific_humidity</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the moist static energy of parcels.</span>
+
+<span class="sd">    This function will calculate the moist static energy following</span>
+<span class="sd">    equation 3.72 in [Hobbs2006]_.</span>
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    .. math::\text{moist static energy} = c_{pd} * T + gz + L_v q</span>
+
+<span class="sd">    * :math:`T` is temperature</span>
+<span class="sd">    * :math:`z` is height</span>
+<span class="sd">    * :math:`q` is specific humidity</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    heights : array-like</span>
+<span class="sd">        Atmospheric height</span>
+<span class="sd">    temperature : array-like</span>
+<span class="sd">        Atmospheric temperature</span>
+<span class="sd">    specific_humidity : array-like</span>
+<span class="sd">        Atmospheric specific humidity</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The moist static energy</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">dry_static_energy</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span> <span class="o">+</span>
+            <span class="n">Lv</span> <span class="o">*</span> <span class="n">specific_humidity</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;kJ/kg&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="thickness_hydrostatic"><a class="viewcode-back" href="../../../api/generated/metpy.calc.thickness_hydrostatic.html#metpy.calc.thickness_hydrostatic">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">thickness_hydrostatic</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the thickness of a layer via the hypsometric equation.</span>
+
+<span class="sd">    This thickness calculation uses the pressure and temperature profiles (and optionally</span>
+<span class="sd">    mixing ratio) via the hypsometric equation with virtual temperature adjustment</span>
+
+<span class="sd">    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,</span>
+
+<span class="sd">    which is based off of Equation 3.24 in [Hobbs2006]_.</span>
+
+<span class="sd">    This assumes a hydrostatic atmosphere.</span>
+
+<span class="sd">    Layer bottom and depth specified in pressure.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        Atmospheric pressure profile</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        Atmospheric temperature profile</span>
+<span class="sd">    mixing : `pint.Quantity`, optional</span>
+<span class="sd">        Profile of dimensionless mass mixing ratio. If none is given, virtual temperature</span>
+<span class="sd">        is simply set to be the given temperature.</span>
+<span class="sd">    molecular_weight_ratio : `pint.Quantity` or float, optional</span>
+<span class="sd">        The ratio of the molecular weight of the constituent gas to that assumed</span>
+<span class="sd">        for air. Defaults to the ratio for water vapor to dry air.</span>
+<span class="sd">        (:math:`\epsilon\approx0.622`).</span>
+<span class="sd">    bottom : `pint.Quantity`, optional</span>
+<span class="sd">        The bottom of the layer in pressure. Defaults to the first observation.</span>
+<span class="sd">    depth : `pint.Quantity`, optional</span>
+<span class="sd">        The depth of the layer in hPa. Defaults to the full profile if bottom is not given,</span>
+<span class="sd">        and 100 hPa if bottom is given.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The thickness of the layer in meters.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    thickness_hydrostatic_from_relative_humidity, pressure_to_height_std, virtual_temperature</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mixing</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;mixing&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">molecular_weight_ratio</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;molecular_weight_ratio&#39;</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+    <span class="n">bottom</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="c1"># Get the data for the layer, conditional upon bottom/depth being specified and mixing</span>
+    <span class="c1"># ratio being given</span>
+    <span class="k">if</span> <span class="n">bottom</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">depth</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mixing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">layer_p</span><span class="p">,</span> <span class="n">layer_virttemp</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">layer_p</span> <span class="o">=</span> <span class="n">pressure</span>
+            <span class="n">layer_virttemp</span> <span class="o">=</span> <span class="n">virtual_temperature</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">mixing</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">mixing</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">layer_p</span><span class="p">,</span> <span class="n">layer_virttemp</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span>
+                                                <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">layer_p</span><span class="p">,</span> <span class="n">layer_temp</span><span class="p">,</span> <span class="n">layer_w</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing</span><span class="p">,</span>
+                                                     <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">)</span>
+            <span class="n">layer_virttemp</span> <span class="o">=</span> <span class="n">virtual_temperature</span><span class="p">(</span><span class="n">layer_temp</span><span class="p">,</span> <span class="n">layer_w</span><span class="p">,</span> <span class="n">molecular_weight_ratio</span><span class="p">)</span>
+
+    <span class="c1"># Take the integral (with unit handling) and return the result in meters</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span> <span class="n">Rd</span> <span class="o">/</span> <span class="n">g</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">layer_virttemp</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;K&#39;</span><span class="p">),</span> <span class="n">x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">layer_p</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">))</span> <span class="o">*</span>
+            <span class="n">units</span><span class="o">.</span><span class="n">K</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="thickness_hydrostatic_from_relative_humidity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.thickness_hydrostatic_from_relative_humidity.html#metpy.calc.thickness_hydrostatic_from_relative_humidity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">thickness_hydrostatic_from_relative_humidity</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">relative_humidity</span><span class="p">,</span>
+                                                 <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the thickness of a layer given pressure, temperature and relative humidity.</span>
+
+<span class="sd">    Similar to ``thickness_hydrostatic``, this thickness calculation uses the pressure,</span>
+<span class="sd">    temperature, and relative humidity profiles via the hypsometric equation with virtual</span>
+<span class="sd">    temperature adjustment.</span>
+
+<span class="sd">    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,</span>
+
+<span class="sd">    which is based off of Equation 3.24 in [Hobbs2006]_. Virtual temperature is calculated</span>
+<span class="sd">    from the profiles of temperature and relative humidity.</span>
+
+<span class="sd">    This assumes a hydrostatic atmosphere.</span>
+
+<span class="sd">    Layer bottom and depth specified in pressure.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        Atmospheric pressure profile</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        Atmospheric temperature profile</span>
+<span class="sd">    relative_humidity : `pint.Quantity`</span>
+<span class="sd">        Atmospheric relative humidity profile. The relative humidity is expressed as a</span>
+<span class="sd">        unitless ratio in the range [0, 1]. Can also pass a percentage if proper units are</span>
+<span class="sd">        attached.</span>
+<span class="sd">    bottom : `pint.Quantity`, optional</span>
+<span class="sd">        The bottom of the layer in pressure. Defaults to the first observation.</span>
+<span class="sd">    depth : `pint.Quantity`, optional</span>
+<span class="sd">        The depth of the layer in hPa. Defaults to the full profile if bottom is not given,</span>
+<span class="sd">        and 100 hPa if bottom is given.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The thickness of the layer in meters.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    thickness_hydrostatic, pressure_to_height_std, virtual_temperature,</span>
+<span class="sd">    mixing_ratio_from_relative_humidity</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">bottom</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;bottom&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">depth</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;depth&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">mixing</span> <span class="o">=</span> <span class="n">mixing_ratio_from_relative_humidity</span><span class="p">(</span><span class="n">relative_humidity</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">pressure</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">thickness_hydrostatic</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing</span><span class="o">=</span><span class="n">mixing</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span>
+                                 <span class="n">depth</span><span class="o">=</span><span class="n">depth</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -1615,8 +1915,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, MetPy Developers.
-      Last updated on Nov 03, 2017 at 16:03:50.
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Jan 04, 2018 at 19:17:05.
 
     </p>
   </div>
@@ -1631,10 +1931,9 @@
   ga('create', 'UA-92978945-1', 'auto');
   ga('send', 'pageview');
 </script>
-<script type="text/javascript" src="_static/jquery.js"></script>
-<script type="text/javascript" src="_static/pop_ver.js"></script>
+<script>var version_json_loc = "../../../../versions.json";</script>
 <p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
 </p>
 
 
@@ -1654,7 +1953,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.0+96.gd290880',
+            VERSION:'0.6.1+116.gba13b4c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1666,6 +1965,7 @@
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
 
   
 

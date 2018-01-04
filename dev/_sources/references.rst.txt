@@ -20,6 +20,10 @@ References
            doi:`10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2>`_.
 
+.. [Bowen2005] Bowen, M. K. and R. Smith, 2005: Derivative formulae and errors for
+           non-uniformly spaced points. *Proc. R. Soc. A*, **461**, 1975-1997,
+           doi:`10.1098/rspa.2004.1430 <https://doi.org/10.1098/rspa.2004.1430>`_.
+
 .. [Bunkers2000] Bunkers, M. J., B. A. Klimowski, J. W. Zeitler, R. L. Thompson,
            and M. L. Weisman, 2000: Predicting supercell motion using a new hodograph
            technique. *Wea. Forecasting.*, **15**, 61–79,
@@ -31,7 +35,7 @@ References
            doi:`10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2>`_.
 
-.. [Davies-Jones2009] Davies-Jones, R., 2009: On Formulas for Equivalent Potential Temperature.
+.. [DaviesJones2009] Davies-Jones, R., 2009: On Formulas for Equivalent Potential Temperature.
            *Mon. Wea. Rev.*, **137**, 3137-3148,
            doi: `10.1175/2009mwr2774.1 <https://doi.org/10.1175/2009MWR2774.1>`_.
 

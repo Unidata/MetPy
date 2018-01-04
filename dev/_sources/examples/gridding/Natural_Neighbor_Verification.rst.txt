@@ -229,7 +229,7 @@ Draw the natural neighbor triangles and their circumcenters. Also plot a `Vorono
 which serves as a complementary (but not necessary)
 spatial data structure that we use here simply to show areal ratios.
 Notice that the two natural neighbor triangle circumcenters are also vertices
-in the Voronoi plot (green dots), and the observations are in the the polygons (blue dots).
+in the Voronoi plot (green dots), and the observations are in the polygons (blue dots).
 
 
 
@@ -391,7 +391,7 @@ The values are slightly different due to truncating the area values in
 the above visual example to the 3rd decimal place.
 
 
-**Total running time of the script:** ( 0 minutes  0.187 seconds)
+**Total running time of the script:** ( 0 minutes  0.195 seconds)
 
 
 

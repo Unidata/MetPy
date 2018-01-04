@@ -308,7 +308,7 @@ Step through barnes calculations.
     Metpy barnes value:      4.08718241061
 
 
-**Total running time of the script:** ( 0 minutes  0.177 seconds)
+**Total running time of the script:** ( 0 minutes  0.178 seconds)
 
 
 

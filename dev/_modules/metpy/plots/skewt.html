@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
@@ -163,6 +164,7 @@
 
 
 
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -174,10 +176,10 @@
       <li>metpy.plots.skewt</li>
     
     
-      <li class="wy-breadcrumbs-aside">
+    <li class="source-link">
         
-      </li>
-    
+    </li>
+
   </ul>
 
   
@@ -1016,6 +1018,7 @@
                                          <span class="n">interpolation_heights</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
                 <span class="n">c</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">interpolation_heights</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
                 <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>  <span class="c1"># TODO: This shouldn&#39;t be required!</span>
+                <span class="n">bounds</span> <span class="o">=</span> <span class="n">bounds</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
             <span class="c1"># If segmenting by anything else, do not interpolate, just use the data</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span> <span class="o">*</span> <span class="n">bounds</span><span class="o">.</span><span class="n">units</span>
@@ -1049,8 +1052,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, MetPy Developers.
-      Last updated on Nov 03, 2017 at 16:03:50.
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Jan 04, 2018 at 19:17:05.
 
     </p>
   </div>
@@ -1065,10 +1068,9 @@
   ga('create', 'UA-92978945-1', 'auto');
   ga('send', 'pageview');
 </script>
-<script type="text/javascript" src="_static/jquery.js"></script>
-<script type="text/javascript" src="_static/pop_ver.js"></script>
+<script>var version_json_loc = "../../../../versions.json";</script>
 <p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
 </p>
 
 
@@ -1088,7 +1090,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.0+96.gd290880',
+            VERSION:'0.6.1+116.gba13b4c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1100,6 +1102,7 @@
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
 
   
 

@@ -139,6 +139,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -181,6 +182,7 @@
 
 
 
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -192,14 +194,17 @@
       <li>constants</li>
     
     
-      <li class="wy-breadcrumbs-aside">
+    <li class="source-link">
         
             
-            <a href="../../_sources/api/generated/metpy.constants.rst.txt" rel="nofollow"> View page source</a>
-          
+                
+                
+                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.constants&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                   class="fa fa-github"> Improve this page</a>
+            
         
-      </li>
-    
+    </li>
+
   </ul>
 
   
@@ -215,11 +220,11 @@
 <h2>Earth<a class="headerlink" href="#earth" title="Permalink to this headline">¶</a></h2>
 <table border="1" class="docutils">
 <colgroup>
-<col width="21%" />
-<col width="13%" />
-<col width="10%" />
-<col width="23%" />
-<col width="34%" />
+<col width="19%" />
+<col width="12%" />
+<col width="9%" />
+<col width="30%" />
+<col width="31%" />
 </colgroup>
 <tbody valign="top">
 <tr class="row-odd"><td>Name</td>
@@ -240,35 +245,47 @@
 <td><span class="math">\(\text{m s}^{-2}\)</span></td>
 <td>Avg. gravity acceleration on Earth</td>
 </tr>
-<tr class="row-even"><td>earth_avg_angular_vel</td>
+<tr class="row-even"><td>gravitational_constant</td>
+<td><span class="math">\(G\)</span></td>
+<td>G</td>
+<td><span class="math">\(\text{m}^{3} {kg}^{-1} {s}^{-2}\)</span></td>
+<td>Gravitational constant</td>
+</tr>
+<tr class="row-odd"><td>earth_avg_angular_vel</td>
 <td><span class="math">\(\Omega\)</span></td>
 <td>omega</td>
 <td><span class="math">\(\text{rad s}^{-1}\)</span></td>
 <td>Avg. angular velocity of Earth</td>
 </tr>
-<tr class="row-odd"><td>earth_sfc_avg_dist_sun</td>
+<tr class="row-even"><td>earth_sfc_avg_dist_sun</td>
 <td><span class="math">\(d\)</span></td>
 <td>d</td>
 <td><span class="math">\(\text{m}\)</span></td>
 <td>Avg. distance of the Earth from the Sun</td>
 </tr>
-<tr class="row-even"><td>earth_solar_irradiance</td>
+<tr class="row-odd"><td>earth_solar_irradiance</td>
 <td><span class="math">\(S\)</span></td>
 <td>S</td>
 <td><span class="math">\(\text{W m}^{-2}\)</span></td>
 <td>Avg. solar irradiance of Earth</td>
 </tr>
-<tr class="row-odd"><td>earth_max_declination</td>
+<tr class="row-even"><td>earth_max_declination</td>
 <td><span class="math">\(\delta\)</span></td>
 <td>delta</td>
 <td><span class="math">\(\text{degrees}\)</span></td>
 <td>Max. solar declination angle of Earth</td>
 </tr>
-<tr class="row-even"><td>earth_orbit_eccentricity</td>
+<tr class="row-odd"><td>earth_orbit_eccentricity</td>
 <td><span class="math">\(e\)</span></td>
 <td>&#160;</td>
 <td><span class="math">\(\text{None}\)</span></td>
 <td>Avg. eccentricity of Earth’s orbit</td>
+</tr>
+<tr class="row-even"><td>earth_mass</td>
+<td><span class="math">\(m_e\)</span></td>
+<td>me</td>
+<td><span class="math">\(\text{kg}\)</span></td>
+<td>Total mass of the Earth (approx)</td>
 </tr>
 </tbody>
 </table>
@@ -471,8 +488,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, MetPy Developers.
-      Last updated on Nov 03, 2017 at 16:03:50.
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Jan 04, 2018 at 19:17:05.
 
     </p>
   </div>
@@ -487,10 +504,9 @@
   ga('create', 'UA-92978945-1', 'auto');
   ga('send', 'pageview');
 </script>
-<script type="text/javascript" src="_static/jquery.js"></script>
-<script type="text/javascript" src="_static/pop_ver.js"></script>
+<script>var version_json_loc = "../../../versions.json";</script>
 <p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
 </p>
 
 
@@ -510,7 +526,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.0+96.gd290880',
+            VERSION:'0.6.1+116.gba13b4c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -522,6 +538,7 @@
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
 
   
 

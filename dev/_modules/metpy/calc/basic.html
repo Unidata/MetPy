@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
@@ -163,6 +164,7 @@
 
 
 
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -174,10 +176,10 @@
       <li>metpy.calc.basic</li>
     
     
-      <li class="wy-breadcrumbs-aside">
+    <li class="source-link">
         
-      </li>
-    
+    </li>
+
   </ul>
 
   
@@ -205,7 +207,7 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">g</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">Rd</span>
+<span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">G</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">me</span><span class="p">,</span> <span class="n">omega</span><span class="p">,</span> <span class="n">Rd</span><span class="p">,</span> <span class="n">Re</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">masked_array</span><span class="p">,</span> <span class="n">units</span>
 
@@ -446,6 +448,85 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">t0</span> <span class="o">/</span> <span class="n">gamma</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">/</span> <span class="n">p0</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="n">Rd</span> <span class="o">*</span> <span class="n">gamma</span> <span class="o">/</span> <span class="n">g</span><span class="p">))</span></div>
 
 
+<div class="viewcode-block" id="height_to_geopotential"><a class="viewcode-back" href="../../../api/generated/metpy.calc.height_to_geopotential.html#metpy.calc.height_to_geopotential">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">height_to_geopotential</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute geopotential for a given height.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    height : `pint.Quantity`</span>
+<span class="sd">        Height above sea level (array_like)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding geopotential value(s)</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from metpy.constants import g, G, me, Re</span>
+<span class="sd">    &gt;&gt;&gt; import metpy.calc</span>
+<span class="sd">    &gt;&gt;&gt; from metpy.units import units</span>
+<span class="sd">    &gt;&gt;&gt; height = np.linspace(0,10000, num = 11) * units.m</span>
+<span class="sd">    &gt;&gt;&gt; geopot = metpy.calc.height_to_geopotential(height)</span>
+<span class="sd">    &gt;&gt;&gt; geopot</span>
+<span class="sd">    &lt;Quantity([     0.           9817.46806283  19631.85526579  29443.16305888</span>
+<span class="sd">    39251.39289118  49056.54621087  58858.62446525  68657.62910064</span>
+<span class="sd">    78453.56156253  88246.42329545  98036.21574306], &#39;meter ** 2 / second ** 2&#39;)&gt;</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Derived from definition of geopotential in [Hobbs2006]_ pg.14 Eq.1.8.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Calculate geopotential</span>
+    <span class="n">geopot</span> <span class="o">=</span> <span class="n">G</span> <span class="o">*</span> <span class="n">me</span> <span class="o">*</span> <span class="p">((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">Re</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="n">Re</span> <span class="o">+</span> <span class="n">height</span><span class="p">)))</span>
+
+    <span class="k">return</span> <span class="n">geopot</span></div>
+
+
+<div class="viewcode-block" id="geopotential_to_height"><a class="viewcode-back" href="../../../api/generated/metpy.calc.geopotential_to_height.html#metpy.calc.geopotential_to_height">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">geopotential_to_height</span><span class="p">(</span><span class="n">geopot</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute height from a given geopotential.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    geopotential : `pint.Quantity`</span>
+<span class="sd">        Geopotential (array_like)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        The corresponding height value(s)</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; from metpy.constants import g, G, me, Re</span>
+<span class="sd">    &gt;&gt;&gt; import metpy.calc</span>
+<span class="sd">    &gt;&gt;&gt; from metpy.units import units</span>
+<span class="sd">    &gt;&gt;&gt; height = np.linspace(0,10000, num = 11) * units.m</span>
+<span class="sd">    &gt;&gt;&gt; geopot = metpy.calc.height_to_geopotential(height)</span>
+<span class="sd">    &gt;&gt;&gt; geopot</span>
+<span class="sd">    &lt;Quantity([     0.           9817.46806283  19631.85526579  29443.16305888</span>
+<span class="sd">    39251.39289118  49056.54621087  58858.62446525  68657.62910064</span>
+<span class="sd">    78453.56156253  88246.42329545  98036.21574306], &#39;meter ** 2 / second ** 2&#39;)&gt;</span>
+<span class="sd">    &gt;&gt;&gt; height = metpy.calc.geopotential_to_height(geopot)</span>
+<span class="sd">    &gt;&gt;&gt; height</span>
+<span class="sd">    &lt;Quantity([     0.   1000.   2000.   3000.   4000.   5000.   6000.   7000.   8000.</span>
+<span class="sd">    9000.  10000.], &#39;meter&#39;)&gt;</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Derived from definition of geopotential in [Hobbs2006]_ pg.14 Eq.1.8.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Calculate geopotential</span>
+    <span class="n">height</span> <span class="o">=</span> <span class="p">(((</span><span class="mi">1</span> <span class="o">/</span> <span class="n">Re</span><span class="p">)</span> <span class="o">-</span> <span class="p">(</span><span class="n">geopot</span> <span class="o">/</span> <span class="p">(</span><span class="n">G</span> <span class="o">*</span> <span class="n">me</span><span class="p">)))</span> <span class="o">**</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">-</span> <span class="n">Re</span>
+
+    <span class="k">return</span> <span class="n">height</span></div>
+
+
 <div class="viewcode-block" id="height_to_pressure_std"><a class="viewcode-back" href="../../../api/generated/metpy.calc.height_to_pressure_std.html#metpy.calc.height_to_pressure_std">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">height_to_pressure_std</span><span class="p">(</span><span class="n">height</span><span class="p">):</span>
@@ -515,7 +596,7 @@
 <span class="sd">        The corresponding pressure value for the height above the pressure level</span>
 
 <span class="sd">    See Also</span>
-<span class="sd">    -----</span>
+<span class="sd">    --------</span>
 <span class="sd">    pressure_to_height_std, height_to_pressure_std, add_pressure_to_height</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -543,7 +624,7 @@
 <span class="sd">        The corresponding height value for the pressure above the height level</span>
 
 <span class="sd">    See Also</span>
-<span class="sd">    -----</span>
+<span class="sd">    --------</span>
 <span class="sd">    pressure_to_height_std, height_to_pressure_std, add_height_to_pressure</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -632,8 +713,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, MetPy Developers.
-      Last updated on Nov 03, 2017 at 16:03:50.
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Jan 04, 2018 at 19:17:05.
 
     </p>
   </div>
@@ -648,10 +729,9 @@
   ga('create', 'UA-92978945-1', 'auto');
   ga('send', 'pageview');
 </script>
-<script type="text/javascript" src="_static/jquery.js"></script>
-<script type="text/javascript" src="_static/pop_ver.js"></script>
+<script>var version_json_loc = "../../../../versions.json";</script>
 <p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
 </p>
 
 
@@ -671,7 +751,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.0+96.gd290880',
+            VERSION:'0.6.1+116.gba13b4c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -683,6 +763,7 @@
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
 
   
 

@@ -17,6 +17,7 @@ Combine a Skew-T and a hodograph using Matplotlib's `GridSpec` layout capability
     import matplotlib.pyplot as plt
     import numpy as np
     import pandas as pd
+
     import metpy.calc as mpcalc
     from metpy.cbook import get_test_data
     from metpy.plots import add_metpy_logo, Hodograph, SkewT
@@ -119,7 +120,7 @@ assign units.
 
 
 
-**Total running time of the script:** ( 0 minutes  0.538 seconds)
+**Total running time of the script:** ( 0 minutes  0.519 seconds)
 
 
 

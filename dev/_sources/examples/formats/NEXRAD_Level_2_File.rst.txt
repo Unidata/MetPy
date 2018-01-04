@@ -105,7 +105,7 @@ Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot
 
 
 
-**Total running time of the script:** ( 0 minutes  6.830 seconds)
+**Total running time of the script:** ( 0 minutes  4.459 seconds)
 
 
 

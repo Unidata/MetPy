@@ -137,6 +137,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -179,6 +180,7 @@
 
 
 
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -190,14 +192,17 @@
       <li>Natural Neighbor Verification</li>
     
     
-      <li class="wy-breadcrumbs-aside">
+    <li class="source-link">
         
             
-            <a href="../../_sources/examples/gridding/Natural_Neighbor_Verification.rst.txt" rel="nofollow"> View page source</a>
-          
+                
+                
+                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20examples/gridding/Natural_Neighbor_Verification&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                   class="fa fa-github"> Improve this page</a>
+            
         
-      </li>
-    
+    </li>
+
   </ul>
 
   
@@ -366,7 +371,7 @@ Grab the circumcenters and radii for natural neighbors</p>
 which serves as a complementary (but not necessary)
 spatial data structure that we use here simply to show areal ratios.
 Notice that the two natural neighbor triangle circumcenters are also vertices
-in the Voronoi plot (green dots), and the observations are in the the polygons (blue dots).</p>
+in the Voronoi plot (green dots), and the observations are in the polygons (blue dots).</p>
 <div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">vor</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.Voronoi.html#scipy.spatial.Voronoi" title="View documentation for scipy.spatial.Voronoi"><span class="n">Voronoi</span></a><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">)))</span>
 <a href="http://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.voronoi_plot_2d.html#scipy.spatial.voronoi_plot_2d" title="View documentation for scipy.spatial.voronoi_plot_2d"><span class="n">voronoi_plot_2d</span></a><span class="p">(</span><span class="n">vor</span><span class="p">)</span>
 
@@ -470,7 +475,7 @@ Calculate the total area of all of the generated polygons.</p>
 </div>
 <p>The values are slightly different due to truncating the area values in
 the above visual example to the 3rd decimal place.</p>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.187 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.195 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/Natural_Neighbor_Verification.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Natural_Neighbor_Verification.py</span></code></a></div>
@@ -502,8 +507,8 @@ the above visual example to the 3rd decimal place.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, MetPy Developers.
-      Last updated on Nov 03, 2017 at 16:03:50.
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Jan 04, 2018 at 19:17:05.
 
     </p>
   </div>
@@ -518,10 +523,9 @@ the above visual example to the 3rd decimal place.</p>
   ga('create', 'UA-92978945-1', 'auto');
   ga('send', 'pageview');
 </script>
-<script type="text/javascript" src="_static/jquery.js"></script>
-<script type="text/javascript" src="_static/pop_ver.js"></script>
+<script>var version_json_loc = "../../../versions.json";</script>
 <p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
 </p>
 
 
@@ -541,7 +545,7 @@ the above visual example to the 3rd decimal place.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.0+96.gd290880',
+            VERSION:'0.6.1+116.gba13b4c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -553,6 +557,7 @@ the above visual example to the 3rd decimal place.</p>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
 
   
 

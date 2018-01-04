@@ -45,7 +45,7 @@ for the project as well.
 
 ## Ground Rules
 The goal is to maintain a diverse community that's pleasant for everyone. Please
-be considerate and respectful of others. Other items:
+be considerate and respectful of others by following our [code of conduct](https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md). Other items:
 
 * Each pull request should consist of a logical collection of changes. You can
   include multiple bug fixes in a single pull request, but they should be related.

@@ -142,6 +142,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -184,6 +185,7 @@
 
 
 
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -197,14 +199,17 @@
       <li>add_timestamp</li>
     
     
-      <li class="wy-breadcrumbs-aside">
+    <li class="source-link">
         
             
-            <a href="../../_sources/api/generated/metpy.plots.add_timestamp.rst.txt" rel="nofollow"> View page source</a>
-          
+                
+                
+                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.plots.add_timestamp&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                   class="fa fa-github"> Improve this page</a>
+            
         
-      </li>
-    
+    </li>
+
   </ul>
 
   
@@ -217,7 +222,7 @@
 <h1>add_timestamp<a class="headerlink" href="#add-timestamp" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.plots.add_timestamp">
-<code class="descclassname">metpy.plots.</code><code class="descname">add_timestamp</code><span class="sig-paren">(</span><em>ax</em>, <em>time=None</em>, <em>x=0.99</em>, <em>y=-0.04</em>, <em>ha='right'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/_util.html#add_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.add_timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">metpy.plots.</code><code class="descname">add_timestamp</code><span class="sig-paren">(</span><em>ax</em>, <em>time=None</em>, <em>x=0.99</em>, <em>y=-0.04</em>, <em>ha='right'</em>, <em>high_contrast=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/_util.html#add_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.add_timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a timestamp at plot creation time.</p>
 <p>Adds an ISO format timestamp with the time of plot creation to the plot.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -225,15 +230,16 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ax</strong> (<a class="reference external" href="http://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.1.0)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.axes.Axes</span></code></a>) – The <em class="xref py py-obj">Axes</em> instance used for plotting</li>
+<li><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.1.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.axes.Axes</span></code></a>) – The <em class="xref py py-obj">Axes</em> instance used for plotting</li>
 <li><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Specific time to be plotted - datetime.utcnow will be use if not specified</li>
 <li><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Relative x position on the axes of the timestamp</li>
 <li><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Relative y position on the axes of the timestamp</li>
 <li><strong>ha</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Horizontal alignment of the time stamp string</li>
+<li><strong>high_contrast</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Outline text for increased contrast</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>ax</strong> (<a class="reference external" href="http://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.1.0)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.axes.Axes</span></code></a>) – The <em class="xref py py-obj">Axes</em> instance used for plotting</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text" title="(in Matplotlib v2.1.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.text.Text</span></code></a> – The <a class="reference external" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text" title="(in Matplotlib v2.1.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.text.Text</span></code></a> instance created</p>
 </td>
 </tr>
 </tbody>
@@ -264,8 +270,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, MetPy Developers.
-      Last updated on Nov 03, 2017 at 16:03:50.
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Jan 04, 2018 at 19:17:05.
 
     </p>
   </div>
@@ -280,10 +286,9 @@
   ga('create', 'UA-92978945-1', 'auto');
   ga('send', 'pageview');
 </script>
-<script type="text/javascript" src="_static/jquery.js"></script>
-<script type="text/javascript" src="_static/pop_ver.js"></script>
+<script>var version_json_loc = "../../../versions.json";</script>
 <p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
 </p>
 
 
@@ -303,7 +308,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.0+96.gd290880',
+            VERSION:'0.6.1+116.gba13b4c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -315,6 +320,7 @@
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
 
   
 

@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
@@ -163,6 +164,7 @@
 
 
 
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -174,10 +176,10 @@
       <li>metpy.calc.indices</li>
     
     
-      <li class="wy-breadcrumbs-aside">
+    <li class="source-link">
         
-      </li>
-    
+    </li>
+
   </ul>
 
   
@@ -197,7 +199,7 @@
 <span class="kn">from</span> <span class="nn">.tools</span> <span class="k">import</span> <span class="n">get_layer</span>
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">g</span><span class="p">,</span> <span class="n">rho_l</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -403,6 +405,7 @@
 
 
 <div class="viewcode-block" id="supercell_composite"><a class="viewcode-back" href="../../../api/generated/metpy.calc.supercell_composite.html#metpy.calc.supercell_composite">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[energy] / [mass]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed] * [speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">supercell_composite</span><span class="p">(</span><span class="n">mucape</span><span class="p">,</span> <span class="n">effective_storm_helicity</span><span class="p">,</span> <span class="n">effective_shear</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the supercell composite parameter.</span>
 
@@ -411,8 +414,9 @@
 <span class="sd">    and is calculated using the formula developed by</span>
 <span class="sd">    [Thompson2004]_:</span>
 
-<span class="sd">    SCP = (mucape / 1000 J/kg) * (effective_storm_helicity / 50 m^2/s^2) *</span>
-<span class="sd">          (effective_shear / 20 m/s)</span>
+<span class="sd">    .. math::  \text{SCP} = \frac{\text{MUCAPE}}{1000 \text{J/kg}} *</span>
+<span class="sd">               \frac{\text{Effective SRH}}{50 \text{m}^2/\text{s}^2} *</span>
+<span class="sd">               \frac{\text{Effective Shear}}{20 \text{m/s}}</span>
 
 <span class="sd">    The effective_shear term is set to zero below 10 m/s and</span>
 <span class="sd">    capped at 1 when effective_shear exceeds 20 m/s.</span>
@@ -432,7 +436,7 @@
 <span class="sd">        supercell composite</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">effective_shear</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">effective_shear</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
+    <span class="n">effective_shear</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">effective_shear</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
     <span class="n">effective_shear</span><span class="p">[</span><span class="n">effective_shear</span> <span class="o">&lt;</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
     <span class="n">effective_shear</span> <span class="o">=</span> <span class="n">effective_shear</span> <span class="o">/</span> <span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
 
@@ -442,7 +446,8 @@
 
 
 <div class="viewcode-block" id="significant_tornado"><a class="viewcode-back" href="../../../api/generated/metpy.calc.significant_tornado.html#metpy.calc.significant_tornado">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="k">def</span> <span class="nf">significant_tornado</span><span class="p">(</span><span class="n">sbcape</span><span class="p">,</span> <span class="n">sblcl</span><span class="p">,</span> <span class="n">storm_helicity_1km</span><span class="p">,</span> <span class="n">shear_6km</span><span class="p">):</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[energy] / [mass]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed] * [speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">significant_tornado</span><span class="p">(</span><span class="n">sbcape</span><span class="p">,</span> <span class="n">surface_based_lcl_height</span><span class="p">,</span> <span class="n">storm_helicity_1km</span><span class="p">,</span> <span class="n">shear_6km</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the significant tornado parameter (fixed layer).</span>
 
 <span class="sd">    The significant tornado parameter is designed to identify</span>
@@ -451,10 +456,12 @@
 <span class="sd">    It&#39;s calculated according to the formula used on the SPC</span>
 <span class="sd">    mesoanalysis page, updated in [Thompson2004]_:</span>
 
-<span class="sd">    sigtor = (sbcape / 1500 J/kg) * ((2000 m - sblcl) / 1000 m) *</span>
-<span class="sd">             (storm_helicity_1km / 150 m^s/s^2) * (shear_6km6 / 20 m/s)</span>
+<span class="sd">    .. math::  \text{SIGTOR} = \frac{\text{SBCAPE}}{1500 \text{J/kg}} * \frac{(2000 \text{m} -</span>
+<span class="sd">               \text{LCL}_\text{SB})}{1000 \text{m}} *</span>
+<span class="sd">               \frac{SRH_{\text{1km}}}{150 \text{m}^\text{s}/\text{s}^2} *</span>
+<span class="sd">               \frac{\text{Shear}_\text{6km}}{20 \text{m/s}}</span>
 
-<span class="sd">    The sblcl term is set to zero when the lcl is above 2000m and</span>
+<span class="sd">    The lcl height is set to zero when the lcl is above 2000m and</span>
 <span class="sd">    capped at 1 when below 1000m, and the shr6 term is set to 0</span>
 <span class="sd">    when shr6 is below 12.5 m/s and maxed out at 1.5 when shr6</span>
 <span class="sd">    exceeds 30 m/s.</span>
@@ -463,7 +470,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    sbcape : `pint.Quantity`</span>
 <span class="sd">        Surface-based CAPE</span>
-<span class="sd">    sblcl : `pint.Quantity`</span>
+<span class="sd">    surface_based_lcl_height : `pint.Quantity`</span>
 <span class="sd">        Surface-based lifted condensation level</span>
 <span class="sd">    storm_helicity_1km : `pint.Quantity`</span>
 <span class="sd">        Surface-1km storm-relative helicity</span>
@@ -476,15 +483,19 @@
 <span class="sd">        significant tornado parameter</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">sblcl</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">sblcl</span><span class="p">,</span> <span class="mi">1000</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">),</span> <span class="mi">2000</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">))</span>
-    <span class="n">sblcl</span><span class="p">[</span><span class="n">sblcl</span> <span class="o">&gt;</span> <span class="mi">2000</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)</span>
-    <span class="n">sblcl</span> <span class="o">=</span> <span class="p">(</span><span class="mf">2000.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">sblcl</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">))</span>
-    <span class="n">shear_6km</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">shear_6km</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">30</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
+    <span class="n">surface_based_lcl_height</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">surface_based_lcl_height</span><span class="p">),</span>
+                                       <span class="mi">1000</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">),</span> <span class="mi">2000</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">))</span>
+    <span class="n">surface_based_lcl_height</span><span class="p">[</span><span class="n">surface_based_lcl_height</span> <span class="o">&gt;</span>
+                             <span class="mi">2000</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)</span>
+    <span class="n">surface_based_lcl_height</span> <span class="o">=</span> <span class="p">((</span><span class="mf">2000.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)</span> <span class="o">-</span> <span class="n">surface_based_lcl_height</span><span class="p">)</span> <span class="o">/</span>
+                                <span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">)))</span>
+    <span class="n">shear_6km</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">shear_6km</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="mi">30</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
     <span class="n">shear_6km</span><span class="p">[</span><span class="n">shear_6km</span> <span class="o">&lt;</span> <span class="mf">12.5</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
-    <span class="n">shear_6km</span> <span class="o">=</span> <span class="n">shear_6km</span> <span class="o">/</span> <span class="p">(</span><span class="mi">20</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span>
+    <span class="n">shear_6km</span> <span class="o">/=</span> <span class="mi">20</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="p">((</span><span class="n">sbcape</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1500.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;J/kg&#39;</span><span class="p">)))</span> <span class="o">*</span>
-            <span class="n">sblcl</span> <span class="o">*</span> <span class="p">(</span><span class="n">storm_helicity_1km</span> <span class="o">/</span> <span class="p">(</span><span class="mf">150.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m^2/s^2&#39;</span><span class="p">)))</span> <span class="o">*</span> <span class="n">shear_6km</span><span class="p">)</span></div>
+            <span class="n">surface_based_lcl_height</span> <span class="o">*</span>
+            <span class="p">(</span><span class="n">storm_helicity_1km</span> <span class="o">/</span> <span class="p">(</span><span class="mf">150.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m^2/s^2&#39;</span><span class="p">)))</span> <span class="o">*</span> <span class="n">shear_6km</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -499,8 +510,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, MetPy Developers.
-      Last updated on Nov 03, 2017 at 16:03:50.
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Jan 04, 2018 at 19:17:05.
 
     </p>
   </div>
@@ -515,10 +526,9 @@
   ga('create', 'UA-92978945-1', 'auto');
   ga('send', 'pageview');
 </script>
-<script type="text/javascript" src="_static/jquery.js"></script>
-<script type="text/javascript" src="_static/pop_ver.js"></script>
+<script>var version_json_loc = "../../../../versions.json";</script>
 <p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
 </p>
 
 
@@ -538,7 +548,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.0+96.gd290880',
+            VERSION:'0.6.1+116.gba13b4c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -550,6 +560,7 @@
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
 
   
 

@@ -152,12 +152,9 @@ plotting.
 
 
 
-    isentprs = isent_anal[0]
-    isenttmp = isent_anal[1]
-    isentspech = isent_anal[2]
-    isentu = isent_anal[3].to('kt')
-    isentv = isent_anal[4].to('kt')
-    isenthgt = isent_anal[5]
+    isentprs, isenttmp, isentspech, isentu, isentv, isenthgt = isent_anal
+    isentu.ito('kt')
+    isentv.ito('kt')
 
 
 
@@ -206,7 +203,7 @@ have to be calculated after the interpolation to isentropic space.
 .. code-block:: python
 
 
-    isentrh = mcalc.relative_humidity_from_specific_humidity(isentspech, isenttmp, isentprs)
+    isentrh = 100 * mcalc.relative_humidity_from_specific_humidity(isentspech, isenttmp, isentprs)
 
 
 
@@ -243,7 +240,7 @@ have to be calculated after the interpolation to isentropic space.
                                                     scale='50m',
                                                     facecolor='none')
 
-    fig = plt.figure(1, figsize=(17., 12.))
+    fig = plt.figure(figsize=(17., 12.))
     add_metpy_logo(fig, 120, 245, size='large')
     ax = fig.add_subplot(1, 1, 1, projection=crs)
     ax.set_extent(*bounds, crs=ccrs.PlateCarree())
@@ -260,7 +257,7 @@ have to be calculated after the interpolation to isentropic space.
     # Plot RH
     cf = ax.contourf(tlons, tlats, isentrh[level, :, :], range(10, 106, 5),
                      cmap=plt.cm.gist_earth_r)
-    cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0.05,
+    cb = plt.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5, pad=0.05,
                       extendrect='True')
     cb.set_label('Relative Humidity', size='x-large')
 
@@ -303,7 +300,7 @@ calculated with `mcalc.montgomery_streamfunction`.
     # Choose a level to plot, in this case 296 K
     level = 0
 
-    fig = plt.figure(1, figsize=(17., 12.))
+    fig = plt.figure(figsize=(17., 12.))
     add_metpy_logo(fig, 120, 250, size='large')
     ax = plt.subplot(111, projection=crs)
     ax.set_extent(*bounds, crs=ccrs.PlateCarree())
@@ -319,7 +316,7 @@ calculated with `mcalc.montgomery_streamfunction`.
     # Plot RH
     cf = ax.contourf(tlons, tlats, isentrh[level, :, :], range(10, 106, 5),
                      cmap=plt.cm.gist_earth_r)
-    cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0.05,
+    cb = plt.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5, pad=0.05,
                       extendrect='True')
     cb.set_label('Relative Humidity', size='x-large')
 
@@ -334,6 +331,7 @@ calculated with `mcalc.montgomery_streamfunction`.
               'Wind (kt), Relative Humidity (percent)', loc='left')
     plt.title('VALID: {:s}'.format(str(vtimes[0])), loc='right')
     plt.tight_layout()
+    plt.show()
 
 
 
@@ -343,7 +341,7 @@ calculated with `mcalc.montgomery_streamfunction`.
 
 
 
-**Total running time of the script:** ( 0 minutes  4.976 seconds)
+**Total running time of the script:** ( 0 minutes  5.183 seconds)
 
 
 

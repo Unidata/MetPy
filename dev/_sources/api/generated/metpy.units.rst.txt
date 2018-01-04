@@ -15,6 +15,7 @@ units
       atleast_2d
       check_units
       concatenate
+      diff
       masked_array
    
    

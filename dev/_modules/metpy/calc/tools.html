@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
@@ -163,6 +164,7 @@
 
 
 
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -174,10 +176,10 @@
       <li>metpy.calc.tools</li>
     
     
-      <li class="wy-breadcrumbs-aside">
+    <li class="source-link">
         
-      </li>
-    
+    </li>
+
   </ul>
 
   
@@ -191,17 +193,24 @@
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Contains a collection of generally useful calculation tools.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">numpy.core.numeric</span> <span class="k">import</span> <span class="n">normalize_axis_index</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>  <span class="c1"># Only available in numpy &gt;=1.13.0</span>
+    <span class="k">def</span> <span class="nf">normalize_axis_index</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">n</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;No op version of :func:`numpy.core.numeric.normalize_axis_index`.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">a</span>
 <span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="nn">ma</span>
 <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">cKDTree</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">height_to_pressure_std</span><span class="p">,</span> <span class="n">pressure_to_height_std</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">units</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -956,7 +965,7 @@
 <span class="sd">        Interpolated values for each point with coordinates sorted in ascending order.</span>
 
 <span class="sd">    Examples</span>
-<span class="sd">     --------</span>
+<span class="sd">    --------</span>
 <span class="sd">     &gt;&gt;&gt; x_log = np.array([1e3, 1e4, 1e5, 1e6])</span>
 <span class="sd">     &gt;&gt;&gt; y_log = np.log(x_log) * 2 + 3</span>
 <span class="sd">     &gt;&gt;&gt; x_interp = np.array([5e3, 5e4, 5e5])</span>
@@ -1020,6 +1029,293 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">less</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="first_derivative"><a class="viewcode-back" href="../../../api/generated/metpy.calc.first_derivative.html#metpy.calc.first_derivative">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">first_derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the first derivative of a grid of values.</span>
+
+<span class="sd">    Works for both regularly-spaced data and grids with varying spacing.</span>
+
+<span class="sd">    Either `x` or `delta` must be specified. This uses 3 points to calculate the</span>
+<span class="sd">    derivative, using forward or backward at the edges of the grid as appropriate, and</span>
+<span class="sd">    centered elsewhere. The irregular spacing is handled explicitly, using the formulation</span>
+<span class="sd">    as specified by [Bowen2005]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    f : array-like</span>
+<span class="sd">        Array of values of which to calculate the derivative</span>
+<span class="sd">    axis : int, optional</span>
+<span class="sd">        The array axis along which to take the derivative. Defaults to 0.</span>
+<span class="sd">    x : array-like, optional</span>
+<span class="sd">        The coordinate values corresponding to the grid points in `f`.</span>
+<span class="sd">    delta : array-like, optional</span>
+<span class="sd">        Spacing between the grid points in `f`. Should be one item less than the size</span>
+<span class="sd">        of `f` along `axis`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        The first derivative calculated along the selected axis.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    second_derivative</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">_process_deriv_args</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># create slice objects --- initially all are [:, :, ..., :]</span>
+    <span class="n">slice0</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">slice1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">slice2</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">delta_slice0</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">delta_slice1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+
+    <span class="c1"># First handle centered case</span>
+    <span class="n">slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">slice2</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
+    <span class="n">delta_diff</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span> <span class="o">-</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">+</span>
+              <span class="n">delta_diff</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">+</span>
+              <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">])</span>
+
+    <span class="c1"># Fill in &quot;left&quot; edge with forward difference</span>
+    <span class="n">slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">slice2</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
+    <span class="n">big_delta</span> <span class="o">=</span> <span class="n">combined_delta</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span> <span class="n">big_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">+</span>
+            <span class="n">combined_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">-</span>
+            <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">])</span>
+
+    <span class="c1"># Now the &quot;right&quot; edge with backward difference</span>
+    <span class="n">slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">slice2</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
+    <span class="n">big_delta</span> <span class="o">=</span> <span class="n">combined_delta</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">-</span>
+             <span class="n">combined_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">+</span>
+             <span class="n">big_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">])</span>
+
+    <span class="k">return</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">right</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="second_derivative"><a class="viewcode-back" href="../../../api/generated/metpy.calc.second_derivative.html#metpy.calc.second_derivative">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">second_derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the second derivative of a grid of values.</span>
+
+<span class="sd">    Works for both regularly-spaced data and grids with varying spacing.</span>
+
+<span class="sd">    Either `x` or `delta` must be specified.</span>
+
+<span class="sd">    Either `x` or `delta` must be specified. This uses 3 points to calculate the</span>
+<span class="sd">    derivative, using forward or backward at the edges of the grid as appropriate, and</span>
+<span class="sd">    centered elsewhere. The irregular spacing is handled explicitly, using the formulation</span>
+<span class="sd">    as specified by [Bowen2005]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    f : array-like</span>
+<span class="sd">        Array of values of which to calculate the derivative</span>
+<span class="sd">    axis : int, optional</span>
+<span class="sd">        The array axis along which to take the derivative. Defaults to 0.</span>
+<span class="sd">    x : array-like, optional</span>
+<span class="sd">        The coordinate values corresponding to the grid points in `f`.</span>
+<span class="sd">    delta : array-like, optional</span>
+<span class="sd">        Spacing between the grid points in `f`. There should be one item less than the size</span>
+<span class="sd">        of `f` along `axis`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        The second derivative calculated along the selected axis.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    first_derivative</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">delta</span> <span class="o">=</span> <span class="n">_process_deriv_args</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># create slice objects --- initially all are [:, :, ..., :]</span>
+    <span class="n">slice0</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">slice1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">slice2</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">delta_slice0</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+    <span class="n">delta_slice1</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">n</span>
+
+    <span class="c1"># First handle centered case</span>
+    <span class="n">slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">slice2</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">-</span>
+                  <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">+</span>
+                  <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]))</span>
+
+    <span class="c1"># Fill in &quot;left&quot; edge</span>
+    <span class="n">slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">slice2</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">-</span>
+                <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">+</span>
+                <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]))</span>
+
+    <span class="c1"># Now the &quot;right&quot; edge</span>
+    <span class="n">slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">slice2</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">-</span>
+                 <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">+</span>
+                 <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]))</span>
+
+    <span class="k">return</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">right</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
+
+
+<span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the gradient of a grid of values.</span>
+
+<span class="sd">    Works for both regularly-spaced data, and grids with varying spacing.</span>
+
+<span class="sd">    Either `x` or `deltas` must be specified.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    f : array-like</span>
+<span class="sd">        Array of values of which to calculate the derivative</span>
+<span class="sd">    x : array-like, optional</span>
+<span class="sd">        The coordinate values corresponding to the grid points in `f`</span>
+<span class="sd">    deltas : array-like, optional</span>
+<span class="sd">        Spacing between the grid points in `f`. There should be one item less than the size</span>
+<span class="sd">        of `f` along `axis`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        The first derivative calculated along each axis in the original array</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    laplacian</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pos_kwarg</span><span class="p">,</span> <span class="n">positions</span> <span class="o">=</span> <span class="n">_process_gradient_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">first_derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">ind</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">pos_kwarg</span><span class="p">:</span> <span class="n">positions</span><span class="p">[</span><span class="n">ind</span><span class="p">]})</span>
+                 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">positions</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="laplacian"><a class="viewcode-back" href="../../../api/generated/metpy.calc.laplacian.html#metpy.calc.laplacian">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">laplacian</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the laplacian of a grid of values.</span>
+
+<span class="sd">    Works for both regularly-spaced data, and grids with varying spacing.</span>
+
+<span class="sd">    Either `x` or `deltas` must be specified.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    f : array-like</span>
+<span class="sd">        Array of values of which to calculate the derivative</span>
+<span class="sd">    x : array-like, optional</span>
+<span class="sd">        The coordinate values corresponding to the grid points in `f`</span>
+<span class="sd">    deltas : array-like, optional</span>
+<span class="sd">        Spacing between the grid points in `f`. There should be one item less than the size</span>
+<span class="sd">        of `f` along `axis`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    array-like</span>
+<span class="sd">        The laplacian</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    gradient</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">pos_kwarg</span><span class="p">,</span> <span class="n">positions</span> <span class="o">=</span> <span class="n">_process_gradient_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">second_derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">ind</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">pos_kwarg</span><span class="p">:</span> <span class="n">positions</span><span class="p">[</span><span class="n">ind</span><span class="p">]})</span>
+               <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">positions</span><span class="p">))</span></div>
+
+
+<span class="k">def</span> <span class="nf">_broadcast_to_axis</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">ndim</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handle reshaping coordinate array to have proper dimensionality.</span>
+
+<span class="sd">    This puts the values along the specified axis.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">==</span> <span class="mi">1</span> <span class="ow">and</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="n">ndim</span><span class="p">:</span>
+        <span class="n">new_shape</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
+        <span class="n">new_shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">size</span>
+        <span class="n">arr</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">*</span><span class="n">new_shape</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">arr</span>
+
+
+<span class="k">def</span> <span class="nf">_process_gradient_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handle common processing of arguments for gradient and gradient-like functions.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="s1">&#39;deltas&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot specify both &quot;x&quot; and &quot;deltas&quot;.&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;delta&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;deltas&#39;</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Must specify either &quot;x&quot; or &quot;delta&quot; for value positions.&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_process_deriv_args</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Handle common processing of arguments for derivative functions.&quot;&quot;&quot;</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">ndim</span>
+    <span class="n">axis</span> <span class="o">=</span> <span class="n">normalize_axis_index</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">n</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;f must have at least 3 point along the desired axis.&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="s1">&#39;delta&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot specify both &quot;x&quot; and &quot;delta&quot;.&#39;</span><span class="p">)</span>
+
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">atleast_1d</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">])</span>
+        <span class="k">if</span> <span class="n">delta</span><span class="o">.</span><span class="n">size</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">diff_size</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+            <span class="n">diff_size</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="n">delta_units</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">diff_size</span><span class="p">,</span> <span class="n">subok</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">delta_units</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">delta</span> <span class="o">=</span> <span class="n">delta</span> <span class="o">*</span> <span class="n">delta_units</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">delta</span> <span class="o">=</span> <span class="n">_broadcast_to_axis</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">_broadcast_to_axis</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">axis</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">delta</span> <span class="o">=</span> <span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Must specify either &quot;x&quot; or &quot;delta&quot; for value positions.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">n</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">delta</span>
 </pre></div>
 
            </div>
@@ -1034,8 +1330,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2016, MetPy Developers.
-      Last updated on Nov 03, 2017 at 16:03:50.
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Jan 04, 2018 at 19:17:05.
 
     </p>
   </div>
@@ -1050,10 +1346,9 @@
   ga('create', 'UA-92978945-1', 'auto');
   ga('send', 'pageview');
 </script>
-<script type="text/javascript" src="_static/jquery.js"></script>
-<script type="text/javascript" src="_static/pop_ver.js"></script>
+<script>var version_json_loc = "../../../../versions.json";</script>
 <p>Do you enjoy using MetPy?
-  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Installation Guide" accesskey="n">Say Thanks!</a>
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
 </p>
 
 
@@ -1073,7 +1368,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.0+96.gd290880',
+            VERSION:'0.6.1+116.gba13b4c',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1085,6 +1380,7 @@
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
 
   
 

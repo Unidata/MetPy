@@ -24,6 +24,7 @@ air weather service guide.
     from mpl_toolkits.axes_grid1.inset_locator import inset_axes
     import numpy as np
     import pandas as pd
+
     import metpy.calc as mpcalc
     from metpy.cbook import get_test_data
     from metpy.plots import Hodograph, SkewT
@@ -289,7 +290,7 @@ which are not drawn.
 
 
 
-**Total running time of the script:** ( 0 minutes  2.992 seconds)
+**Total running time of the script:** ( 0 minutes  1.492 seconds)
 
 
 

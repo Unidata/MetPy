@@ -246,7 +246,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 
 
-**Total running time of the script:** ( 0 minutes  13.925 seconds)
+**Total running time of the script:** ( 0 minutes  6.735 seconds)
 
 
 
