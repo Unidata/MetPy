@@ -1,0 +1,12 @@
+convergence_vorticity
+================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: convergence_vorticity
+
+.. include:: metpy.calc.convergence_vorticity.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

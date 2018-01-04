@@ -1,0 +1,45 @@
+GiniFile
+=================
+
+.. currentmodule:: metpy.io
+
+.. autoclass:: GiniFile
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~GiniFile.__init__
+      ~GiniFile.to_dataset
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: to_dataset
+
+   
+   
+
+.. include:: metpy.io.GiniFile.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

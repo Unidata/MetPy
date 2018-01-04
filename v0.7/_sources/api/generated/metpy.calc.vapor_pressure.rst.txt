@@ -1,0 +1,12 @@
+vapor_pressure
+=========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: vapor_pressure
+
+.. include:: metpy.calc.vapor_pressure.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

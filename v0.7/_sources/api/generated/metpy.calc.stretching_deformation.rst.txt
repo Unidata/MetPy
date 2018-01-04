@@ -1,0 +1,12 @@
+stretching_deformation
+=================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: stretching_deformation
+
+.. include:: metpy.calc.stretching_deformation.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

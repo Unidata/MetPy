@@ -1,0 +1,47 @@
+Variable
+=====================
+
+.. currentmodule:: metpy.io.cdm
+
+.. autoclass:: Variable
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~Variable.__init__
+      ~Variable.group
+      ~Variable.ncattrs
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: group
+   .. automethod:: ncattrs
+
+   
+   
+
+.. include:: metpy.io.cdm.Variable.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

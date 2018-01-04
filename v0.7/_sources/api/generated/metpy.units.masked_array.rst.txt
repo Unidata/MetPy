@@ -1,0 +1,12 @@
+masked_array
+========================
+
+.. currentmodule:: metpy.units
+
+.. autofunction:: masked_array
+
+.. include:: metpy.units.masked_array.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+dry_static_energy
+============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: dry_static_energy
+
+.. include:: metpy.calc.dry_static_energy.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

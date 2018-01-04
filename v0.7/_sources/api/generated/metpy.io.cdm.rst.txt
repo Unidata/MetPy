@@ -1,0 +1,38 @@
+cdm
+============
+
+.. automodule:: metpy.io.cdm
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      cf_to_proj
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      AttributeContainer
+      Dataset
+      Dimension
+      Group
+      OrderedDict
+      Variable
+
+   
+   
+
+   
+   
+   

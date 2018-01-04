@@ -1,0 +1,12 @@
+interpolate_nans
+===========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: interpolate_nans
+
+.. include:: metpy.calc.interpolate_nans.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
