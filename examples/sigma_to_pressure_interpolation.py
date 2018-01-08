@@ -48,7 +48,7 @@ plevs = [700.] * units.hPa
 # interpolated from the irregular pressure values for each sigma level to the new input
 # mandatory isobaric levels. `mcalc.log_interp` will interpolate over a specified dimension
 # with the `axis` argument. In this case, `axis=1` will correspond to interpolation on the
-# vertical axis. The interpolated data is output in a list, so we will pull out each 
+# vertical axis. The interpolated data is output in a list, so we will pull out each
 # variable for plotting.
 
 height, temp = mcalc.log_interp(plevs, pres, hgt, temperature, axis=1)
