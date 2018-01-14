@@ -333,9 +333,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">BVSQ(THTA)</td>
-        <td class="tg-notimplemented">Brunt-Vaisala frequency squared in a layer</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/629">Issue #629</a></td>
+        <td class="tg-implemented">BVSQ(THTA)</td>
+        <td class="tg-implemented">Brunt-Vaisala frequency squared in a layer</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared">metpy.calc.brunt_vaisala_frequency_squared</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
         <td></td>
         <td></td>
         <td></td>
@@ -3857,25 +3857,25 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">BVFQ</td>
-        <td class="tg-notimplemented">Brunt-Vaisala frequency in a layer</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/629">Issue #629</a></td>
+        <td class="tg-implemented">BVFQ</td>
+        <td class="tg-implemented">Brunt-Vaisala frequency in a layer</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_frequency.html#metpy.calc.brunt_vaisala_frequency">metpy.calc.brunt_vaisala_frequency</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
         <td></td>
         <td></td>
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">BVPD</td>
-        <td class="tg-notimplemented">Brunt-Vaisala period in a layer</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/629">Issue #629</a></td>
+        <td class="tg-implemented">BVPD</td>
+        <td class="tg-implemented">Brunt-Vaisala period in a layer</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_period.html#metpy.calc.brunt_vaisala_period">metpy.calc.brunt_vaisala_period</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
         <td></td>
         <td></td>
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">BVSQ</td>
-        <td class="tg-notimplemented">Brunt-Vaisala frequency squared in a layer</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/629">Issue #629</a></td>
+        <td class="tg-implemented">BVSQ</td>
+        <td class="tg-implemented">Brunt-Vaisala frequency squared in a layer</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared">metpy.calc.brunt_vaisala_frequency_squared</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
         <td></td>
         <td></td>
         <td></td>
