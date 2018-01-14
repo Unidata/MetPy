@@ -828,3 +828,12 @@ def test_saturation_mixing_ratio_dimensions():
     p = 998. * units.mbar
     temp = 20 * units.celsius
     assert str(saturation_mixing_ratio(p, temp).units) == 'dimensionless'
+
+
+def test_mixing_ratio_from_rh_dimensions():
+    """Verify mixing ratio from RH returns a dimensionless number."""
+    p = 1000. * units.mbar
+    temperature = 0. * units.degC
+    rh = 100. * units.percent
+    assert (str(mixing_ratio_from_relative_humidity(rh, temperature, p).units) ==
+            'dimensionless')
