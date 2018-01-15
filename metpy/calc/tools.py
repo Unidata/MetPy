@@ -266,10 +266,10 @@ def reduce_point_density(points, radius, priority=None):
     Examples
     --------
     >>> metpy.calc.reduce_point_density(np.array([1, 2, 3]), 1.)
-    array([ True, False,  True], dtype=bool)
+    array([ True, False,  True])
     >>> metpy.calc.reduce_point_density(np.array([1, 2, 3]), 1.,
     ... priority=np.array([0.1, 0.9, 0.3]))
-    array([False,  True, False], dtype=bool)
+    array([False,  True, False])
 
     """
     # Handle 1D input
@@ -643,7 +643,7 @@ def interp(x, xp, *args, **kwargs):
      >>> y = np.array([1., 2., 3., 4.])
      >>> x_interp = np.array([2.5, 3.5])
      >>> metpy.calc.interp(x_interp, x, y)
-     array([ 2.5,  3.5])
+     array([2.5, 3.5])
 
     Notes
     -----
@@ -779,7 +779,7 @@ def log_interp(x, xp, *args, **kwargs):
      >>> y_log = np.log(x_log) * 2 + 3
      >>> x_interp = np.array([5e3, 5e4, 5e5])
      >>> metpy.calc.log_interp(x_interp, x_log, y_log)
-     array([ 20.03438638,  24.63955657,  29.24472675])
+     array([20.03438638, 24.63955657, 29.24472675])
 
     Notes
     -----
