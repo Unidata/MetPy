@@ -842,7 +842,8 @@ def mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure
     relative_humidity_from_mixing_ratio, saturation_mixing_ratio
 
     """
-    return relative_humidity * saturation_mixing_ratio(pressure, temperature)
+    return (relative_humidity *
+            saturation_mixing_ratio(pressure, temperature)).to('dimensionless')
 
 
 @exporter.export
