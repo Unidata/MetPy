@@ -1007,6 +1007,7 @@ def second_derivative(f, **kwargs):
     return concatenate((left, center, right), axis=axis)
 
 
+@exporter.export
 def gradient(f, **kwargs):
     """Calculate the gradient of a grid of values.
 
