@@ -30,6 +30,7 @@ jobs:
       - run:
           name: install dependencies
           command: |
+            sudo apt-get install libgeos-dev
             python3 -m venv venv
             . venv/bin/activate
             pip install ".[test,cdm]" "shapely<1.5.17.post1" -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html
