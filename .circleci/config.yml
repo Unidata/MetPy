@@ -1,46 +1,55 @@
-# Python CircleCI 2.0 configuration file
-#
-# Check https://circleci.com/docs/2.0/language-python/ for more details
-#
 version: 2
+
+base: &base_build
+  working_directory: ~/repo
+
+  steps:
+    - checkout
+
+    # Download and cache dependencies
+    - restore_cache:
+        keys:
+        - v1-dependencies-{{ checksum "setup.py" }}
+        # fallback to using the latest cache if no exact match is found
+        - v1-dependencies-
+
+    - run:
+        name: install dependencies
+        command: |
+          sudo apt-get install libgeos-dev libproj-dev
+          python3 -m venv venv
+          . venv/bin/activate
+          pip install ".[test,cdm]" "shapely<1.5.17.post1" pytest-html -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html
+
+    - save_cache:
+        paths:
+          - ./venv
+        key: v1-dependencies-{{ checksum "setup.py" }}
+      
+    # run tests!
+    - run:
+        name: run tests
+        command: |
+          . venv/bin/activate
+          python setup.py test --addopts "-s --flake8 --mpl --html=report.html --self-contained-html"
+
+    - store_artifacts:
+        path: report.html
+        destination: report.html
+        
 jobs:
-  build:
+  python3:
+    <<: *base_build
     docker:
       - image: circleci/python:3-stretch
+  python2:
+    <<: *base_build
+    docker:
+      - image: circleci/python:2-stretch
 
-    working_directory: ~/repo
-
-    steps:
-      - checkout
-
-      # Download and cache dependencies
-      - restore_cache:
-          keys:
-          - v1-dependencies-{{ checksum "setup.py" }}
-          # fallback to using the latest cache if no exact match is found
-          - v1-dependencies-
-
-      - run:
-          name: install dependencies
-          command: |
-            sudo apt-get install libgeos-dev libproj-dev
-            python3 -m venv venv
-            . venv/bin/activate
-            pip install ".[test,cdm]" "shapely<1.5.17.post1" -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html
-
-      - save_cache:
-          paths:
-            - ./venv
-          key: v1-dependencies-{{ checksum "setup.py" }}
-        
-      # run tests!
-      - run:
-          name: run tests
-          command: |
-            . venv/bin/activate
-            python setup.py test --addopts "-s --flake8 --mpl"
-
-      - store_artifacts:
-          path: test-reports
-          destination: test-reports
-          
+workflows:
+  version: 2
+  test:
+    jobs:
+      - python3
+      - python2
