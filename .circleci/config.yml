@@ -17,7 +17,7 @@ base: &base_build
         name: install dependencies
         command: |
           sudo apt-get install libgeos-dev libproj-dev
-          python3 -m venv venv
+          python -m venv venv
           . venv/bin/activate
           pip install ".[test,cdm]" "shapely<1.5.17.post1" pytest-html -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html
 
