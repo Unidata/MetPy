@@ -12,7 +12,7 @@ import scipy.integrate as si
 import scipy.optimize as so
 
 from .tools import (_greater_or_close, _less_or_close, broadcast_indices, find_intersections,
-                    get_layer, interp)
+                    first_derivative, get_layer, interp)
 from ..constants import Cp_d, epsilon, g, kappa, Lv, P0, Rd
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
@@ -1711,3 +1711,120 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
 
     return thickness_hydrostatic(pressure, temperature, mixing=mixing, bottom=bottom,
                                  depth=depth)
+
+
+@exporter.export
+@check_units('[length]', '[temperature]')
+def brunt_vaisala_frequency_squared(heights, potential_temperature, axis=0):
+    r"""Calculate the square of the Brunt-Vaisala frequency.
+
+    Brunt-Vaisala frequency squared (a measure of atmospheric stability) is given by the
+    formula:
+
+    .. math:: N^2 = \frac{g}{\theta} \frac{d\theta}{dz}
+
+    This formula is based off of Equations 3.75 and 3.77 in [Hobbs2006]_.
+
+    Parameters
+    ----------
+    heights : array-like
+        One-dimensional profile of atmospheric height
+    potential_temperature : array-like
+        Atmospheric potential temperature
+    axis : int, optional
+        The axis corresponding to vertical in the potential temperature array, defaults to 0.
+
+    Returns
+    -------
+    array-like
+        The square of the Brunt-Vaisala frequency.
+
+    See Also
+    --------
+    brunt_vaisala_frequency, brunt_vaisala_period, potential_temperature
+
+    """
+    # Ensure validity of temperature units
+    potential_temperature = potential_temperature.to('K')
+
+    # Calculate and return the square of Brunt-Vaisala frequency
+    return g / potential_temperature * first_derivative(potential_temperature, x=heights,
+                                                        axis=axis)
+
+
+@exporter.export
+@check_units('[length]', '[temperature]')
+def brunt_vaisala_frequency(heights, potential_temperature, axis=0):
+    r"""Calculate the Brunt-Vaisala frequency.
+
+    This function will calculate the Brunt-Vaisala frequency as follows:
+
+    .. math:: N = \left( \frac{g}{\theta} \frac{d\theta}{dz} \right)^\frac{1}{2}
+
+    This formula based off of Equations 3.75 and 3.77 in [Hobbs2006]_.
+
+    This function is a wrapper for `brunt_vaisala_frequency_squared` that filters out negative
+    (unstable) quanties and takes the square root.
+
+    Parameters
+    ----------
+    heights : array-like
+        One-dimensional profile of atmospheric height
+    potential_temperature : array-like
+        Atmospheric potential temperature
+    axis : int, optional
+        The axis corresponding to vertical in the potential temperature array, defaults to 0.
+
+    Returns
+    -------
+    array-like
+        Brunt-Vaisala frequency.
+
+    See Also
+    --------
+    brunt_vaisala_frequency_squared, brunt_vaisala_period, potential_temperature
+
+    """
+    bv_freq_squared = brunt_vaisala_frequency_squared(heights, potential_temperature,
+                                                      axis=axis)
+    bv_freq_squared[bv_freq_squared.magnitude < 0] = np.nan
+
+    return np.sqrt(bv_freq_squared)
+
+
+@exporter.export
+@check_units('[length]', '[temperature]')
+def brunt_vaisala_period(heights, potential_temperature, axis=0):
+    r"""Calculate the Brunt-Vaisala period.
+
+    This function is a helper function for `brunt_vaisala_frequency` that calculates the
+    period of oscilation as in Exercise 3.13 of [Hobbs2006]_:
+
+    .. math:: \tau = \frac{2\pi}{N}
+
+    Returns `NaN` when :math:`N^2 > 0`.
+
+    Parameters
+    ----------
+    heights : array-like
+        One-dimensional profile of atmospheric height
+    potential_temperature : array-like
+        Atmospheric potential temperature
+    axis : int, optional
+        The axis corresponding to vertical in the potential temperature array, defaults to 0.
+
+    Returns
+    -------
+    array-like
+        Brunt-Vaisala period.
+
+    See Also
+    --------
+    brunt_vaisala_frequency, brunt_vaisala_frequency_squared, potential_temperature
+
+    """
+    bv_freq_squared = brunt_vaisala_frequency_squared(heights, potential_temperature,
+                                                      axis=axis)
+    bv_freq_squared[bv_freq_squared.magnitude <= 0] = np.nan
+
+    return 2 * np.pi / np.sqrt(bv_freq_squared)
