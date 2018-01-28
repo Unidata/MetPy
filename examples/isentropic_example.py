@@ -19,7 +19,7 @@ import numpy as np
 
 import metpy.calc as mcalc
 from metpy.cbook import get_test_data
-from metpy.plots import add_metpy_logo
+from metpy.plots import add_metpy_logo, add_timestamp
 from metpy.units import units
 
 #######################################
@@ -166,6 +166,7 @@ plt.title('{:.0f} K Isentropic Pressure (hPa), Wind (kt), Relative Humidity (per
           loc='left')
 plt.title('VALID: {:s}'.format(str(vtimes[0])), loc='right')
 plt.tight_layout()
+add_timestamp(ax, vtimes[0], y=0.02, high_contrast=True)
 
 ######################################
 # **Montgomery Streamfunction**
@@ -212,4 +213,6 @@ plt.title('{:.0f} K Montgomery Streamfunction '.format(isentlevs[level].m) +
           'Wind (kt), Relative Humidity (percent)', loc='left')
 plt.title('VALID: {:s}'.format(str(vtimes[0])), loc='right')
 plt.tight_layout()
+add_timestamp(ax, vtimes[0], y=0.02, high_contrast=True)
+
 plt.show()
