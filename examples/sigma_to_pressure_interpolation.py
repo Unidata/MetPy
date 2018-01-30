@@ -17,7 +17,7 @@ from netCDF4 import Dataset, num2date
 
 import metpy.calc as mcalc
 from metpy.cbook import get_test_data
-from metpy.plots import add_metpy_logo
+from metpy.plots import add_metpy_logo, add_timestamp
 from metpy.units import units
 
 ######################################
@@ -103,4 +103,6 @@ ax.set_title('{:.0f} hPa Heights (m) and Temperature (C)'.format(plevs[0].m), lo
 
 # Set the figure title
 fig.suptitle('WRF-ARW Forecast VALID: {:s} UTC'.format(str(vtimes[FH])), fontsize=14)
+add_timestamp(ax, vtimes[FH], y=0.02, high_contrast=True)
+
 plt.show()
