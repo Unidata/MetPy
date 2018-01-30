@@ -12,7 +12,7 @@ import numpy as np
 
 from metpy.cbook import get_test_data
 from metpy.io import Level2File
-from metpy.plots import add_metpy_logo, ctables
+from metpy.plots import add_metpy_logo, add_timestamp, ctables
 
 ###########################################
 
@@ -42,7 +42,7 @@ rho = np.array([ray[4][b'RHO'][1] for ray in f.sweeps[sweep]])
 
 ###########################################
 fig, axes = plt.subplots(1, 2, figsize=(15, 8))
-add_metpy_logo(fig, 1200, 85, size='large')
+add_metpy_logo(fig, 190, 85, size='large')
 for var_data, var_range, ax in zip((ref, rho), (ref_range, rho_range), axes):
     # Turn into an array, then mask
     data = np.ma.array(var_data)
@@ -58,5 +58,6 @@ for var_data, var_range, ax in zip((ref, rho), (ref_range, rho_range), axes):
     ax.set_aspect('equal', 'datalim')
     ax.set_xlim(-40, 20)
     ax.set_ylim(-30, 30)
+    add_timestamp(ax, f.dt, y=0.02, high_contrast=True)
 
 plt.show()
