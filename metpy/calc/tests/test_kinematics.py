@@ -8,7 +8,7 @@ import pytest
 
 from metpy.calc import (advection, convergence_vorticity, divergence,
                         frontogenesis, geostrophic_wind, get_wind_components, h_convergence,
-                        lat_lon_grid_spacing, montgomery_streamfunction,
+                        lat_lon_grid_deltas, lat_lon_grid_spacing, montgomery_streamfunction,
                         shearing_deformation, shearing_stretching_deformation,
                         storm_relative_helicity, stretching_deformation, total_deformation,
                         v_vorticity, vorticity)
@@ -559,3 +559,54 @@ def test_convergence_vorticity():
     true_v = np.ones_like(u) / units.sec
     assert_array_equal(c, true_c)
     assert_array_equal(v, true_v)
+
+
+def test_lat_lon_grid_deltas_1d():
+    """Test for lat_lon_grid_spacing for variable grid."""
+    lat = np.arange(40, 50, 2.5)
+    lon = np.arange(-100, -90, 2.5)
+    dx, dy = lat_lon_grid_deltas(lon, lat)
+    dx_truth = np.array([[212943.5585, 212943.5585, 212943.5585],
+                         [204946.2305, 204946.2305, 204946.2305],
+                         [196558.8269, 196558.8269, 196558.8269],
+                         [187797.3216, 187797.3216, 187797.3216]]) * units.meter
+    dy_truth = np.array([[277987.1857, 277987.1857, 277987.1857, 277987.1857],
+                         [277987.1857, 277987.1857, 277987.1857, 277987.1857],
+                         [277987.1857, 277987.1857, 277987.1857, 277987.1857]]) * units.meter
+    assert_almost_equal(dx, dx_truth, 4)
+    assert_almost_equal(dy, dy_truth, 4)
+
+
+@pytest.mark.parametrize('flip_order', [(False, True)])
+def test_lat_lon_grid_deltas_2d(flip_order):
+    """Test for lat_lon_grid_spacing for variable grid with negative delta distances."""
+    lat = np.arange(40, 50, 2.5)
+    lon = np.arange(-100, -90, 2.5)
+    dx_truth = np.array([[212943.5585, 212943.5585, 212943.5585],
+                         [204946.2305, 204946.2305, 204946.2305],
+                         [196558.8269, 196558.8269, 196558.8269],
+                         [187797.3216, 187797.3216, 187797.3216]]) * units.meter
+    dy_truth = np.array([[277987.1857, 277987.1857, 277987.1857, 277987.1857],
+                         [277987.1857, 277987.1857, 277987.1857, 277987.1857],
+                         [277987.1857, 277987.1857, 277987.1857, 277987.1857]]) * units.meter
+    if flip_order:
+        lon = lon[::-1]
+        lat = lat[::-1]
+        dx_truth = -1 * dx_truth[::-1]
+        dy_truth = -1 * dy_truth[::-1]
+
+    lon, lat = np.meshgrid(lon, lat)
+    dx, dy = lat_lon_grid_deltas(lon, lat)
+    assert_almost_equal(dx, dx_truth, 4)
+    assert_almost_equal(dy, dy_truth, 4)
+
+
+def test_lat_lon_grid_deltas_mismatched_shape():
+    """Test for lat_lon_grid_spacing for variable grid."""
+    lat = np.arange(40, 50, 2.5)
+    lon = np.array([[-100., -97.5, -95., -92.5],
+                    [-100., -97.5, -95., -92.5],
+                    [-100., -97.5, -95., -92.5],
+                    [-100., -97.5, -95., -92.5]])
+    with pytest.raises(ValueError):
+        lat_lon_grid_deltas(lon, lat)
