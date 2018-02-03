@@ -65,7 +65,7 @@ def test_stationplot_clipping():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05974, '1.4': 3.7}.get(MPL_VERSION, 0.0033),
+@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05974, '1.4': 3.7}.get(MPL_VERSION, 0.25),
                                savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_station_plot_replace():
     """Test that locations are properly replaced."""
