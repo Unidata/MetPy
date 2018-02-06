@@ -887,3 +887,27 @@ def test_wet_bulb_temperature():
     val = wet_bulb_temperature(1000 * units.hPa, 25 * units.degC, 15 * units.degC)
     truth = 18.34345936 * units.degC
     assert_almost_equal(val, truth)
+
+
+def test_wet_bulb_temperature_1d():
+    """Test wet bulb calculation with 1d list."""
+    pressures = [1013, 1000, 990] * units.hPa
+    temperatures = [25, 20, 15] * units.degC
+    dewpoints = [20, 15, 10] * units.degC
+    val = wet_bulb_temperature(pressures, temperatures, dewpoints)
+    truth = [21.4449794, 16.7368576, 12.0656909] * units.degC
+    assert_array_almost_equal(val, truth)
+
+
+def test_wet_bulb_temperature_2d():
+    """Test wet bulb calculation with 2d list."""
+    pressures = [[1013, 1000, 990],
+                 [1012, 999, 989]] * units.hPa
+    temperatures = [[25, 20, 15],
+                    [24, 19, 14]] * units.degC
+    dewpoints = [[20, 15, 10],
+                 [19, 14, 9]] * units.degC
+    val = wet_bulb_temperature(pressures, temperatures, dewpoints)
+    truth = [[21.4449794, 16.7368576, 12.0656909],
+             [20.5021631, 15.801218, 11.1361878]] * units.degC
+    assert_array_almost_equal(val, truth)
