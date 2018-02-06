@@ -595,6 +595,10 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
             (positive_srh + negative_srh).to('meter ** 2 / second ** 2'))
 
 
+@deprecated('0.8', addendum=' This function has been replaced by the signed delta distance'
+                            'calculation lat_lon_grid_deltas and will be removed in MetPy'
+                            ' 0.11.',
+            pending=False)
 @exporter.export
 def lat_lon_grid_spacing(longitude, latitude, **kwargs):
     r"""Calculate the distance between grid points that are in a latitude/longitude format.
@@ -620,6 +624,42 @@ def lat_lon_grid_spacing(longitude, latitude, **kwargs):
     Accepts, 1D or 2D arrays for latitude and longitude
     Assumes [Y, X] for 2D arrays
 
+    .. deprecated:: 0.8.0
+        Function has been replaced with the signed delta distance calculation
+        `lat_lon_grid_deltas` and will be removed from MetPy in 0.11.0.
+
+    """
+    # Use the absolute value of the signed function replacing this
+    dx, dy = lat_lon_grid_deltas(longitude, latitude, **kwargs)
+
+    return np.abs(dx), np.abs(dy)
+
+
+@exporter.export
+def lat_lon_grid_deltas(longitude, latitude, **kwargs):
+    r"""Calculate the delta between grid points that are in a latitude/longitude format.
+
+    Calculate the signed delta distance between grid points when the grid spacing is defined by
+    delta lat/lon rather than delta x/y
+
+    Parameters
+    ----------
+    longitude : array_like
+        array of longitudes defining the grid
+    latitude : array_like
+        array of latitudes defining the grid
+    kwargs
+        Other keyword arguments to pass to :class:`~pyproj.Geod`
+
+    Returns
+    -------
+     dx, dy: 2D arrays of signed deltas between grid points in the x and y direction
+
+    Notes
+    -----
+    Accepts, 1D or 2D arrays for latitude and longitude
+    Assumes [Y, X] for 2D arrays
+
     """
     # Inputs must be the same number of dimensions
     if latitude.ndim != longitude.ndim:
@@ -633,7 +673,12 @@ def lat_lon_grid_spacing(longitude, latitude, **kwargs):
     geod_args.update(**kwargs)
     g = Geod(**geod_args)
 
-    _, _, dy = g.inv(longitude[:-1, :], latitude[:-1, :], longitude[1:, :], latitude[1:, :])
-    _, _, dx = g.inv(longitude[:, :-1], latitude[:, :-1], longitude[:, 1:], latitude[:, 1:])
+    forward_az, _, dy = g.inv(longitude[:-1, :], latitude[:-1, :], longitude[1:, :],
+                              latitude[1:, :])
+    dy[(forward_az < -90.) | (forward_az > 90.)] *= -1
+
+    forward_az, _, dx = g.inv(longitude[:, :-1], latitude[:, :-1], longitude[:, 1:],
+                              latitude[:, 1:])
+    dx[(forward_az < 0.) | (forward_az > 180.)] *= -1
 
     return dx * units.meter, dy * units.meter
