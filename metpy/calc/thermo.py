@@ -1857,7 +1857,26 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     lcl, moist_lapse
 
     """
-    lcl_pressure, lcl_temperature = lcl(pressure, temperature, dewpoint)
-    moist_adiabat_temperatures = moist_lapse(concatenate([lcl_pressure, pressure]),
-                                             lcl_temperature)
-    return moist_adiabat_temperatures[-1]
+
+    if not hasattr(pressure, 'shape'):
+        pressure = atleast_1d(pressure)
+        temperature = atleast_1d(temperature)
+        dewpoint = atleast_1d(dewpoint)
+
+    it = np.nditer([pressure, temperature, dewpoint, None],
+                   op_dtypes=['float', 'float', 'float', 'float'],
+                   flags=['buffered'])
+
+    for p, T, Td, ret in it:
+        p = p * pressure.units
+        T = T * temperature.units
+        Td = Td * dewpoint.units
+        lcl_pressure, lcl_temperature = lcl(p, T, Td)
+        moist_adiabat_temperatures = moist_lapse(concatenate([lcl_pressure, p]),
+                                                 lcl_temperature)
+        ret[...] = moist_adiabat_temperatures[-1]
+
+    # If we started with a scalar, return a scalar
+    if it.operands[3].size == 1:
+        return it.operands[3][0] * moist_adiabat_temperatures.units
+    return it.operands[3] * moist_adiabat_temperatures.units
