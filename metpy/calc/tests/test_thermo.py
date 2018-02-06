@@ -24,7 +24,8 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         specific_humidity_from_mixing_ratio,
                         surface_based_cape_cin, thickness_hydrostatic,
                         thickness_hydrostatic_from_relative_humidity, vapor_pressure,
-                        virtual_potential_temperature, virtual_temperature)
+                        virtual_potential_temperature, virtual_temperature,
+                        wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import units
@@ -879,3 +880,10 @@ def test_brunt_vaisala_period():
              [545.80233643, np.nan, np.nan, 385.94053328]] * units('s')
     bv_period = brunt_vaisala_period(bv_data()[0], bv_data()[1])
     assert_almost_equal(bv_period, truth, 6)
+
+
+def test_wet_bulb_temperature():
+    """Test wet bulb calculation with scalars."""
+    val = wet_bulb_temperature(1000 * units.hPa, 25 * units.degC, 15 * units.degC)
+    truth = 18.34345936 * units.degC
+    assert_almost_equal(val, truth)
