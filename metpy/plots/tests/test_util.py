@@ -26,6 +26,26 @@ def test_add_timestamp():
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 5.58}.get(MPL_VERSION, 0.01),
+                               remove_text=True)
+def test_add_timestamp_custom_format():
+    """Test adding a timestamp to an axes object with custom time formatting."""
+    fig = plt.figure(figsize=(9, 9))
+    ax = plt.subplot(1, 1, 1)
+    add_timestamp(ax, time=datetime(2017, 1, 1), time_format='%H:%M:%S %Y/%m/%d')
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 5.58}.get(MPL_VERSION, 0.01),
+                               remove_text=True)
+def test_add_timestamp_pretext():
+    """Test adding a timestamp to an axes object with custom pre-text."""
+    fig = plt.figure(figsize=(9, 9))
+    ax = plt.subplot(1, 1, 1)
+    add_timestamp(ax, time=datetime(2017, 1, 1), pretext='Valid: ')
+    return fig
+
+
 @pytest.mark.mpl_image_compare(tolerance={'1.4': 9.51}.get(MPL_VERSION, 0.01),
                                remove_text=True)
 def test_add_timestamp_high_contrast():
