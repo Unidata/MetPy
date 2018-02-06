@@ -1828,3 +1828,36 @@ def brunt_vaisala_period(heights, potential_temperature, axis=0):
     bv_freq_squared[bv_freq_squared.magnitude <= 0] = np.nan
 
     return 2 * np.pi / np.sqrt(bv_freq_squared)
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def wet_bulb_temperature(pressure, temperature, dewpoint):
+    """Calculate the wet-bulb temperature using Normand's rule.
+
+    This function calculates the wet-bulb temperature using the Normand method. The LCL is
+    computed, and that parcel brought down to the starting pressure along a moist adiabat.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Initial atmospheric pressure
+    temperature : `pint.Quantity`
+        Initial atmospheric temperature
+    dewpoint : `pint.Quantity`
+        Initial atmospheric dewpoint
+
+    Returns
+    -------
+    array-like
+        Wet-bulb temperature
+
+    See Also
+    --------
+    lcl, moist_lapse
+
+    """
+    lcl_pressure, lcl_temperature = lcl(pressure, temperature, dewpoint)
+    moist_adiabat_temperatures = moist_lapse(concatenate([lcl_pressure, pressure]),
+                                             lcl_temperature)
+    return moist_adiabat_temperatures[-1]
