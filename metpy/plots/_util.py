@@ -15,10 +15,11 @@ import pkg_resources
 from ..units import concatenate
 
 
-def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=False, **kwargs):
-    """Add a timestamp at plot creation time.
+def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=False,
+                  pretext='Created: ', time_format='%Y-%m-%dT%H:%M:%SZ', **kwargs):
+    """Add a timestamp to a plot.
 
-    Adds an ISO format timestamp with the time of plot creation to the plot.
+    Adds a timestamp to a plot, defaulting to the time of plot creation in ISO format.
 
     Parameters
     ----------
@@ -34,6 +35,10 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=Fals
         Horizontal alignment of the time stamp string
     high_contrast : bool
         Outline text for increased contrast
+    pretext : str
+        Text to appear before the timestamp, optional. Defaults to 'Created: '
+    time_format : str
+        Display format of time, optional. Defaults to ISO format.
 
     Returns
     -------
@@ -50,7 +55,7 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=Fals
     text_args.update(**kwargs)
     if not time:
         time = datetime.utcnow()
-    timestr = datetime.strftime(time, 'Created: %Y-%m-%dT%H:%M:%SZ')
+    timestr = pretext + datetime.strftime(time, time_format)
     return ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **text_args)
 
 
