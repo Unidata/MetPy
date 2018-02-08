@@ -885,7 +885,7 @@ def test_brunt_vaisala_period():
 def test_wet_bulb_temperature():
     """Test wet bulb calculation with scalars."""
     val = wet_bulb_temperature(1000 * units.hPa, 25 * units.degC, 15 * units.degC)
-    truth = 18.34345936 * units.degC
+    truth = 18.34345936 * units.degC  # 18.59 from NWS calculator
     assert_almost_equal(val, truth)
 
 
@@ -896,6 +896,7 @@ def test_wet_bulb_temperature_1d():
     dewpoints = [20, 15, 10] * units.degC
     val = wet_bulb_temperature(pressures, temperatures, dewpoints)
     truth = [21.4449794, 16.7368576, 12.0656909] * units.degC
+    # 21.58, 16.86, 12.18 from NWS Calculator
     assert_array_almost_equal(val, truth)
 
 
@@ -910,4 +911,6 @@ def test_wet_bulb_temperature_2d():
     val = wet_bulb_temperature(pressures, temperatures, dewpoints)
     truth = [[21.4449794, 16.7368576, 12.0656909],
              [20.5021631, 15.801218, 11.1361878]] * units.degC
+    # 21.58, 16.86, 12.18
+    # 20.6, 15.9, 11.2 from NWS Calculator
     assert_array_almost_equal(val, truth)
