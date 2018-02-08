@@ -1858,7 +1858,6 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     lcl, moist_lapse
 
     """
-
     if not hasattr(pressure, 'shape'):
         pressure = atleast_1d(pressure)
         temperature = atleast_1d(temperature)
@@ -1868,12 +1867,12 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
                    op_dtypes=['float', 'float', 'float', 'float'],
                    flags=['buffered'])
 
-    for p, T, Td, ret in it:
-        p = p * pressure.units
-        T = T * temperature.units
-        Td = Td * dewpoint.units
-        lcl_pressure, lcl_temperature = lcl(p, T, Td)
-        moist_adiabat_temperatures = moist_lapse(concatenate([lcl_pressure, p]),
+    for press, temp, dewp, ret in it:
+        press = press * pressure.units
+        temp = temp * temperature.units
+        dewp = dewp * dewpoint.units
+        lcl_pressure, lcl_temperature = lcl(press, temp, dewp)
+        moist_adiabat_temperatures = moist_lapse(concatenate([lcl_pressure, press]),
                                                  lcl_temperature)
         ret[...] = moist_adiabat_temperatures[-1]
 
