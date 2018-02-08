@@ -45,6 +45,12 @@ References
 .. [Hobbs2006] Hobbs, P. V., and J. M. Wallace, 2006: *Atmospheric Science: An Introductory
            Survey*. 2nd ed. Academic Press, 504 pp.
 
+.. [Knox2017] Knox, John A., David S. Nevius, and Pamela N. Knox., 2017: Two Simple and
+              Accurate Approximations for Wet-Bulb Temperature in Moist Conditions, with
+              Forecasting Applications. *Bulletin of the American Meteorological Society*,
+              **98.9**, 1897-1906, doi:
+              `10.1175/BAMS-D-16-0246.1 <https://doi.org/10.1175/BAMS-D-16-0246.1>`_.
+
 .. [Lackmann2011] Lackmann, G., 2011: *Midlatitude Synoptic Meteorology*. Amer. Meteor. Soc.,
            345 pp.
 

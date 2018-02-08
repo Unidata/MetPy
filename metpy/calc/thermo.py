@@ -1828,3 +1828,55 @@ def brunt_vaisala_period(heights, potential_temperature, axis=0):
     bv_freq_squared[bv_freq_squared.magnitude <= 0] = np.nan
 
     return 2 * np.pi / np.sqrt(bv_freq_squared)
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def wet_bulb_temperature(pressure, temperature, dewpoint):
+    """Calculate the wet-bulb temperature using Normand's rule.
+
+    This function calculates the wet-bulb temperature using the Normand method. The LCL is
+    computed, and that parcel brought down to the starting pressure along a moist adiabat.
+    Norman method (and others) described and compared by [Knox2017]_.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Initial atmospheric pressure
+    temperature : `pint.Quantity`
+        Initial atmospheric temperature
+    dewpoint : `pint.Quantity`
+        Initial atmospheric dewpoint
+
+    Returns
+    -------
+    array-like
+        Wet-bulb temperature
+
+    See Also
+    --------
+    lcl, moist_lapse
+
+    """
+    if not hasattr(pressure, 'shape'):
+        pressure = atleast_1d(pressure)
+        temperature = atleast_1d(temperature)
+        dewpoint = atleast_1d(dewpoint)
+
+    it = np.nditer([pressure, temperature, dewpoint, None],
+                   op_dtypes=['float', 'float', 'float', 'float'],
+                   flags=['buffered'])
+
+    for press, temp, dewp, ret in it:
+        press = press * pressure.units
+        temp = temp * temperature.units
+        dewp = dewp * dewpoint.units
+        lcl_pressure, lcl_temperature = lcl(press, temp, dewp)
+        moist_adiabat_temperatures = moist_lapse(concatenate([lcl_pressure, press]),
+                                                 lcl_temperature)
+        ret[...] = moist_adiabat_temperatures[-1]
+
+    # If we started with a scalar, return a scalar
+    if it.operands[3].size == 1:
+        return it.operands[3][0] * moist_adiabat_temperatures.units
+    return it.operands[3] * moist_adiabat_temperatures.units
