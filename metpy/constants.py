@@ -107,6 +107,8 @@ with exporter:
     dry_air_spec_heat_ratio = 1.4
     Cp_d = dry_air_spec_heat_press = units.Quantity(1005, 'm^2 / s^2 / K')  # Bolton 1980
     Cv_d = dry_air_spec_heat_vol = Cp_d / dry_air_spec_heat_ratio
+    rho_d = dry_air_density_stp = ((1000. * units.mbar) /
+                                   (Rd * 273.15 * units.K)).to('kg / m^3')
 
     # General meteorology constants
     P0 = pot_temp_ref_press = 1000. * units.mbar
