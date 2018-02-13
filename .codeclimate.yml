@@ -11,13 +11,19 @@ plugins:
     config:
       test_patterns:
         - "metpy/**/tests/*.py"
+    checks:
+      python:S3776:
+        enabled: false
+      python:S107:
+        enabled: false
+      python:S1542:
+        enabled: false
+
   pep8:
     enabled: true
     checks:
       E501:
         enabled: false
-  radon:
-    enabled: true
 
 exclude_patterns:
 - "versioneer.py"
