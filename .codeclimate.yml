@@ -1,9 +1,16 @@
-engines:
-#  duplication:
-#    enabled: true
-#    config:
-#      languages:
-#      - python
+version: "2"
+checks:
+  file-lines:
+    enabled: false
+  similar-code:
+    enabled: false
+
+plugins:
+  sonar-python:
+    enabled: true
+    config:
+      test_patterns:
+        - "metpy/**/tests/*.py"
   pep8:
     enabled: true
     checks:
@@ -12,11 +19,7 @@ engines:
   radon:
     enabled: true
 
-ratings:
-  paths:
-  - "**/*.py"
-
-exclude_paths:
+exclude_patterns:
 - "versioneer.py"
 - "metpy/_version.py"
 - "metpy/io/_nexrad_msgs/msg*.py"
