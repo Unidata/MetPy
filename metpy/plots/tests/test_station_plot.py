@@ -275,3 +275,55 @@ def test_barb_projection():
     sp.plot_barb(u, v)
 
     return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.08}.get(MPL_VERSION, 0.00145),
+                               remove_text=True)
+def test_barb_unit_conversion():
+    """Test that barbs units can be converted at plot time (#737)."""
+    x_pos = np.array([0])
+    y_pos = np.array([0])
+    u_wind = np.array([3.63767155210412]) * units('m/s')
+    v_wind = np.array([3.63767155210412]) * units('m/s')
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    stnplot = StationPlot(ax, x_pos, y_pos)
+    stnplot.plot_barb(u_wind, v_wind, plot_units='knots')
+    ax.set_xlim(-5, 5)
+    ax.set_ylim(-5, 5)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.08}.get(MPL_VERSION, 0.00145),
+                               remove_text=True)
+def test_barb_no_default_unit_conversion():
+    """Test that barbs units are left alone by default (#737)."""
+    x_pos = np.array([0])
+    y_pos = np.array([0])
+    u_wind = np.array([3.63767155210412]) * units('m/s')
+    v_wind = np.array([3.63767155210412]) * units('m/s')
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    stnplot = StationPlot(ax, x_pos, y_pos)
+    stnplot.plot_barb(u_wind, v_wind)
+    ax.set_xlim(-5, 5)
+    ax.set_ylim(-5, 5)
+
+    return fig
+
+
+@pytest.mark.parametrize('u,v', [(np.array([3]) * units('m/s'), np.array([3])),
+                                 (np.array([3]), np.array([3]) * units('m/s'))])
+def test_barb_unit_conversion_exception(u, v):
+    """Test that errors are raise if unit conversion is requested on un-united data."""
+    x_pos = np.array([0])
+    y_pos = np.array([0])
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    stnplot = StationPlot(ax, x_pos, y_pos)
+    with pytest.raises(ValueError):
+        stnplot.plot_barb(u, v, plot_units='knots')
