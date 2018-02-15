@@ -250,6 +250,8 @@ class StationPlot(object):
             The data to use for the u-component of the barbs.
         v : array-like
             The data to use for the v-component of the barbs.
+        plot_units: `pint.unit`
+            Units to plot in (performing conversion if necessary). Defaults to given units.
         kwargs
             Additional keyword arguments to pass to matplotlib's
             :meth:`~matplotlib.axes.Axes.barbs` function.
@@ -260,6 +262,16 @@ class StationPlot(object):
 
         """
         kwargs = self._make_kwargs(kwargs)
+
+        # If plot_units specified, convert the data to those units
+        plotting_units = kwargs.pop('plot_units', None)
+        if plotting_units:
+            if hasattr(u, 'units') and hasattr(v, 'units'):
+                u = u.to(plotting_units)
+                v = v.to(plotting_units)
+            else:
+                raise ValueError('To convert to plotting units, units must be attached to '
+                                 'u and v wind components.')
 
         # Strip units, CartoPy transform doesn't like
         u = np.array(u)
