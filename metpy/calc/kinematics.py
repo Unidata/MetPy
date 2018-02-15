@@ -501,6 +501,40 @@ def geostrophic_wind(heights, f, dx, dy):
 
 
 @exporter.export
+@ensure_yx_order
+def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
+    r"""Calculate the ageostrophic wind given from the heights or geopotential.
+
+    Parameters
+    ----------
+    heights : (M, N) ndarray
+        The height field, with either leading dimensions of (x, y) or trailing dimensions
+        of (y, x), depending on the value of ``dim_order``.
+    f : array_like
+        The coriolis parameter.  This can be a scalar to be applied
+        everywhere or an array of values.
+    dx : scalar
+        The grid spacing in the x-direction
+    dy : scalar
+        The grid spacing in the y-direction
+    u : (M, N) ndarray
+        The u wind field, with either leading dimensions of (x, y) or trailing dimensions
+        of (y, x), depending on the value of ``dim_order``.
+    v : (M, N) ndarray
+        The u wind field, with either leading dimensions of (x, y) or trailing dimensions
+        of (y, x), depending on the value of ``dim_order``.
+
+    Returns
+    -------
+    A 2-item tuple of arrays
+        A tuple of the u-component and v-component of the ageostrophic wind.
+
+    """
+    u_geostrophic, v_geostrophic = geostrophic_wind(heights, f, dx, dy, dim_order=dim_order)
+    return u - u_geostrophic, v - v_geostrophic
+
+
+@exporter.export
 @check_units('[length]', '[temperature]')
 def montgomery_streamfunction(height, temperature):
     r"""Compute the Montgomery Streamfunction on isentropic surfaces.
