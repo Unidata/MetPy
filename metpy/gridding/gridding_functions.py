@@ -133,7 +133,8 @@ def remove_repeat_coordinates(x, y, z):
 @exporter.export
 def interpolate(x, y, z, interp_type='linear', hres=50000,
                 minimum_neighbors=3, gamma=0.25, kappa_star=5.052,
-                search_radius=None, rbf_func='linear', rbf_smooth=0):
+                search_radius=None, rbf_func='linear', rbf_smooth=0,
+                boundary_coords=None):
     r"""Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.
 
     Parameters
@@ -171,6 +172,9 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
         information.
     rbf_smooth: float
         Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.
+    boundary_coords: dictionary
+        Optional dictionary containing coordinates of the study area boundary. Dictionary
+        should be in format: {'west': west, 'south': south, 'east': east, 'north': north}
 
     Returns
     -------
@@ -182,7 +186,10 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
         2-dimensional array representing the interpolated values for each grid.
 
     """
-    grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y))
+    if boundary_coords is None:
+        grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y))
+    else:
+        grid_x, grid_y = points.generate_grid(hres, boundary_coords)
 
     if interp_type in ['linear', 'nearest', 'cubic']:
         points_zip = np.array(list(zip(x, y)))
