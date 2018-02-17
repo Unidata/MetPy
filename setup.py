@@ -51,7 +51,7 @@ setup(
                                   '_static/metpy_150x150.png', '_static/unidata_75x75.png',
                                   '_static/unidata_150x150.png']},
 
-    install_requires = ['matplotlib>=1.4', 'numpy>=1.10.0', 'scipy>=0.14',
+    install_requires=['matplotlib>=1.4', 'numpy>=1.10.0', 'scipy>=0.14',
                         'pint>=0.8', 'enum34;python_version<"3.4"'],
     extras_require={
         'cdm': ['pyproj>=1.9.4'],
