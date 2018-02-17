@@ -9,7 +9,7 @@ import matplotlib
 import matplotlib.transforms as transforms
 import numpy as np
 
-if float(matplotlib.__version__[:3]) < 2.1:
+if matplotlib.__version__ < '2.1':
     from numpy import ma
     from matplotlib.patches import CirclePolygon
     from matplotlib.quiver import Barbs
@@ -120,7 +120,7 @@ if float(matplotlib.__version__[:3]) < 2.1:
 
 
 # See if we need to patch in our own scattertext implementation
-from matplotlib.axes import Axes  # noqa: E402
+from matplotlib.axes import Axes  # noqa: E402, I100, I202
 if not hasattr(Axes, 'scattertext'):
     import matplotlib.cbook as cbook
     import matplotlib.transforms as mtransforms
@@ -381,7 +381,7 @@ if not hasattr(Axes, 'scattertext'):
 
 
 # See if we need to add in the Tableau colors which were added in Matplotlib 2.0
-import matplotlib.colors  # noqa: E402
+import matplotlib.colors  # noqa: E402, I202
 if not hasattr(matplotlib.colors, 'TABLEAU_COLORS'):
     from collections import OrderedDict
 

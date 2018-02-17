@@ -19,6 +19,7 @@ import numpy as np
 
 import metpy.calc as mcalc
 from metpy.cbook import get_test_data
+from metpy.plots import add_metpy_logo, add_timestamp
 from metpy.units import units
 
 #######################################
@@ -85,12 +86,9 @@ isent_anal = mcalc.isentropic_interpolation(isentlevs,
 # plotting.
 
 
-isentprs = isent_anal[0]
-isenttmp = isent_anal[1]
-isentspech = isent_anal[2]
-isentu = isent_anal[3].to('kt')
-isentv = isent_anal[4].to('kt')
-isenthgt = isent_anal[5]
+isentprs, isenttmp, isentspech, isentu, isentv, isenthgt = isent_anal
+isentu.ito('kt')
+isentv.ito('kt')
 
 ########################################
 # A quick look at the shape of these variables will show that the data is now in isentropic
@@ -109,7 +107,7 @@ print(isenthgt.shape)
 # The NARR only gives specific humidity on isobaric vertical levels, so relative humidity will
 # have to be calculated after the interpolation to isentropic space.
 
-isentrh = mcalc.relative_humidity_from_specific_humidity(isentspech, isenttmp, isentprs)
+isentrh = 100 * mcalc.relative_humidity_from_specific_humidity(isentspech, isenttmp, isentprs)
 
 #######################################
 # **Plotting the Isentropic Analysis**
@@ -136,7 +134,8 @@ states_provinces = cfeature.NaturalEarthFeature(category='cultural',
                                                 scale='50m',
                                                 facecolor='none')
 
-fig = plt.figure(1, figsize=(17., 12.))
+fig = plt.figure(figsize=(17., 12.))
+add_metpy_logo(fig, 120, 245, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=crs)
 ax.set_extent(*bounds, crs=ccrs.PlateCarree())
 ax.coastlines('50m', edgecolor='black', linewidth=0.75)
@@ -152,7 +151,7 @@ plt.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
 # Plot RH
 cf = ax.contourf(tlons, tlats, isentrh[level, :, :], range(10, 106, 5),
                  cmap=plt.cm.gist_earth_r)
-cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0,
+cb = plt.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5, pad=0.05,
                   extendrect='True')
 cb.set_label('Relative Humidity', size='x-large')
 
@@ -167,6 +166,7 @@ plt.title('{:.0f} K Isentropic Pressure (hPa), Wind (kt), Relative Humidity (per
           loc='left')
 plt.title('VALID: {:s}'.format(str(vtimes[0])), loc='right')
 plt.tight_layout()
+add_timestamp(ax, vtimes[0], y=0.02, high_contrast=True)
 
 ######################################
 # **Montgomery Streamfunction**
@@ -182,7 +182,8 @@ msf = mcalc.montgomery_streamfunction(isenthgt, isenttmp) / 100.
 # Choose a level to plot, in this case 296 K
 level = 0
 
-fig = plt.figure(1, figsize=(17., 12.))
+fig = plt.figure(figsize=(17., 12.))
+add_metpy_logo(fig, 120, 250, size='large')
 ax = plt.subplot(111, projection=crs)
 ax.set_extent(*bounds, crs=ccrs.PlateCarree())
 ax.coastlines('50m', edgecolor='black', linewidth=0.75)
@@ -197,7 +198,7 @@ plt.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
 # Plot RH
 cf = ax.contourf(tlons, tlats, isentrh[level, :, :], range(10, 106, 5),
                  cmap=plt.cm.gist_earth_r)
-cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0,
+cb = plt.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5, pad=0.05,
                   extendrect='True')
 cb.set_label('Relative Humidity', size='x-large')
 
@@ -212,3 +213,6 @@ plt.title('{:.0f} K Montgomery Streamfunction '.format(isentlevs[level].m) +
           'Wind (kt), Relative Humidity (percent)', loc='left')
 plt.title('VALID: {:s}'.format(str(vtimes[0])), loc='right')
 plt.tight_layout()
+add_timestamp(ax, vtimes[0], y=0.02, high_contrast=True)
+
+plt.show()

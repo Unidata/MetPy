@@ -8,6 +8,7 @@ try:
 except ImportError:
     from enum34 import Enum
 
+import matplotlib
 import numpy as np
 
 from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
@@ -260,13 +261,9 @@ class StationPlot(object):
         """
         kwargs = self._make_kwargs(kwargs)
 
-        # Handle transforming our center points. CartoPy doesn't like 1D barbs
-        # TODO: This can be removed for cartopy > 0.14.3
-        if hasattr(self.ax, 'projection') and 'transform' in kwargs:
-            trans = kwargs.pop('transform')
-            x, y, _ = self. ax.projection.transform_points(trans, self.x, self.y).T
-        else:
-            x, y = self.x, self.y
+        # Strip units, CartoPy transform doesn't like
+        u = np.array(u)
+        v = np.array(v)
 
         # Empirically determined
         pivot = 0.51 * np.sqrt(self.fontsize)
@@ -279,7 +276,20 @@ class StationPlot(object):
         if self.barbs:
             self.barbs.remove()
 
-        self.barbs = self.ax.barbs(x, y, u, v, **defaults)
+        # Handle transforming our center points. CartoPy doesn't like 1D barbs
+        # TODO: This can be removed for cartopy > 0.14.3
+        if hasattr(self.ax, 'projection') and 'transform' in kwargs:
+            trans = kwargs['transform']
+            try:
+                kwargs['transform'] = trans._as_mpl_transform(self.ax)
+            except AttributeError:
+                pass
+            u, v = self.ax.projection.transform_vectors(trans, self.x, self.y, u, v)
+
+            # Since we've re-implemented CartoPy's barbs, we need to skip calling it here
+            self.barbs = matplotlib.axes.Axes.barbs(self.ax, self.x, self.y, u, v, **defaults)
+        else:
+            self.barbs = self.ax.barbs(self.x, self.y, u, v, **defaults)
 
     def _make_kwargs(self, kwargs):
         """Assemble kwargs as necessary.

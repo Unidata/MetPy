@@ -26,6 +26,7 @@ install:
     - cmd: sed -i -e s/python=3/python=%PYTHON_VERSION%/ environment.yml
     - cmd: conda env create -q -f environment.yml
     - cmd: activate devel
+    - cmd: pip install sphinx_rtd_theme==0.2.5b1.post1 -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html
     - cmd: python --version
     - cmd: conda list
     - cmd: if %PYTHON_VERSION% == 2.7 conda install -q enum34
@@ -38,9 +39,9 @@ build: off
 test_script:
     - cmd: set TEST_DATA_DIR=%APPVEYOR_BUILD_FOLDER%\\testdata
     - cmd: python setup.py test --addopts "-s --junitxml=tests.xml --flake8 --mpl --cov=metpy"
-#    - cmd: cd docs
-#    - cmd: make html
-#    - cmd: cd ..
+    - cmd: cd docs
+    - cmd: make html
+    - cmd: cd ..
 
 on_finish:
     - ps: $wc = New-Object 'System.Net.WebClient'

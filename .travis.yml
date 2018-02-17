@@ -16,6 +16,9 @@ addons:
     - gfortran
     - libproj-dev
 
+git:
+  depth: 150
+
 python:
   - 3.6
   - 2.7
@@ -30,6 +33,9 @@ env:
     - secure: "MOw+6pAQ8s7XX1U9Pbgw8SIuz5MHODj6PXe6xCSIyGR14/0KFNiR9s6NEIa9i7qnp7HOq/V2M9ZFPPioQCrL8k5V4XzZfNz6kXGUT8DoSAAnAAnDWy4yMRxYMlEcjSY8l0KZ9B3szxypkLh0Qd9+pHZYvRSLt8A8UcZSVSNGDjg="
     - WHEELHOUSE="https://unidata-python.s3.amazonaws.com/wheelhouse/index.html"
     - WHEELDIR="wheelhouse/"
+    # Shapely dependency needed to keep from using Shapely's manylinux wheels
+    # which use a different geos that what we build cartopy with on Travis
+    - EXTRA_PACKAGES="shapely<1.5.17.post1"
     - EXTRA_INSTALLS="test,cdm"
     - MPLLOCALFREETYPE="1"
     - TEST_OUTPUT_CONTROL="-s"
@@ -60,18 +66,11 @@ matrix:
     - python: nightly
 
 before_install:
-  # Shapely dependency needed to keep from using Shapely's manylinux wheels
-  # which use a different geos that what we build cartopy with on Travis
-  # We hardcode the sphinx_rtd_theme to lock in our build with patch for
+  # We hard-code the sphinx_rtd_theme to lock in our build with patch for
   # version chooser
   - pip install --upgrade pip;
   - pip install --upgrade setuptools;
-  - if [[ $TASK == "docs" ]]; then
-      if ! git describe --tags; then git fetch --depth=150; fi;
-      export EXTRA_INSTALLS="cdm,doc,examples";
-      export EXTRA_PACKAGES="Cython pillow shapely<1.5.17.post1 sphinx_rtd_theme==0.2.5b1.post1 pytest";
-      ls $HOME/local/lib/;
-      if [[ ! -f $HOME/local/lib/libproj.so ]]; then
+  - if [[ ! -f $HOME/local/lib/libproj.so ]]; then
         wget http://download.osgeo.org/proj/proj-4.9.3.tar.gz;
         tar xf proj-4.9.3.tar.gz;
         pushd proj-4.9.3;
@@ -80,13 +79,15 @@ before_install:
         sed -i "" -e s/-I// proj.pc;
         make install;
         popd;
-      fi;
-      export PKG_CONFIG_PATH="$HOME/local/lib/pkgconfig";
-      export LD_LIBRARY_PATH="$HOME/local/lib";
-      pkg-config --modversion proj;
+    fi;
+  - export PKG_CONFIG_PATH="$HOME/local/lib/pkgconfig";
+  - export LD_LIBRARY_PATH="$HOME/local/lib";
+  - pkg-config --modversion proj;
+  - if [[ $TASK == "docs" ]]; then
+      export EXTRA_INSTALLS="cdm,doc,examples";
+      export EXTRA_PACKAGES="$EXTRA_PACKAGES Cython pillow sphinx_rtd_theme==0.2.5b1.post1 pytest";
     else
       export TEST_OPTS="--flake8 --mpl";
-      export EXTRA_PACKAGES="$EXTRA_PACKAGES pydocstyle<2.1";
       if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then
         export EXTRA_PACKAGES="$EXTRA_PACKAGES flake8-bugbear";
       fi;
@@ -110,7 +111,7 @@ script:
   - if [[ $TASK == "docs" ]]; then
       export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata;
       pushd docs;
-      make clean html linkcheck;
+      make clean html linkcheck O=-W;
       export DOC_BUILD_RESULT=$?;
       popd;
       if [[ $TRAVIS_PYTHON_VERSION == 3.6* ]]; then

@@ -157,7 +157,7 @@ print('radii\n', r)
 # which serves as a complementary (but not necessary)
 # spatial data structure that we use here simply to show areal ratios.
 # Notice that the two natural neighbor triangle circumcenters are also vertices
-# in the Voronoi plot (green dots), and the observations are in the the polygons (blue dots).
+# in the Voronoi plot (green dots), and the observations are in the polygons (blue dots).
 vor = Voronoi(list(zip(xp, yp)))
 voronoi_plot_2d(vor)
 

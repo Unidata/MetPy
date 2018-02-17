@@ -20,6 +20,10 @@ References
            doi:`10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0493(1980)108%3C1046:TCOEPT%3E2.0.CO;2>`_.
 
+.. [Bowen2005] Bowen, M. K. and R. Smith, 2005: Derivative formulae and errors for
+           non-uniformly spaced points. *Proc. R. Soc. A*, **461**, 1975-1997,
+           doi:`10.1098/rspa.2004.1430 <https://doi.org/10.1098/rspa.2004.1430>`_.
+
 .. [Bunkers2000] Bunkers, M. J., B. A. Klimowski, J. W. Zeitler, R. L. Thompson,
            and M. L. Weisman, 2000: Predicting supercell motion using a new hodograph
            technique. *Wea. Forecasting.*, **15**, 61–79,
@@ -31,7 +35,7 @@ References
            doi:`10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0493(1959)087%3C0367:AOOAS%3E2.0.CO;2>`_.
 
-.. [Davies-Jones2009] Davies-Jones, R., 2009: On Formulas for Equivalent Potential Temperature.
+.. [DaviesJones2009] Davies-Jones, R., 2009: On Formulas for Equivalent Potential Temperature.
            *Mon. Wea. Rev.*, **137**, 3137-3148,
            doi: `10.1175/2009mwr2774.1 <https://doi.org/10.1175/2009MWR2774.1>`_.
 
@@ -40,6 +44,12 @@ References
 
 .. [Hobbs2006] Hobbs, P. V., and J. M. Wallace, 2006: *Atmospheric Science: An Introductory
            Survey*. 2nd ed. Academic Press, 504 pp.
+
+.. [Knox2017] Knox, John A., David S. Nevius, and Pamela N. Knox., 2017: Two Simple and
+              Accurate Approximations for Wet-Bulb Temperature in Moist Conditions, with
+              Forecasting Applications. *Bulletin of the American Meteorological Society*,
+              **98.9**, 1897-1906, doi:
+              `10.1175/BAMS-D-16-0246.1 <https://doi.org/10.1175/BAMS-D-16-0246.1>`_.
 
 .. [Lackmann2011] Lackmann, G., 2011: *Midlatitude Synoptic Meteorology*. Amer. Meteor. Soc.,
            345 pp.
@@ -93,9 +103,6 @@ References
 .. [Thompson2004] Thompson, R.L., R. Edwards, and C. M. Mead, 2004b: An update to the supercell
            composite and significant tornado parameters. Preprints, 22nd Conf. on Severe Local
            Storms, Hyannis, MA, Amer. Meteor. Soc.
-
-.. [Tsonis2008] Tsonis, A. A., 2008: An introduction to atmospheric thermodynamics.
-           Cambridge Univ. Press, Cambridge.
 
 .. [Ziv1994] Ziv, B., and Alpert, P., 1994: Isobaric to Isentropic Interpolation Errors
            and Implication to Potential Vorticity Analysis. *J. Appl. Meteor.*, **33**,

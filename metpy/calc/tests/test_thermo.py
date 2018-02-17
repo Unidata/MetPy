@@ -6,25 +6,41 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (cape_cin, density, dewpoint, dewpoint_rh, dry_lapse, el,
-                        equivalent_potential_temperature,
-                        isentropic_interpolation,
-                        lcl, lfc, mixed_layer, mixed_parcel, mixing_ratio,
+from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
+                        brunt_vaisala_period, cape_cin, density, dewpoint, dewpoint_rh,
+                        dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
+                        isentropic_interpolation, lcl, lfc, mixed_layer, mixed_parcel,
+                        mixing_ratio, mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse,
-                        most_unstable_cape_cin, most_unstable_parcel,
+                        moist_static_energy, most_unstable_cape_cin, most_unstable_parcel,
                         parcel_profile, potential_temperature,
                         psychrometric_vapor_pressure_wet,
+                        relative_humidity_from_dewpoint,
                         relative_humidity_from_mixing_ratio,
                         relative_humidity_from_specific_humidity,
                         relative_humidity_wet_psychrometric,
                         saturation_mixing_ratio,
                         saturation_vapor_pressure,
-                        surface_based_cape_cin, vapor_pressure,
-                        virtual_potential_temperature, virtual_temperature)
-
+                        specific_humidity_from_mixing_ratio,
+                        surface_based_cape_cin, thickness_hydrostatic,
+                        thickness_hydrostatic_from_relative_humidity, vapor_pressure,
+                        virtual_potential_temperature, virtual_temperature,
+                        wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
 from metpy.units import units
+
+
+def test_relative_humidity_from_dewpoint():
+    """Test Relative Humidity calculation."""
+    assert_almost_equal(relative_humidity_from_dewpoint(25. * units.degC, 15. * units.degC),
+                        53.80 * units.percent, 2)
+
+
+def test_relative_humidity_from_dewpoint_with_f():
+    """Test Relative Humidity accepts temperature in Fahrenheit."""
+    assert_almost_equal(relative_humidity_from_dewpoint(70. * units.degF, 55. * units.degF),
+                        58.935 * units.percent, 3)
 
 
 def test_potential_temperature():
@@ -269,7 +285,7 @@ def test_equivalent_potential_temperature():
 def test_virtual_temperature():
     """Test virtual temperature calculation."""
     t = 288. * units.kelvin
-    qv = .0016  # kg/kg
+    qv = .0016 * units.dimensionless  # kg/kg
     tv = virtual_temperature(t, qv)
     assert_almost_equal(tv, 288.2796 * units.kelvin, 3)
 
@@ -278,7 +294,7 @@ def test_virtual_potential_temperature():
     """Test virtual potential temperature calculation."""
     p = 999. * units.mbar
     t = 288. * units.kelvin
-    qv = .0016  # kg/kg
+    qv = .0016 * units.dimensionless  # kg/kg
     theta_v = virtual_potential_temperature(p, t, qv)
     assert_almost_equal(theta_v, 288.3620 * units.kelvin, 3)
 
@@ -287,7 +303,7 @@ def test_density():
     """Test density calculation."""
     p = 999. * units.mbar
     t = 288. * units.kelvin
-    qv = .0016  # kg/kg
+    qv = .0016 * units.dimensionless  # kg/kg
     rho = density(p, t, qv).to(units.kilogram / units.meter ** 3)
     assert_almost_equal(rho, 1.2072 * (units.kilogram / units.meter ** 3), 3)
 
@@ -364,7 +380,7 @@ def test_el_small_surface_instability():
 
 
 def test_no_el_parcel_colder():
-    """Tests no EL when parcel stays colder than environment. INL 20170925-12Z."""
+    """Test no EL when parcel stays colder than environment. INL 20170925-12Z."""
     levels = np.array([974., 946., 925., 877.2, 866., 850., 814.6, 785.,
                        756.6, 739., 729.1, 700., 686., 671., 641., 613.,
                        603., 586., 571., 559.3, 539., 533., 500., 491.,
@@ -414,33 +430,49 @@ def test_wet_psychrometric_rh_kwargs():
     assert_almost_equal(psychrometric_rh, 82.9701 * units.percent, 3)
 
 
-def test_rh_mixing_ratio():
-    """Tests relative humidity from mixing ratio."""
+def test_mixing_ratio_from_relative_humidity():
+    """Test relative humidity from mixing ratio."""
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
-    w = 0.012
+    rh = 81.7219 * units.percent
+    w = mixing_ratio_from_relative_humidity(rh, temperature, p)
+    assert_almost_equal(w, 0.012 * units.dimensionless, 3)
+
+
+def test_rh_mixing_ratio():
+    """Test relative humidity from mixing ratio."""
+    p = 1013.25 * units.mbar
+    temperature = 20. * units.degC
+    w = 0.012 * units.dimensionless
     rh = relative_humidity_from_mixing_ratio(w, temperature, p)
     assert_almost_equal(rh, 81.7219 * units.percent, 3)
 
 
 def test_mixing_ratio_from_specific_humidity():
-    """Tests mixing ratio from specific humidity."""
-    q = 0.012
+    """Test mixing ratio from specific humidity."""
+    q = 0.012 * units.dimensionless
     w = mixing_ratio_from_specific_humidity(q)
     assert_almost_equal(w, 0.01215, 3)
 
 
+def test_specific_humidity_from_mixing_ratio():
+    """Test specific humidity from mixing ratio."""
+    w = 0.01215 * units.dimensionless
+    q = specific_humidity_from_mixing_ratio(w)
+    assert_almost_equal(q, 0.01200, 5)
+
+
 def test_rh_specific_humidity():
-    """Tests relative humidity from specific humidity."""
+    """Test relative humidity from specific humidity."""
     p = 1013.25 * units.mbar
     temperature = 20. * units.degC
-    q = 0.012
+    q = 0.012 * units.dimensionless
     rh = relative_humidity_from_specific_humidity(q, temperature, p)
     assert_almost_equal(rh, 82.7145 * units.percent, 3)
 
 
 def test_cape_cin():
-    """Tests the basic CAPE and CIN calculation."""
+    """Test the basic CAPE and CIN calculation."""
     p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
@@ -451,7 +483,7 @@ def test_cape_cin():
 
 
 def test_cape_cin_no_el():
-    """Tests that CAPE works with no EL."""
+    """Test that CAPE works with no EL."""
     p = np.array([959., 779.2, 751.3, 724.3]) * units.mbar
     temperature = np.array([22.2, 14.6, 12., 9.4]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4]) * units.celsius
@@ -462,7 +494,7 @@ def test_cape_cin_no_el():
 
 
 def test_cape_cin_no_lfc():
-    """Tests that CAPE is zero with no LFC."""
+    """Test that CAPE is zero with no LFC."""
     p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
     temperature = np.array([22.2, 24.6, 22., 20.4, 18., -10.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
@@ -473,7 +505,7 @@ def test_cape_cin_no_lfc():
 
 
 def test_find_append_zero_crossings():
-    """Tests finding and appending zero crossings of an x, y series."""
+    """Test finding and appending zero crossings of an x, y series."""
     x = np.arange(11) * units.hPa
     y = np.array([3, 2, 1, -1, 2, 2, 0, 1, 0, -1, 2]) * units.degC
     x2, y2 = _find_append_zero_crossings(x, y)
@@ -486,7 +518,7 @@ def test_find_append_zero_crossings():
 
 
 def test_most_unstable_parcel():
-    """Tests calculating the most unstable parcel."""
+    """Test calculating the most unstable parcel."""
     levels = np.array([1000., 959., 867.9]) * units.mbar
     temperatures = np.array([18.2, 22.2, 17.4]) * units.celsius
     dewpoints = np.array([19., 19., 14.3]) * units.celsius
@@ -678,7 +710,7 @@ def test_isentropic_pressure_4d():
 
 
 def test_surface_based_cape_cin():
-    """Tests the surface-based CAPE and CIN calculation."""
+    """Test the surface-based CAPE and CIN calculation."""
     p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
@@ -688,7 +720,7 @@ def test_surface_based_cape_cin():
 
 
 def test_most_unstable_cape_cin_surface():
-    """Tests the most unstable CAPE/CIN calculation when surface is most unstable."""
+    """Test the most unstable CAPE/CIN calculation when surface is most unstable."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
@@ -698,7 +730,7 @@ def test_most_unstable_cape_cin_surface():
 
 
 def test_most_unstable_cape_cin():
-    """Tests the most unstable CAPE/CIN calculation."""
+    """Test the most unstable CAPE/CIN calculation."""
     pressure = np.array([1000., 959., 867.9, 850., 825., 800.]) * units.mbar
     temperature = np.array([18.2, 22.2, 17.4, 10., 0., 15]) * units.celsius
     dewpoint = np.array([19., 19., 14.3, 0., -10., 0.]) * units.celsius
@@ -708,7 +740,7 @@ def test_most_unstable_cape_cin():
 
 
 def test_mixed_parcel():
-    """Tests the mixed parcel calculation."""
+    """Test the mixed parcel calculation."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.degC
@@ -721,8 +753,164 @@ def test_mixed_parcel():
 
 
 def test_mixed_layer():
-    """Tests the mixed layer calculation."""
+    """Test the mixed layer calculation."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
     mixed_layer_temperature = mixed_layer(pressure, temperature, depth=250 * units.hPa)[0]
     assert_almost_equal(mixed_layer_temperature, 16.4024930 * units.degC, 6)
+
+
+def test_dry_static_energy():
+    """Test the dry static energy calculation."""
+    dse = dry_static_energy(1000 * units.m, 25 * units.degC)
+    assert_almost_equal(dse, 309.4474 * units('kJ/kg'), 6)
+
+
+def test_moist_static_energy():
+    """Test the moist static energy calculation."""
+    mse = moist_static_energy(1000 * units.m, 25 * units.degC, 0.012 * units.dimensionless)
+    assert_almost_equal(mse, 339.4594 * units('kJ/kg'), 6)
+
+
+def test_thickness_hydrostatic():
+    """Test the thickness calculation for a moist layer."""
+    pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
+    mixing = np.array([0.01458, 0.00209, 0.00224, 0.00240, 0.00256, 0.00010])
+    thickness = thickness_hydrostatic(pressure, temperature, mixing=mixing)
+    assert_almost_equal(thickness, 9892.07 * units.m, 2)
+
+
+def test_thickness_hydrostatic_subset():
+    """Test the thickness calculation with a subset of the moist layer."""
+    pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
+    mixing = np.array([0.01458, 0.00209, 0.00224, 0.00240, 0.00256, 0.00010])
+    thickness = thickness_hydrostatic(pressure, temperature, mixing=mixing,
+                                      bottom=850 * units.hPa, depth=150 * units.hPa)
+    assert_almost_equal(thickness, 1630.81 * units.m, 2)
+
+
+def test_thickness_hydrostatic_isothermal():
+    """Test the thickness calculation for a dry isothermal layer at 0 degC."""
+    pressure = np.arange(1000, 500 - 1e-10, -10) * units.hPa
+    temperature = np.zeros_like(pressure) * units.degC
+    thickness = thickness_hydrostatic(pressure, temperature)
+    assert_almost_equal(thickness, 5542.12 * units.m, 2)
+
+
+def test_thickness_hydrostatic_isothermal_subset():
+    """Test the thickness calculation for a dry isothermal layer subset at 0 degC."""
+    pressure = np.arange(1000, 500 - 1e-10, -10) * units.hPa
+    temperature = np.zeros_like(pressure) * units.degC
+    thickness = thickness_hydrostatic(pressure, temperature, bottom=850 * units.hPa,
+                                      depth=350 * units.hPa)
+    assert_almost_equal(thickness, 4242.68 * units.m, 2)
+
+
+def test_thickness_hydrostatic_from_relative_humidity():
+    """Test the thickness calculation for a moist layer using RH data."""
+    pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.hPa
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.degC
+    relative_humidity = np.array([81.69, 15.43, 18.95, 23.32, 28.36, 18.55]) * units.percent
+    thickness = thickness_hydrostatic_from_relative_humidity(pressure, temperature,
+                                                             relative_humidity)
+    assert_almost_equal(thickness, 9892.07 * units.m, 2)
+
+
+def test_mixing_ratio_dimensions():
+    """Verify mixing ratio returns a dimensionless number."""
+    p = 998. * units.mbar
+    e = 73.75 * units.hPa
+    assert str(mixing_ratio(e, p).units) == 'dimensionless'
+
+
+def test_saturation_mixing_ratio_dimensions():
+    """Verify saturation mixing ratio returns a dimensionless number."""
+    p = 998. * units.mbar
+    temp = 20 * units.celsius
+    assert str(saturation_mixing_ratio(p, temp).units) == 'dimensionless'
+
+
+def test_mixing_ratio_from_rh_dimensions():
+    """Verify mixing ratio from RH returns a dimensionless number."""
+    p = 1000. * units.mbar
+    temperature = 0. * units.degC
+    rh = 100. * units.percent
+    assert (str(mixing_ratio_from_relative_humidity(rh, temperature, p).units) ==
+            'dimensionless')
+
+
+@pytest.fixture
+def bv_data():
+    """Return height and potential temperature data for testing Brunt-Vaisala functions."""
+    heights = [1000., 1500., 2000., 2500.] * units('m')
+    potential_temperatures = [[290., 290., 290., 290.],
+                              [292., 293., 293., 292.],
+                              [294., 296., 293., 293.],
+                              [296., 295., 293., 296.]] * units('K')
+    return heights, potential_temperatures
+
+
+def test_brunt_vaisala_frequency_squared():
+    """Test Brunt-Vaisala frequency squared function."""
+    truth = [[1.35264138e-04, 2.02896207e-04, 3.04344310e-04, 1.69080172e-04],
+             [1.34337671e-04, 2.00818771e-04, 1.00409386e-04, 1.00753253e-04],
+             [1.33423810e-04, 6.62611486e-05, 0, 1.33879181e-04],
+             [1.32522297e-04, -1.99457288e-04, 0., 2.65044595e-04]] * units('s^-2')
+    bv_freq_sqr = brunt_vaisala_frequency_squared(bv_data()[0], bv_data()[1])
+    assert_almost_equal(bv_freq_sqr, truth, 6)
+
+
+def test_brunt_vaisala_frequency():
+    """Test Brunt-Vaisala frequency function."""
+    truth = [[0.01163031, 0.01424416, 0.01744547, 0.01300308],
+             [0.01159041, 0.01417105, 0.01002045, 0.01003759],
+             [0.01155092, 0.00814010, 0., 0.01157062],
+             [0.01151183, np.nan, 0., 0.01628019]] * units('s^-1')
+    bv_freq = brunt_vaisala_frequency(bv_data()[0], bv_data()[1])
+    assert_almost_equal(bv_freq, truth, 6)
+
+
+def test_brunt_vaisala_period():
+    """Test Brunt-Vaisala period function."""
+    truth = [[540.24223556, 441.10593821, 360.16149037, 483.20734521],
+             [542.10193894, 443.38165033, 627.03634320, 625.96540075],
+             [543.95528431, 771.88106656, np.nan, 543.02940230],
+             [545.80233643, np.nan, np.nan, 385.94053328]] * units('s')
+    bv_period = brunt_vaisala_period(bv_data()[0], bv_data()[1])
+    assert_almost_equal(bv_period, truth, 6)
+
+
+def test_wet_bulb_temperature():
+    """Test wet bulb calculation with scalars."""
+    val = wet_bulb_temperature(1000 * units.hPa, 25 * units.degC, 15 * units.degC)
+    truth = 18.34345936 * units.degC  # 18.59 from NWS calculator
+    assert_almost_equal(val, truth)
+
+
+def test_wet_bulb_temperature_1d():
+    """Test wet bulb calculation with 1d list."""
+    pressures = [1013, 1000, 990] * units.hPa
+    temperatures = [25, 20, 15] * units.degC
+    dewpoints = [20, 15, 10] * units.degC
+    val = wet_bulb_temperature(pressures, temperatures, dewpoints)
+    truth = [21.4449794, 16.7368576, 12.0656909] * units.degC
+    # 21.58, 16.86, 12.18 from NWS Calculator
+    assert_array_almost_equal(val, truth)
+
+
+def test_wet_bulb_temperature_2d():
+    """Test wet bulb calculation with 2d list."""
+    pressures = [[1013, 1000, 990],
+                 [1012, 999, 989]] * units.hPa
+    temperatures = [[25, 20, 15],
+                    [24, 19, 14]] * units.degC
+    dewpoints = [[20, 15, 10],
+                 [19, 14, 9]] * units.degC
+    val = wet_bulb_temperature(pressures, temperatures, dewpoints)
+    truth = [[21.4449794, 16.7368576, 12.0656909],
+             [20.5021631, 15.801218, 11.1361878]] * units.degC
+    # 21.58, 16.86, 12.18
+    # 20.6, 15.9, 11.2 from NWS Calculator
+    assert_array_almost_equal(val, truth)

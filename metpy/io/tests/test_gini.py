@@ -104,7 +104,7 @@ def test_gini_dataset(filename, bounds, data_var, proj_attrs):
     assert_almost_equal(x[-1], x1, 4)
 
     # Because the actual data raster has the top row first, the maximum y value is y[0],
-    # while the the minimum y value is y[-1]
+    # while the minimum y value is y[-1]
     y = ds.variables['y']
     assert_almost_equal(y[-1], y0, 4)
     assert_almost_equal(y[0], y1, 4)

@@ -12,14 +12,44 @@ import scipy.integrate as si
 import scipy.optimize as so
 
 from .tools import (_greater_or_close, _less_or_close, broadcast_indices, find_intersections,
-                    get_layer, interp)
-from ..constants import Cp_d, epsilon, kappa, Lv, P0, Rd
+                    first_derivative, get_layer, interp)
+from ..constants import Cp_d, epsilon, g, kappa, Lv, P0, Rd
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
 
 exporter = Exporter(globals())
 
 sat_pressure_0c = 6.112 * units.millibar
+
+
+@exporter.export
+@check_units('[temperature]', '[temperature]')
+def relative_humidity_from_dewpoint(temperature, dewpt):
+    r"""Calculate the relative humidity.
+
+    Uses temperature and dewpoint in celsius to calculate relative
+    humidity using the ratio of vapor pressure to saturation vapor pressures.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+        The temperature
+    dew point : `pint.Quantity`
+        The dew point temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        The relative humidity
+
+    See Also
+    --------
+    saturation_vapor_pressure
+
+    """
+    e = saturation_vapor_pressure(dewpt)
+    e_s = saturation_vapor_pressure(temperature)
+    return (e / e_s)
 
 
 @exporter.export
@@ -40,7 +70,7 @@ def potential_temperature(pressure, temperature):
     Returns
     -------
     `pint.Quantity`
-        The potential temperature corresponding to the the temperature and
+        The potential temperature corresponding to the temperature and
         pressure.
 
     See Also
@@ -114,7 +144,7 @@ def moist_lapse(pressure, temperature):
     Returns
     -------
     `pint.Quantity`
-       The temperature corresponding to the the starting temperature and
+       The temperature corresponding to the starting temperature and
        pressure levels.
 
     See Also
@@ -196,7 +226,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
     fp = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
                         xtol=eps, maxiter=max_iters)
-    lcl_p = units.Quantity(fp, pressure.units)
+    lcl_p = fp * pressure.units
     return lcl_p, dewpoint(vapor_pressure(lcl_p, w))
 
 
@@ -499,7 +529,8 @@ def mixing_ratio(part_press, tot_press, molecular_weight_ratio=epsilon):
     saturation_mixing_ratio, vapor_pressure
 
     """
-    return molecular_weight_ratio * part_press / (tot_press - part_press)
+    return (molecular_weight_ratio *
+            part_press / (tot_press - part_press)).to('dimensionless')
 
 
 @exporter.export
@@ -536,7 +567,7 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
 
     First, the LCL temperature is calculated:
 
-    .. math:: T_{L}=\frac{1}{\frac{1}{T_{D}-56}+\frac{(T_{K}/T_{D})}{800}}+56
+    .. math:: T_{L}=\frac{1}{\frac{1}{T_{D}-56}+\frac{ln(T_{K}/T_{D})}{800}}+56
 
     Which is then used to calculate the potential temperature at the LCL:
 
@@ -545,8 +576,8 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
 
     Both of these are used to calculate the final equivalent potential temperature:
 
-    .. math:: \theta_{E}=\theta_{DL}\exp[\left(\left\frac{3036.}{T_{L}}
-                                        -1.78\right)*r(1+.448r)\right]
+    .. math:: \theta_{E}=\theta_{DL}\exp\left[\left(\frac{3036.}{T_{L}}
+                                              -1.78\right)*r(1+.448r)\right]
 
     Parameters
     ----------
@@ -565,7 +596,7 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
     Notes
     -----
     [Bolton1980]_ formula for Theta-e is used, since according to
-    [Davies-Jones2009]_ it is the most accurate non-iterative formulation
+    [DaviesJones2009]_ it is the most accurate non-iterative formulation
     available.
 
     """
@@ -711,9 +742,9 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
 
     Notes
     -----
-    .. math:: RH = 100 \frac{e}{e_s}
+    .. math:: RH = \frac{e}{e_s}
 
-    * :math:`RH` is relative humidity
+    * :math:`RH` is relative humidity as a unitless ratio
     * :math:`e` is vapor pressure from the wet psychrometric calculation
     * :math:`e_s` is the saturation vapor pressure
 
@@ -722,8 +753,8 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
     psychrometric_vapor_pressure_wet, saturation_vapor_pressure
 
     """
-    return (100 * units.percent * psychrometric_vapor_pressure_wet(dry_bulb_temperature,
-            web_bulb_temperature, pressure, **kwargs) /
+    return (psychrometric_vapor_pressure_wet(dry_bulb_temperature, web_bulb_temperature,
+                                             pressure, **kwargs) /
             saturation_vapor_pressure(dry_bulb_temperature))
 
 
@@ -778,6 +809,45 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
 
 @exporter.export
 @check_units('[dimensionless]', '[temperature]', '[pressure]')
+def mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure):
+    r"""Calculate the mixing ratio from relative humidity, temperature, and pressure.
+
+    Parameters
+    ----------
+    relative_humidity: array_like
+        The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass
+        a percentage if proper units are attached.
+    temperature: `pint.Quantity`
+        Air temperature
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Dimensionless mixing ratio
+
+    Notes
+    -----
+    Formula adapted from [Hobbs1977]_ pg. 74.
+
+    .. math:: w = (RH)(w_s)
+
+    * :math:`w` is mixing ratio
+    * :math:`RH` is relative humidity as a unitless ratio
+    * :math:`w_s` is the saturation mixing ratio
+
+    See Also
+    --------
+    relative_humidity_from_mixing_ratio, saturation_mixing_ratio
+
+    """
+    return (relative_humidity *
+            saturation_mixing_ratio(pressure, temperature)).to('dimensionless')
+
+
+@exporter.export
+@check_units('[dimensionless]', '[temperature]', '[pressure]')
 def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
     r"""Calculate the relative humidity from mixing ratio, temperature, and pressure.
 
@@ -797,21 +867,20 @@ def relative_humidity_from_mixing_ratio(mixing_ratio, temperature, pressure):
 
     Notes
     -----
-    Formula from [Hobbs1977]_ pg. 74.
+    Formula based on that from [Hobbs1977]_ pg. 74.
 
-    .. math:: RH = 100 \frac{w}{w_s}
+    .. math:: RH = \frac{w}{w_s}
 
-    * :math:`RH` is relative humidity
-    * :math:`w` is mxing ratio
+    * :math:`RH` is relative humidity as a unitless ratio
+    * :math:`w` is mixing ratio
     * :math:`w_s` is the saturation mixing ratio
 
     See Also
     --------
-    saturation_mixing_ratio
+    mixing_ratio_from_relative_humidity, saturation_mixing_ratio
 
     """
-    return (100 * units.percent *
-            mixing_ratio / saturation_mixing_ratio(pressure, temperature))
+    return mixing_ratio / saturation_mixing_ratio(pressure, temperature)
 
 
 @exporter.export
@@ -835,15 +904,55 @@ def mixing_ratio_from_specific_humidity(specific_humidity):
 
     .. math:: w = \frac{q}{1-q}
 
-    * :math:`w` is mxing ratio
+    * :math:`w` is mixing ratio
     * :math:`q` is the specific humidity
 
     See Also
     --------
-    mixing_ratio
+    mixing_ratio, specific_humidity_from_mixing_ratio
 
     """
+    try:
+        specific_humidity = specific_humidity.to('dimensionless')
+    except AttributeError:
+        pass
     return specific_humidity / (1 - specific_humidity)
+
+
+@exporter.export
+@check_units('[dimensionless]')
+def specific_humidity_from_mixing_ratio(mixing_ratio):
+    r"""Calculate the specific humidity from the mixing ratio.
+
+    Parameters
+    ----------
+    mixing_ratio: `pint.Quantity`
+        mixing ratio
+
+    Returns
+    -------
+    `pint.Quantity`
+        Specific humidity
+
+    Notes
+    -----
+    Formula from [Salby1996]_ pg. 118.
+
+    .. math:: q = \frac{w}{1+w}
+
+    * :math:`w` is mixing ratio
+    * :math:`q` is the specific humidity
+
+    See Also
+    --------
+    mixing_ratio, mixing_ratio_from_specific_humidity
+
+    """
+    try:
+        mixing_ratio = mixing_ratio.to('dimensionless')
+    except AttributeError:
+        pass
+    return mixing_ratio / (1 + mixing_ratio)
 
 
 @exporter.export
@@ -867,11 +976,11 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
 
     Notes
     -----
-    Formula from [Hobbs1977]_ pg. 74. and [Salby1996]_ pg. 118.
+    Formula based on that from [Hobbs1977]_ pg. 74. and [Salby1996]_ pg. 118.
 
-    .. math:: RH = 100 \frac{q}{(1-q)w_s}
+    .. math:: RH = \frac{q}{(1-q)w_s}
 
-    * :math:`RH` is relative humidity
+    * :math:`RH` is relative humidity as a unitless ratio
     * :math:`q` is specific humidity
     * :math:`w_s` is the saturation mixing ratio
 
@@ -880,8 +989,7 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
     relative_humidity_from_mixing_ratio
 
     """
-    return (100 * units.percent *
-            mixing_ratio_from_specific_humidity(specific_humidity) /
+    return (mixing_ratio_from_specific_humidity(specific_humidity) /
             saturation_mixing_ratio(pressure, temperature))
 
 
@@ -963,22 +1071,18 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     # Estimate zero crossings
     x, y = _find_append_zero_crossings(np.copy(pressure), y)
 
-    # CAPE (temperature parcel < temperature environment)
+    # CAPE
     # Only use data between the LFC and EL for calculation
     p_mask = _less_or_close(x, lfc_pressure) & _greater_or_close(x, el_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
-
-    y_clipped[_less_or_close(y_clipped, 0 * units.degK)] = 0 * units.degK
     cape = (Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
-    # CIN (temperature parcel < temperature environment)
+    # CIN
     # Only use data between the surface and LFC for calculation
     p_mask = _greater_or_close(x, lfc_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
-
-    y_clipped[_greater_or_close(y_clipped, 0 * units.degK)] = 0 * units.degK
     cin = (Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
     return cape, cin
@@ -1416,3 +1520,363 @@ def mixed_layer(p, *args, **kwargs):
         ret.append((-1. / actual_depth.m) * np.trapz(datavar_layer, p_layer) *
                    datavar_layer.units)
     return ret
+
+
+@exporter.export
+@check_units('[length]', '[temperature]')
+def dry_static_energy(heights, temperature):
+    r"""Calculate the dry static energy of parcels.
+
+    This function will calculate the dry static energy following the first two terms of
+    equation 3.72 in [Hobbs2006]_.
+
+    Notes
+    -----
+    .. math::\text{dry static energy} = c_{pd} * T + gz
+
+    * :math:`T` is temperature
+    * :math:`z` is height
+
+    Parameters
+    ----------
+    heights : array-like
+        Atmospheric height
+    temperature : array-like
+        Atmospheric temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        The dry static energy
+
+    """
+    return (g * heights + Cp_d * temperature).to('kJ/kg')
+
+
+@exporter.export
+@check_units('[length]', '[temperature]', '[dimensionless]')
+def moist_static_energy(heights, temperature, specific_humidity):
+    r"""Calculate the moist static energy of parcels.
+
+    This function will calculate the moist static energy following
+    equation 3.72 in [Hobbs2006]_.
+    Notes
+    -----
+    .. math::\text{moist static energy} = c_{pd} * T + gz + L_v q
+
+    * :math:`T` is temperature
+    * :math:`z` is height
+    * :math:`q` is specific humidity
+
+    Parameters
+    ----------
+    heights : array-like
+        Atmospheric height
+    temperature : array-like
+        Atmospheric temperature
+    specific_humidity : array-like
+        Atmospheric specific humidity
+
+    Returns
+    -------
+    `pint.Quantity`
+        The moist static energy
+
+    """
+    return (dry_static_energy(heights, temperature) +
+            Lv * specific_humidity.to('dimensionless')).to('kJ/kg')
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]')
+def thickness_hydrostatic(pressure, temperature, **kwargs):
+    r"""Calculate the thickness of a layer via the hypsometric equation.
+
+    This thickness calculation uses the pressure and temperature profiles (and optionally
+    mixing ratio) via the hypsometric equation with virtual temperature adjustment
+
+    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,
+
+    which is based off of Equation 3.24 in [Hobbs2006]_.
+
+    This assumes a hydrostatic atmosphere.
+
+    Layer bottom and depth specified in pressure.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure profile
+    temperature : `pint.Quantity`
+        Atmospheric temperature profile
+    mixing : `pint.Quantity`, optional
+        Profile of dimensionless mass mixing ratio. If none is given, virtual temperature
+        is simply set to be the given temperature.
+    molecular_weight_ratio : `pint.Quantity` or float, optional
+        The ratio of the molecular weight of the constituent gas to that assumed
+        for air. Defaults to the ratio for water vapor to dry air.
+        (:math:`\epsilon\approx0.622`).
+    bottom : `pint.Quantity`, optional
+        The bottom of the layer in pressure. Defaults to the first observation.
+    depth : `pint.Quantity`, optional
+        The depth of the layer in hPa. Defaults to the full profile if bottom is not given,
+        and 100 hPa if bottom is given.
+
+    Returns
+    -------
+    `pint.Quantity`
+        The thickness of the layer in meters.
+
+    See Also
+    --------
+    thickness_hydrostatic_from_relative_humidity, pressure_to_height_std, virtual_temperature
+
+    """
+    mixing = kwargs.pop('mixing', None)
+    molecular_weight_ratio = kwargs.pop('molecular_weight_ratio', epsilon)
+    bottom = kwargs.pop('bottom', None)
+    depth = kwargs.pop('depth', None)
+
+    # Get the data for the layer, conditional upon bottom/depth being specified and mixing
+    # ratio being given
+    if bottom is None and depth is None:
+        if mixing is None:
+            layer_p, layer_virttemp = pressure, temperature
+        else:
+            layer_p = pressure
+            layer_virttemp = virtual_temperature(temperature, mixing, molecular_weight_ratio)
+    else:
+        if mixing is None:
+            layer_p, layer_virttemp = get_layer(pressure, temperature, bottom=bottom,
+                                                depth=depth)
+        else:
+            layer_p, layer_temp, layer_w = get_layer(pressure, temperature, mixing,
+                                                     bottom=bottom, depth=depth)
+            layer_virttemp = virtual_temperature(layer_temp, layer_w, molecular_weight_ratio)
+
+    # Take the integral (with unit handling) and return the result in meters
+    return (- Rd / g * np.trapz(layer_virttemp.to('K'), x=np.log(layer_p / units.hPa)) *
+            units.K).to('m')
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]')
+def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative_humidity,
+                                                 **kwargs):
+    r"""Calculate the thickness of a layer given pressure, temperature and relative humidity.
+
+    Similar to ``thickness_hydrostatic``, this thickness calculation uses the pressure,
+    temperature, and relative humidity profiles via the hypsometric equation with virtual
+    temperature adjustment.
+
+    .. math:: Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,
+
+    which is based off of Equation 3.24 in [Hobbs2006]_. Virtual temperature is calculated
+    from the profiles of temperature and relative humidity.
+
+    This assumes a hydrostatic atmosphere.
+
+    Layer bottom and depth specified in pressure.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Atmospheric pressure profile
+    temperature : `pint.Quantity`
+        Atmospheric temperature profile
+    relative_humidity : `pint.Quantity`
+        Atmospheric relative humidity profile. The relative humidity is expressed as a
+        unitless ratio in the range [0, 1]. Can also pass a percentage if proper units are
+        attached.
+    bottom : `pint.Quantity`, optional
+        The bottom of the layer in pressure. Defaults to the first observation.
+    depth : `pint.Quantity`, optional
+        The depth of the layer in hPa. Defaults to the full profile if bottom is not given,
+        and 100 hPa if bottom is given.
+
+    Returns
+    -------
+    `pint.Quantity`
+        The thickness of the layer in meters.
+
+    See Also
+    --------
+    thickness_hydrostatic, pressure_to_height_std, virtual_temperature,
+    mixing_ratio_from_relative_humidity
+
+    """
+    bottom = kwargs.pop('bottom', None)
+    depth = kwargs.pop('depth', None)
+    mixing = mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure)
+
+    return thickness_hydrostatic(pressure, temperature, mixing=mixing, bottom=bottom,
+                                 depth=depth)
+
+
+@exporter.export
+@check_units('[length]', '[temperature]')
+def brunt_vaisala_frequency_squared(heights, potential_temperature, axis=0):
+    r"""Calculate the square of the Brunt-Vaisala frequency.
+
+    Brunt-Vaisala frequency squared (a measure of atmospheric stability) is given by the
+    formula:
+
+    .. math:: N^2 = \frac{g}{\theta} \frac{d\theta}{dz}
+
+    This formula is based off of Equations 3.75 and 3.77 in [Hobbs2006]_.
+
+    Parameters
+    ----------
+    heights : array-like
+        One-dimensional profile of atmospheric height
+    potential_temperature : array-like
+        Atmospheric potential temperature
+    axis : int, optional
+        The axis corresponding to vertical in the potential temperature array, defaults to 0.
+
+    Returns
+    -------
+    array-like
+        The square of the Brunt-Vaisala frequency.
+
+    See Also
+    --------
+    brunt_vaisala_frequency, brunt_vaisala_period, potential_temperature
+
+    """
+    # Ensure validity of temperature units
+    potential_temperature = potential_temperature.to('K')
+
+    # Calculate and return the square of Brunt-Vaisala frequency
+    return g / potential_temperature * first_derivative(potential_temperature, x=heights,
+                                                        axis=axis)
+
+
+@exporter.export
+@check_units('[length]', '[temperature]')
+def brunt_vaisala_frequency(heights, potential_temperature, axis=0):
+    r"""Calculate the Brunt-Vaisala frequency.
+
+    This function will calculate the Brunt-Vaisala frequency as follows:
+
+    .. math:: N = \left( \frac{g}{\theta} \frac{d\theta}{dz} \right)^\frac{1}{2}
+
+    This formula based off of Equations 3.75 and 3.77 in [Hobbs2006]_.
+
+    This function is a wrapper for `brunt_vaisala_frequency_squared` that filters out negative
+    (unstable) quanties and takes the square root.
+
+    Parameters
+    ----------
+    heights : array-like
+        One-dimensional profile of atmospheric height
+    potential_temperature : array-like
+        Atmospheric potential temperature
+    axis : int, optional
+        The axis corresponding to vertical in the potential temperature array, defaults to 0.
+
+    Returns
+    -------
+    array-like
+        Brunt-Vaisala frequency.
+
+    See Also
+    --------
+    brunt_vaisala_frequency_squared, brunt_vaisala_period, potential_temperature
+
+    """
+    bv_freq_squared = brunt_vaisala_frequency_squared(heights, potential_temperature,
+                                                      axis=axis)
+    bv_freq_squared[bv_freq_squared.magnitude < 0] = np.nan
+
+    return np.sqrt(bv_freq_squared)
+
+
+@exporter.export
+@check_units('[length]', '[temperature]')
+def brunt_vaisala_period(heights, potential_temperature, axis=0):
+    r"""Calculate the Brunt-Vaisala period.
+
+    This function is a helper function for `brunt_vaisala_frequency` that calculates the
+    period of oscilation as in Exercise 3.13 of [Hobbs2006]_:
+
+    .. math:: \tau = \frac{2\pi}{N}
+
+    Returns `NaN` when :math:`N^2 > 0`.
+
+    Parameters
+    ----------
+    heights : array-like
+        One-dimensional profile of atmospheric height
+    potential_temperature : array-like
+        Atmospheric potential temperature
+    axis : int, optional
+        The axis corresponding to vertical in the potential temperature array, defaults to 0.
+
+    Returns
+    -------
+    array-like
+        Brunt-Vaisala period.
+
+    See Also
+    --------
+    brunt_vaisala_frequency, brunt_vaisala_frequency_squared, potential_temperature
+
+    """
+    bv_freq_squared = brunt_vaisala_frequency_squared(heights, potential_temperature,
+                                                      axis=axis)
+    bv_freq_squared[bv_freq_squared.magnitude <= 0] = np.nan
+
+    return 2 * np.pi / np.sqrt(bv_freq_squared)
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def wet_bulb_temperature(pressure, temperature, dewpoint):
+    """Calculate the wet-bulb temperature using Normand's rule.
+
+    This function calculates the wet-bulb temperature using the Normand method. The LCL is
+    computed, and that parcel brought down to the starting pressure along a moist adiabat.
+    Norman method (and others) described and compared by [Knox2017]_.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Initial atmospheric pressure
+    temperature : `pint.Quantity`
+        Initial atmospheric temperature
+    dewpoint : `pint.Quantity`
+        Initial atmospheric dewpoint
+
+    Returns
+    -------
+    array-like
+        Wet-bulb temperature
+
+    See Also
+    --------
+    lcl, moist_lapse
+
+    """
+    if not hasattr(pressure, 'shape'):
+        pressure = atleast_1d(pressure)
+        temperature = atleast_1d(temperature)
+        dewpoint = atleast_1d(dewpoint)
+
+    it = np.nditer([pressure, temperature, dewpoint, None],
+                   op_dtypes=['float', 'float', 'float', 'float'],
+                   flags=['buffered'])
+
+    for press, temp, dewp, ret in it:
+        press = press * pressure.units
+        temp = temp * temperature.units
+        dewp = dewp * dewpoint.units
+        lcl_pressure, lcl_temperature = lcl(press, temp, dewp)
+        moist_adiabat_temperatures = moist_lapse(concatenate([lcl_pressure, press]),
+                                                 lcl_temperature)
+        ret[...] = moist_adiabat_temperatures[-1]
+
+    # If we started with a scalar, return a scalar
+    if it.operands[3].size == 1:
+        return it.operands[3][0] * moist_adiabat_temperatures.units
+    return it.operands[3] * moist_adiabat_temperatures.units

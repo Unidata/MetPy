@@ -20,6 +20,7 @@ from scipy.constants import day, milli
 
 from ._tools import (Array, BitField, Bits, bits_to_code, DictStruct, Enum, IOBuffer,
                      NamedStruct, open_as_needed, zlib_decompress_all_frames)
+from ..cbook import is_string_like
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -1536,6 +1537,7 @@ class Level3File(object):
 
         """
         fobj = open_as_needed(filename)
+        self.filename = filename if is_string_like(filename) else 'No File'
 
         # Just read in the entire set of data at once
         with contextlib.closing(fobj):

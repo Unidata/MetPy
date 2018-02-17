@@ -8,46 +8,30 @@ import functools
 import warnings
 
 import numpy as np
+from pyproj import Geod
 
-from ..calc.tools import get_layer_heights
+from ..calc.tools import first_derivative, get_layer_heights, gradient
 from ..cbook import is_string_like, iterable
 from ..constants import Cp_d, g
+from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..units import atleast_2d, check_units, concatenate, units
 
 exporter = Exporter(globals())
 
 
-def _gradient(f, *args, **kwargs):
-    """Wrap :func:`numpy.gradient` to handle units."""
-    if len(args) < f.ndim:
-        args = list(args)
-        args.extend([units.Quantity(1., 'dimensionless')] * (f.ndim - len(args)))
-    grad = np.gradient(f, *(a.magnitude for a in args), **kwargs)
-    if f.ndim == 1:
-        return units.Quantity(grad, f.units / args[0].units)
-    return [units.Quantity(g, f.units / dx.units) for dx, g in zip(args, grad)]
-
-
 def _stack(arrs):
     return concatenate([a[np.newaxis] for a in arrs], axis=0)
-
-
-def _get_gradients(u, v, dx, dy):
-    """Return derivatives for components to simplify calculating convergence and vorticity."""
-    dudy, dudx = _gradient(u, dy, dx)
-    dvdy, dvdx = _gradient(v, dy, dx)
-    return dudx, dudy, dvdx, dvdy
 
 
 def _is_x_first_dim(dim_order):
     """Determine whether x is the first dimension based on the value of dim_order."""
     if dim_order is None:
-        warnings.warn('dim_order is using the default setting (currently "xy"). This will '
-                      'change to "yx" in the next version. It is recommended that you '
+        warnings.warn('dim_order is using the default setting ("yx"). This changed in '
+                      'version 0.7. It is recommended that you '
                       'specify the appropriate ordering ("xy", "yx") for your data by '
-                      'passing the `dim_order` argument to the calculation.', FutureWarning)
-        dim_order = 'xy'
+                      'passing the `dim_order` argument to the calculation.', UserWarning)
+        dim_order = 'yx'
     return dim_order == 'xy'
 
 
@@ -94,7 +78,7 @@ def ensure_yx_order(func):
         or ``'yx'``. ``'xy'`` indicates that the dimension corresponding to x is the leading
         dimension, followed by y. ``'yx'`` indicates that x is the last dimension, preceded
         by y. ``None`` indicates that the default ordering should be assumed,
-        which will change in version 0.6 from 'xy' to 'yx'. Can only be passed as a keyword
+        which changed in version 0.7 from 'xy' to 'yx'. Can only be passed as a keyword
         argument, i.e. func(..., dim_order='xy')."""
 
     # Find the first blank line after the start of the parameters section
@@ -107,10 +91,8 @@ def ensure_yx_order(func):
 
 @exporter.export
 @ensure_yx_order
-def v_vorticity(u, v, dx, dy):
+def vorticity(u, v, dx, dy):
     r"""Calculate the vertical vorticity of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -130,19 +112,31 @@ def v_vorticity(u, v, dx, dy):
 
     See Also
     --------
-    h_convergence, convergence_vorticity
+    divergence
 
     """
-    _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
+    dudy = first_derivative(u, delta=dy, axis=0)
+    dvdx = first_derivative(v, delta=dx, axis=1)
     return dvdx - dudy
 
 
 @exporter.export
-@ensure_yx_order
-def h_convergence(u, v, dx, dy):
-    r"""Calculate the horizontal convergence of the horizontal wind.
+@deprecated('0.7', addendum=' This function has been renamed vorticity.',
+            pending=False)
+def v_vorticity(u, v, dx, dy, dim_order='xy'):
+    """Wrap vorticity for deprecated v_vorticity function."""
+    return vorticity(u, v, dx, dy, dim_order=dim_order)
 
-    The grid must have a constant spacing in each direction.
+
+v_vorticity.__doc__ = (vorticity.__doc__ +
+                       '\n    .. deprecated:: 0.7.0\n        Function has been renamed to '
+                       '`vorticity` and will be removed from MetPy in 0.9.0.')
+
+
+@exporter.export
+@ensure_yx_order
+def divergence(u, v, dx, dy):
+    r"""Calculate the horizontal divergence of the horizontal wind.
 
     Parameters
     ----------
@@ -158,23 +152,37 @@ def h_convergence(u, v, dx, dy):
     Returns
     -------
     (M, N) ndarray
-        The horizontal convergence
+        The horizontal divergence
 
     See Also
     --------
-    v_vorticity, convergence_vorticity
+    vorticity
 
     """
-    dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=1)
+    dvdy = first_derivative(v, delta=dy, axis=0)
     return dudx + dvdy
 
 
 @exporter.export
-@ensure_yx_order
-def convergence_vorticity(u, v, dx, dy):
-    r"""Calculate the horizontal convergence and vertical vorticity of the horizontal wind.
+@deprecated('0.7', addendum=' This function has been replaced by divergence.',
+            pending=False)
+def h_convergence(u, v, dx, dy, dim_order='xy'):
+    """Wrap divergence for deprecated convergence function."""
+    return divergence(u, v, dx, dy, dim_order=dim_order)
 
-    The grid must have a constant spacing in each direction.
+
+h_convergence.__doc__ = (divergence.__doc__ +
+                         '\n    .. deprecated:: 0.7.0\n        Function has been renamed to '
+                         '`divergence` and will be removed from MetPy in 0.9.0.')
+
+
+@exporter.export
+@deprecated('0.7', addendum=' Use divergence and/or vorticity instead.',
+            pending=False)
+@ensure_yx_order
+def convergence_vorticity(u, v, dx, dy, dim_order='xy'):
+    r"""Calculate the horizontal divergence and vertical vorticity of the horizontal wind.
 
     Parameters
     ----------
@@ -189,20 +197,23 @@ def convergence_vorticity(u, v, dx, dy):
 
     Returns
     -------
-    convergence, vorticity : tuple of (M, N) ndarrays
-        The horizontal convergence and vertical vorticity, respectively
+    divergence, vorticity : tuple of (M, N) ndarrays
+        The horizontal divergence and vertical vorticity, respectively
 
     See Also
     --------
-    v_vorticity, h_convergence
+    vorticity, divergence
 
-    Notes
-    -----
-    This is a convenience function that will do less work than calculating
-    the horizontal convergence and vertical vorticity separately.
+    .. deprecated:: 0.7.0
+        Function no longer has any performance benefit over individual calls to
+        `divergence` and `vorticity` and will be removed from MetPy in 0.9.0.
+
 
     """
-    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=1)
+    dudy = first_derivative(u, delta=dy, axis=0)
+    dvdx = first_derivative(v, delta=dx, axis=1)
+    dvdy = first_derivative(v, delta=dy, axis=0)
     return dudx + dvdy, dvdx - dudy
 
 
@@ -210,8 +221,6 @@ def convergence_vorticity(u, v, dx, dy):
 @ensure_yx_order
 def shearing_deformation(u, v, dx, dy):
     r"""Calculate the shearing deformation of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -231,10 +240,11 @@ def shearing_deformation(u, v, dx, dy):
 
     See Also
     --------
-    stretching_convergence, shearing_stretching_deformation
+    stretching_deformation, total_deformation
 
     """
-    _, dudy, dvdx, _ = _get_gradients(u, v, dx, dy)
+    dudy = first_derivative(u, delta=dy, axis=0)
+    dvdx = first_derivative(v, delta=dx, axis=1)
     return dvdx + dudy
 
 
@@ -242,8 +252,6 @@ def shearing_deformation(u, v, dx, dy):
 @ensure_yx_order
 def stretching_deformation(u, v, dx, dy):
     r"""Calculate the stretching deformation of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -263,19 +271,20 @@ def stretching_deformation(u, v, dx, dy):
 
     See Also
     --------
-    shearing_deformation, shearing_stretching_deformation
+    shearing_deformation, total_deformation
 
     """
-    dudx, _, _, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=1)
+    dvdy = first_derivative(v, delta=dy, axis=0)
     return dudx - dvdy
 
 
 @exporter.export
+@deprecated('0.7', addendum=' Use stretching_deformation and/or shearing_deformation instead.',
+            pending=False)
 @ensure_yx_order
 def shearing_stretching_deformation(u, v, dx, dy):
     r"""Calculate the horizontal shearing and stretching deformation of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -297,13 +306,17 @@ def shearing_stretching_deformation(u, v, dx, dy):
     --------
     shearing_deformation, stretching_deformation
 
-    Notes
-    -----
-    This is a convenience function that will do less work than calculating
-    the shearing and streching deformation terms separately.
+
+    .. deprecated:: 0.7.0
+        Function no longer has any performance benefit over individual calls to
+        `shearing_deformation` and `stretching_deformation` and will be removed from
+        MetPy in 0.9.0.
 
     """
-    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=1)
+    dudy = first_derivative(u, delta=dy, axis=0)
+    dvdx = first_derivative(v, delta=dx, axis=1)
+    dvdy = first_derivative(v, delta=dy, axis=0)
     return dvdx + dudy, dudx - dvdy
 
 
@@ -311,8 +324,6 @@ def shearing_stretching_deformation(u, v, dx, dy):
 @ensure_yx_order
 def total_deformation(u, v, dx, dy):
     r"""Calculate the horizontal total deformation of the horizontal wind.
-
-    The grid must have a constant spacing in each direction.
 
     Parameters
     ----------
@@ -332,16 +343,13 @@ def total_deformation(u, v, dx, dy):
 
     See Also
     --------
-    shearing_deformation, stretching_deformation, shearing_stretching_deformation
-
-    Notes
-    -----
-    This is a convenience function that will do less work than calculating
-    the shearing and streching deformation terms separately and calculating the
-    total deformation "by hand".
+    shearing_deformation, stretching_deformation
 
     """
-    dudx, dudy, dvdx, dvdy = _get_gradients(u, v, dx, dy)
+    dudx = first_derivative(u, delta=dx, axis=1)
+    dudy = first_derivative(u, delta=dy, axis=0)
+    dvdx = first_derivative(v, delta=dx, axis=1)
+    dvdy = first_derivative(v, delta=dy, axis=0)
     return np.sqrt((dvdx + dudy)**2 + (dudx - dvdy)**2)
 
 
@@ -385,7 +393,7 @@ def advection(scalar, wind, deltas):
     # Gradient returns a list of derivatives along each dimension. We convert
     # this to an array with dimension as the first index. Reverse the deltas to line up
     # with the order of the dimensions.
-    grad = _stack(_gradient(scalar, *deltas[::-1]))
+    grad = _stack(gradient(scalar, deltas=deltas[::-1]))
 
     # Make them be at least 2D (handling the 1D case) so that we can do the
     # multiply and sum below
@@ -410,10 +418,6 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     * :math:`\beta` is the angle between the axis of dilitation and the isentropes
     * :math:`\delta` is the divergence
 
-    Notes
-    -----
-    Assumes dim_order='yx', unless otherwise specified.
-
     Parameters
     ----------
     thta : (M, N) ndarray
@@ -430,26 +434,30 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     Returns
     -------
     (M, N) ndarray
-        2D Frotogenesis in [temperature units]/m/s
+        2D Frontogenesis in [temperature units]/m/s
 
+    Notes
+    -----
+    Assumes dim_order='yx', unless otherwise specified.
 
-    Conversion factor to go from [temperature units]/m/s to [tempature units/100km/3h]
+    Conversion factor to go from [temperature units]/m/s to [temperature units/100km/3h]
     :math:`1.08e4*1.e5`
 
     """
     # Get gradients of potential temperature in both x and y
-    grad = _gradient(thta, dy, dx)
-    ddy_thta, ddx_thta = grad[-2:]  # Throw away unused gradient components
+    ddy_thta = first_derivative(thta, delta=dy, axis=-2)
+    ddx_thta = first_derivative(thta, delta=dx, axis=-1)
 
     # Compute the magnitude of the potential temperature gradient
     mag_thta = np.sqrt(ddx_thta**2 + ddy_thta**2)
 
     # Get the shearing, stretching, and total deformation of the wind field
-    shrd, strd = shearing_stretching_deformation(u, v, dx, dy, dim_order=dim_order)
+    shrd = shearing_deformation(u, v, dx, dy, dim_order=dim_order)
+    strd = stretching_deformation(u, v, dx, dy, dim_order=dim_order)
     tdef = total_deformation(u, v, dx, dy, dim_order=dim_order)
 
     # Get the divergence of the wind field
-    div = h_convergence(u, v, dx, dy, dim_order=dim_order)
+    div = divergence(u, v, dx, dy, dim_order=dim_order)
 
     # Compute the angle (beta) between the wind field and the gradient of potential temperature
     psi = 0.5 * np.arctan2(shrd, strd)
@@ -487,16 +495,9 @@ def geostrophic_wind(heights, f, dx, dy):
     else:
         norm_factor = g / f
 
-    # If heights has more than 2 dimensions, we need to pass in some dummy
-    # grid deltas so that we can still use np.gradient. It may be better to
-    # to loop in this case, but that remains to be done.
-    deltas = [dy, dx]
-    if heights.ndim > 2:
-        deltas = [units.Quantity(1., units.m)] * (heights.ndim - 2) + deltas
-
-    grad = _gradient(heights, *deltas)
-    dy, dx = grad[-2:]  # Throw away unused gradient components
-    return -norm_factor * dy, norm_factor * dx
+    dhdy = first_derivative(heights, delta=dy, axis=-2)
+    dhdx = first_derivative(heights, delta=dx, axis=-1)
+    return -norm_factor * dhdy, norm_factor * dhdx
 
 
 @exporter.export
@@ -592,3 +593,92 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
     return (positive_srh.to('meter ** 2 / second ** 2'),
             negative_srh.to('meter ** 2 / second ** 2'),
             (positive_srh + negative_srh).to('meter ** 2 / second ** 2'))
+
+
+@deprecated('0.8', addendum=' This function has been replaced by the signed delta distance'
+                            'calculation lat_lon_grid_deltas and will be removed in MetPy'
+                            ' 0.11.',
+            pending=False)
+@exporter.export
+def lat_lon_grid_spacing(longitude, latitude, **kwargs):
+    r"""Calculate the distance between grid points that are in a latitude/longitude format.
+
+    Calculate the distance between grid points when the grid spacing is defined by
+    delta lat/lon rather than delta x/y
+
+    Parameters
+    ----------
+    longitude : array_like
+        array of longitudes defining the grid
+    latitude : array_like
+        array of latitudes defining the grid
+    kwargs
+        Other keyword arguments to pass to :class:`~pyproj.Geod`
+
+    Returns
+    -------
+     dx, dy: 2D arrays of distances between grid points in the x and y direction
+
+    Notes
+    -----
+    Accepts, 1D or 2D arrays for latitude and longitude
+    Assumes [Y, X] for 2D arrays
+
+    .. deprecated:: 0.8.0
+        Function has been replaced with the signed delta distance calculation
+        `lat_lon_grid_deltas` and will be removed from MetPy in 0.11.0.
+
+    """
+    # Use the absolute value of the signed function replacing this
+    dx, dy = lat_lon_grid_deltas(longitude, latitude, **kwargs)
+
+    return np.abs(dx), np.abs(dy)
+
+
+@exporter.export
+def lat_lon_grid_deltas(longitude, latitude, **kwargs):
+    r"""Calculate the delta between grid points that are in a latitude/longitude format.
+
+    Calculate the signed delta distance between grid points when the grid spacing is defined by
+    delta lat/lon rather than delta x/y
+
+    Parameters
+    ----------
+    longitude : array_like
+        array of longitudes defining the grid
+    latitude : array_like
+        array of latitudes defining the grid
+    kwargs
+        Other keyword arguments to pass to :class:`~pyproj.Geod`
+
+    Returns
+    -------
+     dx, dy: 2D arrays of signed deltas between grid points in the x and y direction
+
+    Notes
+    -----
+    Accepts, 1D or 2D arrays for latitude and longitude
+    Assumes [Y, X] for 2D arrays
+
+    """
+    # Inputs must be the same number of dimensions
+    if latitude.ndim != longitude.ndim:
+        raise ValueError('Latitude and longitude must have the same number of dimensions.')
+
+    # If we were given 1D arrays, make a mesh grid
+    if latitude.ndim < 2:
+        longitude, latitude = np.meshgrid(longitude, latitude)
+
+    geod_args = {'ellps': 'sphere'}
+    geod_args.update(**kwargs)
+    g = Geod(**geod_args)
+
+    forward_az, _, dy = g.inv(longitude[:-1, :], latitude[:-1, :], longitude[1:, :],
+                              latitude[1:, :])
+    dy[(forward_az < -90.) | (forward_az > 90.)] *= -1
+
+    forward_az, _, dx = g.inv(longitude[:, :-1], latitude[:, :-1], longitude[:, 1:],
+                              latitude[:, 1:])
+    dx[(forward_az < 0.) | (forward_az > 180.)] *= -1
+
+    return dx * units.meter, dy * units.meter
