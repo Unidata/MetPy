@@ -7,6 +7,7 @@ from datetime import datetime
 import posixpath
 
 from matplotlib.collections import LineCollection
+import matplotlib.patheffects as mpatheffects
 from matplotlib.pyplot import imread
 import numpy as np
 import pkg_resources
@@ -14,10 +15,11 @@ import pkg_resources
 from ..units import concatenate
 
 
-def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', **kwargs):
-    """Add a timestamp at plot creation time.
+def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=False,
+                  pretext='Created: ', time_format='%Y-%m-%dT%H:%M:%SZ', **kwargs):
+    """Add a timestamp to a plot.
 
-    Adds an ISO format timestamp with the time of plot creation to the plot.
+    Adds a timestamp to a plot, defaulting to the time of plot creation in ISO format.
 
     Parameters
     ----------
@@ -31,18 +33,30 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', **kwargs):
         Relative y position on the axes of the timestamp
     ha : str
         Horizontal alignment of the time stamp string
+    high_contrast : bool
+        Outline text for increased contrast
+    pretext : str
+        Text to appear before the timestamp, optional. Defaults to 'Created: '
+    time_format : str
+        Display format of time, optional. Defaults to ISO format.
 
     Returns
     -------
-    ax : `matplotlib.axes.Axes`
-        The `Axes` instance used for plotting
+    `matplotlib.text.Text`
+        The `matplotlib.text.Text` instance created
 
     """
+    if high_contrast:
+        text_args = {'color': 'white',
+                     'path_effects':
+                         [mpatheffects.withStroke(linewidth=2, foreground='black')]}
+    else:
+        text_args = {}
+    text_args.update(**kwargs)
     if not time:
         time = datetime.utcnow()
-    timestr = datetime.strftime(time, 'Created: %Y-%m-%dT%H:%M:%SZ')
-    ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **kwargs)
-    return ax
+    timestr = pretext + datetime.strftime(time, time_format)
+    return ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **text_args)
 
 
 def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs):
@@ -68,8 +82,8 @@ def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs
 
     Returns
     -------
-    fig : `matplotlib.figure`
-       The `figure` instance used for plotting
+    `matplotlib.image.FigureImage`
+       The `matplotlib.image.FigureImage` instance created
 
     """
     fname_suffix = {'small': '_75x75.png',
@@ -83,8 +97,7 @@ def _add_logo(fig, x=10, y=25, zorder=100, which='metpy', size='small', **kwargs
         raise ValueError('Unknown logo size or selection')
 
     logo = imread(pkg_resources.resource_stream('metpy.plots', fpath))
-    fig.figimage(logo, x, y, zorder=zorder, **kwargs)
-    return fig
+    return fig.figimage(logo, x, y, zorder=zorder, **kwargs)
 
 
 def add_metpy_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):

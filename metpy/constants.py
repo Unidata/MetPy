@@ -6,17 +6,19 @@ r"""A collection of meteorologically significant constants.
 
 Earth
 -----
-======================== =============== =========== ========================== =======================================
-Name                     Symbol          Short Name  Units                      Description
------------------------- --------------- ----------- -------------------------- ---------------------------------------
-earth_avg_radius         :math:`R_e`     Re          :math:`\text{m}`           Avg. radius of the Earth
-earth_gravity            :math:`g`       g           :math:`\text{m s}^{-2}`    Avg. gravity acceleration on Earth
-earth_avg_angular_vel    :math:`\Omega`  omega       :math:`\text{rad s}^{-1}`  Avg. angular velocity of Earth
-earth_sfc_avg_dist_sun   :math:`d`       d           :math:`\text{m}`           Avg. distance of the Earth from the Sun
-earth_solar_irradiance   :math:`S`       S           :math:`\text{W m}^{-2}`    Avg. solar irradiance of Earth
-earth_max_declination    :math:`\delta`  delta       :math:`\text{degrees}`     Max. solar declination angle of Earth
-earth_orbit_eccentricity :math:`e`                   :math:`\text{None}`        Avg. eccentricity of Earth's orbit
-======================== =============== =========== ========================== =======================================
+======================== =============== =========== ======================================= ========================================
+Name                     Symbol          Short Name  Units                                   Description
+------------------------ --------------- ----------- --------------------------------------- ----------------------------------------
+earth_avg_radius         :math:`R_e`     Re          :math:`\text{m}`                        Avg. radius of the Earth
+earth_gravity            :math:`g`       g           :math:`\text{m s}^{-2}`                 Avg. gravity acceleration on Earth
+gravitational_constant   :math:`G`       G           :math:`\text{m}^{3} {kg}^{-1} {s}^{-2}` Gravitational constant
+earth_avg_angular_vel    :math:`\Omega`  omega       :math:`\text{rad s}^{-1}`               Avg. angular velocity of Earth
+earth_sfc_avg_dist_sun   :math:`d`       d           :math:`\text{m}`                        Avg. distance of the Earth from the Sun
+earth_solar_irradiance   :math:`S`       S           :math:`\text{W m}^{-2}`                 Avg. solar irradiance of Earth
+earth_max_declination    :math:`\delta`  delta       :math:`\text{degrees}`                  Max. solar declination angle of Earth
+earth_orbit_eccentricity :math:`e`                   :math:`\text{None}`                     Avg. eccentricity of Earth's orbit
+earth_mass               :math:`m_e`     me          :math:`\text{kg}`                       Total mass of the Earth (approx)
+======================== =============== =========== ======================================= ========================================
 
 Water
 -----
@@ -70,11 +72,15 @@ with exporter:
     earth_gravity = g = units.Quantity(1.0, units.gravity).to('m / s^2')
     # Taken from GEMPAK constants
     Re = earth_avg_radius = 6.3712e6 * units.m
+    G = gravitational_constant = (units.Quantity(1, units.
+                                                 newtonian_constant_of_gravitation)
+                                  .to('m^3 / kg / s^2'))
     omega = earth_avg_angular_vel = 2 * units.pi / units.sidereal_day
     d = earth_sfc_avg_dist_sun = 1.496e11 * units.m
     S = earth_solar_irradiance = units.Quantity(1.368e3, 'W / m^2')
     delta = earth_max_declination = 23.45 * units.deg
     earth_orbit_eccentricity = 0.0167
+    earth_mass = me = 5.9722e24 * units.kg
 
     # molar gas constant
     R = units.Quantity(1.0, units.R).to('J / K / mol')
@@ -101,11 +107,13 @@ with exporter:
     dry_air_spec_heat_ratio = 1.4
     Cp_d = dry_air_spec_heat_press = units.Quantity(1005, 'm^2 / s^2 / K')  # Bolton 1980
     Cv_d = dry_air_spec_heat_vol = Cp_d / dry_air_spec_heat_ratio
+    rho_d = dry_air_density_stp = ((1000. * units.mbar) /
+                                   (Rd * 273.15 * units.K)).to('kg / m^3')
 
     # General meteorology constants
     P0 = pot_temp_ref_press = 1000. * units.mbar
-    kappa = poisson_exponent = Rd / Cp_d
+    kappa = poisson_exponent = (Rd / Cp_d).to('dimensionless')
     gamma_d = dry_adiabatic_lapse_rate = g / Cp_d
-    epsilon = molecular_weight_ratio = Mw / Md
+    epsilon = molecular_weight_ratio = (Mw / Md).to('dimensionless')
 
 del Exporter

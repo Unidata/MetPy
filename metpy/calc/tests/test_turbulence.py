@@ -1,7 +1,7 @@
 # Copyright (c) 2008,2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Tests for the `turbulence` module."""
+"""Test the `turbulence` module."""
 
 import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_equal

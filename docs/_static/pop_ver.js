@@ -6,11 +6,11 @@ $(document).ready(function() {
     var mylist = $("#version-list");
     mylist.empty();
     mylist.append($("<option>", {value: "../" + cur_ver, text: name}));
-    $.getJSON("../versions.json", function(obj) {
+    $.getJSON(version_json_loc, function(obj) {
         $.each(obj.versions, function() {
             if (this != cur_ver) {
                 name = this.startsWith('v') ? this.substring(1) : this;
-                mylist.append($("<option>", {value: "../" + this, text: name}));
+                mylist.append($("<option>", {value: DOCUMENTATION_OPTIONS.URL_ROOT + '../' + this, text: name}));
             }
         });
     });

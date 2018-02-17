@@ -167,7 +167,6 @@ The following services are used to track code quality:
 * `Codacy <https://www.codacy.com/app/Unidata/MetPy/dashboard>`_
 * `Code Climate <https://codeclimate.com/github/Unidata/MetPy>`_
 * `Scrutinizer <https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)>`_
-* `Landscape.io <https://landscape.io/github/Unidata/MetPy>`_
 
 ---------
 Releasing

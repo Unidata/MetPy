@@ -54,7 +54,7 @@ sphinx_gallery_conf = {
         'scipy': 'http://docs.scipy.org/doc/scipy/reference'},
     'examples_dirs': [os.path.join('..', 'examples'), os.path.join('..', 'tutorials')],
     'gallery_dirs': ['examples', 'tutorials'],
-    'filename_pattern': os.path.join('.', '*'),
+    'filename_pattern': '\.py',
     'backreferences_dir': os.path.join('api', 'generated'),
     'default_thumb_file': os.path.join('_static', 'metpy_150x150_white_bg.png'),
     'abort_on_example_error': True
@@ -99,7 +99,7 @@ master_doc = 'index'
 # General information about the project.
 project = 'MetPy'
 # noinspection PyShadowingBuiltins
-copyright = '2016, MetPy Developers'
+copyright = '2017, MetPy Developers'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -170,8 +170,17 @@ def setup(app):
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {'canonical_url': 'https://unidata.github.io/MetPy/latest/',
-                      'versions': {'latest': '../latest', 'dev': '../dev'}}
+html_theme_options = {'canonical_url': 'https://unidata.github.io/MetPy/latest/'}
+if 'sphinx_rtd_theme' in vars() and sphinx_rtd_theme.__version__ == '0.2.5b1.post1':
+    html_theme_options['versions'] = {'latest': '../latest', 'dev': '../dev'}
+
+# Extra variables that will be available to the templates. Used to create the
+# links to the Github repository sources and issues
+html_context = {
+    'doc_path': 'docs',
+    'github_repo': 'Unidata/MetPy',
+    'github_version': 'master',  # Make changes to the master branch
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []

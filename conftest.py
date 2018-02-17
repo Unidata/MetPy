@@ -4,6 +4,7 @@
 """Configure pytest for metpy."""
 
 import matplotlib
+import matplotlib.pyplot
 import numpy
 import pint
 import pytest

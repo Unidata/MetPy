@@ -73,6 +73,8 @@ def test_level3_files(fname):
         if 'data' in block:
             f.map_data(block['data'])
 
+    assert f.filename == fname
+
 
 tdwr_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=False),
                                          'Level3_MCI_*'))
@@ -90,6 +92,12 @@ def test_basic():
     assert f.metadata['prod_time'].replace(second=0) == datetime(2014, 4, 7, 18, 5)
     assert f.metadata['vol_time'].replace(second=0) == datetime(2014, 4, 7, 18, 5)
     assert f.metadata['msg_time'].replace(second=0) == datetime(2014, 4, 7, 18, 6)
+    assert f.filename == get_test_data('nids/Level3_FFC_N0Q_20140407_1805.nids',
+                                       as_file_obj=False)
+
+    # At this point, really just want to make sure that __str__ is able to run and produce
+    # something not empty, the format is still up for grabs.
+    assert str(f)
 
 
 def test_tdwr():

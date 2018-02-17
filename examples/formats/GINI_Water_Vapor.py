@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
-from metpy.plots import add_metpy_logo, ctables
+from metpy.plots import add_metpy_logo, add_timestamp, ctables
 
 ###########################################
 
@@ -47,12 +47,13 @@ proj = ccrs.LambertConformal(central_longitude=proj_var.longitude_of_central_mer
 
 # Plot the image
 fig = plt.figure(figsize=(10, 12))
-add_metpy_logo(fig)
+add_metpy_logo(fig, 125, 145)
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 wv_norm, wv_cmap = ctables.registry.get_with_range('WVCIMSS', 100, 260)
 wv_cmap.set_under('k')
 im = ax.imshow(dat[:], cmap=wv_cmap, norm=wv_norm, zorder=0,
                extent=ds.img_extent, origin='upper')
 ax.coastlines(resolution='50m', zorder=2, color='black')
+add_timestamp(ax, f.prod_desc.datetime, y=0.02, high_contrast=True)
 
 plt.show()

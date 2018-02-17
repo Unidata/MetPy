@@ -20,6 +20,7 @@
    examples/index
    tutorials/index
    api/index
+   gempak
    developerguide
    CONTRIBUTING
    citing
@@ -89,6 +90,14 @@ License
 MetPy is available under the terms of the open source `BSD 3 Clause license`__.
 
 __ https://raw.githubusercontent.com/Unidata/MetPy/master/LICENSE
+
+---------------
+Code of Conduct
+---------------
+We want everyone to feel welcome to contribute to MetPy and participate in discussions. In that
+spirit please have a look at our `code of conduct`__.
+
+__ https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md
 
 ----------------
 Related Projects

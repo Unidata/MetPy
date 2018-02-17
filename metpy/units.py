@@ -69,6 +69,41 @@ def concatenate(arrs, axis=0):
     return units.Quantity(np.concatenate(data, axis=axis), dest)
 
 
+def diff(x, **kwargs):
+    """Calculate the n-th discrete difference along given axis.
+
+    Wraps :func:`numpy.diff` to handle units.
+
+    Parameters
+    ----------
+    x : array-like
+        Input data
+    n : int, optional
+        The number of times values are differenced.
+    axis : int, optional
+        The axis along which the difference is taken, default is the last axis.
+
+    Returns
+    -------
+    diff : ndarray
+        The n-th differences. The shape of the output is the same as `a`
+        except along `axis` where the dimension is smaller by `n`. The
+        type of the output is the same as that of the input.
+
+    See Also
+    --------
+    numpy.diff
+
+    """
+    ret = np.diff(x, **kwargs)
+    if hasattr(x, 'units'):
+        # Can't just use units because of how things like temperature work
+        it = x.flat
+        true_units = (next(it) - next(it)).units
+        ret = ret * true_units
+    return ret
+
+
 def atleast_1d(*arrs):
     r"""Convert inputs to arrays with at least one dimension.
 
@@ -87,12 +122,15 @@ def atleast_1d(*arrs):
         A single quantity or a list of quantities, matching the number of inputs.
 
     """
-    mags = [a.magnitude for a in arrs]
-    orig_units = [a.units for a in arrs]
+    mags = [a.magnitude if hasattr(a, 'magnitude') else a for a in arrs]
+    orig_units = [a.units if hasattr(a, 'units') else None for a in arrs]
     ret = np.atleast_1d(*mags)
     if len(mags) == 1:
-        return units.Quantity(ret, orig_units[0])
-    return [units.Quantity(m, u) for m, u in zip(ret, orig_units)]
+        if orig_units[0] is not None:
+            return units.Quantity(ret, orig_units[0])
+        else:
+            return ret
+    return [units.Quantity(m, u) if u is not None else m for m, u in zip(ret, orig_units)]
 
 
 def atleast_2d(*arrs):
@@ -113,12 +151,15 @@ def atleast_2d(*arrs):
         A single quantity or a list of quantities, matching the number of inputs.
 
     """
-    mags = [a.magnitude for a in arrs]
-    orig_units = [a.units for a in arrs]
+    mags = [a.magnitude if hasattr(a, 'magnitude') else a for a in arrs]
+    orig_units = [a.units if hasattr(a, 'units') else None for a in arrs]
     ret = np.atleast_2d(*mags)
     if len(mags) == 1:
-        return units.Quantity(ret, orig_units[0])
-    return [units.Quantity(m, u) for m, u in zip(ret, orig_units)]
+        if orig_units[0] is not None:
+            return units.Quantity(ret, orig_units[0])
+        else:
+            return ret
+    return [units.Quantity(m, u) if u is not None else m for m, u in zip(ret, orig_units)]
 
 
 def masked_array(data, data_units=None, **kwargs):

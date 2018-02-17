@@ -11,7 +11,7 @@ import pytest
 
 from metpy.plots import Hodograph, SkewT
 # Fixtures to make sure we have the right backend and consistent round
-from metpy.testing import patch_round, set_agg_backend  # noqa: F401
+from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 MPL_VERSION = matplotlib.__version__[:3]
@@ -69,7 +69,7 @@ def test_profile():
     return np.linspace(1000, 100, 10), np.linspace(20, -20, 10), np.linspace(25, -30, 10)
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.71}.get(MPL_VERSION, 0.), remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 2.04}.get(MPL_VERSION, 0.), remove_text=True)
 def test_skewt_shade_cape_cin(test_profile):
     """Test shading CAPE and CIN on a SkewT plot."""
     p, t, tp = test_profile
@@ -208,6 +208,24 @@ def test_hodograph_plot_layers_different_units():
     v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
     heights = np.array([0, 1, 2, 3, 4, 5]) * units.km
     bounds = np.array([500, 1500, 2500, 3500, 4500]) * units.m
+    colors = ['r', 'g', 'b', 'r']
+    fig = plt.figure(figsize=(7, 7))
+    ax1 = fig.add_subplot(1, 1, 1)
+    h = Hodograph(ax1)
+    h.add_grid(increment=10)
+    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    ax1.set_xlim(-50, 50)
+    ax1.set_ylim(-5, 50)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_hodograph_plot_layers_bound_units():
+    """Test hodograph colored height layers with interpolation and different units."""
+    u = np.zeros((6)) * units.knots
+    v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
+    heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
+    bounds = np.array([0.5, 1.5, 2.5, 3.5, 4.5]) * units.km
     colors = ['r', 'g', 'b', 'r']
     fig = plt.figure(figsize=(7, 7))
     ax1 = fig.add_subplot(1, 1, 1)

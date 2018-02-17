@@ -6,6 +6,8 @@
 from datetime import datetime
 import warnings
 
+import numpy as np
+
 from metpy.calc import (bulk_shear, bunkers_storm_motion, mean_pressure_weighted,
                         precipitable_water, significant_tornado, supercell_composite)
 from metpy.deprecation import MetpyDeprecationWarning
@@ -21,9 +23,33 @@ def test_precipitable_water():
     """Test precipitable water with observed sounding."""
     with UseSampleData():
         data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC', source='wyoming')
-    pw = precipitable_water(data.variables['dewpoint'][:], data.variables['pressure'][:])
+    pw = precipitable_water(data.variables['dewpoint'][:], data.variables['pressure'][:],
+                            top=400 * units.hPa)
     truth = (0.8899441949243486 * units('inches')).to('millimeters')
     assert_array_equal(pw, truth)
+
+
+def test_precipitable_water_no_bounds():
+    """Test precipitable water with observed sounding and no bounds given."""
+    with UseSampleData():
+        data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC', source='wyoming')
+    dewpoint = data.variables['dewpoint'][:]
+    pressure = data.variables['pressure'][:]
+    inds = pressure >= 400 * units.hPa
+    pw = precipitable_water(dewpoint[inds], pressure[inds])
+    truth = (0.8899441949243486 * units('inches')).to('millimeters')
+    assert_array_equal(pw, truth)
+
+
+def test_precipitable_water_bound_error():
+    """Test with no top bound given and data that produced floating point issue #596."""
+    pressure = np.array([993., 978., 960.5, 927.6, 925., 895.8, 892., 876., 45.9, 39.9, 36.,
+                         36., 34.3]) * units.hPa
+    dewpoint = np.array([25.5, 24.1, 23.1, 21.2, 21.1, 19.4, 19.2, 19.2, -87.1, -86.5, -86.5,
+                         -86.5, -88.1]) * units.degC
+    pw = precipitable_water(dewpoint, pressure)
+    truth = 89.86955998646951 * units('millimeters')
+    assert_almost_equal(pw, truth, 8)
 
 
 def test_mean_pressure_weighted():
@@ -111,6 +137,16 @@ def test_supercell_composite():
     assert_array_equal(supercell_comp, truth)
 
 
+def test_supercell_composite_scalar():
+    """Test supercell composite function with a single value."""
+    mucape = 2000. * units('J/kg')
+    esrh = 400. * units('m^2/s^2')
+    ebwd = 30. * units('m/s')
+    truth = 16.
+    supercell_comp = supercell_composite(mucape, esrh, ebwd)
+    assert_almost_equal(supercell_comp, truth, 6)
+
+
 def test_sigtor():
     """Test significant tornado parameter function."""
     sbcape = [2000., 2000., 2000., 2000., 3000, 4000] * units('J/kg')
@@ -118,5 +154,16 @@ def test_sigtor():
     srh1 = [200., 200., 200., 200., 300, 400] * units('m^2/s^2')
     shr6 = [20., 5., 20., 35., 20., 35] * units('m/s')
     truth = [0., 0, 1.777778, 1.333333, 2., 10.666667]
+    sigtor = significant_tornado(sbcape, sblcl, srh1, shr6)
+    assert_almost_equal(sigtor, truth, 6)
+
+
+def test_sigtor_scalar():
+    """Test significant tornado parameter function with a single value."""
+    sbcape = 4000 * units('J/kg')
+    sblcl = 800 * units('meter')
+    srh1 = 400 * units('m^2/s^2')
+    shr6 = 35 * units('m/s')
+    truth = 10.666667
     sigtor = significant_tornado(sbcape, sblcl, srh1, shr6)
     assert_almost_equal(sigtor, truth, 6)
