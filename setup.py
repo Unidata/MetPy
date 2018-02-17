@@ -5,9 +5,8 @@
 
 from __future__ import print_function
 
-import sys
-
 from setuptools import find_packages, setup
+
 import versioneer
 
 ver = versioneer.get_version()
@@ -52,7 +51,7 @@ setup(
                                   '_static/unidata_150x150.png']},
 
     install_requires=['matplotlib>=1.4', 'numpy>=1.10.0', 'scipy>=0.14',
-                        'pint>=0.8', 'enum34;python_version<"3.4"'],
+                      'pint>=0.8', 'enum34;python_version<"3.4"'],
     extras_require={
         'cdm': ['pyproj>=1.9.4'],
         'dev': ['ipython[all]>=3.1'],
@@ -70,4 +69,4 @@ setup(
 
     zip_safe=True,
 
-    download_url='https://github.com/Unidata/MetPy/archive/v{}.tar.gz'.format(ver),)
+    download_url='https://github.com/Unidata/MetPy/archive/v{}.tar.gz'.format(ver), )
