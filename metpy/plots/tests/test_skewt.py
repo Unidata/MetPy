@@ -182,7 +182,7 @@ def test_skewt_barb_color():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.08}.get(MPL_VERSION, 0.00145),
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 10.0}.get(MPL_VERSION, 0.0048),
                                remove_text=True)
 def test_skewt_barb_unit_conversion():
     """Test that barbs units can be converted at plot time (#737)."""
@@ -197,7 +197,7 @@ def test_skewt_barb_unit_conversion():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.08}.get(MPL_VERSION, 0.00145),
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 10.0}.get(MPL_VERSION, 0.0048),
                                remove_text=True)
 def test_skewt_barb_no_default_unit_conversion():
     """Test that barbs units are left alone by default (#737)."""
