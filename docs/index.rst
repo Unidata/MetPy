@@ -63,6 +63,7 @@ __ https://github.com/Unidata/MetPy/issues
 Media
 -----
 
+* Presentation on MetPy and Community Development at the `2018 AMS Annual Meeting`_ by Ryan May
 * `SciPy 2017 poster`_ and `repository <https://github.com/jrleeman/CAPE-SciPy-2017>`_
   about reproducing a classic CAPE paper with MetPy.
 * `SciPy 2017 talk`_ and `slides
@@ -82,6 +83,7 @@ Media
 .. _`Episode 100 of Podcast.__init__`: https://www.podcastinit.com/episode-100-metpy-with-ryan-may-sean-arms-and-john-leeman/
 .. _`SciPy 2017 talk`: https://youtu.be/qCo9bkT9sow
 .. _`SciPy 2017 poster`: https://github.com/jrleeman/CAPE-SciPy-2017/blob/master/Poster/SciPy_Poster_2017.pdf
+.. _`2018 AMS Annual Meeting`: https://ams.confex.com/ams/98Annual/webprogram/Paper333578.html
 
 -------
 License
