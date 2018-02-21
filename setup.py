@@ -6,7 +6,6 @@
 from __future__ import print_function
 
 from setuptools import find_packages, setup
-
 import versioneer
 
 ver = versioneer.get_version()
