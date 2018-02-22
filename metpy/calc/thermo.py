@@ -122,7 +122,7 @@ def temperature_from_potential_temperature(pressure, theta):
     -----
     Formula:
 
-    .. math:: \Theta = T = \Theta (P / P_0)^\kappa
+    .. math:: T = \Theta (P / P_0)^\kappa
 
     Examples
     --------
