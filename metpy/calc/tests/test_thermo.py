@@ -56,9 +56,9 @@ def test_temperature_from_potential_temperature():
     """Test temperature_from_potential_temperature calculation."""
     theta = np.array([286.12859679, 288.22362587, 290.31865495, 292.41368403]) * units.kelvin
     pres = np.array([850] * 4) * units.mbar
-    real_T = np.array([273.15, 275.15, 277.15, 279.15]) * units.kelvin
+    real_t = np.array([273.15, 275.15, 277.15, 279.15]) * units.kelvin
     assert_array_almost_equal(temperature_from_potential_temperature(pres, theta),
-                              real_T, 2)
+                              real_t, 2)
 
 
 def test_scalar():
