@@ -132,8 +132,6 @@ def temperature_from_potential_temperature(pressure, theta):
     >>> theta = np.array([ 286.12859679, 288.22362587]) * units.kelvin
     >>> p = 850 * units.mbar
     >>> T = temperature_from_potential_temperature(p,theta)
-    >>> T
-    >>> <Quantity([ 273.15  275.15], 'kelvin')>
 
     """
     return theta * (pressure / P0).to('dimensionless')**kappa
