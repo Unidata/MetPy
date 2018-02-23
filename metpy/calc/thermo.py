@@ -497,7 +497,7 @@ def dewpoint_rh(temperature, rh):
     See Also
     --------
     dewpoint, saturation_vapor_pressure
-    
+
     """
     if np.any(rh > 1.2):
         warnings.warn('Relative humidity >120%, ensure proper units.')
