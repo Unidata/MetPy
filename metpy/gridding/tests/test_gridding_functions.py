@@ -99,9 +99,13 @@ def test_remove_repeat_coordinates(test_coords):
 interp_methods = ['natural_neighbor', 'cressman', 'barnes',
                   'linear', 'nearest', 'cubic', 'rbf']
 
+boundary_types = [{'west': 80.0, 'south': 140.0, 'east': 980.0, 'north': 980.0},
+                  None]
+
 
 @pytest.mark.parametrize('method', interp_methods)
-def test_interpolate(method, test_coords):
+@pytest.mark.parametrize('boundary_coords', boundary_types)
+def test_interpolate(method, test_coords, boundary_coords):
     r"""Test main interpolate function."""
     xp, yp = test_coords
 
@@ -120,36 +124,10 @@ def test_interpolate(method, test_coords):
         extra_kw['minimum_neighbors'] = 1
         extra_kw['gamma'] = 1
 
+    if boundary_coords is not None:
+        extra_kw['boundary_coords'] = boundary_coords
+
     _, _, img = interpolate(xp, yp, z, hres=10, interp_type=method, **extra_kw)
-
-    with get_test_data('{0}_test.npz'.format(method)) as fobj:
-        truth = np.load(fobj)['img']
-
-    assert_array_almost_equal(truth, img)
-
-
-@pytest.mark.parametrize('method', interp_methods)
-def test_interpolate_manualgrid(method, test_coords):
-    r"""Test interpolate function using user-defined boundaries."""
-    xp, yp = test_coords
-
-    xp *= 10
-    yp *= 10
-
-    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225, 3.364])
-
-    extra_kw = {}
-    if method == 'cressman':
-        extra_kw['search_radius'] = 200
-        extra_kw['minimum_neighbors'] = 1
-    elif method == 'barnes':
-        extra_kw['search_radius'] = 400
-        extra_kw['minimum_neighbors'] = 1
-        extra_kw['gamma'] = 1
-    testCoords = {'west': 80.0, 'south': 140.0, 'east': 980.0, 'north': 980.0}
-    _, _, img = interpolate(xp, yp, z, hres=10, interp_type=method, boundary_coords=testCoords,
-                            **extra_kw)
 
     with get_test_data('{0}_test.npz'.format(method)) as fobj:
         truth = np.load(fobj)['img']
