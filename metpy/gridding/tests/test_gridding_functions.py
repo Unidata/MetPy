@@ -148,8 +148,8 @@ def test_interpolate_manualgrid(method, test_coords):
         extra_kw['minimum_neighbors'] = 1
         extra_kw['gamma'] = 1
     testCoords = {'west': 80.0, 'south': 140.0, 'east': 980.0, 'north': 980.0}
-    _, _, img = interpolate(xp, yp, z, hres=10, interp_type=method, **extra_kw,
-                            boundary_coords=testCoords)
+    _, _, img = interpolate(xp, yp, z, hres=10, interp_type=method, boundary_coords=testCoords,
+                            **extra_kw)
 
     with get_test_data('{0}_test.npz'.format(method)) as fobj:
         truth = np.load(fobj)['img']
