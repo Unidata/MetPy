@@ -19,6 +19,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         relative_humidity_from_mixing_ratio,
                         relative_humidity_from_specific_humidity,
                         relative_humidity_wet_psychrometric,
+                        saturation_equivalent_potential_temperature,
                         saturation_mixing_ratio,
                         saturation_vapor_pressure,
                         specific_humidity_from_mixing_ratio,
@@ -290,6 +291,16 @@ def test_equivalent_potential_temperature():
     td = 280. * units.kelvin
     ept = equivalent_potential_temperature(p, t, td)
     assert_almost_equal(ept, 311.18586467284007 * units.kelvin, 3)
+
+
+def test_saturation_equivalent_potential_temperature():
+    """Test saturation equivalent potential temperature calculation."""
+    p = 700 * units.mbar
+    t = 263.15 * units.kelvin
+    s_ept = saturation_equivalent_potential_temperature(p, t)
+    # 299.096584 comes from equivalent_potential_temperature(p,t,t)
+    # where dewpoint and temperature are equal, which means saturations.
+    assert_almost_equal(s_ept, 299.096584 * units.kelvin, 3)
 
 
 def test_virtual_temperature():

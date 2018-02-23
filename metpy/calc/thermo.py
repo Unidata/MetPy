@@ -487,7 +487,7 @@ def dewpoint_rh(temperature, rh):
     temperature : `pint.Quantity`
         Air temperature
     rh : `pint.Quantity`
-        Relative humidity expressed as a ratio in the range (0, 1]
+        Relative humidity expressed as a ratio in the range 0 <= rh <= 1
 
     Returns
     -------
@@ -497,7 +497,6 @@ def dewpoint_rh(temperature, rh):
     See Also
     --------
     dewpoint, saturation_vapor_pressure
-
     """
     if np.any(rh > 1.2):
         warnings.warn('Relative humidity >120%, ensure proper units.')
@@ -655,6 +654,72 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
     th_e = th_l * np.exp((3036. / t_l - 1.78) * r * (1 + 0.448 * r))
 
     return th_e * units.kelvin
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]')
+def saturation_equivalent_potential_temperature(pressure, temperature):
+    r"""Calculate saturation equivalent potential temperature.
+
+    This calculation must be given an air parcel's pressure and temperature.
+    The implementation uses the formula outlined in [Bolton1980]_ for the
+    equivalent potential temperature, and assumes a saturated process.
+
+    First, because we assume a saturated process, the temperature at the LCL is
+    equivalent to the current temperature. Therefore the following equation
+
+    .. math:: T_{L}=\frac{1}{\frac{1}{T_{D}-56}+\frac{ln(T_{K}/T_{D})}{800}}+56
+
+    reduces to
+
+    .. math:: T_{L} = T_{K}
+
+    Then the potential temperature at the temperature/LCL is calculated:
+
+    .. math:: \theta_{DL}=T_{K}\left(\frac{1000}{p-e}\right)^k
+              \left(\frac{T_{K}}{T_{L}}\right)^{.28r}
+
+    However, because
+
+    .. math:: T_{L} = T_{K}
+
+    it follows that
+
+    .. math:: \theta_{DL}=T_{K}\left(\frac{1000}{p-e}\right)^k
+
+    Both of these are used to calculate the final equivalent potential temperature:
+
+    .. math:: \theta_{E}=\theta_{DL}\exp\left[\left(\frac{3036.}{T_{K}}
+                                              -1.78\right)*r(1+.448r)\right]
+
+    Parameters
+    ----------
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+    temperature: `pint.Quantity`
+        Temperature of parcel
+
+    Returns
+    -------
+    `pint.Quantity`
+        The saturation equivalent potential temperature of the parcel
+
+    Notes
+    -----
+    [Bolton1980]_ formula for Theta-e is used (for saturated case), since according to
+    [DaviesJones2009]_ it is the most accurate non-iterative formulation
+    available.
+
+    """
+    t = temperature.to('kelvin').magnitude
+    p = pressure.to('hPa').magnitude
+    e = saturation_vapor_pressure(temperature).to('hPa').magnitude
+    r = saturation_mixing_ratio(pressure, temperature).magnitude
+
+    th_l = t * (1000 / (p - e)) ** kappa
+    th_es = th_l * np.exp((3036. / t - 1.78) * r * (1 + 0.448 * r))
+
+    return th_es * units.kelvin
 
 
 @exporter.export
