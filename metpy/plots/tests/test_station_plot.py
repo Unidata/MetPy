@@ -270,7 +270,7 @@ def test_barb_projection():
     # Plot and check barbs (they should align with grid lines)
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1, projection=ccrs.LambertConformal())
-    ax.gridlines()
+    ax.gridlines(xlocs=[-135, -120, -105, -90, -75, -60, -45])
     sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree())
     sp.plot_barb(u, v)
 
