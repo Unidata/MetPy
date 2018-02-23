@@ -85,7 +85,7 @@ before_install:
   - pkg-config --modversion proj;
   - if [[ $TASK == "docs" ]]; then
       export EXTRA_INSTALLS="cdm,doc,examples";
-      export EXTRA_PACKAGES="$EXTRA_PACKAGES Cython pillow sphinx_rtd_theme==0.2.5b1.post1 pytest";
+      export EXTRA_PACKAGES="$EXTRA_PACKAGES pillow sphinx_rtd_theme==0.2.5b1.post1 pytest";
     else
       export TEST_OPTS="--flake8 --mpl";
       if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then
@@ -97,6 +97,8 @@ before_install:
       fi;
     fi;
   - mkdir $WHEELDIR;
+  # Cython needs to be installed before even downloading CartoPy
+  - pip install Cython;
   - pip download -d $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
   - touch $WHEELDIR/download_marker && ls -lrt $WHEELDIR;
   - travis_wait pip wheel -w $WHEELDIR $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
