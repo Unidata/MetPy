@@ -487,7 +487,7 @@ def dewpoint_rh(temperature, rh):
     temperature : `pint.Quantity`
         Air temperature
     rh : `pint.Quantity`
-        Relative humidity expressed as a ratio in the range 0 <= rh <= 1
+        Relative humidity expressed as a ratio in the range 0 < rh <= 1
 
     Returns
     -------
