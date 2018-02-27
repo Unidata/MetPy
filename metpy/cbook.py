@@ -26,7 +26,7 @@ def get_test_data(fname, as_file_obj=True):
     # Look for an environment variable to point to the test data. If not, try looking at
     # the appropriate path relative to this file.
     data_dir = os.environ.get('TEST_DATA_DIR',
-                              os.path.join(os.path.dirname(__file__), '..', 'testdata'))
+                              os.path.join(os.path.dirname(__file__), '..', 'staticdata'))
 
     # Assemble the path
     path = os.path.join(data_dir, fname)
