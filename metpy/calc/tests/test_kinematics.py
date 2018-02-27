@@ -1,4 +1,4 @@
-# Copyright (c) 2008,2015,2017 MetPy Developers.
+# Copyright (c) 2008,2015,2017,2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `kinematics` module."""
@@ -6,7 +6,7 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (advection, convergence_vorticity, divergence,
+from metpy.calc import (advection, ageostrophic_wind, convergence_vorticity, divergence,
                         frontogenesis, geostrophic_wind, get_wind_components, h_convergence,
                         lat_lon_grid_deltas, lat_lon_grid_spacing, montgomery_streamfunction,
                         shearing_deformation, shearing_stretching_deformation,
@@ -397,6 +397,32 @@ def test_geostrophic_gempak():
                        [-8.66612, -5.27816, -1.45282]])
     assert_almost_equal(ug[1, 1], true_u[1, 1] * units('m/s'), 2)
     assert_almost_equal(vg[1, 1], true_v[1, 1] * units('m/s'), 2)
+
+
+def test_no_ageostrophic_geopotential():
+    """Test ageostrophic wind calculation with geopotential and no ageostrophic wind."""
+    z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
+    u = np.array([[-2, 0, 2]] * 3) * units('m/s')
+    v = -u.T
+    uag, vag = ageostrophic_wind(z, 1 / units.sec, 100. * units.meter, 100. * units.meter,
+                                 u, v, dim_order='xy')
+    true = np.array([[0, 0, 0]] * 3) * units('m/s')
+    assert_array_equal(uag, true)
+    assert_array_equal(vag, true)
+
+
+def test_ageostrophic_geopotential():
+    """Test ageostrophic wind calculation with geopotential and ageostrophic wind."""
+    z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
+    u = v = np.array([[0, 0, 0]] * 3) * units('m/s')
+    uag, vag = ageostrophic_wind(z, 1 / units.sec, 100. * units.meter, 100. * units.meter,
+                                 u, v, dim_order='xy')
+
+    u_true = np.array([[2, 0, -2]] * 3) * units('m/s')
+    v_true = -u_true.T
+
+    assert_array_equal(uag, u_true)
+    assert_array_equal(vag, v_true)
 
 
 def test_streamfunc():

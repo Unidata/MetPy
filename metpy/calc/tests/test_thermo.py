@@ -1,4 +1,4 @@
-# Copyright (c) 2008,2015,2016,2017 MetPy Developers.
+# Copyright (c) 2008,2015,2016,2017,2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `thermo` module."""
@@ -22,7 +22,8 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         saturation_mixing_ratio,
                         saturation_vapor_pressure,
                         specific_humidity_from_mixing_ratio,
-                        surface_based_cape_cin, thickness_hydrostatic,
+                        surface_based_cape_cin, temperature_from_potential_temperature,
+                        thickness_hydrostatic,
                         thickness_hydrostatic_from_relative_humidity, vapor_pressure,
                         virtual_potential_temperature, virtual_temperature,
                         wet_bulb_temperature)
@@ -49,6 +50,15 @@ def test_potential_temperature():
     pres = np.array([900., 500., 300., 100.]) * units.mbar
     real_th = np.array([286.493, 344.961, 410.4335, 575.236]) * units.kelvin
     assert_array_almost_equal(potential_temperature(pres, temp), real_th, 3)
+
+
+def test_temperature_from_potential_temperature():
+    """Test temperature_from_potential_temperature calculation."""
+    theta = np.array([286.12859679, 288.22362587, 290.31865495, 292.41368403]) * units.kelvin
+    pres = np.array([850] * 4) * units.mbar
+    real_t = np.array([273.15, 275.15, 277.15, 279.15]) * units.kelvin
+    assert_array_almost_equal(temperature_from_potential_temperature(pres, theta),
+                              real_t, 2)
 
 
 def test_scalar():

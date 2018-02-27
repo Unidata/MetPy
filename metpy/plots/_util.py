@@ -1,4 +1,4 @@
-# Copyright (c) 2015,2017 MetPy Developers.
+# Copyright (c) 2015,2017,2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Utilities for use in making plots."""
@@ -121,8 +121,8 @@ def add_metpy_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
 
     Returns
     -------
-    fig : `matplotlib.figure`
-       The `figure` instance used for plotting
+    `matplotlib.image.FigureImage`
+       The `matplotlib.image.FigureImage` instance created
 
     """
     return _add_logo(fig, x=x, y=y, zorder=zorder, which='metpy', size=size, **kwargs)
@@ -149,8 +149,8 @@ def add_unidata_logo(fig, x=10, y=25, zorder=100, size='small', **kwargs):
 
     Returns
     -------
-    fig : `matplotlib.figure`
-       The `figure` instance used for plotting
+    `matplotlib.image.FigureImage`
+       The `matplotlib.image.FigureImage` instance created
 
     """
     return _add_logo(fig, x=x, y=y, zorder=zorder, which='unidata', size=size, **kwargs)
