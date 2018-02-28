@@ -557,9 +557,11 @@ def montgomery_streamfunction(height, temperature):
 
     Notes
     -----
-    The formula used is that from [Lackmann2011]_ p. 69 for T in Kelvin and height in meters:
-    .. math:: sf = gZ + C_pT
-    * :math:`sf` is Montgomery Streamfunction
+    The formula used is that from [Lackmann2011]_ p. 69.
+
+    .. math:: \Psi = gZ + C_pT
+
+    * :math:`\Psi` is Montgomery Streamfunction
     * :math:`g` is avg. gravitational acceleration on Earth
     * :math:`Z` is geopotential height of the isentropic surface
     * :math:`C_p` is specific heat at constant pressure for dry air
