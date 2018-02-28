@@ -6,7 +6,7 @@
 Isentropic Analysis
 ===================
 
-The MetPy function `mcalc.isentropic_interpolation` allows for isentropic analysis from model
+The MetPy function `mpcalc.isentropic_interpolation` allows for isentropic analysis from model
 analysis data in isobaric coordinates.
 """
 
@@ -17,7 +17,7 @@ import matplotlib.pyplot as plt
 from netCDF4 import Dataset, num2date
 import numpy as np
 
-import metpy.calc as mcalc
+import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
 from metpy.plots import add_metpy_logo, add_timestamp
 from metpy.units import units
@@ -72,14 +72,14 @@ isentlevs = [296.] * units.kelvin
 # levels, and temperature be input. Any additional inputs (in this case relative humidity, u,
 # and v wind components) will be linearly interpolated to isentropic space.
 
-isent_anal = mcalc.isentropic_interpolation(isentlevs,
-                                            lev,
-                                            tmp,
-                                            spech,
-                                            uwnd,
-                                            vwnd,
-                                            hgt,
-                                            tmpk_out=True)
+isent_anal = mpcalc.isentropic_interpolation(isentlevs,
+                                             lev,
+                                             tmp,
+                                             spech,
+                                             uwnd,
+                                             vwnd,
+                                             hgt,
+                                             tmpk_out=True)
 
 #####################################
 # The output is a list, so now we will separate the variables to different names before
@@ -107,7 +107,7 @@ print(isenthgt.shape)
 # The NARR only gives specific humidity on isobaric vertical levels, so relative humidity will
 # have to be calculated after the interpolation to isentropic space.
 
-isentrh = 100 * mcalc.relative_humidity_from_specific_humidity(isentspech, isenttmp, isentprs)
+isentrh = 100 * mpcalc.relative_humidity_from_specific_humidity(isentspech, isenttmp, isentprs)
 
 #######################################
 # **Plotting the Isentropic Analysis**
@@ -173,11 +173,11 @@ add_timestamp(ax, vtimes[0], y=0.02, high_contrast=True)
 #
 # The Montgomery Streamfunction, :math:`{\psi} = gdz + CpT`, is often desired because its
 # gradient is proportional to the geostrophic wind in isentropic space. This can be easily
-# calculated with `mcalc.montgomery_streamfunction`.
+# calculated with `mpcalc.montgomery_streamfunction`.
 
 
 # Calculate Montgomery Streamfunction and scale by 10^-2 for plotting
-msf = mcalc.montgomery_streamfunction(isenthgt, isenttmp) / 100.
+msf = mpcalc.montgomery_streamfunction(isenthgt, isenttmp) / 100.
 
 # Choose a level to plot, in this case 296 K
 level = 0
