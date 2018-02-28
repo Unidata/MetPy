@@ -1,4 +1,4 @@
-# Copyright (c) 2009,2017 MetPy Developers.
+# Copyright (c) 2009,2017,2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of kinematic parameters (e.g. divergence or vorticity)."""
@@ -498,6 +498,40 @@ def geostrophic_wind(heights, f, dx, dy):
     dhdy = first_derivative(heights, delta=dy, axis=-2)
     dhdx = first_derivative(heights, delta=dx, axis=-1)
     return -norm_factor * dhdy, norm_factor * dhdx
+
+
+@exporter.export
+@ensure_yx_order
+def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
+    r"""Calculate the ageostrophic wind given from the heights or geopotential.
+
+    Parameters
+    ----------
+    heights : (M, N) ndarray
+        The height field, with either leading dimensions of (x, y) or trailing dimensions
+        of (y, x), depending on the value of ``dim_order``.
+    f : array_like
+        The coriolis parameter.  This can be a scalar to be applied
+        everywhere or an array of values.
+    dx : scalar
+        The grid spacing in the x-direction
+    dy : scalar
+        The grid spacing in the y-direction
+    u : (M, N) ndarray
+        The u wind field, with either leading dimensions of (x, y) or trailing dimensions
+        of (y, x), depending on the value of ``dim_order``.
+    v : (M, N) ndarray
+        The u wind field, with either leading dimensions of (x, y) or trailing dimensions
+        of (y, x), depending on the value of ``dim_order``.
+
+    Returns
+    -------
+    A 2-item tuple of arrays
+        A tuple of the u-component and v-component of the ageostrophic wind.
+
+    """
+    u_geostrophic, v_geostrophic = geostrophic_wind(heights, f, dx, dy, dim_order=dim_order)
+    return u - u_geostrophic, v - v_geostrophic
 
 
 @exporter.export

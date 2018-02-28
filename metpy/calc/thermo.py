@@ -1,4 +1,4 @@
-# Copyright (c) 2008,2015,2016,2017 MetPy Developers.
+# Copyright (c) 2008,2015,2016,2017,2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of thermodynamic calculations."""
@@ -91,6 +91,50 @@ def potential_temperature(pressure, temperature):
 
     """
     return temperature * (P0 / pressure).to('dimensionless')**kappa
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]')
+def temperature_from_potential_temperature(pressure, theta):
+    r"""Calculate the temperature from a given potential temperature.
+
+    Uses the inverse of the Poisson equation to calculate the temperature from a
+    given potential temperature at a specific pressure level.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The total atmospheric pressure
+    theta : `pint.Quantity`
+        The potential temperature
+
+    Returns
+    -------
+    `pint.Quantity`
+        The temperature corresponding to the potential temperature and pressure.
+
+    See Also
+    --------
+    dry_lapse
+    potential_temperature
+
+    Notes
+    -----
+    Formula:
+
+    .. math:: T = \Theta (P / P_0)^\kappa
+
+    Examples
+    --------
+    >>> from metpy.units import units
+    >>> from metpy.calc import temperature_from_potential_temperature
+    >>> # potential temperature
+    >>> theta = np.array([ 286.12859679, 288.22362587]) * units.kelvin
+    >>> p = 850 * units.mbar
+    >>> T = temperature_from_potential_temperature(p,theta)
+
+    """
+    return theta * (pressure / P0).to('dimensionless')**kappa
 
 
 @exporter.export
