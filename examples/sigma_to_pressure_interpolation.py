@@ -15,7 +15,7 @@ import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset, num2date
 
-import metpy.calc as mcalc
+import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
 from metpy.plots import add_metpy_logo, add_timestamp
 from metpy.units import units
@@ -46,12 +46,12 @@ plevs = [700.] * units.hPa
 #
 # Now that the data is ready, we can interpolate to the new isobaric levels. The data is
 # interpolated from the irregular pressure values for each sigma level to the new input
-# mandatory isobaric levels. `mcalc.log_interp` will interpolate over a specified dimension
+# mandatory isobaric levels. `mpcalc.log_interp` will interpolate over a specified dimension
 # with the `axis` argument. In this case, `axis=1` will correspond to interpolation on the
 # vertical axis. The interpolated data is output in a list, so we will pull out each
 # variable for plotting.
 
-height, temp = mcalc.log_interp(plevs, pres, hgt, temperature, axis=1)
+height, temp = mpcalc.log_interp(plevs, pres, hgt, temperature, axis=1)
 
 ####################################
 # **Plotting the Data for 700 hPa.**

@@ -1,4 +1,4 @@
-# Copyright (c) 2015 MetPy Developers.
+# Copyright (c) 2015-2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -12,7 +12,7 @@ a value for vapor pressure assuming both 1000mb and 850mb ambient air
 pressure values. It also demonstrates converting the resulting dewpoint
 temperature to degrees Fahrenheit.
 """
-import metpy.calc as mcalc
+import metpy.calc as mpcalc
 from metpy.units import units
 
 ###########################################
@@ -23,7 +23,7 @@ print(mixing)
 ###########################################
 # Now throw that value with units into the function to calculate
 # the corresponding vapor pressure, given a surface pressure of 1000 mb
-e = mcalc.vapor_pressure(1000. * units.mbar, mixing)
+e = mpcalc.vapor_pressure(1000. * units.mbar, mixing)
 print(e)
 
 ###########################################
@@ -32,7 +32,7 @@ print(e.to(units.mbar))
 
 ###########################################
 # Take the raw vapor pressure and throw into the dewpoint function
-td = mcalc.dewpoint(e)
+td = mpcalc.dewpoint(e)
 print(td)
 
 ###########################################
@@ -41,10 +41,10 @@ print(td.to('degF'))
 
 ###########################################
 # Now do the same thing for 850 mb, approximately the pressure of Denver
-e = mcalc.vapor_pressure(850. * units.mbar, mixing)
+e = mpcalc.vapor_pressure(850. * units.mbar, mixing)
 print(e.to(units.mbar))
 
 ###########################################
 # And print the corresponding dewpoint
-td = mcalc.dewpoint(e)
+td = mpcalc.dewpoint(e)
 print(td, td.to('degF'))
