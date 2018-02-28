@@ -6,7 +6,8 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (advection, ageostrophic_wind, convergence_vorticity, divergence,
+from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind,
+                        convergence_vorticity, divergence,
                         frontogenesis, geostrophic_wind, get_wind_components, h_convergence,
                         lat_lon_grid_deltas, lat_lon_grid_spacing, montgomery_streamfunction,
                         shearing_deformation, shearing_stretching_deformation,
@@ -636,3 +637,20 @@ def test_lat_lon_grid_deltas_mismatched_shape():
                     [-100., -97.5, -95., -92.5]])
     with pytest.raises(ValueError):
         lat_lon_grid_deltas(lon, lat)
+
+
+def test_absolute_vorticity_asym():
+    """Test absolute vorticity calculation with a complicated field."""
+    u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
+    v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
+    lats = np.array([[30, 30, 30], [20, 20, 20], [10, 10, 10]]) * units.degrees
+    vort = absolute_vorticity(u, v, 1 * units.meters, 2 * units.meters, lats, dim_order='yx')
+    true_vort = np.array([[-2.499927, 3.500073, 13.00007],
+                          [8.500050, -1.499950, -10.99995],
+                          [-5.499975, -1.499975, 2.532525e-5]]) / units.sec
+    assert_almost_equal(vort, true_vort, 5)
+
+    # Now try for xy ordered
+    vort = absolute_vorticity(u.T, v.T, 1 * units.meters, 2 * units.meters,
+                              lats.T, dim_order='xy')
+    assert_almost_equal(vort, true_vort.T, 5)
