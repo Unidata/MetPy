@@ -187,9 +187,8 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
 
     """
     if boundary_coords is None:
-        grid_x, grid_y = points.generate_grid(hres, points.get_boundary_coords(x, y))
-    else:
-        grid_x, grid_y = points.generate_grid(hres, boundary_coords)
+        boundary_coords = points.get_boundary_coords(x, y)
+    grid_x, grid_y = points.generate_grid(hres, boundary_coords)
 
     if interp_type in ['linear', 'nearest', 'cubic']:
         points_zip = np.array(list(zip(x, y)))
