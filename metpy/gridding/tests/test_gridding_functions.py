@@ -99,9 +99,13 @@ def test_remove_repeat_coordinates(test_coords):
 interp_methods = ['natural_neighbor', 'cressman', 'barnes',
                   'linear', 'nearest', 'cubic', 'rbf']
 
+boundary_types = [{'west': 80.0, 'south': 140.0, 'east': 980.0, 'north': 980.0},
+                  None]
+
 
 @pytest.mark.parametrize('method', interp_methods)
-def test_interpolate(method, test_coords):
+@pytest.mark.parametrize('boundary_coords', boundary_types)
+def test_interpolate(method, test_coords, boundary_coords):
     r"""Test main interpolate function."""
     xp, yp = test_coords
 
@@ -119,6 +123,9 @@ def test_interpolate(method, test_coords):
         extra_kw['search_radius'] = 400
         extra_kw['minimum_neighbors'] = 1
         extra_kw['gamma'] = 1
+
+    if boundary_coords is not None:
+        extra_kw['boundary_coords'] = boundary_coords
 
     _, _, img = interpolate(xp, yp, z, hres=10, interp_type=method, **extra_kw)
 
