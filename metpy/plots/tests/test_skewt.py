@@ -182,6 +182,48 @@ def test_skewt_barb_color():
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 10.0}.get(MPL_VERSION, 0.0048),
+                               remove_text=True)
+def test_skewt_barb_unit_conversion():
+    """Test that barbs units can be converted at plot time (#737)."""
+    u_wind = np.array([3.63767155210412]) * units('m/s')
+    v_wind = np.array([3.63767155210412]) * units('m/s')
+    p_wind = np.array([500]) * units.hPa
+
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.plot_barbs(p_wind, u_wind, v_wind, plot_units='knots')
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 10.0}.get(MPL_VERSION, 0.0048),
+                               remove_text=True)
+def test_skewt_barb_no_default_unit_conversion():
+    """Test that barbs units are left alone by default (#737)."""
+    u_wind = np.array([3.63767155210412]) * units('m/s')
+    v_wind = np.array([3.63767155210412]) * units('m/s')
+    p_wind = np.array([500]) * units.hPa
+
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    skew.plot_barbs(p_wind, u_wind, v_wind)
+
+    return fig
+
+
+@pytest.mark.parametrize('u,v', [(np.array([3]) * units('m/s'), np.array([3])),
+                                 (np.array([3]), np.array([3]) * units('m/s'))])
+def test_skewt_barb_unit_conversion_exception(u, v):
+    """Test that errors are raise if unit conversion is requested on un-united data."""
+    p_wind = np.array([500]) * units.hPa
+
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig)
+    with pytest.raises(ValueError):
+        skew.plot_barbs(p_wind, u, v, plot_units='knots')
+
+
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_plot_layers():
     """Test hodograph colored height layers with interpolation."""

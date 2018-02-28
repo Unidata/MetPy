@@ -356,6 +356,8 @@ class SkewT(object):
         y_clip_radius : float, optional
             Space, in normalized axes coordinates, to leave above/below plot
             before clipping wind barbs in the y-direction. Defaults to 0.08.
+        plot_units: `pint.unit`
+            Units to plot in (performing conversion if necessary). Defaults to given units.
         kwargs
             Other keyword arguments to pass to :func:`~matplotlib.pyplot.barbs`
 
@@ -369,6 +371,16 @@ class SkewT(object):
         :func:`matplotlib.pyplot.barbs`
 
         """
+        # If plot_units specified, convert the data to those units
+        plotting_units = kwargs.pop('plot_units', None)
+        if plotting_units:
+            if hasattr(u, 'units') and hasattr(v, 'units'):
+                u = u.to(plotting_units)
+                v = v.to(plotting_units)
+            else:
+                raise ValueError('To convert to plotting units, units must be attached to '
+                                 'u and v wind components.')
+
         # Assemble array of x-locations in axes space
         x = np.empty_like(p)
         x.fill(xloc)
