@@ -111,7 +111,7 @@ install:
 
 script:
   - if [[ $TASK == "docs" ]]; then
-      export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/testdata;
+      export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/staticdata;
       pushd docs;
       make clean html linkcheck O=-W;
       export DOC_BUILD_RESULT=$?;
