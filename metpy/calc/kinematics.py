@@ -10,6 +10,7 @@ import warnings
 import numpy as np
 from pyproj import Geod
 
+from ..calc import coriolis_parameter
 from ..calc.tools import first_derivative, get_layer_heights, gradient
 from ..cbook import is_string_like, iterable
 from ..constants import Cp_d, g
@@ -718,3 +719,32 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
     dx[(forward_az < 0.) | (forward_az > 180.)] *= -1
 
     return dx * units.meter, dy * units.meter
+
+
+@exporter.export
+@check_units('[speed]', '[speed]', '[length]', '[length]')
+def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
+    """Calculate the absolute vorticity of the horizontal wind.
+
+    Parameters
+    ----------
+    u : (M, N) ndarray
+        x component of the wind
+    v : (M, N) ndarray
+        y component of the wind
+    dx : float
+        The grid spacing in the x-direction
+    dy : float
+        The grid spacing in the y-direction
+    lats : (M, N) ndarray
+        latitudes of the wind data
+
+    Returns
+    -------
+    (M, N) ndarray
+        absolute vorticity
+
+    """
+    f = coriolis_parameter(lats)
+    relative_vorticity = vorticity(u, v, dx, dy, dim_order=dim_order)
+    return relative_vorticity + f
