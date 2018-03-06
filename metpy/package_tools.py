@@ -23,7 +23,7 @@ class Exporter(object):
         """Initialize the Exporter."""
         self.globls = globls
         self.exports = globls.setdefault('__all__', [])
-
+        
     def export(self, defn):
         """Declare a function or class as exported."""
         self.exports.append(defn.__name__)

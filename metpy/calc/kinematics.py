@@ -12,12 +12,14 @@ from pyproj import Geod
 
 from ..calc.tools import first_derivative, get_layer_heights, gradient
 from ..cbook import is_string_like, iterable
-from ..constants import Cp_d, g
+from ..constants import Cp_d, g,Re
 from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..units import atleast_2d, check_units, concatenate, units
 
+
 exporter = Exporter(globals())
+
 
 
 def _stack(arrs):
@@ -718,3 +720,77 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
     dx[(forward_az < 0.) | (forward_az > 180.)] *= -1
 
     return dx * units.meter, dy * units.meter
+
+@exporter.export
+def pv_isobaric_rossby(longitude, latitude, pressure,pressuretop,pressurebottom,tmp,tmptop,tmpbottom,u,utop,ubottom,v,vtop,vbottom):
+
+    r"""Calculate the Potential Vorticitys and returns a scalar grid of PV values on an isobaric surface
+
+    This particular implementation of PV is attributed to Rossby's equation and is given as
+
+    gradient of (theta). (er x dvh/dp) + eta * delta theta/delta pressure
+    where theta is potential tempeature, vh is the horizontal velocity and p is pressure
+    Reference - Dynamics of the Atmosphere - a course in theoretical meteorology A. Bott
+
+    Parameters
+    ----------
+    longitude : array_like
+        array of longitudes defining the grid
+    latitude : array_like
+        array of latitudes defining the grid
+    pressure : scalar value  - value in pascals for the isobaric surface in consideration
+
+    pressuretop : scalar value - value in pascals for the  pressure surface above the surface  in consideration
+
+    pressurebottom : scalar value - value in pascals for the  pressure surface below the surface  in consideration
+    
+    tmp : 2d array(lat,lon) - temperature units in  kelvin for the isobaric surface
+    
+    tmptop : 2d array(lat,lon) - temperature units in  kelvin for the isobaric surface above the current surface
+
+    tmpbottom : 2d array(lat,lon) - temperature units in  kelvin for the isobaric surface below the current surface
+    u : 2d array (lat,lon) - zonal velocity in m/s for the isobaric surface
+    
+    utop :2d array (lat,lon) - zonal velocity in m/s for the surface above the isobaric surface
+
+    ubottom : 2d array (lat,lon) -zonal velocity in m/s for the surface below the isobaric surface
+
+    v : 2d array (lat,lon) - meridional velocity in m/s for the isobaric surface
+    
+    vtop :2d array (lat,lon) - meridional velocity in m/s for the surface above the isobaric surface
+
+    vbottom : 2d array (lat,lon) -meridional velocity in m/s for the surface below the isobaric surface
+
+    Returns
+    -------
+     PV: 2d numpy array of potential vorticity
+
+
+    """
+
+    latLen = len(latitude)
+    lonLen = len(longitude)
+    
+    vecfun = np.vectorize(potential_temperature) 
+    theta = vecfunc(tmp,pressure)
+    
+    dpotdx = first_derivative(theta,longitude)
+    
+    dpotdy = first_derivative(theta,latitude)
+    dpi = pressuretop - pressurebottom
+    pv = np.empty((latLen,LonLen))
+    
+    dudp = (utop - ubottom)/dpi
+    dvdp = (vtop - vbottom)/dpi
+    dth = thetatop - thetabottom
+    stability = dth/dpi
+
+    dx,dy=lat_lon_grid_deltas(longitude, latitude)
+    dx = Re * dx
+    dy = Re * dy
+    f = coriolis_parameter(np.deg2rad(lats)).to(units('1/sec'))
+    absv = vorticity(u,v,dx,dy,dim_order='yx')+f
+    vorcor = (dvdp*dpotdx)-(dudp*dpotdy)
+    pv = -g* (absv*stability-vorcor)*10**6
+
+    return pv
