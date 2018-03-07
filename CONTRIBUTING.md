@@ -93,11 +93,6 @@ upon submission of a Pull Request.
 See [here](https://github.com/Unidata/MetPy/blob/master/CLA.md) for more
 explanation and rationale behind MetPy's CLA.
 
-As part of the Pull Request, be sure to add yourself to the
-[list of contributors](https://github.com/Unidata/MetPy/blob/master/AUTHORS.txt).
-We want to make sure we acknowledge the hard work you've generously contributed
-here.
-
 ## Code Review
 Once you've submitted a Pull Request, at this point you're waiting on us. You
 should expect to hear at least a comment within a couple of days.
