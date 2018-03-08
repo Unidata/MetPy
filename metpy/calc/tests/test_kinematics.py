@@ -10,6 +10,7 @@ from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind,
                         convergence_vorticity, divergence,
                         frontogenesis, geostrophic_wind, get_wind_components, h_convergence,
                         lat_lon_grid_deltas, lat_lon_grid_spacing, montgomery_streamfunction,
+                        potential_vorticity_baroclinic, potential_vorticity_barotropic,
                         shearing_deformation, shearing_stretching_deformation,
                         storm_relative_helicity, stretching_deformation, total_deformation,
                         v_vorticity, vorticity)
@@ -654,3 +655,192 @@ def test_absolute_vorticity_asym():
     vort = absolute_vorticity(u.T, v.T, 1 * units.meters, 2 * units.meters,
                               lats.T, dim_order='xy')
     assert_almost_equal(vort, true_vort.T, 5)
+
+
+@pytest.fixture
+def pv_data():
+    """Test data for all PV testing."""
+    u = np.array([[100, 90, 80, 70],
+                  [90, 80, 70, 60],
+                  [80, 70, 60, 50],
+                  [70, 60, 50, 40]]) * units('m/s')
+
+    v = np.zeros_like(u) * units('m/s')
+
+    lats = np.array([[40, 40, 40, 40],
+                     [40.1, 40.1, 40.1, 40.1],
+                     [40.2, 40.2, 40.2, 40.2],
+                     [40.3, 40.3, 40.3, 40.3]]) * units.degrees
+
+    lons = np.array([[40, 39.9, 39.8, 39.7],
+                     [40, 39.9, 39.8, 39.7],
+                     [40, 39.9, 39.8, 39.7],
+                     [40, 39.9, 39.8, 39.7]]) * units.degrees
+
+    dx, dy = lat_lon_grid_deltas(lons, lats)
+
+    return u, v, lats, lons, dx, dy
+
+
+def test_potential_vorticity_baroclinic_unity_axis0(pv_data):
+    """Test potential vorticity calculation with unity stability and height on axis 0."""
+    u, v, lats, _, dx, dy = pv_data
+
+    potential_temperature = np.ones((3, 4, 4)) * units.kelvin
+    potential_temperature[0] = 200 * units.kelvin
+    potential_temperature[1] = 300 * units.kelvin
+    potential_temperature[2] = 400 * units.kelvin
+
+    pressure = np.ones((3, 4, 4)) * units.hPa
+    pressure[2] = 1000 * units.hPa
+    pressure[1] = 900 * units.hPa
+    pressure[0] = 800 * units.hPa
+
+    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, lats)
+
+    abs_vorticity = absolute_vorticity(u, v, dx, dy, lats)
+
+    vort_difference = pvor - (abs_vorticity * g * (-1 * (units.kelvin / units.hPa)))
+
+    true_vort = np.zeros_like(u) * (units.kelvin * units.meter**2 /
+                                    (units.second * units.kilogram))
+
+    assert_almost_equal(vort_difference, true_vort, 10)
+
+    # Now try for xy ordered
+    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u.T, v.T, dx.T,
+                                          dy.T, lats.T, dim_order='xy')
+    abs_vorticity = absolute_vorticity(u.T, v.T, dx.T, dy.T, lats.T, dim_order='xy')
+    vort_difference = pvor - (abs_vorticity * g * (-1 * (units.kelvin / units.hPa)))
+    assert_almost_equal(vort_difference, true_vort, 10)
+
+
+def test_potential_vorticity_baroclinic_unity_axis2(pv_data):
+    """Test potential vorticity calculation with unity stability and height on axis 2."""
+    u, v, lats, _, dx, dy = pv_data
+
+    potential_temperature = np.ones((4, 4, 3)) * units.kelvin
+    potential_temperature[..., 0] = 200 * units.kelvin
+    potential_temperature[..., 1] = 300 * units.kelvin
+    potential_temperature[..., 2] = 400 * units.kelvin
+
+    pressure = np.ones((4, 4, 3)) * units.hPa
+    pressure[..., 2] = 1000 * units.hPa
+    pressure[..., 1] = 900 * units.hPa
+    pressure[..., 0] = 800 * units.hPa
+
+    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u, v,
+                                          dx, dy, lats, axis=2)
+
+    abs_vorticity = absolute_vorticity(u, v, dx, dy, lats)
+
+    vort_difference = pvor - (abs_vorticity * g * (-1 * (units.kelvin / units.hPa)))
+
+    true_vort = np.zeros_like(u) * (units.kelvin * units.meter ** 2 /
+                                    (units.second * units.kilogram))
+
+    assert_almost_equal(vort_difference, true_vort, 10)
+
+    # Now try for xy ordered
+    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u.T, v.T, dx.T,
+                                          dy.T, lats.T, axis=2, dim_order='xy')
+    abs_vorticity = absolute_vorticity(u.T, v.T, dx.T, dy.T, lats.T, dim_order='xy')
+    vort_difference = pvor - (abs_vorticity * g * (-1 * (units.kelvin / units.hPa)))
+    assert_almost_equal(vort_difference, true_vort, 10)
+
+
+def test_potential_vorticity_baroclinic_non_unity_derivative(pv_data):
+    """Test potential vorticity calculation with unity stability and height on axis 0."""
+    u, v, lats, _, dx, dy = pv_data
+
+    potential_temperature = np.ones((3, 4, 4)) * units.kelvin
+    potential_temperature[0] = 200 * units.kelvin
+    potential_temperature[1] = 300 * units.kelvin
+    potential_temperature[2] = 400 * units.kelvin
+
+    pressure = np.ones((3, 4, 4)) * units.hPa
+    pressure[2] = 1000 * units.hPa
+    pressure[1] = 999 * units.hPa
+    pressure[0] = 998 * units.hPa
+
+    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, lats)
+
+    abs_vorticity = absolute_vorticity(u, v, dx, dy, lats)
+
+    vort_difference = pvor - (abs_vorticity * g * (-100 * (units.kelvin / units.hPa)))
+
+    true_vort = np.zeros_like(u) * (units.kelvin * units.meter ** 2 /
+                                    (units.second * units.kilogram))
+
+    assert_almost_equal(vort_difference, true_vort, 10)
+
+    # Now try for xy ordered
+    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u.T, v.T, dx.T,
+                                          dy.T, lats.T, dim_order='xy')
+    abs_vorticity = absolute_vorticity(u.T, v.T, dx.T, dy.T, lats.T, dim_order='xy')
+    vort_difference = pvor - (abs_vorticity * g * (-100 * (units.kelvin / units.hPa)))
+    assert_almost_equal(vort_difference, true_vort, 10)
+
+
+def test_potential_vorticity_baroclinic_wrong_number_of_levels_axis_0(pv_data):
+    """Test that potential vorticity calculation errors without 3 levels on axis 0."""
+    u, v, lats, _, dx, dy = pv_data
+
+    potential_temperature = np.ones((3, 4, 4)) * units.kelvin
+    potential_temperature[0] = 200 * units.kelvin
+    potential_temperature[1] = 300 * units.kelvin
+    potential_temperature[2] = 400 * units.kelvin
+
+    pressure = np.ones((3, 4, 4)) * units.hPa
+    pressure[2] = 1000 * units.hPa
+    pressure[1] = 900 * units.hPa
+    pressure[0] = 800 * units.hPa
+
+    with pytest.raises(ValueError):
+        potential_vorticity_baroclinic(potential_temperature[:1, :, :], pressure, u, v,
+                                       dx, dy, lats)
+
+    with pytest.raises(ValueError):
+        potential_vorticity_baroclinic(u, v, dx, dy, lats,
+                                       potential_temperature, pressure[:1, :, :])
+
+
+def test_potential_vorticity_baroclinic_wrong_number_of_levels_axis_2(pv_data):
+    """Test that potential vorticity calculation errors without 3 levels on axis 2."""
+    u, v, lats, _, dx, dy = pv_data
+
+    potential_temperature = np.ones((4, 4, 3)) * units.kelvin
+    potential_temperature[..., 0] = 200 * units.kelvin
+    potential_temperature[..., 1] = 300 * units.kelvin
+    potential_temperature[..., 1] = 400 * units.kelvin
+
+    pressure = np.ones((4, 4, 3)) * units.hPa
+    pressure[..., 2] = 1000 * units.hPa
+    pressure[..., 1] = 900 * units.hPa
+    pressure[..., 0] = 800 * units.hPa
+
+    with pytest.raises(ValueError):
+        potential_vorticity_baroclinic(potential_temperature[..., :1], pressure, u, v,
+                                       dx, dy, lats, axis=2)
+
+    with pytest.raises(ValueError):
+        potential_vorticity_baroclinic(potential_temperature, pressure[..., :1], u, v,
+                                       dx, dy, lats, axis=1)
+
+
+def test_potential_vorticity_barotropic(pv_data):
+    """Test the barotopic (Rossby) potential vorticity."""
+    u, v, lats, _, dx, dy = pv_data
+
+    heights = np.ones_like(u) * 3 * units.km
+    pv = potential_vorticity_barotropic(heights, u, v, dx, dy, lats)
+    avor = absolute_vorticity(u, v, dx, dy, lats)
+    truth = avor / heights
+    assert_almost_equal(pv, truth, 10)
+
+    # Now try for xy ordered
+    pv = potential_vorticity_barotropic(heights.T, u.T, v.T, dx.T, dy.T, lats.T,
+                                        dim_order='xy')
+    avor = absolute_vorticity(u.T, v.T, dx.T, dy.T, lats.T, dim_order='xy')
+    truth = avor / heights.T
+    assert_almost_equal(pv, truth, 10)
