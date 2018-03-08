@@ -12,7 +12,7 @@ data-wrangling (hopefully that situation will improve in the future). Certainly,
 existing point data in a format you can work with trivially, the station plot will be simple.
 """
 import cartopy.crs as ccrs
-import cartopy.feature as feat
+import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
@@ -88,18 +88,13 @@ fig = plt.figure(figsize=(20, 10))
 add_metpy_logo(fig, 1080, 290, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
-# Set up a cartopy feature for state borders.
-state_boundaries = feat.NaturalEarthFeature(category='cultural',
-                                            name='admin_1_states_provinces_lines',
-                                            scale='110m', facecolor='none')
-
 # Add some various map elements to the plot to make it recognizable.
-ax.add_feature(feat.LAND, zorder=-1)
-ax.add_feature(feat.OCEAN, zorder=-1)
-ax.add_feature(feat.LAKES, zorder=-1)
-ax.coastlines(resolution='110m', zorder=2, color='black')
-ax.add_feature(state_boundaries, edgecolor='black')
-ax.add_feature(feat.BORDERS, linewidth=2, edgecolor='black')
+ax.add_feature(cfeature.LAND)
+ax.add_feature(cfeature.OCEAN)
+ax.add_feature(cfeature.LAKES)
+ax.add_feature(cfeature.COASTLINE)
+ax.add_feature(cfeature.STATES)
+ax.add_feature(cfeature.BORDERS)
 
 # Set plot bounds
 ax.set_extent((-118, -73, 23, 50))

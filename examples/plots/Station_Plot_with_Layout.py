@@ -18,7 +18,7 @@ the station plot. This makes it easy (if using standardized names) to re-use a g
 of a station plot.
 """
 import cartopy.crs as ccrs
-import cartopy.feature as feat
+import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import pandas as pd
 
@@ -109,9 +109,6 @@ data['present_weather'] = [wx_code_map[s.split()[0] if ' ' in s else s] for s in
 # Set up the map projection and set up a cartopy feature for state borders
 proj = ccrs.LambertConformal(central_longitude=-95, central_latitude=35,
                              standard_parallels=[35])
-state_boundaries = feat.NaturalEarthFeature(category='cultural',
-                                            name='admin_1_states_provinces_lines',
-                                            scale='110m', facecolor='none')
 
 ###########################################
 # The payoff
@@ -127,12 +124,12 @@ add_metpy_logo(fig, 1080, 290, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Add some various map elements to the plot to make it recognizable
-ax.add_feature(feat.LAND, zorder=-1)
-ax.add_feature(feat.OCEAN, zorder=-1)
-ax.add_feature(feat.LAKES, zorder=-1)
-ax.coastlines(resolution='110m', zorder=2, color='black')
-ax.add_feature(state_boundaries, edgecolor='black')
-ax.add_feature(feat.BORDERS, linewidth=2, edgecolor='black')
+ax.add_feature(cfeature.LAND)
+ax.add_feature(cfeature.OCEAN)
+ax.add_feature(cfeature.LAKES)
+ax.add_feature(cfeature.COASTLINE)
+ax.add_feature(cfeature.STATES)
+ax.add_feature(cfeature.BORDERS, linewidth=2)
 
 # Set plot bounds
 ax.set_extent((-118, -73, 23, 50))
@@ -173,12 +170,12 @@ add_metpy_logo(fig, 1080, 290, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Add some various map elements to the plot to make it recognizable
-ax.add_feature(feat.LAND, zorder=-1)
-ax.add_feature(feat.OCEAN, zorder=-1)
-ax.add_feature(feat.LAKES, zorder=-1)
-ax.coastlines(resolution='110m', zorder=2, color='black')
-ax.add_feature(state_boundaries, edgecolor='black')
-ax.add_feature(feat.BORDERS, linewidth=2, edgecolor='black')
+ax.add_feature(cfeature.LAND)
+ax.add_feature(cfeature.OCEAN)
+ax.add_feature(cfeature.LAKES)
+ax.add_feature(cfeature.COASTLINE)
+ax.add_feature(cfeature.STATES)
+ax.add_feature(cfeature.BORDERS, linewidth=2)
 
 # Set plot bounds
 ax.set_extent((-118, -73, 23, 50))

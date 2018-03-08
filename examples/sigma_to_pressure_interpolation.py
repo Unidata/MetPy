@@ -65,12 +65,6 @@ tlatlons = crs.transform_points(ccrs.PlateCarree(), lon, lat)
 tlons = tlatlons[:, :, 0]
 tlats = tlatlons[:, :, 1]
 
-# Get data to plot state and province boundaries
-states_provinces = cfeature.NaturalEarthFeature(category='cultural',
-                                                name='admin_1_states_provinces_lakes',
-                                                scale='50m',
-                                                facecolor='none')
-
 # Set the forecast hour
 FH = 1
 
@@ -80,8 +74,8 @@ add_metpy_logo(fig, 470, 320, size='large')
 
 # Plot 700 hPa
 ax = plt.subplot(111, projection=crs)
-ax.coastlines('50m', edgecolor='black', linewidth=0.75)
-ax.add_feature(states_provinces, edgecolor='black', linewidth=0.5)
+ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+ax.add_feature(cfeature.STATES, linewidth=0.5)
 
 # Plot the heights
 cs = ax.contour(tlons, tlats, height[FH, 0, :, :],

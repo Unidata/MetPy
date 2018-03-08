@@ -128,18 +128,12 @@ bounds = [(-122., -75., 25., 50.)]
 # Choose a level to plot, in this case 296 K
 level = 0
 
-# Get data to plot state and province boundaries
-states_provinces = cfeature.NaturalEarthFeature(category='cultural',
-                                                name='admin_1_states_provinces_lakes',
-                                                scale='50m',
-                                                facecolor='none')
-
 fig = plt.figure(figsize=(17., 12.))
 add_metpy_logo(fig, 120, 245, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=crs)
 ax.set_extent(*bounds, crs=ccrs.PlateCarree())
-ax.coastlines('50m', edgecolor='black', linewidth=0.75)
-ax.add_feature(states_provinces, edgecolor='black', linewidth=0.5)
+ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+ax.add_feature(cfeature.STATES, linewidth=0.5)
 
 # Plot the surface
 clevisent = np.arange(0, 1000, 25)
@@ -186,8 +180,8 @@ fig = plt.figure(figsize=(17., 12.))
 add_metpy_logo(fig, 120, 250, size='large')
 ax = plt.subplot(111, projection=crs)
 ax.set_extent(*bounds, crs=ccrs.PlateCarree())
-ax.coastlines('50m', edgecolor='black', linewidth=0.75)
-ax.add_feature(states_provinces, edgecolor='black', linewidth=0.5)
+ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+ax.add_feature(cfeature.STATES.with_scale('50m'), linewidth=0.5)
 
 # Plot the surface
 clevmsf = np.arange(0, 4000, 5)

@@ -7,8 +7,9 @@ Point Interpolation
 
 Compares different point interpolation approaches.
 """
-import cartopy
+
 import cartopy.crs as ccrs
+import cartopy.feature as cfeature
 from matplotlib.colors import BoundaryNorm
 import matplotlib.pyplot as plt
 import numpy as np
@@ -26,12 +27,10 @@ def basic_map(proj):
     add_metpy_logo(fig, 0, 80, size='large')
     view = fig.add_axes([0, 0, 1, 1], projection=proj)
     view.set_extent([-120, -70, 20, 50])
-    view.add_feature(cartopy.feature.NaturalEarthFeature(category='cultural',
-                                                         name='admin_1_states_provinces_lakes',
-                                                         scale='50m', facecolor='none'))
-    view.add_feature(cartopy.feature.OCEAN)
-    view.add_feature(cartopy.feature.COASTLINE)
-    view.add_feature(cartopy.feature.BORDERS, linestyle=':')
+    view.add_feature(cfeature.STATES.with_scale('50m'))
+    view.add_feature(cfeature.OCEAN)
+    view.add_feature(cfeature.COASTLINE)
+    view.add_feature(cfeature.BORDERS, linestyle=':')
     return view
 
 
