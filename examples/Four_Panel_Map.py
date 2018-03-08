@@ -29,16 +29,6 @@ from metpy.units import units
 
 ###########################################
 
-# Make state boundaries feature
-states_provinces = cfeature.NaturalEarthFeature(category='cultural',
-                                                name='admin_1_states_provinces_lines',
-                                                scale='50m', facecolor='none')
-
-# Make country borders feature
-country_borders = cfeature.NaturalEarthFeature(category='cultural',
-                                               name='admin_0_countries',
-                                               scale='50m', facecolor='none')
-
 crs = ccrs.LambertConformal(central_longitude=-100.0, central_latitude=45.0)
 
 ###########################################
@@ -47,9 +37,9 @@ crs = ccrs.LambertConformal(central_longitude=-100.0, central_latitude=45.0)
 # Function used to create the map subplots
 def plot_background(ax):
     ax.set_extent([235., 290., 20., 55.])
-    ax.coastlines('50m', edgecolor='black', linewidth=0.5)
-    ax.add_feature(states_provinces, edgecolor='black', linewidth=0.5)
-    ax.add_feature(country_borders, edgecolor='black', linewidth=0.5)
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.5)
+    ax.add_feature(cfeature.STATES, linewidth=0.5)
+    ax.add_feature(cfeature.BORDERS, linewidth=0.5)
     return ax
 
 

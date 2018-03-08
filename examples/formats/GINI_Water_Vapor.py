@@ -9,6 +9,7 @@ Use MetPy's support for GINI files to read in a water vapor satellite image and 
 data using CartoPy.
 """
 import cartopy.crs as ccrs
+import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 
 from metpy.cbook import get_test_data
@@ -51,9 +52,9 @@ add_metpy_logo(fig, 125, 145)
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 wv_norm, wv_cmap = ctables.registry.get_with_range('WVCIMSS', 100, 260)
 wv_cmap.set_under('k')
-im = ax.imshow(dat[:], cmap=wv_cmap, norm=wv_norm, zorder=0,
+im = ax.imshow(dat[:], cmap=wv_cmap, norm=wv_norm,
                extent=ds.img_extent, origin='upper')
-ax.coastlines(resolution='50m', zorder=2, color='black')
+ax.add_feature(cfeature.COASTLINE.with_scale('50m'))
 add_timestamp(ax, f.prod_desc.datetime, y=0.02, high_contrast=True)
 
 plt.show()
