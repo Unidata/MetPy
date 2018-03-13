@@ -83,8 +83,8 @@ heights_500 = ndimage.gaussian_filter(ds.variables['heights_500'][0], sigma=1.5,
 ###########################################
 
 # Create the figure and plot background on different axes
-fig, axarr=plt.subplots(nrows=2, ncols=2, figsize=(20, 13), constrained_layout=True,
-                        subplot_kw=dict(projection=crs))
+fig, axarr = plt.subplots(nrows=2, ncols=2, figsize=(20, 13), constrained_layout=True,
+                          subplot_kw=dict(projection=crs))
 add_metpy_logo(fig, 140, 120, size='large')
 axlist = axarr.flatten()
 for ax in axlist:
@@ -96,7 +96,7 @@ c1 = axlist[0].contour(lon_2d, lat_2d, heights_300, colors='black', linewidths=2
                        transform=ccrs.PlateCarree())
 axlist[0].clabel(c1, fontsize=10, inline=1, inline_spacing=1, fmt='%i', rightside_up=True)
 axlist[0].set_title('300-hPa Wind Speeds and Heights', fontsize=16)
-cb1= fig.colorbar(cf1, ax=axlist[0],orientation='horizontal',shrink=0.74, pad=0)
+cb1 = fig.colorbar(cf1, ax=axlist[0], orientation='horizontal', shrink=0.74, pad=0)
 cb1.set_label('knots', size='x-large')
 
 # Upper right plot - 500mb absolute vorticity and geopotential heights
@@ -106,21 +106,21 @@ c2 = axlist[1].contour(lon_2d, lat_2d, heights_500, colors='k', linewidths=2,
                        transform=ccrs.PlateCarree())
 axlist[1].clabel(c2, fontsize=10, inline=1, inline_spacing=1, fmt='%i', rightside_up=True)
 axlist[1].set_title('500-hPa Absolute Vorticity and Heights', fontsize=16)
-cb2= fig.colorbar(cf2,ax=axlist[1],orientation='horizontal',shrink=0.74, pad=0)
+cb2 = fig.colorbar(cf2, ax=axlist[1], orientation='horizontal', shrink=0.74, pad=0)
 cb2.set_label(r'$10^{-5}$ s$^{-1}$', size='x-large')
 
 # Lower left plot - surface temperatures
 cf3 = axlist[2].contourf(lon_2d, lat_2d, surface_temp, cmap='YlOrRd',
                          transform=ccrs.PlateCarree(), zorder=0)
 axlist[2].set_title('Surface Temperatures', fontsize=16)
-cb3= fig.colorbar(cf3,ax=axlist[2],orientation='horizontal',shrink=0.74, pad=0)
+cb3 = fig.colorbar(cf3, ax=axlist[2], orientation='horizontal', shrink=0.74, pad=0)
 cb3.set_label(u'\N{DEGREE FAHRENHEIT}', size='x-large')
 
 # Lower right plot - precipitable water entire atmosphere
 cf4 = axlist[3].contourf(lon_2d, lat_2d, precip_water, cmap='Greens',
                          transform=ccrs.PlateCarree(), zorder=0)
 axlist[3].set_title('Precipitable Water', fontsize=16)
-cb4= fig.colorbar(cf4,ax=axlist[3],orientation='horizontal',shrink=0.74, pad=0)
+cb4 = fig.colorbar(cf4, ax=axlist[3], orientation='horizontal', shrink=0.74, pad=0)
 cb4.set_label('in.', size='x-large')
 
 # Set height padding for plots
