@@ -84,7 +84,7 @@ heights_500 = ndimage.gaussian_filter(ds.variables['heights_500'][0], sigma=1.5,
 
 # Create the figure and plot background on different axes
 fig, axarr = plt.subplots(nrows=2, ncols=2, figsize=(20, 13), constrained_layout=True,
-                          subplot_kw=dict(projection=crs))
+                          subplot_kw={'projection': crs})
 add_metpy_logo(fig, 140, 120, size='large')
 axlist = axarr.flatten()
 for ax in axlist:
