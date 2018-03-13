@@ -88,7 +88,7 @@ def test_station_plot_replace():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.036, '1.4': 2.02}.get(MPL_VERSION, 0.00321),
+@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.036, '1.4': 2.02}.get(MPL_VERSION, 0.00413),
                                savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_stationlayout_api():
     """Test the StationPlot API."""
@@ -156,7 +156,7 @@ def test_station_layout_names():
     assert sorted(layout.names()) == ['cover', 'stid', 'temp', 'u', 'v']
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05447, '1.4': 3.0}.get(MPL_VERSION, 0.0039),
+@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05447, '1.4': 3.0}.get(MPL_VERSION, 0.0072),
                                savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_simple_layout():
     """Test metpy's simple layout for station plots."""
