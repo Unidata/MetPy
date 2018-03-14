@@ -6,6 +6,9 @@ checks:
     enabled: false
   method-lines:
     enabled: false
+  argument-count:
+    config:
+      threshold: 10
 
 plugins:
   sonar-python:

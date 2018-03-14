@@ -748,3 +748,96 @@ def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
     f = coriolis_parameter(lats)
     relative_vorticity = vorticity(u, v, dx, dy, dim_order=dim_order)
     return relative_vorticity + f
+
+
+@exporter.export
+@check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
+             '[length]', '[length]', '[dimensionless]')
+def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, lats,
+                                   axis=0, dim_order='yx'):
+    r"""Calculate the baroclinic potential vorticity.
+
+    .. math:: PV = -g \frac{\partial \theta}{\partial z}(\zeta + f)
+
+    This formula is based on equation 7.31a [Hobbs2006]_.
+
+    Parameters
+    ----------
+    potential_temperature : (M, N, P) ndarray
+        potential temperature
+    pressure : (M, N, P) ndarray
+        vertical pressures
+    u : (M, N) ndarray
+        x component of the wind
+    v : (M, N) ndarray
+        y component of the wind
+    dx : float
+        The grid spacing in the x-direction
+    dy : float
+        The grid spacing in the y-direction
+    lats : (M, N) ndarray
+        latitudes of the wind data
+    axis : int, optional
+        The axis corresponding to the vertical dimension in the potential temperature
+        and pressure arrays, defaults to 0, the first dimension.
+
+    Returns
+    -------
+    (M, N) ndarray
+        baroclinic potential vorticity
+
+    Notes
+    -----
+    The same formula is used for isobaric and isentropic PV analysis. Provide winds
+    for vorticity calculations on the desired isobaric or isentropic surface. Three layers
+    of pressure/potential temperature are required in order to calculate the vertical
+    derivative (one above and below the desired surface).
+
+    """
+    if np.shape(potential_temperature)[axis] != 3:
+        raise ValueError('Length of potential temperature along axis '
+                         '{} must be 3.'.format(axis))
+    if np.shape(pressure)[axis] != 3:
+        raise ValueError('Length of pressure along axis '
+                         '{} must be 3.'.format(axis))
+    avor = absolute_vorticity(u, v, dx, dy, lats, dim_order=dim_order)
+    stability = first_derivative(potential_temperature, x=pressure, axis=axis)
+    # Get the middle layer stability derivative (index 1)
+    slices = [slice(None)] * stability.ndim
+    slices[axis] = 1
+    return (-1 * avor * g * stability[slices]).to(units.kelvin * units.meter**2 /
+                                                  (units.second * units.kilogram))
+
+
+@exporter.export
+@check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
+def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
+    r"""Calculate the barotropic (Rossby) potential vorticity.
+
+    .. math:: PV = \frac{f + \zeta}{H}
+
+    This formula is based on equation 7.27 [Hobbs2006]_.
+
+    Parameters
+    ----------
+    heights : (M, N) ndarray
+        atmospheric heights
+    u : (M, N) ndarray
+        x component of the wind
+    v : (M, N) ndarray
+        y component of the wind
+    dx : float
+        The grid spacing in the x-direction
+    dy : float
+        The grid spacing in the y-direction
+    lats : (M, N) ndarray
+        latitudes of the wind data
+
+    Returns
+    -------
+    (M, N) ndarray
+        barotropic potential vorticity
+
+    """
+    avor = absolute_vorticity(u, v, dx, dy, lats, dim_order=dim_order)
+    return (avor / heights).to('meter**-1 * second**-1')
