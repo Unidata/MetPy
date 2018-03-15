@@ -33,5 +33,4 @@ dependencies:
   - pyproj
   - cartopy
   - doc8
-  - pip:
-     - recommonmark
+  - recommonmark
