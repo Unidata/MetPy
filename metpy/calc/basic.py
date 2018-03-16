@@ -382,7 +382,7 @@ def coriolis_parameter(latitude):
 
     """
     latitude = _check_radians(latitude, max_radians=np.pi / 2)
-    return 2. * omega * np.sin(latitude)
+    return (2. * omega * np.sin(latitude)).to('1/s')
 
 
 @exporter.export
