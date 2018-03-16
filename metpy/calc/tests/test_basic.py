@@ -310,3 +310,9 @@ def test_coriolis_warning():
         coriolis_parameter(50)
     with pytest.warns(UserWarning):
         coriolis_parameter(-50)
+
+
+def test_coriolis_units():
+    """Test that coriolis returns units of 1/second."""
+    f = coriolis_parameter(50 * units.degrees)
+    assert f.units == units('1/second')
