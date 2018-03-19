@@ -26,7 +26,7 @@ def test_add_timestamp():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 5.58}.get(MPL_VERSION, 0.01),
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 6.03}.get(MPL_VERSION, 0.01),
                                remove_text=True)
 def test_add_timestamp_custom_format():
     """Test adding a timestamp to an axes object with custom time formatting."""

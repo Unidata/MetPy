@@ -1,6 +1,7 @@
 # Create full conda environment for development, including some useful tools
 name: devel
 channels:
+  - conda-forge/label/testing
   - conda-forge
 dependencies:
   - python=3
@@ -19,7 +20,7 @@ dependencies:
   - pytest-flake8
   - pytest-mpl
   - pytest-runner
-  - flake8-builtins
+  - flake8-builtins!=1.1.0
   - flake8-comprehensions
   - flake8-copyright
   - flake8-docstrings
@@ -28,10 +29,8 @@ dependencies:
   - flake8-pep3101
   - flake8-print
   - flake8-quotes
-  - freetype=2.7
   - pep8-naming
   - pyproj
   - cartopy
   - doc8
-  - pip:
-     - recommonmark
+  - recommonmark

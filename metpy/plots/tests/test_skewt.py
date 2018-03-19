@@ -182,8 +182,7 @@ def test_skewt_barb_color():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 10.0}.get(MPL_VERSION, 0.0048),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.91}.get(MPL_VERSION, 0), remove_text=True)
 def test_skewt_barb_unit_conversion():
     """Test that barbs units can be converted at plot time (#737)."""
     u_wind = np.array([3.63767155210412]) * units('m/s')
@@ -192,13 +191,15 @@ def test_skewt_barb_unit_conversion():
 
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig)
+    skew.ax.set_ylabel('')  # remove_text doesn't do this as of pytest 0.9
     skew.plot_barbs(p_wind, u_wind, v_wind, plot_units='knots')
+    skew.ax.set_ylim(1000, 500)
+    skew.ax.set_yticks([1000, 750, 500])
 
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 10.0}.get(MPL_VERSION, 0.0048),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.88}.get(MPL_VERSION, 0), remove_text=True)
 def test_skewt_barb_no_default_unit_conversion():
     """Test that barbs units are left alone by default (#737)."""
     u_wind = np.array([3.63767155210412]) * units('m/s')
@@ -207,7 +208,10 @@ def test_skewt_barb_no_default_unit_conversion():
 
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig)
+    skew.ax.set_ylabel('')  # remove_text doesn't do this as of pytest 0.9
     skew.plot_barbs(p_wind, u_wind, v_wind)
+    skew.ax.set_ylim(1000, 500)
+    skew.ax.set_yticks([1000, 750, 500])
 
     return fig
 
