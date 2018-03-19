@@ -22,7 +22,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         saturation_equivalent_potential_temperature,
                         saturation_mixing_ratio,
                         saturation_vapor_pressure,
-                        specific_humidity_from_mixing_ratio,
+                        specific_humidity_from_mixing_ratio, static_stability,
                         surface_based_cape_cin, temperature_from_potential_temperature,
                         thickness_hydrostatic,
                         thickness_hydrostatic_from_relative_humidity, vapor_pressure,
@@ -942,3 +942,29 @@ def test_wet_bulb_temperature_2d():
     # 21.58, 16.86, 12.18
     # 20.6, 15.9, 11.2 from NWS Calculator
     assert_array_almost_equal(val, truth)
+
+
+def test_static_stability_adiabatic():
+    """Test static stability calculation with a dry adiabatic profile."""
+    pressures = [1000., 900., 800., 700., 600., 500.] * units.hPa
+    temperature_start = 20 * units.degC
+    temperatures = dry_lapse(pressures, temperature_start)
+    sigma = static_stability(pressures, temperatures)
+    truth = np.zeros_like(pressures) * units('J kg^-1 hPa^-2')
+    # Should be zero with a dry adiabatic profile
+    assert_almost_equal(sigma, truth, 6)
+
+
+def test_static_stability_cross_section():
+    """Test static stability calculation with a 2D cross-section."""
+    pressures = [[850., 700., 500.],
+                 [850., 700., 500.],
+                 [850., 700., 500.]] * units.hPa
+    temperatures = [[17., 11., -10.],
+                    [16., 10., -11.],
+                    [11., 6., -12.]] * units.degC
+    sigma = static_stability(pressures, temperatures, axis=1)
+    truth = [[0.02819452, 0.02016804, 0.00305262],
+             [0.02808841, 0.01999462, 0.00274956],
+             [0.02840196, 0.02366708, 0.0131604]] * units('J kg^-1 hPa^-2')
+    assert_almost_equal(sigma, truth, 6)
