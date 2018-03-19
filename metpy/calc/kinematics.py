@@ -707,7 +707,9 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
         longitude, latitude = np.meshgrid(longitude, latitude)
 
     geod_args = {'ellps': 'sphere'}
-    geod_args.update(**kwargs)
+    if kwargs:
+        geod_args = kwargs
+
     g = Geod(**geod_args)
 
     forward_az, _, dy = g.inv(longitude[:-1, :], latitude[:-1, :], longitude[1:, :],
