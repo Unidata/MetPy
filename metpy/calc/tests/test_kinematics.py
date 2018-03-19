@@ -844,3 +844,20 @@ def test_potential_vorticity_barotropic(pv_data):
     avor = absolute_vorticity(u.T, v.T, dx.T, dy.T, lats.T, dim_order='xy')
     truth = avor / heights.T
     assert_almost_equal(pv, truth, 10)
+
+
+def test_lat_lon_grid_deltas_geod_kwargs():
+    """Test that geod kwargs are overridden by users #774."""
+    lat = np.arange(40, 50, 2.5)
+    lon = np.arange(-100, -90, 2.5)
+    dx, dy = lat_lon_grid_deltas(lon, lat, a=4370997)
+    dx_truth = np.array([[146095.76101984, 146095.76101984, 146095.76101984],
+                         [140608.9751528, 140608.9751528, 140608.9751528],
+                         [134854.56713287, 134854.56713287, 134854.56713287],
+                         [128843.49645823, 128843.49645823, 128843.49645823]]) * units.meter
+    dy_truth = np.array([[190720.72311199, 190720.72311199, 190720.72311199, 190720.72311199],
+                         [190720.72311199, 190720.72311199, 190720.72311199, 190720.72311199],
+                         [190720.72311199, 190720.72311199, 190720.72311199,
+                          190720.72311199]]) * units.meter
+    assert_almost_equal(dx, dx_truth, 4)
+    assert_almost_equal(dy, dy_truth, 4)
