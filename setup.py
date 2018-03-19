@@ -57,7 +57,7 @@ setup(
         'doc': ['sphinx>=1.4', 'sphinx-gallery', 'doc8', 'recommonmark', 'netCDF4', 'pandas'],
         'examples': ['cartopy>=0.13.1', 'pandas'],
         'test': ['pytest>=2.4', 'pytest-runner', 'pytest-mpl', 'pytest-flake8',
-                 'cartopy>=0.13.1', 'flake8>3.2.0', 'flake8-builtins',
+                 'cartopy>=0.13.1', 'flake8>3.2.0', 'flake8-builtins!=1.1.0',
                  'flake8-comprehensions', 'flake8-copyright',
                  'flake8-docstrings', 'flake8-import-order', 'flake8-mutable',
                  'flake8-pep3101', 'flake8-print', 'flake8-quotes',
