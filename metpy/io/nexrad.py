@@ -265,7 +265,7 @@ class Level2File(object):
         # Check if we have any message segments still in the buffer
         if self._msg_buf:
             log.warning('Remaining buffered messages segments for message type(s): %s',
-                        ' '.join(map(str, self._msg_buf.keys())))
+                        ' '.join(map(str, self._msg_buf)))
 
         del self._msg_buf
 
