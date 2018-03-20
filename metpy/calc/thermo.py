@@ -53,8 +53,8 @@ def relative_humidity_from_dewpoint(temperature, dewpt):
 
 
 @exporter.export
-@check_units('[pressure]')
-def exner_function(pressure):
+@check_units('[pressure]', '[pressure]')
+def exner_function(pressure, reference_pressure=P0):
     r"""Calculate the Exner function.
 
     .. math:: \Pi = \left( \frac{p}{p_0} \right)^\kappa
@@ -62,12 +62,14 @@ def exner_function(pressure):
     This can be used to calculate potential temperature from temperature (and visa-versa),
     since
 
-    .. math:: \Pi = \frac{T}{\theta}.
+    .. math:: \Pi = \frac{T}{\theta}
 
     Parameters
     ----------
     pressure : `pint.Quantity`
         The total atmospheric pressure
+    reference_pressure : `pint.Quantity`, optional
+        The reference pressure against which to calculate the Exner function, defaults to P0
 
     Returns
     -------
@@ -80,7 +82,7 @@ def exner_function(pressure):
     temperature_from_potential_temperature
 
     """
-    return (pressure / P0).to('dimensionless')**kappa
+    return (pressure / reference_pressure).to('dimensionless')**kappa
 
 
 @exporter.export
