@@ -28,7 +28,7 @@ specific set of constraints (e.g. step size) for mapping.
        for ax in axes:
            ax.set_axis_off()
 
-   cmaps = list(ctables.registry.keys())
+   cmaps = list(ctables.registry)
    cmaps = [name for name in cmaps if name[-2:]!='_r']
    nrows = len(cmaps)
    gradient = np.linspace(0, 1, 256)
