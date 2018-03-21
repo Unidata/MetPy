@@ -9,8 +9,8 @@ import pytest
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
                         brunt_vaisala_period, cape_cin, density, dewpoint, dewpoint_rh,
                         dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
-                        isentropic_interpolation, lcl, lfc, mixed_layer, mixed_parcel,
-                        mixing_ratio, mixing_ratio_from_relative_humidity,
+                        exner_function, isentropic_interpolation, lcl, lfc, mixed_layer,
+                        mixed_parcel, mixing_ratio, mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse,
                         moist_static_energy, most_unstable_cape_cin, most_unstable_parcel,
                         parcel_profile, potential_temperature,
@@ -43,6 +43,13 @@ def test_relative_humidity_from_dewpoint_with_f():
     """Test Relative Humidity accepts temperature in Fahrenheit."""
     assert_almost_equal(relative_humidity_from_dewpoint(70. * units.degF, 55. * units.degF),
                         58.935 * units.percent, 3)
+
+
+def test_exner_function():
+    """Test Exner function calculation."""
+    pres = np.array([900., 500., 300., 100.]) * units.mbar
+    truth = np.array([0.9703542, 0.8203834, 0.7090065, 0.518048]) * units.dimensionless
+    assert_array_almost_equal(exner_function(pres), truth, 6)
 
 
 def test_potential_temperature():
