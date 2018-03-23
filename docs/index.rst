@@ -44,19 +44,23 @@ We support Python 2.7 as well as Python >= 3.4.
 Contact Us
 ----------
 
-* For questions and discussion about MetPy, join Unidata's python-users_
-  mailing list
+* For questions about MetPy, please ask them using the "metpy" tag on StackOverflow_. Our
+  developers are actively monitoring for questions there.
+* You can also email `Unidata's
+  python support email address <mailto: support-python@unidata.ucar.edu>`_
 * The source code is available on GitHub_
 * Bug reports and feature requests should be directed to the
   `GitHub issue tracker`__
 * MetPy has a Gitter_ chatroom for more "live" communication
 * MetPy can also be found on Twitter_
 * If you use MetPy in a publication, please see :ref:`Citing_MetPy`.
+* For release announcements, join Unidata's python-users_ mailing list
 
 .. _python-users: https://www.unidata.ucar.edu/support/#mailinglists
 .. _GitHub: https://github.com/Unidata/MetPy
 .. _Gitter: https://gitter.im/Unidata/MetPy
 .. _Twitter: https://twitter.com/MetPy
+.. _StackOverflow: https://stackoverflow.com/questions/tagged/metpy
 __ https://github.com/Unidata/MetPy/issues
 
 -----

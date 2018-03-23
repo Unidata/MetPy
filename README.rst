@@ -92,6 +92,7 @@ Important Links
 - HTML Documentation : http://unidata.github.io/MetPy
 - Unidata Python Gallery: https://unidata.github.io/python-gallery/
 - Issue tracker: http://github.com/Unidata/MetPy/issues
+- "metpy" tagged questions on Stack Overflow: https://stackoverflow.com/questions/tagged/metpy
 - Gitter chat room: https://gitter.im/Unidata/MetPy
 - Say Thanks: https://saythanks.io/to/unidata
 

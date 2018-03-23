@@ -113,5 +113,8 @@ running both the unit tests as well as the `flake8` code linter.
 ## Other Channels
 If you're interested in contacting us or being a part of the community in
 other ways, feel free to contact us in
-[MetPy's Gitter Channel](https://gitter.im/Unidata/MetPy) or through Unidata's
+[MetPy's Gitter Channel](https://gitter.im/Unidata/MetPy), ask questions using the
+["metpy" tag on Stack Overflow](https://stackoverflow.com/questions/tagged/metpy),
+email [Unidata's Python support address](mailto:support-python@unidata.ucar.edu),
+or through Unidata's
 [python-users](https://www.unidata.ucar.edu/support/#mailinglists) mailing list.
