@@ -17,7 +17,7 @@ Installation Instructions for NumPy and SciPy can be found at:
   https://www.scipy.org/scipylib/download.html
 
 Installation Instructions for Matplotlib can be found at:
-  http://matplotlib.org/downloads.html
+  https://matplotlib.org/downloads.html
 
 Pint is a pure python package and can be installed via ``pip install pint``.
 
