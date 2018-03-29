@@ -52,9 +52,8 @@ from pkg_resources import resource_listdir, resource_stream
 
 TABLE_EXT = '.tbl'
 
+logging.basicConfig(level=logging.WARNING)
 log = logging.getLogger(__name__)
-log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
-log.setLevel(logging.WARNING)
 
 
 def _parse(s):

@@ -10,9 +10,8 @@ import logging
 import numpy as np
 from scipy.spatial import cKDTree
 
+logging.basicConfig(level=logging.WARNING)
 log = logging.getLogger(__name__)
-log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
-log.setLevel(logging.WARNING)
 
 
 def get_points_within_r(center_points, target_points, r):

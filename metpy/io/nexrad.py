@@ -25,9 +25,8 @@ from ..package_tools import Exporter
 
 exporter = Exporter(globals())
 
+logging.basicConfig(level=logging.WARNING)
 log = logging.getLogger(__name__)
-log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
-log.setLevel(logging.WARNING)
 
 
 def version(val):
@@ -1575,8 +1574,14 @@ class Level3File(object):
         # Unpack the message header and the product description block
         msg_start = self._buffer.set_mark()
         self.header = self._buffer.read_struct(self.header_fmt)
-        # print(self.header, len(self._buffer), self.header.msg_len - self.header_fmt.size)
-        assert self._buffer.check_remains(self.header.msg_len - self.header_fmt.size)
+        log.debug('Buffer size: %d (%d expected) Header: %s', len(self._buffer),
+                  self.header.msg_len, self.header)
+
+        if not self._buffer.check_remains(self.header.msg_len - self.header_fmt.size):
+            log.warning('Product contains an unexpected amount of data remaining--have: %d '
+                        'expected: %d. This product may not parse correctly.',
+                        len(self._buffer) - self._buffer._offset,
+                        self.header.msg_len - self.header_fmt.size)
 
         # Handle GSM and jump out
         if self.header.code == 2:
@@ -1666,8 +1671,9 @@ class Level3File(object):
 
     def _process_wmo_header(self):
         # Read off the WMO header if necessary
-        data = self._buffer.get_next(64).decode('utf-8', 'ignore')
+        data = self._buffer.get_next(64).decode('ascii', 'ignore')
         match = self.wmo_finder.search(data)
+        log.debug('WMO Header: %s', match)
         if match:
             self.wmo_code = match.groups()[0]
             self.siteID = match.groups()[-1]
@@ -1677,6 +1683,7 @@ class Level3File(object):
 
     def _process_end_bytes(self):
         check_bytes = self._buffer[-4:-1]
+        log.debug('End Bytes: %s', check_bytes)
         if check_bytes in (b'\r\r\n', b'\xff\xff\n'):
             self._buffer.truncate(4)
 

@@ -14,8 +14,8 @@ import zlib
 
 from ..units import UndefinedUnitError, units
 
+logging.basicConfig(level=logging.WARNING)
 log = logging.getLogger(__name__)
-log.setLevel(logging.WARNING)
 
 
 # This works around problems on early Python 2.7 where Struct.unpack_from() can't handle

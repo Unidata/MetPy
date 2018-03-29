@@ -100,6 +100,18 @@ def test_basic():
     assert str(f)
 
 
+def test_bad_length(caplog):
+    """Test reading a product with too many bytes produces a log message."""
+    fname = get_test_data('nids/KOUN_SDUS84_DAATLX_201305202016', as_file_obj=False)
+    with open(fname, 'rb') as inf:
+        data = inf.read()
+        fobj = BytesIO(data + data)
+
+    with caplog.at_level(logging.WARNING, 'metpy.io.nexrad'):
+        Level3File(fobj)
+        assert 'This product may not parse correctly' in caplog.records[0].message
+
+
 def test_tdwr():
     """Test reading a specific TDWR file."""
     f = Level3File(get_test_data('nids/Level3_SLC_TV0_20160516_2359.nids'))
