@@ -25,9 +25,8 @@ from ..package_tools import Exporter
 
 exporter = Exporter(globals())
 
+logging.basicConfig(level=logging.WARNING)
 log = logging.getLogger(__name__)
-log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
-log.setLevel(logging.WARNING)
 
 
 def version(val):

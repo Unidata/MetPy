@@ -21,9 +21,8 @@ from ..package_tools import Exporter
 
 exporter = Exporter(globals())
 
+logging.basicConfig(level=logging.WARN)
 log = logging.getLogger(__name__)
-log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
-log.setLevel(logging.WARN)
 
 
 def _make_datetime(s):
