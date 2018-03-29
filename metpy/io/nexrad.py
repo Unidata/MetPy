@@ -1574,8 +1574,14 @@ class Level3File(object):
         # Unpack the message header and the product description block
         msg_start = self._buffer.set_mark()
         self.header = self._buffer.read_struct(self.header_fmt)
-        # print(self.header, len(self._buffer), self.header.msg_len - self.header_fmt.size)
-        assert self._buffer.check_remains(self.header.msg_len - self.header_fmt.size)
+        log.debug('Buffer size: %d (%d expected) Header: %s', len(self._buffer),
+                  self.header.msg_len, self.header)
+
+        if not self._buffer.check_remains(self.header.msg_len - self.header_fmt.size):
+            log.warning('Product contains an unexpected amount of data remaining--have: %d '
+                        'expected: %d. This product may not parse correctly.',
+                        len(self._buffer) - self._buffer._offset,
+                        self.header.msg_len - self.header_fmt.size)
 
         # Handle GSM and jump out
         if self.header.code == 2:
