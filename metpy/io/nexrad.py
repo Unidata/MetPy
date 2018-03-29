@@ -1667,6 +1667,7 @@ class Level3File(object):
         # Read off the WMO header if necessary
         data = self._buffer.get_next(64).decode('ascii', 'ignore')
         match = self.wmo_finder.search(data)
+        log.debug('WMO Header: %s', match)
         if match:
             self.wmo_code = match.groups()[0]
             self.siteID = match.groups()[-1]
@@ -1676,6 +1677,7 @@ class Level3File(object):
 
     def _process_end_bytes(self):
         check_bytes = self._buffer[-4:-1]
+        log.debug('End Bytes: %s', check_bytes)
         if check_bytes in (b'\r\r\n', b'\xff\xff\n'):
             self._buffer.truncate(4)
 
