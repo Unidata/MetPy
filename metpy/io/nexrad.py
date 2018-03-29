@@ -1665,7 +1665,7 @@ class Level3File(object):
 
     def _process_wmo_header(self):
         # Read off the WMO header if necessary
-        data = self._buffer.get_next(64).decode('utf-8', 'ignore')
+        data = self._buffer.get_next(64).decode('ascii', 'ignore')
         match = self.wmo_finder.search(data)
         if match:
             self.wmo_code = match.groups()[0]
