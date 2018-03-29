@@ -513,6 +513,26 @@ def test_storm_relative_helicity():
     assert_almost_equal(T_srh, srh_true_t, 2)
 
 
+def test_storm_relative_helicity_agl():
+    """Test storm relative helicity with heights above ground."""
+    u = np.array([-5, 15, 25, 15, -5]) * units('m/s')
+    v = np.array([40, 20, 10, 10, 30]) * units('m/s')
+    u = u.to('knots')
+    heights = np.array([100, 200, 300, 400, 500]) * units.m
+
+    pos_srh, neg_srh, total_srh = storm_relative_helicity(u, v, heights,
+                                                          bottom=50 * units.meters,
+                                                          depth=300 * units.meters,
+                                                          storm_u=5 * units('m/s'),
+                                                          storm_v=10 * units('m/s'))
+
+    # Check that heights isn't modified--checks for regression of #789
+    assert_almost_equal(heights[0], 100 * units.m, 6)
+    assert_almost_equal(pos_srh, 400. * units('meter ** 2 / second ** 2 '), 6)
+    assert_almost_equal(neg_srh, -100. * units('meter ** 2 / second ** 2 '), 6)
+    assert_almost_equal(total_srh, 300. * units('meter ** 2 / second ** 2 '), 6)
+
+
 def test_lat_lon_grid_spacing_1d():
     """Test for lat_lon_grid_spacing for variable grid."""
     lat = np.arange(40, 50, 2.5)
