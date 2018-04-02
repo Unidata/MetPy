@@ -452,7 +452,7 @@ def get_layer_heights(heights, depth, *args, **kwargs):
     # If we want things in AGL, subtract the minimum height from all height values
     if with_agl:
         sfc_height = np.min(heights)
-        heights -= sfc_height
+        heights = heights - sfc_height
 
     # If the bottom is not specified, make it the surface
     if bottom is None:
