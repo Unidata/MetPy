@@ -88,7 +88,7 @@ References
            <https://doi.org/10.1175/1520-0469(1957)014%3C0184:ACSHSS%3E2.0.CO;2>`_.
 
 .. [Rochette2006] Rochette, Scott M., and Patrick S. Market. "A primer on the
-                  ageostrophic wind." Natl. Weather Dig 30 (2006): 17-28.
+                  ageostrophic wind." Natl. Weather Dig. 30 (2006): 17-28.
 
 .. [Rothfusz1990] Rothfusz, L.P.: *The Heat Index "Equation"*. Fort Worth, TX: Scientific Services
            Division, NWS Southern Region Headquarters, 1990.
