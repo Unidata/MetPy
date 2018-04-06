@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# MetPy documentation build configuration file, created by
-# sphinx-quickstart on Wed Apr 22 15:27:44 2015.
-#
 # This file is execfile()d with the current directory set to its
 # containing dir.
 #
