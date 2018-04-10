@@ -843,3 +843,64 @@ def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
     """
     avor = absolute_vorticity(u, v, dx, dy, lats, dim_order=dim_order)
     return (avor / heights).to('meter**-1 * second**-1')
+
+
+@exporter.export
+def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
+    r"""Calculate the inertial advective wind.
+
+    .. math:: \frac{\hat k}{f} \times (\vec V \cdot \nabla)\hat V_g
+
+    .. math:: \frac{\hat k}{f} \times \left[ \left( u \frac{\partial u_g}{\partial x} + v
+              \frac{\partial u_g}{\partial y} \right) \hat i + \left( u \frac{\partial v_g}
+              {\partial x} + v \frac{\partial v_g}{\partial y} \right) \hat j \right]
+
+    .. math:: \left[ -\frac{1}{f}\left(u \frac{\partial v_g}{\partial x} + v
+              \frac{\partial v_g}{\partial y} \right) \right] \hat i + \left[ \frac{1}{f}
+              \left( u \frac{\partial u_g}{\partial x} + v \frac{\partial u_g}{\partial y}
+              \right) \right] \hat j
+
+    This formula is based on equation 27 of [Rochette2006]_.
+
+    Parameters
+    ----------
+    u : (M, N) ndarray
+        x component of the advecting wind
+    v : (M, N) ndarray
+        y component of the advecting wind
+    u_geostrophic : (M, N) ndarray
+        x component of the geostrophic (advected) wind
+    v_geostrophic : (M, N) ndarray
+        y component of the geostrophic (advected) wind
+    dx : float
+        The grid spacing in the x-direction
+    dy : float
+        The grid spacing in the y-direction
+    lats : (M, N) ndarray
+        latitudes of the wind data
+
+    Returns
+    -------
+    (M, N) ndarray
+        x component of inertial advective wind
+    (M, N) ndarray
+        y component of inertial advective wind
+
+    Notes
+    -----
+    Many forms of the inertial advective wind assume the advecting and advected
+    wind to both be the geostrophic wind. To do so, pass the x and y components
+    of the geostrophic with for u and u_geostrophic/v and v_geostrophic.
+
+    """
+    f = coriolis_parameter(lats)
+
+    dugdx = first_derivative(u_geostrophic, delta=dx, axis=1)
+    dugdy = first_derivative(u_geostrophic, delta=dy, axis=0)
+    dvgdx = first_derivative(v_geostrophic, delta=dx, axis=1)
+    dvgdy = first_derivative(v_geostrophic, delta=dy, axis=0)
+
+    u_component = -(u * dvgdx + v * dvgdy) / f
+    v_component = (u * dugdx + v * dugdy) / f
+
+    return u_component, v_component
