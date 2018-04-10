@@ -4,13 +4,19 @@
 r"""Tests the operation of MetPy's unit support code."""
 
 import sys
+import warnings
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import pytest
 
 from metpy.testing import assert_array_equal, set_agg_backend  # noqa: F401
-from metpy.units import atleast_1d, atleast_2d, check_units, diff, units
+from metpy.units import (atleast_1d, atleast_2d, check_units, diff,
+                         pandas_dataframe_to_unit_arrays, units)
+
+
+warnings.filterwarnings('ignore', 'Pandas doesn\'t allow columns to be created', UserWarning)
 
 
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
@@ -102,3 +108,43 @@ def test_bad(func, args, kwargs, bad_parts):
 
         # Should never complain about the const argument
         assert 'unitless_const' not in message
+
+
+def test_pandas_units_simple():
+    """Simple unit attachment to two columns."""
+    df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
+    df_units = {'cola': 'kilometers', 'colb': 'degC'}
+    res = pandas_dataframe_to_unit_arrays(df, column_units=df_units)
+    cola_truth = np.array([1, 2, 3]) * units.km
+    colb_truth = np.array([4, 5, 6]) * units.degC
+    assert_array_equal(res['cola'], cola_truth)
+    assert_array_equal(res['colb'], colb_truth)
+
+
+def test_pandas_units_on_dataframe():
+    """Unit attachment based on a units attribute to a dataframe."""
+    df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
+    df.units = {'cola': 'kilometers', 'colb': 'degC'}
+    res = pandas_dataframe_to_unit_arrays(df)
+    cola_truth = np.array([1, 2, 3]) * units.km
+    colb_truth = np.array([4, 5, 6]) * units.degC
+    assert_array_equal(res['cola'], cola_truth)
+    assert_array_equal(res['colb'], colb_truth)
+
+
+def test_pandas_units_on_dataframe_not_all_united():
+    """Unit attachment with units attribute with a column with no units."""
+    df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
+    df.units = {'cola': 'kilometers'}
+    res = pandas_dataframe_to_unit_arrays(df)
+    cola_truth = np.array([1, 2, 3]) * units.km
+    colb_truth = np.array([4, 5, 6])
+    assert_array_equal(res['cola'], cola_truth)
+    assert_array_equal(res['colb'], colb_truth)
+
+
+def test_pandas_units_no_units_given():
+    """Ensure unit attachment fails if no unit information is given."""
+    df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
+    with pytest.raises(ValueError):
+        pandas_dataframe_to_unit_arrays(df)
