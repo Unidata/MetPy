@@ -164,7 +164,7 @@ Test coverage is monitored by `codecov.io <https://codecov.io/github/Unidata/Met
 
 The following services are used to track code quality:
 
-* `Codacy <https://www.codacy.com/app/Unidata/MetPy/dashboard>`_
+* `Codacy <https://app.codacy.com/app/Unidata/MetPy/dashboard>`_
 * `Code Climate <https://codeclimate.com/github/Unidata/MetPy>`_
 * `Scrutinizer <https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)>`_
 
