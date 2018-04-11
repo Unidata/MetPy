@@ -96,13 +96,13 @@ view.add_feature(cfeature.COASTLINE.with_scale('50m'))
 view.add_feature(cfeature.BORDERS, linestyle=':')
 
 cs = view.contour(slpgridx, slpgridy, slp, colors='k', levels=list(range(990, 1034, 4)))
-plt.clabel(cs, inline=1, fontsize=12, fmt='%i')
+view.clabel(cs, inline=1, fontsize=12, fmt='%i')
 
 mmb = view.pcolormesh(tempx, tempy, temp, cmap=cmap, norm=norm)
-plt.colorbar(mmb, shrink=.4, pad=0.02, boundaries=levels)
+fig.colorbar(mmb, shrink=.4, pad=0.02, boundaries=levels)
 
 view.barbs(windgridx, windgridy, uwind, vwind, alpha=.4, length=5)
 
-plt.title('Surface Temperature (shaded), SLP, and Wind.')
+view.set_title('Surface Temperature (shaded), SLP, and Wind.')
 
 plt.show()
