@@ -80,12 +80,12 @@ ax.add_feature(cfeature.STATES, linewidth=0.5)
 # Plot the heights
 cs = ax.contour(tlons, tlats, height[FH, 0, :, :],
                 colors='k', linewidths=1.0, linestyles='solid')
-plt.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
-           fmt='%i', rightside_up=True, use_clabeltext=True)
+ax.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
+          fmt='%i', rightside_up=True, use_clabeltext=True)
 
 # Contour the temperature
-cf = ax.contourf(tlons, tlats, temp[FH, 0, :, :], range(-20, 20, 1), cmap=plt.cm.jet)
-cb = plt.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5,
+cf = ax.contourf(tlons, tlats, temp[FH, 0, :, :], range(-20, 20, 1), cmap=plt.cm.RdBu_r)
+cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5,
                   pad=0.05, extendrect='True')
 cb.set_label('Celsius', size='x-large')
 

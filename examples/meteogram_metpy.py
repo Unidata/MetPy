@@ -65,30 +65,24 @@ class Meteogram(object):
         # PLOT WIND SPEED AND WIND DIRECTION
         self.ax1 = fig.add_subplot(4, 1, 1)
         ln1 = self.ax1.plot(self.dates, ws, label='Wind Speed')
-        plt.fill_between(self.dates, ws, 0)
+        self.ax1.fill_between(self.dates, ws, 0)
         self.ax1.set_xlim(self.start, self.end)
         if not plot_range:
             plot_range = [0, 20, 1]
-        plt.ylabel('Wind Speed (knots)', multialignment='center')
+        self.ax1.set_ylabel('Wind Speed (knots)', multialignment='center')
         self.ax1.set_ylim(plot_range[0], plot_range[1], plot_range[2])
-        plt.grid(b=True, which='major', axis='y', color='k', linestyle='--', linewidth=0.5)
-        ln2 = self.ax1.plot(self.dates,
-                            wsmax,
-                            '.r',
-                            label='3-sec Wind Speed Max')
-        plt.setp(self.ax1.get_xticklabels(), visible=True)
+        self.ax1.grid(b=True, which='major', axis='y', color='k', linestyle='--',
+                      linewidth=0.5)
+        ln2 = self.ax1.plot(self.dates, wsmax, '.r', label='3-sec Wind Speed Max')
+
         ax7 = self.ax1.twinx()
-        ln3 = ax7.plot(self.dates,
-                       wd,
-                       '.k',
-                       linewidth=0.5,
-                       label='Wind Direction')
-        plt.ylabel('Wind\nDirection\n(degrees)', multialignment='center')
-        plt.ylim(0, 360)
-        plt.yticks(np.arange(45, 405, 90), ['NE', 'SE', 'SW', 'NW'])
+        ln3 = ax7.plot(self.dates, wd, '.k', linewidth=0.5, label='Wind Direction')
+        ax7.set_ylabel('Wind\nDirection\n(degrees)', multialignment='center')
+        ax7.set_ylim(0, 360)
+        ax7.set_yticks(np.arange(45, 405, 90), ['NE', 'SE', 'SW', 'NW'])
         lns = ln1 + ln2 + ln3
         labs = [l.get_label() for l in lns]
-        plt.gca().xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
+        ax7.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
         ax7.legend(lns, labs, loc='upper center',
                    bbox_to_anchor=(0.5, 1.2), ncol=3, prop={'size': 12})
 
@@ -104,32 +98,22 @@ class Meteogram(object):
         if not plot_range:
             plot_range = [10, 90, 2]
         self.ax2 = fig.add_subplot(4, 1, 2, sharex=self.ax1)
-        ln4 = self.ax2.plot(self.dates,
-                            t,
-                            'r-',
-                            label='Temperature')
-        plt.fill_between(self.dates,
-                         t,
-                         td,
-                         color='r')
-        plt.setp(self.ax2.get_xticklabels(), visible=True)
-        plt.ylabel('Temperature\n(F)', multialignment='center')
-        plt.grid(b=True, which='major', axis='y', color='k', linestyle='--', linewidth=0.5)
+        ln4 = self.ax2.plot(self.dates, t, 'r-', label='Temperature')
+        self.ax2.fill_between(self.dates, t, td, color='r')
+
+        self.ax2.set_ylabel('Temperature\n(F)', multialignment='center')
+        self.ax2.grid(b=True, which='major', axis='y', color='k', linestyle='--',
+                      linewidth=0.5)
         self.ax2.set_ylim(plot_range[0], plot_range[1], plot_range[2])
-        ln5 = self.ax2.plot(self.dates,
-                            td,
-                            'g-',
-                            label='Dewpoint')
-        plt.fill_between(self.dates,
-                         td,
-                         plt.ylim()[0],
-                         color='g')
+
+        ln5 = self.ax2.plot(self.dates, td, 'g-', label='Dewpoint')
+        self.ax2.fill_between(self.dates, td, self.ax2.get_ylim()[0], color='g')
+
         ax_twin = self.ax2.twinx()
-        #    ax_twin.set_ylim(20,90,2)
         ax_twin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
         lns = ln4 + ln5
         labs = [l.get_label() for l in lns]
-        plt.gca().xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
+        ax_twin.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
 
         self.ax2.legend(lns, labs, loc='upper center',
                         bbox_to_anchor=(0.5, 1.2), ncol=2, prop={'size': 12})
@@ -145,17 +129,15 @@ class Meteogram(object):
         if not plot_range:
             plot_range = [0, 100, 4]
         self.ax3 = fig.add_subplot(4, 1, 3, sharex=self.ax1)
-        self.ax3.plot(self.dates,
-                      rh,
-                      'g-',
-                      label='Relative Humidity')
+        self.ax3.plot(self.dates, rh, 'g-', label='Relative Humidity')
         self.ax3.legend(loc='upper center', bbox_to_anchor=(0.5, 1.22), prop={'size': 12})
-        plt.setp(self.ax3.get_xticklabels(), visible=True)
-        plt.grid(b=True, which='major', axis='y', color='k', linestyle='--', linewidth=0.5)
+        self.ax3.grid(b=True, which='major', axis='y', color='k', linestyle='--',
+                      linewidth=0.5)
         self.ax3.set_ylim(plot_range[0], plot_range[1], plot_range[2])
-        plt.fill_between(self.dates, rh, plt.ylim()[0], color='g')
-        plt.ylabel('Relative Humidity\n(%)', multialignment='center')
-        plt.gca().xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
+
+        self.ax3.fill_between(self.dates, rh, self.ax3.get_ylim()[0], color='g')
+        self.ax3.set_ylabel('Relative Humidity\n(%)', multialignment='center')
+        self.ax3.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
         axtwin = self.ax3.twinx()
         axtwin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
 
@@ -170,19 +152,18 @@ class Meteogram(object):
         if not plot_range:
             plot_range = [970, 1030, 2]
         self.ax4 = fig.add_subplot(4, 1, 4, sharex=self.ax1)
-        self.ax4.plot(self.dates,
-                      p,
-                      'm',
-                      label='Mean Sea Level Pressure')
-        plt.ylabel('Mean Sea\nLevel Pressure\n(mb)', multialignment='center')
-        plt.ylim(plot_range[0], plot_range[1], plot_range[2])
+        self.ax4.plot(self.dates, p, 'm', label='Mean Sea Level Pressure')
+        self.ax4.set_ylabel('Mean Sea\nLevel Pressure\n(mb)', multialignment='center')
+        self.ax4.set_ylim(plot_range[0], plot_range[1], plot_range[2])
+
         axtwin = self.ax4.twinx()
         axtwin.set_ylim(plot_range[0], plot_range[1], plot_range[2])
-        plt.fill_between(self.dates, p, plt.ylim()[0], color='m')
-        plt.gca().xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
+        axtwin.fill_between(self.dates, p, axtwin.get_ylim()[0], color='m')
+        axtwin.xaxis.set_major_formatter(mpl.dates.DateFormatter('%d/%H UTC'))
+
         self.ax4.legend(loc='upper center', bbox_to_anchor=(0.5, 1.2), prop={'size': 12})
-        plt.grid(b=True, which='major', axis='y', color='k', linestyle='--', linewidth=0.5)
-        plt.setp(self.ax4.get_xticklabels(), visible=True)
+        self.ax4.grid(b=True, which='major', axis='y', color='k', linestyle='--',
+                      linewidth=0.5)
         # OTHER OPTIONAL AXES TO PLOT
         # plot_irradiance
         # plot_precipitation
