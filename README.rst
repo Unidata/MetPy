@@ -76,7 +76,10 @@ MetPy is still in an early stage of development, and as such
 just for fun, many things may still change as we work through
 design issues.
 
-We support Python 2.7 as well as Python >= 3.4.
+We support Python >= 3.4 and currently support Python 2.7.
+
+NOTE: We are dropping support for Python 2.7 in Fall 2019. See
+`here <https://github.com/Unidata/MetPy/docs/installguide.rst>`_ for more information.
 
 Need Help?
 ----------
@@ -105,7 +108,7 @@ Other required packages:
 - Matplotlib
 - Pint
 
-Python versions older than 3.4 require the enum34 package, which is a backport
+Python 2.7 requires the enum34 package, which is a backport
 of the standard library enum module.
 
 There is also an optional dependency on the pyproj library for geographic

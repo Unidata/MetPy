@@ -2,12 +2,41 @@
 Installation Guide
 ==================
 
+.. _python27:
+
+------------------
+Python 2.7 Support
+------------------
+In the Fall 2019, we will be dropping support for Python 2.7. This follows movement from
+other packages within the `scientific Python ecosystem <http://python3statement.org/>`_.
+This includes:
+
+* Core Python developers will
+  `stop support for Python 2.7 January 1, 2020 <https://pythonclock.org/>`_
+* NumPy feature releases will be
+  `Python 3 only starting January 1, 2019 <https://docs.scipy.org/doc/numpy/neps/dropping-python2.7-proposal.html>`_,
+  and support for the last release supporting Python 2 will end January 1, 2020.
+* XArray will drop
+  `2.7 January 1, 2019 as well <https://github.com/pydata/xarray/issues/1830>`_
+* Matplotlib's 3.0 release, tentatively Summer 2018,
+  `will be Python 3 only <https://mail.python.org/pipermail/matplotlib-devel/2017-October/000892.html>`_;
+  the current 2.2 release will be the last long term release that supports 2.7, and its support
+  will cease January 1, 2020.
+
+The last release of MetPy before this time (Spring or Summer 2019) will be the last that
+support Python 2.7. This version of MetPy will **not** receive any long term support or
+additional bug fix releases after the next minor release. The packages for this version *will*
+remain available on Conda or PyPI.
+
 ------------
 Requirements
 ------------
-MetPy supports Python 2.7 as well as Python >= 3.4. Python 3.6 is the recommended version.
+In general, MetPy tries to support minor versions of dependencies released within the last two
+years. For Python itself, that means supporting the last two minor releases, as well as
+currently supporting Python 2.7.
 
-MetPy requires the following packages:
+MetPy currently supports the following versions of required dependencies:
+  - Python 2.7 or >=3.4
   - NumPy >= 1.10.0
   - SciPy >= 0.14.0
   - Matplotlib >= 1.4.0
@@ -21,7 +50,7 @@ Installation Instructions for Matplotlib can be found at:
 
 Pint is a pure python package and can be installed via ``pip install pint``.
 
-Python versions older than 3.4 require the enum34 package, which is a backport
+Python 2.7 requires the enum34 package, which is a backport
 of the enum standard library module. It can be installed via
 ``pip install enum34``.
 

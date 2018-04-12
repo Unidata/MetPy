@@ -1,8 +1,3 @@
-.. MetPy documentation master file, created by
-   sphinx-quickstart on Wed Apr 22 15:27:44 2015.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 .. image:: _static/sounding.png
    :width: 150 px
    :align: left
@@ -38,7 +33,11 @@ MetPy is still in an early stage of development, and as such
 just for fun, many things may still change as we work through
 design issues.
 
-We support Python 2.7 as well as Python >= 3.4.
+We support Python >= 3.4 and currently support Python 2.7.
+
+.. warning::
+  We are dropping support for Python 2.7 in the Fall of 2019. For more details and rationale
+  behind this decision, see :ref:`python27`.
 
 ----------
 Contact Us
