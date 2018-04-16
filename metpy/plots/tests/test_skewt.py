@@ -298,3 +298,16 @@ def test_hodograph_plot_arbitrary_layer():
     hodo.plot_colormapped(u, v, speed, bounds=levels, colors=colors)
 
     return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+def test_hodograph_wind_vectors():
+    """Test plotting wind vectors onto a hodograph."""
+    u_wind = np.array([-10, -7, 0, 7, 10, 7, 0, -7])
+    v_wind = np.array([0, 7, 10, 7, 0, -7, -10, -7])
+    fig = plt.figure(figsize=(6, 6))
+    ax = fig.add_subplot(1, 1, 1)
+    h = Hodograph(ax, component_range=20)
+    h.plot(u_wind, v_wind, linewidth=3)
+    h.wind_vectors(u_wind, v_wind)
+    return fig
