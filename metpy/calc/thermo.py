@@ -1480,28 +1480,20 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     isentprs[isentprs > np.max(pressure.m)] = np.nan
 
     # create list for storing output data
-    ret = []
-    ret.append(isentprs * units.hPa)
+    ret = [isentprs * units.hPa]
 
     # if tmpk_out = true, calculate temperature and output as last item in list
     if tmpk_out:
         ret.append((isentlevs_nd / ((P0.m / isentprs) ** ka)) * units.kelvin)
 
-    # check to see if any additional arguments were given, if so, interpolate to
-    # new isentropic levels
-    try:
-        args[0]
-    except IndexError:
-        return ret
-    else:
-        # do an interpolation for each additional argument
-        for arr in args:
-            var = arr[sorter]
-            # interpolate to isentropic levels and add to temporary output array
-            arg_out = interp(isentlevels, pres_theta.m, var, axis=axis)
-            ret.append(arg_out)
+    # do an interpolation for each additional argument
+    if args:
+        others = interp(isentlevels, pres_theta.m, *(arr[sorter] for arr in args), axis=axis)
+        if len(args) > 1:
+            ret.extend(others)
+        else:
+            ret.append(others)
 
-    # output values as a list
     return ret
 
 

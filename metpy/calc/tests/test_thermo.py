@@ -685,7 +685,7 @@ def test_isentropic_pressure_interp():
     assert_almost_equal(isentprs[0][1], trueprs, 3)
 
 
-def test_isentropic_pressure_adition_args_interp():
+def test_isentropic_pressure_addition_args_interp():
     """Test calculation of isentropic pressure function, additional args."""
     lev = [100000., 95000., 90000., 85000.] * units.Pa
     tmp = np.ones((4, 5, 5))
