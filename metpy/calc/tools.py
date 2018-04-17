@@ -715,9 +715,11 @@ def interp(x, xp, *args, **kwargs):
 
     # Calculate interpolation for each variable
     for var in variables:
-        var_interp = var[below] + ((x_array - xp[below]) /
-                                   (xp[above] - xp[below])) * (var[above] -
-                                                               var[below])
+        # Var needs to be on the *left* of the multiply to ensure that if it's a pint
+        # Quantity, it gets to control the operation--at least until we make sure
+        # masked arrays and pint play together better. See https://github.com/hgrecco/pint#633
+        var_interp = var[below] + (var[above] - var[below]) * ((x_array - xp[below]) /
+                                                               (xp[above] - xp[below]))
 
         # Set points out of bounds to fill value.
         var_interp[minv == xp.shape[axis]] = fill_value

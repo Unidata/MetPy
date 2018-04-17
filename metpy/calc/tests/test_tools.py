@@ -467,6 +467,16 @@ def test_interp_end_point():
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
 
 
+def test_interp_masked_units():
+    """Test interpolating with masked arrays with units."""
+    x = np.ma.array([1., 2., 3., 4.]) * units.m
+    y = np.ma.array([50., 60., 70., 80.]) * units.degC
+    x_interp = np.array([250., 350.]) * units.cm
+    y_interp_truth = np.array([65., 75.]) * units.degC
+    y_interp = interp(x_interp, x, y)
+    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+
+
 def test_greater_or_close():
     """Test floating point greater or close to."""
     x = np.array([0.0, 1.0, 1.49999, 1.5, 1.5000, 1.7])
