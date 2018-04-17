@@ -102,12 +102,12 @@ before_install:
   - pip download -d $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
   - touch $WHEELDIR/download_marker && ls -lrt $WHEELDIR;
   - travis_wait pip wheel -w $WHEELDIR $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-  - pip install $EXTRA_PACKAGES --upgrade --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
+  - pip install $EXTRA_PACKAGES --upgrade --upgrade-strategy=eager --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
   - travis_wait pip wheel -w $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
   - rm -f $WHEELDIR/MetPy*.whl;
 
 install:
-  - pip install ".[$EXTRA_INSTALLS]" --upgrade --no-index $PRE -f file://$PWD/$WHEELDIR $VERSIONS;
+  - pip install ".[$EXTRA_INSTALLS]" --upgrade --upgrade-strategy=eager --no-index $PRE -f file://$PWD/$WHEELDIR $VERSIONS;
 
 script:
   - if [[ $TASK == "docs" ]]; then
