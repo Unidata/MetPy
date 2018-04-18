@@ -1472,6 +1472,10 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     # calculate first guess for interpolation
     isentprs = 0.5 * (log_p[above] + log_p[below])
 
+    # Make sure we ignore any nans in the data for solving; checking a is enough since it
+    # combines log_p and tmpk.
+    good &= ~np.isnan(a)
+
     # iterative interpolation using scipy.optimize.fixed_point and _isen_iter defined above
     log_p_solved = so.fixed_point(_isen_iter, isentprs[good],
                                   args=(isentlevs_nd[good], ka, a[good], b[good], pok.m),

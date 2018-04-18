@@ -590,10 +590,12 @@ def test_isentropic_pressure():
     tmp[1, :] = 292.
     tmp[2, :] = 290
     tmp[3, :] = 288.
+    tmp[:, :, -1] = np.nan
     tmpk = tmp * units.kelvin
     isentlev = [296.] * units.kelvin
     isentprs = isentropic_interpolation(isentlev, lev, tmpk)
-    trueprs = 1000. * units.hPa
+    trueprs = np.ones((1, 5, 5)) * (1000. * units.hPa)
+    trueprs[:, :, -1] = np.nan
     assert isentprs[0].shape == (1, 5, 5)
     assert_almost_equal(isentprs[0], trueprs, 3)
 
