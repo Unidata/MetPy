@@ -594,7 +594,7 @@ def test_isentropic_pressure():
     isentlev = [296.] * units.kelvin
     isentprs = isentropic_interpolation(isentlev, lev, tmpk)
     trueprs = 1000. * units.hPa
-    assert_almost_equal(isentprs[0].shape, (1, 5, 5), 3)
+    assert isentprs[0].shape == (1, 5, 5)
     assert_almost_equal(isentprs[0], trueprs, 3)
 
 
@@ -756,7 +756,7 @@ def test_isentropic_pressure_4d():
     trueprs2 = 936.18057 * units.hPa
     trueprs3 = 879.446 * units.hPa
     truerh = 69.171 * units.percent
-    assert_almost_equal(isentprs[0].shape, (3, 3, 5, 5), 3)
+    assert isentprs[0].shape == (3, 3, 5, 5)
     assert_almost_equal(isentprs[0][:, 0, :], trueprs, 3)
     assert_almost_equal(isentprs[0][:, 1, :], trueprs2, 3)
     assert_almost_equal(isentprs[0][:, 2, :], trueprs3, 3)
