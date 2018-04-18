@@ -786,6 +786,32 @@ class Hodograph(object):
         u, v = delete_masked_points(u, v)
         return self.ax.plot(u, v, **line_args)
 
+    def wind_vectors(self, u, v, **kwargs):
+        r"""Plot u, v data as wind vectors.
+
+        Plot the wind data as vectors for each level, beginning at the origin.
+
+        Parameters
+        ----------
+        u : array_like
+            u-component of wind
+        v : array_like
+            v-component of wind
+        kwargs
+            Other keyword arguments to pass to :meth:`matplotlib.axes.Axes.quiver`
+
+        Returns
+        -------
+        matplotlib.quiver.Quiver
+            arrows plotted
+
+        """
+        quiver_args = {'units': 'xy', 'scale': 1}
+        quiver_args.update(**kwargs)
+        center_position = np.zeros_like(u)
+        return self.ax.quiver(center_position, center_position,
+                              u, v, **quiver_args)
+
     def plot_colormapped(self, u, v, c, bounds=None, colors=None, **kwargs):
         r"""Plot u, v data, with line colored based on a third set of data.
 
