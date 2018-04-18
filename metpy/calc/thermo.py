@@ -1419,28 +1419,25 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
 
     slices = [np.newaxis] * ndim
     slices[axis] = slice(None)
-    pres = pres[slices]
-    pres = np.broadcast_to(pres, temperature.shape) * pres.units
+    pres = np.broadcast_to(pres[slices], temperature.shape) * pres.units
 
     # Sort input data
     sort_pres = np.argsort(pres.m, axis=axis)
     sort_pres = np.swapaxes(np.swapaxes(sort_pres, 0, axis)[::-1], 0, axis)
     sorter = broadcast_indices(pres, sort_pres, ndim, axis)
     levs = pres[sorter]
-    theta_levels = np.asanyarray(theta_levels.to('kelvin')).reshape(-1)
-    sort_isentlevs = np.argsort(theta_levels)
     tmpk = temperature[sorter]
-    isentlevels = theta_levels[sort_isentlevs]
+
+    theta_levels = np.asanyarray(theta_levels.to('kelvin')).reshape(-1)
+    isentlevels = theta_levels[np.argsort(theta_levels)]
 
     # Make the desired isentropic levels the same shape as temperature
-    isentlevs_nd = isentlevels
-    isentlevs_nd = isentlevs_nd[slices]
     shape = list(temperature.shape)
     shape[axis] = isentlevels.size
-    isentlevs_nd = np.broadcast_to(isentlevs_nd, shape)
+    isentlevs_nd = np.broadcast_to(isentlevels[slices], shape)
 
     # exponent to Poisson's Equation, which is imported above
-    ka = kappa.to('dimensionless').m
+    ka = kappa.m_as('dimensionless')
 
     # calculate theta for each point
     pres_theta = potential_temperature(levs, tmpk)
