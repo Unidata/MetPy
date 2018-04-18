@@ -235,7 +235,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
     r"""Calculate the current apparent temperature.
 
     Calculates the current apparent temperature based on the wind chill or heat index
-    as appropriate for the current conditions.
+    as appropriate for the current conditions. Follows [NWS10201]_.
 
     Parameters
     ----------
@@ -271,8 +271,8 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
 
     # Combine the heat index and wind chill arrays (no point has a value in both)
     app_temperature = np.ma.where(wind_chill_temperature.mask,
-                                       heat_index_temperature,
-                                       wind_chill_temperature)
+                                  heat_index_temperature,
+                                  wind_chill_temperature)
 
     # Fill in missing areas where neither wind chill or heat index are applicable with the
     # ambient temperature.
