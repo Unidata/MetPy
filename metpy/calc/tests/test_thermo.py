@@ -598,6 +598,20 @@ def test_isentropic_pressure():
     assert_almost_equal(isentprs[0], trueprs, 3)
 
 
+def test_isentropic_pressure_masked_column():
+    """Test calculation of isentropic pressure function with a masked column (#769)."""
+    lev = [100000., 95000.] * units.Pa
+    tmp = np.ma.ones((len(lev), 5, 5))
+    tmp[0, :] = 296.
+    tmp[1, :] = 292.
+    tmp[:, :, -1] = np.ma.masked
+    isentprs = isentropic_interpolation([296.] * units.kelvin, lev, tmp * units.kelvin)
+    trueprs = np.ones((1, 5, 5)) * (1000. * units.hPa)
+    trueprs[:, :, -1] = np.nan
+    assert isentprs[0].shape == (1, 5, 5)
+    assert_almost_equal(isentprs[0], trueprs, 3)
+
+
 def test_isentropic_pressure_p_increase():
     """Test calculation of isentropic pressure function, p increasing order."""
     lev = [85000, 90000., 95000., 100000.] * units.Pa

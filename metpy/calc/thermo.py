@@ -1456,6 +1456,11 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     # index values for each point for the pressure level nearest to the desired theta level
     minv = np.apply_along_axis(np.searchsorted, axis, pres_theta.m, theta_levels)
 
+    # Filter out points where we get indices above the top; theta below the bottom will be
+    # masked by comparing to the max pressure later.
+    good = minv < pres_theta.shape[axis]
+    minv[~good] = 0
+
     # Create index values for broadcasting arrays
     above = broadcast_indices(tmpk, minv, ndim, axis)
     below = broadcast_indices(tmpk, minv - 1, ndim, axis)
@@ -1465,16 +1470,18 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     b = tmpk.m[above] - a * log_p[above]
 
     # calculate first guess for interpolation
-    first_guess = 0.5 * (log_p[above] + log_p[below])
+    isentprs = 0.5 * (log_p[above] + log_p[below])
 
     # iterative interpolation using scipy.optimize.fixed_point and _isen_iter defined above
-    log_p_solved = so.fixed_point(_isen_iter, first_guess, args=(isentlevs_nd, ka, a, b,
-                                                                 pok.m),
+    log_p_solved = so.fixed_point(_isen_iter, isentprs[good],
+                                  args=(isentlevs_nd[good], ka, a[good], b[good], pok.m),
                                   xtol=eps, maxiter=max_iters)
 
-    # get back pressure and assign nan for values with pressure greater than 1000 hPa
-    isentprs = np.exp(log_p_solved)
-    isentprs[isentprs > np.max(pressure.m)] = np.nan
+    # get back pressure from log p
+    isentprs[good] = np.exp(log_p_solved)
+
+    # Mask out points we know are bad as well as points that are beyond the max pressure
+    isentprs[~(good & _less_or_close(isentprs, np.max(pres.m)))] = np.nan
 
     # create list for storing output data
     ret = [isentprs * units.hPa]
