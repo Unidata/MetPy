@@ -859,11 +859,26 @@ class Hodograph(object):
             cmap = mcolors.ListedColormap(colors)
             # If we are segmenting by height (a length), interpolate the bounds
             if bounds.dimensionality == {'[length]': 1.0}:
-                bounds = bounds + c[0]  # Make all heights AGL
-                interpolation_heights = concatenate((bounds, c))
+
+                # Find any bounds not in the data and interpolate them
+                interpolation_heights = [bound.m for bound in bounds if bound not in c]
+                interpolation_heights = np.array(interpolation_heights) * bounds.units
                 interpolation_heights = (np.sort(interpolation_heights) *
                                          interpolation_heights.units)
-                c, u, v = interp(interpolation_heights, c, c, u, v)
+                (interpolated_heights, interpolated_u,
+                 interpolated_v) = interp(interpolation_heights, c, c, u, v)
+
+                # Combine the interpolated data with the actual data
+                c = concatenate([c, interpolated_heights])
+                u = concatenate([u, interpolated_u])
+                v = concatenate([v, interpolated_v])
+                sort_inds = np.argsort(c)
+                c = c[sort_inds]
+                u = u[sort_inds]
+                v = v[sort_inds]
+
+                # Unit conversion required for coloring of bounds/data in dissimilar units
+                # to work properly.
                 c = c.to_base_units()  # TODO: This shouldn't be required!
                 bounds = bounds.to_base_units()
             # If segmenting by anything else, do not interpolate, just use the data
