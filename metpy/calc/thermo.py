@@ -2023,3 +2023,34 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     if it.operands[3].size == 1:
         return it.operands[3][0] * moist_adiabat_temperatures.units
     return it.operands[3] * moist_adiabat_temperatures.units
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]')
+def static_stability(pressure, temperature, axis=0):
+    r"""Calculate the static stability within a vertical profile.
+
+    .. math:: \sigma = -\frac{RT}{p} \frac{\partial \ln \theta}{\partial p}
+
+    This formuala is based on equation 4.3.6 in [Bluestein1992]_.
+
+    Parameters
+    ----------
+    pressure : array-like
+        Profile of atmospheric pressure
+    temperature : array-like
+        Profile of temperature
+    axis : int, optional
+        The axis corresponding to vertical in the pressure and temperature arrays, defaults
+        to 0.
+
+    Returns
+    -------
+    array-like
+        The profile of static stability.
+
+    """
+    theta = potential_temperature(pressure, temperature)
+
+    return - Rd * temperature / pressure * first_derivative(np.log(theta / units.K),
+                                                            x=pressure, axis=axis)

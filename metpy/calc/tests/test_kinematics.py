@@ -11,8 +11,8 @@ from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind,
                         frontogenesis, geostrophic_wind, get_wind_components, h_convergence,
                         inertial_advective_wind, lat_lon_grid_deltas, lat_lon_grid_spacing,
                         montgomery_streamfunction, potential_vorticity_baroclinic,
-                        potential_vorticity_barotropic,
-                        shearing_deformation, shearing_stretching_deformation,
+                        potential_vorticity_barotropic, q_vector, shearing_deformation,
+                        shearing_stretching_deformation, static_stability,
                         storm_relative_helicity, stretching_deformation, total_deformation,
                         v_vorticity, vorticity)
 from metpy.constants import g, omega, Re
@@ -1072,3 +1072,81 @@ def test_inertial_advective_wind_diffluent():
     uiaw, viaw = inertial_advective_wind(ug, vg, ug, vg, dx, dy, lats)
     assert_almost_equal(uiaw, uiaw_truth, 7)
     assert_almost_equal(viaw, viaw_truth, 7)
+
+
+@pytest.fixture
+def q_vector_data():
+    """Define data for use in Q-vector tests."""
+    speed = np.ones((4, 4)) * 50. * units('knots')
+    wdir = np.array([[210., 190., 170., 150.],
+                     [190., 180., 180., 170.],
+                     [170., 180., 180., 190.],
+                     [150., 170., 190., 210.]]) * units('degrees')
+    u, v = get_wind_components(speed, wdir)
+
+    temp = np.array([[[18., 18., 18., 18.],
+                      [17., 17., 17., 17.],
+                      [17., 17., 17., 17.],
+                      [16., 16., 16., 16.]],
+                     [[12., 11., 10., 9.],
+                      [11., 10.5, 10.5, 10.],
+                      [10., 10.5, 10.5, 11.],
+                      [9., 10., 11., 12.]],
+                     [[-10., -10., -10., -10.],
+                      [-10., -10., -10., -10.],
+                      [-11., -11., -11., -11.],
+                      [-11., -11., -11., -11.]]]) * units('degC')
+
+    p = np.array([850., 700., 500.]) * units('hPa')
+
+    lats = np.linspace(35., 40., 4) * units('degrees')
+    lons = np.linspace(-100., -90., 4) * units('degrees')
+    dx, dy = lat_lon_grid_deltas(lons, lats)
+
+    return u, v, temp, p, dx, dy
+
+
+def test_q_vector_without_static_stability(q_vector_data):
+    """Test the Q-vector function without using static stability."""
+    u, v, temp, p, dx, dy = q_vector_data
+
+    # Treating as 700 hPa data
+    q1, q2 = q_vector(u, v, temp[1], p[1], dx, dy)
+
+    q1_truth = (np.array([[-2.7454089e-14, -3.0194267e-13, -3.0194267e-13, -2.7454089e-14],
+                          [-1.8952185e-13, -2.2269905e-14, -2.2269905e-14, -1.8952185e-13],
+                          [-1.9918390e-13, -2.3370829e-14, -2.3370829e-14, -1.9918390e-13],
+                          [-5.6160772e-14, -3.5145951e-13, -3.5145951e-13, -5.6160772e-14]]) *
+                units('m^2 kg^-1 s^-1'))
+    q2_truth = (np.array([[-4.4976059e-14, -4.3582378e-13, 4.3582378e-13, 4.4976059e-14],
+                          [-3.0124244e-13, -3.5724617e-14, 3.5724617e-14, 3.0124244e-13],
+                          [3.1216232e-13, 3.6662900e-14, -3.6662900e-14, -3.1216232e-13],
+                          [8.6038280e-14, 4.6968342e-13, -4.6968342e-13, -8.6038280e-14]]) *
+                units('m^2 kg^-1 s^-1'))
+
+    assert_almost_equal(q1, q1_truth, 20)
+    assert_almost_equal(q2, q2_truth, 20)
+
+
+def test_q_vector_with_static_stability(q_vector_data):
+    """Test the Q-vector function using static stability."""
+    u, v, temp, p, dx, dy = q_vector_data
+
+    sigma = static_stability(p[:, np.newaxis, np.newaxis], temp)
+
+    # Treating as 700 hPa data
+    q1, q2 = q_vector(u, v, temp[1], p[1], dx, dy, sigma[1])
+
+    q1_truth = (np.array([[-1.4158140e-08, -1.6197987e-07, -1.6875014e-07, -1.6010616e-08],
+                          [-9.3971386e-08, -1.1252476e-08, -1.1252476e-08, -9.7617234e-08],
+                          [-1.0785670e-07, -1.2403513e-08, -1.2403513e-08, -1.0364793e-07],
+                          [-2.9186946e-08, -1.7577703e-07, -1.6937879e-07, -2.6112047e-08]]) *
+                units('kg m^-2 s^-3'))
+    q2_truth = (np.array([[-2.3194263e-08, -2.3380160e-07, 2.4357380e-07, 2.6229040e-08],
+                          [-1.4936626e-07, -1.8050836e-08, 1.8050836e-08, 1.5516129e-07],
+                          [1.6903373e-07, 1.9457964e-08, -1.9457964e-08, -1.6243771e-07],
+                          [4.4714390e-08, 2.3490489e-07, -2.2635441e-07, -4.0003646e-08]]) *
+                units('kg m^-2 s^-3'))
+
+    assert_almost_equal(q1, q1_truth, 14)
+    assert_almost_equal(q2, q2_truth, 14)
