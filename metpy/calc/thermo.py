@@ -2105,3 +2105,87 @@ def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
     return dewpoint_rh(temperature, relative_humidity_from_specific_humidity(specific_humidity,
                                                                              temperature,
                                                                              pressure))
+
+
+@check_units('[pressure]', '[temperature]', '[temperature]', '[pressure]')
+def downdraft_cape(pressure, temperature, dewpoint, parcel=None, bottom=None,
+                   top_pressure=400 * units.hPa):
+    r"""Calculate downdraft CAPE.
+
+    Calculate the downdraft convective available potential energy (CAPE).The minimum theta-e
+    value between the surface and top_pressure is used as the parcel starting point. Parcels
+    descend along a moist adiabat. Area between the parcel path and environmental temperature
+    is integrated to calculate DCAPE.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The atmospheric pressure level(s) of interest. The first entry should be the starting
+        point pressure.
+    temperature : `pint.Quantity`
+        The atmospheric temperature corresponding to pressure.
+    dewpoint : `pint.Quantity`
+        The atmospheric dew point corresponding to pressure.
+    parcel : tuple
+        Tuple of pressure and temperature for the starting parcel.
+    bottom : `pint.Quantity`
+        Lowest point in the parcel path to consider in integration in height or pressure.
+        If no heights are given, a standard atmosphere will be assumed. Defaults to None.
+    top_pressure : `pint.Quantity`
+        The lowest pressure value to be considered in the calculation. Defaults to 400 hPa.
+
+    Returns
+    -------
+    `pint.Quantity`
+        Downdraft convective available potential energy (CAPE).
+
+    Notes
+    -----
+    .. math:: \text{DCAPE} = R_d \int_{P_i}^{P_{sfc}} (T_{env} - T_{parcel}) d\text{ln}(p)
+
+    * :math:`DCAPE` Downdraft convective available potential energy
+    * :math:`R_d` Gas constant
+    * :math:`g` Gravitational acceleration
+    * :math:`T_{parcel}` Parcel temperature
+    * :math:`T_{env}` Environment temperature
+    * :math:`p` Atmospheric pressure
+
+    """
+    # Sort so everything is with monotonically increasing pressure.
+    sort_inds = np.argsort(pressure)
+    pressure = pressure[sort_inds]
+    temperature = temperature[sort_inds]
+    dewpoint = dewpoint[sort_inds]
+
+    # Trim data to only top height and below as well as bottom height and above
+    pressure, temperature, dewpoint = get_layer(pressure, temperature, dewpoint,
+                                                depth=pressure[-1] - top_pressure,
+                                                bottom=bottom)
+
+    # The user did not give us a parcel, so we'll
+    if not parcel:
+        # Find minimum theta-e
+        theta_e = equivalent_potential_temperature(pressure, temperature, dewpoint)
+        minimum_theta_e_index = np.argmin(theta_e)
+
+        # Trim data to be minimum theta-e down (dewpoint is no longer required)
+        pressure = pressure[:minimum_theta_e_index]
+        temperature = temperature[:minimum_theta_e_index]
+
+        # Create the parcel profile for decent along a moist adiabat
+        profile_temperatures = moist_lapse(pressure[::-1], temperature[-1])
+        profile_temperatures = profile_temperatures[::-1]
+
+    # The user has given us a parcel, we'll trim the data down, interpolating, and create
+    # a parcel profile
+    else:
+        pressure, temperature, dewpoint = get_layer(pressure, temperature, dewpoint,
+                                                    depth=pressure[-1] - top_pressure)
+
+    # Calculate the difference in profile and environmental temperature to integrate
+    y_vals = temperature - profile_temperatures
+
+    # Calculate DCAPE (remember trapz needs monotonically increasing x for correct sign)
+    dcape = Rd * (np.trapz(y_vals,
+                           x=np.log(pressure.m)) * units.kelvin)
+    return dcape.to('J/kg')
