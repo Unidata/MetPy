@@ -11,10 +11,10 @@ import pytest
 
 from metpy.calc import (find_intersections, first_derivative, get_layer, get_layer_heights,
                         interp, interpolate_nans, laplacian, log_interp,
-                        nearest_intersection_idx, pressure_to_height_std,
+                        nearest_intersection_idx, parse_angle, pressure_to_height_std,
                         reduce_point_density, resample_nn_1d, second_derivative)
 from metpy.calc.tools import (_get_bound_pressure_height, _greater_or_close, _less_or_close,
-                              _next_non_masked_element, delete_masked_points)
+                              _next_non_masked_element, delete_masked_points, DIR_STRS)
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -630,3 +630,32 @@ def test_laplacian_2d(deriv_2d_data):
     laplac_true = 2 * (np.ones_like(deriv_2d_data.f) * (deriv_2d_data.a + deriv_2d_data.b))
     laplac = laplacian(deriv_2d_data.f, x=(deriv_2d_data.y, deriv_2d_data.x))
     assert_array_almost_equal(laplac, laplac_true, 5)
+
+
+def test_parse_angle_abbrieviated():
+    """Test abbrieviated directional text in degrees."""
+    expected_angles_degrees = np.arange(0, 360, 22.5) * units.degree
+    output_angles_degrees = list(map(parse_angle, DIR_STRS))
+    assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
+
+
+def test_parse_angle_ext():
+    """Test extended (unabbrieviated) directional text in degrees."""
+    test_dir_strs = ['NORTH', 'NORTHnorthEast', 'North_East', 'East__North_East',
+                     'easT', 'east  south east', 'south east', ' south southeast',
+                     'SOUTH', 'SOUTH SOUTH WEST', 'southWEST', 'WEST south_WEST',
+                     'WeSt', 'WestNorth West', 'North West', 'NORTH north_WeSt']
+    expected_angles_degrees = np.arange(0, 360, 22.5) * units.degree
+    output_angles_degrees = list(map(parse_angle, test_dir_strs))
+    assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
+
+
+def test_parse_angle_mix_multiple():
+    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    test_dir_strs = ['NORTH', 'nne', 'ne', 'east north east',
+                     'easT', 'east  se', 'south east', ' south southeast',
+                     'SOUTH', 'SOUTH SOUTH WEST', 'sw', 'WEST south_WEST',
+                     'w', 'wnw', 'North West', 'nnw']
+    expected_angles_degrees = np.arange(0, 360, 22.5) * units.degree
+    output_angles_degrees = parse_angle(test_dir_strs)
+    assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
