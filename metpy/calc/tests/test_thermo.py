@@ -7,8 +7,10 @@ import numpy as np
 import pytest
 
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
-                        brunt_vaisala_period, cape_cin, density, dewpoint, dewpoint_rh,
-                        dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
+                        brunt_vaisala_period, cape_cin, density, dewpoint,
+                        dewpoint_from_specific_humidity, dewpoint_rh,
+                        dry_lapse, dry_static_energy, el,
+                        equivalent_potential_temperature,
                         exner_function, isentropic_interpolation, lcl, lfc, mixed_layer,
                         mixed_parcel, mixing_ratio, mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse,
@@ -968,3 +970,12 @@ def test_static_stability_cross_section():
              [0.02808841, 0.01999462, 0.00274956],
              [0.02840196, 0.02366708, 0.0131604]] * units('J kg^-1 hPa^-2')
     assert_almost_equal(sigma, truth, 6)
+
+
+def test_dewpoint_specific_humidity():
+    """Test relative humidity from specific humidity."""
+    p = 1013.25 * units.mbar
+    temperature = 20. * units.degC
+    q = 0.012 * units.dimensionless
+    td = dewpoint_from_specific_humidity(q, temperature, p)
+    assert_almost_equal(td, 16.973 * units.degC, 3)
