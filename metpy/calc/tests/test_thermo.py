@@ -238,6 +238,18 @@ def test_lfc_basic():
     assert_almost_equal(lfc_temp, 9.705 * units.celsius, 2)
 
 
+def test_lfc_ml():
+    """Test Mixed-Layer LFC calculation."""
+    levels = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperatures = np.array([22.2, 14.6, 12., 9.4, 7., -49.]) * units.celsius
+    dewpoints = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
+    __, T_mixed, Td_mixed = mixed_parcel(levels, temperatures, dewpoints)
+    mixed_parcel_prof = parcel_profile(levels, T_mixed, Td_mixed)
+    lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints, mixed_parcel_prof)
+    assert_almost_equal(lfc_pressure, 631.794 * units.mbar, 2)
+    assert_almost_equal(lfc_temp, -1.862 * units.degC, 2)
+
+
 def test_no_lfc():
     """Test LFC calculation when there is no LFC in the data."""
     levels = np.array([959., 867.9, 779.2, 647.5, 472.5, 321.9, 251.]) * units.mbar
@@ -346,6 +358,18 @@ def test_el():
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
     assert_almost_equal(el_pressure, 520.8700 * units.mbar, 3)
     assert_almost_equal(el_temperature, -11.7027 * units.degC, 3)
+
+
+def test_el_ml():
+    """Test equilibrium layer calculation for a mixed parcel."""
+    levels = np.array([959., 779.2, 751.3, 724.3, 700., 400., 269.]) * units.mbar
+    temperatures = np.array([22.2, 14.6, 12., 9.4, 7., -25., -35.]) * units.celsius
+    dewpoints = np.array([19., -11.2, -10.8, -10.4, -10., -35., -53.2]) * units.celsius
+    __, T_mixed, Td_mixed = mixed_parcel(levels, temperatures, dewpoints)
+    mixed_parcel_prof = parcel_profile(levels, T_mixed, Td_mixed)
+    el_pressure, el_temperature = el(levels, temperatures, dewpoints, mixed_parcel_prof)
+    assert_almost_equal(el_pressure, 355.834 * units.mbar, 3)
+    assert_almost_equal(el_temperature, -28.371 * units.degC, 3)
 
 
 def test_no_el():

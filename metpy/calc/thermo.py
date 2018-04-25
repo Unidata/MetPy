@@ -338,7 +338,7 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
 
     """
     # Default to surface parcel if no profile or starting pressure level is given
-    if(parcel_temperature_profile is None):
+    if parcel_temperature_profile is None:
         parcel_temperature_profile = parcel_profile(pressure, temperature[0],
                                                     dewpt[0]).to('degC')
     # The parcel profile and data have the same first data point, so we ignore
@@ -389,7 +389,7 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None):
 
     """
     # Default to surface parcel if no profile or starting pressure level is given
-    if(parcel_temperature_profile is None):
+    if parcel_temperature_profile is None:
         parcel_temperature_profile = parcel_profile(pressure, temperature[0],
                                                     dewpt[0]).to('degC')
     # If the top of the sounding parcel is warmer than the environment, there is no EL
