@@ -2054,3 +2054,32 @@ def static_stability(pressure, temperature, axis=0):
 
     return - Rd * temperature / pressure * first_derivative(np.log(theta / units.K),
                                                             x=pressure, axis=axis)
+
+
+@exporter.export
+@check_units('[dimensionless]', '[temperature]', '[pressure]')
+def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
+    r"""Calculate the dewpoint from specific humidity, temperature, and pressure.
+
+    Parameters
+    ----------
+    specific_humidity: `pint.Quantity`
+        Specific humidity of air
+    temperature: `pint.Quantity`
+        Air temperature
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Dewpoint temperature
+
+    See Also
+    --------
+    relative_humidity_from_mixing_ratio, dewpoint_rh
+
+    """
+    return dewpoint_rh(temperature, relative_humidity_from_specific_humidity(specific_humidity,
+                                                                             temperature,
+                                                                             pressure))
