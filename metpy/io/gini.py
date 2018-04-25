@@ -9,6 +9,7 @@ try:
     from enum import Enum
 except ImportError:
     from enum34 import Enum
+from io import BytesIO
 from itertools import repeat  # noqa: I202
 import logging
 import re
@@ -29,6 +30,8 @@ def _make_datetime(s):
     r"""Convert 7 bytes from a GINI file to a `datetime` instance."""
     s = bytearray(s)  # For Python 2
     year, month, day, hour, minute, second, cs = s
+    if year < 70:
+        year += 100
     return datetime(1900 + year, month, day, hour, minute, second, 10000 * cs)
 
 
@@ -198,7 +201,7 @@ class GiniFile(object):
         self.prod_desc2 = self._buffer.read_struct(self.prod_desc2_fmt)
         log.debug(self.prod_desc2)
 
-        if self.prod_desc2.nav_cal != 0:
+        if self.prod_desc2.nav_cal not in (0, -128):  # TODO: See how GEMPAK/MCIDAS parses
             # Only warn if there actually seems to be useful navigation data
             if self._buffer.get_next(self.nav_fmt.size) != b'\x00' * self.nav_fmt.size:
                 log.warning('Navigation/Calibration unhandled: %d', self.prod_desc2.nav_cal)
@@ -214,10 +217,8 @@ class GiniFile(object):
         # Jump past the remaining empty bytes in the product description block
         self._buffer.jump_to(start, self.prod_desc2.pdb_size)
 
-        # Read the actual raster
+        # Read the actual raster--unless it's PNG compressed, in which case that happens later
         blob = self._buffer.read(self.prod_desc.num_records * self.prod_desc.record_len)
-        self.data = np.array(blob).reshape((self.prod_desc.num_records,
-                                            self.prod_desc.record_len))
 
         # Check for end marker
         end = self._buffer.read(self.prod_desc.record_len)
@@ -226,8 +227,17 @@ class GiniFile(object):
 
         # Check to ensure that we processed all of the data
         if not self._buffer.at_end():
-            log.warning('Leftover unprocessed data beyond EOF marker: %s',
-                        self._buffer.get_next(10))
+            if not blob:
+                log.debug('No data read yet, trying to decompress remaining data as an image.')
+                from matplotlib.image import imread
+                blob = (imread(BytesIO(self._buffer.read())) * 255).astype('uint8')
+            else:
+                log.warning('Leftover unprocessed data beyond EOF marker: %s',
+                            self._buffer.get_next(10))
+
+        self.data = np.array(blob).reshape((self.prod_desc.ny,
+                                            self.prod_desc.nx))
+
 
     def to_dataset(self):
         """Convert to a CDM dataset.

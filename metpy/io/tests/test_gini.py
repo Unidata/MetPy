@@ -6,6 +6,7 @@
 from datetime import datetime
 import logging
 
+import numpy as np
 from numpy.testing import assert_almost_equal
 import pytest
 
@@ -147,3 +148,14 @@ def test_gini_str():
              '\tProjection: lambert_conformal\n'
              '\tLower Left Corner (Lon, Lat): (-133.4588, 12.19)\n\tResolution: 4km')
     assert str(f) == truth
+
+
+def test_unidata_composite():
+    """Test reading radar composites in GINI format made by Unidata."""
+    f = GiniFile(get_test_data('Level3_Composite_dhr_1km_20180309_2225.gini'))
+
+    # Check the time stamp
+    assert datetime(2018, 3, 9, 22, 25) == f.prod_desc.datetime
+
+    # Check data value
+    assert 66 == f.data[2160, 2130]
