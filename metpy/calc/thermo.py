@@ -308,8 +308,8 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
 
 
 @exporter.export
-@check_units('[pressure]', '[temperature]', '[temperature]')
-def lfc(pressure, temperature, dewpt):
+@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
+def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
     r"""Calculate the level of free convection (LFC).
 
     This works by finding the first intersection of the ideal parcel path and
@@ -323,6 +323,9 @@ def lfc(pressure, temperature, dewpt):
         The temperature at the levels given by `pressure`
     dewpt : `pint.Quantity`
         The dew point at the levels given by `pressure`
+    parcel_temperature_profile: `pint.Quantity`, optional
+        The parcel temperature profile from which to calculate the LFC. Defaults to the
+        surface parcel profile.
 
     Returns
     -------
@@ -334,15 +337,17 @@ def lfc(pressure, temperature, dewpt):
     parcel_profile
 
     """
-    ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
-
+    # Default to surface parcel if no profile or starting pressure level is given
+    if parcel_temperature_profile is None:
+        parcel_temperature_profile = parcel_profile(pressure, temperature[0],
+                                                    dewpt[0]).to('degC')
     # The parcel profile and data have the same first data point, so we ignore
     # that point to get the real first intersection for the LFC calculation.
-    x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:],
-                              direction='increasing')
+    x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
+                              temperature[1:], direction='increasing')
     # Two possible cases here: LFC = LCL, or LFC doesn't exist
     if len(x) == 0:
-        if np.all(_less_or_close(ideal_profile, temperature)):
+        if np.all(_less_or_close(parcel_temperature_profile, temperature)):
             # LFC doesn't exist
             return np.nan * pressure.units, np.nan * temperature.units
         else:  # LFC = LCL
@@ -353,8 +358,8 @@ def lfc(pressure, temperature, dewpt):
 
 
 @exporter.export
-@check_units('[pressure]', '[temperature]', '[temperature]')
-def el(pressure, temperature, dewpt):
+@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
+def el(pressure, temperature, dewpt, parcel_temperature_profile=None):
     r"""Calculate the equilibrium level.
 
     This works by finding the last intersection of the ideal parcel path and
@@ -369,6 +374,9 @@ def el(pressure, temperature, dewpt):
         The temperature at the levels given by `pressure`
     dewpt : `pint.Quantity`
         The dew point at the levels given by `pressure`
+    parcel_temperature_profile: `pint.Quantity`, optional
+        The parcel temperature profile from which to calculate the EL. Defaults to the
+        surface parcel profile.
 
     Returns
     -------
@@ -380,13 +388,16 @@ def el(pressure, temperature, dewpt):
     parcel_profile
 
     """
-    ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
+    # Default to surface parcel if no profile or starting pressure level is given
+    if parcel_temperature_profile is None:
+        parcel_temperature_profile = parcel_profile(pressure, temperature[0],
+                                                    dewpt[0]).to('degC')
     # If the top of the sounding parcel is warmer than the environment, there is no EL
-    if ideal_profile[-1] > temperature[-1]:
+    if parcel_temperature_profile[-1] > temperature[-1]:
         return np.nan * pressure.units, np.nan * temperature.units
 
     # Otherwise the last intersection (as long as there is one) is the EL
-    x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
+    x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:])
     if len(x) > 0:
         return x[-1], y[-1]
     else:
