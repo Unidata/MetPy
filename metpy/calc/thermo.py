@@ -345,7 +345,13 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
     # that point to get the real first intersection for the LFC calculation.
     x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
                               temperature[1:], direction='increasing')
-    # Two possible cases here: LFC = LCL, or LFC doesn't exist
+
+    # The LFC could:
+    # 1) Not exist
+    # 2) Exist but be equal to the LCL
+    # 3) Exist and be above the LCL
+
+    # LFC does not exist or is LCL
     if len(x) == 0:
         if np.all(_less_or_close(parcel_temperature_profile, temperature)):
             # LFC doesn't exist
@@ -353,7 +359,12 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
         else:  # LFC = LCL
             x, y = lcl(pressure[0], temperature[0], dewpt[0])
             return x, y
+
+    # LFC exists and is not LCL. Make sure it is above the LCL.
     else:
+        idx = x < lcl(pressure[0], temperature[0], dewpt[0])[0]
+        x = x[idx]
+        y = y[idx]
         return x[0], y[0]
 
 
