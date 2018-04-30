@@ -16,8 +16,8 @@
    tutorials/index
    api/index
    gempak
-   developerguide
    CONTRIBUTING
+   infrastructureguide
    citing
    references
 

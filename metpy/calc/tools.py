@@ -531,7 +531,7 @@ def get_layer(pressure, *args, **kwargs):
         heights calculated from ``p`` assuming a standard atmosphere.
     bottom : `pint.Quantity`, optional
         The bottom of the layer as a pressure or height above the surface pressure. Defaults
-        to the lowest pressure or height given.
+        to the highest pressure or lowest height given.
     depth : `pint.Quantity`, optional
         The thickness of the layer as a pressure or height above the bottom of the layer.
         Defaults to 100 hPa.
