@@ -25,6 +25,7 @@ except ImportError:
 
 from ._tools import Bits, IOBuffer, NamedStruct, open_as_needed, zlib_decompress_all_frames
 from .cdm import cf_to_proj, Dataset
+from ..deprecation import deprecated
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -245,7 +246,7 @@ class GiniFile(AbstractDataStore):
         self.data = np.array(blob).reshape((self.prod_desc.ny,
                                             self.prod_desc.nx))
 
-
+    @deprecated(0.8, alternative='xarray.open_dataset(GiniFile)')
     def to_dataset(self):
         """Convert to a CDM dataset.
 
@@ -255,6 +256,8 @@ class GiniFile(AbstractDataStore):
         Returns
         -------
         Dataset
+
+        .. deprecated:: 0.8.0
 
         """
         ds = Dataset()

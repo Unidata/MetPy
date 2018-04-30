@@ -12,6 +12,7 @@ import pytest
 import xarray as xr
 
 from metpy.cbook import get_test_data
+from metpy.deprecation import MetpyDeprecationWarning
 from metpy.io import GiniFile
 from metpy.io.gini import GiniProjection
 
@@ -100,7 +101,8 @@ gini_dataset_info = [('WEST-CONUS_4km_WV_20151208_2200.gini',
 def test_gini_dataset(filename, bounds, data_var, proj_attrs, image, dt):
     """Test the dataset interface for GINI."""
     f = GiniFile(get_test_data(filename))
-    ds = f.to_dataset()
+    with pytest.warns(MetpyDeprecationWarning):
+        ds = f.to_dataset()
 
     # Check our calculated x and y arrays
     x0, x1, y0, y1 = bounds

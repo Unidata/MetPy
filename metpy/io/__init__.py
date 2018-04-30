@@ -5,10 +5,6 @@
 to take both file names (for local files) or file-like objects; this allows reading files
 that are already in memory (using :class:`python:io.StringIO`) or remote files
 (using :func:`~python:urllib.request.urlopen`).
-
-There are also classes to implement concepts from the Common Data Model (CDM). The
-purpose of these is to simplify data access by proving an interface similar to that
-of netcdf4-python.
 """
 
 from .gini import *  # noqa: F403
