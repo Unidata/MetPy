@@ -77,23 +77,26 @@ gini_dataset_info = [('WEST-CONUS_4km_WV_20151208_2200.gini',
                       {'grid_mapping_name': 'lambert_conformal_conic',
                        'standard_parallel': 25.0, 'earth_radius': 6371200.,
                        'latitude_of_projection_origin': 25.0,
-                       'longitude_of_central_meridian': -95.0}),
+                       'longitude_of_central_meridian': -95.0}, (150, 150, 184),
+                      datetime(2015, 12, 8, 22, 0, 19)),
                      ('AK-REGIONAL_8km_3.9_20160408_1445.gini',
                       (-2286001.13195, 2278061.36805, -4762503.5992, -1531941.0992), 'IR',
                       {'grid_mapping_name': 'polar_stereographic', 'standard_parallel': 60.0,
                        'earth_radius': 6371200., 'latitude_of_projection_origin': 90.,
-                       'straight_vertical_longitude_from_pole': 210.0}),
+                       'straight_vertical_longitude_from_pole': 210.0}, (150, 150, 143),
+                      datetime(2016, 4, 8, 14, 45, 20)),
                      ('HI-REGIONAL_4km_3.9_20160616_1715.gini',
                       (0.0, 2236000.0, 980627.44738, 3056627.44738), 'IR',
                       {'grid_mapping_name': 'mercator', 'standard_parallel': 20.0,
                        'earth_radius': 6371200., 'latitude_of_projection_origin': 9.343,
-                       'longitude_of_projection_origin': -167.315})
+                       'longitude_of_projection_origin': -167.315}, (150, 150, 111),
+                      datetime(2016, 6, 16, 17, 15, 18))
                      ]
 
 
-@pytest.mark.parametrize('filename,bounds,data_var,proj_attrs', gini_dataset_info,
+@pytest.mark.parametrize('filename,bounds,data_var,proj_attrs,image,dt', gini_dataset_info,
                          ids=['LCC', 'Stereographic', 'Mercator'])
-def test_gini_dataset(filename, bounds, data_var, proj_attrs):
+def test_gini_dataset(filename, bounds, data_var, proj_attrs, image, dt):
     """Test the dataset interface for GINI."""
     f = GiniFile(get_test_data(filename))
     ds = f.to_dataset()
@@ -125,6 +128,13 @@ def test_gini_dataset(filename, bounds, data_var, proj_attrs):
     # Check the lower left lon/lat corner
     assert_almost_equal(ds.variables['lon'][-1, 0], f.prod_desc.lo1, 4)
     assert_almost_equal(ds.variables['lat'][-1, 0], f.prod_desc.la1, 4)
+
+    # Check a pixel of the image to make sure we're decoding correctly
+    x_ind, y_ind, val = image
+    assert val == ds.variables[data_var][x_ind, y_ind]
+
+    # Check that the decoded date time will work properly
+    assert f.prod_desc.datetime == dt
 
 
 def test_gini_mercator_upper_corner():
