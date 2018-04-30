@@ -15,6 +15,13 @@ import logging
 import re
 
 import numpy as np
+try:
+    from xarray import Variable
+    from xarray.backends.common import AbstractDataStore
+    from xarray.core.utils import FrozenOrderedDict
+except ImportError:
+    # This way GiniFile is still usable without xarray
+    AbstractDataStore = object
 
 from ._tools import Bits, IOBuffer, NamedStruct, open_as_needed, zlib_decompress_all_frames
 from .cdm import cf_to_proj, Dataset
@@ -68,7 +75,7 @@ class GiniProjection(Enum):
 
 
 @exporter.export
-class GiniFile(object):
+class GiniFile(AbstractDataStore):
     """A class that handles reading the GINI format satellite images from the NWS.
 
     This class attempts to decode every byte that is in a given GINI file.
@@ -325,6 +332,146 @@ class GiniFile(object):
                  'Lower Left Corner (Lon, Lat): ({0.lo1}, {0.la1})',
                  'Resolution: {1.resolution}km']
         return '\n\t'.join(parts).format(self.prod_desc, self.prod_desc2)
+
+    def _make_proj_var(self):
+        proj_info = self.proj_info
+        prod_desc2 = self.prod_desc2
+        attrs = {'earth_radius': 6371200.0}
+        if self.prod_desc.projection == GiniProjection.lambert_conformal:
+            attrs['grid_mapping_name'] = 'lambert_conformal_conic'
+            attrs['standard_parallel'] = prod_desc2.lat_in
+            attrs['longitude_of_central_meridian'] = proj_info.lov
+            attrs['latitude_of_projection_origin'] = prod_desc2.lat_in
+        elif self.prod_desc.projection == GiniProjection.polar_stereographic:
+            attrs['grid_mapping_name'] = 'polar_stereographic'
+            attrs['straight_vertical_longitude_from_pole'] = proj_info.lov
+            attrs['latitude_of_projection_origin'] = -90 if proj_info.proj_center else 90
+            attrs['standard_parallel'] = 60.0  # See Note 2 for Table 4.4A in ICD
+        elif self.prod_desc.projection == GiniProjection.mercator:
+            attrs['grid_mapping_name'] = 'mercator'
+            attrs['longitude_of_projection_origin'] = self.prod_desc.lo1
+            attrs['latitude_of_projection_origin'] = self.prod_desc.la1
+            attrs['standard_parallel'] = prod_desc2.lat_in
+        else:
+            raise NotImplementedError(
+                'Unhandled GINI Projection: {}'.format(self.prod_desc.projection))
+
+        return 'projection', Variable((), 0, attrs)
+
+    def _make_time_var(self):
+        base_time = self.prod_desc.datetime.replace(hour=0, minute=0, second=0, microsecond=0)
+        offset = self.prod_desc.datetime - base_time
+        time_var = Variable((), data=offset.seconds + offset.microseconds / 1e6,
+                            attrs={'units': 'seconds since ' + base_time.isoformat()})
+
+        return 'time', time_var
+
+    def _get_proj_and_res(self):
+        import pyproj
+
+        proj_info = self.proj_info
+        prod_desc2 = self.prod_desc2
+
+        kwargs = {'a': 6371200.0, 'b': 6371200.0}
+        if self.prod_desc.projection == GiniProjection.lambert_conformal:
+            kwargs['proj'] = 'lcc'
+            kwargs['lat_0'] = prod_desc2.lat_in
+            kwargs['lon_0'] = proj_info.lov
+            kwargs['lat_1'] = prod_desc2.lat_in
+            kwargs['lat_2'] = prod_desc2.lat_in
+            dx, dy = proj_info.dx, proj_info.dy
+        elif self.prod_desc.projection == GiniProjection.polar_stereographic:
+            kwargs['proj'] = 'stere'
+            kwargs['lon_0'] = proj_info.lov
+            kwargs['lat_0'] = -90 if proj_info.proj_center else 90
+            kwargs['lat_ts'] = 60.0  # See Note 2 for Table 4.4A in ICD
+            kwargs['x_0'] = False  # Easting
+            kwargs['y_0'] = False  # Northing
+            dx, dy = proj_info.dx, proj_info.dy
+        elif self.prod_desc.projection == GiniProjection.mercator:
+            kwargs['proj'] = 'merc'
+            kwargs['lat_0'] = self.prod_desc.la1
+            kwargs['lon_0'] = self.prod_desc.lo1
+            kwargs['lat_ts'] = prod_desc2.lat_in
+            kwargs['x_0'] = False  # Easting
+            kwargs['y_0'] = False  # Northing
+            dx, dy = prod_desc2.resolution, prod_desc2.resolution
+
+        return pyproj.Proj(**kwargs), dx, dy
+
+    def _make_coord_vars(self):
+        proj, dx, dy = self._get_proj_and_res()
+
+        # Get projected location of lower left point
+        x0, y0 = proj(self.prod_desc.lo1, self.prod_desc.la1)
+
+        # Coordinate variable for x
+        xlocs = x0 + np.arange(self.prod_desc.nx) * (1000. * dx)
+        attrs = {'units': 'm', 'long_name': 'x coordinate of projection',
+                 'standard_name': 'projection_x_coordinate'}
+        x_var = Variable(('x',), xlocs, attrs)
+
+        # Now y--Need to flip y because we calculated from the lower left corner,
+        # but the raster data is stored with top row first.
+        ylocs = (y0 + np.arange(self.prod_desc.ny) * (1000. * dy))[::-1]
+        attrs = {'units': 'm', 'long_name': 'y coordinate of projection',
+                 'standard_name': 'projection_y_coordinate'}
+        y_var = Variable(('y',), ylocs, attrs)
+
+        # Get the two-D lon,lat grid as well
+        x, y = np.meshgrid(xlocs, ylocs)
+        lon, lat = proj(x, y, inverse=True)
+
+        lon_var = Variable(('y', 'x'), data=lon,
+                           attrs={'long_name': 'longitude', 'units': 'degrees_east'})
+        lat_var = Variable(('y', 'x'), data=lat,
+                           attrs={'long_name': 'latitude', 'units': 'degrees_north'})
+
+        return [('x', x_var), ('y', y_var), ('lon', lon_var), ('lat', lat_var)]
+
+    def get_variables(self):
+        """Get all variables in the file.
+
+        This is used by `xarray.open_dataset`.
+
+        """
+        variables = [self._make_time_var()]
+        proj_var_name, proj_var = self._make_proj_var()
+        variables.append((proj_var_name, proj_var))
+        variables.extend(self._make_coord_vars())
+
+        # Now the data
+        name = self.prod_desc.channel
+        if '(' in name:
+            name = name.split('(')[0].rstrip()
+
+        missing_val = self.missing
+        attrs = {'long_name': self.prod_desc.channel, 'missing_value': missing_val,
+                 'coordinates': 'y x time', 'grid_mapping': proj_var_name}
+        data_var = Variable(('y', 'x'),
+                            data=np.ma.array(self.data,
+                                             mask=self.data == missing_val),
+                            attrs=attrs)
+        variables.append((name, data_var))
+
+        return FrozenOrderedDict(variables)
+
+    def get_attrs(self):
+        """Get the global attributes.
+
+        This is used by `xarray.open_dataset`.
+
+        """
+        return FrozenOrderedDict(satellite=self.prod_desc.creating_entity,
+                                 sector=self.prod_desc.sector_id)
+
+    def get_dimensions(self):
+        """Get the file's dimensions.
+
+        This is used by `xarray.open_dataset`.
+
+        """
+        return FrozenOrderedDict(x=self.prod_desc.nx, y=self.prod_desc.ny)
 
 
 def _add_projection_coords(ds, prod_desc, proj_var, dx, dy):

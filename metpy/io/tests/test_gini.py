@@ -9,6 +9,7 @@ import logging
 import numpy as np
 from numpy.testing import assert_almost_equal
 import pytest
+import xarray as xr
 
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
@@ -137,10 +138,47 @@ def test_gini_dataset(filename, bounds, data_var, proj_attrs, image, dt):
     assert f.prod_desc.datetime == dt
 
 
+@pytest.mark.parametrize('filename,bounds,data_var,proj_attrs,image,dt', gini_dataset_info,
+                         ids=['LCC', 'Stereographic', 'Mercator'])
+def test_gini_xarray(filename, bounds, data_var, proj_attrs, image, dt):
+    """Test that GINIFile can be passed to XArray as a datastore."""
+    f = GiniFile(get_test_data(filename))
+    ds = xr.open_dataset(f)
+
+    # Check our calculated x and y arrays
+    x0, x1, y0, y1 = bounds
+    x = ds.variables['x']
+    assert_almost_equal(x[0], x0, 4)
+    assert_almost_equal(x[-1], x1, 4)
+
+    # Because the actual data raster has the top row first, the maximum y value is y[0],
+    # while the minimum y value is y[-1]
+    y = ds.variables['y']
+    assert_almost_equal(y[-1], y0, 4)
+    assert_almost_equal(y[0], y1, 4)
+
+    # Check the projection metadata
+    proj_name = ds.variables[data_var].attrs['grid_mapping']
+    proj_var = ds.variables[proj_name]
+    for attr, val in proj_attrs.items():
+        assert proj_var.attrs[attr] == val, 'Values mismatch for ' + attr
+
+    # Check the lower left lon/lat corner
+    assert_almost_equal(ds.variables['lon'][-1, 0], f.prod_desc.lo1, 4)
+    assert_almost_equal(ds.variables['lat'][-1, 0], f.prod_desc.la1, 4)
+
+    # Check a pixel of the image to make sure we're decoding correctly
+    x_ind, y_ind, val = image
+    assert val == ds.variables[data_var][x_ind, y_ind]
+
+    # Check time decoding
+    assert np.asarray(dt, dtype='datetime64[ms]') == ds.variables['time']
+
+
 def test_gini_mercator_upper_corner():
     """Test that the upper corner of the Mercator coordinates is correct."""
     f = GiniFile(get_test_data('HI-REGIONAL_4km_3.9_20160616_1715.gini'))
-    ds = f.to_dataset()
+    ds = xr.open_dataset(f)
     lat = ds.variables['lat']
     lon = ds.variables['lon']
 
