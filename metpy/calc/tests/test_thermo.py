@@ -1020,3 +1020,14 @@ def test_lfc_not_below_lcl():
     # Before patch, LFC pressure would show 1000.5912165339967 hPa
     assert_almost_equal(lfc_pressure, 811.8456357 * units.mbar, 6)
     assert_almost_equal(lfc_temp, 6.4992871 * units.celsius, 6)
+
+
+def test_cape_cin_custom_profile():
+    """Test the CAPE and CIN calculation with a custom profile passed to LFC and EL."""
+    p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
+    dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
+    parcel_prof = parcel_profile(p, temperature[0], dewpoint[0]) + 5 * units.delta_degC
+    cape, cin = cape_cin(p, temperature, dewpoint, parcel_prof)
+    assert_almost_equal(cape, 1443.505086499895 * units('joule / kilogram'), 6)
+    assert_almost_equal(cin, 0.0 * units('joule / kilogram'), 6)
