@@ -1003,3 +1003,20 @@ def test_dewpoint_specific_humidity():
     q = 0.012 * units.dimensionless
     td = dewpoint_from_specific_humidity(q, temperature, p)
     assert_almost_equal(td, 16.973 * units.degC, 3)
+
+
+def test_lfc_not_below_lcl():
+    """Test sounding where LFC appears to be (but isn't) below LCL."""
+    levels = np.array([1002.5, 1001.7, 1001., 1000.3, 999.7, 999., 998.2, 977.9,
+                       966.2, 952.3, 940.6, 930.5, 919.8, 909.1, 898.9, 888.4,
+                       878.3, 868.1, 858., 848., 837.2, 827., 816.7, 805.4]) * units.hPa
+    temperatures = np.array([17.9, 17.9, 17.8, 17.7, 17.7, 17.6, 17.5, 16.,
+                             15.2, 14.5, 13.8, 13., 12.5, 11.9, 11.4, 11.,
+                             10.3, 9.7, 9.2, 8.7, 8., 7.4, 6.8, 6.1]) * units.degC
+    dewpoints = np.array([13.6, 13.6, 13.5, 13.5, 13.5, 13.5, 13.4, 12.5,
+                          12.1, 11.8, 11.4, 11.3, 11., 9.3, 10., 8.7, 8.9,
+                          8.6, 8.1, 7.6, 7., 6.5, 6., 5.4]) * units.degC
+    lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints)
+    # Before patch, LFC pressure would show 1000.5912165339967 hPa
+    assert_almost_equal(lfc_pressure, 811.8456357 * units.mbar, 6)
+    assert_almost_equal(lfc_temp, 6.4992871 * units.celsius, 6)
