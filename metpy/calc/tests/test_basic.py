@@ -6,9 +6,9 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (add_height_to_pressure, add_pressure_to_height, coriolis_parameter,
-                        geopotential_to_height, get_wind_components, get_wind_dir,
-                        get_wind_speed, heat_index, height_to_geopotential,
+from metpy.calc import (add_height_to_pressure, add_pressure_to_height, apparent_temperature,
+                        coriolis_parameter, geopotential_to_height, get_wind_components,
+                        get_wind_dir, get_wind_speed, heat_index, height_to_geopotential,
                         height_to_pressure_std, pressure_to_height_std,
                         sigma_to_pressure, windchill)
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
@@ -316,3 +316,17 @@ def test_coriolis_units():
     """Test that coriolis returns units of 1/second."""
     f = coriolis_parameter(50 * units.degrees)
     assert f.units == units('1/second')
+
+
+def test_apparent_temperature():
+    """Test the apparent temperature calculation."""
+    temperature = np.array([[90, 90, 70],
+                            [20, 20, 60]]) * units.degF
+    rel_humidity = np.array([[60, 20, 60],
+                             [10, 10, 10]]) * units.percent
+    wind = np.array([[5, 3, 3],
+                     [10, 1, 10]]) * units.mph
+    truth = np.array([[99.6777178, 90, 70],
+                      [8.8140662, 20, 60]]) * units.degF
+    res = apparent_temperature(temperature, rel_humidity, wind)
+    assert_array_almost_equal(res, truth, 6)

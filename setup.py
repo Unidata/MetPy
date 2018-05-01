@@ -49,6 +49,7 @@ setup(
                                   '_static/metpy_150x150.png', '_static/unidata_75x75.png',
                                   '_static/unidata_150x150.png']},
 
+    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*',
     install_requires=['matplotlib>=1.4', 'numpy>=1.10.0', 'scipy>=0.14',
                       'pint>=0.8', 'enum34;python_version<"3.4"'],
     extras_require={
@@ -56,7 +57,7 @@ setup(
         'dev': ['ipython[all]>=3.1'],
         'doc': ['sphinx>=1.4', 'sphinx-gallery', 'doc8', 'recommonmark', 'netCDF4', 'pandas'],
         'examples': ['cartopy>=0.13.1', 'pandas'],
-        'test': ['pytest>=2.4', 'pytest-runner', 'pytest-mpl', 'pytest-flake8',
+        'test': ['pandas', 'pytest>=2.4', 'pytest-runner', 'pytest-mpl', 'pytest-flake8',
                  'cartopy>=0.13.1', 'flake8>3.2.0', 'flake8-builtins!=1.1.0',
                  'flake8-comprehensions', 'flake8-copyright',
                  'flake8-docstrings', 'flake8-import-order', 'flake8-mutable',

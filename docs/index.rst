@@ -1,8 +1,3 @@
-.. MetPy documentation master file, created by
-   sphinx-quickstart on Wed Apr 22 15:27:44 2015.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 .. image:: _static/sounding.png
    :width: 150 px
    :align: left
@@ -21,8 +16,8 @@
    tutorials/index
    api/index
    gempak
-   developerguide
    CONTRIBUTING
+   infrastructureguide
    citing
    references
 
@@ -33,12 +28,17 @@ MetPy
 MetPy is a collection of tools in Python for reading, visualizing, and
 performing calculations with weather data.
 
-MetPy is still in an early stage of development, and as such
-**no APIs are considered stable.** While we won't break things
-just for fun, many things may still change as we work through
-design issues.
+MetPy follows `semantic versioning <https://semver.org>`_ in its version number. With our
+current 0.x version, that implies that MetPy's APIs (application programming interfaces) are
+still evolving (we won't break things just for fun, but many things are still changing as we
+work through design issues). Also, for a version `0.x.y`, we change `x` when we
+release new features, and `y` when we make a release with only bug fixes.
 
-We support Python 2.7 as well as Python >= 3.4.
+We support Python >= 3.4 and currently support Python 2.7.
+
+.. warning::
+  We are dropping support for Python 2.7 in the Fall of 2019. For more details and rationale
+  behind this decision, see :ref:`python27`.
 
 ----------
 Contact Us

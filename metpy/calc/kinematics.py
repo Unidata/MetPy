@@ -13,7 +13,7 @@ from pyproj import Geod
 from ..calc import coriolis_parameter
 from ..calc.tools import first_derivative, get_layer_heights, gradient
 from ..cbook import is_string_like, iterable
-from ..constants import Cp_d, g
+from ..constants import Cp_d, g, Rd
 from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..units import atleast_2d, check_units, concatenate, units
@@ -904,3 +904,61 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
     v_component = (u * dugdx + v * dugdy) / f
 
     return u_component, v_component
+
+
+@exporter.export
+@check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]')
+def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
+    r"""Calculate Q-vector at a given pressure level using the u, v winds and temperature.
+
+    .. math:: \vec{Q} = (Q_1, Q_2)
+                      =  - \frac{R}{\sigma p}\left(
+                               \frac{\partial \vec{v}_g}{\partial x} \cdot \nabla_p T,
+                               \frac{\partial \vec{v}_g}{\partial y} \cdot \nabla_p T
+                           \right)
+
+    This formula follows equation 5.7.55 from [Bluestein1992]_, and can be used with the
+    the below form of the quasigeostrophic omega equation to assess vertical motion
+    ([Bluestein1992]_ equation 5.7.54):
+
+    .. math:: \left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2}
+                  \right) \omega =
+              - 2 \nabla_p \cdot \vec{Q} -
+                  \frac{R}{\sigma p} \beta \frac{\partial T}{\partial x}.
+
+    Parameters
+    ----------
+    u : (M, N) ndarray
+        x component of the wind (geostrophic in QG-theory)
+    v : (M, N) ndarray
+        y component of the wind (geostrophic in QG-theory)
+    temperature : (M, N) ndarray
+        Array of temperature at pressure level
+    pressure : `pint.Quantity`
+        Pressure at level
+    dx : float
+        The grid spacing in the x-direction
+    dy : float
+        The grid spacing in the y-direction
+    static_stability : `pint.Quantity`, optional
+        The static stability at the pressure level. Defaults to 1 if not given to calculate
+        the Q-vector without factoring in static stability.
+
+    Returns
+    -------
+    tuple of (M, N) ndarrays
+        The components of the Q-vector in the u- and v-directions respectively
+
+    See Also
+    --------
+    static_stability
+
+    """
+    dudy, dudx = gradient(u, deltas=(dy, dx), axis=(-2, -1))
+    dvdy, dvdx = gradient(v, deltas=(dy, dx), axis=(-2, -1))
+    dtempdy, dtempdx = gradient(temperature, deltas=(dy, dx), axis=(-2, -1))
+
+    q1 = -Rd / (pressure * static_stability) * (dudx * dtempdx + dvdx * dtempdy)
+    q2 = -Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)
+
+    return q1.to_base_units(), q2.to_base_units()

@@ -23,6 +23,15 @@ from ..units import atleast_1d, check_units, concatenate, diff, units
 
 exporter = Exporter(globals())
 
+DIR_STRS = [
+    'N', 'NNE', 'NE', 'ENE',
+    'E', 'ESE', 'SE', 'SSE',
+    'S', 'SSW', 'SW', 'WSW',
+    'W', 'WNW', 'NW', 'NNW'
+]
+
+BASE_DEGREE_MULTIPLIER = 22.5 * units.degree
+
 
 @exporter.export
 def resample_nn_1d(a, centers):
@@ -522,7 +531,7 @@ def get_layer(pressure, *args, **kwargs):
         heights calculated from ``p`` assuming a standard atmosphere.
     bottom : `pint.Quantity`, optional
         The bottom of the layer as a pressure or height above the surface pressure. Defaults
-        to the lowest pressure or height given.
+        to the highest pressure or lowest height given.
     depth : `pint.Quantity`, optional
         The thickness of the layer as a pressure or height above the bottom of the layer.
         Defaults to 100 hPa.
@@ -1126,3 +1135,44 @@ def _process_deriv_args(f, kwargs):
         raise ValueError('Must specify either "x" or "delta" for value positions.')
 
     return n, axis, delta
+
+
+@exporter.export
+def parse_angle(input_dir):
+    """Calculate the meteorological angle from directional text.
+
+    Works for abbrieviations or whole words (E -> 90 | South -> 180)
+    and also is able to parse 22.5 degreee angles such as ESE/East South East
+
+    Parameters
+    ----------
+    input_dir : string or array-like strings
+        Directional text such as west, [south-west, ne], etc
+
+    Returns
+    -------
+    angle
+        The angle in degrees
+
+    """
+    if len(input_dir) > 1 and not isinstance(input_dir, str):
+        return [parse_angle(single_dir) for single_dir in input_dir]
+    else:
+        input_dir = _abbrieviate_direction(input_dir)
+        for i, dir_str in enumerate(DIR_STRS):
+            if input_dir.upper() == dir_str:
+                return i * BASE_DEGREE_MULTIPLIER
+
+
+def _abbrieviate_direction(ext_dir_str):
+    """Convert extended (non-abbrievated) directions to abbrieviation."""
+    return (ext_dir_str
+            .upper()
+            .replace('_', '')
+            .replace('-', '')
+            .replace(' ', '')
+            .replace('NORTH', 'N')
+            .replace('EAST', 'E')
+            .replace('SOUTH', 'S')
+            .replace('WEST', 'W')
+            )

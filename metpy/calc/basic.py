@@ -230,6 +230,58 @@ def heat_index(temperature, rh, mask_undefined=True):
 
 
 @exporter.export
+@check_units(temperature='[temperature]', speed='[speed]')
+def apparent_temperature(temperature, rh, speed, face_level_winds=False):
+    r"""Calculate the current apparent temperature.
+
+    Calculates the current apparent temperature based on the wind chill or heat index
+    as appropriate for the current conditions. Follows [NWS10201]_.
+
+    Parameters
+    ----------
+    temperature : `pint.Quantity`
+        The air temperature
+    rh : `pint.Quantity`
+        The relative humidity expressed as a unitless ratio in the range [0, 1].
+        Can also pass a percentage if proper units are attached.
+    speed : `pint.Quantity`
+        The wind speed at 10m.  If instead the winds are at face level,
+        `face_level_winds` should be set to `True` and the 1.5 multiplicative
+        correction will be applied automatically.
+    face_level_winds : bool, optional
+        A flag indicating whether the wind speeds were measured at facial
+        level instead of 10m, thus requiring a correction.  Defaults to
+        `False`.
+
+    Returns
+    -------
+    `pint.Quantity`
+        The corresponding apparent temperature value(s)
+
+    See Also
+    --------
+    heat_index, windchill
+
+    """
+    wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
+                                       mask_undefined=True).to(temperature.units)
+
+    heat_index_temperature = heat_index(temperature, rh,
+                                        mask_undefined=True).to(temperature.units)
+
+    # Combine the heat index and wind chill arrays (no point has a value in both)
+    app_temperature = np.ma.where(wind_chill_temperature.mask,
+                                  heat_index_temperature,
+                                  wind_chill_temperature)
+
+    # Fill in missing areas where neither wind chill or heat index are applicable with the
+    # ambient temperature.
+    app_temperature[app_temperature.mask] = temperature[app_temperature.mask]
+
+    return np.array(app_temperature) * temperature.units
+
+
+@exporter.export
 @check_units('[pressure]')
 def pressure_to_height_std(pressure):
     r"""Convert pressure data to heights using the U.S. standard atmosphere.

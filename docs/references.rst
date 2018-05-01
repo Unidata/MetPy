@@ -11,6 +11,10 @@ References
            doi:`10.1175/1520-0450(1964)003%3C0396:ATFMDI%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0450(1964)003%3C0396:ATFMDI%3E2.0.CO;2>`_.
 
+.. [Bluestein1992] Bluestein, H. B., 1992: *Principles of Kinematics and Dynamics.
+           Vol. 1, Synoptic-Dynamic Meteorology in Midlatitudes*. Oxford University Press,
+           448 pp.
+
 .. [Bluestein1993] Bluestein, H. B., 1993: *Observations and Theory of Weather Systems.
            Vol. 2, Synoptic-Dynamic Meteorology in Midlatitudes*. Oxford University Press,
            608 pp.
@@ -64,7 +68,7 @@ References
            Wind Chill Temperature and Extreme Heat Indices: Evaluation and Improvement
            Projects. Washington, DC: Office of the Federal Coordinator for Meteorological
            Services and Supporting Research, 2003.
-           `FCM-R19-2003 <../_static/FCM-R19-2003-WindchillReport.pdf>`_, 75 pp.
+           `FCM-R19-2003 <_static/FCM-R19-2003-WindchillReport.pdf>`_, 75 pp.
 
 .. [Garratt1994] Garratt, J.R., 1994: *The Atmospheric Boundary Layer*. Cambridge
            University Press, 316 pp.
@@ -81,6 +85,8 @@ References
 
 .. [Markowski2010] Markowski, P. and Y. Richardson, 2010: *Mesoscale Meteorology in the
            Midlatitudes*. Wiley, 430 pp.
+
+.. [NWS10201] 2017: `National Weather Service Instruction 10-201 <_static/NWS_10-201.pdf>`_.
 
 .. [Philips1957] Philips, N. A., 1957: A coordinate system having some special
            advantages for numerical forecasting. *J. Meteor.*, **14**, 184-185,

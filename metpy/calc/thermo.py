@@ -308,8 +308,8 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
 
 
 @exporter.export
-@check_units('[pressure]', '[temperature]', '[temperature]')
-def lfc(pressure, temperature, dewpt):
+@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
+def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
     r"""Calculate the level of free convection (LFC).
 
     This works by finding the first intersection of the ideal parcel path and
@@ -323,6 +323,9 @@ def lfc(pressure, temperature, dewpt):
         The temperature at the levels given by `pressure`
     dewpt : `pint.Quantity`
         The dew point at the levels given by `pressure`
+    parcel_temperature_profile: `pint.Quantity`, optional
+        The parcel temperature profile from which to calculate the LFC. Defaults to the
+        surface parcel profile.
 
     Returns
     -------
@@ -334,27 +337,40 @@ def lfc(pressure, temperature, dewpt):
     parcel_profile
 
     """
-    ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
-
+    # Default to surface parcel if no profile or starting pressure level is given
+    if parcel_temperature_profile is None:
+        parcel_temperature_profile = parcel_profile(pressure, temperature[0],
+                                                    dewpt[0]).to('degC')
     # The parcel profile and data have the same first data point, so we ignore
     # that point to get the real first intersection for the LFC calculation.
-    x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:],
-                              direction='increasing')
-    # Two possible cases here: LFC = LCL, or LFC doesn't exist
+    x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
+                              temperature[1:], direction='increasing')
+
+    # The LFC could:
+    # 1) Not exist
+    # 2) Exist but be equal to the LCL
+    # 3) Exist and be above the LCL
+
+    # LFC does not exist or is LCL
     if len(x) == 0:
-        if np.all(_less_or_close(ideal_profile, temperature)):
+        if np.all(_less_or_close(parcel_temperature_profile, temperature)):
             # LFC doesn't exist
             return np.nan * pressure.units, np.nan * temperature.units
         else:  # LFC = LCL
             x, y = lcl(pressure[0], temperature[0], dewpt[0])
             return x, y
+
+    # LFC exists and is not LCL. Make sure it is above the LCL.
     else:
+        idx = x < lcl(pressure[0], temperature[0], dewpt[0])[0]
+        x = x[idx]
+        y = y[idx]
         return x[0], y[0]
 
 
 @exporter.export
-@check_units('[pressure]', '[temperature]', '[temperature]')
-def el(pressure, temperature, dewpt):
+@check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
+def el(pressure, temperature, dewpt, parcel_temperature_profile=None):
     r"""Calculate the equilibrium level.
 
     This works by finding the last intersection of the ideal parcel path and
@@ -369,6 +385,9 @@ def el(pressure, temperature, dewpt):
         The temperature at the levels given by `pressure`
     dewpt : `pint.Quantity`
         The dew point at the levels given by `pressure`
+    parcel_temperature_profile: `pint.Quantity`, optional
+        The parcel temperature profile from which to calculate the EL. Defaults to the
+        surface parcel profile.
 
     Returns
     -------
@@ -380,13 +399,16 @@ def el(pressure, temperature, dewpt):
     parcel_profile
 
     """
-    ideal_profile = parcel_profile(pressure, temperature[0], dewpt[0]).to('degC')
+    # Default to surface parcel if no profile or starting pressure level is given
+    if parcel_temperature_profile is None:
+        parcel_temperature_profile = parcel_profile(pressure, temperature[0],
+                                                    dewpt[0]).to('degC')
     # If the top of the sounding parcel is warmer than the environment, there is no EL
-    if ideal_profile[-1] > temperature[-1]:
+    if parcel_temperature_profile[-1] > temperature[-1]:
         return np.nan * pressure.units, np.nan * temperature.units
 
     # Otherwise the last intersection (as long as there is one) is the EL
-    x, y = find_intersections(pressure[1:], ideal_profile[1:], temperature[1:])
+    x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:])
     if len(x) > 0:
         return x[-1], y[-1]
     else:
@@ -2023,3 +2045,63 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     if it.operands[3].size == 1:
         return it.operands[3][0] * moist_adiabat_temperatures.units
     return it.operands[3] * moist_adiabat_temperatures.units
+
+
+@exporter.export
+@check_units('[pressure]', '[temperature]')
+def static_stability(pressure, temperature, axis=0):
+    r"""Calculate the static stability within a vertical profile.
+
+    .. math:: \sigma = -\frac{RT}{p} \frac{\partial \ln \theta}{\partial p}
+
+    This formuala is based on equation 4.3.6 in [Bluestein1992]_.
+
+    Parameters
+    ----------
+    pressure : array-like
+        Profile of atmospheric pressure
+    temperature : array-like
+        Profile of temperature
+    axis : int, optional
+        The axis corresponding to vertical in the pressure and temperature arrays, defaults
+        to 0.
+
+    Returns
+    -------
+    array-like
+        The profile of static stability.
+
+    """
+    theta = potential_temperature(pressure, temperature)
+
+    return - Rd * temperature / pressure * first_derivative(np.log(theta / units.K),
+                                                            x=pressure, axis=axis)
+
+
+@exporter.export
+@check_units('[dimensionless]', '[temperature]', '[pressure]')
+def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
+    r"""Calculate the dewpoint from specific humidity, temperature, and pressure.
+
+    Parameters
+    ----------
+    specific_humidity: `pint.Quantity`
+        Specific humidity of air
+    temperature: `pint.Quantity`
+        Air temperature
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Dewpoint temperature
+
+    See Also
+    --------
+    relative_humidity_from_mixing_ratio, dewpoint_rh
+
+    """
+    return dewpoint_rh(temperature, relative_humidity_from_specific_humidity(specific_humidity,
+                                                                             temperature,
+                                                                             pressure))

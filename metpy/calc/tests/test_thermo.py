@@ -7,8 +7,10 @@ import numpy as np
 import pytest
 
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
-                        brunt_vaisala_period, cape_cin, density, dewpoint, dewpoint_rh,
-                        dry_lapse, dry_static_energy, el, equivalent_potential_temperature,
+                        brunt_vaisala_period, cape_cin, density, dewpoint,
+                        dewpoint_from_specific_humidity, dewpoint_rh,
+                        dry_lapse, dry_static_energy, el,
+                        equivalent_potential_temperature,
                         exner_function, isentropic_interpolation, lcl, lfc, mixed_layer,
                         mixed_parcel, mixing_ratio, mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse,
@@ -22,7 +24,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         saturation_equivalent_potential_temperature,
                         saturation_mixing_ratio,
                         saturation_vapor_pressure,
-                        specific_humidity_from_mixing_ratio,
+                        specific_humidity_from_mixing_ratio, static_stability,
                         surface_based_cape_cin, temperature_from_potential_temperature,
                         thickness_hydrostatic,
                         thickness_hydrostatic_from_relative_humidity, vapor_pressure,
@@ -236,6 +238,18 @@ def test_lfc_basic():
     assert_almost_equal(lfc_temp, 9.705 * units.celsius, 2)
 
 
+def test_lfc_ml():
+    """Test Mixed-Layer LFC calculation."""
+    levels = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperatures = np.array([22.2, 14.6, 12., 9.4, 7., -49.]) * units.celsius
+    dewpoints = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
+    __, T_mixed, Td_mixed = mixed_parcel(levels, temperatures, dewpoints)
+    mixed_parcel_prof = parcel_profile(levels, T_mixed, Td_mixed)
+    lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints, mixed_parcel_prof)
+    assert_almost_equal(lfc_pressure, 631.794 * units.mbar, 2)
+    assert_almost_equal(lfc_temp, -1.862 * units.degC, 2)
+
+
 def test_no_lfc():
     """Test LFC calculation when there is no LFC in the data."""
     levels = np.array([959., 867.9, 779.2, 647.5, 472.5, 321.9, 251.]) * units.mbar
@@ -344,6 +358,18 @@ def test_el():
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
     assert_almost_equal(el_pressure, 520.8700 * units.mbar, 3)
     assert_almost_equal(el_temperature, -11.7027 * units.degC, 3)
+
+
+def test_el_ml():
+    """Test equilibrium layer calculation for a mixed parcel."""
+    levels = np.array([959., 779.2, 751.3, 724.3, 700., 400., 269.]) * units.mbar
+    temperatures = np.array([22.2, 14.6, 12., 9.4, 7., -25., -35.]) * units.celsius
+    dewpoints = np.array([19., -11.2, -10.8, -10.4, -10., -35., -53.2]) * units.celsius
+    __, T_mixed, Td_mixed = mixed_parcel(levels, temperatures, dewpoints)
+    mixed_parcel_prof = parcel_profile(levels, T_mixed, Td_mixed)
+    el_pressure, el_temperature = el(levels, temperatures, dewpoints, mixed_parcel_prof)
+    assert_almost_equal(el_pressure, 355.834 * units.mbar, 3)
+    assert_almost_equal(el_temperature, -28.371 * units.degC, 3)
 
 
 def test_no_el():
@@ -942,3 +968,55 @@ def test_wet_bulb_temperature_2d():
     # 21.58, 16.86, 12.18
     # 20.6, 15.9, 11.2 from NWS Calculator
     assert_array_almost_equal(val, truth)
+
+
+def test_static_stability_adiabatic():
+    """Test static stability calculation with a dry adiabatic profile."""
+    pressures = [1000., 900., 800., 700., 600., 500.] * units.hPa
+    temperature_start = 20 * units.degC
+    temperatures = dry_lapse(pressures, temperature_start)
+    sigma = static_stability(pressures, temperatures)
+    truth = np.zeros_like(pressures) * units('J kg^-1 hPa^-2')
+    # Should be zero with a dry adiabatic profile
+    assert_almost_equal(sigma, truth, 6)
+
+
+def test_static_stability_cross_section():
+    """Test static stability calculation with a 2D cross-section."""
+    pressures = [[850., 700., 500.],
+                 [850., 700., 500.],
+                 [850., 700., 500.]] * units.hPa
+    temperatures = [[17., 11., -10.],
+                    [16., 10., -11.],
+                    [11., 6., -12.]] * units.degC
+    sigma = static_stability(pressures, temperatures, axis=1)
+    truth = [[0.02819452, 0.02016804, 0.00305262],
+             [0.02808841, 0.01999462, 0.00274956],
+             [0.02840196, 0.02366708, 0.0131604]] * units('J kg^-1 hPa^-2')
+    assert_almost_equal(sigma, truth, 6)
+
+
+def test_dewpoint_specific_humidity():
+    """Test relative humidity from specific humidity."""
+    p = 1013.25 * units.mbar
+    temperature = 20. * units.degC
+    q = 0.012 * units.dimensionless
+    td = dewpoint_from_specific_humidity(q, temperature, p)
+    assert_almost_equal(td, 16.973 * units.degC, 3)
+
+
+def test_lfc_not_below_lcl():
+    """Test sounding where LFC appears to be (but isn't) below LCL."""
+    levels = np.array([1002.5, 1001.7, 1001., 1000.3, 999.7, 999., 998.2, 977.9,
+                       966.2, 952.3, 940.6, 930.5, 919.8, 909.1, 898.9, 888.4,
+                       878.3, 868.1, 858., 848., 837.2, 827., 816.7, 805.4]) * units.hPa
+    temperatures = np.array([17.9, 17.9, 17.8, 17.7, 17.7, 17.6, 17.5, 16.,
+                             15.2, 14.5, 13.8, 13., 12.5, 11.9, 11.4, 11.,
+                             10.3, 9.7, 9.2, 8.7, 8., 7.4, 6.8, 6.1]) * units.degC
+    dewpoints = np.array([13.6, 13.6, 13.5, 13.5, 13.5, 13.5, 13.4, 12.5,
+                          12.1, 11.8, 11.4, 11.3, 11., 9.3, 10., 8.7, 8.9,
+                          8.6, 8.1, 7.6, 7., 6.5, 6., 5.4]) * units.degC
+    lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints)
+    # Before patch, LFC pressure would show 1000.5912165339967 hPa
+    assert_almost_equal(lfc_pressure, 811.8456357 * units.mbar, 6)
+    assert_almost_equal(lfc_temp, 6.4992871 * units.celsius, 6)

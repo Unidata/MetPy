@@ -1109,17 +1109,17 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">QVEC(S, V)</td>
-        <td class="tg-notimplemented">Q-vector at a level</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/661">Issue #661</a></td>
+        <td class="tg-implemented">QVEC(S, V)</td>
+        <td class="tg-implemented">Q-vector at a level</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.q_vector.html#metpy.calc.q_vector">metpy.calc.q_vector</a></td>
         <td></td>
         <td></td>
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">QVCL(THTA, V)</td>
-        <td class="tg-notimplemented">Q-vector of a layer</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/661">Issue #661</a></td>
+        <td class="tg-implemented">QVCL(THTA, V)</td>
+        <td class="tg-implemented">Q-vector of a layer</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.q_vector.html#metpy.calc.q_vector">metpy.calc.q_vector</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average of each component)</td>
         <td></td>
         <td></td>
         <td></td>
