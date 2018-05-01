@@ -84,7 +84,6 @@ def generate_grid(horiz_dim, bbox):
         Y dimension meshgrid defined by given bounding box
 
     """
-
     x_steps, y_steps = get_xy_steps(bbox, horiz_dim)
 
     grid_x = np.linspace(bbox['west'], bbox['east'], x_steps)
