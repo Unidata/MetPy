@@ -1213,7 +1213,8 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
 
     """
     # Calculate LFC limit of integration
-    lfc_pressure = lfc(pressure, temperature, dewpt)[0]
+    lfc_pressure, _ = lfc(pressure, temperature, dewpt,
+                          parcel_temperature_profile=parcel_profile)
 
     # If there is no LFC, no need to proceed.
     if np.isnan(lfc_pressure):
@@ -1222,7 +1223,8 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
         lfc_pressure = lfc_pressure.magnitude
 
     # Calculate the EL limit of integration
-    el_pressure = el(pressure, temperature, dewpt)[0]
+    el_pressure, _ = el(pressure, temperature, dewpt,
+                        parcel_temperature_profile=parcel_profile)
 
     # No EL and we use the top reading of the sounding.
     if np.isnan(el_pressure):
