@@ -9,7 +9,7 @@ import pytest
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
                         brunt_vaisala_period, cape_cin, density, dewpoint,
                         dewpoint_from_specific_humidity, dewpoint_rh,
-                        dry_lapse, dry_static_energy, el,
+                        downdraft_cape, dry_lapse, dry_static_energy, el,
                         equivalent_potential_temperature,
                         exner_function, isentropic_interpolation, lcl, lfc, mixed_layer,
                         mixed_parcel, mixing_ratio, mixing_ratio_from_relative_humidity,
@@ -1020,3 +1020,41 @@ def test_lfc_not_below_lcl():
     # Before patch, LFC pressure would show 1000.5912165339967 hPa
     assert_almost_equal(lfc_pressure, 811.8456357 * units.mbar, 6)
     assert_almost_equal(lfc_temp, 6.4992871 * units.celsius, 6)
+
+
+def test_dcape_defaults():
+    """Test DCAPE with the default behavior."""
+    pressure = np.array([973, 943.5, 925, 910.6, 878.4, 865, 850, 848, 847.2, 816.9,
+                        793, 787.8, 759.6, 759, 732.2, 700, 654.5]) * units.hPa
+    temperature = np.array([23.4, 20.4, 18.4, 17.1, 14.1, 12.8, 13.2, 13.4, 13.4,
+                           13.1, 12.8, 12.7, 12.4, 12.4, 10, 7, 3.4]) * units.degC
+    dewpoint = np.array([5.4, 3.6, 2.4, 1.8, 0.4, -0.2, 0.2, 0.4, 0.2, -5.5, -10.2,
+                         -11.9, -21.4, -21.6, -21.8, -22, -21.4]) * units.degC
+    dcape, dcape_pressure, dcape_temperature = downdraft_cape(pressure, temperature, dewpoint)
+    dcape_truth = 74.11506371089433 * units.joule / units.kilogram
+    dcape_pressure_truth = np.array([973, 943.5, 925, 910.6, 878.4]) * units.hPa
+    dcape_temperature_truth = np.array([17.95718657, 16.80836487,
+                                        16.06406211, 15.47121721, 14.1]) * units.degC
+    assert_almost_equal(dcape, dcape_truth, 6)
+    assert_almost_equal(dcape_pressure, dcape_pressure_truth, 6)
+    assert_almost_equal(dcape_temperature, dcape_temperature_truth, 6)
+
+
+def test_dcape_custom_parcel_start():
+    """Test DCAPE with a custom parcel starting point."""
+    pressure = np.array([973, 943.5, 925, 910.6, 878.4, 865, 850, 848, 847.2, 816.9,
+                        793, 787.8, 759.6, 759, 732.2, 700, 654.5]) * units.hPa
+    temperature = np.array([23.4, 20.4, 18.4, 17.1, 14.1, 12.8, 13.2, 13.4, 13.4,
+                           13.1, 12.8, 12.7, 12.4, 12.4, 10, 7, 3.4]) * units.degC
+    dewpoint = np.array([5.4, 3.6, 2.4, 1.8, 0.4, -0.2, 0.2, 0.4, 0.2, -5.5, -10.2,
+                         -11.9, -21.4, -21.6, -21.8, -22, -21.4]) * units.degC
+    custom_parcel = (654.5 * units.hPa, 3.4 * units.degC)
+    dcape, dcape_pressure, dcape_temperature = downdraft_cape(pressure, temperature, dewpoint,
+                                                              parcel=custom_parcel)
+    dcape_truth = 82.40213213698428 * units.joule / units.kilogram
+    dcape_pressure_truth = np.array([973, 943.5, 925, 910.6, 878.4]) * units.hPa
+    dcape_temperature_truth = np.array([17.95718657, 16.80836487,
+                                        16.06406211, 15.47121721, 14.1]) * units.degC
+    assert_almost_equal(dcape, dcape_truth, 6)
+    assert_almost_equal(dcape_pressure, dcape_pressure_truth, 6)
+    assert_almost_equal(dcape_temperature, dcape_temperature_truth, 6)
