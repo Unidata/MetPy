@@ -2107,9 +2107,10 @@ def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
                                                                              pressure))
 
 
-@check_units('[pressure]', '[temperature]', '[temperature]', '[pressure]')
+@exporter.export
+@check_units('[pressure]', '[temperature]', '[temperature]')
 def downdraft_cape(pressure, temperature, dewpoint, parcel=None, bottom=None,
-                   top_pressure=400 * units.hPa):
+                   heights=None, top_pressure=400 * units.hPa):
     r"""Calculate downdraft CAPE.
 
     Calculate the downdraft convective available potential energy (CAPE).The minimum theta-e
@@ -2151,19 +2152,32 @@ def downdraft_cape(pressure, temperature, dewpoint, parcel=None, bottom=None,
     * :math:`p` Atmospheric pressure
 
     """
-    # Sort so everything is with monotonically increasing pressure.
-    sort_inds = np.argsort(pressure)
-    pressure = pressure[sort_inds]
-    temperature = temperature[sort_inds]
-    dewpoint = dewpoint[sort_inds]
 
-    # Trim data to only top height and below as well as bottom height and above
-    pressure, temperature, dewpoint = get_layer(pressure, temperature, dewpoint,
-                                                depth=pressure[-1] - top_pressure,
-                                                bottom=bottom)
+    # If the user specified a parcel starting point, we'll use that instead of the default
+    if parcel:
+        parcel_starting_pressure, parcel_starting_temperature = parcel
 
-    # The user did not give us a parcel, so we'll
-    if not parcel:
+        # Trim data to parcel starting point and below, interpolating the starting point
+        pressure, temperature, dewpoint = get_layer(pressure, temperature, dewpoint,
+                                                    depth=np.nanmax(pressure) * pressure.units - parcel_starting_pressure,
+                                                    heights=heights)
+
+        # Trim data to be only above the bottom, interpolating if necessary. This must be done
+        # in separate step as there is no way to specify the top of a layer, just depth.
+        pressure, temperature, dewpoint = get_layer(pressure, temperature, dewpoint,
+                                                    bottom=bottom,
+                                                    heights=heights)
+
+
+    # The user did not give us a parcel, so we'll calculate a sensible default.
+    else:
+
+        # Trim data to only top height and below as well as bottom height and above
+        pressure, temperature, dewpoint = get_layer(pressure, temperature, dewpoint,
+                                                    depth=np.nanmax(pressure) * pressure.units - top_pressure,
+                                                    bottom=bottom,
+                                                    heights=heights)
+
         # Find minimum theta-e
         theta_e = equivalent_potential_temperature(pressure, temperature, dewpoint)
         minimum_theta_e_index = np.argmin(theta_e)
@@ -2172,20 +2186,19 @@ def downdraft_cape(pressure, temperature, dewpoint, parcel=None, bottom=None,
         pressure = pressure[:minimum_theta_e_index]
         temperature = temperature[:minimum_theta_e_index]
 
-        # Create the parcel profile for decent along a moist adiabat
-        profile_temperatures = moist_lapse(pressure[::-1], temperature[-1])
-        profile_temperatures = profile_temperatures[::-1]
+    # Sort for monotonically increasing pressure that trapz needs to work.
+    # Also guarantees the logic for calculating a descending parcel is sound.
+    sort_inds = np.argsort(pressure)
+    pressure = pressure[sort_inds]
+    temperature = temperature[sort_inds]
 
-    # The user has given us a parcel, we'll trim the data down, interpolating, and create
-    # a parcel profile
-    else:
-        pressure, temperature, dewpoint = get_layer(pressure, temperature, dewpoint,
-                                                    depth=pressure[-1] - top_pressure)
+    # Create the parcel profile for decent along a moist adiabat
+    profile_temperatures = moist_lapse(pressure, temperature[0])
 
     # Calculate the difference in profile and environmental temperature to integrate
     y_vals = temperature - profile_temperatures
 
-    # Calculate DCAPE (remember trapz needs monotonically increasing x for correct sign)
+    # Calculate DCAPE
     dcape = Rd * (np.trapz(y_vals,
                            x=np.log(pressure.m)) * units.kelvin)
-    return dcape.to('J/kg')
+    return dcape.to('J/kg'), pressure[::-1], profile_temperatures[::-1]
