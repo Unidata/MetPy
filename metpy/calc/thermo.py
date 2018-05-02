@@ -2156,10 +2156,11 @@ def downdraft_cape(pressure, temperature, dewpoint, parcel=None, bottom=None,
     # If the user specified a parcel starting point, we'll use that instead of the default
     if parcel:
         parcel_starting_pressure, parcel_starting_temperature = parcel
-
+        print(np.nanmax(pressure) * pressure.units - parcel_starting_pressure)
         # Trim data to parcel starting point and below, interpolating the starting point
         pressure, temperature, dewpoint = get_layer(pressure, temperature, dewpoint,
-                                                    depth=np.nanmax(pressure) * pressure.units - parcel_starting_pressure,
+                                                    depth=(np.nanmax(pressure) * pressure.units -
+                                                           parcel_starting_pressure),
                                                     heights=heights)
 
         # Trim data to be only above the bottom, interpolating if necessary. This must be done
@@ -2168,13 +2169,18 @@ def downdraft_cape(pressure, temperature, dewpoint, parcel=None, bottom=None,
                                                     bottom=bottom,
                                                     heights=heights)
 
-
     # The user did not give us a parcel, so we'll calculate a sensible default.
     else:
 
+        # Determine the depth for this calculation and ensure that it's in the sounding
+        # range. If it's out of range, just use the available data.
+        calculation_depth = (np.nanmax(pressure) * pressure.units - top_pressure)
+        if _less_or_close(calculation_depth, np.nanmin(pressure) * pressure.units):
+            calculation_depth = None
+
         # Trim data to only top height and below as well as bottom height and above
         pressure, temperature, dewpoint = get_layer(pressure, temperature, dewpoint,
-                                                    depth=np.nanmax(pressure) * pressure.units - top_pressure,
+                                                    depth=calculation_depth,
                                                     bottom=bottom,
                                                     heights=heights)
 
