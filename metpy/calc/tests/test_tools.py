@@ -10,7 +10,7 @@ import numpy.ma as ma
 import pytest
 
 from metpy.calc import (find_intersections, first_derivative, get_layer, get_layer_heights,
-                        interp, interpolate_nans, laplacian, log_interp,
+                        gradient, interp, interpolate_nans, laplacian, log_interp,
                         nearest_intersection_idx, parse_angle, pressure_to_height_std,
                         reduce_point_density, resample_nn_1d, second_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
@@ -660,3 +660,17 @@ def test_parse_angle_mix_multiple():
     expected_angles_degrees = np.arange(0, 360, 22.5) * units.degree
     output_angles_degrees = parse_angle(test_dir_strs)
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
+
+
+def test_gradient_2d(deriv_2d_data):
+    """Test gradient with 2D arrays."""
+    res = gradient(deriv_2d_data.f, x=(deriv_2d_data.y, deriv_2d_data.x))
+    truth = (np.array([[-0.25, -0.25, -0.25],
+                       [1.75, 1.75, 1.75],
+                       [4.75, 4.75, 4.75],
+                       [5.75, 5.75, 5.75]]),
+             np.array([[-3, -1, 4],
+                       [-3, -1, 4],
+                       [-3, -1, 4],
+                       [-3, -1, 4]]))
+    assert_array_almost_equal(res, truth, 5)
