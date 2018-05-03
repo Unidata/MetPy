@@ -72,7 +72,7 @@ def generate_grid(horiz_dim, bbox):
     Parameters
     ----------
     horiz_dim: integer
-        Horizontal resolution in meters
+        Horizontal resolution
     bbox: dictionary
         Dictionary containing coordinates for corners of study area.
 
@@ -84,9 +84,6 @@ def generate_grid(horiz_dim, bbox):
         Y dimension meshgrid defined by given bounding box
 
     """
-    if horiz_dim < 10000:
-        log.warning('Grids less than 10km may be slow to load at synoptic scale.')
-
     x_steps, y_steps = get_xy_steps(bbox, horiz_dim)
 
     grid_x = np.linspace(bbox['west'], bbox['east'], x_steps)
