@@ -1048,13 +1048,17 @@ def test_dcape_custom_parcel_start():
                            13.1, 12.8, 12.7, 12.4, 12.4, 10, 7, 3.4]) * units.degC
     dewpoint = np.array([5.4, 3.6, 2.4, 1.8, 0.4, -0.2, 0.2, 0.4, 0.2, -5.5, -10.2,
                          -11.9, -21.4, -21.6, -21.8, -22, -21.4]) * units.degC
-    custom_parcel = (654.5 * units.hPa, 3.4 * units.degC)
+    custom_parcel = (670 * units.hPa, 3.5 * units.degC)
     dcape, dcape_pressure, dcape_temperature = downdraft_cape(pressure, temperature, dewpoint,
                                                               parcel=custom_parcel)
-    dcape_truth = 82.40213213698428 * units.joule / units.kilogram
-    dcape_pressure_truth = np.array([973, 943.5, 925, 910.6, 878.4]) * units.hPa
-    dcape_temperature_truth = np.array([17.95718657, 16.80836487,
-                                        16.06406211, 15.47121721, 14.1]) * units.degC
+    dcape_truth = 101.56717405359117 * units.joule / units.kilogram
+    dcape_pressure_truth = np.array([973, 943.5, 925, 910.6, 878.4, 865, 850, 848, 847.2,
+                                     816.9, 793, 787.8, 759.6, 759, 732.2, 700, 670]) * units.hPa
+    dcape_temperature_truth = np.array([19.0633538, 17.93772489, 17.20885559, 16.62853588,
+                                        15.2870874, 14.70992377, 14.04982066, 13.96065181,
+                                        13.92490675, 12.53726347, 11.39336396, 11.13832389,
+                                        9.71426456, 9.68318326, 8.25933429, 6.44940391,
+                                        4.65373642]) * units.degC
     assert_almost_equal(dcape, dcape_truth, 6)
     assert_almost_equal(dcape_pressure, dcape_pressure_truth, 6)
     assert_almost_equal(dcape_temperature, dcape_temperature_truth, 6)
