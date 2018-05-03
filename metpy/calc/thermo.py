@@ -2110,7 +2110,7 @@ def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
 @exporter.export
 @check_units('[pressure]', '[temperature]', '[temperature]')
 def downdraft_cape(pressure, temperature, dewpoint, parcel=None, bottom=None,
-                   heights=None, top_pressure=400 * units.hPa):
+                   heights=None, depth=400 * units.hPa):
     r"""Calculate downdraft CAPE.
 
     Calculate the downdraft convective available potential energy (CAPE).The minimum theta-e
@@ -2156,16 +2156,15 @@ def downdraft_cape(pressure, temperature, dewpoint, parcel=None, bottom=None,
     # If the user specified a parcel starting point, we'll use that instead of the default
     if parcel:
         parcel_starting_pressure, parcel_starting_temperature = parcel
-        profile_depth = np.nanmax(pressure) * pressure.units - parcel_starting_pressure
 
-        # Trim data to parcel starting point and below, interpolating the starting point
-        pressure, temperature = get_layer(pressure, temperature,
-                                          depth= profile_depth, heights=heights)
+        # Trim data to parcel starting point and below, as interpolating the starting point
+        #pressure, temperature = get_layer(pressure, temperature,
+                                          #depth=depth, heights=heights)
 
+        #profile_depth = np.nanmax(pressure) * pressure.units - parcel_starting_pressure - bottom
         # Trim data to be only above the bottom, interpolating if necessary. This must be done
         # in separate step as there is no way to specify the top of a layer, just depth.
-        pressure, temperature = get_layer(pressure, temperature, bottom=bottom,
-                                          depth= profile_depth, heights=heights)
+        pressure, temperature = get_layer(pressure, temperature, bottom=bottom, depth=depth, heights=heights)
 
     # The user did not give us a parcel, so we'll calculate a sensible default.
     else:
