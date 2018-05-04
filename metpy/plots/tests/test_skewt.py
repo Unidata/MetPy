@@ -311,3 +311,11 @@ def test_hodograph_wind_vectors():
     h.plot(u_wind, v_wind, linewidth=3)
     h.wind_vectors(u_wind, v_wind)
     return fig
+
+
+@pytest.mark.xfail
+def test_united_hodograph_range():
+    """Tests making a hodograph with a united ranged."""
+    fig = plt.figure(figsize=(6, 6))
+    ax = fig.add_subplot(1, 1, 1)
+    Hodograph(ax, component_range=60. * units.knots)
