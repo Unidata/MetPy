@@ -339,7 +339,10 @@ except (AttributeError, RuntimeError):  # Pint's not available, try to enable ou
         @staticmethod
         def default_units(x, axis):
             """Get the default unit to use for the given combination of unit and axis."""
-            return getattr(x, 'units', None)
+            if isinstance(x, (tuple, list)):
+                return getattr(x[0], 'units', 'dimensionless')
+            else:
+                return getattr(x, 'units', 'dimensionless')
 
     # Register the class
     munits.registry[units.Quantity] = PintConverter(units)
