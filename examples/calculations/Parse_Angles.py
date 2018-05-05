@@ -27,7 +27,7 @@ angle_deg = mpcalc.parse_angle(dir_str)
 print(angle_deg)
 
 ###########################################
-# Take the odd units and force them to millibars
+# Convert angle in degrees to radians
 angle_rad = angle_deg.to(units.radians)
 print(angle_rad)
 
