@@ -173,6 +173,7 @@ Other
    .. autosummary::
       :toctree: ./
 
+      angle_to_direction
       find_bounding_indices
       find_intersections
       get_layer
