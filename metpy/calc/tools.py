@@ -1029,10 +1029,11 @@ def gradient(f, **kwargs):
     f : array-like
         Array of values of which to calculate the derivative
     x : array-like, optional
-        The coordinate values corresponding to the grid points in `f`
+        Sequence of arrays containing the coordinate values corresponding to the
+        grid points in `f` in axis order.
     deltas : array-like, optional
-        Spacing between the grid points in `f`. There should be one item less than the size
-        of `f` along `axis`.
+        Sequence of arrays or scalars that specify the spacing between the grid points in `f`
+        in axis order. There should be one item less than the size of `f` along `axis`.
 
     Returns
     -------
