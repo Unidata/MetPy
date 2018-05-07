@@ -1025,11 +1025,14 @@ def test_lfc_not_below_lcl():
 def test_dcape_defaults():
     """Test DCAPE with the default behavior."""
     pressure = np.array([973, 943.5, 925, 910.6, 878.4, 865, 850, 848, 847.2, 816.9,
-                        793, 787.8, 759.6, 759, 732.2, 700, 654.5]) * units.hPa
+                        793, 787.8, 759.6, 759, 732.2, 700, 654.5, 607.1,
+                        607, 580, 562, 549.]) * units.hPa
     temperature = np.array([23.4, 20.4, 18.4, 17.1, 14.1, 12.8, 13.2, 13.4, 13.4,
-                           13.1, 12.8, 12.7, 12.4, 12.4, 10, 7, 3.4]) * units.degC
+                           13.1, 12.8, 12.7, 12.4, 12.4, 10, 7, 3.4, -0.7,
+                           -0.7, -3.3, -5.5, -7.1]) * units.degC
     dewpoint = np.array([5.4, 3.6, 2.4, 1.8, 0.4, -0.2, 0.2, 0.4, 0.2, -5.5, -10.2,
-                         -11.9, -21.4, -21.6, -21.8, -22, -21.4]) * units.degC
+                         -11.9, -21.4, -21.6, -21.8, -22, -21.4, -20.7, -20.7,
+                         -38.3, -27.8, -20.1]) * units.degC
     dcape, dcape_pressure, dcape_temperature = downdraft_cape(pressure, temperature, dewpoint)
     dcape_truth = 74.11506371089433 * units.joule / units.kilogram
     dcape_pressure_truth = np.array([973, 943.5, 925, 910.6, 878.4]) * units.hPa
