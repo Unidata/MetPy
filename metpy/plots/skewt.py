@@ -20,8 +20,8 @@ import matplotlib.transforms as transforms
 import numpy as np
 
 from ._util import colored_line
-from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
-from ..calc.tools import _delete_masked_points, interp
+from ..calc import dewpoint, dry_lapse, interp, moist_lapse, vapor_pressure
+from ..calc.tools import _delete_masked_points
 from ..package_tools import Exporter
 from ..units import concatenate, units
 
