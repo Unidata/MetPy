@@ -21,7 +21,7 @@ import numpy as np
 
 from ._util import colored_line
 from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
-from ..calc.tools import delete_masked_points, interp
+from ..calc.tools import _delete_masked_points, interp
 from ..package_tools import Exporter
 from ..units import concatenate, units
 
@@ -314,7 +314,7 @@ class SkewT(object):
 
         """
         # Skew-T logP plotting
-        t, p = delete_masked_points(t, p)
+        t, p = _delete_masked_points(t, p)
         lines = self.ax.semilogy(t, p, *args, **kwargs)
 
         # Disables the log-formatting that comes with semilogy
@@ -606,7 +606,7 @@ class SkewT(object):
         if matplotlib.__version__ >= '2.1':
             fill_args['interpolate'] = True
 
-        arrs = delete_masked_points(*arrs)
+        arrs = _delete_masked_points(*arrs)
 
         return self.ax.fill_betweenx(*arrs, **fill_args)
 
@@ -783,7 +783,7 @@ class Hodograph(object):
 
         """
         line_args = self._form_line_args(kwargs)
-        u, v = delete_masked_points(u, v)
+        u, v = _delete_masked_points(u, v)
         return self.ax.plot(u, v, **line_args)
 
     def wind_vectors(self, u, v, **kwargs):
@@ -852,7 +852,7 @@ class Hodograph(object):
         :meth:`Hodograph.plot`
 
         """
-        u, v, c = delete_masked_points(u, v, c)
+        u, v, c = _delete_masked_points(u, v, c)
 
         # Plotting a color segmented hodograph
         if colors:
