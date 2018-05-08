@@ -263,6 +263,12 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
     heat_index, windchill
 
     """
+    is_not_scalar = isinstance(temperature.m, (list, tuple, np.ndarray))
+
+    temperature = atleast_1d(temperature)
+    rh = atleast_1d(rh)
+    speed = atleast_1d(speed)
+
     wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
                                        mask_undefined=True).to(temperature.units)
 
@@ -274,11 +280,15 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
                                   heat_index_temperature,
                                   wind_chill_temperature)
 
-    # Fill in missing areas where neither wind chill or heat index are applicable with the
-    # ambient temperature.
-    app_temperature[app_temperature.mask] = temperature[app_temperature.mask]
-
-    return np.array(app_temperature) * temperature.units
+    if is_not_scalar:
+        # Fill in missing areas where neither wind chill or heat index are applicable with the
+        # ambient temperature.
+        app_temperature[app_temperature.mask] = temperature[app_temperature.mask]
+        return np.array(app_temperature) * temperature.units
+    else:
+        if app_temperature.mask:
+            app_temperature = temperature.m
+        return app_temperature[0] * temperature.units
 
 
 @exporter.export
