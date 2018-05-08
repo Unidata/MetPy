@@ -330,3 +330,23 @@ def test_apparent_temperature():
                       [8.8140662, 20, 60]]) * units.degF
     res = apparent_temperature(temperature, rel_humidity, wind)
     assert_array_almost_equal(res, truth, 6)
+
+
+def test_apparent_temperature_scalar():
+    """Test the apparent temperature calculation with a scalar."""
+    temperature = 90 * units.degF
+    rel_humidity = 60 * units.percent
+    wind = 5 * units.mph
+    truth = 99.6777178 * units.degF
+    res = apparent_temperature(temperature, rel_humidity, wind)
+    assert_almost_equal(res, truth, 6)
+
+
+def test_apparent_temperature_scalar_no_modification():
+    """Test the apparent temperature calculation with a scalar that is NOOP."""
+    temperature = 70 * units.degF
+    rel_humidity = 60 * units.percent
+    wind = 5 * units.mph
+    truth = 70 * units.degF
+    res = apparent_temperature(temperature, rel_humidity, wind)
+    assert_almost_equal(res, truth, 6)
