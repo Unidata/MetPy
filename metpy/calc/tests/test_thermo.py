@@ -1031,3 +1031,16 @@ def test_cape_cin_custom_profile():
     cape, cin = cape_cin(p, temperature, dewpoint, parcel_prof)
     assert_almost_equal(cape, 1443.505086499895 * units('joule / kilogram'), 6)
     assert_almost_equal(cin, 0.0 * units('joule / kilogram'), 6)
+
+
+def test_parcel_profile_below_lcl():
+    """Test parcel profile calculation when pressures do not reach LCL (#827)."""
+    pressure = np.array([981, 949.2, 925., 913.9, 903, 879.4, 878, 864, 855,
+                         850, 846.3, 838, 820, 814.5, 799, 794]) * units.hPa
+    truth = np.array([276.35, 273.76110242, 271.74910213, 270.81364639,
+                      269.88711359, 267.85332225, 267.73145436, 266.5050728,
+                      265.70916946, 265.264412, 264.93408677, 264.18931638,
+                      262.55585912, 262.0516423, 260.61745662,
+                      260.15057861]) * units.kelvin
+    profile = parcel_profile(pressure, 3.2 * units.degC, -10.8 * units.degC)
+    assert_almost_equal(profile, truth, 6)
