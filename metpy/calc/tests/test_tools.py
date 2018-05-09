@@ -13,8 +13,9 @@ from metpy.calc import (find_intersections, first_derivative, get_layer, get_lay
                         interp, interpolate_nans, laplacian, log_interp,
                         nearest_intersection_idx, parse_angle, pressure_to_height_std,
                         reduce_point_density, resample_nn_1d, second_derivative)
-from metpy.calc.tools import (_get_bound_pressure_height, _greater_or_close, _less_or_close,
-                              _next_non_masked_element, delete_masked_points, DIR_STRS)
+from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
+                              _greater_or_close, _less_or_close, _next_non_masked_element,
+                              DIR_STRS)
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -186,7 +187,7 @@ def test_delete_masked_points():
     a = ma.masked_array(np.arange(5), mask=[False, True, False, False, False])
     b = ma.masked_array(np.arange(5), mask=[False, False, False, True, False])
     expected = np.array([0, 2, 4])
-    a, b = delete_masked_points(a, b)
+    a, b = _delete_masked_points(a, b)
     assert_array_equal(a, expected)
     assert_array_equal(b, expected)
 

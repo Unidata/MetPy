@@ -224,7 +224,7 @@ def _next_non_masked_element(a, idx):
         return idx, a[idx]
 
 
-def delete_masked_points(*arrs):
+def _delete_masked_points(*arrs):
     """Delete masked points from arrays.
 
     Takes arrays and removes masked points to help with calculations and plotting.
