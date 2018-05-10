@@ -12,7 +12,7 @@ import numpy as np
 
 from metpy.cbook import get_test_data
 from metpy.io import Level2File
-from metpy.plots import add_metpy_logo, add_timestamp, ctables
+from metpy.plots import add_metpy_logo, add_timestamp, colortables
 
 ###########################################
 
@@ -53,7 +53,7 @@ for var_data, var_range, ax in zip((ref, rho), (ref_range, rho_range), axes):
     ylocs = var_range * np.cos(np.deg2rad(az[:, np.newaxis]))
 
     # Plot the data
-    cmap = ctables.registry.get_colortable('viridis')
+    cmap = colortables.get_colortable('viridis')
     ax.pcolormesh(xlocs, ylocs, data, cmap=cmap)
     ax.set_aspect('equal', 'datalim')
     ax.set_xlim(-40, 20)

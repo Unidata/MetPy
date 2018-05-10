@@ -15,7 +15,7 @@ import xarray as xr
 
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
-from metpy.plots import add_metpy_logo, add_timestamp, ctables
+from metpy.plots import add_metpy_logo, add_timestamp, colortables
 
 ###########################################
 
@@ -51,7 +51,7 @@ proj = ccrs.LambertConformal(central_longitude=proj_var.attrs['longitude_of_cent
 fig = plt.figure(figsize=(10, 12))
 add_metpy_logo(fig, 125, 145)
 ax = fig.add_subplot(1, 1, 1, projection=proj)
-wv_norm, wv_cmap = ctables.registry.get_with_range('WVCIMSS', 100, 260)
+wv_norm, wv_cmap = colortables.get_with_range('WVCIMSS', 100, 260)
 wv_cmap.set_under('k')
 im = ax.imshow(dat[:], cmap=wv_cmap, norm=wv_norm,
                extent=(x.min(), x.max(), y.min(), y.max()), origin='upper')
