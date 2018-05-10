@@ -33,6 +33,7 @@ def calc_kappa(spacing, kappa_star=5.052):
     return kappa_star * (2.0 * spacing / np.pi)**2
 
 
+@exporter.export
 def remove_observations_below_value(x, y, z, val=0):
     r"""Remove all x, y, and z where z is less than val.
 
@@ -63,6 +64,7 @@ def remove_observations_below_value(x, y, z, val=0):
     return x_, y_, z_
 
 
+@exporter.export
 def remove_nan_observations(x, y, z):
     r"""Remove all x, y, and z where z is nan.
 
@@ -91,6 +93,7 @@ def remove_nan_observations(x, y, z):
     return x_, y_, z_
 
 
+@exporter.export
 def remove_repeat_coordinates(x, y, z):
     r"""Remove all x, y, and z where (x,y) is repeated and keep the first occurrence only.
 
