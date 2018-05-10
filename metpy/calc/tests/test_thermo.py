@@ -593,7 +593,8 @@ def test_isentropic_pressure():
     tmp[:, :, -1] = np.nan
     tmpk = tmp * units.kelvin
     isentlev = [296.] * units.kelvin
-    isentprs = isentropic_interpolation(isentlev, lev, tmpk)
+    with pytest.warns(RuntimeWarning, match='invalid value'):
+        isentprs = isentropic_interpolation(isentlev, lev, tmpk)
     trueprs = np.ones((1, 5, 5)) * (1000. * units.hPa)
     trueprs[:, :, -1] = np.nan
     assert isentprs[0].shape == (1, 5, 5)

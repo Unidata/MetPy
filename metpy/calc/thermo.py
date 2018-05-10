@@ -11,8 +11,9 @@ import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
 
-from .tools import (_greater_or_close, _less_or_close, broadcast_indices, find_intersections,
-                    first_derivative, get_layer, interp)
+from .tools import (_greater_or_close, _less_or_close, broadcast_indices,
+                    find_bounding_indices, find_intersections, first_derivative, get_layer,
+                    interp)
 from ..constants import Cp_d, epsilon, g, kappa, Lv, P0, Rd
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
@@ -1378,6 +1379,9 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
         The maximum number of iterations to use in calculation, defaults to 50.
     eps : float, optional
         The desired absolute error in the calculated value, defaults to 1e-6.
+    bottom_up_search : bool, optional
+        Controls whether to search for theta levels bottom-up, or top-down. Defaults to
+        True, which is bottom-up search.
 
     Notes
     -----
@@ -1409,6 +1413,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     max_iters = kwargs.pop('max_iters', 50)
     eps = kwargs.pop('eps', 1e-6)
     axis = kwargs.pop('axis', 0)
+    bottom_up_search = kwargs.pop('bottom_up_search', True)
 
     # Get dimensions in temperature
     ndim = temperature.ndim
@@ -1454,16 +1459,8 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     pok = P0 ** ka
 
     # index values for each point for the pressure level nearest to the desired theta level
-    minv = np.apply_along_axis(np.searchsorted, axis, pres_theta.m, theta_levels)
-
-    # Filter out points where we get indices above the top; theta below the bottom will be
-    # masked by comparing to the max pressure later.
-    good = minv < pres_theta.shape[axis]
-    minv[~good] = 0
-
-    # Create index values for broadcasting arrays
-    above = broadcast_indices(tmpk, minv, ndim, axis)
-    below = broadcast_indices(tmpk, minv - 1, ndim, axis)
+    above, below, good = find_bounding_indices(pres_theta.m, theta_levels, axis,
+                                               from_below=bottom_up_search)
 
     # calculate constants for the interpolation
     a = (tmpk.m[above] - tmpk.m[below]) / (log_p[above] - log_p[below])
