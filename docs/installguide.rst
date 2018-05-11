@@ -35,29 +35,6 @@ In general, MetPy tries to support minor versions of dependencies released withi
 years. For Python itself, that means supporting the last two minor releases, as well as
 currently supporting Python 2.7.
 
-MetPy currently supports the following versions of required dependencies:
-  - Python 2.7 or >=3.4
-  - NumPy >= 1.10.0
-  - SciPy >= 0.14.0
-  - Matplotlib >= 1.4.0
-  - pint >= 0.8
-
-Installation Instructions for NumPy and SciPy can be found at:
-  https://www.scipy.org/scipylib/download.html
-
-Installation Instructions for Matplotlib can be found at:
-  https://matplotlib.org/downloads.html
-
-Pint is a pure python package and can be installed via ``pip install pint``.
-
-Python 2.7 requires the enum34 package, which is a backport
-of the enum standard library module. It can be installed via
-``pip install enum34``.
-
-PyProj is an optional dependency (if using the CDM interface to data files).
-It can also be installed via ``pip install pyproj``, though it does require
-the Proj.4 library and a compiled extension.
-
 ------------
 Installation
 ------------
