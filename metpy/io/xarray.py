@@ -2,6 +2,8 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Provide accessors to enhance interoperability between XArray and MetPy."""
+from __future__ import absolute_import
+
 import xarray as xr
 
 from ..units import DimensionalityError, units
