@@ -276,7 +276,7 @@ class ColortableRegistry(dict):
 
 
 registry = ColortableRegistry()
-registry.scan_resource('metpy.plots', 'colortables')
+registry.scan_resource('metpy.plots', 'colortable_files')
 registry.scan_dir(os.path.curdir)
 
 with exporter:
