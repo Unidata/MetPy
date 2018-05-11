@@ -12,7 +12,10 @@ from collections import OrderedDict
 
 import numpy as np
 
+from ..deprecation import deprecated
 
+
+@deprecated(0.8, alternative='XArray')
 class AttributeContainer(object):
     r"""Handle maintaining a list of netCDF attributes.
 
@@ -47,6 +50,7 @@ class AttributeContainer(object):
             self._attrs.remove(item)
 
 
+@deprecated(0.8, alternative='XArray')
 class Group(AttributeContainer):
     r"""Holds dimensions and variables.
 
@@ -195,6 +199,7 @@ class Group(AttributeContainer):
         return '\n'.join(print_groups)
 
 
+@deprecated(0.8, alternative='XArray')
 class Dataset(Group):
     r"""Represents a set of data using the Common Data Model (CDM).
 
@@ -207,6 +212,7 @@ class Dataset(Group):
         super(Dataset, self).__init__(None, 'root')
 
 
+@deprecated(0.8, alternative='XArray')
 class Variable(AttributeContainer):
     r"""Holds typed data (using a :class:`numpy.ndarray`), as well as attributes (e.g. units).
 
@@ -341,6 +347,7 @@ class Variable(AttributeContainer):
 # Punting on unlimited dimensions for now since we're relying upon numpy for storage
 # We don't intend to be a full file API or anything, just need to be able to represent
 # other files using a common API.
+@deprecated(0.8, alternative='XArray')
 class Dimension(object):
     r"""Represent a shared dimension between different Variables.
 
@@ -399,6 +406,7 @@ class Dimension(object):
 
 
 # Not sure if this lives long-term or not
+@deprecated(0.8, alternative='XArray')
 def cf_to_proj(var):
     r"""Convert a Variable with projection information to a Proj.4 Projection instance.
 
