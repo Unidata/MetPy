@@ -11,10 +11,10 @@ import pytest
 from scipy.spatial.distance import cdist
 
 from metpy.cbook import get_test_data
-from metpy.gridding.gridding_functions import (calc_kappa, interpolate,
-                                               remove_nan_observations,
-                                               remove_observations_below_value,
-                                               remove_repeat_coordinates)
+from metpy.gridding import (interpolate, remove_nan_observations,
+                            remove_observations_below_value,
+                            remove_repeat_coordinates)
+from metpy.gridding.gridding_functions import calc_kappa
 
 
 @pytest.fixture()

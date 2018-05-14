@@ -12,7 +12,7 @@ import numpy as np
 
 from metpy.cbook import get_test_data
 from metpy.io import Level3File
-from metpy.plots import add_metpy_logo, add_timestamp, ctables
+from metpy.plots import add_metpy_logo, add_timestamp, colortables
 
 ###########################################
 fig, axes = plt.subplots(1, 2, figsize=(15, 8))
@@ -38,7 +38,7 @@ for v, ctable, ax in zip(('N0Q', 'N0U'), ('NWSReflectivity', 'NWSVelocity'), axe
     ylocs = rng * np.cos(np.deg2rad(az[:, np.newaxis]))
 
     # Plot the data
-    norm, cmap = ctables.registry.get_with_steps(ctable, 16, 16)
+    norm, cmap = colortables.get_with_steps(ctable, 16, 16)
     ax.pcolormesh(xlocs, ylocs, data, norm=norm, cmap=cmap)
     ax.set_aspect('equal', 'datalim')
     ax.set_xlim(-40, 20)
