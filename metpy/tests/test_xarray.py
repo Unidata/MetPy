@@ -2,16 +2,16 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the operation of MetPy's XArray accessors."""
+from __future__ import absolute_import
 
 import cartopy.crs as ccrs
 import numpy as np
 import pytest
 import xarray as xr
 
-# Get activate the xarray accessors
-import metpy.io  # noqa: F401
-from metpy.testing import assert_almost_equal, get_test_data
+from metpy.testing import assert_almost_equal, assert_array_equal, get_test_data
 from metpy.units import units
+from metpy.xarray import preprocess_xarray
 
 
 @pytest.fixture
@@ -106,3 +106,15 @@ def test_missing_grid_mapping_var():
 
     with pytest.warns(UserWarning, match='Could not find'):
         ds.metpy.parse_cf('data')
+
+
+def test_preprocess_xarray():
+    """Test xarray preprocessing decorator."""
+    data = xr.DataArray(np.ones(3), attrs={'units': 'km'})
+    data2 = xr.DataArray(np.ones(3), attrs={'units': 'm'})
+
+    @preprocess_xarray
+    def func(a, b):
+        return a.to('m') + b
+
+    assert_array_equal(func(data, b=data2), np.array([1001, 1001, 1001]) * units.m)
