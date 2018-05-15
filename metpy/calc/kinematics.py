@@ -8,7 +8,6 @@ import functools
 import warnings
 
 import numpy as np
-from pyproj import Geod
 
 from ..calc import coriolis_parameter
 from ..calc.tools import first_derivative, get_layer_heights, gradient
@@ -698,6 +697,8 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
     Assumes [Y, X] for 2D arrays
 
     """
+    from pyproj import Geod
+
     # Inputs must be the same number of dimensions
     if latitude.ndim != longitude.ndim:
         raise ValueError('Latitude and longitude must have the same number of dimensions.')

@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools to process GINI-formatted products."""
+from __future__ import absolute_import
 
 import contextlib
 from datetime import datetime
