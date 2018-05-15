@@ -9,6 +9,9 @@ checks:
   argument-count:
     config:
       threshold: 10
+  method-complexity:
+    config:
+      threshold: 15
 
 plugins:
   sonar-python:

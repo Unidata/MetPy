@@ -590,11 +590,28 @@ def test_isentropic_pressure():
     tmp[1, :] = 292.
     tmp[2, :] = 290
     tmp[3, :] = 288.
+    tmp[:, :, -1] = np.nan
     tmpk = tmp * units.kelvin
     isentlev = [296.] * units.kelvin
-    isentprs = isentropic_interpolation(isentlev, lev, tmpk)
-    trueprs = 1000. * units.hPa
-    assert_almost_equal(isentprs[0].shape, (1, 5, 5), 3)
+    with pytest.warns(RuntimeWarning, match='invalid value'):
+        isentprs = isentropic_interpolation(isentlev, lev, tmpk)
+    trueprs = np.ones((1, 5, 5)) * (1000. * units.hPa)
+    trueprs[:, :, -1] = np.nan
+    assert isentprs[0].shape == (1, 5, 5)
+    assert_almost_equal(isentprs[0], trueprs, 3)
+
+
+def test_isentropic_pressure_masked_column():
+    """Test calculation of isentropic pressure function with a masked column (#769)."""
+    lev = [100000., 95000.] * units.Pa
+    tmp = np.ma.ones((len(lev), 5, 5))
+    tmp[0, :] = 296.
+    tmp[1, :] = 292.
+    tmp[:, :, -1] = np.ma.masked
+    isentprs = isentropic_interpolation([296.] * units.kelvin, lev, tmp * units.kelvin)
+    trueprs = np.ones((1, 5, 5)) * (1000. * units.hPa)
+    trueprs[:, :, -1] = np.nan
+    assert isentprs[0].shape == (1, 5, 5)
     assert_almost_equal(isentprs[0], trueprs, 3)
 
 
@@ -685,7 +702,7 @@ def test_isentropic_pressure_interp():
     assert_almost_equal(isentprs[0][1], trueprs, 3)
 
 
-def test_isentropic_pressure_adition_args_interp():
+def test_isentropic_pressure_addition_args_interp():
     """Test calculation of isentropic pressure function, additional args."""
     lev = [100000., 95000., 90000., 85000.] * units.Pa
     tmp = np.ones((4, 5, 5))
@@ -756,7 +773,7 @@ def test_isentropic_pressure_4d():
     trueprs2 = 936.18057 * units.hPa
     trueprs3 = 879.446 * units.hPa
     truerh = 69.171 * units.percent
-    assert_almost_equal(isentprs[0].shape, (3, 3, 5, 5), 3)
+    assert isentprs[0].shape == (3, 3, 5, 5)
     assert_almost_equal(isentprs[0][:, 0, :], trueprs, 3)
     assert_almost_equal(isentprs[0][:, 1, :], trueprs2, 3)
     assert_almost_equal(isentprs[0][:, 2, :], trueprs3, 3)
