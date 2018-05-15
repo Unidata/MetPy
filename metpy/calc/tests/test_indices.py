@@ -8,8 +8,9 @@ import warnings
 
 import numpy as np
 
-from metpy.calc import (bulk_shear, bunkers_storm_motion, mean_pressure_weighted,
-                        precipitable_water, significant_tornado, supercell_composite)
+from metpy.calc import (bulk_shear, bunkers_storm_motion, critical_angle,
+                        mean_pressure_weighted, precipitable_water,
+                        significant_tornado, supercell_composite)
 from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import assert_almost_equal, assert_array_equal, get_upper_air_data
 from metpy.units import concatenate, units
@@ -157,3 +158,28 @@ def test_sigtor_scalar():
     truth = 10.666667
     sigtor = significant_tornado(sbcape, sblcl, srh1, shr6)
     assert_almost_equal(sigtor, truth, 6)
+
+
+def test_critical_angle():
+    """Test critical angle with observed sounding."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    ca = critical_angle(data['pressure'], data['u_wind'],
+                        data['v_wind'], data['height'],
+                        stormu=0 * units('m/s'), stormv=0 * units('m/s'))
+    truth = [140.0626637513269] * units('degrees')
+    assert_almost_equal(ca, truth, 8)
+
+
+def test_critical_angle_units():
+    """Test critical angle with observed sounding and different storm motion units."""
+    data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
+    # Set storm motion in m/s
+    ca_ms = critical_angle(data['pressure'], data['u_wind'],
+                           data['v_wind'], data['height'],
+                           stormu=10 * units('m/s'), stormv=10 * units('m/s'))
+    # Set same storm motion in kt and m/s
+    ca_kt_ms = critical_angle(data['pressure'], data['u_wind'],
+                              data['v_wind'], data['height'],
+                              stormu=10 * units('m/s'), stormv=19.4384449244 * units('kt'))
+    # Make sure the resulting critical angles are equal
+    assert_almost_equal(ca_ms, ca_kt_ms, 8)
