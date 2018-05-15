@@ -487,6 +487,15 @@ def test_greater_or_close():
     assert_array_equal(res, truth)
 
 
+def test_greater_or_close_mixed_types():
+    """Test _greater_or_close with mixed Quantity and array errors."""
+    with pytest.raises(ValueError):
+        _greater_or_close(1000. * units.mbar, 1000.)
+
+    with pytest.raises(ValueError):
+        _greater_or_close(1000., 1000. * units.mbar)
+
+
 def test_less_or_close():
     """Test floating point less or close to."""
     x = np.array([0.0, 1.0, 1.49999, 1.5, 1.5000, 1.7])
@@ -494,6 +503,15 @@ def test_less_or_close():
     truth = np.array([True, True, True, True, True, False])
     res = _less_or_close(x, comparison_value)
     assert_array_equal(res, truth)
+
+
+def test_less_or_close_mixed_types():
+    """Test _less_or_close with mixed Quantity and array errors."""
+    with pytest.raises(ValueError):
+        _less_or_close(1000. * units.mbar, 1000.)
+
+    with pytest.raises(ValueError):
+        _less_or_close(1000., 1000. * units.mbar)
 
 
 def test_get_layer_heights_interpolation():

@@ -467,7 +467,7 @@ def parcel_profile(pressure, temperature, dewpt):
     t1 = dry_lapse(press_lower, temperature)
 
     # If the pressure profile doesn't make it to the lcl, we can stop here
-    if _greater_or_close(np.nanmin(pressure), lcl_pressure):
+    if _greater_or_close(np.nanmin(pressure), lcl_pressure.m):
         return t1[:-1]
 
     # Find moist pseudo-adiabatic profile starting at the LCL
