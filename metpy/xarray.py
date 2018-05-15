@@ -4,6 +4,8 @@
 """Provide accessors to enhance interoperability between XArray and MetPy."""
 from __future__ import absolute_import
 
+import functools
+
 import xarray as xr
 
 from .units import DimensionalityError, units
@@ -120,3 +122,17 @@ class CFConventionHandler(object):
                     scaled_vals = new_data_array.metpy.unit_array * (height * units.meters)
                     new_data_array.metpy.unit_array = scaled_vals.to('meters')
                     var.coords[coord_name] = new_data_array
+
+
+def preprocess_xarray(func):
+    """Decorate a function to convert all DataArray arguments to pint.Quantities.
+
+    This uses the metpy xarray accessors to do the actual conversion.
+    """
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        args = tuple(a.metpy.unit_array if isinstance(a, xr.DataArray) else a for a in args)
+        kwargs = {name: (v.metpy.unit_array if isinstance(v, xr.DataArray) else v)
+                  for name, v in kwargs.items()}
+        return func(*args, **kwargs)
+    return wrapper
