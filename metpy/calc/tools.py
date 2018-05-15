@@ -20,6 +20,7 @@ from scipy.spatial import cKDTree
 from . import height_to_pressure_std, pressure_to_height_std
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, diff, units
+from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
 
@@ -34,6 +35,7 @@ BASE_DEGREE_MULTIPLIER = 22.5 * units.degree
 
 
 @exporter.export
+@preprocess_xarray
 def resample_nn_1d(a, centers):
     """Return one-dimensional nearest-neighbor indexes based on user-specified centers.
 
@@ -59,6 +61,7 @@ def resample_nn_1d(a, centers):
 
 
 @exporter.export
+@preprocess_xarray
 def nearest_intersection_idx(a, b):
     """Determine the index of the point just before two lines with common x values.
 
@@ -86,6 +89,7 @@ def nearest_intersection_idx(a, b):
 
 
 @exporter.export
+@preprocess_xarray
 @units.wraps(('=A', '=B'), ('=A', '=B', '=B'))
 def find_intersections(x, a, b, direction='all'):
     """Calculate the best estimate of intersection.
@@ -163,6 +167,7 @@ def find_intersections(x, a, b, direction='all'):
 
 
 @exporter.export
+@preprocess_xarray
 def interpolate_nans(x, y, kind='linear'):
     """Interpolate NaN values in y.
 
@@ -248,6 +253,7 @@ def _delete_masked_points(*arrs):
 
 
 @exporter.export
+@preprocess_xarray
 def reduce_point_density(points, radius, priority=None):
     r"""Return a mask to reduce the density of points in irregularly-spaced data.
 
@@ -419,6 +425,7 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[length]')
 def get_layer_heights(heights, depth, *args, **kwargs):
     """Return an atmospheric layer from upper air data with the requested bottom and depth.
@@ -510,6 +517,7 @@ def get_layer_heights(heights, depth, *args, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[pressure]')
 def get_layer(pressure, *args, **kwargs):
     r"""Return an atmospheric layer from upper air data with the requested bottom and depth.
@@ -616,6 +624,7 @@ def get_layer(pressure, *args, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 @units.wraps(None, ('=A', '=A'))
 def interp(x, xp, *args, **kwargs):
     r"""Interpolates data with any shape over a specified axis.
@@ -737,6 +746,7 @@ def interp(x, xp, *args, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 def find_bounding_indices(arr, values, axis, from_below=True):
     """Find the indices surrounding the values within arr along axis.
 
@@ -842,6 +852,7 @@ def broadcast_indices(x, minv, ndim, axis):
 
 
 @exporter.export
+@preprocess_xarray
 @units.wraps(None, ('=A', '=A'))
 def log_interp(x, xp, *args, **kwargs):
     r"""Interpolates data with logarithmic x-scale over a specified axis.
@@ -940,6 +951,7 @@ def _less_or_close(a, value, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 def first_derivative(f, **kwargs):
     """Calculate the first derivative of a grid of values.
 
@@ -1024,6 +1036,7 @@ def first_derivative(f, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 def second_derivative(f, **kwargs):
     """Calculate the second derivative of a grid of values.
 
@@ -1107,6 +1120,7 @@ def second_derivative(f, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 def gradient(f, **kwargs):
     """Calculate the gradient of a grid of values.
 
@@ -1141,6 +1155,7 @@ def gradient(f, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 def laplacian(f, **kwargs):
     """Calculate the laplacian of a grid of values.
 
@@ -1229,6 +1244,7 @@ def _process_deriv_args(f, kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 def parse_angle(input_dir):
     """Calculate the meteorological angle from directional text.
 

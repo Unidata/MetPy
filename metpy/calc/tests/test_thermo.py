@@ -5,6 +5,7 @@
 
 import numpy as np
 import pytest
+import xarray as xr
 
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
                         brunt_vaisala_period, cape_cin, density, dewpoint,
@@ -45,6 +46,13 @@ def test_relative_humidity_from_dewpoint_with_f():
     """Test Relative Humidity accepts temperature in Fahrenheit."""
     assert_almost_equal(relative_humidity_from_dewpoint(70. * units.degF, 55. * units.degF),
                         58.935 * units.percent, 3)
+
+
+def test_relative_humidity_from_dewpoint_xarray():
+    """Test Relative Humidity calculation with xarray data arrays."""
+    temp = xr.DataArray(25., attrs={'units': 'degC'})
+    dewp = xr.DataArray(15., attrs={'units': 'degC'})
+    assert_almost_equal(relative_humidity_from_dewpoint(temp, dewp), 53.80 * units.percent, 2)
 
 
 def test_exner_function():
