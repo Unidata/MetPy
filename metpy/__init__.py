@@ -6,5 +6,6 @@
 # What do we want to pull into the top-level namespace?
 
 from ._version import get_versions
+from .xarray import *  # noqa: F401, F403
 __version__ = get_versions()['version']
 del get_versions

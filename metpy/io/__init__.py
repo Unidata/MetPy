@@ -9,8 +9,6 @@ that are already in memory (using :class:`python:io.StringIO`) or remote files
 
 from .gini import *  # noqa: F403
 from .nexrad import *  # noqa: F403
-from .xarray import *  # noqa: F403
 
 __all__ = gini.__all__[:]  # pylint: disable=undefined-variable
 __all__.extend(nexrad.__all__)  # pylint: disable=undefined-variable
-__all__.extend(xarray.__all__)  # pylint: disable=undefined-variable

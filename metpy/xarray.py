@@ -6,7 +6,7 @@ from __future__ import absolute_import
 
 import xarray as xr
 
-from ..units import DimensionalityError, units
+from .units import DimensionalityError, units
 
 __all__ = []
 
@@ -59,7 +59,7 @@ class CFConventionHandler(object):
 
     def parse_cf(self, varname):
         """Parse Climate and Forecasting (CF) convention metadata."""
-        from ..plots.mapping import CFProjection
+        from .plots.mapping import CFProjection
 
         var = self._dataset[varname]
         if 'grid_mapping' in var.attrs:

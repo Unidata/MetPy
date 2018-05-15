@@ -2,14 +2,13 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the operation of MetPy's XArray accessors."""
+from __future__ import absolute_import
 
 import cartopy.crs as ccrs
 import numpy as np
 import pytest
 import xarray as xr
 
-# Get activate the xarray accessors
-import metpy.io  # noqa: F401
 from metpy.testing import assert_almost_equal, get_test_data
 from metpy.units import units
 
