@@ -11,8 +11,9 @@ import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
 
-from .tools import (_greater_or_close, _less_or_close, broadcast_indices, find_intersections,
-                    first_derivative, get_layer, interp)
+from .tools import (_greater_or_close, _less_or_close, broadcast_indices,
+                    find_bounding_indices, find_intersections, first_derivative, get_layer,
+                    interp)
 from ..constants import Cp_d, epsilon, g, kappa, Lv, P0, Rd
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
@@ -1378,6 +1379,9 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
         The maximum number of iterations to use in calculation, defaults to 50.
     eps : float, optional
         The desired absolute error in the calculated value, defaults to 1e-6.
+    bottom_up_search : bool, optional
+        Controls whether to search for theta levels bottom-up, or top-down. Defaults to
+        True, which is bottom-up search.
 
     Notes
     -----
@@ -1409,6 +1413,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     max_iters = kwargs.pop('max_iters', 50)
     eps = kwargs.pop('eps', 1e-6)
     axis = kwargs.pop('axis', 0)
+    bottom_up_search = kwargs.pop('bottom_up_search', True)
 
     # Get dimensions in temperature
     ndim = temperature.ndim
@@ -1419,28 +1424,25 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
 
     slices = [np.newaxis] * ndim
     slices[axis] = slice(None)
-    pres = pres[slices]
-    pres = np.broadcast_to(pres, temperature.shape) * pres.units
+    pres = np.broadcast_to(pres[slices], temperature.shape) * pres.units
 
     # Sort input data
     sort_pres = np.argsort(pres.m, axis=axis)
     sort_pres = np.swapaxes(np.swapaxes(sort_pres, 0, axis)[::-1], 0, axis)
     sorter = broadcast_indices(pres, sort_pres, ndim, axis)
     levs = pres[sorter]
-    theta_levels = np.asanyarray(theta_levels.to('kelvin')).reshape(-1)
-    sort_isentlevs = np.argsort(theta_levels)
     tmpk = temperature[sorter]
-    isentlevels = theta_levels[sort_isentlevs]
+
+    theta_levels = np.asanyarray(theta_levels.to('kelvin')).reshape(-1)
+    isentlevels = theta_levels[np.argsort(theta_levels)]
 
     # Make the desired isentropic levels the same shape as temperature
-    isentlevs_nd = isentlevels
-    isentlevs_nd = isentlevs_nd[slices]
     shape = list(temperature.shape)
     shape[axis] = isentlevels.size
-    isentlevs_nd = np.broadcast_to(isentlevs_nd, shape)
+    isentlevs_nd = np.broadcast_to(isentlevels[slices], shape)
 
     # exponent to Poisson's Equation, which is imported above
-    ka = kappa.to('dimensionless').m
+    ka = kappa.m_as('dimensionless')
 
     # calculate theta for each point
     pres_theta = potential_temperature(levs, tmpk)
@@ -1457,51 +1459,46 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     pok = P0 ** ka
 
     # index values for each point for the pressure level nearest to the desired theta level
-    minv = np.apply_along_axis(np.searchsorted, axis, pres_theta.m, theta_levels)
-
-    # Create index values for broadcasting arrays
-    above = broadcast_indices(tmpk, minv, ndim, axis)
-    below = broadcast_indices(tmpk, minv - 1, ndim, axis)
+    above, below, good = find_bounding_indices(pres_theta.m, theta_levels, axis,
+                                               from_below=bottom_up_search)
 
     # calculate constants for the interpolation
     a = (tmpk.m[above] - tmpk.m[below]) / (log_p[above] - log_p[below])
     b = tmpk.m[above] - a * log_p[above]
 
     # calculate first guess for interpolation
-    first_guess = 0.5 * (log_p[above] + log_p[below])
+    isentprs = 0.5 * (log_p[above] + log_p[below])
+
+    # Make sure we ignore any nans in the data for solving; checking a is enough since it
+    # combines log_p and tmpk.
+    good &= ~np.isnan(a)
 
     # iterative interpolation using scipy.optimize.fixed_point and _isen_iter defined above
-    log_p_solved = so.fixed_point(_isen_iter, first_guess, args=(isentlevs_nd, ka, a, b,
-                                                                 pok.m),
+    log_p_solved = so.fixed_point(_isen_iter, isentprs[good],
+                                  args=(isentlevs_nd[good], ka, a[good], b[good], pok.m),
                                   xtol=eps, maxiter=max_iters)
 
-    # get back pressure and assign nan for values with pressure greater than 1000 hPa
-    isentprs = np.exp(log_p_solved)
-    isentprs[isentprs > np.max(pressure.m)] = np.nan
+    # get back pressure from log p
+    isentprs[good] = np.exp(log_p_solved)
+
+    # Mask out points we know are bad as well as points that are beyond the max pressure
+    isentprs[~(good & _less_or_close(isentprs, np.max(pres.m)))] = np.nan
 
     # create list for storing output data
-    ret = []
-    ret.append(isentprs * units.hPa)
+    ret = [isentprs * units.hPa]
 
     # if tmpk_out = true, calculate temperature and output as last item in list
     if tmpk_out:
         ret.append((isentlevs_nd / ((P0.m / isentprs) ** ka)) * units.kelvin)
 
-    # check to see if any additional arguments were given, if so, interpolate to
-    # new isentropic levels
-    try:
-        args[0]
-    except IndexError:
-        return ret
-    else:
-        # do an interpolation for each additional argument
-        for arr in args:
-            var = arr[sorter]
-            # interpolate to isentropic levels and add to temporary output array
-            arg_out = interp(isentlevels, pres_theta.m, var, axis=axis)
-            ret.append(arg_out)
+    # do an interpolation for each additional argument
+    if args:
+        others = interp(isentlevels, pres_theta.m, *(arr[sorter] for arr in args), axis=axis)
+        if len(args) > 1:
+            ret.extend(others)
+        else:
+            ret.append(others)
 
-    # output values as a list
     return ret
 
 

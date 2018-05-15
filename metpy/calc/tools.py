@@ -715,9 +715,11 @@ def interp(x, xp, *args, **kwargs):
 
     # Calculate interpolation for each variable
     for var in variables:
-        var_interp = var[below] + ((x_array - xp[below]) /
-                                   (xp[above] - xp[below])) * (var[above] -
-                                                               var[below])
+        # Var needs to be on the *left* of the multiply to ensure that if it's a pint
+        # Quantity, it gets to control the operation--at least until we make sure
+        # masked arrays and pint play together better. See https://github.com/hgrecco/pint#633
+        var_interp = var[below] + (var[above] - var[below]) * ((x_array - xp[below]) /
+                                                               (xp[above] - xp[below]))
 
         # Set points out of bounds to fill value.
         var_interp[minv == xp.shape[axis]] = fill_value
@@ -732,6 +734,94 @@ def interp(x, xp, *args, **kwargs):
         return ret[0]
     else:
         return ret
+
+
+@exporter.export
+def find_bounding_indices(arr, values, axis, from_below=True):
+    """Find the indices surrounding the values within arr along axis.
+
+    Returns a set of above, below, good. Above and below are lists of arrays of indices.
+    These lists are formulated such that they can be used directly to index into a numpy
+    array and get the expected results (no extra slices or ellipsis necessary). `good` is
+    a boolean array indicating the "columns" that actually had values to bound the desired
+    value(s).
+
+    Parameters
+    ----------
+    arr : array-like
+        Array to search for values
+
+    values: array-like
+        One or more values to search for in `arr`
+
+    axis : int
+        The dimension of `arr` along which to search.
+
+    from_below : bool, optional
+        Whether to search from "below" (i.e. low indices to high indices). If `False`,
+        the search will instead proceed from high indices to low indices. Defaults to `True`.
+
+    Returns
+    -------
+    above : list of arrays
+        List of broadcasted indices to the location above the desired value
+
+    below : list of arrays
+        List of broadcasted indices to the location below the desired value
+
+    good : array
+        Boolean array indicating where the search found proper bounds for the desired value
+
+    """
+    # The shape of generated indices is the same as the input, but with the axis of interest
+    # replaced by the number of values to search for.
+    indices_shape = list(arr.shape)
+    indices_shape[axis] = len(values)
+
+    # Storage for the found indices and the mask for good locations
+    indices = np.empty(indices_shape, dtype=np.int)
+    good = np.empty(indices_shape, dtype=np.bool)
+
+    # Used to put the output in the proper location
+    store_slice = [slice(None)] * arr.ndim
+
+    # Loop over all of the values and for each, see where the value would be found from a
+    # linear search
+    for level_index, value in enumerate(values):
+        # Look for changes in the value of the test for <= value in consecutive points
+        # Taking abs() because we only care if there is a flip, not which direction.
+        switches = np.abs(np.diff((arr <= value).astype(np.int), axis=axis))
+
+        # Good points are those where it's not just 0's along the whole axis
+        good_search = np.any(switches, axis=axis)
+
+        if from_below:
+            # Look for the first switch; need to add 1 to the index since argmax is giving the
+            # index within the difference array, which is one smaller.
+            index = switches.argmax(axis=axis) + 1
+        else:
+            # Generate a list of slices to reverse the axis of interest so that searching from
+            # 0 to N is starting at the "top" of the axis.
+            arr_slice = [slice(None)] * arr.ndim
+            arr_slice[axis] = slice(None, None, -1)
+
+            # Same as above, but we use the slice to come from the end; then adjust those
+            # indices to measure from the front.
+            index = arr.shape[axis] - 1 - switches[arr_slice].argmax(axis=axis)
+
+        # Set all indices where the results are not good to 0
+        index[~good_search] = 0
+
+        # Put the results in the proper slice
+        store_slice[axis] = level_index
+        indices[store_slice] = index
+        good[store_slice] = good_search
+
+    # Create index values for broadcasting arrays
+    above = broadcast_indices(arr, indices, arr.ndim, axis)
+    below = broadcast_indices(arr, indices - 1, arr.ndim, axis)
+
+    return above, below, good
 
 
 def broadcast_indices(x, minv, ndim, axis):
