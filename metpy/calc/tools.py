@@ -925,7 +925,7 @@ def _greater_or_close(a, value, **kwargs):
         Boolean array where values are greater than or nearly equal to value.
 
     """
-    return np.greater(a, value) | np.isclose(a, value, **kwargs)
+    return (a > value) | np.isclose(a, value, **kwargs)
 
 
 def _less_or_close(a, value, **kwargs):
@@ -947,7 +947,7 @@ def _less_or_close(a, value, **kwargs):
         Boolean array where values are less than or nearly equal to value.
 
     """
-    return np.less(a, value) | np.isclose(a, value, **kwargs)
+    return (a < value) | np.isclose(a, value, **kwargs)
 
 
 @exporter.export

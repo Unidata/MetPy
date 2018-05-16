@@ -118,3 +118,9 @@ def test_preprocess_xarray():
         return a.to('m') + b
 
     assert_array_equal(func(data, b=data2), np.array([1001, 1001, 1001]) * units.m)
+
+
+def test_strftime():
+    """Test our monkey-patched xarray strftime."""
+    data = xr.DataArray(np.datetime64('2000-01-01 01:00:00'))
+    assert '2000-01-01 01:00:00' == data.dt.strftime('%Y-%m-%d %H:%M:%S')

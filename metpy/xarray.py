@@ -7,6 +7,7 @@ from __future__ import absolute_import
 import functools
 
 import xarray as xr
+from xarray.core.accessors import DatetimeAccessor
 
 from .units import DimensionalityError, units
 
@@ -136,3 +137,16 @@ def preprocess_xarray(func):
                   for name, v in kwargs.items()}
         return func(*args, **kwargs)
     return wrapper
+
+
+# If DatetimeAccessor does not have a strftime, monkey patch one in
+if not hasattr(DatetimeAccessor, 'strftime'):
+    def strftime(self, date_format):
+        """Format time as a string."""
+        import pandas as pd
+        values = self._obj.data
+        values_as_series = pd.Series(values.ravel())
+        strs = values_as_series.dt.strftime(date_format)
+        return strs.values.reshape(values.shape)
+
+    DatetimeAccessor.strftime = strftime

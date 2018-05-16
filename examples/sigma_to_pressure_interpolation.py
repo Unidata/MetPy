@@ -33,9 +33,9 @@ lat = data.variables['lat'][:]
 lon = data.variables['lon'][:]
 time = data.variables['time']
 vtimes = num2date(time[:], time.units)
-temperature = data.variables['temperature'][:] * units(data.variables['temperature'].units)
-pres = data.variables['pressure'][:] * units(data.variables['pressure'].units)
-hgt = data.variables['height'][:] * units(data.variables['height'].units)
+temperature = data.variables['temperature'][:] * units.celsius
+pres = data.variables['pressure'][:] * units.pascal
+hgt = data.variables['height'][:] * units.meter
 
 ####################################
 # Array of desired pressure levels
@@ -59,12 +59,6 @@ height, temp = mpcalc.log_interp(plevs, pres, hgt, temperature, axis=1)
 # Set up our projection
 crs = ccrs.LambertConformal(central_longitude=-100.0, central_latitude=45.0)
 
-# Set up our array of latitude and longitude values and transform to
-# the desired projection.
-tlatlons = crs.transform_points(ccrs.PlateCarree(), lon, lat)
-tlons = tlatlons[:, :, 0]
-tlats = tlatlons[:, :, 1]
-
 # Set the forecast hour
 FH = 1
 
@@ -78,13 +72,14 @@ ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
 ax.add_feature(cfeature.STATES, linewidth=0.5)
 
 # Plot the heights
-cs = ax.contour(tlons, tlats, height[FH, 0, :, :],
+cs = ax.contour(lon, lat, height[FH, 0, :, :], transform=ccrs.PlateCarree(),
                 colors='k', linewidths=1.0, linestyles='solid')
 ax.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
           fmt='%i', rightside_up=True, use_clabeltext=True)
 
 # Contour the temperature
-cf = ax.contourf(tlons, tlats, temp[FH, 0, :, :], range(-20, 20, 1), cmap=plt.cm.RdBu_r)
+cf = ax.contourf(lon, lat, temp[FH, 0, :, :], range(-20, 20, 1), cmap=plt.cm.RdBu_r,
+                 transform=ccrs.PlateCarree())
 cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5,
                   pad=0.05, extendrect='True')
 cb.set_label('Celsius', size='x-large')

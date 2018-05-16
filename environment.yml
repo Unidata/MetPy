@@ -9,7 +9,7 @@ dependencies:
   - scipy
   - matplotlib
   - pint
-  - netcdf4!=1.4
+  - netcdf4
   - xarray
   - pandas
   - jupyter
