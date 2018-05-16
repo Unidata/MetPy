@@ -48,7 +48,7 @@ matrix:
   include:
     - python: 2.7
       env:
-        - VERSIONS="numpy==1.10.0 matplotlib==1.4.0 scipy==0.14.0 pint==0.8"
+        - VERSIONS="numpy==1.10.0 matplotlib==1.4.0 scipy==0.14.0 pint==0.8 xarray==0.9.6"
         - TASK="coverage"
         - TEST_OUTPUT_CONTROL=""
     - python: 3.4

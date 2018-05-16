@@ -55,7 +55,7 @@ def add_timestamp(ax, time=None, x=0.99, y=-0.04, ha='right', high_contrast=Fals
     text_args.update(**kwargs)
     if not time:
         time = datetime.utcnow()
-    timestr = pretext + datetime.strftime(time, time_format)
+    timestr = pretext + time.strftime(time_format)
     return ax.text(x, y, timestr, ha=ha, transform=ax.transAxes, **text_args)
 
 

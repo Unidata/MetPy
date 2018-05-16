@@ -9,12 +9,14 @@ import numpy as np
 import numpy.ma as ma
 import pytest
 
-from metpy.calc import (find_intersections, first_derivative, get_layer, get_layer_heights,
-                        interp, interpolate_nans, laplacian, log_interp,
-                        nearest_intersection_idx, parse_angle, pressure_to_height_std,
-                        reduce_point_density, resample_nn_1d, second_derivative)
-from metpy.calc.tools import (_get_bound_pressure_height, _greater_or_close, _less_or_close,
-                              _next_non_masked_element, delete_masked_points, DIR_STRS)
+from metpy.calc import (find_bounding_indices, find_intersections, first_derivative, get_layer,
+                        get_layer_heights, gradient, interp, interpolate_nans, laplacian,
+                        log_interp, nearest_intersection_idx, parse_angle,
+                        pressure_to_height_std, reduce_point_density, resample_nn_1d,
+                        second_derivative)
+from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
+                              _greater_or_close, _less_or_close, _next_non_masked_element,
+                              DIR_STRS)
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -186,7 +188,7 @@ def test_delete_masked_points():
     a = ma.masked_array(np.arange(5), mask=[False, True, False, False, False])
     b = ma.masked_array(np.arange(5), mask=[False, False, False, True, False])
     expected = np.array([0, 2, 4])
-    a, b = delete_masked_points(a, b)
+    a, b = _delete_masked_points(a, b)
     assert_array_equal(a, expected)
     assert_array_equal(b, expected)
 
@@ -466,6 +468,16 @@ def test_interp_end_point():
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
 
 
+def test_interp_masked_units():
+    """Test interpolating with masked arrays with units."""
+    x = np.ma.array([1., 2., 3., 4.]) * units.m
+    y = np.ma.array([50., 60., 70., 80.]) * units.degC
+    x_interp = np.array([250., 350.]) * units.cm
+    y_interp_truth = np.array([65., 75.]) * units.degC
+    y_interp = interp(x_interp, x, y)
+    assert_array_almost_equal(y_interp, y_interp_truth, 7)
+
+
 def test_greater_or_close():
     """Test floating point greater or close to."""
     x = np.array([0.0, 1.0, 1.49999, 1.5, 1.5000, 1.7])
@@ -475,6 +487,15 @@ def test_greater_or_close():
     assert_array_equal(res, truth)
 
 
+def test_greater_or_close_mixed_types():
+    """Test _greater_or_close with mixed Quantity and array errors."""
+    with pytest.raises(ValueError):
+        _greater_or_close(1000. * units.mbar, 1000.)
+
+    with pytest.raises(ValueError):
+        _greater_or_close(1000., 1000. * units.mbar)
+
+
 def test_less_or_close():
     """Test floating point less or close to."""
     x = np.array([0.0, 1.0, 1.49999, 1.5, 1.5000, 1.7])
@@ -482,6 +503,15 @@ def test_less_or_close():
     truth = np.array([True, True, True, True, True, False])
     res = _less_or_close(x, comparison_value)
     assert_array_equal(res, truth)
+
+
+def test_less_or_close_mixed_types():
+    """Test _less_or_close with mixed Quantity and array errors."""
+    with pytest.raises(ValueError):
+        _less_or_close(1000. * units.mbar, 1000.)
+
+    with pytest.raises(ValueError):
+        _less_or_close(1000., 1000. * units.mbar)
 
 
 def test_get_layer_heights_interpolation():
@@ -659,3 +689,37 @@ def test_parse_angle_mix_multiple():
     expected_angles_degrees = np.arange(0, 360, 22.5) * units.degree
     output_angles_degrees = parse_angle(test_dir_strs)
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
+
+
+def test_gradient_2d(deriv_2d_data):
+    """Test gradient with 2D arrays."""
+    res = gradient(deriv_2d_data.f, x=(deriv_2d_data.y, deriv_2d_data.x))
+    truth = (np.array([[-0.25, -0.25, -0.25],
+                       [1.75, 1.75, 1.75],
+                       [4.75, 4.75, 4.75],
+                       [5.75, 5.75, 5.75]]),
+             np.array([[-3, -1, 4],
+                       [-3, -1, 4],
+                       [-3, -1, 4],
+                       [-3, -1, 4]]))
+    assert_array_almost_equal(res, truth, 5)
+
+
+def test_bounding_indices():
+    """Test finding bounding indices."""
+    data = np.array([[1, 2, 3, 1], [5, 6, 7, 8]])
+    above, below, good = find_bounding_indices(data, [1.5, 7], axis=1, from_below=True)
+
+    assert_array_equal(above[1], np.array([[1, 0], [0, 3]]))
+    assert_array_equal(below[1], np.array([[0, -1], [-1, 2]]))
+    assert_array_equal(good, np.array([[True, False], [False, True]]))
+
+
+def test_bounding_indices_above():
+    """Test finding bounding indices from above."""
+    data = np.array([[1, 2, 3, 1], [5, 6, 7, 8]])
+    above, below, good = find_bounding_indices(data, [1.5, 7], axis=1, from_below=False)
+
+    assert_array_equal(above[1], np.array([[3, 0], [0, 3]]))
+    assert_array_equal(below[1], np.array([[2, -1], [-1, 2]]))
+    assert_array_equal(good, np.array([[True, False], [False, True]]))

@@ -8,15 +8,15 @@ import functools
 import warnings
 
 import numpy as np
-from pyproj import Geod
 
-from ..calc import coriolis_parameter
-from ..calc.tools import first_derivative, get_layer_heights, gradient
+from . import coriolis_parameter
+from .tools import first_derivative, get_layer_heights, gradient
 from ..cbook import is_string_like, iterable
 from ..constants import Cp_d, g, Rd
 from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..units import atleast_2d, check_units, concatenate, units
+from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
 
@@ -91,6 +91,7 @@ def ensure_yx_order(func):
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def vorticity(u, v, dx, dy):
     r"""Calculate the vertical vorticity of the horizontal wind.
@@ -122,6 +123,7 @@ def vorticity(u, v, dx, dy):
 
 
 @exporter.export
+@preprocess_xarray
 @deprecated('0.7', addendum=' This function has been renamed vorticity.',
             pending=False)
 def v_vorticity(u, v, dx, dy, dim_order='xy'):
@@ -135,6 +137,7 @@ v_vorticity.__doc__ = (vorticity.__doc__ +
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def divergence(u, v, dx, dy):
     r"""Calculate the horizontal divergence of the horizontal wind.
@@ -166,6 +169,7 @@ def divergence(u, v, dx, dy):
 
 
 @exporter.export
+@preprocess_xarray
 @deprecated('0.7', addendum=' This function has been replaced by divergence.',
             pending=False)
 def h_convergence(u, v, dx, dy, dim_order='xy'):
@@ -179,6 +183,7 @@ h_convergence.__doc__ = (divergence.__doc__ +
 
 
 @exporter.export
+@preprocess_xarray
 @deprecated('0.7', addendum=' Use divergence and/or vorticity instead.',
             pending=False)
 @ensure_yx_order
@@ -219,6 +224,7 @@ def convergence_vorticity(u, v, dx, dy, dim_order='xy'):
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def shearing_deformation(u, v, dx, dy):
     r"""Calculate the shearing deformation of the horizontal wind.
@@ -250,6 +256,7 @@ def shearing_deformation(u, v, dx, dy):
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def stretching_deformation(u, v, dx, dy):
     r"""Calculate the stretching deformation of the horizontal wind.
@@ -281,6 +288,7 @@ def stretching_deformation(u, v, dx, dy):
 
 
 @exporter.export
+@preprocess_xarray
 @deprecated('0.7', addendum=' Use stretching_deformation and/or shearing_deformation instead.',
             pending=False)
 @ensure_yx_order
@@ -322,6 +330,7 @@ def shearing_stretching_deformation(u, v, dx, dy):
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def total_deformation(u, v, dx, dy):
     r"""Calculate the horizontal total deformation of the horizontal wind.
@@ -355,6 +364,7 @@ def total_deformation(u, v, dx, dy):
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def advection(scalar, wind, deltas):
     r"""Calculate the advection of a scalar field by the wind.
@@ -404,6 +414,7 @@ def advection(scalar, wind, deltas):
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
@@ -468,6 +479,7 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def geostrophic_wind(heights, f, dx, dy):
     r"""Calculate the geostrophic wind given from the heights or geopotential.
@@ -502,6 +514,7 @@ def geostrophic_wind(heights, f, dx, dy):
 
 
 @exporter.export
+@preprocess_xarray
 @ensure_yx_order
 def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
     r"""Calculate the ageostrophic wind given from the heights or geopotential.
@@ -536,6 +549,7 @@ def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[length]', '[temperature]')
 def montgomery_streamfunction(height, temperature):
     r"""Compute the Montgomery Streamfunction on isentropic surfaces.
@@ -577,6 +591,7 @@ def montgomery_streamfunction(height, temperature):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[speed]', '[speed]', '[length]', '[length]', '[length]',
              '[speed]', '[speed]')
 def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
@@ -637,6 +652,7 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
                             ' 0.11.',
             pending=False)
 @exporter.export
+@preprocess_xarray
 def lat_lon_grid_spacing(longitude, latitude, **kwargs):
     r"""Calculate the distance between grid points that are in a latitude/longitude format.
 
@@ -673,6 +689,7 @@ def lat_lon_grid_spacing(longitude, latitude, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 def lat_lon_grid_deltas(longitude, latitude, **kwargs):
     r"""Calculate the delta between grid points that are in a latitude/longitude format.
 
@@ -698,6 +715,8 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
     Assumes [Y, X] for 2D arrays
 
     """
+    from pyproj import Geod
+
     # Inputs must be the same number of dimensions
     if latitude.ndim != longitude.ndim:
         raise ValueError('Latitude and longitude must have the same number of dimensions.')
@@ -724,6 +743,7 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[speed]', '[speed]', '[length]', '[length]')
 def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
     """Calculate the absolute vorticity of the horizontal wind.
@@ -753,6 +773,7 @@ def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
              '[length]', '[length]', '[dimensionless]')
 def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, lats,
@@ -812,6 +833,7 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[length]', '[speed]', '[speed]', '[length]', '[length]', '[dimensionless]')
 def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
     r"""Calculate the barotropic (Rossby) potential vorticity.
@@ -846,6 +868,7 @@ def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
 
 
 @exporter.export
+@preprocess_xarray
 def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
     r"""Calculate the inertial advective wind.
 
@@ -907,6 +930,7 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[speed]', '[speed]', '[temperature]', '[pressure]', '[length]', '[length]')
 def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
     r"""Calculate Q-vector at a given pressure level using the u, v winds and temperature.

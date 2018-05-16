@@ -21,6 +21,7 @@ from scipy.spatial import cKDTree
 from . import height_to_pressure_std, pressure_to_height_std
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, diff, units
+from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
 
@@ -49,6 +50,7 @@ BASE_DEGREE_MULTIPLIER = 22.5 * units.degree
 
 
 @exporter.export
+@preprocess_xarray
 def resample_nn_1d(a, centers):
     """Return one-dimensional nearest-neighbor indexes based on user-specified centers.
 
@@ -74,6 +76,7 @@ def resample_nn_1d(a, centers):
 
 
 @exporter.export
+@preprocess_xarray
 def nearest_intersection_idx(a, b):
     """Determine the index of the point just before two lines with common x values.
 
@@ -101,6 +104,7 @@ def nearest_intersection_idx(a, b):
 
 
 @exporter.export
+@preprocess_xarray
 @units.wraps(('=A', '=B'), ('=A', '=B', '=B'))
 def find_intersections(x, a, b, direction='all'):
     """Calculate the best estimate of intersection.
@@ -178,6 +182,7 @@ def find_intersections(x, a, b, direction='all'):
 
 
 @exporter.export
+@preprocess_xarray
 def interpolate_nans(x, y, kind='linear'):
     """Interpolate NaN values in y.
 
@@ -239,7 +244,7 @@ def _next_non_masked_element(a, idx):
         return idx, a[idx]
 
 
-def delete_masked_points(*arrs):
+def _delete_masked_points(*arrs):
     """Delete masked points from arrays.
 
     Takes arrays and removes masked points to help with calculations and plotting.
@@ -263,6 +268,7 @@ def delete_masked_points(*arrs):
 
 
 @exporter.export
+@preprocess_xarray
 def reduce_point_density(points, radius, priority=None):
     r"""Return a mask to reduce the density of points in irregularly-spaced data.
 
@@ -434,6 +440,7 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[length]')
 def get_layer_heights(heights, depth, *args, **kwargs):
     """Return an atmospheric layer from upper air data with the requested bottom and depth.
@@ -525,6 +532,7 @@ def get_layer_heights(heights, depth, *args, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[pressure]')
 def get_layer(pressure, *args, **kwargs):
     r"""Return an atmospheric layer from upper air data with the requested bottom and depth.
@@ -631,6 +639,7 @@ def get_layer(pressure, *args, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 @units.wraps(None, ('=A', '=A'))
 def interp(x, xp, *args, **kwargs):
     r"""Interpolates data with any shape over a specified axis.
@@ -730,9 +739,11 @@ def interp(x, xp, *args, **kwargs):
 
     # Calculate interpolation for each variable
     for var in variables:
-        var_interp = var[below] + ((x_array - xp[below]) /
-                                   (xp[above] - xp[below])) * (var[above] -
-                                                               var[below])
+        # Var needs to be on the *left* of the multiply to ensure that if it's a pint
+        # Quantity, it gets to control the operation--at least until we make sure
+        # masked arrays and pint play together better. See https://github.com/hgrecco/pint#633
+        var_interp = var[below] + (var[above] - var[below]) * ((x_array - xp[below]) /
+                                                               (xp[above] - xp[below]))
 
         # Set points out of bounds to fill value.
         var_interp[minv == xp.shape[axis]] = fill_value
@@ -747,6 +758,95 @@ def interp(x, xp, *args, **kwargs):
         return ret[0]
     else:
         return ret
+
+
+@exporter.export
+@preprocess_xarray
+def find_bounding_indices(arr, values, axis, from_below=True):
+    """Find the indices surrounding the values within arr along axis.
+
+    Returns a set of above, below, good. Above and below are lists of arrays of indices.
+    These lists are formulated such that they can be used directly to index into a numpy
+    array and get the expected results (no extra slices or ellipsis necessary). `good` is
+    a boolean array indicating the "columns" that actually had values to bound the desired
+    value(s).
+
+    Parameters
+    ----------
+    arr : array-like
+        Array to search for values
+
+    values: array-like
+        One or more values to search for in `arr`
+
+    axis : int
+        The dimension of `arr` along which to search.
+
+    from_below : bool, optional
+        Whether to search from "below" (i.e. low indices to high indices). If `False`,
+        the search will instead proceed from high indices to low indices. Defaults to `True`.
+
+    Returns
+    -------
+    above : list of arrays
+        List of broadcasted indices to the location above the desired value
+
+    below : list of arrays
+        List of broadcasted indices to the location below the desired value
+
+    good : array
+        Boolean array indicating where the search found proper bounds for the desired value
+
+    """
+    # The shape of generated indices is the same as the input, but with the axis of interest
+    # replaced by the number of values to search for.
+    indices_shape = list(arr.shape)
+    indices_shape[axis] = len(values)
+
+    # Storage for the found indices and the mask for good locations
+    indices = np.empty(indices_shape, dtype=np.int)
+    good = np.empty(indices_shape, dtype=np.bool)
+
+    # Used to put the output in the proper location
+    store_slice = [slice(None)] * arr.ndim
+
+    # Loop over all of the values and for each, see where the value would be found from a
+    # linear search
+    for level_index, value in enumerate(values):
+        # Look for changes in the value of the test for <= value in consecutive points
+        # Taking abs() because we only care if there is a flip, not which direction.
+        switches = np.abs(np.diff((arr <= value).astype(np.int), axis=axis))
+
+        # Good points are those where it's not just 0's along the whole axis
+        good_search = np.any(switches, axis=axis)
+
+        if from_below:
+            # Look for the first switch; need to add 1 to the index since argmax is giving the
+            # index within the difference array, which is one smaller.
+            index = switches.argmax(axis=axis) + 1
+        else:
+            # Generate a list of slices to reverse the axis of interest so that searching from
+            # 0 to N is starting at the "top" of the axis.
+            arr_slice = [slice(None)] * arr.ndim
+            arr_slice[axis] = slice(None, None, -1)
+
+            # Same as above, but we use the slice to come from the end; then adjust those
+            # indices to measure from the front.
+            index = arr.shape[axis] - 1 - switches[arr_slice].argmax(axis=axis)
+
+        # Set all indices where the results are not good to 0
+        index[~good_search] = 0
+
+        # Put the results in the proper slice
+        store_slice[axis] = level_index
+        indices[store_slice] = index
+        good[store_slice] = good_search
+
+    # Create index values for broadcasting arrays
+    above = broadcast_indices(arr, indices, arr.ndim, axis)
+    below = broadcast_indices(arr, indices - 1, arr.ndim, axis)
+
+    return above, below, good
 
 
 def broadcast_indices(x, minv, ndim, axis):
@@ -767,6 +867,7 @@ def broadcast_indices(x, minv, ndim, axis):
 
 
 @exporter.export
+@preprocess_xarray
 @units.wraps(None, ('=A', '=A'))
 def log_interp(x, xp, *args, **kwargs):
     r"""Interpolates data with logarithmic x-scale over a specified axis.
@@ -839,7 +940,7 @@ def _greater_or_close(a, value, **kwargs):
         Boolean array where values are greater than or nearly equal to value.
 
     """
-    return np.greater(a, value) | np.isclose(a, value, **kwargs)
+    return (a > value) | np.isclose(a, value, **kwargs)
 
 
 def _less_or_close(a, value, **kwargs):
@@ -861,10 +962,11 @@ def _less_or_close(a, value, **kwargs):
         Boolean array where values are less than or nearly equal to value.
 
     """
-    return np.less(a, value) | np.isclose(a, value, **kwargs)
+    return (a < value) | np.isclose(a, value, **kwargs)
 
 
 @exporter.export
+@preprocess_xarray
 def first_derivative(f, **kwargs):
     """Calculate the first derivative of a grid of values.
 
@@ -949,6 +1051,7 @@ def first_derivative(f, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 def second_derivative(f, **kwargs):
     """Calculate the second derivative of a grid of values.
 
@@ -1032,6 +1135,7 @@ def second_derivative(f, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 def gradient(f, **kwargs):
     """Calculate the gradient of a grid of values.
 
@@ -1044,10 +1148,11 @@ def gradient(f, **kwargs):
     f : array-like
         Array of values of which to calculate the derivative
     x : array-like, optional
-        The coordinate values corresponding to the grid points in `f`
+        Sequence of arrays containing the coordinate values corresponding to the
+        grid points in `f` in axis order.
     deltas : array-like, optional
-        Spacing between the grid points in `f`. There should be one item less than the size
-        of `f` along `axis`.
+        Sequence of arrays or scalars that specify the spacing between the grid points in `f`
+        in axis order. There should be one item less than the size of `f` along `axis`.
 
     Returns
     -------
@@ -1065,6 +1170,7 @@ def gradient(f, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 def laplacian(f, **kwargs):
     """Calculate the laplacian of a grid of values.
 
@@ -1153,6 +1259,7 @@ def _process_deriv_args(f, kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 def parse_angle(input_dir):
     """Calculate the meteorological angle from directional text.
 

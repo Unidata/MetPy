@@ -50,6 +50,10 @@ import posixpath
 import matplotlib.colors as mcolors
 from pkg_resources import resource_listdir, resource_stream
 
+from ..package_tools import Exporter
+
+exporter = Exporter(globals())
+
 TABLE_EXT = '.tbl'
 
 logging.basicConfig(level=logging.WARNING)
@@ -66,6 +70,7 @@ def _parse(s):
     return None
 
 
+@exporter.export
 def read_colortable(fobj):
     r"""Read colortable information from a file.
 
@@ -271,5 +276,8 @@ class ColortableRegistry(dict):
 
 
 registry = ColortableRegistry()
-registry.scan_resource('metpy.plots', 'colortables')
+registry.scan_resource('metpy.plots', 'colortable_files')
 registry.scan_dir(os.path.curdir)
+
+with exporter:
+    colortables = registry
