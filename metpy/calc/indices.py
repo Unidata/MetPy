@@ -189,12 +189,12 @@ def bulk_shear(pressure, u, v, heights=None, bottom=None, depth=None):
     height : `pint.Quantity`, optional
         Heights from sounding
     depth: `pint.Quantity`, optional
-        The depth of the layer in meters or hPa
+        The depth of the layer in meters or hPa. Defaults to 100 hPa.
     bottom: `pint.Quantity`, optional
-        The bottom of the layer in meters or hPa.
-        If in meters, must be in the same coordinates as the given
+        The bottom of the layer in height or pressure coordinates.
+        If using a height, it must be in the same coordinates as the given
         heights (i.e., don't use meters AGL unless given heights
-        are in meters AGL.) Default is the surface (1st observation.)
+        are in meters AGL.) Defaults to the highest pressure or lowest height given.
 
     Returns
     -------

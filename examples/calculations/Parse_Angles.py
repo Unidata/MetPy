@@ -3,17 +3,15 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """
 Parse angles
-=====================================
+============
 
-Use functions from `metpy.calc` as well as pint's unit support to perform calculations.
+Demonstrate how to convert direction strings to angles.
 
 The code below shows how to parse directional text into angles.
-It also demonstrates converting the resulting angles from degrees
-into radians. Lastly, it demonstrates the function's flexibility
-in handling various formats.
+It also  demonstrates the function's flexibility
+in handling various string formatting.
 """
 import metpy.calc as mpcalc
-from metpy.units import units
 
 ###########################################
 # Create a test value of a directional text
@@ -25,11 +23,6 @@ print(dir_str)
 # the corresponding angle
 angle_deg = mpcalc.parse_angle(dir_str)
 print(angle_deg)
-
-###########################################
-# Convert angle in degrees to radians
-angle_rad = angle_deg.to(units.radians)
-print(angle_rad)
 
 ###########################################
 # The function can also handle arrays of string
