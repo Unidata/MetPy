@@ -614,6 +614,18 @@ def test_first_derivative_scalar_delta():
     assert_array_almost_equal(df_dx, np.array([1., 1., 1.]), 6)
 
 
+def test_first_derivative_masked():
+    """Test that first_derivative properly propagates masks."""
+    data = np.ma.arange(7)
+    data[3] = np.ma.masked
+    df_dx = first_derivative(data, delta=1)
+
+    truth = np.ma.array([1., 1., 1., 1., 1., 1., 1.],
+                        mask=[False, False, True, True, True, False, False])
+    assert_array_almost_equal(df_dx, truth)
+    assert_array_equal(df_dx.mask, truth.mask)
+
+
 def test_second_derivative(deriv_1d_data):
     """Test second_derivative with a simple 1D array."""
     d2v_dx2 = second_derivative(deriv_1d_data.values, x=deriv_1d_data.x)
