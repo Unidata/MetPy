@@ -6,6 +6,7 @@ from __future__ import division
 
 import functools
 import warnings
+from operator import itemgetter
 
 import numpy as np
 try:
@@ -23,12 +24,26 @@ from ..units import atleast_1d, check_units, concatenate, diff, units
 
 exporter = Exporter(globals())
 
-DIR_STRS = [
-    'N', 'NNE', 'NE', 'ENE',
-    'E', 'ESE', 'SE', 'SSE',
-    'S', 'SSW', 'SW', 'WSW',
-    'W', 'WNW', 'NW', 'NNW'
-]
+DIR_DICT = {
+    'N': 0. * units.degree,
+    'NNE': 22.5 * units.degree,
+    'NE': 45. * units.degree,
+    'ENE': 67.5 * units.degree,
+    'E': 90. * units.degree,
+    'ESE': 112.5 * units.degree,
+    'SE': 135. * units.degree,
+    'SSE': 157.5 * units.degree,
+    'S': 180. * units.degree,
+    'SSW': 202.5 * units.degree,
+    'SW': 225. * units.degree,
+    'WSW': 247.5 * units.degree,
+    'W': 270. * units.degree,
+    'WNW': 292.5 * units.degree,
+    'NW': 315. * units.degree,
+    'NNW': 337.5 * units.degree
+}
+
+DIR_STRS = DIR_DICT.keys()
 
 BASE_DEGREE_MULTIPLIER = 22.5 * units.degree
 
@@ -1155,13 +1170,14 @@ def parse_angle(input_dir):
         The angle in degrees
 
     """
-    if len(input_dir) > 1 and not isinstance(input_dir, str):
-        return [parse_angle(single_dir) for single_dir in input_dir]
-    else:
-        input_dir = _abbrieviate_direction(input_dir)
-        for i, dir_str in enumerate(DIR_STRS):
-            if input_dir.upper() == dir_str:
-                return i * BASE_DEGREE_MULTIPLIER
+    if isinstance(input_dir, str):
+        # abb_dirs = abbrieviated directions
+        abb_dirs = [_abbrieviate_direction(input_dir)]
+    elif isinstance(input_dir, list):
+        input_dir_str = ','.join(input_dir)
+        abb_dir_str = _abbrieviate_direction(input_dir_str)
+        abb_dirs = abb_dir_str.split(',')
+    return itemgetter(*abb_dirs)(DIR_DICT)
 
 
 def _abbrieviate_direction(ext_dir_str):
