@@ -56,7 +56,7 @@ setup(
         'cdm': ['pyproj>=1.9.4'],
         'dev': ['ipython[all]>=3.1'],
         'doc': ['sphinx>=1.4', 'sphinx-gallery', 'doc8', 'recommonmark',
-                'netCDF4!=1.4'],
+                'netCDF4'],
         'examples': ['cartopy>=0.13.1'],
         'test': ['pytest>=2.4', 'pytest-runner', 'pytest-mpl', 'pytest-flake8',
                  'cartopy>=0.13.1', 'flake8>3.2.0', 'flake8-builtins!=1.4.0',
