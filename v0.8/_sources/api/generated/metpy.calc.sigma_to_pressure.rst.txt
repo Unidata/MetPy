@@ -1,0 +1,12 @@
+sigma_to_pressure
+============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: sigma_to_pressure
+
+.. include:: metpy.calc.sigma_to_pressure.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

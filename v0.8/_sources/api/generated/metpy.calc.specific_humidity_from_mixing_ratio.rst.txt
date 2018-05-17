@@ -1,0 +1,12 @@
+specific_humidity_from_mixing_ratio
+==============================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: specific_humidity_from_mixing_ratio
+
+.. include:: metpy.calc.specific_humidity_from_mixing_ratio.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

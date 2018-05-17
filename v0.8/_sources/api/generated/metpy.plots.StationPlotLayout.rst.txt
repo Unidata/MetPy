@@ -1,0 +1,75 @@
+StationPlotLayout
+=============================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: StationPlotLayout
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~StationPlotLayout.add_barb
+      ~StationPlotLayout.add_symbol
+      ~StationPlotLayout.add_text
+      ~StationPlotLayout.add_value
+      ~StationPlotLayout.clear
+      ~StationPlotLayout.copy
+      ~StationPlotLayout.fromkeys
+      ~StationPlotLayout.get
+      ~StationPlotLayout.items
+      ~StationPlotLayout.keys
+      ~StationPlotLayout.names
+      ~StationPlotLayout.plot
+      ~StationPlotLayout.pop
+      ~StationPlotLayout.popitem
+      ~StationPlotLayout.setdefault
+      ~StationPlotLayout.update
+      ~StationPlotLayout.values
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: add_barb
+   .. automethod:: add_symbol
+   .. automethod:: add_text
+   .. automethod:: add_value
+   .. automethod:: clear
+   .. automethod:: copy
+   .. automethod:: fromkeys
+   .. automethod:: get
+   .. automethod:: items
+   .. automethod:: keys
+   .. automethod:: names
+   .. automethod:: plot
+   .. automethod:: pop
+   .. automethod:: popitem
+   .. automethod:: setdefault
+   .. automethod:: update
+   .. automethod:: values
+
+   
+   
+
+.. include:: metpy.plots.StationPlotLayout.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

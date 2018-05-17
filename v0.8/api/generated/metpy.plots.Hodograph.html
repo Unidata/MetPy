@@ -1,0 +1,521 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Hodograph &mdash; MetPy 0.8</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.plots.Hodograph.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 0.8" href="../../index.html"/>
+        <link rel="up" title="plots" href="metpy.plots.html"/>
+        <link rel="next" title="SkewT" href="metpy.plots.SkewT.html"/>
+        <link rel="prev" title="read_colortable" href="metpy.plots.read_colortable.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>0.8</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">MetPy Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_timestamp.html">add_timestamp</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Hodograph</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-plots-hodograph">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.Hodograph</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">The MetPy API</a> &raquo;</li>
+        
+          <li><a href="metpy.plots.html">plots</a> &raquo;</li>
+        
+      <li>Hodograph</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.plots.Hodograph&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="hodograph">
+<h1>Hodograph<a class="headerlink" href="#hodograph" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="metpy.plots.Hodograph">
+<em class="property">class </em><code class="descclassname">metpy.plots.</code><code class="descname">Hodograph</code><span class="sig-paren">(</span><em>ax=None</em>, <em>component_range=80</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph" title="Permalink to this definition">¶</a></dt>
+<dd><p>Make a hodograph of wind data.</p>
+<p>Plots the u and v components of the wind along the x and y axes, respectively.</p>
+<p>This class simplifies the process of creating a hodograph using matplotlib.
+It provides helpers for creating a circular grid and for plotting the wind as a line
+colored by another value (such as wind speed).</p>
+<dl class="attribute">
+<dt id="metpy.plots.Hodograph.ax">
+<code class="descname">ax</code><a class="headerlink" href="#metpy.plots.Hodograph.ax" title="Permalink to this definition">¶</a></dt>
+<dd><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a> – The underlying Axes instance used for all plotting</p>
+</dd></dl>
+
+<p>Create a Hodograph instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>, optional) – The <em class="xref py py-obj">Axes</em> instance used for plotting</li>
+<li><strong>component_range</strong> (<em>value</em>) – The maximum range of the plot. Used to set plot bounds and control the maximum
+number of grid rings needed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Summary</p>
+<table border="1" class="longtable docutils">
+<colgroup>
+<col width="10%" />
+<col width="90%" />
+</colgroup>
+<tbody valign="top">
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.Hodograph.__init__" title="metpy.plots.Hodograph.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([ax,&nbsp;component_range])</td>
+<td>Create a Hodograph instance.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.Hodograph.add_grid" title="metpy.plots.Hodograph.add_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_grid</span></code></a>([increment])</td>
+<td>Add grid lines to hodograph.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.Hodograph.plot" title="metpy.plots.Hodograph.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(u,&nbsp;v,&nbsp;**kwargs)</td>
+<td>Plot u, v data.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.Hodograph.plot_colormapped" title="metpy.plots.Hodograph.plot_colormapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_colormapped</span></code></a>(u,&nbsp;v,&nbsp;c[,&nbsp;bounds,&nbsp;colors])</td>
+<td>Plot u, v data, with line colored based on a third set of data.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.Hodograph.wind_vectors" title="metpy.plots.Hodograph.wind_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wind_vectors</span></code></a>(u,&nbsp;v,&nbsp;**kwargs)</td>
+<td>Plot u, v data as wind vectors.</td>
+</tr>
+</tbody>
+</table>
+<p class="rubric">Methods Documentation</p>
+<dl class="method">
+<dt id="metpy.plots.Hodograph.__init__">
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>ax=None</em>, <em>component_range=80</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a Hodograph instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>, optional) – The <em class="xref py py-obj">Axes</em> instance used for plotting</li>
+<li><strong>component_range</strong> (<em>value</em>) – The maximum range of the plot. Used to set plot bounds and control the maximum
+number of grid rings needed.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.Hodograph.add_grid">
+<code class="descname">add_grid</code><span class="sig-paren">(</span><em>increment=10.0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.add_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.add_grid" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add grid lines to hodograph.</p>
+<p>Creates lines for the x- and y-axes, as well as circles denoting wind speed values.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>increment</strong> (<em>value</em><em>, </em><em>optional</em>) – The value increment between rings</li>
+<li><strong>kwargs</strong> – Other kwargs to control appearance of lines</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.patches.Circle.html#matplotlib.patches.Circle" title="(in Matplotlib v2.2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.patches.Circle</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axhline.html#matplotlib.axes.Axes.axhline" title="(in Matplotlib v2.2.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.axhline()</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axvline.html#matplotlib.axes.Axes.axvline" title="(in Matplotlib v2.2.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.axvline()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.Hodograph.plot">
+<code class="descname">plot</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot u, v data.</p>
+<p>Plots the wind data on the hodograph.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>array_like</em>) – u-component of wind</li>
+<li><strong>v</strong> (<em>array_like</em>) – v-component of wind</li>
+<li><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.plot.html#matplotlib.axes.Axes.plot" title="(in Matplotlib v2.2.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.plot()</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>list[matplotlib.lines.Line2D]</em> – lines plotted</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.Hodograph.plot_colormapped" title="metpy.plots.Hodograph.plot_colormapped"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Hodograph.plot_colormapped()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.Hodograph.plot_colormapped">
+<code class="descname">plot_colormapped</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>c</em>, <em>bounds=None</em>, <em>colors=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.plot_colormapped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.plot_colormapped" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot u, v data, with line colored based on a third set of data.</p>
+<p>Plots the wind data on the hodograph, but with a colormapped line. Takes a third
+variable besides the winds and either a colormap to color it with or a series of
+bounds and colors to create a colormap and norm to control colormapping.
+The bounds must always be in increasing order. For using custom bounds with
+height data, the function will automatically interpolate to the actual bounds from the
+height and wind data, as well as convert the input bounds from
+height AGL to height above MSL to work with the provided heights.</p>
+<p>Simple wrapper around plot so that pressure is the first (independent)
+input. This is essentially a wrapper around <em class="xref py py-obj">semilogy</em>. It also
+sets some appropriate ticking and plot ranges.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>array_like</em>) – u-component of wind</li>
+<li><strong>v</strong> (<em>array_like</em>) – v-component of wind</li>
+<li><strong>c</strong> (<em>array_like</em>) – data to use for colormapping</li>
+<li><strong>bounds</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Array of bounds for c to use in coloring the hodograph.</li>
+<li><strong>colors</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.6)"><em>list</em></a><em>, </em><em>optional</em>) – Array of strings representing colors for the hodograph segments.</li>
+<li><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v2.2.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.collections.LineCollection</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.collections.LineCollection</em> – instance created</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="#metpy.plots.Hodograph.plot" title="metpy.plots.Hodograph.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Hodograph.plot()</span></code></a></p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="metpy.plots.Hodograph.wind_vectors">
+<code class="descname">wind_vectors</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.wind_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.wind_vectors" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot u, v data as wind vectors.</p>
+<p>Plot the wind data as vectors for each level, beginning at the origin.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>u</strong> (<em>array_like</em>) – u-component of wind</li>
+<li><strong>v</strong> (<em>array_like</em>) – v-component of wind</li>
+<li><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.quiver.html#matplotlib.axes.Axes.quiver" title="(in Matplotlib v2.2.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.quiver()</span></code></a></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.quiver.Quiver</em> – arrows plotted</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="examples-using-metpy-plots-hodograph">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.Hodograph</span></code><a class="headerlink" href="#examples-using-metpy-plots-hodograph" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s `GridSpec` layout capability. "><div class="figure" id="id1">
+<img alt="../../_images/sphx_glr_Skew-T_Layout_thumb.png" src="../../_images/sphx_glr_Skew-T_Layout_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Skew-T_Layout.html#sphx-glr-examples-plots-skew-t-layout-py"><span class="std std-ref">Skew-T with Complex Layout</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot. "><div class="figure" id="id2">
+<img alt="../../_images/sphx_glr_Hodograph_Inset_thumb.png" src="../../_images/sphx_glr_Hodograph_Inset_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Hodograph_Inset.html#sphx-glr-examples-plots-hodograph-inset-py"><span class="std std-ref">Hodograph Inset</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori..."><div class="figure" id="id3">
+<img alt="../../_images/sphx_glr_upperair_soundings_thumb.png" src="../../_images/sphx_glr_upperair_soundings_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/upperair_soundings.html#sphx-glr-tutorials-upperair-soundings-py"><span class="std std-ref">Upper Air Sounding Tutorial</span></a></span></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="metpy.plots.SkewT.html" class="btn btn-neutral float-right" title="SkewT" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="metpy.plots.read_colortable.html" class="btn btn-neutral" title="read_colortable" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on May 17, 2018 at 20:56:37.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../../../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.8.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

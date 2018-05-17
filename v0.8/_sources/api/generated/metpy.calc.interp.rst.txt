@@ -1,0 +1,12 @@
+interp
+=================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: interp
+
+.. include:: metpy.calc.interp.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+significant_tornado
+==============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: significant_tornado
+
+.. include:: metpy.calc.significant_tornado.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

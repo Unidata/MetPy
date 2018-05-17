@@ -1,0 +1,12 @@
+concatenate
+=======================
+
+.. currentmodule:: metpy.units
+
+.. autofunction:: concatenate
+
+.. include:: metpy.units.concatenate.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+deprecated
+=======================
+
+.. currentmodule:: metpy.io.cdm
+
+.. autofunction:: deprecated
+
+.. include:: metpy.io.cdm.deprecated.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+natural_neighbor
+===============================
+
+.. currentmodule:: metpy.gridding
+
+.. autofunction:: natural_neighbor
+
+.. include:: metpy.gridding.natural_neighbor.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
