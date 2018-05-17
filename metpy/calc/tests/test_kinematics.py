@@ -504,14 +504,14 @@ def test_storm_relative_helicity():
     # negative SRH will be zero.
     srh_true_t = srh_true_p
     srh_true_n = 0 * units('m^2/s^2')
-    p_srh, n_srh, T_srh = storm_relative_helicity(u_int, v_int,
+    p_srh, n_srh, t_srh = storm_relative_helicity(u_int, v_int,
                                                   hgt_int, 1000 * units('meter'),
                                                   bottom=0 * units('meter'),
                                                   storm_u=0 * units.knot,
                                                   storm_v=0 * units.knot)
     assert_almost_equal(p_srh, srh_true_p, 2)
     assert_almost_equal(n_srh, srh_true_n, 2)
-    assert_almost_equal(T_srh, srh_true_t, 2)
+    assert_almost_equal(t_srh, srh_true_t, 2)
 
 
 def test_storm_relative_helicity_agl():
