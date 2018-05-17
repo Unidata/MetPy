@@ -11,12 +11,32 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from metpy.testing import assert_array_equal, set_agg_backend  # noqa: F401
-from metpy.units import (atleast_1d, atleast_2d, check_units, diff,
+from metpy.testing import assert_array_almost_equal, assert_array_equal
+from metpy.testing import set_agg_backend  # noqa: F401
+from metpy.units import (atleast_1d, atleast_2d, check_units, concatenate, diff,
                          pandas_dataframe_to_unit_arrays, units)
 
 
 warnings.filterwarnings('ignore', 'Pandas doesn\'t allow columns to be created', UserWarning)
+
+
+def test_concatenate():
+    """Test basic functionality of unit-aware concatenate."""
+    result = concatenate((3 * units.meter, 400 * units.cm))
+    assert_array_equal(result, np.array([3, 4]) * units.meter)
+    assert not isinstance(result.m, np.ma.MaskedArray)
+
+
+def test_concatenate_masked():
+    """Test concatenate preserves masks."""
+    d1 = units.Quantity(np.ma.array([1, 2, 3], mask=[False, True, False]), 'degC')
+    result = concatenate((d1, 32 * units.degF))
+
+    truth = np.ma.array([1, np.inf, 3, 0])
+    truth[1] = np.ma.masked
+
+    assert_array_almost_equal(result, units.Quantity(truth, 'degC'), 6)
+    assert_array_equal(result.mask, np.array([False, True, False, False]))
 
 
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)

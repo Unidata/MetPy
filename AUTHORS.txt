@@ -3,8 +3,12 @@ UCAR/Unidata
 Aaron Hill
 Abby Kenyon
 Alex Haberlie
+Andrew Huang
+Assela Pathirana
 Brian Mapes
 Bryan Guarente
+Claude Dicaire
+Dan Dawson
 Daryl Herzmann
 Denis Sergeev
 Eric Bruning

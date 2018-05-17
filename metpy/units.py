@@ -101,7 +101,13 @@ def concatenate(arrs, axis=0):
             a = a.to(dest).magnitude
         data.append(np.atleast_1d(a))
 
-    return units.Quantity(np.concatenate(data, axis=axis), dest)
+    # Use masked array concatenate to ensure masks are preserved, but convert to an
+    # array if there are no masked values.
+    data = np.ma.concatenate(data, axis=axis)
+    if not np.any(data.mask):
+        data = np.asarray(data)
+
+    return units.Quantity(data, dest)
 
 
 def diff(x, **kwargs):

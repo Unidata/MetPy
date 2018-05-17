@@ -59,7 +59,7 @@ setup(
                 'netCDF4'],
         'examples': ['cartopy>=0.13.1'],
         'test': ['pytest>=2.4', 'pytest-runner', 'pytest-mpl', 'pytest-flake8',
-                 'cartopy>=0.13.1', 'flake8>3.2.0', 'flake8-builtins!=1.4.0',
+                 'cartopy>=0.16.0', 'flake8>3.2.0', 'flake8-builtins!=1.4.0',
                  'flake8-comprehensions', 'flake8-copyright',
                  'flake8-docstrings', 'flake8-import-order', 'flake8-mutable',
                  'flake8-pep3101', 'flake8-print', 'flake8-quotes',
