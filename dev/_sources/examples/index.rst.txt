@@ -17,6 +17,26 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s XArray accessors to simplify opening a data file and plotting data on a map using C...">
+
+.. only:: html
+
+    .. figure:: /examples/images/thumb/sphx_glr_XArray_Projections_thumb.png
+
+        :ref:`sphx_glr_examples_XArray_Projections.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/XArray_Projections
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Plot a sounding using MetPy with more advanced features.">
 
 .. only:: html
@@ -77,7 +97,7 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy function `mcalc.isentropic_interpolation` allows for isentropic analysis from model a...">
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy function `mpcalc.isentropic_interpolation` allows for isentropic analysis from model ...">
 
 .. only:: html
 
@@ -129,6 +149,26 @@ Examples using various calculation functions from MetPy.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to convert direction strings to angles.">
+
+.. only:: html
+
+    .. figure:: /examples/calculations/images/thumb/sphx_glr_Parse_Angles_thumb.png
+
+        :ref:`sphx_glr_examples_calculations_Parse_Angles.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/calculations/Parse_Angles
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Use functions from `metpy.calc` as well as pint&#x27;s unit support to perform calculations.">
 
 .. only:: html
@@ -146,6 +186,26 @@ Examples using various calculation functions from MetPy.
    :hidden:
 
    /examples/calculations/Dewpoint_and_Mixing_Ratio
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use `metpy.calc.gradient`.">
+
+.. only:: html
+
+    .. figure:: /examples/calculations/images/thumb/sphx_glr_Gradient_thumb.png
+
+        :ref:`sphx_glr_examples_calculations_Gradient.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/calculations/Gradient
 .. raw:: html
 
     <div style='clear:both'></div>
@@ -158,26 +218,6 @@ File Formats
 Examples using MetPy's support for reading various file formats.
 
 
-
-.. raw:: html
-
-    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot ">
-
-.. only:: html
-
-    .. figure:: /examples/formats/images/thumb/sphx_glr_NEXRAD_Level_3_File_thumb.png
-
-        :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /examples/formats/NEXRAD_Level_3_File
 
 .. raw:: html
 
@@ -198,6 +238,26 @@ Examples using MetPy's support for reading various file formats.
    :hidden:
 
    /examples/formats/GINI_Water_Vapor
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot ">
+
+.. only:: html
+
+    .. figure:: /examples/formats/images/thumb/sphx_glr_NEXRAD_Level_3_File_thumb.png
+
+        :ref:`sphx_glr_examples_formats_NEXRAD_Level_3_File.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/formats/NEXRAD_Level_3_File
 
 .. raw:: html
 

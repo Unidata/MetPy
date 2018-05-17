@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Unit Support &mdash; MetPy 0.6</title>
+  <title>Unit Support &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.6" href="index.html"/>
+    <link rel="top" title="MetPy 0.7" href="index.html"/>
         <link rel="next" title="MetPy Examples" href="examples/index.html"/>
         <link rel="prev" title="Installation Guide" href="installguide.html"/> 
 
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -128,8 +128,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
@@ -199,7 +199,7 @@
             
   <div class="section" id="unit-support">
 <h1>Unit Support<a class="headerlink" href="#unit-support" title="Permalink to this headline">¶</a></h1>
-<p>To ensure correct calculations, MetPy relies upon the <code class="xref py py-mod docutils literal"><span class="pre">pint</span></code> library to enforce
+<p>To ensure correct calculations, MetPy relies upon the <code class="xref py py-mod docutils literal notranslate"><span class="pre">pint</span></code> library to enforce
 unit-correctness. This simplifies the MetPy API by eliminating the need to specify units
 various functions. Instead, only the final results need to be converted to desired units. For
 more information on unit support, see the documentation for
@@ -208,29 +208,29 @@ for <a class="reference external" href="http://pint.readthedocs.io/en/latest/non
 <div class="section" id="construction">
 <h2>Construction<a class="headerlink" href="#construction" title="Permalink to this headline">¶</a></h2>
 <p>To use units, the first step is to import the default MetPy units registry from the
-<a class="reference internal" href="api/generated/metpy.units.html#module-metpy.units" title="metpy.units"><code class="xref py py-mod docutils literal"><span class="pre">units</span></code></a> module:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<a class="reference internal" href="api/generated/metpy.units.html#module-metpy.units" title="metpy.units"><code class="xref py py-mod docutils literal notranslate"><span class="pre">units</span></code></a> module:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 </pre></div>
 </div>
 <p>The unit registry encapsulates all of the available units, as well as any pertinent settings.
 The registry also understands unit prefixes and suffixes; this allows the registry to
-understand <code class="docutils literal"><span class="pre">'kilometer'</span></code> and <code class="docutils literal"><span class="pre">'meters'</span></code> in addition to the base <code class="docutils literal"><span class="pre">'meter'</span></code> unit.</p>
-<p>In general, using units is only a small step on top of using the <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a> object.
+understand <code class="docutils literal notranslate"><span class="pre">'kilometer'</span></code> and <code class="docutils literal notranslate"><span class="pre">'meters'</span></code> in addition to the base <code class="docutils literal notranslate"><span class="pre">'meter'</span></code> unit.</p>
+<p>In general, using units is only a small step on top of using the <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> object.
 The easiest way to attach units to an array is to multiply by the units:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span>
 </pre></div>
 </div>
-<p>It is also possible to directly construct a <code class="xref py py-class docutils literal"><span class="pre">pint.Quantity</span></code>, with a full units string:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;sec&#39;</span><span class="p">)</span>
+<p>It is also possible to directly construct a <code class="xref py py-class docutils literal notranslate"><span class="pre">pint.Quantity</span></code>, with a full units string:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">time</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s1">&#39;sec&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Compound units can be constructed by the direct mathematical operations necessary:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="mf">9.81</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">/</span> <span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">second</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="mf">9.81</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span> <span class="o">/</span> <span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">second</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">second</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>This verbose syntax can be reduced by using the unit registry’s support for parsing units:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="mf">9.81</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s^2&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="mf">9.81</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s^2&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -238,60 +238,60 @@ The easiest way to attach units to an array is to multiply by the units:</p>
 <h2>Operations<a class="headerlink" href="#operations" title="Permalink to this headline">¶</a></h2>
 <p>With units attached, it is possible to perform mathematical operations, resulting in the proper
 units:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">/</span> <span class="n">time</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">/</span> <span class="n">time</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="mf">0.5</span>  <span class="mf">0.5</span>  <span class="mf">0.5</span>  <span class="mf">0.5</span><span class="p">]</span> <span class="n">meter</span> <span class="o">/</span> <span class="n">second</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span> <span class="mf">0.5</span>  <span class="mf">0.5</span>  <span class="mf">0.5</span>  <span class="mf">0.5</span><span class="p">]</span> <span class="n">meter</span> <span class="o">/</span> <span class="n">second</span>
 </pre></div>
 </div>
 <p>For multiplication and division, units can combine and cancel. For addition and subtraction,
 instead the operands must have compatible units. For instance, this works:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">+</span> <span class="n">distance</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">+</span> <span class="n">distance</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">0</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">6</span> <span class="mi">8</span><span class="p">]</span> <span class="n">meter</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="mi">0</span> <span class="mi">2</span> <span class="mi">4</span> <span class="mi">6</span> <span class="mi">8</span><span class="p">]</span> <span class="n">meter</span>
 </pre></div>
 </div>
 <p>But this does not:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">+</span> <span class="n">time</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">distance</span> <span class="o">+</span> <span class="n">time</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">DimensionalityError</span><span class="p">:</span> <span class="n">Cannot</span> <span class="n">convert</span> <span class="kn">from</span> <span class="s1">&#39;meter&#39;</span> <span class="p">([</span><span class="n">length</span><span class="p">])</span> <span class="n">to</span> <span class="s1">&#39;second&#39;</span> <span class="p">([</span><span class="n">time</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">DimensionalityError</span><span class="p">:</span> <span class="n">Cannot</span> <span class="n">convert</span> <span class="kn">from</span> <span class="s1">&#39;meter&#39;</span> <span class="p">([</span><span class="n">length</span><span class="p">])</span> <span class="n">to</span> <span class="s1">&#39;second&#39;</span> <span class="p">([</span><span class="n">time</span><span class="p">])</span>
 </pre></div>
 </div>
 <p>Even if the units are not identical, as long as they are dimensionally equivalent, the
 operation can be performed:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">inch</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">inch</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">cm</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">4.968503937007874</span> <span class="n">inch</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">4.968503937007874</span> <span class="n">inch</span>
 </pre></div>
 </div>
 </div>
 <div class="section" id="conversion">
 <h2>Conversion<a class="headerlink" href="#conversion" title="Permalink to this headline">¶</a></h2>
-<p>Converting a <code class="xref py py-class docutils literal"><span class="pre">Quantity</span></code> between units can be accomplished by using the
-<code class="xref py py-meth docutils literal"><span class="pre">to()</span></code> method call, which constructs a new <code class="xref py py-class docutils literal"><span class="pre">Quantity</span></code> in the
+<p>Converting a <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code> between units can be accomplished by using the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">to()</span></code> method call, which constructs a new <code class="xref py py-class docutils literal notranslate"><span class="pre">Quantity</span></code> in the
 desired units:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">((</span><span class="mi">1</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">inch</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">mm</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">((</span><span class="mi">1</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">inch</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">mm</span><span class="p">))</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">25.400000000000002</span> <span class="n">millimeter</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">25.400000000000002</span> <span class="n">millimeter</span>
 </pre></div>
 </div>
-<p>There is also the <code class="xref py py-meth docutils literal"><span class="pre">ito()</span></code> method which performs the same operation in place.
-To simplify units, there is also the <code class="xref py py-meth docutils literal"><span class="pre">to_base_units()</span></code> method, which
+<p>There is also the <code class="xref py py-meth docutils literal notranslate"><span class="pre">ito()</span></code> method which performs the same operation in place.
+To simplify units, there is also the <code class="xref py py-meth docutils literal notranslate"><span class="pre">to_base_units()</span></code> method, which
 converts a quantity to SI units, performing any needed cancellation:</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">Lf</span> <span class="o">=</span> <span class="mf">3.34e6</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;J/kg&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">Lf</span> <span class="o">=</span> <span class="mf">3.34e6</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;J/kg&#39;</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">Lf</span><span class="p">,</span> <span class="n">Lf</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">(),</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="mf">3340000.0</span> <span class="n">joule</span> <span class="o">/</span> <span class="n">kilogram</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">3340000.0</span> <span class="n">joule</span> <span class="o">/</span> <span class="n">kilogram</span>
 <span class="mf">3340000.0</span> <span class="n">meter</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">/</span> <span class="n">second</span> <span class="o">**</span> <span class="mi">2</span>
 </pre></div>
 </div>
-<p><code class="xref py py-meth docutils literal"><span class="pre">to_base_units()</span></code> can also be done in place via the
-<code class="xref py py-meth docutils literal"><span class="pre">ito_base_units()</span></code> method.</p>
+<p><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_base_units()</span></code> can also be done in place via the
+<code class="xref py py-meth docutils literal notranslate"><span class="pre">ito_base_units()</span></code> method.</p>
 </div>
 </div>
 
@@ -318,7 +318,7 @@ converts a quantity to SI units, performing any needed cancellation:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -355,7 +355,7 @@ converts a quantity to SI units, performing any needed cancellation:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

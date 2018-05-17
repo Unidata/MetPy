@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.turbulence &mdash; MetPy 0.6</title>
+  <title>metpy.calc.turbulence &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -122,8 +122,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
 </ul>
@@ -197,11 +197,13 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">preprocess_xarray</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="get_perturbation"><a class="viewcode-back" href="../../../api/generated/metpy.calc.get_perturbation.html#metpy.calc.get_perturbation">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
 <span class="k">def</span> <span class="nf">get_perturbation</span><span class="p">(</span><span class="n">ts</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the perturbation from the mean of a time series.</span>
 
@@ -241,6 +243,7 @@
 
 
 <div class="viewcode-block" id="tke"><a class="viewcode-back" href="../../../api/generated/metpy.calc.tke.html#metpy.calc.tke">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
 <span class="k">def</span> <span class="nf">tke</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute turbulence kinetic energy.</span>
 
@@ -306,6 +309,7 @@
 
 
 <div class="viewcode-block" id="kinematic_flux"><a class="viewcode-back" href="../../../api/generated/metpy.calc.kinematic_flux.html#metpy.calc.kinematic_flux">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
 <span class="k">def</span> <span class="nf">kinematic_flux</span><span class="p">(</span><span class="n">vel</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the kinematic flux from two time series.</span>
 
@@ -374,6 +378,7 @@
 
 
 <div class="viewcode-block" id="friction_velocity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.friction_velocity.html#metpy.calc.friction_velocity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
 <span class="k">def</span> <span class="nf">friction_velocity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">perturbation</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the friction velocity from the time series of velocity components.</span>
 
@@ -455,7 +460,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -492,7 +497,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

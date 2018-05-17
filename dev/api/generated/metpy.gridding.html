@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gridding &mdash; MetPy 0.6</title>
+  <title>gridding &mdash; MetPy 0.7</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="The MetPy API" href="../index.html"/>
         <link rel="next" title="interpolate" href="metpy.gridding.interpolate.html"/>
-        <link rel="prev" title="ColortableRegistry" href="metpy.plots.ctables.ColortableRegistry.html"/> 
+        <link rel="prev" title="Exporter" href="metpy.plots.ctables.Exporter.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -134,13 +134,16 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.gridding.interpolate.html">interpolate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.gridding.inverse_distance.html">inverse_distance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.gridding.natural_neighbor.html">natural_neighbor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.gridding.remove_nan_observations.html">remove_nan_observations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.gridding.remove_observations_below_value.html">remove_observations_below_value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.gridding.remove_repeat_coordinates.html">remove_repeat_coordinates</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -222,14 +225,23 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="metpy.gridding.interpolate"><code class="xref py py-obj docutils literal"><span class="pre">interpolate</span></code></a>(x,&nbsp;y,&nbsp;z[,&nbsp;interp_type,&nbsp;hres,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="metpy.gridding.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate</span></code></a>(x,&nbsp;y,&nbsp;z[,&nbsp;interp_type,&nbsp;hres,&nbsp;…])</td>
 <td>Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.gridding.inverse_distance.html#metpy.gridding.inverse_distance" title="metpy.gridding.inverse_distance"><code class="xref py py-obj docutils literal"><span class="pre">inverse_distance</span></code></a>(xp,&nbsp;yp,&nbsp;variable,&nbsp;grid_x,&nbsp;…)</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.gridding.inverse_distance.html#metpy.gridding.inverse_distance" title="metpy.gridding.inverse_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_distance</span></code></a>(xp,&nbsp;yp,&nbsp;variable,&nbsp;grid_x,&nbsp;…)</td>
 <td>Generate an inverse distance weighting interpolation of the given points.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.gridding.natural_neighbor.html#metpy.gridding.natural_neighbor" title="metpy.gridding.natural_neighbor"><code class="xref py py-obj docutils literal"><span class="pre">natural_neighbor</span></code></a>(xp,&nbsp;yp,&nbsp;variable,&nbsp;grid_x,&nbsp;…)</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.gridding.natural_neighbor.html#metpy.gridding.natural_neighbor" title="metpy.gridding.natural_neighbor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_neighbor</span></code></a>(xp,&nbsp;yp,&nbsp;variable,&nbsp;grid_x,&nbsp;…)</td>
 <td>Generate a natural neighbor interpolation of the given points.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="metpy.gridding.remove_nan_observations.html#metpy.gridding.remove_nan_observations" title="metpy.gridding.remove_nan_observations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_nan_observations</span></code></a>(x,&nbsp;y,&nbsp;z)</td>
+<td>Remove all x, y, and z where z is nan.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.gridding.remove_observations_below_value.html#metpy.gridding.remove_observations_below_value" title="metpy.gridding.remove_observations_below_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_observations_below_value</span></code></a>(x,&nbsp;y,&nbsp;z[,&nbsp;val])</td>
+<td>Remove all x, y, and z where z is less than val.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="metpy.gridding.remove_repeat_coordinates.html#metpy.gridding.remove_repeat_coordinates" title="metpy.gridding.remove_repeat_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_repeat_coordinates</span></code></a>(x,&nbsp;y,&nbsp;z)</td>
+<td>Remove all x, y, and z where (x,y) is repeated and keep the first occurrence only.</td>
 </tr>
 </tbody>
 </table>
@@ -248,7 +260,7 @@
         <a href="metpy.gridding.interpolate.html" class="btn btn-neutral float-right" title="interpolate" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.plots.ctables.ColortableRegistry.html" class="btn btn-neutral" title="ColortableRegistry" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.plots.ctables.Exporter.html" class="btn btn-neutral" title="Exporter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -258,7 +270,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -295,7 +307,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

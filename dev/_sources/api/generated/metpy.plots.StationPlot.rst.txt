@@ -7,6 +7,14 @@ StationPlot
 
    
    
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~StationPlot.location_names
+
+   
    
 
    
@@ -26,6 +34,13 @@ StationPlot
    
 
    
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: location_names
+
    
    
 

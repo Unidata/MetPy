@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ctables &mdash; MetPy 0.6</title>
+  <title>ctables &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="The MetPy API" href="../index.html"/>
         <link rel="next" title="convert_gempak_table" href="metpy.plots.ctables.convert_gempak_table.html"/>
         <link rel="prev" title="StationPlotLayout" href="metpy.plots.StationPlotLayout.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -133,14 +133,15 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.convert_gempak_table.html">convert_gempak_table</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.ColortableRegistry.html">ColortableRegistry</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.Exporter.html">Exporter</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -227,10 +228,10 @@ specific set of constraints (e.g. step size) for mapping.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.ctables.convert_gempak_table.html#metpy.plots.ctables.convert_gempak_table" title="metpy.plots.ctables.convert_gempak_table"><code class="xref py py-obj docutils literal"><span class="pre">convert_gempak_table</span></code></a>(infile,&nbsp;outfile)</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.ctables.convert_gempak_table.html#metpy.plots.ctables.convert_gempak_table" title="metpy.plots.ctables.convert_gempak_table"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_gempak_table</span></code></a>(infile,&nbsp;outfile)</td>
 <td>Convert a GEMPAK color table to one MetPy can read.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.ctables.read_colortable.html#metpy.plots.ctables.read_colortable" title="metpy.plots.ctables.read_colortable"><code class="xref py py-obj docutils literal"><span class="pre">read_colortable</span></code></a>(fobj)</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.plots.ctables.read_colortable.html#metpy.plots.ctables.read_colortable" title="metpy.plots.ctables.read_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_colortable</span></code></a>(fobj)</td>
 <td>Read colortable information from a file.</td>
 </tr>
 </tbody>
@@ -242,8 +243,11 @@ specific set of constraints (e.g. step size) for mapping.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry" title="metpy.plots.ctables.ColortableRegistry"><code class="xref py py-obj docutils literal"><span class="pre">ColortableRegistry</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.ctables.ColortableRegistry.html#metpy.plots.ctables.ColortableRegistry" title="metpy.plots.ctables.ColortableRegistry"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ColortableRegistry</span></code></a></td>
 <td>Manages the collection of color tables.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="metpy.plots.ctables.Exporter.html#metpy.plots.ctables.Exporter" title="metpy.plots.ctables.Exporter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Exporter</span></code></a>(globls)</td>
+<td>Manages exporting of symbols from the module.</td>
 </tr>
 </tbody>
 </table>
@@ -272,7 +276,7 @@ specific set of constraints (e.g. step size) for mapping.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -309,7 +313,7 @@ specific set of constraints (e.g. step size) for mapping.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

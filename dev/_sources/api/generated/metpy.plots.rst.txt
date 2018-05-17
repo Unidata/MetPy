@@ -14,6 +14,7 @@ plots
       add_metpy_logo
       add_timestamp
       add_unidata_logo
+      read_colortable
    
    
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Wind and Sea Level Pressure Interpolation &mdash; MetPy 0.6</title>
+  <title>Wind and Sea Level Pressure Interpolation &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="MetPy Examples" href="../index.html"/>
         <link rel="next" title="Point Interpolation" href="Point_Interpolation.html"/>
         <link rel="prev" title="Find Natural Neighbors Verification" href="Find_Natural_Neighbors_Verification.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -138,8 +138,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -215,8 +215,8 @@
 <span id="sphx-glr-examples-gridding-wind-slp-interpolation-py"></span><h1>Wind and Sea Level Pressure Interpolation<a class="headerlink" href="#wind-and-sea-level-pressure-interpolation" title="Permalink to this headline">¶</a></h1>
 <p>Interpolate sea level pressure, as well as wind component data,
 to make a consistent looking analysis, featuring contours of pressure and wind barbs.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy</span>
-<span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="kn">as</span> <span class="nn">cfeature</span>
 <span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="View documentation for matplotlib.colors.BoundaryNorm"><span class="n">BoundaryNorm</span></a>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
@@ -224,7 +224,7 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 
 <span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <a href="../../api/generated/metpy.calc.get_wind_components.html#metpy.calc.get_wind_components" title="View documentation for metpy.calc.get_wind_components"><span class="n">get_wind_components</span></a>
 <span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.gridding.gridding_functions</span> <span class="kn">import</span> <a href="../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="View documentation for metpy.gridding.gridding_functions.interpolate"><span class="n">interpolate</span></a><span class="p">,</span> <span class="n">remove_nan_observations</span>
+<span class="kn">from</span> <span class="nn">metpy.gridding.gridding_functions</span> <span class="kn">import</span> <a href="../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="View documentation for metpy.gridding.gridding_functions.interpolate"><span class="n">interpolate</span></a><span class="p">,</span> <a href="../../api/generated/metpy.gridding.remove_nan_observations.html#metpy.gridding.remove_nan_observations" title="View documentation for metpy.gridding.gridding_functions.remove_nan_observations"><span class="n">remove_nan_observations</span></a>
 <span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
 
@@ -232,7 +232,7 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 </pre></div>
 </div>
 <p>Read in data</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;station_data.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;station_data.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span>
                        <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;slp&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;wind_dir&#39;</span><span class="p">,</span>
                               <span class="s1">&#39;wind_speed&#39;</span><span class="p">],</span>
@@ -240,22 +240,22 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 </pre></div>
 </div>
 <p>Project the lon/lat locations to our final projection</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">lon</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lon</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;longitude&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;latitude&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
 <span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">to_proj</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">(),</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>
 </pre></div>
 </div>
 <p>Remove all missing data from pressure</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">pres</span> <span class="o">=</span> <span class="n">remove_nan_observations</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;slp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">pres</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.remove_nan_observations.html#metpy.gridding.remove_nan_observations" title="View documentation for metpy.gridding.gridding_functions.remove_nan_observations"><span class="n">remove_nan_observations</span></a><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;slp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Interpolate pressure using Cressman interpolation</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">slpgridx</span><span class="p">,</span> <span class="n">slpgridy</span><span class="p">,</span> <span class="n">slp</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="View documentation for metpy.gridding.gridding_functions.interpolate"><span class="n">interpolate</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">slpgridx</span><span class="p">,</span> <span class="n">slpgridy</span><span class="p">,</span> <span class="n">slp</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="View documentation for metpy.gridding.gridding_functions.interpolate"><span class="n">interpolate</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span>
                                       <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Get wind information and mask where either speed or direction is unavailable</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">wind_speed</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;wind_speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;knots&#39;</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">wind_speed</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;wind_speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;knots&#39;</span><span class="p">)</span>
 <span class="n">wind_dir</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;wind_dir&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">degree</span>
 
 <span class="n">good_indices</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.where.html#numpy.where" title="View documentation for numpy.where"><span class="n">np</span><span class="o">.</span><span class="n">where</span></a><span class="p">((</span><span class="o">~</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.isnan.html#numpy.isnan" title="View documentation for numpy.isnan"><span class="n">np</span><span class="o">.</span><span class="n">isnan</span></a><span class="p">(</span><span class="n">wind_dir</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="o">~</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.isnan.html#numpy.isnan" title="View documentation for numpy.isnan"><span class="n">np</span><span class="o">.</span><span class="n">isnan</span></a><span class="p">(</span><span class="n">wind_speed</span><span class="p">)))</span>
@@ -268,7 +268,7 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 </div>
 <p>Calculate u and v components of wind and then interpolate both.</p>
 <p>Both will have the same underlying grid so throw away grid returned from v interpolation.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.get_wind_components.html#metpy.calc.get_wind_components" title="View documentation for metpy.calc.get_wind_components"><span class="n">get_wind_components</span></a><span class="p">(</span><span class="n">wind_speed</span><span class="p">,</span> <span class="n">wind_dir</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.get_wind_components.html#metpy.calc.get_wind_components" title="View documentation for metpy.calc.get_wind_components"><span class="n">get_wind_components</span></a><span class="p">(</span><span class="n">wind_speed</span><span class="p">,</span> <span class="n">wind_dir</span><span class="p">)</span>
 
 <span class="n">windgridx</span><span class="p">,</span> <span class="n">windgridy</span><span class="p">,</span> <span class="n">uwind</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="View documentation for metpy.gridding.gridding_functions.interpolate"><span class="n">interpolate</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">u</span><span class="p">),</span>
                                           <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span>
@@ -279,7 +279,7 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 </pre></div>
 </div>
 <p>Get temperature information</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">remove_nan_observations</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.remove_nan_observations.html#metpy.gridding.remove_nan_observations" title="View documentation for metpy.gridding.gridding_functions.remove_nan_observations"><span class="n">remove_nan_observations</span></a><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="n">tempx</span><span class="p">,</span> <span class="n">tempy</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="View documentation for metpy.gridding.gridding_functions.interpolate"><span class="n">interpolate</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span>
                                  <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">35000</span><span class="p">)</span>
 
@@ -287,7 +287,7 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 </pre></div>
 </div>
 <p>Set up the map and plot the interpolated grids appropriately.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">levels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">levels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;viridis&#39;</span><span class="p">)</span>
 <span class="n">norm</span> <span class="o">=</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="View documentation for matplotlib.colors.BoundaryNorm"><span class="n">BoundaryNorm</span></a><span class="p">(</span><span class="n">levels</span><span class="p">,</span> <span class="n">ncolors</span><span class="o">=</span><span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
@@ -296,33 +296,31 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 <span class="n">view</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">to_proj</span><span class="p">)</span>
 
 <span class="n">view</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mi">120</span><span class="p">,</span> <span class="o">-</span><span class="mi">70</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">50</span><span class="p">])</span>
-<span class="n">view</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">NaturalEarthFeature</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;cultural&#39;</span><span class="p">,</span>
-                                                     <span class="n">name</span><span class="o">=</span><span class="s1">&#39;admin_1_states_provinces_lakes&#39;</span><span class="p">,</span>
-                                                     <span class="n">scale</span><span class="o">=</span><span class="s1">&#39;50m&#39;</span><span class="p">,</span> <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">))</span>
-<span class="n">view</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">OCEAN</span><span class="p">)</span>
-<span class="n">view</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="p">)</span>
-<span class="n">view</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cartopy</span><span class="o">.</span><span class="n">feature</span><span class="o">.</span><span class="n">BORDERS</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+<span class="n">view</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+<span class="n">view</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">OCEAN</span><span class="p">)</span>
+<span class="n">view</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">))</span>
+<span class="n">view</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">BORDERS</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
 
 <span class="n">cs</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">slpgridx</span><span class="p">,</span> <span class="n">slpgridy</span><span class="p">,</span> <span class="n">slp</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">990</span><span class="p">,</span> <span class="mi">1034</span><span class="p">,</span> <span class="mi">4</span><span class="p">)))</span>
-<a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.clabel.html#matplotlib.pyplot.clabel" title="View documentation for matplotlib.pyplot.clabel"><span class="n">plt</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">)</span>
+<span class="n">view</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">)</span>
 
 <span class="n">mmb</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">tempx</span><span class="p">,</span> <span class="n">tempy</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
-<a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">mmb</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=.</span><span class="mi">4</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">boundaries</span><span class="o">=</span><span class="n">levels</span><span class="p">)</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">mmb</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=.</span><span class="mi">4</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">boundaries</span><span class="o">=</span><span class="n">levels</span><span class="p">)</span>
 
 <span class="n">view</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">windgridx</span><span class="p">,</span> <span class="n">windgridy</span><span class="p">,</span> <span class="n">uwind</span><span class="p">,</span> <span class="n">vwind</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">4</span><span class="p">,</span> <span class="n">length</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
 
-<a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.title.html#matplotlib.pyplot.title" title="View documentation for matplotlib.pyplot.title"><span class="n">plt</span><span class="o">.</span><span class="n">title</span></a><span class="p">(</span><span class="s1">&#39;Surface Temperature (shaded), SLP, and Wind.&#39;</span><span class="p">)</span>
+<span class="n">view</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Surface Temperature (shaded), SLP, and Wind.&#39;</span><span class="p">)</span>
 
 <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_Wind_SLP_Interpolation_001.png" class="align-center" src="../../_images/sphx_glr_Wind_SLP_Interpolation_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  2.051 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  2.280 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/Wind_SLP_Interpolation.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Wind_SLP_Interpolation.py</span></code></a></div>
+<a class="reference download internal" href="../../_downloads/Wind_SLP_Interpolation.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Wind_SLP_Interpolation.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/Wind_SLP_Interpolation.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Wind_SLP_Interpolation.ipynb</span></code></a></div>
+<a class="reference download internal" href="../../_downloads/Wind_SLP_Interpolation.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Wind_SLP_Interpolation.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -350,7 +348,7 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -387,7 +385,7 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

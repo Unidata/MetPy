@@ -7,6 +7,20 @@ Variable
 
    
    
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~Variable.datatype
+      ~Variable.dimensions
+      ~Variable.dtype
+      ~Variable.name
+      ~Variable.ndim
+      ~Variable.shape
+      ~Variable.size
+
+   
    
 
    
@@ -24,6 +38,19 @@ Variable
    
 
    
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: datatype
+   .. autoattribute:: dimensions
+   .. autoattribute:: dtype
+   .. autoattribute:: name
+   .. autoattribute:: ndim
+   .. autoattribute:: shape
+   .. autoattribute:: size
+
    
    
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation Guide &mdash; MetPy 0.6</title>
+  <title>Installation Guide &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.6" href="index.html"/>
+    <link rel="top" title="MetPy 0.7" href="index.html"/>
         <link rel="next" title="Unit Support" href="units.html"/>
         <link rel="prev" title="MetPy" href="index.html"/> 
 
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -118,6 +118,7 @@
             
               <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Installation Guide</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#python-2-7-support">Python 2.7 Support</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#requirements">Requirements</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
@@ -128,8 +129,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
@@ -199,53 +200,57 @@
             
   <div class="section" id="installation-guide">
 <h1>Installation Guide<a class="headerlink" href="#installation-guide" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="python-2-7-support">
+<span id="python27"></span><h2>Python 2.7 Support<a class="headerlink" href="#python-2-7-support" title="Permalink to this headline">¶</a></h2>
+<p>In the Fall 2019, we will be dropping support for Python 2.7. This follows movement from
+other packages within the <a class="reference external" href="http://python3statement.org/">scientific Python ecosystem</a>.
+This includes:</p>
+<ul class="simple">
+<li>Core Python developers will
+<a class="reference external" href="https://pythonclock.org/">stop support for Python 2.7 January 1, 2020</a></li>
+<li>NumPy feature releases will be
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/neps/dropping-python2.7-proposal.html">Python 3 only starting January 1, 2019</a>,
+and support for the last release supporting Python 2 will end January 1, 2020.</li>
+<li>XArray will drop
+<a class="reference external" href="https://github.com/pydata/xarray/issues/1830">2.7 January 1, 2019 as well</a></li>
+<li>Matplotlib’s 3.0 release, tentatively Summer 2018,
+<a class="reference external" href="https://mail.python.org/pipermail/matplotlib-devel/2017-October/000892.html">will be Python 3 only</a>;
+the current 2.2 release will be the last long term release that supports 2.7, and its support
+will cease January 1, 2020.</li>
+</ul>
+<p>The last release of MetPy before this time (Spring or Summer 2019) will be the last that
+support Python 2.7. This version of MetPy will <strong>not</strong> receive any long term support or
+additional bug fix releases after the next minor release. The packages for this version <em>will</em>
+remain available on Conda or PyPI.</p>
+</div>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
-<p>MetPy supports Python 2.7 as well as Python &gt;= 3.4. Python 3.6 is the recommended version.</p>
-<dl class="docutils">
-<dt>MetPy requires the following packages:</dt>
-<dd><ul class="first last simple">
-<li>NumPy &gt;= 1.10.0</li>
-<li>SciPy &gt;= 0.14.0</li>
-<li>Matplotlib &gt;= 1.4.0</li>
-<li>pint &gt;= 0.8</li>
-</ul>
-</dd>
-<dt>Installation Instructions for NumPy and SciPy can be found at:</dt>
-<dd><a class="reference external" href="https://www.scipy.org/scipylib/download.html">https://www.scipy.org/scipylib/download.html</a></dd>
-<dt>Installation Instructions for Matplotlib can be found at:</dt>
-<dd><a class="reference external" href="http://matplotlib.org/downloads.html">http://matplotlib.org/downloads.html</a></dd>
-</dl>
-<p>Pint is a pure python package and can be installed via <code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pint</span></code>.</p>
-<p>Python versions older than 3.4 require the enum34 package, which is a backport
-of the enum standard library module. It can be installed via
-<code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">enum34</span></code>.</p>
-<p>PyProj is an optional dependency (if using the CDM interface to data files).
-It can also be installed via <code class="docutils literal"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">pyproj</span></code>, though it does require
-the Proj.4 library and a compiled extension.</p>
+<p>In general, MetPy tries to support minor versions of dependencies released within the last two
+years. For Python itself, that means supporting the last two minor releases, as well as
+currently supporting Python 2.7.</p>
 </div>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>The easiest way to install MetPy is through <code class="docutils literal"><span class="pre">pip</span></code>:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">metpy</span>
+<p>The easiest way to install MetPy is through <code class="docutils literal notranslate"><span class="pre">pip</span></code>:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">metpy</span>
 </pre></div>
 </div>
 <p>If you are a user of the <a class="reference external" href="https://conda.io/docs/">Conda</a> package manager, there are also
 up-to-date packages for MetPy (as well as its dependencies) available from the
 <a class="reference external" href="https://conda-forge.org">conda-forge</a> channel:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">metpy</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">conda</span> <span class="n">install</span> <span class="o">-</span><span class="n">c</span> <span class="n">conda</span><span class="o">-</span><span class="n">forge</span> <span class="n">metpy</span>
 </pre></div>
 </div>
 <p>The source code can also be grabbed from <a class="reference external" href="https://github.com/Unidata/MetPy">GitHub</a>. From
 the base of the source directory, run:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
 </pre></div>
 </div>
 <p>This will build and install MetPy into your current Python installation.</p>
 </div>
 <div class="section" id="examples">
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
-<p>The MetPy source comes with a set of example scripts in the <code class="docutils literal"><span class="pre">examples</span></code>
+<p>The MetPy source comes with a set of example scripts in the <code class="docutils literal notranslate"><span class="pre">examples</span></code>
 directory. These are also available as notebooks in the gallery in
 the <a class="reference internal" href="examples/index.html"><span class="doc">MetPy Examples</span></a>.</p>
 </div>
@@ -274,7 +279,7 @@ the <a class="reference internal" href="examples/index.html"><span class="doc">M
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -311,7 +316,7 @@ the <a class="reference internal" href="examples/index.html"><span class="doc">M
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

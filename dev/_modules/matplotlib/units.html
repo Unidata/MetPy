@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>matplotlib.units &mdash; MetPy 0.6</title>
+  <title>matplotlib.units &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -122,8 +122,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -191,13 +191,13 @@
   <h1>Source code for matplotlib.units</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">The classes here provide support for using custom classes with</span>
-<span class="sd">matplotlib, e.g., those that do not expose the array interface but know</span>
+<span class="sd">Matplotlib, e.g., those that do not expose the array interface but know</span>
 <span class="sd">how to convert themselves to arrays.  It also supports classes with</span>
 <span class="sd">units and units conversion.  Use cases include converters for custom</span>
 <span class="sd">objects, e.g., a list of datetime objects, as well as for objects that</span>
 <span class="sd">are unit aware.  We don&#39;t assume any particular units implementation;</span>
 <span class="sd">rather a units implementation must provide the register with the Registry</span>
-<span class="sd">converter dictionary and a ConversionInterface.  For example,</span>
+<span class="sd">converter dictionary and a `ConversionInterface`.  For example,</span>
 <span class="sd">here is a complete implementation which supports plotting with native</span>
 <span class="sd">datetime objects::</span>
 
@@ -210,12 +210,12 @@
 
 <span class="sd">        @staticmethod</span>
 <span class="sd">        def convert(value, unit, axis):</span>
-<span class="sd">            &#39;convert value to a scalar or array&#39;</span>
+<span class="sd">            &#39;Convert a datetime value to a scalar or array&#39;</span>
 <span class="sd">            return dates.date2num(value)</span>
 
 <span class="sd">        @staticmethod</span>
 <span class="sd">        def axisinfo(unit, axis):</span>
-<span class="sd">            &#39;return major and minor tick locators and formatters&#39;</span>
+<span class="sd">            &#39;Return major and minor tick locators and formatters&#39;</span>
 <span class="sd">            if unit!=&#39;date&#39;: return None</span>
 <span class="sd">            majloc = dates.AutoDateLocator()</span>
 <span class="sd">            majfmt = dates.AutoDateFormatter(majloc)</span>
@@ -225,10 +225,10 @@
 
 <span class="sd">        @staticmethod</span>
 <span class="sd">        def default_units(x, axis):</span>
-<span class="sd">            &#39;return the default unit for x or None&#39;</span>
+<span class="sd">            &#39;Return the default unit for x or None&#39;</span>
 <span class="sd">            return &#39;date&#39;</span>
 
-<span class="sd">    # finally we register our object type with a converter</span>
+<span class="sd">    # Finally we register our object type with the Matplotlib units registry.</span>
 <span class="sd">    units.registry[datetime.date] = DateConverter()</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
@@ -242,17 +242,31 @@
 
 
 <span class="k">class</span> <span class="nc">AxisInfo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;information to support default axis labeling and tick labeling, and</span>
-<span class="sd">       default limits&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Information to support default axis labeling, tick labeling, and</span>
+<span class="sd">    default limits. An instance of this class must be returned by</span>
+<span class="sd">    :meth:`ConversionInterface.axisinfo`.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">majloc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">minloc</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">majfmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">minfmt</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">default_limits</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        majloc and minloc: TickLocators for the major and minor ticks</span>
-<span class="sd">        majfmt and minfmt: TickFormatters for the major and minor ticks</span>
-<span class="sd">        label: the default axis label</span>
-<span class="sd">        default_limits: the default min, max of the axis if no data is present</span>
-<span class="sd">        If any of the above are None, the axis will simply use the default</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        majloc, minloc : Locator, optional</span>
+<span class="sd">            Tick locators for the major and minor ticks.</span>
+<span class="sd">        majfmt, minfmt : Formatter, optional</span>
+<span class="sd">            Tick formatters for the major and minor ticks.</span>
+<span class="sd">        label : str, optional</span>
+<span class="sd">            The default axis label.</span>
+<span class="sd">        default_limits : optional</span>
+<span class="sd">            The default min and max limits of the axis if no data has</span>
+<span class="sd">            been plotted.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        If any of the above are ``None``, the axis will simply use the</span>
+<span class="sd">        default value.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">majloc</span> <span class="o">=</span> <span class="n">majloc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">minloc</span> <span class="o">=</span> <span class="n">minloc</span>
@@ -264,38 +278,41 @@
 
 <span class="k">class</span> <span class="nc">ConversionInterface</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    The minimal interface for a converter to take custom instances (or</span>
-<span class="sd">    sequences) and convert them to values mpl can use</span>
+<span class="sd">    The minimal interface for a converter to take custom data types (or</span>
+<span class="sd">    sequences) and convert them to values Matplotlib can use.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">axisinfo</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-        <span class="s1">&#39;return an units.AxisInfo instance for axis with the specified units&#39;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return an `~units.AxisInfo` instance for the axis with the</span>
+<span class="sd">        specified units.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">default_units</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-        <span class="s1">&#39;return the default unit for x or None for the given axis&#39;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the default unit for *x* or ``None`` for the given axis.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="kc">None</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        convert obj using unit for the specified axis.  If obj is a sequence,</span>
-<span class="sd">        return the converted sequence.  The output must be a sequence of</span>
-<span class="sd">        scalars that can be used by the numpy array layer</span>
+<span class="sd">        Convert *obj* using *unit* for the specified *axis*.</span>
+<span class="sd">        If *obj* is a sequence, return the converted sequence.</span>
+<span class="sd">        The output must be a sequence of scalars that can be used by the numpy</span>
+<span class="sd">        array layer.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">obj</span>
 
     <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">is_numlike</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        The matplotlib datalim, autoscaling, locators etc work with</span>
+<span class="sd">        The Matplotlib datalim, autoscaling, locators etc work with</span>
 <span class="sd">        scalars which are the units converted to floats given the</span>
 <span class="sd">        current unit.  The converter may be passed these floats, or</span>
-<span class="sd">        arrays of them, even when units are set.  Derived conversion</span>
-<span class="sd">        interfaces may opt to pass plain-ol unitless numbers through</span>
-<span class="sd">        the conversion interface and this is a helper function for</span>
-<span class="sd">        them.</span>
+<span class="sd">        arrays of them, even when units are set.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">iterable</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">thisx</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
@@ -306,14 +323,17 @@
 
 <span class="k">class</span> <span class="nc">Registry</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    register types with conversion interface</span>
+<span class="sd">    A register that maps types to conversion interfaces.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="nb">dict</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_cached</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">def</span> <span class="nf">get_converter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="s1">&#39;get the converter interface instance for x, or None&#39;</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Get the converter for data that has the same type as *x*. If no</span>
+<span class="sd">        converters are registered for *x*, returns ``None``.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">return</span> <span class="kc">None</span>  <span class="c1"># nothing registered</span>
@@ -327,6 +347,11 @@
         <span class="k">if</span> <span class="n">classx</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">converter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">classx</span><span class="p">)</span>
 
+        <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s2">&quot;values&quot;</span><span class="p">):</span>
+            <span class="c1"># this unpacks pandas series or dataframes...</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">values</span>
+
+        <span class="c1"># If x is an array, look inside the array for data with units</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">and</span> <span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
             <span class="n">xravel</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
             <span class="k">try</span><span class="p">:</span>
@@ -344,10 +369,11 @@
                 <span class="c1"># not ever return a non-subclass for a single element.</span>
                 <span class="n">next_item</span> <span class="o">=</span> <span class="n">xravel</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
                 <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">next_item</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="ow">or</span>
-                    <span class="n">next_item</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
+                        <span class="n">next_item</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">):</span>
                     <span class="n">converter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_converter</span><span class="p">(</span><span class="n">next_item</span><span class="p">)</span>
                 <span class="k">return</span> <span class="n">converter</span>
 
+        <span class="c1"># If we haven&#39;t found a converter yet, try to get the first element</span>
         <span class="k">if</span> <span class="n">converter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">try</span><span class="p">:</span>
                 <span class="n">thisx</span> <span class="o">=</span> <span class="n">safe_first_element</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
@@ -378,7 +404,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -415,7 +441,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

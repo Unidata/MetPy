@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Contributing &mdash; MetPy 0.6</title>
+  <title>Contributors Guide &mdash; MetPy 0.7</title>
   
 
   
@@ -43,9 +43,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.6" href="index.html"/>
-        <link rel="next" title="Citing MetPy" href="citing.html"/>
-        <link rel="prev" title="Developer’s Guide" href="developerguide.html"/> 
+    <link rel="top" title="MetPy 0.7" href="index.html"/>
+        <link rel="next" title="Infrastructure Guide" href="infrastructureguide.html"/>
+        <link rel="prev" title="GEMPAK Conversion Guide" href="gempak.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -123,19 +123,32 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributing</a><ul>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Contributors Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#getting-started">Getting Started</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#what-can-i-do">What Can I Do?</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#how-can-i-talk-to-you">How Can I Talk to You?</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#ground-rules">Ground Rules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#reporting-a-bug">Reporting a bug</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#setting-up-your-development-environment">Setting up your development environment</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#pull-requests">Pull Requests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#code-review">Code Review</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#other-channels">Other Channels</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#documentation">Documentation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#tests">Tests</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#running-tests">Running Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#writing-tests">Writing Tests</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#image-tests">Image tests</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#code-style">Code Style</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#what-happens-after-the-pull-request">What happens after the pull request</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#automated-testing">Automated Testing</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#code-review">Code Review</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#merging">Merging</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#more-questions">More Questions?</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#futher-reading">Futher Reading</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
@@ -183,7 +196,7 @@
     
       <li><a href="index.html">Docs</a> &raquo;</li>
         
-      <li>Contributing</li>
+      <li>Contributors Guide</li>
     
     
     <li class="source-link">
@@ -203,125 +216,283 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="contributing">
-<span id="contributing"></span><h1>Contributing<a class="headerlink" href="#contributing" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="contributors-guide">
+<span id="contributors-guide"></span><h1>Contributors Guide<a class="headerlink" href="#contributors-guide" title="Permalink to this headline">¶</a></h1>
+<p>Interested in helping build MetPy? Have code from your research that you believe others will
+find useful? Have a few minutes to tackle an issue? In this guide we will get you setup and
+integrated into contributing to MetPy!</p>
 <div class="section" id="introduction">
 <span id="introduction"></span><h2>Introduction<a class="headerlink" href="#introduction" title="Permalink to this headline">¶</a></h2>
 <p>First off, thank you for considering contributing to MetPy. MetPy is community-driven
-project, so it's people like you that make MetPy useful and successful.</p>
+project. It’s people like you that make MetPy useful and successful. There are many ways
+to contribute, from writing tutorials or examples, improvements to the documentation,
+submitting bug reports and feature requests, or even writing code which can be incorporated
+into MetPy for everyone to use.</p>
 <p>Following these guidelines helps to communicate that you respect the time of the
 developers managing and developing this open source project. In return, they
 should reciprocate that respect in addressing your issue, assessing changes, and
 helping you finalize your pull requests.</p>
-<p>We love contributions from community members, just like you! There are many ways
-to contribute, from writing tutorials or examples, improvements
-to the documentation, submitting bug report and feature requests, or even writing
-code which can be incorporated into MetPy for everyone to use. If you get stuck at
-any point you can create an <a class="reference external" href="https://github.com/Unidata/MetPy/issues">issue on GitHub</a>
-or contact us at one of the other channels mentioned below.</p>
-<p>For more information on contributing to open source projects,
-<a class="reference external" href="https://guides.github.com/activities/contributing-to-open-source/">GitHub's own guide</a>
-is a great starting point. Also, checkout the <a class="reference external" href="https://jrleeman.github.io/ScientificSoftwareMaintenance/">Zen of Scientific Software Maintenance</a>
-for some guiding principles on how to create high quality scientific software contributions.</p>
-</div>
-<div class="section" id="getting-started">
-<span id="getting-started"></span><h2>Getting Started<a class="headerlink" href="#getting-started" title="Permalink to this headline">¶</a></h2>
-<p>Interested in helping build MetPy? Have code from your research that you believe others will
-find useful? Have a few minutes to tackle an issue? In this guide we will get you setup and
-integrated into contributing to MetPy!</p>
+<p>So, please take a few minutes to read through this guide and get setup for success with your
+MetPy contributions. We’re glad you’re here!</p>
 </div>
 <div class="section" id="what-can-i-do">
 <span id="what-can-i-do"></span><h2>What Can I Do?<a class="headerlink" href="#what-can-i-do" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
 <li>Tackle any <a class="reference external" href="https://github.com/Unidata/MetPy/issues">issues</a> you wish! We have a special
 label for issues that beginners might want to try. Have a look at our
-<a class="reference external" href="https://github.com/unidata/metpy/issues?q=is%3Aopen+is%3Aissue+label%3A%22Difficulty%3A+Beginner%22">current beginner issues.</a></li>
-<li>Contribute code you already have. It doesn’t need to be perfect! We will help you clean
+<a class="reference external" href="https://github.com/unidata/metpy/issues?q=is%3Aopen+is%3Aissue+label%3A%22Difficulty%3A+Beginner%22">current beginner issues.</a>
+Also have a look at if the issue is already assigned to someone - this helps us make sure
+that work is not duplicated if the issue is already being worked on by Unidata Staff.</li>
+<li>Contribute code you already have. It does not need to be perfect! We will help you clean
 things up, test it, etc.</li>
 <li>Make a tutorial or example of how to do something.</li>
+<li>Improve documentation of a feature you found troublesome.</li>
+<li>File a new issue if you run into problems!</li>
 </ul>
-</div>
-<div class="section" id="how-can-i-talk-to-you">
-<span id="how-can-i-talk-to-you"></span><h2>How Can I Talk to You?<a class="headerlink" href="#how-can-i-talk-to-you" title="Permalink to this headline">¶</a></h2>
-<p>Discussion of MetPy development often happens in the issue tracker and in pull requests.
-In addition, the developers monitor the
-<a class="reference external" href="https://gitter.im/Unidata/MetPy?utm_source=badge&amp;utm_medium=badge&amp;utm_campaign=pr-badge">Gitter chat room</a>
-for the project as well.</p>
 </div>
 <div class="section" id="ground-rules">
 <span id="ground-rules"></span><h2>Ground Rules<a class="headerlink" href="#ground-rules" title="Permalink to this headline">¶</a></h2>
-<p>The goal is to maintain a diverse community that's pleasant for everyone. Please
-be considerate and respectful of others by following our <a class="reference external" href="https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md">code of conduct</a>. Other items:</p>
+<p>The goal is to maintain a diverse community that’s pleasant for everyone. Please
+be considerate and respectful of others by following our
+<a class="reference external" href="https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md">code of conduct</a>.</p>
+<p>Other items:</p>
 <ul class="simple">
 <li>Each pull request should consist of a logical collection of changes. You can
 include multiple bug fixes in a single pull request, but they should be related.
 For unrelated changes, please submit multiple pull requests.</li>
 <li>Do not commit changes to files that are irrelevant to your feature or bugfix
 (eg: .gitignore).</li>
-<li>Be willing to accept criticism and work on improving your code; we don't want
-to break other users' code, so care must be taken not to introduce bugs.</li>
+<li>Be willing to accept criticism and work on improving your code; we don’t want
+to break other users’ code, so care must be taken not to introduce bugs.</li>
 <li>Be aware that the pull request review process is not immediate, and is
 generally proportional to the size of the pull request.</li>
 </ul>
 </div>
 <div class="section" id="reporting-a-bug">
 <span id="reporting-a-bug"></span><h2>Reporting a bug<a class="headerlink" href="#reporting-a-bug" title="Permalink to this headline">¶</a></h2>
-<p>When creating a new issue, please be as specific as possible. Include the version
-of the code you were using, as well as what operating system you are running.
-If possible, include complete, minimal example code that reproduces the problem.</p>
+<p>The easiest way to get involved is to report issues you encounter when using MetPy or by
+requesting something you think is missing.</p>
+<ul class="simple">
+<li>Head over to the <a class="reference external" href="https://github.com/Unidata/MetPy/issues">issues</a> page.</li>
+<li>Search to see if your issue already exists or has even been solved previously.</li>
+<li>If you indeed have a new issue or request, click the “New Issue” button.</li>
+<li>Fill in as much of the issue template as is relevant. Please be as specific as possible.
+Include the version of the code you were using, as well as what operating system you
+are running. If possible, include complete, minimal example code that reproduces the problem.</li>
+</ul>
+</div>
+<div class="section" id="setting-up-your-development-environment">
+<span id="setting-up-your-development-environment"></span><h2>Setting up your development environment<a class="headerlink" href="#setting-up-your-development-environment" title="Permalink to this headline">¶</a></h2>
+<p>We recommend using the <a class="reference external" href="https://conda.io/docs/">conda</a> package manager for your Python
+environments. Our recommended setup for contributing is:</p>
+<ul class="simple">
+<li>Install <a class="reference external" href="https://conda.io/miniconda.html">miniconda</a> on your system.</li>
+<li>Install git on your system if it is not already there (install XCode command line tools on
+a Mac or git bash on Windows)</li>
+<li>Login to your GitHub account and make a fork of the
+<a class="reference external" href="https://github.com/unidata/metpy/">MetPy repository</a> by clicking the “Fork” button.</li>
+<li>Clone your fork of the MetPy repository (in terminal on Mac/Linux or git shell/
+GUI on Windows) in the location you’d like to keep it. We are partial to creating a
+<code class="docutils literal notranslate"><span class="pre">git_repos</span></code> directory in our home folder.
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clone</span> <span class="pre">https://github.com/your-user-name/metpy.git</span></code></li>
+<li>Navigate to that folder in the terminal or in Anaconda Prompt if you’re on Windows.
+<code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">metpy</span></code></li>
+<li>Connect your repository to the upstream (main project).
+<code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">remote</span> <span class="pre">add</span> <span class="pre">unidata</span> <span class="pre">https://github.com/unidata/metpy.git</span></code></li>
+<li>Create the development environment by running <code class="docutils literal notranslate"><span class="pre">conda</span> <span class="pre">env</span> <span class="pre">create</span></code>. This will install
+all of the packages in the <code class="docutils literal notranslate"><span class="pre">environment.yml</span></code> file.</li>
+<li>Activate our new development environment <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">activate</span> <span class="pre">devel</span></code> on Mac/Linux or
+<code class="docutils literal notranslate"><span class="pre">activate</span> <span class="pre">devel</span></code> on Windows.</li>
+<li>Make an editable install of MetPy by running <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">-e</span> <span class="pre">.</span></code></li>
+</ul>
+<p>Now you’re all set! You have an environment called <code class="docutils literal notranslate"><span class="pre">devel</span></code> that you can work in. You’ll need
+to make sure to activate that environment next time you want to use it after closing the
+terminal or your system. If you want to get back to the root environment, just run
+<code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">deactivate</span></code> (just <code class="docutils literal notranslate"><span class="pre">deactivate</span></code> on Windows).</p>
 </div>
 <div class="section" id="pull-requests">
 <span id="pull-requests"></span><h2>Pull Requests<a class="headerlink" href="#pull-requests" title="Permalink to this headline">¶</a></h2>
-<p><strong>Working on your first Pull Request?</strong> You can learn how from this <em>free</em> video series <a class="reference external" href="https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github">How to Contribute to an Open Source Project on GitHub</a>, Aaron Meurer's <a class="reference external" href="http://www.asmeurer.com/git-workflow/">tutorial on the git workflow</a>, or the guide <a class="reference external" href="https://opensource.guide/how-to-contribute/">“How to Contribute to Open Source&quot;</a>.
-We love pull requests from everyone. Fork, then clone the repo:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nd">@github</span><span class="o">.</span><span class="n">com</span><span class="p">:</span><span class="n">your</span><span class="o">-</span><span class="n">username</span><span class="o">/</span><span class="n">metpy</span><span class="o">.</span><span class="n">git</span>
-</pre></div>
-</div>
-<p>Install metpy:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="o">.</span>
-</pre></div>
-</div>
-<p>Install py.test (at least version 2.4) and make sure the tests pass:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">pytest</span>
-<span class="n">py</span><span class="o">.</span><span class="n">test</span>
-</pre></div>
-</div>
-<p>Make your change. Add tests for your change. Make the tests pass:</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="n">py</span><span class="o">.</span><span class="n">test</span>
-</pre></div>
-</div>
+<p>The changes to the MetPy source (and documentation) should be made via GitHub pull requests
+against <code class="docutils literal notranslate"><span class="pre">master</span></code>, even for those with administration rights. While it’s tempting to
+make changes directly to <code class="docutils literal notranslate"><span class="pre">master</span></code> and push them up, it is better to make a pull request so
+that others can give feedback. If nothing else, this gives a chance for the automated tests to
+run on the PR. This can eliminate “brown paper bag” moments with buggy commits on the master
+branch.</p>
+<p>During the Pull Request process, before the final merge, it’s a good idea to rebase the branch
+and squash together smaller commits. It’s not necessary to flatten the entire branch, but it
+can be nice to eliminate small fixes and get the merge down to logically arranged commits. This
+can also be used to hide sins from history–this is the only chance, since once it hits
+<code class="docutils literal notranslate"><span class="pre">master</span></code>, it’s there forever!</p>
+<p><strong>Working on your first Pull Request?</strong> You can learn how from this <em>free</em> video series
+<a class="reference external" href="https://egghead.io/courses/how-to-contribute-to-an-open-source-project-on-github">How to Contribute to an Open Source Project on GitHub</a>, Aaron Meurer’s <a class="reference external" href="https://www.asmeurer.com/git-workflow/">tutorial on the git workflow</a>, or the guide <a class="reference external" href="https://opensource.guide/how-to-contribute/">“How to Contribute to Open Source”</a>.</p>
 <p>Commit the changes you made. Chris Beams has written a <a class="reference external" href="https://chris.beams.io/posts/git-commit/">guide</a> on how to write good commit messages.</p>
-<p>Push to your fork and <a class="reference external" href="https://github.com/Unidata/metpy/compare/">submit a pull request</a>.</p>
-<p>For the Pull Request to be accepted, you need to agree to the
+<p>Push to your fork and <a class="reference external" href="https://github.com/Unidata/metpy/compare/">submit a pull request</a>.
+For the Pull Request to be accepted, you need to agree to the
 MetPy Contributor License Agreement (CLA). This will be handled automatically
 upon submission of a Pull Request.
 See <a class="reference external" href="https://github.com/Unidata/MetPy/blob/master/CLA.md">here</a> for more
-explanation and rationale behind MetPy's CLA.</p>
-<p>As part of the Pull Request, be sure to add yourself to the
-<a class="reference external" href="https://github.com/Unidata/MetPy/blob/master/AUTHORS.txt">list of contributors</a>.
-We want to make sure we acknowledge the hard work you've generously contributed
-here.</p>
+explanation and rationale behind MetPy’s CLA.</p>
+</div>
+<div class="section" id="documentation">
+<span id="documentation"></span><h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
+<p>Now that you’ve made your awesome contribution, it’s time to tell the world how to use it.
+Writing documentation strings is really important to make sure others use your functionality
+properly. Didn’t write new functions? That’s fine, but be sure that the documentation for
+the code you touched is still in great shape. It is not uncommon to find some strange wording
+or clarification that you can take care of while you are here. If you added a new function
+make sure that it gets marked as included if appropriate in the GEMPAK conversion table.</p>
+<p>You can write examples in the documentation if they are simple concepts to demonstrate. If
+your feature is more complex, consider adding to the examples or tutorials for MetPy.</p>
+<p>You can build the documentation locally to see how your changes will look.</p>
+<ul class="simple">
+<li>Navigate to the docs folder <code class="docutils literal notranslate"><span class="pre">cd</span> <span class="pre">docs</span></code></li>
+<li>Remove any old builds and build the current docs <code class="docutils literal notranslate"><span class="pre">make</span> <span class="pre">clean</span> <span class="pre">html</span></code></li>
+<li>Open <code class="docutils literal notranslate"><span class="pre">docs/build/html/index.html</span></code> and see your changes!</li>
+</ul>
+</div>
+<div class="section" id="tests">
+<span id="tests"></span><h2>Tests<a class="headerlink" href="#tests" title="Permalink to this headline">¶</a></h2>
+<p>Unit tests are the lifeblood of the project, as it ensures that we can continue to add and
+change the code and stay confident that things have not broken. Running the tests requires
+<code class="docutils literal notranslate"><span class="pre">pytest</span></code>, which is easily available through <code class="docutils literal notranslate"><span class="pre">conda</span></code> or <code class="docutils literal notranslate"><span class="pre">pip</span></code>. It was also installed if
+you made our default <code class="docutils literal notranslate"><span class="pre">devel</span></code> environment.</p>
+<div class="section" id="running-tests">
+<span id="running-tests"></span><h3>Running Tests<a class="headerlink" href="#running-tests" title="Permalink to this headline">¶</a></h3>
+<p>Running the tests can be done by running <code class="docutils literal notranslate"><span class="pre">py.test</span></code></p>
+<p>Running the whole test suite isn’t that slow, but can be a burden if you’re working on just
+one module or a specific test. It is easy to run tests on a single directory:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py</span><span class="o">.</span><span class="n">test</span> <span class="n">metpy</span><span class="o">/</span><span class="n">calc</span>
+</pre></div>
+</div>
+<p>A specific test can be run as:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py</span><span class="o">.</span><span class="n">test</span> <span class="o">-</span><span class="n">k</span> <span class="n">test_my_test_func_name</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="writing-tests">
+<span id="writing-tests"></span><h3>Writing Tests<a class="headerlink" href="#writing-tests" title="Permalink to this headline">¶</a></h3>
+<p>Tests should ideally hit all of the lines of code added or changed. We have automated
+services that can help track down lines of code that are missed by tests. Watching the
+coverage has even helped find sections of dead code that could be removed!</p>
+<p>Let’s say we are adding a simple function to add two numbers and return the result as a float
+or as a string. (This would be a silly function, but go with us here for demonstration
+purposes.)</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">add_as_float_or_string</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+    <span class="k">if</span> <span class="n">as_string</span><span class="p">:</span>
+       <span class="k">return</span> <span class="n">string</span><span class="p">(</span><span class="n">res</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">res</span>
+</pre></div>
+</div>
+<p>I can see two easy tests here: one for the results as a float and one for the results as a
+string. If I had added this to the <code class="docutils literal notranslate"><span class="pre">calc</span></code> module, I’d add those two tests in
+<code class="docutils literal notranslate"><span class="pre">tests/test_calc.py</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">test_add_as_float_or_string_defaults</span><span class="p">():</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">add_as_float_or_string</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="mi">7</span><span class="p">)</span>
+    
+
+<span class="k">def</span> <span class="nf">test_add_as_float_or_string_string_return</span><span class="p">():</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="n">add_as_float_or_string</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">as_string</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">assert</span><span class="p">(</span><span class="n">res</span><span class="p">,</span> <span class="s1">&#39;7&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>There are plenty of more advanced testing concepts, like dealing with floating point
+comparisons, parameterizing tests, testing that exceptions are raised, and more. Have a look
+at the existing tests to get an idea of some of the common patterns.</p>
+</div>
+<div class="section" id="image-tests">
+<span id="image-tests"></span><h3>Image tests<a class="headerlink" href="#image-tests" title="Permalink to this headline">¶</a></h3>
+<p>Some tests (for matplotlib plotting code) are done as an image comparison, using the
+pytest-mpl plugin. To run these tests, use:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py</span><span class="o">.</span><span class="n">test</span> <span class="o">--</span><span class="n">mpl</span>
+</pre></div>
+</div>
+<p>When adding new image comparison tests, start by creating the baseline images for the tests:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py</span><span class="o">.</span><span class="n">test</span> <span class="o">--</span><span class="n">mpl</span><span class="o">-</span><span class="n">generate</span><span class="o">-</span><span class="n">path</span><span class="o">=</span><span class="n">baseline</span>
+</pre></div>
+</div>
+<p>That command runs the tests and saves the images in the <code class="docutils literal notranslate"><span class="pre">baseline</span></code> directory.
+For MetPy this is generally <code class="docutils literal notranslate"><span class="pre">metpy/plots/tests/baseline/</span></code>. We recommend using the <code class="docutils literal notranslate"><span class="pre">-k</span></code> flag
+to run only the test you just created for this step.</p>
+<p>For more information, see the <code class="docutils literal notranslate"><span class="pre">docs</span> <span class="pre">for</span> <span class="pre">mpl-test</span> <span class="pre">&lt;https://github.com/astrofrog/pytest-mpl&gt;</span></code>_.</p>
+</div>
+</div>
+<div class="section" id="code-style">
+<span id="code-style"></span><h2>Code Style<a class="headerlink" href="#code-style" title="Permalink to this headline">¶</a></h2>
+<p>MetPy uses the Python code style outlined in <code class="docutils literal notranslate"><span class="pre">PEP8</span> <span class="pre">&lt;http://pep8.org&gt;</span></code>_. For better or worse, this is what the majority
+of the Python world uses. The one deviation is that line length limit is 95 characters. 80 is a
+good target, but some times longer lines are needed.</p>
+<p>While the authors are no fans of blind adherence to style and so-called project “clean-ups”
+that go through and correct code style, MetPy has adopted this style from the outset.
+Therefore, it makes sense to enforce this style as code is added to keep everything clean and
+uniform. To this end, part of the automated testing for MetPy checks style. To check style
+locally within the source directory you can use the <code class="docutils literal notranslate"><span class="pre">flake8</span></code> tool. Running it
+from the root of the source directory is as easy as running <code class="docutils literal notranslate"><span class="pre">pytest</span> <span class="pre">--flake8</span></code> in the base
+of the repository.</p>
+<p>You can also just submit your PR and the kind robots will comment on all style violations as
+well. It can be a pain to make sure you have the right number of spaces around things, imports
+in order, and all of the other nits that the bots will find. It is very important though as
+this consistent style helps us keep MetPy readable, maintainable, and uniform.</p>
+</div>
+<div class="section" id="what-happens-after-the-pull-request">
+<span id="what-happens-after-the-pull-request"></span><h2>What happens after the pull request<a class="headerlink" href="#what-happens-after-the-pull-request" title="Permalink to this headline">¶</a></h2>
+<p>You’ve make your changes, documented them, added some tests, and submitted a pull request.
+What now?</p>
+<div class="section" id="automated-testing">
+<span id="automated-testing"></span><h3>Automated Testing<a class="headerlink" href="#automated-testing" title="Permalink to this headline">¶</a></h3>
+<p>First, our army of never sleeping robots will begin a series of automated checks.
+The test suite, documentation, style, and more will be checked on various versions of Python
+with current and legacy packages. Travis CI will run testing on Linux and Mac, Appveyor will
+run tests on Windows. Other services will kick in and check if there is a drop in code coverage
+or any style variations that should be corrected. If you see a red mark by a service, something
+failed and clicking the “Details” link will give you more information. We’re happy to help if
+you are stuck.</p>
+<p>The robots can be difficult to satisfy, but they are there to help everyone write better code.
+In some cases, there will be exceptions to their suggestions, but these are rare. If you make
+changes to your code and push again, the tests will automatically run again.</p>
 </div>
 <div class="section" id="code-review">
-<span id="code-review"></span><h2>Code Review<a class="headerlink" href="#code-review" title="Permalink to this headline">¶</a></h2>
-<p>Once you've submitted a Pull Request, at this point you're waiting on us. You
-should expect to hear at least a comment within a couple of days.
-We may suggest some changes or improvements or alternatives.</p>
-<p>Some things that will increase the chance that your pull request is accepted:</p>
+<span id="code-review"></span><h3>Code Review<a class="headerlink" href="#code-review" title="Permalink to this headline">¶</a></h3>
+<p>At this point you’re waiting on us. You should expect to hear at least a comment within a
+couple of days. We may suggest some changes or improvements or alternatives.</p>
+<p>Some things that will increase the chance that your pull request is accepted quickly:</p>
 <ul class="simple">
 <li>Write tests.</li>
-<li>Follow <a class="reference external" href="http://pep8.org">PEP8</a> for style. (The <code class="docutils literal"><span class="pre">flake8</span></code> utility can help with this.)</li>
-<li>Write a <a class="reference external" href="http://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">good commit message</a>.</li>
+<li>Follow [PEP8][http://pep8.org] for style. (The <code class="docutils literal notranslate"><span class="pre">flake8</span></code> utility can help with this.)</li>
+<li>Write a [good commit message][https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html].</li>
 </ul>
 <p>Pull requests will automatically have tests run by Travis. This includes
-running both the unit tests as well as the <code class="docutils literal"><span class="pre">flake8</span></code> code linter.</p>
+running both the unit tests as well as the <code class="docutils literal notranslate"><span class="pre">flake8</span></code> code linter.</p>
 </div>
-<div class="section" id="other-channels">
-<span id="other-channels"></span><h2>Other Channels<a class="headerlink" href="#other-channels" title="Permalink to this headline">¶</a></h2>
-<p>If you're interested in contacting us or being a part of the community in
-other ways, feel free to contact us in
-<a class="reference external" href="https://gitter.im/Unidata/MetPy">MetPy's Gitter Channel</a> or through Unidata's
-<a class="reference external" href="https://www.unidata.ucar.edu/support/#mailinglists">python-users</a> mailing list.</p>
+<div class="section" id="merging">
+<span id="merging"></span><h3>Merging<a class="headerlink" href="#merging" title="Permalink to this headline">¶</a></h3>
+<p>Once we’re all happy with the pull request, it’s time for it to get merged in. Only the
+maintainers can merge pull requests and you should never merge a pull request you have commits
+on as it circumvents the code review. If this is your first or second pull request, we’ll
+likely help by rebasing and cleaning up the commit history for you. As your developement skills
+increase, we’ll help you learn how to do this.</p>
+</div>
+</div>
+<div class="section" id="more-questions">
+<span id="more-questions"></span><h2>More Questions?<a class="headerlink" href="#more-questions" title="Permalink to this headline">¶</a></h2>
+<p>If you’re stuck somewhere or are interested in being a part of the community in
+other ways, feel free to contact us:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://gitter.im/Unidata/MetPy">MetPy’s Gitter Channel</a></li>
+<li><a class="reference external" href="https://stackoverflow.com/questions/tagged/metpy">“metpy” tag on Stack Overflow</a></li>
+<li><a class="reference external" href="mailto:support-python&#37;&#52;&#48;unidata&#46;ucar&#46;edu">Unidata’s Python support address</a></li>
+<li><a class="reference external" href="https://www.unidata.ucar.edu/support/#mailinglists">python-users</a> mailing list</li>
+</ul>
+</div>
+<div class="section" id="futher-reading">
+<span id="futher-reading"></span><h2>Futher Reading<a class="headerlink" href="#futher-reading" title="Permalink to this headline">¶</a></h2>
+<p>There are a ton of great resources out there on contributing to open source and on the
+importance of writing tested and maintainable software.</p>
+<ul class="simple">
+<li><a class="reference external" href="https://guides.github.com/activities/contributing-to-open-source/">GitHub’s Contributing to Open Source Guide</a></li>
+<li><a class="reference external" href="https://jrleeman.github.io/ScientificSoftwareMaintenance/">Zen of Scientific Software Maintenance</a></li>
+</ul>
 </div>
 </div>
 
@@ -335,10 +506,10 @@ other ways, feel free to contact us in
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="citing.html" class="btn btn-neutral float-right" title="Citing MetPy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="infrastructureguide.html" class="btn btn-neutral float-right" title="Infrastructure Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="developerguide.html" class="btn btn-neutral" title="Developer’s Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="gempak.html" class="btn btn-neutral" title="GEMPAK Conversion Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -348,7 +519,7 @@ other ways, feel free to contact us in
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -385,7 +556,7 @@ other ways, feel free to contact us in
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

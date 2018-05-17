@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cdm &mdash; MetPy 0.6</title>
+  <title>cdm &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="The MetPy API" href="../index.html"/>
         <link rel="next" title="cf_to_proj" href="metpy.io.cdm.cf_to_proj.html"/>
         <link rel="prev" title="Level3File" href="metpy.io.Level3File.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -128,6 +128,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">cdm</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.cf_to_proj.html">cf_to_proj</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.deprecated.html">deprecated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.AttributeContainer.html">AttributeContainer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Dataset.html">Dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Dimension.html">Dimension</a></li>
@@ -143,8 +144,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -229,8 +230,11 @@ implementation in the spirit of the original Java interface in netCDF-Java.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.io.cdm.cf_to_proj.html#metpy.io.cdm.cf_to_proj" title="metpy.io.cdm.cf_to_proj"><code class="xref py py-obj docutils literal"><span class="pre">cf_to_proj</span></code></a>(var)</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.io.cdm.cf_to_proj.html#metpy.io.cdm.cf_to_proj" title="metpy.io.cdm.cf_to_proj"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cf_to_proj</span></code></a>(var)</td>
 <td>Convert a Variable with projection information to a Proj.4 Projection instance.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="metpy.io.cdm.deprecated.html#metpy.io.cdm.deprecated" title="metpy.io.cdm.deprecated"><code class="xref py py-obj docutils literal notranslate"><span class="pre">deprecated</span></code></a>(since[,&nbsp;message,&nbsp;name,&nbsp;…])</td>
+<td>Mark a function or a class as deprecated.</td>
 </tr>
 </tbody>
 </table>
@@ -241,23 +245,23 @@ implementation in the spirit of the original Java interface in netCDF-Java.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.io.cdm.AttributeContainer.html#metpy.io.cdm.AttributeContainer" title="metpy.io.cdm.AttributeContainer"><code class="xref py py-obj docutils literal"><span class="pre">AttributeContainer</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.io.cdm.AttributeContainer.html#metpy.io.cdm.AttributeContainer" title="metpy.io.cdm.AttributeContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">AttributeContainer</span></code></a>(**kwargs)</td>
 <td>Handle maintaining a list of netCDF attributes.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.io.cdm.Dataset.html#metpy.io.cdm.Dataset" title="metpy.io.cdm.Dataset"><code class="xref py py-obj docutils literal"><span class="pre">Dataset</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.io.cdm.Dataset.html#metpy.io.cdm.Dataset" title="metpy.io.cdm.Dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dataset</span></code></a>(**kwargs)</td>
 <td>Represents a set of data using the Common Data Model (CDM).</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.io.cdm.Dimension.html#metpy.io.cdm.Dimension" title="metpy.io.cdm.Dimension"><code class="xref py py-obj docutils literal"><span class="pre">Dimension</span></code></a>(group,&nbsp;name[,&nbsp;size])</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.io.cdm.Dimension.html#metpy.io.cdm.Dimension" title="metpy.io.cdm.Dimension"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dimension</span></code></a>(**kwargs)</td>
 <td>Represent a shared dimension between different Variables.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.io.cdm.Group.html#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-obj docutils literal"><span class="pre">Group</span></code></a>(parent,&nbsp;name)</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.io.cdm.Group.html#metpy.io.cdm.Group" title="metpy.io.cdm.Group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Group</span></code></a>(**kwargs)</td>
 <td>Holds dimensions and variables.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.io.cdm.OrderedDict.html#metpy.io.cdm.OrderedDict" title="metpy.io.cdm.OrderedDict"><code class="xref py py-obj docutils literal"><span class="pre">OrderedDict</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.io.cdm.OrderedDict.html#metpy.io.cdm.OrderedDict" title="metpy.io.cdm.OrderedDict"><code class="xref py py-obj docutils literal notranslate"><span class="pre">OrderedDict</span></code></a></td>
 <td>Dictionary that remembers insertion order</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.io.cdm.Variable.html#metpy.io.cdm.Variable" title="metpy.io.cdm.Variable"><code class="xref py py-obj docutils literal"><span class="pre">Variable</span></code></a>(group,&nbsp;name,&nbsp;datatype,&nbsp;dimensions,&nbsp;…)</td>
-<td>Holds typed data (using a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.13)"><code class="xref py py-class docutils literal"><span class="pre">numpy.ndarray</span></code></a>), as well as attributes (e.g.</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.io.cdm.Variable.html#metpy.io.cdm.Variable" title="metpy.io.cdm.Variable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Variable</span></code></a>(**kwargs)</td>
+<td>Holds typed data (using a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.14)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>), as well as attributes (e.g.</td>
 </tr>
 </tbody>
 </table>
@@ -286,7 +290,7 @@ implementation in the spirit of the original Java interface in netCDF-Java.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -323,7 +327,7 @@ implementation in the spirit of the original Java interface in netCDF-Java.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

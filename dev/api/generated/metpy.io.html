@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>io &mdash; MetPy 0.6</title>
+  <title>io &mdash; MetPy 0.7</title>
   
 
   
@@ -43,9 +43,9 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="The MetPy API" href="../index.html"/>
-        <link rel="next" title="get_upper_air_data" href="metpy.io.get_upper_air_data.html"/>
+        <link rel="next" title="is_precip_mode" href="metpy.io.is_precip_mode.html"/>
         <link rel="prev" title="UndefinedUnitError" href="metpy.units.UndefinedUnitError.html"/> 
 
   
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">io</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.get_upper_air_data.html">get_upper_air_data</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.is_precip_mode.html">is_precip_mode</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.GiniFile.html">GiniFile</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.Level2File.html">Level2File</a></li>
@@ -141,8 +140,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -218,11 +217,8 @@
 <span id="io"></span><h1>io<a class="headerlink" href="#module-metpy.io" title="Permalink to this headline">¶</a></h1>
 <p>MetPy’s IO module contains classes for reading files. These classes are written
 to take both file names (for local files) or file-like objects; this allows reading files
-that are already in memory (using <a class="reference external" href="https://docs.python.org/3/library/io.html#io.StringIO" title="(in Python v3.6)"><code class="docutils literal"><span class="pre">io.StringIO</span></code></a>) or remote files
-(using <a class="reference external" href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen" title="(in Python v3.6)"><code class="xref py py-func docutils literal"><span class="pre">urlopen()</span></code></a>).</p>
-<p>There are also classes to implement concepts from the Common Data Model (CDM). The
-purpose of these is to simplify data access by proving an interface similar to that
-of netcdf4-python.</p>
+that are already in memory (using <a class="reference external" href="https://docs.python.org/3/library/io.html#io.StringIO" title="(in Python v3.6)"><code class="docutils literal notranslate"><span class="pre">io.StringIO</span></code></a>) or remote files
+(using <a class="reference external" href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen" title="(in Python v3.6)"><code class="xref py py-func docutils literal notranslate"><span class="pre">urlopen()</span></code></a>).</p>
 <p class="rubric">Functions</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -230,10 +226,7 @@ of netcdf4-python.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.io.get_upper_air_data.html#metpy.io.get_upper_air_data" title="metpy.io.get_upper_air_data"><code class="xref py py-obj docutils literal"><span class="pre">get_upper_air_data</span></code></a>(time,&nbsp;site_id[,&nbsp;source])</td>
-<td>Download and parse upper air observations from an online archive.</td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.io.is_precip_mode.html#metpy.io.is_precip_mode" title="metpy.io.is_precip_mode"><code class="xref py py-obj docutils literal"><span class="pre">is_precip_mode</span></code></a>(vcp_num)</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.io.is_precip_mode.html#metpy.io.is_precip_mode" title="metpy.io.is_precip_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_precip_mode</span></code></a>(vcp_num)</td>
 <td>Determine if the NEXRAD radar is operating in precipitation mode.</td>
 </tr>
 </tbody>
@@ -245,13 +238,13 @@ of netcdf4-python.</p>
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.io.GiniFile.html#metpy.io.GiniFile" title="metpy.io.GiniFile"><code class="xref py py-obj docutils literal"><span class="pre">GiniFile</span></code></a>(filename)</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.io.GiniFile.html#metpy.io.GiniFile" title="metpy.io.GiniFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GiniFile</span></code></a>(filename)</td>
 <td>A class that handles reading the GINI format satellite images from the NWS.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.io.Level2File.html#metpy.io.Level2File" title="metpy.io.Level2File"><code class="xref py py-obj docutils literal"><span class="pre">Level2File</span></code></a>(filename)</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.io.Level2File.html#metpy.io.Level2File" title="metpy.io.Level2File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level2File</span></code></a>(filename)</td>
 <td>Handle reading the NEXRAD Level 2 data and its various messages.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.io.Level3File.html#metpy.io.Level3File" title="metpy.io.Level3File"><code class="xref py py-obj docutils literal"><span class="pre">Level3File</span></code></a>(filename)</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.io.Level3File.html#metpy.io.Level3File" title="metpy.io.Level3File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level3File</span></code></a>(filename)</td>
 <td>Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.</td>
 </tr>
 </tbody>
@@ -268,7 +261,7 @@ of netcdf4-python.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.io.get_upper_air_data.html" class="btn btn-neutral float-right" title="get_upper_air_data" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.io.is_precip_mode.html" class="btn btn-neutral float-right" title="is_precip_mode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="metpy.units.UndefinedUnitError.html" class="btn btn-neutral" title="UndefinedUnitError" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -281,7 +274,7 @@ of netcdf4-python.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -318,7 +311,7 @@ of netcdf4-python.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

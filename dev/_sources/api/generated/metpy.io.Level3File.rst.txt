@@ -7,6 +7,27 @@ Level3File
 
    
    
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~Level3File.additional_gsm_fmt
+      ~Level3File.graph_block_fmt
+      ~Level3File.gsm_fmt
+      ~Level3File.header_fmt
+      ~Level3File.ij_to_km
+      ~Level3File.packet_map
+      ~Level3File.prod_desc_fmt
+      ~Level3File.prod_spec_map
+      ~Level3File.standalone_tabular
+      ~Level3File.sym_block_fmt
+      ~Level3File.sym_layer_fmt
+      ~Level3File.tab_block_fmt
+      ~Level3File.tab_header_fmt
+      ~Level3File.wmo_finder
+
+   
    
 
    
@@ -23,6 +44,26 @@ Level3File
    
 
    
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: additional_gsm_fmt
+   .. autoattribute:: graph_block_fmt
+   .. autoattribute:: gsm_fmt
+   .. autoattribute:: header_fmt
+   .. autoattribute:: ij_to_km
+   .. autoattribute:: packet_map
+   .. autoattribute:: prod_desc_fmt
+   .. autoattribute:: prod_spec_map
+   .. autoattribute:: standalone_tabular
+   .. autoattribute:: sym_block_fmt
+   .. autoattribute:: sym_layer_fmt
+   .. autoattribute:: tab_block_fmt
+   .. autoattribute:: tab_header_fmt
+   .. autoattribute:: wmo_finder
+
    
    
 

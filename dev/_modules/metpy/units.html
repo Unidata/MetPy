@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.units &mdash; MetPy 0.6</title>
+  <title>metpy.units &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -122,8 +122,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -223,6 +223,41 @@
              <span class="n">pint</span><span class="o">.</span><span class="n">converters</span><span class="o">.</span><span class="n">ScaleConverter</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)))</span>
 
 
+<div class="viewcode-block" id="pandas_dataframe_to_unit_arrays"><a class="viewcode-back" href="../../api/generated/metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays">[docs]</a><span class="k">def</span> <span class="nf">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column_units</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Attach units to data in pandas dataframes and return united arrays.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    df : `pandas.DataFrame`</span>
+<span class="sd">        Data in pandas dataframe.</span>
+
+<span class="sd">    column_units : dict</span>
+<span class="sd">        Dictionary of units to attach to columns of the dataframe. Overrides</span>
+<span class="sd">        the units attribute if it is attached to the dataframe.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        Dictionary containing united arrays with keys corresponding to the dataframe</span>
+<span class="sd">        column names.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">column_units</span><span class="p">:</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">column_units</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">units</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;No units attribute attached to pandas &#39;</span>
+                             <span class="s1">&#39;dataframe and col_units not given.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Iterate through columns attaching units if we have them, if not, don&#39;t touch it</span>
+    <span class="n">res</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">df</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">column</span> <span class="ow">in</span> <span class="n">column_units</span> <span class="ow">and</span> <span class="n">column_units</span><span class="p">[</span><span class="n">column</span><span class="p">]:</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="n">column_units</span><span class="p">[</span><span class="n">column</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">res</span><span class="p">[</span><span class="n">column</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">column</span><span class="p">]</span><span class="o">.</span><span class="n">values</span>
+    <span class="k">return</span> <span class="n">res</span></div>
+
+
 <div class="viewcode-block" id="concatenate"><a class="viewcode-back" href="../../api/generated/metpy.units.concatenate.html#metpy.units.concatenate">[docs]</a><span class="k">def</span> <span class="nf">concatenate</span><span class="p">(</span><span class="n">arrs</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Concatenate multiple values into a new unitized object.</span>
 
@@ -257,7 +292,13 @@
             <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">dest</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
         <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">atleast_1d</span><span class="p">(</span><span class="n">a</span><span class="p">))</span>
 
-    <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">),</span> <span class="n">dest</span><span class="p">)</span></div>
+    <span class="c1"># Use masked array concatenate to ensure masks are preserved, but convert to an</span>
+    <span class="c1"># array if there are no masked values.</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">concatenate</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">mask</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">dest</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="diff"><a class="viewcode-back" href="../../api/generated/metpy.units.diff.html#metpy.units.diff">[docs]</a><span class="k">def</span> <span class="nf">diff</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -495,7 +536,10 @@
 <div class="viewcode-block" id="PintConverter.default_units"><a class="viewcode-back" href="../../api/generated/metpy.units.PintConverter.html#metpy.units.PintConverter.default_units">[docs]</a>        <span class="nd">@staticmethod</span>
         <span class="k">def</span> <span class="nf">default_units</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Get the default unit to use for the given combination of unit and axis.&quot;&quot;&quot;</span>
-            <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span></div></div>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
+                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span></div></div>
 
     <span class="c1"># Register the class</span>
     <span class="n">munits</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">PintConverter</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
@@ -517,7 +561,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -554,7 +598,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

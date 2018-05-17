@@ -14,6 +14,9 @@ gridding
       interpolate
       inverse_distance
       natural_neighbor
+      remove_nan_observations
+      remove_observations_below_value
+      remove_repeat_coordinates
    
    
 

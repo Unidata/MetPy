@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.io.nexrad &mdash; MetPy 0.6</title>
+  <title>metpy.io.nexrad &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -122,8 +122,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
 </ul>
@@ -211,13 +211,13 @@
 
 <span class="kn">from</span> <span class="nn">._tools</span> <span class="k">import</span> <span class="p">(</span><span class="n">Array</span><span class="p">,</span> <span class="n">BitField</span><span class="p">,</span> <span class="n">Bits</span><span class="p">,</span> <span class="n">bits_to_code</span><span class="p">,</span> <span class="n">DictStruct</span><span class="p">,</span> <span class="n">Enum</span><span class="p">,</span> <span class="n">IOBuffer</span><span class="p">,</span>
                      <span class="n">NamedStruct</span><span class="p">,</span> <span class="n">open_as_needed</span><span class="p">,</span> <span class="n">zlib_decompress_all_frames</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..cbook</span> <span class="k">import</span> <span class="n">is_string_like</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-<span class="n">log</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">())</span>  <span class="c1"># Python 2.7 needs a handler set</span>
-<span class="n">log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">version</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
@@ -455,7 +455,7 @@
         <span class="c1"># Check if we have any message segments still in the buffer</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_buf</span><span class="p">:</span>
             <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Remaining buffered messages segments for message type(s): </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
-                        <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_buf</span><span class="o">.</span><span class="n">keys</span><span class="p">())))</span>
+                        <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_buf</span><span class="p">)))</span>
 
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_buf</span>
 
@@ -1727,6 +1727,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">fobj</span> <span class="o">=</span> <span class="n">open_as_needed</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filename</span> <span class="o">=</span> <span class="n">filename</span> <span class="k">if</span> <span class="n">is_string_like</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span> <span class="k">else</span> <span class="s1">&#39;No File&#39;</span>
 
         <span class="c1"># Just read in the entire set of data at once</span>
         <span class="k">with</span> <span class="n">contextlib</span><span class="o">.</span><span class="n">closing</span><span class="p">(</span><span class="n">fobj</span><span class="p">):</span>
@@ -1764,8 +1765,14 @@
         <span class="c1"># Unpack the message header and the product description block</span>
         <span class="n">msg_start</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">set_mark</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">header</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header_fmt</span><span class="p">)</span>
-        <span class="c1"># print(self.header, len(self._buffer), self.header.msg_len - self.header_fmt.size)</span>
-        <span class="k">assert</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">check_remains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">msg_len</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">header_fmt</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;Buffer size: </span><span class="si">%d</span><span class="s1"> (</span><span class="si">%d</span><span class="s1"> expected) Header: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">),</span>
+                  <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">msg_len</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">check_remains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">msg_len</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">header_fmt</span><span class="o">.</span><span class="n">size</span><span class="p">):</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Product contains an unexpected amount of data remaining--have: </span><span class="si">%d</span><span class="s1"> &#39;</span>
+                        <span class="s1">&#39;expected: </span><span class="si">%d</span><span class="s1">. This product may not parse correctly.&#39;</span><span class="p">,</span>
+                        <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">_offset</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">msg_len</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">header_fmt</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 
         <span class="c1"># Handle GSM and jump out</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="o">.</span><span class="n">code</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
@@ -1855,8 +1862,9 @@
 
     <span class="k">def</span> <span class="nf">_process_wmo_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Read off the WMO header if necessary</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">get_next</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">get_next</span><span class="p">(</span><span class="mi">64</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">,</span> <span class="s1">&#39;ignore&#39;</span><span class="p">)</span>
         <span class="n">match</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">wmo_finder</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;WMO Header: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">match</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">wmo_code</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">siteID</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">groups</span><span class="p">()[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
@@ -1866,6 +1874,7 @@
 
     <span class="k">def</span> <span class="nf">_process_end_bytes</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">check_bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="p">[</span><span class="o">-</span><span class="mi">4</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;End Bytes: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">check_bytes</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">check_bytes</span> <span class="ow">in</span> <span class="p">(</span><span class="sa">b</span><span class="s1">&#39;</span><span class="se">\r\r\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\xff\xff\n</span><span class="s1">&#39;</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">truncate</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 
@@ -2507,7 +2516,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -2544,7 +2553,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

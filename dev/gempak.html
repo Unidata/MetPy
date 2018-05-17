@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GEMPAK Conversion Guide &mdash; MetPy 0.6</title>
+  <title>GEMPAK Conversion Guide &mdash; MetPy 0.7</title>
   
 
   
@@ -43,9 +43,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.6" href="index.html"/>
-        <link rel="next" title="Developer’s Guide" href="developerguide.html"/>
-        <link rel="prev" title="natural_neighbor" href="api/generated/metpy.gridding.natural_neighbor.html"/> 
+    <link rel="top" title="MetPy 0.7" href="index.html"/>
+        <link rel="next" title="Contributors Guide" href="CONTRIBUTING.html"/>
+        <link rel="prev" title="remove_repeat_coordinates" href="api/generated/metpy.gridding.remove_repeat_coordinates.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -123,8 +123,8 @@
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">The MetPy API</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="references.html">References</a></li>
 </ul>
@@ -521,9 +521,9 @@ blue is uncertain of parity, and white is unevaluated.</p>
      <td></td>
    </tr>
    <tr>
-     <td class="tg-notimplemented">BVSQ(THTA)</td>
-     <td class="tg-notimplemented">Brunt-Vaisala frequency squared in a layer</td>
-     <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/629">Issue #629</a></td>
+     <td class="tg-implemented">BVSQ(THTA)</td>
+     <td class="tg-implemented">Brunt-Vaisala frequency squared in a layer</td>
+     <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared">metpy.calc.brunt_vaisala_frequency_squared</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
      <td></td>
      <td></td>
      <td></td>
@@ -697,11 +697,11 @@ blue is uncertain of parity, and white is unevaluated.</p>
      <td></td>
    </tr>
    <tr>
-     <td>LAP(S)</td>
-     <td>Laplacian operator</td>
+     <td class="tg-implemented">LAP(S)</td>
+     <td class="tg-implemented">Laplacian operator</td>
+     <td class="tg-implemented"><a href="api/generated/metpy.calc.laplacian.html#metpy.calc.laplacian">metpy.calc.laplacian</a></td>
      <td></td>
-     <td></td>
-     <td></td>
+     <td class="tg-no">No</td>
      <td></td>
    </tr>
    <tr>
@@ -857,11 +857,12 @@ blue is uncertain of parity, and white is unevaluated.</p>
      <td></td>
    </tr>
    <tr>
-     <td class="tg-notimplemented">PVOR(S, V)</td>
-     <td class="tg-notimplemented">Potential vorticity in a layer</td>
-     <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/650">Issue #650</a></td>
+     <td class="tg-implemented">PVOR(S, V)</td>
+     <td class="tg-implemented">Potential vorticity in a layer</td>
+     <td class="tg-implemented"><a href="api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic">metpy.calc.potential_vorticity_baroclinic</a>
+                                <br><a href="api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_barotropic">metpy.calc.potential_vorticity_barotropic</a></td>
      <td></td>
-     <td></td>
+     <td class="tg-no">No</td>
      <td></td>
    </tr>
    <tr>
@@ -1025,11 +1026,11 @@ blue is uncertain of parity, and white is unevaluated.</p>
      <td></td>
    </tr>
    <tr>
-     <td class="tg-notimplemented">THWC(PRES, TMPC, DWPC)</td>
-     <td class="tg-notimplemented">Wet bulb temperature</td>
-     <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/409">Issue #409</a></td>
+     <td class="tg-implemented">THWC(PRES, TMPC, DWPC)</td>
+     <td class="tg-implemented">Wet bulb temperature</td>
+     <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html">metpy.calc.wet_bulb_temperature</a></td>
      <td></td>
-     <td></td>
+     <td class="tg-no">No</td>
      <td></td>
    </tr>
    <tr>
@@ -1164,11 +1165,11 @@ blue is uncertain of parity, and white is unevaluated.</p>
     <th class="tg=yw4l">Units?</th>
   </tr>
   <tr>
-    <td class="tg-notimplemented">AGE(S)</td>
-    <td class="tg-notimplemented">Ageostrophic wind</td>
-    <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/660">Issue #660</a></td>
+    <td class="tg-implemented">AGE(S)</td>
+    <td class="tg-implemented">Ageostrophic wind</td>
+    <td class="tg-implemented"><a href="api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind">metpy.calc.ageostrophic_wind</a></td>
     <td></td>
-    <td></td>
+    <td class="tg-no">No</td>
     <td></td>
   </tr>
   <tr>
@@ -1180,19 +1181,19 @@ blue is uncertain of parity, and white is unevaluated.</p>
     <td></td>
   </tr>
   <tr>
-    <td class="tg-notimplemented">DVDX(V)</td>
-    <td class="tg-notimplemented">Partial x derivative of V</td>
-    <td class="tg-notimplemented"></td>
+    <td class="tg-implemented">DVDX(V)</td>
+    <td class="tg-implemented">Partial x derivative of V</td>
+    <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
     <td></td>
-    <td></td>
+    <td class="tg-no">No</td>
     <td></td>
   </tr>
   <tr>
     <td class="tg-notimplemented">DVDY(V)</td>
     <td class="tg-notimplemented">Partial y derivative of V</td>
-    <td class="tg-notimplemented"></td>
+    <td class="tg-notimplemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
     <td></td>
-    <td></td>
+    <td class="tg-no">No</td>
     <td></td>
   </tr>
   <tr>
@@ -1220,11 +1221,11 @@ blue is uncertain of parity, and white is unevaluated.</p>
     <td></td>
   </tr>
   <tr>
-    <td class="tg-notimplemented">GRAD(S)</td>
-    <td class="tg-notimplemented">Gradient of a scalar</td>
-    <td class="tg-notimplemented"></td>
+    <td class="tg-implemented">GRAD(S)</td>
+    <td class="tg-implemented">Gradient of a scalar</td>
+    <td class="tg-implemented"><a href="api/generated/metpy.calc.gradient.html#metpy.calc.gradient">metpy.calc.gradient</a></td>
     <td></td>
-    <td></td>
+    <td class="tg-no">No</td>
     <td></td>
   </tr>
   <tr>
@@ -1244,11 +1245,11 @@ blue is uncertain of parity, and white is unevaluated.</p>
     <td></td>
   </tr>
   <tr>
-    <td class="tg-notimplemented">INAD(V1, V2)</td>
-    <td class="tg-notimplemented">Inertial advective wind</td>
-    <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/640">Issue #640</a></td>
+    <td class="tg-implemented">INAD(V1, V2)</td>
+    <td class="tg-implemented">Inertial advective wind</td>
+    <td class="tg-implemented"><a href="api/generated/metpy.calc.inertial_advective_wind.html">metpy.calc.inertial_advective_wind</a></td>
     <td></td>
-    <td></td>
+    <td class="tg-no">No</td>
     <td></td>
   </tr>
   <tr>
@@ -1292,17 +1293,17 @@ blue is uncertain of parity, and white is unevaluated.</p>
     <td></td>
   </tr>
   <tr>
-    <td class="tg-notimplemented">QVEC(S, V)</td>
-    <td class="tg-notimplemented">Q-vector at a level</td>
-    <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/661">Issue #661</a></td>
+    <td class="tg-implemented">QVEC(S, V)</td>
+    <td class="tg-implemented">Q-vector at a level</td>
+    <td class="tg-implemented"><a href="api/generated/metpy.calc.q_vector.html">metpy.calc.q_vector</a></td>
     <td></td>
-    <td></td>
+    <td class="tg-no">No</td>
     <td></td>
   </tr>
   <tr>
-    <td class="tg-notimplemented">QVCL(THTA, V)</td>
-    <td class="tg-notimplemented">Q-vector of a layer</td>
-    <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/661">Issue #661</a></td>
+    <td class="tg-implemented">QVCL(THTA, V)</td>
+    <td class="tg-implemented">Q-vector of a layer</td>
+    <td class="tg-implemented"><a href="api/generated/metpy.calc.q_vector.html#metpy.calc.q_vector">metpy.calc.q_vector</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average of each component)</td>
     <td></td>
     <td></td>
     <td></td>
@@ -4006,25 +4007,25 @@ blue is uncertain of parity, and white is unevaluated.</p>
     <td></td>
   </tr>
   <tr>
-    <td class="tg-notimplemented">BVFQ</td>
-    <td class="tg-notimplemented">Brunt-Vaisala frequency in a layer</td>
-    <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/629">Issue #629</a></td>
+    <td class="tg-implemented">BVFQ</td>
+    <td class="tg-implemented">Brunt-Vaisala frequency in a layer</td>
+    <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_frequency.html#metpy.calc.brunt_vaisala_frequency">metpy.calc.brunt_vaisala_frequency</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td class="tg-notimplemented">BVPD</td>
-    <td class="tg-notimplemented">Brunt-Vaisala period in a layer</td>
-    <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/629">Issue #629</a></td>
+    <td class="tg-implemented">BVPD</td>
+    <td class="tg-implemented">Brunt-Vaisala period in a layer</td>
+    <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_period.html#metpy.calc.brunt_vaisala_period">metpy.calc.brunt_vaisala_period</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
     <td></td>
     <td></td>
     <td></td>
   </tr>
   <tr>
-    <td class="tg-notimplemented">BVSQ</td>
-    <td class="tg-notimplemented">Brunt-Vaisala frequency squared in a layer</td>
-    <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/629">Issue #629</a></td>
+    <td class="tg-implemented">BVSQ</td>
+    <td class="tg-implemented">Brunt-Vaisala frequency squared in a layer</td>
+    <td class="tg-implemented"><a href="api/generated/metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared">metpy.calc.brunt_vaisala_frequency_squared</a> (use with <a href="api/generated/metpy.calc.mixed_layer.html#metpy.calc.mixed_layer">metpy.calc.mixed_layer</a> to obtain layer average)</td>
     <td></td>
     <td></td>
     <td></td>
@@ -8297,10 +8298,10 @@ blue is uncertain of parity, and white is unevaluated.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="developerguide.html" class="btn btn-neutral float-right" title="Developer’s Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="CONTRIBUTING.html" class="btn btn-neutral float-right" title="Contributors Guide" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="api/generated/metpy.gridding.natural_neighbor.html" class="btn btn-neutral" title="natural_neighbor" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="api/generated/metpy.gridding.remove_repeat_coordinates.html" class="btn btn-neutral" title="remove_repeat_coordinates" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -8310,7 +8311,7 @@ blue is uncertain of parity, and white is unevaluated.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -8347,7 +8348,7 @@ blue is uncertain of parity, and white is unevaluated.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

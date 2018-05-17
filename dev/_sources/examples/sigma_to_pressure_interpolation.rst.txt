@@ -20,9 +20,9 @@ interpolated to isobaric coordinates.
     import matplotlib.pyplot as plt
     from netCDF4 import Dataset, num2date
 
-    import metpy.calc as mcalc
+    import metpy.calc as mpcalc
     from metpy.cbook import get_test_data
-    from metpy.plots import add_metpy_logo
+    from metpy.plots import add_metpy_logo, add_timestamp
     from metpy.units import units
 
 
@@ -48,9 +48,9 @@ University Department of Geography and Meteorology.
     lon = data.variables['lon'][:]
     time = data.variables['time']
     vtimes = num2date(time[:], time.units)
-    temperature = data.variables['temperature'][:] * units(data.variables['temperature'].units)
-    pres = data.variables['pressure'][:] * units(data.variables['pressure'].units)
-    hgt = data.variables['height'][:] * units(data.variables['height'].units)
+    temperature = data.variables['temperature'][:] * units.celsius
+    pres = data.variables['pressure'][:] * units.pascal
+    hgt = data.variables['height'][:] * units.meter
 
 
 
@@ -76,32 +76,17 @@ Array of desired pressure levels
 
 Now that the data is ready, we can interpolate to the new isobaric levels. The data is
 interpolated from the irregular pressure values for each sigma level to the new input
-mandatory isobaric levels. `mcalc.log_interp` will interpolate over a specified dimension
+mandatory isobaric levels. `mpcalc.log_interp` will interpolate over a specified dimension
 with the `axis` argument. In this case, `axis=1` will correspond to interpolation on the
-vertical axis.
+vertical axis. The interpolated data is output in a list, so we will pull out each
+variable for plotting.
 
 
 
 .. code-block:: python
 
 
-    isobaric_levels = mcalc.log_interp(plevs, pres, hgt, temperature, axis=1)
-
-
-
-
-
-
-
-The interpolated data is output in a list, so we will pull out each variable for plotting.
-
-
-
-.. code-block:: python
-
-
-    height = isobaric_levels[0]
-    temp = isobaric_levels[1]
+    height, temp = mpcalc.log_interp(plevs, pres, hgt, temperature, axis=1)
 
 
 
@@ -119,18 +104,6 @@ The interpolated data is output in a list, so we will pull out each variable for
     # Set up our projection
     crs = ccrs.LambertConformal(central_longitude=-100.0, central_latitude=45.0)
 
-    # Set up our array of latitude and longitude values and transform to
-    # the desired projection.
-    tlatlons = crs.transform_points(ccrs.PlateCarree(), lon, lat)
-    tlons = tlatlons[:, :, 0]
-    tlats = tlatlons[:, :, 1]
-
-    # Get data to plot state and province boundaries
-    states_provinces = cfeature.NaturalEarthFeature(category='cultural',
-                                                    name='admin_1_states_provinces_lakes',
-                                                    scale='50m',
-                                                    facecolor='none')
-
     # Set the forecast hour
     FH = 1
 
@@ -140,19 +113,20 @@ The interpolated data is output in a list, so we will pull out each variable for
 
     # Plot 700 hPa
     ax = plt.subplot(111, projection=crs)
-    ax.coastlines('50m', edgecolor='black', linewidth=0.75)
-    ax.add_feature(states_provinces, edgecolor='black', linewidth=0.5)
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'), linewidth=0.75)
+    ax.add_feature(cfeature.STATES, linewidth=0.5)
 
     # Plot the heights
-    cs = ax.contour(tlons, tlats, height[FH, 0, :, :],
+    cs = ax.contour(lon, lat, height[FH, 0, :, :], transform=ccrs.PlateCarree(),
                     colors='k', linewidths=1.0, linestyles='solid')
-    plt.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
-               fmt='%i', rightside_up=True, use_clabeltext=True)
+    ax.clabel(cs, fontsize=10, inline=1, inline_spacing=7,
+              fmt='%i', rightside_up=True, use_clabeltext=True)
 
     # Contour the temperature
-    cf = ax.contourf(tlons, tlats, temp[FH, 0, :, :], range(-20, 20, 1), cmap=plt.cm.jet)
-    cb = plt.colorbar(cf, orientation='horizontal', extend=max, aspect=65, shrink=0.5, pad=0.05,
-                      extendrect='True')
+    cf = ax.contourf(lon, lat, temp[FH, 0, :, :], range(-20, 20, 1), cmap=plt.cm.RdBu_r,
+                     transform=ccrs.PlateCarree())
+    cb = fig.colorbar(cf, orientation='horizontal', extend='max', aspect=65, shrink=0.5,
+                      pad=0.05, extendrect='True')
     cb.set_label('Celsius', size='x-large')
 
     ax.set_extent([-106.5, -90.4, 34.5, 46.75], crs=ccrs.PlateCarree())
@@ -163,6 +137,8 @@ The interpolated data is output in a list, so we will pull out each variable for
 
     # Set the figure title
     fig.suptitle('WRF-ARW Forecast VALID: {:s} UTC'.format(str(vtimes[FH])), fontsize=14)
+    add_timestamp(ax, vtimes[FH], y=0.02, high_contrast=True)
+
     plt.show()
 
 
@@ -173,7 +149,7 @@ The interpolated data is output in a list, so we will pull out each variable for
 
 
 
-**Total running time of the script:** ( 0 minutes  1.392 seconds)
+**Total running time of the script:** ( 0 minutes  7.190 seconds)
 
 
 

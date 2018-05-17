@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>reduce_point_density &mdash; MetPy 0.6</title>
+  <title>reduce_point_density &mdash; MetPy 0.7</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="relative_humidity_from_dewpoint" href="metpy.calc.relative_humidity_from_dewpoint.html"/>
-        <link rel="prev" title="psychrometric_vapor_pressure_wet" href="metpy.calc.psychrometric_vapor_pressure_wet.html"/> 
+        <link rel="prev" title="q_vector" href="metpy.calc.q_vector.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -128,22 +128,32 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.absolute_vorticity.html">absolute_vorticity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.add_pressure_to_height.html">add_pressure_to_height</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.advection.html">advection</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.ageostrophic_wind.html">ageostrophic_wind</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.apparent_temperature.html">apparent_temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.brunt_vaisala_frequency.html">brunt_vaisala_frequency</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.brunt_vaisala_frequency_squared.html">brunt_vaisala_frequency_squared</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.brunt_vaisala_period.html">brunt_vaisala_period</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.bulk_shear.html">bulk_shear</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.bunkers_storm_motion.html">bunkers_storm_motion</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.cape_cin.html">cape_cin</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.convergence_vorticity.html">convergence_vorticity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.coriolis_parameter.html">coriolis_parameter</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.critical_angle.html">critical_angle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.density.html">density</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.dewpoint.html">dewpoint</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.dewpoint_from_specific_humidity.html">dewpoint_from_specific_humidity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.dewpoint_rh.html">dewpoint_rh</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.divergence.html">divergence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.dry_lapse.html">dry_lapse</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.dry_static_energy.html">dry_static_energy</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.el.html">el</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.equivalent_potential_temperature.html">equivalent_potential_temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.exner_function.html">exner_function</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.find_bounding_indices.html">find_bounding_indices</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.find_intersections.html">find_intersections</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.first_derivative.html">first_derivative</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.friction_velocity.html">friction_velocity</a></li>
@@ -156,15 +166,18 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_wind_components.html">get_wind_components</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_wind_dir.html">get_wind_dir</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.get_wind_speed.html">get_wind_speed</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.gradient.html">gradient</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.h_convergence.html">h_convergence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.heat_index.html">heat_index</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.height_to_geopotential.html">height_to_geopotential</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.height_to_pressure_std.html">height_to_pressure_std</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.inertial_advective_wind.html">inertial_advective_wind</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.interp.html">interp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.interpolate_nans.html">interpolate_nans</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.isentropic_interpolation.html">isentropic_interpolation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.kinematic_flux.html">kinematic_flux</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.laplacian.html">laplacian</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.lat_lon_grid_deltas.html">lat_lon_grid_deltas</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.lat_lon_grid_spacing.html">lat_lon_grid_spacing</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.lcl.html">lcl</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.lfc.html">lfc</a></li>
@@ -182,12 +195,16 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.most_unstable_parcel.html">most_unstable_parcel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.nearest_intersection_idx.html">nearest_intersection_idx</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.parcel_profile.html">parcel_profile</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.parse_angle.html">parse_angle</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.potential_temperature.html">potential_temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.potential_vorticity_baroclinic.html">potential_vorticity_baroclinic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.potential_vorticity_barotropic.html">potential_vorticity_barotropic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.precipitable_water.html">precipitable_water</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.pressure_to_height_std.html">pressure_to_height_std</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.psychrometric_vapor_pressure_wet.html">psychrometric_vapor_pressure_wet</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.q_vector.html">q_vector</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">reduce_point_density</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-calc-reduce-point-density">Examples using <code class="docutils literal"><span class="pre">metpy.calc.reduce_point_density</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-calc-reduce-point-density">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.reduce_point_density</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.relative_humidity_from_dewpoint.html">relative_humidity_from_dewpoint</a></li>
@@ -195,6 +212,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.relative_humidity_from_specific_humidity.html">relative_humidity_from_specific_humidity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.relative_humidity_wet_psychrometric.html">relative_humidity_wet_psychrometric</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.resample_nn_1d.html">resample_nn_1d</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.saturation_equivalent_potential_temperature.html">saturation_equivalent_potential_temperature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.saturation_mixing_ratio.html">saturation_mixing_ratio</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html">saturation_vapor_pressure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.second_derivative.html">second_derivative</a></li>
@@ -203,10 +221,12 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.sigma_to_pressure.html">sigma_to_pressure</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.significant_tornado.html">significant_tornado</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.specific_humidity_from_mixing_ratio.html">specific_humidity_from_mixing_ratio</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.static_stability.html">static_stability</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.storm_relative_helicity.html">storm_relative_helicity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.stretching_deformation.html">stretching_deformation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.supercell_composite.html">supercell_composite</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.surface_based_cape_cin.html">surface_based_cape_cin</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.temperature_from_potential_temperature.html">temperature_from_potential_temperature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.thickness_hydrostatic.html">thickness_hydrostatic</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html">thickness_hydrostatic_from_relative_humidity</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.tke.html">tke</a></li>
@@ -216,6 +236,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.virtual_potential_temperature.html">virtual_potential_temperature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.vorticity.html">vorticity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.windchill.html">windchill</a></li>
 </ul>
 </li>
@@ -225,8 +246,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -309,7 +330,7 @@
 <p>This function is used to down-sample a collection of scattered points (e.g. surface
 data), returning a mask that can be used to select the points from one or more arrays
 (e.g. arrays of temperature and dew point). The points selected can be controlled by
-providing an array of <code class="docutils literal"><span class="pre">priority</span></code> values (e.g. rainfall totals to ensure that
+providing an array of <code class="docutils literal notranslate"><span class="pre">priority</span></code> values (e.g. rainfall totals to ensure that
 stations with higher precipitation remain in the mask).</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -318,7 +339,7 @@ stations with higher precipitation remain in the mask).</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>points</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em>) – N locations of the points in K dimensional space</li>
 <li><strong>radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – minimum radius allowed between points</li>
-<li><strong>priority</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em><em>, </em><em>optional</em>) – If given, this should have the same shape as <code class="docutils literal"><span class="pre">points</span></code>; these values will
+<li><strong>priority</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em><em>, </em><em>optional</em>) – If given, this should have the same shape as <code class="docutils literal notranslate"><span class="pre">points</span></code>; these values will
 be used to control selection priority for points.</li>
 </ul>
 </td>
@@ -333,17 +354,17 @@ be used to control selection priority for points.</li>
 </tbody>
 </table>
 <p class="rubric">Examples</p>
-<div class="highlight-default"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">reduce_point_density</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="mf">1.</span><span class="p">)</span>
-<span class="go">array([ True, False,  True], dtype=bool)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">reduce_point_density</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="mf">1.</span><span class="p">)</span>
+<span class="go">array([ True, False,  True])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">reduce_point_density</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="mf">1.</span><span class="p">,</span>
 <span class="gp">... </span><span class="n">priority</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]))</span>
-<span class="go">array([False,  True, False], dtype=bool)</span>
+<span class="go">array([False,  True, False])</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-calc-reduce-point-density">
-<h2>Examples using <code class="docutils literal"><span class="pre">metpy.calc.reduce_point_density</span></code><a class="headerlink" href="#examples-using-metpy-calc-reduce-point-density" title="Permalink to this headline">¶</a></h2>
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.reduce_point_density</span></code><a class="headerlink" href="#examples-using-metpy-calc-reduce-point-density" title="Permalink to this headline">¶</a></h2>
 <div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols."><div class="figure" id="id1">
 <img alt="../../_images/sphx_glr_Station_Plot_thumb.png" src="../../_images/sphx_glr_Station_Plot_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a></span></p>
@@ -364,7 +385,7 @@ be used to control selection priority for points.</li>
         <a href="metpy.calc.relative_humidity_from_dewpoint.html" class="btn btn-neutral float-right" title="relative_humidity_from_dewpoint" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.calc.psychrometric_vapor_pressure_wet.html" class="btn btn-neutral" title="psychrometric_vapor_pressure_wet" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.calc.q_vector.html" class="btn btn-neutral" title="q_vector" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -374,7 +395,7 @@ be used to control selection priority for points.</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -411,7 +432,7 @@ be used to control selection priority for points.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

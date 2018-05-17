@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>OrderedDict &mdash; MetPy 0.6</title>
+  <title>OrderedDict &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="cdm" href="metpy.io.cdm.html"/>
         <link rel="next" title="Variable" href="metpy.io.cdm.Variable.html"/>
         <link rel="prev" title="Group" href="metpy.io.cdm.Group.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -128,6 +128,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.io.cdm.html">cdm</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.cf_to_proj.html">cf_to_proj</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.deprecated.html">deprecated</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.AttributeContainer.html">AttributeContainer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Dataset.html">Dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Dimension.html">Dimension</a></li>
@@ -143,8 +144,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -231,40 +232,40 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.clear" title="metpy.io.cdm.OrderedDict.clear"><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code></a>(()&nbsp;-&gt;&nbsp;None.&nbsp;&nbsp;Remove&nbsp;all&nbsp;items&nbsp;from&nbsp;od.)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.clear" title="metpy.io.cdm.OrderedDict.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.copy" title="metpy.io.cdm.OrderedDict.copy"><code class="xref py py-obj docutils literal"><span class="pre">copy</span></code></a>(()&nbsp;-&gt;&nbsp;a&nbsp;shallow&nbsp;copy&nbsp;of&nbsp;od)</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.copy" title="metpy.io.cdm.OrderedDict.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.fromkeys" title="metpy.io.cdm.OrderedDict.fromkeys"><code class="xref py py-obj docutils literal"><span class="pre">fromkeys</span></code></a>((S[,&nbsp;…)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.fromkeys" title="metpy.io.cdm.OrderedDict.fromkeys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fromkeys</span></code></a>(S[,&nbsp;v])</td>
 <td>If not specified, the value defaults to None.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.get" title="metpy.io.cdm.OrderedDict.get"><code class="xref py py-obj docutils literal"><span class="pre">get</span></code></a>((k[,d])&nbsp;-&gt;&nbsp;D[k]&nbsp;if&nbsp;k&nbsp;in&nbsp;D,&nbsp;…)</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.get" title="metpy.io.cdm.OrderedDict.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(k[,d])</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.items" title="metpy.io.cdm.OrderedDict.items"><code class="xref py py-obj docutils literal"><span class="pre">items</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.items" title="metpy.io.cdm.OrderedDict.items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.keys" title="metpy.io.cdm.OrderedDict.keys"><code class="xref py py-obj docutils literal"><span class="pre">keys</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.keys" title="metpy.io.cdm.OrderedDict.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.move_to_end" title="metpy.io.cdm.OrderedDict.move_to_end"><code class="xref py py-obj docutils literal"><span class="pre">move_to_end</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.move_to_end" title="metpy.io.cdm.OrderedDict.move_to_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_to_end</span></code></a></td>
 <td>Move an existing element to the end (or beginning if last==False).</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.pop" title="metpy.io.cdm.OrderedDict.pop"><code class="xref py py-obj docutils literal"><span class="pre">pop</span></code></a>((k[,d])&nbsp;-&gt;&nbsp;v,&nbsp;…)</td>
-<td>value.  If key is not found, d is returned if given, otherwise KeyError</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.pop" title="metpy.io.cdm.OrderedDict.pop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code></a>(k[,d])</td>
+<td>value.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.popitem" title="metpy.io.cdm.OrderedDict.popitem"><code class="xref py py-obj docutils literal"><span class="pre">popitem</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.popitem" title="metpy.io.cdm.OrderedDict.popitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code></a></td>
 <td>Remove and return a (key, value) pair from the dictionary.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.setdefault" title="metpy.io.cdm.OrderedDict.setdefault"><code class="xref py py-obj docutils literal"><span class="pre">setdefault</span></code></a>((k[,d])&nbsp;-&gt;&nbsp;od.get(k,d),&nbsp;…)</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.setdefault" title="metpy.io.cdm.OrderedDict.setdefault"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setdefault</span></code></a>(k[,d])</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.update" title="metpy.io.cdm.OrderedDict.update"><code class="xref py py-obj docutils literal"><span class="pre">update</span></code></a></td>
-<td></td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.update" title="metpy.io.cdm.OrderedDict.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>([E,&nbsp;]**F)</td>
+<td>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.values" title="metpy.io.cdm.OrderedDict.values"><code class="xref py py-obj docutils literal"><span class="pre">values</span></code></a></td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.values" title="metpy.io.cdm.OrderedDict.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a>()</td>
 <td></td>
 </tr>
 </tbody>
@@ -293,12 +294,12 @@
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.items">
-<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.OrderedDict.items" title="Permalink to this definition">¶</a></dt>
+<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#metpy.io.cdm.OrderedDict.items" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.keys">
-<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.OrderedDict.keys" title="Permalink to this definition">¶</a></dt>
+<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#metpy.io.cdm.OrderedDict.keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
@@ -330,12 +331,15 @@ is raised.</p>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.update">
-<code class="descname">update</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.OrderedDict.update" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<code class="descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em>E</em>, <span class="optional">]</span><em>**F</em><span class="sig-paren">)</span> &#x2192; None.  Update D from dict/iterable E and F.<a class="headerlink" href="#metpy.io.cdm.OrderedDict.update" title="Permalink to this definition">¶</a></dt>
+<dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
+If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
+In either case, this is followed by: for k in F:  D[k] = F[k]</p>
+</dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.values">
-<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.OrderedDict.values" title="Permalink to this definition">¶</a></dt>
+<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#metpy.io.cdm.OrderedDict.values" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -365,7 +369,7 @@ is raised.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -402,7 +406,7 @@ is raised.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

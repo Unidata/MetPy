@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Overview: module code &mdash; MetPy 0.6</title>
+  <title>Overview: module code &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../index.html"/> 
+    <link rel="top" title="MetPy 0.7" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -78,7 +78,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,8 +121,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
@@ -187,19 +187,22 @@
             
   <h1>All modules for which code is available</h1>
 <ul><li><a href="collections.html">collections</a></li>
-<li><a href="matplotlib/units.html">matplotlib.units</a></li>
+<ul><li><a href="collections/abc.html">collections.abc</a></li>
+</ul><li><a href="matplotlib/units.html">matplotlib.units</a></li>
 <li><a href="metpy/calc/basic.html">metpy.calc.basic</a></li>
 <li><a href="metpy/calc/indices.html">metpy.calc.indices</a></li>
 <li><a href="metpy/calc/kinematics.html">metpy.calc.kinematics</a></li>
 <li><a href="metpy/calc/thermo.html">metpy.calc.thermo</a></li>
 <li><a href="metpy/calc/tools.html">metpy.calc.tools</a></li>
 <li><a href="metpy/calc/turbulence.html">metpy.calc.turbulence</a></li>
+<li><a href="metpy/deprecation.html">metpy.deprecation</a></li>
 <li><a href="metpy/gridding/gridding_functions.html">metpy.gridding.gridding_functions</a></li>
 <li><a href="metpy/gridding/interpolation.html">metpy.gridding.interpolation</a></li>
+<li><a href="metpy/io/_tools.html">metpy.io._tools</a></li>
 <li><a href="metpy/io/cdm.html">metpy.io.cdm</a></li>
 <li><a href="metpy/io/gini.html">metpy.io.gini</a></li>
 <li><a href="metpy/io/nexrad.html">metpy.io.nexrad</a></li>
-<li><a href="metpy/io/upperair.html">metpy.io.upperair</a></li>
+<li><a href="metpy/package_tools.html">metpy.package_tools</a></li>
 <li><a href="metpy/plots/_util.html">metpy.plots._util</a></li>
 <li><a href="metpy/plots/ctables.html">metpy.plots.ctables</a></li>
 <li><a href="metpy/plots/skewt.html">metpy.plots.skewt</a></li>
@@ -207,6 +210,7 @@
 <li><a href="metpy/units.html">metpy.units</a></li>
 <li><a href="pint/errors.html">pint.errors</a></li>
 <li><a href="pint/registry.html">pint.registry</a></li>
+<li><a href="xarray/backends/common.html">xarray.backends.common</a></li>
 </ul>
 
            </div>
@@ -222,7 +226,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -259,7 +263,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

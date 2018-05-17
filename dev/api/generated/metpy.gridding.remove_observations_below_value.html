@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>get_upper_air_data &mdash; MetPy 0.6</title>
+  <title>remove_observations_below_value &mdash; MetPy 0.7</title>
   
 
   
@@ -17,7 +17,7 @@
   
   
   
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.io.get_upper_air_data.html"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.gridding.remove_observations_below_value.html"/>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
-        <link rel="up" title="io" href="metpy.io.html"/>
-        <link rel="next" title="is_precip_mode" href="metpy.io.is_precip_mode.html"/>
-        <link rel="prev" title="io" href="metpy.io.html"/> 
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
+        <link rel="up" title="gridding" href="metpy.gridding.html"/>
+        <link rel="next" title="remove_repeat_coordinates" href="metpy.gridding.remove_repeat_coordinates.html"/>
+        <link rel="prev" title="remove_nan_observations" href="metpy.gridding.remove_nan_observations.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -125,24 +125,25 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">The MetPy API</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="metpy.io.html">io</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">get_upper_air_data</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.is_precip_mode.html">is_precip_mode</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.GiniFile.html">GiniFile</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.Level2File.html">Level2File</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.Level3File.html">Level3File</a></li>
-</ul>
-</li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="metpy.gridding.html">gridding</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="metpy.gridding.interpolate.html">interpolate</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.gridding.inverse_distance.html">inverse_distance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.gridding.natural_neighbor.html">natural_neighbor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.gridding.remove_nan_observations.html">remove_nan_observations</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">remove_observations_below_value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.gridding.remove_repeat_coordinates.html">remove_repeat_coordinates</a></li>
+</ul>
+</li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -192,9 +193,9 @@
         
           <li><a href="../index.html">The MetPy API</a> &raquo;</li>
         
-          <li><a href="metpy.io.html">io</a> &raquo;</li>
+          <li><a href="metpy.gridding.html">gridding</a> &raquo;</li>
         
-      <li>get_upper_air_data</li>
+      <li>remove_observations_below_value</li>
     
     
     <li class="source-link">
@@ -202,7 +203,7 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.io.get_upper_air_data&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.gridding.remove_observations_below_value&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -216,34 +217,31 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="get-upper-air-data">
-<h1>get_upper_air_data<a class="headerlink" href="#get-upper-air-data" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="remove-observations-below-value">
+<h1>remove_observations_below_value<a class="headerlink" href="#remove-observations-below-value" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
-<dt id="metpy.io.get_upper_air_data">
-<code class="descclassname">metpy.io.</code><code class="descname">get_upper_air_data</code><span class="sig-paren">(</span><em>time</em>, <em>site_id</em>, <em>source='wyoming'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/upperair.html#get_upper_air_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.get_upper_air_data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Download and parse upper air observations from an online archive.</p>
+<dt id="metpy.gridding.remove_observations_below_value">
+<code class="descclassname">metpy.gridding.</code><code class="descname">remove_observations_below_value</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>val=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/gridding/gridding_functions.html#remove_observations_below_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.gridding.remove_observations_below_value" title="Permalink to this definition">¶</a></dt>
+<dd><p>Remove all x, y, and z where z is less than val.</p>
+<p>Will not destroy original values.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#module-datetime" title="(in Python v3.6)"><em>datetime</em></a>) – The date and time of the desired observation.</li>
-<li><strong>site_id</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The three letter ICAO identifier of the station for which data should be
-downloaded.</li>
-<li><strong>source</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The archive to use as a source of data. Current can be one of ‘wyoming’ or ‘iastate’.
-Defaults to ‘wyoming’.</li>
-<li><strong>kwargs</strong> – Arbitrary keyword arguments to use to initialize source</li>
+<li><strong>x</strong> (<em>array_like</em>) – x coordinate.</li>
+<li><strong>y</strong> (<em>array_like</em>) – y coordinate.</li>
+<li><strong>z</strong> (<em>array_like</em>) – Observation value.</li>
+<li><strong>val</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Value at which to threshold z.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference internal" href="metpy.io.cdm.Dataset.html#metpy.io.cdm.Dataset" title="metpy.io.cdm.Dataset"><code class="xref py py-class docutils literal"><span class="pre">metpy.io.cdm.Dataset</span></code></a> containing the data</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>x, y, z</em> – List of coordinate observation pairs without
+observation values less than val.</p>
 </td>
 </tr>
 </tbody>
 </table>
-<div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.6.0: </span>Function has been moved to the Siphon library and will be removed from MetPy in 0.8.0.</p>
-</div>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -258,10 +256,10 @@ Defaults to ‘wyoming’.</li>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.io.is_precip_mode.html" class="btn btn-neutral float-right" title="is_precip_mode" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.gridding.remove_repeat_coordinates.html" class="btn btn-neutral float-right" title="remove_repeat_coordinates" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.io.html" class="btn btn-neutral" title="io" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.gridding.remove_nan_observations.html" class="btn btn-neutral" title="remove_nan_observations" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -271,7 +269,7 @@ Defaults to ‘wyoming’.</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -308,7 +306,7 @@ Defaults to ‘wyoming’.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

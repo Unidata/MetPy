@@ -7,6 +7,30 @@ Level2File
 
    
    
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~Level2File.AR2_BLOCKSIZE
+      ~Level2File.CTM_HEADER_SIZE
+      ~Level2File.MISSING
+      ~Level2File.RANGE_FOLD
+      ~Level2File.data_block_fmt
+      ~Level2File.msg15_code_map
+      ~Level2File.msg1_fmt
+      ~Level2File.msg2_fmt
+      ~Level2File.msg31_data_hdr_fmt
+      ~Level2File.msg31_el_const_fmt
+      ~Level2File.msg31_vol_const_fmt
+      ~Level2File.msg_hdr_fmt
+      ~Level2File.rad_const_fmt_v1
+      ~Level2File.rad_const_fmt_v2
+      ~Level2File.vcp_el_fmt
+      ~Level2File.vcp_fmt
+      ~Level2File.vol_hdr_fmt
+
+   
    
 
    
@@ -22,6 +46,29 @@ Level2File
    
 
    
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: AR2_BLOCKSIZE
+   .. autoattribute:: CTM_HEADER_SIZE
+   .. autoattribute:: MISSING
+   .. autoattribute:: RANGE_FOLD
+   .. autoattribute:: data_block_fmt
+   .. autoattribute:: msg15_code_map
+   .. autoattribute:: msg1_fmt
+   .. autoattribute:: msg2_fmt
+   .. autoattribute:: msg31_data_hdr_fmt
+   .. autoattribute:: msg31_el_const_fmt
+   .. autoattribute:: msg31_vol_const_fmt
+   .. autoattribute:: msg_hdr_fmt
+   .. autoattribute:: rad_const_fmt_v1
+   .. autoattribute:: rad_const_fmt_v2
+   .. autoattribute:: vcp_el_fmt
+   .. autoattribute:: vcp_fmt
+   .. autoattribute:: vol_hdr_fmt
+
    
    
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.plots._util &mdash; MetPy 0.6</title>
+  <title>metpy.plots._util &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -122,8 +122,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
 </ul>
@@ -189,7 +189,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for metpy.plots._util</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright (c) 2015,2017 MetPy Developers.</span>
+<span></span><span class="c1"># Copyright (c) 2015,2017,2018 MetPy Developers.</span>
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Utilities for use in making plots.&quot;&quot;&quot;</span>
@@ -206,10 +206,11 @@
 <span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">concatenate</span>
 
 
-<div class="viewcode-block" id="add_timestamp"><a class="viewcode-back" href="../../../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp">[docs]</a><span class="k">def</span> <span class="nf">add_timestamp</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">high_contrast</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Add a timestamp at plot creation time.</span>
+<div class="viewcode-block" id="add_timestamp"><a class="viewcode-back" href="../../../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp">[docs]</a><span class="k">def</span> <span class="nf">add_timestamp</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">y</span><span class="o">=-</span><span class="mf">0.04</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span> <span class="n">high_contrast</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                  <span class="n">pretext</span><span class="o">=</span><span class="s1">&#39;Created: &#39;</span><span class="p">,</span> <span class="n">time_format</span><span class="o">=</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add a timestamp to a plot.</span>
 
-<span class="sd">    Adds an ISO format timestamp with the time of plot creation to the plot.</span>
+<span class="sd">    Adds a timestamp to a plot, defaulting to the time of plot creation in ISO format.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -225,6 +226,10 @@
 <span class="sd">        Horizontal alignment of the time stamp string</span>
 <span class="sd">    high_contrast : bool</span>
 <span class="sd">        Outline text for increased contrast</span>
+<span class="sd">    pretext : str</span>
+<span class="sd">        Text to appear before the timestamp, optional. Defaults to &#39;Created: &#39;</span>
+<span class="sd">    time_format : str</span>
+<span class="sd">        Display format of time, optional. Defaults to ISO format.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -241,7 +246,7 @@
     <span class="n">text_args</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">if</span> <span class="ow">not</span> <span class="n">time</span><span class="p">:</span>
         <span class="n">time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">utcnow</span><span class="p">()</span>
-    <span class="n">timestr</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="s1">&#39;Created: %Y-%m-</span><span class="si">%d</span><span class="s1">T%H:%M:%SZ&#39;</span><span class="p">)</span>
+    <span class="n">timestr</span> <span class="o">=</span> <span class="n">pretext</span> <span class="o">+</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="n">time_format</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">ax</span><span class="o">.</span><span class="n">text</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">timestr</span><span class="p">,</span> <span class="n">ha</span><span class="o">=</span><span class="n">ha</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">ax</span><span class="o">.</span><span class="n">transAxes</span><span class="p">,</span> <span class="o">**</span><span class="n">text_args</span><span class="p">)</span></div>
 
 
@@ -307,8 +312,8 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    fig : `matplotlib.figure`</span>
-<span class="sd">       The `figure` instance used for plotting</span>
+<span class="sd">    `matplotlib.image.FigureImage`</span>
+<span class="sd">       The `matplotlib.image.FigureImage` instance created</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_add_logo</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;metpy&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
@@ -335,8 +340,8 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    fig : `matplotlib.figure`</span>
-<span class="sd">       The `figure` instance used for plotting</span>
+<span class="sd">    `matplotlib.image.FigureImage`</span>
+<span class="sd">       The `matplotlib.image.FigureImage` instance created</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">_add_logo</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="n">y</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="n">zorder</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;unidata&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">size</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
@@ -402,7 +407,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -439,7 +444,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>interpolate &mdash; MetPy 0.6</title>
+  <title>interpolate &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="gridding" href="metpy.gridding.html"/>
         <link rel="next" title="inverse_distance" href="metpy.gridding.inverse_distance.html"/>
         <link rel="prev" title="gridding" href="metpy.gridding.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -132,18 +132,21 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.gridding.html">gridding</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">interpolate</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-gridding-interpolate">Examples using <code class="docutils literal"><span class="pre">metpy.gridding.interpolate</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-gridding-interpolate">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.gridding.interpolate</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.gridding.inverse_distance.html">inverse_distance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.gridding.natural_neighbor.html">natural_neighbor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.gridding.remove_nan_observations.html">remove_nan_observations</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.gridding.remove_observations_below_value.html">remove_observations_below_value</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.gridding.remove_repeat_coordinates.html">remove_repeat_coordinates</a></li>
 </ul>
 </li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -221,7 +224,7 @@
 <h1>interpolate<a class="headerlink" href="#interpolate" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.gridding.interpolate">
-<code class="descclassname">metpy.gridding.</code><code class="descname">interpolate</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>interp_type='linear'</em>, <em>hres=50000</em>, <em>minimum_neighbors=3</em>, <em>gamma=0.25</em>, <em>kappa_star=5.052</em>, <em>search_radius=None</em>, <em>rbf_func='linear'</em>, <em>rbf_smooth=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/gridding/gridding_functions.html#interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.gridding.interpolate" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">metpy.gridding.</code><code class="descname">interpolate</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>interp_type='linear'</em>, <em>hres=50000</em>, <em>minimum_neighbors=3</em>, <em>gamma=0.25</em>, <em>kappa_star=5.052</em>, <em>search_radius=None</em>, <em>rbf_func='linear'</em>, <em>rbf_smooth=0</em>, <em>boundary_coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/gridding/gridding_functions.html#interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.gridding.interpolate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -250,6 +253,8 @@ Options include: ‘multiquadric’, ‘inverse’, ‘gaussian’, ‘linear’
 ‘quintic’, and ‘thin_plate’. Defualt ‘linear’. See scipy.interpolate.Rbf for more
 information.</li>
 <li><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</li>
+<li><strong>boundary_coords</strong> (<em>dictionary</em>) – Optional dictionary containing coordinates of the study area boundary. Dictionary
+should be in format: {‘west’: west, ‘south’: south, ‘east’: east, ‘north’: north}</li>
 </ul>
 </td>
 </tr>
@@ -266,7 +271,7 @@ information.</li>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-gridding-interpolate">
-<h2>Examples using <code class="docutils literal"><span class="pre">metpy.gridding.interpolate</span></code><a class="headerlink" href="#examples-using-metpy-gridding-interpolate" title="Permalink to this headline">¶</a></h2>
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.gridding.interpolate</span></code><a class="headerlink" href="#examples-using-metpy-gridding-interpolate" title="Permalink to this headline">¶</a></h2>
 <div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking an..."><div class="figure" id="id1">
 <img alt="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" src="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/gridding/Wind_SLP_Interpolation.html#sphx-glr-examples-gridding-wind-slp-interpolation-py"><span class="std std-ref">Wind and Sea Level Pressure Interpolation</span></a></span></p>
@@ -301,7 +306,7 @@ information.</li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -338,7 +343,7 @@ information.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

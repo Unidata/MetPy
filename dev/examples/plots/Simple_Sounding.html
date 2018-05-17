@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Simple Sounding &mdash; MetPy 0.6</title>
+  <title>Simple Sounding &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="MetPy Examples" href="../index.html"/>
         <link rel="next" title="Station Plot" href="Station_Plot.html"/>
         <link rel="prev" title="Hodograph Inset" href="Hodograph_Inset.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -138,8 +138,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -214,7 +214,7 @@
   <div class="section" id="simple-sounding">
 <span id="sphx-glr-examples-plots-simple-sounding-py"></span><h1>Simple Sounding<a class="headerlink" href="#simple-sounding" title="Permalink to this headline">¶</a></h1>
 <p>Use MetPy as straightforward as possible to make a Skew-T LogP plot.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 
@@ -224,11 +224,11 @@
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Change default to be better for skew-T</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change default to be better for skew-T</span>
 <a href="http://matplotlib.org/api/matplotlib_configuration_api.html#matplotlib.rcParams" title="View documentation for matplotlib.pyplot.rcParams"><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span></a><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Upper air data can be obtained using the siphon package, but for this example we will use</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Upper air data can be obtained using the siphon package, but for this example we will use</span>
 <span class="c1"># some of MetPy&#39;s sample data.</span>
 
 <span class="n">col_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="p">,</span> <span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span><span class="p">]</span>
@@ -246,7 +246,7 @@
 </div>
 <p>We will pull the data out of the example dataset into individual variables and
 assign units.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">hPa</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">p</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">hPa</span>
 <span class="n">T</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">degC</span>
 <span class="n">Td</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;dewpoint&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">degC</span>
 <span class="n">wind_speed</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">knots</span>
@@ -254,7 +254,7 @@ assign units.</p>
 <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.get_wind_components.html#metpy.calc.get_wind_components" title="View documentation for metpy.calc.get_wind_components"><span class="n">mpcalc</span><span class="o">.</span><span class="n">get_wind_components</span></a><span class="p">(</span><span class="n">wind_speed</span><span class="p">,</span> <span class="n">wind_dir</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">skew</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">()</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">skew</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">()</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
 <span class="c1"># log scaling in Y, as dictated by the typical meteorological plot</span>
@@ -274,7 +274,7 @@ assign units.</p>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_Simple_Sounding_001.png" class="align-center" src="../../_images/sphx_glr_Simple_Sounding_001.png" />
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Example of defining your own vertical barb spacing</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Example of defining your own vertical barb spacing</span>
 <span class="n">skew</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">()</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
@@ -306,12 +306,12 @@ assign units.</p>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_Simple_Sounding_002.png" class="align-center" src="../../_images/sphx_glr_Simple_Sounding_002.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.852 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.853 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/Simple_Sounding.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Simple_Sounding.py</span></code></a></div>
+<a class="reference download internal" href="../../_downloads/Simple_Sounding.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Simple_Sounding.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../../_downloads/Simple_Sounding.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Simple_Sounding.ipynb</span></code></a></div>
+<a class="reference download internal" href="../../_downloads/Simple_Sounding.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Simple_Sounding.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -339,7 +339,7 @@ assign units.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -376,7 +376,7 @@ assign units.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

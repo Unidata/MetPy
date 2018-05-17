@@ -18,7 +18,7 @@ def plot_color_gradients(cmap_category, cmap_list, nrows):
     for ax in axes:
         ax.set_axis_off()
 
-cmaps = list(ctables.registry.keys())
+cmaps = list(ctables.registry)
 cmaps = [name for name in cmaps if name[-2:]!='_r']
 nrows = len(cmaps)
 gradient = np.linspace(0, 1, 256)

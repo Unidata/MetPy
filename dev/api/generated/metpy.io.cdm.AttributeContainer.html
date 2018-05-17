@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>AttributeContainer &mdash; MetPy 0.6</title>
+  <title>AttributeContainer &mdash; MetPy 0.7</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="cdm" href="metpy.io.cdm.html"/>
         <link rel="next" title="Dataset" href="metpy.io.cdm.Dataset.html"/>
-        <link rel="prev" title="cf_to_proj" href="metpy.io.cdm.cf_to_proj.html"/> 
+        <link rel="prev" title="deprecated" href="metpy.io.cdm.deprecated.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -128,6 +128,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.io.cdm.html">cdm</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.cf_to_proj.html">cf_to_proj</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.deprecated.html">deprecated</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">AttributeContainer</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Dataset.html">Dataset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Dimension.html">Dimension</a></li>
@@ -143,8 +144,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -222,10 +223,9 @@
 <h1>AttributeContainer<a class="headerlink" href="#attributecontainer" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="metpy.io.cdm.AttributeContainer">
-<em class="property">class </em><code class="descclassname">metpy.io.cdm.</code><code class="descname">AttributeContainer</code><a class="reference internal" href="../../_modules/metpy/io/cdm.html#AttributeContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.AttributeContainer" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">metpy.io.cdm.</code><code class="descname">AttributeContainer</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/cdm.html#AttributeContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.AttributeContainer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Handle maintaining a list of netCDF attributes.</p>
 <p>Implements the attribute handling for other CDM classes.</p>
-<p>Initialize an <a class="reference internal" href="#metpy.io.cdm.AttributeContainer" title="metpy.io.cdm.AttributeContainer"><code class="xref py py-class docutils literal"><span class="pre">AttributeContainer</span></code></a>.</p>
 <p class="rubric">Methods Summary</p>
 <table border="1" class="longtable docutils">
 <colgroup>
@@ -233,10 +233,10 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.AttributeContainer.__init__" title="metpy.io.cdm.AttributeContainer.__init__"><code class="xref py py-obj docutils literal"><span class="pre">__init__</span></code></a>()</td>
-<td>Initialize an <a class="reference internal" href="#metpy.io.cdm.AttributeContainer" title="metpy.io.cdm.AttributeContainer"><code class="xref py py-class docutils literal"><span class="pre">AttributeContainer</span></code></a>.</td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.AttributeContainer.__init__" title="metpy.io.cdm.AttributeContainer.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(**kwargs)</td>
+<td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.AttributeContainer.ncattrs" title="metpy.io.cdm.AttributeContainer.ncattrs"><code class="xref py py-obj docutils literal"><span class="pre">ncattrs</span></code></a>()</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.AttributeContainer.ncattrs" title="metpy.io.cdm.AttributeContainer.ncattrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ncattrs</span></code></a>()</td>
 <td>Get a list of the names of the netCDF attributes.</td>
 </tr>
 </tbody>
@@ -244,9 +244,8 @@
 <p class="rubric">Methods Documentation</p>
 <dl class="method">
 <dt id="metpy.io.cdm.AttributeContainer.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/cdm.html#AttributeContainer.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.AttributeContainer.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><p>Initialize an <a class="reference internal" href="#metpy.io.cdm.AttributeContainer" title="metpy.io.cdm.AttributeContainer"><code class="xref py py-class docutils literal"><span class="pre">AttributeContainer</span></code></a>.</p>
-</dd></dl>
+<code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.AttributeContainer.__init__" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.AttributeContainer.ncattrs">
@@ -279,7 +278,7 @@
         <a href="metpy.io.cdm.Dataset.html" class="btn btn-neutral float-right" title="Dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.io.cdm.cf_to_proj.html" class="btn btn-neutral" title="cf_to_proj" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.io.cdm.deprecated.html" class="btn btn-neutral" title="deprecated" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -289,7 +288,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -326,7 +325,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

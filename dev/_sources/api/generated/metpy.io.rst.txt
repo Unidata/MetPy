@@ -11,7 +11,6 @@ io
       :toctree: ./
 
    
-      get_upper_air_data
       is_precip_mode
    
    

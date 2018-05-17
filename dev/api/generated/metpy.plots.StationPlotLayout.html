@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>StationPlotLayout &mdash; MetPy 0.6</title>
+  <title>StationPlotLayout &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="ctables" href="metpy.plots.ctables.html"/>
         <link rel="prev" title="StationPlot" href="metpy.plots.StationPlot.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -132,11 +132,12 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_timestamp.html">add_timestamp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">StationPlotLayout</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-plots-stationplotlayout">Examples using <code class="docutils literal"><span class="pre">metpy.plots.StationPlotLayout</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-plots-stationplotlayout">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.StationPlotLayout</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -146,8 +147,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -226,13 +227,13 @@
 <dl class="class">
 <dt id="metpy.plots.StationPlotLayout">
 <em class="property">class </em><code class="descclassname">metpy.plots.</code><code class="descname">StationPlotLayout</code><a class="reference internal" href="../../_modules/metpy/plots/station_plot.html#StationPlotLayout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.StationPlotLayout" title="Permalink to this definition">¶</a></dt>
-<dd><p>make a layout to encapsulate plotting using <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal"><span class="pre">StationPlot</span></code></a>.</p>
+<dd><p>make a layout to encapsulate plotting using <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StationPlot</span></code></a>.</p>
 <p>This class keeps a collection of offsets, plot formats, etc. for a parameter based
 on its name. This then allows a dictionary of data (or any object that allows looking
-up of arrays based on a name) to be passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a> to plot the data all at once.</p>
+up of arrays based on a name) to be passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a> to plot the data all at once.</p>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal"><span class="pre">StationPlot</span></code></a></p>
+<p class="last"><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StationPlot</span></code></a></p>
 </div>
 <p class="rubric">Methods Summary</p>
 <table border="1" class="longtable docutils">
@@ -241,55 +242,55 @@ up of arrays based on a name) to be passed to <a class="reference internal" href
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_barb" title="metpy.plots.StationPlotLayout.add_barb"><code class="xref py py-obj docutils literal"><span class="pre">add_barb</span></code></a>(u_name,&nbsp;v_name[,&nbsp;units])</td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_barb" title="metpy.plots.StationPlotLayout.add_barb"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_barb</span></code></a>(u_name,&nbsp;v_name[,&nbsp;units])</td>
 <td>Add a wind barb to the center of the station layout.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_symbol" title="metpy.plots.StationPlotLayout.add_symbol"><code class="xref py py-obj docutils literal"><span class="pre">add_symbol</span></code></a>(location,&nbsp;name,&nbsp;symbol_mapper,&nbsp;…)</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_symbol" title="metpy.plots.StationPlotLayout.add_symbol"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_symbol</span></code></a>(location,&nbsp;name,&nbsp;symbol_mapper,&nbsp;…)</td>
 <td>Add a symbol to the station layout.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_text" title="metpy.plots.StationPlotLayout.add_text"><code class="xref py py-obj docutils literal"><span class="pre">add_text</span></code></a>(location,&nbsp;name,&nbsp;**kwargs)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_text" title="metpy.plots.StationPlotLayout.add_text"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_text</span></code></a>(location,&nbsp;name,&nbsp;**kwargs)</td>
 <td>Add a text field to the  station layout.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_value" title="metpy.plots.StationPlotLayout.add_value"><code class="xref py py-obj docutils literal"><span class="pre">add_value</span></code></a>(location,&nbsp;name[,&nbsp;fmt,&nbsp;units])</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_value" title="metpy.plots.StationPlotLayout.add_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_value</span></code></a>(location,&nbsp;name[,&nbsp;fmt,&nbsp;units])</td>
 <td>Add a numeric value to the station layout.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.clear" title="metpy.plots.StationPlotLayout.clear"><code class="xref py py-obj docutils literal"><span class="pre">clear</span></code></a>(()&nbsp;-&gt;&nbsp;None.&nbsp;&nbsp;Remove&nbsp;all&nbsp;items&nbsp;from&nbsp;D.)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.clear" title="metpy.plots.StationPlotLayout.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.copy" title="metpy.plots.StationPlotLayout.copy"><code class="xref py py-obj docutils literal"><span class="pre">copy</span></code></a>(()&nbsp;-&gt;&nbsp;a&nbsp;shallow&nbsp;copy&nbsp;of&nbsp;D)</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.copy" title="metpy.plots.StationPlotLayout.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.fromkeys" title="metpy.plots.StationPlotLayout.fromkeys"><code class="xref py py-obj docutils literal"><span class="pre">fromkeys</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.fromkeys" title="metpy.plots.StationPlotLayout.fromkeys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fromkeys</span></code></a></td>
 <td>Returns a new dict with keys from iterable and values equal to value.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.get" title="metpy.plots.StationPlotLayout.get"><code class="xref py py-obj docutils literal"><span class="pre">get</span></code></a>((k[,d])&nbsp;-&gt;&nbsp;D[k]&nbsp;if&nbsp;k&nbsp;in&nbsp;D,&nbsp;…)</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.get" title="metpy.plots.StationPlotLayout.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(k[,d])</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.items" title="metpy.plots.StationPlotLayout.items"><code class="xref py py-obj docutils literal"><span class="pre">items</span></code></a>(…)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.items" title="metpy.plots.StationPlotLayout.items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.keys" title="metpy.plots.StationPlotLayout.keys"><code class="xref py py-obj docutils literal"><span class="pre">keys</span></code></a>(…)</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.keys" title="metpy.plots.StationPlotLayout.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></a>()</td>
 <td></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.names" title="metpy.plots.StationPlotLayout.names"><code class="xref py py-obj docutils literal"><span class="pre">names</span></code></a>()</td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.names" title="metpy.plots.StationPlotLayout.names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">names</span></code></a>()</td>
 <td>Get the list of names used by the layout.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-obj docutils literal"><span class="pre">plot</span></code></a>(plotter,&nbsp;data_dict)</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(plotter,&nbsp;data_dict)</td>
 <td>Plot a collection of data using this layout for a station plot.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.pop" title="metpy.plots.StationPlotLayout.pop"><code class="xref py py-obj docutils literal"><span class="pre">pop</span></code></a>((k[,d])&nbsp;-&gt;&nbsp;v,&nbsp;…)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.pop" title="metpy.plots.StationPlotLayout.pop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code></a>(k[,d])</td>
 <td>If key is not found, d is returned if given, otherwise KeyError is raised</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.popitem" title="metpy.plots.StationPlotLayout.popitem"><code class="xref py py-obj docutils literal"><span class="pre">popitem</span></code></a>(()&nbsp;-&gt;&nbsp;(k,&nbsp;v),&nbsp;…)</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.popitem" title="metpy.plots.StationPlotLayout.popitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code></a>()</td>
 <td>2-tuple; but raise KeyError if D is empty.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.setdefault" title="metpy.plots.StationPlotLayout.setdefault"><code class="xref py py-obj docutils literal"><span class="pre">setdefault</span></code></a>((k[,d])&nbsp;-&gt;&nbsp;D.get(k,d),&nbsp;…)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.setdefault" title="metpy.plots.StationPlotLayout.setdefault"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setdefault</span></code></a>(k[,d])</td>
 <td></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.update" title="metpy.plots.StationPlotLayout.update"><code class="xref py py-obj docutils literal"><span class="pre">update</span></code></a>(([E,&nbsp;…)</td>
-<td>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]</td>
+<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.update" title="metpy.plots.StationPlotLayout.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>([E,&nbsp;]**F)</td>
+<td>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.values" title="metpy.plots.StationPlotLayout.values"><code class="xref py py-obj docutils literal"><span class="pre">values</span></code></a>(…)</td>
+<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.StationPlotLayout.values" title="metpy.plots.StationPlotLayout.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a>()</td>
 <td></td>
 </tr>
 </tbody>
@@ -311,13 +312,13 @@ code; this is useful for specifying things like color or line width.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
 <li><strong>u_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the parameter for the u-component for <em class="xref py py-obj">barbs</em>, which is used as
-a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a>.</li>
+a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</li>
 <li><strong>v_name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the parameter for the v-component for <em class="xref py py-obj">barbs</em>, which is used as
-a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a>.</li>
+a key to pull data out of the data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</li>
 <li><strong>units</strong> (<em>pint-compatible unit</em><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
 conversion to a string. If not specified, no conversion is done.</li>
 <li><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v2.1.1)"><code class="xref py py-meth docutils literal"><span class="pre">barbs()</span></code></a> function.</li>
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.barbs.html#matplotlib.axes.Axes.barbs" title="(in Matplotlib v2.2.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">barbs()</span></code></a> function.</li>
 </ul>
 </td>
 </tr>
@@ -325,7 +326,7 @@ conversion to a string. If not specified, no conversion is done.</li>
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_symbol" title="metpy.plots.StationPlotLayout.add_symbol"><code class="xref py py-meth docutils literal"><span class="pre">add_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_text" title="metpy.plots.StationPlotLayout.add_text"><code class="xref py py-meth docutils literal"><span class="pre">add_text()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_value" title="metpy.plots.StationPlotLayout.add_value"><code class="xref py py-meth docutils literal"><span class="pre">add_value()</span></code></a></p>
+<p class="last"><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_symbol" title="metpy.plots.StationPlotLayout.add_symbol"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_text" title="metpy.plots.StationPlotLayout.add_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_text()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_value" title="metpy.plots.StationPlotLayout.add_value"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_value()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -347,10 +348,10 @@ code; this is useful for specifying things like color or font properties.</p>
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions.</li>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the parameter, which is used as a key to pull data out of the
-data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a>.</li>
-<li><strong>symbol_mapper</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a>) – Controls converting data values to unicode code points for the
-<code class="xref py py-data docutils literal"><span class="pre">wx_symbol_font</span></code> font. This should take a value and return a single unicode
-character. See <code class="xref py py-mod docutils literal"><span class="pre">metpy.plots.wx_symbols</span></code> for included mappers.</li>
+data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</li>
+<li><strong>symbol_mapper</strong> (<em>callable</em>) – Controls converting data values to unicode code points for the
+<code class="xref py py-data docutils literal notranslate"><span class="pre">wx_symbol_font</span></code> font. This should take a value and return a single unicode
+character. See <code class="xref py py-mod docutils literal notranslate"><span class="pre">metpy.plots.wx_symbols</span></code> for included mappers.</li>
 <li><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</li>
 </ul>
 </td>
@@ -359,7 +360,7 @@ character. See <code class="xref py py-mod docutils literal"><span class="pre">m
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_barb" title="metpy.plots.StationPlotLayout.add_barb"><code class="xref py py-meth docutils literal"><span class="pre">add_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_text" title="metpy.plots.StationPlotLayout.add_text"><code class="xref py py-meth docutils literal"><span class="pre">add_text()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_value" title="metpy.plots.StationPlotLayout.add_value"><code class="xref py py-meth docutils literal"><span class="pre">add_value()</span></code></a></p>
+<p class="last"><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_barb" title="metpy.plots.StationPlotLayout.add_barb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_text" title="metpy.plots.StationPlotLayout.add_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_text()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_value" title="metpy.plots.StationPlotLayout.add_value"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_value()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -381,7 +382,7 @@ code; this is useful for specifying things like color or font properties.</p>
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions.</li>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the parameter, which is used as a key to pull data out of the
-data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a>.</li>
+data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</li>
 <li><strong>kwargs</strong> – Additional keyword arguments to use for matplotlib’s plotting functions.</li>
 </ul>
 </td>
@@ -390,7 +391,7 @@ data container passed to <a class="reference internal" href="#metpy.plots.Statio
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_barb" title="metpy.plots.StationPlotLayout.add_barb"><code class="xref py py-meth docutils literal"><span class="pre">add_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_symbol" title="metpy.plots.StationPlotLayout.add_symbol"><code class="xref py py-meth docutils literal"><span class="pre">add_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_value" title="metpy.plots.StationPlotLayout.add_value"><code class="xref py py-meth docutils literal"><span class="pre">add_value()</span></code></a></p>
+<p class="last"><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_barb" title="metpy.plots.StationPlotLayout.add_barb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_symbol" title="metpy.plots.StationPlotLayout.add_symbol"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_value" title="metpy.plots.StationPlotLayout.add_value"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_value()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -414,9 +415,9 @@ code; this is useful for specifying things like color or font properties.</p>
 ‘C’, ‘N’, ‘NE’, ‘E’, ‘SE’, ‘S’, ‘SW’, ‘W’, or ‘NW’. Otherwise, should be a tuple
 specifying the number of increments in the x and y directions.</li>
 <li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – The name of the parameter, which is used as a key to pull data out of the
-data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal"><span class="pre">plot()</span></code></a>.</li>
-<li><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#callable" title="(in Python v3.6)"><em>callable</em></a><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
-compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.6)"><code class="xref py py-func docutils literal"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
+data container passed to <a class="reference internal" href="#metpy.plots.StationPlotLayout.plot" title="metpy.plots.StationPlotLayout.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">plot()</span></code></a>.</li>
+<li><strong>fmt</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em> or </em><em>callable</em><em>, </em><em>optional</em>) – How to format the data as a string for plotting. If a string, it should be
+compatible with the <a class="reference external" href="https://docs.python.org/3/library/functions.html#format" title="(in Python v3.6)"><code class="xref py py-func docutils literal notranslate"><span class="pre">format()</span></code></a> builtin. If a callable, this should take a
 value and return a string. Defaults to ‘0.f’.</li>
 <li><strong>units</strong> (<em>pint-compatible unit</em><em>, </em><em>optional</em>) – The units to use for plotting. Data will be converted to this unit before
 conversion to a string. If not specified, no conversion is done.</li>
@@ -428,7 +429,7 @@ conversion to a string. If not specified, no conversion is done.</li>
 </table>
 <div class="admonition seealso">
 <p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_barb" title="metpy.plots.StationPlotLayout.add_barb"><code class="xref py py-meth docutils literal"><span class="pre">add_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_symbol" title="metpy.plots.StationPlotLayout.add_symbol"><code class="xref py py-meth docutils literal"><span class="pre">add_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_text" title="metpy.plots.StationPlotLayout.add_text"><code class="xref py py-meth docutils literal"><span class="pre">add_text()</span></code></a></p>
+<p class="last"><a class="reference internal" href="#metpy.plots.StationPlotLayout.add_barb" title="metpy.plots.StationPlotLayout.add_barb"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_barb()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_symbol" title="metpy.plots.StationPlotLayout.add_symbol"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_symbol()</span></code></a>, <a class="reference internal" href="#metpy.plots.StationPlotLayout.add_text" title="metpy.plots.StationPlotLayout.add_text"><code class="xref py py-meth docutils literal notranslate"><span class="pre">add_text()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -489,7 +490,7 @@ in the layout. Fields present in the layout, but not in <em class="xref py py-ob
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>plotter</strong> (<a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><em>StationPlot</em></a>) – <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal"><span class="pre">StationPlot</span></code></a> to use to plot the data. This controls the axes,
+<li><strong>plotter</strong> (<a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><em>StationPlot</em></a>) – <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StationPlot</span></code></a> to use to plot the data. This controls the axes,
 spacing, station locations, etc.</li>
 <li><strong>data_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.6)"><em>dict</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a><em>, </em><em>array-like</em><em>]</em>) – Data container that maps a name to an array of data. Data from this object
 will be used to fill out the station plot.</li>
@@ -533,7 +534,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-plots-stationplotlayout">
-<h2>Examples using <code class="docutils literal"><span class="pre">metpy.plots.StationPlotLayout</span></code><a class="headerlink" href="#examples-using-metpy-plots-stationplotlayout" title="Permalink to this headline">¶</a></h2>
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.StationPlotLayout</span></code><a class="headerlink" href="#examples-using-metpy-plots-stationplotlayout" title="Permalink to this headline">¶</a></h2>
 <div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b..."><div class="figure" id="id1">
 <img alt="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" src="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot_with_Layout.html#sphx-glr-examples-plots-station-plot-with-layout-py"><span class="std std-ref">Station Plot with Layout</span></a></span></p>
@@ -564,7 +565,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -601,7 +602,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

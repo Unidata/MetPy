@@ -25,6 +25,7 @@ ctables
 
    
       ColortableRegistry
+      Exporter
 
    
    

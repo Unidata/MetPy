@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>add_timestamp &mdash; MetPy 0.6</title>
+  <title>add_timestamp &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="add_unidata_logo" href="metpy.plots.add_unidata_logo.html"/>
         <link rel="prev" title="add_metpy_logo" href="metpy.plots.add_metpy_logo.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -130,8 +130,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">add_timestamp</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">add_timestamp</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-plots-add-timestamp">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.add_timestamp</span></code></a></li>
+</ul>
+</li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
@@ -143,8 +147,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -222,31 +226,56 @@
 <h1>add_timestamp<a class="headerlink" href="#add-timestamp" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.plots.add_timestamp">
-<code class="descclassname">metpy.plots.</code><code class="descname">add_timestamp</code><span class="sig-paren">(</span><em>ax</em>, <em>time=None</em>, <em>x=0.99</em>, <em>y=-0.04</em>, <em>ha='right'</em>, <em>high_contrast=False</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/_util.html#add_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.add_timestamp" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add a timestamp at plot creation time.</p>
-<p>Adds an ISO format timestamp with the time of plot creation to the plot.</p>
+<code class="descclassname">metpy.plots.</code><code class="descname">add_timestamp</code><span class="sig-paren">(</span><em>ax</em>, <em>time=None</em>, <em>x=0.99</em>, <em>y=-0.04</em>, <em>ha='right'</em>, <em>high_contrast=False</em>, <em>pretext='Created: '</em>, <em>time_format='%Y-%m-%dT%H:%M:%SZ'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/_util.html#add_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.add_timestamp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a timestamp to a plot.</p>
+<p>Adds a timestamp to a plot, defaulting to the time of plot creation in ISO format.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.1.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.axes.Axes</span></code></a>) – The <em class="xref py py-obj">Axes</em> instance used for plotting</li>
-<li><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-obj docutils literal"><span class="pre">datetime.datetime</span></code></a>) – Specific time to be plotted - datetime.utcnow will be use if not specified</li>
+<li><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v2.2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>) – The <em class="xref py py-obj">Axes</em> instance used for plotting</li>
+<li><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.6)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Specific time to be plotted - datetime.utcnow will be use if not specified</li>
 <li><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Relative x position on the axes of the timestamp</li>
 <li><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Relative y position on the axes of the timestamp</li>
 <li><strong>ha</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Horizontal alignment of the time stamp string</li>
 <li><strong>high_contrast</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.6)"><em>bool</em></a>) – Outline text for increased contrast</li>
+<li><strong>pretext</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Text to appear before the timestamp, optional. Defaults to ‘Created: ‘</li>
+<li><strong>time_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Display format of time, optional. Defaults to ISO format.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text" title="(in Matplotlib v2.1.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.text.Text</span></code></a> – The <a class="reference external" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text" title="(in Matplotlib v2.1.1)"><code class="xref py py-obj docutils literal"><span class="pre">matplotlib.text.Text</span></code></a> instance created</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text" title="(in Matplotlib v2.2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.text.Text</span></code></a> – The <a class="reference external" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text" title="(in Matplotlib v2.2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.text.Text</span></code></a> instance created</p>
 </td>
 </tr>
 </tbody>
 </table>
 </dd></dl>
 
-<div style='clear:both'></div></div>
+<div class="section" id="examples-using-metpy-plots-add-timestamp">
+<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.add_timestamp</span></code><a class="headerlink" href="#examples-using-metpy-plots-add-timestamp" title="Permalink to this headline">¶</a></h2>
+<div class="sphx-glr-thumbcontainer" tooltip="By using `metpy.calc.log_interp`, data with sigma as the vertical coordinate can be interpolate..."><div class="figure" id="id1">
+<img alt="../../_images/sphx_glr_sigma_to_pressure_interpolation_thumb.png" src="../../_images/sphx_glr_sigma_to_pressure_interpolation_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/sigma_to_pressure_interpolation.html#sphx-glr-examples-sigma-to-pressure-interpolation-py"><span class="std std-ref">Sigma to Pressure Interpolation</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="The MetPy function `mpcalc.isentropic_interpolation` allows for isentropic analysis from model ..."><div class="figure" id="id2">
+<img alt="../../_images/sphx_glr_isentropic_example_thumb.png" src="../../_images/sphx_glr_isentropic_example_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/isentropic_example.html#sphx-glr-examples-isentropic-example-py"><span class="std std-ref">Isentropic Analysis</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s support for GINI files to read in a water vapor satellite image and plot the data u..."><div class="figure" id="id3">
+<img alt="../../_images/sphx_glr_GINI_Water_Vapor_thumb.png" src="../../_images/sphx_glr_GINI_Water_Vapor_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/GINI_Water_Vapor.html#sphx-glr-examples-formats-gini-water-vapor-py"><span class="std std-ref">GINI Water Vapor Imagery</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot "><div class="figure" id="id4">
+<img alt="../../_images/sphx_glr_NEXRAD_Level_3_File_thumb.png" src="../../_images/sphx_glr_NEXRAD_Level_3_File_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/NEXRAD_Level_3_File.html#sphx-glr-examples-formats-nexrad-level-3-file-py"><span class="std std-ref">NEXRAD Level 3 File</span></a></span></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot "><div class="figure" id="id5">
+<img alt="../../_images/sphx_glr_NEXRAD_Level_2_File_thumb.png" src="../../_images/sphx_glr_NEXRAD_Level_2_File_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/NEXRAD_Level_2_File.html#sphx-glr-examples-formats-nexrad-level-2-file-py"><span class="std std-ref">NEXRAD Level 2 File</span></a></span></p>
+</div>
+</div><div style='clear:both'></div></div>
+</div>
 
 
            </div>
@@ -271,7 +300,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -308,7 +337,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

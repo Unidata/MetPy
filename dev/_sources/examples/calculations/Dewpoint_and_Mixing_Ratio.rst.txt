@@ -17,7 +17,7 @@ temperature to degrees Fahrenheit.
 
 .. code-block:: python
 
-    import metpy.calc as mcalc
+    import metpy.calc as mpcalc
     from metpy.units import units
 
 
@@ -53,7 +53,7 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb
 
 .. code-block:: python
 
-    e = mcalc.vapor_pressure(1000. * units.mbar, mixing)
+    e = mpcalc.vapor_pressure(1000. * units.mbar, mixing)
     print(e)
 
 
@@ -92,7 +92,7 @@ Take the raw vapor pressure and throw into the dewpoint function
 
 .. code-block:: python
 
-    td = mcalc.dewpoint(e)
+    td = mpcalc.dewpoint(e)
     print(td)
 
 
@@ -131,7 +131,7 @@ Now do the same thing for 850 mb, approximately the pressure of Denver
 
 .. code-block:: python
 
-    e = mcalc.vapor_pressure(850. * units.mbar, mixing)
+    e = mpcalc.vapor_pressure(850. * units.mbar, mixing)
     print(e.to(units.mbar))
 
 
@@ -151,7 +151,7 @@ And print the corresponding dewpoint
 
 .. code-block:: python
 
-    td = mcalc.dewpoint(e)
+    td = mpcalc.dewpoint(e)
     print(td, td.to('degF'))
 
 

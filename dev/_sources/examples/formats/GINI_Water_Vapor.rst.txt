@@ -13,12 +13,13 @@ data using CartoPy.
 
 .. code-block:: python
 
-    import cartopy.crs as ccrs
+    import cartopy.feature as cfeature
     import matplotlib.pyplot as plt
+    import xarray as xr
 
     from metpy.cbook import get_test_data
     from metpy.io import GiniFile
-    from metpy.plots import add_metpy_logo, ctables
+    from metpy.plots import add_metpy_logo, add_timestamp, colortables
 
 
 
@@ -50,67 +51,42 @@ data using CartoPy.
             Resolution: 4km
 
 
+Get a Dataset view of the data (essentially a NetCDF-like interface to the
+underlying data). Pull out the data and (x, y) coordinates. We use `metpy.parse_cf` to
+handle parsing some netCDF Climate and Forecasting (CF) metadata to simplify working with
+projections.
+
+
 
 .. code-block:: python
 
-
-    # Get a Dataset view of the data (essentially a NetCDF-like interface to the
-    # underlying data). Pull out the data, (x, y) coordinates, and the projection
-    # information.
-    ds = f.to_dataset()
+    ds = xr.open_dataset(f)
     x = ds.variables['x'][:]
     y = ds.variables['y'][:]
-    dat = ds.variables['WV']
-    proj_var = ds.variables[dat.grid_mapping]
-    print(proj_var)
+    dat = ds.metpy.parse_cf('WV')
 
 
 
 
 
-.. rst-class:: sphx-glr-script-out
 
- Out::
 
-    <class 'metpy.io.cdm.Variable'>: int32 Lambert_Conformal()
-            grid_mapping_name: lambert_conformal_conic
-            standard_parallel: 25.0
-            longitude_of_central_meridian: -95.0
-            latitude_of_projection_origin: 25.0
-            earth_radius: 6371200.0
+Plot the image. We use MetPy's xarray/cartopy integration to automatically handle parsing
+the projection information.
 
 
 
 .. code-block:: python
 
-
-    # Create CartoPy projection information for the file
-    globe = ccrs.Globe(ellipse='sphere', semimajor_axis=proj_var.earth_radius,
-                       semiminor_axis=proj_var.earth_radius)
-    proj = ccrs.LambertConformal(central_longitude=proj_var.longitude_of_central_meridian,
-                                 central_latitude=proj_var.latitude_of_projection_origin,
-                                 standard_parallels=[proj_var.standard_parallel],
-                                 globe=globe)
-
-
-
-
-
-
-
-
-.. code-block:: python
-
-
-    # Plot the image
     fig = plt.figure(figsize=(10, 12))
     add_metpy_logo(fig, 125, 145)
-    ax = fig.add_subplot(1, 1, 1, projection=proj)
-    wv_norm, wv_cmap = ctables.registry.get_with_range('WVCIMSS', 100, 260)
+    ax = fig.add_subplot(1, 1, 1, projection=dat.metpy.cartopy_crs)
+    wv_norm, wv_cmap = colortables.get_with_range('WVCIMSS', 100, 260)
     wv_cmap.set_under('k')
-    im = ax.imshow(dat[:], cmap=wv_cmap, norm=wv_norm, zorder=0,
-                   extent=ds.img_extent, origin='upper')
-    ax.coastlines(resolution='50m', zorder=2, color='black')
+    im = ax.imshow(dat[:], cmap=wv_cmap, norm=wv_norm,
+                   extent=(x.min(), x.max(), y.min(), y.max()), origin='upper')
+    ax.add_feature(cfeature.COASTLINE.with_scale('50m'))
+    add_timestamp(ax, f.prod_desc.datetime, y=0.02, high_contrast=True)
 
     plt.show()
 
@@ -122,7 +98,7 @@ data using CartoPy.
 
 
 
-**Total running time of the script:** ( 0 minutes  0.364 seconds)
+**Total running time of the script:** ( 0 minutes  0.382 seconds)
 
 
 

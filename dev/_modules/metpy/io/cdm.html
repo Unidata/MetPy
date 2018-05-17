@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.io.cdm &mdash; MetPy 0.6</title>
+  <title>metpy.io.cdm &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -122,8 +122,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
 </ul>
@@ -203,17 +203,20 @@
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
+<span class="kn">from</span> <span class="nn">..deprecation</span> <span class="k">import</span> <span class="n">deprecated</span>
 
-<div class="viewcode-block" id="AttributeContainer"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.AttributeContainer.html#metpy.io.cdm.AttributeContainer">[docs]</a><span class="k">class</span> <span class="nc">AttributeContainer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+
+<div class="viewcode-block" id="AttributeContainer"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.AttributeContainer.html#metpy.io.cdm.AttributeContainer">[docs]</a><span class="nd">@deprecated</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;XArray&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">AttributeContainer</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Handle maintaining a list of netCDF attributes.</span>
 
 <span class="sd">    Implements the attribute handling for other CDM classes.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="AttributeContainer.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.AttributeContainer.html#metpy.io.cdm.AttributeContainer.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize an :class:`AttributeContainer`.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span> <span class="o">=</span> <span class="p">[]</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span> <span class="o">=</span> <span class="p">[]</span>
 
 <div class="viewcode-block" id="AttributeContainer.ncattrs"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.AttributeContainer.html#metpy.io.cdm.AttributeContainer.ncattrs">[docs]</a>    <span class="k">def</span> <span class="nf">ncattrs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Get a list of the names of the netCDF attributes.</span>
@@ -238,14 +241,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_attrs</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="n">item</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Group.html#metpy.io.cdm.Group">[docs]</a><span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">AttributeContainer</span><span class="p">):</span>
+<div class="viewcode-block" id="Group"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Group.html#metpy.io.cdm.Group">[docs]</a><span class="nd">@deprecated</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;XArray&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Group</span><span class="p">(</span><span class="n">AttributeContainer</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Holds dimensions and variables.</span>
 
 <span class="sd">    Every CDM dataset has at least a root group.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Group.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Group.html#metpy.io.cdm.Group.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parent</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Initialize this :class:`Group`.</span>
 
 <span class="sd">        Instead of constructing a :class:`Group` directly, you should use</span>
@@ -285,7 +289,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">dimensions</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">()</span>
 
         <span class="c1"># Do this last so earlier attributes aren&#39;t captured</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Group</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Group</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
     <span class="c1"># CamelCase API names for netcdf4-python compatibility</span>
 <div class="viewcode-block" id="Group.createGroup"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Group.html#metpy.io.cdm.Group.createGroup">[docs]</a>    <span class="k">def</span> <span class="nf">createGroup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
@@ -386,19 +390,21 @@
         <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">print_groups</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Dataset.html#metpy.io.cdm.Dataset">[docs]</a><span class="k">class</span> <span class="nc">Dataset</span><span class="p">(</span><span class="n">Group</span><span class="p">):</span>
+<div class="viewcode-block" id="Dataset"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Dataset.html#metpy.io.cdm.Dataset">[docs]</a><span class="nd">@deprecated</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;XArray&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Dataset</span><span class="p">(</span><span class="n">Group</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Represents a set of data using the Common Data Model (CDM).</span>
 
 <span class="sd">    This is currently only a wrapper around the root Group.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Dataset.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Dataset.html#metpy.io.cdm.Dataset.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize a Dataset.&quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Dataset</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;root&#39;</span><span class="p">)</span></div></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Dataset</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;root&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="Variable"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Variable.html#metpy.io.cdm.Variable">[docs]</a><span class="k">class</span> <span class="nc">Variable</span><span class="p">(</span><span class="n">AttributeContainer</span><span class="p">):</span>
+<div class="viewcode-block" id="Variable"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Variable.html#metpy.io.cdm.Variable">[docs]</a><span class="nd">@deprecated</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;XArray&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Variable</span><span class="p">(</span><span class="n">AttributeContainer</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Holds typed data (using a :class:`numpy.ndarray`), as well as attributes (e.g. units).</span>
 
 <span class="sd">    In addition to its various attributes, the Variable supports getting *and* setting data</span>
@@ -407,7 +413,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Variable.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Variable.html#metpy.io.cdm.Variable.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">wrap_array</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">datatype</span><span class="p">,</span> <span class="n">dimensions</span><span class="p">,</span> <span class="n">fill_value</span><span class="p">,</span> <span class="n">wrap_array</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize a Variable.</span>
 
 <span class="sd">        Instead of constructing a Variable directly, you should use</span>
@@ -455,7 +461,7 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="o">.</span><span class="n">fill</span><span class="p">(</span><span class="n">fill_value</span><span class="p">)</span>
 
         <span class="c1"># Do this last so earlier attributes aren&#39;t captured</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Variable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span></div>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Variable</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
 
     <span class="c1"># Not a property to maintain compatibility with NetCDF4 python</span>
 <div class="viewcode-block" id="Variable.group"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Variable.html#metpy.io.cdm.Variable.group">[docs]</a>    <span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -532,14 +538,15 @@
 <span class="c1"># Punting on unlimited dimensions for now since we&#39;re relying upon numpy for storage</span>
 <span class="c1"># We don&#39;t intend to be a full file API or anything, just need to be able to represent</span>
 <span class="c1"># other files using a common API.</span>
-<div class="viewcode-block" id="Dimension"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Dimension.html#metpy.io.cdm.Dimension">[docs]</a><span class="k">class</span> <span class="nc">Dimension</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="Dimension"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Dimension.html#metpy.io.cdm.Dimension">[docs]</a><span class="nd">@deprecated</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;XArray&#39;</span><span class="p">)</span>
+<span class="k">class</span> <span class="nc">Dimension</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Represent a shared dimension between different Variables.</span>
 
 <span class="sd">    For instance, variables that are dependent upon a common set of times.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="Dimension.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Dimension.html#metpy.io.cdm.Dimension.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">group</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Initialize a Dimension.</span>
 
 <span class="sd">        Instead of constructing a Dimension directly, you should use ``Group.createDimension``.</span>
@@ -566,7 +573,7 @@
 
         <span class="c1">#: :desc: The size of this Dimension</span>
         <span class="c1">#: :type: int</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>
 
     <span class="c1"># Not a property to maintain compatibility with NetCDF4 python</span>
 <div class="viewcode-block" id="Dimension.group"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.Dimension.html#metpy.io.cdm.Dimension.group">[docs]</a>    <span class="k">def</span> <span class="nf">group</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -590,7 +597,8 @@
 
 
 <span class="c1"># Not sure if this lives long-term or not</span>
-<div class="viewcode-block" id="cf_to_proj"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.cf_to_proj.html#metpy.io.cdm.cf_to_proj">[docs]</a><span class="k">def</span> <span class="nf">cf_to_proj</span><span class="p">(</span><span class="n">var</span><span class="p">):</span>
+<div class="viewcode-block" id="cf_to_proj"><a class="viewcode-back" href="../../../api/generated/metpy.io.cdm.cf_to_proj.html#metpy.io.cdm.cf_to_proj">[docs]</a><span class="nd">@deprecated</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;XArray&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">cf_to_proj</span><span class="p">(</span><span class="n">var</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert a Variable with projection information to a Proj.4 Projection instance.</span>
 
 <span class="sd">    The attributes of this Variable must conform to the Climate and Forecasting (CF)</span>
@@ -640,7 +648,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -677,7 +685,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

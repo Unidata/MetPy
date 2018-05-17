@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sigma to Pressure Interpolation &mdash; MetPy 0.6</title>
+  <title>Sigma to Pressure Interpolation &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../index.html"/>
         <link rel="up" title="MetPy Examples" href="index.html"/>
         <link rel="next" title="Four Panel Map" href="Four_Panel_Map.html"/>
         <link rel="prev" title="Advanced Sounding" href="Advanced_Sounding.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -122,6 +122,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">MetPy Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="XArray_Projections.html">XArray Projection Handling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Sigma to Pressure Interpolation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Four_Panel_Map.html">Four Panel Map</a></li>
@@ -138,8 +139,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
 </ul>
@@ -213,66 +214,50 @@
             
   <div class="section" id="sigma-to-pressure-interpolation">
 <span id="sphx-glr-examples-sigma-to-pressure-interpolation-py"></span><h1>Sigma to Pressure Interpolation<a class="headerlink" href="#sigma-to-pressure-interpolation" title="Permalink to this headline">¶</a></h1>
-<p>By using <a class="reference internal" href="../api/generated/metpy.calc.log_interp.html#metpy.calc.log_interp" title="metpy.calc.log_interp"><code class="xref py py-obj docutils literal"><span class="pre">metpy.calc.log_interp</span></code></a>, data with sigma as the vertical coordinate can be
+<p>By using <a class="reference internal" href="../api/generated/metpy.calc.log_interp.html#metpy.calc.log_interp" title="metpy.calc.log_interp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.calc.log_interp</span></code></a>, data with sigma as the vertical coordinate can be
 interpolated to isobaric coordinates.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
 <span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="kn">as</span> <span class="nn">cfeature</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">num2date</span>
 
-<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="kn">as</span> <span class="nn">mcalc</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="kn">as</span> <span class="nn">mpcalc</span>
 <span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="View documentation for metpy.plots.add_timestamp"><span class="n">add_timestamp</span></a>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 </pre></div>
 </div>
 <p><strong>Data</strong></p>
 <p>The data for this example comes from the outer domain of a WRF-ARW model forecast
 initialized at 1200 UTC on 03 June 1980. Model data courtesy Matthew Wilson, Valparaiso
 University Department of Geography and Meteorology.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;wrf_example.nc&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;wrf_example.nc&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span>
 <span class="n">lat</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">][:]</span>
 <span class="n">lon</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">][:]</span>
 <span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;time&#39;</span><span class="p">]</span>
-<span class="n">vtimes</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">time</span><span class="p">[:],</span> <span class="n">time</span><span class="o">.</span><a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">)</span>
-<span class="n">temperature</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">][:]</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">)</span>
-<span class="n">pres</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">][:]</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">]</span><span class="o">.</span><a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">)</span>
-<span class="n">hgt</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">][:]</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">)</span>
+<span class="n">vtimes</span> <span class="o">=</span> <span class="n">num2date</span><span class="p">(</span><span class="n">time</span><span class="p">[:],</span> <span class="n">time</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+<span class="n">temperature</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">][:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">celsius</span>
+<span class="n">pres</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;pressure&#39;</span><span class="p">][:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">pascal</span>
+<span class="n">hgt</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">][:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span>
 </pre></div>
 </div>
 <p>Array of desired pressure levels</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">plevs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">700.</span><span class="p">]</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">hPa</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">plevs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">700.</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
 </pre></div>
 </div>
 <p><strong>Interpolate The Data</strong></p>
 <p>Now that the data is ready, we can interpolate to the new isobaric levels. The data is
 interpolated from the irregular pressure values for each sigma level to the new input
-mandatory isobaric levels. <em class="xref py py-obj">mcalc.log_interp</em> will interpolate over a specified dimension
+mandatory isobaric levels. <em class="xref py py-obj">mpcalc.log_interp</em> will interpolate over a specified dimension
 with the <em class="xref py py-obj">axis</em> argument. In this case, <em class="xref py py-obj">axis=1</em> will correspond to interpolation on the
-vertical axis.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">isobaric_levels</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.log_interp.html#metpy.calc.log_interp" title="View documentation for metpy.calc.log_interp"><span class="n">mcalc</span><span class="o">.</span><span class="n">log_interp</span></a><span class="p">(</span><span class="n">plevs</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">hgt</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The interpolated data is output in a list, so we will pull out each variable for plotting.</p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="n">height</span> <span class="o">=</span> <span class="n">isobaric_levels</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-<span class="n">temp</span> <span class="o">=</span> <span class="n">isobaric_levels</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+vertical axis. The interpolated data is output in a list, so we will pull out each
+variable for plotting.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">height</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.log_interp.html#metpy.calc.log_interp" title="View documentation for metpy.calc.log_interp"><span class="n">mpcalc</span><span class="o">.</span><span class="n">log_interp</span></a><span class="p">(</span><span class="n">plevs</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">hgt</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Plotting the Data for 700 hPa.</strong></p>
-<div class="highlight-python"><div class="highlight"><pre><span></span><span class="c1"># Set up our projection</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up our projection</span>
 <span class="n">crs</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mf">100.0</span><span class="p">,</span> <span class="n">central_latitude</span><span class="o">=</span><span class="mf">45.0</span><span class="p">)</span>
-
-<span class="c1"># Set up our array of latitude and longitude values and transform to</span>
-<span class="c1"># the desired projection.</span>
-<span class="n">tlatlons</span> <span class="o">=</span> <span class="n">crs</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">)</span>
-<span class="n">tlons</span> <span class="o">=</span> <span class="n">tlatlons</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">0</span><span class="p">]</span>
-<span class="n">tlats</span> <span class="o">=</span> <span class="n">tlatlons</span><span class="p">[:,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">]</span>
-
-<span class="c1"># Get data to plot state and province boundaries</span>
-<span class="n">states_provinces</span> <span class="o">=</span> <span class="n">cfeature</span><span class="o">.</span><span class="n">NaturalEarthFeature</span><span class="p">(</span><span class="n">category</span><span class="o">=</span><span class="s1">&#39;cultural&#39;</span><span class="p">,</span>
-                                                <span class="n">name</span><span class="o">=</span><span class="s1">&#39;admin_1_states_provinces_lakes&#39;</span><span class="p">,</span>
-                                                <span class="n">scale</span><span class="o">=</span><span class="s1">&#39;50m&#39;</span><span class="p">,</span>
-                                                <span class="n">facecolor</span><span class="o">=</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
 
 <span class="c1"># Set the forecast hour</span>
 <span class="n">FH</span> <span class="o">=</span> <span class="mi">1</span>
@@ -283,19 +268,20 @@ vertical axis.</p>
 
 <span class="c1"># Plot 700 hPa</span>
 <span class="n">ax</span> <span class="o">=</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">coastlines</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">states_provinces</span><span class="p">,</span> <span class="n">edgecolor</span><span class="o">=</span><span class="s1">&#39;black&#39;</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
 <span class="c1"># Plot the heights</span>
-<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">tlons</span><span class="p">,</span> <span class="n">tlats</span><span class="p">,</span> <span class="n">height</span><span class="p">[</span><span class="n">FH</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span>
+<span class="n">cs</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">height</span><span class="p">[</span><span class="n">FH</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span>
                 <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;solid&#39;</span><span class="p">)</span>
-<a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.clabel.html#matplotlib.pyplot.clabel" title="View documentation for matplotlib.pyplot.clabel"><span class="n">plt</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
-           <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">cs</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+          <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
 <span class="c1"># Contour the temperature</span>
-<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">tlons</span><span class="p">,</span> <span class="n">tlats</span><span class="p">,</span> <span class="n">temp</span><span class="p">[</span><span class="n">FH</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">jet</span><span class="p">)</span>
-<span class="n">cb</span> <span class="o">=</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.colorbar.html#matplotlib.pyplot.colorbar" title="View documentation for matplotlib.pyplot.colorbar"><span class="n">plt</span><span class="o">.</span><span class="n">colorbar</span></a><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="nb">max</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span>
-                  <span class="n">extendrect</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
+<span class="n">cf</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">temp</span><span class="p">[</span><span class="n">FH</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">cmap</span><span class="o">=</span><span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">RdBu_r</span><span class="p">,</span>
+                 <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
+<span class="n">cb</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span><span class="n">cf</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="s1">&#39;horizontal&#39;</span><span class="p">,</span> <span class="n">extend</span><span class="o">=</span><span class="s1">&#39;max&#39;</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">65</span><span class="p">,</span> <span class="n">shrink</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                  <span class="n">pad</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">extendrect</span><span class="o">=</span><span class="s1">&#39;True&#39;</span><span class="p">)</span>
 <span class="n">cb</span><span class="o">.</span><span class="n">set_label</span><span class="p">(</span><span class="s1">&#39;Celsius&#39;</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;x-large&#39;</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">([</span><span class="o">-</span><span class="mf">106.5</span><span class="p">,</span> <span class="o">-</span><span class="mf">90.4</span><span class="p">,</span> <span class="mf">34.5</span><span class="p">,</span> <span class="mf">46.75</span><span class="p">],</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
@@ -306,16 +292,18 @@ vertical axis.</p>
 
 <span class="c1"># Set the figure title</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;WRF-ARW Forecast VALID: {:s} UTC&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">vtimes</span><span class="p">[</span><span class="n">FH</span><span class="p">])),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
+<a href="../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="View documentation for metpy.plots.add_timestamp"><span class="n">add_timestamp</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">vtimes</span><span class="p">[</span><span class="n">FH</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">high_contrast</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
 <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_sigma_to_pressure_interpolation_001.png" class="align-center" src="../_images/sphx_glr_sigma_to_pressure_interpolation_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.392 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  7.190 seconds)</p>
 <div class="sphx-glr-footer docutils container">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/sigma_to_pressure_interpolation.py" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">sigma_to_pressure_interpolation.py</span></code></a></div>
+<a class="reference download internal" href="../_downloads/sigma_to_pressure_interpolation.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">sigma_to_pressure_interpolation.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/sigma_to_pressure_interpolation.ipynb" download=""><code class="xref download docutils literal"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sigma_to_pressure_interpolation.ipynb</span></code></a></div>
+<a class="reference download internal" href="../_downloads/sigma_to_pressure_interpolation.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sigma_to_pressure_interpolation.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -343,7 +331,7 @@ vertical axis.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -380,7 +368,7 @@ vertical axis.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.indices &mdash; MetPy 0.6</title>
+  <title>metpy.calc.indices &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -122,8 +122,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
 </ul>
@@ -200,11 +200,13 @@
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">g</span><span class="p">,</span> <span class="n">rho_l</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">preprocess_xarray</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
 
 <div class="viewcode-block" id="precipitable_water"><a class="viewcode-back" href="../../../api/generated/metpy.calc.precipitable_water.html#metpy.calc.precipitable_water">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">precipitable_water</span><span class="p">(</span><span class="n">dewpt</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">top</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate precipitable water through the depth of a sounding.</span>
@@ -254,6 +256,7 @@
 
 
 <div class="viewcode-block" id="mean_pressure_weighted"><a class="viewcode-back" href="../../../api/generated/metpy.calc.mean_pressure_weighted.html#metpy.calc.mean_pressure_weighted">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">mean_pressure_weighted</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate pressure-weighted mean of an arbitrary variable through a layer.</span>
@@ -304,6 +307,7 @@
 
 
 <div class="viewcode-block" id="bunkers_storm_motion"><a class="viewcode-back" href="../../../api/generated/metpy.calc.bunkers_storm_motion.html#metpy.calc.bunkers_storm_motion">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">bunkers_storm_motion</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">heights</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the Bunkers right-mover and left-mover storm motions and sfc-6km mean flow.</span>
@@ -363,6 +367,7 @@
 
 
 <div class="viewcode-block" id="bulk_shear"><a class="viewcode-back" href="../../../api/generated/metpy.calc.bulk_shear.html#metpy.calc.bulk_shear">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">bulk_shear</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">heights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate bulk shear through a layer.</span>
@@ -380,12 +385,12 @@
 <span class="sd">    height : `pint.Quantity`, optional</span>
 <span class="sd">        Heights from sounding</span>
 <span class="sd">    depth: `pint.Quantity`, optional</span>
-<span class="sd">        The depth of the layer in meters or hPa</span>
+<span class="sd">        The depth of the layer in meters or hPa. Defaults to 100 hPa.</span>
 <span class="sd">    bottom: `pint.Quantity`, optional</span>
-<span class="sd">        The bottom of the layer in meters or hPa.</span>
-<span class="sd">        If in meters, must be in the same coordinates as the given</span>
+<span class="sd">        The bottom of the layer in height or pressure coordinates.</span>
+<span class="sd">        If using a height, it must be in the same coordinates as the given</span>
 <span class="sd">        heights (i.e., don&#39;t use meters AGL unless given heights</span>
-<span class="sd">        are in meters AGL.) Default is the surface (1st observation.)</span>
+<span class="sd">        are in meters AGL.) Defaults to the highest pressure or lowest height given.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -405,6 +410,7 @@
 
 
 <div class="viewcode-block" id="supercell_composite"><a class="viewcode-back" href="../../../api/generated/metpy.calc.supercell_composite.html#metpy.calc.supercell_composite">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[energy] / [mass]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed] * [speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">supercell_composite</span><span class="p">(</span><span class="n">mucape</span><span class="p">,</span> <span class="n">effective_storm_helicity</span><span class="p">,</span> <span class="n">effective_shear</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the supercell composite parameter.</span>
@@ -446,6 +452,7 @@
 
 
 <div class="viewcode-block" id="significant_tornado"><a class="viewcode-back" href="../../../api/generated/metpy.calc.significant_tornado.html#metpy.calc.significant_tornado">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[energy] / [mass]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed] * [speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">significant_tornado</span><span class="p">(</span><span class="n">sbcape</span><span class="p">,</span> <span class="n">surface_based_lcl_height</span><span class="p">,</span> <span class="n">storm_helicity_1km</span><span class="p">,</span> <span class="n">shear_6km</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the significant tornado parameter (fixed layer).</span>
@@ -496,6 +503,67 @@
     <span class="k">return</span> <span class="p">((</span><span class="n">sbcape</span> <span class="o">/</span> <span class="p">(</span><span class="mf">1500.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;J/kg&#39;</span><span class="p">)))</span> <span class="o">*</span>
             <span class="n">surface_based_lcl_height</span> <span class="o">*</span>
             <span class="p">(</span><span class="n">storm_helicity_1km</span> <span class="o">/</span> <span class="p">(</span><span class="mf">150.</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m^2/s^2&#39;</span><span class="p">)))</span> <span class="o">*</span> <span class="n">shear_6km</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="critical_angle"><a class="viewcode-back" href="../../../api/generated/metpy.calc.critical_angle.html#metpy.calc.critical_angle">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">critical_angle</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">heights</span><span class="p">,</span> <span class="n">stormu</span><span class="p">,</span> <span class="n">stormv</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the critical angle.</span>
+
+<span class="sd">    The critical angle is the angle between the 10m storm-relative inflow vector</span>
+<span class="sd">    and the 10m-500m shear vector. A critical angle near 90 degrees indicates</span>
+<span class="sd">    that a storm in this environment on the indicated storm motion vector</span>
+<span class="sd">    is likely ingesting purely streamwise vorticity into its updraft, and [Esterheld2008]_</span>
+<span class="sd">    showed that significantly tornadic supercells tend to occur in environments</span>
+<span class="sd">    with critical angles near 90 degrees.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        Pressures from sounding.</span>
+<span class="sd">    u : `pint.Quantity`</span>
+<span class="sd">        U-component of sounding winds.</span>
+<span class="sd">    v : `pint.Quantity`</span>
+<span class="sd">        V-component of sounding winds.</span>
+<span class="sd">    heights : `pint.Quantity`</span>
+<span class="sd">        Heights from sounding.</span>
+<span class="sd">    stormu : `pint.Quantity`</span>
+<span class="sd">        U-component of storm motion.</span>
+<span class="sd">    stormv : `pint.Quantity`</span>
+<span class="sd">        V-component of storm motion.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        critical angle in degrees</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Convert everything to m/s</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
+    <span class="n">stormu</span> <span class="o">=</span> <span class="n">stormu</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
+    <span class="n">stormv</span> <span class="o">=</span> <span class="n">stormv</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
+
+    <span class="n">sort_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">pressure</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">pressure</span> <span class="o">=</span> <span class="n">pressure</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
+    <span class="n">heights</span> <span class="o">=</span> <span class="n">heights</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">u</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">v</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
+
+    <span class="c1"># Calculate sfc-500m shear vector</span>
+    <span class="n">shr5</span> <span class="o">=</span> <span class="n">bulk_shear</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">heights</span><span class="o">=</span><span class="n">heights</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="mi">500</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter&#39;</span><span class="p">))</span>
+
+    <span class="c1"># Make everything relative to the sfc wind orientation</span>
+    <span class="n">umn</span> <span class="o">=</span> <span class="n">stormu</span> <span class="o">-</span> <span class="n">u</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">vmn</span> <span class="o">=</span> <span class="n">stormv</span> <span class="o">-</span> <span class="n">v</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="n">vshr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">shr5</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">shr5</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">magnitude</span><span class="p">])</span>
+    <span class="n">vsm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">([</span><span class="n">umn</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">vmn</span><span class="o">.</span><span class="n">magnitude</span><span class="p">])</span>
+    <span class="n">angle_c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dot</span><span class="p">(</span><span class="n">vshr</span><span class="p">,</span> <span class="n">vsm</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vshr</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">vsm</span><span class="p">))</span>
+    <span class="n">critical_angle</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arccos</span><span class="p">(</span><span class="n">angle_c</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;radian&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">critical_angle</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degrees&#39;</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -511,7 +579,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -548,7 +616,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

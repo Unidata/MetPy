@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>plots &mdash; MetPy 0.6</title>
+  <title>plots &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
         <link rel="up" title="The MetPy API" href="../index.html"/>
         <link rel="next" title="add_metpy_logo" href="metpy.plots.add_metpy_logo.html"/>
         <link rel="prev" title="windchill" href="metpy.calc.windchill.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -132,6 +132,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_timestamp.html">add_timestamp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
@@ -143,8 +144,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
 </ul>
@@ -226,14 +227,17 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo"><code class="xref py py-obj docutils literal"><span class="pre">add_metpy_logo</span></code></a>(fig[,&nbsp;x,&nbsp;y,&nbsp;zorder,&nbsp;size])</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_metpy_logo</span></code></a>(fig[,&nbsp;x,&nbsp;y,&nbsp;zorder,&nbsp;size])</td>
 <td>Add the MetPy logo to a figure.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="metpy.plots.add_timestamp"><code class="xref py py-obj docutils literal"><span class="pre">add_timestamp</span></code></a>(ax[,&nbsp;time,&nbsp;x,&nbsp;y,&nbsp;ha,&nbsp;…])</td>
-<td>Add a timestamp at plot creation time.</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="metpy.plots.add_timestamp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_timestamp</span></code></a>(ax[,&nbsp;time,&nbsp;x,&nbsp;y,&nbsp;ha,&nbsp;…])</td>
+<td>Add a timestamp to a plot.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.add_unidata_logo.html#metpy.plots.add_unidata_logo" title="metpy.plots.add_unidata_logo"><code class="xref py py-obj docutils literal"><span class="pre">add_unidata_logo</span></code></a>(fig[,&nbsp;x,&nbsp;y,&nbsp;zorder,&nbsp;size])</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.add_unidata_logo.html#metpy.plots.add_unidata_logo" title="metpy.plots.add_unidata_logo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_unidata_logo</span></code></a>(fig[,&nbsp;x,&nbsp;y,&nbsp;zorder,&nbsp;size])</td>
 <td>Add the Unidata logo to a figure.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="metpy.plots.read_colortable.html#metpy.plots.read_colortable" title="metpy.plots.read_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_colortable</span></code></a>(fobj)</td>
+<td>Read colortable information from a file.</td>
 </tr>
 </tbody>
 </table>
@@ -244,17 +248,17 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="metpy.plots.Hodograph"><code class="xref py py-obj docutils literal"><span class="pre">Hodograph</span></code></a>([ax,&nbsp;component_range])</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="metpy.plots.Hodograph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hodograph</span></code></a>([ax,&nbsp;component_range])</td>
 <td>Make a hodograph of wind data.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal"><span class="pre">SkewT</span></code></a>([fig,&nbsp;rotation,&nbsp;subplot])</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig,&nbsp;rotation,&nbsp;subplot])</td>
 <td>Make Skew-T log-P plots of data.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal"><span class="pre">StationPlot</span></code></a>(ax,&nbsp;x,&nbsp;y[,&nbsp;fontsize,&nbsp;spacing,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>(ax,&nbsp;x,&nbsp;y[,&nbsp;fontsize,&nbsp;spacing,&nbsp;…])</td>
 <td>Make a standard meteorological station plot.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout" title="metpy.plots.StationPlotLayout"><code class="xref py py-obj docutils literal"><span class="pre">StationPlotLayout</span></code></a></td>
-<td>make a layout to encapsulate plotting using <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal"><span class="pre">StationPlot</span></code></a>.</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout" title="metpy.plots.StationPlotLayout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlotLayout</span></code></a></td>
+<td>make a layout to encapsulate plotting using <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StationPlot</span></code></a>.</td>
 </tr>
 </tbody>
 </table>
@@ -283,7 +287,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -320,7 +324,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

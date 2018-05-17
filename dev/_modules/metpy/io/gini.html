@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.io.gini &mdash; MetPy 0.6</title>
+  <title>metpy.io.gini &mdash; MetPy 0.7</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.6" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.7" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.6</option>
+                      <option value=''>0.7</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -122,8 +122,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../developerguide.html">Developer’s Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributing</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
 </ul>
@@ -193,6 +193,7 @@
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Tools to process GINI-formatted products.&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span>
 
 <span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
@@ -200,27 +201,37 @@
     <span class="kn">from</span> <span class="nn">enum</span> <span class="k">import</span> <span class="n">Enum</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">enum34</span> <span class="k">import</span> <span class="n">Enum</span>
+<span class="kn">from</span> <span class="nn">io</span> <span class="k">import</span> <span class="n">BytesIO</span>
 <span class="kn">from</span> <span class="nn">itertools</span> <span class="k">import</span> <span class="n">repeat</span>  <span class="c1"># noqa: I202</span>
 <span class="kn">import</span> <span class="nn">logging</span>
 <span class="kn">import</span> <span class="nn">re</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">xarray</span> <span class="k">import</span> <span class="n">Variable</span>
+    <span class="kn">from</span> <span class="nn">xarray.backends.common</span> <span class="k">import</span> <span class="n">AbstractDataStore</span>
+    <span class="kn">from</span> <span class="nn">xarray.core.utils</span> <span class="k">import</span> <span class="n">FrozenOrderedDict</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="c1"># This way GiniFile is still usable without xarray</span>
+    <span class="n">AbstractDataStore</span> <span class="o">=</span> <span class="nb">object</span>
 
 <span class="kn">from</span> <span class="nn">._tools</span> <span class="k">import</span> <span class="n">Bits</span><span class="p">,</span> <span class="n">IOBuffer</span><span class="p">,</span> <span class="n">NamedStruct</span><span class="p">,</span> <span class="n">open_as_needed</span><span class="p">,</span> <span class="n">zlib_decompress_all_frames</span>
 <span class="kn">from</span> <span class="nn">.cdm</span> <span class="k">import</span> <span class="n">cf_to_proj</span><span class="p">,</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">..deprecation</span> <span class="k">import</span> <span class="n">deprecated</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARN</span><span class="p">)</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
-<span class="n">log</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">StreamHandler</span><span class="p">())</span>  <span class="c1"># Python 2.7 needs a handler set</span>
-<span class="n">log</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">WARN</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_make_datetime</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Convert 7 bytes from a GINI file to a `datetime` instance.&quot;&quot;&quot;</span>
     <span class="n">s</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="n">s</span><span class="p">)</span>  <span class="c1"># For Python 2</span>
     <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="n">cs</span> <span class="o">=</span> <span class="n">s</span>
+    <span class="k">if</span> <span class="n">year</span> <span class="o">&lt;</span> <span class="mi">70</span><span class="p">:</span>
+        <span class="n">year</span> <span class="o">+=</span> <span class="mi">100</span>
     <span class="k">return</span> <span class="n">datetime</span><span class="p">(</span><span class="mi">1900</span> <span class="o">+</span> <span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="n">day</span><span class="p">,</span> <span class="n">hour</span><span class="p">,</span> <span class="n">minute</span><span class="p">,</span> <span class="n">second</span><span class="p">,</span> <span class="mi">10000</span> <span class="o">*</span> <span class="n">cs</span><span class="p">)</span>
 
 
@@ -257,7 +268,7 @@
 
 
 <div class="viewcode-block" id="GiniFile"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="k">class</span> <span class="nc">GiniFile</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<span class="k">class</span> <span class="nc">GiniFile</span><span class="p">(</span><span class="n">AbstractDataStore</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A class that handles reading the GINI format satellite images from the NWS.</span>
 
 <span class="sd">    This class attempts to decode every byte that is in a given GINI file.</span>
@@ -390,7 +401,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2_fmt</span><span class="p">)</span>
         <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="o">.</span><span class="n">nav_cal</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="o">.</span><span class="n">nav_cal</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">128</span><span class="p">):</span>  <span class="c1"># TODO: See how GEMPAK/MCIDAS parses</span>
             <span class="c1"># Only warn if there actually seems to be useful navigation data</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">get_next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">nav_fmt</span><span class="o">.</span><span class="n">size</span><span class="p">)</span> <span class="o">!=</span> <span class="sa">b</span><span class="s1">&#39;</span><span class="se">\x00</span><span class="s1">&#39;</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">nav_fmt</span><span class="o">.</span><span class="n">size</span><span class="p">:</span>
                 <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Navigation/Calibration unhandled: </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="o">.</span><span class="n">nav_cal</span><span class="p">)</span>
@@ -406,10 +417,8 @@
         <span class="c1"># Jump past the remaining empty bytes in the product description block</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">jump_to</span><span class="p">(</span><span class="n">start</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="o">.</span><span class="n">pdb_size</span><span class="p">)</span>
 
-        <span class="c1"># Read the actual raster</span>
+        <span class="c1"># Read the actual raster--unless it&#39;s PNG compressed, in which case that happens later</span>
         <span class="n">blob</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">num_records</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">record_len</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">num_records</span><span class="p">,</span>
-                                            <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">record_len</span><span class="p">))</span>
 
         <span class="c1"># Check for end marker</span>
         <span class="n">end</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">record_len</span><span class="p">)</span>
@@ -418,10 +427,19 @@
 
         <span class="c1"># Check to ensure that we processed all of the data</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">at_end</span><span class="p">():</span>
-            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Leftover unprocessed data beyond EOF marker: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">get_next</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span></div>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">blob</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s1">&#39;No data read yet, trying to decompress remaining data as an image.&#39;</span><span class="p">)</span>
+                <span class="kn">from</span> <span class="nn">matplotlib.image</span> <span class="k">import</span> <span class="n">imread</span>
+                <span class="n">blob</span> <span class="o">=</span> <span class="p">(</span><span class="n">imread</span><span class="p">(</span><span class="n">BytesIO</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read</span><span class="p">()))</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;uint8&#39;</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Leftover unprocessed data beyond EOF marker: </span><span class="si">%s</span><span class="s1">&#39;</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">get_next</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
 
-<div class="viewcode-block" id="GiniFile.to_dataset"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.to_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">to_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">nx</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="GiniFile.to_dataset"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.to_dataset">[docs]</a>    <span class="nd">@deprecated</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;xarray.open_dataset(GiniFile)&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">to_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert to a CDM dataset.</span>
 
 <span class="sd">        Gives a representation of the data in a much more user-friendly manner, providing</span>
@@ -430,6 +448,8 @@
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        Dataset</span>
+
+<span class="sd">        .. deprecated:: 0.8.0</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
@@ -506,7 +526,173 @@
                  <span class="s1">&#39;Projection: </span><span class="si">{0.projection.name}</span><span class="s1">&#39;</span><span class="p">,</span>
                  <span class="s1">&#39;Lower Left Corner (Lon, Lat): (</span><span class="si">{0.lo1}</span><span class="s1">, </span><span class="si">{0.la1}</span><span class="s1">)&#39;</span><span class="p">,</span>
                  <span class="s1">&#39;Resolution: </span><span class="si">{1.resolution}</span><span class="s1">km&#39;</span><span class="p">]</span>
-        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n\t</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">parts</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_proj_var</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">proj_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj_info</span>
+        <span class="n">prod_desc2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;earth_radius&#39;</span><span class="p">:</span> <span class="mf">6371200.0</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="n">GiniProjection</span><span class="o">.</span><span class="n">lambert_conformal</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;lambert_conformal_conic&#39;</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;standard_parallel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;longitude_of_central_meridian&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">proj_info</span><span class="o">.</span><span class="n">lov</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;latitude_of_projection_origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="n">GiniProjection</span><span class="o">.</span><span class="n">polar_stereographic</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;polar_stereographic&#39;</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;straight_vertical_longitude_from_pole&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">proj_info</span><span class="o">.</span><span class="n">lov</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;latitude_of_projection_origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span> <span class="k">if</span> <span class="n">proj_info</span><span class="o">.</span><span class="n">proj_center</span> <span class="k">else</span> <span class="mi">90</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;standard_parallel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">60.0</span>  <span class="c1"># See Note 2 for Table 4.4A in ICD</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="n">GiniProjection</span><span class="o">.</span><span class="n">mercator</span><span class="p">:</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;mercator&#39;</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;longitude_of_projection_origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">lo1</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;latitude_of_projection_origin&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">la1</span>
+            <span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;standard_parallel&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span>
+                <span class="s1">&#39;Unhandled GINI Projection: </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="s1">&#39;projection&#39;</span><span class="p">,</span> <span class="n">Variable</span><span class="p">((),</span> <span class="mi">0</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_make_time_var</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">base_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">datetime</span> <span class="o">-</span> <span class="n">base_time</span>
+        <span class="n">time_var</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">((),</span> <span class="n">data</span><span class="o">=</span><span class="n">offset</span><span class="o">.</span><span class="n">seconds</span> <span class="o">+</span> <span class="n">offset</span><span class="o">.</span><span class="n">microseconds</span> <span class="o">/</span> <span class="mf">1e6</span><span class="p">,</span>
+                            <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;seconds since &#39;</span> <span class="o">+</span> <span class="n">base_time</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()})</span>
+
+        <span class="k">return</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">time_var</span>
+
+    <span class="k">def</span> <span class="nf">_get_proj_and_res</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="kn">import</span> <span class="nn">pyproj</span>
+
+        <span class="n">proj_info</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj_info</span>
+        <span class="n">prod_desc2</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span>
+
+        <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="mf">6371200.0</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">:</span> <span class="mf">6371200.0</span><span class="p">}</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="n">GiniProjection</span><span class="o">.</span><span class="n">lambert_conformal</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;proj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;lcc&#39;</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lat_0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lon_0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">proj_info</span><span class="o">.</span><span class="n">lov</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lat_1&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lat_2&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
+            <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">proj_info</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span> <span class="n">proj_info</span><span class="o">.</span><span class="n">dy</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="n">GiniProjection</span><span class="o">.</span><span class="n">polar_stereographic</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;proj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;stere&#39;</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lon_0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">proj_info</span><span class="o">.</span><span class="n">lov</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lat_0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span> <span class="k">if</span> <span class="n">proj_info</span><span class="o">.</span><span class="n">proj_center</span> <span class="k">else</span> <span class="mi">90</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lat_ts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mf">60.0</span>  <span class="c1"># See Note 2 for Table 4.4A in ICD</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;x_0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Easting</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;y_0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Northing</span>
+            <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">proj_info</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span> <span class="n">proj_info</span><span class="o">.</span><span class="n">dy</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="n">GiniProjection</span><span class="o">.</span><span class="n">mercator</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;proj&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;merc&#39;</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lat_0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">la1</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lon_0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">lo1</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;lat_ts&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;x_0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Easting</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;y_0&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Northing</span>
+            <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">prod_desc2</span><span class="o">.</span><span class="n">resolution</span><span class="p">,</span> <span class="n">prod_desc2</span><span class="o">.</span><span class="n">resolution</span>
+
+        <span class="k">return</span> <span class="n">pyproj</span><span class="o">.</span><span class="n">Proj</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">),</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span>
+
+    <span class="k">def</span> <span class="nf">_make_coord_vars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">proj</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_proj_and_res</span><span class="p">()</span>
+
+        <span class="c1"># Get projected location of lower left point</span>
+        <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">proj</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">lo1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">la1</span><span class="p">)</span>
+
+        <span class="c1"># Coordinate variable for x</span>
+        <span class="n">xlocs</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">nx</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <span class="n">dx</span><span class="p">)</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;x coordinate of projection&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;standard_name&#39;</span><span class="p">:</span> <span class="s1">&#39;projection_x_coordinate&#39;</span><span class="p">}</span>
+        <span class="n">x_var</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">((</span><span class="s1">&#39;x&#39;</span><span class="p">,),</span> <span class="n">xlocs</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+        <span class="c1"># Now y--Need to flip y because we calculated from the lower left corner,</span>
+        <span class="c1"># but the raster data is stored with top row first.</span>
+        <span class="n">ylocs</span> <span class="o">=</span> <span class="p">(</span><span class="n">y0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <span class="n">dy</span><span class="p">))[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;m&#39;</span><span class="p">,</span> <span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;y coordinate of projection&#39;</span><span class="p">,</span>
+                 <span class="s1">&#39;standard_name&#39;</span><span class="p">:</span> <span class="s1">&#39;projection_y_coordinate&#39;</span><span class="p">}</span>
+        <span class="n">y_var</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">((</span><span class="s1">&#39;y&#39;</span><span class="p">,),</span> <span class="n">ylocs</span><span class="p">,</span> <span class="n">attrs</span><span class="p">)</span>
+
+        <span class="c1"># Get the two-D lon,lat grid as well</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">xlocs</span><span class="p">,</span> <span class="n">ylocs</span><span class="p">)</span>
+        <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">proj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="n">lon_var</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">((</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">lon</span><span class="p">,</span>
+                           <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;longitude&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;degrees_east&#39;</span><span class="p">})</span>
+        <span class="n">lat_var</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">((</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">data</span><span class="o">=</span><span class="n">lat</span><span class="p">,</span>
+                           <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="s1">&#39;latitude&#39;</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;degrees_north&#39;</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="p">[(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">x_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">y_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">lon_var</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">lat_var</span><span class="p">)]</span>
+
+    <span class="c1"># FIXME: Work around xarray &lt;=0.10.3 docstring for load angering sphinx</span>
+    <span class="c1"># That&#39;s the only reason this exists.</span>
+<div class="viewcode-block" id="GiniFile.load"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Load the variables and attributes simultaneously.</span>
+
+<span class="sd">        A centralized loading function makes it easier to create</span>
+<span class="sd">        data stores that do automatic encoding/decoding.</span>
+
+<span class="sd">        For example::</span>
+
+<span class="sd">            class SuffixAppendingDataStore(AbstractDataStore):</span>
+
+<span class="sd">                def load(self):</span>
+<span class="sd">                    variables, attributes = AbstractDataStore.load(self)</span>
+<span class="sd">                    variables = {&#39;%s_suffix&#39; % k: v</span>
+<span class="sd">                                 for k, v in iteritems(variables)}</span>
+<span class="sd">                    attributes = {&#39;%s_suffix&#39; % k: v</span>
+<span class="sd">                                  for k, v in iteritems(attributes)}</span>
+<span class="sd">                    return variables, attributes</span>
+
+<span class="sd">        This function will be called anytime variables or attributes</span>
+<span class="sd">        are requested, so care should be taken to make sure its fast.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">GiniFile</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">load</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="GiniFile.get_variables"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_variables">[docs]</a>    <span class="k">def</span> <span class="nf">get_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get all variables in the file.</span>
+
+<span class="sd">        This is used by `xarray.open_dataset`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_time_var</span><span class="p">()]</span>
+        <span class="n">proj_var_name</span><span class="p">,</span> <span class="n">proj_var</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_proj_var</span><span class="p">()</span>
+        <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">proj_var_name</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">))</span>
+        <span class="n">variables</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_make_coord_vars</span><span class="p">())</span>
+
+        <span class="c1"># Now the data</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">channel</span>
+        <span class="k">if</span> <span class="s1">&#39;(&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+
+        <span class="n">missing_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">missing</span>
+        <span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;long_name&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">channel</span><span class="p">,</span> <span class="s1">&#39;missing_value&#39;</span><span class="p">:</span> <span class="n">missing_val</span><span class="p">,</span>
+                 <span class="s1">&#39;coordinates&#39;</span><span class="p">:</span> <span class="s1">&#39;y x time&#39;</span><span class="p">,</span> <span class="s1">&#39;grid_mapping&#39;</span><span class="p">:</span> <span class="n">proj_var_name</span><span class="p">}</span>
+        <span class="n">data_var</span> <span class="o">=</span> <span class="n">Variable</span><span class="p">((</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span>
+                            <span class="n">data</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                                             <span class="n">mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="n">missing_val</span><span class="p">),</span>
+                            <span class="n">attrs</span><span class="o">=</span><span class="n">attrs</span><span class="p">)</span>
+        <span class="n">variables</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">name</span><span class="p">,</span> <span class="n">data_var</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">FrozenOrderedDict</span><span class="p">(</span><span class="n">variables</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GiniFile.get_attrs"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_attrs">[docs]</a>    <span class="k">def</span> <span class="nf">get_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the global attributes.</span>
+
+<span class="sd">        This is used by `xarray.open_dataset`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">FrozenOrderedDict</span><span class="p">(</span><span class="n">satellite</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">creating_entity</span><span class="p">,</span>
+                                 <span class="n">sector</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">sector_id</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GiniFile.get_dimensions"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.get_dimensions">[docs]</a>    <span class="k">def</span> <span class="nf">get_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the file&#39;s dimensions.</span>
+
+<span class="sd">        This is used by `xarray.open_dataset`.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">FrozenOrderedDict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span></div></div>
 
 
 <span class="k">def</span> <span class="nf">_add_projection_coords</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">prod_desc</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
@@ -562,7 +748,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 04, 2018 at 19:17:05.
+      Last updated on May 17, 2018 at 19:42:17.
 
     </p>
   </div>
@@ -599,7 +785,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.6.1+116.gba13b4c',
+            VERSION:'0.7.0+262.g9879351',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
