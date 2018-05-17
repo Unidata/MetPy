@@ -5,8 +5,8 @@
 from __future__ import division
 
 import functools
-import warnings
 from operator import itemgetter
+import warnings
 
 import numpy as np
 try:
