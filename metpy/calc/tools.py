@@ -25,7 +25,6 @@ from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
 
-
 DIR_STRS = [
     'N', 'NNE', 'NE', 'ENE',
     'E', 'ESE', 'SE', 'SSE',
@@ -36,6 +35,7 @@ DIR_STRS = [
 BASE_DEGREE_MULTIPLIER = 22.5 * units.degree
 
 DIR_DICT = {dir_str: i * BASE_DEGREE_MULTIPLIER for i, dir_str in enumerate(DIR_STRS)}
+
 
 @exporter.export
 @preprocess_xarray
