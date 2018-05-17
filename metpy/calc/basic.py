@@ -19,11 +19,13 @@ import numpy as np
 from ..constants import G, g, me, omega, Rd, Re
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, masked_array, units
+from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
 
 
 @exporter.export
+@preprocess_xarray
 def get_wind_speed(u, v):
     r"""Compute the wind speed from u and v-components.
 
@@ -49,6 +51,7 @@ def get_wind_speed(u, v):
 
 
 @exporter.export
+@preprocess_xarray
 def get_wind_dir(u, v):
     r"""Compute the wind direction from u and v-components.
 
@@ -78,6 +81,7 @@ def get_wind_dir(u, v):
 
 
 @exporter.export
+@preprocess_xarray
 def get_wind_components(speed, wdir):
     r"""Calculate the U, V wind vector components from the speed and direction.
 
@@ -115,6 +119,7 @@ def get_wind_components(speed, wdir):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units(temperature='[temperature]', speed='[speed]')
 def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
     r"""Calculate the Wind Chill Temperature Index (WCTI).
@@ -176,6 +181,7 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[temperature]')
 def heat_index(temperature, rh, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.
@@ -230,6 +236,7 @@ def heat_index(temperature, rh, mask_undefined=True):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units(temperature='[temperature]', speed='[speed]')
 def apparent_temperature(temperature, rh, speed, face_level_winds=False):
     r"""Calculate the current apparent temperature.
@@ -263,6 +270,12 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
     heat_index, windchill
 
     """
+    is_not_scalar = isinstance(temperature.m, (list, tuple, np.ndarray))
+
+    temperature = atleast_1d(temperature)
+    rh = atleast_1d(rh)
+    speed = atleast_1d(speed)
+
     wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
                                        mask_undefined=True).to(temperature.units)
 
@@ -274,14 +287,19 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
                                   heat_index_temperature,
                                   wind_chill_temperature)
 
-    # Fill in missing areas where neither wind chill or heat index are applicable with the
-    # ambient temperature.
-    app_temperature[app_temperature.mask] = temperature[app_temperature.mask]
-
-    return np.array(app_temperature) * temperature.units
+    if is_not_scalar:
+        # Fill in missing areas where neither wind chill or heat index are applicable with the
+        # ambient temperature.
+        app_temperature[app_temperature.mask] = temperature[app_temperature.mask]
+        return np.array(app_temperature) * temperature.units
+    else:
+        if app_temperature.mask:
+            app_temperature = temperature.m
+        return app_temperature[0] * temperature.units
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[pressure]')
 def pressure_to_height_std(pressure):
     r"""Convert pressure data to heights using the U.S. standard atmosphere.
@@ -310,6 +328,7 @@ def pressure_to_height_std(pressure):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[length]')
 def height_to_geopotential(height):
     r"""Compute geopotential for a given height.
@@ -348,6 +367,7 @@ def height_to_geopotential(height):
 
 
 @exporter.export
+@preprocess_xarray
 def geopotential_to_height(geopot):
     r"""Compute height from a given geopotential.
 
@@ -389,6 +409,7 @@ def geopotential_to_height(geopot):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[length]')
 def height_to_pressure_std(height):
     r"""Convert height data to pressures using the U.S. standard atmosphere.
@@ -417,6 +438,7 @@ def height_to_pressure_std(height):
 
 
 @exporter.export
+@preprocess_xarray
 def coriolis_parameter(latitude):
     r"""Calculate the coriolis parameter at each point.
 
@@ -438,6 +460,7 @@ def coriolis_parameter(latitude):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[pressure]', '[length]')
 def add_height_to_pressure(pressure, height):
     r"""Calculate the pressure at a certain height above another pressure level.
@@ -466,6 +489,7 @@ def add_height_to_pressure(pressure, height):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[length]', '[pressure]')
 def add_pressure_to_height(height, pressure):
     r"""Calculate the height at a certain pressure above another height.
@@ -494,6 +518,7 @@ def add_pressure_to_height(height, pressure):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[dimensionless]', '[pressure]', '[pressure]')
 def sigma_to_pressure(sigma, psfc, ptop):
     r"""Calculate pressure from sigma values.

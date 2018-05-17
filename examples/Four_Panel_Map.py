@@ -14,17 +14,15 @@ By reading model output data from a netCDF file, we can create a four panel plot
 """
 
 ###########################################
-
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
-import netCDF4
 import numpy as np
 import scipy.ndimage as ndimage
+import xarray as xr
 
 from metpy.cbook import get_test_data
 from metpy.plots import add_metpy_logo
-from metpy.units import units
 
 ###########################################
 
@@ -45,40 +43,35 @@ def plot_background(ax):
 ###########################################
 
 # Open the example netCDF data
-ds = netCDF4.Dataset(get_test_data('gfs_output.nc', False))
+ds = xr.open_dataset(get_test_data('gfs_output.nc', False))
 print(ds)
 
 ###########################################
 
-# Convert number of hours since the reference time into an actual date
-time_vals = netCDF4.num2date(ds.variables['time'][:].squeeze(), ds.variables['time'].units)
-
-###########################################
-
 # Combine 1D latitude and longitudes into a 2D grid of locations
-lon_2d, lat_2d = np.meshgrid(ds.variables['lon'][:], ds.variables['lat'][:])
+lon_2d, lat_2d = np.meshgrid(ds['lon'], ds['lat'])
 
 ###########################################
 
-# Assign units
-vort_500 = ds.variables['vort_500'][0] * units(ds.variables['vort_500'].units)
-surface_temp = ds.variables['temp'][0] * units(ds.variables['temp'].units)
-precip_water = ds.variables['precip_water'][0] * units(ds.variables['precip_water'].units)
-winds_300 = ds.variables['winds_300'][0] * units(ds.variables['winds_300'].units)
+# Pull out the data
+vort_500 = ds['vort_500'][0]
+surface_temp = ds['temp'][0]
+precip_water = ds['precip_water'][0]
+winds_300 = ds['winds_300'][0]
 
 ###########################################
 
 # Do unit conversions to what we wish to plot
 vort_500 = vort_500 * 1e5
-surface_temp = surface_temp.to('degF')
-precip_water = precip_water.to('inches')
-winds_300 = winds_300.to('knots')
+surface_temp.metpy.convert_units('degF')
+precip_water.metpy.convert_units('inches')
+winds_300.metpy.convert_units('knots')
 
 ###########################################
 
 # Smooth the height data
-heights_300 = ndimage.gaussian_filter(ds.variables['heights_300'][0], sigma=1.5, order=0)
-heights_500 = ndimage.gaussian_filter(ds.variables['heights_500'][0], sigma=1.5, order=0)
+heights_300 = ndimage.gaussian_filter(ds['heights_300'][0], sigma=1.5, order=0)
+heights_500 = ndimage.gaussian_filter(ds['heights_500'][0], sigma=1.5, order=0)
 
 ###########################################
 
@@ -127,7 +120,7 @@ cb4.set_label('in.', size='x-large')
 fig.set_constrained_layout_pads(w_pad=0., h_pad=0.1, hspace=0., wspace=0.)
 
 # Set figure title
-fig.suptitle('{0:%d %B %Y %H:%MZ}'.format(time_vals), fontsize=24)
+fig.suptitle(ds['time'][0].dt.strftime('%d %B %Y %H:%MZ'), fontsize=24)
 
 # Display the plot
 plt.show()

@@ -9,11 +9,13 @@ from .tools import get_layer
 from ..constants import g, rho_l
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
+from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[temperature]', '[pressure]', '[pressure]')
 def precipitable_water(dewpt, pressure, bottom=None, top=None):
     r"""Calculate precipitable water through the depth of a sounding.
@@ -63,6 +65,7 @@ def precipitable_water(dewpt, pressure, bottom=None, top=None):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[pressure]')
 def mean_pressure_weighted(pressure, *args, **kwargs):
     r"""Calculate pressure-weighted mean of an arbitrary variable through a layer.
@@ -113,6 +116,7 @@ def mean_pressure_weighted(pressure, *args, **kwargs):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[pressure]', '[speed]', '[speed]', '[length]')
 def bunkers_storm_motion(pressure, u, v, heights):
     r"""Calculate the Bunkers right-mover and left-mover storm motions and sfc-6km mean flow.
@@ -172,6 +176,7 @@ def bunkers_storm_motion(pressure, u, v, heights):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[pressure]', '[speed]', '[speed]')
 def bulk_shear(pressure, u, v, heights=None, bottom=None, depth=None):
     r"""Calculate bulk shear through a layer.
@@ -214,6 +219,7 @@ def bulk_shear(pressure, u, v, heights=None, bottom=None, depth=None):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[energy] / [mass]', '[speed] * [speed]', '[speed]')
 def supercell_composite(mucape, effective_storm_helicity, effective_shear):
     r"""Calculate the supercell composite parameter.
@@ -255,6 +261,7 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
 
 
 @exporter.export
+@preprocess_xarray
 @check_units('[energy] / [mass]', '[length]', '[speed] * [speed]', '[speed]')
 def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, shear_6km):
     r"""Calculate the significant tornado parameter (fixed layer).
@@ -305,3 +312,64 @@ def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, sh
     return ((sbcape / (1500. * units('J/kg'))) *
             surface_based_lcl_height *
             (storm_helicity_1km / (150. * units('m^2/s^2'))) * shear_6km)
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[pressure]', '[speed]', '[speed]', '[length]', '[speed]', '[speed]')
+def critical_angle(pressure, u, v, heights, stormu, stormv):
+    r"""Calculate the critical angle.
+
+    The critical angle is the angle between the 10m storm-relative inflow vector
+    and the 10m-500m shear vector. A critical angle near 90 degrees indicates
+    that a storm in this environment on the indicated storm motion vector
+    is likely ingesting purely streamwise vorticity into its updraft, and [Esterheld2008]_
+    showed that significantly tornadic supercells tend to occur in environments
+    with critical angles near 90 degrees.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressures from sounding.
+    u : `pint.Quantity`
+        U-component of sounding winds.
+    v : `pint.Quantity`
+        V-component of sounding winds.
+    heights : `pint.Quantity`
+        Heights from sounding.
+    stormu : `pint.Quantity`
+        U-component of storm motion.
+    stormv : `pint.Quantity`
+        V-component of storm motion.
+
+    Returns
+    -------
+    `pint.Quantity`
+        critical angle in degrees
+
+    """
+    # Convert everything to m/s
+    u = u.to('m/s')
+    v = v.to('m/s')
+    stormu = stormu.to('m/s')
+    stormv = stormv.to('m/s')
+
+    sort_inds = np.argsort(pressure[::-1])
+    pressure = pressure[sort_inds]
+    heights = heights[sort_inds]
+    u = u[sort_inds]
+    v = v[sort_inds]
+
+    # Calculate sfc-500m shear vector
+    shr5 = bulk_shear(pressure, u, v, heights=heights, depth=500 * units('meter'))
+
+    # Make everything relative to the sfc wind orientation
+    umn = stormu - u[0]
+    vmn = stormv - v[0]
+
+    vshr = np.asarray([shr5[0].magnitude, shr5[1].magnitude])
+    vsm = np.asarray([umn.magnitude, vmn.magnitude])
+    angle_c = np.dot(vshr, vsm) / (np.linalg.norm(vshr) * np.linalg.norm(vsm))
+    critical_angle = np.arccos(angle_c) * units('radian')
+
+    return critical_angle.to('degrees')

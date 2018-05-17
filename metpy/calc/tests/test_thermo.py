@@ -5,6 +5,7 @@
 
 import numpy as np
 import pytest
+import xarray as xr
 
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
                         brunt_vaisala_period, cape_cin, density, dewpoint,
@@ -45,6 +46,13 @@ def test_relative_humidity_from_dewpoint_with_f():
     """Test Relative Humidity accepts temperature in Fahrenheit."""
     assert_almost_equal(relative_humidity_from_dewpoint(70. * units.degF, 55. * units.degF),
                         58.935 * units.percent, 3)
+
+
+def test_relative_humidity_from_dewpoint_xarray():
+    """Test Relative Humidity calculation with xarray data arrays."""
+    temp = xr.DataArray(25., attrs={'units': 'degC'})
+    dewp = xr.DataArray(15., attrs={'units': 'degC'})
+    assert_almost_equal(relative_humidity_from_dewpoint(temp, dewp), 53.80 * units.percent, 2)
 
 
 def test_exner_function():
@@ -590,11 +598,28 @@ def test_isentropic_pressure():
     tmp[1, :] = 292.
     tmp[2, :] = 290
     tmp[3, :] = 288.
+    tmp[:, :, -1] = np.nan
     tmpk = tmp * units.kelvin
     isentlev = [296.] * units.kelvin
-    isentprs = isentropic_interpolation(isentlev, lev, tmpk)
-    trueprs = 1000. * units.hPa
-    assert_almost_equal(isentprs[0].shape, (1, 5, 5), 3)
+    with pytest.warns(RuntimeWarning, match='invalid value'):
+        isentprs = isentropic_interpolation(isentlev, lev, tmpk)
+    trueprs = np.ones((1, 5, 5)) * (1000. * units.hPa)
+    trueprs[:, :, -1] = np.nan
+    assert isentprs[0].shape == (1, 5, 5)
+    assert_almost_equal(isentprs[0], trueprs, 3)
+
+
+def test_isentropic_pressure_masked_column():
+    """Test calculation of isentropic pressure function with a masked column (#769)."""
+    lev = [100000., 95000.] * units.Pa
+    tmp = np.ma.ones((len(lev), 5, 5))
+    tmp[0, :] = 296.
+    tmp[1, :] = 292.
+    tmp[:, :, -1] = np.ma.masked
+    isentprs = isentropic_interpolation([296.] * units.kelvin, lev, tmp * units.kelvin)
+    trueprs = np.ones((1, 5, 5)) * (1000. * units.hPa)
+    trueprs[:, :, -1] = np.nan
+    assert isentprs[0].shape == (1, 5, 5)
     assert_almost_equal(isentprs[0], trueprs, 3)
 
 
@@ -685,7 +710,7 @@ def test_isentropic_pressure_interp():
     assert_almost_equal(isentprs[0][1], trueprs, 3)
 
 
-def test_isentropic_pressure_adition_args_interp():
+def test_isentropic_pressure_addition_args_interp():
     """Test calculation of isentropic pressure function, additional args."""
     lev = [100000., 95000., 90000., 85000.] * units.Pa
     tmp = np.ones((4, 5, 5))
@@ -756,7 +781,7 @@ def test_isentropic_pressure_4d():
     trueprs2 = 936.18057 * units.hPa
     trueprs3 = 879.446 * units.hPa
     truerh = 69.171 * units.percent
-    assert_almost_equal(isentprs[0].shape, (3, 3, 5, 5), 3)
+    assert isentprs[0].shape == (3, 3, 5, 5)
     assert_almost_equal(isentprs[0][:, 0, :], trueprs, 3)
     assert_almost_equal(isentprs[0][:, 1, :], trueprs2, 3)
     assert_almost_equal(isentprs[0][:, 2, :], trueprs3, 3)
@@ -1031,3 +1056,16 @@ def test_cape_cin_custom_profile():
     cape, cin = cape_cin(p, temperature, dewpoint, parcel_prof)
     assert_almost_equal(cape, 1443.505086499895 * units('joule / kilogram'), 6)
     assert_almost_equal(cin, 0.0 * units('joule / kilogram'), 6)
+
+
+def test_parcel_profile_below_lcl():
+    """Test parcel profile calculation when pressures do not reach LCL (#827)."""
+    pressure = np.array([981, 949.2, 925., 913.9, 903, 879.4, 878, 864, 855,
+                         850, 846.3, 838, 820, 814.5, 799, 794]) * units.hPa
+    truth = np.array([276.35, 273.76110242, 271.74910213, 270.81364639,
+                      269.88711359, 267.85332225, 267.73145436, 266.5050728,
+                      265.70916946, 265.264412, 264.93408677, 264.18931638,
+                      262.55585912, 262.0516423, 260.61745662,
+                      260.15057861]) * units.kelvin
+    profile = parcel_profile(pressure, 3.2 * units.degC, -10.8 * units.degC)
+    assert_almost_equal(profile, truth, 6)

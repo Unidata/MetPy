@@ -2,6 +2,7 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools to process GINI-formatted products."""
+from __future__ import absolute_import
 
 import contextlib
 from datetime import datetime
@@ -9,14 +10,23 @@ try:
     from enum import Enum
 except ImportError:
     from enum34 import Enum
+from io import BytesIO
 from itertools import repeat  # noqa: I202
 import logging
 import re
 
 import numpy as np
+try:
+    from xarray import Variable
+    from xarray.backends.common import AbstractDataStore
+    from xarray.core.utils import FrozenOrderedDict
+except ImportError:
+    # This way GiniFile is still usable without xarray
+    AbstractDataStore = object
 
 from ._tools import Bits, IOBuffer, NamedStruct, open_as_needed, zlib_decompress_all_frames
 from .cdm import cf_to_proj, Dataset
+from ..deprecation import deprecated
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -29,6 +39,8 @@ def _make_datetime(s):
     r"""Convert 7 bytes from a GINI file to a `datetime` instance."""
     s = bytearray(s)  # For Python 2
     year, month, day, hour, minute, second, cs = s
+    if year < 70:
+        year += 100
     return datetime(1900 + year, month, day, hour, minute, second, 10000 * cs)
 
 
@@ -65,7 +77,7 @@ class GiniProjection(Enum):
 
 
 @exporter.export
-class GiniFile(object):
+class GiniFile(AbstractDataStore):
     """A class that handles reading the GINI format satellite images from the NWS.
 
     This class attempts to decode every byte that is in a given GINI file.
@@ -198,7 +210,7 @@ class GiniFile(object):
         self.prod_desc2 = self._buffer.read_struct(self.prod_desc2_fmt)
         log.debug(self.prod_desc2)
 
-        if self.prod_desc2.nav_cal != 0:
+        if self.prod_desc2.nav_cal not in (0, -128):  # TODO: See how GEMPAK/MCIDAS parses
             # Only warn if there actually seems to be useful navigation data
             if self._buffer.get_next(self.nav_fmt.size) != b'\x00' * self.nav_fmt.size:
                 log.warning('Navigation/Calibration unhandled: %d', self.prod_desc2.nav_cal)
@@ -214,10 +226,8 @@ class GiniFile(object):
         # Jump past the remaining empty bytes in the product description block
         self._buffer.jump_to(start, self.prod_desc2.pdb_size)
 
-        # Read the actual raster
+        # Read the actual raster--unless it's PNG compressed, in which case that happens later
         blob = self._buffer.read(self.prod_desc.num_records * self.prod_desc.record_len)
-        self.data = np.array(blob).reshape((self.prod_desc.num_records,
-                                            self.prod_desc.record_len))
 
         # Check for end marker
         end = self._buffer.read(self.prod_desc.record_len)
@@ -226,9 +236,18 @@ class GiniFile(object):
 
         # Check to ensure that we processed all of the data
         if not self._buffer.at_end():
-            log.warning('Leftover unprocessed data beyond EOF marker: %s',
-                        self._buffer.get_next(10))
+            if not blob:
+                log.debug('No data read yet, trying to decompress remaining data as an image.')
+                from matplotlib.image import imread
+                blob = (imread(BytesIO(self._buffer.read())) * 255).astype('uint8')
+            else:
+                log.warning('Leftover unprocessed data beyond EOF marker: %s',
+                            self._buffer.get_next(10))
 
+        self.data = np.array(blob).reshape((self.prod_desc.ny,
+                                            self.prod_desc.nx))
+
+    @deprecated(0.8, alternative='xarray.open_dataset(GiniFile)')
     def to_dataset(self):
         """Convert to a CDM dataset.
 
@@ -238,6 +257,8 @@ class GiniFile(object):
         Returns
         -------
         Dataset
+
+        .. deprecated:: 0.8.0
 
         """
         ds = Dataset()
@@ -315,6 +336,172 @@ class GiniFile(object):
                  'Lower Left Corner (Lon, Lat): ({0.lo1}, {0.la1})',
                  'Resolution: {1.resolution}km']
         return '\n\t'.join(parts).format(self.prod_desc, self.prod_desc2)
+
+    def _make_proj_var(self):
+        proj_info = self.proj_info
+        prod_desc2 = self.prod_desc2
+        attrs = {'earth_radius': 6371200.0}
+        if self.prod_desc.projection == GiniProjection.lambert_conformal:
+            attrs['grid_mapping_name'] = 'lambert_conformal_conic'
+            attrs['standard_parallel'] = prod_desc2.lat_in
+            attrs['longitude_of_central_meridian'] = proj_info.lov
+            attrs['latitude_of_projection_origin'] = prod_desc2.lat_in
+        elif self.prod_desc.projection == GiniProjection.polar_stereographic:
+            attrs['grid_mapping_name'] = 'polar_stereographic'
+            attrs['straight_vertical_longitude_from_pole'] = proj_info.lov
+            attrs['latitude_of_projection_origin'] = -90 if proj_info.proj_center else 90
+            attrs['standard_parallel'] = 60.0  # See Note 2 for Table 4.4A in ICD
+        elif self.prod_desc.projection == GiniProjection.mercator:
+            attrs['grid_mapping_name'] = 'mercator'
+            attrs['longitude_of_projection_origin'] = self.prod_desc.lo1
+            attrs['latitude_of_projection_origin'] = self.prod_desc.la1
+            attrs['standard_parallel'] = prod_desc2.lat_in
+        else:
+            raise NotImplementedError(
+                'Unhandled GINI Projection: {}'.format(self.prod_desc.projection))
+
+        return 'projection', Variable((), 0, attrs)
+
+    def _make_time_var(self):
+        base_time = self.prod_desc.datetime.replace(hour=0, minute=0, second=0, microsecond=0)
+        offset = self.prod_desc.datetime - base_time
+        time_var = Variable((), data=offset.seconds + offset.microseconds / 1e6,
+                            attrs={'units': 'seconds since ' + base_time.isoformat()})
+
+        return 'time', time_var
+
+    def _get_proj_and_res(self):
+        import pyproj
+
+        proj_info = self.proj_info
+        prod_desc2 = self.prod_desc2
+
+        kwargs = {'a': 6371200.0, 'b': 6371200.0}
+        if self.prod_desc.projection == GiniProjection.lambert_conformal:
+            kwargs['proj'] = 'lcc'
+            kwargs['lat_0'] = prod_desc2.lat_in
+            kwargs['lon_0'] = proj_info.lov
+            kwargs['lat_1'] = prod_desc2.lat_in
+            kwargs['lat_2'] = prod_desc2.lat_in
+            dx, dy = proj_info.dx, proj_info.dy
+        elif self.prod_desc.projection == GiniProjection.polar_stereographic:
+            kwargs['proj'] = 'stere'
+            kwargs['lon_0'] = proj_info.lov
+            kwargs['lat_0'] = -90 if proj_info.proj_center else 90
+            kwargs['lat_ts'] = 60.0  # See Note 2 for Table 4.4A in ICD
+            kwargs['x_0'] = False  # Easting
+            kwargs['y_0'] = False  # Northing
+            dx, dy = proj_info.dx, proj_info.dy
+        elif self.prod_desc.projection == GiniProjection.mercator:
+            kwargs['proj'] = 'merc'
+            kwargs['lat_0'] = self.prod_desc.la1
+            kwargs['lon_0'] = self.prod_desc.lo1
+            kwargs['lat_ts'] = prod_desc2.lat_in
+            kwargs['x_0'] = False  # Easting
+            kwargs['y_0'] = False  # Northing
+            dx, dy = prod_desc2.resolution, prod_desc2.resolution
+
+        return pyproj.Proj(**kwargs), dx, dy
+
+    def _make_coord_vars(self):
+        proj, dx, dy = self._get_proj_and_res()
+
+        # Get projected location of lower left point
+        x0, y0 = proj(self.prod_desc.lo1, self.prod_desc.la1)
+
+        # Coordinate variable for x
+        xlocs = x0 + np.arange(self.prod_desc.nx) * (1000. * dx)
+        attrs = {'units': 'm', 'long_name': 'x coordinate of projection',
+                 'standard_name': 'projection_x_coordinate'}
+        x_var = Variable(('x',), xlocs, attrs)
+
+        # Now y--Need to flip y because we calculated from the lower left corner,
+        # but the raster data is stored with top row first.
+        ylocs = (y0 + np.arange(self.prod_desc.ny) * (1000. * dy))[::-1]
+        attrs = {'units': 'm', 'long_name': 'y coordinate of projection',
+                 'standard_name': 'projection_y_coordinate'}
+        y_var = Variable(('y',), ylocs, attrs)
+
+        # Get the two-D lon,lat grid as well
+        x, y = np.meshgrid(xlocs, ylocs)
+        lon, lat = proj(x, y, inverse=True)
+
+        lon_var = Variable(('y', 'x'), data=lon,
+                           attrs={'long_name': 'longitude', 'units': 'degrees_east'})
+        lat_var = Variable(('y', 'x'), data=lat,
+                           attrs={'long_name': 'latitude', 'units': 'degrees_north'})
+
+        return [('x', x_var), ('y', y_var), ('lon', lon_var), ('lat', lat_var)]
+
+    # FIXME: Work around xarray <=0.10.3 docstring for load angering sphinx
+    # That's the only reason this exists.
+    def load(self):
+        """
+        Load the variables and attributes simultaneously.
+
+        A centralized loading function makes it easier to create
+        data stores that do automatic encoding/decoding.
+
+        For example::
+
+            class SuffixAppendingDataStore(AbstractDataStore):
+
+                def load(self):
+                    variables, attributes = AbstractDataStore.load(self)
+                    variables = {'%s_suffix' % k: v
+                                 for k, v in iteritems(variables)}
+                    attributes = {'%s_suffix' % k: v
+                                  for k, v in iteritems(attributes)}
+                    return variables, attributes
+
+        This function will be called anytime variables or attributes
+        are requested, so care should be taken to make sure its fast.
+        """
+        return super(GiniFile, self).load()
+
+    def get_variables(self):
+        """Get all variables in the file.
+
+        This is used by `xarray.open_dataset`.
+
+        """
+        variables = [self._make_time_var()]
+        proj_var_name, proj_var = self._make_proj_var()
+        variables.append((proj_var_name, proj_var))
+        variables.extend(self._make_coord_vars())
+
+        # Now the data
+        name = self.prod_desc.channel
+        if '(' in name:
+            name = name.split('(')[0].rstrip()
+
+        missing_val = self.missing
+        attrs = {'long_name': self.prod_desc.channel, 'missing_value': missing_val,
+                 'coordinates': 'y x time', 'grid_mapping': proj_var_name}
+        data_var = Variable(('y', 'x'),
+                            data=np.ma.array(self.data,
+                                             mask=self.data == missing_val),
+                            attrs=attrs)
+        variables.append((name, data_var))
+
+        return FrozenOrderedDict(variables)
+
+    def get_attrs(self):
+        """Get the global attributes.
+
+        This is used by `xarray.open_dataset`.
+
+        """
+        return FrozenOrderedDict(satellite=self.prod_desc.creating_entity,
+                                 sector=self.prod_desc.sector_id)
+
+    def get_dimensions(self):
+        """Get the file's dimensions.
+
+        This is used by `xarray.open_dataset`.
+
+        """
+        return FrozenOrderedDict(x=self.prod_desc.nx, y=self.prod_desc.ny)
 
 
 def _add_projection_coords(ds, prod_desc, proj_var, dx, dy):

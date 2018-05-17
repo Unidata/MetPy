@@ -5,16 +5,6 @@ Infrastructure Guide
 This guide serves as an advanced version of the contributing documentation and contains the
 information on how we manage MetPy and the infrastructure behind it.
 
-------------
-Requirements
-------------
-
-- pytest >= 2.4
-- flake8
-- sphinx >= 1.3
-- sphinx-rtd-theme >= 0.1.7
-- nbconvert>=4.1
-
 ----------
 Versioning
 ----------

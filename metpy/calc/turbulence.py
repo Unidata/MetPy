@@ -6,11 +6,13 @@ r"""Contains calculations related to turbulence and time series perturbations.""
 import numpy as np
 
 from ..package_tools import Exporter
+from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
 
 
 @exporter.export
+@preprocess_xarray
 def get_perturbation(ts, axis=-1):
     r"""Compute the perturbation from the mean of a time series.
 
@@ -50,6 +52,7 @@ def get_perturbation(ts, axis=-1):
 
 
 @exporter.export
+@preprocess_xarray
 def tke(u, v, w, perturbation=False, axis=-1):
     r"""Compute turbulence kinetic energy.
 
@@ -115,6 +118,7 @@ def tke(u, v, w, perturbation=False, axis=-1):
 
 
 @exporter.export
+@preprocess_xarray
 def kinematic_flux(vel, b, perturbation=False, axis=-1):
     r"""Compute the kinematic flux from two time series.
 
@@ -183,6 +187,7 @@ def kinematic_flux(vel, b, perturbation=False, axis=-1):
 
 
 @exporter.export
+@preprocess_xarray
 def friction_velocity(u, w, v=None, perturbation=False, axis=-1):
     r"""Compute the friction velocity from the time series of velocity components.
 

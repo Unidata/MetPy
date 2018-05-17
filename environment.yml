@@ -10,6 +10,7 @@ dependencies:
   - matplotlib
   - pint
   - netcdf4
+  - xarray
   - pandas
   - jupyter
   - sphinx

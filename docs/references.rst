@@ -43,6 +43,11 @@ References
            *Mon. Wea. Rev.*, **137**, 3137-3148,
            doi: `10.1175/2009mwr2774.1 <https://doi.org/10.1175/2009MWR2774.1>`_.
 
+.. [Esterheld2008] Esterheld, J., and Giuliano, D., 2008: Discriminating between Tornadic and
+           Non-Tornadic Supercells: A New Hodograph Technique. *E-Journal Of Severe Storms
+           Meteorology*, **3(2)**, Retrieved May 10, 2018, from
+           http://www.ejssm.org/ojs/index.php/ejssm/article/view/33
+
 .. [Hobbs1977] Hobbs, P. V., and J. M. Wallace, 1977: *Atmospheric Science: An
            Introductory Survey*. Academic Press, 350 pp.
 

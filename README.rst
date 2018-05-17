@@ -80,7 +80,8 @@ release new features, and `y` when we make a release with only bug fixes.
 We support Python >= 3.4 and currently support Python 2.7.
 
 NOTE: We are dropping support for Python 2.7 in Fall 2019. See
-`here <https://github.com/Unidata/MetPy/docs/installguide.rst>`_ for more information.
+`here <https://github.com/Unidata/MetPy/blob/master/docs/installguide.rst>`_ for more
+information.
 
 Need Help?
 ----------
