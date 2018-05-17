@@ -689,7 +689,7 @@ def test_parse_angle_mix_multiple():
     expected_angles_degrees = np.arange(0, 360, 22.5) * units.degree
     output_angles_degrees = parse_angle(test_dir_strs)
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
-
+    print(DIR_STRS)
 
 def test_gradient_2d(deriv_2d_data):
     """Test gradient with 2D arrays."""

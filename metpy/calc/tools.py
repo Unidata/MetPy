@@ -25,29 +25,17 @@ from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
 
-DIR_DICT = {
-    'N': 0. * units.degree,
-    'NNE': 22.5 * units.degree,
-    'NE': 45. * units.degree,
-    'ENE': 67.5 * units.degree,
-    'E': 90. * units.degree,
-    'ESE': 112.5 * units.degree,
-    'SE': 135. * units.degree,
-    'SSE': 157.5 * units.degree,
-    'S': 180. * units.degree,
-    'SSW': 202.5 * units.degree,
-    'SW': 225. * units.degree,
-    'WSW': 247.5 * units.degree,
-    'W': 270. * units.degree,
-    'WNW': 292.5 * units.degree,
-    'NW': 315. * units.degree,
-    'NNW': 337.5 * units.degree
-}
 
-DIR_STRS = DIR_DICT.keys()
+DIR_STRS = [
+    'N', 'NNE', 'NE', 'ENE',
+    'E', 'ESE', 'SE', 'SSE',
+    'S', 'SSW', 'SW', 'WSW',
+    'W', 'WNW', 'NW', 'NNW'
+]
 
 BASE_DEGREE_MULTIPLIER = 22.5 * units.degree
 
+DIR_DICT = {dir_str: i * BASE_DEGREE_MULTIPLIER for i, dir_str in enumerate(DIR_STRS)}
 
 @exporter.export
 @preprocess_xarray
