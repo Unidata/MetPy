@@ -690,6 +690,7 @@ def test_parse_angle_mix_multiple():
     output_angles_degrees = parse_angle(test_dir_strs)
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
 
+
 def test_gradient_2d(deriv_2d_data):
     """Test gradient with 2D arrays."""
     res = gradient(deriv_2d_data.f, x=(deriv_2d_data.y, deriv_2d_data.x))
