@@ -1370,11 +1370,11 @@ def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
     get_layer
 
     """
-    p_layer, T_layer, Td_layer = get_layer(pressure, temperature, dewpoint, bottom=bottom,
+    p_layer, t_layer, td_layer = get_layer(pressure, temperature, dewpoint, bottom=bottom,
                                            depth=depth, heights=heights, interpolate=False)
-    theta_e = equivalent_potential_temperature(p_layer, T_layer, Td_layer)
+    theta_e = equivalent_potential_temperature(p_layer, t_layer, td_layer)
     max_idx = np.argmax(theta_e)
-    return p_layer[max_idx], T_layer[max_idx], Td_layer[max_idx], max_idx
+    return p_layer[max_idx], t_layer[max_idx], td_layer[max_idx], max_idx
 
 
 @exporter.export
