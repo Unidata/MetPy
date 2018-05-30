@@ -9,8 +9,9 @@ import pytest
 from metpy.calc import (add_height_to_pressure, add_pressure_to_height, apparent_temperature,
                         coriolis_parameter, geopotential_to_height, get_wind_components,
                         get_wind_dir, get_wind_speed, heat_index, height_to_geopotential,
-                        height_to_pressure_std, pressure_to_height_std,
-                        sigma_to_pressure, windchill)
+                        height_to_pressure_std, pressure_to_height_std, sigma_to_pressure,
+                        wind_components, wind_direction, wind_speed, windchill)
+from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -21,7 +22,7 @@ def test_wind_comps_basic():
     dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
     s2 = np.sqrt(2.)
 
-    u, v = get_wind_components(speed, dirs)
+    u, v = wind_components(speed, dirs)
 
     true_u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph
     true_v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph
@@ -32,7 +33,7 @@ def test_wind_comps_basic():
 
 def test_wind_comps_scalar():
     """Test wind components calculation with scalars."""
-    u, v = get_wind_components(8 * units('m/s'), 150 * units.deg)
+    u, v = wind_components(8 * units('m/s'), 150 * units.deg)
     assert_almost_equal(u, -4 * units('m/s'), 3)
     assert_almost_equal(v, 6.9282 * units('m/s'), 3)
 
@@ -42,7 +43,7 @@ def test_speed():
     u = np.array([4., 2., 0., 0.]) * units('m/s')
     v = np.array([0., 2., 4., 0.]) * units('m/s')
 
-    speed = get_wind_speed(u, v)
+    speed = wind_speed(u, v)
 
     s2 = np.sqrt(2.)
     true_speed = np.array([4., 2 * s2, 4., 0.]) * units('m/s')
@@ -50,28 +51,28 @@ def test_speed():
     assert_array_almost_equal(true_speed, speed, 4)
 
 
-def test_dir():
+def test_direction():
     """Test calculating wind direction."""
     u = np.array([4., 2., 0., 0.]) * units('m/s')
     v = np.array([0., 2., 4., 0.]) * units('m/s')
 
-    direc = get_wind_dir(u, v)
+    direc = wind_direction(u, v)
 
     true_dir = np.array([270., 225., 180., 270.]) * units.deg
 
     assert_array_almost_equal(true_dir, direc, 4)
 
 
-def test_speed_dir_roundtrip():
+def test_speed_direction_roundtrip():
     """Test round-tripping between speed/direction and components."""
     # Test each quadrant of the whole circle
     wspd = np.array([15., 5., 2., 10.]) * units.meters / units.seconds
     wdir = np.array([160., 30., 225., 350.]) * units.degrees
 
-    u, v = get_wind_components(wspd, wdir)
+    u, v = wind_components(wspd, wdir)
 
-    wdir_out = get_wind_dir(u, v)
-    wspd_out = get_wind_speed(u, v)
+    wdir_out = wind_direction(u, v)
+    wspd_out = wind_speed(u, v)
 
     assert_array_almost_equal(wspd, wspd_out, 4)
     assert_array_almost_equal(wdir, wdir_out, 4)
@@ -79,13 +80,35 @@ def test_speed_dir_roundtrip():
 
 def test_scalar_speed():
     """Test wind speed with scalars."""
-    s = get_wind_speed(-3. * units('m/s'), -4. * units('m/s'))
+    s = wind_speed(-3. * units('m/s'), -4. * units('m/s'))
     assert_almost_equal(s, 5. * units('m/s'), 3)
 
 
-def test_scalar_dir():
+def test_scalar_direction():
     """Test wind direction with scalars."""
-    d = get_wind_dir(3. * units('m/s'), 4. * units('m/s'))
+    d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
+    assert_almost_equal(d, 216.870 * units.deg, 3)
+
+
+def test_get_wind_components():
+    """Test that get_wind_components wrapper works (deprecated in 0.9)."""
+    with pytest.warns(MetpyDeprecationWarning):
+        u, v = get_wind_components(8 * units('m/s'), 150 * units.deg)
+    assert_almost_equal(u, -4 * units('m/s'), 3)
+    assert_almost_equal(v, 6.9282 * units('m/s'), 3)
+
+
+def test_get_wind_speed():
+    """Test that get_wind_speed wrapper works (deprecated in 0.9)."""
+    with pytest.warns(MetpyDeprecationWarning):
+        s = get_wind_speed(-3. * units('m/s'), -4. * units('m/s'))
+    assert_almost_equal(s, 5. * units('m/s'), 3)
+
+
+def test_get_wind_dir():
+    """Test that get_wind_dir wrapper works (deprecated in 0.9)."""
+    with pytest.warns(MetpyDeprecationWarning):
+        d = get_wind_dir(3. * units('m/s'), 4. * units('m/s'))
     assert_almost_equal(d, 216.870 * units.deg, 3)
 
 
@@ -301,7 +324,7 @@ def test_sigma_to_pressure():
 def test_warning_dir():
     """Test that warning is raised wind direction > 2Pi."""
     with pytest.warns(UserWarning):
-        get_wind_components(3. * units('m/s'), 270)
+        wind_components(3. * units('m/s'), 270)
 
 
 def test_coriolis_warning():
