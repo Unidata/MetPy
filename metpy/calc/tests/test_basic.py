@@ -31,6 +31,20 @@ def test_wind_comps_basic():
     assert_array_almost_equal(true_v, v, 4)
 
 
+def test_wind_comps_with_north_and_calm():
+    """Test that the wind component calculation handles northerly and calm winds."""
+    speed = np.array([0, 5, 5]) * units.mph
+    dirs = np.array([0, 360, 0]) * units.deg
+
+    u, v = wind_components(speed, dirs)
+
+    true_u = np.array([0, 0, 0]) * units.mph
+    true_v = np.array([0, -5, -5]) * units.mph
+
+    assert_array_almost_equal(true_u, u, 4)
+    assert_array_almost_equal(true_v, v, 4)
+
+
 def test_wind_comps_scalar():
     """Test wind components calculation with scalars."""
     u, v = wind_components(8 * units('m/s'), 150 * units.deg)
@@ -58,9 +72,39 @@ def test_direction():
 
     direc = wind_direction(u, v)
 
-    true_dir = np.array([270., 225., 180., 270.]) * units.deg
+    true_dir = np.array([270., 225., 180., 0.]) * units.deg
 
     assert_array_almost_equal(true_dir, direc, 4)
+
+
+def test_direction_with_north_and_calm():
+    """Test how wind direction handles northerly and calm winds."""
+    u = np.array([0., -0., 0.]) * units('m/s')
+    v = np.array([0., 0., -5.]) * units('m/s')
+
+    direc = wind_direction(u, v)
+
+    true_dir = np.array([0., 0., 360.]) * units.deg
+
+    assert_array_almost_equal(true_dir, direc, 4)
+
+
+def test_direction_without_units():
+    """Test calculating wind direction without units."""
+    u = np.array([0., -5., -4., -3.])
+    v = np.array([0., 5., 0., -3.])
+
+    direc = wind_direction(u, v)
+
+    true_dir = np.array([0., 135., 90., 45.]) * units.deg
+
+    assert_array_almost_equal(true_dir, direc, 4)
+
+
+def test_direction_dimensions():
+    """Verify wind_direction returns degrees."""
+    d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
+    assert str(d.units) == 'degree'
 
 
 def test_speed_direction_roundtrip():

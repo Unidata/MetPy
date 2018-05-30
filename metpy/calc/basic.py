@@ -65,20 +65,30 @@ def wind_direction(u, v):
 
     Returns
     -------
-    wind direction: `pint.Quantity`
-        The direction of the wind, specified as the direction from
-        which it is blowing, with 0 being North.
+    direction: `pint.Quantity`
+        The direction of the wind in interval [0, 360] degrees, specified as the direction from
+        which it is blowing, with 360 being North.
 
     See Also
     --------
     wind_components
 
+    Notes
+    -----
+    In the case of calm winds (where `u` and `v` are zero), this function returns a direction
+    of 0.
+
     """
     wdir = 90. * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
     wdir = atleast_1d(wdir)
-    wdir[wdir < 0] += 360. * units.deg
-    return wdir.reshape(origshape)
+    wdir[wdir <= 0] += 360. * units.deg
+    # Need to be able to handle array-like u and v (with or without units)
+    # np.any check required for legacy numpy which treats 0-d False boolean index as zero
+    calm_mask = (np.asarray(u) == 0.) & (np.asarray(v) == 0.)
+    if np.any(calm_mask):
+        wdir[calm_mask] = 0. * units.deg
+    return wdir.reshape(origshape).to('degrees')
 
 
 @exporter.export
@@ -92,7 +102,7 @@ def wind_components(speed, wdir):
         The wind speed (magnitude)
     wdir : array_like
         The wind direction, specified as the direction from which the wind is
-        blowing, with 0 being North.
+        blowing, with 360 degrees being North.
 
     Returns
     -------
