@@ -2050,7 +2050,7 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
 
     This function calculates the wet-bulb temperature using the Normand method. The LCL is
     computed, and that parcel brought down to the starting pressure along a moist adiabat.
-    Norman method (and others) described and compared by [Knox2017]_.
+    The Normand method (and others) are described and compared by [Knox2017]_.
 
     Parameters
     ----------
