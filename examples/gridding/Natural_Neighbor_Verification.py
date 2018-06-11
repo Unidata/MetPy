@@ -54,8 +54,8 @@ import numpy as np
 from scipy.spatial import ConvexHull, Delaunay, delaunay_plot_2d, Voronoi, voronoi_plot_2d
 from scipy.spatial.distance import euclidean
 
-from metpy.gridding import polygons, triangles
-from metpy.gridding.interpolation import nn_point
+from metpy.interpolate import geometry
+from metpy.interpolate.points import natural_neighbor_point
 
 ###########################################
 # For a test case, we generate 10 random points and observations, where the
@@ -89,18 +89,20 @@ ax.set_aspect('equal', 'datalim')
 ax.set_title('Triangulation of observations and test grid cell '
              'natural neighbor interpolation values')
 
-members, tri_info = triangles.find_natural_neighbors(tri, list(zip(sim_gridx, sim_gridy)))
+members, tri_info = geometry.find_natural_neighbors(tri, list(zip(sim_gridx, sim_gridy)))
 
-val = nn_point(xp, yp, zp, (sim_gridx[0], sim_gridy[0]), tri, members[0], tri_info)
+val = natural_neighbor_point(xp, yp, zp, (sim_gridx[0], sim_gridy[0]), tri, members[0],
+                             tri_info)
 ax.annotate('grid 0: {:.3f}'.format(val), xy=(sim_gridx[0] + 2, sim_gridy[0]))
 
-val = nn_point(xp, yp, zp, (sim_gridx[1], sim_gridy[1]), tri, members[1], tri_info)
+val = natural_neighbor_point(xp, yp, zp, (sim_gridx[1], sim_gridy[1]), tri, members[1],
+                             tri_info)
 ax.annotate('grid 1: {:.3f}'.format(val), xy=(sim_gridx[1] + 2, sim_gridy[1]))
 
 
 ###########################################
 # Using the circumcenter and circumcircle radius information from
-# :func:`metpy.gridding.triangles.find_natural_neighbors`, we can visually
+# :func:`metpy.interpolate.geometry.find_natural_neighbors`, we can visually
 # examine the results to see if they are correct.
 def draw_circle(ax, x, y, r, m, label):
     th = np.linspace(0, 2 * np.pi, 100)
@@ -109,7 +111,7 @@ def draw_circle(ax, x, y, r, m, label):
     ax.plot(nx, ny, m, label=label)
 
 
-members, tri_info = triangles.find_natural_neighbors(tri, list(zip(sim_gridx, sim_gridy)))
+members, tri_info = geometry.find_natural_neighbors(tri, list(zip(sim_gridx, sim_gridy)))
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 delaunay_plot_2d(tri, ax=ax)
@@ -201,24 +203,24 @@ def draw_polygon_with_info(ax, polygon, off_x=0, off_y=0):
                 [pt[1], pts[(i + 1) % len(pts)][1]], 'k-')
 
     avex, avey = np.mean(pts, axis=0)
-    ax.annotate('area: {:.3f}'.format(polygons.area(pts)), xy=(avex + off_x, avey + off_y),
+    ax.annotate('area: {:.3f}'.format(geometry.area(pts)), xy=(avex + off_x, avey + off_y),
                 fontsize=12)
 
 
-cc1 = triangles.circumcenter((53, 66), (15, 60), (30, 30))
-cc2 = triangles.circumcenter((34, 24), (53, 66), (30, 30))
+cc1 = geometry.circumcenter((53, 66), (15, 60), (30, 30))
+cc2 = geometry.circumcenter((34, 24), (53, 66), (30, 30))
 draw_polygon_with_info(ax, [cc[0], cc1, cc2])
 
-cc1 = triangles.circumcenter((53, 66), (15, 60), (30, 30))
-cc2 = triangles.circumcenter((15, 60), (8, 24), (30, 30))
+cc1 = geometry.circumcenter((53, 66), (15, 60), (30, 30))
+cc2 = geometry.circumcenter((15, 60), (8, 24), (30, 30))
 draw_polygon_with_info(ax, [cc[0], cc[1], cc1, cc2], off_x=-9, off_y=3)
 
-cc1 = triangles.circumcenter((8, 24), (34, 24), (30, 30))
-cc2 = triangles.circumcenter((15, 60), (8, 24), (30, 30))
+cc1 = geometry.circumcenter((8, 24), (34, 24), (30, 30))
+cc2 = geometry.circumcenter((15, 60), (8, 24), (30, 30))
 draw_polygon_with_info(ax, [cc[1], cc1, cc2], off_x=-15)
 
-cc1 = triangles.circumcenter((8, 24), (34, 24), (30, 30))
-cc2 = triangles.circumcenter((34, 24), (53, 66), (30, 30))
+cc1 = geometry.circumcenter((8, 24), (34, 24), (30, 30))
+cc2 = geometry.circumcenter((34, 24), (53, 66), (30, 30))
 draw_polygon_with_info(ax, [cc[0], cc[1], cc1, cc2])
 
 ###########################################
@@ -242,7 +244,8 @@ print(contributions)
 ###########################################
 # The sum of this array is the interpolation value!
 interpolation_value = np.sum(contributions)
-function_output = nn_point(xp, yp, zp, (sim_gridx[0], sim_gridy[0]), tri, members[0], tri_info)
+function_output = natural_neighbor_point(xp, yp, zp, (sim_gridx[0], sim_gridy[0]), tri,
+                                         members[0], tri_info)
 
 print(interpolation_value, function_output)
 

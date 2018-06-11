@@ -30,9 +30,9 @@ import numpy as np
 from scipy.spatial import cKDTree
 from scipy.spatial.distance import cdist
 
-from metpy.gridding.gridding_functions import calc_kappa
-from metpy.gridding.interpolation import barnes_point, cressman_point
-from metpy.gridding.triangles import dist_2
+from metpy.interpolate.geometry import dist_2
+from metpy.interpolate.points import barnes_point, cressman_point
+from metpy.interpolate.tools import calc_kappa
 
 
 def draw_circle(ax, x, y, r, m, label):

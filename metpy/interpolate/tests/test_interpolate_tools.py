@@ -1,7 +1,7 @@
-# Copyright (c) 2016 MetPy Developers.
+# Copyright (c) 2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Test the `gridding_functions` module."""
+"""Test the `tools` module."""
 
 from __future__ import division
 
@@ -10,11 +10,9 @@ from numpy.testing import assert_almost_equal, assert_array_almost_equal
 import pytest
 from scipy.spatial.distance import cdist
 
-from metpy.cbook import get_test_data
-from metpy.gridding import (interpolate, remove_nan_observations,
-                            remove_observations_below_value,
-                            remove_repeat_coordinates)
-from metpy.gridding.gridding_functions import calc_kappa
+from metpy.interpolate import (remove_nan_observations, remove_observations_below_value,
+                               remove_repeat_coordinates)
+from metpy.interpolate.tools import barnes_weights, calc_kappa, cressman_weights
 
 
 @pytest.fixture()
@@ -96,40 +94,35 @@ def test_remove_repeat_coordinates(test_coords):
     assert_array_almost_equal(truthz, z_)
 
 
-interp_methods = ['natural_neighbor', 'cressman', 'barnes',
-                  'linear', 'nearest', 'cubic', 'rbf']
+def test_barnes_weights():
+    r"""Test Barnes weights function."""
+    kappa = 1000000
 
-boundary_types = [{'west': 80.0, 'south': 140.0, 'east': 980.0, 'north': 980.0},
-                  None]
+    gamma = 0.5
+
+    dist = np.array([1000, 2000, 3000, 4000])**2
+
+    weights = barnes_weights(dist, kappa, gamma) * 10000000
+
+    truth = [1353352.832366126918939,
+             3354.626279025118388,
+             .152299797447126,
+             .000000126641655]
+
+    assert_array_almost_equal(truth, weights)
 
 
-@pytest.mark.parametrize('method', interp_methods)
-@pytest.mark.parametrize('boundary_coords', boundary_types)
-def test_interpolate(method, test_coords, boundary_coords):
-    r"""Test main interpolate function."""
-    xp, yp = test_coords
+def test_cressman_weights():
+    r"""Test Cressman weights function."""
+    r = 5000
 
-    xp *= 10
-    yp *= 10
+    dist = np.array([1000, 2000, 3000, 4000])**2
 
-    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225, 3.364])
+    weights = cressman_weights(dist, r)
 
-    extra_kw = {}
-    if method == 'cressman':
-        extra_kw['search_radius'] = 200
-        extra_kw['minimum_neighbors'] = 1
-    elif method == 'barnes':
-        extra_kw['search_radius'] = 400
-        extra_kw['minimum_neighbors'] = 1
-        extra_kw['gamma'] = 1
+    truth = [0.923076923076923,
+             0.724137931034482,
+             0.470588235294117,
+             0.219512195121951]
 
-    if boundary_coords is not None:
-        extra_kw['boundary_coords'] = boundary_coords
-
-    _, _, img = interpolate(xp, yp, z, hres=10, interp_type=method, **extra_kw)
-
-    with get_test_data('{0}_test.npz'.format(method)) as fobj:
-        truth = np.load(fobj)['img']
-
-    assert_array_almost_equal(truth, img)
+    assert_array_almost_equal(truth, weights)

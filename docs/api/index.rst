@@ -16,6 +16,7 @@ The MetPy API
    metpy.calc
    metpy.plots
    metpy.plots.ctables
+   metpy.interpolate
    metpy.gridding
 
 * :ref:`modindex`
