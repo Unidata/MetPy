@@ -7,8 +7,8 @@ from __future__ import division
 
 import numpy as np
 
-from .interpolation import (interpolate_to_points, inverse_distance_to_points,
-                            natural_neighbor_to_points)
+from .points import (interpolate_to_points, inverse_distance_to_points,
+                     natural_neighbor_to_points)
 from ..deprecation import deprecated
 from ..package_tools import Exporter
 

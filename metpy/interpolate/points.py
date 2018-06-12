@@ -199,8 +199,9 @@ def natural_neighbor_to_points(points, values, xi):
 
         if len(neighbors) > 0:
 
-            img[ind] = natural_neighbor_point(*np.array(points).transpose(), values, xi[grid],
-                                              tri, neighbors, triangle_info)
+            points_transposed = np.array(points).transpose()
+            img[ind] = natural_neighbor_point(points_transposed[0], points_transposed[1],
+                                              values, xi[grid], tri, neighbors, triangle_info)
 
     return img
 
@@ -365,8 +366,11 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
     # If this is radial basis function, make the interpolator and apply it
     elif interp_type == 'rbf':
 
-        rbfi = Rbf(*np.array(points).transpose(), values, function=rbf_func, smooth=rbf_smooth)
-        return rbfi(*np.array(xi).transpose())
+        points_transposed = np.array(points).transpose()
+        xi_transposed = np.array(xi).transpose()
+        rbfi = Rbf(points_transposed[0], points_transposed[1], values, function=rbf_func,
+                   smooth=rbf_smooth)
+        return rbfi(xi_transposed[0], xi_transposed[1])
 
     else:
         raise ValueError('Interpolation option not available. '

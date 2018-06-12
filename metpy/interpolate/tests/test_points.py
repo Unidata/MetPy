@@ -150,13 +150,9 @@ def test_inverse_distance_to_points(method, test_data, test_points):
 interp_methods = ['natural_neighbor', 'cressman', 'barnes',
                   'linear', 'nearest', 'cubic', 'rbf']
 
-boundary_types = [{'west': 80.0, 'south': 140.0, 'east': 980.0, 'north': 980.0},
-                  None]
-
 
 @pytest.mark.parametrize('method', interp_methods)
-@pytest.mark.parametrize('boundary_coords', boundary_types)
-def test_interpolate_to_points(method, test_data, boundary_coords):
+def test_interpolate_to_points(method, test_data):
     r"""Test main grid interpolation function."""
     xp, yp, z = test_data
     obs_points = np.vstack([xp, yp]).transpose() * 10

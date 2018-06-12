@@ -19,7 +19,9 @@ import numpy.ma as ma
 from scipy.spatial import cKDTree
 
 from . import height_to_pressure_std, pressure_to_height_std
-from ..deprecation import metpyDeprecation
+from ..cbook import broadcast_indices
+from ..deprecation import deprecated, metpyDeprecation
+from ..interpolate.one_dimension import interpolate_1d, interpolate_nans_1d, log_interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, diff, units
 from ..xarray import preprocess_xarray
@@ -172,37 +174,17 @@ def find_intersections(x, a, b, direction='all'):
 
 @exporter.export
 @preprocess_xarray
+@deprecated('0.9', addendum=(' This function has been moved to metpy.interpolate and renamed '
+                             'interpolate_nans_1d.'), pending=False)
 def interpolate_nans(x, y, kind='linear'):
-    """Interpolate NaN values in y.
+    """Wrap interpolate_nans_1d for deprecated interpolate_nans."""
+    return interpolate_nans_1d(x, y, kind=kind)
 
-    Interpolate NaN values in the y dimension. Works with unsorted x values.
 
-    Parameters
-    ----------
-    x : array-like
-        1-dimensional array of numeric x-values
-    y : array-like
-        1-dimensional array of numeric y-values
-    kind : string
-        specifies the kind of interpolation x coordinate - 'linear' or 'log', optional.
-        Defaults to 'linear'.
-
-    Returns
-    -------
-        An array of the y coordinate data with NaN values interpolated.
-
-    """
-    x_sort_args = np.argsort(x)
-    x = x[x_sort_args]
-    y = y[x_sort_args]
-    nans = np.isnan(y)
-    if kind == 'linear':
-        y[nans] = np.interp(x[nans], x[~nans], y[~nans])
-    elif kind == 'log':
-        y[nans] = np.interp(np.log(x[nans]), np.log(x[~nans]), y[~nans])
-    else:
-        raise ValueError('Unknown option for kind: {0}'.format(str(kind)))
-    return y[x_sort_args]
+interpolate_nans.__doc__ = (interpolate_nans_1d.__doc__ +
+                            '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
+                            '`interpolate_nans_1d` and moved to `metpy.interpolate`, and '
+                            'will be removed from MetPy in 0.12.0.')
 
 
 def _next_non_masked_element(a, idx):
@@ -371,7 +353,7 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
             if interpolate:
                 bound_pressure = bound  # Use the user specified bound
                 if heights is not None:  # Interpolate heights from the height data
-                    bound_height = log_interp(bound_pressure, pressure, heights)
+                    bound_height = log_interpolate_1d(bound_pressure, pressure, heights)
                 else:  # If not heights given, use the standard atmosphere
                     bound_height = pressure_to_height_std(bound_pressure)
             else:  # No interpolation, find the closest values
@@ -511,7 +493,7 @@ def get_layer_heights(heights, depth, *args, **kwargs):
 
         if interpolate:
             # Interpolate for the possibly missing bottom/top values
-            datavar_interp = interp(heights_interp, heights, datavar)
+            datavar_interp = interpolate_1d(heights_interp, heights, datavar)
             datavar = datavar_interp
         else:
             datavar = datavar[inds]
@@ -618,7 +600,7 @@ def get_layer(pressure, *args, **kwargs):
 
         if interpolate:
             # Interpolate for the possibly missing bottom/top values
-            datavar_interp = log_interp(p_interp, pressure, datavar)
+            datavar_interp = log_interpolate_1d(p_interp, pressure, datavar)
             datavar = datavar_interp
         else:
             datavar = datavar[inds]
@@ -629,124 +611,17 @@ def get_layer(pressure, *args, **kwargs):
 
 @exporter.export
 @preprocess_xarray
-@units.wraps(None, ('=A', '=A'))
+@deprecated('0.9', addendum=(' This function has been moved to metpy.interpolate and renamed '
+                             'interpolate_1d.'), pending=False)
 def interp(x, xp, *args, **kwargs):
-    r"""Interpolates data with any shape over a specified axis.
+    """Wrap interpolate_1d for deprecated interp."""
+    return interpolate_1d(x, xp, *args, **kwargs)
 
-    Interpolation over a specified axis for arrays of any shape.
 
-    Parameters
-    ----------
-    x : array-like
-        1-D array of desired interpolated values.
-
-    xp : array-like
-        The x-coordinates of the data points.
-
-    args : array-like
-        The data to be interpolated. Can be multiple arguments, all must be the same shape as
-        xp.
-
-    axis : int, optional
-        The axis to interpolate over. Defaults to 0.
-
-    fill_value: float, optional
-        Specify handling of interpolation points out of data bounds. If None, will return
-        ValueError if points are out of bounds. Defaults to nan.
-
-    Returns
-    -------
-    array-like
-        Interpolated values for each point with coordinates sorted in ascending order.
-
-    Examples
-    --------
-     >>> x = np.array([1., 2., 3., 4.])
-     >>> y = np.array([1., 2., 3., 4.])
-     >>> x_interp = np.array([2.5, 3.5])
-     >>> metpy.calc.interp(x_interp, x, y)
-     array([2.5, 3.5])
-
-    Notes
-    -----
-    xp and args must be the same shape.
-
-    """
-    # Pull out keyword args
-    fill_value = kwargs.pop('fill_value', np.nan)
-    axis = kwargs.pop('axis', 0)
-
-    # Make x an array
-    x = np.asanyarray(x).reshape(-1)
-
-    # Save number of dimensions in xp
-    ndim = xp.ndim
-
-    # Sort input data
-    sort_args = np.argsort(xp, axis=axis)
-    sort_x = np.argsort(x)
-
-    # indices for sorting
-    sorter = broadcast_indices(xp, sort_args, ndim, axis)
-
-    # sort xp
-    xp = xp[sorter]
-    # Ensure pressure in increasing order
-    variables = [arr[sorter] for arr in args]
-
-    # Make x broadcast with xp
-    x_array = x[sort_x]
-    expand = [np.newaxis] * ndim
-    expand[axis] = slice(None)
-    x_array = x_array[expand]
-
-    # Calculate value above interpolated value
-    minv = np.apply_along_axis(np.searchsorted, axis, xp, x[sort_x])
-    minv2 = np.copy(minv)
-
-    # If fill_value is none and data is out of bounds, raise value error
-    if ((np.max(minv) == xp.shape[axis]) or (np.min(minv) == 0)) and fill_value is None:
-        raise ValueError('Interpolation point out of data bounds encountered')
-
-    # Warn if interpolated values are outside data bounds, will make these the values
-    # at end of data range.
-    if np.max(minv) == xp.shape[axis]:
-        warnings.warn('Interpolation point out of data bounds encountered')
-        minv2[minv == xp.shape[axis]] = xp.shape[axis] - 1
-    if np.min(minv) == 0:
-        minv2[minv == 0] = 1
-
-    # Get indices for broadcasting arrays
-    above = broadcast_indices(xp, minv2, ndim, axis)
-    below = broadcast_indices(xp, minv2 - 1, ndim, axis)
-
-    if np.any(x_array < xp[below]):
-        warnings.warn('Interpolation point out of data bounds encountered')
-
-    # Create empty output list
-    ret = []
-
-    # Calculate interpolation for each variable
-    for var in variables:
-        # Var needs to be on the *left* of the multiply to ensure that if it's a pint
-        # Quantity, it gets to control the operation--at least until we make sure
-        # masked arrays and pint play together better. See https://github.com/hgrecco/pint#633
-        var_interp = var[below] + (var[above] - var[below]) * ((x_array - xp[below]) /
-                                                               (xp[above] - xp[below]))
-
-        # Set points out of bounds to fill value.
-        var_interp[minv == xp.shape[axis]] = fill_value
-        var_interp[x_array < xp[below]] = fill_value
-
-        # Check for input points in decreasing order and return output to match.
-        if x[0] > x[-1]:
-            var_interp = np.swapaxes(np.swapaxes(var_interp, 0, axis)[::-1], 0, axis)
-        # Output to list
-        ret.append(var_interp)
-    if len(ret) == 1:
-        return ret[0]
-    else:
-        return ret
+interp.__doc__ = (interpolate_1d.__doc__ +
+                  '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
+                  '`interpolate_1d` and moved to `metpy.interpolate`, and '
+                  'will be removed from MetPy in 0.12.0.')
 
 
 @exporter.export
@@ -838,76 +713,19 @@ def find_bounding_indices(arr, values, axis, from_below=True):
     return above, below, good
 
 
-def broadcast_indices(x, minv, ndim, axis):
-    """Calculate index values to properly broadcast index array within data array.
-
-    See usage in interp.
-    """
-    ret = []
-    for dim in range(ndim):
-        if dim == axis:
-            ret.append(minv)
-        else:
-            broadcast_slice = [np.newaxis] * ndim
-            broadcast_slice[dim] = slice(None)
-            dim_inds = np.arange(x.shape[dim])
-            ret.append(dim_inds[broadcast_slice])
-    return ret
-
-
 @exporter.export
 @preprocess_xarray
-@units.wraps(None, ('=A', '=A'))
+@deprecated('0.9', addendum=(' This function has been moved to metpy.interpolate and renamed '
+                             'log_interpolate_1d.'), pending=False)
 def log_interp(x, xp, *args, **kwargs):
-    r"""Interpolates data with logarithmic x-scale over a specified axis.
+    """Wrap log_interpolate_1d for deprecated log_interp."""
+    return log_interpolate_1d(x, xp, *args, **kwargs)
 
-    Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.
 
-    Parameters
-    ----------
-    x : array-like
-        1-D array of desired interpolated values.
-
-    xp : array-like
-        The x-coordinates of the data points.
-
-    args : array-like
-        The data to be interpolated. Can be multiple arguments, all must be the same shape as
-        xp.
-
-    axis : int, optional
-        The axis to interpolate over. Defaults to 0.
-
-    fill_value: float, optional
-        Specify handling of interpolation points out of data bounds. If None, will return
-        ValueError if points are out of bounds. Defaults to nan.
-
-    Returns
-    -------
-    array-like
-        Interpolated values for each point with coordinates sorted in ascending order.
-
-    Examples
-    --------
-     >>> x_log = np.array([1e3, 1e4, 1e5, 1e6])
-     >>> y_log = np.log(x_log) * 2 + 3
-     >>> x_interp = np.array([5e3, 5e4, 5e5])
-     >>> metpy.calc.log_interp(x_interp, x_log, y_log)
-     array([20.03438638, 24.63955657, 29.24472675])
-
-    Notes
-    -----
-    xp and args must be the same shape.
-
-    """
-    # Pull out kwargs
-    fill_value = kwargs.pop('fill_value', np.nan)
-    axis = kwargs.pop('axis', 0)
-
-    # Log x and xp
-    log_x = np.log(x)
-    log_xp = np.log(xp)
-    return interp(log_x, log_xp, *args, axis=axis, fill_value=fill_value)
+log_interp.__doc__ = (log_interpolate_1d.__doc__ +
+                      '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
+                      '`log_interpolate_1d` and moved to `metpy.interpolate`, and '
+                      'will be removed from MetPy in 0.12.0.')
 
 
 def _greater_or_close(a, value, **kwargs):
