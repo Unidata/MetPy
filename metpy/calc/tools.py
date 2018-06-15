@@ -19,6 +19,7 @@ import numpy.ma as ma
 from scipy.spatial import cKDTree
 
 from . import height_to_pressure_std, pressure_to_height_std
+from ..deprecation import metpyDeprecation
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, diff, units
 from ..xarray import preprocess_xarray
@@ -1135,7 +1136,7 @@ def gradient(f, **kwargs):
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    x : array-like, optional
+    coordinates : array-like, optional
         Sequence of arrays containing the coordinate values corresponding to the
         grid points in `f` in axis order.
     deltas : array-like, optional
@@ -1150,6 +1151,11 @@ def gradient(f, **kwargs):
     See Also
     --------
     laplacian
+
+    Notes
+    -----
+    `gradient` previously accepted `x` as a parameter for coordinate values. This has been
+    deprecated in 0.9 in favor of `coordinates`.
 
     """
     pos_kwarg, positions = _process_gradient_args(kwargs)
@@ -1170,7 +1176,7 @@ def laplacian(f, **kwargs):
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    x : array-like, optional
+    coordinates : array-like, optional
         The coordinate values corresponding to the grid points in `f`
     deltas : array-like, optional
         Spacing between the grid points in `f`. There should be one item less than the size
@@ -1184,6 +1190,11 @@ def laplacian(f, **kwargs):
     See Also
     --------
     gradient
+
+    Notes
+    -----
+    `laplacian` previously accepted `x` as a parameter for coordinate values. This has been
+    deprecated in 0.9 in favor of `coordinates`.
 
     """
     pos_kwarg, positions = _process_gradient_args(kwargs)
@@ -1206,13 +1217,17 @@ def _broadcast_to_axis(arr, axis, ndim):
 def _process_gradient_args(kwargs):
     """Handle common processing of arguments for gradient and gradient-like functions."""
     if 'deltas' in kwargs:
-        if 'x' in kwargs:
-            raise ValueError('Cannot specify both "x" and "deltas".')
+        if 'coordinates' in kwargs or 'x' in kwargs:
+            raise ValueError('Cannot specify both "coordinates" and "deltas".')
         return 'delta', kwargs['deltas']
+    elif 'coordinates' in kwargs:
+        return 'x', kwargs['coordinates']
     elif 'x' in kwargs:
+        warnings.warn('The use of "x" as a parameter for coordinate values has been '
+                      'deprecated. Use "coordinates" instead.', metpyDeprecation)
         return 'x', kwargs['x']
     else:
-        raise ValueError('Must specify either "x" or "delta" for value positions.')
+        raise ValueError('Must specify either "coordinates" or "deltas" for value positions.')
 
 
 def _process_deriv_args(f, kwargs):

@@ -17,6 +17,7 @@ from metpy.calc import (find_bounding_indices, find_intersections, first_derivat
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               DIR_STRS)
+from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -660,7 +661,7 @@ def test_second_derivative_scalar_delta():
 
 def test_laplacian(deriv_1d_data):
     """Test laplacian with simple 1D data."""
-    laplac = laplacian(deriv_1d_data.values, x=(deriv_1d_data.x,))
+    laplac = laplacian(deriv_1d_data.values, coordinates=(deriv_1d_data.x,))
 
     # Worked by hand
     truth = np.ones_like(deriv_1d_data.values) * 0.2133333 * units('delta_degC/cm**2')
@@ -670,7 +671,15 @@ def test_laplacian(deriv_1d_data):
 def test_laplacian_2d(deriv_2d_data):
     """Test lapacian with full 2D arrays."""
     laplac_true = 2 * (np.ones_like(deriv_2d_data.f) * (deriv_2d_data.a + deriv_2d_data.b))
-    laplac = laplacian(deriv_2d_data.f, x=(deriv_2d_data.y, deriv_2d_data.x))
+    laplac = laplacian(deriv_2d_data.f, coordinates=(deriv_2d_data.y, deriv_2d_data.x))
+    assert_array_almost_equal(laplac, laplac_true, 5)
+
+
+def test_laplacian_x_deprecation(deriv_2d_data):
+    """Test deprecation of x keyword argument."""
+    laplac_true = 2 * (np.ones_like(deriv_2d_data.f) * (deriv_2d_data.a + deriv_2d_data.b))
+    with pytest.warns(MetpyDeprecationWarning):
+        laplac = laplacian(deriv_2d_data.f, x=(deriv_2d_data.y, deriv_2d_data.x))
     assert_array_almost_equal(laplac, laplac_true, 5)
 
 
@@ -705,7 +714,22 @@ def test_parse_angle_mix_multiple():
 
 def test_gradient_2d(deriv_2d_data):
     """Test gradient with 2D arrays."""
-    res = gradient(deriv_2d_data.f, x=(deriv_2d_data.y, deriv_2d_data.x))
+    res = gradient(deriv_2d_data.f, coordinates=(deriv_2d_data.y, deriv_2d_data.x))
+    truth = (np.array([[-0.25, -0.25, -0.25],
+                       [1.75, 1.75, 1.75],
+                       [4.75, 4.75, 4.75],
+                       [5.75, 5.75, 5.75]]),
+             np.array([[-3, -1, 4],
+                       [-3, -1, 4],
+                       [-3, -1, 4],
+                       [-3, -1, 4]]))
+    assert_array_almost_equal(res, truth, 5)
+
+
+def test_gradient_x_deprecation(deriv_2d_data):
+    """Test deprecation of x keyword argument."""
+    with pytest.warns(MetpyDeprecationWarning):
+        res = gradient(deriv_2d_data.f, x=(deriv_2d_data.y, deriv_2d_data.x))
     truth = (np.array([[-0.25, -0.25, -0.25],
                        [1.75, 1.75, 1.75],
                        [4.75, 4.75, 4.75],
