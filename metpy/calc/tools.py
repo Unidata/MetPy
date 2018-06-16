@@ -33,6 +33,7 @@ DIR_STRS = [
     'W', 'WNW', 'NW', 'NNW'
 ]
 
+MAX_DEGREE_ANGLE = 360 * units.degree
 BASE_DEGREE_MULTIPLIER = 22.5 * units.degree
 
 DIR_DICT = {dir_str: i * BASE_DEGREE_MULTIPLIER for i, dir_str in enumerate(DIR_STRS)}
@@ -1302,3 +1303,54 @@ def _abbrieviate_direction(ext_dir_str):
             .replace('SOUTH', 'S')
             .replace('WEST', 'W')
             )
+
+
+@exporter.export
+@preprocess_xarray
+def lon_w2e(longitude):
+    """Convert longitudes in degree from -180 to 180 --> 0 to 360.
+
+    Parameters
+    ----------
+    longitude : array_like
+        array of longitudes ranging from -180 to 180
+
+    Returns
+    -------
+    longitude : array_like
+        array of longitudes ranging from 0 to 360
+
+    """
+    longitude = _ensure_degrees(longitude)
+    return (longitude - MAX_DEGREE_ANGLE) % MAX_DEGREE_ANGLE
+
+
+@exporter.export
+@preprocess_xarray
+def lon_e2w(longitude):
+    """Convert longitudes in degree from 0 to 360 --> -180 to 180.
+
+    Parameters
+    ----------
+    longitude : array_like
+        array of longitudes ranging from 0 to 360
+
+    Returns
+    -------
+    longitude : array_like
+        array of longitudes ranging from -180 to 180
+
+    """
+    longitude = _ensure_degrees(longitude)
+    half_max_degree_angle = MAX_DEGREE_ANGLE / 2
+    return ((longitude + half_max_degree_angle) %
+            MAX_DEGREE_ANGLE - half_max_degree_angle)
+
+
+def _ensure_degrees(angle):
+    """Ensure angle is in degrees."""
+    try:
+        angle = angle.to('degree')
+    except AttributeError:
+        angle = angle * units.degree
+    return angle
