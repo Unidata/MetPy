@@ -21,6 +21,14 @@ from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
+EXPECTED_E2W_LON_DEG = np.concatenate(
+    [np.arange(0., 180.), np.arange(-1., -181., -1.)[::-1]]
+) * units.degree
+
+EXPECTED_W2E_LON_DEG = np.concatenate(
+    [np.arange(180., 360.), np.arange(0., 180.)]
+) * units.degree
+
 
 def test_resample_nn():
     """Test 1d nearest neighbor functionality."""
@@ -764,30 +772,22 @@ def test_bounding_indices_above():
 def test_lon_w2e():
     """Test lon west to east."""
     test_lon = np.arange(-180, 180) * units.degree
-    expected_lon = np.concatenate(
-        [np.arange(180, 360), np.arange(0, 180)]
-    ) * units.degree
     output_lon = lon_w2e(test_lon)
-    assert_array_equal(output_lon, expected_lon)
+    assert_array_equal(output_lon, EXPECTED_W2E_LON_DEG)
 
 
 def test_lon_w2e_no_units():
     """Test lon west to east."""
     test_lon = np.arange(-180, 180)
-    expected_lon = np.concatenate(
-        [np.arange(180, 360), np.arange(0, 180)]
-    ) * units.degree
     output_lon = lon_w2e(test_lon)
-    assert_array_equal(output_lon, expected_lon)
+    assert_array_equal(output_lon, EXPECTED_W2E_LON_DEG)
 
 
 def test_lon_w2e_invalid():
     """Test lon west to east."""
     test_lon = np.arange(-180., 180.)
     test_lon[0] = np.nan
-    expected_lon = np.concatenate(
-        [np.arange(180., 360.), np.arange(0., 180.)]
-    ) * units.degree
+    expected_lon = EXPECTED_W2E_LON_DEG
     expected_lon[0] = np.nan
     output_lon = lon_w2e(test_lon)
     assert_array_equal(output_lon, expected_lon)
@@ -796,18 +796,12 @@ def test_lon_w2e_invalid():
 def test_lon_e2w():
     """Test lon west to east."""
     test_lon = np.arange(0, 360) * units.degree
-    expected_lon = np.concatenate(
-        [np.arange(0, 180), np.arange(-1, -181, -1)[::-1]]
-    ) * units.degree
     output_lon = lon_e2w(test_lon)
-    assert_array_equal(output_lon, expected_lon)
+    assert_array_equal(output_lon, EXPECTED_E2W_LON_DEG)
 
 
 def test_lon_e2w_no_units():
-    """Test lon west to east with no units"""
+    """Test lon west to east with no units."""
     test_lon = np.arange(0, 360)
-    expected_lon = np.concatenate(
-        [np.arange(0, 180), np.arange(-1, -181, -1)[::-1]]
-    ) * units.degree
     output_lon = lon_e2w(test_lon)
-    assert_array_equal(output_lon, expected_lon)
+    assert_array_equal(output_lon, EXPECTED_E2W_LON_DEG)

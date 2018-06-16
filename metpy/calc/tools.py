@@ -1319,6 +1319,7 @@ def lon_w2e(longitude):
     -------
     longitude : array_like
         array of longitudes ranging from 0 to 360
+
     """
     longitude = _ensure_degrees(longitude)
     return (longitude - MAX_DEGREE_ANGLE) % MAX_DEGREE_ANGLE
@@ -1338,6 +1339,7 @@ def lon_e2w(longitude):
     -------
     longitude : array_like
         array of longitudes ranging from -180 to 180
+
     """
     longitude = _ensure_degrees(longitude)
     half_max_degree_angle = MAX_DEGREE_ANGLE / 2
