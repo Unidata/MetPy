@@ -17,8 +17,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from metpy.calc import get_wind_components
 from metpy.calc import reduce_point_density
+from metpy.calc import wind_components
 from metpy.cbook import get_test_data
 from metpy.plots import add_metpy_logo, current_weather, sky_cover, StationPlot, wx_code_map
 from metpy.units import units
@@ -60,8 +60,8 @@ data = data[reduce_point_density(point_locs, 300000.)]
 
 # Get the wind components, converting from m/s to knots as will be appropriate
 # for the station plot.
-u, v = get_wind_components((data['wind_speed'].values * units('m/s')).to('knots'),
-                           data['wind_dir'].values * units.degree)
+u, v = wind_components((data['wind_speed'].values * units('m/s')).to('knots'),
+                       data['wind_dir'].values * units.degree)
 
 # Convert the fraction value into a code of 0-8 and compensate for NaN values,
 # which can be used to pull out the appropriate symbol

@@ -13,7 +13,7 @@ import numpy.testing
 from pint import DimensionalityError
 import pytest
 
-from metpy.calc import get_wind_components
+from metpy.calc import wind_components
 from metpy.cbook import get_test_data
 from .units import units
 
@@ -74,7 +74,7 @@ def get_upper_air_data(date, station):
     direc = direc * units.degrees
     spd = spd * units.knots
 
-    u, v = get_wind_components(spd, direc)
+    u, v = wind_components(spd, direc)
 
     return {'pressure': p, 'height': z, 'temperature': t,
             'dewpoint': td, 'direction': direc, 'speed': spd, 'u_wind': u, 'v_wind': v}

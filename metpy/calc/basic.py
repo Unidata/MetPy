@@ -17,6 +17,7 @@ import warnings
 import numpy as np
 
 from ..constants import G, g, me, omega, Rd, Re
+from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, masked_array, units
 from ..xarray import preprocess_xarray
@@ -26,7 +27,7 @@ exporter = Exporter(globals())
 
 @exporter.export
 @preprocess_xarray
-def get_wind_speed(u, v):
+def wind_speed(u, v):
     r"""Compute the wind speed from u and v-components.
 
     Parameters
@@ -43,7 +44,7 @@ def get_wind_speed(u, v):
 
     See Also
     --------
-    get_wind_components
+    wind_components
 
     """
     speed = np.sqrt(u * u + v * v)
@@ -52,7 +53,7 @@ def get_wind_speed(u, v):
 
 @exporter.export
 @preprocess_xarray
-def get_wind_dir(u, v):
+def wind_direction(u, v):
     r"""Compute the wind direction from u and v-components.
 
     Parameters
@@ -64,25 +65,35 @@ def get_wind_dir(u, v):
 
     Returns
     -------
-    wind direction: `pint.Quantity`
-        The direction of the wind, specified as the direction from
-        which it is blowing, with 0 being North.
+    direction: `pint.Quantity`
+        The direction of the wind in interval [0, 360] degrees, specified as the direction from
+        which it is blowing, with 360 being North.
 
     See Also
     --------
-    get_wind_components
+    wind_components
+
+    Notes
+    -----
+    In the case of calm winds (where `u` and `v` are zero), this function returns a direction
+    of 0.
 
     """
     wdir = 90. * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
     wdir = atleast_1d(wdir)
-    wdir[wdir < 0] += 360. * units.deg
-    return wdir.reshape(origshape)
+    wdir[wdir <= 0] += 360. * units.deg
+    # Need to be able to handle array-like u and v (with or without units)
+    # np.any check required for legacy numpy which treats 0-d False boolean index as zero
+    calm_mask = (np.asarray(u) == 0.) & (np.asarray(v) == 0.)
+    if np.any(calm_mask):
+        wdir[calm_mask] = 0. * units.deg
+    return wdir.reshape(origshape).to('degrees')
 
 
 @exporter.export
 @preprocess_xarray
-def get_wind_components(speed, wdir):
+def wind_components(speed, wdir):
     r"""Calculate the U, V wind vector components from the speed and direction.
 
     Parameters
@@ -91,7 +102,7 @@ def get_wind_components(speed, wdir):
         The wind speed (magnitude)
     wdir : array_like
         The wind direction, specified as the direction from which the wind is
-        blowing, with 0 being North.
+        blowing, with 360 degrees being North.
 
     Returns
     -------
@@ -101,13 +112,13 @@ def get_wind_components(speed, wdir):
 
     See Also
     --------
-    get_wind_speed
-    get_wind_dir
+    wind_speed
+    wind_direction
 
     Examples
     --------
     >>> from metpy.units import units
-    >>> metpy.calc.get_wind_components(10. * units('m/s'), 225. * units.deg)
+    >>> metpy.calc.wind_components(10. * units('m/s'), 225. * units.deg)
     (<Quantity(7.071067811865475, 'meter / second')>,
      <Quantity(7.071067811865477, 'meter / second')>)
 
@@ -116,6 +127,49 @@ def get_wind_components(speed, wdir):
     u = -speed * np.sin(wdir)
     v = -speed * np.cos(wdir)
     return u, v
+
+
+@exporter.export
+@preprocess_xarray
+@deprecated('0.9', addendum=' This function has been renamed wind_speed.',
+            pending=False)
+def get_wind_speed(u, v):
+    """Wrap wind_speed for deprecated get_wind_speed function."""
+    return wind_speed(u, v)
+
+
+get_wind_speed.__doc__ = (wind_speed.__doc__ +
+                          '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
+                          '`wind_speed` and will be removed from MetPy in 0.12.0.')
+
+
+@exporter.export
+@preprocess_xarray
+@deprecated('0.9', addendum=' This function has been renamed wind_direction.',
+            pending=False)
+def get_wind_dir(u, v):
+    """Wrap wind_direction for deprecated get_wind_dir function."""
+    return wind_direction(u, v)
+
+
+get_wind_dir.__doc__ = (wind_direction.__doc__ +
+                        '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
+                        '`wind_direction` and will be removed from MetPy in 0.12.0.')
+
+
+@exporter.export
+@preprocess_xarray
+@deprecated('0.9', addendum=' This function has been renamed wind_components.',
+            pending=False)
+def get_wind_components(u, v):
+    """Wrap wind_components for deprecated get_wind_components function."""
+    return wind_components(u, v)
+
+
+get_wind_components.__doc__ = (wind_components.__doc__ +
+                               '\n    .. deprecated:: 0.9.0\n        Function has been '
+                               'renamed to `wind_components` and will be removed from MetPy '
+                               'in 0.12.0.')
 
 
 @exporter.export

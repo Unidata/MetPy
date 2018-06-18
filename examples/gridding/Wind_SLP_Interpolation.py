@@ -15,7 +15,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
-from metpy.calc import get_wind_components
+from metpy.calc import wind_components
 from metpy.cbook import get_test_data
 from metpy.gridding.gridding_functions import interpolate, remove_nan_observations
 from metpy.plots import add_metpy_logo
@@ -62,7 +62,7 @@ wind_dir = wind_dir[good_indices]
 # Calculate u and v components of wind and then interpolate both.
 #
 # Both will have the same underlying grid so throw away grid returned from v interpolation.
-u, v = get_wind_components(wind_speed, wind_dir)
+u, v = wind_components(wind_speed, wind_dir)
 
 windgridx, windgridy, uwind = interpolate(x_masked, y_masked, np.array(u),
                                           interp_type='cressman', search_radius=400000,

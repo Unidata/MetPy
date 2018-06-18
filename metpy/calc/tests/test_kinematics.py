@@ -8,13 +8,13 @@ import pytest
 
 from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind,
                         convergence_vorticity, divergence,
-                        frontogenesis, geostrophic_wind, get_wind_components, h_convergence,
+                        frontogenesis, geostrophic_wind, h_convergence,
                         inertial_advective_wind, lat_lon_grid_deltas, lat_lon_grid_spacing,
                         montgomery_streamfunction, potential_vorticity_baroclinic,
                         potential_vorticity_barotropic, q_vector, shearing_deformation,
                         shearing_stretching_deformation, static_stability,
                         storm_relative_helicity, stretching_deformation, total_deformation,
-                        v_vorticity, vorticity)
+                        v_vorticity, vorticity, wind_components)
 from metpy.constants import g, omega, Re
 from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import assert_almost_equal, assert_array_equal
@@ -494,7 +494,7 @@ def test_storm_relative_helicity():
     dir_int = np.arange(180, 272.25, 2.25)
     spd_int = np.zeros((hgt_int.shape[0]))
     spd_int[:] = 2.
-    u_int, v_int = get_wind_components(spd_int * units('m/s'), dir_int * units.degree)
+    u_int, v_int = wind_components(spd_int * units('m/s'), dir_int * units.degree)
 
     # Put in the correct value of SRH for a eighth-circle, 2 m/s hodograph
     # (SRH = 2 * area under hodo, in this case...)
@@ -1082,7 +1082,7 @@ def q_vector_data():
                      [190., 180., 180., 170.],
                      [170., 180., 180., 190.],
                      [150., 170., 190., 210.]]) * units('degrees')
-    u, v = get_wind_components(speed, wdir)
+    u, v = wind_components(speed, wdir)
 
     temp = np.array([[[18., 18., 18., 18.],
                       [17., 17., 17., 17.],
