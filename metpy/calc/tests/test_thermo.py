@@ -29,6 +29,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         surface_based_cape_cin, temperature_from_potential_temperature,
                         thickness_hydrostatic,
                         thickness_hydrostatic_from_relative_humidity, vapor_pressure,
+                        vertical_velocity, vertical_velocity_pressure,
                         virtual_potential_temperature, virtual_temperature,
                         wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
@@ -1069,3 +1070,36 @@ def test_parcel_profile_below_lcl():
                       260.15057861]) * units.kelvin
     profile = parcel_profile(pressure, 3.2 * units.degC, -10.8 * units.degC)
     assert_almost_equal(profile, truth, 6)
+
+
+def test_vertical_velocity_pressure_dry_air():
+    """Test conversion of w to omega assuming dry air."""
+    w = 1 * units('cm/s')
+    omega_truth = -1.250690495 * units('microbar/second')
+    omega_test = vertical_velocity_pressure(w, 1000. * units.mbar, 273.15 * units.K)
+    assert_almost_equal(omega_test, omega_truth, 6)
+
+
+def test_vertical_velocity_dry_air():
+    """Test conversion of w to omega assuming dry air."""
+    omega = 1 * units('microbar/second')
+    w_truth = -0.799558327 * units('cm/s')
+    w_test = vertical_velocity(omega, 1000. * units.mbar, 273.15 * units.K)
+    assert_almost_equal(w_test, w_truth, 6)
+
+
+def test_vertical_velocity_pressure_moist_air():
+    """Test conversion of w to omega assuming moist air."""
+    w = -1 * units('cm/s')
+    omega_truth = 1.032100858 * units('microbar/second')
+    omega_test = vertical_velocity_pressure(w, 850. * units.mbar, 280. * units.K,
+                                            8 * units('g/kg'))
+    assert_almost_equal(omega_test, omega_truth, 6)
+
+
+def test_vertical_velocity_moist_air():
+    """Test conversion of w to omega assuming moist air."""
+    omega = -1 * units('microbar/second')
+    w_truth = 0.968897557 * units('cm/s')
+    w_test = vertical_velocity(omega, 850. * units.mbar, 280. * units.K, 8 * units('g/kg'))
+    assert_almost_equal(w_test, w_truth, 6)
