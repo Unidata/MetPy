@@ -301,7 +301,7 @@ class CFConventionHandler(object):
 
         # Ambiguous axis, raise warning and do not parse
         warnings.warn('DataArray of requested variable has more than one ' +
-                      cf_to_readable_axes[axis] + ' coordinate. Specify the unique axes '
+                      cf_to_readable_axes[axis] + ' coordinate. Specify the unique axes ' +
                       'using the coordinates argument.')
         coord_lists[axis] = []
 
