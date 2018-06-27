@@ -14,10 +14,27 @@ from metpy.units import units
 from metpy.xarray import preprocess_xarray
 
 
+# Seed RandomState for deterministic tests
+np.random.seed(81964262)
+
+
 @pytest.fixture
 def test_ds():
     """Provide an xarray dataset for testing."""
     return xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+
+@pytest.fixture
+def test_ds_generic():
+    """Provide a generic-coordinate dataset for testing."""
+    return xr.DataArray(np.random.random((1, 3, 3, 5, 5)),
+                        coords={
+                            'a': xr.DataArray(np.arange(1), dims='a'),
+                            'b': xr.DataArray(np.arange(3), dims='b'),
+                            'c': xr.DataArray(np.arange(3), dims='c'),
+                            'd': xr.DataArray(np.arange(5), dims='d'),
+                            'e': xr.DataArray(np.arange(5), dims='e')
+    }, dims=['a', 'b', 'c', 'd', 'e'], name='test').to_dataset()
 
 
 @pytest.fixture
@@ -124,3 +141,237 @@ def test_strftime():
     """Test our monkey-patched xarray strftime."""
     data = xr.DataArray(np.datetime64('2000-01-01 01:00:00'))
     assert '2000-01-01 01:00:00' == data.dt.strftime('%Y-%m-%d %H:%M:%S')
+
+
+def test_coordinates_basic_by_method(test_var):
+    """Test that NARR example coordinates are like we expect using coordinates method."""
+    x, y, vertical, time = test_var.metpy.coordinates('x', 'y', 'vertical', 'time')
+
+    # Must compare both values and attributes
+    assert (x == test_var['x']).all() and x.attrs == test_var['x'].attrs
+    assert (y == test_var['y']).all() and y.attrs == test_var['y'].attrs
+    assert ((vertical == test_var['isobaric']).all() and
+            vertical.attrs == test_var['isobaric'].attrs)
+    assert (time == test_var['time']).all() and time.attrs == test_var['time'].attrs
+
+
+def test_coordinates_basic_by_property(test_var):
+    """Test that NARR example coordinates are like we expect using properties."""
+    # Must compare both values and attributes
+    assert ((test_var.metpy.x == test_var['x']).all() and
+            test_var.metpy.x.attrs == test_var['x'].attrs)
+    assert ((test_var.metpy.y == test_var['y']).all() and
+            test_var.metpy.y.attrs == test_var['y'].attrs)
+    assert ((test_var.metpy.vertical == test_var['isobaric']).all() and
+            test_var.metpy.vertical.attrs == test_var['isobaric'].attrs)
+    assert ((test_var.metpy.time == test_var['time']).all() and
+            test_var.metpy.time.attrs == test_var['time'].attrs)
+
+
+def test_coordinates_specified_by_name_with_dataset(test_ds_generic):
+    """Test that we can manually specify the coordinates by name."""
+    data = test_ds_generic.metpy.parse_cf(coordinates={'T': 'a', 'Z': 'b', 'Y': 'c', 'X': 'd'})
+    x, y, vertical, time = data['test'].metpy.coordinates('x', 'y', 'vertical', 'time')
+
+    # Must compare both values and attributes
+    assert (x == data['test']['d']).all() and x.attrs == data['test']['d'].attrs
+    assert (y == data['test']['c']).all() and y.attrs == data['test']['c'].attrs
+    assert (vertical == data['test']['b']).all() and vertical.attrs == data['test']['b'].attrs
+    assert (time == data['test']['a']).all() and time.attrs == data['test']['a'].attrs
+
+
+def test_coordinates_specified_by_dataarray_with_dataset(test_ds_generic):
+    """Test that we can manually specify the coordinates by DataArray."""
+    data = test_ds_generic.metpy.parse_cf(coordinates={
+        'T': test_ds_generic['d'],
+        'Z': test_ds_generic['a'],
+        'Y': test_ds_generic['b'],
+        'X': test_ds_generic['c']
+    })
+    x, y, vertical, time = data['test'].metpy.coordinates('x', 'y', 'vertical', 'time')
+
+    # Must compare both values and attributes
+    assert (x == data['test']['c']).all() and x.attrs == data['test']['c'].attrs
+    assert (y == data['test']['b']).all() and y.attrs == data['test']['b'].attrs
+    assert (vertical == data['test']['a']).all() and vertical.attrs == data['test']['a'].attrs
+    assert (time == data['test']['d']).all() and time.attrs == data['test']['d'].attrs
+
+
+def test_bad_coordinate_type(test_var):
+    """Test that an AttributeError is raised when a bad axis/coordinate type is given."""
+    with pytest.raises(AttributeError) as exc:
+        next(test_var.metpy.coordinates('bad_axis_type'))
+    assert 'not an interpretable axis' in str(exc.value)
+
+
+def test_missing_coordinate_type(test_ds_generic):
+    """Test that an AttributeError is raised when an axis/coordinate type is unavailable."""
+    data = test_ds_generic.metpy.parse_cf('test', coordinates={'Z': 'e'})
+    with pytest.raises(AttributeError) as exc:
+        data.metpy.time
+    assert 'not available' in str(exc.value)
+
+
+def test_assign_axes_overwrite(test_ds_generic):
+    """Test that CFConventionHandler._assign_axis overwrites past axis attributes."""
+    data = test_ds_generic.copy()
+    data['c'].attrs['axis'] = 'X'
+    data.metpy._assign_axes({'Y': data['c']}, data['test'])
+    assert data['c'].attrs['axis'] == 'Y'
+
+
+def test_resolve_axis_conflict_lonlat_and_xy(test_ds_generic):
+    """Test _resolve_axis_conflict with both lon/lat and x/y coordinates."""
+    test_ds_generic['b'].attrs['_CoordinateAxisType'] = 'GeoX'
+    test_ds_generic['c'].attrs['_CoordinateAxisType'] = 'Lon'
+    test_ds_generic['d'].attrs['_CoordinateAxisType'] = 'GeoY'
+    test_ds_generic['e'].attrs['_CoordinateAxisType'] = 'Lat'
+
+    test_var = test_ds_generic.metpy.parse_cf('test')
+
+    # Must compare both values and attributes
+    assert ((test_var.metpy.x == test_var['b']).all() and
+            test_var.metpy.x.attrs == test_var['b'].attrs)
+    assert ((test_var.metpy.y == test_var['d']).all() and
+            test_var.metpy.y.attrs == test_var['d'].attrs)
+
+
+def test_resolve_axis_conflict_double_lonlat(test_ds_generic):
+    """Test _resolve_axis_conflict with double lon/lat coordinates."""
+    test_ds_generic['b'].attrs['_CoordinateAxisType'] = 'Lat'
+    test_ds_generic['c'].attrs['_CoordinateAxisType'] = 'Lon'
+    test_ds_generic['d'].attrs['_CoordinateAxisType'] = 'Lat'
+    test_ds_generic['e'].attrs['_CoordinateAxisType'] = 'Lon'
+
+    with pytest.warns(UserWarning, match='Specify the unique'):
+        test_ds_generic.metpy.parse_cf('test')
+
+
+def test_resolve_axis_conflict_double_xy(test_ds_generic):
+    """Test _resolve_axis_conflict with double x/y coordinates."""
+    test_ds_generic['b'].attrs['standard_name'] = 'projection_x_coordinate'
+    test_ds_generic['c'].attrs['standard_name'] = 'projection_y_coordinate'
+    test_ds_generic['d'].attrs['standard_name'] = 'projection_x_coordinate'
+    test_ds_generic['e'].attrs['standard_name'] = 'projection_y_coordinate'
+
+    with pytest.warns(UserWarning, match='Specify the unique'):
+        test_ds_generic.metpy.parse_cf('test')
+
+
+def test_resolve_axis_conflict_double_vertical(test_ds_generic):
+    """Test _resolve_axis_conflict with double vertical coordinates."""
+    test_ds_generic['b'].attrs['units'] = 'hPa'
+    test_ds_generic['c'].attrs['units'] = 'Pa'
+
+    with pytest.warns(UserWarning, match='Specify the unique'):
+        test_ds_generic.metpy.parse_cf('test')
+
+
+criterion_matches = [
+    ('standard_name', 'time', 'time'),
+    ('standard_name', 'model_level_number', 'vertical'),
+    ('standard_name', 'atmosphere_hybrid_sigma_pressure_coordinate', 'vertical'),
+    ('standard_name', 'geopotential_height', 'vertical'),
+    ('standard_name', 'height_above_geopotential_datum', 'vertical'),
+    ('standard_name', 'altitude', 'vertical'),
+    ('standard_name', 'atmosphere_sigma_coordinate', 'vertical'),
+    ('standard_name', 'height_above_reference_ellipsoid', 'vertical'),
+    ('standard_name', 'height', 'vertical'),
+    ('standard_name', 'atmosphere_sleve_coordinate', 'vertical'),
+    ('standard_name', 'height_above_mean_sea_level', 'vertical'),
+    ('standard_name', 'atmosphere_hybrid_height_coordinate', 'vertical'),
+    ('standard_name', 'atmosphere_ln_pressure_coordinate', 'vertical'),
+    ('standard_name', 'air_pressure', 'vertical'),
+    ('standard_name', 'projection_y_coordinate', 'y'),
+    ('standard_name', 'latitude', 'lat'),
+    ('standard_name', 'projection_x_coordinate', 'x'),
+    ('standard_name', 'longitude', 'lon'),
+    ('_CoordinateAxisType', 'Time', 'time'),
+    ('_CoordinateAxisType', 'Pressure', 'vertical'),
+    ('_CoordinateAxisType', 'GeoZ', 'vertical'),
+    ('_CoordinateAxisType', 'Height', 'vertical'),
+    ('_CoordinateAxisType', 'GeoY', 'y'),
+    ('_CoordinateAxisType', 'Lat', 'lat'),
+    ('_CoordinateAxisType', 'GeoX', 'x'),
+    ('_CoordinateAxisType', 'Lon', 'lon'),
+    ('axis', 'T', 'time'),
+    ('axis', 'Z', 'vertical'),
+    ('axis', 'Y', 'y'),
+    ('axis', 'X', 'x'),
+    ('positive', 'up', 'vertical'),
+    ('positive', 'down', 'vertical')
+]
+
+
+@pytest.mark.parametrize('test_tuple', criterion_matches)
+def test_check_axis_criterion_match(test_ds_generic, test_tuple):
+    """Test the variety of possibilities for _check_axis in the criterion match."""
+    test_ds_generic['e'].attrs[test_tuple[0]] = test_tuple[1]
+    assert test_ds_generic.metpy._check_axis(test_ds_generic['e'], test_tuple[2])
+
+
+unit_matches = [
+    ('Pa', 'vertical'),
+    ('hPa', 'vertical'),
+    ('mbar', 'vertical'),
+    ('degreeN', 'lat'),
+    ('degreesN', 'lat'),
+    ('degree_north', 'lat'),
+    ('degree_N', 'lat'),
+    ('degrees_north', 'lat'),
+    ('degrees_N', 'lat'),
+    ('degreeE', 'lon'),
+    ('degrees_east', 'lon'),
+    ('degree_east', 'lon'),
+    ('degreesE', 'lon'),
+    ('degree_E', 'lon'),
+    ('degrees_E', 'lon')
+]
+
+
+@pytest.mark.parametrize('test_tuple', unit_matches)
+def test_check_axis_unit_match(test_ds_generic, test_tuple):
+    """Test the variety of possibilities for _check_axis in the unit match."""
+    test_ds_generic['e'].attrs['units'] = test_tuple[0]
+    assert test_ds_generic.metpy._check_axis(test_ds_generic['e'], test_tuple[1])
+
+
+regex_matches = [
+    ('time', 'time'),
+    ('time1', 'time'),
+    ('time42', 'time'),
+    ('Time', 'time'),
+    ('TIME', 'time'),
+    ('bottom_top', 'vertical'),
+    ('sigma', 'vertical'),
+    ('HGHT', 'vertical'),
+    ('height', 'vertical'),
+    ('Altitude', 'vertical'),
+    ('depth', 'vertical'),
+    ('isobaric', 'vertical'),
+    ('isobaric1', 'vertical'),
+    ('isobaric42', 'vertical'),
+    ('PRES', 'vertical'),
+    ('pressure', 'vertical'),
+    ('pressure_difference_layer', 'vertical'),
+    ('isothermal', 'vertical'),
+    ('y', 'y'),
+    ('Y', 'y'),
+    ('lat', 'lat'),
+    ('latitude', 'lat'),
+    ('Latitude', 'lat'),
+    ('XLAT', 'lat'),
+    ('x', 'x'),
+    ('X', 'x'),
+    ('lon', 'lon'),
+    ('longitude', 'lon'),
+    ('Longitude', 'lon'),
+    ('XLONG', 'lon')
+]
+
+
+@pytest.mark.parametrize('test_tuple', regex_matches)
+def test_check_axis_regular_expression_match(test_ds_generic, test_tuple):
+    """Test the variety of possibilities for _check_axis in the regular expression match."""
+    data = test_ds_generic.rename({'e': test_tuple[0]})
+    assert data.metpy._check_axis(data[test_tuple[0]], test_tuple[1])
