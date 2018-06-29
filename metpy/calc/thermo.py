@@ -2155,3 +2155,92 @@ def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
     return dewpoint_rh(temperature, relative_humidity_from_specific_humidity(specific_humidity,
                                                                              temperature,
                                                                              pressure))
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[length]/[time]', '[pressure]', '[temperature]')
+def vertical_velocity_pressure(w, pressure, temperature, mixing=0):
+    r"""Calculate omega from w assuming hydrostatic conditions.
+
+    This function converts vertical velocity with respect to height
+    :math:`\left(w = \frac{Dz}{Dt}\right)` to that
+    with respect to pressure :math:`\left(\omega = \frac{Dp}{Dt}\right)`
+    assuming hydrostatic conditions on the synoptic scale.
+    By Equation 7.33 in [Hobbs2006]_,
+
+    .. math: \omega \simeq -\rho g w
+
+    Density (:math:`\rho`) is calculated using the :func:`density` function,
+    from the given pressure and temperature. If `mixing` is given, the virtual
+    temperature correction is used, otherwise, dry air is assumed.
+
+    Parameters
+    ----------
+    w: `pint.Quantity`
+        Vertical velocity in terms of height
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+    temperature: `pint.Quantity`
+        Air temperature
+    mixing: `pint.Quantity`, optional
+        Mixing ratio of air
+
+    Returns
+    -------
+    `pint.Quantity`
+        Vertical velocity in terms of pressure (in Pascals / second)
+
+    See Also
+    --------
+    density, vertical_velocity
+
+    """
+    rho = density(pressure, temperature, mixing)
+    return (- g * rho * w).to('Pa/s')
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[pressure]/[time]', '[pressure]', '[temperature]')
+def vertical_velocity(omega, pressure, temperature, mixing=0):
+    r"""Calculate w from omega assuming hydrostatic conditions.
+
+    This function converts vertical velocity with respect to pressure
+    :math:`\left(\omega = \frac{Dp}{Dt}\right)` to that with respect to height
+    :math:`\left(w = \frac{Dz}{Dt}\right)` assuming hydrostatic conditions on
+    the synoptic scale. By Equation 7.33 in [Hobbs2006]_,
+
+    .. math: \omega \simeq -\rho g w
+
+    so that
+
+    .. math w \simeq \frac{- \omega}{\rho g}
+
+    Density (:math:`\rho`) is calculated using the :func:`density` function,
+    from the given pressure and temperature. If `mixing` is given, the virtual
+    temperature correction is used, otherwise, dry air is assumed.
+
+    Parameters
+    ----------
+    omega: `pint.Quantity`
+        Vertical velocity in terms of pressure
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+    temperature: `pint.Quantity`
+        Air temperature
+    mixing: `pint.Quantity`, optional
+        Mixing ratio of air
+
+    Returns
+    -------
+    `pint.Quantity`
+        Vertical velocity in terms of height (in meters / second)
+
+    See Also
+    --------
+    density, vertical_velocity_pressure
+
+    """
+    rho = density(pressure, temperature, mixing)
+    return (omega / (- g * rho)).to('m/s')
