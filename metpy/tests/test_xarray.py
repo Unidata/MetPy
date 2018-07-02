@@ -316,9 +316,9 @@ criterion_matches = [
 
 @pytest.mark.parametrize('test_tuple', criterion_matches)
 def test_check_axis_criterion_match(test_ds_generic, test_tuple):
-    """Test the variety of possibilities for _check_axis in the criterion match."""
+    """Test the variety of possibilities for check_axis in the criterion match."""
     test_ds_generic['e'].attrs[test_tuple[0]] = test_tuple[1]
-    assert test_ds_generic.metpy._check_axis(test_ds_generic['e'], test_tuple[2])
+    assert test_ds_generic.metpy.check_axis(test_ds_generic['e'], test_tuple[2])
 
 
 unit_matches = [
@@ -342,9 +342,9 @@ unit_matches = [
 
 @pytest.mark.parametrize('test_tuple', unit_matches)
 def test_check_axis_unit_match(test_ds_generic, test_tuple):
-    """Test the variety of possibilities for _check_axis in the unit match."""
+    """Test the variety of possibilities for check_axis in the unit match."""
     test_ds_generic['e'].attrs['units'] = test_tuple[0]
-    assert test_ds_generic.metpy._check_axis(test_ds_generic['e'], test_tuple[1])
+    assert test_ds_generic.metpy.check_axis(test_ds_generic['e'], test_tuple[1])
 
 
 regex_matches = [
@@ -383,6 +383,6 @@ regex_matches = [
 
 @pytest.mark.parametrize('test_tuple', regex_matches)
 def test_check_axis_regular_expression_match(test_ds_generic, test_tuple):
-    """Test the variety of possibilities for _check_axis in the regular expression match."""
+    """Test the variety of possibilities for check_axis in the regular expression match."""
     data = test_ds_generic.rename({'e': test_tuple[0]})
-    assert data.metpy._check_axis(data[test_tuple[0]], test_tuple[1])
+    assert data.metpy.check_axis(data[test_tuple[0]], test_tuple[1])

@@ -90,6 +90,20 @@ class MetPyAccessor(object):
     def x(self):
         return self._axis('x')
 
+    def coordinates_identical(self, other):
+        """Return whether or not the coordinates of other match this DataArray's."""
+        # If the number of coordinates do not match, we know they can't match.
+        if len(self._data_array.coords) != len(other.coords):
+            return False
+
+        # If same length, iterate over all of them and check
+        for coord_name, coord_var in self._data_array.coords.items():
+            if not other[coord_name].identical(coord_var):
+                return False
+
+        # Otherwise, they match.
+        return True
+
 
 @xr.register_dataset_accessor('metpy')
 class CFConventionHandler(object):
@@ -124,12 +138,12 @@ class CFConventionHandler(object):
 
         # Trying to guess whether we should be adding a crs to this variable's coordinates
         # First make sure it's missing CRS but isn't lat/lon itself
-        if not self._check_axis(var, 'lat', 'lon') and 'crs' not in var.coords:
+        if not self.check_axis(var, 'lat', 'lon') and 'crs' not in var.coords:
             # Look for both lat/lon in the coordinates
             has_lat = has_lon = False
             for coord_var in var.coords.values():
-                has_lat = has_lat or self._check_axis(coord_var, 'lat')
-                has_lon = has_lon or self._check_axis(coord_var, 'lon')
+                has_lat = has_lat or self.check_axis(coord_var, 'lat')
+                has_lon = has_lon or self.check_axis(coord_var, 'lon')
 
             # If we found them, create a lat/lon projection as the crs coord
             if has_lat and has_lon:
@@ -204,7 +218,7 @@ class CFConventionHandler(object):
     }
 
     @classmethod
-    def _check_axis(cls, var, *axes):
+    def check_axis(cls, var, *axes):
         """Check if var satisfies the criteria for any of the given axes."""
         for axis in axes:
             # Check for
@@ -239,7 +253,7 @@ class CFConventionHandler(object):
     def _fixup_coords(self, var):
         """Clean up the units on the coordinate variables."""
         for coord_name, data_array in var.coords.items():
-            if self._check_axis(data_array, 'x', 'y'):
+            if self.check_axis(data_array, 'x', 'y'):
                 try:
                     var.coords[coord_name].metpy.convert_units('meters')
                 except DimensionalityError:  # Radians!
@@ -255,7 +269,7 @@ class CFConventionHandler(object):
         coord_lists = {'T': [], 'Z': [], 'Y': [], 'X': []}
         for coord_var in coords:
 
-            # Identify the coordinate type using _check_axis helper
+            # Identify the coordinate type using check_axis helper
             axes_to_check = {
                 'T': ('time',),
                 'Z': ('vertical',),
@@ -263,7 +277,7 @@ class CFConventionHandler(object):
                 'X': ('x', 'lon')
             }
             for axis_cf, axes_readable in axes_to_check.items():
-                if self._check_axis(coord_var, *axes_readable):
+                if self.check_axis(coord_var, *axes_readable):
                     coord_lists[axis_cf].append(coord_var)
 
         # Resolve any coordinate conflicts
@@ -299,7 +313,7 @@ class CFConventionHandler(object):
             # existence of unique projection x/y (preferred over lon/lat) and use that if
             # it exists uniquely
             projection_coords = [coord_var for coord_var in coord_lists[axis] if
-                                 self._check_axis(coord_var, 'x', 'y')]
+                                 self.check_axis(coord_var, 'x', 'y')]
             if len(projection_coords) == 1:
                 coord_lists[axis] = projection_coords
                 return
@@ -328,6 +342,19 @@ def preprocess_xarray(func):
         args = tuple(a.metpy.unit_array if isinstance(a, xr.DataArray) else a for a in args)
         kwargs = {name: (v.metpy.unit_array if isinstance(v, xr.DataArray) else v)
                   for name, v in kwargs.items()}
+        return func(*args, **kwargs)
+    return wrapper
+
+
+def check_matching_coordinates(func):
+    """Decorate a function to make sure all given DataArrays have matching coordinates."""
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        data_arrays = ([a for a in args if isinstance(a, xr.DataArray)] +
+                       [a for a in kwargs.values() if isinstance(a, xr.DataArray)])
+        for i in range(1, len(data_arrays)):
+            if not data_arrays[0].metpy.coordinates_identical(data_arrays[i]):
+                raise IndexError('Input DataArray arguments must be on same coordinates.')
         return func(*args, **kwargs)
     return wrapper
 
