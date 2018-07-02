@@ -1,18 +1,56 @@
-# Copyright (c) 2016 MetPy Developers.
+# Copyright (c) 2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Test the `triangles` module."""
+"""Test the `geometry` module."""
 
 from __future__ import division
 
+import logging
+
 import numpy as np
-from numpy.testing import assert_almost_equal, assert_array_almost_equal
+from numpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from scipy.spatial import Delaunay
 
-from metpy.gridding.triangles import (circumcenter, circumcircle_radius, circumcircle_radius_2,
-                                      dist_2, distance, find_local_boundary,
-                                      find_natural_neighbors, find_nn_triangles_point,
-                                      triangle_area)
+from metpy.interpolate.geometry import (area, circumcenter, circumcircle_radius,
+                                        circumcircle_radius_2, dist_2, distance,
+                                        find_local_boundary, find_natural_neighbors,
+                                        find_nn_triangles_point, get_point_count_within_r,
+                                        get_points_within_r, order_edges, triangle_area)
+
+logging.getLogger('metpy.interpolate.geometry').setLevel(logging.ERROR)
+
+
+def test_get_points_within_r():
+    r"""Test get points within a radius function."""
+    x = list(range(10))
+    y = list(range(10))
+
+    center = [1, 5]
+
+    radius = 5
+
+    matches = get_points_within_r(center, list(zip(x, y)), radius).T
+
+    truth = [[1, 1], [2, 2], [3, 3], [4, 4], [5, 5]]
+
+    assert_array_almost_equal(truth, matches)
+
+
+def test_get_point_count_within_r():
+    r"""Test get point count within a radius function."""
+    x = list(range(10))
+    y = list(range(10))
+
+    center1 = [1, 5]
+    center2 = [12, 10]
+
+    radius = 5
+
+    count = get_point_count_within_r([center1, center2], list(zip(x, y)), radius)
+
+    truth = np.array([5, 2])
+
+    assert_array_almost_equal(truth, count)
 
 
 def test_triangle_area():
@@ -180,3 +218,23 @@ def test_find_local_boundary():
     truth = [(45, 55), (44, 45), (55, 54), (54, 44)]
 
     assert_array_almost_equal(truth, edges)
+
+
+def test_area():
+    r"""Test get area of polygon function."""
+    pt0 = [0, 0]
+    pt1 = [5, 5]
+    pt2 = [5, 0]
+
+    truth = 12.5
+
+    assert_almost_equal(area([pt0, pt1, pt2]), truth)
+
+
+def test_order_edges():
+    r"""Test order edges of polygon function."""
+    edges = [[1, 2], [5, 6], [4, 5], [2, 3], [6, 1], [3, 4]]
+
+    truth = [[1, 2], [2, 3], [3, 4], [4, 5], [5, 6], [6, 1]]
+
+    assert_array_equal(truth, order_edges(edges))

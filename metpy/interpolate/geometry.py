@@ -1,14 +1,70 @@
-# Copyright (c) 2016 MetPy Developers.
+# Copyright (c) 2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Calculations and tools for triangles."""
+"""Tools for working with geometric objects (points, triangles, polygons)."""
 
 from __future__ import division
 
+import logging
 import math
 
 import numpy as np
 from scipy.spatial import cKDTree
+
+logging.basicConfig(level=logging.WARNING)
+log = logging.getLogger(__name__)
+
+
+def get_points_within_r(center_points, target_points, r):
+    r"""Get all target_points within a specified radius of a center point.
+
+    All data must be in same coordinate system, or you will get undetermined results.
+
+    Parameters
+    ----------
+    center_points: (X, Y) ndarray
+        location from which to grab surrounding points within r
+    target_points: (X, Y) ndarray
+        points from which to return if they are within r of center_points
+    r: integer
+        search radius around center_points to grab target_points
+
+    Returns
+    -------
+    matches: (X, Y) ndarray
+        A list of points within r distance of, and in the same
+        order as, center_points
+
+    """
+    tree = cKDTree(target_points)
+    indices = tree.query_ball_point(center_points, r)
+    return tree.data[indices].T
+
+
+def get_point_count_within_r(center_points, target_points, r):
+    r"""Get count of target points within a specified radius from center points.
+
+    All data must be in same coordinate system, or you will get undetermined results.
+
+    Parameters
+    ----------
+    center_points: (X, Y) ndarray
+        locations from which to grab surrounding points within r
+    target_points: (X, Y) ndarray
+        points from which to return if they are within r of center_points
+    r: integer
+        search radius around center_points to grab target_points
+
+    Returns
+    -------
+    matches: (N, ) ndarray
+        A list of point counts within r distance of, and in the same
+        order as, center_points
+
+    """
+    tree = cKDTree(target_points)
+    indices = tree.query_ball_point(center_points, r)
+    return np.array([len(x) for x in indices])
 
 
 def triangle_area(pt1, pt2, pt3):
@@ -358,3 +414,63 @@ def find_local_boundary(tri, triangles):
                 edges.append((pt1, pt2))
 
     return edges
+
+
+def area(poly):
+    r"""Find the area of a given polygon using the shoelace algorithm.
+
+    Parameters
+    ----------
+    poly: (2, N) ndarray
+        2-dimensional coordinates representing an ordered
+        traversal around the edge a polygon.
+
+    Returns
+    -------
+    area: float
+
+    """
+    a = 0.0
+    n = len(poly)
+
+    for i in range(n):
+        a += poly[i][0] * poly[(i + 1) % n][1] - poly[(i + 1) % n][0] * poly[i][1]
+
+    return abs(a) / 2.0
+
+
+def order_edges(edges):
+    r"""Return an ordered traversal of the edges of a two-dimensional polygon.
+
+    Parameters
+    ----------
+    edges: (2, N) ndarray
+        List of unordered line segments, where each
+        line segment is represented by two unique
+        vertex codes.
+
+    Returns
+    -------
+    ordered_edges: (2, N) ndarray
+
+    """
+    edge = edges[0]
+    edges = edges[1:]
+
+    ordered_edges = [edge]
+
+    num_max = len(edges)
+    while len(edges) > 0 and num_max > 0:
+
+        match = edge[1]
+
+        for search_edge in edges:
+            vertex = search_edge[0]
+            if match == vertex:
+                edge = search_edge
+                edges.remove(edge)
+                ordered_edges.append(search_edge)
+                break
+        num_max -= 1
+
+    return ordered_edges

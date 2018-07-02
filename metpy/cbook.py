@@ -7,7 +7,7 @@ import os
 import os.path
 
 from matplotlib.cbook import iterable
-
+import numpy as np
 
 try:
     string_type = basestring
@@ -74,4 +74,21 @@ class Registry(object):
         return self._registry[name]
 
 
-__all__ = ('Registry', 'get_test_data', 'is_string_like', 'iterable')
+def broadcast_indices(x, minv, ndim, axis):
+    """Calculate index values to properly broadcast index array within data array.
+
+    See usage in interp.
+    """
+    ret = []
+    for dim in range(ndim):
+        if dim == axis:
+            ret.append(minv)
+        else:
+            broadcast_slice = [np.newaxis] * ndim
+            broadcast_slice[dim] = slice(None)
+            dim_inds = np.arange(x.shape[dim])
+            ret.append(dim_inds[broadcast_slice])
+    return ret
+
+
+__all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'is_string_like', 'iterable')

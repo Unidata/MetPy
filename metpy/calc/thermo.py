@@ -11,10 +11,11 @@ import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
 
-from .tools import (_greater_or_close, _less_or_close, broadcast_indices,
-                    find_bounding_indices, find_intersections, first_derivative, get_layer,
-                    interp)
+from .tools import (_greater_or_close, _less_or_close, find_bounding_indices,
+                    find_intersections, first_derivative, get_layer)
+from ..cbook import broadcast_indices
 from ..constants import Cp_d, epsilon, g, kappa, Lv, P0, Rd
+from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
 from ..xarray import preprocess_xarray
@@ -1525,7 +1526,8 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
 
     # do an interpolation for each additional argument
     if args:
-        others = interp(isentlevels, pres_theta.m, *(arr[sorter] for arr in args), axis=axis)
+        others = interpolate_1d(isentlevels, pres_theta.m, *(arr[sorter] for arr in args),
+                                axis=axis)
         if len(args) > 1:
             ret.extend(others)
         else:
