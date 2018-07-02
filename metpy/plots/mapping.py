@@ -81,6 +81,14 @@ class CFProjection(object):
         """Return a given attribute."""
         return self._attrs[item]
 
+    def __eq__(self, other):
+        """Test equality (CFProjection with matching attrs)."""
+        return self.__class__ == other.__class__ and self.to_dict() == other.to_dict()
+
+    def __ne__(self, other):
+        """Test inequality (not equal to)."""
+        return not self.__eq__(other)
+
 
 @CFProjection.register('geostationary')
 def make_geo(attrs_dict, globe):
