@@ -299,6 +299,13 @@ class CFConventionHandler(object):
                 coord_lists[axis] = projection_coords
                 return
 
+        # If one and only one of the possible axes is a dimension, use it
+        dimension_coords = [coord_var for coord_var in coord_lists[axis] if
+                            coord_var.name in coord_var.dims]
+        if len(dimension_coords) == 1:
+            coord_lists[axis] = dimension_coords
+            return
+
         # Ambiguous axis, raise warning and do not parse
         warnings.warn('DataArray of requested variable has more than one ' +
                       cf_to_readable_axes[axis] + ' coordinate. Specify the unique axes ' +

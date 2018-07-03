@@ -147,25 +147,18 @@ def test_coordinates_basic_by_method(test_var):
     """Test that NARR example coordinates are like we expect using coordinates method."""
     x, y, vertical, time = test_var.metpy.coordinates('x', 'y', 'vertical', 'time')
 
-    # Must compare both values and attributes
-    assert (x == test_var['x']).all() and x.attrs == test_var['x'].attrs
-    assert (y == test_var['y']).all() and y.attrs == test_var['y'].attrs
-    assert ((vertical == test_var['isobaric']).all() and
-            vertical.attrs == test_var['isobaric'].attrs)
-    assert (time == test_var['time']).all() and time.attrs == test_var['time'].attrs
+    assert test_var['x'].identical(x)
+    assert test_var['y'].identical(y)
+    assert test_var['isobaric'].identical(vertical)
+    assert test_var['time'].identical(time)
 
 
 def test_coordinates_basic_by_property(test_var):
     """Test that NARR example coordinates are like we expect using properties."""
-    # Must compare both values and attributes
-    assert ((test_var.metpy.x == test_var['x']).all() and
-            test_var.metpy.x.attrs == test_var['x'].attrs)
-    assert ((test_var.metpy.y == test_var['y']).all() and
-            test_var.metpy.y.attrs == test_var['y'].attrs)
-    assert ((test_var.metpy.vertical == test_var['isobaric']).all() and
-            test_var.metpy.vertical.attrs == test_var['isobaric'].attrs)
-    assert ((test_var.metpy.time == test_var['time']).all() and
-            test_var.metpy.time.attrs == test_var['time'].attrs)
+    assert test_var['x'].identical(test_var.metpy.x)
+    assert test_var['y'].identical(test_var.metpy.y)
+    assert test_var['isobaric'].identical(test_var.metpy.vertical)
+    assert test_var['time'].identical(test_var.metpy.time)
 
 
 def test_coordinates_specified_by_name_with_dataset(test_ds_generic):
@@ -173,11 +166,10 @@ def test_coordinates_specified_by_name_with_dataset(test_ds_generic):
     data = test_ds_generic.metpy.parse_cf(coordinates={'T': 'a', 'Z': 'b', 'Y': 'c', 'X': 'd'})
     x, y, vertical, time = data['test'].metpy.coordinates('x', 'y', 'vertical', 'time')
 
-    # Must compare both values and attributes
-    assert (x == data['test']['d']).all() and x.attrs == data['test']['d'].attrs
-    assert (y == data['test']['c']).all() and y.attrs == data['test']['c'].attrs
-    assert (vertical == data['test']['b']).all() and vertical.attrs == data['test']['b'].attrs
-    assert (time == data['test']['a']).all() and time.attrs == data['test']['a'].attrs
+    assert data['test']['d'].identical(x)
+    assert data['test']['c'].identical(y)
+    assert data['test']['b'].identical(vertical)
+    assert data['test']['a'].identical(time)
 
 
 def test_coordinates_specified_by_dataarray_with_dataset(test_ds_generic):
@@ -190,11 +182,10 @@ def test_coordinates_specified_by_dataarray_with_dataset(test_ds_generic):
     })
     x, y, vertical, time = data['test'].metpy.coordinates('x', 'y', 'vertical', 'time')
 
-    # Must compare both values and attributes
-    assert (x == data['test']['c']).all() and x.attrs == data['test']['c'].attrs
-    assert (y == data['test']['b']).all() and y.attrs == data['test']['b'].attrs
-    assert (vertical == data['test']['a']).all() and vertical.attrs == data['test']['a'].attrs
-    assert (time == data['test']['d']).all() and time.attrs == data['test']['d'].attrs
+    assert data['test']['c'].identical(x)
+    assert data['test']['b'].identical(y)
+    assert data['test']['a'].identical(vertical)
+    assert data['test']['d'].identical(time)
 
 
 def test_bad_coordinate_type(test_var):
@@ -229,11 +220,8 @@ def test_resolve_axis_conflict_lonlat_and_xy(test_ds_generic):
 
     test_var = test_ds_generic.metpy.parse_cf('test')
 
-    # Must compare both values and attributes
-    assert ((test_var.metpy.x == test_var['b']).all() and
-            test_var.metpy.x.attrs == test_var['b'].attrs)
-    assert ((test_var.metpy.y == test_var['d']).all() and
-            test_var.metpy.y.attrs == test_var['d'].attrs)
+    assert test_var['b'].identical(test_var.metpy.x)
+    assert test_var['d'].identical(test_var.metpy.y)
 
 
 def test_resolve_axis_conflict_double_lonlat(test_ds_generic):
@@ -256,6 +244,17 @@ def test_resolve_axis_conflict_double_xy(test_ds_generic):
 
     with pytest.warns(UserWarning, match='Specify the unique'):
         test_ds_generic.metpy.parse_cf('test')
+
+
+def test_resolve_axis_conflict_double_x_with_single_dim(test_ds_generic):
+    """Test _resolve_axis_conflict with double x coordinate, but only one being a dim."""
+    test_ds_generic['e'].attrs['standard_name'] = 'projection_x_coordinate'
+    test_ds_generic.coords['f'] = ('e', np.linspace(0, 1, 5))
+    test_ds_generic['f'].attrs['standard_name'] = 'projection_x_coordinate'
+
+    test_var = test_ds_generic.metpy.parse_cf('test')
+
+    assert test_var['e'].identical(test_var.metpy.x)
 
 
 def test_resolve_axis_conflict_double_vertical(test_ds_generic):
