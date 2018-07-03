@@ -5,7 +5,6 @@
 from __future__ import division
 
 import functools
-import warnings
 
 import numpy as np
 
@@ -28,10 +27,6 @@ def _stack(arrs):
 def _is_x_first_dim(dim_order):
     """Determine whether x is the first dimension based on the value of dim_order."""
     if dim_order is None:
-        warnings.warn('dim_order is using the default setting ("yx"). This changed in '
-                      'version 0.7. It is recommended that you '
-                      'specify the appropriate ordering ("xy", "yx") for your data by '
-                      'passing the `dim_order` argument to the calculation.', UserWarning)
         dim_order = 'yx'
     return dim_order == 'xy'
 
@@ -79,8 +74,8 @@ def ensure_yx_order(func):
         or ``'yx'``. ``'xy'`` indicates that the dimension corresponding to x is the leading
         dimension, followed by y. ``'yx'`` indicates that x is the last dimension, preceded
         by y. ``None`` indicates that the default ordering should be assumed,
-        which changed in version 0.7 from 'xy' to 'yx'. Can only be passed as a keyword
-        argument, i.e. func(..., dim_order='xy')."""
+        which is 'yx'. Can only be passed as a keyword argument, i.e.
+        func(..., dim_order='xy')."""
 
     # Find the first blank line after the start of the parameters section
     params = wrapper.__doc__.find('Parameters')
@@ -124,20 +119,6 @@ def vorticity(u, v, dx, dy):
 
 @exporter.export
 @preprocess_xarray
-@deprecated('0.7', addendum=' This function has been renamed vorticity.',
-            pending=False)
-def v_vorticity(u, v, dx, dy, dim_order='xy'):
-    """Wrap vorticity for deprecated v_vorticity function."""
-    return vorticity(u, v, dx, dy, dim_order=dim_order)
-
-
-v_vorticity.__doc__ = (vorticity.__doc__ +
-                       '\n    .. deprecated:: 0.7.0\n        Function has been renamed to '
-                       '`vorticity` and will be removed from MetPy in 0.9.0.')
-
-
-@exporter.export
-@preprocess_xarray
 @ensure_yx_order
 def divergence(u, v, dx, dy):
     r"""Calculate the horizontal divergence of the horizontal wind.
@@ -166,61 +147,6 @@ def divergence(u, v, dx, dy):
     dudx = first_derivative(u, delta=dx, axis=1)
     dvdy = first_derivative(v, delta=dy, axis=0)
     return dudx + dvdy
-
-
-@exporter.export
-@preprocess_xarray
-@deprecated('0.7', addendum=' This function has been replaced by divergence.',
-            pending=False)
-def h_convergence(u, v, dx, dy, dim_order='xy'):
-    """Wrap divergence for deprecated convergence function."""
-    return divergence(u, v, dx, dy, dim_order=dim_order)
-
-
-h_convergence.__doc__ = (divergence.__doc__ +
-                         '\n    .. deprecated:: 0.7.0\n        Function has been renamed to '
-                         '`divergence` and will be removed from MetPy in 0.9.0.')
-
-
-@exporter.export
-@preprocess_xarray
-@deprecated('0.7', addendum=' Use divergence and/or vorticity instead.',
-            pending=False)
-@ensure_yx_order
-def convergence_vorticity(u, v, dx, dy, dim_order='xy'):
-    r"""Calculate the horizontal divergence and vertical vorticity of the horizontal wind.
-
-    Parameters
-    ----------
-    u : (M, N) ndarray
-        x component of the wind
-    v : (M, N) ndarray
-        y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
-
-    Returns
-    -------
-    divergence, vorticity : tuple of (M, N) ndarrays
-        The horizontal divergence and vertical vorticity, respectively
-
-    See Also
-    --------
-    vorticity, divergence
-
-    .. deprecated:: 0.7.0
-        Function no longer has any performance benefit over individual calls to
-        `divergence` and `vorticity` and will be removed from MetPy in 0.9.0.
-
-
-    """
-    dudx = first_derivative(u, delta=dx, axis=1)
-    dudy = first_derivative(u, delta=dy, axis=0)
-    dvdx = first_derivative(v, delta=dx, axis=1)
-    dvdy = first_derivative(v, delta=dy, axis=0)
-    return dudx + dvdy, dvdx - dudy
 
 
 @exporter.export
@@ -285,48 +211,6 @@ def stretching_deformation(u, v, dx, dy):
     dudx = first_derivative(u, delta=dx, axis=1)
     dvdy = first_derivative(v, delta=dy, axis=0)
     return dudx - dvdy
-
-
-@exporter.export
-@preprocess_xarray
-@deprecated('0.7', addendum=' Use stretching_deformation and/or shearing_deformation instead.',
-            pending=False)
-@ensure_yx_order
-def shearing_stretching_deformation(u, v, dx, dy):
-    r"""Calculate the horizontal shearing and stretching deformation of the horizontal wind.
-
-    Parameters
-    ----------
-    u : (M, N) ndarray
-        x component of the wind
-    v : (M, N) ndarray
-        y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
-
-    Returns
-    -------
-    shearing, strectching : tuple of (M, N) ndarrays
-        The horizontal shearing and stretching deformation, respectively
-
-    See Also
-    --------
-    shearing_deformation, stretching_deformation
-
-
-    .. deprecated:: 0.7.0
-        Function no longer has any performance benefit over individual calls to
-        `shearing_deformation` and `stretching_deformation` and will be removed from
-        MetPy in 0.9.0.
-
-    """
-    dudx = first_derivative(u, delta=dx, axis=1)
-    dudy = first_derivative(u, delta=dy, axis=0)
-    dvdx = first_derivative(v, delta=dx, axis=1)
-    dvdy = first_derivative(v, delta=dy, axis=0)
-    return dvdx + dudy, dudx - dvdy
 
 
 @exporter.export

@@ -6,80 +6,25 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind,
-                        convergence_vorticity, divergence,
-                        frontogenesis, geostrophic_wind, h_convergence,
-                        inertial_advective_wind, lat_lon_grid_deltas, lat_lon_grid_spacing,
-                        montgomery_streamfunction, potential_vorticity_baroclinic,
-                        potential_vorticity_barotropic, q_vector, shearing_deformation,
-                        shearing_stretching_deformation, static_stability,
+from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind, divergence,
+                        frontogenesis, geostrophic_wind, inertial_advective_wind,
+                        lat_lon_grid_deltas, lat_lon_grid_spacing, montgomery_streamfunction,
+                        potential_vorticity_baroclinic, potential_vorticity_barotropic,
+                        q_vector, shearing_deformation, static_stability,
                         storm_relative_helicity, stretching_deformation, total_deformation,
-                        v_vorticity, vorticity, wind_components)
+                        vorticity, wind_components)
 from metpy.constants import g, omega, Re
 from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import assert_almost_equal, assert_array_equal
 from metpy.units import concatenate, units
 
 
-def test_default_order_warns():
-    """Test that using the default array ordering issues a warning."""
+def test_default_order():
+    """Test using the default array ordering."""
     u = np.ones((3, 3)) * units('m/s')
-    with pytest.warns(UserWarning):
-        vorticity(u, u, 1 * units.meter, 1 * units.meter)
-
-
-def test_zero_gradient():
-    """Test divergence_vorticity when there is no gradient in the field."""
-    u = np.ones((3, 3)) * units('m/s')
-    with pytest.warns(MetpyDeprecationWarning):
-        c, v = convergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
-    truth = np.zeros_like(u) / units.sec
-    assert_array_equal(c, truth)
-    assert_array_equal(v, truth)
-
-
-def test_cv_zero_vorticity():
-    """Test divergence_vorticity when there is only divergence."""
-    a = np.arange(3)
-    u = np.c_[a, a, a] * units('m/s')
-    with pytest.warns(MetpyDeprecationWarning):
-        c, v = convergence_vorticity(u, u.T, 1 * units.meter, 1 * units.meter, dim_order='xy')
-    true_c = 2. * np.ones_like(u) / units.sec
+    v = vorticity(u, u, 1 * units.meter, 1 * units.meter)
     true_v = np.zeros_like(u) / units.sec
-    assert_array_equal(c, true_c)
     assert_array_equal(v, true_v)
-
-
-def test_divergence_vorticity():
-    """Test of vorticity and divergence calculation for basic case."""
-    a = np.arange(3)
-    u = np.c_[a, a, a] * units('m/s')
-    with pytest.warns(MetpyDeprecationWarning):
-        c, v = convergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
-    true_c = np.ones_like(u) / units.sec
-    true_v = np.ones_like(u) / units.sec
-    assert_array_equal(c, true_c)
-    assert_array_equal(v, true_v)
-
-
-def test_vorticity_divergence_asym():
-    """Test vorticity and divergence calculation with a complicated field."""
-    u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
-    v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    with pytest.warns(MetpyDeprecationWarning):
-        c, vort = convergence_vorticity(u, v, 1 * units.meters, 2 * units.meters,
-                                        dim_order='yx')
-    true_c = np.array([[-2, 5.5, -2.5], [2., 0.5, -1.5], [3., -1.5, 8.5]]) / units.sec
-    true_vort = np.array([[-2.5, 3.5, 13.], [8.5, -1.5, -11.], [-5.5, -1.5, 0.]]) / units.sec
-    assert_array_equal(c, true_c)
-    assert_array_equal(vort, true_vort)
-
-    # Now try for xy ordered
-    with pytest.warns(MetpyDeprecationWarning):
-        c, vort = convergence_vorticity(u.T, v.T, 1 * units.meters, 2 * units.meters,
-                                        dim_order='xy')
-    assert_array_equal(c, true_c.T)
-    assert_array_equal(vort, true_vort.T)
 
 
 def test_zero_vorticity():
@@ -142,63 +87,6 @@ def test_divergence_asym():
     # Now try for xy ordered
     c = divergence(u.T, v.T, 1 * units.meters, 2 * units.meters, dim_order='xy')
     assert_array_equal(c, true_c.T)
-
-
-def test_shst_zero_gradient():
-    """Test shear_stretching_deformation when there is zero gradient."""
-    u = np.ones((3, 3)) * units('m/s')
-    with pytest.warns(MetpyDeprecationWarning):
-        sh, st = shearing_stretching_deformation(u, u, 1 * units.meter, 1 * units.meter,
-                                                 dim_order='xy')
-    truth = np.zeros_like(u) / units.sec
-    assert_array_equal(sh, truth)
-    assert_array_equal(st, truth)
-
-
-def test_shst_zero_stretching():
-    """Test shear_stretching_deformation when there is only shearing."""
-    a = np.arange(3)
-    u = np.c_[a, a, a] * units('m/s')
-    with pytest.warns(MetpyDeprecationWarning):
-        sh, st = shearing_stretching_deformation(u, u.T, 1 * units.meter, 1 * units.meter,
-                                                 dim_order='yx')
-    true_sh = 2. * np.ones_like(u) / units.sec
-    true_st = np.zeros_like(u) / units.sec
-    assert_array_equal(sh, true_sh)
-    assert_array_equal(st, true_st)
-
-
-def test_shst_deformation():
-    """Test of shearing and stretching deformation calculation for basic case."""
-    a = np.arange(3)
-    u = np.c_[a, a, a] * units('m/s')
-    with pytest.warns(MetpyDeprecationWarning):
-        sh, st = shearing_stretching_deformation(u, u, 1 * units.meter, 1 * units.meter,
-                                                 dim_order='xy')
-    true_sh = np.ones_like(u) / units.sec
-    true_st = np.ones_like(u) / units.sec
-    assert_array_equal(sh, true_st)
-    assert_array_equal(st, true_sh)
-
-
-def test_shst_deformation_asym():
-    """Test shearing and stretching deformation calculation with a complicated field."""
-    u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
-    v = np.array([[6, 4, 8], [2, 6, 0], [2, 2, 6]]) * units('m/s')
-    with pytest.warns(MetpyDeprecationWarning):
-        sh, st = shearing_stretching_deformation(u, v, 1 * units.meters, 2 * units.meters,
-                                                 dim_order='yx')
-    true_sh = np.array([[-7.5, -1.5, 1.], [9.5, -0.5, -11.], [1.5, 5.5, 12.]]) / units.sec
-    true_st = np.array([[4., 0.5, 12.5], [4., 1.5, -0.5], [1., 5.5, -4.5]]) / units.sec
-    assert_array_equal(sh, true_sh)
-    assert_array_equal(st, true_st)
-
-    # Now try for yx ordered
-    with pytest.warns(MetpyDeprecationWarning):
-        sh, st = shearing_stretching_deformation(u.T, v.T, 1 * units.meters, 2 * units.meters,
-                                                 dim_order='xy')
-    assert_array_equal(sh, true_sh.T)
-    assert_array_equal(st, true_st.T)
 
 
 def test_shearing_deformation_asym():
@@ -579,38 +467,6 @@ def test_lat_lon_grid_spacing_mismatched_shape():
     with pytest.raises(ValueError):
         with pytest.warns(MetpyDeprecationWarning):
             dx, dy = lat_lon_grid_spacing(lon, lat)
-
-
-def test_v_vorticity():
-    """Test that v_vorticity wrapper works (deprecated in 0.7)."""
-    a = np.arange(3)
-    u = np.c_[a, a, a] * units('m/s')
-    with pytest.warns(MetpyDeprecationWarning):
-        v = v_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
-    true_v = np.ones_like(u) / units.sec
-    assert_array_equal(v, true_v)
-
-
-def test_convergence():
-    """Test that convergence wrapper works (deprecated in 0.7)."""
-    a = np.arange(3)
-    u = np.c_[a, a, a] * units('m/s')
-    with pytest.warns(MetpyDeprecationWarning):
-        c = h_convergence(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
-    true_c = np.ones_like(u) / units.sec
-    assert_array_equal(c, true_c)
-
-
-def test_convergence_vorticity():
-    """Test that convergence_vorticity wrapper works (deprecated in 0.7)."""
-    a = np.arange(3)
-    u = np.c_[a, a, a] * units('m/s')
-    with pytest.warns(MetpyDeprecationWarning):
-        c, v = convergence_vorticity(u, u, 1 * units.meter, 1 * units.meter, dim_order='xy')
-    true_c = np.ones_like(u) / units.sec
-    true_v = np.ones_like(u) / units.sec
-    assert_array_equal(c, true_c)
-    assert_array_equal(v, true_v)
 
 
 def test_lat_lon_grid_deltas_1d():
