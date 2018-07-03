@@ -441,6 +441,12 @@ def deriv_2d_data():
     return ret._replace(f=ret.a * (ret.x - ret.x0)**2 + ret.b * (ret.y[:, None] - ret.y0)**2)
 
 
+@pytest.fixture()
+def deriv_4d_data():
+    """Return simple 4-dimensional data for testing axis handling of derivative functions."""
+    return np.arange(3 * 3 * 4 * 4).reshape((3, 3, 4, 4))
+
+
 def test_first_derivative(deriv_1d_data):
     """Test first_derivative with a simple 1D array."""
     dv_dx = first_derivative(deriv_1d_data.values, x=deriv_1d_data.x)
@@ -587,6 +593,28 @@ def test_gradient_2d(deriv_2d_data):
     assert_array_almost_equal(res, truth, 5)
 
 
+def test_gradient_4d(deriv_4d_data):
+    """Test gradient with 4D arrays."""
+    res = gradient(deriv_4d_data, deltas=(1, 1, 1, 1))
+    truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (48., 16., 4., 1.))
+    assert_array_almost_equal(res, truth, 8)
+
+
+def test_gradient_restricted_axes(deriv_2d_data):
+    """Test 2D gradient with 3D arrays and manual specification of axes."""
+    res = gradient(deriv_2d_data.f[..., None], coordinates=(deriv_2d_data.y, deriv_2d_data.x),
+                   axes=(0, 1))
+    truth = (np.array([[[-0.25], [-0.25], [-0.25]],
+                       [[1.75], [1.75], [1.75]],
+                       [[4.75], [4.75], [4.75]],
+                       [[5.75], [5.75], [5.75]]]),
+             np.array([[[-3], [-1], [4]],
+                       [[-3], [-1], [4]],
+                       [[-3], [-1], [4]],
+                       [[-3], [-1], [4]]]))
+    assert_array_almost_equal(res, truth, 5)
+
+
 def test_gradient_x_deprecation(deriv_2d_data):
     """Test deprecation of x keyword argument."""
     with pytest.warns(MetpyDeprecationWarning):
@@ -620,3 +648,48 @@ def test_bounding_indices_above():
     assert_array_equal(above[1], np.array([[3, 0], [0, 3]]))
     assert_array_equal(below[1], np.array([[2, -1], [-1, 2]]))
     assert_array_equal(good, np.array([[True, False], [False, True]]))
+
+
+def test_3d_gradient_3d_data_no_axes(deriv_4d_data):
+    """Test 3D gradient with 3D data and no axes parameter."""
+    test = deriv_4d_data[0]
+    res = gradient(test, deltas=(1, 1, 1))
+    truth = tuple(factor * np.ones_like(test) for factor in (16., 4., 1.))
+    assert_array_almost_equal(res, truth, 8)
+
+
+def test_2d_gradient_3d_data_no_axes(deriv_4d_data):
+    """Test for failure of 2D gradient with 3D data and no axes parameter."""
+    test = deriv_4d_data[0]
+    with pytest.raises(ValueError) as exc:
+        gradient(test, deltas=(1, 1))
+    assert 'must match the number of dimensions' in str(exc.value)
+
+
+def test_3d_gradient_2d_data_no_axes(deriv_4d_data):
+    """Test for failure of 3D gradient with 2D data and no axes parameter."""
+    test = deriv_4d_data[0, 0]
+    with pytest.raises(ValueError) as exc:
+        gradient(test, deltas=(1, 1, 1))
+    assert 'must match the number of dimensions' in str(exc.value)
+
+
+def test_2d_gradient_4d_data_2_axes_3_deltas(deriv_4d_data):
+    """Test 2D gradient of 4D data with 2 axes and 3 deltas."""
+    res = gradient(deriv_4d_data, deltas=(1, 1, 1), axes=(-2, -1))
+    truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (4., 1.))
+    assert_array_almost_equal(res, truth, 8)
+
+
+def test_2d_gradient_4d_data_2_axes_2_deltas(deriv_4d_data):
+    """Test 2D gradient of 4D data with 2 axes and 2 deltas."""
+    res = gradient(deriv_4d_data, deltas=(1, 1), axes=(0, 1))
+    truth = tuple(factor * np.ones_like(deriv_4d_data) for factor in (48., 16.))
+    assert_array_almost_equal(res, truth, 8)
+
+
+def test_2d_gradient_4d_data_2_axes_1_deltas(deriv_4d_data):
+    """Test for failure of 2D gradient of 4D data with 2 axes and 1 deltas."""
+    with pytest.raises(ValueError) as exc:
+        gradient(deriv_4d_data, deltas=(1, ), axes=(1, 2))
+    assert 'cannot be less than that of "axes"' in str(exc.value)

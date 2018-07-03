@@ -112,8 +112,8 @@ def vorticity(u, v, dx, dy):
     divergence
 
     """
-    dudy = first_derivative(u, delta=dy, axis=0)
-    dvdx = first_derivative(v, delta=dx, axis=1)
+    dudy = first_derivative(u, delta=dy, axis=-2)
+    dvdx = first_derivative(v, delta=dx, axis=-1)
     return dvdx - dudy
 
 
@@ -144,8 +144,8 @@ def divergence(u, v, dx, dy):
     vorticity
 
     """
-    dudx = first_derivative(u, delta=dx, axis=1)
-    dvdy = first_derivative(v, delta=dy, axis=0)
+    dudx = first_derivative(u, delta=dx, axis=-1)
+    dvdy = first_derivative(v, delta=dy, axis=-2)
     return dudx + dvdy
 
 
@@ -176,8 +176,8 @@ def shearing_deformation(u, v, dx, dy):
     stretching_deformation, total_deformation
 
     """
-    dudy = first_derivative(u, delta=dy, axis=0)
-    dvdx = first_derivative(v, delta=dx, axis=1)
+    dudy = first_derivative(u, delta=dy, axis=-2)
+    dvdx = first_derivative(v, delta=dx, axis=-1)
     return dvdx + dudy
 
 
@@ -208,8 +208,8 @@ def stretching_deformation(u, v, dx, dy):
     shearing_deformation, total_deformation
 
     """
-    dudx = first_derivative(u, delta=dx, axis=1)
-    dvdy = first_derivative(v, delta=dy, axis=0)
+    dudx = first_derivative(u, delta=dx, axis=-1)
+    dvdy = first_derivative(v, delta=dy, axis=-2)
     return dudx - dvdy
 
 
@@ -240,10 +240,8 @@ def total_deformation(u, v, dx, dy):
     shearing_deformation, stretching_deformation
 
     """
-    dudx = first_derivative(u, delta=dx, axis=1)
-    dudy = first_derivative(u, delta=dy, axis=0)
-    dvdx = first_derivative(v, delta=dx, axis=1)
-    dvdy = first_derivative(v, delta=dy, axis=0)
+    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(-2, -1))
+    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(-2, -1))
     return np.sqrt((dvdx + dudy)**2 + (dudx - dvdy)**2)
 
 
@@ -263,12 +261,12 @@ def advection(scalar, wind, deltas):
     scalar : N-dimensional array
         Array (with N-dimensions) with the quantity to be advected.
     wind : sequence of arrays
-        Length N sequence of N-dimensional arrays.  Represents the flow,
+        Length M sequence of N-dimensional arrays.  Represents the flow,
         with a component of the wind in each dimension.  For example, for
         horizontal advection, this could be a list: [u, v], where u and v
         are each a 2-dimensional array.
     deltas : sequence
-        A (length N) sequence containing the grid spacing in each dimension.
+        A (length M) sequence containing the grid spacing in each dimension.
 
     Returns
     -------
@@ -804,10 +802,8 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
     """
     f = coriolis_parameter(lats)
 
-    dugdx = first_derivative(u_geostrophic, delta=dx, axis=1)
-    dugdy = first_derivative(u_geostrophic, delta=dy, axis=0)
-    dvgdx = first_derivative(v_geostrophic, delta=dx, axis=1)
-    dvgdy = first_derivative(v_geostrophic, delta=dy, axis=0)
+    dugdy, dugdx = gradient(u_geostrophic, deltas=(dy, dx), axes=(-2, -1))
+    dvgdy, dvgdx = gradient(v_geostrophic, deltas=(dy, dx), axes=(-2, -1))
 
     u_component = -(u * dvgdx + v * dvgdy) / f
     v_component = (u * dugdx + v * dugdy) / f
@@ -864,9 +860,9 @@ def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
     static_stability
 
     """
-    dudy, dudx = gradient(u, deltas=(dy, dx), axis=(-2, -1))
-    dvdy, dvdx = gradient(v, deltas=(dy, dx), axis=(-2, -1))
-    dtempdy, dtempdx = gradient(temperature, deltas=(dy, dx), axis=(-2, -1))
+    dudy, dudx = gradient(u, deltas=(dy, dx), axes=(-2, -1))
+    dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(-2, -1))
+    dtempdy, dtempdx = gradient(temperature, deltas=(dy, dx), axes=(-2, -1))
 
     q1 = -Rd / (pressure * static_stability) * (dudx * dtempdx + dvdx * dtempdy)
     q2 = -Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)

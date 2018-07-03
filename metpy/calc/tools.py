@@ -864,8 +864,6 @@ def second_derivative(f, **kwargs):
 
     Works for both regularly-spaced data and grids with varying spacing.
 
-    Either `x` or `delta` must be specified.
-
     Either `x` or `delta` must be specified. This uses 3 points to calculate the
     derivative, using forward or backward at the edges of the grid as appropriate, and
     centered elsewhere. The irregular spacing is handled explicitly, using the formulation
@@ -948,7 +946,7 @@ def gradient(f, **kwargs):
 
     Works for both regularly-spaced data, and grids with varying spacing.
 
-    Either `x` or `deltas` must be specified.
+    Either `coordinates` or `deltas` must be specified.
 
     Parameters
     ----------
@@ -959,12 +957,17 @@ def gradient(f, **kwargs):
         grid points in `f` in axis order.
     deltas : array-like, optional
         Sequence of arrays or scalars that specify the spacing between the grid points in `f`
-        in axis order. There should be one item less than the size of `f` along `axis`.
+        in axis order. There should be one item less than the size of `f` along the applicable
+        axis.
+    axes : sequence, optional
+        Sequence of integers that specify the array axes along which to take the derivatives.
+        Defaults to all axes of f in order. If given, its length must be less than or equal to
+        that of the `coordinates` or `deltas` given.
 
     Returns
     -------
     array-like
-        The first derivative calculated along each axis in the original array
+        The first derivative calculated along each specified axis of the original array
 
     See Also
     --------
@@ -975,10 +978,13 @@ def gradient(f, **kwargs):
     `gradient` previously accepted `x` as a parameter for coordinate values. This has been
     deprecated in 0.9 in favor of `coordinates`.
 
+    If this function is used without the `axes` parameter, the length of `coordinates` or
+    `deltas` (as applicable) must match the number of dimensions of `f`.
+
     """
-    pos_kwarg, positions = _process_gradient_args(kwargs)
-    return tuple(first_derivative(f, axis=ind, **{pos_kwarg: positions[ind]})
-                 for ind, pos in enumerate(positions))
+    pos_kwarg, positions, axes = _process_gradient_args(f, kwargs)
+    return tuple(first_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
+                 for ind, axis in enumerate(axes))
 
 
 @exporter.export
@@ -988,7 +994,7 @@ def laplacian(f, **kwargs):
 
     Works for both regularly-spaced data, and grids with varying spacing.
 
-    Either `x` or `deltas` must be specified.
+    Either `coordinates` or `deltas` must be specified.
 
     Parameters
     ----------
@@ -998,7 +1004,11 @@ def laplacian(f, **kwargs):
         The coordinate values corresponding to the grid points in `f`
     deltas : array-like, optional
         Spacing between the grid points in `f`. There should be one item less than the size
-        of `f` along `axis`.
+        of `f` along the applicable axis.
+    axes : sequence, optional
+        Sequence of integers that specify the array axes along which to take the derivatives.
+        Defaults to all axes of f. If given, its length must be less than or equal to that of
+        the `coordinates` or `deltas` given.
 
     Returns
     -------
@@ -1014,10 +1024,13 @@ def laplacian(f, **kwargs):
     `laplacian` previously accepted `x` as a parameter for coordinate values. This has been
     deprecated in 0.9 in favor of `coordinates`.
 
+    If this function is used without the `axes` parameter, the length of `coordinates` or
+    `deltas` (as applicable) must match the number of dimensions of `f`.
+
     """
-    pos_kwarg, positions = _process_gradient_args(kwargs)
-    return sum(second_derivative(f, axis=ind, **{pos_kwarg: positions[ind]})
-               for ind, pos in enumerate(positions))
+    pos_kwarg, positions, axes = _process_gradient_args(f, kwargs)
+    return sum(second_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
+               for ind, axis in enumerate(axes))
 
 
 def _broadcast_to_axis(arr, axis, ndim):
@@ -1032,18 +1045,31 @@ def _broadcast_to_axis(arr, axis, ndim):
     return arr
 
 
-def _process_gradient_args(kwargs):
+def _process_gradient_args(f, kwargs):
     """Handle common processing of arguments for gradient and gradient-like functions."""
+    axes = kwargs.get('axes', range(f.ndim))
+
+    def _check_length(positions):
+        if 'axes' in kwargs and len(positions) < len(axes):
+            raise ValueError('Length of "coordinates" or "deltas" cannot be less than that '
+                             'of "axes".')
+        elif 'axes' not in kwargs and len(positions) != len(axes):
+            raise ValueError('Length of "coordinates" or "deltas" must match the number of '
+                             'dimensions of "f" when "axes" is not given.')
+
     if 'deltas' in kwargs:
         if 'coordinates' in kwargs or 'x' in kwargs:
             raise ValueError('Cannot specify both "coordinates" and "deltas".')
-        return 'delta', kwargs['deltas']
+        _check_length(kwargs['deltas'])
+        return 'delta', kwargs['deltas'], axes
     elif 'coordinates' in kwargs:
-        return 'x', kwargs['coordinates']
+        _check_length(kwargs['coordinates'])
+        return 'x', kwargs['coordinates'], axes
     elif 'x' in kwargs:
         warnings.warn('The use of "x" as a parameter for coordinate values has been '
                       'deprecated. Use "coordinates" instead.', metpyDeprecation)
-        return 'x', kwargs['x']
+        _check_length(kwargs['x'])
+        return 'x', kwargs['x'], axes
     else:
         raise ValueError('Must specify either "coordinates" or "deltas" for value positions.')
 
