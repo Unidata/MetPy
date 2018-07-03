@@ -538,7 +538,8 @@ def test_lat_lon_grid_spacing_1d():
     """Test for lat_lon_grid_spacing for variable grid."""
     lat = np.arange(40, 50, 2.5)
     lon = np.arange(-100, -90, 2.5)
-    dx, dy = lat_lon_grid_spacing(lon, lat)
+    with pytest.warns(MetpyDeprecationWarning):
+        dx, dy = lat_lon_grid_spacing(lon, lat)
     dx_truth = np.array([[212943.5585, 212943.5585, 212943.5585],
                          [204946.2305, 204946.2305, 204946.2305],
                          [196558.8269, 196558.8269, 196558.8269],
@@ -555,7 +556,8 @@ def test_lat_lon_grid_spacing_2d():
     lat = np.arange(40, 50, 2.5)
     lon = np.arange(-100, -90, 2.5)
     lon, lat = np.meshgrid(lon, lat)
-    dx, dy = lat_lon_grid_spacing(lon, lat)
+    with pytest.warns(MetpyDeprecationWarning):
+        dx, dy = lat_lon_grid_spacing(lon, lat)
     dx_truth = np.array([[212943.5585, 212943.5585, 212943.5585],
                          [204946.2305, 204946.2305, 204946.2305],
                          [196558.8269, 196558.8269, 196558.8269],
@@ -575,7 +577,8 @@ def test_lat_lon_grid_spacing_mismatched_shape():
                     [-100., -97.5, -95., -92.5],
                     [-100., -97.5, -95., -92.5]])
     with pytest.raises(ValueError):
-        dx, dy = lat_lon_grid_spacing(lon, lat)
+        with pytest.warns(MetpyDeprecationWarning):
+            dx, dy = lat_lon_grid_spacing(lon, lat)
 
 
 def test_v_vorticity():
@@ -611,7 +614,7 @@ def test_convergence_vorticity():
 
 
 def test_lat_lon_grid_deltas_1d():
-    """Test for lat_lon_grid_spacing for variable grid."""
+    """Test for lat_lon_grid_deltas for variable grid."""
     lat = np.arange(40, 50, 2.5)
     lon = np.arange(-100, -90, 2.5)
     dx, dy = lat_lon_grid_deltas(lon, lat)
@@ -628,7 +631,7 @@ def test_lat_lon_grid_deltas_1d():
 
 @pytest.mark.parametrize('flip_order', [(False, True)])
 def test_lat_lon_grid_deltas_2d(flip_order):
-    """Test for lat_lon_grid_spacing for variable grid with negative delta distances."""
+    """Test for lat_lon_grid_deltas for variable grid with negative delta distances."""
     lat = np.arange(40, 50, 2.5)
     lon = np.arange(-100, -90, 2.5)
     dx_truth = np.array([[212943.5585, 212943.5585, 212943.5585],
@@ -669,7 +672,7 @@ def test_lat_lon_grid_deltas_extra_dimensions():
 
 
 def test_lat_lon_grid_deltas_mismatched_shape():
-    """Test for lat_lon_grid_spacing for variable grid."""
+    """Test for lat_lon_grid_deltas for variable grid."""
     lat = np.arange(40, 50, 2.5)
     lon = np.array([[-100., -97.5, -95., -92.5],
                     [-100., -97.5, -95., -92.5],
