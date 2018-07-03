@@ -132,6 +132,13 @@ data_crs = data['temperature'].metpy.cartopy_crs
 print(data_crs)
 
 #########################################################################
+# The cartopy ``Globe`` can similarly be accessed via the ``data_var.metpy.cartopy_globe``
+# property:
+
+data_globe = data['temperature'].metpy.cartopy_globe
+print(data_globe)
+
+#########################################################################
 # Calculations
 # ------------
 #

@@ -4,6 +4,8 @@
 """Test the operation of MetPy's XArray accessors."""
 from __future__ import absolute_import
 
+from collections import OrderedDict
+
 import cartopy.crs as ccrs
 import numpy as np
 import pytest
@@ -59,6 +61,16 @@ def test_no_projection(test_ds):
         var.metpy.crs
 
     assert 'not available' in str(exc.value)
+
+
+def test_globe(test_var):
+    """Test getting the globe belonging to the projection."""
+    globe = test_var.metpy.cartopy_globe
+
+    assert globe.to_proj4_params() == OrderedDict([('ellps', 'sphere'),
+                                                   ('a', 6367470.21484375),
+                                                   ('b', 6367470.21484375)])
+    assert isinstance(globe, ccrs.Globe)
 
 
 def test_units(test_var):
