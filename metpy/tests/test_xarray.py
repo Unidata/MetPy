@@ -246,6 +246,17 @@ def test_resolve_axis_conflict_double_xy(test_ds_generic):
         test_ds_generic.metpy.parse_cf('test')
 
 
+def test_resolve_axis_conflict_double_x_with_single_dim(test_ds_generic):
+    """Test _resolve_axis_conflict with double x coordinate, but only one being a dim."""
+    test_ds_generic['e'].attrs['standard_name'] = 'projection_x_coordinate'
+    test_ds_generic.coords['f'] = ('e', np.linspace(0, 1, 5))
+    test_ds_generic['f'].attrs['standard_name'] = 'projection_x_coordinate'
+
+    test_var = test_ds_generic.metpy.parse_cf('test')
+
+    assert test_var['e'].identical(test_var.metpy.x)
+
+
 def test_resolve_axis_conflict_double_vertical(test_ds_generic):
     """Test _resolve_axis_conflict with double vertical coordinates."""
     test_ds_generic['b'].attrs['units'] = 'hPa'
