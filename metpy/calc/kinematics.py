@@ -707,12 +707,14 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
 
     Returns
     -------
-     dx, dy: 2D arrays of signed deltas between grid points in the x and y direction
+    dx, dy:
+        at least two dimensional arrays of signed deltas between grid points in the x and y
+        direction
 
     Notes
     -----
-    Accepts, 1D or 2D arrays for latitude and longitude
-    Assumes [Y, X] for 2D arrays
+    Accepts 1D, 2D, or higher arrays for latitude and longitude
+    Assumes [..., Y, X] for >=2 dimensional arrays
 
     """
     from pyproj import Geod
@@ -731,12 +733,12 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
 
     g = Geod(**geod_args)
 
-    forward_az, _, dy = g.inv(longitude[:-1, :], latitude[:-1, :], longitude[1:, :],
-                              latitude[1:, :])
+    forward_az, _, dy = g.inv(longitude[..., :-1, :], latitude[..., :-1, :],
+                              longitude[..., 1:, :], latitude[..., 1:, :])
     dy[(forward_az < -90.) | (forward_az > 90.)] *= -1
 
-    forward_az, _, dx = g.inv(longitude[:, :-1], latitude[:, :-1], longitude[:, 1:],
-                              latitude[:, 1:])
+    forward_az, _, dx = g.inv(longitude[..., :, :-1], latitude[..., :, :-1],
+                              longitude[..., :, 1:], latitude[..., :, 1:])
     dx[(forward_az < 0.) | (forward_az > 180.)] *= -1
 
     return dx * units.meter, dy * units.meter

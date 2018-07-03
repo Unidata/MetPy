@@ -650,6 +650,24 @@ def test_lat_lon_grid_deltas_2d(flip_order):
     assert_almost_equal(dy, dy_truth, 4)
 
 
+def test_lat_lon_grid_deltas_extra_dimensions():
+    """Test for lat_lon_grid_deltas with extra leading dimensions."""
+    lon, lat = np.meshgrid(np.arange(-100, -90, 2.5), np.arange(40, 50, 2.5))
+    lat = lat[None, None]
+    lon = lon[None, None]
+    dx_truth = np.array([[[[212943.5585, 212943.5585, 212943.5585],
+                           [204946.2305, 204946.2305, 204946.2305],
+                           [196558.8269, 196558.8269, 196558.8269],
+                           [187797.3216, 187797.3216, 187797.3216]]]]) * units.meter
+    dy_truth = (np.array([[[[277987.1857, 277987.1857, 277987.1857, 277987.1857],
+                            [277987.1857, 277987.1857, 277987.1857, 277987.1857],
+                            [277987.1857, 277987.1857, 277987.1857, 277987.1857]]]]) *
+                units.meter)
+    dx, dy = lat_lon_grid_deltas(lon, lat)
+    assert_almost_equal(dx, dx_truth, 4)
+    assert_almost_equal(dy, dy_truth, 4)
+
+
 def test_lat_lon_grid_deltas_mismatched_shape():
     """Test for lat_lon_grid_spacing for variable grid."""
     lat = np.arange(40, 50, 2.5)
