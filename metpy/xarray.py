@@ -54,6 +54,11 @@ class MetPyAccessor(object):
         """Return the coordinate reference system (CRS) as a cartopy object."""
         return self.crs.to_cartopy()
 
+    @property
+    def cartopy_globe(self):
+        """Return the globe belonging to the coordinate reference system (CRS)."""
+        return self.crs.cartopy_globe
+
     def _axis(self, axis):
         """Return the coordinate variable corresponding to the given individual axis."""
         if axis in readable_to_cf_axes:
