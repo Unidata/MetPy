@@ -642,8 +642,9 @@ class Level2File(object):
 
     def _check_size(self, msg_hdr, size):
         hdr_size = msg_hdr.size_hw * 2 - self.msg_hdr_fmt.size
-        assert size == hdr_size, ('Message type {} should be {} bytes '
-                                  'but got {}'.format(msg_hdr.msg_type, size, hdr_size))
+        if size != hdr_size:
+            log.warning('Message type %d should be %d bytes but got %d',
+                        msg_hdr.msg_type, size, hdr_size)
 
 
 def reduce_lists(d):
