@@ -48,7 +48,8 @@ sphinx_gallery_conf = {
         'metpy': None,
         'matplotlib': 'http://matplotlib.org',
         'numpy': 'http://docs.scipy.org/doc/numpy/',
-        'scipy': 'http://docs.scipy.org/doc/scipy/reference'},
+        'scipy': 'http://docs.scipy.org/doc/scipy/reference',
+        'xarray': 'http://xarray.pydata.org/en/stable/'},
     'examples_dirs': [os.path.join('..', 'examples'), os.path.join('..', 'tutorials')],
     'gallery_dirs': ['examples', 'tutorials'],
     'filename_pattern': '\.py',
@@ -72,7 +73,8 @@ intersphinx_mapping = {
                        'matplotlib': ('http://matplotlib.org/', None),
                        'python': ('https://docs.python.org/3/', None),
                        'numpy': ('https://docs.scipy.org/doc/numpy/', None),
-                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None)
+                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+                       'xarray': ('http://xarray.pydata.org/en/stable/', None)
                        }
 
 # Tweak how docs are formatted
