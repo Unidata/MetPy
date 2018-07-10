@@ -17,6 +17,10 @@ help:
 clean:
 	rm -rf $(BUILDDIR)/* $(SOURCEDIR)/examples $(SOURCEDIR)/tutorials $(SOURCEDIR)/api/generated
 
+# Check that all functions in modules with template overrides are present in the doc file
+overridecheck:
+	python override_check.py
+
 .PHONY: help Makefile
 
 # Catch-all target: route all unknown targets to Sphinx using the new
