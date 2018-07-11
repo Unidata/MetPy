@@ -349,7 +349,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
     else:
         if app_temperature.mask:
             app_temperature = temperature.m
-        return app_temperature[0] * temperature.units
+        return atleast_1d(app_temperature)[0] * temperature.units
 
 
 @exporter.export
