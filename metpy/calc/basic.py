@@ -337,7 +337,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
                                         mask_undefined=True).to(temperature.units)
 
     # Combine the heat index and wind chill arrays (no point has a value in both)
-    app_temperature = np.ma.where(wind_chill_temperature.mask,
+    app_temperature = np.ma.where(masked_array(wind_chill_temperature).mask,
                                   heat_index_temperature,
                                   wind_chill_temperature)
 
