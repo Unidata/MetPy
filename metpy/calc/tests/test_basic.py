@@ -263,6 +263,15 @@ def test_heat_index_ratio():
     assert_almost_equal(hi.to('degC'), units.Quantity([50.3405, np.nan], units.degC), 4)
 
 
+def test_heat_index_kelvin():
+    """Test heat_index when given Kelvin temperatures."""
+    temp = 308.15 * units.degK
+    rh = 0.7
+    hi = heat_index(temp, rh)
+    # NB rounded up test value here vs the above two tests
+    assert_almost_equal(hi.to('degC'), 50.3406 * units.degC, 4)
+
+
 def test_height_to_geopotential():
     """Test conversion from height to geopotential."""
     height = units.Quantity([0, 1000, 2000, 3000], units.m)
