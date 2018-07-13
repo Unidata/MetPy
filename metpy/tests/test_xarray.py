@@ -13,7 +13,7 @@ import xarray as xr
 
 from metpy.testing import assert_almost_equal, assert_array_equal, get_test_data
 from metpy.units import units
-from metpy.xarray import preprocess_xarray
+from metpy.xarray import check_matching_coordinates, preprocess_xarray
 
 
 # Seed RandomState for deterministic tests
@@ -399,3 +399,35 @@ def test_narr_example_variable_without_grid_mapping(test_ds):
     assert test_ds['y'].shape == data['lon'].metpy.y.shape
     assert data['lon'].metpy.x.identical(data['Temperature'].metpy.x)
     assert data['lon'].metpy.y.identical(data['Temperature'].metpy.y)
+
+
+def test_coordinates_identical_true(test_ds_generic):
+    """Test coordinates identical method when true."""
+    assert test_ds_generic['test'].metpy.coordinates_identical(test_ds_generic['test'])
+
+
+def test_coordinates_identical_false_number_of_coords(test_ds_generic):
+    """Test coordinates identical method when false due to number of coordinates."""
+    other_ds = test_ds_generic.drop('e')
+    assert not test_ds_generic['test'].metpy.coordinates_identical(other_ds['test'])
+
+
+def test_coordinates_identical_false_coords_mismatch(test_ds_generic):
+    """Test coordinates identical method when false due to coordinates not matching."""
+    other_ds = test_ds_generic.copy()
+    other_ds['e'].attrs['units'] = 'meters'
+    assert not test_ds_generic['test'].metpy.coordinates_identical(other_ds['test'])
+
+
+def test_check_matching_coordinates(test_ds_generic):
+    """Test xarray coordinate checking decorator."""
+    other = test_ds_generic['test'].rename({'a': 'time'})
+
+    @check_matching_coordinates
+    def add(a, b):
+        return a + b
+
+    xr.testing.assert_identical(add(test_ds_generic['test'], test_ds_generic['test']),
+                                test_ds_generic['test'] * 2)
+    with pytest.raises(ValueError):
+        add(test_ds_generic['test'], other)

@@ -91,6 +91,7 @@ calc
    .. autosummary::
       :toctree: ./
 
+      absolute_momentum
       absolute_vorticity
       advection
       ageostrophic_wind
@@ -133,11 +134,15 @@ calc
    .. autosummary::
       :toctree: ./
 
+      cross_section_components
       first_derivative
       gradient
       laplacian
       lat_lon_grid_deltas
+      normal_component
       second_derivative
+      tangential_component
+      unit_vectors_from_cross_section
 
 
    Apparent Temperature

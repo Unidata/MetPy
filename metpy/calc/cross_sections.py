@@ -1,7 +1,7 @@
-# Copyright (c) 2017 MetPy Developers.
+# Copyright (c) 2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Contains calculation of various derived indices.
+"""Contains calculations related to cross sections and respective vector components.
 
 Compared to the rest of the calculations which are based around pint quantities, this module
 is based around xarray DataArrays.
@@ -47,8 +47,8 @@ def distances_from_cross_section(cross):
                                         lat[0].values * np.ones_like(lat),
                                         lon.values,
                                         lat.values)
-        x = distance * np.cos(np.deg2rad(90. - forward_az))
-        y = distance * np.sin(np.deg2rad(90. - forward_az))
+        x = distance * np.sin(np.deg2rad(forward_az))
+        y = distance * np.cos(np.deg2rad(forward_az))
 
         # Build into DataArrays
         x = xr.DataArray(x, coords=lon.coords, dims=lon.dims, attrs={'units': 'meters'})
@@ -89,7 +89,7 @@ def latitude_from_cross_section(cross):
                                                     cross.metpy.x.values,
                                                     y.values)[..., 1]
         latitude = xr.DataArray(latitude, coords=y.coords, dims=y.dims,
-                                attrs={'units': 'degress_north'})
+                                attrs={'units': 'degrees_north'})
         return latitude
 
 
@@ -298,6 +298,8 @@ def absolute_momentum(u_wind, v_wind, index='index'):
     _, latitude = xr.broadcast(norm_wind, latitude)
     f = coriolis_parameter(np.deg2rad(latitude.values)).magnitude  # in 1/s
     x, y = distances_from_cross_section(norm_wind)
+    x.metpy.convert_units('meters')
+    y.metpy.convert_units('meters')
     _, x, y = xr.broadcast(norm_wind, x, y)
     distance = np.hypot(x, y).values  # in meters
 

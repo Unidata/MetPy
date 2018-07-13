@@ -7,7 +7,8 @@ import numpy as np
 import pytest
 import xarray as xr
 
-from metpy.interpolate import cross_section
+from metpy.interpolate import cross_section, geodesic, interpolate_to_slice
+from metpy.testing import assert_array_almost_equal
 
 
 @pytest.fixture()
@@ -49,10 +50,10 @@ def test_ds_lonlat():
 @pytest.fixture()
 def test_ds_xy():
     """Return dataset on a x/y grid with a time coordinate for use in tests."""
-    data = np.linspace(250, 300, 5 * 6 * 7).reshape((1, 5, 6, 7))
+    data_temperature = np.linspace(250, 300, 5 * 6 * 7).reshape((1, 5, 6, 7))
     ds = xr.Dataset(
         {
-            'temperature': (['time', 'isobaric', 'y', 'x'], data),
+            'temperature': (['time', 'isobaric', 'y', 'x'], data_temperature),
             'lambert_conformal': ([], '')
         },
         coords={
@@ -94,6 +95,32 @@ def test_ds_xy():
         'earth_radius': 6367470.21484375
     }
     return ds.metpy.parse_cf()
+
+
+def test_interpolate_to_slice_against_selection(test_ds_lonlat):
+    """Test interpolate_to_slice on a simple operation."""
+    data = test_ds_lonlat['temperature']
+    path = np.array([[265.0, 30.],
+                     [265.0, 36.],
+                     [265.0, 42.]])
+    test_slice = interpolate_to_slice(data, path)
+    true_slice = data.sel({'lat': [30., 36., 42.], 'lon': 265.0})
+    # Coordinates differ, so just compare the data
+    assert_array_almost_equal(true_slice.metpy.unit_array, test_slice.metpy.unit_array, 5)
+
+
+def test_geodesic(test_ds_xy):
+    """Test the geodesic construction."""
+    crs = test_ds_xy['temperature'].metpy.cartopy_crs
+    path = geodesic(crs, (36.46, -112.45), (42.95, -68.74), 7)
+    truth = np.array([[-4.99495719e+05, -1.49986599e+06],
+                      [9.84044354e+04, -1.26871737e+06],
+                      [6.88589099e+05, -1.02913966e+06],
+                      [1.27269045e+06, -7.82037603e+05],
+                      [1.85200974e+06, -5.28093957e+05],
+                      [2.42752546e+06, -2.67710326e+05],
+                      [2.99993290e+06, -9.39107692e+02]])
+    assert_array_almost_equal(path, truth, 0)
 
 
 def test_cross_section_dataarray_and_linear_interp(test_ds_xy):

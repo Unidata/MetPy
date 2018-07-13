@@ -1,4 +1,4 @@
-# Copyright (c) 2016,2017,2018 MetPy Developers.
+# Copyright (c) 2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `cross_sections` module."""
@@ -12,8 +12,7 @@ from metpy.calc import (absolute_momentum, cross_section_components, normal_comp
 from metpy.calc.cross_sections import (distances_from_cross_section,
                                        latitude_from_cross_section)
 from metpy.interpolate import cross_section
-from metpy.testing import assert_array_almost_equal
-from metpy.units import units
+from metpy.testing import assert_array_almost_equal, assert_xarray_allclose
 
 
 @pytest.fixture()
@@ -139,11 +138,8 @@ def test_distances_from_cross_section_given_lonlat(test_cross_lonlat):
         dims=['index'],
         attrs={'units': 'meters'}
     )
-
-    xr.testing.assert_allclose(true_x, x)
-    assert x.metpy.coordinates_identical(true_x)
-    xr.testing.assert_allclose(true_y, y)
-    assert y.metpy.coordinates_identical(true_y)
+    assert_xarray_allclose(x, true_x)
+    assert_xarray_allclose(y, true_y)
 
 
 def test_distances_from_cross_section_given_xy(test_cross_xy):
@@ -180,10 +176,9 @@ def test_latitude_from_cross_section_given_y(test_cross_xy):
             'index': index,
         },
         dims=['index'],
-        attrs={'units': 'degress_north'}
+        attrs={'units': 'degrees_north'}
     )
-    xr.testing.assert_allclose(true_latitude, latitude)
-    assert latitude.metpy.coordinates_identical(true_latitude)
+    assert_xarray_allclose(latitude, true_latitude)
 
 
 def test_unit_vectors_from_cross_section_given_lonlat(test_cross_lonlat):
@@ -248,10 +243,8 @@ def test_cross_section_components(test_cross_lonlat):
                                   coords=test_cross_lonlat['u_wind'].coords,
                                   dims=test_cross_lonlat['u_wind'].dims,
                                   attrs=test_cross_lonlat['u_wind'].attrs)
-    xr.testing.assert_allclose(true_tang_wind, tang_wind)
-    assert tang_wind.metpy.coordinates_identical(true_tang_wind)
-    xr.testing.assert_allclose(true_norm_wind, norm_wind)
-    assert norm_wind.metpy.coordinates_identical(true_norm_wind)
+    assert_xarray_allclose(tang_wind, true_tang_wind)
+    assert_xarray_allclose(norm_wind, true_norm_wind)
 
 
 def test_tangential_component(test_cross_xy):
@@ -271,8 +264,7 @@ def test_tangential_component(test_cross_xy):
                                   coords=test_cross_xy['u_wind'].coords,
                                   dims=test_cross_xy['u_wind'].dims,
                                   attrs=test_cross_xy['u_wind'].attrs)
-    xr.testing.assert_allclose(true_tang_wind, tang_wind)
-    assert tang_wind.metpy.coordinates_identical(true_tang_wind)
+    assert_xarray_allclose(tang_wind, true_tang_wind)
 
 
 def test_normal_component(test_cross_xy):
@@ -292,8 +284,7 @@ def test_normal_component(test_cross_xy):
                                   coords=test_cross_xy['u_wind'].coords,
                                   dims=test_cross_xy['u_wind'].dims,
                                   attrs=test_cross_xy['u_wind'].attrs)
-    xr.testing.assert_allclose(true_norm_wind, norm_wind)
-    assert norm_wind.metpy.coordinates_identical(true_norm_wind)
+    assert_xarray_allclose(norm_wind, true_norm_wind)
 
 
 def test_absolute_momentum_given_lonlat(test_cross_lonlat):
@@ -313,10 +304,8 @@ def test_absolute_momentum_given_lonlat(test_cross_lonlat):
     true_momentum = xr.DataArray(true_momentum_values,
                                  coords=test_cross_lonlat['u_wind'].coords,
                                  dims=test_cross_lonlat['u_wind'].dims,
-                                 attrs=test_cross_lonlat['u_wind'].attrs)
-    xr.testing.assert_allclose(true_momentum, momentum)
-    assert momentum.metpy.coordinates_identical(true_momentum)
-    assert units(momentum.attrs['units']) == units('m/s')
+                                 attrs={'units': 'meter / second'})
+    assert_xarray_allclose(momentum, true_momentum)
 
 
 def test_absolute_momentum_given_xy(test_cross_xy):
@@ -335,7 +324,5 @@ def test_absolute_momentum_given_xy(test_cross_xy):
     true_momentum = xr.DataArray(true_momentum_values,
                                  coords=test_cross_xy['u_wind'].coords,
                                  dims=test_cross_xy['u_wind'].dims,
-                                 attrs=test_cross_xy['u_wind'].attrs)
-    xr.testing.assert_allclose(true_momentum, momentum)
-    assert momentum.metpy.coordinates_identical(true_momentum)
-    assert units(momentum.attrs['units']) == units('m/s')
+                                 attrs={'units': 'meter / second'})
+    assert_xarray_allclose(momentum, true_momentum)

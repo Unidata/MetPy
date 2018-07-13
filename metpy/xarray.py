@@ -98,7 +98,7 @@ class MetPyAccessor(object):
 
         # If same length, iterate over all of them and check
         for coord_name, coord_var in self._data_array.coords.items():
-            if not other[coord_name].identical(coord_var):
+            if coord_name not in other.coords or not other[coord_name].identical(coord_var):
                 return False
 
         # Otherwise, they match.
@@ -355,9 +355,11 @@ def check_matching_coordinates(func):
     def wrapper(*args, **kwargs):
         data_arrays = ([a for a in args if isinstance(a, xr.DataArray)] +
                        [a for a in kwargs.values() if isinstance(a, xr.DataArray)])
-        for i in range(1, len(data_arrays)):
-            if not data_arrays[0].metpy.coordinates_identical(data_arrays[i]):
-                raise IndexError('Input DataArray arguments must be on same coordinates.')
+        if len(data_arrays) > 1:
+            first = data_arrays[0]
+            for other in data_arrays[1:]:
+                if not first.metpy.coordinates_identical(other):
+                    raise ValueError('Input DataArray arguments must be on same coordinates.')
         return func(*args, **kwargs)
     return wrapper
 

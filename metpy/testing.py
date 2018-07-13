@@ -1,4 +1,4 @@
-# Copyright (c) 2015,2016 MetPy Developers.
+# Copyright (c) 2015,2016,2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Collection of utilities for testing.
@@ -8,10 +8,13 @@ This includes:
 * code for testing matplotlib figures
 """
 
+from __future__ import absolute_import
+
 import numpy as np
 import numpy.testing
 from pint import DimensionalityError
 import pytest
+import xarray as xr
 
 from metpy.calc import wind_components
 from metpy.cbook import get_test_data
@@ -161,6 +164,13 @@ def assert_array_equal(actual, desired):
     """
     actual, desired = check_and_drop_units(actual, desired)
     numpy.testing.assert_array_equal(actual, desired)
+
+
+def assert_xarray_allclose(actual, desired):
+    """Check that the xarrays are almost equal, including coordinates and attributes."""
+    xr.testing.assert_allclose(actual, desired)
+    assert desired.metpy.coordinates_identical(actual)
+    assert desired.attrs == actual.attrs
 
 
 @pytest.fixture(scope='module', autouse=True)

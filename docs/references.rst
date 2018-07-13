@@ -110,8 +110,8 @@ References
 
 .. [Schultz1999] Schultz, D. M. and P. N. Schumacher, 1999: The Use and Misuse of Conditional
            Symmetric Instability. Mon. Wea. Rev., 127, 2709–2732,
-           doi:`10.1175/1520-0493(1999)127<2709:TUAMOC>2.0.CO;2
-           <https://doi.org/10.1175/1520-0493(1999)127<2709:TUAMOC>2.0.CO;2>`_.
+           doi:`10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2
+           <https://doi.org/10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2>`_.
 
 .. [Steadman1979] Steadman, R.G., 1979: The assessment of sultriness. Part I: A
            temperature-humidity index based on human physiology and clothing
