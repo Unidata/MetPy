@@ -269,7 +269,7 @@ def heat_index(temperature, rh, mask_undefined=True):
     windchill
 
     """
-    delta = temperature - 0. * units.degF
+    delta = temperature.to(units.degF) - 0. * units.degF
     rh2 = rh * rh
     delta2 = delta * delta
 
