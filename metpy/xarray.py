@@ -134,7 +134,8 @@ class CFConventionHandler(object):
             else:
                 var.coords['crs'] = CFProjection(proj_var.attrs)
                 var.attrs.pop('grid_mapping')
-                self._fixup_coords(var)
+
+        self._fixup_coords(var)
 
         # Trying to guess whether we should be adding a crs to this variable's coordinates
         # First make sure it's missing CRS but isn't lat/lon itself
@@ -253,15 +254,17 @@ class CFConventionHandler(object):
     def _fixup_coords(self, var):
         """Clean up the units on the coordinate variables."""
         for coord_name, data_array in var.coords.items():
-            if self.check_axis(data_array, 'x', 'y'):
+            if (self.check_axis(data_array, 'x', 'y') and
+                    not self.check_axis(data_array, 'lon', 'lat')):
                 try:
                     var.coords[coord_name].metpy.convert_units('meters')
                 except DimensionalityError:  # Radians!
-                    new_data_array = data_array.copy()
-                    height = var.coords['crs'].item()['perspective_point_height']
-                    scaled_vals = new_data_array.metpy.unit_array * (height * units.meters)
-                    new_data_array.metpy.unit_array = scaled_vals.to('meters')
-                    var.coords[coord_name] = new_data_array
+                    if 'crs' in var.coords:
+                        new_data_array = data_array.copy()
+                        height = var.coords['crs'].item()['perspective_point_height']
+                        scaled_vals = new_data_array.metpy.unit_array * (height * units.meters)
+                        new_data_array.metpy.unit_array = scaled_vals.to('meters')
+                        var.coords[coord_name] = new_data_array
 
     def _generate_coordinate_map(self, coords):
         """Generate a coordinate map via CF conventions and other methods."""

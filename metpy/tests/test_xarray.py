@@ -386,3 +386,16 @@ def test_check_axis_regular_expression_match(test_ds_generic, test_tuple):
     """Test the variety of possibilities for check_axis in the regular expression match."""
     data = test_ds_generic.rename({'e': test_tuple[0]})
     assert data.metpy.check_axis(data[test_tuple[0]], test_tuple[1])
+
+
+def test_narr_example_variable_without_grid_mapping(test_ds):
+    """Test that NARR example is parsed correctly, with x/y coordinates scaled the same."""
+    data = test_ds.metpy.parse_cf()
+    # Make sure that x and y coordinates are parsed correctly, rather than having unequal
+    # scaling based on whether that variable has the grid_mapping attribute. This would
+    # otherwise double the coordinates's shapes since xarray tries to combine the coordinates
+    # with different scaling from differing units.
+    assert test_ds['x'].shape == data['lon'].metpy.x.shape
+    assert test_ds['y'].shape == data['lon'].metpy.y.shape
+    assert data['lon'].metpy.x.identical(data['Temperature'].metpy.x)
+    assert data['lon'].metpy.y.identical(data['Temperature'].metpy.y)
