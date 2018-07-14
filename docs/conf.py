@@ -175,6 +175,10 @@ if 'sphinx_rtd_theme' in vars() and sphinx_rtd_theme.__version__ == '0.2.5b1.pos
 # links to the Github repository sources and issues
 html_context = {
     'doc_path': 'docs',
+    'galleries': sphinx_gallery_conf['gallery_dirs'],
+    'gallery_dir': dict(zip(sphinx_gallery_conf['gallery_dirs'],
+                            sphinx_gallery_conf['examples_dirs'])),
+    'api_dir': 'api/generated',
     'github_repo': 'Unidata/MetPy',
     'github_version': 'master',  # Make changes to the master branch
 }
