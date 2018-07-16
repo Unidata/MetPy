@@ -426,3 +426,13 @@ def test_apparent_temperature_scalar_no_modification():
     truth = 70 * units.degF
     res = apparent_temperature(temperature, rel_humidity, wind)
     assert_almost_equal(res, truth, 6)
+
+
+def test_apparent_temperature_windchill():
+    """Test that apparent temperature works when a windchill is calculated."""
+    temperature = -5. * units.degC
+    rel_humidity = 50. * units.percent
+    wind = 35. * units('m/s')
+    truth = -18.9357 * units.degC
+    res = apparent_temperature(temperature, rel_humidity, wind)
+    assert_almost_equal(res, truth, 0)
