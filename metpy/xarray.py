@@ -28,9 +28,13 @@ class MetPyAccessor(object):
         self._units = self._data_array.attrs.get('units', 'dimensionless')
 
     @property
+    def units(self):
+        return units(self._units)
+
+    @property
     def unit_array(self):
         """Return data values as a `pint.Quantity`."""
-        return self._data_array.values * units(self._units)
+        return self._data_array.values * self.units
 
     @unit_array.setter
     def unit_array(self, values):
@@ -60,7 +64,7 @@ class MetPyAccessor(object):
         return self.crs.cartopy_globe
 
     def _axis(self, axis):
-        """Return the coordinate variable corresponding to the given individual axis."""
+        """Return the coordinate variable corresponding to the given individual axis type."""
         if axis in readable_to_cf_axes:
             for coord_var in self._data_array.coords.values():
                 if coord_var.attrs.get('axis') == readable_to_cf_axes[axis]:
@@ -70,7 +74,7 @@ class MetPyAccessor(object):
             raise AttributeError('\'' + axis + '\' is not an interpretable axis.')
 
     def coordinates(self, *args):
-        """Return the coordinate variables corresponding to the given axes."""
+        """Return the coordinate variables corresponding to the given axes types."""
         for arg in args:
             yield self._axis(arg)
 
@@ -103,6 +107,38 @@ class MetPyAccessor(object):
 
         # Otherwise, they match.
         return True
+
+    def as_timestamp(self):
+        """Return the data as unix timestamp (for easier time derivatives)."""
+        attrs = {key: self._data_array.attrs[key] for key in
+                 {'standard_name', 'long_name', 'axis'} & set(self._data_array.attrs)}
+        attrs['units'] = 'seconds'
+        return xr.DataArray(self._data_array.values.astype('datetime64[s]').astype('int'),
+                            name=self._data_array.name,
+                            coords=self._data_array.coords,
+                            dims=self._data_array.dims,
+                            attrs=attrs)
+
+    def find_axis_name(self, axis):
+        """Return the name of the axis corresponding to the given identifier.
+
+        The given indentifer can be an axis number (integer), dimension coordinate name
+        (string) or a standard axis type (string).
+        """
+        if isinstance(axis, int):
+            # If an integer, use the corresponding dimension
+            return self._data_array.dims[axis]
+        elif axis not in self._data_array.dims and axis in readable_to_cf_axes:
+            # If not a dimension name itself, but a valid axis type, get the name of the
+            # coordinate corresponding to that axis type
+            return self._axis(axis).name
+        elif axis in self._data_array.dims and axis in self._data_array.coords:
+            # If this is a dimension coordinate name, use it directly
+            return axis
+        else:
+            # Otherwise, not valid
+            raise ValueError('Given axis is not valid. Must be an axis number, a dimension '
+                             'coordinate name, or a standard axis type.')
 
 
 @xr.register_dataset_accessor('metpy')

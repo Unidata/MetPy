@@ -73,11 +73,16 @@ def test_globe(test_var):
     assert isinstance(globe, ccrs.Globe)
 
 
-def test_units(test_var):
+def test_unit_array(test_var):
     """Test unit handling through the accessor."""
     arr = test_var.metpy.unit_array
     assert isinstance(arr, units.Quantity)
     assert arr.units == units.kelvin
+
+
+def test_units(test_var):
+    """Test the units property on the accessor."""
+    assert test_var.metpy.units == units('kelvin')
 
 
 def test_convert_units(test_var):
@@ -431,3 +436,37 @@ def test_check_matching_coordinates(test_ds_generic):
                                 test_ds_generic['test'] * 2)
     with pytest.raises(ValueError):
         add(test_ds_generic['test'], other)
+
+
+def test_as_timestamp(test_var):
+    """Test the as_timestamp method for a time DataArray."""
+    time = test_var.metpy.time
+    truth = xr.DataArray(np.array([544557600]),
+                         name='time',
+                         coords=time.coords,
+                         dims='time',
+                         attrs={'long_name': 'forecast time', 'axis': 'T',
+                                'units': 'seconds'})
+    assert truth.identical(time.metpy.as_timestamp())
+
+
+def test_find_axis_name_integer(test_var):
+    """Test getting axis name using the axis number identifier."""
+    assert test_var.metpy.find_axis_name(2) == 'y'
+
+
+def test_find_axis_name_axis_type(test_var):
+    """Test getting axis name using the axis type identifier."""
+    assert test_var.metpy.find_axis_name('vertical') == 'isobaric'
+
+
+def test_find_axis_name_dim_coord_name(test_var):
+    """Test getting axis name using the dimension coordinate name identifier."""
+    assert test_var.metpy.find_axis_name('isobaric') == 'isobaric'
+
+
+def test_find_axis_name_bad_identifier(test_var):
+    """Test getting axis name using the axis type identifier."""
+    with pytest.raises(ValueError) as exc:
+        test_var.metpy.find_axis_name('latitude')
+    assert 'axis is not valid' in str(exc.value)

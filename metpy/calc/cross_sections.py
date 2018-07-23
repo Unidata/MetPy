@@ -123,8 +123,8 @@ def unit_vectors_from_cross_section(cross, index='index'):
 
     """
     x, y = distances_from_cross_section(cross)
-    dx_di = first_derivative(x, x=cross[index])
-    dy_di = first_derivative(y, x=cross[index])
+    dx_di = first_derivative(x, axis=index).values
+    dy_di = first_derivative(y, axis=index).values
     tangent_vector_mag = np.hypot(dx_di, dy_di)
     unit_tangent_vector = np.vstack([dx_di / tangent_vector_mag, dy_di / tangent_vector_mag])
     unit_normal_vector = np.vstack([-dy_di / tangent_vector_mag, dx_di / tangent_vector_mag])
