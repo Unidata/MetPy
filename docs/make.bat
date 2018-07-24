@@ -22,6 +22,11 @@ if "%1" == "clean" (
 	goto end
 )
 
+if "%1" == "overridecheck" (
+	python override_check.py
+	goto end
+)
+
 %SPHINXBUILD% >NUL 2>NUL
 if errorlevel 9009 (
 	echo.
