@@ -176,14 +176,10 @@ calc
    .. autosummary::
       :toctree: ./
       
-      convergence_vorticity
       get_wind_components
       get_wind_dir
       get_wind_speed
-      h_convergence
       interp
       interpolate_nans
       lat_lon_grid_spacing
       log_interp
-      shearing_stretching_deformation
-      v_vorticity

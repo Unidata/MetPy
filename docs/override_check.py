@@ -31,7 +31,7 @@ for full_path in glob.glob('_templates/overrides/metpy.*.rst'):
     # Check for any missing functions
     missing_functions = functions - lines
 
-    if len(missing_functions) > 0:
+    if missing_functions:
         failed = True
         print('ERROR - The following functions are missing from the override file ' +
               filename + ': ' + ', '.join(missing_functions), file=sys.stderr)
