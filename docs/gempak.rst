@@ -589,11 +589,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">MSFC(V)</td>
-        <td class="tg-notimplemented">Pseudo angular momentum (cross-sections)</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/654">Issue #654</a></td>
+        <td class="tg-implemented">MSFC(V)</td>
+        <td class="tg-implemented">Pseudo angular momentum (cross-sections)</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.absolute_momentum.html#metpy.calc.absolute_momentum">metpy.calc.absolute_momentum</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -605,11 +605,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">NORM(V)</td>
-        <td class="tg-notimplemented">Normal component (cross-sections)</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/652">Issue #652</a></td>
+        <td class="tg-implemented">NORM(V)</td>
+        <td class="tg-implemented">Normal component (cross-sections)</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.normal_component.html#metpy.calc.normal_component">metpy.calc.normal_component</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -792,9 +792,9 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td>TANG(V)</td>
         <td>Tangential component (cross-sections)</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.tangential_component.html#metpy.calc.tangential_component">metpy.calc.tangential_component</a></td>
         <td></td>
-        <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -1102,11 +1102,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">NORMV(V)</td>
-        <td class="tg-notimplemented">Vector normal wind (cross-section)</td>
-        <td class="tg-notimplemented"></td>
+        <td class="tg-implemented">NORMV(V)</td>
+        <td class="tg-implemented">Vector normal wind (cross-section)</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.normal_component.html#metpy.calc.normal_component">metpy.calc.normal_component</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -1166,11 +1166,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">TANGV(V)</td>
-        <td class="tg-notimplemented">Vector tangential wind (cross-section)</td>
-        <td class="tg-notimplemented"></td>
+        <td class="tg-implemented">TANGV(V)</td>
+        <td class="tg-implemented">Vector tangential wind (cross-section)</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.tangential_component.html#metpy.calc.tangential_component">metpy.calc.tangential_component</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
