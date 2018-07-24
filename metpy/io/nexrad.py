@@ -375,7 +375,11 @@ class Level2File(object):
 
     def _decode_msg2(self, msg_hdr):
         self.rda_status.append(self._buffer.read_struct(self.msg2_fmt))
-        self._check_size(msg_hdr, self.msg2_fmt.size)
+
+        # RDA Build 18.0 expanded the size, but only with spares for now
+        extra_size = 40 if self.rda_status[-1].rda_build >= '18.0' else 0
+
+        self._check_size(msg_hdr, self.msg2_fmt.size + extra_size)
 
     def _decode_msg3(self, msg_hdr):
         from ._nexrad_msgs.msg3 import descriptions, fields
@@ -642,8 +646,9 @@ class Level2File(object):
 
     def _check_size(self, msg_hdr, size):
         hdr_size = msg_hdr.size_hw * 2 - self.msg_hdr_fmt.size
-        assert size == hdr_size, ('Message type {} should be {} bytes '
-                                  'but got {}'.format(msg_hdr.msg_type, size, hdr_size))
+        if size != hdr_size:
+            log.warning('Message type %d should be %d bytes but got %d',
+                        msg_hdr.msg_type, size, hdr_size)
 
 
 def reduce_lists(d):
