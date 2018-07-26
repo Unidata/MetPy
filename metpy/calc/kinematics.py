@@ -97,10 +97,12 @@ def vorticity(u, v, dx, dy):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one
+        item less than the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one
+        item less than the size of `u` along the applicable axis.
 
     Returns
     -------
