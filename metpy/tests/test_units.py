@@ -168,3 +168,24 @@ def test_pandas_units_no_units_given():
     df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
     with pytest.raises(ValueError):
         pandas_dataframe_to_unit_arrays(df)
+
+
+def test_added_degrees_units():
+    """Test that our added degrees units are present in the registry."""
+    # Test equivalence of abbreviations/aliases to our defined names
+    assert str(units('degrees_N').units) == 'degrees_north'
+    assert str(units('degreesN').units) == 'degrees_north'
+    assert str(units('degree_north').units) == 'degrees_north'
+    assert str(units('degree_N').units) == 'degrees_north'
+    assert str(units('degreeN').units) == 'degrees_north'
+    assert str(units('degrees_E').units) == 'degrees_east'
+    assert str(units('degreesE').units) == 'degrees_east'
+    assert str(units('degree_east').units) == 'degrees_east'
+    assert str(units('degree_E').units) == 'degrees_east'
+    assert str(units('degreeE').units) == 'degrees_east'
+
+    # Test equivalence of our defined units to base units
+    assert units('degrees_north') == units('degrees')
+    assert units('degrees_north').to_base_units().units == units.radian
+    assert units('degrees_east') == units('degrees')
+    assert units('degrees_east').to_base_units().units == units.radian
