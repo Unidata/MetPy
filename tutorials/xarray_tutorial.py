@@ -22,7 +22,6 @@ import xarray as xr
 # Any import of metpy will activate the accessors
 import metpy.calc as mpcalc
 from metpy.testing import get_test_data
-from metpy.units import units
 
 #########################################################################
 # Getting Data
@@ -51,8 +50,9 @@ print(data)
 # Additionally, we take a few optional steps to clean up our dataset for later use:
 #
 # - Rename our data variables for easier reference.
-# - Modify the units on geopotential height to meters, which pint (the unit library in use by
-#   MetPy) can understand (compared to the current gpm units).
+# - Modify the units on geopotential height to meters, since the unit used here ('gpm') is
+#   currently not handled by MetPy's unit registry (see `GitHub Issue #907
+#   <https://github.com/Unidata/MetPy/issues/907>`_).
 
 # To parse the full dataset, we can call parse_cf without an argument
 data = data.metpy.parse_cf()
@@ -150,14 +150,11 @@ print(data_globe)
 # - Broadcasting must be taken care of outside of the calculation, as it would only recognize
 #   dimensions by order, not name
 #
-# Also, some of the units used in CF conventions (such as 'degrees_north') are not recognized
-# by pint, so we must implement a workaround.
-#
 # As an example, we calculate geostropic wind at 500 hPa below:
 
 lat, lon = xr.broadcast(y, x)
-f = mpcalc.coriolis_parameter(lat.values * units.degrees)
-dx, dy = mpcalc.lat_lon_grid_deltas(lon.values, lat.values, initstring=data_crs.proj4_init)
+f = mpcalc.coriolis_parameter(lat)
+dx, dy = mpcalc.lat_lon_grid_deltas(lon, lat, initstring=data_crs.proj4_init)
 heights = data['height'].loc[time[0]].loc[{vertical.name: 500.}]
 u_geo, v_geo = mpcalc.geostrophic_wind(heights, f, dx, dy)
 print(u_geo)
@@ -187,7 +184,7 @@ print(v_geo)
 
 heights = data['height'].loc[time[0]].loc[{vertical.name: 500.}]
 lat, lon = xr.broadcast(y, x)
-f = mpcalc.coriolis_parameter(lat.values * units.degrees)
+f = mpcalc.coriolis_parameter(lat)
 dx, dy = mpcalc.grid_deltas_from_dataarray(heights)
 u_geo, v_geo = mpcalc.geostrophic_wind(heights, f, dx, dy)
 print(u_geo)
