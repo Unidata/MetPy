@@ -97,7 +97,7 @@ data['isobaric3'].metpy.convert_units('hPa')
 #
 # 1. Use the ``data_var.metpy.coordinates`` method
 # 2. Use the ``data_var.metpy.x``, ``data_var.metpy.y``, ``data_var.metpy.vertical``,
-#    `data_var.metpy.time` properties
+#    ``data_var.metpy.time`` properties
 #
 # The valid coordinate types are:
 #
@@ -142,7 +142,7 @@ print(data_globe)
 # Calculations
 # ------------
 #
-# Nearly all of the calculations in `metpy.calc` will accept DataArrays by converting them
+# Most of the calculations in `metpy.calc` will accept DataArrays by converting them
 # into their corresponding unit arrays. While this may often work without any issues, we must
 # keep in mind that because the calculations are working with unit arrays and not DataArrays:
 #
@@ -157,9 +157,39 @@ print(data_globe)
 
 lat, lon = xr.broadcast(y, x)
 f = mpcalc.coriolis_parameter(lat.values * units.degrees)
-dx, dy = mpcalc.lat_lon_grid_deltas(lon.values, lat.values)
+dx, dy = mpcalc.lat_lon_grid_deltas(lon.values, lat.values, initstring=data_crs.proj4_init)
 heights = data['height'].loc[time[0]].loc[{vertical.name: 500.}]
-u_geo, v_geo = mpcalc.geostrophic_wind(heights, f, dx, dy, dim_order='yx')
+u_geo, v_geo = mpcalc.geostrophic_wind(heights, f, dx, dy)
+print(u_geo)
+print(v_geo)
+
+#########################################################################
+# Also, a limited number of calculations directly support xarray DataArrays or Datasets (they
+# can accept *and* return xarray objects). Right now, this includes
+#
+# - Derivative functions
+#     - ``first_derivative``
+#     - ``second_derivative``
+#     - ``gradient``
+#     - ``laplacian``
+# - Cross-section functions
+#     - ``cross_section_components``
+#     - ``normal_component``
+#     - ``tangential_component``
+#     - ``absolute_momentum``
+#
+# More details can be found by looking at the documentation for the specific function.
+
+#########################################################################
+# There is also the special case of the helper function, ``grid_deltas_from_dataarray``, which
+# takes a DataArray input, but returns unit arrays for use in other calculations. We could
+# rewrite the above geostrophic wind example using this helper function as follows:
+
+heights = data['height'].loc[time[0]].loc[{vertical.name: 500.}]
+lat, lon = xr.broadcast(y, x)
+f = mpcalc.coriolis_parameter(lat.values * units.degrees)
+dx, dy = mpcalc.grid_deltas_from_dataarray(heights)
+u_geo, v_geo = mpcalc.geostrophic_wind(heights, f, dx, dy)
 print(u_geo)
 print(v_geo)
 
@@ -259,8 +289,8 @@ plt.show()
 #
 # Fix:
 #
-# Specify the `coordinates` argument to the `parse_cf` method to map the `T` (time), `Z`
-# (vertical), `Y`, and `X` axes (as applicable to your dataset) to the corresponding
+# Specify the ``coordinates`` argument to the ``parse_cf`` method to map the ``T`` (time),
+# ``Z`` (vertical), ``Y``, and ``X`` axes (as applicable to your dataset) to the corresponding
 # coordinates.
 #
 # ::
