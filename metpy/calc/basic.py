@@ -15,7 +15,6 @@ from __future__ import division
 import warnings
 
 import numpy as np
-
 from scipy.ndimage import gaussian_filter
 
 from ..constants import G, g, me, omega, Rd, Re
@@ -633,7 +632,7 @@ def gwfs(scalar_grid, n):
     -------
     `pint.Quantity`
         The filtered 2D scalar grid
-    
+
     Notes
     -----
     This function is a close replication of the GEMPAK function GWFS,
@@ -689,16 +688,17 @@ def gwfs(scalar_grid, n):
 
     where N > 1.  If N <= 1, N = 2 is assumed.  For example, if N = 4,
     then the 4 delta x wave length is passed with approximate response
-    1/e.                                                                
+    1/e.
+
     """
     n = int(round(n))
     if n < 2:
         n = 2
-    sgma = n / (2*np.pi)
-    res = gaussian_filter(scalar_grid, sgma, truncate=2*np.sqrt(2))
+    sgma = n / (2 * np.pi)
+    res = gaussian_filter(scalar_grid, sgma, truncate=2 * np.sqrt(2))
     return res
 
-    
+
 def _check_radians(value, max_radians=2 * np.pi):
     """Input validation of values that could be in degrees instead of radians.
 
