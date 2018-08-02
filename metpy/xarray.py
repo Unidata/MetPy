@@ -11,7 +11,7 @@ import warnings
 import xarray as xr
 from xarray.core.accessors import DatetimeAccessor
 
-from .units import DimensionalityError, UndefinedUnitError, units
+from .units import DimensionalityError, units
 
 __all__ = []
 readable_to_cf_axes = {'time': 'T', 'vertical': 'Z', 'y': 'Y', 'x': 'X'}
@@ -268,20 +268,17 @@ class CFConventionHandler(object):
                         cls.criteria[criterion].get(axis, set())):
                     return True
 
-            # Check for units, allowing for undefined unit failure (CF standard)
-            try:
-                if (axis in cls.criteria['units'] and (
-                        (
-                            cls.criteria['units'][axis]['match'] == 'dimensionality' and
-                            (units.get_dimensionality(var.attrs.get('units')) ==
-                             units.get_dimensionality(cls.criteria['units'][axis]['units']))
-                        ) or (
-                            cls.criteria['units'][axis]['match'] == 'name' and
-                            var.attrs.get('units') in cls.criteria['units'][axis]['units']
-                        ))):
-                    return True
-            except UndefinedUnitError:
-                pass
+            # Check for units, either by dimensionality or name
+            if (axis in cls.criteria['units'] and (
+                    (
+                        cls.criteria['units'][axis]['match'] == 'dimensionality' and
+                        (units.get_dimensionality(var.attrs.get('units')) ==
+                         units.get_dimensionality(cls.criteria['units'][axis]['units']))
+                    ) or (
+                        cls.criteria['units'][axis]['match'] == 'name' and
+                        var.attrs.get('units') in cls.criteria['units'][axis]['units']
+                    ))):
+                return True
 
             # Check if name matches regular expression (non-CF failsafe)
             if re.match(cls.criteria['regular_expression'][axis], var.name.lower()):

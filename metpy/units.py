@@ -31,6 +31,11 @@ units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
 units.define(pint.unit.UnitDefinition('percent', '%', (),
              pint.converters.ScaleConverter(0.01)))
 
+# Define commonly encountered units not defined by pint
+units.define('degrees_north = degree = degrees_N = degreesN = degree_north = degree_N '
+             '= degreeN')
+units.define('degrees_east = degree = degrees_E = degreesE = degree_east = degree_E = degreeE')
+
 
 def pandas_dataframe_to_unit_arrays(df, column_units=None):
     """Attach units to data in pandas dataframes and return united arrays.

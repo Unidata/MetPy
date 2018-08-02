@@ -895,7 +895,7 @@ def grid_deltas_from_dataarray(f):
 
     """
     if f.metpy.crs['grid_mapping_name'] == 'latitude_longitude':
-        dx, dy = lat_lon_grid_deltas(f.metpy.x.values, f.metpy.y.values,
+        dx, dy = lat_lon_grid_deltas(f.metpy.x, f.metpy.y,
                                      initstring=f.metpy.cartopy_crs.proj4_init)
         slc_x = slc_y = tuple([np.newaxis] * (f.ndim - 2) + [slice(None)] * 2)
     else:
