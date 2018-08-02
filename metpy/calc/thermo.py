@@ -1457,6 +1457,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
 
     slices = [np.newaxis] * ndim
     slices[axis] = slice(None)
+    slices = tuple(slices)
     pres = np.broadcast_to(pres[slices], temperature.shape) * pres.units
 
     # Sort input data

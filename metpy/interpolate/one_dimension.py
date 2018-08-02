@@ -122,7 +122,7 @@ def interpolate_1d(x, xp, *args, **kwargs):
     x_array = x[sort_x]
     expand = [np.newaxis] * ndim
     expand[axis] = slice(None)
-    x_array = x_array[expand]
+    x_array = x_array[tuple(expand)]
 
     # Calculate value above interpolated value
     minv = np.apply_along_axis(np.searchsorted, axis, xp, x[sort_x])

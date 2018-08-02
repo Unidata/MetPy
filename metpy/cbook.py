@@ -87,8 +87,8 @@ def broadcast_indices(x, minv, ndim, axis):
             broadcast_slice = [np.newaxis] * ndim
             broadcast_slice[dim] = slice(None)
             dim_inds = np.arange(x.shape[dim])
-            ret.append(dim_inds[broadcast_slice])
-    return ret
+            ret.append(dim_inds[tuple(broadcast_slice)])
+    return tuple(ret)
 
 
 __all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'is_string_like', 'iterable')
