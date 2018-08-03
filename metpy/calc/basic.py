@@ -623,7 +623,8 @@ def gwfs(scalar_grid, n):
     Parameters
     ----------
     scalar_grid : `pint.Quantity`
-        Some two-dimensional scalar grid
+        Some n-dimensional scalar grid. If more than two axes, smoothing
+        is only done across the last two.
 
     n : int
         Degree of filtering
@@ -691,11 +692,21 @@ def gwfs(scalar_grid, n):
     1/e.
 
     """
+    # Compute standard deviation in a manner consistent with GEMPAK
     n = int(round(n))
     if n < 2:
         n = 2
     sgma = n / (2 * np.pi)
-    res = gaussian_filter(scalar_grid, sgma, truncate=2 * np.sqrt(2))
+
+    # Construct sigma sequence so smoothing occurs only in horizontal direction
+    nax = len(scalar_grid.shape)
+    # Assume the last two axes represent the horizontal directions
+    sgma_seq = [sgma if i > nax - 3 else 0 for i in range(nax)]
+
+    # Compute smoothed field and reattach units
+    res = gaussian_filter(scalar_grid, sgma_seq, truncate=2 * np.sqrt(2))
+    if hasattr(scalar_grid, 'units'):
+        res = res * scalar_grid.units
     return res
 
 
