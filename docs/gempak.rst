@@ -471,7 +471,7 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td class="tg-implemented">GWFS(S, N)</td>
         <td class="tg-implemented">Filter with normal distribution of weights</td>
-        <td class="tg-implemented"><a href="api/generated/metpy.calc.gwfs.html#metpy.calc.gwfs">metpy.calc.gwfs</a></td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian">metpy.calc.smooth_gaussian</a></td>
         <td class="tg-yes">Yes</td>
         <td class="tg-yes">Yes</td>
         <td></td>
