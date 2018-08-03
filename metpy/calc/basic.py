@@ -617,7 +617,7 @@ def sigma_to_pressure(sigma, psfc, ptop):
 
 @exporter.export
 @preprocess_xarray
-def gwfs(scalar_grid, n):
+def smooth_gaussian(scalar_grid, n):
     """Filter with normal distribution of weights.
 
     Parameters

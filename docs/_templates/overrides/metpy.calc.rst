@@ -167,12 +167,12 @@ calc
       get_layer
       get_layer_heights
       get_perturbation
-      gwfs
       isentropic_interpolation
       nearest_intersection_idx
       parse_angle
       reduce_point_density
       resample_nn_1d
+      smooth_gaussian
       
 
    Deprecated

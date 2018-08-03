@@ -8,9 +8,10 @@ import pytest
 
 from metpy.calc import (add_height_to_pressure, add_pressure_to_height, apparent_temperature,
                         coriolis_parameter, geopotential_to_height, get_wind_components,
-                        get_wind_dir, get_wind_speed, gwfs, heat_index, height_to_geopotential,
+                        get_wind_dir, get_wind_speed, heat_index, height_to_geopotential,
                         height_to_pressure_std, pressure_to_height_std, sigma_to_pressure,
-                        wind_components, wind_direction, wind_speed, windchill)
+                        smooth_gaussian, wind_components, wind_direction, wind_speed,
+                        windchill)
 from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
@@ -438,13 +439,13 @@ def test_apparent_temperature_windchill():
     assert_almost_equal(res, truth, 0)
 
 
-def test_gwfs():
-    """Test the gwfs function with a larger n."""
+def test_smooth_gaussian():
+    """Test the smooth_gaussian function with a larger n."""
     m = 10
     s = np.zeros((m, m))
     for i in np.ndindex(s.shape):
         s[i] = i[0] + i[1]**2
-    s = gwfs(s, 4)
+    s = smooth_gaussian(s, 4)
     s_true = np.array([[0.40077472, 1.59215426, 4.59665817, 9.59665817, 16.59665817,
                         25.59665817, 36.59665817, 49.59665817, 64.51108392, 77.87487258],
                        [1.20939518, 2.40077472, 5.40527863, 10.40527863, 17.40527863,
@@ -468,13 +469,13 @@ def test_gwfs():
     assert_array_almost_equal(s, s_true)
 
 
-def test_gwfs_small_n():
-    """Test the gwfs function with a smaller n."""
+def test_smooth_gaussian_small_n():
+    """Test the smooth_gaussian function with a smaller n."""
     m = 5
     s = np.zeros((m, m))
     for i in np.ndindex(s.shape):
         s[i] = i[0] + i[1]**2
-    s = gwfs(s, 1)
+    s = smooth_gaussian(s, 1)
     s_true = [[0.0141798077, 1.02126971, 4.02126971, 9.02126971, 15.9574606],
               [1.00708990, 2.01417981, 5.01417981, 10.0141798, 16.9503707],
               [2.00708990, 3.01417981, 6.01417981, 11.0141798, 17.9503707],
@@ -483,15 +484,15 @@ def test_gwfs_small_n():
     assert_array_almost_equal(s, s_true)
 
 
-def test_gwfs_3d_units():
-    """Test the gwfs function with units and a 3D array."""
+def test_smooth_gaussian_3d_units():
+    """Test the smooth_gaussian function with units and a 3D array."""
     m = 5
     s = np.zeros((3, m, m))
     for i in np.ndindex(s.shape):
         s[i] = i[1] + i[2]**2
     s[0::2, :, :] = 10 * s[0::2, :, :]
     s = s * units('m')
-    s = gwfs(s, 1)
+    s = smooth_gaussian(s, 1)
     s_true = ([[0.0141798077, 1.02126971, 4.02126971, 9.02126971, 15.9574606],
               [1.00708990, 2.01417981, 5.01417981, 10.0141798, 16.9503707],
               [2.00708990, 3.01417981, 6.01417981, 11.0141798, 17.9503707],
