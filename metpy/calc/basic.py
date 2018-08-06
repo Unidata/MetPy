@@ -15,6 +15,7 @@ from __future__ import division
 import warnings
 
 import numpy as np
+from scipy.ndimage import gaussian_filter
 
 from ..constants import G, g, me, omega, Rd, Re
 from ..deprecation import deprecated
@@ -612,6 +613,101 @@ def sigma_to_pressure(sigma, psfc, ptop):
         raise ValueError('Pressure input should be non-negative')
 
     return sigma * (psfc - ptop) + ptop
+
+
+@exporter.export
+@preprocess_xarray
+def smooth_gaussian(scalar_grid, n):
+    """Filter with normal distribution of weights.
+
+    Parameters
+    ----------
+    scalar_grid : `pint.Quantity`
+        Some n-dimensional scalar grid. If more than two axes, smoothing
+        is only done across the last two.
+
+    n : int
+        Degree of filtering
+
+    Returns
+    -------
+    `pint.Quantity`
+        The filtered 2D scalar grid
+
+    Notes
+    -----
+    This function is a close replication of the GEMPAK function GWFS,
+    but is not identical.  The following notes are incorporated from
+    the GEMPAK source code:
+
+    This function smoothes a scalar grid using a moving average
+    low-pass filter whose weights are determined by the normal
+    (Gaussian) probability distribution function for two dimensions.
+    The weight given to any grid point within the area covered by the
+    moving average for a target grid point is proportional to
+
+                    EXP [ -( D ** 2 ) ],
+
+    where D is the distance from that point to the target point divided
+    by the standard deviation of the normal distribution.  The value of
+    the standard deviation is determined by the degree of filtering
+    requested.  The degree of filtering is specified by an integer.
+    This integer is the number of grid increments from crest to crest
+    of the wave for which the theoretical response is 1/e = .3679.  If
+    the grid increment is called delta_x, and the value of this integer
+    is represented by N, then the theoretical filter response function
+    value for the N * delta_x wave will be 1/e.  The actual response
+    function will be greater than the theoretical value.
+
+    The larger N is, the more severe the filtering will be, because the
+    response function for all wavelengths shorter than N * delta_x
+    will be less than 1/e.  Furthermore, as N is increased, the slope
+    of the filter response function becomes more shallow; so, the
+    response at all wavelengths decreases, but the amount of decrease
+    lessens with increasing wavelength.  (The theoretical response
+    function can be obtained easily--it is the Fourier transform of the
+    weight function described above.)
+
+    The area of the patch covered by the moving average varies with N.
+    As N gets bigger, the smoothing gets stronger, and weight values
+    farther from the target grid point are larger because the standard
+    deviation of the normal distribution is bigger.  Thus, increasing
+    N has the effect of expanding the moving average window as well as
+    changing the values of weights.  The patch is a square covering all
+    points whose weight values are within two standard deviations of the
+    mean of the two dimensional normal distribution.
+
+    The key difference between GEMPAK's GWFS and this function is that,
+    in GEMPAK, the leftover weight values representing the fringe of the
+    distribution are applied to the target grid point.  In this
+    function, the leftover weights are not used.
+
+    When this function is invoked, the first argument is the grid to be
+    smoothed, the second is the value of N as described above:
+
+                        GWFS ( S, N )
+
+    where N > 1.  If N <= 1, N = 2 is assumed.  For example, if N = 4,
+    then the 4 delta x wave length is passed with approximate response
+    1/e.
+
+    """
+    # Compute standard deviation in a manner consistent with GEMPAK
+    n = int(round(n))
+    if n < 2:
+        n = 2
+    sgma = n / (2 * np.pi)
+
+    # Construct sigma sequence so smoothing occurs only in horizontal direction
+    nax = len(scalar_grid.shape)
+    # Assume the last two axes represent the horizontal directions
+    sgma_seq = [sgma if i > nax - 3 else 0 for i in range(nax)]
+
+    # Compute smoothed field and reattach units
+    res = gaussian_filter(scalar_grid, sgma_seq, truncate=2 * np.sqrt(2))
+    if hasattr(scalar_grid, 'units'):
+        res = res * scalar_grid.units
+    return res
 
 
 def _check_radians(value, max_radians=2 * np.pi):

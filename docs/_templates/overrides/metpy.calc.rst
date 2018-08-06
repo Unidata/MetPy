@@ -172,6 +172,7 @@ calc
       parse_angle
       reduce_point_density
       resample_nn_1d
+      smooth_gaussian
       
 
    Deprecated

@@ -10,7 +10,8 @@ from metpy.calc import (add_height_to_pressure, add_pressure_to_height, apparent
                         coriolis_parameter, geopotential_to_height, get_wind_components,
                         get_wind_dir, get_wind_speed, heat_index, height_to_geopotential,
                         height_to_pressure_std, pressure_to_height_std, sigma_to_pressure,
-                        wind_components, wind_direction, wind_speed, windchill)
+                        smooth_gaussian, wind_components, wind_direction, wind_speed,
+                        windchill)
 from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
@@ -436,3 +437,65 @@ def test_apparent_temperature_windchill():
     truth = -18.9357 * units.degC
     res = apparent_temperature(temperature, rel_humidity, wind)
     assert_almost_equal(res, truth, 0)
+
+
+def test_smooth_gaussian():
+    """Test the smooth_gaussian function with a larger n."""
+    m = 10
+    s = np.zeros((m, m))
+    for i in np.ndindex(s.shape):
+        s[i] = i[0] + i[1]**2
+    s = smooth_gaussian(s, 4)
+    s_true = np.array([[0.40077472, 1.59215426, 4.59665817, 9.59665817, 16.59665817,
+                        25.59665817, 36.59665817, 49.59665817, 64.51108392, 77.87487258],
+                       [1.20939518, 2.40077472, 5.40527863, 10.40527863, 17.40527863,
+                        26.40527863, 37.40527863, 50.40527863, 65.31970438, 78.68349304],
+                       [2.20489127, 3.39627081, 6.40077472, 11.40077472, 18.40077472,
+                        27.40077472, 38.40077472, 51.40077472, 66.31520047, 79.67898913],
+                       [3.20489127, 4.39627081, 7.40077472, 12.40077472, 19.40077472,
+                        28.40077472, 39.40077472, 52.40077472, 67.31520047, 80.67898913],
+                       [4.20489127, 5.39627081, 8.40077472, 13.40077472, 20.40077472,
+                        29.40077472, 40.40077472, 53.40077472, 68.31520047, 81.67898913],
+                       [5.20489127, 6.39627081, 9.40077472, 14.40077472, 21.40077472,
+                        30.40077472, 41.40077472, 54.40077472, 69.31520047, 82.67898913],
+                       [6.20489127, 7.39627081, 10.40077472, 15.40077472, 22.40077472,
+                        31.40077472, 42.40077472, 55.40077472, 70.31520047, 83.67898913],
+                       [7.20489127, 8.39627081, 11.40077472, 16.40077472, 23.40077472,
+                        32.40077472, 43.40077472, 56.40077472, 71.31520047, 84.67898913],
+                       [8.20038736, 9.3917669, 12.39627081, 17.39627081, 24.39627081,
+                        33.39627081, 44.39627081, 57.39627081, 72.31069656, 85.67448522],
+                       [9.00900782, 10.20038736, 13.20489127, 18.20489127, 25.20489127,
+                        34.20489127, 45.20489127, 58.20489127, 73.11931702, 86.48310568]])
+    assert_array_almost_equal(s, s_true)
+
+
+def test_smooth_gaussian_small_n():
+    """Test the smooth_gaussian function with a smaller n."""
+    m = 5
+    s = np.zeros((m, m))
+    for i in np.ndindex(s.shape):
+        s[i] = i[0] + i[1]**2
+    s = smooth_gaussian(s, 1)
+    s_true = [[0.0141798077, 1.02126971, 4.02126971, 9.02126971, 15.9574606],
+              [1.00708990, 2.01417981, 5.01417981, 10.0141798, 16.9503707],
+              [2.00708990, 3.01417981, 6.01417981, 11.0141798, 17.9503707],
+              [3.00708990, 4.01417981, 7.01417981, 12.0141798, 18.9503707],
+              [4.00000000, 5.00708990, 8.00708990, 13.0070899, 19.9432808]]
+    assert_array_almost_equal(s, s_true)
+
+
+def test_smooth_gaussian_3d_units():
+    """Test the smooth_gaussian function with units and a 3D array."""
+    m = 5
+    s = np.zeros((3, m, m))
+    for i in np.ndindex(s.shape):
+        s[i] = i[1] + i[2]**2
+    s[0::2, :, :] = 10 * s[0::2, :, :]
+    s = s * units('m')
+    s = smooth_gaussian(s, 1)
+    s_true = ([[0.0141798077, 1.02126971, 4.02126971, 9.02126971, 15.9574606],
+              [1.00708990, 2.01417981, 5.01417981, 10.0141798, 16.9503707],
+              [2.00708990, 3.01417981, 6.01417981, 11.0141798, 17.9503707],
+              [3.00708990, 4.01417981, 7.01417981, 12.0141798, 18.9503707],
+              [4.00000000, 5.00708990, 8.00708990, 13.0070899, 19.9432808]]) * units('m')
+    assert_array_almost_equal(s[1, :, :], s_true)
