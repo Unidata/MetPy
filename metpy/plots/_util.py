@@ -266,17 +266,16 @@ def gempak_color(c, style='psc'):
             '#8B008B',     # 30 (magenta4)
             'bisque']      # 31
 
-    if style == 'xw':
-        cols[0] = 'black'
-        cols[1] = 'bisque'
-        cols[31] = 'white'
-    elif style == 'psc':
-        pass
-    else:
-        raise ValueError('Unknown style parameter')
+    if style != 'psc':
+        if style == 'xw':
+            cols[0] = 'black'
+            cols[1] = 'bisque'
+            cols[31] = 'white'
+        else:
+            raise ValueError('Unknown style parameter')
 
     try:
         c_list = list(c)
     except TypeError:
         c_list = [c]
-    return [cols[normalize(c)] for c in c_list]
+    return [cols[normalize(x)] for x in c_list]
