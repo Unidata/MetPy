@@ -3,4 +3,5 @@ linters:
         ignore: 'F405'
         max-line-length: 95
 files:
-    ignore: ['metpy/_version.py']
+    ignore:
+        - 'metpy/_version.py'

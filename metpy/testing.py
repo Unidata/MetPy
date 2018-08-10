@@ -36,14 +36,14 @@ def get_upper_air_data(date, station):
         dict : upper air data
 
     """
-    soudning_key = '{0:%Y-%m-%dT%HZ}_{1:}'.format(date, station)
+    sounding_key = '{0:%Y-%m-%dT%HZ}_{1:}'.format(date, station)
     sounding_files = {'2016-05-22T00Z_DDC': 'may22_sounding.txt',
                       '2013-01-20T12Z_OUN': 'jan20_sounding.txt',
                       '1999-05-04T00Z_OUN': 'may4_sounding.txt',
                       '2002-11-11T00Z_BNA': 'nov11_sounding.txt',
                       '2010-12-09T12Z_BOI': 'dec9_sounding.txt'}
 
-    fname = sounding_files[soudning_key]
+    fname = sounding_files[sounding_key]
     fobj = get_test_data(fname)
 
     def to_float(s):

@@ -4,15 +4,13 @@
 """Test the `nexrad` module."""
 
 from datetime import datetime
-import glob
 from io import BytesIO
 import logging
-import os.path
 
 import numpy as np
 import pytest
 
-from metpy.cbook import get_test_data
+from metpy.cbook import get_test_data, POOCH
 from metpy.io import is_precip_mode, Level2File, Level3File
 
 # Turn off the warnings for tests
@@ -58,7 +56,8 @@ def test_doubled_file():
 #
 # NIDS/Level 3 Tests
 #
-nexrad_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=False), 'K???_*'))
+nexrad_nids_files = [get_test_data(fname, as_file_obj=False)
+                     for fname in POOCH.registry if fname.startswith('nids/K')]
 
 
 @pytest.mark.parametrize('fname', nexrad_nids_files)
@@ -76,8 +75,8 @@ def test_level3_files(fname):
     assert f.filename == fname
 
 
-tdwr_nids_files = glob.glob(os.path.join(get_test_data('nids', as_file_obj=False),
-                                         'Level3_MCI_*'))
+tdwr_nids_files = [get_test_data(fname, as_file_obj=False)
+                   for fname in POOCH.registry if fname.startswith('nids/Level3_MCI_')]
 
 
 @pytest.mark.parametrize('fname', tdwr_nids_files)
