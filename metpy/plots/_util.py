@@ -201,3 +201,82 @@ def colored_line(x, y, c, **kwargs):
     lc = LineCollection(segments, **kwargs)
     lc.set_array(c)
     return lc
+
+
+def gempak_color(c, style='psc'):
+    """Convert GEMPAK color numbers into corresponding Matplotlib colors.
+
+    Takes a sequence of GEMPAK color numbers and turns them into
+    equivalent Matplotlib colors. Various GEMPAK quirks are respected,
+    such as treating negative values as equivalent to 0.
+
+    Parameters
+    ----------
+    c : int or sequence of ints
+        GEMPAK color number(s)
+    style : str, optional
+        The GEMPAK 'device' to use to interpret color numbers. May be 'psc'
+        (the default; best for a white background) or 'xw' (best for a black background).
+
+    Returns
+    -------
+        List of Matplotlib colors.
+
+    """
+    def normalize(x):
+        """Transform input x to an int in range 0 to 31 consistent with GEMPAK color quirks."""
+        x = int(x)
+        if x < 0 or x == 101:
+            x = 0
+        else:
+            x = x % 32
+        return x
+
+    # Define GEMPAK colors (Matplotlib doesn't appear to like numbered variants)
+    cols = ['white',       # 0/32
+            'black',       # 1
+            'red',         # 2
+            'green',       # 3
+            'blue',        # 4
+            'yellow',      # 5
+            'cyan',        # 6
+            'magenta',     # 7
+            '#CD6839',     # 8 (sienna3)
+            '#FF8247',     # 9 (sienna1)
+            '#FFA54F',     # 10 (tan1)
+            '#FFAEB9',     # 11 (LightPink1)
+            '#FF6A6A',     # 12 (IndianRed1)
+            '#EE2C2C',     # 13 (firebrick2)
+            '#8B0000',     # 14 (red4)
+            '#CD0000',     # 15 (red3)
+            '#EE4000',     # 16 (OrangeRed2)
+            '#FF7F00',     # 17 (DarkOrange1)
+            '#CD8500',     # 18 (orange3)
+            'gold',        # 19
+            '#EEEE00',     # 20 (yellow2)
+            'chartreuse',  # 21
+            '#00CD00',     # 22 (green3)
+            '#008B00',     # 23 (green4)
+            '#104E8B',     # 24 (DodgerBlue4)
+            'DodgerBlue',  # 25
+            '#00B2EE',     # 26 (DeepSkyBlue2)
+            '#00EEEE',     # 27 (cyan2)
+            '#8968CD',     # 28 (MediumPurple3)
+            '#912CEE',     # 29 (purple2)
+            '#8B008B',     # 30 (magenta4)
+            'bisque']      # 31
+
+    if style == 'xw':
+        cols[0] = 'black'
+        cols[1] = 'bisque'
+        cols[31] = 'white'
+    elif style == 'psc':
+        pass
+    else:
+        raise ValueError('Unknown style parameter')
+
+    try:
+        c_list = list(c)
+    except TypeError:
+        c_list = [c]
+    return [cols[normalize(c)] for c in c_list]

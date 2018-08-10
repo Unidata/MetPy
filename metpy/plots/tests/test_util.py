@@ -7,9 +7,10 @@ from datetime import datetime
 
 import matplotlib
 import matplotlib.pyplot as plt
+import numpy as np
 import pytest
 
-from metpy.plots import add_metpy_logo, add_timestamp, add_unidata_logo
+from metpy.plots import add_metpy_logo, add_timestamp, add_unidata_logo, gempak_color
 # Fixture to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401, I202
 
@@ -88,3 +89,65 @@ def test_add_logo_invalid_size():
     fig = plt.figure(figsize=(9, 9))
     with pytest.raises(ValueError):
         add_metpy_logo(fig, size='jumbo')
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.004}.get(MPL_VERSION, 0.01),
+                               remove_text=True)
+def test_gempak_color_image_compare():
+    """Test creating a plot with all the GEMPAK colors."""
+    c = range(32)
+    mplc = gempak_color(c)
+
+    delta = 0.025
+    x = y = np.arange(-3.0, 3.01, delta)
+    xx, yy = np.meshgrid(x, y)
+    z1 = np.exp(-xx**2 - yy**2)
+    z2 = np.exp(-(xx - 1)**2 - (yy - 1)**2)
+    z = (z1 - z2) * 2
+
+    fig = plt.figure(figsize=(9, 9))
+    cs = plt.contourf(xx, yy, z, levels=np.linspace(-1.8, 1.8, 33), colors=mplc)
+    plt.colorbar(cs)
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.004}.get(MPL_VERSION, 0.01),
+                               remove_text=True)
+def test_gempak_color_xw_image_compare():
+    """Test creating a plot with all the GEMPAK colors using xw style."""
+    c = range(32)
+    mplc = gempak_color(c, style='xw')
+
+    delta = 0.025
+    x = y = np.arange(-3.0, 3.01, delta)
+    xx, yy = np.meshgrid(x, y)
+    z1 = np.exp(-xx**2 - yy**2)
+    z2 = np.exp(-(xx - 1)**2 - (yy - 1)**2)
+    z = (z1 - z2) * 2
+
+    fig = plt.figure(figsize=(9, 9))
+    cs = plt.contourf(xx, yy, z, levels=np.linspace(-1.8, 1.8, 33), colors=mplc)
+    plt.colorbar(cs)
+    return fig
+
+
+def test_gempak_color_invalid_style():
+    """Test converting a GEMPAK color with an invalid style parameter."""
+    c = range(32)
+    with pytest.raises(ValueError):
+        gempak_color(c, style='plt')
+
+
+def test_gempak_color_quirks():
+    """Test converting some unusual GEMPAK colors."""
+    c = [-5, 95, 101]
+    mplc = gempak_color(c)
+    truth = ['white', 'bisque', 'white']
+    assert mplc == truth
+
+
+def test_gempak_color_scalar():
+    """Test converting a single GEMPAK color."""
+    mplc = gempak_color(6)
+    truth = ['cyan']
+    assert mplc == truth
