@@ -220,7 +220,7 @@ def gempak_color(c, style='psc'):
 
     Returns
     -------
-        List of Matplotlib colors.
+        List of strings of Matplotlib colors, or a single string if only one color requested.
 
     """
     def normalize(x):
@@ -276,6 +276,7 @@ def gempak_color(c, style='psc'):
 
     try:
         c_list = list(c)
+        res = [cols[normalize(x)] for x in c_list]
     except TypeError:
-        c_list = [c]
-    return [cols[normalize(x)] for x in c_list]
+        res = cols[normalize(c)]
+    return res

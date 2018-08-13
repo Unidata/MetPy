@@ -149,5 +149,5 @@ def test_gempak_color_quirks():
 def test_gempak_color_scalar():
     """Test converting a single GEMPAK color."""
     mplc = gempak_color(6)
-    truth = ['cyan']
+    truth = 'cyan'
     assert mplc == truth
