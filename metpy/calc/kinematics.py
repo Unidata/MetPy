@@ -571,8 +571,14 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
     int_layers = (storm_relative_u[1:] * storm_relative_v[:-1] -
                   storm_relative_u[:-1] * storm_relative_v[1:])
 
+    # Need to manually check for masked value because sum() on masked array with non-default
+    # mask will return a masked value rather than 0. See numpy/numpy#11736
     positive_srh = int_layers[int_layers.magnitude > 0.].sum()
+    if np.ma.is_masked(positive_srh):
+        positive_srh = 0.0 * units('meter**2 / second**2')
     negative_srh = int_layers[int_layers.magnitude < 0.].sum()
+    if np.ma.is_masked(negative_srh):
+        negative_srh = 0.0 * units('meter**2 / second**2')
 
     return (positive_srh.to('meter ** 2 / second ** 2'),
             negative_srh.to('meter ** 2 / second ** 2'),

@@ -443,6 +443,23 @@ def test_storm_relative_helicity_agl():
     assert_almost_equal(total_srh, 300. * units('meter ** 2 / second ** 2 '), 6)
 
 
+def test_storm_relative_helicity_masked():
+    """Test that srh does not return masked values."""
+    h = np.ma.array([20.72, 234.85, 456.69, 683.21])
+    u = np.ma.array([-2.32, -3.23, 0.736, 9.07])
+    v = np.ma.array([8.31, 13.57, 25.56, 30.55])
+    u = np.ma.array(np.zeros((4,)))
+    v = np.zeros_like(u)
+    pos, neg, com = storm_relative_helicity(units.knot * u, units.knot * v, units.meter * h,
+                                            depth=500 * units.meter,
+                                            storm_u=15.77463015050421 * units('m/s'),
+                                            storm_v=21.179437759755647 * units('m/s'))
+
+    assert not np.ma.is_masked(pos)
+    assert not np.ma.is_masked(neg)
+    assert not np.ma.is_masked(com)
+
+
 def test_absolute_vorticity_asym():
     """Test absolute vorticity calculation with a complicated field."""
     u = np.array([[2, 4, 8], [0, 2, 2], [4, 6, 8]]) * units('m/s')
