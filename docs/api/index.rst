@@ -1,8 +1,8 @@
 .. _api-index:
 
-#############
-The MetPy API
-#############
+###############
+Reference Guide
+###############
 
 .. currentmodule:: metpy
 
