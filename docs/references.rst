@@ -129,4 +129,4 @@ References
            <https://doi.org/10.1175/1520-0450(1994)033%3C0694:ITIIEA%3E2.0.CO;2>`_.
 
 .. [WMO8-2014] WMO, 2014: *Guide to Meteorological Instruments and Methods of Observation*.
-           `WMO No.8 <https://library.wmo.int/opac/doc_num.php?explnum_id=4147>`_.
+           `WMO No.8 <https://library.wmo.int/doc_num.php?explnum_id=4147>`_.
