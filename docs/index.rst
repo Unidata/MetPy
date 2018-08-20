@@ -67,6 +67,8 @@ __ https://github.com/Unidata/MetPy/issues
 Media
 -----
 
+* `SciPy 2018 poster`_ and `abstract <http://johnrleeman.com/pubs/2018/Leeman_2018_SciPy_Abstract.pdf>`_ on building community by John Leeman
+* `SciPy 2018 talk`_ on prototyping MetPy's future declarative plotting interface
 * Presentation on MetPy and Community Development at the `2018 AMS Annual Meeting`_ by Ryan May
 * `SciPy 2017 poster`_ and `repository <https://github.com/jrleeman/CAPE-SciPy-2017>`_
   about reproducing a classic CAPE paper with MetPy.
@@ -88,6 +90,8 @@ Media
 .. _`SciPy 2017 talk`: https://youtu.be/qCo9bkT9sow
 .. _`SciPy 2017 poster`: https://github.com/jrleeman/CAPE-SciPy-2017/blob/master/Poster/SciPy_Poster_2017.pdf
 .. _`2018 AMS Annual Meeting`: https://ams.confex.com/ams/98Annual/webprogram/Paper333578.html
+.. _`SciPy 2018 talk`: https://youtu.be/OKQlUdPY0Jc
+.. _`SciPy 2018 poster`: http://johnrleeman.com/pubs/2018/Leeman_2018_SciPy_Poster.pdf
 
 -------
 License
