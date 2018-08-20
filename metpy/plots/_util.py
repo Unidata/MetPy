@@ -203,7 +203,7 @@ def colored_line(x, y, c, **kwargs):
     return lc
 
 
-def gempak_color(c, style='psc'):
+def convert_gempak_color(c, style='psc'):
     """Convert GEMPAK color numbers into corresponding Matplotlib colors.
 
     Takes a sequence of GEMPAK color numbers and turns them into

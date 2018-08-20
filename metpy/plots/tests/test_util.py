@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pytest
 
-from metpy.plots import add_metpy_logo, add_timestamp, add_unidata_logo, gempak_color
+from metpy.plots import add_metpy_logo, add_timestamp, add_unidata_logo, convert_gempak_color
 # Fixture to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401, I202
 
@@ -96,7 +96,7 @@ def test_add_logo_invalid_size():
 def test_gempak_color_image_compare():
     """Test creating a plot with all the GEMPAK colors."""
     c = range(32)
-    mplc = gempak_color(c)
+    mplc = convert_gempak_color(c)
 
     delta = 0.025
     x = y = np.arange(-3.0, 3.01, delta)
@@ -116,7 +116,7 @@ def test_gempak_color_image_compare():
 def test_gempak_color_xw_image_compare():
     """Test creating a plot with all the GEMPAK colors using xw style."""
     c = range(32)
-    mplc = gempak_color(c, style='xw')
+    mplc = convert_gempak_color(c, style='xw')
 
     delta = 0.025
     x = y = np.arange(-3.0, 3.01, delta)
@@ -135,19 +135,19 @@ def test_gempak_color_invalid_style():
     """Test converting a GEMPAK color with an invalid style parameter."""
     c = range(32)
     with pytest.raises(ValueError):
-        gempak_color(c, style='plt')
+        convert_gempak_color(c, style='plt')
 
 
 def test_gempak_color_quirks():
     """Test converting some unusual GEMPAK colors."""
     c = [-5, 95, 101]
-    mplc = gempak_color(c)
+    mplc = convert_gempak_color(c)
     truth = ['white', 'bisque', 'white']
     assert mplc == truth
 
 
 def test_gempak_color_scalar():
     """Test converting a single GEMPAK color."""
-    mplc = gempak_color(6)
+    mplc = convert_gempak_color(6)
     truth = 'cyan'
     assert mplc == truth
