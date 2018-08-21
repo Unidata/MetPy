@@ -30,8 +30,6 @@ from ..deprecation import deprecated
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
-
-logging.basicConfig(level=logging.WARN)
 log = logging.getLogger(__name__)
 
 

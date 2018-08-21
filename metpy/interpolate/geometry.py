@@ -11,7 +11,6 @@ import math
 import numpy as np
 from scipy.spatial import cKDTree
 
-logging.basicConfig(level=logging.WARNING)
 log = logging.getLogger(__name__)
 
 
