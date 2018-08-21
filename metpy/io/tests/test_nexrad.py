@@ -109,6 +109,7 @@ def test_bad_length(caplog):
 
     with caplog.at_level(logging.WARNING, 'metpy.io.nexrad'):
         Level3File(fobj)
+        assert len(caplog.records) == 1
         assert 'This product may not parse correctly' in caplog.records[0].message
 
 
