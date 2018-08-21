@@ -5,7 +5,12 @@
 
 # What do we want to pull into the top-level namespace?
 
-from ._version import get_versions
+import warnings
+
+# Must occur before below imports
+warnings.filterwarnings('ignore', 'numpy.dtype size changed')
+
+from ._version import get_versions  # noqa: E402
 from .xarray import *  # noqa: F401, F403
 __version__ = get_versions()['version']
 del get_versions
