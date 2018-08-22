@@ -189,3 +189,9 @@ def test_added_degrees_units():
     assert units('degrees_north').to_base_units().units == units.radian
     assert units('degrees_east') == units('degrees')
     assert units('degrees_east').to_base_units().units == units.radian
+
+
+def test_gpm_unit():
+    """Test that the gpm unit does alias to meters."""
+    x = 1 * units('gpm')
+    assert str(x.units) == 'meter'
