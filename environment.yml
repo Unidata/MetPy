@@ -35,3 +35,4 @@ dependencies:
   - cartopy
   - doc8
   - recommonmark
+  - pooch=0.1
