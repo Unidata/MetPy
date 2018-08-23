@@ -9,7 +9,6 @@ environment:
     - PYTHON_VERSION: "3.6"
 
 platform:
-    - x86
     - x64
 
 install:
@@ -37,6 +36,7 @@ install:
 build: off
 
 test_script:
+    - cmd: set TEST_DATA_DIR=%APPVEYOR_BUILD_FOLDER%\\staticdata
     - cmd: python setup.py test --addopts "-s --junitxml=tests.xml --flake8 --mpl --cov=metpy"
     - cmd: cd docs
     - cmd: make overridecheck html
