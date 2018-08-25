@@ -14,7 +14,7 @@ This includes:
 * Core Python developers will
   `stop support for Python 2.7 January 1, 2020 <https://pythonclock.org/>`_
 * NumPy feature releases will be
-  `Python 3 only starting January 1, 2019 <https://docs.scipy.org/doc/numpy/neps/dropping-python2.7-proposal.html>`_,
+  `Python 3 only starting January 1, 2019 <https://www.numpy.org/neps/nep-0014-dropping-python2.7-proposal.html>`_,
   and support for the last release supporting Python 2 will end January 1, 2020.
 * XArray will drop
   `2.7 January 1, 2019 as well <https://github.com/pydata/xarray/issues/1830>`_

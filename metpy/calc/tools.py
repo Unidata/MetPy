@@ -17,11 +17,15 @@ except ImportError:  # Only available in numpy >=1.13.0
         return a
 import numpy.ma as ma
 from scipy.spatial import cKDTree
+import xarray as xr
 
 from . import height_to_pressure_std, pressure_to_height_std
+from ..cbook import broadcast_indices
+from ..deprecation import deprecated, metpyDeprecation
+from ..interpolate.one_dimension import interpolate_1d, interpolate_nans_1d, log_interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, diff, units
-from ..xarray import preprocess_xarray
+from ..xarray import CFConventionHandler, preprocess_xarray
 
 exporter = Exporter(globals())
 
@@ -171,37 +175,17 @@ def find_intersections(x, a, b, direction='all'):
 
 @exporter.export
 @preprocess_xarray
+@deprecated('0.9', addendum=(' This function has been moved to metpy.interpolate and renamed '
+                             'interpolate_nans_1d.'), pending=False)
 def interpolate_nans(x, y, kind='linear'):
-    """Interpolate NaN values in y.
+    """Wrap interpolate_nans_1d for deprecated interpolate_nans."""
+    return interpolate_nans_1d(x, y, kind=kind)
 
-    Interpolate NaN values in the y dimension. Works with unsorted x values.
 
-    Parameters
-    ----------
-    x : array-like
-        1-dimensional array of numeric x-values
-    y : array-like
-        1-dimensional array of numeric y-values
-    kind : string
-        specifies the kind of interpolation x coordinate - 'linear' or 'log', optional.
-        Defaults to 'linear'.
-
-    Returns
-    -------
-        An array of the y coordinate data with NaN values interpolated.
-
-    """
-    x_sort_args = np.argsort(x)
-    x = x[x_sort_args]
-    y = y[x_sort_args]
-    nans = np.isnan(y)
-    if kind == 'linear':
-        y[nans] = np.interp(x[nans], x[~nans], y[~nans])
-    elif kind == 'log':
-        y[nans] = np.interp(np.log(x[nans]), np.log(x[~nans]), y[~nans])
-    else:
-        raise ValueError('Unknown option for kind: {0}'.format(str(kind)))
-    return y[x_sort_args]
+interpolate_nans.__doc__ = (interpolate_nans_1d.__doc__ +
+                            '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
+                            '`interpolate_nans_1d` and moved to `metpy.interpolate`, and '
+                            'will be removed from MetPy in 0.12.0.')
 
 
 def _next_non_masked_element(a, idx):
@@ -370,7 +354,7 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
             if interpolate:
                 bound_pressure = bound  # Use the user specified bound
                 if heights is not None:  # Interpolate heights from the height data
-                    bound_height = log_interp(bound_pressure, pressure, heights)
+                    bound_height = log_interpolate_1d(bound_pressure, pressure, heights)
                 else:  # If not heights given, use the standard atmosphere
                     bound_height = pressure_to_height_std(bound_pressure)
             else:  # No interpolation, find the closest values
@@ -510,7 +494,7 @@ def get_layer_heights(heights, depth, *args, **kwargs):
 
         if interpolate:
             # Interpolate for the possibly missing bottom/top values
-            datavar_interp = interp(heights_interp, heights, datavar)
+            datavar_interp = interpolate_1d(heights_interp, heights, datavar)
             datavar = datavar_interp
         else:
             datavar = datavar[inds]
@@ -617,7 +601,7 @@ def get_layer(pressure, *args, **kwargs):
 
         if interpolate:
             # Interpolate for the possibly missing bottom/top values
-            datavar_interp = log_interp(p_interp, pressure, datavar)
+            datavar_interp = log_interpolate_1d(p_interp, pressure, datavar)
             datavar = datavar_interp
         else:
             datavar = datavar[inds]
@@ -628,124 +612,17 @@ def get_layer(pressure, *args, **kwargs):
 
 @exporter.export
 @preprocess_xarray
-@units.wraps(None, ('=A', '=A'))
+@deprecated('0.9', addendum=(' This function has been moved to metpy.interpolate and renamed '
+                             'interpolate_1d.'), pending=False)
 def interp(x, xp, *args, **kwargs):
-    r"""Interpolates data with any shape over a specified axis.
+    """Wrap interpolate_1d for deprecated interp."""
+    return interpolate_1d(x, xp, *args, **kwargs)
 
-    Interpolation over a specified axis for arrays of any shape.
 
-    Parameters
-    ----------
-    x : array-like
-        1-D array of desired interpolated values.
-
-    xp : array-like
-        The x-coordinates of the data points.
-
-    args : array-like
-        The data to be interpolated. Can be multiple arguments, all must be the same shape as
-        xp.
-
-    axis : int, optional
-        The axis to interpolate over. Defaults to 0.
-
-    fill_value: float, optional
-        Specify handling of interpolation points out of data bounds. If None, will return
-        ValueError if points are out of bounds. Defaults to nan.
-
-    Returns
-    -------
-    array-like
-        Interpolated values for each point with coordinates sorted in ascending order.
-
-    Examples
-    --------
-     >>> x = np.array([1., 2., 3., 4.])
-     >>> y = np.array([1., 2., 3., 4.])
-     >>> x_interp = np.array([2.5, 3.5])
-     >>> metpy.calc.interp(x_interp, x, y)
-     array([2.5, 3.5])
-
-    Notes
-    -----
-    xp and args must be the same shape.
-
-    """
-    # Pull out keyword args
-    fill_value = kwargs.pop('fill_value', np.nan)
-    axis = kwargs.pop('axis', 0)
-
-    # Make x an array
-    x = np.asanyarray(x).reshape(-1)
-
-    # Save number of dimensions in xp
-    ndim = xp.ndim
-
-    # Sort input data
-    sort_args = np.argsort(xp, axis=axis)
-    sort_x = np.argsort(x)
-
-    # indices for sorting
-    sorter = broadcast_indices(xp, sort_args, ndim, axis)
-
-    # sort xp
-    xp = xp[sorter]
-    # Ensure pressure in increasing order
-    variables = [arr[sorter] for arr in args]
-
-    # Make x broadcast with xp
-    x_array = x[sort_x]
-    expand = [np.newaxis] * ndim
-    expand[axis] = slice(None)
-    x_array = x_array[expand]
-
-    # Calculate value above interpolated value
-    minv = np.apply_along_axis(np.searchsorted, axis, xp, x[sort_x])
-    minv2 = np.copy(minv)
-
-    # If fill_value is none and data is out of bounds, raise value error
-    if ((np.max(minv) == xp.shape[axis]) or (np.min(minv) == 0)) and fill_value is None:
-        raise ValueError('Interpolation point out of data bounds encountered')
-
-    # Warn if interpolated values are outside data bounds, will make these the values
-    # at end of data range.
-    if np.max(minv) == xp.shape[axis]:
-        warnings.warn('Interpolation point out of data bounds encountered')
-        minv2[minv == xp.shape[axis]] = xp.shape[axis] - 1
-    if np.min(minv) == 0:
-        minv2[minv == 0] = 1
-
-    # Get indices for broadcasting arrays
-    above = broadcast_indices(xp, minv2, ndim, axis)
-    below = broadcast_indices(xp, minv2 - 1, ndim, axis)
-
-    if np.any(x_array < xp[below]):
-        warnings.warn('Interpolation point out of data bounds encountered')
-
-    # Create empty output list
-    ret = []
-
-    # Calculate interpolation for each variable
-    for var in variables:
-        # Var needs to be on the *left* of the multiply to ensure that if it's a pint
-        # Quantity, it gets to control the operation--at least until we make sure
-        # masked arrays and pint play together better. See https://github.com/hgrecco/pint#633
-        var_interp = var[below] + (var[above] - var[below]) * ((x_array - xp[below]) /
-                                                               (xp[above] - xp[below]))
-
-        # Set points out of bounds to fill value.
-        var_interp[minv == xp.shape[axis]] = fill_value
-        var_interp[x_array < xp[below]] = fill_value
-
-        # Check for input points in decreasing order and return output to match.
-        if x[0] > x[-1]:
-            var_interp = np.swapaxes(np.swapaxes(var_interp, 0, axis)[::-1], 0, axis)
-        # Output to list
-        ret.append(var_interp)
-    if len(ret) == 1:
-        return ret[0]
-    else:
-        return ret
+interp.__doc__ = (interpolate_1d.__doc__ +
+                  '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
+                  '`interpolate_1d` and moved to `metpy.interpolate`, and '
+                  'will be removed from MetPy in 0.12.0.')
 
 
 @exporter.export
@@ -820,15 +697,15 @@ def find_bounding_indices(arr, values, axis, from_below=True):
 
             # Same as above, but we use the slice to come from the end; then adjust those
             # indices to measure from the front.
-            index = arr.shape[axis] - 1 - switches[arr_slice].argmax(axis=axis)
+            index = arr.shape[axis] - 1 - switches[tuple(arr_slice)].argmax(axis=axis)
 
         # Set all indices where the results are not good to 0
         index[~good_search] = 0
 
         # Put the results in the proper slice
         store_slice[axis] = level_index
-        indices[store_slice] = index
-        good[store_slice] = good_search
+        indices[tuple(store_slice)] = index
+        good[tuple(store_slice)] = good_search
 
     # Create index values for broadcasting arrays
     above = broadcast_indices(arr, indices, arr.ndim, axis)
@@ -837,76 +714,19 @@ def find_bounding_indices(arr, values, axis, from_below=True):
     return above, below, good
 
 
-def broadcast_indices(x, minv, ndim, axis):
-    """Calculate index values to properly broadcast index array within data array.
-
-    See usage in interp.
-    """
-    ret = []
-    for dim in range(ndim):
-        if dim == axis:
-            ret.append(minv)
-        else:
-            broadcast_slice = [np.newaxis] * ndim
-            broadcast_slice[dim] = slice(None)
-            dim_inds = np.arange(x.shape[dim])
-            ret.append(dim_inds[broadcast_slice])
-    return ret
-
-
 @exporter.export
 @preprocess_xarray
-@units.wraps(None, ('=A', '=A'))
+@deprecated('0.9', addendum=(' This function has been moved to metpy.interpolate and renamed '
+                             'log_interpolate_1d.'), pending=False)
 def log_interp(x, xp, *args, **kwargs):
-    r"""Interpolates data with logarithmic x-scale over a specified axis.
+    """Wrap log_interpolate_1d for deprecated log_interp."""
+    return log_interpolate_1d(x, xp, *args, **kwargs)
 
-    Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.
 
-    Parameters
-    ----------
-    x : array-like
-        1-D array of desired interpolated values.
-
-    xp : array-like
-        The x-coordinates of the data points.
-
-    args : array-like
-        The data to be interpolated. Can be multiple arguments, all must be the same shape as
-        xp.
-
-    axis : int, optional
-        The axis to interpolate over. Defaults to 0.
-
-    fill_value: float, optional
-        Specify handling of interpolation points out of data bounds. If None, will return
-        ValueError if points are out of bounds. Defaults to nan.
-
-    Returns
-    -------
-    array-like
-        Interpolated values for each point with coordinates sorted in ascending order.
-
-    Examples
-    --------
-     >>> x_log = np.array([1e3, 1e4, 1e5, 1e6])
-     >>> y_log = np.log(x_log) * 2 + 3
-     >>> x_interp = np.array([5e3, 5e4, 5e5])
-     >>> metpy.calc.log_interp(x_interp, x_log, y_log)
-     array([20.03438638, 24.63955657, 29.24472675])
-
-    Notes
-    -----
-    xp and args must be the same shape.
-
-    """
-    # Pull out kwargs
-    fill_value = kwargs.pop('fill_value', np.nan)
-    axis = kwargs.pop('axis', 0)
-
-    # Log x and xp
-    log_x = np.log(x)
-    log_xp = np.log(xp)
-    return interp(log_x, log_xp, *args, axis=axis, fill_value=fill_value)
+log_interp.__doc__ = (log_interpolate_1d.__doc__ +
+                      '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
+                      '`log_interpolate_1d` and moved to `metpy.interpolate`, and '
+                      'will be removed from MetPy in 0.12.0.')
 
 
 def _greater_or_close(a, value, **kwargs):
@@ -953,24 +773,212 @@ def _less_or_close(a, value, **kwargs):
     return (a < value) | np.isclose(a, value, **kwargs)
 
 
+@deprecated('0.8', addendum=' This function has been replaced by the signed delta distance'
+                            'calculation lat_lon_grid_deltas and will be removed in MetPy'
+                            ' 0.11.',
+            pending=False)
 @exporter.export
 @preprocess_xarray
+def lat_lon_grid_spacing(longitude, latitude, **kwargs):
+    r"""Calculate the distance between grid points that are in a latitude/longitude format.
+
+    Calculate the distance between grid points when the grid spacing is defined by
+    delta lat/lon rather than delta x/y
+
+    Parameters
+    ----------
+    longitude : array_like
+        array of longitudes defining the grid
+    latitude : array_like
+        array of latitudes defining the grid
+    kwargs
+        Other keyword arguments to pass to :class:`~pyproj.Geod`
+
+    Returns
+    -------
+     dx, dy: 2D arrays of distances between grid points in the x and y direction
+
+    Notes
+    -----
+    Accepts, 1D or 2D arrays for latitude and longitude
+    Assumes [Y, X] for 2D arrays
+
+    .. deprecated:: 0.8.0
+        Function has been replaced with the signed delta distance calculation
+        `lat_lon_grid_deltas` and will be removed from MetPy in 0.11.0.
+
+    """
+    # Use the absolute value of the signed function replacing this
+    dx, dy = lat_lon_grid_deltas(longitude, latitude, **kwargs)
+
+    return np.abs(dx), np.abs(dy)
+
+
+@exporter.export
+@preprocess_xarray
+def lat_lon_grid_deltas(longitude, latitude, **kwargs):
+    r"""Calculate the delta between grid points that are in a latitude/longitude format.
+
+    Calculate the signed delta distance between grid points when the grid spacing is defined by
+    delta lat/lon rather than delta x/y
+
+    Parameters
+    ----------
+    longitude : array_like
+        array of longitudes defining the grid
+    latitude : array_like
+        array of latitudes defining the grid
+    kwargs
+        Other keyword arguments to pass to :class:`~pyproj.Geod`
+
+    Returns
+    -------
+    dx, dy:
+        at least two dimensional arrays of signed deltas between grid points in the x and y
+        direction
+
+    Notes
+    -----
+    Accepts 1D, 2D, or higher arrays for latitude and longitude
+    Assumes [..., Y, X] for >=2 dimensional arrays
+
+    """
+    from pyproj import Geod
+
+    # Inputs must be the same number of dimensions
+    if latitude.ndim != longitude.ndim:
+        raise ValueError('Latitude and longitude must have the same number of dimensions.')
+
+    # If we were given 1D arrays, make a mesh grid
+    if latitude.ndim < 2:
+        longitude, latitude = np.meshgrid(longitude, latitude)
+
+    geod_args = {'ellps': 'sphere'}
+    if kwargs:
+        geod_args = kwargs
+
+    g = Geod(**geod_args)
+
+    forward_az, _, dy = g.inv(longitude[..., :-1, :], latitude[..., :-1, :],
+                              longitude[..., 1:, :], latitude[..., 1:, :])
+    dy[(forward_az < -90.) | (forward_az > 90.)] *= -1
+
+    forward_az, _, dx = g.inv(longitude[..., :, :-1], latitude[..., :, :-1],
+                              longitude[..., :, 1:], latitude[..., :, 1:])
+    dx[(forward_az < 0.) | (forward_az > 180.)] *= -1
+
+    return dx * units.meter, dy * units.meter
+
+
+@exporter.export
+def grid_deltas_from_dataarray(f):
+    """Calculate the horizontal deltas between grid points of a DataArray.
+
+    Calculate the signed delta distance between grid points of a DataArray in the horizontal
+    directions, whether the grid is lat/lon or x/y.
+
+    Parameters
+    ----------
+    f : `xarray.DataArray`
+        Parsed DataArray on a latitude/longitude grid, in (..., lat, lon) or (..., y, x)
+        dimension order
+
+    Returns
+    -------
+    dx, dy:
+        arrays of signed deltas between grid points in the x and y directions with dimensions
+        matching those of `f`.
+
+    See Also
+    --------
+    lat_lon_grid_deltas
+
+    """
+    if f.metpy.crs['grid_mapping_name'] == 'latitude_longitude':
+        dx, dy = lat_lon_grid_deltas(f.metpy.x, f.metpy.y,
+                                     initstring=f.metpy.cartopy_crs.proj4_init)
+        slc_x = slc_y = tuple([np.newaxis] * (f.ndim - 2) + [slice(None)] * 2)
+    else:
+        dx = np.diff(f.metpy.x.metpy.unit_array.to('m').magnitude) * units('m')
+        dy = np.diff(f.metpy.y.metpy.unit_array.to('m').magnitude) * units('m')
+        slc = [np.newaxis] * (f.ndim - 2)
+        slc_x = tuple(slc + [np.newaxis, slice(None)])
+        slc_y = tuple(slc + [slice(None), np.newaxis])
+    return dx[slc_x], dy[slc_y]
+
+
+def xarray_derivative_wrap(func):
+    """Decorate the derivative functions to make them work nicely with DataArrays.
+
+    This will automatically determine if the coordinates can be pulled directly from the
+    DataArray, or if a call to lat_lon_grid_deltas is needed.
+    """
+    @functools.wraps(func)
+    def wrapper(f, **kwargs):
+        if 'x' in kwargs or 'delta' in kwargs:
+            # Use the usual DataArray to pint.Quantity preprocessing wrapper
+            return preprocess_xarray(func)(f, **kwargs)
+        elif isinstance(f, xr.DataArray):
+            # Get axis argument, defaulting to first dimension
+            axis = f.metpy.find_axis_name(kwargs.get('axis', 0))
+
+            # Initialize new kwargs with the axis number
+            new_kwargs = {'axis': f.get_axis_num(axis)}
+
+            if f[axis].attrs.get('axis') == 'T':
+                # Time coordinate, need to convert to seconds from datetimes
+                new_kwargs['x'] = f[axis].metpy.as_timestamp().metpy.unit_array
+            elif CFConventionHandler.check_axis(f[axis], 'lon'):
+                # Longitude coordinate, need to get grid deltas
+                new_kwargs['delta'], _ = grid_deltas_from_dataarray(f)
+            elif CFConventionHandler.check_axis(f[axis], 'lat'):
+                # Latitude coordinate, need to get grid deltas
+                _, new_kwargs['delta'] = grid_deltas_from_dataarray(f)
+            else:
+                # General coordinate, use as is
+                new_kwargs['x'] = f[axis].metpy.unit_array
+
+            # Calculate and return result as a DataArray
+            result = func(f.metpy.unit_array, **new_kwargs)
+            return xr.DataArray(result.magnitude,
+                                coords=f.coords,
+                                dims=f.dims,
+                                attrs={'units': str(result.units)})
+        else:
+            # Error
+            raise ValueError('Must specify either "x" or "delta" for value positions when "f" '
+                             'is not a DataArray.')
+    return wrapper
+
+
+@exporter.export
+@xarray_derivative_wrap
 def first_derivative(f, **kwargs):
     """Calculate the first derivative of a grid of values.
 
     Works for both regularly-spaced data and grids with varying spacing.
 
-    Either `x` or `delta` must be specified. This uses 3 points to calculate the
-    derivative, using forward or backward at the edges of the grid as appropriate, and
-    centered elsewhere. The irregular spacing is handled explicitly, using the formulation
-    as specified by [Bowen2005]_.
+    Either `x` or `delta` must be specified, or `f` must be given as an `xarray.DataArray` with
+    attached coordinate and projection information. If `f` is an `xarray.DataArray`, and `x` or
+    `delta` are given, `f` will be converted to a `pint.Quantity` and the derivative returned
+    as a `pint.Quantity`, otherwise, if neither `x` nor `delta` are given, the attached
+    coordinate information belonging to `axis` will be used and the derivative will be returned
+    as an `xarray.DataArray`.
+
+    This uses 3 points to calculate the derivative, using forward or backward at the edges of
+    the grid as appropriate, and centered elsewhere. The irregular spacing is handled
+    explicitly, using the formulation as specified by [Bowen2005]_.
 
     Parameters
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    axis : int, optional
-        The array axis along which to take the derivative. Defaults to 0.
+    axis : int or str, optional
+        The array axis along which to take the derivative. If `f` is ndarray-like, must be an
+        integer. If `f` is a `DataArray`, can be a string (referring to either the coordinate
+        dimension name or the axis type) or integer (referring to axis number), unless using
+        implicit conversion to `pint.Quantity`, in which case it must be an integer. Defaults
+        to 0.
     x : array-like, optional
         The coordinate values corresponding to the grid points in `f`.
     delta : array-like, optional
@@ -1003,11 +1011,14 @@ def first_derivative(f, **kwargs):
     delta_slice0[axis] = slice(None, -1)
     delta_slice1[axis] = slice(1, None)
 
-    combined_delta = delta[delta_slice0] + delta[delta_slice1]
-    delta_diff = delta[delta_slice1] - delta[delta_slice0]
-    center = (- delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0] +
-              delta_diff / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1] +
-              delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2])
+    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
+    delta_diff = delta[tuple(delta_slice1)] - delta[tuple(delta_slice0)]
+    center = (- delta[tuple(delta_slice1)] / (combined_delta * delta[tuple(delta_slice0)]) *
+              f[tuple(slice0)] +
+              delta_diff / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)]) *
+              f[tuple(slice1)] +
+              delta[tuple(delta_slice0)] / (combined_delta * delta[tuple(delta_slice1)]) *
+              f[tuple(slice2)])
 
     # Fill in "left" edge with forward difference
     slice0[axis] = slice(None, 1)
@@ -1016,11 +1027,13 @@ def first_derivative(f, **kwargs):
     delta_slice0[axis] = slice(None, 1)
     delta_slice1[axis] = slice(1, 2)
 
-    combined_delta = delta[delta_slice0] + delta[delta_slice1]
-    big_delta = combined_delta + delta[delta_slice0]
-    left = (- big_delta / (combined_delta * delta[delta_slice0]) * f[slice0] +
-            combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1] -
-            delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2])
+    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
+    big_delta = combined_delta + delta[tuple(delta_slice0)]
+    left = (- big_delta / (combined_delta * delta[tuple(delta_slice0)]) * f[tuple(slice0)] +
+            combined_delta / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)]) *
+            f[tuple(slice1)] -
+            delta[tuple(delta_slice0)] / (combined_delta * delta[tuple(delta_slice1)]) *
+            f[tuple(slice2)])
 
     # Now the "right" edge with backward difference
     slice0[axis] = slice(-3, -2)
@@ -1029,35 +1042,45 @@ def first_derivative(f, **kwargs):
     delta_slice0[axis] = slice(-2, -1)
     delta_slice1[axis] = slice(-1, None)
 
-    combined_delta = delta[delta_slice0] + delta[delta_slice1]
-    big_delta = combined_delta + delta[delta_slice1]
-    right = (delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0] -
-             combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1] +
-             big_delta / (combined_delta * delta[delta_slice1]) * f[slice2])
+    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
+    big_delta = combined_delta + delta[tuple(delta_slice1)]
+    right = (delta[tuple(delta_slice1)] / (combined_delta * delta[tuple(delta_slice0)]) *
+             f[tuple(slice0)] -
+             combined_delta / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)]) *
+             f[tuple(slice1)] +
+             big_delta / (combined_delta * delta[tuple(delta_slice1)]) * f[tuple(slice2)])
 
     return concatenate((left, center, right), axis=axis)
 
 
 @exporter.export
-@preprocess_xarray
+@xarray_derivative_wrap
 def second_derivative(f, **kwargs):
     """Calculate the second derivative of a grid of values.
 
     Works for both regularly-spaced data and grids with varying spacing.
 
-    Either `x` or `delta` must be specified.
+    Either `x` or `delta` must be specified, or `f` must be given as an `xarray.DataArray` with
+    attached coordinate and projection information. If `f` is an `xarray.DataArray`, and `x` or
+    `delta` are given, `f` will be converted to a `pint.Quantity` and the derivative returned
+    as a `pint.Quantity`, otherwise, if neither `x` nor `delta` are given, the attached
+    coordinate information belonging to `axis` will be used and the derivative will be returned
+    as an `xarray.DataArray`.
 
-    Either `x` or `delta` must be specified. This uses 3 points to calculate the
-    derivative, using forward or backward at the edges of the grid as appropriate, and
-    centered elsewhere. The irregular spacing is handled explicitly, using the formulation
-    as specified by [Bowen2005]_.
+    This uses 3 points to calculate the derivative, using forward or backward at the edges of
+    the grid as appropriate, and centered elsewhere. The irregular spacing is handled
+    explicitly, using the formulation as specified by [Bowen2005]_.
 
     Parameters
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    axis : int, optional
-        The array axis along which to take the derivative. Defaults to 0.
+    axis : int or str, optional
+        The array axis along which to take the derivative. If `f` is ndarray-like, must be an
+        integer. If `f` is a `DataArray`, can be a string (referring to either the coordinate
+        dimension name or the axis type) or integer (referring to axis number), unless using
+        implicit conversion to `pint.Quantity`, in which case it must be an integer. Defaults
+        to 0.
     x : array-like, optional
         The coordinate values corresponding to the grid points in `f`.
     delta : array-like, optional
@@ -1090,10 +1113,11 @@ def second_derivative(f, **kwargs):
     delta_slice0[axis] = slice(None, -1)
     delta_slice1[axis] = slice(1, None)
 
-    combined_delta = delta[delta_slice0] + delta[delta_slice1]
-    center = 2 * (f[slice0] / (combined_delta * delta[delta_slice0]) -
-                  f[slice1] / (delta[delta_slice0] * delta[delta_slice1]) +
-                  f[slice2] / (combined_delta * delta[delta_slice1]))
+    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
+    center = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)]) -
+                  f[tuple(slice1)] / (delta[tuple(delta_slice0)] *
+                  delta[tuple(delta_slice1)]) +
+                  f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
 
     # Fill in "left" edge
     slice0[axis] = slice(None, 1)
@@ -1102,10 +1126,10 @@ def second_derivative(f, **kwargs):
     delta_slice0[axis] = slice(None, 1)
     delta_slice1[axis] = slice(1, 2)
 
-    combined_delta = delta[delta_slice0] + delta[delta_slice1]
-    left = 2 * (f[slice0] / (combined_delta * delta[delta_slice0]) -
-                f[slice1] / (delta[delta_slice0] * delta[delta_slice1]) +
-                f[slice2] / (combined_delta * delta[delta_slice1]))
+    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
+    left = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)]) -
+                f[tuple(slice1)] / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)]) +
+                f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
 
     # Now the "right" edge
     slice0[axis] = slice(-3, -2)
@@ -1114,67 +1138,96 @@ def second_derivative(f, **kwargs):
     delta_slice0[axis] = slice(-2, -1)
     delta_slice1[axis] = slice(-1, None)
 
-    combined_delta = delta[delta_slice0] + delta[delta_slice1]
-    right = 2 * (f[slice0] / (combined_delta * delta[delta_slice0]) -
-                 f[slice1] / (delta[delta_slice0] * delta[delta_slice1]) +
-                 f[slice2] / (combined_delta * delta[delta_slice1]))
+    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
+    right = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)]) -
+                 f[tuple(slice1)] / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)]) +
+                 f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
 
     return concatenate((left, center, right), axis=axis)
 
 
 @exporter.export
-@preprocess_xarray
 def gradient(f, **kwargs):
     """Calculate the gradient of a grid of values.
 
     Works for both regularly-spaced data, and grids with varying spacing.
 
-    Either `x` or `deltas` must be specified.
+    Either `coordinates` or `deltas` must be specified, or `f` must be given as an
+    `xarray.DataArray` with  attached coordinate and projection information. If `f` is an
+    `xarray.DataArray`, and `coordinates` or `deltas` are given, `f` will be converted to a
+    `pint.Quantity` and the gradient returned as a tuple of `pint.Quantity`, otherwise, if
+    neither `coordinates` nor `deltas` are given, the attached coordinate information belonging
+    to `axis` will be used and the gradient will be returned as a tuple of `xarray.DataArray`.
 
     Parameters
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    x : array-like, optional
+    coordinates : array-like, optional
         Sequence of arrays containing the coordinate values corresponding to the
         grid points in `f` in axis order.
     deltas : array-like, optional
         Sequence of arrays or scalars that specify the spacing between the grid points in `f`
-        in axis order. There should be one item less than the size of `f` along `axis`.
+        in axis order. There should be one item less than the size of `f` along the applicable
+        axis.
+    axes : sequence, optional
+        Sequence of strings (if `f` is a `xarray.DataArray` and implicit conversion to
+        `pint.Quantity` is not used) or integers that specify the array axes along which to
+        take the derivatives. Defaults to all axes of `f`. If given, and used with
+        `coordinates` or `deltas`, its length must be less than or equal to that of the
+        `coordinates` or `deltas` given.
 
     Returns
     -------
-    array-like
-        The first derivative calculated along each axis in the original array
+    tuple of array-like
+        The first derivative calculated along each specified axis of the original array
 
     See Also
     --------
-    laplacian
+    laplacian, first_derivative
+
+    Notes
+    -----
+    `gradient` previously accepted `x` as a parameter for coordinate values. This has been
+    deprecated in 0.9 in favor of `coordinates`.
+
+    If this function is used without the `axes` parameter, the length of `coordinates` or
+    `deltas` (as applicable) should match the number of dimensions of `f`.
 
     """
-    pos_kwarg, positions = _process_gradient_args(kwargs)
-    return tuple(first_derivative(f, axis=ind, **{pos_kwarg: positions[ind]})
-                 for ind, pos in enumerate(positions))
+    pos_kwarg, positions, axes = _process_gradient_args(f, kwargs)
+    return tuple(first_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
+                 for ind, axis in enumerate(axes))
 
 
 @exporter.export
-@preprocess_xarray
 def laplacian(f, **kwargs):
     """Calculate the laplacian of a grid of values.
 
     Works for both regularly-spaced data, and grids with varying spacing.
 
-    Either `x` or `deltas` must be specified.
+    Either `coordinates` or `deltas` must be specified, or `f` must be given as an
+    `xarray.DataArray` with  attached coordinate and projection information. If `f` is an
+    `xarray.DataArray`, and `coordinates` or `deltas` are given, `f` will be converted to a
+    `pint.Quantity` and the gradient returned as a tuple of `pint.Quantity`, otherwise, if
+    neither `coordinates` nor `deltas` are given, the attached coordinate information belonging
+    to `axis` will be used and the gradient will be returned as a tuple of `xarray.DataArray`.
 
     Parameters
     ----------
     f : array-like
         Array of values of which to calculate the derivative
-    x : array-like, optional
+    coordinates : array-like, optional
         The coordinate values corresponding to the grid points in `f`
     deltas : array-like, optional
         Spacing between the grid points in `f`. There should be one item less than the size
-        of `f` along `axis`.
+        of `f` along the applicable axis.
+    axes : sequence, optional
+        Sequence of strings (if `f` is a `xarray.DataArray` and implicit conversion to
+        `pint.Quantity` is not used) or integers that specify the array axes along which to
+        take the derivatives. Defaults to all axes of `f`. If given, and used with
+        `coordinates` or `deltas`, its length must be less than or equal to that of the
+        `coordinates` or `deltas` given.
 
     Returns
     -------
@@ -1183,12 +1236,25 @@ def laplacian(f, **kwargs):
 
     See Also
     --------
-    gradient
+    gradient, second_derivative
+
+    Notes
+    -----
+    `laplacian` previously accepted `x` as a parameter for coordinate values. This has been
+    deprecated in 0.9 in favor of `coordinates`.
+
+    If this function is used without the `axes` parameter, the length of `coordinates` or
+    `deltas` (as applicable) should match the number of dimensions of `f`.
 
     """
-    pos_kwarg, positions = _process_gradient_args(kwargs)
-    return sum(second_derivative(f, axis=ind, **{pos_kwarg: positions[ind]})
-               for ind, pos in enumerate(positions))
+    pos_kwarg, positions, axes = _process_gradient_args(f, kwargs)
+    derivs = [second_derivative(f, axis=axis, **{pos_kwarg: positions[ind]})
+              for ind, axis in enumerate(axes)]
+    laplac = sum(derivs)
+    if isinstance(derivs[0], xr.DataArray):
+        # Patch in the units that are dropped
+        laplac.attrs['units'] = derivs[0].attrs['units']
+    return laplac
 
 
 def _broadcast_to_axis(arr, axis, ndim):
@@ -1203,16 +1269,36 @@ def _broadcast_to_axis(arr, axis, ndim):
     return arr
 
 
-def _process_gradient_args(kwargs):
+def _process_gradient_args(f, kwargs):
     """Handle common processing of arguments for gradient and gradient-like functions."""
+    axes = kwargs.get('axes', range(f.ndim))
+
+    def _check_length(positions):
+        if 'axes' in kwargs and len(positions) < len(axes):
+            raise ValueError('Length of "coordinates" or "deltas" cannot be less than that '
+                             'of "axes".')
+        elif 'axes' not in kwargs and len(positions) != len(axes):
+            raise ValueError('Length of "coordinates" or "deltas" must match the number of '
+                             'dimensions of "f" when "axes" is not given.')
+
     if 'deltas' in kwargs:
-        if 'x' in kwargs:
-            raise ValueError('Cannot specify both "x" and "deltas".')
-        return 'delta', kwargs['deltas']
+        if 'coordinates' in kwargs or 'x' in kwargs:
+            raise ValueError('Cannot specify both "coordinates" and "deltas".')
+        _check_length(kwargs['deltas'])
+        return 'delta', kwargs['deltas'], axes
+    elif 'coordinates' in kwargs:
+        _check_length(kwargs['coordinates'])
+        return 'x', kwargs['coordinates'], axes
     elif 'x' in kwargs:
-        return 'x', kwargs['x']
+        warnings.warn('The use of "x" as a parameter for coordinate values has been '
+                      'deprecated. Use "coordinates" instead.', metpyDeprecation)
+        _check_length(kwargs['x'])
+        return 'x', kwargs['x'], axes
+    elif isinstance(f, xr.DataArray):
+        return 'pass', axes, axes  # only the axis argument matters
     else:
-        raise ValueError('Must specify either "x" or "delta" for value positions.')
+        raise ValueError('Must specify either "coordinates" or "deltas" for value positions '
+                         'when "f" is not a DataArray.')
 
 
 def _process_deriv_args(f, kwargs):

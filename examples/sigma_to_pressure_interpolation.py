@@ -15,8 +15,8 @@ import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 from netCDF4 import Dataset, num2date
 
-import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
+from metpy.interpolate import log_interpolate_1d
 from metpy.plots import add_metpy_logo, add_timestamp
 from metpy.units import units
 
@@ -51,7 +51,7 @@ plevs = [700.] * units.hPa
 # vertical axis. The interpolated data is output in a list, so we will pull out each
 # variable for plotting.
 
-height, temp = mpcalc.log_interp(plevs, pres, hgt, temperature, axis=1)
+height, temp = log_interpolate_1d(plevs, pres, hgt, temperature, axis=1)
 
 ####################################
 # **Plotting the Data for 700 hPa.**

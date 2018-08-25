@@ -179,3 +179,18 @@ def test_lat_lon():
     attrs = {'grid_mapping_name': 'latitude_longitude'}
     crs = CFProjection(attrs).to_cartopy()
     assert isinstance(crs, ccrs.PlateCarree)
+
+
+def test_eq():
+    """Test that two CFProjection instances are equal given that they have the same attrs."""
+    attrs = {'grid_mapping_name': 'latitude_longitude'}
+    cf_proj_1 = CFProjection(attrs)
+    cf_proj_2 = CFProjection(attrs.copy())
+    assert cf_proj_1 == cf_proj_2
+
+
+def test_ne():
+    """Test that two CFProjection instances are not equal when attrs differs."""
+    cf_proj_1 = CFProjection({'grid_mapping_name': 'latitude_longitude'})
+    cf_proj_2 = CFProjection({'grid_mapping_name': 'lambert_conformal_conic'})
+    assert cf_proj_1 != cf_proj_2

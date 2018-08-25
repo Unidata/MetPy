@@ -329,7 +329,7 @@ class SkewT(object):
 
         return lines
 
-    def plot_barbs(self, p, u, v, c=None, xloc=1.0, x_clip_radius=0.08,
+    def plot_barbs(self, p, u, v, c=None, xloc=1.0, x_clip_radius=0.1,
                    y_clip_radius=0.08, **kwargs):
         r"""Plot wind barbs.
 
@@ -352,7 +352,7 @@ class SkewT(object):
             denotes far left and 1.0 denotes far right. Defaults to far right.
         x_clip_radius : float, optional
             Space, in normalized axes coordinates, to leave before clipping
-            wind barbs in the x-direction. Defaults to 0.08.
+            wind barbs in the x-direction. Defaults to 0.1.
         y_clip_radius : float, optional
             Space, in normalized axes coordinates, to leave above/below plot
             before clipping wind barbs in the y-direction. Defaults to 0.08.

@@ -56,7 +56,6 @@ exporter = Exporter(globals())
 
 TABLE_EXT = '.tbl'
 
-logging.basicConfig(level=logging.WARNING)
 log = logging.getLogger(__name__)
 
 

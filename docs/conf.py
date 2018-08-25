@@ -48,7 +48,8 @@ sphinx_gallery_conf = {
         'metpy': None,
         'matplotlib': 'http://matplotlib.org',
         'numpy': 'http://docs.scipy.org/doc/numpy/',
-        'scipy': 'http://docs.scipy.org/doc/scipy/reference'},
+        'scipy': 'http://docs.scipy.org/doc/scipy/reference',
+        'xarray': 'http://xarray.pydata.org/en/stable/'},
     'examples_dirs': [os.path.join('..', 'examples'), os.path.join('..', 'tutorials')],
     'gallery_dirs': ['examples', 'tutorials'],
     'filename_pattern': '\.py',
@@ -72,7 +73,8 @@ intersphinx_mapping = {
                        'matplotlib': ('http://matplotlib.org/', None),
                        'python': ('https://docs.python.org/3/', None),
                        'numpy': ('https://docs.scipy.org/doc/numpy/', None),
-                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None)
+                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+                       'xarray': ('http://xarray.pydata.org/en/stable/', None)
                        }
 
 # Tweak how docs are formatted
@@ -175,6 +177,10 @@ if 'sphinx_rtd_theme' in vars() and sphinx_rtd_theme.__version__ == '0.2.5b1.pos
 # links to the Github repository sources and issues
 html_context = {
     'doc_path': 'docs',
+    'galleries': sphinx_gallery_conf['gallery_dirs'],
+    'gallery_dir': dict(zip(sphinx_gallery_conf['gallery_dirs'],
+                            sphinx_gallery_conf['examples_dirs'])),
+    'api_dir': 'api/generated',
     'github_repo': 'Unidata/MetPy',
     'github_version': 'master',  # Make changes to the master branch
 }

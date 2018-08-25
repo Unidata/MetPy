@@ -48,11 +48,9 @@ matrix:
   include:
     - python: 2.7
       env:
-        - VERSIONS="numpy==1.10.0 matplotlib==1.4.0 scipy==0.14.0 pint==0.8 xarray==0.9.6"
+        - VERSIONS="numpy==1.11.0 matplotlib==1.4.0 scipy==0.14.0 pint==0.8 xarray==0.10.7"
         - TASK="coverage"
         - TEST_OUTPUT_CONTROL=""
-    - python: 3.4
-      env:
     - python: 3.5
       env:
     - python: "3.6-dev"
@@ -113,7 +111,7 @@ script:
   - if [[ $TASK == "docs" ]]; then
       export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/staticdata;
       pushd docs;
-      make clean html linkcheck O=-W;
+      make clean overridecheck html linkcheck O=-W;
       export DOC_BUILD_RESULT=$?;
       popd;
       if [[ $TRAVIS_PYTHON_VERSION == 3.6* ]]; then

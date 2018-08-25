@@ -17,10 +17,13 @@ units : :class:`pint.UnitRegistry`
 from __future__ import division
 
 import functools
+import logging
 
 import numpy as np
 import pint
 import pint.unit
+
+log = logging.getLogger(__name__)
 
 UndefinedUnitError = pint.UndefinedUnitError
 DimensionalityError = pint.DimensionalityError
@@ -30,6 +33,18 @@ units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
 # For pint 0.6, this is the best way to define a dimensionless unit. See pint #185
 units.define(pint.unit.UnitDefinition('percent', '%', (),
              pint.converters.ScaleConverter(0.01)))
+
+# Define commonly encountered units not defined by pint
+units.define('degrees_north = degree = degrees_N = degreesN = degree_north = degree_N '
+             '= degreeN')
+units.define('degrees_east = degree = degrees_E = degreesE = degree_east = degree_E = degreeE')
+
+# Alias geopotential meters (gpm) to just meters
+try:
+    units._units['meter']._aliases = ('metre', 'gpm')
+    units._units['gpm'] = units._units['meter']
+except AttributeError:
+    log.warning('Failed to add gpm alias to meters.')
 
 
 def pandas_dataframe_to_unit_arrays(df, column_units=None):

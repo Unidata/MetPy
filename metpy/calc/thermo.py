@@ -11,10 +11,11 @@ import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
 
-from .tools import (_greater_or_close, _less_or_close, broadcast_indices,
-                    find_bounding_indices, find_intersections, first_derivative, get_layer,
-                    interp)
+from .tools import (_greater_or_close, _less_or_close, find_bounding_indices,
+                    find_intersections, first_derivative, get_layer)
+from ..cbook import broadcast_indices
 from ..constants import Cp_d, epsilon, g, kappa, Lv, P0, Rd
+from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
 from ..xarray import preprocess_xarray
@@ -1456,6 +1457,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
 
     slices = [np.newaxis] * ndim
     slices[axis] = slice(None)
+    slices = tuple(slices)
     pres = np.broadcast_to(pres[slices], temperature.shape) * pres.units
 
     # Sort input data
@@ -1525,7 +1527,8 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
 
     # do an interpolation for each additional argument
     if args:
-        others = interp(isentlevels, pres_theta.m, *(arr[sorter] for arr in args), axis=axis)
+        others = interpolate_1d(isentlevels, pres_theta.m, *(arr[sorter] for arr in args),
+                                axis=axis)
         if len(args) > 1:
             ret.extend(others)
         else:
@@ -2050,7 +2053,7 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
 
     This function calculates the wet-bulb temperature using the Normand method. The LCL is
     computed, and that parcel brought down to the starting pressure along a moist adiabat.
-    Norman method (and others) described and compared by [Knox2017]_.
+    The Normand method (and others) are described and compared by [Knox2017]_.
 
     Parameters
     ----------
@@ -2155,3 +2158,92 @@ def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
     return dewpoint_rh(temperature, relative_humidity_from_specific_humidity(specific_humidity,
                                                                              temperature,
                                                                              pressure))
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[length]/[time]', '[pressure]', '[temperature]')
+def vertical_velocity_pressure(w, pressure, temperature, mixing=0):
+    r"""Calculate omega from w assuming hydrostatic conditions.
+
+    This function converts vertical velocity with respect to height
+    :math:`\left(w = \frac{Dz}{Dt}\right)` to that
+    with respect to pressure :math:`\left(\omega = \frac{Dp}{Dt}\right)`
+    assuming hydrostatic conditions on the synoptic scale.
+    By Equation 7.33 in [Hobbs2006]_,
+
+    .. math: \omega \simeq -\rho g w
+
+    Density (:math:`\rho`) is calculated using the :func:`density` function,
+    from the given pressure and temperature. If `mixing` is given, the virtual
+    temperature correction is used, otherwise, dry air is assumed.
+
+    Parameters
+    ----------
+    w: `pint.Quantity`
+        Vertical velocity in terms of height
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+    temperature: `pint.Quantity`
+        Air temperature
+    mixing: `pint.Quantity`, optional
+        Mixing ratio of air
+
+    Returns
+    -------
+    `pint.Quantity`
+        Vertical velocity in terms of pressure (in Pascals / second)
+
+    See Also
+    --------
+    density, vertical_velocity
+
+    """
+    rho = density(pressure, temperature, mixing)
+    return (- g * rho * w).to('Pa/s')
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[pressure]/[time]', '[pressure]', '[temperature]')
+def vertical_velocity(omega, pressure, temperature, mixing=0):
+    r"""Calculate w from omega assuming hydrostatic conditions.
+
+    This function converts vertical velocity with respect to pressure
+    :math:`\left(\omega = \frac{Dp}{Dt}\right)` to that with respect to height
+    :math:`\left(w = \frac{Dz}{Dt}\right)` assuming hydrostatic conditions on
+    the synoptic scale. By Equation 7.33 in [Hobbs2006]_,
+
+    .. math: \omega \simeq -\rho g w
+
+    so that
+
+    .. math w \simeq \frac{- \omega}{\rho g}
+
+    Density (:math:`\rho`) is calculated using the :func:`density` function,
+    from the given pressure and temperature. If `mixing` is given, the virtual
+    temperature correction is used, otherwise, dry air is assumed.
+
+    Parameters
+    ----------
+    omega: `pint.Quantity`
+        Vertical velocity in terms of pressure
+    pressure: `pint.Quantity`
+        Total atmospheric pressure
+    temperature: `pint.Quantity`
+        Air temperature
+    mixing: `pint.Quantity`, optional
+        Mixing ratio of air
+
+    Returns
+    -------
+    `pint.Quantity`
+        Vertical velocity in terms of height (in meters / second)
+
+    See Also
+    --------
+    density, vertical_velocity_pressure
+
+    """
+    rho = density(pressure, temperature, mixing)
+    return (omega / (- g * rho)).to('m/s')

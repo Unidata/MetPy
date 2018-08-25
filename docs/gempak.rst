@@ -325,9 +325,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-no">No</td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">AVOR(V)</td>
-        <td class="tg-notimplemented">Absolute vorticity</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/657">Issue #657</a></td>
+        <td class="tg-implemented">AVOR(V)</td>
+        <td class="tg-implemented">Absolute vorticity</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.absolute_vorticity.html">metpy.calc.absolute_vorticity</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -469,11 +469,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td>GWFS(S, N)</td>
-        <td>Filter with normal distribution of weights</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td class="tg-implemented">GWFS(S, N)</td>
+        <td class="tg-implemented">Filter with normal distribution of weights</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian">metpy.calc.smooth_gaussian</a></td>
+        <td class="tg-yes">Yes</td>
+        <td class="tg-yes">Yes</td>
         <td></td>
       </tr>
       <tr>
@@ -589,11 +589,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">MSFC(V)</td>
-        <td class="tg-notimplemented">Pseudo angular momentum (cross-sections)</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/654">Issue #654</a></td>
+        <td class="tg-implemented">MSFC(V)</td>
+        <td class="tg-implemented">Pseudo angular momentum (cross-sections)</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.absolute_momentum.html#metpy.calc.absolute_momentum">metpy.calc.absolute_momentum</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -605,11 +605,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">NORM(V)</td>
-        <td class="tg-notimplemented">Normal component (cross-sections)</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/652">Issue #652</a></td>
+        <td class="tg-implemented">NORM(V)</td>
+        <td class="tg-implemented">Normal component (cross-sections)</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.normal_component.html#metpy.calc.normal_component">metpy.calc.normal_component</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -792,9 +792,9 @@ blue is uncertain of parity, and white is unevaluated.
       <tr>
         <td>TANG(V)</td>
         <td>Tangential component (cross-sections)</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.tangential_component.html#metpy.calc.tangential_component">metpy.calc.tangential_component</a></td>
         <td></td>
-        <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -862,9 +862,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">TMWK(PRES, TMPK, RMIX)</td>
-        <td class="tg-notimplemented">Web bulb temperature in Kelvin</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/409">Issue #409</a></td>
+        <td class="tg-implemented">TMWK(PRES, TMPK, RMIX)</td>
+        <td class="tg-implemented">Web bulb temperature in Kelvin</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html">metpy.calc.wet_bulb_temperature</a></td>
         <td></td>
         <td></td>
         <td></td>
@@ -1006,9 +1006,9 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">DVDY(V)</td>
-        <td class="tg-notimplemented">Partial y derivative of V</td>
-        <td class="tg-notimplemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
+        <td class="tg-implemented">DVDY(V)</td>
+        <td class="tg-implemented">Partial y derivative of V</td>
+        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td></td>
         <td class="tg-no">No</td>
         <td></td>
@@ -1102,11 +1102,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">NORMV(V)</td>
-        <td class="tg-notimplemented">Vector normal wind (cross-section)</td>
-        <td class="tg-notimplemented"></td>
+        <td class="tg-implemented">NORMV(V)</td>
+        <td class="tg-implemented">Vector normal wind (cross-section)</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.normal_component.html#metpy.calc.normal_component">metpy.calc.normal_component</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -1166,11 +1166,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">TANGV(V)</td>
-        <td class="tg-notimplemented">Vector tangential wind (cross-section)</td>
-        <td class="tg-notimplemented"></td>
+        <td class="tg-implemented">TANGV(V)</td>
+        <td class="tg-implemented">Vector tangential wind (cross-section)</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.tangential_component.html#metpy.calc.tangential_component">metpy.calc.tangential_component</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>

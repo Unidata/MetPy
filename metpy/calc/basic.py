@@ -15,8 +15,10 @@ from __future__ import division
 import warnings
 
 import numpy as np
+from scipy.ndimage import gaussian_filter
 
 from ..constants import G, g, me, omega, Rd, Re
+from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, masked_array, units
 from ..xarray import preprocess_xarray
@@ -26,7 +28,7 @@ exporter = Exporter(globals())
 
 @exporter.export
 @preprocess_xarray
-def get_wind_speed(u, v):
+def wind_speed(u, v):
     r"""Compute the wind speed from u and v-components.
 
     Parameters
@@ -43,7 +45,7 @@ def get_wind_speed(u, v):
 
     See Also
     --------
-    get_wind_components
+    wind_components
 
     """
     speed = np.sqrt(u * u + v * v)
@@ -52,7 +54,7 @@ def get_wind_speed(u, v):
 
 @exporter.export
 @preprocess_xarray
-def get_wind_dir(u, v):
+def wind_direction(u, v):
     r"""Compute the wind direction from u and v-components.
 
     Parameters
@@ -64,25 +66,35 @@ def get_wind_dir(u, v):
 
     Returns
     -------
-    wind direction: `pint.Quantity`
-        The direction of the wind, specified as the direction from
-        which it is blowing, with 0 being North.
+    direction: `pint.Quantity`
+        The direction of the wind in interval [0, 360] degrees, specified as the direction from
+        which it is blowing, with 360 being North.
 
     See Also
     --------
-    get_wind_components
+    wind_components
+
+    Notes
+    -----
+    In the case of calm winds (where `u` and `v` are zero), this function returns a direction
+    of 0.
 
     """
     wdir = 90. * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
     wdir = atleast_1d(wdir)
-    wdir[wdir < 0] += 360. * units.deg
-    return wdir.reshape(origshape)
+    wdir[wdir <= 0] += 360. * units.deg
+    # Need to be able to handle array-like u and v (with or without units)
+    # np.any check required for legacy numpy which treats 0-d False boolean index as zero
+    calm_mask = (np.asarray(u) == 0.) & (np.asarray(v) == 0.)
+    if np.any(calm_mask):
+        wdir[calm_mask] = 0. * units.deg
+    return wdir.reshape(origshape).to('degrees')
 
 
 @exporter.export
 @preprocess_xarray
-def get_wind_components(speed, wdir):
+def wind_components(speed, wdir):
     r"""Calculate the U, V wind vector components from the speed and direction.
 
     Parameters
@@ -91,7 +103,7 @@ def get_wind_components(speed, wdir):
         The wind speed (magnitude)
     wdir : array_like
         The wind direction, specified as the direction from which the wind is
-        blowing, with 0 being North.
+        blowing, with 360 degrees being North.
 
     Returns
     -------
@@ -101,13 +113,13 @@ def get_wind_components(speed, wdir):
 
     See Also
     --------
-    get_wind_speed
-    get_wind_dir
+    wind_speed
+    wind_direction
 
     Examples
     --------
     >>> from metpy.units import units
-    >>> metpy.calc.get_wind_components(10. * units('m/s'), 225. * units.deg)
+    >>> metpy.calc.wind_components(10. * units('m/s'), 225. * units.deg)
     (<Quantity(7.071067811865475, 'meter / second')>,
      <Quantity(7.071067811865477, 'meter / second')>)
 
@@ -116,6 +128,49 @@ def get_wind_components(speed, wdir):
     u = -speed * np.sin(wdir)
     v = -speed * np.cos(wdir)
     return u, v
+
+
+@exporter.export
+@preprocess_xarray
+@deprecated('0.9', addendum=' This function has been renamed wind_speed.',
+            pending=False)
+def get_wind_speed(u, v):
+    """Wrap wind_speed for deprecated get_wind_speed function."""
+    return wind_speed(u, v)
+
+
+get_wind_speed.__doc__ = (wind_speed.__doc__ +
+                          '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
+                          '`wind_speed` and will be removed from MetPy in 0.12.0.')
+
+
+@exporter.export
+@preprocess_xarray
+@deprecated('0.9', addendum=' This function has been renamed wind_direction.',
+            pending=False)
+def get_wind_dir(u, v):
+    """Wrap wind_direction for deprecated get_wind_dir function."""
+    return wind_direction(u, v)
+
+
+get_wind_dir.__doc__ = (wind_direction.__doc__ +
+                        '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
+                        '`wind_direction` and will be removed from MetPy in 0.12.0.')
+
+
+@exporter.export
+@preprocess_xarray
+@deprecated('0.9', addendum=' This function has been renamed wind_components.',
+            pending=False)
+def get_wind_components(u, v):
+    """Wrap wind_components for deprecated get_wind_components function."""
+    return wind_components(u, v)
+
+
+get_wind_components.__doc__ = (wind_components.__doc__ +
+                               '\n    .. deprecated:: 0.9.0\n        Function has been '
+                               'renamed to `wind_components` and will be removed from MetPy '
+                               'in 0.12.0.')
 
 
 @exporter.export
@@ -215,7 +270,7 @@ def heat_index(temperature, rh, mask_undefined=True):
     windchill
 
     """
-    delta = temperature - 0. * units.degF
+    delta = temperature.to(units.degF) - 0. * units.degF
     rh2 = rh * rh
     delta2 = delta * delta
 
@@ -283,7 +338,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
                                         mask_undefined=True).to(temperature.units)
 
     # Combine the heat index and wind chill arrays (no point has a value in both)
-    app_temperature = np.ma.where(wind_chill_temperature.mask,
+    app_temperature = np.ma.where(masked_array(wind_chill_temperature).mask,
                                   heat_index_temperature,
                                   wind_chill_temperature)
 
@@ -295,7 +350,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
     else:
         if app_temperature.mask:
             app_temperature = temperature.m
-        return app_temperature[0] * temperature.units
+        return atleast_1d(app_temperature)[0] * temperature.units
 
 
 @exporter.export
@@ -558,6 +613,101 @@ def sigma_to_pressure(sigma, psfc, ptop):
         raise ValueError('Pressure input should be non-negative')
 
     return sigma * (psfc - ptop) + ptop
+
+
+@exporter.export
+@preprocess_xarray
+def smooth_gaussian(scalar_grid, n):
+    """Filter with normal distribution of weights.
+
+    Parameters
+    ----------
+    scalar_grid : `pint.Quantity`
+        Some n-dimensional scalar grid. If more than two axes, smoothing
+        is only done across the last two.
+
+    n : int
+        Degree of filtering
+
+    Returns
+    -------
+    `pint.Quantity`
+        The filtered 2D scalar grid
+
+    Notes
+    -----
+    This function is a close replication of the GEMPAK function GWFS,
+    but is not identical.  The following notes are incorporated from
+    the GEMPAK source code:
+
+    This function smoothes a scalar grid using a moving average
+    low-pass filter whose weights are determined by the normal
+    (Gaussian) probability distribution function for two dimensions.
+    The weight given to any grid point within the area covered by the
+    moving average for a target grid point is proportional to
+
+                    EXP [ -( D ** 2 ) ],
+
+    where D is the distance from that point to the target point divided
+    by the standard deviation of the normal distribution.  The value of
+    the standard deviation is determined by the degree of filtering
+    requested.  The degree of filtering is specified by an integer.
+    This integer is the number of grid increments from crest to crest
+    of the wave for which the theoretical response is 1/e = .3679.  If
+    the grid increment is called delta_x, and the value of this integer
+    is represented by N, then the theoretical filter response function
+    value for the N * delta_x wave will be 1/e.  The actual response
+    function will be greater than the theoretical value.
+
+    The larger N is, the more severe the filtering will be, because the
+    response function for all wavelengths shorter than N * delta_x
+    will be less than 1/e.  Furthermore, as N is increased, the slope
+    of the filter response function becomes more shallow; so, the
+    response at all wavelengths decreases, but the amount of decrease
+    lessens with increasing wavelength.  (The theoretical response
+    function can be obtained easily--it is the Fourier transform of the
+    weight function described above.)
+
+    The area of the patch covered by the moving average varies with N.
+    As N gets bigger, the smoothing gets stronger, and weight values
+    farther from the target grid point are larger because the standard
+    deviation of the normal distribution is bigger.  Thus, increasing
+    N has the effect of expanding the moving average window as well as
+    changing the values of weights.  The patch is a square covering all
+    points whose weight values are within two standard deviations of the
+    mean of the two dimensional normal distribution.
+
+    The key difference between GEMPAK's GWFS and this function is that,
+    in GEMPAK, the leftover weight values representing the fringe of the
+    distribution are applied to the target grid point.  In this
+    function, the leftover weights are not used.
+
+    When this function is invoked, the first argument is the grid to be
+    smoothed, the second is the value of N as described above:
+
+                        GWFS ( S, N )
+
+    where N > 1.  If N <= 1, N = 2 is assumed.  For example, if N = 4,
+    then the 4 delta x wave length is passed with approximate response
+    1/e.
+
+    """
+    # Compute standard deviation in a manner consistent with GEMPAK
+    n = int(round(n))
+    if n < 2:
+        n = 2
+    sgma = n / (2 * np.pi)
+
+    # Construct sigma sequence so smoothing occurs only in horizontal direction
+    nax = len(scalar_grid.shape)
+    # Assume the last two axes represent the horizontal directions
+    sgma_seq = [sgma if i > nax - 3 else 0 for i in range(nax)]
+
+    # Compute smoothed field and reattach units
+    res = gaussian_filter(scalar_grid, sgma_seq, truncate=2 * np.sqrt(2))
+    if hasattr(scalar_grid, 'units'):
+        res = res * scalar_grid.units
+    return res
 
 
 def _check_radians(value, max_radians=2 * np.pi):

@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.spatial import Delaunay
 
-from metpy.gridding.triangles import find_natural_neighbors
+from metpy.interpolate.geometry import find_natural_neighbors
 
 # Create test observations, test points, and plot the triangulation and points.
 gx, gy = np.meshgrid(np.arange(0, 20, 4), np.arange(0, 20, 4))

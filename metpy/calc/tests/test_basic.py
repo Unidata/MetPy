@@ -9,8 +9,10 @@ import pytest
 from metpy.calc import (add_height_to_pressure, add_pressure_to_height, apparent_temperature,
                         coriolis_parameter, geopotential_to_height, get_wind_components,
                         get_wind_dir, get_wind_speed, heat_index, height_to_geopotential,
-                        height_to_pressure_std, pressure_to_height_std,
-                        sigma_to_pressure, windchill)
+                        height_to_pressure_std, pressure_to_height_std, sigma_to_pressure,
+                        smooth_gaussian, wind_components, wind_direction, wind_speed,
+                        windchill)
+from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
 
@@ -21,7 +23,7 @@ def test_wind_comps_basic():
     dirs = np.array([0, 45, 90, 135, 180, 225, 270, 315, 360]) * units.deg
     s2 = np.sqrt(2.)
 
-    u, v = get_wind_components(speed, dirs)
+    u, v = wind_components(speed, dirs)
 
     true_u = np.array([0, -4 / s2, -4, -4 / s2, 0, 25 / s2, 25, 25 / s2, 0]) * units.mph
     true_v = np.array([-4, -4 / s2, 0, 4 / s2, 25, 25 / s2, 0, -25 / s2, -10]) * units.mph
@@ -30,9 +32,23 @@ def test_wind_comps_basic():
     assert_array_almost_equal(true_v, v, 4)
 
 
+def test_wind_comps_with_north_and_calm():
+    """Test that the wind component calculation handles northerly and calm winds."""
+    speed = np.array([0, 5, 5]) * units.mph
+    dirs = np.array([0, 360, 0]) * units.deg
+
+    u, v = wind_components(speed, dirs)
+
+    true_u = np.array([0, 0, 0]) * units.mph
+    true_v = np.array([0, -5, -5]) * units.mph
+
+    assert_array_almost_equal(true_u, u, 4)
+    assert_array_almost_equal(true_v, v, 4)
+
+
 def test_wind_comps_scalar():
     """Test wind components calculation with scalars."""
-    u, v = get_wind_components(8 * units('m/s'), 150 * units.deg)
+    u, v = wind_components(8 * units('m/s'), 150 * units.deg)
     assert_almost_equal(u, -4 * units('m/s'), 3)
     assert_almost_equal(v, 6.9282 * units('m/s'), 3)
 
@@ -42,7 +58,7 @@ def test_speed():
     u = np.array([4., 2., 0., 0.]) * units('m/s')
     v = np.array([0., 2., 4., 0.]) * units('m/s')
 
-    speed = get_wind_speed(u, v)
+    speed = wind_speed(u, v)
 
     s2 = np.sqrt(2.)
     true_speed = np.array([4., 2 * s2, 4., 0.]) * units('m/s')
@@ -50,28 +66,58 @@ def test_speed():
     assert_array_almost_equal(true_speed, speed, 4)
 
 
-def test_dir():
+def test_direction():
     """Test calculating wind direction."""
     u = np.array([4., 2., 0., 0.]) * units('m/s')
     v = np.array([0., 2., 4., 0.]) * units('m/s')
 
-    direc = get_wind_dir(u, v)
+    direc = wind_direction(u, v)
 
-    true_dir = np.array([270., 225., 180., 270.]) * units.deg
+    true_dir = np.array([270., 225., 180., 0.]) * units.deg
 
     assert_array_almost_equal(true_dir, direc, 4)
 
 
-def test_speed_dir_roundtrip():
+def test_direction_with_north_and_calm():
+    """Test how wind direction handles northerly and calm winds."""
+    u = np.array([0., -0., 0.]) * units('m/s')
+    v = np.array([0., 0., -5.]) * units('m/s')
+
+    direc = wind_direction(u, v)
+
+    true_dir = np.array([0., 0., 360.]) * units.deg
+
+    assert_array_almost_equal(true_dir, direc, 4)
+
+
+def test_direction_without_units():
+    """Test calculating wind direction without units."""
+    u = np.array([0., -5., -4., -3.])
+    v = np.array([0., 5., 0., -3.])
+
+    direc = wind_direction(u, v)
+
+    true_dir = np.array([0., 135., 90., 45.]) * units.deg
+
+    assert_array_almost_equal(true_dir, direc, 4)
+
+
+def test_direction_dimensions():
+    """Verify wind_direction returns degrees."""
+    d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
+    assert str(d.units) == 'degree'
+
+
+def test_speed_direction_roundtrip():
     """Test round-tripping between speed/direction and components."""
     # Test each quadrant of the whole circle
     wspd = np.array([15., 5., 2., 10.]) * units.meters / units.seconds
     wdir = np.array([160., 30., 225., 350.]) * units.degrees
 
-    u, v = get_wind_components(wspd, wdir)
+    u, v = wind_components(wspd, wdir)
 
-    wdir_out = get_wind_dir(u, v)
-    wspd_out = get_wind_speed(u, v)
+    wdir_out = wind_direction(u, v)
+    wspd_out = wind_speed(u, v)
 
     assert_array_almost_equal(wspd, wspd_out, 4)
     assert_array_almost_equal(wdir, wdir_out, 4)
@@ -79,13 +125,35 @@ def test_speed_dir_roundtrip():
 
 def test_scalar_speed():
     """Test wind speed with scalars."""
-    s = get_wind_speed(-3. * units('m/s'), -4. * units('m/s'))
+    s = wind_speed(-3. * units('m/s'), -4. * units('m/s'))
     assert_almost_equal(s, 5. * units('m/s'), 3)
 
 
-def test_scalar_dir():
+def test_scalar_direction():
     """Test wind direction with scalars."""
-    d = get_wind_dir(3. * units('m/s'), 4. * units('m/s'))
+    d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
+    assert_almost_equal(d, 216.870 * units.deg, 3)
+
+
+def test_get_wind_components():
+    """Test that get_wind_components wrapper works (deprecated in 0.9)."""
+    with pytest.warns(MetpyDeprecationWarning):
+        u, v = get_wind_components(8 * units('m/s'), 150 * units.deg)
+    assert_almost_equal(u, -4 * units('m/s'), 3)
+    assert_almost_equal(v, 6.9282 * units('m/s'), 3)
+
+
+def test_get_wind_speed():
+    """Test that get_wind_speed wrapper works (deprecated in 0.9)."""
+    with pytest.warns(MetpyDeprecationWarning):
+        s = get_wind_speed(-3. * units('m/s'), -4. * units('m/s'))
+    assert_almost_equal(s, 5. * units('m/s'), 3)
+
+
+def test_get_wind_dir():
+    """Test that get_wind_dir wrapper works (deprecated in 0.9)."""
+    with pytest.warns(MetpyDeprecationWarning):
+        d = get_wind_dir(3. * units('m/s'), 4. * units('m/s'))
     assert_almost_equal(d, 216.870 * units.deg, 3)
 
 
@@ -196,6 +264,15 @@ def test_heat_index_ratio():
     assert_almost_equal(hi.to('degC'), units.Quantity([50.3405, np.nan], units.degC), 4)
 
 
+def test_heat_index_kelvin():
+    """Test heat_index when given Kelvin temperatures."""
+    temp = 308.15 * units.degK
+    rh = 0.7
+    hi = heat_index(temp, rh)
+    # NB rounded up test value here vs the above two tests
+    assert_almost_equal(hi.to('degC'), 50.3406 * units.degC, 4)
+
+
 def test_height_to_geopotential():
     """Test conversion from height to geopotential."""
     height = units.Quantity([0, 1000, 2000, 3000], units.m)
@@ -301,7 +378,7 @@ def test_sigma_to_pressure():
 def test_warning_dir():
     """Test that warning is raised wind direction > 2Pi."""
     with pytest.warns(UserWarning):
-        get_wind_components(3. * units('m/s'), 270)
+        wind_components(3. * units('m/s'), 270)
 
 
 def test_coriolis_warning():
@@ -350,3 +427,75 @@ def test_apparent_temperature_scalar_no_modification():
     truth = 70 * units.degF
     res = apparent_temperature(temperature, rel_humidity, wind)
     assert_almost_equal(res, truth, 6)
+
+
+def test_apparent_temperature_windchill():
+    """Test that apparent temperature works when a windchill is calculated."""
+    temperature = -5. * units.degC
+    rel_humidity = 50. * units.percent
+    wind = 35. * units('m/s')
+    truth = -18.9357 * units.degC
+    res = apparent_temperature(temperature, rel_humidity, wind)
+    assert_almost_equal(res, truth, 0)
+
+
+def test_smooth_gaussian():
+    """Test the smooth_gaussian function with a larger n."""
+    m = 10
+    s = np.zeros((m, m))
+    for i in np.ndindex(s.shape):
+        s[i] = i[0] + i[1]**2
+    s = smooth_gaussian(s, 4)
+    s_true = np.array([[0.40077472, 1.59215426, 4.59665817, 9.59665817, 16.59665817,
+                        25.59665817, 36.59665817, 49.59665817, 64.51108392, 77.87487258],
+                       [1.20939518, 2.40077472, 5.40527863, 10.40527863, 17.40527863,
+                        26.40527863, 37.40527863, 50.40527863, 65.31970438, 78.68349304],
+                       [2.20489127, 3.39627081, 6.40077472, 11.40077472, 18.40077472,
+                        27.40077472, 38.40077472, 51.40077472, 66.31520047, 79.67898913],
+                       [3.20489127, 4.39627081, 7.40077472, 12.40077472, 19.40077472,
+                        28.40077472, 39.40077472, 52.40077472, 67.31520047, 80.67898913],
+                       [4.20489127, 5.39627081, 8.40077472, 13.40077472, 20.40077472,
+                        29.40077472, 40.40077472, 53.40077472, 68.31520047, 81.67898913],
+                       [5.20489127, 6.39627081, 9.40077472, 14.40077472, 21.40077472,
+                        30.40077472, 41.40077472, 54.40077472, 69.31520047, 82.67898913],
+                       [6.20489127, 7.39627081, 10.40077472, 15.40077472, 22.40077472,
+                        31.40077472, 42.40077472, 55.40077472, 70.31520047, 83.67898913],
+                       [7.20489127, 8.39627081, 11.40077472, 16.40077472, 23.40077472,
+                        32.40077472, 43.40077472, 56.40077472, 71.31520047, 84.67898913],
+                       [8.20038736, 9.3917669, 12.39627081, 17.39627081, 24.39627081,
+                        33.39627081, 44.39627081, 57.39627081, 72.31069656, 85.67448522],
+                       [9.00900782, 10.20038736, 13.20489127, 18.20489127, 25.20489127,
+                        34.20489127, 45.20489127, 58.20489127, 73.11931702, 86.48310568]])
+    assert_array_almost_equal(s, s_true)
+
+
+def test_smooth_gaussian_small_n():
+    """Test the smooth_gaussian function with a smaller n."""
+    m = 5
+    s = np.zeros((m, m))
+    for i in np.ndindex(s.shape):
+        s[i] = i[0] + i[1]**2
+    s = smooth_gaussian(s, 1)
+    s_true = [[0.0141798077, 1.02126971, 4.02126971, 9.02126971, 15.9574606],
+              [1.00708990, 2.01417981, 5.01417981, 10.0141798, 16.9503707],
+              [2.00708990, 3.01417981, 6.01417981, 11.0141798, 17.9503707],
+              [3.00708990, 4.01417981, 7.01417981, 12.0141798, 18.9503707],
+              [4.00000000, 5.00708990, 8.00708990, 13.0070899, 19.9432808]]
+    assert_array_almost_equal(s, s_true)
+
+
+def test_smooth_gaussian_3d_units():
+    """Test the smooth_gaussian function with units and a 3D array."""
+    m = 5
+    s = np.zeros((3, m, m))
+    for i in np.ndindex(s.shape):
+        s[i] = i[1] + i[2]**2
+    s[0::2, :, :] = 10 * s[0::2, :, :]
+    s = s * units('m')
+    s = smooth_gaussian(s, 1)
+    s_true = ([[0.0141798077, 1.02126971, 4.02126971, 9.02126971, 15.9574606],
+              [1.00708990, 2.01417981, 5.01417981, 10.0141798, 16.9503707],
+              [2.00708990, 3.01417981, 6.01417981, 11.0141798, 17.9503707],
+              [3.00708990, 4.01417981, 7.01417981, 12.0141798, 18.9503707],
+              [4.00000000, 5.00708990, 8.00708990, 13.0070899, 19.9432808]]) * units('m')
+    assert_array_almost_equal(s[1, :, :], s_true)

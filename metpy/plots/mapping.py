@@ -41,7 +41,8 @@ class CFProjection(object):
         return {cartopy_name: source[cf_name] for cartopy_name, cf_name in mapping
                 if cf_name in source}
 
-    def _make_cartopy_globe(self):
+    @property
+    def cartopy_globe(self):
         """Initialize a `cartopy.crs.Globe` from the metadata."""
         if 'earth_radius' in self._attrs:
             kwargs = {'ellipse': 'sphere', 'semimajor_axis': self._attrs['earth_radius'],
@@ -60,7 +61,7 @@ class CFProjection(object):
 
     def to_cartopy(self):
         """Convert to a CartoPy projection."""
-        globe = self._make_cartopy_globe()
+        globe = self.cartopy_globe
         proj_name = self._attrs['grid_mapping_name']
         try:
             proj_handler = self.projection_registry[proj_name]
@@ -80,6 +81,14 @@ class CFProjection(object):
     def __getitem__(self, item):
         """Return a given attribute."""
         return self._attrs[item]
+
+    def __eq__(self, other):
+        """Test equality (CFProjection with matching attrs)."""
+        return self.__class__ == other.__class__ and self.to_dict() == other.to_dict()
+
+    def __ne__(self, other):
+        """Test inequality (not equal to)."""
+        return not self.__eq__(other)
 
 
 @CFProjection.register('geostationary')
