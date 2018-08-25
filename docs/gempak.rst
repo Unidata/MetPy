@@ -357,35 +357,35 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td>DDR(S)</td>
-        <td>Partial derivative with respect to R</td>
+        <td class="tg-implemented">DDR(S)</td>
+        <td class="tg-implemented">Partial derivative with respect to R</td>
+        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td>DDT(S)</td>
-        <td>Time derivative</td>
-        <td></td>
-        <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
-        <td>DDX(S)</td>
-        <td>Partial derivative with respect to X</td>
+        <td class="tg-implemented">DDT(S)</td>
+        <td class="tg-implemented">Time derivative</td>
+        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td></td>
-        <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
-        <td>DDY(S)</td>
-        <td>Partial derivative with respect to Y</td>
+        <td class="tg-implemented">DDX(S)</td>
+        <td class="tg-implemented">Partial derivative with respect to X</td>
+        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td></td>
+        <td class="tg-no">No</td>
         <td></td>
+      </tr>
+      <tr>
+        <td class="tg-implemented">DDY(S)</td>
+        <td class="tg-implemented">Partial derivative with respect to Y</td>
+        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -437,11 +437,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td>DTH(S)</td>
-        <td>Partial derivative with respect to theta</td>
+        <td class="tg-implemented">DTH(S)</td>
+        <td class="tg-implemented">Partial derivative with respect to theta</td>
+        <td class="tg-implemented"><a href="api/generated/generated/metpy.calc.first_derivative.html">metpy.calc.first_derivative</a></td>
         <td></td>
-        <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -790,8 +790,8 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td>TANG(V)</td>
-        <td>Tangential component (cross-sections)</td>
+        <td class="tg-implemented">TANG(V)</td>
+        <td class="tg-implemented">Tangential component (cross-sections)</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.tangential_component.html#metpy.calc.tangential_component">metpy.calc.tangential_component</a></td>
         <td></td>
         <td class="tg-no">No</td>
@@ -814,11 +814,11 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">THES(PRES, TMPC)</td>
-        <td class="tg-notimplemented">Saturated equivalent potential temperature</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/645">Issue #645</a></td>
+        <td class="tg-implemented">THES(PRES, TMPC)</td>
+        <td class="tg-implemented">Saturated equivalent potential temperature</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.saturation_equivalent_potential_temperature.html#metpy.calc.saturation_equivalent_potential_temperature">metpy.calc.saturation_equivalent_potential_temperature</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -866,7 +866,7 @@ blue is uncertain of parity, and white is unevaluated.
         <td class="tg-implemented">Web bulb temperature in Kelvin</td>
         <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html">metpy.calc.wet_bulb_temperature</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
@@ -3218,35 +3218,35 @@ blue is uncertain of parity, and white is unevaluated.
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">RELH</td>
-        <td class="tg-notimplemented">Relative humidity</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/648">Issue #648</a></td>
+        <td class="tg-implemented">RELH</td>
+        <td class="tg-implemented">Relative humidity</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.relative_humidity_from_dewpoint.html#metpy.calc.relative_humidity_from_dewpoint">metpy.calc.relative_humidity_from_dewpoint</a></td>
         <td></td>
-        <td></td>
-        <td></td>
-      </tr>
-      <tr>
-        <td class="tg-notimplemented">TMWK</td>
-        <td class="tg-notimplemented">Wet bulb temperature in Kelvin</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/409">Issue #409</a></td>
-        <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">TMWC</td>
-        <td class="tg-notimplemented">Wet bulb temperature in Celsius</td>
-        <td class="tg-notimplemented"<a href="https://github.com/Unidata/MetPy/issues/409">Issue #409</a></td>
+        <td class="tg-implemented">TMWK</td>
+        <td class="tg-implemented">Wet bulb temperature in Kelvin</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html#metpy.calc.wet_bulb_temperature">metpy.calc.wet_bulb_temperature(pressures, temperatures, dewpoints).to('K')</a></td>
         <td></td>
-        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
-        <td class="tg-notimplemented">TMWF</td>
-        <td class="tg-notimplemented">Wet bulb temperature in Fahrenheit</td>
-        <td class="tg-notimplemented"><a href="https://github.com/Unidata/MetPy/issues/409">Issue #409</a></td>
+        <td class="tg-implemented">TMWC</td>
+        <td class="tg-implemented">Wet bulb temperature in Celsius</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html#metpy.calc.wet_bulb_temperature">metpy.calc.wet_bulb_temperature(pressures, temperatures, dewpoints).to('degC')</a></td>
         <td></td>
+        <td class="tg-no">No</td>
         <td></td>
+      </tr>
+      <tr>
+        <td class="tg-implemented">TMWF</td>
+        <td class="tg-implemented">Wet bulb temperature in Fahrenheit</td>
+        <td class="tg-implemented"><a href="api/generated/metpy.calc.wet_bulb_temperature.html#metpy.calc.wet_bulb_temperature">metpy.calc.wet_bulb_temperature(pressures, temperatures, dewpoints).to('degF')</a></td>
+        <td></td>
+        <td class="tg-no">No</td>
         <td></td>
       </tr>
       <tr>
