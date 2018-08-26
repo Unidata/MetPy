@@ -306,7 +306,7 @@ def test_lfc_equals_lcl():
     levels = np.array([912., 905.3, 874.4, 850., 815.1, 786.6, 759.1,
                        748., 732.2, 700., 654.8]) * units.mbar
     temperatures = np.array([29.4, 28.7, 25.2, 22.4, 19.4, 16.8,
-                             14.3, 13.2, 12.6, 11.4, 7.1]) * units.celsius
+                             14.0, 13.2, 12.6, 11.4, 7.1]) * units.celsius
     dewpoints = np.array([18.4, 18.1, 16.6, 15.4, 13.2, 11.4, 9.6,
                           8.8, 0., -18.6, -22.9]) * units.celsius
     lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints)
