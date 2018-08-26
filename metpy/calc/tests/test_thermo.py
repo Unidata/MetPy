@@ -837,7 +837,7 @@ def test_surface_based_cape_cin():
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
     cape, cin = surface_based_cape_cin(p, temperature, dewpoint)
     assert_almost_equal(cape, 58.0368212 * units('joule / kilogram'), 6)
-    assert_almost_equal(cin, -89.8073512 * units('joule / kilogram'), 6)
+    assert_almost_equal(cin, -136.597240 * units('joule / kilogram'), 6)
 
 
 def test_most_unstable_cape_cin_surface():
