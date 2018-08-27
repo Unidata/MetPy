@@ -2043,7 +2043,7 @@ def brunt_vaisala_frequency_squared(heights, potential_temperature, axis=0):
 
     # Calculate and return the square of Brunt-Vaisala frequency
     return mpconsts.g / potential_temperature * first_derivative(potential_temperature, x=heights,
-                                                        axis=axis)
+                                                                 axis=axis)
 
 
 @exporter.export
@@ -2208,7 +2208,7 @@ def static_stability(pressure, temperature, axis=0):
     theta = potential_temperature(pressure, temperature)
 
     return - mpconsts.Rd * temperature / pressure * first_derivative(np.log(theta / units.K),
-                                                            x=pressure, axis=axis)
+                                                                     x=pressure, axis=axis)
 
 
 @exporter.export

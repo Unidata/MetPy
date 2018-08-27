@@ -681,7 +681,7 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
     slices = [slice(None)] * stability.ndim
     slices[axis] = 1
     return (-1 * avor * mpconsts.g * stability[slices]).to(units.kelvin * units.meter**2 /
-                                                  (units.second * units.kilogram))
+                                                           (units.second * units.kilogram))
 
 
 @exporter.export
