@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.tools &mdash; MetPy 0.7</title>
+  <title>metpy.calc.tools &mdash; MetPy 0.9</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -118,9 +118,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -208,11 +208,15 @@
         <span class="k">return</span> <span class="n">a</span>
 <span class="kn">import</span> <span class="nn">numpy.ma</span> <span class="k">as</span> <span class="nn">ma</span>
 <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">cKDTree</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">height_to_pressure_std</span><span class="p">,</span> <span class="n">pressure_to_height_std</span>
+<span class="kn">from</span> <span class="nn">..cbook</span> <span class="k">import</span> <span class="n">broadcast_indices</span>
+<span class="kn">from</span> <span class="nn">..deprecation</span> <span class="k">import</span> <span class="n">deprecated</span><span class="p">,</span> <span class="n">metpyDeprecation</span>
+<span class="kn">from</span> <span class="nn">..interpolate.one_dimension</span> <span class="k">import</span> <span class="n">interpolate_1d</span><span class="p">,</span> <span class="n">interpolate_nans_1d</span><span class="p">,</span> <span class="n">log_interpolate_1d</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">units</span>
-<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">preprocess_xarray</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">CFConventionHandler</span><span class="p">,</span> <span class="n">preprocess_xarray</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -362,37 +366,17 @@
 
 <div class="viewcode-block" id="interpolate_nans"><a class="viewcode-back" href="../../../api/generated/metpy.calc.interpolate_nans.html#metpy.calc.interpolate_nans">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
+<span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;0.9&#39;</span><span class="p">,</span> <span class="n">addendum</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39; This function has been moved to metpy.interpolate and renamed &#39;</span>
+                             <span class="s1">&#39;interpolate_nans_1d.&#39;</span><span class="p">),</span> <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">interpolate_nans</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Interpolate NaN values in y.</span>
+    <span class="sd">&quot;&quot;&quot;Wrap interpolate_nans_1d for deprecated interpolate_nans.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">interpolate_nans_1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">kind</span><span class="o">=</span><span class="n">kind</span><span class="p">)</span></div>
 
-<span class="sd">    Interpolate NaN values in the y dimension. Works with unsorted x values.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    x : array-like</span>
-<span class="sd">        1-dimensional array of numeric x-values</span>
-<span class="sd">    y : array-like</span>
-<span class="sd">        1-dimensional array of numeric y-values</span>
-<span class="sd">    kind : string</span>
-<span class="sd">        specifies the kind of interpolation x coordinate - &#39;linear&#39; or &#39;log&#39;, optional.</span>
-<span class="sd">        Defaults to &#39;linear&#39;.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">        An array of the y coordinate data with NaN values interpolated.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">x_sort_args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">x_sort_args</span><span class="p">]</span>
-    <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">x_sort_args</span><span class="p">]</span>
-    <span class="n">nans</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
-        <span class="n">y</span><span class="p">[</span><span class="n">nans</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">nans</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">nans</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">nans</span><span class="p">])</span>
-    <span class="k">elif</span> <span class="n">kind</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
-        <span class="n">y</span><span class="p">[</span><span class="n">nans</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">nans</span><span class="p">]),</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="o">~</span><span class="n">nans</span><span class="p">]),</span> <span class="n">y</span><span class="p">[</span><span class="o">~</span><span class="n">nans</span><span class="p">])</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown option for kind: </span><span class="si">{0}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">kind</span><span class="p">)))</span>
-    <span class="k">return</span> <span class="n">y</span><span class="p">[</span><span class="n">x_sort_args</span><span class="p">]</span></div>
+<span class="n">interpolate_nans</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span><span class="n">interpolate_nans_1d</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+</span>
+                            <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    .. deprecated:: 0.9.0</span><span class="se">\n</span><span class="s1">        Function has been renamed &#39;</span>
+                            <span class="s1">&#39;`interpolate_nans_1d` and moved to `metpy.interpolate`, and &#39;</span>
+                            <span class="s1">&#39;will be removed from MetPy in 0.12.0.&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_next_non_masked_element</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
@@ -561,7 +545,7 @@
             <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
                 <span class="n">bound_pressure</span> <span class="o">=</span> <span class="n">bound</span>  <span class="c1"># Use the user specified bound</span>
                 <span class="k">if</span> <span class="n">heights</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># Interpolate heights from the height data</span>
-                    <span class="n">bound_height</span> <span class="o">=</span> <span class="n">log_interp</span><span class="p">(</span><span class="n">bound_pressure</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">heights</span><span class="p">)</span>
+                    <span class="n">bound_height</span> <span class="o">=</span> <span class="n">log_interpolate_1d</span><span class="p">(</span><span class="n">bound_pressure</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">heights</span><span class="p">)</span>
                 <span class="k">else</span><span class="p">:</span>  <span class="c1"># If not heights given, use the standard atmosphere</span>
                     <span class="n">bound_height</span> <span class="o">=</span> <span class="n">pressure_to_height_std</span><span class="p">(</span><span class="n">bound_pressure</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>  <span class="c1"># No interpolation, find the closest values</span>
@@ -701,7 +685,7 @@
 
         <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
             <span class="c1"># Interpolate for the possibly missing bottom/top values</span>
-            <span class="n">datavar_interp</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">heights_interp</span><span class="p">,</span> <span class="n">heights</span><span class="p">,</span> <span class="n">datavar</span><span class="p">)</span>
+            <span class="n">datavar_interp</span> <span class="o">=</span> <span class="n">interpolate_1d</span><span class="p">(</span><span class="n">heights_interp</span><span class="p">,</span> <span class="n">heights</span><span class="p">,</span> <span class="n">datavar</span><span class="p">)</span>
             <span class="n">datavar</span> <span class="o">=</span> <span class="n">datavar_interp</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">datavar</span> <span class="o">=</span> <span class="n">datavar</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
@@ -808,7 +792,7 @@
 
         <span class="k">if</span> <span class="n">interpolate</span><span class="p">:</span>
             <span class="c1"># Interpolate for the possibly missing bottom/top values</span>
-            <span class="n">datavar_interp</span> <span class="o">=</span> <span class="n">log_interp</span><span class="p">(</span><span class="n">p_interp</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">datavar</span><span class="p">)</span>
+            <span class="n">datavar_interp</span> <span class="o">=</span> <span class="n">log_interpolate_1d</span><span class="p">(</span><span class="n">p_interp</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">datavar</span><span class="p">)</span>
             <span class="n">datavar</span> <span class="o">=</span> <span class="n">datavar_interp</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">datavar</span> <span class="o">=</span> <span class="n">datavar</span><span class="p">[</span><span class="n">inds</span><span class="p">]</span>
@@ -819,124 +803,17 @@
 
 <div class="viewcode-block" id="interp"><a class="viewcode-back" href="../../../api/generated/metpy.calc.interp.html#metpy.calc.interp">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
-<span class="nd">@units</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="s1">&#39;=A&#39;</span><span class="p">))</span>
+<span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;0.9&#39;</span><span class="p">,</span> <span class="n">addendum</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39; This function has been moved to metpy.interpolate and renamed &#39;</span>
+                             <span class="s1">&#39;interpolate_1d.&#39;</span><span class="p">),</span> <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Interpolates data with any shape over a specified axis.</span>
+    <span class="sd">&quot;&quot;&quot;Wrap interpolate_1d for deprecated interp.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">interpolate_1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<span class="sd">    Interpolation over a specified axis for arrays of any shape.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    x : array-like</span>
-<span class="sd">        1-D array of desired interpolated values.</span>
-
-<span class="sd">    xp : array-like</span>
-<span class="sd">        The x-coordinates of the data points.</span>
-
-<span class="sd">    args : array-like</span>
-<span class="sd">        The data to be interpolated. Can be multiple arguments, all must be the same shape as</span>
-<span class="sd">        xp.</span>
-
-<span class="sd">    axis : int, optional</span>
-<span class="sd">        The axis to interpolate over. Defaults to 0.</span>
-
-<span class="sd">    fill_value: float, optional</span>
-<span class="sd">        Specify handling of interpolation points out of data bounds. If None, will return</span>
-<span class="sd">        ValueError if points are out of bounds. Defaults to nan.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    array-like</span>
-<span class="sd">        Interpolated values for each point with coordinates sorted in ascending order.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">     &gt;&gt;&gt; x = np.array([1., 2., 3., 4.])</span>
-<span class="sd">     &gt;&gt;&gt; y = np.array([1., 2., 3., 4.])</span>
-<span class="sd">     &gt;&gt;&gt; x_interp = np.array([2.5, 3.5])</span>
-<span class="sd">     &gt;&gt;&gt; metpy.calc.interp(x_interp, x, y)</span>
-<span class="sd">     array([2.5, 3.5])</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    xp and args must be the same shape.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Pull out keyword args</span>
-    <span class="n">fill_value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fill_value&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
-    <span class="n">axis</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-
-    <span class="c1"># Make x an array</span>
-    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asanyarray</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span>
-
-    <span class="c1"># Save number of dimensions in xp</span>
-    <span class="n">ndim</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">ndim</span>
-
-    <span class="c1"># Sort input data</span>
-    <span class="n">sort_args</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-    <span class="n">sort_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-
-    <span class="c1"># indices for sorting</span>
-    <span class="n">sorter</span> <span class="o">=</span> <span class="n">broadcast_indices</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">sort_args</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
-
-    <span class="c1"># sort xp</span>
-    <span class="n">xp</span> <span class="o">=</span> <span class="n">xp</span><span class="p">[</span><span class="n">sorter</span><span class="p">]</span>
-    <span class="c1"># Ensure pressure in increasing order</span>
-    <span class="n">variables</span> <span class="o">=</span> <span class="p">[</span><span class="n">arr</span><span class="p">[</span><span class="n">sorter</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">args</span><span class="p">]</span>
-
-    <span class="c1"># Make x broadcast with xp</span>
-    <span class="n">x_array</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">sort_x</span><span class="p">]</span>
-    <span class="n">expand</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
-    <span class="n">expand</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-    <span class="n">x_array</span> <span class="o">=</span> <span class="n">x_array</span><span class="p">[</span><span class="n">expand</span><span class="p">]</span>
-
-    <span class="c1"># Calculate value above interpolated value</span>
-    <span class="n">minv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">apply_along_axis</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="n">x</span><span class="p">[</span><span class="n">sort_x</span><span class="p">])</span>
-    <span class="n">minv2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span>
-
-    <span class="c1"># If fill_value is none and data is out of bounds, raise value error</span>
-    <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span> <span class="o">==</span> <span class="n">xp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">])</span> <span class="ow">or</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">))</span> <span class="ow">and</span> <span class="n">fill_value</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Interpolation point out of data bounds encountered&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Warn if interpolated values are outside data bounds, will make these the values</span>
-    <span class="c1"># at end of data range.</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span> <span class="o">==</span> <span class="n">xp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]:</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Interpolation point out of data bounds encountered&#39;</span><span class="p">)</span>
-        <span class="n">minv2</span><span class="p">[</span><span class="n">minv</span> <span class="o">==</span> <span class="n">xp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]]</span> <span class="o">=</span> <span class="n">xp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="n">minv2</span><span class="p">[</span><span class="n">minv</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-
-    <span class="c1"># Get indices for broadcasting arrays</span>
-    <span class="n">above</span> <span class="o">=</span> <span class="n">broadcast_indices</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">minv2</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
-    <span class="n">below</span> <span class="o">=</span> <span class="n">broadcast_indices</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">minv2</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">x_array</span> <span class="o">&lt;</span> <span class="n">xp</span><span class="p">[</span><span class="n">below</span><span class="p">]):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Interpolation point out of data bounds encountered&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Create empty output list</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
-
-    <span class="c1"># Calculate interpolation for each variable</span>
-    <span class="k">for</span> <span class="n">var</span> <span class="ow">in</span> <span class="n">variables</span><span class="p">:</span>
-        <span class="c1"># Var needs to be on the *left* of the multiply to ensure that if it&#39;s a pint</span>
-        <span class="c1"># Quantity, it gets to control the operation--at least until we make sure</span>
-        <span class="c1"># masked arrays and pint play together better. See https://github.com/hgrecco/pint#633</span>
-        <span class="n">var_interp</span> <span class="o">=</span> <span class="n">var</span><span class="p">[</span><span class="n">below</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="n">var</span><span class="p">[</span><span class="n">above</span><span class="p">]</span> <span class="o">-</span> <span class="n">var</span><span class="p">[</span><span class="n">below</span><span class="p">])</span> <span class="o">*</span> <span class="p">((</span><span class="n">x_array</span> <span class="o">-</span> <span class="n">xp</span><span class="p">[</span><span class="n">below</span><span class="p">])</span> <span class="o">/</span>
-                                                               <span class="p">(</span><span class="n">xp</span><span class="p">[</span><span class="n">above</span><span class="p">]</span> <span class="o">-</span> <span class="n">xp</span><span class="p">[</span><span class="n">below</span><span class="p">]))</span>
-
-        <span class="c1"># Set points out of bounds to fill value.</span>
-        <span class="n">var_interp</span><span class="p">[</span><span class="n">minv</span> <span class="o">==</span> <span class="n">xp</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]]</span> <span class="o">=</span> <span class="n">fill_value</span>
-        <span class="n">var_interp</span><span class="p">[</span><span class="n">x_array</span> <span class="o">&lt;</span> <span class="n">xp</span><span class="p">[</span><span class="n">below</span><span class="p">]]</span> <span class="o">=</span> <span class="n">fill_value</span>
-
-        <span class="c1"># Check for input points in decreasing order and return output to match.</span>
-        <span class="k">if</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
-            <span class="n">var_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">var_interp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
-        <span class="c1"># Output to list</span>
-        <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_interp</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ret</span></div>
+<span class="n">interp</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span><span class="n">interpolate_1d</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+</span>
+                  <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    .. deprecated:: 0.9.0</span><span class="se">\n</span><span class="s1">        Function has been renamed &#39;</span>
+                  <span class="s1">&#39;`interpolate_1d` and moved to `metpy.interpolate`, and &#39;</span>
+                  <span class="s1">&#39;will be removed from MetPy in 0.12.0.&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="find_bounding_indices"><a class="viewcode-back" href="../../../api/generated/metpy.calc.find_bounding_indices.html#metpy.calc.find_bounding_indices">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1011,15 +888,15 @@
 
             <span class="c1"># Same as above, but we use the slice to come from the end; then adjust those</span>
             <span class="c1"># indices to measure from the front.</span>
-            <span class="n">index</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">switches</span><span class="p">[</span><span class="n">arr_slice</span><span class="p">]</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="n">arr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">switches</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">arr_slice</span><span class="p">)]</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
 
         <span class="c1"># Set all indices where the results are not good to 0</span>
         <span class="n">index</span><span class="p">[</span><span class="o">~</span><span class="n">good_search</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
 
         <span class="c1"># Put the results in the proper slice</span>
         <span class="n">store_slice</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="n">level_index</span>
-        <span class="n">indices</span><span class="p">[</span><span class="n">store_slice</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span>
-        <span class="n">good</span><span class="p">[</span><span class="n">store_slice</span><span class="p">]</span> <span class="o">=</span> <span class="n">good_search</span>
+        <span class="n">indices</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">store_slice</span><span class="p">)]</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="n">good</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">store_slice</span><span class="p">)]</span> <span class="o">=</span> <span class="n">good_search</span>
 
     <span class="c1"># Create index values for broadcasting arrays</span>
     <span class="n">above</span> <span class="o">=</span> <span class="n">broadcast_indices</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">indices</span><span class="p">,</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
@@ -1028,76 +905,19 @@
     <span class="k">return</span> <span class="n">above</span><span class="p">,</span> <span class="n">below</span><span class="p">,</span> <span class="n">good</span></div>
 
 
-<span class="k">def</span> <span class="nf">broadcast_indices</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">minv</span><span class="p">,</span> <span class="n">ndim</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Calculate index values to properly broadcast index array within data array.</span>
-
-<span class="sd">    See usage in interp.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">ndim</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">dim</span> <span class="o">==</span> <span class="n">axis</span><span class="p">:</span>
-            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">minv</span><span class="p">)</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">broadcast_slice</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
-            <span class="n">broadcast_slice</span><span class="p">[</span><span class="n">dim</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-            <span class="n">dim_inds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span>
-            <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">dim_inds</span><span class="p">[</span><span class="n">broadcast_slice</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">ret</span>
-
-
 <div class="viewcode-block" id="log_interp"><a class="viewcode-back" href="../../../api/generated/metpy.calc.log_interp.html#metpy.calc.log_interp">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
-<span class="nd">@units</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;=A&#39;</span><span class="p">,</span> <span class="s1">&#39;=A&#39;</span><span class="p">))</span>
+<span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;0.9&#39;</span><span class="p">,</span> <span class="n">addendum</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39; This function has been moved to metpy.interpolate and renamed &#39;</span>
+                             <span class="s1">&#39;log_interpolate_1d.&#39;</span><span class="p">),</span> <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">log_interp</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Interpolates data with logarithmic x-scale over a specified axis.</span>
+    <span class="sd">&quot;&quot;&quot;Wrap log_interpolate_1d for deprecated log_interp.&quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">log_interpolate_1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
-<span class="sd">    Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    x : array-like</span>
-<span class="sd">        1-D array of desired interpolated values.</span>
-
-<span class="sd">    xp : array-like</span>
-<span class="sd">        The x-coordinates of the data points.</span>
-
-<span class="sd">    args : array-like</span>
-<span class="sd">        The data to be interpolated. Can be multiple arguments, all must be the same shape as</span>
-<span class="sd">        xp.</span>
-
-<span class="sd">    axis : int, optional</span>
-<span class="sd">        The axis to interpolate over. Defaults to 0.</span>
-
-<span class="sd">    fill_value: float, optional</span>
-<span class="sd">        Specify handling of interpolation points out of data bounds. If None, will return</span>
-<span class="sd">        ValueError if points are out of bounds. Defaults to nan.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    array-like</span>
-<span class="sd">        Interpolated values for each point with coordinates sorted in ascending order.</span>
-
-<span class="sd">    Examples</span>
-<span class="sd">    --------</span>
-<span class="sd">     &gt;&gt;&gt; x_log = np.array([1e3, 1e4, 1e5, 1e6])</span>
-<span class="sd">     &gt;&gt;&gt; y_log = np.log(x_log) * 2 + 3</span>
-<span class="sd">     &gt;&gt;&gt; x_interp = np.array([5e3, 5e4, 5e5])</span>
-<span class="sd">     &gt;&gt;&gt; metpy.calc.log_interp(x_interp, x_log, y_log)</span>
-<span class="sd">     array([20.03438638, 24.63955657, 29.24472675])</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    xp and args must be the same shape.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Pull out kwargs</span>
-    <span class="n">fill_value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fill_value&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
-    <span class="n">axis</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
-
-    <span class="c1"># Log x and xp</span>
-    <span class="n">log_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-    <span class="n">log_xp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">xp</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">interp</span><span class="p">(</span><span class="n">log_x</span><span class="p">,</span> <span class="n">log_xp</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="n">fill_value</span><span class="o">=</span><span class="n">fill_value</span><span class="p">)</span></div>
+<span class="n">log_interp</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="p">(</span><span class="n">log_interpolate_1d</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">+</span>
+                      <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">    .. deprecated:: 0.9.0</span><span class="se">\n</span><span class="s1">        Function has been renamed &#39;</span>
+                      <span class="s1">&#39;`log_interpolate_1d` and moved to `metpy.interpolate`, and &#39;</span>
+                      <span class="s1">&#39;will be removed from MetPy in 0.12.0.&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_greater_or_close</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1144,24 +964,212 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="n">value</span><span class="p">)</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="first_derivative"><a class="viewcode-back" href="../../../api/generated/metpy.calc.first_derivative.html#metpy.calc.first_derivative">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<div class="viewcode-block" id="lat_lon_grid_spacing"><a class="viewcode-back" href="../../../api/generated/metpy.calc.lat_lon_grid_spacing.html#metpy.calc.lat_lon_grid_spacing">[docs]</a><span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;0.8&#39;</span><span class="p">,</span> <span class="n">addendum</span><span class="o">=</span><span class="s1">&#39; This function has been replaced by the signed delta distance&#39;</span>
+                            <span class="s1">&#39;calculation lat_lon_grid_deltas and will be removed in MetPy&#39;</span>
+                            <span class="s1">&#39; 0.11.&#39;</span><span class="p">,</span>
+            <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
+<span class="k">def</span> <span class="nf">lat_lon_grid_spacing</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the distance between grid points that are in a latitude/longitude format.</span>
+
+<span class="sd">    Calculate the distance between grid points when the grid spacing is defined by</span>
+<span class="sd">    delta lat/lon rather than delta x/y</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    longitude : array_like</span>
+<span class="sd">        array of longitudes defining the grid</span>
+<span class="sd">    latitude : array_like</span>
+<span class="sd">        array of latitudes defining the grid</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments to pass to :class:`~pyproj.Geod`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">     dx, dy: 2D arrays of distances between grid points in the x and y direction</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Accepts, 1D or 2D arrays for latitude and longitude</span>
+<span class="sd">    Assumes [Y, X] for 2D arrays</span>
+
+<span class="sd">    .. deprecated:: 0.8.0</span>
+<span class="sd">        Function has been replaced with the signed delta distance calculation</span>
+<span class="sd">        `lat_lon_grid_deltas` and will be removed from MetPy in 0.11.0.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Use the absolute value of the signed function replacing this</span>
+    <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dx</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dy</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="lat_lon_grid_deltas"><a class="viewcode-back" href="../../../api/generated/metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="k">def</span> <span class="nf">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the delta between grid points that are in a latitude/longitude format.</span>
+
+<span class="sd">    Calculate the signed delta distance between grid points when the grid spacing is defined by</span>
+<span class="sd">    delta lat/lon rather than delta x/y</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    longitude : array_like</span>
+<span class="sd">        array of longitudes defining the grid</span>
+<span class="sd">    latitude : array_like</span>
+<span class="sd">        array of latitudes defining the grid</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Other keyword arguments to pass to :class:`~pyproj.Geod`</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dx, dy:</span>
+<span class="sd">        at least two dimensional arrays of signed deltas between grid points in the x and y</span>
+<span class="sd">        direction</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Accepts 1D, 2D, or higher arrays for latitude and longitude</span>
+<span class="sd">    Assumes [..., Y, X] for &gt;=2 dimensional arrays</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="kn">from</span> <span class="nn">pyproj</span> <span class="k">import</span> <span class="n">Geod</span>
+
+    <span class="c1"># Inputs must be the same number of dimensions</span>
+    <span class="k">if</span> <span class="n">latitude</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="n">longitude</span><span class="o">.</span><span class="n">ndim</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Latitude and longitude must have the same number of dimensions.&#39;</span><span class="p">)</span>
+
+    <span class="c1"># If we were given 1D arrays, make a mesh grid</span>
+    <span class="k">if</span> <span class="n">latitude</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span>
+
+    <span class="n">geod_args</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;ellps&#39;</span><span class="p">:</span> <span class="s1">&#39;sphere&#39;</span><span class="p">}</span>
+    <span class="k">if</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">geod_args</span> <span class="o">=</span> <span class="n">kwargs</span>
+
+    <span class="n">g</span> <span class="o">=</span> <span class="n">Geod</span><span class="p">(</span><span class="o">**</span><span class="n">geod_args</span><span class="p">)</span>
+
+    <span class="n">forward_az</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">longitude</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span> <span class="n">latitude</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:],</span>
+                              <span class="n">longitude</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:],</span> <span class="n">latitude</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">:,</span> <span class="p">:])</span>
+    <span class="n">dy</span><span class="p">[(</span><span class="n">forward_az</span> <span class="o">&lt;</span> <span class="o">-</span><span class="mf">90.</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">forward_az</span> <span class="o">&gt;</span> <span class="mf">90.</span><span class="p">)]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="n">forward_az</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">longitude</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">latitude</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                              <span class="n">longitude</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">:],</span> <span class="n">latitude</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="p">:,</span> <span class="mi">1</span><span class="p">:])</span>
+    <span class="n">dx</span><span class="p">[(</span><span class="n">forward_az</span> <span class="o">&lt;</span> <span class="mf">0.</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">forward_az</span> <span class="o">&gt;</span> <span class="mf">180.</span><span class="p">)]</span> <span class="o">*=</span> <span class="o">-</span><span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="p">,</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span></div>
+
+
+<div class="viewcode-block" id="grid_deltas_from_dataarray"><a class="viewcode-back" href="../../../api/generated/metpy.calc.grid_deltas_from_dataarray.html#metpy.calc.grid_deltas_from_dataarray">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">grid_deltas_from_dataarray</span><span class="p">(</span><span class="n">f</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the horizontal deltas between grid points of a DataArray.</span>
+
+<span class="sd">    Calculate the signed delta distance between grid points of a DataArray in the horizontal</span>
+<span class="sd">    directions, whether the grid is lat/lon or x/y.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    f : `xarray.DataArray`</span>
+<span class="sd">        Parsed DataArray on a latitude/longitude grid, in (..., lat, lon) or (..., y, x)</span>
+<span class="sd">        dimension order</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    dx, dy:</span>
+<span class="sd">        arrays of signed deltas between grid points in the x and y directions with dimensions</span>
+<span class="sd">        matching those of `f`.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    lat_lon_grid_deltas</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">crs</span><span class="p">[</span><span class="s1">&#39;grid_mapping_name&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;latitude_longitude&#39;</span><span class="p">:</span>
+        <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span>
+                                     <span class="n">initstring</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="o">.</span><span class="n">proj4_init</span><span class="p">)</span>
+        <span class="n">slc_x</span> <span class="o">=</span> <span class="n">slc_y</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+        <span class="n">dy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
+        <span class="n">slc</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">ndim</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">slc_x</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">slc</span> <span class="o">+</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">,</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)])</span>
+        <span class="n">slc_y</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">slc</span> <span class="o">+</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">dx</span><span class="p">[</span><span class="n">slc_x</span><span class="p">],</span> <span class="n">dy</span><span class="p">[</span><span class="n">slc_y</span><span class="p">]</span></div>
+
+
+<span class="k">def</span> <span class="nf">xarray_derivative_wrap</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Decorate the derivative functions to make them work nicely with DataArrays.</span>
+
+<span class="sd">    This will automatically determine if the coordinates can be pulled directly from the</span>
+<span class="sd">    DataArray, or if a call to lat_lon_grid_deltas is needed.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">or</span> <span class="s1">&#39;delta&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="c1"># Use the usual DataArray to pint.Quantity preprocessing wrapper</span>
+            <span class="k">return</span> <span class="n">preprocess_xarray</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+            <span class="c1"># Get axis argument, defaulting to first dimension</span>
+            <span class="n">axis</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">find_axis_name</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span>
+
+            <span class="c1"># Initialize new kwargs with the axis number</span>
+            <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;axis&#39;</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">get_axis_num</span><span class="p">(</span><span class="n">axis</span><span class="p">)}</span>
+
+            <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;axis&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span>
+                <span class="c1"># Time coordinate, need to convert to seconds from datetimes</span>
+                <span class="n">new_kwargs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">as_timestamp</span><span class="p">()</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
+            <span class="k">elif</span> <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;lon&#39;</span><span class="p">):</span>
+                <span class="c1"># Longitude coordinate, need to get grid deltas</span>
+                <span class="n">new_kwargs</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">grid_deltas_from_dataarray</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;lat&#39;</span><span class="p">):</span>
+                <span class="c1"># Latitude coordinate, need to get grid deltas</span>
+                <span class="n">_</span><span class="p">,</span> <span class="n">new_kwargs</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid_deltas_from_dataarray</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="c1"># General coordinate, use as is</span>
+                <span class="n">new_kwargs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
+
+            <span class="c1"># Calculate and return result as a DataArray</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span><span class="p">,</span> <span class="o">**</span><span class="n">new_kwargs</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                                <span class="n">coords</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span>
+                                <span class="n">dims</span><span class="o">=</span><span class="n">f</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span>
+                                <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="nb">str</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">units</span><span class="p">)})</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># Error</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Must specify either &quot;x&quot; or &quot;delta&quot; for value positions when &quot;f&quot; &#39;</span>
+                             <span class="s1">&#39;is not a DataArray.&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<div class="viewcode-block" id="first_derivative"><a class="viewcode-back" href="../../../api/generated/metpy.calc.first_derivative.html#metpy.calc.first_derivative">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@xarray_derivative_wrap</span>
 <span class="k">def</span> <span class="nf">first_derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the first derivative of a grid of values.</span>
 
 <span class="sd">    Works for both regularly-spaced data and grids with varying spacing.</span>
 
-<span class="sd">    Either `x` or `delta` must be specified. This uses 3 points to calculate the</span>
-<span class="sd">    derivative, using forward or backward at the edges of the grid as appropriate, and</span>
-<span class="sd">    centered elsewhere. The irregular spacing is handled explicitly, using the formulation</span>
-<span class="sd">    as specified by [Bowen2005]_.</span>
+<span class="sd">    Either `x` or `delta` must be specified, or `f` must be given as an `xarray.DataArray` with</span>
+<span class="sd">    attached coordinate and projection information. If `f` is an `xarray.DataArray`, and `x` or</span>
+<span class="sd">    `delta` are given, `f` will be converted to a `pint.Quantity` and the derivative returned</span>
+<span class="sd">    as a `pint.Quantity`, otherwise, if neither `x` nor `delta` are given, the attached</span>
+<span class="sd">    coordinate information belonging to `axis` will be used and the derivative will be returned</span>
+<span class="sd">    as an `xarray.DataArray`.</span>
+
+<span class="sd">    This uses 3 points to calculate the derivative, using forward or backward at the edges of</span>
+<span class="sd">    the grid as appropriate, and centered elsewhere. The irregular spacing is handled</span>
+<span class="sd">    explicitly, using the formulation as specified by [Bowen2005]_.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    f : array-like</span>
 <span class="sd">        Array of values of which to calculate the derivative</span>
-<span class="sd">    axis : int, optional</span>
-<span class="sd">        The array axis along which to take the derivative. Defaults to 0.</span>
+<span class="sd">    axis : int or str, optional</span>
+<span class="sd">        The array axis along which to take the derivative. If `f` is ndarray-like, must be an</span>
+<span class="sd">        integer. If `f` is a `DataArray`, can be a string (referring to either the coordinate</span>
+<span class="sd">        dimension name or the axis type) or integer (referring to axis number), unless using</span>
+<span class="sd">        implicit conversion to `pint.Quantity`, in which case it must be an integer. Defaults</span>
+<span class="sd">        to 0.</span>
 <span class="sd">    x : array-like, optional</span>
 <span class="sd">        The coordinate values corresponding to the grid points in `f`.</span>
 <span class="sd">    delta : array-like, optional</span>
@@ -1194,11 +1202,14 @@
     <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
-    <span class="n">delta_diff</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span> <span class="o">-</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span>
-    <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">+</span>
-              <span class="n">delta_diff</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">+</span>
-              <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">])</span>
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]</span>
+    <span class="n">delta_diff</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]</span> <span class="o">-</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)])</span> <span class="o">*</span>
+              <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice0</span><span class="p">)]</span> <span class="o">+</span>
+              <span class="n">delta_diff</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)])</span> <span class="o">*</span>
+              <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice1</span><span class="p">)]</span> <span class="o">+</span>
+              <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)])</span> <span class="o">*</span>
+              <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice2</span><span class="p">)])</span>
 
     <span class="c1"># Fill in &quot;left&quot; edge with forward difference</span>
     <span class="n">slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -1207,11 +1218,13 @@
     <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
-    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
-    <span class="n">big_delta</span> <span class="o">=</span> <span class="n">combined_delta</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span>
-    <span class="n">left</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span> <span class="n">big_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">+</span>
-            <span class="n">combined_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">-</span>
-            <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">])</span>
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]</span>
+    <span class="n">big_delta</span> <span class="o">=</span> <span class="n">combined_delta</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span> <span class="n">big_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice0</span><span class="p">)]</span> <span class="o">+</span>
+            <span class="n">combined_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)])</span> <span class="o">*</span>
+            <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice1</span><span class="p">)]</span> <span class="o">-</span>
+            <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)])</span> <span class="o">*</span>
+            <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice2</span><span class="p">)])</span>
 
     <span class="c1"># Now the &quot;right&quot; edge with backward difference</span>
     <span class="n">slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
@@ -1220,35 +1233,45 @@
     <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
-    <span class="n">big_delta</span> <span class="o">=</span> <span class="n">combined_delta</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
-    <span class="n">right</span> <span class="o">=</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">-</span>
-             <span class="n">combined_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">+</span>
-             <span class="n">big_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">])</span>
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]</span>
+    <span class="n">big_delta</span> <span class="o">=</span> <span class="n">combined_delta</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)])</span> <span class="o">*</span>
+             <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice0</span><span class="p">)]</span> <span class="o">-</span>
+             <span class="n">combined_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)])</span> <span class="o">*</span>
+             <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice1</span><span class="p">)]</span> <span class="o">+</span>
+             <span class="n">big_delta</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)])</span> <span class="o">*</span> <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice2</span><span class="p">)])</span>
 
     <span class="k">return</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">right</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="second_derivative"><a class="viewcode-back" href="../../../api/generated/metpy.calc.second_derivative.html#metpy.calc.second_derivative">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
+<span class="nd">@xarray_derivative_wrap</span>
 <span class="k">def</span> <span class="nf">second_derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the second derivative of a grid of values.</span>
 
 <span class="sd">    Works for both regularly-spaced data and grids with varying spacing.</span>
 
-<span class="sd">    Either `x` or `delta` must be specified.</span>
+<span class="sd">    Either `x` or `delta` must be specified, or `f` must be given as an `xarray.DataArray` with</span>
+<span class="sd">    attached coordinate and projection information. If `f` is an `xarray.DataArray`, and `x` or</span>
+<span class="sd">    `delta` are given, `f` will be converted to a `pint.Quantity` and the derivative returned</span>
+<span class="sd">    as a `pint.Quantity`, otherwise, if neither `x` nor `delta` are given, the attached</span>
+<span class="sd">    coordinate information belonging to `axis` will be used and the derivative will be returned</span>
+<span class="sd">    as an `xarray.DataArray`.</span>
 
-<span class="sd">    Either `x` or `delta` must be specified. This uses 3 points to calculate the</span>
-<span class="sd">    derivative, using forward or backward at the edges of the grid as appropriate, and</span>
-<span class="sd">    centered elsewhere. The irregular spacing is handled explicitly, using the formulation</span>
-<span class="sd">    as specified by [Bowen2005]_.</span>
+<span class="sd">    This uses 3 points to calculate the derivative, using forward or backward at the edges of</span>
+<span class="sd">    the grid as appropriate, and centered elsewhere. The irregular spacing is handled</span>
+<span class="sd">    explicitly, using the formulation as specified by [Bowen2005]_.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    f : array-like</span>
 <span class="sd">        Array of values of which to calculate the derivative</span>
-<span class="sd">    axis : int, optional</span>
-<span class="sd">        The array axis along which to take the derivative. Defaults to 0.</span>
+<span class="sd">    axis : int or str, optional</span>
+<span class="sd">        The array axis along which to take the derivative. If `f` is ndarray-like, must be an</span>
+<span class="sd">        integer. If `f` is a `DataArray`, can be a string (referring to either the coordinate</span>
+<span class="sd">        dimension name or the axis type) or integer (referring to axis number), unless using</span>
+<span class="sd">        implicit conversion to `pint.Quantity`, in which case it must be an integer. Defaults</span>
+<span class="sd">        to 0.</span>
 <span class="sd">    x : array-like, optional</span>
 <span class="sd">        The coordinate values corresponding to the grid points in `f`.</span>
 <span class="sd">    delta : array-like, optional</span>
@@ -1281,10 +1304,11 @@
     <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
-    <span class="n">center</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">-</span>
-                  <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">+</span>
-                  <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]))</span>
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]</span>
+    <span class="n">center</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice0</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)])</span> <span class="o">-</span>
+                  <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice1</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">*</span>
+                  <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)])</span> <span class="o">+</span>
+                  <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice2</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]))</span>
 
     <span class="c1"># Fill in &quot;left&quot; edge</span>
     <span class="n">slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
@@ -1293,10 +1317,10 @@
     <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
     <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
-    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
-    <span class="n">left</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">-</span>
-                <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">+</span>
-                <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]))</span>
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice0</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)])</span> <span class="o">-</span>
+                <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice1</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)])</span> <span class="o">+</span>
+                <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice2</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]))</span>
 
     <span class="c1"># Now the &quot;right&quot; edge</span>
     <span class="n">slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">)</span>
@@ -1305,67 +1329,96 @@
     <span class="n">delta_slice0</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
     <span class="n">delta_slice1</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]</span>
-    <span class="n">right</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">slice0</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">])</span> <span class="o">-</span>
-                 <span class="n">f</span><span class="p">[</span><span class="n">slice1</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="n">delta_slice0</span><span class="p">]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">])</span> <span class="o">+</span>
-                 <span class="n">f</span><span class="p">[</span><span class="n">slice2</span><span class="p">]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="n">delta_slice1</span><span class="p">]))</span>
+    <span class="n">combined_delta</span> <span class="o">=</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">+</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]</span>
+    <span class="n">right</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice0</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)])</span> <span class="o">-</span>
+                 <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice1</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice0</span><span class="p">)]</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)])</span> <span class="o">+</span>
+                 <span class="n">f</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">slice2</span><span class="p">)]</span> <span class="o">/</span> <span class="p">(</span><span class="n">combined_delta</span> <span class="o">*</span> <span class="n">delta</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">delta_slice1</span><span class="p">)]))</span>
 
     <span class="k">return</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">left</span><span class="p">,</span> <span class="n">center</span><span class="p">,</span> <span class="n">right</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="gradient"><a class="viewcode-back" href="../../../api/generated/metpy.calc.gradient.html#metpy.calc.gradient">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
 <span class="k">def</span> <span class="nf">gradient</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the gradient of a grid of values.</span>
 
 <span class="sd">    Works for both regularly-spaced data, and grids with varying spacing.</span>
 
-<span class="sd">    Either `x` or `deltas` must be specified.</span>
+<span class="sd">    Either `coordinates` or `deltas` must be specified, or `f` must be given as an</span>
+<span class="sd">    `xarray.DataArray` with  attached coordinate and projection information. If `f` is an</span>
+<span class="sd">    `xarray.DataArray`, and `coordinates` or `deltas` are given, `f` will be converted to a</span>
+<span class="sd">    `pint.Quantity` and the gradient returned as a tuple of `pint.Quantity`, otherwise, if</span>
+<span class="sd">    neither `coordinates` nor `deltas` are given, the attached coordinate information belonging</span>
+<span class="sd">    to `axis` will be used and the gradient will be returned as a tuple of `xarray.DataArray`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    f : array-like</span>
 <span class="sd">        Array of values of which to calculate the derivative</span>
-<span class="sd">    x : array-like, optional</span>
+<span class="sd">    coordinates : array-like, optional</span>
 <span class="sd">        Sequence of arrays containing the coordinate values corresponding to the</span>
 <span class="sd">        grid points in `f` in axis order.</span>
 <span class="sd">    deltas : array-like, optional</span>
 <span class="sd">        Sequence of arrays or scalars that specify the spacing between the grid points in `f`</span>
-<span class="sd">        in axis order. There should be one item less than the size of `f` along `axis`.</span>
+<span class="sd">        in axis order. There should be one item less than the size of `f` along the applicable</span>
+<span class="sd">        axis.</span>
+<span class="sd">    axes : sequence, optional</span>
+<span class="sd">        Sequence of strings (if `f` is a `xarray.DataArray` and implicit conversion to</span>
+<span class="sd">        `pint.Quantity` is not used) or integers that specify the array axes along which to</span>
+<span class="sd">        take the derivatives. Defaults to all axes of `f`. If given, and used with</span>
+<span class="sd">        `coordinates` or `deltas`, its length must be less than or equal to that of the</span>
+<span class="sd">        `coordinates` or `deltas` given.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    array-like</span>
-<span class="sd">        The first derivative calculated along each axis in the original array</span>
+<span class="sd">    tuple of array-like</span>
+<span class="sd">        The first derivative calculated along each specified axis of the original array</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    laplacian</span>
+<span class="sd">    laplacian, first_derivative</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    `gradient` previously accepted `x` as a parameter for coordinate values. This has been</span>
+<span class="sd">    deprecated in 0.9 in favor of `coordinates`.</span>
+
+<span class="sd">    If this function is used without the `axes` parameter, the length of `coordinates` or</span>
+<span class="sd">    `deltas` (as applicable) should match the number of dimensions of `f`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">pos_kwarg</span><span class="p">,</span> <span class="n">positions</span> <span class="o">=</span> <span class="n">_process_gradient_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">first_derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">ind</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">pos_kwarg</span><span class="p">:</span> <span class="n">positions</span><span class="p">[</span><span class="n">ind</span><span class="p">]})</span>
-                 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">positions</span><span class="p">))</span></div>
+    <span class="n">pos_kwarg</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">_process_gradient_args</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+    <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">first_derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">pos_kwarg</span><span class="p">:</span> <span class="n">positions</span><span class="p">[</span><span class="n">ind</span><span class="p">]})</span>
+                 <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="laplacian"><a class="viewcode-back" href="../../../api/generated/metpy.calc.laplacian.html#metpy.calc.laplacian">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
 <span class="k">def</span> <span class="nf">laplacian</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the laplacian of a grid of values.</span>
 
 <span class="sd">    Works for both regularly-spaced data, and grids with varying spacing.</span>
 
-<span class="sd">    Either `x` or `deltas` must be specified.</span>
+<span class="sd">    Either `coordinates` or `deltas` must be specified, or `f` must be given as an</span>
+<span class="sd">    `xarray.DataArray` with  attached coordinate and projection information. If `f` is an</span>
+<span class="sd">    `xarray.DataArray`, and `coordinates` or `deltas` are given, `f` will be converted to a</span>
+<span class="sd">    `pint.Quantity` and the gradient returned as a tuple of `pint.Quantity`, otherwise, if</span>
+<span class="sd">    neither `coordinates` nor `deltas` are given, the attached coordinate information belonging</span>
+<span class="sd">    to `axis` will be used and the gradient will be returned as a tuple of `xarray.DataArray`.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    f : array-like</span>
 <span class="sd">        Array of values of which to calculate the derivative</span>
-<span class="sd">    x : array-like, optional</span>
+<span class="sd">    coordinates : array-like, optional</span>
 <span class="sd">        The coordinate values corresponding to the grid points in `f`</span>
 <span class="sd">    deltas : array-like, optional</span>
 <span class="sd">        Spacing between the grid points in `f`. There should be one item less than the size</span>
-<span class="sd">        of `f` along `axis`.</span>
+<span class="sd">        of `f` along the applicable axis.</span>
+<span class="sd">    axes : sequence, optional</span>
+<span class="sd">        Sequence of strings (if `f` is a `xarray.DataArray` and implicit conversion to</span>
+<span class="sd">        `pint.Quantity` is not used) or integers that specify the array axes along which to</span>
+<span class="sd">        take the derivatives. Defaults to all axes of `f`. If given, and used with</span>
+<span class="sd">        `coordinates` or `deltas`, its length must be less than or equal to that of the</span>
+<span class="sd">        `coordinates` or `deltas` given.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1374,12 +1427,25 @@
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
-<span class="sd">    gradient</span>
+<span class="sd">    gradient, second_derivative</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    `laplacian` previously accepted `x` as a parameter for coordinate values. This has been</span>
+<span class="sd">    deprecated in 0.9 in favor of `coordinates`.</span>
+
+<span class="sd">    If this function is used without the `axes` parameter, the length of `coordinates` or</span>
+<span class="sd">    `deltas` (as applicable) should match the number of dimensions of `f`.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">pos_kwarg</span><span class="p">,</span> <span class="n">positions</span> <span class="o">=</span> <span class="n">_process_gradient_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">)</span>
-    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">second_derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">ind</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">pos_kwarg</span><span class="p">:</span> <span class="n">positions</span><span class="p">[</span><span class="n">ind</span><span class="p">]})</span>
-               <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">pos</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">positions</span><span class="p">))</span></div>
+    <span class="n">pos_kwarg</span><span class="p">,</span> <span class="n">positions</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">_process_gradient_args</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">derivs</span> <span class="o">=</span> <span class="p">[</span><span class="n">second_derivative</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">,</span> <span class="o">**</span><span class="p">{</span><span class="n">pos_kwarg</span><span class="p">:</span> <span class="n">positions</span><span class="p">[</span><span class="n">ind</span><span class="p">]})</span>
+              <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">axis</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">axes</span><span class="p">)]</span>
+    <span class="n">laplac</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">derivs</span><span class="p">)</span>
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">derivs</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+        <span class="c1"># Patch in the units that are dropped</span>
+        <span class="n">laplac</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">derivs</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">laplac</span></div>
 
 
 <span class="k">def</span> <span class="nf">_broadcast_to_axis</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">axis</span><span class="p">,</span> <span class="n">ndim</span><span class="p">):</span>
@@ -1394,16 +1460,36 @@
     <span class="k">return</span> <span class="n">arr</span>
 
 
-<span class="k">def</span> <span class="nf">_process_gradient_args</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_process_gradient_args</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Handle common processing of arguments for gradient and gradient-like functions.&quot;&quot;&quot;</span>
+    <span class="n">axes</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;axes&#39;</span><span class="p">,</span> <span class="nb">range</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">ndim</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">_check_length</span><span class="p">(</span><span class="n">positions</span><span class="p">):</span>
+        <span class="k">if</span> <span class="s1">&#39;axes&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Length of &quot;coordinates&quot; or &quot;deltas&quot; cannot be less than that &#39;</span>
+                             <span class="s1">&#39;of &quot;axes&quot;.&#39;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s1">&#39;axes&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">positions</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">axes</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Length of &quot;coordinates&quot; or &quot;deltas&quot; must match the number of &#39;</span>
+                             <span class="s1">&#39;dimensions of &quot;f&quot; when &quot;axes&quot; is not given.&#39;</span><span class="p">)</span>
+
     <span class="k">if</span> <span class="s1">&#39;deltas&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="k">if</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot specify both &quot;x&quot; and &quot;deltas&quot;.&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="s1">&#39;delta&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;deltas&#39;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="s1">&#39;coordinates&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">or</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Cannot specify both &quot;coordinates&quot; and &quot;deltas&quot;.&#39;</span><span class="p">)</span>
+        <span class="n">_check_length</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;deltas&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s1">&#39;delta&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;deltas&#39;</span><span class="p">],</span> <span class="n">axes</span>
+    <span class="k">elif</span> <span class="s1">&#39;coordinates&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="n">_check_length</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coordinates&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;coordinates&#39;</span><span class="p">],</span> <span class="n">axes</span>
     <span class="k">elif</span> <span class="s1">&#39;x&#39;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
-        <span class="k">return</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The use of &quot;x&quot; as a parameter for coordinate values has been &#39;</span>
+                      <span class="s1">&#39;deprecated. Use &quot;coordinates&quot; instead.&#39;</span><span class="p">,</span> <span class="n">metpyDeprecation</span><span class="p">)</span>
+        <span class="n">_check_length</span><span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">])</span>
+        <span class="k">return</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">axes</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;pass&#39;</span><span class="p">,</span> <span class="n">axes</span><span class="p">,</span> <span class="n">axes</span>  <span class="c1"># only the axis argument matters</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Must specify either &quot;x&quot; or &quot;delta&quot; for value positions.&#39;</span><span class="p">)</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Must specify either &quot;coordinates&quot; or &quot;deltas&quot; for value positions &#39;</span>
+                         <span class="s1">&#39;when &quot;f&quot; is not a DataArray.&#39;</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_process_deriv_args</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">):</span>
@@ -1493,7 +1579,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -1530,7 +1616,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>add_metpy_logo &mdash; MetPy 0.7</title>
+  <title>add_metpy_logo &mdash; MetPy 0.9</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="add_timestamp" href="metpy.plots.add_timestamp.html"/>
         <link rel="prev" title="plots" href="metpy.plots.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,9 +120,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">MetPy Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
@@ -135,6 +135,7 @@
 </li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_timestamp.html">add_timestamp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
@@ -143,6 +144,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
@@ -196,7 +198,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">The MetPy API</a> &raquo;</li>
+          <li><a href="../index.html">Reference Guide</a> &raquo;</li>
         
           <li><a href="metpy.plots.html">plots</a> &raquo;</li>
         
@@ -234,16 +236,16 @@
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>fig</strong> (<a class="reference external" href="https://matplotlib.org/api/figure_api.html#module-matplotlib.figure" title="(in Matplotlib v2.2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.figure</span></code></a>) – The <em class="xref py py-obj">figure</em> instance used for plotting</li>
-<li><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – x position padding in pixels</li>
-<li><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – y position padding in pixels</li>
-<li><strong>zorder</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – The zorder of the logo</li>
-<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Size of logo to be used. Can be ‘small’ for 75 px square or ‘large’ for
+<li><strong>fig</strong> (<a class="reference external" href="https://matplotlib.org/api/figure_api.html#module-matplotlib.figure" title="(in Matplotlib v2.2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.figure</span></code></a>) – The <em class="xref py py-obj">figure</em> instance used for plotting</li>
+<li><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – x position padding in pixels</li>
+<li><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – y position padding in pixels</li>
+<li><strong>zorder</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The zorder of the logo</li>
+<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Size of logo to be used. Can be ‘small’ for 75 px square or ‘large’ for
 150 px square.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/image_api.html#matplotlib.image.FigureImage" title="(in Matplotlib v2.2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.image.FigureImage</span></code></a> – The <a class="reference external" href="https://matplotlib.org/api/image_api.html#matplotlib.image.FigureImage" title="(in Matplotlib v2.2.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.image.FigureImage</span></code></a> instance created</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/image_api.html#matplotlib.image.FigureImage" title="(in Matplotlib v2.2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.image.FigureImage</span></code></a> – The <a class="reference external" href="https://matplotlib.org/api/image_api.html#matplotlib.image.FigureImage" title="(in Matplotlib v2.2.3)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.image.FigureImage</span></code></a> instance created</p>
 </td>
 </tr>
 </tbody>
@@ -338,7 +340,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -375,7 +377,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

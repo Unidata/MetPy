@@ -1,3 +1,5 @@
+
+
 plots
 ===========
 
@@ -14,6 +16,7 @@ plots
       add_metpy_logo
       add_timestamp
       add_unidata_logo
+      convert_gempak_color
       read_colortable
    
    
@@ -37,3 +40,4 @@ plots
    
    
    
+

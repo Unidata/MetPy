@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>interpolate &mdash; MetPy 0.7</title>
+  <title>interpolate &mdash; MetPy 0.9</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
         <link rel="up" title="gridding" href="metpy.gridding.html"/>
         <link rel="next" title="inverse_distance" href="metpy.gridding.inverse_distance.html"/>
         <link rel="prev" title="gridding" href="metpy.gridding.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,9 +120,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">MetPy Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
@@ -130,11 +130,9 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.gridding.html">gridding</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">interpolate</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-gridding-interpolate">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.gridding.interpolate</span></code></a></li>
-</ul>
-</li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">interpolate</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.gridding.inverse_distance.html">inverse_distance</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.gridding.natural_neighbor.html">natural_neighbor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.gridding.remove_nan_observations.html">remove_nan_observations</a></li>
@@ -194,7 +192,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">The MetPy API</a> &raquo;</li>
+          <li><a href="../index.html">Reference Guide</a> &raquo;</li>
         
           <li><a href="metpy.gridding.html">gridding</a> &raquo;</li>
         
@@ -224,7 +222,7 @@
 <h1>interpolate<a class="headerlink" href="#interpolate" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.gridding.interpolate">
-<code class="descclassname">metpy.gridding.</code><code class="descname">interpolate</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>interp_type='linear'</em>, <em>hres=50000</em>, <em>minimum_neighbors=3</em>, <em>gamma=0.25</em>, <em>kappa_star=5.052</em>, <em>search_radius=None</em>, <em>rbf_func='linear'</em>, <em>rbf_smooth=0</em>, <em>boundary_coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/gridding/gridding_functions.html#interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.gridding.interpolate" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">metpy.gridding.</code><code class="descname">interpolate</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>interp_type='linear'</em>, <em>hres=50000</em>, <em>minimum_neighbors=3</em>, <em>gamma=0.25</em>, <em>kappa_star=5.052</em>, <em>search_radius=None</em>, <em>rbf_func='linear'</em>, <em>rbf_smooth=0</em>, <em>boundary_coords=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/grid.html#interpolate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.gridding.interpolate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -234,25 +232,25 @@
 <li><strong>x</strong> (<em>array_like</em>) – x coordinate</li>
 <li><strong>y</strong> (<em>array_like</em>) – y coordinate</li>
 <li><strong>z</strong> (<em>array_like</em>) – observation value</li>
-<li><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – What type of interpolation to use. Available options include:
-1) “linear”, “nearest”, “cubic”, or “rbf” from Scipy.interpolate.
-2) “natural_neighbor”, “barnes”, or “cressman” from Metpy.mapping .
+<li><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – What type of interpolation to use. Available options include:
+1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.1.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
+2) “natural_neighbor”, “barnes”, or “cressman” from <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>.
 Default “linear”.</li>
-<li><strong>hres</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – The horizontal resolution of the generated grid, given in the same units as the
+<li><strong>hres</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The horizontal resolution of the generated grid, given in the same units as the
 x and y parameters. Default 50000.</li>
-<li><strong>minimum_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.6)"><em>int</em></a>) – Minimum number of neighbors needed to perform barnes or cressman interpolation for a
+<li><strong>minimum_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Minimum number of neighbors needed to perform barnes or cressman interpolation for a
 point. Default is 3.</li>
-<li><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</li>
-<li><strong>kappa_star</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Response parameter for barnes interpolation, specified nondimensionally
+<li><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</li>
+<li><strong>kappa_star</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Response parameter for barnes interpolation, specified nondimensionally
 in terms of the Nyquist. Default 5.052</li>
-<li><strong>search_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – A search radius to use for the barnes and cressman interpolation schemes.
+<li><strong>search_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – A search radius to use for the barnes and cressman interpolation schemes.
 If search_radius is not specified, it will default to the average spacing of
 observations.</li>
-<li><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.6)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
+<li><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
 Options include: ‘multiquadric’, ‘inverse’, ‘gaussian’, ‘linear’, ‘cubic’,
-‘quintic’, and ‘thin_plate’. Defualt ‘linear’. See scipy.interpolate.Rbf for more
+‘quintic’, and ‘thin_plate’. Defualt ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.1.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
 information.</li>
-<li><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.6)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</li>
+<li><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</li>
 <li><strong>boundary_coords</strong> (<em>dictionary</em>) – Optional dictionary containing coordinates of the study area boundary. Dictionary
 should be in format: {‘west’: west, ‘south’: south, ‘east’: east, ‘north’: north}</li>
 </ul>
@@ -268,20 +266,19 @@ should be in format: {‘west’: west, ‘south’: south, ‘east’: east, �
 </tr>
 </tbody>
 </table>
+<p class="rubric">Notes</p>
+<p>This function acts as a wrapper for <em class="xref py py-obj">interpolate_points</em> to allow it to generate a regular
+grid.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><code class="xref py py-func docutils literal notranslate"><span class="pre">interpolate_to_points()</span></code></p>
+</div>
+<div class="deprecated">
+<p><span class="versionmodified">Deprecated since version 0.9.0: </span>Function has been renamed to <em class="xref py py-obj">interpolate_to_grid</em> and will be removed from MetPy in 0.12.0.</p>
+</div>
 </dd></dl>
 
-<div class="section" id="examples-using-metpy-gridding-interpolate">
-<h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.gridding.interpolate</span></code><a class="headerlink" href="#examples-using-metpy-gridding-interpolate" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Interpolate sea level pressure, as well as wind component data, to make a consistent looking an..."><div class="figure" id="id1">
-<img alt="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" src="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/gridding/Wind_SLP_Interpolation.html#sphx-glr-examples-gridding-wind-slp-interpolation-py"><span class="std std-ref">Wind and Sea Level Pressure Interpolation</span></a></span></p>
-</div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Compares different point interpolation approaches. "><div class="figure" id="id2">
-<img alt="../../_images/sphx_glr_Point_Interpolation_thumb.png" src="../../_images/sphx_glr_Point_Interpolation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/gridding/Point_Interpolation.html#sphx-glr-examples-gridding-point-interpolation-py"><span class="std std-ref">Point Interpolation</span></a></span></p>
-</div>
-</div><div style='clear:both'></div></div>
-</div>
+<div style='clear:both'></div></div>
 
 
            </div>
@@ -306,7 +303,7 @@ should be in format: {‘west’: west, ‘south’: south, ‘east’: east, �
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -343,7 +340,7 @@ should be in format: {‘west’: west, ‘south’: south, ‘east’: east, �
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Gradient &mdash; MetPy 0.7</title>
+  <title>Gradient &mdash; MetPy 0.9</title>
   
 
   
@@ -43,8 +43,8 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
-        <link rel="up" title="MetPy Examples" href="../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+        <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="GINI Water Vapor Imagery" href="../formats/GINI_Water_Vapor.html"/>
         <link rel="prev" title="Dewpoint and Mixing Ratio" href="Dewpoint_and_Mixing_Ratio.html"/> 
 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,7 +120,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#calculations">Calculations</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="Parse_Angles.html">Parse angles</a></li>
@@ -133,8 +133,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -185,7 +185,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">MetPy Examples</a> &raquo;</li>
+          <li><a href="../index.html">Examples</a> &raquo;</li>
         
       <li>Gradient</li>
     
@@ -195,7 +195,10 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20examples/calculations/Gradient&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/calculations/Gradient.py"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -209,7 +212,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="gradient">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-calculations-gradient-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="gradient">
 <span id="sphx-glr-examples-calculations-gradient-py"></span><h1>Gradient<a class="headerlink" href="#gradient" title="Permalink to this headline">¶</a></h1>
 <p>Use <a class="reference internal" href="../../api/generated/metpy.calc.gradient.html#metpy.calc.gradient" title="metpy.calc.gradient"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.calc.gradient</span></code></a>.</p>
 <p>This example demonstrates the various ways that MetPy’s gradient function
@@ -239,14 +246,14 @@ can be utilized.</p>
 </pre></div>
 </div>
 <p>Calculate the gradient using the coordinates of the data</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grad</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.gradient.html#metpy.calc.gradient" title="View documentation for metpy.calc.gradient"><span class="n">mpcalc</span><span class="o">.</span><span class="n">gradient</span></a><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">grad</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.gradient.html#metpy.calc.gradient" title="View documentation for metpy.calc.gradient"><span class="n">mpcalc</span><span class="o">.</span><span class="n">gradient</span></a><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">coordinates</span><span class="o">=</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">))</span>
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Gradient in y direction: &#39;</span><span class="p">,</span> <span class="n">grad</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 <span class="k">print</span><span class="p">(</span><span class="s1">&#39;Gradient in x direction: &#39;</span><span class="p">,</span> <span class="n">grad</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Gradient</span> <span class="ow">in</span> <span class="n">y</span> <span class="n">direction</span><span class="p">:</span>  <span class="p">[[</span> <span class="mf">2.</span>   <span class="mf">2.</span>   <span class="mf">2.</span> <span class="p">]</span> <span class="p">[</span> <span class="mf">2.</span>   <span class="mf">2.</span>   <span class="mf">2.</span> <span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.5</span> <span class="o">-</span><span class="mf">5.5</span> <span class="o">-</span><span class="mf">5.5</span><span class="p">]]</span> <span class="n">kelvin</span> <span class="o">/</span> <span class="n">kilometer</span>
-<span class="n">Gradient</span> <span class="ow">in</span> <span class="n">x</span> <span class="n">direction</span><span class="p">:</span>  <span class="p">[[</span> <span class="mf">2.</span>  <span class="mf">0.</span> <span class="o">-</span><span class="mf">2.</span><span class="p">]</span> <span class="p">[</span> <span class="mf">2.</span>  <span class="mf">0.</span> <span class="o">-</span><span class="mf">2.</span><span class="p">]</span> <span class="p">[</span> <span class="mf">2.</span>  <span class="mf">0.</span> <span class="o">-</span><span class="mf">2.</span><span class="p">]</span> <span class="p">[</span> <span class="mf">2.</span>  <span class="mf">0.</span> <span class="o">-</span><span class="mf">2.</span><span class="p">]]</span> <span class="n">kelvin</span> <span class="o">/</span> <span class="n">kilometer</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[ 2.   2.   2. ] [ 2.   2.   2. ] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
+Gradient in x direction:  [[ 2.  0. -2.] [ 2.  0. -2.] [ 2.  0. -2.] [ 2.  0. -2.]] kelvin / kilometer
 </pre></div>
 </div>
 <p>It’s also possible that we do not have the position of data points, but know
@@ -260,8 +267,8 @@ axes.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Gradient</span> <span class="ow">in</span> <span class="n">y</span> <span class="n">direction</span><span class="p">:</span>  <span class="p">[[</span> <span class="mf">2.</span>   <span class="mf">2.</span>   <span class="mf">2.</span> <span class="p">]</span> <span class="p">[</span> <span class="mf">2.</span>   <span class="mf">2.</span>   <span class="mf">2.</span> <span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">-</span><span class="mf">0.5</span> <span class="o">-</span><span class="mf">0.5</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="mf">5.5</span> <span class="o">-</span><span class="mf">5.5</span> <span class="o">-</span><span class="mf">5.5</span><span class="p">]]</span> <span class="n">kelvin</span> <span class="o">/</span> <span class="n">kilometer</span>
-<span class="n">Gradient</span> <span class="ow">in</span> <span class="n">x</span> <span class="n">direction</span><span class="p">:</span>  <span class="p">[[</span> <span class="mf">1.</span>  <span class="mf">0.</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.</span>  <span class="mf">0.</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.</span>  <span class="mf">0.</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.</span>  <span class="mf">0.</span> <span class="o">-</span><span class="mf">1.</span><span class="p">]]</span> <span class="n">kelvin</span> <span class="o">/</span> <span class="n">kilometer</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[ 2.   2.   2. ] [ 2.   2.   2. ] [-0.5 -0.5 -0.5] [-5.5 -5.5 -5.5]] kelvin / kilometer
+Gradient in x direction:  [[ 1.  0. -1.] [ 1.  0. -1.] [ 1.  0. -1.] [ 1.  0. -1.]] kelvin / kilometer
 </pre></div>
 </div>
 <p>Finally, the deltas can be arrays for unevenly spaced data.</p>
@@ -278,12 +285,12 @@ axes.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Gradient</span> <span class="ow">in</span> <span class="n">y</span> <span class="n">direction</span><span class="p">:</span>  <span class="p">[[</span> <span class="mf">0.33333333</span>  <span class="mf">0.66666667</span>  <span class="mf">2.33333333</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.66666667</span>  <span class="mf">0.66666667</span>  <span class="mf">1.66666667</span><span class="p">]</span> <span class="p">[</span> <span class="mf">0.83333333</span> <span class="o">-</span><span class="mf">0.16666667</span> <span class="o">-</span><span class="mf">1.66666667</span><span class="p">]</span> <span class="p">[</span><span class="o">-</span><span class="mf">3.83333333</span> <span class="o">-</span><span class="mf">1.83333333</span> <span class="o">-</span><span class="mf">4.33333333</span><span class="p">]]</span> <span class="n">kelvin</span> <span class="o">/</span> <span class="n">kilometer</span>
-<span class="n">Gradient</span> <span class="ow">in</span> <span class="n">x</span> <span class="n">direction</span><span class="p">:</span>  <span class="p">[[</span> <span class="mf">0.83333333</span>  <span class="mf">0.16666667</span> <span class="o">-</span><span class="mf">0.83333333</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.33333333</span>  <span class="mf">0.66666667</span> <span class="o">-</span><span class="mf">1.33333333</span><span class="p">]</span> <span class="p">[</span> <span class="mf">0.83333333</span>  <span class="mf">0.16666667</span> <span class="o">-</span><span class="mf">0.83333333</span><span class="p">]</span> <span class="p">[</span> <span class="mf">1.5</span>         <span class="mf">0.5</span>        <span class="o">-</span><span class="mf">1.5</span>       <span class="p">]]</span> <span class="n">kelvin</span> <span class="o">/</span> <span class="n">kilometer</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Gradient in y direction:  [[ 0.33333333  0.66666667  2.33333333] [ 1.66666667  0.66666667  1.66666667] [ 0.83333333 -0.16666667 -1.66666667] [-3.83333333 -1.83333333 -4.33333333]] kelvin / kilometer
+Gradient in x direction:  [[ 0.83333333  0.16666667 -0.83333333] [ 1.33333333  0.66666667 -1.33333333] [ 0.83333333  0.16666667 -0.83333333] [ 1.5         0.5        -1.5       ]] kelvin / kilometer
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.027 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.026 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-calculations-gradient-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/Gradient.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Gradient.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -315,7 +322,7 @@ axes.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -352,7 +359,7 @@ axes.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

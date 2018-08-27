@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Inverse Distance Verification: Cressman and Barnes &mdash; MetPy 0.7</title>
+  <title>Inverse Distance Verification: Cressman and Barnes &mdash; MetPy 0.9</title>
   
 
   
@@ -43,8 +43,8 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
-        <link rel="up" title="MetPy Examples" href="../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+        <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="Natural Neighbor Verification" href="Natural_Neighbor_Verification.html"/>
         <link rel="prev" title="Point Interpolation" href="Point_Interpolation.html"/> 
 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,7 +120,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#calculations">Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#file-formats">File Formats</a></li>
@@ -135,8 +135,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -187,7 +187,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">MetPy Examples</a> &raquo;</li>
+          <li><a href="../index.html">Examples</a> &raquo;</li>
         
       <li>Inverse Distance Verification: Cressman and Barnes</li>
     
@@ -197,7 +197,10 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20examples/gridding/Inverse_Distance_Verification&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/gridding/Inverse_Distance_Verification.py"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -211,7 +214,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="inverse-distance-verification-cressman-and-barnes">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-gridding-inverse-distance-verification-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="inverse-distance-verification-cressman-and-barnes">
 <span id="sphx-glr-examples-gridding-inverse-distance-verification-py"></span><h1>Inverse Distance Verification: Cressman and Barnes<a class="headerlink" href="#inverse-distance-verification-cressman-and-barnes" title="Permalink to this headline">¶</a></h1>
 <p>Compare inverse distance interpolation methods</p>
 <p>Two popular interpolation schemes that use inverse distance weighting of observations are the
@@ -236,13 +243,13 @@ interpolated value.</li>
 <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="kn">import</span> <a href="http://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.cKDTree.html#scipy.spatial.cKDTree" title="View documentation for scipy.spatial.cKDTree"><span class="n">cKDTree</span></a>
 <span class="kn">from</span> <span class="nn">scipy.spatial.distance</span> <span class="kn">import</span> <a href="http://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.distance.cdist.html#scipy.spatial.distance.cdist" title="View documentation for scipy.spatial.distance.cdist"><span class="n">cdist</span></a>
 
-<span class="kn">from</span> <span class="nn">metpy.gridding.gridding_functions</span> <span class="kn">import</span> <span class="n">calc_kappa</span>
-<span class="kn">from</span> <span class="nn">metpy.gridding.interpolation</span> <span class="kn">import</span> <span class="n">barnes_point</span><span class="p">,</span> <span class="n">cressman_point</span>
-<span class="kn">from</span> <span class="nn">metpy.gridding.triangles</span> <span class="kn">import</span> <span class="n">dist_2</span>
+<span class="kn">from</span> <span class="nn">metpy.interpolate.geometry</span> <span class="kn">import</span> <span class="n">dist_2</span>
+<span class="kn">from</span> <span class="nn">metpy.interpolate.points</span> <span class="kn">import</span> <span class="n">barnes_point</span><span class="p">,</span> <span class="n">cressman_point</span>
+<span class="kn">from</span> <span class="nn">metpy.interpolate.tools</span> <span class="kn">import</span> <span class="n">calc_kappa</span>
 
 
 <span class="k">def</span> <span class="nf">draw_circle</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">label</span><span class="p">):</span>
-    <span class="n">th</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+    <span class="n">th</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.linspace.html#numpy.linspace" title="View documentation for numpy.linspace"><span class="n">np</span><span class="o">.</span><span class="n">linspace</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <a href="http://docs.scipy.org/doc/numpy/reference/constants.html#numpy.pi" title="View documentation for numpy.pi"><span class="n">np</span><span class="o">.</span><span class="n">pi</span></a><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
     <span class="n">nx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.cos.html#numpy.cos" title="View documentation for numpy.cos"><span class="n">np</span><span class="o">.</span><span class="n">cos</span></a><span class="p">(</span><span class="n">th</span><span class="p">)</span>
     <span class="n">ny</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">r</span> <span class="o">*</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.sin.html#numpy.sin" title="View documentation for numpy.sin"><span class="n">np</span><span class="o">.</span><span class="n">sin</span></a><span class="p">(</span><span class="n">th</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">nx</span><span class="p">,</span> <span class="n">ny</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span>
@@ -312,7 +319,7 @@ cKDTree’s <code class="docutils literal notranslate"><span class="pre">data</s
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_Inverse_Distance_Verification_001.png" class="align-center" src="../../_images/sphx_glr_Inverse_Distance_Verification_001.png" />
+<img alt="../../_images/sphx_glr_Inverse_Distance_Verification_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Inverse_Distance_Verification_001.png" />
 <p>For each point, we will do a manual check of the interpolation values by doing a step by
 step and visual breakdown.</p>
 <p>Plot the grid point, observations within radius of the grid point, their locations, and
@@ -340,7 +347,7 @@ their distances from the grid point.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_Inverse_Distance_Verification_002.png" class="align-center" src="../../_images/sphx_glr_Inverse_Distance_Verification_002.png" />
+<img alt="../../_images/sphx_glr_Inverse_Distance_Verification_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Inverse_Distance_Verification_002.png" />
 <p>Step through the cressman calculations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dists</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">22.803508502</span><span class="p">,</span> <span class="mf">7.21110255093</span><span class="p">,</span> <span class="mf">31.304951685</span><span class="p">,</span> <span class="mf">33.5410196625</span><span class="p">])</span>
 <span class="n">values</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">0.064</span><span class="p">,</span> <span class="mf">1.156</span><span class="p">,</span> <span class="mf">3.364</span><span class="p">,</span> <span class="mf">0.225</span><span class="p">])</span>
@@ -357,8 +364,8 @@ their distances from the grid point.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Manual</span> <span class="n">cressman</span> <span class="n">value</span> <span class="k">for</span> <span class="n">grid</span> <span class="mi">1</span><span class="p">:</span>        <span class="mf">1.0549944440419021</span>
-<span class="n">Metpy</span> <span class="n">cressman</span> <span class="n">value</span> <span class="k">for</span> <span class="n">grid</span> <span class="mi">1</span><span class="p">:</span>         <span class="mf">1.0549944440416752</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Manual cressman value for grid 1:        1.0549944440419021
+Metpy cressman value for grid 1:         1.0549944440416752
 </pre></div>
 </div>
 <p>Now repeat for grid 1, except use barnes interpolation.</p>
@@ -385,7 +392,7 @@ their distances from the grid point.</p>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_Inverse_Distance_Verification_003.png" class="align-center" src="../../_images/sphx_glr_Inverse_Distance_Verification_003.png" />
+<img alt="../../_images/sphx_glr_Inverse_Distance_Verification_003.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Inverse_Distance_Verification_003.png" />
 <p>Step through barnes calculations.</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">dists</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">9.21954445729</span><span class="p">,</span> <span class="mf">22.4722050542</span><span class="p">,</span> <span class="mf">27.892651362</span><span class="p">,</span> <span class="mf">38.8329756779</span><span class="p">])</span>
 <span class="n">values</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="mf">2.809</span><span class="p">,</span> <span class="mf">6.241</span><span class="p">,</span> <span class="mf">4.489</span><span class="p">,</span> <span class="mf">2.704</span><span class="p">])</span>
@@ -401,12 +408,12 @@ their distances from the grid point.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Manual</span> <span class="n">barnes</span> <span class="n">value</span><span class="p">:</span>     <span class="mf">4.087182410612323</span>
-<span class="n">Metpy</span> <span class="n">barnes</span> <span class="n">value</span><span class="p">:</span>      <span class="mf">4.087182410612151</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>Manual barnes value:     4.087182410612323
+Metpy barnes value:      4.087182410612151
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.110 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.094 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gridding-inverse-distance-verification-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/Inverse_Distance_Verification.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Inverse_Distance_Verification.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -438,7 +445,7 @@ their distances from the grid point.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -475,7 +482,7 @@ their distances from the grid point.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

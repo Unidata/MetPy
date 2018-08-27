@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>GINI Water Vapor Imagery &mdash; MetPy 0.7</title>
+  <title>GINI Water Vapor Imagery &mdash; MetPy 0.9</title>
   
 
   
@@ -43,8 +43,8 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
-        <link rel="up" title="MetPy Examples" href="../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+        <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="NEXRAD Level 3 File" href="NEXRAD_Level_3_File.html"/>
         <link rel="prev" title="Gradient" href="../calculations/Gradient.html"/> 
 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,7 +120,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#calculations">Calculations</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#file-formats">File Formats</a><ul class="current">
@@ -133,8 +133,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -185,7 +185,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">MetPy Examples</a> &raquo;</li>
+          <li><a href="../index.html">Examples</a> &raquo;</li>
         
       <li>GINI Water Vapor Imagery</li>
     
@@ -195,7 +195,10 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20examples/formats/GINI_Water_Vapor&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/formats/GINI_Water_Vapor.py"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -209,7 +212,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="gini-water-vapor-imagery">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-formats-gini-water-vapor-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="gini-water-vapor-imagery">
 <span id="sphx-glr-examples-formats-gini-water-vapor-py"></span><h1>GINI Water Vapor Imagery<a class="headerlink" href="#gini-water-vapor-imagery" title="Permalink to this headline">¶</a></h1>
 <p>Use MetPy’s support for GINI files to read in a water vapor satellite image and plot the
 data using CartoPy.</p>
@@ -228,19 +235,19 @@ data using CartoPy.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><a href="../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile" title="View documentation for metpy.io.GiniFile"><span class="n">GiniFile</span></a><span class="p">:</span> <span class="n">GOES</span><span class="o">-</span><span class="mi">15</span> <span class="n">West</span> <span class="n">CONUS</span> <span class="n">WV</span> <span class="p">(</span><span class="mf">6.5</span><span class="o">/</span><span class="mf">6.7</span> <span class="n">micron</span><span class="p">)</span>
-        <span class="n">Time</span><span class="p">:</span> <span class="mi">2015</span><span class="o">-</span><span class="mi">12</span><span class="o">-</span><span class="mi">08</span> <span class="mi">22</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">19</span>
-        <span class="n">Size</span><span class="p">:</span> <span class="mi">1280</span><span class="n">x1100</span>
-        <span class="n">Projection</span><span class="p">:</span> <span class="n">lambert_conformal</span>
-        <span class="n">Lower</span> <span class="n">Left</span> <span class="n">Corner</span> <span class="p">(</span><span class="n">Lon</span><span class="p">,</span> <span class="n">Lat</span><span class="p">):</span> <span class="p">(</span><span class="o">-</span><span class="mf">133.4588</span><span class="p">,</span> <span class="mf">12.19</span><span class="p">)</span>
-        <span class="n">Resolution</span><span class="p">:</span> <span class="mi">4</span><span class="n">km</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>GiniFile: GOES-15 West CONUS WV (6.5/6.7 micron)
+        Time: 2015-12-08 22:00:19
+        Size: 1280x1100
+        Projection: lambert_conformal
+        Lower Left Corner (Lon, Lat): (-133.4588, 12.19)
+        Resolution: 4km
 </pre></div>
 </div>
 <p>Get a Dataset view of the data (essentially a NetCDF-like interface to the
 underlying data). Pull out the data and (x, y) coordinates. We use <em class="xref py py-obj">metpy.parse_cf</em> to
 handle parsing some netCDF Climate and Forecasting (CF) metadata to simplify working with
 projections.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ds</span> <span class="o">=</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="View documentation for xarray.open_dataset"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 <span class="n">x</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">][:]</span>
 <span class="n">y</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">][:]</span>
 <span class="n">dat</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">&#39;WV&#39;</span><span class="p">)</span>
@@ -261,9 +268,9 @@ the projection information.</p>
 <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_GINI_Water_Vapor_001.png" class="align-center" src="../../_images/sphx_glr_GINI_Water_Vapor_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.382 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<img alt="../../_images/sphx_glr_GINI_Water_Vapor_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_GINI_Water_Vapor_001.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.938 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-formats-gini-water-vapor-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/GINI_Water_Vapor.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">GINI_Water_Vapor.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -295,7 +302,7 @@ the projection information.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -332,7 +339,7 @@ the projection information.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

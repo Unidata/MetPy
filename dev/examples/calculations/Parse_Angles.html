@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Parse angles &mdash; MetPy 0.7</title>
+  <title>Parse angles &mdash; MetPy 0.9</title>
   
 
   
@@ -43,8 +43,8 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
-        <link rel="up" title="MetPy Examples" href="../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+        <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="Dewpoint and Mixing Ratio" href="Dewpoint_and_Mixing_Ratio.html"/>
         <link rel="prev" title="Meteogram" href="../meteogram_metpy.html"/> 
 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,7 +120,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#calculations">Calculations</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Parse angles</a></li>
@@ -133,8 +133,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -185,7 +185,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">MetPy Examples</a> &raquo;</li>
+          <li><a href="../index.html">Examples</a> &raquo;</li>
         
       <li>Parse angles</li>
     
@@ -195,7 +195,10 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20examples/calculations/Parse_Angles&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/calculations/Parse_Angles.py"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -209,7 +212,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="parse-angles">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-calculations-parse-angles-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="parse-angles">
 <span id="sphx-glr-examples-calculations-parse-angles-py"></span><h1>Parse angles<a class="headerlink" href="#parse-angles" title="Permalink to this headline">¶</a></h1>
 <p>Demonstrate how to convert direction strings to angles.</p>
 <p>The code below shows how to parse directional text into angles.
@@ -224,7 +231,7 @@ in handling various string formatting.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">SOUTH</span> <span class="n">SOUTH</span> <span class="n">EAST</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>SOUTH SOUTH EAST
 </pre></div>
 </div>
 <p>Now throw that string into the function to calculate
@@ -234,7 +241,7 @@ the corresponding angle</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">157.5</span> <span class="n">degree</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>157.5 degree
 </pre></div>
 </div>
 <p>The function can also handle arrays of string
@@ -245,11 +252,11 @@ in many different abbrieviations and capitalizations</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="o">&lt;</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">45.0</span><span class="p">,</span> <span class="s1">&#39;degree&#39;</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">45.0</span><span class="p">,</span> <span class="s1">&#39;degree&#39;</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">45.0</span><span class="p">,</span> <span class="s1">&#39;degree&#39;</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">45.0</span><span class="p">,</span> <span class="s1">&#39;degree&#39;</span><span class="p">)</span><span class="o">&gt;</span><span class="p">,</span> <span class="o">&lt;</span><span class="n">Quantity</span><span class="p">(</span><span class="mf">45.0</span><span class="p">,</span> <span class="s1">&#39;degree&#39;</span><span class="p">)</span><span class="o">&gt;</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&lt;Quantity(45.0, &#39;degree&#39;)&gt;, &lt;Quantity(45.0, &#39;degree&#39;)&gt;, &lt;Quantity(45.0, &#39;degree&#39;)&gt;, &lt;Quantity(45.0, &#39;degree&#39;)&gt;, &lt;Quantity(45.0, &#39;degree&#39;)&gt;)
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.000 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.001 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-calculations-parse-angles-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/Parse_Angles.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Parse_Angles.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -281,7 +288,7 @@ in many different abbrieviations and capitalizations</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -318,7 +325,7 @@ in many different abbrieviations and capitalizations</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

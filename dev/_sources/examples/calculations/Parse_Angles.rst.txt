@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_examples_calculations_Parse_Angles.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_examples_calculations_Parse_Angles.py:
 
@@ -39,7 +43,9 @@ Create a test value of a directional text
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     SOUTH SOUTH EAST
 
@@ -60,7 +66,9 @@ the corresponding angle
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     157.5 degree
 
@@ -81,18 +89,24 @@ in many different abbrieviations and capitalizations
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     (<Quantity(45.0, 'degree')>, <Quantity(45.0, 'degree')>, <Quantity(45.0, 'degree')>, <Quantity(45.0, 'degree')>, <Quantity(45.0, 'degree')>)
 
 
-**Total running time of the script:** ( 0 minutes  0.000 seconds)
+**Total running time of the script:** ( 0 minutes  0.001 seconds)
 
+
+.. _sphx_glr_download_examples_calculations_Parse_Angles.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

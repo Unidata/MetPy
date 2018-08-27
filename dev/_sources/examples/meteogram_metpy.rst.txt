@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_examples_meteogram_metpy.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_examples_meteogram_metpy.py:
 
@@ -12,7 +16,7 @@ Plots time series data as a meteogram.
 
 
 .. image:: /examples/images/sphx_glr_meteogram_metpy_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -230,13 +234,17 @@ Plots time series data as a meteogram.
     fig.subplots_adjust(hspace=0.5)
     plt.show()
 
-**Total running time of the script:** ( 0 minutes  3.266 seconds)
+**Total running time of the script:** ( 0 minutes  0.516 seconds)
 
+
+.. _sphx_glr_download_examples_meteogram_metpy.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

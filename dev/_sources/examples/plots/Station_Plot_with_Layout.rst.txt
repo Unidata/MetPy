@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_examples_plots_Station_Plot_with_Layout.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_examples_plots_Station_Plot_with_Layout.py:
 
@@ -27,7 +31,7 @@ of a station plot.
     import matplotlib.pyplot as plt
     import pandas as pd
 
-    from metpy.calc import get_wind_components
+    from metpy.calc import wind_components
     from metpy.cbook import get_test_data
     from metpy.plots import (add_metpy_logo, simple_layout, StationPlot,
                              StationPlotLayout, wx_code_map)
@@ -136,8 +140,8 @@ Now perform a few conversions:
 
     # Get the wind components, converting from m/s to knots as will be appropriate
     # for the station plot
-    u, v = get_wind_components(data_arr['wind_speed'].values * units('m/s'),
-                               data_arr['wind_dir'].values * units.degree)
+    u, v = wind_components(data_arr['wind_speed'].values * units('m/s'),
+                           data_arr['wind_dir'].values * units.degree)
     data['eastward_wind'], data['northward_wind'] = u, v
 
     # Convert the fraction value into a code of 0-8, which can be used to pull out
@@ -219,7 +223,7 @@ The payoff
 
 
 .. image:: /examples/plots/images/sphx_glr_Station_Plot_with_Layout_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -277,18 +281,22 @@ or instead, a custom layout can be used:
 
 
 .. image:: /examples/plots/images/sphx_glr_Station_Plot_with_Layout_002.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
 
-**Total running time of the script:** ( 0 minutes  0.081 seconds)
+**Total running time of the script:** ( 0 minutes  0.136 seconds)
 
+
+.. _sphx_glr_download_examples_plots_Station_Plot_with_Layout.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

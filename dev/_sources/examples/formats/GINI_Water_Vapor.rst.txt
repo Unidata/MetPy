@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_examples_formats_GINI_Water_Vapor.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_examples_formats_GINI_Water_Vapor.py:
 
@@ -41,7 +45,9 @@ data using CartoPy.
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     GiniFile: GOES-15 West CONUS WV (6.5/6.7 micron)
             Time: 2015-12-08 22:00:19
@@ -93,18 +99,22 @@ the projection information.
 
 
 .. image:: /examples/formats/images/sphx_glr_GINI_Water_Vapor_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
 
-**Total running time of the script:** ( 0 minutes  0.382 seconds)
+**Total running time of the script:** ( 0 minutes  0.938 seconds)
 
+
+.. _sphx_glr_download_examples_formats_GINI_Water_Vapor.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

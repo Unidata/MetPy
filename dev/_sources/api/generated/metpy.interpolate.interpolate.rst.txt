@@ -1,0 +1,12 @@
+interpolate
+=============================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: interpolate
+
+.. include:: metpy.interpolate.interpolate.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

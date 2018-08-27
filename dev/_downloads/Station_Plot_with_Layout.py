@@ -22,7 +22,7 @@ import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
 import pandas as pd
 
-from metpy.calc import get_wind_components
+from metpy.calc import wind_components
 from metpy.cbook import get_test_data
 from metpy.plots import (add_metpy_logo, simple_layout, StationPlot,
                          StationPlotLayout, wx_code_map)
@@ -91,8 +91,8 @@ data['air_pressure_at_sea_level'] = data_arr['slp'].values * units('mbar')
 
 # Get the wind components, converting from m/s to knots as will be appropriate
 # for the station plot
-u, v = get_wind_components(data_arr['wind_speed'].values * units('m/s'),
-                           data_arr['wind_dir'].values * units.degree)
+u, v = wind_components(data_arr['wind_speed'].values * units('m/s'),
+                       data_arr['wind_dir'].values * units.degree)
 data['eastward_wind'], data['northward_wind'] = u, v
 
 # Convert the fraction value into a code of 0-8, which can be used to pull out

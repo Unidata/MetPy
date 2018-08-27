@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>XArray Projection Handling &mdash; MetPy 0.7</title>
+  <title>XArray Projection Handling &mdash; MetPy 0.9</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../index.html"/>
-        <link rel="up" title="MetPy Examples" href="index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../index.html"/>
+        <link rel="up" title="Examples" href="index.html"/>
         <link rel="next" title="Advanced Sounding" href="Advanced_Sounding.html"/>
-        <link rel="prev" title="MetPy Examples" href="index.html"/> 
+        <link rel="prev" title="Examples" href="index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,12 +120,13 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">XArray Projection Handling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Four_Panel_Map.html">Four Panel Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cross_section.html">Cross Section Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isentropic_example.html">Isentropic Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="meteogram_metpy.html">Meteogram</a></li>
 </ul>
@@ -136,8 +137,8 @@
 <li class="toctree-l2"><a class="reference internal" href="index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -188,7 +189,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">MetPy Examples</a> &raquo;</li>
+          <li><a href="index.html">Examples</a> &raquo;</li>
         
       <li>XArray Projection Handling</li>
     
@@ -198,7 +199,10 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20examples/XArray_Projections&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/XArray_Projections.py"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -212,11 +216,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="xarray-projection-handling">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-xarray-projections-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="xarray-projection-handling">
 <span id="sphx-glr-examples-xarray-projections-py"></span><h1>XArray Projection Handling<a class="headerlink" href="#xarray-projection-handling" title="Permalink to this headline">¶</a></h1>
 <p>Use MetPy’s XArray accessors to simplify opening a data file and plotting
 data on a map using CartoPy.</p>
-<img alt="../_images/sphx_glr_XArray_Projections_001.png" class="align-center" src="../_images/sphx_glr_XArray_Projections_001.png" />
+<img alt="../_images/sphx_glr_XArray_Projections_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_XArray_Projections_001.png" />
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="kn">as</span> <span class="nn">cfeature</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">xarray</span> <span class="kn">as</span> <span class="nn">xr</span>
@@ -224,7 +232,7 @@ data on a map using CartoPy.</p>
 <span class="c1"># Any import of metpy will activate the accessors</span>
 <span class="kn">from</span> <span class="nn">metpy.testing</span> <span class="kn">import</span> <span class="n">get_test_data</span>
 
-<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+<span class="n">ds</span> <span class="o">=</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="View documentation for xarray.open_dataset"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
 <span class="n">data_var</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">(</span><span class="s1">&#39;Temperature&#39;</span><span class="p">)</span>
 
 <span class="n">x</span> <span class="o">=</span> <span class="n">data_var</span><span class="o">.</span><span class="n">x</span>
@@ -243,8 +251,8 @@ data on a map using CartoPy.</p>
 <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.427 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<p><strong>Total running time of the script:</strong> ( 0 minutes  2.110 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-xarray-projections-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/XArray_Projections.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">XArray_Projections.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -266,7 +274,7 @@ data on a map using CartoPy.</p>
         <a href="Advanced_Sounding.html" class="btn btn-neutral float-right" title="Advanced Sounding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="index.html" class="btn btn-neutral" title="MetPy Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral" title="Examples" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -276,7 +284,7 @@ data on a map using CartoPy.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -313,7 +321,7 @@ data on a map using CartoPy.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

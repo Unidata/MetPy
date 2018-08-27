@@ -1,0 +1,461 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Units Tutorial &mdash; MetPy 0.9</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/tutorials/unit_tutorial.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../genindex.html"/>
+        <link rel="search" title="Search" href="../search.html"/>
+    <link rel="top" title="MetPy 0.9" href="../index.html"/>
+        <link rel="up" title="Tutorials" href="index.html"/>
+        <link rel="next" title="Upper Air Sounding Tutorial" href="upperair_soundings.html"/>
+        <link rel="prev" title="Tutorials" href="index.html"/> 
+
+  
+  <script src="../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>0.9</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Units Tutorial</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#simple-calculation">Simple Calculation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#temperature">Temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#compound-units">Compound Units</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#common-mistakes">Common Mistakes</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="upperair_soundings.html">Upper Air Sounding Tutorial</a></li>
+<li class="toctree-l2"><a class="reference internal" href="xarray_tutorial.html">xarray with MetPy Tutorial</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="index.html">Tutorials</a> &raquo;</li>
+        
+      <li>Units Tutorial</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../tutorials/unit_tutorial.py"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-tutorials-unit-tutorial-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="units-tutorial">
+<span id="sphx-glr-tutorials-unit-tutorial-py"></span><h1>Units Tutorial<a class="headerlink" href="#units-tutorial" title="Permalink to this headline">¶</a></h1>
+<p>Early in our scientific careers we all learn about the importance of paying
+attention to units in our calculations. Unit conversions can still get the best
+of us and have caused more than one major technical disaster, including the
+crash and complete loss of the $327 million Mars Climate Orbiter.</p>
+<p>In MetPy, we use the pint library and a custom unit registry to help prevent
+unit mistakes in calculations. That means that every quantity you pass to MetPy
+should have units attached, just like if you were doing the calculation on
+paper!</p>
+<p>In MetPy units are attached by multiplying them with the integer, float, array,
+etc. In this tutorial we’ll show some examples of working with units and get
+you on your way to utilizing the computation functions in MetPy.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
+</pre></div>
+</div>
+<div class="section" id="simple-calculation">
+<h2>Simple Calculation<a class="headerlink" href="#simple-calculation" title="Permalink to this headline">¶</a></h2>
+<p>Let’s say we want to calculate the area of a rectangle. It so happens that
+one of our colleagues measures their side of the rectangle in imperial units
+and the other in metric units. No problem! First we need to attach units to
+our measurements. For many units the easiest way is by find the unit as an
+attribute of the unit registry:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">length</span> <span class="o">=</span> <span class="mf">10.4</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">inches</span>
+<span class="n">width</span> <span class="o">=</span> <span class="mi">20</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">meters</span>
+<span class="k">print</span><span class="p">(</span><span class="n">length</span><span class="p">,</span> <span class="n">width</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>10.4 inch 20 meter
+</pre></div>
+</div>
+<p>Don’t forget that you can use tab completion to see what units are available!
+Just about every imaginable quantity is there, but if you find one that isn’t,
+we’re happy to talk about adding it.</p>
+<p>While it may seem like a lot of trouble, let’s compute the area of a rectangle
+defined by our length and width variables above. Without units attached, you’d
+need to remember to perform a unit conversion before multiplying or you would
+end up with an area in inch-meters and likely forget about it. With units
+attached, the units are tracked for you.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">area</span> <span class="o">=</span> <span class="n">length</span> <span class="o">*</span> <span class="n">width</span>
+<span class="k">print</span><span class="p">(</span><span class="n">area</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>208.0 inch * meter
+</pre></div>
+</div>
+<p>That’s great, now we have an area, but it is not in a very useful unit still.
+Units can be converted using the <em class="xref py py-obj">to()</em> method. While you won’t see square meters in
+the units list, we can parse complex/compound units as strings:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">area</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m^2&#39;</span><span class="p">))</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>5.2832 meter ** 2
+</pre></div>
+</div>
+</div>
+<div class="section" id="temperature">
+<h2>Temperature<a class="headerlink" href="#temperature" title="Permalink to this headline">¶</a></h2>
+<p>Temperature units are actually relatively tricky (more like absolutely tricky as
+you’ll see). Temperature is a non-multiplicative unit - they are in a system
+with a reference point. That means that not only is there a scaling factor, but
+also an offset. This makes the math and unit book-keeping a little more complex.
+Imagine adding 10 degrees Celsius to 100 degrees Celsius. Is the answer 110
+degrees Celsius or 383.15 degrees Celsius (283.15 K + 373.15 K)? That’s why
+there are delta degrees units in the unit registry for offset units. For more
+examples and explanation you can watch MetPy Monday #13:
+<a class="reference external" href="https://www.youtube.com/watch?v=iveJCqxe3Z4">https://www.youtube.com/watch?v=iveJCqxe3Z4</a>.</p>
+<p>Let’s take a look at how this works and fails:</p>
+<p>We would expect this to fail because we cannot add two offset units (and it does
+fail as an “Ambiguous operation with offset unit”).</p>
+<p><em class="xref py py-obj">10 * units.degC + 5 * units.degC</em></p>
+<p>On the other hand, we can subtract two offset quantities and get a delta. A delta unit is
+pint’s way of representing a relative change in two offset units, indicating that this is
+not an absolute value of 5 degrees Celsius, but a relative change of 5 degrees Celsius.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">degC</span> <span class="o">-</span> <span class="mi">5</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>5 delta_degC
+</pre></div>
+</div>
+<p>We can add a delta to an offset unit as well since it is a relative change.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="mi">25</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">degC</span> <span class="o">+</span> <span class="mi">5</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">delta_degF</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>27.77777777777778 degC
+</pre></div>
+</div>
+<p>Absolute temperature scales like Kelvin and Rankine do not have an offset
+and therefore can be used in addition/subtraction without the need for a
+delta version of the unit.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="mi">273</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>283 kelvin
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="mi">273</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span> <span class="o">-</span> <span class="mi">10</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">kelvin</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>263 kelvin
+</pre></div>
+</div>
+</div>
+<div class="section" id="compound-units">
+<h2>Compound Units<a class="headerlink" href="#compound-units" title="Permalink to this headline">¶</a></h2>
+<p>We can create compound units for things like speed by parsing a string of
+units. Abbreviations or full unit names are acceptable.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randint.html#numpy.random.randint" title="View documentation for numpy.random.randint"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randint.html#numpy.random.randint" title="View documentation for numpy.random.randint"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;meters/second&#39;</span><span class="p">)</span>
+
+<span class="k">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+<span class="k">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[11.  9. 13.  6.  2. 11. 12.  4.  1. 13.] meter / second
+[ 5.  3.  4.  4. 11. 11.  3.  7.  1.  1.] meter / second
+</pre></div>
+</div>
+</div>
+<div class="section" id="common-mistakes">
+<h2>Common Mistakes<a class="headerlink" href="#common-mistakes" title="Permalink to this headline">¶</a></h2>
+<p>There are a few common mistakes the new users often make. Be sure to check
+these when you’re having issues</p>
+<ul class="simple">
+<li>Pressure units are <em class="xref py py-obj">mbar</em> or <em class="xref py py-obj">hPa</em> for common atmospheric measurements. The
+unit <em class="xref py py-obj">mb</em> is actually millibarns.</li>
+<li>When using masked arrays, units must be multiplied on the left side. This
+will be addressed in the future, but is a current limitation in the
+ecosystem. The expected error will be
+<em class="xref py py-obj">AttributeError: ‘MaskedArray’ object has no attribute ‘units’</em></li>
+</ul>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.005 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-unit-tutorial-py">
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/unit_tutorial.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">unit_tutorial.py</span></code></a></div>
+<div class="sphx-glr-download docutils container">
+<a class="reference download internal" href="../_downloads/unit_tutorial.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">unit_tutorial.ipynb</span></code></a></div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="upperair_soundings.html" class="btn btn-neutral float-right" title="Upper Air Sounding Tutorial" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="index.html" class="btn btn-neutral" title="Tutorials" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Aug 27, 2018 at 22:30:03.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../',
+            VERSION:'0.9.0+2.ge416110',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../_static/jquery.js"></script>
+      <script type="text/javascript" src="../_static/underscore.js"></script>
+      <script type="text/javascript" src="../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../_static/pop_ver.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_examples_gridding_Inverse_Distance_Verification.py:
 
@@ -35,9 +39,9 @@ Algorithmically:
     from scipy.spatial import cKDTree
     from scipy.spatial.distance import cdist
 
-    from metpy.gridding.gridding_functions import calc_kappa
-    from metpy.gridding.interpolation import barnes_point, cressman_point
-    from metpy.gridding.triangles import dist_2
+    from metpy.interpolate.geometry import dist_2
+    from metpy.interpolate.points import barnes_point, cressman_point
+    from metpy.interpolate.tools import calc_kappa
 
 
     def draw_circle(ax, x, y, r, m, label):
@@ -168,7 +172,7 @@ Plot all of the affiliated information and interpolation values.
 
 
 .. image:: /examples/gridding/images/sphx_glr_Inverse_Distance_Verification_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -209,7 +213,7 @@ their distances from the grid point.
 
 
 .. image:: /examples/gridding/images/sphx_glr_Inverse_Distance_Verification_002.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -239,7 +243,9 @@ Step through the cressman calculations.
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     Manual cressman value for grid 1:        1.0549944440419021
     Metpy cressman value for grid 1:         1.0549944440416752
@@ -278,7 +284,7 @@ Now repeat for grid 1, except use barnes interpolation.
 
 
 .. image:: /examples/gridding/images/sphx_glr_Inverse_Distance_Verification_003.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -306,19 +312,25 @@ Step through barnes calculations.
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     Manual barnes value:     4.087182410612323
     Metpy barnes value:      4.087182410612151
 
 
-**Total running time of the script:** ( 0 minutes  0.110 seconds)
+**Total running time of the script:** ( 0 minutes  0.094 seconds)
 
+
+.. _sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

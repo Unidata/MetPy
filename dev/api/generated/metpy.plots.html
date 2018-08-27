@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>plots &mdash; MetPy 0.7</title>
+  <title>plots &mdash; MetPy 0.9</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
-        <link rel="up" title="The MetPy API" href="../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+        <link rel="up" title="Reference Guide" href="../index.html"/>
         <link rel="next" title="add_metpy_logo" href="metpy.plots.add_metpy_logo.html"/>
-        <link rel="prev" title="windchill" href="metpy.calc.windchill.html"/> 
+        <link rel="prev" title="log_interp" href="metpy.calc.log_interp.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,9 +120,9 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">MetPy Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">The MetPy API</a><ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
@@ -132,6 +132,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_timestamp.html">add_timestamp</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
@@ -140,6 +141,7 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
@@ -193,7 +195,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">The MetPy API</a> &raquo;</li>
+          <li><a href="../index.html">Reference Guide</a> &raquo;</li>
         
       <li>plots</li>
     
@@ -236,7 +238,10 @@
 <tr class="row-odd"><td><a class="reference internal" href="metpy.plots.add_unidata_logo.html#metpy.plots.add_unidata_logo" title="metpy.plots.add_unidata_logo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_unidata_logo</span></code></a>(fig[,&nbsp;x,&nbsp;y,&nbsp;zorder,&nbsp;size])</td>
 <td>Add the Unidata logo to a figure.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.read_colortable.html#metpy.plots.read_colortable" title="metpy.plots.read_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_colortable</span></code></a>(fobj)</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.plots.convert_gempak_color.html#metpy.plots.convert_gempak_color" title="metpy.plots.convert_gempak_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_gempak_color</span></code></a>(c[,&nbsp;style])</td>
+<td>Convert GEMPAK color numbers into corresponding Matplotlib colors.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.read_colortable.html#metpy.plots.read_colortable" title="metpy.plots.read_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_colortable</span></code></a>(fobj)</td>
 <td>Read colortable information from a file.</td>
 </tr>
 </tbody>
@@ -277,7 +282,7 @@
         <a href="metpy.plots.add_metpy_logo.html" class="btn btn-neutral float-right" title="add_metpy_logo" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.calc.windchill.html" class="btn btn-neutral" title="windchill" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.calc.log_interp.html" class="btn btn-neutral" title="log_interp" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -287,7 +292,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -324,7 +329,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

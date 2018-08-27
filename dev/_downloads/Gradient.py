@@ -36,7 +36,7 @@ y = np.array([[1, 1, 1],
 
 ###########################################
 # Calculate the gradient using the coordinates of the data
-grad = mpcalc.gradient(data, x=(y, x))
+grad = mpcalc.gradient(data, coordinates=(y, x))
 print('Gradient in y direction: ', grad[0])
 print('Gradient in x direction: ', grad[1])
 

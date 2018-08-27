@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_tutorials_upperair_soundings.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_tutorials_upperair_soundings.py:
 
@@ -52,8 +56,8 @@ some of MetPy's sample data. This event is the Veterans Day tornado outbreak in 
     df = pd.read_fwf(get_test_data('nov11_sounding.txt', as_file_obj=False),
                      skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
-    df['u_wind'], df['v_wind'] = mpcalc.get_wind_components(df['speed'],
-                                                            np.deg2rad(df['direction']))
+    df['u_wind'], df['v_wind'] = mpcalc.wind_components(df['speed'],
+                                                        np.deg2rad(df['direction']))
 
     # Drop any rows with all NaN values for T, Td, winds
     df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
@@ -77,7 +81,7 @@ some of MetPy's sample data. This event is the Veterans Day tornado outbreak in 
     Td = df['dewpoint'].values * units.degC
     wind_speed = df['speed'].values * units.knots
     wind_dir = df['direction'].values * units.degrees
-    u, v = mpcalc.get_wind_components(wind_speed, wind_dir)
+    u, v = mpcalc.wind_components(wind_speed, wind_dir)
 
 
 
@@ -116,7 +120,9 @@ sounding. The MetPy calc module has many such calculations already implemented!
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     923.0963220202037 hectopascal 15.595422727825456 degC
 
@@ -168,7 +174,7 @@ These lines perform the following tasks:
 
 
 .. image:: /tutorials/images/sphx_glr_upperair_soundings_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -222,7 +228,7 @@ useful when performing further analysis on the Skew-T diagram. Often the
 
 
 .. image:: /tutorials/images/sphx_glr_upperair_soundings_002.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -285,18 +291,22 @@ which are not drawn.
 
 
 .. image:: /tutorials/images/sphx_glr_upperair_soundings_003.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
 
-**Total running time of the script:** ( 0 minutes  1.334 seconds)
+**Total running time of the script:** ( 0 minutes  1.774 seconds)
 
+
+.. _sphx_glr_download_tutorials_upperair_soundings.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

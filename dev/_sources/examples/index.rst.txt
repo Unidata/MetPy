@@ -2,8 +2,8 @@
 
 .. _examples-index:
 
-MetPy Examples
-==============
+Examples
+========
 
 
 .. _general-examples:
@@ -94,6 +94,26 @@ Examples of using a variety of MetPy's functionality together.
    :hidden:
 
    /examples/Four_Panel_Map
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="The MetPy function `metpy.interpolate.cross_section` can obtain a cross-sectional slice through...">
+
+.. only:: html
+
+    .. figure:: /examples/images/thumb/sphx_glr_cross_section_thumb.png
+
+        :ref:`sphx_glr_examples_cross_section.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/cross_section
 
 .. raw:: html
 
@@ -405,6 +425,26 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to plot US counties at all three available resolutions. ">
+
+.. only:: html
+
+    .. figure:: /examples/plots/images/thumb/sphx_glr_US_Counties_thumb.png
+
+        :ref:`sphx_glr_examples_plots_US_Counties.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/US_Counties
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s `GridSpec` layout capability. ">
 
 .. only:: html
@@ -511,6 +551,7 @@ Examples using MetPy's various specialty plotting routines.
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-gallery
 
 
   .. container:: sphx-glr-download

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Four Panel Map &mdash; MetPy 0.7</title>
+  <title>Four Panel Map &mdash; MetPy 0.9</title>
   
 
   
@@ -43,9 +43,9 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../index.html"/>
-        <link rel="up" title="MetPy Examples" href="index.html"/>
-        <link rel="next" title="Isentropic Analysis" href="isentropic_example.html"/>
+    <link rel="top" title="MetPy 0.9" href="../index.html"/>
+        <link rel="up" title="Examples" href="index.html"/>
+        <link rel="next" title="Cross Section Analysis" href="cross_section.html"/>
         <link rel="prev" title="Sigma to Pressure Interpolation" href="sigma_to_pressure_interpolation.html"/> 
 
   
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,12 +120,13 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="XArray_Projections.html">XArray Projection Handling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Four Panel Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cross_section.html">Cross Section Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isentropic_example.html">Isentropic Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="meteogram_metpy.html">Meteogram</a></li>
 </ul>
@@ -136,8 +137,8 @@
 <li class="toctree-l2"><a class="reference internal" href="index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -188,7 +189,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">MetPy Examples</a> &raquo;</li>
+          <li><a href="index.html">Examples</a> &raquo;</li>
         
       <li>Four Panel Map</li>
     
@@ -198,7 +199,10 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20examples/Four_Panel_Map&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/Four_Panel_Map.py"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -212,7 +216,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="four-panel-map">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-four-panel-map-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="four-panel-map">
 <span id="sphx-glr-examples-four-panel-map-py"></span><h1>Four Panel Map<a class="headerlink" href="#four-panel-map" title="Permalink to this headline">¶</a></h1>
 <p>By reading model output data from a netCDF file, we can create a four panel plot showing:</p>
 <ul class="simple">
@@ -245,27 +253,27 @@
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open the example netCDF data</span>
-<span class="n">ds</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;gfs_output.nc&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span>
+<span class="n">ds</span> <span class="o">=</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="View documentation for xarray.open_dataset"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;gfs_output.nc&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span>
 <span class="k">print</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">xarray</span><span class="o">.</span><span class="n">Dataset</span><span class="o">&gt;</span>
-<span class="n">Dimensions</span><span class="p">:</span>       <span class="p">(</span><span class="n">lat</span><span class="p">:</span> <span class="mi">201</span><span class="p">,</span> <span class="n">lon</span><span class="p">:</span> <span class="mi">361</span><span class="p">,</span> <span class="n">time</span><span class="p">:</span> <span class="mi">1</span><span class="p">)</span>
-<span class="n">Coordinates</span><span class="p">:</span>
-  <span class="o">*</span> <span class="n">lat</span>           <span class="p">(</span><span class="n">lat</span><span class="p">)</span> <span class="n">float32</span> <span class="mf">65.0</span> <span class="mf">64.75</span> <span class="mf">64.5</span> <span class="mf">64.25</span> <span class="mf">64.0</span> <span class="mf">63.75</span> <span class="mf">63.5</span> <span class="mf">63.25</span> <span class="o">...</span>
-  <span class="o">*</span> <span class="n">lon</span>           <span class="p">(</span><span class="n">lon</span><span class="p">)</span> <span class="n">float32</span> <span class="mf">220.0</span> <span class="mf">220.25</span> <span class="mf">220.5</span> <span class="mf">220.75</span> <span class="mf">221.0</span> <span class="mf">221.25</span> <span class="mf">221.5</span> <span class="o">...</span>
-  <span class="o">*</span> <span class="n">time</span>          <span class="p">(</span><span class="n">time</span><span class="p">)</span> <span class="n">datetime64</span><span class="p">[</span><span class="n">ns</span><span class="p">]</span> <span class="mi">2017</span><span class="o">-</span><span class="mi">02</span><span class="o">-</span><span class="mi">28</span><span class="n">T21</span><span class="p">:</span><span class="mi">00</span><span class="p">:</span><span class="mi">00</span>
-<span class="n">Data</span> <span class="n">variables</span><span class="p">:</span>
-    <span class="n">temp</span>          <span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span> <span class="n">float64</span> <span class="o">...</span>
-    <span class="n">precip_water</span>  <span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span> <span class="n">float64</span> <span class="o">...</span>
-    <span class="n">heights_300</span>   <span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span> <span class="n">float64</span> <span class="o">...</span>
-    <span class="n">heights_500</span>   <span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span> <span class="n">float64</span> <span class="o">...</span>
-    <span class="n">vort_500</span>      <span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span> <span class="n">float64</span> <span class="o">...</span>
-    <span class="n">winds_300</span>     <span class="p">(</span><span class="n">time</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span><span class="p">)</span> <span class="n">float64</span> <span class="o">...</span>
-<span class="n">Attributes</span><span class="p">:</span>
-    <span class="n">title</span><span class="p">:</span>     <span class="n">Test</span> <span class="n">GFS</span> <span class="n">Output</span> <span class="n">Data</span>
-    <span class="n">subtitle</span><span class="p">:</span>  <span class="n">For</span> <span class="n">MetPy</span> <span class="n">examples</span> <span class="ow">and</span> <span class="n">tests</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.Dataset&gt;
+Dimensions:       (lat: 201, lon: 361, time: 1)
+Coordinates:
+  * lat           (lat) float32 65.0 64.75 64.5 64.25 64.0 63.75 63.5 63.25 ...
+  * lon           (lon) float32 220.0 220.25 220.5 220.75 221.0 221.25 221.5 ...
+  * time          (time) datetime64[ns] 2017-02-28T21:00:00
+Data variables:
+    temp          (time, lat, lon) float64 ...
+    precip_water  (time, lat, lon) float64 ...
+    heights_300   (time, lat, lon) float64 ...
+    heights_500   (time, lat, lon) float64 ...
+    vort_500      (time, lat, lon) float64 ...
+    winds_300     (time, lat, lon) float64 ...
+Attributes:
+    title:     Test GFS Output Data
+    subtitle:  For MetPy examples and tests
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Combine 1D latitude and longitudes into a 2D grid of locations</span>
@@ -342,9 +350,9 @@
 <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_Four_Panel_Map_001.png" class="align-center" src="../_images/sphx_glr_Four_Panel_Map_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  11.089 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<img alt="../_images/sphx_glr_Four_Panel_Map_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_Four_Panel_Map_001.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  11.285 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-four-panel-map-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/Four_Panel_Map.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Four_Panel_Map.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -363,7 +371,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="isentropic_example.html" class="btn btn-neutral float-right" title="Isentropic Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="cross_section.html" class="btn btn-neutral float-right" title="Cross Section Analysis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="sigma_to_pressure_interpolation.html" class="btn btn-neutral" title="Sigma to Pressure Interpolation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -376,7 +384,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -413,7 +421,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

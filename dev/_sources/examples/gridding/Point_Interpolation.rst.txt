@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_examples_gridding_Point_Interpolation.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_examples_gridding_Point_Interpolation.py:
 
@@ -20,8 +24,8 @@ Compares different point interpolation approaches.
     import numpy as np
 
     from metpy.cbook import get_test_data
-    from metpy.gridding.gridding_functions import (interpolate, remove_nan_observations,
-                                                   remove_repeat_coordinates)
+    from metpy.interpolate import (interpolate_to_grid, remove_nan_observations,
+                                   remove_repeat_coordinates)
     from metpy.plots import add_metpy_logo
 
 
@@ -105,7 +109,7 @@ Scipy.interpolate linear
 
 .. code-block:: python
 
-    gx, gy, img = interpolate(x, y, temp, interp_type='linear', hres=75000)
+    gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='linear', hres=75000)
     img = np.ma.masked_where(np.isnan(img), img)
     fig, view = basic_map(to_proj)
     mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
@@ -115,7 +119,7 @@ Scipy.interpolate linear
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -128,7 +132,7 @@ Natural neighbor interpolation (MetPy implementation)
 
 .. code-block:: python
 
-    gx, gy, img = interpolate(x, y, temp, interp_type='natural_neighbor', hres=75000)
+    gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='natural_neighbor', hres=75000)
     img = np.ma.masked_where(np.isnan(img), img)
     fig, view = basic_map(to_proj)
     mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
@@ -138,7 +142,7 @@ Natural neighbor interpolation (MetPy implementation)
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_002.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -155,8 +159,8 @@ min_neighbors = 1
 
 .. code-block:: python
 
-    gx, gy, img = interpolate(x, y, temp, interp_type='cressman', minimum_neighbors=1, hres=75000,
-                              search_radius=100000)
+    gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='cressman', minimum_neighbors=1,
+                                      hres=75000, search_radius=100000)
     img = np.ma.masked_where(np.isnan(img), img)
     fig, view = basic_map(to_proj)
     mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
@@ -166,7 +170,7 @@ min_neighbors = 1
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_003.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -181,7 +185,8 @@ min_neighbors = 3
 
 .. code-block:: python
 
-    gx, gy, img1 = interpolate(x, y, temp, interp_type='barnes', hres=75000, search_radius=100000)
+    gx, gy, img1 = interpolate_to_grid(x, y, temp, interp_type='barnes', hres=75000,
+                                       search_radius=100000)
     img1 = np.ma.masked_where(np.isnan(img1), img1)
     fig, view = basic_map(to_proj)
     mmb = view.pcolormesh(gx, gy, img1, cmap=cmap, norm=norm)
@@ -191,7 +196,7 @@ min_neighbors = 3
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_004.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -204,8 +209,8 @@ linear
 
 .. code-block:: python
 
-    gx, gy, img = interpolate(x, y, temp, interp_type='rbf', hres=75000, rbf_func='linear',
-                              rbf_smooth=0)
+    gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='rbf', hres=75000, rbf_func='linear',
+                                      rbf_smooth=0)
     img = np.ma.masked_where(np.isnan(img), img)
     fig, view = basic_map(to_proj)
     mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
@@ -216,18 +221,22 @@ linear
 
 
 .. image:: /examples/gridding/images/sphx_glr_Point_Interpolation_005.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
 
-**Total running time of the script:** ( 0 minutes  50.402 seconds)
+**Total running time of the script:** ( 1 minutes  24.053 seconds)
 
+
+.. _sphx_glr_download_examples_gridding_Point_Interpolation.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

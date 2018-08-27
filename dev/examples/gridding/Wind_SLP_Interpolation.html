@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Wind and Sea Level Pressure Interpolation &mdash; MetPy 0.7</title>
+  <title>Wind and Sea Level Pressure Interpolation &mdash; MetPy 0.9</title>
   
 
   
@@ -43,8 +43,8 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
-        <link rel="up" title="MetPy Examples" href="../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+        <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="Point Interpolation" href="Point_Interpolation.html"/>
         <link rel="prev" title="Find Natural Neighbors Verification" href="Find_Natural_Neighbors_Verification.html"/> 
 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,7 +120,7 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#calculations">Calculations</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#file-formats">File Formats</a></li>
@@ -135,8 +135,8 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -187,7 +187,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">MetPy Examples</a> &raquo;</li>
+          <li><a href="../index.html">Examples</a> &raquo;</li>
         
       <li>Wind and Sea Level Pressure Interpolation</li>
     
@@ -197,7 +197,10 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20examples/gridding/Wind_SLP_Interpolation&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/gridding/Wind_SLP_Interpolation.py"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -211,7 +214,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="wind-and-sea-level-pressure-interpolation">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-gridding-wind-slp-interpolation-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="wind-and-sea-level-pressure-interpolation">
 <span id="sphx-glr-examples-gridding-wind-slp-interpolation-py"></span><h1>Wind and Sea Level Pressure Interpolation<a class="headerlink" href="#wind-and-sea-level-pressure-interpolation" title="Permalink to this headline">¶</a></h1>
 <p>Interpolate sea level pressure, as well as wind component data,
 to make a consistent looking analysis, featuring contours of pressure and wind barbs.</p>
@@ -222,9 +229,9 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
 
-<span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <a href="../../api/generated/metpy.calc.get_wind_components.html#metpy.calc.get_wind_components" title="View documentation for metpy.calc.get_wind_components"><span class="n">get_wind_components</span></a>
+<span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <a href="../../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components" title="View documentation for metpy.calc.wind_components"><span class="n">wind_components</span></a>
 <span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.gridding.gridding_functions</span> <span class="kn">import</span> <a href="../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="View documentation for metpy.gridding.gridding_functions.interpolate"><span class="n">interpolate</span></a><span class="p">,</span> <a href="../../api/generated/metpy.gridding.remove_nan_observations.html#metpy.gridding.remove_nan_observations" title="View documentation for metpy.gridding.gridding_functions.remove_nan_observations"><span class="n">remove_nan_observations</span></a>
+<span class="kn">from</span> <span class="nn">metpy.interpolate</span> <span class="kn">import</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">,</span> <a href="../../api/generated/metpy.interpolate.remove_nan_observations.html#metpy.interpolate.remove_nan_observations" title="View documentation for metpy.interpolate.remove_nan_observations"><span class="n">remove_nan_observations</span></a>
 <span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
 
@@ -246,12 +253,13 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 </pre></div>
 </div>
 <p>Remove all missing data from pressure</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">pres</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.remove_nan_observations.html#metpy.gridding.remove_nan_observations" title="View documentation for metpy.gridding.gridding_functions.remove_nan_observations"><span class="n">remove_nan_observations</span></a><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;slp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">pres</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.remove_nan_observations.html#metpy.interpolate.remove_nan_observations" title="View documentation for metpy.interpolate.remove_nan_observations"><span class="n">remove_nan_observations</span></a><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;slp&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Interpolate pressure using Cressman interpolation</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">slpgridx</span><span class="p">,</span> <span class="n">slpgridy</span><span class="p">,</span> <span class="n">slp</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="View documentation for metpy.gridding.gridding_functions.interpolate"><span class="n">interpolate</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span>
-                                      <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">slpgridx</span><span class="p">,</span> <span class="n">slpgridy</span><span class="p">,</span> <span class="n">slp</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span>
+                                              <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span>
+                                              <span class="n">hres</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Get wind information and mask where either speed or direction is unavailable</p>
@@ -268,20 +276,20 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 </div>
 <p>Calculate u and v components of wind and then interpolate both.</p>
 <p>Both will have the same underlying grid so throw away grid returned from v interpolation.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.get_wind_components.html#metpy.calc.get_wind_components" title="View documentation for metpy.calc.get_wind_components"><span class="n">get_wind_components</span></a><span class="p">(</span><span class="n">wind_speed</span><span class="p">,</span> <span class="n">wind_dir</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components" title="View documentation for metpy.calc.wind_components"><span class="n">wind_components</span></a><span class="p">(</span><span class="n">wind_speed</span><span class="p">,</span> <span class="n">wind_dir</span><span class="p">)</span>
 
-<span class="n">windgridx</span><span class="p">,</span> <span class="n">windgridy</span><span class="p">,</span> <span class="n">uwind</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="View documentation for metpy.gridding.gridding_functions.interpolate"><span class="n">interpolate</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">u</span><span class="p">),</span>
-                                          <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span>
-                                          <span class="n">hres</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+<span class="n">windgridx</span><span class="p">,</span> <span class="n">windgridy</span><span class="p">,</span> <span class="n">uwind</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">u</span><span class="p">),</span>
+                                                  <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span>
+                                                  <span class="n">hres</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
 
-<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vwind</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="View documentation for metpy.gridding.gridding_functions.interpolate"><span class="n">interpolate</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span>
-                          <span class="n">search_radius</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">vwind</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">v</span><span class="p">),</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span>
+                                  <span class="n">search_radius</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>Get temperature information</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.remove_nan_observations.html#metpy.gridding.remove_nan_observations" title="View documentation for metpy.gridding.gridding_functions.remove_nan_observations"><span class="n">remove_nan_observations</span></a><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
-<span class="n">tempx</span><span class="p">,</span> <span class="n">tempy</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <a href="../../api/generated/metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="View documentation for metpy.gridding.gridding_functions.interpolate"><span class="n">interpolate</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span>
-                                 <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">35000</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.remove_nan_observations.html#metpy.interpolate.remove_nan_observations" title="View documentation for metpy.interpolate.remove_nan_observations"><span class="n">remove_nan_observations</span></a><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+<span class="n">tempx</span><span class="p">,</span> <span class="n">tempy</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x_masked</span><span class="p">,</span> <span class="n">y_masked</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span>
+                                         <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="mi">400000</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">35000</span><span class="p">)</span>
 
 <span class="n">temp</span> <span class="o">=</span> <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.ma.masked_where.html#numpy.ma.masked_where" title="View documentation for numpy.ma.masked_where"><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span></a><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.isnan.html#numpy.isnan" title="View documentation for numpy.isnan"><span class="n">np</span><span class="o">.</span><span class="n">isnan</span></a><span class="p">(</span><span class="n">temp</span><span class="p">),</span> <span class="n">temp</span><span class="p">)</span>
 </pre></div>
@@ -314,9 +322,9 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
 <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../../_images/sphx_glr_Wind_SLP_Interpolation_001.png" class="align-center" src="../../_images/sphx_glr_Wind_SLP_Interpolation_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  2.280 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<img alt="../../_images/sphx_glr_Wind_SLP_Interpolation_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Wind_SLP_Interpolation_001.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  2.187 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gridding-wind-slp-interpolation-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../../_downloads/Wind_SLP_Interpolation.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Wind_SLP_Interpolation.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -348,7 +356,7 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -385,7 +393,7 @@ to make a consistent looking analysis, featuring contours of pressure and wind b
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_examples_calculations_Dewpoint_and_Mixing_Ratio.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py:
 
@@ -41,7 +45,9 @@ Create a test value of mixing ratio in grams per kilogram
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     10.0 gram / kilogram
 
@@ -62,7 +68,9 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     15823.283396314564 gram * millibar / kilogram
 
@@ -81,7 +89,9 @@ Take the odd units and force them to millibars
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     15.823283396314565 millibar
 
@@ -101,7 +111,9 @@ Take the raw vapor pressure and throw into the dewpoint function
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     13.854135353732214 degC
 
@@ -120,7 +132,9 @@ Which can of course be converted to Fahrenheit
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     56.937444036717935 degF
 
@@ -140,7 +154,9 @@ Now do the same thing for 850 mb, approximately the pressure of Denver
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     13.449790886867381 millibar
 
@@ -159,18 +175,24 @@ And print the corresponding dewpoint
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     11.376545231347285 degC 52.47778181642507 degF
 
 
-**Total running time of the script:** ( 0 minutes  0.003 seconds)
+**Total running time of the script:** ( 0 minutes  0.004 seconds)
 
+
+.. _sphx_glr_download_examples_calculations_Dewpoint_and_Mixing_Ratio.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

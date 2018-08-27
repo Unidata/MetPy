@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Isentropic Analysis &mdash; MetPy 0.7</title>
+  <title>Isentropic Analysis &mdash; MetPy 0.9</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../index.html"/>
-        <link rel="up" title="MetPy Examples" href="index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../index.html"/>
+        <link rel="up" title="Examples" href="index.html"/>
         <link rel="next" title="Meteogram" href="meteogram_metpy.html"/>
-        <link rel="prev" title="Four Panel Map" href="Four_Panel_Map.html"/> 
+        <link rel="prev" title="Cross Section Analysis" href="cross_section.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,12 +120,13 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="XArray_Projections.html">XArray Projection Handling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Four_Panel_Map.html">Four Panel Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cross_section.html">Cross Section Analysis</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Isentropic Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="meteogram_metpy.html">Meteogram</a></li>
 </ul>
@@ -136,8 +137,8 @@
 <li class="toctree-l2"><a class="reference internal" href="index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -188,7 +189,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">MetPy Examples</a> &raquo;</li>
+          <li><a href="index.html">Examples</a> &raquo;</li>
         
       <li>Isentropic Analysis</li>
     
@@ -198,7 +199,10 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20examples/isentropic_example&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/isentropic_example.py"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -212,7 +216,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="isentropic-analysis">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-isentropic-example-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="isentropic-analysis">
 <span id="sphx-glr-examples-isentropic-example-py"></span><h1>Isentropic Analysis<a class="headerlink" href="#isentropic-analysis" title="Permalink to this headline">¶</a></h1>
 <p>The MetPy function <em class="xref py py-obj">mpcalc.isentropic_interpolation</em> allows for isentropic analysis from model
 analysis data in isobaric coordinates.</p>
@@ -232,14 +240,14 @@ analysis data in isobaric coordinates.</p>
 <p>In this example, NARR reanalysis data for 18 UTC 04 April 1987 from the National Centers
 for Environmental Information (<a class="reference external" href="https://www.ncdc.noaa.gov/data-access/model-data">https://www.ncdc.noaa.gov/data-access/model-data</a>)
 will be used.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span> <span class="o">=</span> <a href="http://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="View documentation for xarray.open_dataset"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;Temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;isobaric&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;Lambert_Conformal&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;u_wind&#39;</span><span class="p">,</span> <span class="s1">&#39;v_wind&#39;</span><span class="p">,</span> <span class="s1">&#39;Geopotential_height&#39;</span><span class="p">,</span> <span class="s1">&#39;Specific_humidity&#39;</span><span class="p">]</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;Temperature&#39;, &#39;time&#39;, &#39;isobaric&#39;, &#39;y&#39;, &#39;x&#39;, &#39;Lambert_Conformal&#39;, &#39;lat&#39;, &#39;lon&#39;, &#39;u_wind&#39;, &#39;v_wind&#39;, &#39;Geopotential_height&#39;, &#39;Specific_humidity&#39;]
 </pre></div>
 </div>
 <p>We will reduce the dimensionality of the data as it is pulled in to remove an empty time
@@ -299,12 +307,12 @@ coordinates, with the number of vertical levels as specified above.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
-<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
-<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
-<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
-<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
-<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">118</span><span class="p">,</span> <span class="mi">292</span><span class="p">)</span>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(1, 118, 292)
+(1, 118, 292)
+(1, 118, 292)
+(1, 118, 292)
+(1, 118, 292)
+(1, 118, 292)
 </pre></div>
 </div>
 <p><strong>Converting to Relative Humidity</strong></p>
@@ -354,7 +362,7 @@ have to be calculated after the interpolation to isentropic space.</p>
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_isentropic_example_001.png" class="align-center" src="../_images/sphx_glr_isentropic_example_001.png" />
+<img alt="../_images/sphx_glr_isentropic_example_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_isentropic_example_001.png" />
 <p><strong>Montgomery Streamfunction</strong></p>
 <p>The Montgomery Streamfunction, <span class="math notranslate nohighlight">\({\psi} = gdz + CpT\)</span>, is often desired because its
 gradient is proportional to the geostrophic wind in isentropic space. This can be easily
@@ -400,9 +408,9 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
 <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_isentropic_example_002.png" class="align-center" src="../_images/sphx_glr_isentropic_example_002.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  13.214 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<img alt="../_images/sphx_glr_isentropic_example_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_isentropic_example_002.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  17.830 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-isentropic-example-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/isentropic_example.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">isentropic_example.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -424,7 +432,7 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
         <a href="meteogram_metpy.html" class="btn btn-neutral float-right" title="Meteogram" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Four_Panel_Map.html" class="btn btn-neutral" title="Four Panel Map" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="cross_section.html" class="btn btn-neutral" title="Cross Section Analysis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -434,7 +442,7 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -471,7 +479,7 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

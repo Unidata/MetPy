@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sigma to Pressure Interpolation &mdash; MetPy 0.7</title>
+  <title>Sigma to Pressure Interpolation &mdash; MetPy 0.9</title>
   
 
   
@@ -43,8 +43,8 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../index.html"/>
-        <link rel="up" title="MetPy Examples" href="index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../index.html"/>
+        <link rel="up" title="Examples" href="index.html"/>
         <link rel="next" title="Four Panel Map" href="Four_Panel_Map.html"/>
         <link rel="prev" title="Advanced Sounding" href="Advanced_Sounding.html"/> 
 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -120,12 +120,13 @@
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="index.html">MetPy Examples</a><ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="XArray_Projections.html">XArray Projection Handling</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Sigma to Pressure Interpolation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Four_Panel_Map.html">Four Panel Map</a></li>
+<li class="toctree-l3"><a class="reference internal" href="cross_section.html">Cross Section Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isentropic_example.html">Isentropic Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="meteogram_metpy.html">Meteogram</a></li>
 </ul>
@@ -136,8 +137,8 @@
 <li class="toctree-l2"><a class="reference internal" href="index.html#plotting">Plotting</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -188,7 +189,7 @@
     
       <li><a href="../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="index.html">MetPy Examples</a> &raquo;</li>
+          <li><a href="index.html">Examples</a> &raquo;</li>
         
       <li>Sigma to Pressure Interpolation</li>
     
@@ -198,7 +199,10 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20examples/sigma_to_pressure_interpolation&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/sigma_to_pressure_interpolation.py"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -212,7 +216,11 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="sigma-to-pressure-interpolation">
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-sigma-to-pressure-interpolation-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="sigma-to-pressure-interpolation">
 <span id="sphx-glr-examples-sigma-to-pressure-interpolation-py"></span><h1>Sigma to Pressure Interpolation<a class="headerlink" href="#sigma-to-pressure-interpolation" title="Permalink to this headline">¶</a></h1>
 <p>By using <a class="reference internal" href="../api/generated/metpy.calc.log_interp.html#metpy.calc.log_interp" title="metpy.calc.log_interp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.calc.log_interp</span></code></a>, data with sigma as the vertical coordinate can be
 interpolated to isobaric coordinates.</p>
@@ -221,8 +229,8 @@ interpolated to isobaric coordinates.</p>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">netCDF4</span> <span class="kn">import</span> <span class="n">Dataset</span><span class="p">,</span> <span class="n">num2date</span>
 
-<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="kn">as</span> <span class="nn">mpcalc</span>
 <span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.interpolate</span> <span class="kn">import</span> <a href="../api/generated/metpy.interpolate.log_interpolate_1d.html#metpy.interpolate.log_interpolate_1d" title="View documentation for metpy.interpolate.log_interpolate_1d"><span class="n">log_interpolate_1d</span></a>
 <span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">,</span> <a href="../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="View documentation for metpy.plots.add_timestamp"><span class="n">add_timestamp</span></a>
 <span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
 </pre></div>
@@ -252,7 +260,7 @@ mandatory isobaric levels. <em class="xref py py-obj">mpcalc.log_interp</em> wil
 with the <em class="xref py py-obj">axis</em> argument. In this case, <em class="xref py py-obj">axis=1</em> will correspond to interpolation on the
 vertical axis. The interpolated data is output in a list, so we will pull out each
 variable for plotting.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">height</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.log_interp.html#metpy.calc.log_interp" title="View documentation for metpy.calc.log_interp"><span class="n">mpcalc</span><span class="o">.</span><span class="n">log_interp</span></a><span class="p">(</span><span class="n">plevs</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">hgt</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">height</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <a href="../api/generated/metpy.interpolate.log_interpolate_1d.html#metpy.interpolate.log_interpolate_1d" title="View documentation for metpy.interpolate.log_interpolate_1d"><span class="n">log_interpolate_1d</span></a><span class="p">(</span><span class="n">plevs</span><span class="p">,</span> <span class="n">pres</span><span class="p">,</span> <span class="n">hgt</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </div>
 <p><strong>Plotting the Data for 700 hPa.</strong></p>
@@ -297,9 +305,9 @@ variable for plotting.</p>
 <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<img alt="../_images/sphx_glr_sigma_to_pressure_interpolation_001.png" class="align-center" src="../_images/sphx_glr_sigma_to_pressure_interpolation_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  7.190 seconds)</p>
-<div class="sphx-glr-footer docutils container">
+<img alt="../_images/sphx_glr_sigma_to_pressure_interpolation_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_sigma_to_pressure_interpolation_001.png" />
+<p><strong>Total running time of the script:</strong> ( 0 minutes  6.905 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-sigma-to-pressure-interpolation-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" href="../_downloads/sigma_to_pressure_interpolation.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">sigma_to_pressure_interpolation.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
@@ -331,7 +339,7 @@ variable for plotting.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -368,7 +376,7 @@ variable for plotting.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

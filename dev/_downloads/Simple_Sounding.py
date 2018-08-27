@@ -33,8 +33,8 @@ col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'spee
 df = pd.read_fwf(get_test_data('jan20_sounding.txt', as_file_obj=False),
                  skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
-df['u_wind'], df['v_wind'] = mpcalc.get_wind_components(df['speed'],
-                                                        np.deg2rad(df['direction']))
+df['u_wind'], df['v_wind'] = mpcalc.wind_components(df['speed'],
+                                                    np.deg2rad(df['direction']))
 
 # Drop any rows with all NaN values for T, Td, winds
 df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
@@ -49,7 +49,7 @@ T = df['temperature'].values * units.degC
 Td = df['dewpoint'].values * units.degC
 wind_speed = df['speed'].values * units.knots
 wind_dir = df['direction'].values * units.degrees
-u, v = mpcalc.get_wind_components(wind_speed, wind_dir)
+u, v = mpcalc.wind_components(wind_speed, wind_dir)
 
 ###########################################
 

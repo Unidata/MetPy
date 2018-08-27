@@ -1,0 +1,12 @@
+natural_neighbor
+==================================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: natural_neighbor
+
+.. include:: metpy.interpolate.natural_neighbor.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

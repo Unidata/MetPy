@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_examples_formats_NEXRAD_Level_3_File.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_examples_formats_NEXRAD_Level_3_File.py:
 
@@ -63,18 +67,22 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
 
 .. image:: /examples/formats/images/sphx_glr_NEXRAD_Level_3_File_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
 
-**Total running time of the script:** ( 0 minutes  0.118 seconds)
+**Total running time of the script:** ( 0 minutes  0.725 seconds)
 
+
+.. _sphx_glr_download_examples_formats_NEXRAD_Level_3_File.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

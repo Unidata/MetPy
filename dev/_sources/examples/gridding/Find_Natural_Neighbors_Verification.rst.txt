@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_examples_gridding_Find_Natural_Neighbors_Verification.py:
 
@@ -19,7 +23,7 @@ circumcenter of a circumscribed circle containing the triangle.
     import numpy as np
     from scipy.spatial import Delaunay
 
-    from metpy.gridding.triangles import find_natural_neighbors
+    from metpy.interpolate.geometry import find_natural_neighbors
 
     # Create test observations, test points, and plot the triangulation and points.
     gx, gy = np.meshgrid(np.arange(0, 20, 4), np.arange(0, 20, 4))
@@ -43,7 +47,7 @@ circumcenter of a circumscribed circle containing the triangle.
 
 
 .. image:: /examples/gridding/images/sphx_glr_Find_Natural_Neighbors_Verification_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
@@ -70,7 +74,9 @@ Point 3 is at the confluence of several triangles so it has many natural neighbo
 
 .. rst-class:: sphx-glr-script-out
 
- Out::
+ Out:
+
+ .. code-block:: none
 
     {0: [0, 1], 1: [24, 25], 2: [16, 17, 30, 31], 3: [18, 19, 20, 21, 22, 23, 26, 27], 4: []}
 
@@ -107,18 +113,22 @@ containing that triangle.
 
 
 .. image:: /examples/gridding/images/sphx_glr_Find_Natural_Neighbors_Verification_002.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
 
-**Total running time of the script:** ( 0 minutes  0.258 seconds)
+**Total running time of the script:** ( 0 minutes  0.287 seconds)
 
+
+.. _sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

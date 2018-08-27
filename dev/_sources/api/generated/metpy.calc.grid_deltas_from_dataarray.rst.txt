@@ -1,0 +1,12 @@
+grid_deltas_from_dataarray
+=====================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: grid_deltas_from_dataarray
+
+.. include:: metpy.calc.grid_deltas_from_dataarray.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

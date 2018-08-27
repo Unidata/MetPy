@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.thermo &mdash; MetPy 0.7</title>
+  <title>metpy.calc.thermo &mdash; MetPy 0.9</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -118,9 +118,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -202,10 +202,11 @@
 <span class="kn">import</span> <span class="nn">scipy.integrate</span> <span class="k">as</span> <span class="nn">si</span>
 <span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">so</span>
 
-<span class="kn">from</span> <span class="nn">.tools</span> <span class="k">import</span> <span class="p">(</span><span class="n">_greater_or_close</span><span class="p">,</span> <span class="n">_less_or_close</span><span class="p">,</span> <span class="n">broadcast_indices</span><span class="p">,</span>
-                    <span class="n">find_bounding_indices</span><span class="p">,</span> <span class="n">find_intersections</span><span class="p">,</span> <span class="n">first_derivative</span><span class="p">,</span> <span class="n">get_layer</span><span class="p">,</span>
-                    <span class="n">interp</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">.tools</span> <span class="k">import</span> <span class="p">(</span><span class="n">_greater_or_close</span><span class="p">,</span> <span class="n">_less_or_close</span><span class="p">,</span> <span class="n">find_bounding_indices</span><span class="p">,</span>
+                    <span class="n">find_intersections</span><span class="p">,</span> <span class="n">first_derivative</span><span class="p">,</span> <span class="n">get_layer</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">..cbook</span> <span class="k">import</span> <span class="n">broadcast_indices</span>
 <span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">Cp_d</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">kappa</span><span class="p">,</span> <span class="n">Lv</span><span class="p">,</span> <span class="n">P0</span><span class="p">,</span> <span class="n">Rd</span>
+<span class="kn">from</span> <span class="nn">..interpolate.one_dimension</span> <span class="k">import</span> <span class="n">interpolate_1d</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
 <span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">preprocess_xarray</span>
@@ -540,8 +541,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Default to surface parcel if no profile or starting pressure level is given</span>
     <span class="k">if</span> <span class="n">parcel_temperature_profile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">parcel_temperature_profile</span> <span class="o">=</span> <span class="n">parcel_profile</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                                                    <span class="n">dewpt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+        <span class="n">new_stuff</span> <span class="o">=</span> <span class="n">parcel_profile_with_lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">)</span>
+        <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">parcel_temperature_profile</span> <span class="o">=</span> <span class="n">new_stuff</span>
+        <span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+        <span class="n">parcel_temperature_profile</span> <span class="o">=</span> <span class="n">parcel_temperature_profile</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+
     <span class="c1"># The parcel profile and data have the same first data point, so we ignore</span>
     <span class="c1"># that point to get the real first intersection for the LFC calculation.</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">find_intersections</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">parcel_temperature_profile</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
@@ -603,8 +607,11 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Default to surface parcel if no profile or starting pressure level is given</span>
     <span class="k">if</span> <span class="n">parcel_temperature_profile</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">parcel_temperature_profile</span> <span class="o">=</span> <span class="n">parcel_profile</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
-                                                    <span class="n">dewpt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+        <span class="n">new_stuff</span> <span class="o">=</span> <span class="n">parcel_profile_with_lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">)</span>
+        <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">parcel_temperature_profile</span> <span class="o">=</span> <span class="n">new_stuff</span>
+        <span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+        <span class="n">parcel_temperature_profile</span> <span class="o">=</span> <span class="n">parcel_temperature_profile</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+
     <span class="c1"># If the top of the sounding parcel is warmer than the environment, there is no EL</span>
     <span class="k">if</span> <span class="n">parcel_temperature_profile</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">temperature</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span>
@@ -647,26 +654,98 @@
 <span class="sd">    lcl, moist_lapse, dry_lapse</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">t_l</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">t_u</span> <span class="o">=</span> <span class="n">_parcel_profile_helper</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">t_l</span><span class="p">,</span> <span class="n">t_u</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="parcel_profile_with_lcl"><a class="viewcode-back" href="../../../api/generated/metpy.calc.parcel_profile_with_lcl.html#metpy.calc.parcel_profile_with_lcl">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">parcel_profile_with_lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the profile a parcel takes through the atmosphere.</span>
+
+<span class="sd">    The parcel starts at `temperature`, and `dewpt`, lifted up</span>
+<span class="sd">    dry adiabatically to the LCL, and then moist adiabatically from there.</span>
+<span class="sd">    `pressure` specifies the pressure levels for the profile. This function returns</span>
+<span class="sd">    a profile that includes the LCL.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        The atmospheric pressure level(s) of interest. The first entry should be the starting</span>
+<span class="sd">        point pressure.</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        The atmospheric temperature at the levels in `pressure`. The first entry should be the</span>
+<span class="sd">        starting point temperature.</span>
+<span class="sd">    dewpt : `pint.Quantity`</span>
+<span class="sd">        The atmospheric dew point at the levels in `pressure`. The first entry should be the</span>
+<span class="sd">        starting dew point.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        The parcel profile pressures, which includes the specified levels and the LCL</span>
+<span class="sd">    ambient_temperature : `pint.Quantity`</span>
+<span class="sd">        The atmospheric temperature values, including the value interpolated to the LCL level</span>
+<span class="sd">    ambient_dew_point : `pint.Quantity`</span>
+<span class="sd">        The atmospheric dew point values, including the value interpolated to the LCL level</span>
+<span class="sd">    profile_temperature : `pint.Quantity`</span>
+<span class="sd">        The parcel profile temperatures at all of the levels in the returned pressures array,</span>
+<span class="sd">        including the LCL.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    lcl, moist_lapse, dry_lapse, parcel_profile</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">p_l</span><span class="p">,</span> <span class="n">p_lcl</span><span class="p">,</span> <span class="n">p_u</span><span class="p">,</span> <span class="n">t_l</span><span class="p">,</span> <span class="n">t_lcl</span><span class="p">,</span> <span class="n">t_u</span> <span class="o">=</span> <span class="n">_parcel_profile_helper</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                                                              <span class="n">dewpt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">new_press</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">p_l</span><span class="p">,</span> <span class="n">p_lcl</span><span class="p">,</span> <span class="n">p_u</span><span class="p">))</span>
+    <span class="n">prof_temp</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">t_l</span><span class="p">,</span> <span class="n">t_lcl</span><span class="p">,</span> <span class="n">t_u</span><span class="p">))</span>
+    <span class="n">new_temp</span> <span class="o">=</span> <span class="n">_insert_lcl_level</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">p_lcl</span><span class="p">)</span>
+    <span class="n">new_dewp</span> <span class="o">=</span> <span class="n">_insert_lcl_level</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">,</span> <span class="n">p_lcl</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">new_press</span><span class="p">,</span> <span class="n">new_temp</span><span class="p">,</span> <span class="n">new_dewp</span><span class="p">,</span> <span class="n">prof_temp</span></div>
+
+
+<span class="k">def</span> <span class="nf">_parcel_profile_helper</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Help calculate parcel profiles.</span>
+
+<span class="sd">    Returns the temperature and pressure, above, below, and including the LCL. The</span>
+<span class="sd">    other calculation functions decide what to do with the pieces.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="c1"># Find the LCL</span>
-    <span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">)</span>
-    <span class="n">lcl_pressure</span> <span class="o">=</span> <span class="n">lcl_pressure</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+    <span class="n">press_lcl</span><span class="p">,</span> <span class="n">temp_lcl</span> <span class="o">=</span> <span class="n">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">)</span>
+    <span class="n">press_lcl</span> <span class="o">=</span> <span class="n">press_lcl</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
     <span class="c1"># Find the dry adiabatic profile, *including* the LCL. We need &gt;= the LCL in case the</span>
     <span class="c1"># LCL is included in the levels. It&#39;s slightly redundant in that case, but simplifies</span>
     <span class="c1"># the logic for removing it later.</span>
-    <span class="n">press_lower</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">pressure</span><span class="p">[</span><span class="n">pressure</span> <span class="o">&gt;=</span> <span class="n">lcl_pressure</span><span class="p">],</span> <span class="n">lcl_pressure</span><span class="p">))</span>
-    <span class="n">t1</span> <span class="o">=</span> <span class="n">dry_lapse</span><span class="p">(</span><span class="n">press_lower</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+    <span class="n">press_lower</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">pressure</span><span class="p">[</span><span class="n">pressure</span> <span class="o">&gt;=</span> <span class="n">press_lcl</span><span class="p">],</span> <span class="n">press_lcl</span><span class="p">))</span>
+    <span class="n">temp_lower</span> <span class="o">=</span> <span class="n">dry_lapse</span><span class="p">(</span><span class="n">press_lower</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
 
     <span class="c1"># If the pressure profile doesn&#39;t make it to the lcl, we can stop here</span>
-    <span class="k">if</span> <span class="n">_greater_or_close</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">pressure</span><span class="p">),</span> <span class="n">lcl_pressure</span><span class="o">.</span><span class="n">m</span><span class="p">):</span>
-        <span class="k">return</span> <span class="n">t1</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">_greater_or_close</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">pressure</span><span class="p">),</span> <span class="n">press_lcl</span><span class="o">.</span><span class="n">m</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">press_lower</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">press_lcl</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span> <span class="o">*</span> <span class="n">press_lower</span><span class="o">.</span><span class="n">units</span><span class="p">,</span>
+                <span class="n">temp_lower</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">temp_lcl</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([])</span> <span class="o">*</span> <span class="n">temp_lower</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
     <span class="c1"># Find moist pseudo-adiabatic profile starting at the LCL</span>
-    <span class="n">press_upper</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">pressure</span><span class="p">[</span><span class="n">pressure</span> <span class="o">&lt;</span> <span class="n">lcl_pressure</span><span class="p">]))</span>
-    <span class="n">t2</span> <span class="o">=</span> <span class="n">moist_lapse</span><span class="p">(</span><span class="n">press_upper</span><span class="p">,</span> <span class="n">t1</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">t1</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
+    <span class="n">press_upper</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">press_lcl</span><span class="p">,</span> <span class="n">pressure</span><span class="p">[</span><span class="n">pressure</span> <span class="o">&lt;</span> <span class="n">press_lcl</span><span class="p">]))</span>
+    <span class="n">temp_upper</span> <span class="o">=</span> <span class="n">moist_lapse</span><span class="p">(</span><span class="n">press_upper</span><span class="p">,</span> <span class="n">temp_lower</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">temp_lower</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
-    <span class="c1"># Return LCL *without* the LCL point</span>
-    <span class="k">return</span> <span class="n">concatenate</span><span class="p">((</span><span class="n">t1</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">t2</span><span class="p">[</span><span class="mi">1</span><span class="p">:]))</span></div>
+    <span class="c1"># Return profile pieces</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">press_lower</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">press_lcl</span><span class="p">,</span> <span class="n">press_upper</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
+            <span class="n">temp_lower</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">temp_lcl</span><span class="p">,</span> <span class="n">temp_upper</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+
+<span class="k">def</span> <span class="nf">_insert_lcl_level</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">lcl_pressure</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Insert the LCL pressure into the profile.&quot;&quot;&quot;</span>
+    <span class="n">interp_temp</span> <span class="o">=</span> <span class="n">interpolate_1d</span><span class="p">(</span><span class="n">lcl_pressure</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)</span>
+
+    <span class="c1"># Pressure needs to be increasing for searchsorted, so flip it and then convert</span>
+    <span class="c1"># the index back to the original array</span>
+    <span class="n">loc</span> <span class="o">=</span> <span class="n">pressure</span><span class="o">.</span><span class="n">size</span> <span class="o">-</span> <span class="n">pressure</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">searchsorted</span><span class="p">(</span><span class="n">lcl_pressure</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="n">temperature</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">loc</span><span class="p">,</span> <span class="n">interp_temp</span><span class="o">.</span><span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span>
 
 
 <div class="viewcode-block" id="vapor_pressure"><a class="viewcode-back" href="../../../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1647,6 +1726,7 @@
 
     <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="o">*</span> <span class="n">ndim</span>
     <span class="n">slices</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">slices</span><span class="p">)</span>
     <span class="n">pres</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">broadcast_to</span><span class="p">(</span><span class="n">pres</span><span class="p">[</span><span class="n">slices</span><span class="p">],</span> <span class="n">temperature</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="o">*</span> <span class="n">pres</span><span class="o">.</span><span class="n">units</span>
 
     <span class="c1"># Sort input data</span>
@@ -1716,7 +1796,8 @@
 
     <span class="c1"># do an interpolation for each additional argument</span>
     <span class="k">if</span> <span class="n">args</span><span class="p">:</span>
-        <span class="n">others</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">isentlevels</span><span class="p">,</span> <span class="n">pres_theta</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">sorter</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">args</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+        <span class="n">others</span> <span class="o">=</span> <span class="n">interpolate_1d</span><span class="p">(</span><span class="n">isentlevels</span><span class="p">,</span> <span class="n">pres_theta</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">arr</span><span class="p">[</span><span class="n">sorter</span><span class="p">]</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">args</span><span class="p">),</span>
+                                <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">args</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
             <span class="n">ret</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">others</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
@@ -1759,8 +1840,8 @@
 <span class="sd">    cape_cin, parcel_profile</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">profile</span> <span class="o">=</span> <span class="n">parcel_profile</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dewpoint</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="k">return</span> <span class="n">cape_cin</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">profile</span><span class="p">)</span></div>
+    <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">profile</span> <span class="o">=</span> <span class="n">parcel_profile_with_lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpoint</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cape_cin</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">td</span><span class="p">,</span> <span class="n">profile</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="most_unstable_cape_cin"><a class="viewcode-back" href="../../../api/generated/metpy.calc.most_unstable_cape_cin.html#metpy.calc.most_unstable_cape_cin">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -2241,7 +2322,7 @@
 
 <span class="sd">    This function calculates the wet-bulb temperature using the Normand method. The LCL is</span>
 <span class="sd">    computed, and that parcel brought down to the starting pressure along a moist adiabat.</span>
-<span class="sd">    Norman method (and others) described and compared by [Knox2017]_.</span>
+<span class="sd">    The Normand method (and others) are described and compared by [Knox2017]_.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2346,6 +2427,95 @@
     <span class="k">return</span> <span class="n">dewpoint_rh</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">relative_humidity_from_specific_humidity</span><span class="p">(</span><span class="n">specific_humidity</span><span class="p">,</span>
                                                                              <span class="n">temperature</span><span class="p">,</span>
                                                                              <span class="n">pressure</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="vertical_velocity_pressure"><a class="viewcode-back" href="../../../api/generated/metpy.calc.vertical_velocity_pressure.html#metpy.calc.vertical_velocity_pressure">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]/[time]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">vertical_velocity_pressure</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate omega from w assuming hydrostatic conditions.</span>
+
+<span class="sd">    This function converts vertical velocity with respect to height</span>
+<span class="sd">    :math:`\left(w = \frac{Dz}{Dt}\right)` to that</span>
+<span class="sd">    with respect to pressure :math:`\left(\omega = \frac{Dp}{Dt}\right)`</span>
+<span class="sd">    assuming hydrostatic conditions on the synoptic scale.</span>
+<span class="sd">    By Equation 7.33 in [Hobbs2006]_,</span>
+
+<span class="sd">    .. math: \omega \simeq -\rho g w</span>
+
+<span class="sd">    Density (:math:`\rho`) is calculated using the :func:`density` function,</span>
+<span class="sd">    from the given pressure and temperature. If `mixing` is given, the virtual</span>
+<span class="sd">    temperature correction is used, otherwise, dry air is assumed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    w: `pint.Quantity`</span>
+<span class="sd">        Vertical velocity in terms of height</span>
+<span class="sd">    pressure: `pint.Quantity`</span>
+<span class="sd">        Total atmospheric pressure</span>
+<span class="sd">    temperature: `pint.Quantity`</span>
+<span class="sd">        Air temperature</span>
+<span class="sd">    mixing: `pint.Quantity`, optional</span>
+<span class="sd">        Mixing ratio of air</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        Vertical velocity in terms of pressure (in Pascals / second)</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    density, vertical_velocity</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">density</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span> <span class="n">g</span> <span class="o">*</span> <span class="n">rho</span> <span class="o">*</span> <span class="n">w</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;Pa/s&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="vertical_velocity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.vertical_velocity.html#metpy.calc.vertical_velocity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]/[time]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">vertical_velocity</span><span class="p">(</span><span class="n">omega</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate w from omega assuming hydrostatic conditions.</span>
+
+<span class="sd">    This function converts vertical velocity with respect to pressure</span>
+<span class="sd">    :math:`\left(\omega = \frac{Dp}{Dt}\right)` to that with respect to height</span>
+<span class="sd">    :math:`\left(w = \frac{Dz}{Dt}\right)` assuming hydrostatic conditions on</span>
+<span class="sd">    the synoptic scale. By Equation 7.33 in [Hobbs2006]_,</span>
+
+<span class="sd">    .. math: \omega \simeq -\rho g w</span>
+
+<span class="sd">    so that</span>
+
+<span class="sd">    .. math w \simeq \frac{- \omega}{\rho g}</span>
+
+<span class="sd">    Density (:math:`\rho`) is calculated using the :func:`density` function,</span>
+<span class="sd">    from the given pressure and temperature. If `mixing` is given, the virtual</span>
+<span class="sd">    temperature correction is used, otherwise, dry air is assumed.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    omega: `pint.Quantity`</span>
+<span class="sd">        Vertical velocity in terms of pressure</span>
+<span class="sd">    pressure: `pint.Quantity`</span>
+<span class="sd">        Total atmospheric pressure</span>
+<span class="sd">    temperature: `pint.Quantity`</span>
+<span class="sd">        Air temperature</span>
+<span class="sd">    mixing: `pint.Quantity`, optional</span>
+<span class="sd">        Mixing ratio of air</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        Vertical velocity in terms of height (in meters / second)</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    density, vertical_velocity_pressure</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">rho</span> <span class="o">=</span> <span class="n">density</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">mixing</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">omega</span> <span class="o">/</span> <span class="p">(</span><span class="o">-</span> <span class="n">g</span> <span class="o">*</span> <span class="n">rho</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -2361,7 +2531,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -2398,7 +2568,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

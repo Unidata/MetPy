@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_examples_plots_Station_Plot.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_examples_plots_Station_Plot.py:
 
@@ -22,8 +26,8 @@ existing point data in a format you can work with trivially, the station plot wi
     import numpy as np
     import pandas as pd
 
-    from metpy.calc import get_wind_components
     from metpy.calc import reduce_point_density
+    from metpy.calc import wind_components
     from metpy.cbook import get_test_data
     from metpy.plots import add_metpy_logo, current_weather, sky_cover, StationPlot, wx_code_map
     from metpy.units import units
@@ -95,8 +99,8 @@ Now that we have the data we want, we need to perform some conversions:
 
     # Get the wind components, converting from m/s to knots as will be appropriate
     # for the station plot.
-    u, v = get_wind_components((data['wind_speed'].values * units('m/s')).to('knots'),
-                               data['wind_dir'].values * units.degree)
+    u, v = wind_components((data['wind_speed'].values * units('m/s')).to('knots'),
+                           data['wind_dir'].values * units.degree)
 
     # Convert the fraction value into a code of 0-8 and compensate for NaN values,
     # which can be used to pull out the appropriate symbol
@@ -184,18 +188,22 @@ The payoff
 
 
 .. image:: /examples/plots/images/sphx_glr_Station_Plot_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
 
-**Total running time of the script:** ( 0 minutes  0.064 seconds)
+**Total running time of the script:** ( 0 minutes  0.176 seconds)
 
+
+.. _sphx_glr_download_examples_plots_Station_Plot.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.plots._util &mdash; MetPy 0.7</title>
+  <title>metpy.plots._util &mdash; MetPy 0.9</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -118,9 +118,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -392,6 +392,85 @@
     <span class="n">lc</span> <span class="o">=</span> <span class="n">LineCollection</span><span class="p">(</span><span class="n">segments</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="n">lc</span><span class="o">.</span><span class="n">set_array</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">lc</span>
+
+
+<div class="viewcode-block" id="convert_gempak_color"><a class="viewcode-back" href="../../../api/generated/metpy.plots.convert_gempak_color.html#metpy.plots.convert_gempak_color">[docs]</a><span class="k">def</span> <span class="nf">convert_gempak_color</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">style</span><span class="o">=</span><span class="s1">&#39;psc&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Convert GEMPAK color numbers into corresponding Matplotlib colors.</span>
+
+<span class="sd">    Takes a sequence of GEMPAK color numbers and turns them into</span>
+<span class="sd">    equivalent Matplotlib colors. Various GEMPAK quirks are respected,</span>
+<span class="sd">    such as treating negative values as equivalent to 0.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    c : int or sequence of ints</span>
+<span class="sd">        GEMPAK color number(s)</span>
+<span class="sd">    style : str, optional</span>
+<span class="sd">        The GEMPAK &#39;device&#39; to use to interpret color numbers. May be &#39;psc&#39;</span>
+<span class="sd">        (the default; best for a white background) or &#39;xw&#39; (best for a black background).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        List of strings of Matplotlib colors, or a single string if only one color requested.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Transform input x to an int in range 0 to 31 consistent with GEMPAK color quirks.&quot;&quot;&quot;</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">x</span> <span class="o">==</span> <span class="mi">101</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">32</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+    <span class="c1"># Define GEMPAK colors (Matplotlib doesn&#39;t appear to like numbered variants)</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;white&#39;</span><span class="p">,</span>       <span class="c1"># 0/32</span>
+            <span class="s1">&#39;black&#39;</span><span class="p">,</span>       <span class="c1"># 1</span>
+            <span class="s1">&#39;red&#39;</span><span class="p">,</span>         <span class="c1"># 2</span>
+            <span class="s1">&#39;green&#39;</span><span class="p">,</span>       <span class="c1"># 3</span>
+            <span class="s1">&#39;blue&#39;</span><span class="p">,</span>        <span class="c1"># 4</span>
+            <span class="s1">&#39;yellow&#39;</span><span class="p">,</span>      <span class="c1"># 5</span>
+            <span class="s1">&#39;cyan&#39;</span><span class="p">,</span>        <span class="c1"># 6</span>
+            <span class="s1">&#39;magenta&#39;</span><span class="p">,</span>     <span class="c1"># 7</span>
+            <span class="s1">&#39;#CD6839&#39;</span><span class="p">,</span>     <span class="c1"># 8 (sienna3)</span>
+            <span class="s1">&#39;#FF8247&#39;</span><span class="p">,</span>     <span class="c1"># 9 (sienna1)</span>
+            <span class="s1">&#39;#FFA54F&#39;</span><span class="p">,</span>     <span class="c1"># 10 (tan1)</span>
+            <span class="s1">&#39;#FFAEB9&#39;</span><span class="p">,</span>     <span class="c1"># 11 (LightPink1)</span>
+            <span class="s1">&#39;#FF6A6A&#39;</span><span class="p">,</span>     <span class="c1"># 12 (IndianRed1)</span>
+            <span class="s1">&#39;#EE2C2C&#39;</span><span class="p">,</span>     <span class="c1"># 13 (firebrick2)</span>
+            <span class="s1">&#39;#8B0000&#39;</span><span class="p">,</span>     <span class="c1"># 14 (red4)</span>
+            <span class="s1">&#39;#CD0000&#39;</span><span class="p">,</span>     <span class="c1"># 15 (red3)</span>
+            <span class="s1">&#39;#EE4000&#39;</span><span class="p">,</span>     <span class="c1"># 16 (OrangeRed2)</span>
+            <span class="s1">&#39;#FF7F00&#39;</span><span class="p">,</span>     <span class="c1"># 17 (DarkOrange1)</span>
+            <span class="s1">&#39;#CD8500&#39;</span><span class="p">,</span>     <span class="c1"># 18 (orange3)</span>
+            <span class="s1">&#39;gold&#39;</span><span class="p">,</span>        <span class="c1"># 19</span>
+            <span class="s1">&#39;#EEEE00&#39;</span><span class="p">,</span>     <span class="c1"># 20 (yellow2)</span>
+            <span class="s1">&#39;chartreuse&#39;</span><span class="p">,</span>  <span class="c1"># 21</span>
+            <span class="s1">&#39;#00CD00&#39;</span><span class="p">,</span>     <span class="c1"># 22 (green3)</span>
+            <span class="s1">&#39;#008B00&#39;</span><span class="p">,</span>     <span class="c1"># 23 (green4)</span>
+            <span class="s1">&#39;#104E8B&#39;</span><span class="p">,</span>     <span class="c1"># 24 (DodgerBlue4)</span>
+            <span class="s1">&#39;DodgerBlue&#39;</span><span class="p">,</span>  <span class="c1"># 25</span>
+            <span class="s1">&#39;#00B2EE&#39;</span><span class="p">,</span>     <span class="c1"># 26 (DeepSkyBlue2)</span>
+            <span class="s1">&#39;#00EEEE&#39;</span><span class="p">,</span>     <span class="c1"># 27 (cyan2)</span>
+            <span class="s1">&#39;#8968CD&#39;</span><span class="p">,</span>     <span class="c1"># 28 (MediumPurple3)</span>
+            <span class="s1">&#39;#912CEE&#39;</span><span class="p">,</span>     <span class="c1"># 29 (purple2)</span>
+            <span class="s1">&#39;#8B008B&#39;</span><span class="p">,</span>     <span class="c1"># 30 (magenta4)</span>
+            <span class="s1">&#39;bisque&#39;</span><span class="p">]</span>      <span class="c1"># 31</span>
+
+    <span class="k">if</span> <span class="n">style</span> <span class="o">!=</span> <span class="s1">&#39;psc&#39;</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">style</span> <span class="o">==</span> <span class="s1">&#39;xw&#39;</span><span class="p">:</span>
+            <span class="n">cols</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;black&#39;</span>
+            <span class="n">cols</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;bisque&#39;</span>
+            <span class="n">cols</span><span class="p">[</span><span class="mi">31</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Unknown style parameter&#39;</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">c_list</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="p">[</span><span class="n">cols</span><span class="p">[</span><span class="n">normalize</span><span class="p">(</span><span class="n">x</span><span class="p">)]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">c_list</span><span class="p">]</span>
+    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
+        <span class="n">res</span> <span class="o">=</span> <span class="n">cols</span><span class="p">[</span><span class="n">normalize</span><span class="p">(</span><span class="n">c</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">res</span></div>
 </pre></div>
 
            </div>
@@ -407,7 +486,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -444,7 +523,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

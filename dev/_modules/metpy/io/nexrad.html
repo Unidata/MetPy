@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.io.nexrad &mdash; MetPy 0.7</title>
+  <title>metpy.io.nexrad &mdash; MetPy 0.9</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -118,9 +118,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">MetPy Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -216,7 +216,6 @@
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
-<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">(</span><span class="n">level</span><span class="o">=</span><span class="n">logging</span><span class="o">.</span><span class="n">WARNING</span><span class="p">)</span>
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
@@ -566,7 +565,11 @@
 
     <span class="k">def</span> <span class="nf">_decode_msg2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_hdr</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rda_status</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read_struct</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">msg2_fmt</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_check_size</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg2_fmt</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+
+        <span class="c1"># RDA Build 18.0 expanded the size, but only with spares for now</span>
+        <span class="n">extra_size</span> <span class="o">=</span> <span class="mi">40</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rda_status</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">rda_build</span> <span class="o">&gt;=</span> <span class="s1">&#39;18.0&#39;</span> <span class="k">else</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_check_size</span><span class="p">(</span><span class="n">msg_hdr</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg2_fmt</span><span class="o">.</span><span class="n">size</span> <span class="o">+</span> <span class="n">extra_size</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_decode_msg3</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_hdr</span><span class="p">):</span>
         <span class="kn">from</span> <span class="nn">._nexrad_msgs.msg3</span> <span class="k">import</span> <span class="n">descriptions</span><span class="p">,</span> <span class="n">fields</span>
@@ -833,8 +836,9 @@
 
     <span class="k">def</span> <span class="nf">_check_size</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_hdr</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
         <span class="n">hdr_size</span> <span class="o">=</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">size_hw</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg_hdr_fmt</span><span class="o">.</span><span class="n">size</span>
-        <span class="k">assert</span> <span class="n">size</span> <span class="o">==</span> <span class="n">hdr_size</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;Message type </span><span class="si">{}</span><span class="s1"> should be </span><span class="si">{}</span><span class="s1"> bytes &#39;</span>
-                                  <span class="s1">&#39;but got </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">msg_hdr</span><span class="o">.</span><span class="n">msg_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">hdr_size</span><span class="p">))</span></div>
+        <span class="k">if</span> <span class="n">size</span> <span class="o">!=</span> <span class="n">hdr_size</span><span class="p">:</span>
+            <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Message type </span><span class="si">%d</span><span class="s1"> should be </span><span class="si">%d</span><span class="s1"> bytes but got </span><span class="si">%d</span><span class="s1">&#39;</span><span class="p">,</span>
+                        <span class="n">msg_hdr</span><span class="o">.</span><span class="n">msg_type</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">hdr_size</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">reduce_lists</span><span class="p">(</span><span class="n">d</span><span class="p">):</span>
@@ -2516,7 +2520,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -2553,7 +2557,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

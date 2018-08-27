@@ -1,4 +1,8 @@
+.. note::
+    :class: sphx-glr-download-link-note
 
+    Click :ref:`here <sphx_glr_download_examples_sigma_to_pressure_interpolation.py>` to download the full example code
+.. rst-class:: sphx-glr-example-title
 
 .. _sphx_glr_examples_sigma_to_pressure_interpolation.py:
 
@@ -20,8 +24,8 @@ interpolated to isobaric coordinates.
     import matplotlib.pyplot as plt
     from netCDF4 import Dataset, num2date
 
-    import metpy.calc as mpcalc
     from metpy.cbook import get_test_data
+    from metpy.interpolate import log_interpolate_1d
     from metpy.plots import add_metpy_logo, add_timestamp
     from metpy.units import units
 
@@ -86,7 +90,7 @@ variable for plotting.
 .. code-block:: python
 
 
-    height, temp = mpcalc.log_interp(plevs, pres, hgt, temperature, axis=1)
+    height, temp = log_interpolate_1d(plevs, pres, hgt, temperature, axis=1)
 
 
 
@@ -144,18 +148,22 @@ variable for plotting.
 
 
 .. image:: /examples/images/sphx_glr_sigma_to_pressure_interpolation_001.png
-    :align: center
+    :class: sphx-glr-single-img
 
 
 
 
-**Total running time of the script:** ( 0 minutes  7.190 seconds)
+**Total running time of the script:** ( 0 minutes  6.905 seconds)
 
+
+.. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:
 
 
 .. only :: html
 
  .. container:: sphx-glr-footer
+    :class: sphx-glr-footer-example
+
 
 
   .. container:: sphx-glr-download

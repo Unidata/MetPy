@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.units &mdash; MetPy 0.7</title>
+  <title>metpy.units &mdash; MetPy 0.9</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.7" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.7</option>
+                      <option value=''>0.9</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -118,9 +118,9 @@
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">MetPy Examples</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">MetPy Tutorials</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">The MetPy API</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -208,10 +208,13 @@
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">logging</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pint</span>
 <span class="kn">import</span> <span class="nn">pint.unit</span>
+
+<span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 <span class="n">UndefinedUnitError</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">UndefinedUnitError</span>
 <span class="n">DimensionalityError</span> <span class="o">=</span> <span class="n">pint</span><span class="o">.</span><span class="n">DimensionalityError</span>
@@ -221,6 +224,18 @@
 <span class="c1"># For pint 0.6, this is the best way to define a dimensionless unit. See pint #185</span>
 <span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="n">pint</span><span class="o">.</span><span class="n">unit</span><span class="o">.</span><span class="n">UnitDefinition</span><span class="p">(</span><span class="s1">&#39;percent&#39;</span><span class="p">,</span> <span class="s1">&#39;%&#39;</span><span class="p">,</span> <span class="p">(),</span>
              <span class="n">pint</span><span class="o">.</span><span class="n">converters</span><span class="o">.</span><span class="n">ScaleConverter</span><span class="p">(</span><span class="mf">0.01</span><span class="p">)))</span>
+
+<span class="c1"># Define commonly encountered units not defined by pint</span>
+<span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;degrees_north = degree = degrees_N = degreesN = degree_north = degree_N &#39;</span>
+             <span class="s1">&#39;= degreeN&#39;</span><span class="p">)</span>
+<span class="n">units</span><span class="o">.</span><span class="n">define</span><span class="p">(</span><span class="s1">&#39;degrees_east = degree = degrees_E = degreesE = degree_east = degree_E = degreeE&#39;</span><span class="p">)</span>
+
+<span class="c1"># Alias geopotential meters (gpm) to just meters</span>
+<span class="k">try</span><span class="p">:</span>
+    <span class="n">units</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;meter&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">_aliases</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;metre&#39;</span><span class="p">,</span> <span class="s1">&#39;gpm&#39;</span><span class="p">)</span>
+    <span class="n">units</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;gpm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;meter&#39;</span><span class="p">]</span>
+<span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+    <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Failed to add gpm alias to meters.&#39;</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="pandas_dataframe_to_unit_arrays"><a class="viewcode-back" href="../../api/generated/metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays">[docs]</a><span class="k">def</span> <span class="nf">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column_units</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -561,7 +576,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on May 17, 2018 at 19:42:17.
+      Last updated on Aug 27, 2018 at 22:30:03.
 
     </p>
   </div>
@@ -598,7 +613,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.7.0+262.g9879351',
+            VERSION:'0.9.0+2.ge416110',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
