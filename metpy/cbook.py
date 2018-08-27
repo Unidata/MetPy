@@ -26,7 +26,7 @@ def is_string_like(s):
 POOCH = pooch.create(
     path=pooch.os_cache('metpy'),
     base_url='https://github.com/Unidata/MetPy/raw/{version}/staticdata/',
-    version=__version__,
+    version='v' + __version__,
     version_dev='master',
     env='TEST_DATA_DIR')
 
