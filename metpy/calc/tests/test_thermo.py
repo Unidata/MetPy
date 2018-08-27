@@ -16,7 +16,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         mixed_parcel, mixing_ratio, mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse,
                         moist_static_energy, most_unstable_cape_cin, most_unstable_parcel,
-                        parcel_profile, potential_temperature,
+                        parcel_profile, parcel_profile_with_lcl, potential_temperature,
                         psychrometric_vapor_pressure_wet,
                         relative_humidity_from_dewpoint,
                         relative_humidity_from_mixing_ratio,
@@ -137,6 +137,25 @@ def test_parcel_profile():
                           258.966]) * units.kelvin
 
     prof = parcel_profile(levels, 30. * units.degC, 20. * units.degC)
+    assert_array_almost_equal(prof, true_prof, 2)
+
+
+def test_parcel_profile_lcl():
+    """Test parcel profile with lcl calculation."""
+    p = np.array([1004., 1000., 943., 928., 925., 850., 839., 749., 700., 699.]) * units.hPa
+    t = np.array([24.2, 24., 20.2, 21.6, 21.4, 20.4, 20.2, 14.4, 13.2, 13.]) * units.degC
+    td = np.array([21.9, 22.1, 19.2, 20.5, 20.4, 18.4, 17.4, 8.4, -2.8, -3.0]) * units.degC
+
+    true_prof = np.array([297.35, 297.01, 294.5, 293.48, 292.92, 292.81, 289.79, 289.32,
+                          285.15, 282.59, 282.53]) * units.kelvin
+    true_p = np.insert(p.m, 2, 970.699) * units.mbar
+    true_t = np.insert(t.m, 2, 22.047) * units.degC
+    true_td = np.insert(td.m, 2, 20.609) * units.degC
+
+    pressure, temp, dewp, prof = parcel_profile_with_lcl(p, t, td)
+    assert_almost_equal(pressure, true_p, 3)
+    assert_almost_equal(temp, true_t, 3)
+    assert_almost_equal(dewp, true_td, 3)
     assert_array_almost_equal(prof, true_prof, 2)
 
 
@@ -287,12 +306,34 @@ def test_lfc_equals_lcl():
     levels = np.array([912., 905.3, 874.4, 850., 815.1, 786.6, 759.1,
                        748., 732.2, 700., 654.8]) * units.mbar
     temperatures = np.array([29.4, 28.7, 25.2, 22.4, 19.4, 16.8,
-                             14.3, 13.2, 12.6, 11.4, 7.1]) * units.celsius
+                             14.0, 13.2, 12.6, 11.4, 7.1]) * units.celsius
     dewpoints = np.array([18.4, 18.1, 16.6, 15.4, 13.2, 11.4, 9.6,
                           8.8, 0., -18.6, -22.9]) * units.celsius
     lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints)
     assert_almost_equal(lfc_pressure, 777.0333 * units.mbar, 2)
     assert_almost_equal(lfc_temp, 15.8714 * units.celsius, 2)
+
+
+def test_sensitive_sounding():
+    """Test quantities for a sensitive sounding (#902)."""
+    # This sounding has a very small positive area in the low level. It's only captured
+    # properly if the parcel profile includes the LCL, otherwise it breaks LFC and CAPE
+    p = units.Quantity([1004., 1000., 943., 928., 925., 850., 839., 749., 700., 699.,
+                        603., 500., 404., 400., 363., 306., 300., 250., 213., 200.,
+                        176., 150.], 'hectopascal')
+    t = units.Quantity([24.2, 24., 20.2, 21.6, 21.4, 20.4, 20.2, 14.4, 13.2, 13., 6.8, -3.3,
+                        -13.1, -13.7, -17.9, -25.5, -26.9, -37.9, -46.7, -48.7, -52.1, -58.9],
+                       'degC')
+    td = units.Quantity([21.9, 22.1, 19.2, 20.5, 20.4, 18.4, 17.4, 8.4, -2.8, -3.0, -15.2,
+                         -20.3, -29.1, -27.7, -24.9, -39.5, -41.9, -51.9, -60.7, -62.7, -65.1,
+                         -71.9], 'degC')
+    lfc_pressure, lfc_temp = lfc(p, t, td)
+    assert_almost_equal(lfc_pressure, 947.476 * units.mbar, 2)
+    assert_almost_equal(lfc_temp, 20.498 * units.degC, 2)
+
+    pos, neg = surface_based_cape_cin(p, t, td)
+    assert_almost_equal(pos, 0.112 * units('J/kg'), 3)
+    assert_almost_equal(neg, -6.075 * units('J/kg'), 3)
 
 
 def test_lfc_sfc_precision():
@@ -796,7 +837,7 @@ def test_surface_based_cape_cin():
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
     cape, cin = surface_based_cape_cin(p, temperature, dewpoint)
     assert_almost_equal(cape, 58.0368212 * units('joule / kilogram'), 6)
-    assert_almost_equal(cin, -89.8073512 * units('joule / kilogram'), 6)
+    assert_almost_equal(cin, -136.597240 * units('joule / kilogram'), 6)
 
 
 def test_most_unstable_cape_cin_surface():

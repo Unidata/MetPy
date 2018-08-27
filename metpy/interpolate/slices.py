@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools for interpolating to a vertical slice/cross section through data."""
 
-import cartopy.crs as ccrs
 import numpy as np
 import xarray as xr
 
@@ -17,8 +16,8 @@ exporter = Exporter(globals())
 def interpolate_to_slice(data, points, interp_type='linear'):
     r"""Obtain an interpolated slice through data using xarray.
 
-    Utilizing the interpolation functionality in `metpy.interpolate`, this function takes a
-    slice the given data (currently only regular grids are supported), which is given as an
+    Utilizing the interpolation functionality in `xarray`, this function takes a slice the
+    given data (currently only regular grids are supported), which is given as an
     `xarray.DataArray` so that we can utilize its coordinate metadata.
 
     Parameters
@@ -81,6 +80,7 @@ def geodesic(crs, start, end, steps):
     cross_section
 
     """
+    import cartopy.crs as ccrs
     from pyproj import Geod
 
     # Geod.npts only gives points *in between* the start and end, and we want to include
@@ -100,10 +100,10 @@ def geodesic(crs, start, end, steps):
 def cross_section(data, start, end, steps=100, interp_type='linear'):
     r"""Obtain an interpolated cross-sectional slice through gridded data.
 
-    Utilizing the interpolation functionality in `metpy.interpolate`, this function takes a
-    vertical cross-sectional slice along a geodesic through the given data on a regular grid,
-    which is given as an `xarray.DataArray` so that we can utilize its coordinate and
-    projection metadata.
+    Utilizing the interpolation functionality in `xarray`, this function takes a vertical
+    cross-sectional slice along a geodesic through the given data on a regular grid, which is
+    given as an `xarray.DataArray` so that we can utilize its coordinate and projection
+    metadata.
 
     Parameters
     ----------
