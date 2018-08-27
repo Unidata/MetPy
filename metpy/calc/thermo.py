@@ -2042,8 +2042,8 @@ def brunt_vaisala_frequency_squared(heights, potential_temperature, axis=0):
     potential_temperature = potential_temperature.to('K')
 
     # Calculate and return the square of Brunt-Vaisala frequency
-    return mpconsts.g / potential_temperature * first_derivative(potential_temperature, x=heights,
-                                                                 axis=axis)
+    return mpconsts.g / potential_temperature * first_derivative(potential_temperature,
+                                                                 x=heights, axis=axis)
 
 
 @exporter.export
