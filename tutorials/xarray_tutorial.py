@@ -45,20 +45,17 @@ print(data)
 #
 # To make use of the data within MetPy, we need to parse the dataset for projection and
 # coordinate information following the CF conventions. For this, we use the
-# ``data.metpy.parse_cf()`` method.
+# ``data.metpy.parse_cf()`` method, which will return a new, parsed ``DataArray`` or
+# ``Dataset``.
 #
-# Additionally, we take a few optional steps to clean up our dataset for later use:
-#
-# - Rename our data variables for easier reference.
-# - Modify the units on geopotential height to meters, since the unit used here ('gpm') is
-#   currently not handled by MetPy's unit registry (see `GitHub Issue #907
-#   <https://github.com/Unidata/MetPy/issues/907>`_).
+# Additionally, we rename our data variables for easier reference.
 
-# To parse the full dataset, we can call parse_cf without an argument
+# To parse the full dataset, we can call parse_cf without an argument, and assign the returned
+# Dataset.
 data = data.metpy.parse_cf()
 
 # If we instead want just a single variable, we can pass that variable name to parse_cf and
-# it will return just that data variable
+# it will return just that data variable as a DataArray.
 data_var = data.metpy.parse_cf('Temperature_isobaric')
 
 # To rename variables, supply a dictionary between old and new names to the rename method
@@ -70,9 +67,6 @@ data.rename({
     'v-component_of_wind_isobaric': 'v',
     'Geopotential_height_isobaric': 'height'
 }, inplace=True)
-
-# To change an attribute on a variable, do the following
-data['height'].attrs['units'] = 'm'
 
 #########################################################################
 # Units
@@ -175,11 +169,12 @@ print(v_geo)
 #     - ``tangential_component``
 #     - ``absolute_momentum``
 #
-# More details can be found by looking at the documentation for the specific function.
+# More details can be found by looking at the documentation for the specific function of
+# interest.
 
 #########################################################################
 # There is also the special case of the helper function, ``grid_deltas_from_dataarray``, which
-# takes a DataArray input, but returns unit arrays for use in other calculations. We could
+# takes a ``DataArray`` input, but returns unit arrays for use in other calculations. We could
 # rewrite the above geostrophic wind example using this helper function as follows:
 
 heights = data['height'].loc[time[0]].loc[{vertical.name: 500.}]
@@ -195,8 +190,9 @@ print(v_geo)
 # --------
 #
 # Like most meteorological data, we want to be able to plot these data. DataArrays can be used
-# like normal numpy arrays in plotting code, or we can use some of xarray's plotting
-# functionality.
+# like normal numpy arrays in plotting code, which is the recommended process at the current
+# point in time, or we can use some of xarray's plotting functionality for quick inspection of
+# the data.
 #
 # (More detail beyond the following can be found at `xarray's plotting reference
 # <http://xarray.pydata.org/en/stable/plotting.html>`_.)

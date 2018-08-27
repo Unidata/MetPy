@@ -351,8 +351,11 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
     """
     # Default to surface parcel if no profile or starting pressure level is given
     if parcel_temperature_profile is None:
-        parcel_temperature_profile = parcel_profile(pressure, temperature[0],
-                                                    dewpt[0]).to('degC')
+        new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpt)
+        pressure, temperature, _, parcel_temperature_profile = new_stuff
+        temperature = temperature.to('degC')
+        parcel_temperature_profile = parcel_temperature_profile.to('degC')
+
     # The parcel profile and data have the same first data point, so we ignore
     # that point to get the real first intersection for the LFC calculation.
     x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
@@ -414,8 +417,11 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None):
     """
     # Default to surface parcel if no profile or starting pressure level is given
     if parcel_temperature_profile is None:
-        parcel_temperature_profile = parcel_profile(pressure, temperature[0],
-                                                    dewpt[0]).to('degC')
+        new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpt)
+        pressure, temperature, _, parcel_temperature_profile = new_stuff
+        temperature = temperature.to('degC')
+        parcel_temperature_profile = parcel_temperature_profile.to('degC')
+
     # If the top of the sounding parcel is warmer than the environment, there is no EL
     if parcel_temperature_profile[-1] > temperature[-1]:
         return np.nan * pressure.units, np.nan * temperature.units
@@ -458,26 +464,98 @@ def parcel_profile(pressure, temperature, dewpt):
     lcl, moist_lapse, dry_lapse
 
     """
+    _, _, _, t_l, _, t_u = _parcel_profile_helper(pressure, temperature, dewpt)
+    return concatenate((t_l, t_u))
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[pressure]', '[temperature]', '[temperature]')
+def parcel_profile_with_lcl(pressure, temperature, dewpt):
+    r"""Calculate the profile a parcel takes through the atmosphere.
+
+    The parcel starts at `temperature`, and `dewpt`, lifted up
+    dry adiabatically to the LCL, and then moist adiabatically from there.
+    `pressure` specifies the pressure levels for the profile. This function returns
+    a profile that includes the LCL.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        The atmospheric pressure level(s) of interest. The first entry should be the starting
+        point pressure.
+    temperature : `pint.Quantity`
+        The atmospheric temperature at the levels in `pressure`. The first entry should be the
+        starting point temperature.
+    dewpt : `pint.Quantity`
+        The atmospheric dew point at the levels in `pressure`. The first entry should be the
+        starting dew point.
+
+    Returns
+    -------
+    pressure : `pint.Quantity`
+        The parcel profile pressures, which includes the specified levels and the LCL
+    ambient_temperature : `pint.Quantity`
+        The atmospheric temperature values, including the value interpolated to the LCL level
+    ambient_dew_point : `pint.Quantity`
+        The atmospheric dew point values, including the value interpolated to the LCL level
+    profile_temperature : `pint.Quantity`
+        The parcel profile temperatures at all of the levels in the returned pressures array,
+        including the LCL.
+
+    See Also
+    --------
+    lcl, moist_lapse, dry_lapse, parcel_profile
+
+    """
+    p_l, p_lcl, p_u, t_l, t_lcl, t_u = _parcel_profile_helper(pressure, temperature[0],
+                                                              dewpt[0])
+    new_press = concatenate((p_l, p_lcl, p_u))
+    prof_temp = concatenate((t_l, t_lcl, t_u))
+    new_temp = _insert_lcl_level(pressure, temperature, p_lcl)
+    new_dewp = _insert_lcl_level(pressure, dewpt, p_lcl)
+    return new_press, new_temp, new_dewp, prof_temp
+
+
+def _parcel_profile_helper(pressure, temperature, dewpt):
+    """Help calculate parcel profiles.
+
+    Returns the temperature and pressure, above, below, and including the LCL. The
+    other calculation functions decide what to do with the pieces.
+
+    """
     # Find the LCL
-    lcl_pressure, _ = lcl(pressure[0], temperature, dewpt)
-    lcl_pressure = lcl_pressure.to(pressure.units)
+    press_lcl, temp_lcl = lcl(pressure[0], temperature, dewpt)
+    press_lcl = press_lcl.to(pressure.units)
 
     # Find the dry adiabatic profile, *including* the LCL. We need >= the LCL in case the
     # LCL is included in the levels. It's slightly redundant in that case, but simplifies
     # the logic for removing it later.
-    press_lower = concatenate((pressure[pressure >= lcl_pressure], lcl_pressure))
-    t1 = dry_lapse(press_lower, temperature)
+    press_lower = concatenate((pressure[pressure >= press_lcl], press_lcl))
+    temp_lower = dry_lapse(press_lower, temperature)
 
     # If the pressure profile doesn't make it to the lcl, we can stop here
-    if _greater_or_close(np.nanmin(pressure), lcl_pressure.m):
-        return t1[:-1]
+    if _greater_or_close(np.nanmin(pressure), press_lcl.m):
+        return (press_lower[:-1], press_lcl, np.array([]) * press_lower.units,
+                temp_lower[:-1], temp_lcl, np.array([]) * temp_lower.units)
 
     # Find moist pseudo-adiabatic profile starting at the LCL
-    press_upper = concatenate((lcl_pressure, pressure[pressure < lcl_pressure]))
-    t2 = moist_lapse(press_upper, t1[-1]).to(t1.units)
+    press_upper = concatenate((press_lcl, pressure[pressure < press_lcl]))
+    temp_upper = moist_lapse(press_upper, temp_lower[-1]).to(temp_lower.units)
 
-    # Return LCL *without* the LCL point
-    return concatenate((t1[:-1], t2[1:]))
+    # Return profile pieces
+    return (press_lower[:-1], press_lcl, press_upper[1:],
+            temp_lower[:-1], temp_lcl, temp_upper[1:])
+
+
+def _insert_lcl_level(pressure, temperature, lcl_pressure):
+    """Insert the LCL pressure into the profile."""
+    interp_temp = interpolate_1d(lcl_pressure, pressure, temperature)
+
+    # Pressure needs to be increasing for searchsorted, so flip it and then convert
+    # the index back to the original array
+    loc = pressure.size - pressure[::-1].searchsorted(lcl_pressure)
+    return np.insert(temperature.m, loc, interp_temp.m) * temperature.units
 
 
 @exporter.export
@@ -1574,8 +1652,8 @@ def surface_based_cape_cin(pressure, temperature, dewpoint):
     cape_cin, parcel_profile
 
     """
-    profile = parcel_profile(pressure, temperature[0], dewpoint[0])
-    return cape_cin(pressure, temperature, dewpoint, profile)
+    p, t, td, profile = parcel_profile_with_lcl(pressure, temperature, dewpoint)
+    return cape_cin(p, t, td, profile)
 
 
 @exporter.export

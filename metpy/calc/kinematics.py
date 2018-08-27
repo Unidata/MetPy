@@ -97,11 +97,11 @@ def vorticity(u, v, dx, dy):
     v : (M, N) ndarray
         y component of the wind
     dx : float or ndarray
-        The grid spacing(s) in the x-direction. If an array, there should be one
-        item less than the size of `u` along the applicable axis.
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
     dy : float or ndarray
-        The grid spacing(s) in the y-direction. If an array, there should be one
-        item less than the size of `u` along the applicable axis.
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
@@ -111,6 +111,11 @@ def vorticity(u, v, dx, dy):
     See Also
     --------
     divergence
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     dudy = first_derivative(u, delta=dy, axis=-2)
@@ -130,10 +135,12 @@ def divergence(u, v, dx, dy):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
@@ -143,6 +150,11 @@ def divergence(u, v, dx, dy):
     See Also
     --------
     vorticity
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     dudx = first_derivative(u, delta=dx, axis=-1)
@@ -162,10 +174,12 @@ def shearing_deformation(u, v, dx, dy):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
@@ -175,6 +189,11 @@ def shearing_deformation(u, v, dx, dy):
     See Also
     --------
     stretching_deformation, total_deformation
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     dudy = first_derivative(u, delta=dy, axis=-2)
@@ -194,10 +213,12 @@ def stretching_deformation(u, v, dx, dy):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
@@ -207,6 +228,11 @@ def stretching_deformation(u, v, dx, dy):
     See Also
     --------
     shearing_deformation, total_deformation
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     dudx = first_derivative(u, delta=dx, axis=-1)
@@ -226,10 +252,12 @@ def total_deformation(u, v, dx, dy):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
@@ -239,6 +267,11 @@ def total_deformation(u, v, dx, dy):
     See Also
     --------
     shearing_deformation, stretching_deformation
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     dudy, dudx = gradient(u, deltas=(dy, dx), axes=(-2, -1))
@@ -266,8 +299,10 @@ def advection(scalar, wind, deltas):
         with a component of the wind in each dimension.  For example, for
         horizontal advection, this could be a list: [u, v], where u and v
         are each a 2-dimensional array.
-    deltas : sequence
-        A (length M) sequence containing the grid spacing in each dimension.
+    deltas : sequence of float or ndarray
+        A (length M) sequence containing the grid spacing(s) in each dimension. If using
+        arrays, in each array there should be one item less than the size of `scalar` along the
+        applicable axis.
 
     Returns
     -------
@@ -321,10 +356,12 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
 
     Returns
     -------
@@ -333,7 +370,8 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
 
     Notes
     -----
-    Assumes dim_order='yx', unless otherwise specified.
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     Conversion factor to go from [temperature units]/m/s to [temperature units/100km/3h]
     :math:`1.08e4*1.e5`
@@ -375,15 +413,22 @@ def geostrophic_wind(heights, f, dx, dy):
     f : array_like
         The coriolis parameter.  This can be a scalar to be applied
         everywhere or an array of values.
-    dx : scalar
-        The grid spacing in the x-direction
-    dy : scalar
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `heights` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `heights` along the applicable axis.
 
     Returns
     -------
     A 2-item tuple of arrays
         A tuple of the u-component and v-component of the geostrophic wind.
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     if heights.dimensionality['[length]'] == 2.0:
@@ -405,26 +450,30 @@ def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
     Parameters
     ----------
     heights : (M, N) ndarray
-        The height field, with either leading dimensions of (x, y) or trailing dimensions
-        of (y, x), depending on the value of ``dim_order``.
+        The height field.
     f : array_like
         The coriolis parameter.  This can be a scalar to be applied
         everywhere or an array of values.
-    dx : scalar
-        The grid spacing in the x-direction
-    dy : scalar
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `heights` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `heights` along the applicable axis.
     u : (M, N) ndarray
-        The u wind field, with either leading dimensions of (x, y) or trailing dimensions
-        of (y, x), depending on the value of ``dim_order``.
+        The u wind field.
     v : (M, N) ndarray
-        The u wind field, with either leading dimensions of (x, y) or trailing dimensions
-        of (y, x), depending on the value of ``dim_order``.
+        The u wind field.
 
     Returns
     -------
     A 2-item tuple of arrays
         A tuple of the u-component and v-component of the ageostrophic wind.
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     u_geostrophic, v_geostrophic = geostrophic_wind(heights, f, dx, dy, dim_order=dim_order)
@@ -522,8 +571,14 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
     int_layers = (storm_relative_u[1:] * storm_relative_v[:-1] -
                   storm_relative_u[:-1] * storm_relative_v[1:])
 
+    # Need to manually check for masked value because sum() on masked array with non-default
+    # mask will return a masked value rather than 0. See numpy/numpy#11736
     positive_srh = int_layers[int_layers.magnitude > 0.].sum()
+    if np.ma.is_masked(positive_srh):
+        positive_srh = 0.0 * units('meter**2 / second**2')
     negative_srh = int_layers[int_layers.magnitude < 0.].sum()
+    if np.ma.is_masked(negative_srh):
+        negative_srh = 0.0 * units('meter**2 / second**2')
 
     return (positive_srh.to('meter ** 2 / second ** 2'),
             negative_srh.to('meter ** 2 / second ** 2'),
@@ -542,10 +597,12 @@ def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
     lats : (M, N) ndarray
         latitudes of the wind data
 
@@ -553,6 +610,11 @@ def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
     -------
     (M, N) ndarray
         absolute vorticity
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     f = coriolis_parameter(lats)
@@ -582,10 +644,12 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
     lats : (M, N) ndarray
         latitudes of the wind data
     axis : int, optional
@@ -638,10 +702,12 @@ def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
         x component of the wind
     v : (M, N) ndarray
         y component of the wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
     lats : (M, N) ndarray
         latitudes of the wind data
 
@@ -649,6 +715,11 @@ def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
     -------
     (M, N) ndarray
         barotropic potential vorticity
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     avor = absolute_vorticity(u, v, dx, dy, lats, dim_order=dim_order)
@@ -683,10 +754,12 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
         x component of the geostrophic (advected) wind
     v_geostrophic : (M, N) ndarray
         y component of the geostrophic (advected) wind
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
     lats : (M, N) ndarray
         latitudes of the wind data
 
@@ -702,6 +775,9 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
     Many forms of the inertial advective wind assume the advecting and advected
     wind to both be the geostrophic wind. To do so, pass the x and y components
     of the geostrophic with for u and u_geostrophic/v and v_geostrophic.
+
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     f = coriolis_parameter(lats)
@@ -746,10 +822,12 @@ def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
         Array of temperature at pressure level
     pressure : `pint.Quantity`
         Pressure at level
-    dx : float
-        The grid spacing in the x-direction
-    dy : float
-        The grid spacing in the y-direction
+    dx : float or ndarray
+        The grid spacing(s) in the x-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
+    dy : float or ndarray
+        The grid spacing(s) in the y-direction. If an array, there should be one item less than
+        the size of `u` along the applicable axis.
     static_stability : `pint.Quantity`, optional
         The static stability at the pressure level. Defaults to 1 if not given to calculate
         the Q-vector without factoring in static stability.
@@ -762,6 +840,11 @@ def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
     See Also
     --------
     static_stability
+
+    Notes
+    -----
+    If inputs have more than two dimensions, they are assumed to have either leading dimensions
+    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
     """
     dudy, dudx = gradient(u, deltas=(dy, dx), axes=(-2, -1))
