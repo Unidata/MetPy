@@ -254,7 +254,8 @@ def moist_lapse(pressure, temperature):
         p = units.Quantity(p, pressure.units)
         rs = saturation_mixing_ratio(p, t)
         frac = ((mpconsts.Rd * t + mpconsts.Lv * rs) /
-                (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon / (mpconsts.Rd * t * t)))).to('kelvin')
+                (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon /
+                                  (mpconsts.Rd * t * t)))).to('kelvin')
         return frac / p
     return units.Quantity(si.odeint(dt, atleast_1d(temperature).squeeze(),
                                     pressure.squeeze()).T.squeeze(), temperature.units)
@@ -1280,14 +1281,16 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     p_mask = _less_or_close(x, lfc_pressure) & _greater_or_close(x, el_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
-    cape = (mpconsts.Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+    cape = (mpconsts.Rd *
+            (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
     # CIN
     # Only use data between the surface and LFC for calculation
     p_mask = _greater_or_close(x, lfc_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
-    cin = (mpconsts.Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+    cin = (mpconsts.Rd *
+           (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
     return cape, cin
 
@@ -1866,8 +1869,8 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
             layer_virttemp = virtual_temperature(layer_temp, layer_w, molecular_weight_ratio)
 
     # Take the integral (with unit handling) and return the result in meters
-    return (- mpconsts.Rd / mpconsts.g * np.trapz(layer_virttemp.to('K'), x=np.log(layer_p / units.hPa)) *
-            units.K).to('m')
+    return (- mpconsts.Rd / mpconsts.g * np.trapz(
+        layer_virttemp.to('K'), x=np.log(layer_p / units.hPa)) * units.K).to('m')
 
 
 @exporter.export
