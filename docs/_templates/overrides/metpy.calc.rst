@@ -79,6 +79,7 @@ calc
       most_unstable_cape_cin
       most_unstable_parcel
       parcel_profile
+      parcel_profile_with_lcl
       significant_tornado
       storm_relative_helicity
       supercell_composite
@@ -126,7 +127,7 @@ calc
       brunt_vaisala_period
       friction_velocity
       tke
-   
+
 
    Mathematical Functions
    ----------------------
@@ -173,7 +174,7 @@ calc
       reduce_point_density
       resample_nn_1d
       smooth_gaussian
-      
+
 
    Deprecated
    ----------
@@ -182,7 +183,7 @@ calc
 
    .. autosummary::
       :toctree: ./
-      
+
       get_wind_components
       get_wind_dir
       get_wind_speed
