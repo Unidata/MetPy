@@ -1,0 +1,373 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>first_derivative &mdash; MetPy 0.9</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.first_derivative.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+        <link rel="up" title="calc" href="metpy.calc.html"/>
+        <link rel="next" title="gradient" href="metpy.calc.gradient.html"/>
+        <link rel="prev" title="cross_section_components" href="metpy.calc.cross_section_components.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>0.9</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#soundings">Soundings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dynamic-kinematic">Dynamic/Kinematic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#boundary-layer-turbulence">Boundary Layer/Turbulence</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.cross_section_components.html">cross_section_components</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">first_derivative</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.gradient.html">gradient</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.grid_deltas_from_dataarray.html">grid_deltas_from_dataarray</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.laplacian.html">laplacian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.lat_lon_grid_deltas.html">lat_lon_grid_deltas</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.normal_component.html">normal_component</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.second_derivative.html">second_derivative</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.tangential_component.html">tangential_component</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.unit_vectors_from_cross_section.html">unit_vectors_from_cross_section</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#other">Other</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#deprecated">Deprecated</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference Guide</a> &raquo;</li>
+        
+          <li><a href="metpy.calc.html">calc</a> &raquo;</li>
+        
+      <li>first_derivative</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.calc.first_derivative&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="first-derivative">
+<h1>first_derivative<a class="headerlink" href="#first-derivative" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="metpy.calc.first_derivative">
+<code class="descclassname">metpy.calc.</code><code class="descname">first_derivative</code><span class="sig-paren">(</span><em>f</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#first_derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.first_derivative" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the first derivative of a grid of values.</p>
+<p>Works for both regularly-spaced data and grids with varying spacing.</p>
+<p>Either <em class="xref py py-obj">x</em> or <em class="xref py py-obj">delta</em> must be specified, or <em class="xref py py-obj">f</em> must be given as an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.10.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
+attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.10.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, and <em class="xref py py-obj">x</em> or
+<em class="xref py py-obj">delta</em> are given, <em class="xref py py-obj">f</em> will be converted to a <em class="xref py py-obj">pint.Quantity</em> and the derivative returned
+as a <em class="xref py py-obj">pint.Quantity</em>, otherwise, if neither <em class="xref py py-obj">x</em> nor <em class="xref py py-obj">delta</em> are given, the attached
+coordinate information belonging to <em class="xref py py-obj">axis</em> will be used and the derivative will be returned
+as an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.10.8)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
+<p>This uses 3 points to calculate the derivative, using forward or backward at the edges of
+the grid as appropriate, and centered elsewhere. The irregular spacing is handled
+explicitly, using the formulation as specified by <a class="reference internal" href="../../references.html#bowen2005" id="id1">[Bowen2005]</a>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>f</strong> (<em>array-like</em>) – Array of values of which to calculate the derivative</li>
+<li><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The array axis along which to take the derivative. If <em class="xref py py-obj">f</em> is ndarray-like, must be an
+integer. If <em class="xref py py-obj">f</em> is a <em class="xref py py-obj">DataArray</em>, can be a string (referring to either the coordinate
+dimension name or the axis type) or integer (referring to axis number), unless using
+implicit conversion to <em class="xref py py-obj">pint.Quantity</em>, in which case it must be an integer. Defaults
+to 0.</li>
+<li><strong>x</strong> (<em>array-like</em><em>, </em><em>optional</em>) – The coordinate values corresponding to the grid points in <em class="xref py py-obj">f</em>.</li>
+<li><strong>delta</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Spacing between the grid points in <em class="xref py py-obj">f</em>. Should be one item less than the size
+of <em class="xref py py-obj">f</em> along <em class="xref py py-obj">axis</em>.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array-like</em> – The first derivative calculated along the selected axis.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="metpy.calc.second_derivative.html#metpy.calc.second_derivative" title="metpy.calc.second_derivative"><code class="xref py py-func docutils literal notranslate"><span class="pre">second_derivative()</span></code></a></p>
+</div>
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="metpy.calc.gradient.html" class="btn btn-neutral float-right" title="gradient" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="metpy.calc.cross_section_components.html" class="btn btn-neutral" title="cross_section_components" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Aug 27, 2018 at 23:29:17.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../../../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.9.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

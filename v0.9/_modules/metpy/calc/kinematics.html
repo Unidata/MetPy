@@ -1,0 +1,1132 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.calc.kinematics &mdash; MetPy 0.9</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/calc/kinematics.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>0.9</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.calc.kinematics</li>
+    
+    
+    <li class="source-link">
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.calc.kinematics</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2009,2017,2018 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sd">&quot;&quot;&quot;Contains calculation of kinematic parameters (e.g. divergence or vorticity).&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
+
+<span class="kn">import</span> <span class="nn">functools</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">coriolis_parameter</span>
+<span class="kn">from</span> <span class="nn">.tools</span> <span class="k">import</span> <span class="n">first_derivative</span><span class="p">,</span> <span class="n">get_layer_heights</span><span class="p">,</span> <span class="n">gradient</span>
+<span class="kn">from</span> <span class="nn">..cbook</span> <span class="k">import</span> <span class="n">is_string_like</span><span class="p">,</span> <span class="n">iterable</span>
+<span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">Cp_d</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">Rd</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_2d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">preprocess_xarray</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">_stack</span><span class="p">(</span><span class="n">arrs</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">a</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_is_x_first_dim</span><span class="p">(</span><span class="n">dim_order</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Determine whether x is the first dimension based on the value of dim_order.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">dim_order</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dim_order</span> <span class="o">=</span> <span class="s1">&#39;yx&#39;</span>
+    <span class="k">return</span> <span class="n">dim_order</span> <span class="o">==</span> <span class="s1">&#39;xy&#39;</span>
+
+
+<span class="k">def</span> <span class="nf">_check_and_flip</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Transpose array or list of arrays if they are 2D.&quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="s1">&#39;ndim&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">arr</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">arr</span><span class="o">.</span><span class="n">T</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">arr</span>
+    <span class="k">elif</span> <span class="ow">not</span> <span class="n">is_string_like</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="ow">and</span> <span class="n">iterable</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_check_and_flip</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arr</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">arr</span>
+
+
+<span class="k">def</span> <span class="nf">ensure_yx_order</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Wrap a function to ensure all array arguments are y, x ordered, based on kwarg.&quot;&quot;&quot;</span>
+    <span class="nd">@functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="c1"># Check what order we&#39;re given</span>
+        <span class="n">dim_order</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;dim_order&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="n">x_first</span> <span class="o">=</span> <span class="n">_is_x_first_dim</span><span class="p">(</span><span class="n">dim_order</span><span class="p">)</span>
+
+        <span class="c1"># If x is the first dimension, flip (transpose) every array within the function args.</span>
+        <span class="k">if</span> <span class="n">x_first</span><span class="p">:</span>
+            <span class="n">args</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">_check_and_flip</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">args</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">kwargs</span><span class="p">[</span><span class="n">k</span><span class="p">]</span> <span class="o">=</span> <span class="n">_check_and_flip</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
+
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+        <span class="c1"># If we flipped on the way in, need to flip on the way out so that output array(s)</span>
+        <span class="c1"># match the dimension order of the original input.</span>
+        <span class="k">if</span> <span class="n">x_first</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">_check_and_flip</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">ret</span>
+
+    <span class="c1"># Inject a docstring for the dim_order argument into the function&#39;s docstring.</span>
+    <span class="n">dim_order_doc</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
+<span class="s2">    dim_order : str or ``None``, optional</span>
+<span class="s2">        The ordering of dimensions in passed in arrays. Can be one of ``None``, ``&#39;xy&#39;``,</span>
+<span class="s2">        or ``&#39;yx&#39;``. ``&#39;xy&#39;`` indicates that the dimension corresponding to x is the leading</span>
+<span class="s2">        dimension, followed by y. ``&#39;yx&#39;`` indicates that x is the last dimension, preceded</span>
+<span class="s2">        by y. ``None`` indicates that the default ordering should be assumed,</span>
+<span class="s2">        which is &#39;yx&#39;. Can only be passed as a keyword argument, i.e.</span>
+<span class="s2">        func(..., dim_order=&#39;xy&#39;).&quot;&quot;&quot;</span>
+
+    <span class="c1"># Find the first blank line after the start of the parameters section</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;Parameters&#39;</span><span class="p">)</span>
+    <span class="n">blank</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="vm">__doc__</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n\n</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
+    <span class="n">wrapper</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">wrapper</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">[:</span><span class="n">blank</span><span class="p">]</span> <span class="o">+</span> <span class="n">dim_order_doc</span> <span class="o">+</span> <span class="n">wrapper</span><span class="o">.</span><span class="vm">__doc__</span><span class="p">[</span><span class="n">blank</span><span class="p">:]</span>
+
+    <span class="k">return</span> <span class="n">wrapper</span>
+
+
+<div class="viewcode-block" id="vorticity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.vorticity.html#metpy.calc.vorticity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@ensure_yx_order</span>
+<span class="k">def</span> <span class="nf">vorticity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the vertical vorticity of the horizontal wind.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        x component of the wind</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        y component of the wind</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (M, N) ndarray</span>
+<span class="sd">        vertical vorticity</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    divergence</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dudy</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dy</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">dvdx</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dvdx</span> <span class="o">-</span> <span class="n">dudy</span></div>
+
+
+<div class="viewcode-block" id="divergence"><a class="viewcode-back" href="../../../api/generated/metpy.calc.divergence.html#metpy.calc.divergence">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@ensure_yx_order</span>
+<span class="k">def</span> <span class="nf">divergence</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the horizontal divergence of the horizontal wind.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        x component of the wind</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        y component of the wind</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (M, N) ndarray</span>
+<span class="sd">        The horizontal divergence</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    vorticity</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dudx</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">dvdy</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dy</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dudx</span> <span class="o">+</span> <span class="n">dvdy</span></div>
+
+
+<div class="viewcode-block" id="shearing_deformation"><a class="viewcode-back" href="../../../api/generated/metpy.calc.shearing_deformation.html#metpy.calc.shearing_deformation">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@ensure_yx_order</span>
+<span class="k">def</span> <span class="nf">shearing_deformation</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the shearing deformation of the horizontal wind.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        x component of the wind</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        y component of the wind</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (M, N) ndarray</span>
+<span class="sd">        Shearing Deformation</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    stretching_deformation, total_deformation</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dudy</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dy</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">dvdx</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dvdx</span> <span class="o">+</span> <span class="n">dudy</span></div>
+
+
+<div class="viewcode-block" id="stretching_deformation"><a class="viewcode-back" href="../../../api/generated/metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@ensure_yx_order</span>
+<span class="k">def</span> <span class="nf">stretching_deformation</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the stretching deformation of the horizontal wind.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        x component of the wind</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        y component of the wind</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (M, N) ndarray</span>
+<span class="sd">        Stretching Deformation</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    shearing_deformation, total_deformation</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dudx</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">dvdy</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dy</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dudx</span> <span class="o">-</span> <span class="n">dvdy</span></div>
+
+
+<div class="viewcode-block" id="total_deformation"><a class="viewcode-back" href="../../../api/generated/metpy.calc.total_deformation.html#metpy.calc.total_deformation">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@ensure_yx_order</span>
+<span class="k">def</span> <span class="nf">total_deformation</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the horizontal total deformation of the horizontal wind.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        x component of the wind</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        y component of the wind</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (M, N) ndarray</span>
+<span class="sd">        Total Deformation</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    shearing_deformation, stretching_deformation</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dudy</span><span class="p">,</span> <span class="n">dudx</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">dvdy</span><span class="p">,</span> <span class="n">dvdx</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">dvdx</span> <span class="o">+</span> <span class="n">dudy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="p">(</span><span class="n">dudx</span> <span class="o">-</span> <span class="n">dvdy</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="advection"><a class="viewcode-back" href="../../../api/generated/metpy.calc.advection.html#metpy.calc.advection">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@ensure_yx_order</span>
+<span class="k">def</span> <span class="nf">advection</span><span class="p">(</span><span class="n">scalar</span><span class="p">,</span> <span class="n">wind</span><span class="p">,</span> <span class="n">deltas</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the advection of a scalar field by the wind.</span>
+
+<span class="sd">    The order of the dimensions of the arrays must match the order in which</span>
+<span class="sd">    the wind components are given.  For example, if the winds are given [u, v],</span>
+<span class="sd">    then the scalar and wind arrays must be indexed as x,y (which puts x as the</span>
+<span class="sd">    rows, not columns).</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    scalar : N-dimensional array</span>
+<span class="sd">        Array (with N-dimensions) with the quantity to be advected.</span>
+<span class="sd">    wind : sequence of arrays</span>
+<span class="sd">        Length M sequence of N-dimensional arrays.  Represents the flow,</span>
+<span class="sd">        with a component of the wind in each dimension.  For example, for</span>
+<span class="sd">        horizontal advection, this could be a list: [u, v], where u and v</span>
+<span class="sd">        are each a 2-dimensional array.</span>
+<span class="sd">    deltas : sequence of float or ndarray</span>
+<span class="sd">        A (length M) sequence containing the grid spacing(s) in each dimension. If using</span>
+<span class="sd">        arrays, in each array there should be one item less than the size of `scalar` along the</span>
+<span class="sd">        applicable axis.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    N-dimensional array</span>
+<span class="sd">        An N-dimensional array containing the advection at all grid points.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># This allows passing in a list of wind components or an array.</span>
+    <span class="n">wind</span> <span class="o">=</span> <span class="n">_stack</span><span class="p">(</span><span class="n">wind</span><span class="p">)</span>
+
+    <span class="c1"># If we have more than one component, we need to reverse the order along the first</span>
+    <span class="c1"># dimension so that the wind components line up with the</span>
+    <span class="c1"># order of the gradients from the ..., y, x ordered array.</span>
+    <span class="k">if</span> <span class="n">wind</span><span class="o">.</span><span class="n">ndim</span> <span class="o">&gt;</span> <span class="n">scalar</span><span class="o">.</span><span class="n">ndim</span><span class="p">:</span>
+        <span class="n">wind</span> <span class="o">=</span> <span class="n">wind</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Gradient returns a list of derivatives along each dimension. We convert</span>
+    <span class="c1"># this to an array with dimension as the first index. Reverse the deltas to line up</span>
+    <span class="c1"># with the order of the dimensions.</span>
+    <span class="n">grad</span> <span class="o">=</span> <span class="n">_stack</span><span class="p">(</span><span class="n">gradient</span><span class="p">(</span><span class="n">scalar</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="n">deltas</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+    <span class="c1"># Make them be at least 2D (handling the 1D case) so that we can do the</span>
+    <span class="c1"># multiply and sum below</span>
+    <span class="n">grad</span><span class="p">,</span> <span class="n">wind</span> <span class="o">=</span> <span class="n">atleast_2d</span><span class="p">(</span><span class="n">grad</span><span class="p">,</span> <span class="n">wind</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="n">grad</span> <span class="o">*</span> <span class="n">wind</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="frontogenesis"><a class="viewcode-back" href="../../../api/generated/metpy.calc.frontogenesis.html#metpy.calc.frontogenesis">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@ensure_yx_order</span>
+<span class="k">def</span> <span class="nf">frontogenesis</span><span class="p">(</span><span class="n">thta</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">&#39;yx&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the 2D kinematic frontogenesis of a temperature field.</span>
+
+<span class="sd">    The implementation is a form of the Petterssen Frontogenesis and uses the formula</span>
+<span class="sd">    outlined in [Bluestein1993]_ pg.248-253.</span>
+
+<span class="sd">    .. math:: F=\frac{1}{2}\left|\nabla \theta\right|[D cos(2\beta)-\delta]</span>
+
+<span class="sd">    * :math:`F` is 2D kinematic frontogenesis</span>
+<span class="sd">    * :math:`\theta` is potential temperature</span>
+<span class="sd">    * :math:`D` is the total deformation</span>
+<span class="sd">    * :math:`\beta` is the angle between the axis of dilitation and the isentropes</span>
+<span class="sd">    * :math:`\delta` is the divergence</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    thta : (M, N) ndarray</span>
+<span class="sd">        Potential temperature</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        x component of the wind</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        y component of the wind</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (M, N) ndarray</span>
+<span class="sd">        2D Frontogenesis in [temperature units]/m/s</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    Conversion factor to go from [temperature units]/m/s to [temperature units/100km/3h]</span>
+<span class="sd">    :math:`1.08e4*1.e5`</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get gradients of potential temperature in both x and y</span>
+    <span class="n">ddy_thta</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">thta</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dy</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">ddx_thta</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">thta</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Compute the magnitude of the potential temperature gradient</span>
+    <span class="n">mag_thta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">ddx_thta</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">ddy_thta</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="c1"># Get the shearing, stretching, and total deformation of the wind field</span>
+    <span class="n">shrd</span> <span class="o">=</span> <span class="n">shearing_deformation</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="n">dim_order</span><span class="p">)</span>
+    <span class="n">strd</span> <span class="o">=</span> <span class="n">stretching_deformation</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="n">dim_order</span><span class="p">)</span>
+    <span class="n">tdef</span> <span class="o">=</span> <span class="n">total_deformation</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="n">dim_order</span><span class="p">)</span>
+
+    <span class="c1"># Get the divergence of the wind field</span>
+    <span class="n">div</span> <span class="o">=</span> <span class="n">divergence</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="n">dim_order</span><span class="p">)</span>
+
+    <span class="c1"># Compute the angle (beta) between the wind field and the gradient of potential temperature</span>
+    <span class="n">psi</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">shrd</span><span class="p">,</span> <span class="n">strd</span><span class="p">)</span>
+    <span class="n">beta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arcsin</span><span class="p">((</span><span class="o">-</span><span class="n">ddx_thta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">psi</span><span class="p">)</span> <span class="o">-</span> <span class="n">ddy_thta</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">psi</span><span class="p">))</span> <span class="o">/</span> <span class="n">mag_thta</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">mag_thta</span> <span class="o">*</span> <span class="p">(</span><span class="n">tdef</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">beta</span><span class="p">)</span> <span class="o">-</span> <span class="n">div</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="geostrophic_wind"><a class="viewcode-back" href="../../../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@ensure_yx_order</span>
+<span class="k">def</span> <span class="nf">geostrophic_wind</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the geostrophic wind given from the heights or geopotential.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    heights : (M, N) ndarray</span>
+<span class="sd">        The height field, with either leading dimensions of (x, y) or trailing dimensions</span>
+<span class="sd">        of (y, x), depending on the value of ``dim_order``.</span>
+<span class="sd">    f : array_like</span>
+<span class="sd">        The coriolis parameter.  This can be a scalar to be applied</span>
+<span class="sd">        everywhere or an array of values.</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `heights` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `heights` along the applicable axis.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A 2-item tuple of arrays</span>
+<span class="sd">        A tuple of the u-component and v-component of the geostrophic wind.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">heights</span><span class="o">.</span><span class="n">dimensionality</span><span class="p">[</span><span class="s1">&#39;[length]&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">2.0</span><span class="p">:</span>
+        <span class="n">norm_factor</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">f</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">norm_factor</span> <span class="o">=</span> <span class="n">g</span> <span class="o">/</span> <span class="n">f</span>
+
+    <span class="n">dhdy</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dy</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">dhdx</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="o">-</span><span class="n">norm_factor</span> <span class="o">*</span> <span class="n">dhdy</span><span class="p">,</span> <span class="n">norm_factor</span> <span class="o">*</span> <span class="n">dhdx</span></div>
+
+
+<div class="viewcode-block" id="ageostrophic_wind"><a class="viewcode-back" href="../../../api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@ensure_yx_order</span>
+<span class="k">def</span> <span class="nf">ageostrophic_wind</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">&#39;yx&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the ageostrophic wind given from the heights or geopotential.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    heights : (M, N) ndarray</span>
+<span class="sd">        The height field.</span>
+<span class="sd">    f : array_like</span>
+<span class="sd">        The coriolis parameter.  This can be a scalar to be applied</span>
+<span class="sd">        everywhere or an array of values.</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `heights` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `heights` along the applicable axis.</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        The u wind field.</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        The u wind field.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    A 2-item tuple of arrays</span>
+<span class="sd">        A tuple of the u-component and v-component of the ageostrophic wind.</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">u_geostrophic</span><span class="p">,</span> <span class="n">v_geostrophic</span> <span class="o">=</span> <span class="n">geostrophic_wind</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="n">dim_order</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">u</span> <span class="o">-</span> <span class="n">u_geostrophic</span><span class="p">,</span> <span class="n">v</span> <span class="o">-</span> <span class="n">v_geostrophic</span></div>
+
+
+<div class="viewcode-block" id="montgomery_streamfunction"><a class="viewcode-back" href="../../../api/generated/metpy.calc.montgomery_streamfunction.html#metpy.calc.montgomery_streamfunction">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">montgomery_streamfunction</span><span class="p">(</span><span class="n">height</span><span class="p">,</span> <span class="n">temperature</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the Montgomery Streamfunction on isentropic surfaces.</span>
+
+<span class="sd">    The Montgomery Streamfunction is the streamfunction of the geostrophic wind on an</span>
+<span class="sd">    isentropic surface. This quantity is proportional to the geostrophic wind in isentropic</span>
+<span class="sd">    coordinates, and its gradient can be interpreted similarly to the pressure gradient in</span>
+<span class="sd">    isobaric coordinates.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    height : `pint.Quantity`</span>
+<span class="sd">        Array of geopotential height of isentropic surfaces</span>
+<span class="sd">    temperature : `pint.Quantity`</span>
+<span class="sd">        Array of temperature on isentropic surfaces</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    stream_func : `pint.Quantity`</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The formula used is that from [Lackmann2011]_ p. 69.</span>
+
+<span class="sd">    .. math:: \Psi = gZ + C_pT</span>
+
+<span class="sd">    * :math:`\Psi` is Montgomery Streamfunction</span>
+<span class="sd">    * :math:`g` is avg. gravitational acceleration on Earth</span>
+<span class="sd">    * :math:`Z` is geopotential height of the isentropic surface</span>
+<span class="sd">    * :math:`C_p` is specific heat at constant pressure for dry air</span>
+<span class="sd">    * :math:`T` is temperature of the isentropic surface</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    get_isentropic_pressure</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">g</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">Cp_d</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="storm_relative_helicity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.storm_relative_helicity.html#metpy.calc.storm_relative_helicity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">storm_relative_helicity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">heights</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">m</span><span class="p">,</span>
+                            <span class="n">storm_u</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">),</span> <span class="n">storm_v</span><span class="o">=</span><span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)):</span>
+    <span class="c1"># Partially adapted from similar SharpPy code</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate storm relative helicity.</span>
+
+<span class="sd">    Calculates storm relatively helicity following [Markowski2010] 230-231.</span>
+
+<span class="sd">    .. math:: \int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz</span>
+
+<span class="sd">    This is applied to the data from a hodograph with the following summation:</span>
+
+<span class="sd">    .. math:: \sum_{n = 1}^{N-1} [(u_{n+1} - c_{x})(v_{n} - c_{y}) -</span>
+<span class="sd">                                  (u_{n} - c_{x})(v_{n+1} - c_{y})]</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : array-like</span>
+<span class="sd">        u component winds</span>
+<span class="sd">    v : array-like</span>
+<span class="sd">        v component winds</span>
+<span class="sd">    heights : array-like</span>
+<span class="sd">        atmospheric heights, will be converted to AGL</span>
+<span class="sd">    depth : number</span>
+<span class="sd">        depth of the layer</span>
+<span class="sd">    bottom : number</span>
+<span class="sd">        height of layer bottom AGL (default is surface)</span>
+<span class="sd">    storm_u : number</span>
+<span class="sd">        u component of storm motion (default is 0 m/s)</span>
+<span class="sd">    storm_v : number</span>
+<span class="sd">        v component of storm motion (default is 0 m/s)</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    `pint.Quantity, pint.Quantity, pint.Quantity`</span>
+<span class="sd">        positive, negative, total storm-relative helicity</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">get_layer_heights</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">with_agl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">)</span>
+
+    <span class="n">storm_relative_u</span> <span class="o">=</span> <span class="n">u</span> <span class="o">-</span> <span class="n">storm_u</span>
+    <span class="n">storm_relative_v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">storm_v</span>
+
+    <span class="n">int_layers</span> <span class="o">=</span> <span class="p">(</span><span class="n">storm_relative_u</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="n">storm_relative_v</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span>
+                  <span class="n">storm_relative_u</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">storm_relative_v</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+
+    <span class="c1"># Need to manually check for masked value because sum() on masked array with non-default</span>
+    <span class="c1"># mask will return a masked value rather than 0. See numpy/numpy#11736</span>
+    <span class="n">positive_srh</span> <span class="o">=</span> <span class="n">int_layers</span><span class="p">[</span><span class="n">int_layers</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&gt;</span> <span class="mf">0.</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">is_masked</span><span class="p">(</span><span class="n">positive_srh</span><span class="p">):</span>
+        <span class="n">positive_srh</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter**2 / second**2&#39;</span><span class="p">)</span>
+    <span class="n">negative_srh</span> <span class="o">=</span> <span class="n">int_layers</span><span class="p">[</span><span class="n">int_layers</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">&lt;</span> <span class="mf">0.</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">is_masked</span><span class="p">(</span><span class="n">negative_srh</span><span class="p">):</span>
+        <span class="n">negative_srh</span> <span class="o">=</span> <span class="mf">0.0</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;meter**2 / second**2&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="n">positive_srh</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meter ** 2 / second ** 2&#39;</span><span class="p">),</span>
+            <span class="n">negative_srh</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meter ** 2 / second ** 2&#39;</span><span class="p">),</span>
+            <span class="p">(</span><span class="n">positive_srh</span> <span class="o">+</span> <span class="n">negative_srh</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meter ** 2 / second ** 2&#39;</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="absolute_vorticity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.absolute_vorticity.html#metpy.calc.absolute_vorticity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">absolute_vorticity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">&#39;yx&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the absolute vorticity of the horizontal wind.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        x component of the wind</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        y component of the wind</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    lats : (M, N) ndarray</span>
+<span class="sd">        latitudes of the wind data</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (M, N) ndarray</span>
+<span class="sd">        absolute vorticity</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">coriolis_parameter</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span>
+    <span class="n">relative_vorticity</span> <span class="o">=</span> <span class="n">vorticity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="n">dim_order</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">relative_vorticity</span> <span class="o">+</span> <span class="n">f</span></div>
+
+
+<div class="viewcode-block" id="potential_vorticity_baroclinic"><a class="viewcode-back" href="../../../api/generated/metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">potential_vorticity_baroclinic</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span>
+                                   <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">&#39;yx&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the baroclinic potential vorticity.</span>
+
+<span class="sd">    .. math:: PV = -g \frac{\partial \theta}{\partial z}(\zeta + f)</span>
+
+<span class="sd">    This formula is based on equation 7.31a [Hobbs2006]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    potential_temperature : (M, N, P) ndarray</span>
+<span class="sd">        potential temperature</span>
+<span class="sd">    pressure : (M, N, P) ndarray</span>
+<span class="sd">        vertical pressures</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        x component of the wind</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        y component of the wind</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    lats : (M, N) ndarray</span>
+<span class="sd">        latitudes of the wind data</span>
+<span class="sd">    axis : int, optional</span>
+<span class="sd">        The axis corresponding to the vertical dimension in the potential temperature</span>
+<span class="sd">        and pressure arrays, defaults to 0, the first dimension.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (M, N) ndarray</span>
+<span class="sd">        baroclinic potential vorticity</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The same formula is used for isobaric and isentropic PV analysis. Provide winds</span>
+<span class="sd">    for vorticity calculations on the desired isobaric or isentropic surface. Three layers</span>
+<span class="sd">    of pressure/potential temperature are required in order to calculate the vertical</span>
+<span class="sd">    derivative (one above and below the desired surface).</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">)[</span><span class="n">axis</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Length of potential temperature along axis &#39;</span>
+                         <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> must be 3.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">pressure</span><span class="p">)[</span><span class="n">axis</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Length of pressure along axis &#39;</span>
+                         <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> must be 3.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
+    <span class="n">avor</span> <span class="o">=</span> <span class="n">absolute_vorticity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="n">dim_order</span><span class="p">)</span>
+    <span class="n">stability</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">pressure</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
+    <span class="c1"># Get the middle layer stability derivative (index 1)</span>
+    <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">stability</span><span class="o">.</span><span class="n">ndim</span>
+    <span class="n">slices</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">avor</span> <span class="o">*</span> <span class="n">g</span> <span class="o">*</span> <span class="n">stability</span><span class="p">[</span><span class="n">slices</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">kelvin</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span>
+                                                  <span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">second</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kilogram</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="potential_vorticity_barotropic"><a class="viewcode-back" href="../../../api/generated/metpy.calc.potential_vorticity_barotropic.html#metpy.calc.potential_vorticity_barotropic">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">potential_vorticity_barotropic</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">&#39;yx&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the barotropic (Rossby) potential vorticity.</span>
+
+<span class="sd">    .. math:: PV = \frac{f + \zeta}{H}</span>
+
+<span class="sd">    This formula is based on equation 7.27 [Hobbs2006]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    heights : (M, N) ndarray</span>
+<span class="sd">        atmospheric heights</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        x component of the wind</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        y component of the wind</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    lats : (M, N) ndarray</span>
+<span class="sd">        latitudes of the wind data</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (M, N) ndarray</span>
+<span class="sd">        barotropic potential vorticity</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">avor</span> <span class="o">=</span> <span class="n">absolute_vorticity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="n">dim_order</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">avor</span> <span class="o">/</span> <span class="n">heights</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;meter**-1 * second**-1&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="inertial_advective_wind"><a class="viewcode-back" href="../../../api/generated/metpy.calc.inertial_advective_wind.html#metpy.calc.inertial_advective_wind">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="k">def</span> <span class="nf">inertial_advective_wind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">u_geostrophic</span><span class="p">,</span> <span class="n">v_geostrophic</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">lats</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the inertial advective wind.</span>
+
+<span class="sd">    .. math:: \frac{\hat k}{f} \times (\vec V \cdot \nabla)\hat V_g</span>
+
+<span class="sd">    .. math:: \frac{\hat k}{f} \times \left[ \left( u \frac{\partial u_g}{\partial x} + v</span>
+<span class="sd">              \frac{\partial u_g}{\partial y} \right) \hat i + \left( u \frac{\partial v_g}</span>
+<span class="sd">              {\partial x} + v \frac{\partial v_g}{\partial y} \right) \hat j \right]</span>
+
+<span class="sd">    .. math:: \left[ -\frac{1}{f}\left(u \frac{\partial v_g}{\partial x} + v</span>
+<span class="sd">              \frac{\partial v_g}{\partial y} \right) \right] \hat i + \left[ \frac{1}{f}</span>
+<span class="sd">              \left( u \frac{\partial u_g}{\partial x} + v \frac{\partial u_g}{\partial y}</span>
+<span class="sd">              \right) \right] \hat j</span>
+
+<span class="sd">    This formula is based on equation 27 of [Rochette2006]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        x component of the advecting wind</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        y component of the advecting wind</span>
+<span class="sd">    u_geostrophic : (M, N) ndarray</span>
+<span class="sd">        x component of the geostrophic (advected) wind</span>
+<span class="sd">    v_geostrophic : (M, N) ndarray</span>
+<span class="sd">        y component of the geostrophic (advected) wind</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    lats : (M, N) ndarray</span>
+<span class="sd">        latitudes of the wind data</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    (M, N) ndarray</span>
+<span class="sd">        x component of inertial advective wind</span>
+<span class="sd">    (M, N) ndarray</span>
+<span class="sd">        y component of inertial advective wind</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    Many forms of the inertial advective wind assume the advecting and advected</span>
+<span class="sd">    wind to both be the geostrophic wind. To do so, pass the x and y components</span>
+<span class="sd">    of the geostrophic with for u and u_geostrophic/v and v_geostrophic.</span>
+
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">coriolis_parameter</span><span class="p">(</span><span class="n">lats</span><span class="p">)</span>
+
+    <span class="n">dugdy</span><span class="p">,</span> <span class="n">dugdx</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">u_geostrophic</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">dvgdy</span><span class="p">,</span> <span class="n">dvgdx</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">v_geostrophic</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">u_component</span> <span class="o">=</span> <span class="o">-</span><span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">dvgdx</span> <span class="o">+</span> <span class="n">v</span> <span class="o">*</span> <span class="n">dvgdy</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span>
+    <span class="n">v_component</span> <span class="o">=</span> <span class="p">(</span><span class="n">u</span> <span class="o">*</span> <span class="n">dugdx</span> <span class="o">+</span> <span class="n">v</span> <span class="o">*</span> <span class="n">dugdy</span><span class="p">)</span> <span class="o">/</span> <span class="n">f</span>
+
+    <span class="k">return</span> <span class="n">u_component</span><span class="p">,</span> <span class="n">v_component</span></div>
+
+
+<div class="viewcode-block" id="q_vector"><a class="viewcode-back" href="../../../api/generated/metpy.calc.q_vector.html#metpy.calc.q_vector">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@preprocess_xarray</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">q_vector</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">static_stability</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate Q-vector at a given pressure level using the u, v winds and temperature.</span>
+
+<span class="sd">    .. math:: \vec{Q} = (Q_1, Q_2)</span>
+<span class="sd">                      =  - \frac{R}{\sigma p}\left(</span>
+<span class="sd">                               \frac{\partial \vec{v}_g}{\partial x} \cdot \nabla_p T,</span>
+<span class="sd">                               \frac{\partial \vec{v}_g}{\partial y} \cdot \nabla_p T</span>
+<span class="sd">                           \right)</span>
+
+<span class="sd">    This formula follows equation 5.7.55 from [Bluestein1992]_, and can be used with the</span>
+<span class="sd">    the below form of the quasigeostrophic omega equation to assess vertical motion</span>
+<span class="sd">    ([Bluestein1992]_ equation 5.7.54):</span>
+
+<span class="sd">    .. math:: \left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2}</span>
+<span class="sd">                  \right) \omega =</span>
+<span class="sd">              - 2 \nabla_p \cdot \vec{Q} -</span>
+<span class="sd">                  \frac{R}{\sigma p} \beta \frac{\partial T}{\partial x}.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">        x component of the wind (geostrophic in QG-theory)</span>
+<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">        y component of the wind (geostrophic in QG-theory)</span>
+<span class="sd">    temperature : (M, N) ndarray</span>
+<span class="sd">        Array of temperature at pressure level</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
+<span class="sd">        Pressure at level</span>
+<span class="sd">    dx : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    dy : float or ndarray</span>
+<span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
+<span class="sd">        the size of `u` along the applicable axis.</span>
+<span class="sd">    static_stability : `pint.Quantity`, optional</span>
+<span class="sd">        The static stability at the pressure level. Defaults to 1 if not given to calculate</span>
+<span class="sd">        the Q-vector without factoring in static stability.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    tuple of (M, N) ndarrays</span>
+<span class="sd">        The components of the Q-vector in the u- and v-directions respectively</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    static_stability</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
+<span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">dudy</span><span class="p">,</span> <span class="n">dudx</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">dvdy</span><span class="p">,</span> <span class="n">dvdx</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">dtempdy</span><span class="p">,</span> <span class="n">dtempdx</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="n">q1</span> <span class="o">=</span> <span class="o">-</span><span class="n">Rd</span> <span class="o">/</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">*</span> <span class="n">static_stability</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">dudx</span> <span class="o">*</span> <span class="n">dtempdx</span> <span class="o">+</span> <span class="n">dvdx</span> <span class="o">*</span> <span class="n">dtempdy</span><span class="p">)</span>
+    <span class="n">q2</span> <span class="o">=</span> <span class="o">-</span><span class="n">Rd</span> <span class="o">/</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">*</span> <span class="n">static_stability</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">dudy</span> <span class="o">*</span> <span class="n">dtempdx</span> <span class="o">+</span> <span class="n">dvdy</span> <span class="o">*</span> <span class="n">dtempdy</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">q1</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">(),</span> <span class="n">q2</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Aug 27, 2018 at 23:29:17.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../../../../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.9.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

@@ -1,0 +1,584 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>metpy.calc.cross_sections &mdash; MetPy 0.9</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/_modules/metpy/calc/cross_sections.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../../genindex.html"/>
+        <link rel="search" title="Search" href="../../../search.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../../index.html"/>
+        <link rel="up" title="Module code" href="../../index.html"/> 
+
+  
+  <script src="../../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>0.9</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>metpy.calc.cross_sections</li>
+    
+    
+    <li class="source-link">
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for metpy.calc.cross_sections</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Copyright (c) 2018 MetPy Developers.</span>
+<span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
+<span class="sd">&quot;&quot;&quot;Contains calculations related to cross sections and respective vector components.</span>
+
+<span class="sd">Compared to the rest of the calculations which are based around pint quantities, this module</span>
+<span class="sd">is based around xarray DataArrays.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
+
+<span class="kn">from</span> <span class="nn">.basic</span> <span class="k">import</span> <span class="n">coriolis_parameter</span>
+<span class="kn">from</span> <span class="nn">.tools</span> <span class="k">import</span> <span class="n">first_derivative</span>
+<span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">CFConventionHandler</span><span class="p">,</span> <span class="n">check_matching_coordinates</span>
+
+<span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+
+<span class="k">def</span> <span class="nf">distances_from_cross_section</span><span class="p">(</span><span class="n">cross</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the distances in the x and y directions along a cross-section.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cross : `xarray.DataArray`</span>
+<span class="sd">        The input DataArray of a cross-section from which to obtain geometeric distances in</span>
+<span class="sd">        the x and y directions.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    x, y : tuple of `xarray.DataArray`</span>
+<span class="sd">        A tuple of the x and y distances as DataArrays</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">)</span> <span class="ow">and</span>
+            <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">)):</span>
+        <span class="c1"># Use pyproj to obtain x and y distances</span>
+        <span class="kn">from</span> <span class="nn">pyproj</span> <span class="k">import</span> <span class="n">Geod</span>
+
+        <span class="n">g</span> <span class="o">=</span> <span class="n">Geod</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="o">.</span><span class="n">proj4_init</span><span class="p">)</span>
+        <span class="n">lon</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">lat</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span>
+
+        <span class="n">forward_az</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">distance</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">lon</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">lon</span><span class="p">),</span>
+                                        <span class="n">lat</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">lat</span><span class="p">),</span>
+                                        <span class="n">lon</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                                        <span class="n">lat</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">forward_az</span><span class="p">))</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">distance</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">forward_az</span><span class="p">))</span>
+
+        <span class="c1"># Build into DataArrays</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">lon</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">lon</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;meters&#39;</span><span class="p">})</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">lat</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">lat</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;meters&#39;</span><span class="p">})</span>
+
+    <span class="k">elif</span> <span class="p">(</span><span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span> <span class="ow">and</span>
+            <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)):</span>
+
+        <span class="c1"># Simply return what we have</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span>
+
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="s1">&#39;Sufficient horizontal coordinates not defined.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+
+<span class="k">def</span> <span class="nf">latitude_from_cross_section</span><span class="p">(</span><span class="n">cross</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Calculate the latitude of points in a cross-section.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cross : `xarray.DataArray`</span>
+<span class="sd">        The input DataArray of a cross-section from which to obtain latitudes.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    latitude : `xarray.DataArray`</span>
+<span class="sd">        Latitude of points</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span>
+    <span class="k">if</span> <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">y</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">Geodetic</span><span class="p">()</span><span class="o">.</span><span class="n">transform_points</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">,</span>
+                                                    <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                                                    <span class="n">y</span><span class="o">.</span><span class="n">values</span><span class="p">)[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">latitude</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">latitude</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">y</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span>
+                                <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;degrees_north&#39;</span><span class="p">})</span>
+        <span class="k">return</span> <span class="n">latitude</span>
+
+
+<div class="viewcode-block" id="unit_vectors_from_cross_section"><a class="viewcode-back" href="../../../api/generated/metpy.calc.unit_vectors_from_cross_section.html#metpy.calc.unit_vectors_from_cross_section">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">def</span> <span class="nf">unit_vectors_from_cross_section</span><span class="p">(</span><span class="n">cross</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the unit tanget and unit normal vectors from a cross-section.</span>
+
+<span class="sd">    Given a path described parametrically by :math:`\vec{l}(i) = (x(i), y(i))`, we can find</span>
+<span class="sd">    the unit tangent vector by the formula</span>
+
+<span class="sd">    .. math:: \vec{T}(i) =</span>
+<span class="sd">        \frac{1}{\sqrt{\left( \frac{dx}{di} \right)^2 + \left( \frac{dy}{di} \right)^2}}</span>
+<span class="sd">        \left( \frac{dx}{di}, \frac{dy}{di} \right)</span>
+
+<span class="sd">    From this, because this is a two-dimensional path, the normal vector can be obtained by a</span>
+<span class="sd">    simple :math:`\frac{\pi}{2}` rotation.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    cross : `xarray.DataArray`</span>
+<span class="sd">        The input DataArray of a cross-section from which to obtain latitudes.</span>
+<span class="sd">    index : `str`, optional</span>
+<span class="sd">        A string denoting the index coordinate of the cross section, defaults to &#39;index&#39; as</span>
+<span class="sd">        set by `metpy.interpolate.cross_section`.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    unit_tangent_vector, unit_normal_vector : tuple of `numpy.ndarray`</span>
+<span class="sd">        Arrays describing the unit tangent and unit normal vectors (in x,y) for all points</span>
+<span class="sd">        along the cross section.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">distances_from_cross_section</span><span class="p">(</span><span class="n">cross</span><span class="p">)</span>
+    <span class="n">dx_di</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">dy_di</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">index</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>
+    <span class="n">tangent_vector_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">dx_di</span><span class="p">,</span> <span class="n">dy_di</span><span class="p">)</span>
+    <span class="n">unit_tangent_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">dx_di</span> <span class="o">/</span> <span class="n">tangent_vector_mag</span><span class="p">,</span> <span class="n">dy_di</span> <span class="o">/</span> <span class="n">tangent_vector_mag</span><span class="p">])</span>
+    <span class="n">unit_normal_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="o">-</span><span class="n">dy_di</span> <span class="o">/</span> <span class="n">tangent_vector_mag</span><span class="p">,</span> <span class="n">dx_di</span> <span class="o">/</span> <span class="n">tangent_vector_mag</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">unit_tangent_vector</span><span class="p">,</span> <span class="n">unit_normal_vector</span></div>
+
+
+<div class="viewcode-block" id="cross_section_components"><a class="viewcode-back" href="../../../api/generated/metpy.calc.cross_section_components.html#metpy.calc.cross_section_components">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_matching_coordinates</span>
+<span class="k">def</span> <span class="nf">cross_section_components</span><span class="p">(</span><span class="n">data_x</span><span class="p">,</span> <span class="n">data_y</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Obtain the tangential and normal components of a cross-section of a vector field.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data_x : `xarray.DataArray`</span>
+<span class="sd">        The input DataArray of the x-component (in terms of data projection) of the vector</span>
+<span class="sd">        field.</span>
+<span class="sd">    data_y : `xarray.DataArray`</span>
+<span class="sd">        The input DataArray of the y-component (in terms of data projection) of the vector</span>
+<span class="sd">        field.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    component_tangential, component_normal: tuple of `xarray.DataArray`</span>
+<span class="sd">        The components of the vector field in the tangential and normal directions,</span>
+<span class="sd">        respectively.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    tangential_component, normal_component</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The coordinates of `data_x` and `data_y` must match.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the unit vectors</span>
+    <span class="n">unit_tang</span><span class="p">,</span> <span class="n">unit_norm</span> <span class="o">=</span> <span class="n">unit_vectors_from_cross_section</span><span class="p">(</span><span class="n">data_x</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="c1"># Take the dot products</span>
+    <span class="n">component_tang</span> <span class="o">=</span> <span class="n">data_x</span> <span class="o">*</span> <span class="n">unit_tang</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">data_y</span> <span class="o">*</span> <span class="n">unit_tang</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">component_norm</span> <span class="o">=</span> <span class="n">data_x</span> <span class="o">*</span> <span class="n">unit_norm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">data_y</span> <span class="o">*</span> <span class="n">unit_norm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Reattach units (only reliable attribute after operation)</span>
+    <span class="n">component_tang</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">data_x</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]}</span>
+    <span class="n">component_norm</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">data_x</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]}</span>
+
+    <span class="k">return</span> <span class="n">component_tang</span><span class="p">,</span> <span class="n">component_norm</span></div>
+
+
+<div class="viewcode-block" id="normal_component"><a class="viewcode-back" href="../../../api/generated/metpy.calc.normal_component.html#metpy.calc.normal_component">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_matching_coordinates</span>
+<span class="k">def</span> <span class="nf">normal_component</span><span class="p">(</span><span class="n">data_x</span><span class="p">,</span> <span class="n">data_y</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Obtain the normal component of a cross-section of a vector field.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data_x : `xarray.DataArray`</span>
+<span class="sd">        The input DataArray of the x-component (in terms of data projection) of the vector</span>
+<span class="sd">        field.</span>
+<span class="sd">    data_y : `xarray.DataArray`</span>
+<span class="sd">        The input DataArray of the y-component (in terms of data projection) of the vector</span>
+<span class="sd">        field.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    component_normal: `xarray.DataArray`</span>
+<span class="sd">        The component of the vector field in the normal directions.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    cross_section_components, tangential_component</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The coordinates of `data_x` and `data_y` must match.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the unit vectors</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">unit_norm</span> <span class="o">=</span> <span class="n">unit_vectors_from_cross_section</span><span class="p">(</span><span class="n">data_x</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="c1"># Take the dot products</span>
+    <span class="n">component_norm</span> <span class="o">=</span> <span class="n">data_x</span> <span class="o">*</span> <span class="n">unit_norm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">data_y</span> <span class="o">*</span> <span class="n">unit_norm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Reattach units (only reliable attribute after operation)</span>
+    <span class="n">component_norm</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">data_x</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]}</span>
+
+    <span class="k">return</span> <span class="n">component_norm</span></div>
+
+
+<div class="viewcode-block" id="tangential_component"><a class="viewcode-back" href="../../../api/generated/metpy.calc.tangential_component.html#metpy.calc.tangential_component">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_matching_coordinates</span>
+<span class="k">def</span> <span class="nf">tangential_component</span><span class="p">(</span><span class="n">data_x</span><span class="p">,</span> <span class="n">data_y</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Obtain the tangential component of a cross-section of a vector field.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    data_x : `xarray.DataArray`</span>
+<span class="sd">        The input DataArray of the x-component (in terms of data projection) of the vector</span>
+<span class="sd">        field.</span>
+<span class="sd">    data_y : `xarray.DataArray`</span>
+<span class="sd">        The input DataArray of the y-component (in terms of data projection) of the vector</span>
+<span class="sd">        field.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    component_tangential: `xarray.DataArray`</span>
+<span class="sd">        The component of the vector field in the tangential directions.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    cross_section_components, normal_component</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The coordinates of `data_x` and `data_y` must match.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the unit vectors</span>
+    <span class="n">unit_tang</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">unit_vectors_from_cross_section</span><span class="p">(</span><span class="n">data_x</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+
+    <span class="c1"># Take the dot products</span>
+    <span class="n">component_tang</span> <span class="o">=</span> <span class="n">data_x</span> <span class="o">*</span> <span class="n">unit_tang</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">data_y</span> <span class="o">*</span> <span class="n">unit_tang</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1"># Reattach units (only reliable attribute after operation)</span>
+    <span class="n">component_tang</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">data_x</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]}</span>
+
+    <span class="k">return</span> <span class="n">component_tang</span></div>
+
+
+<div class="viewcode-block" id="absolute_momentum"><a class="viewcode-back" href="../../../api/generated/metpy.calc.absolute_momentum.html#metpy.calc.absolute_momentum">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="nd">@check_matching_coordinates</span>
+<span class="k">def</span> <span class="nf">absolute_momentum</span><span class="p">(</span><span class="n">u_wind</span><span class="p">,</span> <span class="n">v_wind</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">):</span>
+    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate cross-sectional absolute momentum (also called pseudoangular momentum).</span>
+
+<span class="sd">    As given in [Schultz1999]_, absolute momentum (also called pseudoangular momentum) is</span>
+<span class="sd">    given by</span>
+
+<span class="sd">    .. math:: M = v + fx</span>
+
+<span class="sd">    where :math:`v` is the along-front component of the wind and :math:`x` is the cross-front</span>
+<span class="sd">    distance. Applied to a cross-section taken perpendicular to the front, :math:`v` becomes</span>
+<span class="sd">    the normal component of the wind and :math:`x` the tangential distance.</span>
+
+<span class="sd">    If using this calculation in assessing symmetric instability, geostrophic wind should be</span>
+<span class="sd">    used so that geostrophic absolute momentum :math:`\left(M_g\right)` is obtained, as</span>
+<span class="sd">    described in [Schultz1999]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    u_wind : `xarray.DataArray`</span>
+<span class="sd">        The input DataArray of the x-component (in terms of data projection) of the wind.</span>
+<span class="sd">    v_wind : `xarray.DataArray`</span>
+<span class="sd">        The input DataArray of the y-component (in terms of data projection) of the wind.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    absolute_momentum: `xarray.DataArray`</span>
+<span class="sd">        The absolute momentum</span>
+
+<span class="sd">    Notes</span>
+<span class="sd">    -----</span>
+<span class="sd">    The coordinates of `u_wind` and `v_wind` must match.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Get the normal component of the wind</span>
+    <span class="n">norm_wind</span> <span class="o">=</span> <span class="n">normal_component</span><span class="p">(</span><span class="n">u_wind</span><span class="p">,</span> <span class="n">v_wind</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">index</span><span class="p">)</span>
+    <span class="n">norm_wind</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Get other pieces of calculation (all as ndarrays matching shape of norm_wind)</span>
+    <span class="n">latitude</span> <span class="o">=</span> <span class="n">latitude_from_cross_section</span><span class="p">(</span><span class="n">norm_wind</span><span class="p">)</span>  <span class="c1"># in degrees_north</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">latitude</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">norm_wind</span><span class="p">,</span> <span class="n">latitude</span><span class="p">)</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">coriolis_parameter</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">latitude</span><span class="o">.</span><span class="n">values</span><span class="p">))</span><span class="o">.</span><span class="n">magnitude</span>  <span class="c1"># in 1/s</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">distances_from_cross_section</span><span class="p">(</span><span class="n">norm_wind</span><span class="p">)</span>
+    <span class="n">x</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;meters&#39;</span><span class="p">)</span>
+    <span class="n">y</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;meters&#39;</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">broadcast</span><span class="p">(</span><span class="n">norm_wind</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+    <span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">values</span>  <span class="c1"># in meters</span>
+
+    <span class="n">m</span> <span class="o">=</span> <span class="n">norm_wind</span> <span class="o">+</span> <span class="n">f</span> <span class="o">*</span> <span class="n">distance</span>
+    <span class="n">m</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">norm_wind</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]}</span>
+
+    <span class="k">return</span> <span class="n">m</span></div>
+</pre></div>
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Aug 27, 2018 at 23:29:17.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../../../../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../../',
+            VERSION:'0.9.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

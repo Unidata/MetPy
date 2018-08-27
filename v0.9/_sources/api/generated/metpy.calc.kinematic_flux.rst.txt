@@ -1,0 +1,12 @@
+kinematic_flux
+=========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: kinematic_flux
+
+.. include:: metpy.calc.kinematic_flux.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

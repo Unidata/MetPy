@@ -1,0 +1,382 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>vertical_velocity_pressure &mdash; MetPy 0.9</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.calc.vertical_velocity_pressure.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+        <link rel="up" title="calc" href="metpy.calc.html"/>
+        <link rel="next" title="virtual_potential_temperature" href="metpy.calc.virtual_potential_temperature.html"/>
+        <link rel="prev" title="vertical_velocity" href="metpy.calc.vertical_velocity.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>0.9</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.dewpoint.html">dewpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.dewpoint_from_specific_humidity.html">dewpoint_from_specific_humidity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.dewpoint_rh.html">dewpoint_rh</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.equivalent_potential_temperature.html">equivalent_potential_temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixing_ratio.html">mixing_ratio</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixing_ratio_from_relative_humidity.html">mixing_ratio_from_relative_humidity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.mixing_ratio_from_specific_humidity.html">mixing_ratio_from_specific_humidity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.moist_lapse.html">moist_lapse</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.moist_static_energy.html">moist_static_energy</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.precipitable_water.html">precipitable_water</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.psychrometric_vapor_pressure_wet.html">psychrometric_vapor_pressure_wet</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.relative_humidity_from_dewpoint.html">relative_humidity_from_dewpoint</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html">relative_humidity_from_mixing_ratio</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.relative_humidity_from_specific_humidity.html">relative_humidity_from_specific_humidity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.relative_humidity_wet_psychrometric.html">relative_humidity_wet_psychrometric</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.saturation_equivalent_potential_temperature.html">saturation_equivalent_potential_temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.saturation_mixing_ratio.html">saturation_mixing_ratio</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html">saturation_vapor_pressure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.specific_humidity_from_mixing_ratio.html">specific_humidity_from_mixing_ratio</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html">thickness_hydrostatic_from_relative_humidity</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.vapor_pressure.html">vapor_pressure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.vertical_velocity.html">vertical_velocity</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">vertical_velocity_pressure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.virtual_potential_temperature.html">virtual_potential_temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.virtual_temperature.html">virtual_temperature</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.wet_bulb_temperature.html">wet_bulb_temperature</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#soundings">Soundings</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dynamic-kinematic">Dynamic/Kinematic</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#boundary-layer-turbulence">Boundary Layer/Turbulence</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#other">Other</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#deprecated">Deprecated</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Reference Guide</a> &raquo;</li>
+        
+          <li><a href="metpy.calc.html">calc</a> &raquo;</li>
+        
+      <li>vertical_velocity_pressure</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.calc.vertical_velocity_pressure&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="vertical-velocity-pressure">
+<h1>vertical_velocity_pressure<a class="headerlink" href="#vertical-velocity-pressure" title="Permalink to this headline">¶</a></h1>
+<dl class="function">
+<dt id="metpy.calc.vertical_velocity_pressure">
+<code class="descclassname">metpy.calc.</code><code class="descname">vertical_velocity_pressure</code><span class="sig-paren">(</span><em>w</em>, <em>pressure</em>, <em>temperature</em>, <em>mixing=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#vertical_velocity_pressure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.vertical_velocity_pressure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate omega from w assuming hydrostatic conditions.</p>
+<p>This function converts vertical velocity with respect to height
+<span class="math notranslate nohighlight">\(\left(w = \frac{Dz}{Dt}\right)\)</span> to that
+with respect to pressure <span class="math notranslate nohighlight">\(\left(\omega = \frac{Dp}{Dt}\right)\)</span>
+assuming hydrostatic conditions on the synoptic scale.
+By Equation 7.33 in <a class="reference internal" href="../../references.html#hobbs2006" id="id1">[Hobbs2006]</a>,</p>
+<p>Density (<span class="math notranslate nohighlight">\(\rho\)</span>) is calculated using the <a class="reference internal" href="metpy.calc.density.html#metpy.calc.density" title="metpy.calc.density"><code class="xref py py-func docutils literal notranslate"><span class="pre">density()</span></code></a> function,
+from the given pressure and temperature. If <em class="xref py py-obj">mixing</em> is given, the virtual
+temperature correction is used, otherwise, dry air is assumed.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>w</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Vertical velocity in terms of height</li>
+<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</li>
+<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</li>
+<li><strong>mixing</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Mixing ratio of air</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – Vertical velocity in terms of pressure (in Pascals / second)</p>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="metpy.calc.density.html#metpy.calc.density" title="metpy.calc.density"><code class="xref py py-func docutils literal notranslate"><span class="pre">density()</span></code></a>, <a class="reference internal" href="metpy.calc.vertical_velocity.html#metpy.calc.vertical_velocity" title="metpy.calc.vertical_velocity"><code class="xref py py-func docutils literal notranslate"><span class="pre">vertical_velocity()</span></code></a></p>
+</div>
+</dd></dl>
+
+<div style='clear:both'></div></div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="metpy.calc.virtual_potential_temperature.html" class="btn btn-neutral float-right" title="virtual_potential_temperature" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="metpy.calc.vertical_velocity.html" class="btn btn-neutral" title="vertical_velocity" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2017, MetPy Developers.
+      Last updated on Aug 27, 2018 at 23:29:17.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../../../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.9.1',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

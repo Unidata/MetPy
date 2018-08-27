@@ -1,0 +1,12 @@
+moist_lapse
+======================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: moist_lapse
+
+.. include:: metpy.calc.moist_lapse.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

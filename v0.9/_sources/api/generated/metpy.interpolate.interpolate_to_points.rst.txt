@@ -1,0 +1,12 @@
+interpolate_to_points
+=======================================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: interpolate_to_points
+
+.. include:: metpy.interpolate.interpolate_to_points.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

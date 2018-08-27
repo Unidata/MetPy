@@ -1,0 +1,59 @@
+SkewT
+=================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: SkewT
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~SkewT.__init__
+      ~SkewT.plot
+      ~SkewT.plot_barbs
+      ~SkewT.plot_dry_adiabats
+      ~SkewT.plot_mixing_lines
+      ~SkewT.plot_moist_adiabats
+      ~SkewT.shade_area
+      ~SkewT.shade_cape
+      ~SkewT.shade_cin
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: plot
+   .. automethod:: plot_barbs
+   .. automethod:: plot_dry_adiabats
+   .. automethod:: plot_mixing_lines
+   .. automethod:: plot_moist_adiabats
+   .. automethod:: shade_area
+   .. automethod:: shade_cape
+   .. automethod:: shade_cin
+
+   
+   
+
+.. include:: metpy.plots.SkewT.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

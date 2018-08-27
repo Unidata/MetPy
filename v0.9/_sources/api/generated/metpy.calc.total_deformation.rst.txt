@@ -1,0 +1,12 @@
+total_deformation
+============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: total_deformation
+
+.. include:: metpy.calc.total_deformation.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
