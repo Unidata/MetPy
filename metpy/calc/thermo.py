@@ -11,9 +11,9 @@ import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
 
-from .. import constants as mpconsts
 from .tools import (_greater_or_close, _less_or_close, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
+from .. import constants as mpconsts
 from ..cbook import broadcast_indices
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter

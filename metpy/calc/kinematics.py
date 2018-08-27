@@ -10,8 +10,8 @@ import numpy as np
 
 from . import coriolis_parameter
 from .tools import first_derivative, get_layer_heights, gradient
-from ..cbook import is_string_like, iterable
 from .. import constants as mpconsts
+from ..cbook import is_string_like, iterable
 from ..package_tools import Exporter
 from ..units import atleast_2d, check_units, concatenate, units
 from ..xarray import preprocess_xarray
