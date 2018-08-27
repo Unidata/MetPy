@@ -7,7 +7,6 @@ Compared to the rest of the calculations which are based around pint quantities,
 is based around xarray DataArrays.
 """
 
-import cartopy.crs as ccrs
 import numpy as np
 import xarray as xr
 
@@ -85,6 +84,7 @@ def latitude_from_cross_section(cross):
     if CFConventionHandler.check_axis(y, 'lat'):
         return y
     else:
+        import cartopy.crs as ccrs
         latitude = ccrs.Geodetic().transform_points(cross.metpy.cartopy_crs,
                                                     cross.metpy.x.values,
                                                     y.values)[..., 1]

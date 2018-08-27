@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools for interpolating to a vertical slice/cross section through data."""
 
-import cartopy.crs as ccrs
 import numpy as np
 import xarray as xr
 
@@ -81,6 +80,7 @@ def geodesic(crs, start, end, steps):
     cross_section
 
     """
+    import cartopy.crs as ccrs
     from pyproj import Geod
 
     # Geod.npts only gives points *in between* the start and end, and we want to include
