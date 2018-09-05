@@ -22,7 +22,7 @@ __all__.extend(wx_symbols.__all__)  # pylint: disable=undefined-variable
 __all__.extend([add_metpy_logo, add_timestamp, add_unidata_logo,
                 convert_gempak_color])  # pylint: disable=undefined-variable
 try:
-    from .cartopy_utils import USCOUNTIES
-    __all__.extend([USCOUNTIES])
+    from .cartopy_utils import USCOUNTIES, USSTATES
+    __all__.extend([USCOUNTIES, USSTATES])
 except ImportError:
     logger.warning('Cannot import USCOUNTIES without cartopy installed.')

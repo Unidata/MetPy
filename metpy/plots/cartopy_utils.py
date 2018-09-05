@@ -40,4 +40,38 @@ class USCountiesFeature(cfeat.NaturalEarthFeature):
         return USCountiesFeature(new_scale, **self.kwargs)
 
 
-USCOUNTIES = USCountiesFeature('20m', facecolor='None')
+USCOUNTIES = USCountiesFeature('20m', facecolor='None', edgecolor='black')
+
+
+class USStatesFeature(cfeat.NaturalEarthFeature):
+    """A simple interface to US State shapefiles."""
+
+    def __init__(self, scale, **kwargs):
+        """Create USStatesFeature instance."""
+        super(USStatesFeature, self).__init__('', 'us_states', scale, **kwargs)
+
+    def geometries(self):
+        """Return an iterator of (shapely) geometries for this feature."""
+        # Ensure that the associated files are in the cache
+        fname = 'us_states_{}'.format(self.scale)
+        for extension in ['.dbf', '.shx']:
+            get_test_data(fname + extension)
+        path = get_test_data(fname + '.shp', as_file_obj=False)
+        return iter(tuple(shpreader.Reader(path).geometries()))
+
+    def with_scale(self, new_scale):
+        """
+        Return a copy of the feature with a new scale.
+
+        Parameters
+        ----------
+        new_scale
+            The new dataset scale, i.e. one of '500k', '5m', or '20m'.
+            Corresponding to 1:500,000, 1:5,000,000, and 1:20,000,000
+            respectively.
+
+        """
+        return USStatesFeature(new_scale, **self.kwargs)
+
+
+USSTATES = USStatesFeature('20m', facecolor='None', edgecolor='black')
