@@ -9,17 +9,17 @@ import cartopy.io.shapereader as shpreader
 from ..cbook import get_test_data
 
 
-class USCountiesFeature(cfeat.NaturalEarthFeature):
+class MetPyMapFeature(cfeat.NaturalEarthFeature):
     """A simple interface to US County shapefiles."""
 
-    def __init__(self, scale, **kwargs):
+    def __init__(self, name, scale, **kwargs):
         """Create USCountiesFeature instance."""
-        super(USCountiesFeature, self).__init__('', 'us_counties', scale, **kwargs)
+        super(MetPyMapFeature, self).__init__('', name, scale, **kwargs)
 
     def geometries(self):
         """Return an iterator of (shapely) geometries for this feature."""
         # Ensure that the associated files are in the cache
-        fname = 'us_counties_{}'.format(self.scale)
+        fname = '{}_{}'.format(self.name, self.scale)
         for extension in ['.dbf', '.shx']:
             get_test_data(fname + extension)
         path = get_test_data(fname + '.shp', as_file_obj=False)
@@ -37,7 +37,9 @@ class USCountiesFeature(cfeat.NaturalEarthFeature):
             respectively.
 
         """
-        return USCountiesFeature(new_scale, **self.kwargs)
+        return MetPyMapFeature(self.name, new_scale, **self.kwargs)
 
 
-USCOUNTIES = USCountiesFeature('20m', facecolor='None')
+USCOUNTIES = MetPyMapFeature('us_counties', '20m', facecolor='None', edgecolor='black')
+
+USSTATES = MetPyMapFeature('us_states', '20m', facecolor='None', edgecolor='black')
