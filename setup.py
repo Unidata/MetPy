@@ -33,8 +33,8 @@ setup(
                  'Programming Language :: Python :: 2',
                  'Programming Language :: Python :: 2.7',
                  'Programming Language :: Python :: 3',
-                 'Programming Language :: Python :: 3.5',
                  'Programming Language :: Python :: 3.6',
+                 'Programming Language :: Python :: 3.7',
                  'Topic :: Scientific/Engineering',
                  'Topic :: Scientific/Engineering :: Atmospheric Science',
                  'Intended Audience :: Science/Research',
@@ -49,7 +49,7 @@ setup(
                                   '_static/unidata_150x150.png'],
                   'metpy': ['static-data-manifest.txt']},
 
-    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
+    python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*',
     install_requires=['matplotlib>=1.4', 'numpy>=1.11.0', 'scipy>=0.14',
                       'pint>=0.8', 'xarray>=0.10.7', 'enum34;python_version<"3.4"',
                       'pooch==0.1.*'],
