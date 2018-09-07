@@ -20,6 +20,7 @@ git:
   depth: 150
 
 python:
+  - 3.7
   - 3.6
   - 2.7
 
@@ -51,8 +52,6 @@ matrix:
         - VERSIONS="numpy==1.11.0 matplotlib==1.4.0 scipy==0.14.0 pint==0.8 xarray==0.10.7"
         - TASK="coverage"
         - TEST_OUTPUT_CONTROL=""
-    - python: 3.5
-      env:
     - python: "3.6-dev"
       env: PRE="--pre"
     - python: "3.6-dev"
