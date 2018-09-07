@@ -77,7 +77,7 @@ still evolving (we won't break things just for fun, but many things are still ch
 work through design issues). Also, for a version `0.x.y`, we change `x` when we
 release new features, and `y` when we make a release with only bug fixes.
 
-We support Python >= 3.5 and currently support Python 2.7.
+We support Python >= 3.6 and currently support Python 2.7.
 
 NOTE: We are dropping support for Python 2.7 in Fall 2019. See
 `here <https://github.com/Unidata/MetPy/blob/master/docs/installguide.rst>`_ for more
