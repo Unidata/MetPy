@@ -200,6 +200,18 @@ to run only the test you just created for this step.
 
 For more information, see the `docs for mpl-test <https://github.com/astrofrog/pytest-mpl>`_.
 
+
+## Cached Data Files
+MetPy keeps some test data, as well as things like shape files for US counties in a data cache
+supported by the pooch library. To add files to this, please ensure they are as small as
+possible. Put the files in the `staticdata` directory. Then run this command in the metpy
+directory (that contains the `static-data-manifest.txt` file)to recreate the data registry:
+
+`python -c "import pooch; pooch.make_registry('staticdata', 'metpy/static-data-manifest.txt')"`
+
+Make sure that no system files (like `.DS_Store`) are in the manifest and add it to your
+contribution.
+
 ## Code Style
 MetPy uses the Python code style outlined in `PEP8
 <http://pep8.org>`_. For better or worse, this is what the majority
