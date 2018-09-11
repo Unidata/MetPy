@@ -6,7 +6,7 @@ import numpy as np
 
 from .thermo import mixing_ratio, saturation_vapor_pressure
 from .tools import get_layer
-from ..constants import g, rho_l
+from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
 from ..xarray import preprocess_xarray
@@ -60,7 +60,7 @@ def precipitable_water(dewpt, pressure, bottom=None, top=None):
 
     # Since pressure is in decreasing order, pw will be the opposite sign of that expected.
     pw = -1. * (np.trapz(w.magnitude, pres_layer.magnitude) * (w.units * pres_layer.units) /
-                (g * rho_l))
+                (mpconsts.g * mpconsts.rho_l))
     return pw.to('millimeters')
 
 

@@ -17,7 +17,7 @@ import warnings
 import numpy as np
 from scipy.ndimage import gaussian_filter
 
-from ..constants import G, g, me, omega, Rd, Re
+from .. import constants as mpconsts
 from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, masked_array, units
@@ -379,7 +379,8 @@ def pressure_to_height_std(pressure):
     t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
     p0 = 1013.25 * units.mbar
-    return (t0 / gamma) * (1 - (pressure / p0).to('dimensionless')**(Rd * gamma / g))
+    return (t0 / gamma) * (1 - (pressure / p0).to('dimensionless')**(
+        mpconsts.Rd * gamma / mpconsts.g))
 
 
 @exporter.export
@@ -416,7 +417,7 @@ def height_to_geopotential(height):
 
     """
     # Calculate geopotential
-    geopot = G * me * ((1 / Re) - (1 / (Re + height)))
+    geopot = mpconsts.G * mpconsts.me * ((1 / mpconsts.Re) - (1 / (mpconsts.Re + height)))
 
     return geopot
 
@@ -458,7 +459,7 @@ def geopotential_to_height(geopot):
 
     """
     # Calculate geopotential
-    height = (((1 / Re) - (geopot / (G * me))) ** -1) - Re
+    height = (((1 / mpconsts.Re) - (geopot / (mpconsts.G * mpconsts.me))) ** -1) - mpconsts.Re
 
     return height
 
@@ -489,7 +490,7 @@ def height_to_pressure_std(height):
     t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
     p0 = 1013.25 * units.mbar
-    return p0 * (1 - (gamma / t0) * height) ** (g / (Rd * gamma))
+    return p0 * (1 - (gamma / t0) * height) ** (mpconsts.g / (mpconsts.Rd * gamma))
 
 
 @exporter.export
@@ -511,7 +512,7 @@ def coriolis_parameter(latitude):
 
     """
     latitude = _check_radians(latitude, max_radians=np.pi / 2)
-    return (2. * omega * np.sin(latitude)).to('1/s')
+    return (2. * mpconsts.omega * np.sin(latitude)).to('1/s')
 
 
 @exporter.export

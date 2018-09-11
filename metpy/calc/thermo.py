@@ -13,8 +13,8 @@ import scipy.optimize as so
 
 from .tools import (_greater_or_close, _less_or_close, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
+from .. import constants as mpconsts
 from ..cbook import broadcast_indices
-from ..constants import Cp_d, epsilon, g, kappa, Lv, P0, Rd
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
@@ -59,7 +59,7 @@ def relative_humidity_from_dewpoint(temperature, dewpt):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[pressure]')
-def exner_function(pressure, reference_pressure=P0):
+def exner_function(pressure, reference_pressure=mpconsts.P0):
     r"""Calculate the Exner function.
 
     .. math:: \Pi = \left( \frac{p}{p_0} \right)^\kappa
@@ -87,7 +87,7 @@ def exner_function(pressure, reference_pressure=P0):
     temperature_from_potential_temperature
 
     """
-    return (pressure / reference_pressure).to('dimensionless')**kappa
+    return (pressure / reference_pressure).to('dimensionless')**mpconsts.kappa
 
 
 @exporter.export
@@ -207,7 +207,7 @@ def dry_lapse(pressure, temperature):
     potential_temperature
 
     """
-    return temperature * (pressure / pressure[0])**kappa
+    return temperature * (pressure / pressure[0])**mpconsts.kappa
 
 
 @exporter.export
@@ -253,8 +253,9 @@ def moist_lapse(pressure, temperature):
         t = units.Quantity(t, temperature.units)
         p = units.Quantity(p, pressure.units)
         rs = saturation_mixing_ratio(p, t)
-        frac = ((Rd * t + Lv * rs) /
-                (Cp_d + (Lv * Lv * rs * epsilon / (Rd * t * t)))).to('kelvin')
+        frac = ((mpconsts.Rd * t + mpconsts.Lv * rs) /
+                (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon /
+                                  (mpconsts.Rd * t * t)))).to('kelvin')
         return frac / p
     return units.Quantity(si.odeint(dt, atleast_1d(temperature).squeeze(),
                                     pressure.squeeze()).T.squeeze(), temperature.units)
@@ -308,7 +309,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     """
     def _lcl_iter(p, p0, w, t):
         td = dewpoint(vapor_pressure(units.Quantity(p, pressure.units), w))
-        return (p0 * (td / t) ** (1. / kappa)).m
+        return (p0 * (td / t) ** (1. / mpconsts.kappa)).m
 
     w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
     fp = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
@@ -591,7 +592,7 @@ def vapor_pressure(pressure, mixing):
     saturation_vapor_pressure, dewpoint
 
     """
-    return pressure * mixing / (epsilon + mixing)
+    return pressure * mixing / (mpconsts.epsilon + mixing)
 
 
 @exporter.export
@@ -694,7 +695,7 @@ def dewpoint(e):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[pressure]', '[dimensionless]')
-def mixing_ratio(part_press, tot_press, molecular_weight_ratio=epsilon):
+def mixing_ratio(part_press, tot_press, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate the mixing ratio of a gas.
 
     This calculates mixing ratio given its partial pressure and the total pressure of
@@ -809,7 +810,7 @@ def equivalent_potential_temperature(pressure, temperature, dewpoint):
     r = saturation_mixing_ratio(pressure, dewpoint).magnitude
 
     t_l = 56 + 1. / (1. / (td - 56) + np.log(t / td) / 800.)
-    th_l = t * (1000 / (p - e)) ** kappa * (t / t_l) ** (0.28 * r)
+    th_l = t * (1000 / (p - e)) ** mpconsts.kappa * (t / t_l) ** (0.28 * r)
     th_e = th_l * np.exp((3036. / t_l - 1.78) * r * (1 + 0.448 * r))
 
     return th_e * units.kelvin
@@ -876,7 +877,7 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
     e = saturation_vapor_pressure(temperature).to('hPa').magnitude
     r = saturation_mixing_ratio(pressure, temperature).magnitude
 
-    th_l = t * (1000 / (p - e)) ** kappa
+    th_l = t * (1000 / (p - e)) ** mpconsts.kappa
     th_es = th_l * np.exp((3036. / t - 1.78) * r * (1 + 0.448 * r))
 
     return th_es * units.kelvin
@@ -885,7 +886,7 @@ def saturation_equivalent_potential_temperature(pressure, temperature):
 @exporter.export
 @preprocess_xarray
 @check_units('[temperature]', '[dimensionless]', '[dimensionless]')
-def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
+def virtual_temperature(temperature, mixing, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate virtual temperature.
 
     This calculation must be given an air parcel's temperature and mixing ratio.
@@ -920,7 +921,7 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=epsilon):
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[dimensionless]', '[dimensionless]')
 def virtual_potential_temperature(pressure, temperature, mixing,
-                                  molecular_weight_ratio=epsilon):
+                                  molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate virtual potential temperature.
 
     This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
@@ -956,7 +957,7 @@ def virtual_potential_temperature(pressure, temperature, mixing,
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[dimensionless]', '[dimensionless]')
-def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
+def density(pressure, temperature, mixing, molecular_weight_ratio=mpconsts.epsilon):
     r"""Calculate density.
 
     This calculation must be given an air parcel's pressure, temperature, and mixing ratio.
@@ -986,7 +987,7 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=epsilon):
 
     """
     virttemp = virtual_temperature(temperature, mixing, molecular_weight_ratio)
-    return (pressure / (Rd * virttemp)).to(units.kilogram / units.meter ** 3)
+    return (pressure / (mpconsts.Rd * virttemp)).to(units.kilogram / units.meter ** 3)
 
 
 @exporter.export
@@ -1358,14 +1359,16 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     p_mask = _less_or_close(x, lfc_pressure) & _greater_or_close(x, el_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
-    cape = (Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+    cape = (mpconsts.Rd *
+            (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
     # CIN
     # Only use data between the surface and LFC for calculation
     p_mask = _greater_or_close(x, lfc_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
-    cin = (Rd * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+    cin = (mpconsts.Rd *
+           (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
     return cape, cin
 
@@ -1554,7 +1557,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     isentlevs_nd = np.broadcast_to(isentlevels[slices], shape)
 
     # exponent to Poisson's Equation, which is imported above
-    ka = kappa.m_as('dimensionless')
+    ka = mpconsts.kappa.m_as('dimensionless')
 
     # calculate theta for each point
     pres_theta = potential_temperature(levs, tmpk)
@@ -1568,7 +1571,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     log_p = np.log(levs.m)
 
     # Calculations for interpolation routine
-    pok = P0 ** ka
+    pok = mpconsts.P0 ** ka
 
     # index values for each point for the pressure level nearest to the desired theta level
     above, below, good = find_bounding_indices(pres_theta.m, theta_levels, axis,
@@ -1601,7 +1604,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
 
     # if tmpk_out = true, calculate temperature and output as last item in list
     if tmpk_out:
-        ret.append((isentlevs_nd / ((P0.m / isentprs) ** ka)) * units.kelvin)
+        ret.append((isentlevs_nd / ((mpconsts.P0.m / isentprs) ** ka)) * units.kelvin)
 
     # do an interpolation for each additional argument
     if args:
@@ -1837,7 +1840,7 @@ def dry_static_energy(heights, temperature):
         The dry static energy
 
     """
-    return (g * heights + Cp_d * temperature).to('kJ/kg')
+    return (mpconsts.g * heights + mpconsts.Cp_d * temperature).to('kJ/kg')
 
 
 @exporter.export
@@ -1872,7 +1875,7 @@ def moist_static_energy(heights, temperature, specific_humidity):
 
     """
     return (dry_static_energy(heights, temperature) +
-            Lv * specific_humidity.to('dimensionless')).to('kJ/kg')
+            mpconsts.Lv * specific_humidity.to('dimensionless')).to('kJ/kg')
 
 
 @exporter.export
@@ -1922,7 +1925,7 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
 
     """
     mixing = kwargs.pop('mixing', None)
-    molecular_weight_ratio = kwargs.pop('molecular_weight_ratio', epsilon)
+    molecular_weight_ratio = kwargs.pop('molecular_weight_ratio', mpconsts.epsilon)
     bottom = kwargs.pop('bottom', None)
     depth = kwargs.pop('depth', None)
 
@@ -1944,8 +1947,8 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
             layer_virttemp = virtual_temperature(layer_temp, layer_w, molecular_weight_ratio)
 
     # Take the integral (with unit handling) and return the result in meters
-    return (- Rd / g * np.trapz(layer_virttemp.to('K'), x=np.log(layer_p / units.hPa)) *
-            units.K).to('m')
+    return (- mpconsts.Rd / mpconsts.g * np.trapz(
+        layer_virttemp.to('K'), x=np.log(layer_p / units.hPa)) * units.K).to('m')
 
 
 @exporter.export
@@ -2039,8 +2042,8 @@ def brunt_vaisala_frequency_squared(heights, potential_temperature, axis=0):
     potential_temperature = potential_temperature.to('K')
 
     # Calculate and return the square of Brunt-Vaisala frequency
-    return g / potential_temperature * first_derivative(potential_temperature, x=heights,
-                                                        axis=axis)
+    return mpconsts.g / potential_temperature * first_derivative(potential_temperature,
+                                                                 x=heights, axis=axis)
 
 
 @exporter.export
@@ -2204,8 +2207,8 @@ def static_stability(pressure, temperature, axis=0):
     """
     theta = potential_temperature(pressure, temperature)
 
-    return - Rd * temperature / pressure * first_derivative(np.log(theta / units.K),
-                                                            x=pressure, axis=axis)
+    return - mpconsts.Rd * temperature / pressure * first_derivative(np.log(theta / units.K),
+                                                                     x=pressure, axis=axis)
 
 
 @exporter.export
@@ -2278,7 +2281,7 @@ def vertical_velocity_pressure(w, pressure, temperature, mixing=0):
 
     """
     rho = density(pressure, temperature, mixing)
-    return (- g * rho * w).to('Pa/s')
+    return (- mpconsts.g * rho * w).to('Pa/s')
 
 
 @exporter.export
@@ -2324,4 +2327,4 @@ def vertical_velocity(omega, pressure, temperature, mixing=0):
 
     """
     rho = density(pressure, temperature, mixing)
-    return (omega / (- g * rho)).to('m/s')
+    return (omega / (- mpconsts.g * rho)).to('m/s')

@@ -10,8 +10,8 @@ import numpy as np
 
 from . import coriolis_parameter
 from .tools import first_derivative, get_layer_heights, gradient
+from .. import constants as mpconsts
 from ..cbook import is_string_like, iterable
-from ..constants import Cp_d, g, Rd
 from ..package_tools import Exporter
 from ..units import atleast_2d, check_units, concatenate, units
 from ..xarray import preprocess_xarray
@@ -434,7 +434,7 @@ def geostrophic_wind(heights, f, dx, dy):
     if heights.dimensionality['[length]'] == 2.0:
         norm_factor = 1. / f
     else:
-        norm_factor = g / f
+        norm_factor = mpconsts.g / f
 
     dhdy = first_derivative(heights, delta=dy, axis=-2)
     dhdx = first_derivative(heights, delta=dx, axis=-1)
@@ -519,7 +519,7 @@ def montgomery_streamfunction(height, temperature):
     get_isentropic_pressure
 
     """
-    return (g * height) + (Cp_d * temperature)
+    return (mpconsts.g * height) + (mpconsts.Cp_d * temperature)
 
 
 @exporter.export
@@ -680,8 +680,8 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
     # Get the middle layer stability derivative (index 1)
     slices = [slice(None)] * stability.ndim
     slices[axis] = 1
-    return (-1 * avor * g * stability[slices]).to(units.kelvin * units.meter**2 /
-                                                  (units.second * units.kilogram))
+    return (-1 * avor * mpconsts.g * stability[slices]).to(units.kelvin * units.meter**2 /
+                                                           (units.second * units.kilogram))
 
 
 @exporter.export
@@ -851,7 +851,7 @@ def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
     dvdy, dvdx = gradient(v, deltas=(dy, dx), axes=(-2, -1))
     dtempdy, dtempdx = gradient(temperature, deltas=(dy, dx), axes=(-2, -1))
 
-    q1 = -Rd / (pressure * static_stability) * (dudx * dtempdx + dvdx * dtempdy)
-    q2 = -Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)
+    q1 = -mpconsts.Rd / (pressure * static_stability) * (dudx * dtempdx + dvdx * dtempdy)
+    q2 = -mpconsts.Rd / (pressure * static_stability) * (dudy * dtempdx + dvdy * dtempdy)
 
     return q1.to_base_units(), q2.to_base_units()
