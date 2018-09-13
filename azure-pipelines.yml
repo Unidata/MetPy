@@ -30,9 +30,11 @@ jobs:
     inputs:
       createCustomEnvironment: true
       environmentName: 'devel'
+      updateConda: false
       packageSpecs: 'python=$(python.version)'
+      createOptions: '-p conda/envs'
 
-  - script: conda env update
+  - script: conda env update -p conda/envs
     displayName: 'Install Conda packages'
 
 #  - script: python -m pip install --upgrade pip && pip install .[test,cdm,doc,examples]
