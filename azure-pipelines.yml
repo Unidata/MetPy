@@ -39,7 +39,7 @@ jobs:
 
   - script: |
       python -m pip install --upgrade pip
-      pip install Cython
+      pip install Cython numpy
       pip install .[test,cdm,doc,examples]
     displayName: 'Install dependencies'
 
