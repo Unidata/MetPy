@@ -37,7 +37,10 @@ jobs:
   # - script: conda env update
   #   displayName: 'Install Conda packages'
 
-  - script: python -m pip install --upgrade pip && pip install .[test,cdm,doc,examples]
+  - script: |
+      python -m pip install --upgrade pip
+      pip install Cython
+      pip install .[test,cdm,doc,examples]
     displayName: 'Install dependencies'
 
   - script: pytest tests --doctest-modules --junitxml=junit/test-results.xml
