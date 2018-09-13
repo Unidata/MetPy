@@ -30,6 +30,9 @@ jobs:
     inputs:
       environmentName: 'devel'
       packageSpecs: 'python=$(python.version)'
+      updateConda: false
+      cleanEnvironment: true
+      createOptions: '--prefix $(Agent.WorkFolder)/envs/devel'
 
   - script: conda env update
     displayName: 'Install Conda packages'
