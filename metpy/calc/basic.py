@@ -715,6 +715,64 @@ def smooth_gaussian(scalar_grid, n):
     return res
 
 
+@exporter.export
+@preprocess_xarray
+def smooth_n_point(scalar_grid, n=5, passes=1):
+    """Filter with normal distribution of weights.
+
+    Parameters
+    ----------
+    scalar_grid : array-like or `pint.Quantity`
+        Some 2D scalar grid to be smoothed.
+
+    n: int
+        The number of points to use in smoothing, only valid inputs
+        are 5 and 9. Defaults to 5.
+
+    passes : int
+        The number of times to apply the filter to the grid. Defaults
+        to 1.
+
+    Returns
+    -------
+    array-like or `pint.Quantity`
+        The filtered 2D scalar grid.
+
+    Notes
+    -----
+    This function is a close replication of the GEMPAK function SM5S
+    and SM9S depending on the choice of the number of points to use
+    for smoothing. This function can be applied multiple times to
+    create a more smoothed field and will only smooth the interior
+    points, leaving the end points with their original values. If a
+    masked value or NaN values exists in the array, it will propagate
+    to any point that uses that particular grid point in the smoothing
+    calculation. Applying the smoothing function multiple times will
+    propogate NaNs further throughout the domain.
+
+    """
+    if n == 9:
+        p = 0.25
+        q = 0.125
+        r = 0.0625
+    elif n == 5:
+        p = 0.5
+        q = 0.125
+        r = 0.0
+    else:
+        raise ValueError('The number of points to use in the smoothing '
+                         'calculation must be either 5 or 9.')
+
+    smooth_grid = scalar_grid[:].copy()
+    for _i in range(passes):
+        smooth_grid[1:-1, 1:-1] = (p * smooth_grid[1:-1, 1:-1]
+                                   + q * (smooth_grid[2:, 1:-1] + smooth_grid[1:-1, 2:]
+                                          + smooth_grid[:-2, 1:-1] + smooth_grid[1:-1, :-2])
+                                   + r * (smooth_grid[2:, 2:] + smooth_grid[2:, :-2] +
+                                          + smooth_grid[:-2, 2:] + smooth_grid[:-2, :-2]))
+    return smooth_grid
+
+
 def _check_radians(value, max_radians=2 * np.pi):
     """Input validation of values that could be in degrees instead of radians.
 

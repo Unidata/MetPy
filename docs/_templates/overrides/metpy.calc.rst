@@ -174,6 +174,7 @@ calc
       reduce_point_density
       resample_nn_1d
       smooth_gaussian
+      smooth_n_point
 
 
    Deprecated
