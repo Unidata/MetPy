@@ -37,10 +37,12 @@ jobs:
   # - script: conda env update
   #   displayName: 'Install Conda packages'
 
+  - script: sudo apt-get install libproj-dev
+
   - script: |
       python -m pip install --upgrade pip
       pip install Cython numpy
-      pip install .[test,cdm,doc,examples]
+      pip install .[test,cdm,doc,examples] -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html
     displayName: 'Install dependencies'
 
   - script: pytest tests --doctest-modules --junitxml=junit/test-results.xml
