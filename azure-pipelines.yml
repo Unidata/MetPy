@@ -37,7 +37,7 @@ jobs:
   # - script: conda env update
   #   displayName: 'Install Conda packages'
 
-  - script: sudo apt-get install libproj-dev
+  - script: sudo apt-get install -y libproj-dev libgeos-dev
 
   - script: |
       python -m pip install --upgrade pip
