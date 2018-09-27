@@ -205,6 +205,7 @@ plt.show()
 
 # Let's add a projection and coastlines to it
 ax = plt.axes(projection=ccrs.LambertConformal())
+ax._hold = True  # Work-around for CartoPy 0.16/Matplotlib 3.0.0 incompatibility
 data['height'].loc[time[0]].loc[{vertical.name: 500.}].plot(ax=ax, transform=data_crs)
 ax.coastlines()
 plt.show()
@@ -232,13 +233,12 @@ ax.barbs(x[wind_slice], y[wind_slice],
 
 # Plot heights and temperature as contours
 h_contour = ax.contour(x, y, data_level['height'], colors='k', levels=range(5400, 6000, 60))
-h_contour_label = plt.clabel(h_contour, fontsize=8, colors='k', inline=1, inline_spacing=8,
-                             fmt='%i', rightside_up=True, use_clabeltext=True)
+h_contour.clabel(fontsize=8, colors='k', inline=1, inline_spacing=8,
+                 fmt='%i', rightside_up=True, use_clabeltext=True)
 t_contour = ax.contour(x, y, data_level['temperature'], colors='xkcd:deep blue',
                        levels=range(248, 276, 2), alpha=0.8, linestyles='--')
-t_contour_label = plt.clabel(t_contour, fontsize=8, colors='xkcd:deep blue', inline=1,
-                             inline_spacing=8, fmt='%i', rightside_up=True,
-                             use_clabeltext=True, alpha=0.8)
+t_contour.clabel(fontsize=8, colors='xkcd:deep blue', inline=1, inline_spacing=8,
+                 fmt='%i', rightside_up=True, use_clabeltext=True)
 
 # Add geographic features
 ax.add_feature(cfeature.LAND.with_scale('50m'), facecolor=cfeature.COLORS['land'])
