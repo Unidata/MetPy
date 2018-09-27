@@ -20,8 +20,9 @@ import matplotlib.transforms as transforms
 import numpy as np
 
 from ._util import colored_line
-from ..calc import dewpoint, dry_lapse, interp, moist_lapse, vapor_pressure
+from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
 from ..calc.tools import _delete_masked_points
+from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
 from ..units import concatenate, units
 
@@ -866,7 +867,7 @@ class Hodograph(object):
                 interpolation_heights = (np.sort(interpolation_heights) *
                                          interpolation_heights.units)
                 (interpolated_heights, interpolated_u,
-                 interpolated_v) = interp(interpolation_heights, c, c, u, v)
+                 interpolated_v) = interpolate_1d(interpolation_heights, c, c, u, v)
 
                 # Combine the interpolated data with the actual data
                 c = concatenate([c, interpolated_heights])
