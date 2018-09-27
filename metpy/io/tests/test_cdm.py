@@ -6,8 +6,10 @@ import numpy as np
 import pytest
 
 from metpy.io.cdm import Dataset
+from metpy.testing import ignore_deprecation
 
 
+@ignore_deprecation
 def test_group():
     """Test `Group`/`Dataset` behavior."""
     ds = Dataset()
@@ -25,6 +27,7 @@ def test_group():
                        'shape = 5\n\nAttributes:\n\tconventions: CF-1.5')
 
 
+@ignore_deprecation
 def test_dim():
     """Test `Dimension` behavior."""
     ds = Dataset()
@@ -34,6 +37,7 @@ def test_dim():
     assert str(dim) == "<class 'metpy.io.cdm.Dimension'>: name = x, size = 5"
 
 
+@ignore_deprecation
 def test_var():
     """Test `Variable` behavior."""
     ds = Dataset()
@@ -58,6 +62,7 @@ def test_var():
                         '\n\tunits: meters\n\tshape = 2')
 
 
+@ignore_deprecation
 def test_multidim_var():
     """Test multi-dim `Variable`."""
     ds = Dataset()
@@ -74,6 +79,7 @@ def test_multidim_var():
                         '\n\tshape = (2, 3)')
 
 
+@ignore_deprecation
 def test_remove_attr():
     """Test removing an attribute."""
     ds = Dataset()
@@ -85,6 +91,7 @@ def test_remove_attr():
     assert 'maker' not in ds.ncattrs()
 
 
+@ignore_deprecation
 def test_add_group():
     """Test adding a group."""
     ds = Dataset()
@@ -95,6 +102,7 @@ def test_add_group():
     assert str(ds) == 'root\nGroups:\nmyGroup'
 
 
+@ignore_deprecation
 def test_variable_size_check():
     """Test `Variable` checking size of passed array."""
     ds = Dataset()

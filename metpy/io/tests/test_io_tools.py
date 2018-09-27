@@ -8,11 +8,12 @@ import pytest
 
 from metpy.io._tools import hexdump, UnitLinker
 from metpy.io.cdm import Dataset
-from metpy.testing import assert_array_equal
+from metpy.testing import assert_array_equal, ignore_deprecation
 from metpy.units import units
 
 
 @pytest.fixture()
+@ignore_deprecation
 def test_var():
     """Fixture to create a dataset and variable for tests."""
     ds = Dataset()
