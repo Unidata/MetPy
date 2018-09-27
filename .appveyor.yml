@@ -37,7 +37,7 @@ build: off
 
 test_script:
     - cmd: set TEST_DATA_DIR=%APPVEYOR_BUILD_FOLDER%\\staticdata
-    - cmd: python setup.py test --addopts "-s --junitxml=tests.xml --flake8 --mpl --cov=metpy"
+    - cmd: python setup.py test --addopts "-s --junitxml=tests.xml --flake8 --mpl --cov=metpy -W error::metpy.deprecation.MetpyDeprecationWarning"
     - cmd: cd docs
     - cmd: make overridecheck html
     - cmd: cd ..
