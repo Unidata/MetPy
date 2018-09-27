@@ -20,21 +20,25 @@ MPL_VERSION = matplotlib.__version__[:3]
 @pytest.mark.mpl_image_compare(tolerance=0.021, remove_text=True)
 def test_skewt_api():
     """Test the SkewT API."""
-    fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
 
-    # Plot the data using normal plotting functions, in this case using
-    # log scaling in Y, as dictated by the typical meteorological plot
-    p = np.linspace(1000, 100, 10)
-    t = np.linspace(20, -20, 10)
-    u = np.linspace(-10, 10, 10)
-    skew.plot(p, t, 'r')
-    skew.plot_barbs(p, u, u)
+        # Plot the data using normal plotting functions, in this case using
+        # log scaling in Y, as dictated by the typical meteorological plot
+        p = np.linspace(1000, 100, 10)
+        t = np.linspace(20, -20, 10)
+        u = np.linspace(-10, 10, 10)
+        skew.plot(p, t, 'r')
+        skew.plot_barbs(p, u, u)
 
-    # Add the relevant special lines
-    skew.plot_dry_adiabats()
-    skew.plot_moist_adiabats()
-    skew.plot_mixing_lines()
+        skew.ax.set_xlim(-20, 30)
+        skew.ax.set_ylim(1000, 100)
+
+        # Add the relevant special lines
+        skew.plot_dry_adiabats()
+        skew.plot_moist_adiabats()
+        skew.plot_mixing_lines()
 
     return fig
 
@@ -73,13 +77,16 @@ def test_profile():
 def test_skewt_shade_cape_cin(test_profile):
     """Test shading CAPE and CIN on a SkewT plot."""
     p, t, tp = test_profile
-    fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
-    skew.plot(p, t, 'r')
-    skew.plot(p, tp, 'k')
-    skew.shade_cape(p, t, tp)
-    skew.shade_cin(p, t, tp)
-    skew.ax.set_xlim(-50, 50)
+
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
+        skew.plot(p, t, 'r')
+        skew.plot(p, tp, 'k')
+        skew.shade_cape(p, t, tp)
+        skew.shade_cin(p, t, tp)
+        skew.ax.set_xlim(-50, 50)
+
     return fig
 
 
@@ -87,12 +94,15 @@ def test_skewt_shade_cape_cin(test_profile):
 def test_skewt_shade_area(test_profile):
     """Test shading areas on a SkewT plot."""
     p, t, tp = test_profile
-    fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
-    skew.plot(p, t, 'r')
-    skew.plot(p, tp, 'k')
-    skew.shade_area(p, t, tp)
-    skew.ax.set_xlim(-50, 50)
+
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
+        skew.plot(p, t, 'r')
+        skew.plot(p, tp, 'k')
+        skew.shade_area(p, t, tp)
+        skew.ax.set_xlim(-50, 50)
+
     return fig
 
 
@@ -111,12 +121,14 @@ def test_skewt_shade_area_invalid(test_profile):
 def test_skewt_shade_area_kwargs(test_profile):
     """Test shading areas on a SkewT plot with kwargs."""
     p, t, tp = test_profile
-    fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
-    skew.plot(p, t, 'r')
-    skew.plot(p, tp, 'k')
-    skew.shade_area(p, t, tp, facecolor='m')
-    skew.ax.set_xlim(-50, 50)
+
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
+        skew.plot(p, t, 'r')
+        skew.plot(p, tp, 'k')
+        skew.shade_area(p, t, tp, facecolor='m')
+        skew.ax.set_xlim(-50, 50)
     return fig
 
 
