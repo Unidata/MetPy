@@ -89,8 +89,8 @@ rh_colorbar = fig.colorbar(rh_contour)
 # Plot potential temperature using contour, with some custom labeling
 theta_contour = ax.contour(cross['lon'], cross['isobaric'], cross['Potential_temperature'],
                            levels=np.arange(250, 450, 5), colors='k', linewidths=2)
-plt.clabel(theta_contour, theta_contour.levels[1::2], fontsize=8, colors='k', inline=1,
-           inline_spacing=8, fmt='%i', rightside_up=True, use_clabeltext=True, alpha=0.6)
+theta_contour.clabel(theta_contour.levels[1::2], fontsize=8, colors='k', inline=1,
+                     inline_spacing=8, fmt='%i', rightside_up=True, use_clabeltext=True)
 
 # Plot winds using the axes interface directly, with some custom indexing to make the barbs
 # less crowded
@@ -104,7 +104,7 @@ ax.barbs(cross['lon'][wind_slc_horz], cross['isobaric'][wind_slc_vert],
 ax.set_yscale('symlog')
 ax.set_yticklabels(np.arange(1000, 50, -100))
 ax.set_ylim(cross['isobaric'].max(), cross['isobaric'].min())
-plt.yticks(np.arange(1000, 50, -100))
+ax.set_yticks(np.arange(1000, 50, -100))
 
 # Define the CRS and inset axes
 data_crs = data['Geopotential_height'].metpy.cartopy_crs

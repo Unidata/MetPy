@@ -52,7 +52,7 @@ setup(
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*',
     install_requires=['matplotlib>=1.4', 'numpy>=1.11.0', 'scipy>=0.14',
                       'pint>=0.8', 'xarray>=0.10.7', 'enum34;python_version<"3.4"',
-                      'pooch==0.1'],
+                      'pooch==0.1.*'],
     extras_require={
         'cdm': ['pyproj>=1.9.4'],
         'dev': ['ipython[all]>=3.1'],

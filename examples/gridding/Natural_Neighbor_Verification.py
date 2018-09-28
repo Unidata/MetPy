@@ -76,6 +76,7 @@ zp = (pts[:, 0] * pts[:, 0]) / 1000
 tri = Delaunay(pts)
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+ax.ishold = lambda: True  # Work-around for Matplotlib 3.0.0 incompatibility
 delaunay_plot_2d(tri, ax=ax)
 
 for i, zval in enumerate(zp):
@@ -114,6 +115,7 @@ def draw_circle(ax, x, y, r, m, label):
 members, tri_info = geometry.find_natural_neighbors(tri, list(zip(sim_gridx, sim_gridy)))
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+ax.ishold = lambda: True  # Work-around for Matplotlib 3.0.0 incompatibility
 delaunay_plot_2d(tri, ax=ax)
 ax.plot(sim_gridx, sim_gridy, 'ks', markersize=10)
 
@@ -166,6 +168,7 @@ print('radii\n', r)
 vor = Voronoi(list(zip(xp, yp)))
 
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+ax.ishold = lambda: True  # Work-around for Matplotlib 3.0.0 incompatibility
 voronoi_plot_2d(vor, ax=ax)
 
 nn_ind = np.array([0, 5, 7, 8])
