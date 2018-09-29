@@ -40,4 +40,4 @@ class USCountiesFeature(cfeat.NaturalEarthFeature):
         return USCountiesFeature(new_scale, **self.kwargs)
 
 
-USCOUNTIES = USCountiesFeature('20m', facecolor='None')
+USCOUNTIES = USCountiesFeature('20m', facecolor='None', edgecolor='black')
