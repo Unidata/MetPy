@@ -71,12 +71,12 @@ tutorial, we will use an example subset of GFS data from Hurrican Irma (Septembe
     <xarray.Dataset>
     Dimensions:                              (isobaric1: 21, isobaric3: 31, latitude: 81, longitude: 131, time1: 9)
     Coordinates:
-      * time1                                (time1) datetime64[ns] 2017-09-05T12:00:00 ...
+      * time1                                (time1) datetime64[ns] 2017-09-05T12:00:00 ... 2017-09-06T12:00:00
         reftime                              datetime64[ns] ...
-      * latitude                             (latitude) float32 50.0 49.5 49.0 ...
-      * isobaric3                            (isobaric3) float64 100.0 200.0 ...
-      * isobaric1                            (isobaric1) float64 1e+04 1.5e+04 ...
-      * longitude                            (longitude) float32 250.0 250.5 ...
+      * latitude                             (latitude) float32 50.0 49.5 ... 10.0
+      * isobaric3                            (isobaric3) float64 100.0 ... 1e+05
+      * isobaric1                            (isobaric1) float64 1e+04 ... 1e+05
+      * longitude                            (longitude) float32 250.0 ... 315.0
     Data variables:
         Vertical_velocity_pressure_isobaric  (time1, isobaric1, latitude, longitude) float32 ...
         Relative_humidity_isobaric           (time1, isobaric3, latitude, longitude) float32 ...
@@ -238,7 +238,7 @@ straightforward as using the ``data_var.metpy.cartopy_crs`` property:
 
  .. code-block:: none
 
-    <cartopy.crs.PlateCarree object at 0x2b537c7f2728>
+    <cartopy.crs.PlateCarree object at 0x2b7e049c5a40>
 
 
 The cartopy ``Globe`` can similarly be accessed via the ``data_var.metpy.cartopy_globe``
@@ -262,7 +262,7 @@ property:
 
  .. code-block:: none
 
-    <cartopy._crs.Globe object at 0x2b537c4197b8>
+    <cartopy._crs.Globe object at 0x2b7e04d52780>
 
 
 Calculations
@@ -389,6 +389,7 @@ the data.
 
     # Let's add a projection and coastlines to it
     ax = plt.axes(projection=ccrs.LambertConformal())
+    ax._hold = True  # Work-around for CartoPy 0.16/Matplotlib 3.0.0 incompatibility
     data['height'].loc[time[0]].loc[{vertical.name: 500.}].plot(ax=ax, transform=data_crs)
     ax.coastlines()
     plt.show()
@@ -427,13 +428,12 @@ the data.
 
     # Plot heights and temperature as contours
     h_contour = ax.contour(x, y, data_level['height'], colors='k', levels=range(5400, 6000, 60))
-    h_contour_label = plt.clabel(h_contour, fontsize=8, colors='k', inline=1, inline_spacing=8,
-                                 fmt='%i', rightside_up=True, use_clabeltext=True)
+    h_contour.clabel(fontsize=8, colors='k', inline=1, inline_spacing=8,
+                     fmt='%i', rightside_up=True, use_clabeltext=True)
     t_contour = ax.contour(x, y, data_level['temperature'], colors='xkcd:deep blue',
                            levels=range(248, 276, 2), alpha=0.8, linestyles='--')
-    t_contour_label = plt.clabel(t_contour, fontsize=8, colors='xkcd:deep blue', inline=1,
-                                 inline_spacing=8, fmt='%i', rightside_up=True,
-                                 use_clabeltext=True, alpha=0.8)
+    t_contour.clabel(fontsize=8, colors='xkcd:deep blue', inline=1, inline_spacing=8,
+                     fmt='%i', rightside_up=True, use_clabeltext=True)
 
     # Add geographic features
     ax.add_feature(cfeature.LAND.with_scale('50m'), facecolor=cfeature.COLORS['land'])
@@ -571,7 +571,7 @@ Fix 2 (unit array broadcasting):
 
 
 
-**Total running time of the script:** ( 0 minutes  3.415 seconds)
+**Total running time of the script:** ( 0 minutes  3.074 seconds)
 
 
 .. _sphx_glr_download_tutorials_xarray_tutorial.py:

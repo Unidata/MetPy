@@ -96,6 +96,7 @@ The locations of these observations are then used to generate a Delaunay triangu
     tri = Delaunay(pts)
 
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+    ax.ishold = lambda: True  # Work-around for Matplotlib 3.0.0 incompatibility
     delaunay_plot_2d(tri, ax=ax)
 
     for i, zval in enumerate(zp):
@@ -147,6 +148,7 @@ examine the results to see if they are correct.
     members, tri_info = geometry.find_natural_neighbors(tri, list(zip(sim_gridx, sim_gridy)))
 
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+    ax.ishold = lambda: True  # Work-around for Matplotlib 3.0.0 incompatibility
     delaunay_plot_2d(tri, ax=ax)
     ax.plot(sim_gridx, sim_gridy, 'ks', markersize=10)
 
@@ -251,6 +253,7 @@ in the Voronoi plot (green dots), and the observations are in the polygons (blue
     vor = Voronoi(list(zip(xp, yp)))
 
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+    ax.ishold = lambda: True  # Work-around for Matplotlib 3.0.0 incompatibility
     voronoi_plot_2d(vor, ax=ax)
 
     nn_ind = np.array([0, 5, 7, 8])
@@ -425,7 +428,7 @@ the above visual example to the 3rd decimal place.
 
 
 
-**Total running time of the script:** ( 0 minutes  0.284 seconds)
+**Total running time of the script:** ( 0 minutes  0.161 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Natural_Neighbor_Verification.py:

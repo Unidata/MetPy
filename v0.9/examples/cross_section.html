@@ -250,9 +250,9 @@ dimension.</p>
 Dimensions:              (isobaric: 29, x: 292, y: 118)
 Coordinates:
     time                 datetime64[ns] 1987-04-04T18:00:00
-  * isobaric             (isobaric) float64 1e+03 975.0 950.0 925.0 900.0 ...
-  * y                    (y) float64 -3.087e+06 -3.054e+06 -3.022e+06 ...
-  * x                    (x) float64 -3.977e+06 -3.945e+06 -3.912e+06 ...
+  * isobaric             (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
+  * y                    (y) float64 -3.087e+06 -3.054e+06 ... 7.114e+05
+  * x                    (x) float64 -3.977e+06 -3.945e+06 ... 5.47e+06
     crs                  object Projection: lambert_conformal_conic
 Data variables:
     Temperature          (isobaric, y, x) float32 ...
@@ -281,20 +281,20 @@ Data variables:
 Dimensions:              (index: 100, isobaric: 29)
 Coordinates:
     time                 datetime64[ns] 1987-04-04T18:00:00
-  * isobaric             (isobaric) float64 1e+03 975.0 950.0 925.0 900.0 ...
+  * isobaric             (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
     crs                  object Projection: lambert_conformal_conic
-    x                    (index) float64 1.818e+05 2.18e+05 2.541e+05 ...
-    y                    (index) float64 -1.454e+06 -1.447e+06 -1.44e+06 ...
-  * index                (index) int64 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 ...
-    lat                  (index) float64 37.0 37.05 37.11 37.16 37.2 37.25 ...
-    lon                  (index) float64 -105.0 -104.6 -104.2 -103.8 -103.4 ...
+    x                    (index) float64 1.818e+05 2.18e+05 ... 3.712e+06
+    y                    (index) float64 -1.454e+06 -1.447e+06 ... -5.573e+05
+  * index                (index) int64 0 1 2 3 4 5 6 7 ... 93 94 95 96 97 98 99
+    lat                  (index) float64 37.0 37.05 37.11 ... 35.66 35.58 35.5
+    lon                  (index) float64 -105.0 -104.6 -104.2 ... -65.39 -65.0
 Data variables:
-    Temperature          (isobaric, index) float64 287.7 286.9 287.2 287.2 ...
+    Temperature          (isobaric, index) float64 287.7 286.9 ... 211.4 211.4
     Lambert_Conformal    |S1 ...
-    u_wind               (isobaric, index) float64 -2.729 0.4776 -0.3369 ...
-    v_wind               (isobaric, index) float64 8.473 5.723 5.25 6.252 ...
-    Geopotential_height  (isobaric, index) float64 118.6 127.4 133.2 138.3 ...
-    Specific_humidity    (isobaric, index) float64 0.006367 0.006119 ...
+    u_wind               (isobaric, index) float64 -2.729 0.4776 ... 24.6 23.68
+    v_wind               (isobaric, index) float64 8.473 5.723 ... -1.082
+    Geopotential_height  (isobaric, index) float64 118.6 127.4 ... 1.636e+04
+    Specific_humidity    (isobaric, index) float64 0.006367 ... 4.223e-06
 </pre></div>
 </div>
 <p>For this example, we will be plotting potential temperature, relative humidity, and
@@ -329,24 +329,24 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
 Dimensions:                (index: 100, isobaric: 29)
 Coordinates:
     time                   datetime64[ns] 1987-04-04T18:00:00
-  * isobaric               (isobaric) float64 1e+03 975.0 950.0 925.0 900.0 ...
+  * isobaric               (isobaric) float64 1e+03 975.0 950.0 ... 125.0 100.0
     crs                    object Projection: lambert_conformal_conic
-    x                      (index) float64 1.818e+05 2.18e+05 2.541e+05 ...
-    y                      (index) float64 -1.454e+06 -1.447e+06 -1.44e+06 ...
-  * index                  (index) int64 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 ...
-    lat                    (index) float64 37.0 37.05 37.11 37.16 37.2 37.25 ...
-    lon                    (index) float64 -105.0 -104.6 -104.2 -103.8 ...
+    x                      (index) float64 1.818e+05 2.18e+05 ... 3.712e+06
+    y                      (index) float64 -1.454e+06 -1.447e+06 ... -5.573e+05
+  * index                  (index) int64 0 1 2 3 4 5 6 ... 93 94 95 96 97 98 99
+    lat                    (index) float64 37.0 37.05 37.11 ... 35.66 35.58 35.5
+    lon                    (index) float64 -105.0 -104.6 -104.2 ... -65.39 -65.0
 Data variables:
-    Temperature            (isobaric, index) float64 287.7 286.9 287.2 287.2 ...
+    Temperature            (isobaric, index) float64 287.7 286.9 ... 211.4 211.4
     Lambert_Conformal      |S1 ...
-    u_wind                 (isobaric, index) float64 -5.304 0.9285 -0.6549 ...
-    v_wind                 (isobaric, index) float64 16.47 11.13 10.2 12.15 ...
-    Geopotential_height    (isobaric, index) float64 118.6 127.4 133.2 138.3 ...
-    Specific_humidity      (isobaric, index) float64 0.006367 0.006119 ...
-    Potential_temperature  (isobaric, index) float64 287.7 286.9 287.2 287.2 ...
-    Relative_humidity      (isobaric, index) float64 0.6114 0.6195 0.572 ...
-    t_wind                 (isobaric, index) float64 -2.027 3.07 1.35 ...
-    n_wind                 (isobaric, index) float64 17.18 10.73 10.14 12.54 ...
+    u_wind                 (isobaric, index) float64 -5.304 0.9285 ... 46.03
+    v_wind                 (isobaric, index) float64 16.47 11.13 ... -2.104
+    Geopotential_height    (isobaric, index) float64 118.6 127.4 ... 1.636e+04
+    Specific_humidity      (isobaric, index) float64 0.006367 ... 4.223e-06
+    Potential_temperature  (isobaric, index) float64 287.7 286.9 ... 408.1 408.1
+    Relative_humidity      (isobaric, index) float64 0.6114 0.6195 ... 0.04498
+    t_wind                 (isobaric, index) float64 -2.027 3.07 ... 45.18 43.27
+    n_wind                 (isobaric, index) float64 17.18 10.73 ... -15.83
 </pre></div>
 </div>
 <p>Now, we can make the plot.</p>
@@ -362,8 +362,8 @@ Data variables:
 <span class="c1"># Plot potential temperature using contour, with some custom labeling</span>
 <span class="n">theta_contour</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">cross</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">],</span> <span class="n">cross</span><span class="p">[</span><span class="s1">&#39;isobaric&#39;</span><span class="p">],</span> <span class="n">cross</span><span class="p">[</span><span class="s1">&#39;Potential_temperature&#39;</span><span class="p">],</span>
                            <span class="n">levels</span><span class="o">=</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">250</span><span class="p">,</span> <span class="mi">450</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
-<a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.clabel.html#matplotlib.pyplot.clabel" title="View documentation for matplotlib.pyplot.clabel"><span class="n">plt</span><span class="o">.</span><span class="n">clabel</span></a><span class="p">(</span><span class="n">theta_contour</span><span class="p">,</span> <span class="n">theta_contour</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
-           <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+<span class="n">theta_contour</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">theta_contour</span><span class="o">.</span><span class="n">levels</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">],</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                     <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
 <span class="c1"># Plot winds using the axes interface directly, with some custom indexing to make the barbs</span>
 <span class="c1"># less crowded</span>
@@ -377,7 +377,7 @@ Data variables:
 <span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;symlog&#39;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_yticklabels</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">cross</span><span class="p">[</span><span class="s1">&#39;isobaric&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">cross</span><span class="p">[</span><span class="s1">&#39;isobaric&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
-<a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.yticks.html#matplotlib.pyplot.yticks" title="View documentation for matplotlib.pyplot.yticks"><span class="n">plt</span><span class="o">.</span><span class="n">yticks</span></a><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">))</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="o">-</span><span class="mi">100</span><span class="p">))</span>
 
 <span class="c1"># Define the CRS and inset axes</span>
 <span class="n">data_crs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;Geopotential_height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
@@ -412,12 +412,12 @@ Data variables:
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_cross_section_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_cross_section_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.285 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.767 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-cross-section-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/cross_section.py" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">cross_section.py</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/38e6da5cf826f2b9110ea4c61c481a51/cross_section.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">cross_section.py</span></code></a></div>
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" href="../_downloads/cross_section.ipynb" download=""><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">cross_section.ipynb</span></code></a></div>
+<a class="reference download internal" download="" href="../_downloads/804652c055dcb34bc8b8482ecfaf9d26/cross_section.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">cross_section.ipynb</span></code></a></div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
@@ -445,7 +445,7 @@ Data variables:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Aug 27, 2018 at 23:29:17.
+      Last updated on Sep 29, 2018 at 20:19:33.
 
     </p>
   </div>
@@ -482,7 +482,7 @@ Data variables:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.9.1',
+            VERSION:'0.9.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

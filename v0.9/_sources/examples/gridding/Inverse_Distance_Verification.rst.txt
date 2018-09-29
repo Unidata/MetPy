@@ -320,7 +320,7 @@ Step through barnes calculations.
     Metpy barnes value:      4.087182410612151
 
 
-**Total running time of the script:** ( 0 minutes  0.146 seconds)
+**Total running time of the script:** ( 0 minutes  0.175 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Inverse_Distance_Verification.py:

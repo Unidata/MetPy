@@ -90,8 +90,8 @@ By reading model output data from a netCDF file, we can create a four panel plot
     <xarray.Dataset>
     Dimensions:       (lat: 201, lon: 361, time: 1)
     Coordinates:
-      * lat           (lat) float32 65.0 64.75 64.5 64.25 64.0 63.75 63.5 63.25 ...
-      * lon           (lon) float32 220.0 220.25 220.5 220.75 221.0 221.25 221.5 ...
+      * lat           (lat) float32 65.0 64.75 64.5 64.25 ... 15.75 15.5 15.25 15.0
+      * lon           (lon) float32 220.0 220.25 220.5 220.75 ... 309.5 309.75 310.0
       * time          (time) datetime64[ns] 2017-02-28T21:00:00
     Data variables:
         temp          (time, lat, lon) float64 ...
@@ -226,7 +226,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 
 
-**Total running time of the script:** ( 0 minutes  15.085 seconds)
+**Total running time of the script:** ( 0 minutes  10.149 seconds)
 
 
 .. _sphx_glr_download_examples_Four_Panel_Map.py:
