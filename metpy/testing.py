@@ -10,6 +10,8 @@ This includes:
 
 from __future__ import absolute_import
 
+import functools
+
 import numpy as np
 import numpy.testing
 from pint import DimensionalityError
@@ -18,6 +20,7 @@ import xarray as xr
 
 from metpy.calc import wind_components
 from metpy.cbook import get_test_data
+from metpy.deprecation import MetpyDeprecationWarning
 from .units import units
 
 
@@ -194,3 +197,16 @@ def patch_round(monkeypatch):
     to use numpy's throughout.
     """
     monkeypatch.setitem(__builtins__, 'round', np.round)
+
+
+def ignore_deprecation(func):
+    """Decorate a function to swallow metpy deprecation warnings, making sure they are present.
+
+    This should be used on deprecation function tests to make sure the deprecation warnings
+    are not failing the tests, but still allow testing of those functions.
+    """
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        with pytest.warns(MetpyDeprecationWarning):
+            return func(*args, **kwargs)
+    return wrapper
