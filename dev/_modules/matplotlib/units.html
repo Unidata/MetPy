@@ -232,13 +232,12 @@
 <span class="sd">    units.registry[datetime.date] = DateConverter()</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="p">(</span><span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span><span class="p">,</span>
-                        <span class="n">unicode_literals</span><span class="p">)</span>
 
+<span class="kn">from</span> <span class="nn">numbers</span> <span class="k">import</span> <span class="n">Number</span>
 
-<span class="kn">import</span> <span class="nn">six</span>
-<span class="kn">from</span> <span class="nn">matplotlib.cbook</span> <span class="k">import</span> <span class="n">iterable</span><span class="p">,</span> <span class="n">is_numlike</span><span class="p">,</span> <span class="n">safe_first_element</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">matplotlib.cbook</span> <span class="k">import</span> <span class="n">iterable</span><span class="p">,</span> <span class="n">safe_first_element</span>
 
 
 <span class="k">class</span> <span class="nc">AxisInfo</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
@@ -316,9 +315,9 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">iterable</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
             <span class="k">for</span> <span class="n">thisx</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
-                <span class="k">return</span> <span class="n">is_numlike</span><span class="p">(</span><span class="n">thisx</span><span class="p">)</span>
+                <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">thisx</span><span class="p">,</span> <span class="n">Number</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">is_numlike</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">return</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">Number</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">Registry</span><span class="p">(</span><span class="nb">dict</span><span class="p">):</span>
@@ -404,7 +403,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Aug 27, 2018 at 22:30:03.
+      Last updated on Sep 29, 2018 at 16:53:09.
 
     </p>
   </div>
@@ -441,7 +440,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.0+2.ge416110',
+            VERSION:'0.9.1+9.gd0d44e8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

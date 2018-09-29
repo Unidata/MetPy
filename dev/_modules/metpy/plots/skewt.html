@@ -211,8 +211,9 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="kn">from</span> <span class="nn">._util</span> <span class="k">import</span> <span class="n">colored_line</span>
-<span class="kn">from</span> <span class="nn">..calc</span> <span class="k">import</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">dry_lapse</span><span class="p">,</span> <span class="n">interp</span><span class="p">,</span> <span class="n">moist_lapse</span><span class="p">,</span> <span class="n">vapor_pressure</span>
+<span class="kn">from</span> <span class="nn">..calc</span> <span class="k">import</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">dry_lapse</span><span class="p">,</span> <span class="n">moist_lapse</span><span class="p">,</span> <span class="n">vapor_pressure</span>
 <span class="kn">from</span> <span class="nn">..calc.tools</span> <span class="k">import</span> <span class="n">_delete_masked_points</span>
+<span class="kn">from</span> <span class="nn">..interpolate</span> <span class="k">import</span> <span class="n">interpolate_1d</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
 
@@ -1057,7 +1058,7 @@
                 <span class="n">interpolation_heights</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">interpolation_heights</span><span class="p">)</span> <span class="o">*</span>
                                          <span class="n">interpolation_heights</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
                 <span class="p">(</span><span class="n">interpolated_heights</span><span class="p">,</span> <span class="n">interpolated_u</span><span class="p">,</span>
-                 <span class="n">interpolated_v</span><span class="p">)</span> <span class="o">=</span> <span class="n">interp</span><span class="p">(</span><span class="n">interpolation_heights</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                 <span class="n">interpolated_v</span><span class="p">)</span> <span class="o">=</span> <span class="n">interpolate_1d</span><span class="p">(</span><span class="n">interpolation_heights</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
                 <span class="c1"># Combine the interpolated data with the actual data</span>
                 <span class="n">c</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">c</span><span class="p">,</span> <span class="n">interpolated_heights</span><span class="p">])</span>
@@ -1106,7 +1107,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Aug 27, 2018 at 22:30:03.
+      Last updated on Sep 29, 2018 at 16:53:09.
 
     </p>
   </div>
@@ -1143,7 +1144,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.9.0+2.ge416110',
+            VERSION:'0.9.1+9.gd0d44e8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -123,7 +123,7 @@ assign units.
 
 
 
-**Total running time of the script:** ( 0 minutes  0.545 seconds)
+**Total running time of the script:** ( 0 minutes  0.959 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Hodograph_Inset.py:

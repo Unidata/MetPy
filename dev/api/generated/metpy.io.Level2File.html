@@ -231,67 +231,155 @@ compression that is used.</p>
 <dl class="attribute">
 <dt id="metpy.io.Level2File.stid">
 <code class="descname">stid</code><a class="headerlink" href="#metpy.io.Level2File.stid" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>str</em> – The ID of the radar station</p>
+<dd><p>The ID of the radar station</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.Level2File.dt">
 <code class="descname">dt</code><a class="headerlink" href="#metpy.io.Level2File.dt" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>Datetime instance</em> – The date and time of the data</p>
+<dd><p>The date and time of the data</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">Datetime instance</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.Level2File.vol_hdr">
 <code class="descname">vol_hdr</code><a class="headerlink" href="#metpy.io.Level2File.vol_hdr" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>namedtuple</em> – The unpacked volume header</p>
+<dd><p>The unpacked volume header</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">namedtuple</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.Level2File.sweeps">
 <code class="descname">sweeps</code><a class="headerlink" href="#metpy.io.Level2File.sweeps" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>list of tuples</em> – Data for each of the sweeps found in the file</p>
+<dd><p>Data for each of the sweeps found in the file</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">list of tuples</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.Level2File.rda_status">
 <code class="descname">rda_status</code><a class="headerlink" href="#metpy.io.Level2File.rda_status" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>namedtuple, optional</em> – Unpacked RDA status information, if found</p>
+<dd><p>Unpacked RDA status information, if found</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">namedtuple, optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.Level2File.maintenance_data">
 <code class="descname">maintenance_data</code><a class="headerlink" href="#metpy.io.Level2File.maintenance_data" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>namedtuple, optional</em> – Unpacked maintenance data information, if found</p>
+<dd><p>Unpacked maintenance data information, if found</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">namedtuple, optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.Level2File.maintenance_data_desc">
 <code class="descname">maintenance_data_desc</code><a class="headerlink" href="#metpy.io.Level2File.maintenance_data_desc" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict, optional</em> – Descriptions of maintenance data fields, if maintenance data present</p>
+<dd><p>Descriptions of maintenance data fields, if maintenance data present</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>, optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.Level2File.vcp_info">
 <code class="descname">vcp_info</code><a class="headerlink" href="#metpy.io.Level2File.vcp_info" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>namedtuple, optional</em> – Unpacked VCP information, if found</p>
+<dd><p>Unpacked VCP information, if found</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body">namedtuple, optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.Level2File.clutter_filter_bypass_map">
 <code class="descname">clutter_filter_bypass_map</code><a class="headerlink" href="#metpy.io.Level2File.clutter_filter_bypass_map" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict, optional</em> – Unpacked clutter filter bypass map, if present</p>
+<dd><p>Unpacked clutter filter bypass map, if present</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>, optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.Level2File.rda">
 <code class="descname">rda</code><a class="headerlink" href="#metpy.io.Level2File.rda" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict, optional</em> – Unpacked RDA adaptation data, if present</p>
+<dd><p>Unpacked RDA adaptation data, if present</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>, optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.Level2File.rda_adaptation_desc">
 <code class="descname">rda_adaptation_desc</code><a class="headerlink" href="#metpy.io.Level2File.rda_adaptation_desc" title="Permalink to this definition">¶</a></dt>
-<dd><p><em>dict, optional</em> – Descriptions of RDA adaptation data, if adaptation data present</p>
+<dd><p>Descriptions of RDA adaptation data, if adaptation data present</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a>, optional</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <p class="rubric">Notes</p>
@@ -519,7 +607,7 @@ this will be read from directly.</td>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Aug 27, 2018 at 22:30:03.
+      Last updated on Sep 29, 2018 at 16:53:09.
 
     </p>
   </div>
@@ -556,7 +644,7 @@ this will be read from directly.</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.0+2.ge416110',
+            VERSION:'0.9.1+9.gd0d44e8',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
