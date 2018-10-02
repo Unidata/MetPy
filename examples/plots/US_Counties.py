@@ -23,4 +23,4 @@ ax3 = fig.add_subplot(1, 3, 3, projection=proj)
 
 for scale, axis in zip(['20m', '5m', '500k'], [ax1, ax2, ax3]):
     axis.set_extent([270.25, 270.9, 38.15, 38.75], ccrs.Geodetic())
-    axis.add_feature(USCOUNTIES.with_scale(scale), edgecolor='black')
+    axis.add_feature(USCOUNTIES.with_scale(scale))
