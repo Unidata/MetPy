@@ -973,33 +973,33 @@ def bv_data():
     return heights, potential_temperatures
 
 
-def test_brunt_vaisala_frequency_squared():
+def test_brunt_vaisala_frequency_squared(bv_data):
     """Test Brunt-Vaisala frequency squared function."""
     truth = [[1.35264138e-04, 2.02896207e-04, 3.04344310e-04, 1.69080172e-04],
              [1.34337671e-04, 2.00818771e-04, 1.00409386e-04, 1.00753253e-04],
              [1.33423810e-04, 6.62611486e-05, 0, 1.33879181e-04],
              [1.32522297e-04, -1.99457288e-04, 0., 2.65044595e-04]] * units('s^-2')
-    bv_freq_sqr = brunt_vaisala_frequency_squared(bv_data()[0], bv_data()[1])
+    bv_freq_sqr = brunt_vaisala_frequency_squared(bv_data[0], bv_data[1])
     assert_almost_equal(bv_freq_sqr, truth, 6)
 
 
-def test_brunt_vaisala_frequency():
+def test_brunt_vaisala_frequency(bv_data):
     """Test Brunt-Vaisala frequency function."""
     truth = [[0.01163031, 0.01424416, 0.01744547, 0.01300308],
              [0.01159041, 0.01417105, 0.01002045, 0.01003759],
              [0.01155092, 0.00814010, 0., 0.01157062],
              [0.01151183, np.nan, 0., 0.01628019]] * units('s^-1')
-    bv_freq = brunt_vaisala_frequency(bv_data()[0], bv_data()[1])
+    bv_freq = brunt_vaisala_frequency(bv_data[0], bv_data[1])
     assert_almost_equal(bv_freq, truth, 6)
 
 
-def test_brunt_vaisala_period():
+def test_brunt_vaisala_period(bv_data):
     """Test Brunt-Vaisala period function."""
     truth = [[540.24223556, 441.10593821, 360.16149037, 483.20734521],
              [542.10193894, 443.38165033, 627.03634320, 625.96540075],
              [543.95528431, 771.88106656, np.nan, 543.02940230],
              [545.80233643, np.nan, np.nan, 385.94053328]] * units('s')
-    bv_period = brunt_vaisala_period(bv_data()[0], bv_data()[1])
+    bv_period = brunt_vaisala_period(bv_data[0], bv_data[1])
     assert_almost_equal(bv_period, truth, 6)
 
 
