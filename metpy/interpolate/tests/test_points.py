@@ -120,7 +120,7 @@ def test_natural_neighbor_to_points(test_data, test_points):
     assert_array_almost_equal(truth, img)
 
 
-interp_methods = ['cressman', 'barnes']
+interp_methods = ['cressman', 'barnes', 'shouldraise']
 
 
 @pytest.mark.parametrize('method', interp_methods)
@@ -138,6 +138,12 @@ def test_inverse_distance_to_points(method, test_data, test_points):
         extra_kw['r'] = 40
         extra_kw['kappa'] = 100
         test_file = 'barnes_r40_k100.npz'
+    elif method == 'shouldraise':
+        extra_kw['r'] = 40
+        with pytest.raises(ValueError):
+            inverse_distance_to_points(
+                obs_points, z, test_points, kind=method, **extra_kw)
+        return
 
     img = inverse_distance_to_points(obs_points, z, test_points, kind=method, **extra_kw)
 
@@ -148,7 +154,7 @@ def test_inverse_distance_to_points(method, test_data, test_points):
 
 
 interp_methods = ['natural_neighbor', 'cressman', 'barnes',
-                  'linear', 'nearest', 'cubic', 'rbf']
+                  'linear', 'nearest', 'cubic', 'rbf', 'shouldraise']
 
 
 @pytest.mark.parametrize('method', interp_methods)
@@ -156,6 +162,9 @@ def test_interpolate_to_points(method, test_data):
     r"""Test main grid interpolation function."""
     xp, yp, z = test_data
     obs_points = np.vstack([xp, yp]).transpose() * 10
+
+    with get_test_data('interpolation_test_points.npz') as fobj:
+        test_points = np.load(fobj)['points']
 
     extra_kw = {}
     if method == 'cressman':
@@ -165,9 +174,11 @@ def test_interpolate_to_points(method, test_data):
         extra_kw['search_radius'] = 400
         extra_kw['minimum_neighbors'] = 1
         extra_kw['gamma'] = 1
-
-    with get_test_data('interpolation_test_points.npz') as fobj:
-        test_points = np.load(fobj)['points']
+    elif method == 'shouldraise':
+        with pytest.raises(ValueError):
+            interpolate_to_points(
+                obs_points, z, test_points, interp_type=method, **extra_kw)
+        return
 
     img = interpolate_to_points(obs_points, z, test_points, interp_type=method, **extra_kw)
 
