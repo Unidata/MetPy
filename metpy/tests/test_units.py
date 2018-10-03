@@ -58,11 +58,18 @@ def test_axvline():
 def test_atleast1d_without_units():
     """Test that atleast_1d wrapper can handle plain arrays."""
     assert_array_equal(atleast_1d(1), np.array([1]))
+    assert_array_equal(atleast_1d([1, ], [2, ]), np.array([[1, ], [2, ]]))
 
 
 def test_atleast2d_without_units():
     """Test that atleast_2d wrapper can handle plain arrays."""
     assert_array_equal(atleast_2d(1), np.array([[1]]))
+
+
+def test_atleast2d_with_units():
+    """Test that atleast_2d wrapper can handle plain array with units."""
+    assert_array_equal(
+        atleast_2d(1 * units.degC), np.array([[1]]) * units.degC)
 
 
 def test_units_diff():
