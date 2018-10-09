@@ -202,7 +202,6 @@ def test_log_interp():
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
 
 
-@pytest.fixture
 def get_bounds_data():
     """Provide pressure and height data for testing layer bounds calculation."""
     pressures = np.linspace(1000, 100, 10) * units.hPa
@@ -316,7 +315,6 @@ def test_get_layer_invalid_depth_units():
         get_layer(p, y, depth=400 * units.degC)
 
 
-@pytest.fixture
 def layer_test_data():
     """Provide test data for testing of layer bounds."""
     pressure = np.arange(1000, 10, -100) * units.hPa
