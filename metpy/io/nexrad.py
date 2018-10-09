@@ -83,8 +83,7 @@ def bzip_blocks_decompress_all(data):
 def nexrad_to_datetime(julian_date, ms_midnight):
     """Convert NEXRAD date time format to python `datetime.datetime`."""
     # Subtracting one from julian_date is because epoch date is 1
-    return datetime.datetime.utcfromtimestamp((julian_date - 1) * day +
-                                              ms_midnight * milli)
+    return datetime.datetime.utcfromtimestamp((julian_date - 1) * day + ms_midnight * milli)
 
 
 def remap_status(val):
@@ -241,8 +240,8 @@ class Level2File(object):
                 # As of 2620002P, this is a special value used to indicate that the segment
                 # number/count bytes are used to indicate total size in bytes.
                 if msg_hdr.size_hw == 65535:
-                    msg_bytes = (msg_hdr.num_segments << 16 | msg_hdr.segment_num +
-                                 self.CTM_HEADER_SIZE)
+                    msg_bytes = (msg_hdr.num_segments << 16 | msg_hdr.segment_num
+                                 + self.CTM_HEADER_SIZE)
                 elif msg_hdr.msg_type in (29, 31):
                     msg_bytes = self.CTM_HEADER_SIZE + 2 * msg_hdr.size_hw
 
@@ -617,8 +616,8 @@ class Level2File(object):
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer
         bufs = self._msg_buf.setdefault(msg_hdr.msg_type, {})
-        bufs[msg_hdr.segment_num] = self._buffer.read(2 * msg_hdr.size_hw -
-                                                      self.msg_hdr_fmt.size)
+        bufs[msg_hdr.segment_num] = self._buffer.read(2 * msg_hdr.size_hw
+                                                      - self.msg_hdr_fmt.size)
 
         # Warn for badly formatted data
         if len(bufs) != msg_hdr.segment_num:

@@ -248,8 +248,8 @@ ax.add_feature(cfeature.LAKES.with_scale('50m'), facecolor=cfeature.COLORS['wate
                edgecolor='#c7c783', zorder=0)
 
 # Set a title and show the plot
-ax.set_title(('500 hPa Heights (m), Temperature (K), Humidity (%) at ' +
-              time[0].dt.strftime('%Y-%m-%d %H:%MZ')))
+ax.set_title('500 hPa Heights (m), Temperature (K), Humidity (%) at '
+             + time[0].dt.strftime('%Y-%m-%d %H:%MZ'))
 plt.show()
 
 #########################################################################

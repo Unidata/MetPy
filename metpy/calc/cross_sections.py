@@ -33,8 +33,8 @@ def distances_from_cross_section(cross):
         A tuple of the x and y distances as DataArrays
 
     """
-    if (CFConventionHandler.check_axis(cross.metpy.x, 'lon') and
-            CFConventionHandler.check_axis(cross.metpy.y, 'lat')):
+    if (CFConventionHandler.check_axis(cross.metpy.x, 'lon')
+            and CFConventionHandler.check_axis(cross.metpy.y, 'lat')):
         # Use pyproj to obtain x and y distances
         from pyproj import Geod
 
@@ -53,8 +53,8 @@ def distances_from_cross_section(cross):
         x = xr.DataArray(x, coords=lon.coords, dims=lon.dims, attrs={'units': 'meters'})
         y = xr.DataArray(y, coords=lat.coords, dims=lat.dims, attrs={'units': 'meters'})
 
-    elif (CFConventionHandler.check_axis(cross.metpy.x, 'x') and
-            CFConventionHandler.check_axis(cross.metpy.y, 'y')):
+    elif (CFConventionHandler.check_axis(cross.metpy.x, 'x')
+            and CFConventionHandler.check_axis(cross.metpy.y, 'y')):
 
         # Simply return what we have
         x = cross.metpy.x

@@ -958,8 +958,8 @@ def test_mixing_ratio_from_rh_dimensions():
     p = 1000. * units.mbar
     temperature = 0. * units.degC
     rh = 100. * units.percent
-    assert (str(mixing_ratio_from_relative_humidity(rh, temperature, p).units) ==
-            'dimensionless')
+    assert (str(mixing_ratio_from_relative_humidity(rh, temperature, p).units)
+            == 'dimensionless')
 
 
 @pytest.fixture

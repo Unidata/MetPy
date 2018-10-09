@@ -253,9 +253,9 @@ def moist_lapse(pressure, temperature):
         t = units.Quantity(t, temperature.units)
         p = units.Quantity(p, pressure.units)
         rs = saturation_mixing_ratio(p, t)
-        frac = ((mpconsts.Rd * t + mpconsts.Lv * rs) /
-                (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon /
-                                  (mpconsts.Rd * t * t)))).to('kelvin')
+        frac = ((mpconsts.Rd * t + mpconsts.Lv * rs)
+                / (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon
+                                    / (mpconsts.Rd * t * t)))).to('kelvin')
         return frac / p
     return units.Quantity(si.odeint(dt, atleast_1d(temperature).squeeze(),
                                     pressure.squeeze()).T.squeeze(), temperature.units)
@@ -627,8 +627,8 @@ def saturation_vapor_pressure(temperature):
     """
     # Converted from original in terms of C to use kelvin. Using raw absolute values of C in
     # a formula plays havoc with units support.
-    return sat_pressure_0c * np.exp(17.67 * (temperature - 273.15 * units.kelvin) /
-                                    (temperature - 29.65 * units.kelvin))
+    return sat_pressure_0c * np.exp(17.67 * (temperature - 273.15 * units.kelvin)
+                                    / (temperature - 29.65 * units.kelvin))
 
 
 @exporter.export
@@ -730,8 +730,8 @@ def mixing_ratio(part_press, tot_press, molecular_weight_ratio=mpconsts.epsilon)
     saturation_mixing_ratio, vapor_pressure
 
     """
-    return (molecular_weight_ratio *
-            part_press / (tot_press - part_press)).to('dimensionless')
+    return (molecular_weight_ratio * part_press
+            / (tot_press - part_press)).to('dimensionless')
 
 
 @exporter.export
@@ -913,8 +913,8 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=mpconsts.eps
     .. math:: T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}
 
     """
-    return temperature * ((mixing + molecular_weight_ratio) /
-                          (molecular_weight_ratio * (1 + mixing)))
+    return temperature * ((mixing + molecular_weight_ratio)
+                          / (molecular_weight_ratio * (1 + mixing)))
 
 
 @exporter.export
@@ -1028,8 +1028,8 @@ def relative_humidity_wet_psychrometric(dry_bulb_temperature, web_bulb_temperatu
 
     """
     return (psychrometric_vapor_pressure_wet(dry_bulb_temperature, web_bulb_temperature,
-                                             pressure, **kwargs) /
-            saturation_vapor_pressure(dry_bulb_temperature))
+                                             pressure, **kwargs)
+            / saturation_vapor_pressure(dry_bulb_temperature))
 
 
 @exporter.export
@@ -1078,8 +1078,8 @@ def psychrometric_vapor_pressure_wet(dry_bulb_temperature, wet_bulb_temperature,
     saturation_vapor_pressure
 
     """
-    return (saturation_vapor_pressure(wet_bulb_temperature) - psychrometer_coefficient *
-            pressure * (dry_bulb_temperature - wet_bulb_temperature).to('kelvin'))
+    return (saturation_vapor_pressure(wet_bulb_temperature) - psychrometer_coefficient
+            * pressure * (dry_bulb_temperature - wet_bulb_temperature).to('kelvin'))
 
 
 @exporter.export
@@ -1118,8 +1118,8 @@ def mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure
     relative_humidity_from_mixing_ratio, saturation_mixing_ratio
 
     """
-    return (relative_humidity *
-            saturation_mixing_ratio(pressure, temperature)).to('dimensionless')
+    return (relative_humidity
+            * saturation_mixing_ratio(pressure, temperature)).to('dimensionless')
 
 
 @exporter.export
@@ -1269,8 +1269,8 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
     relative_humidity_from_mixing_ratio
 
     """
-    return (mixing_ratio_from_specific_humidity(specific_humidity) /
-            saturation_mixing_ratio(pressure, temperature))
+    return (mixing_ratio_from_specific_humidity(specific_humidity)
+            / saturation_mixing_ratio(pressure, temperature))
 
 
 @exporter.export
@@ -1359,16 +1359,16 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     p_mask = _less_or_close(x, lfc_pressure) & _greater_or_close(x, el_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
-    cape = (mpconsts.Rd *
-            (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+    cape = (mpconsts.Rd
+            * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
     # CIN
     # Only use data between the surface and LFC for calculation
     p_mask = _greater_or_close(x, lfc_pressure)
     x_clipped = x[p_mask]
     y_clipped = y[p_mask]
-    cin = (mpconsts.Rd *
-           (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
+    cin = (mpconsts.Rd
+           * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
     return cape, cin
 
@@ -1806,8 +1806,8 @@ def mixed_layer(p, *args, **kwargs):
     ret = []
     for datavar_layer in datavars_layer:
         actual_depth = abs(p_layer[0] - p_layer[-1])
-        ret.append((-1. / actual_depth.m) * np.trapz(datavar_layer, p_layer) *
-                   datavar_layer.units)
+        ret.append((-1. / actual_depth.m) * np.trapz(datavar_layer, p_layer)
+                   * datavar_layer.units)
     return ret
 
 
@@ -1874,8 +1874,8 @@ def moist_static_energy(heights, temperature, specific_humidity):
         The moist static energy
 
     """
-    return (dry_static_energy(heights, temperature) +
-            mpconsts.Lv * specific_humidity.to('dimensionless')).to('kJ/kg')
+    return (dry_static_energy(heights, temperature)
+            + mpconsts.Lv * specific_humidity.to('dimensionless')).to('kJ/kg')
 
 
 @exporter.export
