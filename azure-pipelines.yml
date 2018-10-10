@@ -45,7 +45,7 @@ jobs:
       pip install .[test,cdm,doc,examples] -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html
     displayName: 'Install dependencies'
 
-  - script: pytest metpy/tests --doctest-modules --junitxml=junit/test-results.xml
+  - script: MPLBACKEND='agg' pytest metpy/tests --doctest-modules --junitxml=junit/test-results.xml
     displayName: 'pytest'
 
   - task: PublishTestResults@2
