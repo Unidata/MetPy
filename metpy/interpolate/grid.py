@@ -177,10 +177,10 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
     return natural_neighbor_to_grid(xp, yp, variable, grid_x, grid_y)
 
 
-natural_neighbor.__doc__ = (natural_neighbor_to_grid.__doc__ +
-                            '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                            'to `natural_neighbor_to_grid` and will be removed from MetPy in '
-                            '0.12.0.')
+natural_neighbor.__doc__ = (natural_neighbor_to_grid.__doc__
+                            + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
+                              'to `natural_neighbor_to_grid` and will be removed from MetPy in'
+                              ' 0.12.0.')
 
 
 @exporter.export
@@ -246,10 +246,10 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
                                     kappa=kappa, min_neighbors=min_neighbors, kind=kind)
 
 
-inverse_distance.__doc__ = (inverse_distance_to_grid.__doc__ +
-                            '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                            'to `inverse_distance_to_grid` and will be removed from MetPy in '
-                            '0.12.0.')
+inverse_distance.__doc__ = (inverse_distance_to_grid.__doc__
+                            + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
+                              'to `inverse_distance_to_grid` and will be removed from MetPy in'
+                              ' 0.12.0.')
 
 
 @exporter.export
@@ -348,6 +348,6 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
                                boundary_coords=boundary_coords)
 
 
-interpolate.__doc__ = (interpolate_to_grid.__doc__ +
-                       '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
-                       '`interpolate_to_grid` and will be removed from MetPy in 0.12.0.')
+interpolate.__doc__ = (interpolate_to_grid.__doc__
+                       + '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
+                         '`interpolate_to_grid` and will be removed from MetPy in 0.12.0.')

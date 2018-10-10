@@ -139,9 +139,9 @@ def get_wind_speed(u, v):
     return wind_speed(u, v)
 
 
-get_wind_speed.__doc__ = (wind_speed.__doc__ +
-                          '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
-                          '`wind_speed` and will be removed from MetPy in 0.12.0.')
+get_wind_speed.__doc__ = (wind_speed.__doc__
+                          + '\n    .. deprecated:: 0.9.0\n        Function has been renamed to'
+                            ' `wind_speed` and will be removed from MetPy in 0.12.0.')
 
 
 @exporter.export
@@ -153,9 +153,9 @@ def get_wind_dir(u, v):
     return wind_direction(u, v)
 
 
-get_wind_dir.__doc__ = (wind_direction.__doc__ +
-                        '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
-                        '`wind_direction` and will be removed from MetPy in 0.12.0.')
+get_wind_dir.__doc__ = (wind_direction.__doc__
+                        + '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
+                          '`wind_direction` and will be removed from MetPy in 0.12.0.')
 
 
 @exporter.export
@@ -167,10 +167,10 @@ def get_wind_components(u, v):
     return wind_components(u, v)
 
 
-get_wind_components.__doc__ = (wind_components.__doc__ +
-                               '\n    .. deprecated:: 0.9.0\n        Function has been '
-                               'renamed to `wind_components` and will be removed from MetPy '
-                               'in 0.12.0.')
+get_wind_components.__doc__ = (wind_components.__doc__
+                               + '\n    .. deprecated:: 0.9.0\n        Function has been '
+                                 'renamed to `wind_components` and will be removed from MetPy '
+                                 'in 0.12.0.')
 
 
 @exporter.export
@@ -223,8 +223,8 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 
     temp_limit, speed_limit = 10. * units.degC, 3 * units.mph
     speed_factor = speed.to('km/hr').magnitude ** 0.16
-    wcti = units.Quantity((0.6215 + 0.3965 * speed_factor) * temperature.to('degC').magnitude -
-                          11.37 * speed_factor + 13.12, units.degC).to(temperature.units)
+    wcti = units.Quantity((0.6215 + 0.3965 * speed_factor) * temperature.to('degC').magnitude
+                          - 11.37 * speed_factor + 13.12, units.degC).to(temperature.units)
 
     # See if we need to mask any undefined values
     if mask_undefined:
@@ -275,11 +275,15 @@ def heat_index(temperature, rh, mask_undefined=True):
     delta2 = delta * delta
 
     # Calculate the Heat Index -- constants converted for RH in [0, 1]
-    hi = (-42.379 * units.degF + 2.04901523 * delta +
-          1014.333127 * units.delta_degF * rh - 22.475541 * delta * rh -
-          6.83783e-3 / units.delta_degF * delta2 - 5.481717e2 * units.delta_degF * rh2 +
-          1.22874e-1 / units.delta_degF * delta2 * rh + 8.5282 * delta * rh2 -
-          1.99e-2 / units.delta_degF * delta2 * rh2)
+    hi = (-42.379 * units.degF
+          + 2.04901523 * delta
+          + 1014.333127 * units.delta_degF * rh
+          - 22.475541 * delta * rh
+          - 6.83783e-3 / units.delta_degF * delta2
+          - 5.481717e2 * units.delta_degF * rh2
+          + 1.22874e-1 / units.delta_degF * delta2 * rh
+          + 8.5282 * delta * rh2
+          - 1.99e-2 / units.delta_degF * delta2 * rh2)
 
     # See if we need to mask any undefined values
     if mask_undefined:

@@ -568,8 +568,8 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
     storm_relative_u = u - storm_u
     storm_relative_v = v - storm_v
 
-    int_layers = (storm_relative_u[1:] * storm_relative_v[:-1] -
-                  storm_relative_u[:-1] * storm_relative_v[1:])
+    int_layers = (storm_relative_u[1:] * storm_relative_v[:-1]
+                  - storm_relative_u[:-1] * storm_relative_v[1:])
 
     # Need to manually check for masked value because sum() on masked array with non-default
     # mask will return a masked value rather than 0. See numpy/numpy#11736
@@ -680,8 +680,8 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
     # Get the middle layer stability derivative (index 1)
     slices = [slice(None)] * stability.ndim
     slices[axis] = 1
-    return (-1 * avor * mpconsts.g * stability[slices]).to(units.kelvin * units.meter**2 /
-                                                           (units.second * units.kilogram))
+    return (-1 * avor * mpconsts.g * stability[slices]).to(units.kelvin * units.meter**2
+                                                           / (units.second * units.kilogram))
 
 
 @exporter.export
