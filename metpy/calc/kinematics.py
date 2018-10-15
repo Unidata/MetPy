@@ -626,23 +626,24 @@ def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
 @preprocess_xarray
 @check_units('[temperature]', '[pressure]', '[speed]', '[speed]',
              '[length]', '[length]', '[dimensionless]')
-def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, lats,
-                                   axis=0, dim_order='yx'):
+def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, lats):
     r"""Calculate the baroclinic potential vorticity.
 
-    .. math:: PV = -g \frac{\partial \theta}{\partial z}(\zeta + f)
+    .. math:: PV = -g \left(\frac{\partial u}{\partial p}\frac{\partial \theta}{\partial y}
+              - \frac{\partial v}{\partial p}\frac{\partial \theta}{\partial x}
+              + \frac{\partial \theta}{\partial p}(\zeta + f) \right)
 
-    This formula is based on equation 7.31a [Hobbs2006]_.
+    This formula is based on equation 4.5.93 [Bluestein1993]_.
 
     Parameters
     ----------
-    potential_temperature : (M, N, P) ndarray
+    potential_temperature : (P, M, N) ndarray
         potential temperature
-    pressure : (M, N, P) ndarray
+    pressure : (P, M, N) ndarray
         vertical pressures
-    u : (M, N) ndarray
+    u : (P, M, N) ndarray
         x component of the wind
-    v : (M, N) ndarray
+    v : (P, M, N) ndarray
         y component of the wind
     dx : float or ndarray
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
@@ -658,31 +659,48 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
 
     Returns
     -------
-    (M, N) ndarray
+    (P, M, N) ndarray
         baroclinic potential vorticity
 
     Notes
     -----
-    The same formula is used for isobaric and isentropic PV analysis. Provide winds
-    for vorticity calculations on the desired isobaric or isentropic surface. Three layers
-    of pressure/potential temperature are required in order to calculate the vertical
-    derivative (one above and below the desired surface).
+    This function will only work with data that is in (P, Y, X) format. If your data
+    is in a different order you will need to re-order your data in order to get correct
+    results from this function.
+
+    The same function can be used for isobaric and isentropic PV analysis. Provide winds
+    for vorticity calculations on the desired isobaric or isentropic surface. At least three
+    layers of pressure/potential temperature are required in order to calculate the vertical
+    derivative (one above and below the desired surface). The first two terms will be zero if
+    isentropic level data is used due to the gradient of theta in both the x and y-directions
+    will be zero since you are on an isentropic surface.
+
+    This function expects pressure/isentropic level to increase with increasing array element
+    (e.g., from higher in the atmosphere to closer to the surface. If the pressure array is
+    one-dimensional p[:, None, None] can be used to make it appear multi-dimensional.)
 
     """
-    if np.shape(potential_temperature)[axis] != 3:
-        raise ValueError('Length of potential temperature along axis '
-                         '{} must be 3.'.format(axis))
-    if np.shape(pressure)[axis] != 3:
-        raise ValueError('Length of pressure along axis '
-                         '{} must be 3.'.format(axis))
-    avor = absolute_vorticity(u, v, dx, dy, lats, dim_order=dim_order)
-    stability = first_derivative(potential_temperature, x=pressure, axis=axis)
-    # Get the middle layer stability derivative (index 1)
-    slices = [slice(None)] * stability.ndim
-    slices[axis] = 1
+    if ((np.shape(potential_temperature)[-3] < 3) or (np.shape(pressure)[-3] < 3)
+       or (np.shape(potential_temperature)[-3] != (np.shape(pressure)[-3]))):
+        raise ValueError('Length of potential temperature along the pressure axis '
+                         '{} must be at least 3.'.format(-3))
 
-    ret = -mpconsts.g * avor * stability[tuple(slices)]
-    return ret.to(units.kelvin * units.meter**2 / (units.second * units.kilogram))
+    avor = absolute_vorticity(u, v, dx, dy, lats, dim_order='yx')
+    dthtadp = first_derivative(potential_temperature, x=pressure, axis=-3)
+
+    if ((np.shape(potential_temperature)[-2] == 1)
+       and (np.shape(potential_temperature)[-1] == 1)):
+        dthtady = 0 * units.K / units.m  # axis=-2 only has one dimension
+        dthtadx = 0 * units.K / units.m  # axis=-1 only has one dimension
+    else:
+        dthtady = first_derivative(potential_temperature, delta=dy, axis=-2)
+        dthtadx = first_derivative(potential_temperature, delta=dx, axis=-1)
+    dudp = first_derivative(u, x=pressure, axis=-3)
+    dvdp = first_derivative(v, x=pressure, axis=-3)
+
+    return (-mpconsts.g * (dudp * dthtady - dvdp * dthtadx
+                           + avor * dthtadp)).to(units.kelvin * units.meter**2
+                                                 / (units.second * units.kilogram))
 
 
 @exporter.export
