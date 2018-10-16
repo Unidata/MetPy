@@ -1,0 +1,87 @@
+# Python package
+# Create and test a Python package on multiple Python versions.
+# Add steps that analyze code, save the dist with the build record, publish to a PyPI-compatible index, and more:
+# https://docs.microsoft.com/vsts/pipelines/languages/python
+
+jobs:
+
+- job: 'Test'
+  pool:
+    vmImage: 'Ubuntu 16.04'
+  strategy:
+    matrix:
+      Python27:
+        python.version: '2.7'
+      Python35:
+        python.version: '3.5'
+      Python36:
+        python.version: '3.6'
+      Python37:
+        python.version: '3.7'
+    maxParallel: 4
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '$(python.version)'
+      architecture: 'x64'
+
+  # - task: CondaEnvironment@0
+  #   inputs:
+  #     environmentName: 'devel'
+  #     packageSpecs: 'python=$(python.version)'
+  #     updateConda: false
+  #     cleanEnvironment: true
+  #     createOptions: '--prefix $(Agent.WorkFolder)/envs/devel'
+
+  # - script: conda env update
+  #   displayName: 'Install Conda packages'
+
+  - script: >
+      if [[ ! -f $HOME/local/lib/libproj.so ]]; then
+        wget http://download.osgeo.org/proj/proj-4.9.3.tar.gz;
+        tar xf proj-4.9.3.tar.gz;
+        pushd proj-4.9.3;
+        ./configure --prefix=$HOME/local;
+        make;
+        sed -i "" -e s/-I// proj.pc;
+        make install;
+        popd;
+      fi;
+      export PKG_CONFIG_PATH="$HOME/local/lib/pkgconfig";
+      export LD_LIBRARY_PATH="$HOME/local/lib";
+      pkg-config --modversion proj;
+    displayName: 'Build Proj.4'
+
+  - script: sudo apt-get install -y libgeos-dev
+    displayName: 'Install Ubuntu package dependencies'
+
+  - script: |
+      python -m pip install --upgrade pip
+      pip install Cython numpy
+      pip install .[test,cdm,doc,examples] -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html
+    displayName: 'Install dependencies'
+
+  - script: MPLBACKEND='agg' pytest metpy/tests --doctest-modules --junitxml=junit/test-results.xml
+    displayName: 'pytest'
+
+  - task: PublishTestResults@2
+    inputs:
+      testResultsFiles: '**/test-results.xml'
+      testRunTitle: 'Python $(python.version)'
+    condition: succeededOrFailed()
+
+- job: 'Publish'
+  dependsOn: 'Test'
+  pool:
+    vmImage: 'Ubuntu 16.04'
+
+  steps:
+  - task: UsePythonVersion@0
+    inputs:
+      versionSpec: '3.x'
+      architecture: 'x64'
+
+  - script: python setup.py sdist
+    displayName: 'Build sdist'
+
