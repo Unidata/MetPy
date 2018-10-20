@@ -66,6 +66,7 @@ def test_skewt_with_grid_enabled():
         # Also tests when we don't pass in Figure
         SkewT()
 
+
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=True)
 def test_skewt_arbitrary_rect():
     """Test placing the SkewT in an arbitrary rectangle"""
@@ -234,6 +235,7 @@ def test_skewt_barb_no_default_unit_conversion():
 
     return fig
 
+
 @pytest.mark.parametrize('u,v', [(np.array([3]) * units('m/s'), np.array([3])),
                                  (np.array([3]), np.array([3]) * units('m/s'))])
 def test_skewt_barb_unit_conversion_exception(u, v):
@@ -337,4 +339,3 @@ def test_united_hodograph_range():
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(1, 1, 1)
     Hodograph(ax, component_range=60. * units.knots)
-
