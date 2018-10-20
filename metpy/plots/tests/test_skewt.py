@@ -75,6 +75,11 @@ def test_skewt_arbitrary_rect():
     return fig
 
 
+@pytest.mark.xfail(strict=True)
+def test_skewt_subplot_rect_conflict():
+    SkewT(rect=(0.15, 0.35, 0.8, 0.3), subplot=(1, 1, 1))
+
+
 @pytest.fixture()
 def test_profile():
     """Return data for a test profile."""
