@@ -252,7 +252,7 @@ class SkewT(object):
 
     """
 
-    def __init__(self, fig=None, rotation=30, subplot=(1, 1, 1)):
+    def __init__(self, *args, rotation=30, **kwargs):
         r"""Create SkewT - logP plots.
 
         Parameters
@@ -270,20 +270,38 @@ class SkewT(object):
             :meth:`matplotlib.figure.Figure.add_subplot`. The
             :class:`matplotlib.gridspec.SubplotSpec`
             can be created by using :class:`matplotlib.gridspec.GridSpec`.
+        args
+            Other positional arguments to pass to :func:`~matplotlib.figure.Figure.add_axes`
+        kwargs
+            Other keyword arguments to pass to :func:`~matplotlib.figure.Figure.add_axes`
 
         """
+        kwargs = dict(kwargs)
+
+        fig = kwargs.pop('fig', None)
         if fig is None:
             import matplotlib.pyplot as plt
             figsize = plt.rcParams.get('figure.figsize', (7, 7))
             fig = plt.figure(figsize=figsize)
         self._fig = fig
 
-        # Handle being passed a tuple for the subplot, or a GridSpec instance
-        try:
-            len(subplot)
-        except TypeError:
-            subplot = (subplot,)
-        self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
+        subplot = kwargs.pop('subplot', None)
+        if len(args) == 0 and subplot is None:
+            subplot = (1, 1, 1)
+
+        kwargs['projection'] = 'skewx'
+        kwargs['rotation'] = rotation
+
+        if subplot is not None:
+            # Handle being passed a tuple for the subplot, or a GridSpec instance
+            try:
+                len(subplot)
+            except TypeError:
+                subplot = (subplot,)
+            self.ax = fig.add_subplot(*subplot, **kwargs)
+        else:
+            # Handle arbitrary arguments to fig.add_axes
+            self.ax = fig.add_axes(*args, **kwargs)
         self.ax.grid(True)
 
     def plot(self, p, t, *args, **kwargs):
