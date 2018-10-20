@@ -48,21 +48,18 @@ class SkewXTick(maxis.XTick):
         return self.get_loc() is None
 
     def _need_lower(self):
-        return (self._has_default_loc() or
-                transforms.interval_contains(self.axes.lower_xlim,
-                                             self.get_loc()))
+        return (self._has_default_loc()
+                or transforms.interval_contains(self.axes.lower_xlim, self.get_loc()))
 
     def _need_upper(self):
-        return (self._has_default_loc() or
-                transforms.interval_contains(self.axes.upper_xlim,
-                                             self.get_loc()))
+        return (self._has_default_loc()
+                or transforms.interval_contains(self.axes.upper_xlim, self.get_loc()))
 
     @property
     def gridOn(self):  # noqa: N802
         """Control whether the gridline is drawn for this tick."""
-        return (self._gridOn and (self._has_default_loc() or
-                transforms.interval_contains(self.get_view_interval(),
-                                             self.get_loc())))
+        return (self._gridOn and (self._has_default_loc()
+                or transforms.interval_contains(self.get_view_interval(), self.get_loc())))
 
     @gridOn.setter
     def gridOn(self, value):  # noqa: N802
@@ -205,19 +202,19 @@ class SkewXAxes(Axes):
         # coordinates thus performing the transform around the proper origin
         # We keep the pre-transAxes transform around for other users, like the
         # spines for finding bounds
-        self.transDataToAxes = (self.transScale +
-                                (self.transLimits +
-                                 transforms.Affine2D().skew_deg(self.rot, 0)))
+        self.transDataToAxes = (self.transScale
+                                + (self.transLimits
+                                   + transforms.Affine2D().skew_deg(self.rot, 0)))
 
         # Create the full transform from Data to Pixels
         self.transData = self.transDataToAxes + self.transAxes
 
         # Blended transforms like this need to have the skewing applied using
         # both axes, in axes coords like before.
-        self._xaxis_transform = (transforms.blended_transform_factory(
-            self.transScale + self.transLimits,
-            transforms.IdentityTransform()) +
-            transforms.Affine2D().skew_deg(self.rot, 0)) + self.transAxes
+        self._xaxis_transform = (
+            transforms.blended_transform_factory(self.transScale + self.transLimits,
+                                                 transforms.IdentityTransform())
+            + transforms.Affine2D().skew_deg(self.rot, 0)) + self.transAxes
 
     @property
     def lower_xlim(self):
@@ -876,8 +873,8 @@ class Hodograph(object):
                 # Find any bounds not in the data and interpolate them
                 interpolation_heights = [bound.m for bound in bounds if bound not in c]
                 interpolation_heights = np.array(interpolation_heights) * bounds.units
-                interpolation_heights = (np.sort(interpolation_heights) *
-                                         interpolation_heights.units)
+                interpolation_heights = (np.sort(interpolation_heights)
+                                         * interpolation_heights.units)
                 (interpolated_heights, interpolated_u,
                  interpolated_v) = interpolate_1d(interpolation_heights, c, c, u, v)
 

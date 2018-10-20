@@ -59,8 +59,8 @@ def precipitable_water(dewpt, pressure, bottom=None, top=None):
     w = mixing_ratio(saturation_vapor_pressure(dewpt_layer), pres_layer)
 
     # Since pressure is in decreasing order, pw will be the opposite sign of that expected.
-    pw = -1. * (np.trapz(w.magnitude, pres_layer.magnitude) * (w.units * pres_layer.units) /
-                (mpconsts.g * mpconsts.rho_l))
+    pw = -1. * (np.trapz(w.magnitude, pres_layer.magnitude) * (w.units * pres_layer.units)
+                / (mpconsts.g * mpconsts.rho_l))
     return pw.to('millimeters')
 
 
@@ -155,8 +155,7 @@ def bunkers_storm_motion(pressure, u, v, heights):
     # mean wind from 5.5-6km
     wind_5500m = concatenate(mean_pressure_weighted(pressure, u, v, heights=heights,
                                                     depth=500 * units('meter'),
-                                                    bottom=heights[0] +
-                                                    5500 * units('meter')))
+                                                    bottom=heights[0] + 5500 * units('meter')))
 
     # Calculate the shear vector from sfc-500m to 5.5-6km
     shear = wind_5500m - wind_500m
@@ -255,9 +254,9 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
     effective_shear[effective_shear < 10 * units('m/s')] = 0 * units('m/s')
     effective_shear = effective_shear / (20 * units('m/s'))
 
-    return ((mucape / (1000 * units('J/kg'))) *
-            (effective_storm_helicity / (50 * units('m^2/s^2'))) *
-            effective_shear).to('dimensionless')
+    return ((mucape / (1000 * units('J/kg')))
+            * (effective_storm_helicity / (50 * units('m^2/s^2')))
+            * effective_shear).to('dimensionless')
 
 
 @exporter.export
@@ -300,18 +299,18 @@ def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, sh
 
     """
     surface_based_lcl_height = np.clip(atleast_1d(surface_based_lcl_height),
-                                       1000 * units('meter'), 2000 * units('meter'))
-    surface_based_lcl_height[surface_based_lcl_height >
-                             2000 * units('meter')] = 0 * units('meter')
-    surface_based_lcl_height = ((2000. * units('meter') - surface_based_lcl_height) /
-                                (1000. * units('meter')))
+                                       1000 * units.m, 2000 * units.m)
+    surface_based_lcl_height[surface_based_lcl_height > 2000 * units.m] = 0 * units.m
+    surface_based_lcl_height = ((2000. * units.m - surface_based_lcl_height)
+                                / (1000. * units.m))
     shear_6km = np.clip(atleast_1d(shear_6km), None, 30 * units('m/s'))
     shear_6km[shear_6km < 12.5 * units('m/s')] = 0 * units('m/s')
     shear_6km /= 20 * units('m/s')
 
-    return ((sbcape / (1500. * units('J/kg'))) *
-            surface_based_lcl_height *
-            (storm_helicity_1km / (150. * units('m^2/s^2'))) * shear_6km)
+    return ((sbcape / (1500. * units('J/kg')))
+            * surface_based_lcl_height
+            * (storm_helicity_1km / (150. * units('m^2/s^2')))
+            * shear_6km)
 
 
 @exporter.export

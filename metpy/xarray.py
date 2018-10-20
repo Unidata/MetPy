@@ -271,12 +271,12 @@ class CFConventionHandler(object):
             # Check for units, either by dimensionality or name
             if (axis in cls.criteria['units'] and (
                     (
-                        cls.criteria['units'][axis]['match'] == 'dimensionality' and
-                        (units.get_dimensionality(var.attrs.get('units')) ==
-                         units.get_dimensionality(cls.criteria['units'][axis]['units']))
+                        cls.criteria['units'][axis]['match'] == 'dimensionality'
+                        and (units.get_dimensionality(var.attrs.get('units'))
+                             == units.get_dimensionality(cls.criteria['units'][axis]['units']))
                     ) or (
-                        cls.criteria['units'][axis]['match'] == 'name' and
-                        var.attrs.get('units') in cls.criteria['units'][axis]['units']
+                        cls.criteria['units'][axis]['match'] == 'name'
+                        and var.attrs.get('units') in cls.criteria['units'][axis]['units']
                     ))):
                 return True
 
@@ -287,8 +287,8 @@ class CFConventionHandler(object):
     def _fixup_coords(self, var):
         """Clean up the units on the coordinate variables."""
         for coord_name, data_array in var.coords.items():
-            if (self.check_axis(data_array, 'x', 'y') and
-                    not self.check_axis(data_array, 'lon', 'lat')):
+            if (self.check_axis(data_array, 'x', 'y')
+                    and not self.check_axis(data_array, 'lon', 'lat')):
                 try:
                     var.coords[coord_name].metpy.convert_units('meters')
                 except DimensionalityError:  # Radians!
@@ -362,9 +362,9 @@ class CFConventionHandler(object):
             return
 
         # Ambiguous axis, raise warning and do not parse
-        warnings.warn('DataArray of requested variable has more than one ' +
-                      cf_to_readable_axes[axis] + ' coordinate. Specify the unique axes ' +
-                      'using the coordinates argument.')
+        warnings.warn('DataArray of requested variable has more than one '
+                      + cf_to_readable_axes[axis]
+                      + ' coordinate. Specify the unique axes using the coordinates argument.')
         coord_lists[axis] = []
 
 
@@ -386,8 +386,8 @@ def check_matching_coordinates(func):
     """Decorate a function to make sure all given DataArrays have matching coordinates."""
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
-        data_arrays = ([a for a in args if isinstance(a, xr.DataArray)] +
-                       [a for a in kwargs.values() if isinstance(a, xr.DataArray)])
+        data_arrays = ([a for a in args if isinstance(a, xr.DataArray)]
+                       + [a for a in kwargs.values() if isinstance(a, xr.DataArray)])
         if len(data_arrays) > 1:
             first = data_arrays[0]
             for other in data_arrays[1:]:

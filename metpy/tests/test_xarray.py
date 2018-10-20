@@ -40,10 +40,9 @@ def test_ds_generic():
 
 
 @pytest.fixture
-def test_var():
+def test_var(test_ds):
     """Provide a standard, parsed, variable for testing."""
-    ds = test_ds()
-    return ds.metpy.parse_cf('Temperature')
+    return test_ds.metpy.parse_cf('Temperature')
 
 
 def test_projection(test_var):

@@ -522,8 +522,8 @@ def test_potential_vorticity_baroclinic_unity_axis0(pv_data):
 
     vort_difference = pvor - (abs_vorticity * g * (-1 * (units.kelvin / units.hPa)))
 
-    true_vort = np.zeros_like(u) * (units.kelvin * units.meter**2 /
-                                    (units.second * units.kilogram))
+    true_vort = np.zeros_like(u) * (units.kelvin * units.meter**2
+                                    / (units.second * units.kilogram))
 
     assert_almost_equal(vort_difference, true_vort, 10)
 
@@ -556,8 +556,8 @@ def test_potential_vorticity_baroclinic_unity_axis2(pv_data):
 
     vort_difference = pvor - (abs_vorticity * g * (-1 * (units.kelvin / units.hPa)))
 
-    true_vort = np.zeros_like(u) * (units.kelvin * units.meter ** 2 /
-                                    (units.second * units.kilogram))
+    true_vort = np.zeros_like(u) * (units.kelvin * units.meter ** 2
+                                    / (units.second * units.kilogram))
 
     assert_almost_equal(vort_difference, true_vort, 10)
 
@@ -589,8 +589,8 @@ def test_potential_vorticity_baroclinic_non_unity_derivative(pv_data):
 
     vort_difference = pvor - (abs_vorticity * g * (-100 * (units.kelvin / units.hPa)))
 
-    true_vort = np.zeros_like(u) * (units.kelvin * units.meter ** 2 /
-                                    (units.second * units.kilogram))
+    true_vort = np.zeros_like(u) * (units.kelvin * units.meter ** 2
+                                    / (units.second * units.kilogram))
 
     assert_almost_equal(vort_difference, true_vort, 10)
 
@@ -915,13 +915,13 @@ def test_q_vector_without_static_stability(q_vector_data):
     q1_truth = (np.array([[-2.7454089e-14, -3.0194267e-13, -3.0194267e-13, -2.7454089e-14],
                           [-1.8952185e-13, -2.2269905e-14, -2.2269905e-14, -1.8952185e-13],
                           [-1.9918390e-13, -2.3370829e-14, -2.3370829e-14, -1.9918390e-13],
-                          [-5.6160772e-14, -3.5145951e-13, -3.5145951e-13, -5.6160772e-14]]) *
-                units('m^2 kg^-1 s^-1'))
+                          [-5.6160772e-14, -3.5145951e-13, -3.5145951e-13, -5.6160772e-14]])
+                * units('m^2 kg^-1 s^-1'))
     q2_truth = (np.array([[-4.4976059e-14, -4.3582378e-13, 4.3582378e-13, 4.4976059e-14],
                           [-3.0124244e-13, -3.5724617e-14, 3.5724617e-14, 3.0124244e-13],
                           [3.1216232e-13, 3.6662900e-14, -3.6662900e-14, -3.1216232e-13],
-                          [8.6038280e-14, 4.6968342e-13, -4.6968342e-13, -8.6038280e-14]]) *
-                units('m^2 kg^-1 s^-1'))
+                          [8.6038280e-14, 4.6968342e-13, -4.6968342e-13, -8.6038280e-14]])
+                * units('m^2 kg^-1 s^-1'))
 
     assert_almost_equal(q1, q1_truth, 20)
     assert_almost_equal(q2, q2_truth, 20)
@@ -939,13 +939,13 @@ def test_q_vector_with_static_stability(q_vector_data):
     q1_truth = (np.array([[-1.4158140e-08, -1.6197987e-07, -1.6875014e-07, -1.6010616e-08],
                           [-9.3971386e-08, -1.1252476e-08, -1.1252476e-08, -9.7617234e-08],
                           [-1.0785670e-07, -1.2403513e-08, -1.2403513e-08, -1.0364793e-07],
-                          [-2.9186946e-08, -1.7577703e-07, -1.6937879e-07, -2.6112047e-08]]) *
-                units('kg m^-2 s^-3'))
+                          [-2.9186946e-08, -1.7577703e-07, -1.6937879e-07, -2.6112047e-08]])
+                * units('kg m^-2 s^-3'))
     q2_truth = (np.array([[-2.3194263e-08, -2.3380160e-07, 2.4357380e-07, 2.6229040e-08],
                           [-1.4936626e-07, -1.8050836e-08, 1.8050836e-08, 1.5516129e-07],
                           [1.6903373e-07, 1.9457964e-08, -1.9457964e-08, -1.6243771e-07],
-                          [4.4714390e-08, 2.3490489e-07, -2.2635441e-07, -4.0003646e-08]]) *
-                units('kg m^-2 s^-3'))
+                          [4.4714390e-08, 2.3490489e-07, -2.2635441e-07, -4.0003646e-08]])
+                * units('kg m^-2 s^-3'))
 
     assert_almost_equal(q1, q1_truth, 14)
     assert_almost_equal(q2, q2_truth, 14)

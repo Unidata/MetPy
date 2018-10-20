@@ -182,10 +182,10 @@ def interpolate_nans(x, y, kind='linear'):
     return interpolate_nans_1d(x, y, kind=kind)
 
 
-interpolate_nans.__doc__ = (interpolate_nans_1d.__doc__ +
-                            '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                            '`interpolate_nans_1d` and moved to `metpy.interpolate`, and '
-                            'will be removed from MetPy in 0.12.0.')
+interpolate_nans.__doc__ = (interpolate_nans_1d.__doc__
+                            + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
+                              '`interpolate_nans_1d` and moved to `metpy.interpolate`, and '
+                              'will be removed from MetPy in 0.12.0.')
 
 
 def _next_non_masked_element(a, idx):
@@ -400,12 +400,12 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
         raise ValueError('Bound must be specified in units of length or pressure.')
 
     # If the bound is out of the range of the data, we shouldn't extrapolate
-    if not (_greater_or_close(bound_pressure, np.nanmin(pressure) * pressure.units) and
-            _less_or_close(bound_pressure, np.nanmax(pressure) * pressure.units)):
+    if not (_greater_or_close(bound_pressure, np.nanmin(pressure) * pressure.units)
+            and _less_or_close(bound_pressure, np.nanmax(pressure) * pressure.units)):
         raise ValueError('Specified bound is outside pressure range.')
     if heights is not None:
-        if not (_less_or_close(bound_height, np.nanmax(heights) * heights.units) and
-                _greater_or_close(bound_height, np.nanmin(heights) * heights.units)):
+        if not (_less_or_close(bound_height, np.nanmax(heights) * heights.units)
+                and _greater_or_close(bound_height, np.nanmin(heights) * heights.units)):
             raise ValueError('Specified bound is outside height range.')
 
     return bound_pressure, bound_height
@@ -581,8 +581,8 @@ def get_layer(pressure, *args, **kwargs):
     pressure = pressure[sort_inds]
 
     # Mask based on top and bottom pressure
-    inds = (_less_or_close(pressure, bottom_pressure) &
-            _greater_or_close(pressure, top_pressure))
+    inds = (_less_or_close(pressure, bottom_pressure)
+            & _greater_or_close(pressure, top_pressure))
     p_interp = pressure[inds]
 
     # Interpolate pressures at bounds if necessary and sort
@@ -619,10 +619,10 @@ def interp(x, xp, *args, **kwargs):
     return interpolate_1d(x, xp, *args, **kwargs)
 
 
-interp.__doc__ = (interpolate_1d.__doc__ +
-                  '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                  '`interpolate_1d` and moved to `metpy.interpolate`, and '
-                  'will be removed from MetPy in 0.12.0.')
+interp.__doc__ = (interpolate_1d.__doc__
+                  + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
+                    '`interpolate_1d` and moved to `metpy.interpolate`, and '
+                    'will be removed from MetPy in 0.12.0.')
 
 
 @exporter.export
@@ -723,10 +723,10 @@ def log_interp(x, xp, *args, **kwargs):
     return log_interpolate_1d(x, xp, *args, **kwargs)
 
 
-log_interp.__doc__ = (log_interpolate_1d.__doc__ +
-                      '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                      '`log_interpolate_1d` and moved to `metpy.interpolate`, and '
-                      'will be removed from MetPy in 0.12.0.')
+log_interp.__doc__ = (log_interpolate_1d.__doc__
+                      + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
+                        '`log_interpolate_1d` and moved to `metpy.interpolate`, and '
+                        'will be removed from MetPy in 0.12.0.')
 
 
 def _greater_or_close(a, value, **kwargs):
@@ -1013,12 +1013,12 @@ def first_derivative(f, **kwargs):
 
     combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
     delta_diff = delta[tuple(delta_slice1)] - delta[tuple(delta_slice0)]
-    center = (- delta[tuple(delta_slice1)] / (combined_delta * delta[tuple(delta_slice0)]) *
-              f[tuple(slice0)] +
-              delta_diff / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)]) *
-              f[tuple(slice1)] +
-              delta[tuple(delta_slice0)] / (combined_delta * delta[tuple(delta_slice1)]) *
-              f[tuple(slice2)])
+    center = (- delta[tuple(delta_slice1)] / (combined_delta * delta[tuple(delta_slice0)])
+              * f[tuple(slice0)]
+              + delta_diff / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
+              * f[tuple(slice1)]
+              + delta[tuple(delta_slice0)] / (combined_delta * delta[tuple(delta_slice1)])
+              * f[tuple(slice2)])
 
     # Fill in "left" edge with forward difference
     slice0[axis] = slice(None, 1)
@@ -1029,11 +1029,12 @@ def first_derivative(f, **kwargs):
 
     combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
     big_delta = combined_delta + delta[tuple(delta_slice0)]
-    left = (- big_delta / (combined_delta * delta[tuple(delta_slice0)]) * f[tuple(slice0)] +
-            combined_delta / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)]) *
-            f[tuple(slice1)] -
-            delta[tuple(delta_slice0)] / (combined_delta * delta[tuple(delta_slice1)]) *
-            f[tuple(slice2)])
+    left = (- big_delta / (combined_delta * delta[tuple(delta_slice0)])
+            * f[tuple(slice0)]
+            + combined_delta / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
+            * f[tuple(slice1)]
+            - delta[tuple(delta_slice0)] / (combined_delta * delta[tuple(delta_slice1)])
+            * f[tuple(slice2)])
 
     # Now the "right" edge with backward difference
     slice0[axis] = slice(-3, -2)
@@ -1044,11 +1045,12 @@ def first_derivative(f, **kwargs):
 
     combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
     big_delta = combined_delta + delta[tuple(delta_slice1)]
-    right = (delta[tuple(delta_slice1)] / (combined_delta * delta[tuple(delta_slice0)]) *
-             f[tuple(slice0)] -
-             combined_delta / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)]) *
-             f[tuple(slice1)] +
-             big_delta / (combined_delta * delta[tuple(delta_slice1)]) * f[tuple(slice2)])
+    right = (delta[tuple(delta_slice1)] / (combined_delta * delta[tuple(delta_slice0)])
+             * f[tuple(slice0)]
+             - combined_delta / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
+             * f[tuple(slice1)]
+             + big_delta / (combined_delta * delta[tuple(delta_slice1)])
+             * f[tuple(slice2)])
 
     return concatenate((left, center, right), axis=axis)
 
@@ -1114,10 +1116,10 @@ def second_derivative(f, **kwargs):
     delta_slice1[axis] = slice(1, None)
 
     combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    center = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)]) -
-                  f[tuple(slice1)] / (delta[tuple(delta_slice0)] *
-                  delta[tuple(delta_slice1)]) +
-                  f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
+    center = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)])
+                  - f[tuple(slice1)] / (delta[tuple(delta_slice0)]
+                                        * delta[tuple(delta_slice1)])
+                  + f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
 
     # Fill in "left" edge
     slice0[axis] = slice(None, 1)
@@ -1127,9 +1129,9 @@ def second_derivative(f, **kwargs):
     delta_slice1[axis] = slice(1, 2)
 
     combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    left = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)]) -
-                f[tuple(slice1)] / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)]) +
-                f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
+    left = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)])
+                - f[tuple(slice1)] / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
+                + f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
 
     # Now the "right" edge
     slice0[axis] = slice(-3, -2)
@@ -1139,9 +1141,9 @@ def second_derivative(f, **kwargs):
     delta_slice1[axis] = slice(-1, None)
 
     combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    right = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)]) -
-                 f[tuple(slice1)] / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)]) +
-                 f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
+    right = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)])
+                 - f[tuple(slice1)] / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
+                 + f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
 
     return concatenate((left, center, right), axis=axis)
 
