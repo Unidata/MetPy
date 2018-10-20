@@ -272,7 +272,6 @@ class SkewT(object):
             allows the user to place the axes at an arbitrary point on the figure.
 
         """
-
         if fig is None:
             import matplotlib.pyplot as plt
             figsize = plt.rcParams.get('figure.figsize', (7, 7))

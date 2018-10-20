@@ -69,7 +69,7 @@ def test_skewt_with_grid_enabled():
 
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=True)
 def test_skewt_arbitrary_rect():
-    """Test placing the SkewT in an arbitrary rectangle"""
+    """Test placing the SkewT in an arbitrary rectangle."""
     fig = plt.figure(figsize=(9, 9))
     SkewT(fig, rect=(0.15, 0.35, 0.8, 0.3))
     return fig
