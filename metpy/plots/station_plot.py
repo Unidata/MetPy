@@ -325,7 +325,7 @@ class StationPlot(object):
             def formatter(s):
                 """Turn a format string into a callable."""
                 if hasattr(s, 'units'):
-                    s = np.asscalar(s)
+                    s = s.item()
                 return format(s, fmt)
         else:
             formatter = fmt
@@ -569,10 +569,10 @@ class StationPlotLayout(dict):
 
     def __repr__(self):
         """Return string representation of layout."""
-        return ('{' +
-                ', '.join('{0}: ({1[0].name}, {1[1]}, ...)'.format(loc, info)
-                          for loc, info in sorted(self.items())) +
-                '}')
+        return ('{'
+                + ', '.join('{0}: ({1[0].name}, {1[1]}, ...)'.format(loc, info)
+                            for loc, info in sorted(self.items()))
+                + '}')
 
 
 with exporter:

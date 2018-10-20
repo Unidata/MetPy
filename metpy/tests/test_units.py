@@ -4,7 +4,6 @@
 r"""Tests the operation of MetPy's unit support code."""
 
 import sys
-import warnings
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -15,9 +14,6 @@ from metpy.testing import assert_array_almost_equal, assert_array_equal
 from metpy.testing import set_agg_backend  # noqa: F401
 from metpy.units import (atleast_1d, atleast_2d, check_units, concatenate, diff,
                          pandas_dataframe_to_unit_arrays, units)
-
-
-warnings.filterwarnings('ignore', 'Pandas doesn\'t allow columns to be created', UserWarning)
 
 
 def test_concatenate():
@@ -62,11 +58,18 @@ def test_axvline():
 def test_atleast1d_without_units():
     """Test that atleast_1d wrapper can handle plain arrays."""
     assert_array_equal(atleast_1d(1), np.array([1]))
+    assert_array_equal(atleast_1d([1, ], [2, ]), np.array([[1, ], [2, ]]))
 
 
 def test_atleast2d_without_units():
     """Test that atleast_2d wrapper can handle plain arrays."""
     assert_array_equal(atleast_2d(1), np.array([[1]]))
+
+
+def test_atleast2d_with_units():
+    """Test that atleast_2d wrapper can handle plain array with units."""
+    assert_array_equal(
+        atleast_2d(1 * units.degC), np.array([[1]]) * units.degC)
 
 
 def test_units_diff():
@@ -141,6 +144,7 @@ def test_pandas_units_simple():
     assert_array_equal(res['colb'], colb_truth)
 
 
+@pytest.mark.filterwarnings('ignore:Pandas doesn\'t allow columns to be created')
 def test_pandas_units_on_dataframe():
     """Unit attachment based on a units attribute to a dataframe."""
     df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
@@ -152,6 +156,7 @@ def test_pandas_units_on_dataframe():
     assert_array_equal(res['colb'], colb_truth)
 
 
+@pytest.mark.filterwarnings('ignore:Pandas doesn\'t allow columns to be created')
 def test_pandas_units_on_dataframe_not_all_united():
     """Unit attachment with units attribute with a column with no units."""
     df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])

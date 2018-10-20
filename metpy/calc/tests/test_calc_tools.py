@@ -202,7 +202,6 @@ def test_log_interp():
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
 
 
-@pytest.fixture
 def get_bounds_data():
     """Provide pressure and height data for testing layer bounds calculation."""
     pressures = np.linspace(1000, 100, 10) * units.hPa
@@ -316,7 +315,6 @@ def test_get_layer_invalid_depth_units():
         get_layer(p, y, depth=400 * units.degC)
 
 
-@pytest.fixture
 def layer_test_data():
     """Provide test data for testing of layer bounds."""
     pressure = np.arange(1000, 10, -100) * units.hPa
@@ -512,8 +510,8 @@ def test_lat_lon_grid_deltas_extra_dimensions():
                            [187797.3216, 187797.3216, 187797.3216]]]]) * units.meter
     dy_truth = (np.array([[[[277987.1857, 277987.1857, 277987.1857, 277987.1857],
                             [277987.1857, 277987.1857, 277987.1857, 277987.1857],
-                            [277987.1857, 277987.1857, 277987.1857, 277987.1857]]]]) *
-                units.meter)
+                            [277987.1857, 277987.1857, 277987.1857, 277987.1857]]]])
+                * units.meter)
     dx, dy = lat_lon_grid_deltas(lon, lat)
     assert_almost_equal(dx, dx_truth, 4)
     assert_almost_equal(dy, dy_truth, 4)

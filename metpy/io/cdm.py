@@ -329,8 +329,8 @@ class Variable(AttributeContainer):
 
     def __str__(self):
         """Return a string representation of the Variable."""
-        groups = [str(type(self)) +
-                  ': {0.datatype} {0.name}({1})'.format(self, ', '.join(self.dimensions))]
+        groups = [str(type(self))
+                  + ': {0.datatype} {0.name}({1})'.format(self, ', '.join(self.dimensions))]
         for att in self.ncattrs():
             groups.append('\t{0}: {1}'.format(att, getattr(self, att)))
         if self.ndim:
