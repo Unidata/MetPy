@@ -77,6 +77,7 @@ def test_skewt_arbitrary_rect():
 
 @pytest.mark.xfail(strict=True)
 def test_skewt_subplot_rect_conflict():
+    """Test the subplot/rect conflict failure."""
     SkewT(rect=(0.15, 0.35, 0.8, 0.3), subplot=(1, 1, 1))
 
 
