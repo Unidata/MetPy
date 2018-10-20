@@ -252,7 +252,7 @@ class SkewT(object):
 
     """
 
-    def __init__(self, *args, rotation=30, **kwargs):
+    def __init__(self, fig=None, rotation=30, subplot=None, rect=None):
         r"""Create SkewT - logP plots.
 
         Parameters
@@ -270,27 +270,22 @@ class SkewT(object):
             :meth:`matplotlib.figure.Figure.add_subplot`. The
             :class:`matplotlib.gridspec.SubplotSpec`
             can be created by using :class:`matplotlib.gridspec.GridSpec`.
-        args
-            Other positional arguments to pass to :func:`~matplotlib.figure.Figure.add_axes`
-        kwargs
-            Other keyword arguments to pass to :func:`~matplotlib.figure.Figure.add_axes`
+        rect : tuple[float, float, float, float], optional
+            Rectangle (left, bottom, width, height) in which to place the axes. This
+            allows the user to place the axes at an arbitrary point on the figure.
 
         """
-        kwargs = dict(kwargs)
 
-        fig = kwargs.pop('fig', None)
         if fig is None:
             import matplotlib.pyplot as plt
             figsize = plt.rcParams.get('figure.figsize', (7, 7))
             fig = plt.figure(figsize=figsize)
         self._fig = fig
 
-        subplot = kwargs.pop('subplot', None)
-        if len(args) == 0 and subplot is None:
+        if rect is None and subplot is None:
             subplot = (1, 1, 1)
-
-        kwargs['projection'] = 'skewx'
-        kwargs['rotation'] = rotation
+        elif rect is not None and subplot is not None:
+            raise ValueError("Specify only one of `rect' and `subplot', but not both")
 
         if subplot is not None:
             # Handle being passed a tuple for the subplot, or a GridSpec instance
@@ -298,10 +293,9 @@ class SkewT(object):
                 len(subplot)
             except TypeError:
                 subplot = (subplot,)
-            self.ax = fig.add_subplot(*subplot, **kwargs)
+            self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
         else:
-            # Handle arbitrary arguments to fig.add_axes
-            self.ax = fig.add_axes(*args, **kwargs)
+            self.ax = fig.add_axes(rect, projection='skewx', rotation=rotation)
         self.ax.grid(True)
 
     def plot(self, p, t, *args, **kwargs):
