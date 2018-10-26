@@ -92,7 +92,7 @@ class GiniFile(AbstractDataStore):
     """
 
     missing = 255
-    wmo_finder = re.compile('(T\w{3}\d{2})[\s\w\d]+\w*(\w{3})\r\r\n')
+    wmo_finder = re.compile('(T\\w{3}\\d{2})[\\s\\w\\d]+\\w*(\\w{3})\r\r\n')
 
     crafts = ['Unknown', 'Unknown', 'Miscellaneous', 'JERS', 'ERS/QuikSCAT', 'POES/NPOESS',
               'Composite', 'DMSP', 'GMS', 'METEOSAT', 'GOES-7', 'GOES-8', 'GOES-9',

@@ -1010,7 +1010,7 @@ class Level3File(object):
     """
 
     ij_to_km = 0.25
-    wmo_finder = re.compile('((?:NX|SD|NO)US)\d{2}[\s\w\d]+\w*(\w{3})\r\r\n')
+    wmo_finder = re.compile('((?:NX|SD|NO)US)\\d{2}[\\s\\w\\d]+\\w*(\\w{3})\r\r\n')
     header_fmt = NamedStruct([('code', 'H'), ('date', 'H'), ('time', 'l'),
                               ('msg_len', 'L'), ('src_id', 'h'), ('dest_id', 'h'),
                               ('num_blks', 'H')], '>', 'MsgHdr')
