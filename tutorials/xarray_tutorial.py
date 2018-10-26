@@ -205,7 +205,6 @@ plt.show()
 
 # Let's add a projection and coastlines to it
 ax = plt.axes(projection=ccrs.LambertConformal())
-ax._hold = True  # Work-around for CartoPy 0.16/Matplotlib 3.0.0 incompatibility
 data['height'].loc[time[0]].loc[{vertical.name: 500.}].plot(ax=ax, transform=data_crs)
 ax.coastlines()
 plt.show()
