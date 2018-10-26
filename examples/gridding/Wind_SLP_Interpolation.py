@@ -89,7 +89,6 @@ norm = BoundaryNorm(levels, ncolors=cmap.N, clip=True)
 fig = plt.figure(figsize=(20, 10))
 add_metpy_logo(fig, 360, 120, size='large')
 view = fig.add_subplot(1, 1, 1, projection=to_proj)
-view._hold = True  # Work-around for CartoPy 0.16/Matplotlib 3.0.0 incompatibility
 
 view.set_extent([-120, -70, 20, 50])
 view.add_feature(cfeature.STATES.with_scale('50m'))

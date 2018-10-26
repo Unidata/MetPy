@@ -680,8 +680,9 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
     # Get the middle layer stability derivative (index 1)
     slices = [slice(None)] * stability.ndim
     slices[axis] = 1
-    return (-1 * avor * mpconsts.g * stability[slices]).to(units.kelvin * units.meter**2
-                                                           / (units.second * units.kilogram))
+
+    ret = -mpconsts.g * avor * stability[tuple(slices)]
+    return ret.to(units.kelvin * units.meter**2 / (units.second * units.kilogram))
 
 
 @exporter.export
