@@ -456,7 +456,7 @@ class SkewT(object):
             p = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = dry_lapse(p, t0[:, np.newaxis]).to(units.degC)
+        t = dry_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
         linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
@@ -509,7 +509,7 @@ class SkewT(object):
             p = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = moist_lapse(p, t0[:, np.newaxis]).to(units.degC)
+        t = moist_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
         linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
