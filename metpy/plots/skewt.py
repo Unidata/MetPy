@@ -278,20 +278,23 @@ class SkewT(object):
             fig = plt.figure(figsize=figsize)
         self._fig = fig
 
-        if rect is None and subplot is None:
-            subplot = (1, 1, 1)
-        elif rect is not None and subplot is not None:
+        if rect and subplot:
             raise ValueError("Specify only one of `rect' and `subplot', but not both")
 
-        if subplot is not None:
-            # Handle being passed a tuple for the subplot, or a GridSpec instance
-            try:
-                len(subplot)
-            except TypeError:
-                subplot = (subplot,)
-            self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
-        else:
+        elif rect:
             self.ax = fig.add_axes(rect, projection='skewx', rotation=rotation)
+
+        else:
+            if subplot is not None:
+                # Handle being passed a tuple for the subplot, or a GridSpec instance
+                try:
+                    len(subplot)
+                except TypeError:
+                    subplot = (subplot,)
+            else:
+                subplot = (1, 1, 1)
+
+            self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
         self.ax.grid(True)
 
     def plot(self, p, t, *args, **kwargs):
