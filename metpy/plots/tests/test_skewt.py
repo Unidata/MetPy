@@ -67,6 +67,20 @@ def test_skewt_with_grid_enabled():
         SkewT()
 
 
+@pytest.mark.mpl_image_compare(tolerance=0., remove_text=True)
+def test_skewt_arbitrary_rect():
+    """Test placing the SkewT in an arbitrary rectangle."""
+    fig = plt.figure(figsize=(9, 9))
+    SkewT(fig, rect=(0.15, 0.35, 0.8, 0.3))
+    return fig
+
+
+def test_skewt_subplot_rect_conflict():
+    """Test the subplot/rect conflict failure."""
+    with pytest.raises(ValueError):
+        SkewT(rect=(0.15, 0.35, 0.8, 0.3), subplot=(1, 1, 1))
+
+
 @pytest.fixture()
 def test_profile():
     """Return data for a test profile."""
