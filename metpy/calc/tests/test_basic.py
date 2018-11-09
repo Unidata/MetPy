@@ -10,8 +10,8 @@ from metpy.calc import (add_height_to_pressure, add_pressure_to_height, apparent
                         coriolis_parameter, geopotential_to_height, get_wind_components,
                         get_wind_dir, get_wind_speed, heat_index, height_to_geopotential,
                         height_to_pressure_std, pressure_to_height_std, sigma_to_pressure,
-                        smooth_gaussian, wind_components, wind_direction, wind_speed,
-                        windchill)
+                        smooth_gaussian, smooth_n_point, wind_components, wind_direction,
+                        wind_speed, windchill)
 from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
@@ -499,3 +499,78 @@ def test_smooth_gaussian_3d_units():
               [3.00708990, 4.01417981, 7.01417981, 12.0141798, 18.9503707],
               [4.00000000, 5.00708990, 8.00708990, 13.0070899, 19.9432808]]) * units('m')
     assert_array_almost_equal(s[1, :, :], s_true)
+
+
+def test_smooth_n_pt_5():
+    """Test the smooth_n_pt function using 5 points."""
+    hght = np.array([[5640., 5640., 5640., 5640., 5640.],
+                    [5684., 5676., 5666., 5659., 5651.],
+                    [5728., 5712., 5692., 5678., 5662.],
+                    [5772., 5748., 5718., 5697., 5673.],
+                    [5816., 5784., 5744., 5716., 5684.]])
+    shght = smooth_n_point(hght, 5, 1)
+    s_true = np.array([[5640., 5640., 5640., 5640., 5640.],
+                      [5684., 5675.75, 5666.375, 5658.875, 5651.],
+                      [5728., 5711.5, 5692.75, 5677.75, 5662.],
+                      [5772., 5747.25, 5719.125, 5696.625, 5673.],
+                      [5816., 5784., 5744., 5716., 5684.]])
+    assert_array_almost_equal(shght, s_true)
+
+
+def test_smooth_n_pt_5_units():
+    """Test the smooth_n_pt function using 5 points with units."""
+    hght = np.array([[5640., 5640., 5640., 5640., 5640.],
+                    [5684., 5676., 5666., 5659., 5651.],
+                    [5728., 5712., 5692., 5678., 5662.],
+                    [5772., 5748., 5718., 5697., 5673.],
+                    [5816., 5784., 5744., 5716., 5684.]]) * units.meter
+    shght = smooth_n_point(hght, 5, 1)
+    s_true = np.array([[5640., 5640., 5640., 5640., 5640.],
+                      [5684., 5675.75, 5666.375, 5658.875, 5651.],
+                      [5728., 5711.5, 5692.75, 5677.75, 5662.],
+                      [5772., 5747.25, 5719.125, 5696.625, 5673.],
+                      [5816., 5784., 5744., 5716., 5684.]]) * units.meter
+    assert_array_almost_equal(shght, s_true)
+
+
+def test_smooth_n_pt_9_units():
+    """Test the smooth_n_pt function using 9 points with units."""
+    hght = np.array([[5640., 5640., 5640., 5640., 5640.],
+                    [5684., 5676., 5666., 5659., 5651.],
+                    [5728., 5712., 5692., 5678., 5662.],
+                    [5772., 5748., 5718., 5697., 5673.],
+                    [5816., 5784., 5744., 5716., 5684.]]) * units.meter
+    shght = smooth_n_point(hght, 9, 1)
+    s_true = np.array([[5640., 5640., 5640., 5640., 5640.],
+                      [5684., 5675.5, 5666.75, 5658.75, 5651.],
+                      [5728., 5711., 5693.5, 5677.5, 5662.],
+                      [5772., 5746.5, 5720.25, 5696.25, 5673.],
+                      [5816., 5784., 5744., 5716., 5684.]]) * units.meter
+    assert_array_almost_equal(shght, s_true)
+
+
+def test_smooth_n_pt_9_repeat():
+    """Test the smooth_n_pt function using 9 points with two passes."""
+    hght = np.array([[5640., 5640., 5640., 5640., 5640.],
+                    [5684., 5676., 5666., 5659., 5651.],
+                    [5728., 5712., 5692., 5678., 5662.],
+                    [5772., 5748., 5718., 5697., 5673.],
+                    [5816., 5784., 5744., 5716., 5684.]])
+    shght = smooth_n_point(hght, 9, 2)
+    s_true = np.array([[5640., 5640., 5640., 5640., 5640.],
+                      [5684., 5675.4375, 5666.9375, 5658.8125, 5651.],
+                      [5728., 5710.875, 5693.875, 5677.625, 5662.],
+                      [5772., 5746.375, 5720.625, 5696.375, 5673.],
+                      [5816., 5784., 5744., 5716., 5684.]])
+    assert_array_almost_equal(shght, s_true)
+
+
+def test_smooth_n_pt_wrong_number():
+    """Test the smooth_n_pt function using wrong number of points."""
+    hght = np.array([[5640., 5640., 5640., 5640., 5640.],
+                    [5684., 5676., 5666., 5659., 5651.],
+                    [5728., 5712., 5692., 5678., 5662.],
+                    [5772., 5748., 5718., 5697., 5673.],
+                    [5816., 5784., 5744., 5716., 5684.]])
+    with pytest.raises(ValueError):
+        smooth_n_point(hght, 7)

@@ -28,7 +28,6 @@ install:
     - cmd: pip install sphinx_rtd_theme==0.2.5b1.post1 -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html
     - cmd: python --version
     - cmd: conda list
-    - cmd: if %PYTHON_VERSION% == 2.7 conda install -q enum34
     - cmd: pip install ".[test]"
     - cmd: flake8 --version
 
