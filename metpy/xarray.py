@@ -172,7 +172,6 @@ class CFConventionHandler(object):
                     'grid_mapping: {}'.format(proj_name))
             else:
                 var.coords['crs'] = CFProjection(proj_var.attrs)
-                var.attrs.pop('grid_mapping')
 
         self._fixup_coords(var)
 
