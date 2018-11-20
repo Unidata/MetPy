@@ -22,6 +22,7 @@ import xarray as xr
 # Any import of metpy will activate the accessors
 import metpy.calc as mpcalc
 from metpy.testing import get_test_data
+from metpy.units import units
 
 #########################################################################
 # Getting Data
@@ -75,10 +76,9 @@ data.rename({
 # MetPy's DataArray accessor has a ``unit_array`` property to obtain a ``pint.Quantity`` array
 # of just the data from the DataArray (metadata is removed) and a ``convert_units`` method to
 # convert the the data from one unit to another (keeping it as a DataArray). For now, we'll
-# just use ``convert_units`` to convert our pressure coordinates to ``hPa``.
+# just use ``convert_units`` to convert our temperature to ``degC``.
 
-data['isobaric1'].metpy.convert_units('hPa')
-data['isobaric3'].metpy.convert_units('hPa')
+data['temperature'].metpy.convert_units('degC')
 
 #########################################################################
 # Coordinates
@@ -116,6 +116,21 @@ time = data['temperature'].metpy.time
 print([coord.name for coord in (x, y, vertical, time)])
 
 #########################################################################
+# Indexing and Selecting Data
+# ---------------------------
+#
+# MetPy provides wrappers for the usual xarray indexing and selection routines that can handle
+# quantities with units. For DataArrays, MetPy also allows using the coordinate axis types
+# mentioned above as aliases for the coordinates. And so, if we wanted 850 hPa heights,
+# we would take:
+
+print(data['height'].metpy.sel(vertical=850 * units.hPa))
+
+#########################################################################
+# For full details on xarray indexing/selection, see
+# `xarray's documentation <http://xarray.pydata.org/en/stable/indexing.html>`_.
+
+#########################################################################
 # Projections
 # -----------
 #
@@ -149,7 +164,7 @@ print(data_globe)
 lat, lon = xr.broadcast(y, x)
 f = mpcalc.coriolis_parameter(lat)
 dx, dy = mpcalc.lat_lon_grid_deltas(lon, lat, initstring=data_crs.proj4_init)
-heights = data['height'].loc[time[0]].loc[{vertical.name: 500.}]
+heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
 u_geo, v_geo = mpcalc.geostrophic_wind(heights, f, dx, dy)
 print(u_geo)
 print(v_geo)
@@ -177,7 +192,7 @@ print(v_geo)
 # takes a ``DataArray`` input, but returns unit arrays for use in other calculations. We could
 # rewrite the above geostrophic wind example using this helper function as follows:
 
-heights = data['height'].loc[time[0]].loc[{vertical.name: 500.}]
+heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
 lat, lon = xr.broadcast(y, x)
 f = mpcalc.coriolis_parameter(lat)
 dx, dy = mpcalc.grid_deltas_from_dataarray(heights)
@@ -198,14 +213,15 @@ print(v_geo)
 # <http://xarray.pydata.org/en/stable/plotting.html>`_.)
 
 # A very simple example example of a plot of 500 hPa heights
-data['height'].loc[time[0]].loc[{vertical.name: 500.}].plot()
+data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}].plot()
 plt.show()
 
 #########################################################################
 
 # Let's add a projection and coastlines to it
 ax = plt.axes(projection=ccrs.LambertConformal())
-data['height'].loc[time[0]].loc[{vertical.name: 500.}].plot(ax=ax, transform=data_crs)
+data['height'].metpy.loc[{'time': time[0],
+                          'vertical': 500. * units.hPa}].plot(ax=ax, transform=data_crs)
 ax.coastlines()
 plt.show()
 
@@ -214,7 +230,7 @@ plt.show()
 # Or, let's make a full 500 hPa map with heights, temperature, winds, and humidity
 
 # Select the data for this time and level
-data_level = data.loc[{vertical.name: 500., time.name: time[0]}]
+data_level = data.metpy.loc[{time.name: time[0], vertical.name: 500. * units.hPa}]
 
 # Create the matplotlib figure and axis
 fig, ax = plt.subplots(1, 1, figsize=(12, 8), subplot_kw={'projection': data_crs})
@@ -235,7 +251,7 @@ h_contour = ax.contour(x, y, data_level['height'], colors='k', levels=range(5400
 h_contour.clabel(fontsize=8, colors='k', inline=1, inline_spacing=8,
                  fmt='%i', rightside_up=True, use_clabeltext=True)
 t_contour = ax.contour(x, y, data_level['temperature'], colors='xkcd:deep blue',
-                       levels=range(248, 276, 2), alpha=0.8, linestyles='--')
+                       levels=range(-26, 4, 2), alpha=0.8, linestyles='--')
 t_contour.clabel(fontsize=8, colors='xkcd:deep blue', inline=1, inline_spacing=8,
                  fmt='%i', rightside_up=True, use_clabeltext=True)
 
@@ -247,7 +263,7 @@ ax.add_feature(cfeature.LAKES.with_scale('50m'), facecolor=cfeature.COLORS['wate
                edgecolor='#c7c783', zorder=0)
 
 # Set a title and show the plot
-ax.set_title('500 hPa Heights (m), Temperature (K), Humidity (%) at '
+ax.set_title('500 hPa Heights (m), Temperature (\u00B0C), Humidity (%) at '
              + time[0].dt.strftime('%Y-%m-%d %H:%MZ'))
 plt.show()
 

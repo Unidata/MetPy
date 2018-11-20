@@ -477,3 +477,52 @@ def test_find_axis_name_bad_identifier(test_var):
 def test_cf_parse_with_grid_mapping(test_var):
     """Test cf_parse dont delete grid_mapping attribute."""
     assert test_var.grid_mapping == 'Lambert_Conformal'
+
+
+def test_data_array_loc_get_with_units(test_var):
+    """Test the .loc indexer on the metpy accessor."""
+    truth = test_var.loc[:, 850.]
+    assert truth.identical(test_var.metpy.loc[:, 8.5e4 * units.Pa])
+
+
+def test_data_array_loc_set_with_units(test_var):
+    """Test the .loc indexer on the metpy accessor for setting."""
+    temperature = test_var.copy()
+    temperature.metpy.loc[:, 8.5e4 * units.Pa] = np.nan
+    assert np.isnan(temperature.loc[:, 850.]).all()
+    assert not np.isnan(temperature.loc[:, 700.]).any()
+
+
+def test_data_array_sel_dict_with_units(test_var):
+    """Test .sel on the metpy accessor with dictionary."""
+    truth = test_var.squeeze().loc[500.]
+    assert truth.identical(test_var.metpy.sel({'time': '1987-04-04T18:00:00',
+                                               'isobaric': 5e4 * units.Pa}))
+
+
+def test_data_array_sel_kwargs_with_units(test_var):
+    """Test .sel on the metpy accessor with kwargs and axis type."""
+    truth = test_var.loc[:, 500.][..., 122]
+    assert truth.identical(test_var.metpy.sel(vertical=5e4 * units.Pa, x=-16.569 * units.km,
+                                              tolerance=1., method='nearest'))
+
+
+def test_dataset_loc_with_units(test_ds):
+    """Test .loc on the metpy accessor for Datasets using slices."""
+    truth = test_ds[{'isobaric': slice(6, 17)}]
+    assert truth.identical(test_ds.metpy.loc[{'isobaric': slice(8.5e4 * units.Pa,
+                                                                5e4 * units.Pa)}])
+
+
+def test_dataset_sel_kwargs_with_units(test_ds):
+    """Test .sel on the metpy accessor for Datasets with kwargs."""
+    truth = test_ds[{'time': 0, 'y': 50, 'x': 122}]
+    assert truth.identical(test_ds.metpy.sel(time='1987-04-04T18:00:00', y=-1.464e6 * units.m,
+                                             x=-17. * units.km, tolerance=1.,
+                                             method='nearest'))
+
+
+def test_dataset_loc_without_dict(test_ds):
+    """Test that .metpy.loc for Datasets raises error when used with a non-dict."""
+    with pytest.raises(TypeError):
+        test_ds.metpy.loc[:, 700 * units.hPa]
