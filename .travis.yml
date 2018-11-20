@@ -2,6 +2,7 @@
 #   http://lint.travis-ci.org/
 language: python
 sudo: required
+dist: xenial
 
 addons:
   artifacts:
