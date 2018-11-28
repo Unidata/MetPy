@@ -87,7 +87,7 @@ def test_profile():
     return np.linspace(1000, 100, 10), np.linspace(20, -20, 10), np.linspace(25, -30, 10)
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 2.04}.get(MPL_VERSION, 0.), remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'2.0': 1.12}.get(MPL_VERSION, 0.), remove_text=True)
 def test_skewt_shade_cape_cin(test_profile):
     """Test shading CAPE and CIN on a SkewT plot."""
     p, t, tp = test_profile
@@ -208,7 +208,7 @@ def test_skewt_barb_color():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.91}.get(MPL_VERSION, 0), remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'2.0': 0.2}.get(MPL_VERSION, 0), remove_text=True)
 def test_skewt_barb_unit_conversion():
     """Test that barbs units can be converted at plot time (#737)."""
     u_wind = np.array([3.63767155210412]) * units('m/s')

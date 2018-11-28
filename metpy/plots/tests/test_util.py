@@ -47,7 +47,7 @@ def test_add_timestamp_pretext():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 9.51}.get(MPL_VERSION, 0.01),
+@pytest.mark.mpl_image_compare(tolerance={'2.0': 0.21}.get(MPL_VERSION, 0.01),
                                remove_text=True)
 def test_add_timestamp_high_contrast():
     """Test adding a timestamp to an axes object."""
