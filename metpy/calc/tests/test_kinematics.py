@@ -480,10 +480,18 @@ def test_absolute_vorticity_asym():
 @pytest.fixture
 def pv_data():
     """Test data for all PV testing."""
-    u = np.array([[100, 90, 80, 70],
-                  [90, 80, 70, 60],
-                  [80, 70, 60, 50],
-                  [70, 60, 50, 40]]) * units('m/s')
+    u = np.array([[[100, 90, 80, 70],
+                   [90, 80, 70, 60],
+                   [80, 70, 60, 50],
+                   [70, 60, 50, 40]],
+                  [[100, 90, 80, 70],
+                   [90, 80, 70, 60],
+                   [80, 70, 60, 50],
+                   [70, 60, 50, 40]],
+                  [[100, 90, 80, 70],
+                   [90, 80, 70, 60],
+                   [80, 70, 60, 50],
+                   [70, 60, 50, 40]]]) * units('m/s')
 
     v = np.zeros_like(u) * units('m/s')
 
@@ -516,56 +524,18 @@ def test_potential_vorticity_baroclinic_unity_axis0(pv_data):
     pressure[1] = 900 * units.hPa
     pressure[0] = 800 * units.hPa
 
-    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, lats)
+    pvor = potential_vorticity_baroclinic(potential_temperature, pressure,
+                                          u, v, dx[None, :, :], dy[None, :, :],
+                                          lats[None, :, :])
 
-    abs_vorticity = absolute_vorticity(u, v, dx, dy, lats)
+    abs_vorticity = absolute_vorticity(u, v, dx[None, :, :], dy[None, :, :],
+                                       lats[None, :, :])
 
     vort_difference = pvor - (abs_vorticity * g * (-1 * (units.kelvin / units.hPa)))
 
     true_vort = np.zeros_like(u) * (units.kelvin * units.meter**2
                                     / (units.second * units.kilogram))
 
-    assert_almost_equal(vort_difference, true_vort, 10)
-
-    # Now try for xy ordered
-    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u.T, v.T, dx.T,
-                                          dy.T, lats.T, dim_order='xy')
-    abs_vorticity = absolute_vorticity(u.T, v.T, dx.T, dy.T, lats.T, dim_order='xy')
-    vort_difference = pvor - (abs_vorticity * g * (-1 * (units.kelvin / units.hPa)))
-    assert_almost_equal(vort_difference, true_vort, 10)
-
-
-def test_potential_vorticity_baroclinic_unity_axis2(pv_data):
-    """Test potential vorticity calculation with unity stability and height on axis 2."""
-    u, v, lats, _, dx, dy = pv_data
-
-    potential_temperature = np.ones((4, 4, 3)) * units.kelvin
-    potential_temperature[..., 0] = 200 * units.kelvin
-    potential_temperature[..., 1] = 300 * units.kelvin
-    potential_temperature[..., 2] = 400 * units.kelvin
-
-    pressure = np.ones((4, 4, 3)) * units.hPa
-    pressure[..., 2] = 1000 * units.hPa
-    pressure[..., 1] = 900 * units.hPa
-    pressure[..., 0] = 800 * units.hPa
-
-    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u, v,
-                                          dx, dy, lats, axis=2)
-
-    abs_vorticity = absolute_vorticity(u, v, dx, dy, lats)
-
-    vort_difference = pvor - (abs_vorticity * g * (-1 * (units.kelvin / units.hPa)))
-
-    true_vort = np.zeros_like(u) * (units.kelvin * units.meter ** 2
-                                    / (units.second * units.kilogram))
-
-    assert_almost_equal(vort_difference, true_vort, 10)
-
-    # Now try for xy ordered
-    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u.T, v.T, dx.T,
-                                          dy.T, lats.T, axis=2, dim_order='xy')
-    abs_vorticity = absolute_vorticity(u.T, v.T, dx.T, dy.T, lats.T, dim_order='xy')
-    vort_difference = pvor - (abs_vorticity * g * (-1 * (units.kelvin / units.hPa)))
     assert_almost_equal(vort_difference, true_vort, 10)
 
 
@@ -583,22 +553,18 @@ def test_potential_vorticity_baroclinic_non_unity_derivative(pv_data):
     pressure[1] = 999 * units.hPa
     pressure[0] = 998 * units.hPa
 
-    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy, lats)
+    pvor = potential_vorticity_baroclinic(potential_temperature, pressure,
+                                          u, v, dx[None, :, :], dy[None, :, :],
+                                          lats[None, :, :])
 
-    abs_vorticity = absolute_vorticity(u, v, dx, dy, lats)
+    abs_vorticity = absolute_vorticity(u, v, dx[None, :, :], dy[None, :, :],
+                                       lats[None, :, :])
 
     vort_difference = pvor - (abs_vorticity * g * (-100 * (units.kelvin / units.hPa)))
 
     true_vort = np.zeros_like(u) * (units.kelvin * units.meter ** 2
                                     / (units.second * units.kilogram))
 
-    assert_almost_equal(vort_difference, true_vort, 10)
-
-    # Now try for xy ordered
-    pvor = potential_vorticity_baroclinic(potential_temperature, pressure, u.T, v.T, dx.T,
-                                          dy.T, lats.T, dim_order='xy')
-    abs_vorticity = absolute_vorticity(u.T, v.T, dx.T, dy.T, lats.T, dim_order='xy')
-    vort_difference = pvor - (abs_vorticity * g * (-100 * (units.kelvin / units.hPa)))
     assert_almost_equal(vort_difference, true_vort, 10)
 
 
@@ -618,39 +584,209 @@ def test_potential_vorticity_baroclinic_wrong_number_of_levels_axis_0(pv_data):
 
     with pytest.raises(ValueError):
         potential_vorticity_baroclinic(potential_temperature[:1, :, :], pressure, u, v,
-                                       dx, dy, lats)
+                                       dx[None, :, :], dy[None, :, :],
+                                       lats[None, :, :])
 
     with pytest.raises(ValueError):
-        potential_vorticity_baroclinic(u, v, dx, dy, lats,
-                                       potential_temperature, pressure[:1, :, :])
+        potential_vorticity_baroclinic(u, v, dx[None, :, :], dy[None, :, :],
+                                       lats[None, :, :], potential_temperature,
+                                       pressure[:1, :, :])
 
 
-def test_potential_vorticity_baroclinic_wrong_number_of_levels_axis_2(pv_data):
-    """Test that potential vorticity calculation errors without 3 levels on axis 2."""
-    u, v, lats, _, dx, dy = pv_data
+def test_potential_vorticity_baroclinic_isentropic_real_data():
+    """Test potential vorticity calculation with real isentropic data."""
+    isentlevs = [328, 330, 332] * units.K
+    isentprs = np.array([[[245.88052, 245.79416, 245.68776, 245.52525, 245.31844],
+                          [245.97734, 245.85878, 245.74838, 245.61089, 245.4683],
+                          [246.4308, 246.24358, 246.08649, 245.93279, 245.80148],
+                          [247.14348, 246.87215, 246.64842, 246.457, 246.32005],
+                          [248.05727, 247.72388, 247.44029, 247.19205, 247.0112]],
+                        [[239.66074, 239.60431, 239.53738, 239.42496, 239.27725],
+                         [239.5676, 239.48225, 239.4114, 239.32259, 239.23781],
+                         [239.79681, 239.6465, 239.53227, 239.43031, 239.35794],
+                         [240.2442, 240.01723, 239.84442, 239.71255, 239.64021],
+                         [240.85277, 240.57112, 240.34885, 240.17174, 240.0666]],
+                        [[233.63297, 233.60493, 233.57542, 233.51053, 233.41898],
+                         [233.35995, 233.3061, 233.27275, 233.23009, 233.2001],
+                         [233.37685, 233.26152, 233.18793, 233.13496, 233.11841],
+                         [233.57312, 233.38823, 233.26366, 233.18817, 233.17694],
+                         [233.89297, 233.66039, 233.49615, 233.38635, 233.35281]]]) * units.hPa
+    isentu = np.array([[[28.94226812, 28.53362902, 27.98145564, 27.28696092, 26.46488305],
+                        [28.15024259, 28.12645242, 27.95788749, 27.62007338, 27.10351611],
+                        [26.27821641, 26.55765132, 26.7329775, 26.77170719, 26.64779014],
+                        [24.07215607, 24.48837805, 24.86738637, 25.17622757, 25.38030319],
+                        [22.25524153, 22.65568001, 23.07333679, 23.48542321, 23.86341343]],
+                       [[28.50078095, 28.12605738, 27.6145395, 26.96565679, 26.1919881],
+                        [27.73718892, 27.73189078, 27.58886228, 27.28329365, 26.80468118],
+                        [25.943111, 26.23034592, 26.41833632, 26.47466534, 26.37320009],
+                        [23.82858821, 24.24937503, 24.63505859, 24.95235053, 25.16669265],
+                        [22.09498322, 22.5008718, 22.9247538, 23.34295878, 23.72623895]],
+                       [[28.05929378, 27.71848573, 27.24762337, 26.64435265, 25.91909314],
+                        [27.32413525, 27.33732915, 27.21983708, 26.94651392, 26.50584625],
+                        [25.60800559, 25.90304052, 26.10369515, 26.17762349, 26.09861004],
+                        [23.58502035, 24.01037201, 24.4027308, 24.72847348, 24.95308212],
+                        [21.9347249, 22.34606359, 22.77617081, 23.20049435, 23.58906447]]])\
+        * (units.meters / units.sec)
+    isentv = np.array([[[-2.22336191, -2.82451946, -3.27190475, -3.53076527, -3.59311591],
+                        [-2.12438321, -2.98895919, -3.73633746, -4.32254411, -4.70849598],
+                        [-1.24050415, -2.31904635, -3.32284815, -4.20895826, -4.93036136],
+                        [0.32254009, -0.89843808, -2.09621275, -3.2215678, -4.2290825],
+                        [2.14238865, 0.88207403, -0.40652485, -1.67244834, -2.86837275]],
+                       [[-1.99024801, -2.59146057, -3.04973279, -3.3296825, -3.42137476],
+                        [-1.8711102, -2.71865804, -3.45952099, -4.05064148, -4.45309013],
+                        [-0.99367383, -2.04299168, -3.02642031, -3.90252563, -4.62540783],
+                        [0.547778, -0.63635567, -1.80391109, -2.90776869, -3.90375721],
+                        [2.33967328, 1.12072805, -0.13066324, -1.3662872, -2.5404749]],
+                       [[-1.75713411, -2.35840168, -2.82756083, -3.12859972, -3.24963361],
+                        [-1.6178372, -2.44835688, -3.18270452, -3.77873886, -4.19768429],
+                        [-0.7468435, -1.76693701, -2.72999246, -3.596093, -4.32045429],
+                        [0.7730159, -0.37427326, -1.51160943, -2.59396958, -3.57843192],
+                        [2.53695791, 1.35938207, 0.14519838, -1.06012605, -2.21257705]]])\
+        * (units.meters / units.sec)
+    lats = np.array([57.5, 57., 56.5, 56., 55.5]) * units.degrees
+    lons = np.array([227.5, 228., 228.5, 229., 229.5]) * units.degrees
 
-    potential_temperature = np.ones((4, 4, 3)) * units.kelvin
-    potential_temperature[..., 0] = 200 * units.kelvin
-    potential_temperature[..., 1] = 300 * units.kelvin
-    potential_temperature[..., 1] = 400 * units.kelvin
+    dx, dy = lat_lon_grid_deltas(lons, lats)
 
-    pressure = np.ones((4, 4, 3)) * units.hPa
-    pressure[..., 2] = 1000 * units.hPa
-    pressure[..., 1] = 900 * units.hPa
-    pressure[..., 0] = 800 * units.hPa
+    pvor = potential_vorticity_baroclinic(isentlevs[:, None, None], isentprs,
+                                          isentu, isentv, dx[None, :, :], dy[None, :, :],
+                                          lats[None, :, None])
 
-    with pytest.raises(ValueError):
-        potential_vorticity_baroclinic(potential_temperature[..., :1], pressure, u, v,
-                                       dx, dy, lats, axis=2)
+    true_pv = np.array([[[2.97116898e-06, 3.38486331e-06, 3.81432403e-06, 4.24722471e-06,
+                          4.64995688e-06],
+                         [2.04235589e-06, 2.35739554e-06, 2.71138003e-06, 3.11803005e-06,
+                          3.54655984e-06],
+                         [1.41179481e-06, 1.60663306e-06, 1.85439220e-06, 2.17827401e-06,
+                          2.55309150e-06],
+                         [1.25933892e-06, 1.31915377e-06, 1.43444064e-06, 1.63067920e-06,
+                          1.88631658e-06],
+                         [1.37533104e-06, 1.31658998e-06, 1.30424716e-06, 1.36777872e-06,
+                          1.49289942e-06]],
+                        [[3.07674708e-06, 3.48172482e-06, 3.90371030e-06, 4.33207155e-06,
+                         4.73253199e-06],
+                         [2.16369614e-06, 2.47112604e-06, 2.81747901e-06, 3.21722053e-06,
+                          3.63944011e-06],
+                         [1.53925419e-06, 1.72853221e-06, 1.97026966e-06, 2.28774012e-06,
+                          2.65577906e-06],
+                         [1.38675388e-06, 1.44221972e-06, 1.55296146e-06, 1.74439951e-06,
+                          1.99486345e-06],
+                         [1.50312413e-06, 1.44039769e-06, 1.42422805e-06, 1.48403040e-06,
+                          1.60544869e-06]],
+                        [[3.17979446e-06, 3.57430736e-06, 3.98713951e-06, 4.40950119e-06,
+                         4.80650246e-06],
+                         [2.28618901e-06, 2.58455503e-06, 2.92172357e-06, 3.31292186e-06,
+                          3.72721632e-06],
+                         [1.67022518e-06, 1.85294576e-06, 2.08747504e-06, 2.39710083e-06,
+                          2.75677598e-06],
+                         [1.51817109e-06, 1.56879550e-06, 1.67430213e-06, 1.85997008e-06,
+                          2.10409000e-06],
+                         [1.63449148e-06, 1.56773336e-06, 1.54753266e-06, 1.60313832e-06,
+                         1.72018062e-06]]]) * (units.kelvin * units.meter ** 2
+                                               / (units.second * units.kilogram))
 
-    with pytest.raises(ValueError):
-        potential_vorticity_baroclinic(potential_temperature, pressure[..., :1], u, v,
-                                       dx, dy, lats, axis=1)
+    assert_almost_equal(pvor, true_pv, 14)
+
+
+def test_potential_vorticity_baroclinic_isobaric_real_data():
+    """Test potential vorticity calculation with real isentropic data."""
+    pres = [20000., 25000., 30000.] * units.Pa
+    theta = np.array([[[344.45776, 344.5063, 344.574, 344.6499, 344.735],
+                       [343.98444, 344.02536, 344.08682, 344.16284, 344.2629],
+                       [343.58792, 343.60876, 343.65628, 343.72818, 343.82834],
+                       [343.21542, 343.2204, 343.25833, 343.32935, 343.43414],
+                       [342.85272, 342.84982, 342.88556, 342.95645, 343.0634]],
+                      [[326.70923, 326.67603, 326.63416, 326.57153, 326.49155],
+                       [326.77695, 326.73468, 326.6931, 326.6408, 326.58405],
+                       [326.95062, 326.88986, 326.83627, 326.78134, 326.7308],
+                       [327.1913, 327.10928, 327.03894, 326.97546, 326.92587],
+                       [327.47235, 327.3778, 327.29468, 327.2188, 327.15973]],
+                      [[318.47897, 318.30374, 318.1081, 317.8837, 317.63837],
+                       [319.155, 318.983, 318.79745, 318.58905, 318.36212],
+                       [319.8042, 319.64206, 319.4669, 319.2713, 319.0611],
+                       [320.4621, 320.3055, 320.13373, 319.9425, 319.7401],
+                       [321.1375, 320.98648, 320.81473, 320.62186, 320.4186]]]) * units.K
+    uwnd = np.array([[[25.309322, 25.169882, 24.94082, 24.61212, 24.181437],
+                      [24.849028, 24.964956, 24.989666, 24.898415, 24.673553],
+                      [23.666418, 24.003235, 24.269922, 24.435743, 24.474638],
+                      [22.219162, 22.669518, 23.09492, 23.460283, 23.731855],
+                      [21.065105, 21.506243, 21.967466, 22.420042, 22.830257]],
+                     [[29.227198, 28.803436, 28.23203, 27.516447, 26.670708],
+                      [28.402836, 28.376076, 28.199024, 27.848948, 27.315084],
+                      [26.454042, 26.739328, 26.916056, 26.952703, 26.822044],
+                      [24.17064, 24.59482, 24.979027, 25.290913, 25.495026],
+                      [22.297522, 22.70384, 23.125736, 23.541069, 23.921045]],
+                     [[27.429195, 26.97554, 26.360558, 25.594944, 24.7073],
+                      [26.959536, 26.842077, 26.56688, 26.118752, 25.50171],
+                      [25.460867, 25.599699, 25.62171, 25.50819, 25.249628],
+                      [23.6418, 23.920736, 24.130007, 24.255558, 24.28613],
+                      [21.915337, 22.283215, 22.607704, 22.879448, 23.093569]]])\
+        * (units.meters / units.sec)
+    vwnd = np.array([[[-0.3050951, -0.90105104, -1.4307652, -1.856761, -2.156073],
+                      [-0.10017005, -0.82312256, -1.5097888, -2.1251845, -2.631675],
+                      [0.6832816, -0.16461015, -1.0023694, -1.7991445, -2.5169075],
+                      [2.0360851, 1.0960612, 0.13380499, -0.81640035, -1.718524],
+                      [3.6074955, 2.654059, 1.6466523, 0.61709386, -0.39874703]],
+                     [[-2.3738103, -2.9788015, -3.423631, -3.6743853, -3.7226477],
+                      [-2.2792664, -3.159968, -3.917221, -4.507328, -4.8893175],
+                      [-1.3700132, -2.4722757, -3.4953287, -4.3956766, -5.123884],
+                      [0.2314668, -1.0151587, -2.2366724, -3.382317, -4.403803],
+                      [2.0903401, 0.8078297, -0.5038105, -1.7920332, -3.0061343]],
+                     [[-1.4415079, -1.7622383, -1.9080431, -1.8903408, -1.7376306],
+                      [-1.5708634, -2.288579, -2.823628, -3.1583376, -3.285275],
+                      [-0.9814599, -1.999404, -2.8674111, -3.550859, -4.0168552],
+                      [0.07641177, -1.1033016, -2.1928647, -3.1449537, -3.9159832],
+                      [1.2759045, 0.05043932, -1.1469103, -2.264961, -3.2550638]]])\
+        * (units.meters / units.sec)
+    lats = np.array([57.5, 57., 56.5, 56., 55.5]) * units.degrees
+    lons = np.array([227.5, 228., 228.5, 229., 229.5]) * units.degrees
+
+    dx, dy = lat_lon_grid_deltas(lons, lats)
+
+    pvor = potential_vorticity_baroclinic(theta, pres[:, None, None],
+                                          uwnd, vwnd, dx[None, :, :], dy[None, :, :],
+                                          lats[None, :, None])
+
+    true_pv = np.array([[[4.29013406e-06, 4.61736108e-06, 4.97453387e-06, 5.36730237e-06,
+                          5.75500645e-06],
+                         [3.48415057e-06, 3.72492697e-06, 4.00658450e-06, 4.35128065e-06,
+                          4.72701041e-06],
+                         [2.87775662e-06, 3.01866087e-06, 3.21074864e-06, 3.47971854e-06,
+                          3.79924194e-06],
+                         [2.70274738e-06, 2.71627883e-06, 2.78699880e-06, 2.94197238e-06,
+                          3.15685712e-06],
+                         [2.81293318e-06, 2.70649941e-06, 2.65188277e-06, 2.68109532e-06,
+                          2.77737801e-06]],
+                        [[2.43090597e-06, 2.79248225e-06, 3.16783697e-06, 3.54497301e-06,
+                         3.89481001e-06],
+                         [1.61968826e-06, 1.88924405e-06, 2.19296648e-06, 2.54191855e-06,
+                          2.91119712e-06],
+                         [1.09089606e-06, 1.25384007e-06, 1.46192044e-06, 1.73476959e-06,
+                          2.05268876e-06],
+                         [9.72047256e-07, 1.02016741e-06, 1.11466014e-06, 1.27721014e-06,
+                          1.49122340e-06],
+                         [1.07501523e-06, 1.02474621e-06, 1.01290749e-06, 1.06385170e-06,
+                          1.16674712e-06]],
+                        [[6.10254835e-07, 7.31519400e-07, 8.55731472e-07, 9.74301226e-07,
+                         1.08453329e-06],
+                         [3.17052987e-07, 3.98799900e-07, 4.91789955e-07, 5.96021549e-07,
+                          7.10773939e-07],
+                         [1.81983099e-07, 2.26503437e-07, 2.83058115e-07, 3.56549337e-07,
+                          4.47098851e-07],
+                         [1.54729567e-07, 1.73825926e-07, 2.01823376e-07, 2.44513805e-07,
+                          3.02525735e-07],
+                         [1.55220676e-07, 1.63334569e-07, 1.76335524e-07, 1.98346439e-07,
+                          2.30155553e-07]]]) * (units.kelvin * units.meter ** 2
+                                                / (units.second * units.kilogram))
+
+    assert_almost_equal(pvor, true_pv, 10)
 
 
 def test_potential_vorticity_barotropic(pv_data):
     """Test the barotopic (Rossby) potential vorticity."""
     u, v, lats, _, dx, dy = pv_data
+
+    u = u[0]
+    v = v[0]
 
     heights = np.ones_like(u) * 3 * units.km
     pv = potential_vorticity_barotropic(heights, u, v, dx, dy, lats)
