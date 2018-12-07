@@ -10,6 +10,7 @@ import logging
 import numpy as np
 from numpy.testing import assert_array_almost_equal
 import pytest
+import scipy
 
 from metpy.cbook import get_test_data
 from metpy.deprecation import MetpyDeprecationWarning
@@ -223,7 +224,11 @@ def test_inverse_distance(method, test_data, test_grid):
 
 
 interp_methods = ['natural_neighbor', 'cressman', 'barnes',
-                  'linear', 'nearest', 'cubic', 'rbf']
+                  'linear', 'nearest', 'rbf',
+                  pytest.param('cubic',
+                               marks=pytest.mark.skipif(
+                                   scipy.__version__ < '1.2.0',
+                                   reason='Need Scipy >=1.2 for fixed cubic interpolation.'))]
 
 boundary_types = [{'west': 80.0, 'south': 140.0, 'east': 980.0, 'north': 980.0},
                   None]
