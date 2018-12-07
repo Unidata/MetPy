@@ -137,8 +137,7 @@ def test_missing_grid_mapping_var():
                         attrs={'grid_mapping': 'fixedgrid_projection'})
     ds = xr.Dataset({'data': data})
 
-    with pytest.warns(UserWarning, match='Could not find'):
-        ds.metpy.parse_cf('data')
+    ds.metpy.parse_cf('data')
 
 
 def test_preprocess_xarray():
