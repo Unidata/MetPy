@@ -282,7 +282,7 @@ def moist_lapse(pressure, temperature, ref_pressure=None):
 
     ref_pres_idx = np.searchsorted(pressure.m, ref_pressure.m, side=side)
 
-    ret_temperatures = np.array([[]] * temperature.shape[0]).T
+    ret_temperatures = np.empty((0, temperature.shape[0]))
 
     if ref_pressure > pressure.min():
         # Integrate downward in pressure
