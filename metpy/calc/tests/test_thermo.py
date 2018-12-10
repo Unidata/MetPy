@@ -130,6 +130,14 @@ def test_moist_lapse_degc():
     assert_array_almost_equal(temp, true_temp, 2)
 
 
+def test_moist_lapse_ref_pres():
+    """Test moist_lapse with a reference pressure."""
+    temp = moist_lapse(np.array([1050., 800., 600., 500., 400.]) * units.mbar,
+                       19.85 * units.degC, 1000. * units.mbar)
+    true_temp = np.array([294.76, 284.64, 272.81, 264.42, 252.91]) * units.kelvin
+    assert_array_almost_equal(temp, true_temp, 2)
+
+
 def test_parcel_profile():
     """Test parcel profile calculation."""
     levels = np.array([1000., 900., 800., 700., 600., 500., 400.]) * units.mbar

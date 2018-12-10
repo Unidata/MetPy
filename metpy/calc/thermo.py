@@ -179,13 +179,12 @@ def temperature_from_potential_temperature(pressure, theta):
 
 @exporter.export
 @preprocess_xarray
-@check_units('[pressure]', '[temperature]')
-def dry_lapse(pressure, temperature):
+@check_units('[pressure]', '[temperature]', '[pressure]')
+def dry_lapse(pressure, temperature, ref_pressure=None):
     r"""Calculate the temperature at a level assuming only dry processes.
 
     This function lifts a parcel starting at `temperature`, conserving
-    potential temperature. The starting pressure should be the first item in
-    the `pressure` array.
+    potential temperature. The starting pressure can be given by `ref_pressure`.
 
     Parameters
     ----------
@@ -193,6 +192,9 @@ def dry_lapse(pressure, temperature):
         The atmospheric pressure level(s) of interest
     temperature : `pint.Quantity`
         The starting temperature
+    ref_pressure : `pint.Quantity`, optional
+        The reference pressure. If not given, it defaults to the first element of the
+        pressure array.
 
     Returns
     -------
@@ -207,18 +209,20 @@ def dry_lapse(pressure, temperature):
     potential_temperature
 
     """
-    return temperature * (pressure / pressure[0])**mpconsts.kappa
+    if ref_pressure is None:
+        ref_pressure = pressure[0]
+    return temperature * (pressure / ref_pressure)**mpconsts.kappa
 
 
 @exporter.export
 @preprocess_xarray
-@check_units('[pressure]', '[temperature]')
-def moist_lapse(pressure, temperature):
+@check_units('[pressure]', '[temperature]', '[pressure]')
+def moist_lapse(pressure, temperature, ref_pressure=None):
     r"""Calculate the temperature at a level assuming liquid saturation processes.
 
-    This function lifts a parcel starting at `temperature`. The starting
-    pressure should be the first item in the `pressure` array. Essentially,
-    this function is calculating moist pseudo-adiabats.
+    This function lifts a parcel starting at `temperature`. The starting pressure can
+    be given by `ref_pressure`. Essentially, this function is calculating moist
+    pseudo-adiabats.
 
     Parameters
     ----------
@@ -226,6 +230,9 @@ def moist_lapse(pressure, temperature):
         The atmospheric pressure level(s) of interest
     temperature : `pint.Quantity`
         The starting temperature
+    ref_pressure : `pint.Quantity`, optional
+        The reference pressure. If not given, it defaults to the first element of the
+        pressure array.
 
     Returns
     -------
@@ -257,8 +264,42 @@ def moist_lapse(pressure, temperature):
                 / (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon
                                     / (mpconsts.Rd * t * t)))).to('kelvin')
         return frac / p
-    return units.Quantity(si.odeint(dt, atleast_1d(temperature).squeeze(),
-                                    pressure.squeeze()).T.squeeze(), temperature.units)
+
+    if ref_pressure is None:
+        ref_pressure = pressure[0]
+
+    pressure = pressure.to('mbar')
+    ref_pressure = ref_pressure.to('mbar')
+    temperature = atleast_1d(temperature)
+
+    side = 'left'
+
+    pres_decreasing = (pressure[0] > pressure[-1])
+    if pres_decreasing:
+        # Everything is easier if pressures are in increasing order
+        pressure = pressure[::-1]
+        side = 'right'
+
+    ref_pres_idx = np.searchsorted(pressure.m, ref_pressure.m, side=side)
+
+    ret_temperatures = np.empty((0, temperature.shape[0]))
+
+    if ref_pressure > pressure.min():
+        # Integrate downward in pressure
+        pres_down = np.append(ref_pressure, pressure[(ref_pres_idx - 1)::-1])
+        trace_down = si.odeint(dt, temperature.squeeze(), pres_down.squeeze())
+        ret_temperatures = np.concatenate((ret_temperatures, trace_down[:0:-1]))
+
+    if ref_pressure < pressure.max():
+        # Integrate upward in pressure
+        pres_up = np.append(ref_pressure, pressure[ref_pres_idx:])
+        trace_up = si.odeint(dt, temperature.squeeze(), pres_up.squeeze())
+        ret_temperatures = np.concatenate((ret_temperatures, trace_up[1:]))
+
+    if pres_decreasing:
+        ret_temperatures = ret_temperatures[::-1]
+
+    return units.Quantity(ret_temperatures.T.squeeze(), temperature.units)
 
 
 @exporter.export
