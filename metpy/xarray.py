@@ -5,6 +5,7 @@
 from __future__ import absolute_import
 
 import functools
+import logging
 import re
 import warnings
 
@@ -16,6 +17,8 @@ from .units import DimensionalityError, units
 __all__ = []
 readable_to_cf_axes = {'time': 'T', 'vertical': 'Z', 'y': 'Y', 'x': 'X'}
 cf_to_readable_axes = {readable_to_cf_axes[key]: key for key in readable_to_cf_axes}
+
+log = logging.getLogger(__name__)
 
 
 @xr.register_dataarray_accessor('metpy')
@@ -164,7 +167,7 @@ class CFConventionHandler(object):
             try:
                 proj_var = self._dataset.variables[proj_name]
             except KeyError:
-                warnings.warn(
+                log.warning(
                     'Could not find variable corresponding to the value of '
                     'grid_mapping: {}'.format(proj_name))
             else:
