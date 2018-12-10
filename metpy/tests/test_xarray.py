@@ -127,7 +127,7 @@ def test_missing_grid_mapping():
     assert 'crs' in data_var.coords
 
 
-def test_missing_grid_mapping_var():
+def test_missing_grid_mapping_var(caplog):
     """Test behavior when we can't find the variable pointed to by grid_mapping."""
     x = xr.DataArray(np.arange(3),
                      attrs={'standard_name': 'projection_x_coordinate', 'units': 'radians'})
@@ -137,7 +137,11 @@ def test_missing_grid_mapping_var():
                         attrs={'grid_mapping': 'fixedgrid_projection'})
     ds = xr.Dataset({'data': data})
 
-    ds.metpy.parse_cf('data')
+    ds.metpy.parse_cf('data')  # Should log a warning
+
+    for record in caplog.records:
+        assert record.levelname == 'WARNING'
+    assert 'Could not find' in caplog.text
 
 
 def test_preprocess_xarray():
