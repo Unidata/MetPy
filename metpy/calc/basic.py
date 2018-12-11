@@ -103,7 +103,7 @@ def wind_components(speed, wdir):
         The wind speed (magnitude)
     wdir : array_like
         The wind direction, specified as the direction from which the wind is
-        blowing, with 360 degrees being North.
+        blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.
 
     Returns
     -------
