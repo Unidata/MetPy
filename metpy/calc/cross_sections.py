@@ -208,8 +208,10 @@ def normal_component(data_x, data_y, index='index'):
     # Take the dot products
     component_norm = data_x * unit_norm[0] + data_y * unit_norm[1]
 
-    # Reattach units (only reliable attribute after operation)
-    component_norm.attrs = {'units': data_x.attrs['units']}
+    # Reattach only reliable attributes after operation
+    for attr in ('units', 'grid_mapping'):
+        if attr in data_x.attrs:
+            component_norm.attrs[attr] = data_x.attrs[attr]
 
     return component_norm
 
@@ -248,8 +250,10 @@ def tangential_component(data_x, data_y, index='index'):
     # Take the dot products
     component_tang = data_x * unit_tang[0] + data_y * unit_tang[1]
 
-    # Reattach units (only reliable attribute after operation)
-    component_tang.attrs = {'units': data_x.attrs['units']}
+    # Reattach only reliable attributes after operation
+    for attr in ('units', 'grid_mapping'):
+        if attr in data_x.attrs:
+            component_tang.attrs[attr] = data_x.attrs[attr]
 
     return component_tang
 
