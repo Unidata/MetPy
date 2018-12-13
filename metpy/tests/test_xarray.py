@@ -472,3 +472,8 @@ def test_find_axis_name_bad_identifier(test_var):
     with pytest.raises(ValueError) as exc:
         test_var.metpy.find_axis_name('latitude')
     assert 'axis is not valid' in str(exc.value)
+
+
+def test_cf_parse_with_grid_mapping(test_var):
+    """Test cf_parse dont delete grid_mapping attribute."""
+    assert test_var.grid_mapping == 'Lambert_Conformal'
