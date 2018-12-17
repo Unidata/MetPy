@@ -8,9 +8,12 @@ from .one_dimension import *  # noqa: F403
 from .points import *  # noqa: F403
 from .slices import *  # noqa: F403
 from .tools import *  # noqa: F403
+from ..package_tools import set_module
 
 __all__ = grid.__all__[:]  # pylint: disable=undefined-variable
 __all__.extend(one_dimension.__all__)  # pylint: disable=undefined-variable
 __all__.extend(points.__all__)  # pylint: disable=undefined-variable
 __all__.extend(slices.__all__)  # pylint: disable=undefined-variable
 __all__.extend(tools.__all__)  # pylint: disable=undefined-variable
+
+set_module(globals())

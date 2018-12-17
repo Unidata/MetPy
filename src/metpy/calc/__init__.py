@@ -10,6 +10,7 @@ from .kinematics import *  # noqa: F403
 from .thermo import *  # noqa: F403
 from .tools import *  # noqa: F403
 from .turbulence import *  # noqa: F403
+from ..package_tools import set_module
 
 __all__ = basic.__all__[:]  # pylint: disable=undefined-variable
 __all__.extend(cross_sections.__all__)  # pylint: disable=undefined-variable
@@ -18,3 +19,5 @@ __all__.extend(kinematics.__all__)  # pylint: disable=undefined-variable
 __all__.extend(thermo.__all__)  # pylint: disable=undefined-variable
 __all__.extend(tools.__all__)  # pylint: disable=undefined-variable
 __all__.extend(turbulence.__all__)  # pylint: disable=undefined-variable
+
+set_module(globals())
