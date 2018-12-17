@@ -35,6 +35,14 @@ In general, MetPy tries to support minor versions of dependencies released withi
 years. For Python itself, that means supporting the last two minor releases, as well as
 currently supporting Python 2.7.
 
+* matplotlib >= 2.0.0
+* numpy >= 1.11.0
+* scipy >= 0.17.0
+* pint >= 0.8
+* xarray >= 0.10.7
+* enum34 (for python < 3.4)
+* pooch >= 0.1, < 0.3
+
 ------------
 Installation
 ------------
