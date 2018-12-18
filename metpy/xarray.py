@@ -70,7 +70,7 @@ class MetPyAccessor(object):
         """Return the coordinate variable corresponding to the given individual axis type."""
         if axis in readable_to_cf_axes:
             for coord_var in self._data_array.coords.values():
-                if coord_var.attrs.get('axis') == readable_to_cf_axes[axis]:
+                if coord_var.attrs.get('_metpy_axis') == readable_to_cf_axes[axis]:
                     return coord_var
             raise AttributeError(axis + ' attribute is not available.')
         else:
@@ -114,7 +114,8 @@ class MetPyAccessor(object):
     def as_timestamp(self):
         """Return the data as unix timestamp (for easier time derivatives)."""
         attrs = {key: self._data_array.attrs[key] for key in
-                 {'standard_name', 'long_name', 'axis'} & set(self._data_array.attrs)}
+                 {'standard_name', 'long_name', 'axis', '_metpy_axis'}
+                 & set(self._data_array.attrs)}
         attrs['units'] = 'seconds'
         return xr.DataArray(self._data_array.values.astype('datetime64[s]').astype('int'),
                             name=self._data_array.name,
@@ -337,12 +338,9 @@ class CFConventionHandler(object):
     @staticmethod
     def _assign_axes(coord_map, var):
         """Assign axis attribute to coordinates in var according to coord_map."""
-        for coord_var in var.coords.values():
-            if 'axis' in coord_var.attrs:
-                del coord_var.attrs['axis']
         for axis in coord_map:
             if coord_map[axis] is not None:
-                coord_map[axis].attrs['axis'] = axis
+                coord_map[axis].attrs['_metpy_axis'] = axis
 
     def _resolve_axis_conflict(self, axis, coord_lists):
         """Handle axis conflicts if they arise."""
