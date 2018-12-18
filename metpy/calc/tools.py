@@ -925,7 +925,7 @@ def xarray_derivative_wrap(func):
             # Initialize new kwargs with the axis number
             new_kwargs = {'axis': f.get_axis_num(axis)}
 
-            if f[axis].attrs.get('axis') == 'T':
+            if f[axis].attrs.get('_metpy_axis') == 'T':
                 # Time coordinate, need to convert to seconds from datetimes
                 new_kwargs['x'] = f[axis].metpy.as_timestamp().metpy.unit_array
             elif CFConventionHandler.check_axis(f[axis], 'lon'):

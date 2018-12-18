@@ -222,12 +222,13 @@ def test_missing_coordinate_type(test_ds_generic):
     assert 'not available' in str(exc.value)
 
 
-def test_assign_axes_overwrite(test_ds_generic):
-    """Test that CFConventionHandler._assign_axis overwrites past axis attributes."""
+def test_assign_axes_not_overwrite(test_ds_generic):
+    """Test that CFConventionHandler._assign_axis does not overwrite past axis attributes."""
     data = test_ds_generic.copy()
     data['c'].attrs['axis'] = 'X'
     data.metpy._assign_axes({'Y': data['c']}, data['test'])
-    assert data['c'].attrs['axis'] == 'Y'
+    assert data['c'].identical(data['test'].metpy.y)
+    assert data['c'].attrs['axis'] == 'X'
 
 
 def test_resolve_axis_conflict_lonlat_and_xy(test_ds_generic):
@@ -447,7 +448,7 @@ def test_as_timestamp(test_var):
                          name='time',
                          coords=time.coords,
                          dims='time',
-                         attrs={'long_name': 'forecast time', 'axis': 'T',
+                         attrs={'long_name': 'forecast time', '_metpy_axis': 'T',
                                 'units': 'seconds'})
     assert truth.identical(time.metpy.as_timestamp())
 
