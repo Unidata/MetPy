@@ -11,6 +11,8 @@ import warnings
 
 import xarray as xr
 from xarray.core.accessors import DatetimeAccessor
+from xarray.core.indexing import expanded_indexer
+from xarray.core.utils import either_dict_or_kwargs, is_dict_like
 
 from .units import DimensionalityError, units
 
@@ -142,6 +144,38 @@ class MetPyAccessor(object):
             # Otherwise, not valid
             raise ValueError('Given axis is not valid. Must be an axis number, a dimension '
                              'coordinate name, or a standard axis type.')
+
+    class _LocIndexer(object):
+        """Provide the unit-wrapped .loc indexer for data arrays."""
+
+        def __init__(self, data_array):
+            self.data_array = data_array
+
+        def expand(self, key):
+            """Parse key using xarray utils to ensure we have dimension names."""
+            if not is_dict_like(key):
+                labels = expanded_indexer(key, self.data_array.ndim)
+                key = dict(zip(self.data_array.dims, labels))
+            return key
+
+        def __getitem__(self, key):
+            key = _reassign_quantity_indexer(self.data_array, self.expand(key))
+            return self.data_array.loc[key]
+
+        def __setitem__(self, key, value):
+            key = _reassign_quantity_indexer(self.data_array, self.expand(key))
+            self.data_array.loc[key] = value
+
+    @property
+    def loc(self):
+        """Make the LocIndexer available as a property."""
+        return self._LocIndexer(self._data_array)
+
+    def sel(self, indexers=None, method=None, tolerance=None, drop=False, **indexers_kwargs):
+        """Wrap DataArray.sel to handle units."""
+        indexers = either_dict_or_kwargs(indexers, indexers_kwargs, 'sel')
+        indexers = _reassign_quantity_indexer(self._data_array, indexers)
+        return self._data_array.sel(indexers, method=method, tolerance=tolerance, drop=drop)
 
 
 @xr.register_dataset_accessor('metpy')
@@ -369,6 +403,27 @@ class CFConventionHandler(object):
                       + ' coordinate. Specify the unique axes using the coordinates argument.')
         coord_lists[axis] = []
 
+    class _LocIndexer(object):
+        """Provide the unit-wrapped .loc indexer for datasets."""
+
+        def __init__(self, dataset):
+            self.dataset = dataset
+
+        def __getitem__(self, key):
+            parsed_key = _reassign_quantity_indexer(self.dataset, key)
+            return self.dataset.loc[parsed_key]
+
+    @property
+    def loc(self):
+        """Make the LocIndexer available as a property."""
+        return self._LocIndexer(self._dataset)
+
+    def sel(self, indexers=None, method=None, tolerance=None, drop=False, **indexers_kwargs):
+        """Wrap Dataset.sel to handle units."""
+        indexers = either_dict_or_kwargs(indexers, indexers_kwargs, 'sel')
+        indexers = _reassign_quantity_indexer(self._dataset, indexers)
+        return self._dataset.sel(indexers, method=method, tolerance=tolerance, drop=drop)
+
 
 def preprocess_xarray(func):
     """Decorate a function to convert all DataArray arguments to pint.Quantities.
@@ -410,3 +465,34 @@ if not hasattr(DatetimeAccessor, 'strftime'):
         return strs.values.reshape(values.shape)
 
     DatetimeAccessor.strftime = strftime
+
+
+def _reassign_quantity_indexer(data, indexers):
+    """Reassign a units.Quantity indexer to units of relevant coordinate."""
+    def _to_magnitude(val, unit):
+        try:
+            return val.to(unit).m
+        except AttributeError:
+            return val
+
+    for coord_name in indexers:
+        # Handle axis types for DataArrays
+        if (isinstance(data, xr.DataArray) and coord_name not in data.dims
+                and coord_name in readable_to_cf_axes):
+            axis = coord_name
+            coord_name = next(data.metpy.coordinates(axis)).name
+            indexers[coord_name] = indexers[axis]
+            del indexers[axis]
+
+        # Handle slices of quantities
+        if isinstance(indexers[coord_name], slice):
+            start = _to_magnitude(indexers[coord_name].start, data[coord_name].metpy.units)
+            stop = _to_magnitude(indexers[coord_name].stop, data[coord_name].metpy.units)
+            step = _to_magnitude(indexers[coord_name].step, data[coord_name].metpy.units)
+            indexers[coord_name] = slice(start, stop, step)
+
+        # Handle quantities
+        indexers[coord_name] = _to_magnitude(indexers[coord_name],
+                                             data[coord_name].metpy.units)
+
+    return indexers
