@@ -116,6 +116,9 @@ of the standard library enum module.
 There is also an optional dependency on the pyproj library for geographic
 projections (used with CDM interface).
 
+See the `installation guide <https://unidata.github.io/MetPy/dev/installguide.html>`_
+for more information.
+
 Code of Conduct
 ---------------
 We want everyone to feel welcome to contribute to MetPy and participate in discussions. In that
