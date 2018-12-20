@@ -9,6 +9,7 @@ import logging
 from . import _mpl  # noqa: F401
 from ._util import add_metpy_logo, add_timestamp, add_unidata_logo, convert_gempak_color
 from .ctables import *  # noqa: F403
+from .declarative import *  # noqa: F403
 from .skewt import *  # noqa: F403
 from .station_plot import *  # noqa: F403
 from .wx_symbols import *  # noqa: F403
@@ -16,6 +17,7 @@ from .wx_symbols import *  # noqa: F403
 logger = logging.getLogger(__name__)
 
 __all__ = ctables.__all__[:]  # pylint: disable=undefined-variable
+__all__.extend(declarative.__all__)  # pylint: disable=undefined-variable
 __all__.extend(skewt.__all__)  # pylint: disable=undefined-variable
 __all__.extend(station_plot.__all__)  # pylint: disable=undefined-variable
 __all__.extend(wx_symbols.__all__)  # pylint: disable=undefined-variable
