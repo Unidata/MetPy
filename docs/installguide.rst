@@ -40,6 +40,7 @@ currently supporting Python 2.7.
 * scipy >= 0.17.0
 * pint >= 0.8
 * xarray >= 0.10.7
+* traitlets >= 4.3.0
 * enum34 (for python < 3.4)
 * pooch >= 0.1, < 0.3
 
