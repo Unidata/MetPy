@@ -23,7 +23,9 @@ def interpolate_to_slice(data, points, interp_type='linear'):
     Parameters
     ----------
     data: `xarray.DataArray` or `xarray.Dataset`
-        Three- (or higher) dimensional field(s) to interpolate.
+        Three- (or higher) dimensional field(s) to interpolate. The DataArray (or each
+        DataArray in the Dataset) must have been parsed by MetPy and include both an x and
+        y coordinate dimension.
     points: (N, 2) array_like
         A list of x, y points in the data projection at which to interpolate the data
     interp_type: str, optional
@@ -40,7 +42,13 @@ def interpolate_to_slice(data, points, interp_type='linear'):
     cross_section
 
     """
-    x, y = data.metpy.coordinates('x', 'y')
+    try:
+        x, y = data.metpy.coordinates('x', 'y')
+    except AttributeError:
+        raise ValueError('Required coordinate information not available. Verify that '
+                         'your data has been parsed by MetPy with proper x and y '
+                         'dimension coordinates.')
+
     data_sliced = data.interp({
         x.name: xr.DataArray(points[:, 0], dims='index', attrs=x.attrs),
         y.name: xr.DataArray(points[:, 1], dims='index', attrs=y.attrs)
@@ -108,8 +116,9 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
     Parameters
     ----------
     data: `xarray.DataArray` or `xarray.Dataset`
-        Three- (or higher) dimensional field(s) to interpolate (must have attached projection
-        information).
+        Three- (or higher) dimensional field(s) to interpolate. The DataArray (or each
+        DataArray in the Dataset) must have been parsed by MetPy and include both an x and
+        y coordinate dimension and the added `crs` coordinate.
     start: (2, ) array_like
         A latitude-longitude pair designating the start point of the cross section (units are
         degrees north and degrees east).
@@ -144,8 +153,14 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
     else:
 
         # Get the projection and coordinates
-        crs_data = data.metpy.cartopy_crs
-        x = data.metpy.x
+        try:
+            crs_data = data.metpy.cartopy_crs
+            x = data.metpy.x
+        except AttributeError:
+            raise ValueError('Data missing required coordinate information. Verify that '
+                             'your data have been parsed by MetPy with proper x and y '
+                             'dimension coordinates and added crs coordinate of the '
+                             'correct projection for each variable.')
 
         # Get the geodesic
         points_cross = geodesic(crs_data, start, end, steps)
