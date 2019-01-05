@@ -543,7 +543,7 @@ class MapPanel(Panel):
     area = Union([Unicode(), Tuple(Float(), Float(), Float(), Float())], allow_none=True,
                  default_value=None)
     projection = Union([Unicode(), Instance(ccrs.Projection)], default_value='data')
-    maps = List(Union([Unicode(), Instance(cfeature.Feature)]), default_value=['coastline'])
+    layers = List(Union([Unicode(), Instance(cfeature.Feature)]), default_value=['coastline'])
     title = Unicode()
 
     @observe('plots')
@@ -582,7 +582,7 @@ class MapPanel(Panel):
         Handle converting names of maps to auto-scaling map features.
 
         """
-        for item in self.maps:
+        for item in self.layers:
             if is_string_like(item):
                 item = item.upper()
                 try:

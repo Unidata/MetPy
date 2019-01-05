@@ -63,7 +63,7 @@ def test_declarative_contour():
     panel = MapPanel()
     panel.area = 'us'
     panel.proj = 'lcc'
-    panel.maps = ['coastline', 'borders', 'usstates']
+    panel.layers = ['coastline', 'borders', 'usstates']
     panel.plots = [contour]
 
     pc = PanelContainer()
@@ -97,7 +97,7 @@ def test_declarative_events():
     panel = MapPanel()
     panel.area = 'us'
     panel.proj = 'lcc'
-    panel.maps = ['coastline', 'borders', 'states']
+    panel.layers = ['coastline', 'borders', 'states']
     panel.plots = [contour, img]
 
     pc = PanelContainer()
@@ -140,7 +140,7 @@ def test_projection_object():
     panel = MapPanel()
     panel.area = (-110, -60, 25, 55)
     panel.projection = ccrs.Mercator()
-    panel.maps = [cfeature.LAKES]
+    panel.layers = [cfeature.LAKES]
     panel.plots = [contour]
 
     pc = PanelContainer()
