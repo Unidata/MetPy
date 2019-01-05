@@ -40,7 +40,7 @@ img.level = 850 * units.hPa
 # Plot the data on a map
 panel = MapPanel()
 panel.area = 'us'
-panel.maps = ['coastline', 'borders', 'states', 'rivers', 'ocean', 'land']
+panel.layers = ['coastline', 'borders', 'states', 'rivers', 'ocean', 'land']
 panel.title = 'NARR Example'
 panel.plots = [contour, img]
 
