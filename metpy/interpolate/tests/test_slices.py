@@ -223,3 +223,27 @@ def test_cross_section_dataset_and_nearest_interp(test_ds_lonlat):
     )
 
     xr.testing.assert_allclose(data_truth, data_cross)
+
+
+def test_interpolate_to_slice_error_on_missing_coordinate(test_ds_lonlat):
+    """Test that the proper error is raised with missing coordinate."""
+    # Use a variable with a coordinate dimension that has attributes removed
+    data_bad = test_ds_lonlat['temperature'].copy()
+    data_bad['lat'].attrs = {}
+    path = np.array([[265.0, 30.],
+                     [265.0, 36.],
+                     [265.0, 42.]])
+
+    with pytest.raises(ValueError):
+        interpolate_to_slice(data_bad, path)
+
+
+def test_cross_section_error_on_missing_coordinate(test_ds_lonlat):
+    """Test that the proper error is raised with missing coordinate."""
+    # Use a variable with no crs coordinate
+    data_bad = test_ds_lonlat['temperature'].copy()
+    del data_bad['crs']
+    start, end = (30.5, 255.5), (44.5, 274.5)
+
+    with pytest.raises(ValueError):
+        cross_section(data_bad, start, end)
