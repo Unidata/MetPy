@@ -134,7 +134,12 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.MapPanel.html">MapPanel</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PanelContainer.html">PanelContainer</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Plot2D.html">Plot2D</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a></li>
@@ -253,16 +258,31 @@
 <col width="90%" />
 </colgroup>
 <tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="metpy.plots.Hodograph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hodograph</span></code></a>([ax,&nbsp;component_range])</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a>(*args,&nbsp;**kwargs)</td>
+<td>Represent a contour plot.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="metpy.plots.Hodograph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hodograph</span></code></a>([ax,&nbsp;component_range])</td>
 <td>Make a hodograph of wind data.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig,&nbsp;rotation,&nbsp;subplot])</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>(*args,&nbsp;**kwargs)</td>
+<td>Represent an image plot.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MapPanel</span></code></a>(*args,&nbsp;**kwargs)</td>
+<td>Draw one or more plots on a map.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PanelContainer</span></code></a>(*args,&nbsp;**kwargs)</td>
+<td>Hold multiple panels of plots.</td>
+</tr>
+<tr class="row-even"><td><a class="reference internal" href="metpy.plots.Plot2D.html#metpy.plots.Plot2D" title="metpy.plots.Plot2D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plot2D</span></code></a>(*args,&nbsp;**kwargs)</td>
+<td>Represent plots of 2D data.</td>
+</tr>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig,&nbsp;rotation,&nbsp;subplot,&nbsp;rect])</td>
 <td>Make Skew-T log-P plots of data.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>(ax,&nbsp;x,&nbsp;y[,&nbsp;fontsize,&nbsp;spacing,&nbsp;…])</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>(ax,&nbsp;x,&nbsp;y[,&nbsp;fontsize,&nbsp;spacing,&nbsp;…])</td>
 <td>Make a standard meteorological station plot.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout" title="metpy.plots.StationPlotLayout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlotLayout</span></code></a></td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout" title="metpy.plots.StationPlotLayout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlotLayout</span></code></a></td>
 <td>make a layout to encapsulate plotting using <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StationPlot</span></code></a>.</td>
 </tr>
 </tbody>
@@ -292,7 +312,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -329,7 +349,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -340,7 +360,8 @@
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
 
   

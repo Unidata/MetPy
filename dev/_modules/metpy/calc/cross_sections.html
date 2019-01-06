@@ -224,8 +224,8 @@
 <span class="sd">        A tuple of the x and y distances as DataArrays</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">)</span> <span class="ow">and</span>
-            <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">)):</span>
         <span class="c1"># Use pyproj to obtain x and y distances</span>
         <span class="kn">from</span> <span class="nn">pyproj</span> <span class="k">import</span> <span class="n">Geod</span>
 
@@ -244,8 +244,8 @@
         <span class="n">x</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">lon</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">lon</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;meters&#39;</span><span class="p">})</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">lat</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">lat</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;meters&#39;</span><span class="p">})</span>
 
-    <span class="k">elif</span> <span class="p">(</span><span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span> <span class="ow">and</span>
-            <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)):</span>
+    <span class="k">elif</span> <span class="p">(</span><span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
+            <span class="ow">and</span> <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)):</span>
 
         <span class="c1"># Simply return what we have</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
@@ -399,8 +399,10 @@
     <span class="c1"># Take the dot products</span>
     <span class="n">component_norm</span> <span class="o">=</span> <span class="n">data_x</span> <span class="o">*</span> <span class="n">unit_norm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">data_y</span> <span class="o">*</span> <span class="n">unit_norm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="c1"># Reattach units (only reliable attribute after operation)</span>
-    <span class="n">component_norm</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">data_x</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]}</span>
+    <span class="c1"># Reattach only reliable attributes after operation</span>
+    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;grid_mapping&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">data_x</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
+            <span class="n">component_norm</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_x</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">component_norm</span></div>
 
@@ -439,8 +441,10 @@
     <span class="c1"># Take the dot products</span>
     <span class="n">component_tang</span> <span class="o">=</span> <span class="n">data_x</span> <span class="o">*</span> <span class="n">unit_tang</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">data_y</span> <span class="o">*</span> <span class="n">unit_tang</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
 
-    <span class="c1"># Reattach units (only reliable attribute after operation)</span>
-    <span class="n">component_tang</span><span class="o">.</span><span class="n">attrs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="n">data_x</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="s1">&#39;units&#39;</span><span class="p">]}</span>
+    <span class="c1"># Reattach only reliable attributes after operation</span>
+    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;grid_mapping&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">attr</span> <span class="ow">in</span> <span class="n">data_x</span><span class="o">.</span><span class="n">attrs</span><span class="p">:</span>
+            <span class="n">component_tang</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span> <span class="o">=</span> <span class="n">data_x</span><span class="o">.</span><span class="n">attrs</span><span class="p">[</span><span class="n">attr</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">component_tang</span></div>
 
@@ -513,7 +517,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -550,7 +554,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -561,7 +565,8 @@
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
 
   

@@ -118,7 +118,7 @@ containing that triangle.
 
 
 
-**Total running time of the script:** ( 0 minutes  0.314 seconds)
+**Total running time of the script:** ( 0 minutes  0.218 seconds)
 
 
 .. _sphx_glr_download_examples_gridding_Find_Natural_Neighbors_Verification.py:

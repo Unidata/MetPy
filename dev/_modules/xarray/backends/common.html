@@ -191,15 +191,11 @@
   <h1>Source code for xarray.backends.common</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">absolute_import</span><span class="p">,</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span>
 
-<span class="kn">import</span> <span class="nn">contextlib</span>
 <span class="kn">import</span> <span class="nn">logging</span>
-<span class="kn">import</span> <span class="nn">multiprocessing</span>
-<span class="kn">import</span> <span class="nn">threading</span>
 <span class="kn">import</span> <span class="nn">time</span>
 <span class="kn">import</span> <span class="nn">traceback</span>
 <span class="kn">import</span> <span class="nn">warnings</span>
 <span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Mapping</span><span class="p">,</span> <span class="n">OrderedDict</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -208,74 +204,11 @@
 <span class="kn">from</span> <span class="nn">..core.pycompat</span> <span class="k">import</span> <span class="n">dask_array_type</span><span class="p">,</span> <span class="n">iteritems</span>
 <span class="kn">from</span> <span class="nn">..core.utils</span> <span class="k">import</span> <span class="n">FrozenOrderedDict</span><span class="p">,</span> <span class="n">NdimSizeLenMixin</span>
 
-<span class="c1"># Import default lock</span>
-<span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">dask.utils</span> <span class="k">import</span> <span class="n">SerializableLock</span>
-    <span class="n">HDF5_LOCK</span> <span class="o">=</span> <span class="n">SerializableLock</span><span class="p">()</span>
-<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-    <span class="n">HDF5_LOCK</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
-
 <span class="c1"># Create a logger object, but don&#39;t add any handlers. Leave that to user code.</span>
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
 <span class="n">NONE_VAR_NAME</span> <span class="o">=</span> <span class="s1">&#39;__values__&#39;</span>
-
-
-<span class="k">def</span> <span class="nf">_get_scheduler</span><span class="p">(</span><span class="n">get</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Determine the dask scheduler that is being used.</span>
-
-<span class="sd">    None is returned if not dask scheduler is active.</span>
-
-<span class="sd">    See also</span>
-<span class="sd">    --------</span>
-<span class="sd">    dask.base.get_scheduler</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="c1"># dask 0.18.1 and later</span>
-        <span class="kn">from</span> <span class="nn">dask.base</span> <span class="k">import</span> <span class="n">get_scheduler</span>
-        <span class="n">actual_get</span> <span class="o">=</span> <span class="n">get_scheduler</span><span class="p">(</span><span class="n">get</span><span class="p">,</span> <span class="n">collection</span><span class="p">)</span>
-    <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">from</span> <span class="nn">dask.utils</span> <span class="k">import</span> <span class="n">effective_get</span>
-            <span class="n">actual_get</span> <span class="o">=</span> <span class="n">effective_get</span><span class="p">(</span><span class="n">get</span><span class="p">,</span> <span class="n">collection</span><span class="p">)</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="kc">None</span>
-
-    <span class="k">try</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="k">import</span> <span class="n">Client</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">actual_get</span><span class="o">.</span><span class="vm">__self__</span><span class="p">,</span> <span class="n">Client</span><span class="p">):</span>
-            <span class="k">return</span> <span class="s1">&#39;distributed&#39;</span>
-    <span class="k">except</span> <span class="p">(</span><span class="ne">ImportError</span><span class="p">,</span> <span class="ne">AttributeError</span><span class="p">):</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="kn">import</span> <span class="nn">dask.multiprocessing</span>
-            <span class="k">if</span> <span class="n">actual_get</span> <span class="o">==</span> <span class="n">dask</span><span class="o">.</span><span class="n">multiprocessing</span><span class="o">.</span><span class="n">get</span><span class="p">:</span>
-                <span class="k">return</span> <span class="s1">&#39;multiprocessing&#39;</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="s1">&#39;threaded&#39;</span>
-        <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
-            <span class="k">return</span> <span class="s1">&#39;threaded&#39;</span>
-
-
-<span class="k">def</span> <span class="nf">_get_scheduler_lock</span><span class="p">(</span><span class="n">scheduler</span><span class="p">,</span> <span class="n">path_or_file</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Get the appropriate lock for a certain situation based onthe dask</span>
-<span class="sd">       scheduler used.</span>
-
-<span class="sd">    See Also</span>
-<span class="sd">    --------</span>
-<span class="sd">    dask.utils.get_scheduler_lock</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">if</span> <span class="n">scheduler</span> <span class="o">==</span> <span class="s1">&#39;distributed&#39;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">dask.distributed</span> <span class="k">import</span> <span class="n">Lock</span>
-        <span class="k">return</span> <span class="n">Lock</span><span class="p">(</span><span class="n">path_or_file</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="n">scheduler</span> <span class="o">==</span> <span class="s1">&#39;multiprocessing&#39;</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">multiprocessing</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
-    <span class="k">elif</span> <span class="n">scheduler</span> <span class="o">==</span> <span class="s1">&#39;threaded&#39;</span><span class="p">:</span>
-        <span class="kn">from</span> <span class="nn">dask.utils</span> <span class="k">import</span> <span class="n">SerializableLock</span>
-        <span class="k">return</span> <span class="n">SerializableLock</span><span class="p">()</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">threading</span><span class="o">.</span><span class="n">Lock</span><span class="p">()</span>
 
 
 <span class="k">def</span> <span class="nf">_encode_variable_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
@@ -324,39 +257,6 @@
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">next_delay</span><span class="p">)</span>
 
 
-<span class="k">class</span> <span class="nc">CombinedLock</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;A combination of multiple locks.</span>
-
-<span class="sd">    Like a locked door, a CombinedLock is locked if any of its constituent</span>
-<span class="sd">    locks are locked.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locks</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">locks</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">locks</span><span class="p">))</span>  <span class="c1"># remove duplicates</span>
-
-    <span class="k">def</span> <span class="nf">acquire</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">lock</span><span class="o">.</span><span class="n">acquire</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span> <span class="k">for</span> <span class="n">lock</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">release</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">lock</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">:</span>
-            <span class="n">lock</span><span class="o">.</span><span class="n">release</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">lock</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">:</span>
-            <span class="n">lock</span><span class="o">.</span><span class="fm">__enter__</span><span class="p">()</span>
-
-    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
-        <span class="k">for</span> <span class="n">lock</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">:</span>
-            <span class="n">lock</span><span class="o">.</span><span class="fm">__exit__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">locked</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="nb">any</span><span class="p">(</span><span class="n">lock</span><span class="o">.</span><span class="n">locked</span> <span class="k">for</span> <span class="n">lock</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="s2">&quot;CombinedLock(</span><span class="si">%r</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">locks</span><span class="p">)</span>
-
-
 <span class="k">class</span> <span class="nc">BackendArray</span><span class="p">(</span><span class="n">NdimSizeLenMixin</span><span class="p">,</span> <span class="n">indexing</span><span class="o">.</span><span class="n">ExplicitlyIndexed</span><span class="p">):</span>
 
     <span class="k">def</span> <span class="nf">__array__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -365,9 +265,6 @@
 
 
 <span class="k">class</span> <span class="nc">AbstractDataStore</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
-    <span class="n">_autoclose</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">_ds</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="n">_isopen</span> <span class="o">=</span> <span class="kc">False</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
@@ -450,7 +347,7 @@
 
 
 <span class="k">class</span> <span class="nc">ArrayWriter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock</span><span class="o">=</span><span class="n">HDF5_LOCK</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sources</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lock</span> <span class="o">=</span> <span class="n">lock</span>
@@ -465,6 +362,9 @@
     <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+            <span class="c1"># TODO: consider wrapping targets with dask.delayed, if this makes</span>
+            <span class="c1"># for any discernable difference in perforance, e.g.,</span>
+            <span class="c1"># targets = [dask.delayed(t) for t in self.targets]</span>
             <span class="n">delayed_store</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
                                      <span class="n">lock</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="n">compute</span><span class="p">,</span>
                                      <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -474,11 +374,6 @@
 
 
 <span class="k">class</span> <span class="nc">AbstractWritableDataStore</span><span class="p">(</span><span class="n">AbstractDataStore</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">writer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">lock</span><span class="o">=</span><span class="n">HDF5_LOCK</span><span class="p">):</span>
-        <span class="k">if</span> <span class="n">writer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">writer</span> <span class="o">=</span> <span class="n">ArrayWriter</span><span class="p">(</span><span class="n">lock</span><span class="o">=</span><span class="n">lock</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">writer</span> <span class="o">=</span> <span class="n">writer</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">delayed_store</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -520,12 +415,6 @@
     <span class="k">def</span> <span class="nf">set_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-    <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_isopen</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_autoclose</span><span class="p">:</span>
-            <span class="c1"># datastore will be reopened during write</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">delayed_store</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">sync</span><span class="p">(</span><span class="n">compute</span><span class="o">=</span><span class="n">compute</span><span class="p">)</span>
-
     <span class="k">def</span> <span class="nf">store_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dataset</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        in stores, variables are all variables AND coordinates</span>
@@ -536,7 +425,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">check_encoding_set</span><span class="o">=</span><span class="nb">frozenset</span><span class="p">(),</span>
-              <span class="n">unlimited_dims</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+              <span class="n">writer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Top level method for putting data on this store, this method:</span>
 <span class="sd">          - encodes variables/attributes</span>
@@ -552,16 +441,19 @@
 <span class="sd">        check_encoding_set : list-like</span>
 <span class="sd">            List of variables that should be checked for invalid encoding</span>
 <span class="sd">            values</span>
+<span class="sd">        writer : ArrayWriter</span>
 <span class="sd">        unlimited_dims : list-like</span>
 <span class="sd">            List of dimension names that should be treated as unlimited</span>
 <span class="sd">            dimensions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">writer</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">writer</span> <span class="o">=</span> <span class="n">ArrayWriter</span><span class="p">()</span>
 
         <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_attributes</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="n">unlimited_dims</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_variables</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">check_encoding_set</span><span class="p">,</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variables</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">check_encoding_set</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span>
                            <span class="n">unlimited_dims</span><span class="o">=</span><span class="n">unlimited_dims</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
@@ -577,7 +469,7 @@
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">iteritems</span><span class="p">(</span><span class="n">attributes</span><span class="p">):</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">check_encoding_set</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">check_encoding_set</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span>
                       <span class="n">unlimited_dims</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This provides a centralized method to set the variables on the data</span>
@@ -590,6 +482,7 @@
 <span class="sd">        check_encoding_set : list-like</span>
 <span class="sd">            List of variables that should be checked for invalid encoding</span>
 <span class="sd">            values</span>
+<span class="sd">        writer : ArrayWriter</span>
 <span class="sd">        unlimited_dims : list-like</span>
 <span class="sd">            List of dimension names that should be treated as unlimited</span>
 <span class="sd">            dimensions.</span>
@@ -601,7 +494,7 @@
             <span class="n">target</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prepare_variable</span><span class="p">(</span>
                 <span class="n">name</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">check</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="n">unlimited_dims</span><span class="p">)</span>
 
-            <span class="bp">self</span><span class="o">.</span><span class="n">writer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -648,90 +541,6 @@
         <span class="n">attributes</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_attribute</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
                                   <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
         <span class="k">return</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span>
-
-
-<span class="k">class</span> <span class="nc">DataStorePickleMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Subclasses must define `ds`, `_opener` and `_mode` attributes.</span>
-
-<span class="sd">    Do not subclass this class: it is not part of xarray&#39;s external API.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="k">del</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;_ds&#39;</span><span class="p">]</span>
-        <span class="k">del</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;_isopen&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mode</span> <span class="o">==</span> <span class="s1">&#39;w&#39;</span><span class="p">:</span>
-            <span class="c1"># file has already been created, don&#39;t override when restoring</span>
-            <span class="n">state</span><span class="p">[</span><span class="s1">&#39;_mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span>
-        <span class="k">return</span> <span class="n">state</span>
-
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ds</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_isopen</span> <span class="o">=</span> <span class="kc">False</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">ds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_isopen</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ds</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_opener</span><span class="p">(</span><span class="n">mode</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_mode</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_isopen</span> <span class="o">=</span> <span class="kc">True</span>
-        <span class="k">return</span> <span class="n">ds</span>
-
-    <span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
-    <span class="k">def</span> <span class="nf">ensure_open</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">autoclose</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Helper function to make sure datasets are closed and opened</span>
-<span class="sd">        at appropriate times to avoid too many open file errors.</span>
-
-<span class="sd">        Use requires `autoclose=True` argument to `open_mfdataset`.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="k">if</span> <span class="n">autoclose</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">autoclose</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_autoclose</span>
-
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_isopen</span><span class="p">:</span>
-            <span class="k">try</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_opener</span><span class="p">()</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">_isopen</span> <span class="o">=</span> <span class="kc">True</span>
-                <span class="k">yield</span>
-            <span class="k">finally</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">autoclose</span><span class="p">:</span>
-                    <span class="bp">self</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">yield</span>
-
-    <span class="k">def</span> <span class="nf">assert_open</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">_isopen</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">AssertionError</span><span class="p">(</span><span class="s1">&#39;internal failure: file must be open &#39;</span>
-                                 <span class="s1">&#39;if `autoclose=True` is used.&#39;</span><span class="p">)</span>
-
-
-<span class="k">class</span> <span class="nc">PickleByReconstructionWrapper</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">opener</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;r&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">opener</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">opener</span><span class="p">,</span> <span class="n">file</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">mode</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">=</span> <span class="n">mode</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ds</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">value</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ds</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">opener</span><span class="p">()</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ds</span>
-
-    <span class="k">def</span> <span class="nf">__getstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
-        <span class="k">del</span> <span class="n">state</span><span class="p">[</span><span class="s1">&#39;_ds&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mode</span> <span class="o">==</span> <span class="s1">&#39;w&#39;</span><span class="p">:</span>
-            <span class="c1"># file has already been created, don&#39;t override when restoring</span>
-            <span class="n">state</span><span class="p">[</span><span class="s1">&#39;mode&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;a&#39;</span>
-        <span class="k">return</span> <span class="n">state</span>
-
-    <span class="k">def</span> <span class="nf">__setstate__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_ds</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
 </pre></div>
 
            </div>
@@ -747,7 +556,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -784,7 +593,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -795,7 +604,8 @@
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
 
   

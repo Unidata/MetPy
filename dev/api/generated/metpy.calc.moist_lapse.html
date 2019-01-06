@@ -253,11 +253,11 @@
 <h1>moist_lapse<a class="headerlink" href="#moist-lapse" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.moist_lapse">
-<code class="descclassname">metpy.calc.</code><code class="descname">moist_lapse</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#moist_lapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.moist_lapse" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">metpy.calc.</code><code class="descname">moist_lapse</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>ref_pressure=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#moist_lapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.moist_lapse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the temperature at a level assuming liquid saturation processes.</p>
-<p>This function lifts a parcel starting at <em class="xref py py-obj">temperature</em>. The starting
-pressure should be the first item in the <em class="xref py py-obj">pressure</em> array. Essentially,
-this function is calculating moist pseudo-adiabats.</p>
+<p>This function lifts a parcel starting at <em class="xref py py-obj">temperature</em>. The starting pressure can
+be given by <em class="xref py py-obj">ref_pressure</em>. Essentially, this function is calculating moist
+pseudo-adiabats.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -265,6 +265,8 @@ this function is calculating moist pseudo-adiabats.</p>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure level(s) of interest</li>
 <li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The starting temperature</li>
+<li><strong>ref_pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The reference pressure. If not given, it defaults to the first element of the
+pressure array.</li>
 </ul>
 </td>
 </tr>
@@ -317,7 +319,7 @@ equation:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -354,7 +356,7 @@ equation:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -365,7 +367,8 @@ equation:</p>
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
 
   

@@ -46,7 +46,7 @@
     <link rel="top" title="MetPy 0.9" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="Hodograph Inset" href="Hodograph_Inset.html"/>
-        <link rel="prev" title="US Counties" href="US_Counties.html"/> 
+        <link rel="prev" title="Combined Plotting" href="Combined_plotting.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -126,7 +126,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#file-formats">File Formats</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gridding">Gridding</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#plotting">Plotting</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Simplified_Image_Plot.html">Simple Plotting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="US_Counties.html">US Counties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Combined_plotting.html">Combined Plotting</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Skew-T with Complex Layout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Hodograph_Inset.html">Hodograph Inset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Simple_Sounding.html">Simple Sounding</a></li>
@@ -241,7 +243,7 @@ some of MetPy’s sample data.</p>
                  <span class="n">skiprows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="n">col_names</span><span class="p">)</span>
 
 <span class="n">df</span><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;v_wind&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components" title="View documentation for metpy.calc.wind_components"><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_components</span></a><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">],</span>
-                                                    <a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.deg2rad.html#numpy.deg2rad" title="View documentation for numpy.deg2rad"><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span></a><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;direction&#39;</span><span class="p">]))</span>
+                                                    <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.deg2rad.html#numpy.deg2rad" title="View documentation for numpy.deg2rad"><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span></a><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;direction&#39;</span><span class="p">]))</span>
 
 <span class="c1"># Drop any rows with all NaN values for T, Td, winds</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span><span class="p">,</span>
@@ -259,11 +261,11 @@ assign units.</p>
 </pre></div>
 </div>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.rst.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
 <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">630</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
 
 <span class="c1"># Grid for plots</span>
-<span class="n">gs</span> <span class="o">=</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.gridspec.GridSpec.html#matplotlib.gridspec.GridSpec" title="View documentation for matplotlib.gridspec.GridSpec"><span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">gs</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.gridspec.GridSpec.rst.html#matplotlib.gridspec.GridSpec" title="View documentation for matplotlib.gridspec.GridSpec"><span class="n">gridspec</span><span class="o">.</span><span class="n">GridSpec</span></a><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
 <span class="n">skew</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">subplot</span><span class="o">=</span><span class="n">gs</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">])</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
@@ -288,11 +290,11 @@ assign units.</p>
 <span class="n">h</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 <span class="c1"># Show the plot</span>
-<a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_Skew-T_Layout_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Skew-T_Layout_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.510 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.339 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-skew-t-layout-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../../_downloads/f6c53ea43150f4d2bd08cd74a37033b0/Skew-T_Layout.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Skew-T_Layout.py</span></code></a></div>
@@ -315,7 +317,7 @@ assign units.</p>
         <a href="Hodograph_Inset.html" class="btn btn-neutral float-right" title="Hodograph Inset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="US_Counties.html" class="btn btn-neutral" title="US Counties" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="Combined_plotting.html" class="btn btn-neutral" title="Combined Plotting" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -325,7 +327,7 @@ assign units.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -362,7 +364,7 @@ assign units.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -373,7 +375,8 @@ assign units.</p>
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
 
   

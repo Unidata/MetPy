@@ -26,7 +26,6 @@ def basic_map(proj):
     fig = plt.figure(figsize=(15, 10))
     add_metpy_logo(fig, 0, 80, size='large')
     view = fig.add_axes([0, 0, 1, 1], projection=proj)
-    view._hold = True  # Work-around for CartoPy 0.16/Matplotlib 3.0.0 incompatibility
     view.set_extent([-120, -70, 20, 50])
     view.add_feature(cfeature.STATES.with_scale('50m'))
     view.add_feature(cfeature.OCEAN)

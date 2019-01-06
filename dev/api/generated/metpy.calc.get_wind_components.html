@@ -46,7 +46,7 @@
     <link rel="top" title="MetPy 0.9" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="get_wind_dir" href="metpy.calc.get_wind_dir.html"/>
-        <link rel="prev" title="smooth_gaussian" href="metpy.calc.smooth_gaussian.html"/> 
+        <link rel="prev" title="smooth_n_point" href="metpy.calc.smooth_n_point.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -243,7 +243,7 @@
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>speed</strong> (<em>array_like</em>) – The wind speed (magnitude)</li>
 <li><strong>wdir</strong> (<em>array_like</em>) – The wind direction, specified as the direction from which the wind is
-blowing, with 360 degrees being North.</li>
+blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.</li>
 </ul>
 </td>
 </tr>
@@ -284,7 +284,7 @@ directions, respectively.</p>
         <a href="metpy.calc.get_wind_dir.html" class="btn btn-neutral float-right" title="get_wind_dir" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.calc.smooth_gaussian.html" class="btn btn-neutral" title="smooth_gaussian" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.calc.smooth_n_point.html" class="btn btn-neutral" title="smooth_n_point" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -294,7 +294,7 @@ directions, respectively.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -331,7 +331,7 @@ directions, respectively.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -342,7 +342,8 @@ directions, respectively.</p>
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
 
   

@@ -126,7 +126,9 @@
 <li class="toctree-l2"><a class="reference internal" href="../index.html#file-formats">File Formats</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../index.html#gridding">Gridding</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="../index.html#plotting">Plotting</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Simplified_Image_Plot.html">Simple Plotting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="US_Counties.html">US Counties</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Combined_plotting.html">Combined Plotting</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Skew-T_Layout.html">Skew-T with Complex Layout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Hodograph_Inset.html">Hodograph Inset</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Simple_Sounding.html">Simple Sounding</a></li>
@@ -282,7 +284,7 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 <span class="c1"># Convert the fraction value into a code of 0-8 and compensate for NaN values,</span>
 <span class="c1"># which can be used to pull out the appropriate symbol</span>
 <span class="n">cloud_frac</span> <span class="o">=</span> <span class="p">(</span><span class="mi">8</span> <span class="o">*</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;cloud_fraction&#39;</span><span class="p">])</span>
-<span class="n">cloud_frac</span><span class="p">[</span><a href="http://docs.scipy.org/doc/numpy/reference/generated/numpy.isnan.html#numpy.isnan" title="View documentation for numpy.isnan"><span class="n">np</span><span class="o">.</span><span class="n">isnan</span></a><span class="p">(</span><span class="n">cloud_frac</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="n">cloud_frac</span><span class="p">[</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.isnan.html#numpy.isnan" title="View documentation for numpy.isnan"><span class="n">np</span><span class="o">.</span><span class="n">isnan</span></a><span class="p">(</span><span class="n">cloud_frac</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">10</span>
 <span class="n">cloud_frac</span> <span class="o">=</span> <span class="n">cloud_frac</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 
 <span class="c1"># Map weather strings to WMO codes, which we can use to convert to symbols</span>
@@ -295,10 +297,10 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 <h2>The payoff<a class="headerlink" href="#the-payoff" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change the DPI of the resulting figure. Higher DPI drastically improves the</span>
 <span class="c1"># look of the text rendering.</span>
-<a href="http://matplotlib.org/api/matplotlib_configuration_api.html#matplotlib.rcParams" title="View documentation for matplotlib.pyplot.rcParams"><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span></a><span class="p">[</span><span class="s1">&#39;savefig.dpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
+<a href="https://matplotlib.org/api/matplotlib_configuration_api.rst.html#matplotlib.rcParams" title="View documentation for matplotlib.pyplot.rcParams"><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span></a><span class="p">[</span><span class="s1">&#39;savefig.dpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
 
 <span class="c1"># Create the figure and an axes set to the projection.</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.rst.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">1080</span><span class="p">,</span> <span class="mi">290</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">proj</span><span class="p">)</span>
 
@@ -349,11 +351,11 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 <span class="c1"># plot further out by specifying a location of 2 increments in x and 0 in y.</span>
 <span class="n">stationplot</span><span class="o">.</span><span class="n">plot_text</span><span class="p">((</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;stid&#39;</span><span class="p">])</span>
 
-<a href="http://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_Station_Plot_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Station_Plot_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.060 seconds)</p>
+<p><strong>Total running time of the script:</strong> ( 0 minutes  0.051 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-station-plot-py">
 <div class="sphx-glr-download docutils container">
 <a class="reference download internal" download="" href="../../_downloads/77a41afe7b4b48010ff6048feccd95fe/Station_Plot.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Station_Plot.py</span></code></a></div>
@@ -387,7 +389,7 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -424,7 +426,7 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -435,7 +437,8 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
 
   

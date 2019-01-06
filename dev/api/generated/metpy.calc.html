@@ -259,6 +259,7 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.reduce_point_density.html">reduce_point_density</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.resample_nn_1d.html">resample_nn_1d</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_gaussian.html">smooth_gaussian</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.smooth_n_point.html">smooth_n_point</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="#deprecated">Deprecated</a><ul>
@@ -373,7 +374,7 @@
 <tr class="row-odd"><td><a class="reference internal" href="metpy.calc.density.html#metpy.calc.density" title="metpy.calc.density"><code class="xref py py-obj docutils literal notranslate"><span class="pre">density</span></code></a>(pressure,&nbsp;temperature,&nbsp;mixing[,&nbsp;…])</td>
 <td>Calculate density.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.calc.dry_lapse.html#metpy.calc.dry_lapse" title="metpy.calc.dry_lapse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dry_lapse</span></code></a>(pressure,&nbsp;temperature)</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.calc.dry_lapse.html#metpy.calc.dry_lapse" title="metpy.calc.dry_lapse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dry_lapse</span></code></a>(pressure,&nbsp;temperature[,&nbsp;ref_pressure])</td>
 <td>Calculate the temperature at a level assuming only dry processes.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="metpy.calc.dry_static_energy.html#metpy.calc.dry_static_energy" title="metpy.calc.dry_static_energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dry_static_energy</span></code></a>(heights,&nbsp;temperature)</td>
@@ -441,7 +442,7 @@
 <tr class="row-odd"><td><a class="reference internal" href="metpy.calc.mixing_ratio_from_specific_humidity.html#metpy.calc.mixing_ratio_from_specific_humidity" title="metpy.calc.mixing_ratio_from_specific_humidity"><code class="xref py py-obj docutils literal notranslate"><span class="pre">mixing_ratio_from_specific_humidity</span></code></a>(…)</td>
 <td>Calculate the mixing ratio from specific humidity.</td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.calc.moist_lapse.html#metpy.calc.moist_lapse" title="metpy.calc.moist_lapse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moist_lapse</span></code></a>(pressure,&nbsp;temperature)</td>
+<tr class="row-even"><td><a class="reference internal" href="metpy.calc.moist_lapse.html#metpy.calc.moist_lapse" title="metpy.calc.moist_lapse"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moist_lapse</span></code></a>(pressure,&nbsp;temperature[,&nbsp;…])</td>
 <td>Calculate the temperature at a level assuming liquid saturation processes.</td>
 </tr>
 <tr class="row-odd"><td><a class="reference internal" href="metpy.calc.moist_static_energy.html#metpy.calc.moist_static_energy" title="metpy.calc.moist_static_energy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">moist_static_energy</span></code></a>(heights,&nbsp;temperature,&nbsp;…)</td>
@@ -607,7 +608,7 @@
 <tr class="row-even"><td><a class="reference internal" href="metpy.calc.montgomery_streamfunction.html#metpy.calc.montgomery_streamfunction" title="metpy.calc.montgomery_streamfunction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">montgomery_streamfunction</span></code></a>(height,&nbsp;temperature)</td>
 <td>Compute the Montgomery Streamfunction on isentropic surfaces.</td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic" title="metpy.calc.potential_vorticity_baroclinic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_vorticity_baroclinic</span></code></a>(…[,&nbsp;axis,&nbsp;…])</td>
+<tr class="row-odd"><td><a class="reference internal" href="metpy.calc.potential_vorticity_baroclinic.html#metpy.calc.potential_vorticity_baroclinic" title="metpy.calc.potential_vorticity_baroclinic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_vorticity_baroclinic</span></code></a>(…)</td>
 <td>Calculate the baroclinic potential vorticity.</td>
 </tr>
 <tr class="row-even"><td><a class="reference internal" href="metpy.calc.potential_vorticity_barotropic.html#metpy.calc.potential_vorticity_barotropic" title="metpy.calc.potential_vorticity_barotropic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">potential_vorticity_barotropic</span></code></a>(heights,&nbsp;u,&nbsp;…)</td>
@@ -768,6 +769,9 @@
 <tr class="row-odd"><td><a class="reference internal" href="metpy.calc.smooth_gaussian.html#metpy.calc.smooth_gaussian" title="metpy.calc.smooth_gaussian"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_gaussian</span></code></a>(scalar_grid,&nbsp;n)</td>
 <td>Filter with normal distribution of weights.</td>
 </tr>
+<tr class="row-even"><td><a class="reference internal" href="metpy.calc.smooth_n_point.html#metpy.calc.smooth_n_point" title="metpy.calc.smooth_n_point"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smooth_n_point</span></code></a>(scalar_grid[,&nbsp;n,&nbsp;passes])</td>
+<td>Filter with normal distribution of weights.</td>
+</tr>
 </tbody>
 </table>
 </div>
@@ -829,7 +833,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -866,7 +870,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -877,7 +881,8 @@
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
 
   

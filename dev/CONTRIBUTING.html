@@ -137,6 +137,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#image-tests">Image tests</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="#cached-data-files">Cached Data Files</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#code-style">Code Style</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#what-happens-after-the-pull-request">What happens after the pull request</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#automated-testing">Automated Testing</a></li>
@@ -418,6 +419,16 @@ to run only the test you just created for this step.</p>
 <p>For more information, see the <code class="docutils literal notranslate"><span class="pre">docs</span> <span class="pre">for</span> <span class="pre">mpl-test</span> <span class="pre">&lt;https://github.com/astrofrog/pytest-mpl&gt;</span></code>_.</p>
 </div>
 </div>
+<div class="section" id="cached-data-files">
+<span id="cached-data-files"></span><h2>Cached Data Files<a class="headerlink" href="#cached-data-files" title="Permalink to this headline">¶</a></h2>
+<p>MetPy keeps some test data, as well as things like shape files for US counties in a data cache
+supported by the pooch library. To add files to this, please ensure they are as small as
+possible. Put the files in the <code class="docutils literal notranslate"><span class="pre">staticdata</span></code> directory. Then run this command in the metpy
+directory (that contains the <code class="docutils literal notranslate"><span class="pre">static-data-manifest.txt</span></code> file)to recreate the data registry:</p>
+<p><code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">-c</span> <span class="pre">&quot;import</span> <span class="pre">pooch;</span> <span class="pre">pooch.make_registry('staticdata',</span> <span class="pre">'metpy/static-data-manifest.txt')&quot;</span></code></p>
+<p>Make sure that no system files (like <code class="docutils literal notranslate"><span class="pre">.DS_Store</span></code>) are in the manifest and add it to your
+contribution.</p>
+</div>
 <div class="section" id="code-style">
 <span id="code-style"></span><h2>Code Style<a class="headerlink" href="#code-style" title="Permalink to this headline">¶</a></h2>
 <p>MetPy uses the Python code style outlined in <code class="docutils literal notranslate"><span class="pre">PEP8</span> <span class="pre">&lt;http://pep8.org&gt;</span></code>_. For better or worse, this is what the majority
@@ -519,7 +530,7 @@ importance of writing tested and maintainable software.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -556,7 +567,7 @@ importance of writing tested and maintainable software.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -567,7 +578,8 @@ importance of writing tested and maintainable software.</p>
       <script type="text/javascript" src="_static/jquery.js"></script>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="_static/pop_ver.js"></script>
 
   

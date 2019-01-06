@@ -201,8 +201,8 @@
 
 <span class="kn">from</span> <span class="nn">.</span> <span class="k">import</span> <span class="n">coriolis_parameter</span>
 <span class="kn">from</span> <span class="nn">.tools</span> <span class="k">import</span> <span class="n">first_derivative</span><span class="p">,</span> <span class="n">get_layer_heights</span><span class="p">,</span> <span class="n">gradient</span>
+<span class="kn">from</span> <span class="nn">..</span> <span class="k">import</span> <span class="n">constants</span> <span class="k">as</span> <span class="n">mpconsts</span>
 <span class="kn">from</span> <span class="nn">..cbook</span> <span class="k">import</span> <span class="n">is_string_like</span><span class="p">,</span> <span class="n">iterable</span>
-<span class="kn">from</span> <span class="nn">..constants</span> <span class="k">import</span> <span class="n">Cp_d</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">Rd</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_2d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
 <span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">preprocess_xarray</span>
@@ -625,7 +625,7 @@
     <span class="k">if</span> <span class="n">heights</span><span class="o">.</span><span class="n">dimensionality</span><span class="p">[</span><span class="s1">&#39;[length]&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mf">2.0</span><span class="p">:</span>
         <span class="n">norm_factor</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">/</span> <span class="n">f</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">norm_factor</span> <span class="o">=</span> <span class="n">g</span> <span class="o">/</span> <span class="n">f</span>
+        <span class="n">norm_factor</span> <span class="o">=</span> <span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">/</span> <span class="n">f</span>
 
     <span class="n">dhdy</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dy</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
     <span class="n">dhdx</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
@@ -710,7 +710,7 @@
 <span class="sd">    get_isentropic_pressure</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">return</span> <span class="p">(</span><span class="n">g</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">Cp_d</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">*</span> <span class="n">height</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">Cp_d</span> <span class="o">*</span> <span class="n">temperature</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="storm_relative_helicity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.storm_relative_helicity.html#metpy.calc.storm_relative_helicity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -759,8 +759,8 @@
     <span class="n">storm_relative_u</span> <span class="o">=</span> <span class="n">u</span> <span class="o">-</span> <span class="n">storm_u</span>
     <span class="n">storm_relative_v</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">storm_v</span>
 
-    <span class="n">int_layers</span> <span class="o">=</span> <span class="p">(</span><span class="n">storm_relative_u</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="n">storm_relative_v</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span>
-                  <span class="n">storm_relative_u</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">storm_relative_v</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="n">int_layers</span> <span class="o">=</span> <span class="p">(</span><span class="n">storm_relative_u</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">*</span> <span class="n">storm_relative_v</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                  <span class="o">-</span> <span class="n">storm_relative_u</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">storm_relative_v</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
 
     <span class="c1"># Need to manually check for masked value because sum() on masked array with non-default</span>
     <span class="c1"># mask will return a masked value rather than 0. See numpy/numpy#11736</span>
@@ -817,23 +817,24 @@
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span>
              <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">potential_vorticity_baroclinic</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span>
-                                   <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">&#39;yx&#39;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">potential_vorticity_baroclinic</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">,</span> <span class="n">pressure</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">lats</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the baroclinic potential vorticity.</span>
 
-<span class="sd">    .. math:: PV = -g \frac{\partial \theta}{\partial z}(\zeta + f)</span>
+<span class="sd">    .. math:: PV = -g \left(\frac{\partial u}{\partial p}\frac{\partial \theta}{\partial y}</span>
+<span class="sd">              - \frac{\partial v}{\partial p}\frac{\partial \theta}{\partial x}</span>
+<span class="sd">              + \frac{\partial \theta}{\partial p}(\zeta + f) \right)</span>
 
-<span class="sd">    This formula is based on equation 7.31a [Hobbs2006]_.</span>
+<span class="sd">    This formula is based on equation 4.5.93 [Bluestein1993]_.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    potential_temperature : (M, N, P) ndarray</span>
+<span class="sd">    potential_temperature : (P, M, N) ndarray</span>
 <span class="sd">        potential temperature</span>
-<span class="sd">    pressure : (M, N, P) ndarray</span>
+<span class="sd">    pressure : (P, M, N) ndarray</span>
 <span class="sd">        vertical pressures</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (P, M, N) ndarray</span>
 <span class="sd">        x component of the wind</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (P, M, N) ndarray</span>
 <span class="sd">        y component of the wind</span>
 <span class="sd">    dx : float or ndarray</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
@@ -849,30 +850,48 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (M, N) ndarray</span>
+<span class="sd">    (P, M, N) ndarray</span>
 <span class="sd">        baroclinic potential vorticity</span>
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    The same formula is used for isobaric and isentropic PV analysis. Provide winds</span>
-<span class="sd">    for vorticity calculations on the desired isobaric or isentropic surface. Three layers</span>
-<span class="sd">    of pressure/potential temperature are required in order to calculate the vertical</span>
-<span class="sd">    derivative (one above and below the desired surface).</span>
+<span class="sd">    This function will only work with data that is in (P, Y, X) format. If your data</span>
+<span class="sd">    is in a different order you will need to re-order your data in order to get correct</span>
+<span class="sd">    results from this function.</span>
+
+<span class="sd">    The same function can be used for isobaric and isentropic PV analysis. Provide winds</span>
+<span class="sd">    for vorticity calculations on the desired isobaric or isentropic surface. At least three</span>
+<span class="sd">    layers of pressure/potential temperature are required in order to calculate the vertical</span>
+<span class="sd">    derivative (one above and below the desired surface). The first two terms will be zero if</span>
+<span class="sd">    isentropic level data is used due to the gradient of theta in both the x and y-directions</span>
+<span class="sd">    will be zero since you are on an isentropic surface.</span>
+
+<span class="sd">    This function expects pressure/isentropic level to increase with increasing array element</span>
+<span class="sd">    (e.g., from higher in the atmosphere to closer to the surface. If the pressure array is</span>
+<span class="sd">    one-dimensional p[:, None, None] can be used to make it appear multi-dimensional.)</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">)[</span><span class="n">axis</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Length of potential temperature along axis &#39;</span>
-                         <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> must be 3.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">pressure</span><span class="p">)[</span><span class="n">axis</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">3</span><span class="p">:</span>
-        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Length of pressure along axis &#39;</span>
-                         <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> must be 3.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">axis</span><span class="p">))</span>
-    <span class="n">avor</span> <span class="o">=</span> <span class="n">absolute_vorticity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="n">dim_order</span><span class="p">)</span>
-    <span class="n">stability</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">pressure</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="n">axis</span><span class="p">)</span>
-    <span class="c1"># Get the middle layer stability derivative (index 1)</span>
-    <span class="n">slices</span> <span class="o">=</span> <span class="p">[</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">)]</span> <span class="o">*</span> <span class="n">stability</span><span class="o">.</span><span class="n">ndim</span>
-    <span class="n">slices</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
-    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span> <span class="o">*</span> <span class="n">avor</span> <span class="o">*</span> <span class="n">g</span> <span class="o">*</span> <span class="n">stability</span><span class="p">[</span><span class="n">slices</span><span class="p">])</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">kelvin</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span>
-                                                  <span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">second</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kilogram</span><span class="p">))</span></div>
+    <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">pressure</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span>
+       <span class="ow">or</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">]</span> <span class="o">!=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">pressure</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">]))):</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Length of potential temperature along the pressure axis &#39;</span>
+                         <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> must be at least 3.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">))</span>
+
+    <span class="n">avor</span> <span class="o">=</span> <span class="n">absolute_vorticity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">lats</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">&#39;yx&#39;</span><span class="p">)</span>
+    <span class="n">dthtadp</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">pressure</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">)[</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span>
+       <span class="ow">and</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)):</span>
+        <span class="n">dthtady</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">K</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">m</span>  <span class="c1"># axis=-2 only has one dimension</span>
+        <span class="n">dthtadx</span> <span class="o">=</span> <span class="mi">0</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">K</span> <span class="o">/</span> <span class="n">units</span><span class="o">.</span><span class="n">m</span>  <span class="c1"># axis=-1 only has one dimension</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">dthtady</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dy</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">2</span><span class="p">)</span>
+        <span class="n">dthtadx</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">potential_temperature</span><span class="p">,</span> <span class="n">delta</span><span class="o">=</span><span class="n">dx</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">dudp</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">pressure</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">dvdp</span> <span class="o">=</span> <span class="n">first_derivative</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">pressure</span><span class="p">,</span> <span class="n">axis</span><span class="o">=-</span><span class="mi">3</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">(</span><span class="o">-</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">g</span> <span class="o">*</span> <span class="p">(</span><span class="n">dudp</span> <span class="o">*</span> <span class="n">dthtady</span> <span class="o">-</span> <span class="n">dvdp</span> <span class="o">*</span> <span class="n">dthtadx</span>
+                           <span class="o">+</span> <span class="n">avor</span> <span class="o">*</span> <span class="n">dthtadp</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">kelvin</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span><span class="o">**</span><span class="mi">2</span>
+                                                 <span class="o">/</span> <span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">second</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">kilogram</span><span class="p">))</span></div>
 
 
 <div class="viewcode-block" id="potential_vorticity_barotropic"><a class="viewcode-back" href="../../../api/generated/metpy.calc.potential_vorticity_barotropic.html#metpy.calc.potential_vorticity_barotropic">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -1042,8 +1061,8 @@
     <span class="n">dvdy</span><span class="p">,</span> <span class="n">dvdx</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
     <span class="n">dtempdy</span><span class="p">,</span> <span class="n">dtempdx</span> <span class="o">=</span> <span class="n">gradient</span><span class="p">(</span><span class="n">temperature</span><span class="p">,</span> <span class="n">deltas</span><span class="o">=</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="n">dx</span><span class="p">),</span> <span class="n">axes</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
 
-    <span class="n">q1</span> <span class="o">=</span> <span class="o">-</span><span class="n">Rd</span> <span class="o">/</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">*</span> <span class="n">static_stability</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">dudx</span> <span class="o">*</span> <span class="n">dtempdx</span> <span class="o">+</span> <span class="n">dvdx</span> <span class="o">*</span> <span class="n">dtempdy</span><span class="p">)</span>
-    <span class="n">q2</span> <span class="o">=</span> <span class="o">-</span><span class="n">Rd</span> <span class="o">/</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">*</span> <span class="n">static_stability</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">dudy</span> <span class="o">*</span> <span class="n">dtempdx</span> <span class="o">+</span> <span class="n">dvdy</span> <span class="o">*</span> <span class="n">dtempdy</span><span class="p">)</span>
+    <span class="n">q1</span> <span class="o">=</span> <span class="o">-</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">Rd</span> <span class="o">/</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">*</span> <span class="n">static_stability</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">dudx</span> <span class="o">*</span> <span class="n">dtempdx</span> <span class="o">+</span> <span class="n">dvdx</span> <span class="o">*</span> <span class="n">dtempdy</span><span class="p">)</span>
+    <span class="n">q2</span> <span class="o">=</span> <span class="o">-</span><span class="n">mpconsts</span><span class="o">.</span><span class="n">Rd</span> <span class="o">/</span> <span class="p">(</span><span class="n">pressure</span> <span class="o">*</span> <span class="n">static_stability</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">dudy</span> <span class="o">*</span> <span class="n">dtempdx</span> <span class="o">+</span> <span class="n">dvdy</span> <span class="o">*</span> <span class="n">dtempdy</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">q1</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">(),</span> <span class="n">q2</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span></div>
 </pre></div>
@@ -1061,7 +1080,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -1098,7 +1117,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1109,7 +1128,8 @@
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
 
   

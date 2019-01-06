@@ -249,20 +249,22 @@
 <h1>potential_vorticity_baroclinic<a class="headerlink" href="#potential-vorticity-baroclinic" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.potential_vorticity_baroclinic">
-<code class="descclassname">metpy.calc.</code><code class="descname">potential_vorticity_baroclinic</code><span class="sig-paren">(</span><em>potential_temperature</em>, <em>pressure</em>, <em>u</em>, <em>v</em>, <em>dx</em>, <em>dy</em>, <em>lats</em>, <em>axis=0</em>, <em>dim_order='yx'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#potential_vorticity_baroclinic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.potential_vorticity_baroclinic" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">metpy.calc.</code><code class="descname">potential_vorticity_baroclinic</code><span class="sig-paren">(</span><em>potential_temperature</em>, <em>pressure</em>, <em>u</em>, <em>v</em>, <em>dx</em>, <em>dy</em>, <em>lats</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#potential_vorticity_baroclinic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.potential_vorticity_baroclinic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the baroclinic potential vorticity.</p>
 <div class="math notranslate nohighlight">
-\[PV = -g \frac{\partial \theta}{\partial z}(\zeta + f)\]</div>
-<p>This formula is based on equation 7.31a <a class="reference internal" href="../../references.html#hobbs2006" id="id1">[Hobbs2006]</a>.</p>
+\[PV = -g \left(\frac{\partial u}{\partial p}\frac{\partial \theta}{\partial y}
+- \frac{\partial v}{\partial p}\frac{\partial \theta}{\partial x}
++ \frac{\partial \theta}{\partial p}(\zeta + f) \right)\]</div>
+<p>This formula is based on equation 4.5.93 <a class="reference internal" href="../../references.html#bluestein1993" id="id1">[Bluestein1993]</a>.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>potential_temperature</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>, </em><em>P</em><em>) </em><em>ndarray</em>) – potential temperature</li>
-<li><strong>pressure</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>, </em><em>P</em><em>) </em><em>ndarray</em>) – vertical pressures</li>
-<li><strong>u</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the wind</li>
-<li><strong>v</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the wind</li>
+<li><strong>potential_temperature</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – potential temperature</li>
+<li><strong>pressure</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – vertical pressures</li>
+<li><strong>u</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the wind</li>
+<li><strong>v</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the wind</li>
 <li><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
 the size of <em class="xref py py-obj">u</em> along the applicable axis.</li>
 <li><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
@@ -273,16 +275,24 @@ and pressure arrays, defaults to 0, the first dimension.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(M, N) ndarray</em> – baroclinic potential vorticity</p>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(P, M, N) ndarray</em> – baroclinic potential vorticity</p>
 </td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Notes</p>
-<p>The same formula is used for isobaric and isentropic PV analysis. Provide winds
-for vorticity calculations on the desired isobaric or isentropic surface. Three layers
-of pressure/potential temperature are required in order to calculate the vertical
-derivative (one above and below the desired surface).</p>
+<p>This function will only work with data that is in (P, Y, X) format. If your data
+is in a different order you will need to re-order your data in order to get correct
+results from this function.</p>
+<p>The same function can be used for isobaric and isentropic PV analysis. Provide winds
+for vorticity calculations on the desired isobaric or isentropic surface. At least three
+layers of pressure/potential temperature are required in order to calculate the vertical
+derivative (one above and below the desired surface). The first two terms will be zero if
+isentropic level data is used due to the gradient of theta in both the x and y-directions
+will be zero since you are on an isentropic surface.</p>
+<p>This function expects pressure/isentropic level to increase with increasing array element
+(e.g., from higher in the atmosphere to closer to the surface. If the pressure array is
+one-dimensional p[:, None, None] can be used to make it appear multi-dimensional.)</p>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -310,7 +320,7 @@ derivative (one above and below the desired surface).</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -347,7 +357,7 @@ derivative (one above and below the desired surface).</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -358,7 +368,8 @@ derivative (one above and below the desired surface).</p>
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
 
   

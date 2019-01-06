@@ -29,7 +29,12 @@ plots
       :toctree: ./
 
    
+      ContourPlot
       Hodograph
+      ImagePlot
+      MapPanel
+      PanelContainer
+      Plot2D
       SkewT
       StationPlot
       StationPlotLayout

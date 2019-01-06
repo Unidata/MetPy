@@ -454,33 +454,17 @@
             <span class="n">func</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="fm">__init__</span>
 
             <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="n">wrapper</span><span class="p">,</span> <span class="n">new_doc</span><span class="p">):</span>
-                <span class="k">try</span><span class="p">:</span>
-                    <span class="k">pass</span>
-                    <span class="c1"># obj.__doc = new_doc</span>
-                <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">TypeError</span><span class="p">):</span>
-                    <span class="c1"># cls.__doc__ is not writeable on Py2.</span>
-                    <span class="c1"># TypeError occurs on PyPy</span>
-                    <span class="k">pass</span>
                 <span class="n">obj</span><span class="o">.</span><span class="fm">__init__</span> <span class="o">=</span> <span class="n">wrapper</span>
                 <span class="k">return</span> <span class="n">obj</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">obj_type</span> <span class="o">=</span> <span class="s1">&#39;function&#39;</span>
-            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="nb">classmethod</span><span class="p">):</span>
-                <span class="n">func</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="vm">__func__</span>
-                <span class="n">old_doc</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span>
+            <span class="n">func</span> <span class="o">=</span> <span class="n">obj</span>
+            <span class="n">old_doc</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span>
 
-                <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="n">wrapper</span><span class="p">,</span> <span class="n">new_doc</span><span class="p">):</span>
-                    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="n">wrapper</span><span class="p">)</span>
-                    <span class="c1"># wrapper.__doc__ = new_doc</span>
-                    <span class="k">return</span> <span class="nb">classmethod</span><span class="p">(</span><span class="n">wrapper</span><span class="p">)</span>
-            <span class="k">else</span><span class="p">:</span>
-                <span class="n">func</span> <span class="o">=</span> <span class="n">obj</span>
-                <span class="n">old_doc</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span>
-
-                <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="n">wrapper</span><span class="p">,</span> <span class="n">new_doc</span><span class="p">):</span>
-                    <span class="n">wrapper</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="n">wrapper</span><span class="p">)</span>
-                    <span class="c1"># wrapper.__doc__ = new_doc</span>
-                    <span class="k">return</span> <span class="n">wrapper</span>
+            <span class="k">def</span> <span class="nf">finalize</span><span class="p">(</span><span class="n">wrapper</span><span class="p">,</span> <span class="n">new_doc</span><span class="p">):</span>
+                <span class="n">wrapper</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)(</span><span class="n">wrapper</span><span class="p">)</span>
+                <span class="c1"># wrapper.__doc__ = new_doc</span>
+                <span class="k">return</span> <span class="n">wrapper</span>
 
         <span class="n">message</span> <span class="o">=</span> <span class="n">_generate_deprecation_message</span><span class="p">(</span><span class="n">since</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span>
                                                 <span class="n">alternative</span><span class="p">,</span> <span class="n">pending</span><span class="p">,</span>
@@ -517,7 +501,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -554,7 +538,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -565,7 +549,8 @@
       <script type="text/javascript" src="../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
 
   

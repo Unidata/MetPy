@@ -40,7 +40,7 @@ Demonstrate how to plot US counties at all three available resolutions.
 
     for scale, axis in zip(['20m', '5m', '500k'], [ax1, ax2, ax3]):
         axis.set_extent([270.25, 270.9, 38.15, 38.75], ccrs.Geodetic())
-        axis.add_feature(USCOUNTIES.with_scale(scale), edgecolor='black')
+        axis.add_feature(USCOUNTIES.with_scale(scale))
 
 
 
@@ -50,7 +50,7 @@ Demonstrate how to plot US counties at all three available resolutions.
 
 
 
-**Total running time of the script:** ( 0 minutes  0.073 seconds)
+**Total running time of the script:** ( 0 minutes  0.041 seconds)
 
 
 .. _sphx_glr_download_examples_plots_US_Counties.py:

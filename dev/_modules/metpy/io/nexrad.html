@@ -274,8 +274,7 @@
 <span class="k">def</span> <span class="nf">nexrad_to_datetime</span><span class="p">(</span><span class="n">julian_date</span><span class="p">,</span> <span class="n">ms_midnight</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Convert NEXRAD date time format to python `datetime.datetime`.&quot;&quot;&quot;</span>
     <span class="c1"># Subtracting one from julian_date is because epoch date is 1</span>
-    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">((</span><span class="n">julian_date</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">day</span> <span class="o">+</span>
-                                              <span class="n">ms_midnight</span> <span class="o">*</span> <span class="n">milli</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">utcfromtimestamp</span><span class="p">((</span><span class="n">julian_date</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">day</span> <span class="o">+</span> <span class="n">ms_midnight</span> <span class="o">*</span> <span class="n">milli</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">remap_status</span><span class="p">(</span><span class="n">val</span><span class="p">):</span>
@@ -432,8 +431,8 @@
                 <span class="c1"># As of 2620002P, this is a special value used to indicate that the segment</span>
                 <span class="c1"># number/count bytes are used to indicate total size in bytes.</span>
                 <span class="k">if</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">size_hw</span> <span class="o">==</span> <span class="mi">65535</span><span class="p">:</span>
-                    <span class="n">msg_bytes</span> <span class="o">=</span> <span class="p">(</span><span class="n">msg_hdr</span><span class="o">.</span><span class="n">num_segments</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span> <span class="o">|</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">segment_num</span> <span class="o">+</span>
-                                 <span class="bp">self</span><span class="o">.</span><span class="n">CTM_HEADER_SIZE</span><span class="p">)</span>
+                    <span class="n">msg_bytes</span> <span class="o">=</span> <span class="p">(</span><span class="n">msg_hdr</span><span class="o">.</span><span class="n">num_segments</span> <span class="o">&lt;&lt;</span> <span class="mi">16</span> <span class="o">|</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">segment_num</span>
+                                 <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">CTM_HEADER_SIZE</span><span class="p">)</span>
                 <span class="k">elif</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">msg_type</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="mi">31</span><span class="p">):</span>
                     <span class="n">msg_bytes</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">CTM_HEADER_SIZE</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">size_hw</span>
 
@@ -808,8 +807,8 @@
     <span class="k">def</span> <span class="nf">_buffer_segment</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg_hdr</span><span class="p">):</span>
         <span class="c1"># Add to the buffer</span>
         <span class="n">bufs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_msg_buf</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">msg_hdr</span><span class="o">.</span><span class="n">msg_type</span><span class="p">,</span> <span class="p">{})</span>
-        <span class="n">bufs</span><span class="p">[</span><span class="n">msg_hdr</span><span class="o">.</span><span class="n">segment_num</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">size_hw</span> <span class="o">-</span>
-                                                      <span class="bp">self</span><span class="o">.</span><span class="n">msg_hdr_fmt</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
+        <span class="n">bufs</span><span class="p">[</span><span class="n">msg_hdr</span><span class="o">.</span><span class="n">segment_num</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_buffer</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">size_hw</span>
+                                                      <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg_hdr_fmt</span><span class="o">.</span><span class="n">size</span><span class="p">)</span>
 
         <span class="c1"># Warn for badly formatted data</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bufs</span><span class="p">)</span> <span class="o">!=</span> <span class="n">msg_hdr</span><span class="o">.</span><span class="n">segment_num</span><span class="p">:</span>
@@ -1202,7 +1201,7 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">ij_to_km</span> <span class="o">=</span> <span class="mf">0.25</span>
-    <span class="n">wmo_finder</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;((?:NX|SD|NO)US)\d</span><span class="si">{2}</span><span class="s1">[\s\w\d]+\w*(\w</span><span class="si">{3}</span><span class="s1">)</span><span class="se">\r\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="n">wmo_finder</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;((?:NX|SD|NO)US)</span><span class="se">\\</span><span class="s1">d</span><span class="si">{2}</span><span class="s1">[</span><span class="se">\\</span><span class="s1">s</span><span class="se">\\</span><span class="s1">w</span><span class="se">\\</span><span class="s1">d]+</span><span class="se">\\</span><span class="s1">w*(</span><span class="se">\\</span><span class="s1">w</span><span class="si">{3}</span><span class="s1">)</span><span class="se">\r\r\n</span><span class="s1">&#39;</span><span class="p">)</span>
     <span class="n">header_fmt</span> <span class="o">=</span> <span class="n">NamedStruct</span><span class="p">([(</span><span class="s1">&#39;code&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="s1">&#39;l&#39;</span><span class="p">),</span>
                               <span class="p">(</span><span class="s1">&#39;msg_len&#39;</span><span class="p">,</span> <span class="s1">&#39;L&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;src_id&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">),</span> <span class="p">(</span><span class="s1">&#39;dest_id&#39;</span><span class="p">,</span> <span class="s1">&#39;h&#39;</span><span class="p">),</span>
                               <span class="p">(</span><span class="s1">&#39;num_blks&#39;</span><span class="p">,</span> <span class="s1">&#39;H&#39;</span><span class="p">)],</span> <span class="s1">&#39;&gt;&#39;</span><span class="p">,</span> <span class="s1">&#39;MsgHdr&#39;</span><span class="p">)</span>
@@ -2520,7 +2519,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2017, MetPy Developers.
-      Last updated on Sep 29, 2018 at 16:53:09.
+      Last updated on Jan 06, 2019 at 02:18:28.
 
     </p>
   </div>
@@ -2557,7 +2556,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.9.1+9.gd0d44e8',
+            VERSION:'0.9.1+87.gcee9d4d',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -2568,7 +2567,8 @@
       <script type="text/javascript" src="../../../_static/jquery.js"></script>
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+      <script type="text/javascript" src="../../../_static/language_data.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
 
   

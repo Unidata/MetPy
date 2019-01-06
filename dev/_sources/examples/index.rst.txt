@@ -425,6 +425,26 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface.">
+
+.. only:: html
+
+    .. figure:: /examples/plots/images/thumb/sphx_glr_Simplified_Image_Plot_thumb.png
+
+        :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Simplified_Image_Plot
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to plot US counties at all three available resolutions. ">
 
 .. only:: html
@@ -442,6 +462,26 @@ Examples using MetPy's various specialty plotting routines.
    :hidden:
 
    /examples/plots/US_Counties
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface combining multiple plots.">
+
+.. only:: html
+
+    .. figure:: /examples/plots/images/thumb/sphx_glr_Combined_plotting_thumb.png
+
+        :ref:`sphx_glr_examples_plots_Combined_plotting.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Combined_plotting
 
 .. raw:: html
 
