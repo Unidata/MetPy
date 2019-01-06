@@ -1,0 +1,12 @@
+find_intersections
+=============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: find_intersections
+
+.. include:: metpy.calc.find_intersections.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

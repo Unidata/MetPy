@@ -1,0 +1,12 @@
+remove_repeat_coordinates
+========================================
+
+.. currentmodule:: metpy.gridding
+
+.. autofunction:: remove_repeat_coordinates
+
+.. include:: metpy.gridding.remove_repeat_coordinates.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

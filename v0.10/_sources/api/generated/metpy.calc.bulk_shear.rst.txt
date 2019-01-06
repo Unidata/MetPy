@@ -1,0 +1,12 @@
+bulk_shear
+=====================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: bulk_shear
+
+.. include:: metpy.calc.bulk_shear.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

@@ -1,0 +1,12 @@
+remove_observations_below_value
+=================================================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: remove_observations_below_value
+
+.. include:: metpy.interpolate.remove_observations_below_value.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

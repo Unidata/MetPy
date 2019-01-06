@@ -1,0 +1,12 @@
+wind_components
+==========================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: wind_components
+
+.. include:: metpy.calc.wind_components.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

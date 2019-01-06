@@ -1,0 +1,12 @@
+potential_vorticity_baroclinic
+=========================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: potential_vorticity_baroclinic
+
+.. include:: metpy.calc.potential_vorticity_baroclinic.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

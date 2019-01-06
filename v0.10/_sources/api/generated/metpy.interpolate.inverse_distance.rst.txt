@@ -1,0 +1,12 @@
+inverse_distance
+==================================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: inverse_distance
+
+.. include:: metpy.interpolate.inverse_distance.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

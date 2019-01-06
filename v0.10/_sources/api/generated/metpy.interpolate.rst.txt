@@ -1,0 +1,44 @@
+
+
+interpolate
+=================
+
+.. automodule:: metpy.interpolate
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree: ./
+
+   
+      cross_section
+      geodesic
+      interpolate
+      interpolate_1d
+      interpolate_nans_1d
+      interpolate_to_grid
+      interpolate_to_points
+      interpolate_to_slice
+      inverse_distance
+      inverse_distance_to_grid
+      inverse_distance_to_points
+      log_interpolate_1d
+      natural_neighbor
+      natural_neighbor_to_grid
+      natural_neighbor_to_points
+      remove_nan_observations
+      remove_observations_below_value
+      remove_repeat_coordinates
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+

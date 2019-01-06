@@ -1,0 +1,43 @@
+PintAxisInfo
+========================
+
+.. currentmodule:: metpy.units
+
+.. autoclass:: PintAxisInfo
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~PintAxisInfo.__init__
+
+   
+   
+
+   
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+
+   
+   
+
+.. include:: metpy.units.PintAxisInfo.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>
