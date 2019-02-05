@@ -119,7 +119,7 @@ class MetpyDeprecationWarning(UserWarning):
     pass
 
 
-metpyDeprecation = MetpyDeprecationWarning
+metpyDeprecation = MetpyDeprecationWarning  # noqa: N816
 
 
 def _generate_deprecation_message(since, message='', name='',
