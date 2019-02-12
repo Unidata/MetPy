@@ -39,7 +39,8 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'sphinx_gallery.gen_gallery',
-    'matplotlib.sphinxext.plot_directive'
+    'matplotlib.sphinxext.plot_directive',
+    'm2r'
 ]
 
 sphinx_gallery_conf = {
@@ -57,11 +58,6 @@ sphinx_gallery_conf = {
     'default_thumb_file': os.path.join('_static', 'metpy_150x150_white_bg.png'),
     'abort_on_example_error': True
 }
-
-source_parsers = {
-   '.md': 'recommonmark.parser.CommonMarkParser',
-}
-
 
 # Turn off code and image links for embedded mpl plots
 plot_html_show_source_link = False
@@ -98,7 +94,7 @@ master_doc = 'index'
 # General information about the project.
 project = 'MetPy'
 # noinspection PyShadowingBuiltins
-copyright = '2017, MetPy Developers'
+copyright = '2019, MetPy Developers'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the

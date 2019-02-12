@@ -50,13 +50,13 @@ setup(
                   'metpy': ['static-data-manifest.txt']},
 
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*',
-    install_requires=['matplotlib>=2.0.0', 'numpy>=1.11.0', 'scipy>=0.17.0',
-                      'pint>=0.8', 'xarray>=0.10.7', 'enum34;python_version<"3.4"',
+    install_requires=['matplotlib>=2.0.0', 'numpy>=1.12.0', 'scipy>=0.17.0',
+                      'pint!=0.9', 'xarray>=0.10.7', 'enum34;python_version<"3.4"',
                       'pooch>=0.1, <0.3', 'traitlets>=4.3.0'],
     extras_require={
         'cdm': ['pyproj>=1.9.4'],
         'dev': ['ipython[all]>=3.1'],
-        'doc': ['sphinx>=1.4', 'sphinx-gallery', 'doc8', 'recommonmark',
+        'doc': ['sphinx>=1.4', 'sphinx-gallery', 'doc8', 'm2r',
                 'netCDF4'],
         'examples': ['cartopy>=0.13.1', 'matplotlib>=2.2.0'],
         'test': ['pytest>=2.4', 'pytest-runner', 'pytest-mpl', 'pytest-flake8',
