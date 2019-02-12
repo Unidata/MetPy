@@ -22,7 +22,7 @@ dependencies:
   - pytest-mpl
   - pytest-runner
   - flake8-builtins!=1.4.0
-  - flake8-comprehensions
+  - flake8-comprehensions=1.4.1
   - flake8-copyright
   - flake8-docstrings
   - flake8-import-order
