@@ -15,6 +15,7 @@
    examples/index
    tutorials/index
    api/index
+   roadmap
    gempak
    CONTRIBUTING
    infrastructureguide
