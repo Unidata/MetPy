@@ -54,7 +54,7 @@ setup(
                       'pint!=0.9', 'xarray>=0.10.7', 'enum34;python_version<"3.4"',
                       'pooch>=0.1, <0.3', 'traitlets>=4.3.0'],
     extras_require={
-        'cdm': ['pyproj>=1.9.4'],
+        'cdm': ['pyproj>=1.9.4,!=2.0.0'],
         'dev': ['ipython[all]>=3.1'],
         'doc': ['sphinx>=1.4', 'sphinx-gallery', 'doc8', 'm2r',
                 'netCDF4'],
