@@ -604,7 +604,7 @@ def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
     lats : (M, N) ndarray
-        latitudes of the wind data
+        latitudes of the wind data in radians or with appropriate unit information attached
 
     Returns
     -------
@@ -652,7 +652,7 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
     lats : (M, N) ndarray
-        latitudes of the wind data
+        latitudes of the wind data in radians or with appropriate unit information attached
     axis : int, optional
         The axis corresponding to the vertical dimension in the potential temperature
         and pressure arrays, defaults to 0, the first dimension.
@@ -728,7 +728,7 @@ def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
     lats : (M, N) ndarray
-        latitudes of the wind data
+        latitudes of the wind data in radians or with appropriate unit information attached
 
     Returns
     -------
@@ -780,7 +780,7 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
     lats : (M, N) ndarray
-        latitudes of the wind data
+        latitudes of the wind data in radians or with appropriate unit information attached
 
     Returns
     -------
