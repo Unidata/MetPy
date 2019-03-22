@@ -397,10 +397,18 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
         temperature = temperature.to('degC')
         parcel_temperature_profile = parcel_temperature_profile.to('degC')
 
-    # The parcel profile and data have the same first data point, so we ignore
-    # that point to get the real first intersection for the LFC calculation.
-    x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
-                              temperature[1:], direction='increasing')
+    # The parcel profile and data may have the same first data point
+    # (e.g., for a surface-based parcel), so we may need to ignore
+    # that point to get the real first intersection for the LFC
+    # calculation.
+    # TODO: This should find the intersection wrt log p.
+    if temperature[0] == parcel_temperature_profile[0]:
+        x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
+                                  temperature[1:], direction='increasing')
+    else:
+        x, y = find_intersections(pressure,
+                                  parcel_temperature_profile, temperature,
+                                  direction='increasing')
 
     # Compute LCL for this parcel for future comparisons
     this_lcl = lcl(pressure[0], parcel_temperature_profile[0], dewpt[0])
@@ -423,10 +431,10 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
     else:
         idx = x < this_lcl[0]
         # LFC height < LCL height, so set LFC = LCL
-        if not idx[0]:
+        if not any(idx):
             x, y = this_lcl
             return x, y
-        # Otherwise, make sure LFC is above the LCL
+        # Otherwise, make select first candidate LFC above the LCL
         else:
             x = x[idx]
             y = y[idx]
