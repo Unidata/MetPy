@@ -198,7 +198,7 @@ That command runs the tests and saves the images in the ``baseline`` directory.
 For MetPy this is generally ``metpy/plots/tests/baseline/``. We recommend using the ``-k`` flag
 to run only the test you just created for this step.
 
-For more information, see the `docs for mpl-test <https://github.com/astrofrog/pytest-mpl>`_.
+For more information, see the [docs for pytest-mpl](https://github.com/astrofrog/pytest-mpl).
 
 
 ## Cached Data Files
@@ -213,10 +213,9 @@ Make sure that no system files (like `.DS_Store`) are in the manifest and add it
 contribution.
 
 ## Code Style
-MetPy uses the Python code style outlined in `PEP8
-<https://pep8.org>`_. For better or worse, this is what the majority
-of the Python world uses. The one deviation is that line length limit is 95 characters. 80 is a
-good target, but some times longer lines are needed.
+MetPy uses the Python code style outlined in [PEP8](http://pep8.org). For better or worse, this 
+is what the majority of the Python world uses. The one deviation is that line length limit is 
+95 characters. 80 is a good target, but some times longer lines are needed.
 
 While the authors are no fans of blind adherence to style and so-called project "clean-ups"
 that go through and correct code style, MetPy has adopted this style from the outset.
