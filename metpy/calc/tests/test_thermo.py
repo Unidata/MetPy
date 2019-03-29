@@ -327,6 +327,19 @@ def test_lfc_ml2():
     assert_almost_equal(lfc_temp, 0.767 * units.degC, 2)
 
 
+def test_lfc_intersection():
+    """Test LFC calculation when LFC is below a tricky intersection."""
+    p = np.array([1024.957, 930., 924.828, 898.255, 873.461, 848.698, 823.926,
+                  788.493]) * units('hPa')
+    t = np.array([6.008, -10., -6.94, -8.58, -4.41, -4.19, -3.71, -4.48]) * units('degC')
+    td = np.array([5., -10., -7., -9., -4.5, -4.2, -3.8, -4.5]) * units('degC')
+    _, mlt, mltd = mixed_parcel(p, t, td)
+    ml_profile = parcel_profile(p, mlt, mltd)
+    mllfc_p, mllfc_t = lfc(p, t, td, ml_profile, mltd)
+    assert_almost_equal(mllfc_p, 982.762 * units.hPa, 2)
+    assert_almost_equal(mllfc_t, 272.045 * units.kelvin, 2)
+
+
 def test_no_lfc():
     """Test LFC calculation when there is no LFC in the data."""
     levels = np.array([959., 867.9, 779.2, 647.5, 472.5, 321.9, 251.]) * units.mbar
