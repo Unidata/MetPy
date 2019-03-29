@@ -310,7 +310,7 @@ def test_lfc_ml2():
                              -71.53523254, -71.61097717, -71.92687988, -72.68682861,
                              -74.129776, -76.02471924, -76.88977051, -76.26008606,
                              -75.90351868, -76.15809631]) * units.celsius
-    dewpoints = np.array([4.50012302, 3.42483997, 2.78102994, 2.24474645, 1.593485, 0.94408154,
+    dewpoints = np.array([4.50012302, 3.42483997, 2.78102994, 2.24474645, 1.593485, -0.9440815,
                           -3.8044982, -3.55629468, -9.7376976, -10.2950449, -9.67498302,
                           -10.30486488, -8.70559597, -8.71669006, -12.66509628, -18.6697197,
                           -23.00351334, -29.46240425, -36.82178497, -41.68824768, -44.50320816,
@@ -322,9 +322,9 @@ def test_lfc_ml2():
                           -88.74453735, -89.04680634, -89.26436615]) * units.celsius
     __, t_mixed, td_mixed = mixed_parcel(levels, temperatures, dewpoints)
     mixed_parcel_prof = parcel_profile(levels, t_mixed, td_mixed)
-    lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints, mixed_parcel_prof)
-    assert_almost_equal(lfc_pressure, 1001.532 * units.mbar, 2)
-    assert_almost_equal(lfc_temp, 4.17 * units.degC, 2)
+    lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints, mixed_parcel_prof, td_mixed)
+    assert_almost_equal(lfc_pressure, 962.34 * units.mbar, 2)
+    assert_almost_equal(lfc_temp, 0.767 * units.degC, 2)
 
 
 def test_no_lfc():
