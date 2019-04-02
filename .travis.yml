@@ -120,7 +120,7 @@ script:
       else
         export DOC_TEST_RESULT=0;
       fi;
-      doc8 --file-encoding utf8 README.rst docs/;
+      doc8 README.rst docs/;
       if [[ $? -ne 0 || $DOC_BUILD_RESULT -ne 0 || $DOC_TEST_RESULT -ne 0 ]]; then
         false;
       fi;
