@@ -7,6 +7,8 @@ from __future__ import division
 
 import numpy as np
 
+# Change when Python 2.7 no longer supported
+import metpy.calc
 from .points import (interpolate_to_points, inverse_distance_to_points,
                      natural_neighbor_to_points)
 from ..deprecation import deprecated
@@ -179,8 +181,8 @@ def natural_neighbor(xp, yp, variable, grid_x, grid_y):
 
 natural_neighbor.__doc__ = (natural_neighbor_to_grid.__doc__
                             + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                              'to `natural_neighbor_to_grid` and will be removed from MetPy in'
-                              ' 0.12.0.')
+                            'to `natural_neighbor_to_grid` and will be removed from MetPy in'
+                            ' 0.12.0.')
 
 
 @exporter.export
@@ -248,8 +250,8 @@ def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None
 
 inverse_distance.__doc__ = (inverse_distance_to_grid.__doc__
                             + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                              'to `inverse_distance_to_grid` and will be removed from MetPy in'
-                              ' 0.12.0.')
+                            'to `inverse_distance_to_grid` and will be removed from MetPy in'
+                            ' 0.12.0.')
 
 
 @exporter.export
@@ -334,6 +336,65 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
 
 
 @exporter.export
+def interpolate_to_isosurface(level_var, interp_var, level, **kwargs):
+    r"""Linear interpolation of a variable to a given vertical level from given values.
+
+    This function assumes that highest vertical level (lowest pressure) is zeroth index.
+    A classic use of this function would be to compute the potential temperature on the
+    dynamic tropopause (2 PVU surface).
+
+    Parameters
+    ----------
+    level_var: array_like (P, M, N)
+        Level values in 3D grid on common vertical coordinate (e.g., PV values on
+        isobaric levels). Assumes height dimension is highest to lowest in atmosphere.
+    interp_var: array_like (P, M, N)
+        Variable on 3D grid with same vertical coordinate as level_var to interpolate to
+        given level (e.g., potential temperature on isobaric levels)
+    level: int or float
+        Desired interpolated level (e.g., 2 PVU surface)
+
+    Other Parameters
+    ----------------
+    bottom_up_search : bool, optional
+        Controls whether to search for levels bottom-up, or top-down. Defaults to
+        True, which is bottom-up search.
+
+    Returns
+    -------
+    interp_level: (M, N) ndarray
+        The interpolated variable (e.g., potential temperature) on the desired level (e.g.,
+        2 PVU surface)
+
+    Notes
+    -----
+    This function implements a linear interpolation to estimate values on a given surface.
+    The prototypical example is interpolation of potential temperature to the dynamic
+    tropopause (e.g., 2 PVU surface)
+
+    """
+    # Change when Python 2.7 no longer supported
+    # Pull out keyword arguments
+    bottom_up_search = kwargs.pop('bottom_up_search', True)
+
+    # Find index values above and below desired interpolated surface value
+    above, below, good = metpy.calc.find_bounding_indices(level_var, [level], axis=0,
+                                                          from_below=bottom_up_search)
+
+    # Linear interpolation of variable to interpolated surface value
+    interp_level = (((level - level_var[above]) / (level_var[below] - level_var[above]))
+                    * (interp_var[below] - interp_var[above])) + interp_var[above]
+
+    # Handle missing values and instances where no values for surface exist above and below
+    interp_level[~good] = np.nan
+    minvar = (np.min(level_var, axis=0) >= level)
+    maxvar = (np.max(level_var, axis=0) <= level)
+    interp_level[0][minvar] = interp_var[-1][minvar]
+    interp_level[0][maxvar] = interp_var[0][maxvar]
+    return interp_level.squeeze()
+
+
+@exporter.export
 @deprecated('0.9', addendum=' This function has been renamed interpolate_to_grid.',
             pending=False)
 def interpolate(x, y, z, interp_type='linear', hres=50000,
@@ -350,4 +411,4 @@ def interpolate(x, y, z, interp_type='linear', hres=50000,
 
 interpolate.__doc__ = (interpolate_to_grid.__doc__
                        + '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
-                         '`interpolate_to_grid` and will be removed from MetPy in 0.12.0.')
+                       '`interpolate_to_grid` and will be removed from MetPy in 0.12.0.')
