@@ -67,7 +67,7 @@ requesting something you think is missing.
 We recommend using the [conda](https://conda.io/docs/) package manager for your Python 
 environments. Our recommended setup for contributing is:
 
-* Install [miniconda](https://conda.io/miniconda.html) on your system.
+* Install [miniconda](https://docs.conda.io/en/latest/miniconda.html) on your system.
 * Install git on your system if it is not already there (install XCode command line tools on
   a Mac or git bash on Windows)
 * Login to your GitHub account and make a fork of the 
@@ -214,7 +214,7 @@ contribution.
 
 ## Code Style
 MetPy uses the Python code style outlined in `PEP8
-<http://pep8.org>`_. For better or worse, this is what the majority
+<https://pep8.org>`_. For better or worse, this is what the majority
 of the Python world uses. The one deviation is that line length limit is 95 characters. 80 is a
 good target, but some times longer lines are needed.
 
@@ -255,7 +255,7 @@ couple of days. We may suggest some changes or improvements or alternatives.
 Some things that will increase the chance that your pull request is accepted quickly:
 
 * Write tests.
-* Follow [PEP8][http://pep8.org] for style. (The `flake8` utility can help with this.)
+* Follow [PEP8][https://pep8.org] for style. (The `flake8` utility can help with this.)
 * Write a [good commit message][https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html].
 
 Pull requests will automatically have tests run by Travis. This includes

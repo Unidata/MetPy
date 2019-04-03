@@ -8,7 +8,7 @@ Installation Guide
 Python 2.7 Support
 ------------------
 In the Fall 2019, we will be dropping support for Python 2.7. This follows movement from
-other packages within the `scientific Python ecosystem <http://python3statement.org/>`_.
+other packages within the `scientific Python ecosystem <https://python3statement.org/>`_.
 This includes:
 
 * Core Python developers will
