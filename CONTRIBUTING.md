@@ -67,7 +67,7 @@ requesting something you think is missing.
 We recommend using the [conda](https://conda.io/docs/) package manager for your Python 
 environments. Our recommended setup for contributing is:
 
-* Install [miniconda](https://conda.io/miniconda.html) on your system.
+* Install [miniconda](https://docs.conda.io/en/latest/miniconda.html) on your system.
 * Install git on your system if it is not already there (install XCode command line tools on
   a Mac or git bash on Windows)
 * Login to your GitHub account and make a fork of the 
