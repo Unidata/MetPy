@@ -15,7 +15,7 @@ import xarray as xr
 
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
-from metpy.plots import ContourPlot, ImagePlot, MapPanel, PanelContainer
+from metpy.plots import ContourPlot, FilledContourPlot, ImagePlot, MapPanel, PanelContainer
 # Fixtures to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401, I202
 from metpy.units import units
@@ -74,6 +74,35 @@ def test_declarative_contour():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.035)
+def test_declarative_contour_options():
+    """Test making a contour plot."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Temperature'
+    contour.level = 700 * units.hPa
+    contour.contours = 30
+    contour.linewidth = 1
+    contour.linecolor = 'red'
+    contour.linestyle = 'dashed'
+    contour.clabels = True
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.proj = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
 def test_declarative_events():
     """Test that resetting traitlets properly propagates."""
@@ -112,6 +141,7 @@ def test_declarative_events():
     contour.field = 'Specific_humidity'
     img.field = 'Geopotential_height'
     img.colormap = 'plasma'
+    img.colorbar = 'horizontal'
 
     return pc.figure
 
@@ -150,6 +180,81 @@ def test_projection_object():
     return pc.figure
 
 
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
+def test_colorfill():
+    """Test that we can use ContourFillPlot."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = FilledContourPlot()
+    contour.data = data
+    contour.level = 700 * units.hPa
+    contour.field = 'Temperature'
+    contour.colormap = 'coolwarm'
+    contour.colorbar = 'vertical'
+
+    panel = MapPanel()
+    panel.area = (-110, -60, 25, 55)
+    panel.layers = [cfeature.STATES]
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.panel = panel
+    pc.size = (12, 8)
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
+def test_colorfill_horiz_colorbar():
+    """Test that we can use ContourFillPlot."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = FilledContourPlot()
+    contour.data = data
+    contour.level = 700 * units.hPa
+    contour.field = 'Temperature'
+    contour.colormap = 'coolwarm'
+    contour.colorbar = 'horizontal'
+
+    panel = MapPanel()
+    panel.area = (-110, -60, 25, 55)
+    panel.layers = [cfeature.STATES]
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.panel = panel
+    pc.size = (8, 8)
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.016)
+def test_colorfill_no_colorbar():
+    """Test that we can use ContourFillPlot."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    contour = FilledContourPlot()
+    contour.data = data
+    contour.level = 700 * units.hPa
+    contour.field = 'Temperature'
+    contour.colormap = 'coolwarm'
+    contour.colorbar = None
+
+    panel = MapPanel()
+    panel.area = (-110, -60, 25, 55)
+    panel.layers = [cfeature.STATES]
+    panel.plots = [contour]
+
+    pc = PanelContainer()
+    pc.panel = panel
+    pc.size = (8, 8)
+    pc.draw()
+
+    return pc.figure
+
+
 @pytest.mark.mpl_image_compare(remove_text=True, tolerance=1.23)
 def test_global():
     """Test that we can set global extent."""
@@ -158,6 +263,7 @@ def test_global():
     img = ImagePlot()
     img.data = data
     img.field = 'IR'
+    img.colorbar = None
 
     panel = MapPanel()
     panel.area = 'global'
@@ -181,6 +287,7 @@ def test_latlon():
     img.field = 'Temperature_isobaric'
     img.level = 500 * units.hPa
     img.time = datetime(2017, 9, 5, 15, 0, 0)
+    img.colorbar = None
 
     contour = ContourPlot()
     contour.data = data

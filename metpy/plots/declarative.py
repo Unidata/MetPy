@@ -673,9 +673,12 @@ class Plot2D(HasTraits):
     level = Union([Int(allow_none=True, default_value=None), Instance(units.Quantity)])
     time = Instance(datetime, allow_none=True)
 
+    contours = Union([List(Float()), Int()], default_value=25)
+    clabels = Bool(default_value=False)
     colormap = Unicode(allow_none=True, default_value=None)
     image_range = Union([Tuple(Int(allow_none=True), Int(allow_none=True)),
                          Instance(plt.Normalize)], default_value=(None, None))
+    colorbar = Unicode(default_value=None, allow_none=True)
 
     @property
     def _cmap_obj(self):
@@ -705,12 +708,21 @@ class Plot2D(HasTraits):
 
         """
         if getattr(self, 'handle', None) is not None:
-            self.clear_handle()
+            if getattr(self.handle, 'collections', None) is not None:
+                self.clear_collections()
+            else:
+                self.clear_handle()
             self._need_redraw = True
 
     def clear_handle(self):
         """Clear the handle to the plot instance."""
         self.handle.remove()
+        self.handle = None
+
+    def clear_collections(self):
+        """Clear the handle collections to the plot instance."""
+        for col in self.handle.collections:
+            col.remove()
         self.handle = None
 
     @observe('parent')
@@ -795,6 +807,9 @@ class Plot2D(HasTraits):
         if self._need_redraw:
             if getattr(self, 'handle', None) is None:
                 self._build()
+            if self.colorbar is not None:
+                self.parent.ax.figure.colorbar(
+                    self.handle, orientation=self.colorbar, pad=0, aspect=50)
             self._need_redraw = False
 
 
@@ -809,6 +824,13 @@ class ImagePlot(Plot2D):
             self.handle.set_cmap(self._cmap_obj)
             self.handle.set_norm(self._norm_obj)
             self._need_redraw = True
+
+    @observe('colorbar')
+    def _set_need_rebuild(self, _):
+        """Handle changes to attributes that need to regenerate everything."""
+        # Because matplotlib doesn't let you just change these properties, we need
+        # to trigger a clear and re-call of contour()
+        self.clear()
 
     @property
     def plotdata(self):
@@ -846,24 +868,41 @@ class ContourPlot(Plot2D):
 
     linecolor = Unicode('black')
     linewidth = Int(2)
-    contours = Union([List(Float()), Int()], default_value=25)
+    linestyle = Unicode('solid', allow_none=True)
 
-    @observe('contours', 'linecolor', 'linewidth')
+    @observe('contours', 'linecolor', 'linewidth', 'linestyle', 'clabels')
     def _set_need_rebuild(self, _):
         """Handle changes to attributes that need to regenerate everything."""
         # Because matplotlib doesn't let you just change these properties, we need
         # to trigger a clear and re-call of contour()
         self.clear()
 
-    def clear_handle(self):
-        """Clear the handle to the plot instance."""
-        for col in self.handle.collections:
-            col.remove()
-        self.handle = None
-
     def _build(self):
         """Build the plot by calling any plotting methods as necessary."""
         x, y, imdata = self.plotdata
         self.handle = self.parent.ax.contour(x, y, imdata, self.contours,
                                              colors=self.linecolor, linewidths=self.linewidth,
+                                             linestyles=self.linestyle,
                                              transform=imdata.metpy.cartopy_crs)
+        if self.clabels:
+            self.handle.clabel(inline=1, fmt='%.0f', inline_spacing=2,
+                               use_clabeltext=True)
+
+
+@exporter.export
+class FilledContourPlot(Plot2D):
+    """Represent a contour fill plot."""
+
+    @observe('contours', 'colorbar', 'colormap')
+    def _set_need_rebuild(self, _):
+        """Handle changes to attributes that need to regenerate everything."""
+        # Because matplotlib doesn't let you just change these properties, we need
+        # to trigger a clear and re-call of contour()
+        self.clear()
+
+    def _build(self):
+        """Build the plot by calling any plotting methods as necessary."""
+        x, y, imdata = self.plotdata
+        self.handle = self.parent.ax.contourf(x, y, imdata, self.contours,
+                                              cmap=self._cmap_obj, norm=self._norm_obj,
+                                              transform=imdata.metpy.cartopy_crs)
