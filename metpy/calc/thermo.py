@@ -5,7 +5,6 @@
 
 from __future__ import division
 
-from math import isclose
 import warnings
 
 import numpy as np
@@ -407,7 +406,7 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     # The parcel profile and data may have the same first data point.
     # If that is the case, ignore that point to get the real first
     # intersection for the LFC calculation.
-    if isclose(parcel_temperature_profile[0].m, temperature[0].m):
+    if np.isclose(parcel_temperature_profile[0].m, temperature[0].m):
         x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
                                   temperature[1:], direction='increasing')
     else:
