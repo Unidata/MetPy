@@ -402,6 +402,9 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
     x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
                               temperature[1:], direction='increasing')
 
+    # Compute LCL for this parcel for future comparisons
+    this_lcl = lcl(pressure[0], temperature[0], dewpt[0])
+
     # The LFC could:
     # 1) Not exist
     # 2) Exist but be equal to the LCL
@@ -409,11 +412,13 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
 
     # LFC does not exist or is LCL
     if len(x) == 0:
-        if np.all(_less_or_close(parcel_temperature_profile, temperature)):
+        # Is there any positive area above the LCL?
+        mask = pressure < this_lcl[0]
+        if np.all(_less_or_close(parcel_temperature_profile[mask], temperature[mask])):
             # LFC doesn't exist
             return np.nan * pressure.units, np.nan * temperature.units
         else:  # LFC = LCL
-            x, y = lcl(pressure[0], temperature[0], dewpt[0])
+            x, y = this_lcl
             return x, y
 
     # LFC exists and is not LCL. Make sure it is above the LCL.
