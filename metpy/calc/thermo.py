@@ -421,12 +421,18 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
             x, y = this_lcl
             return x, y
 
-    # LFC exists and is not LCL. Make sure it is above the LCL.
+    # LFC exists. Make sure it is no lower than the LCL
     else:
-        idx = x < lcl(pressure[0], temperature[0], dewpt[0])[0]
-        x = x[idx]
-        y = y[idx]
-        return x[0], y[0]
+        idx = x < this_lcl[0]
+        # LFC height < LCL height, so set LFC = LCL
+        if not any(idx):
+            x, y = this_lcl
+            return x, y
+        # Otherwise, make select first candidate LFC above the LCL
+        else:
+            x = x[idx]
+            y = y[idx]
+            return x[0], y[0]
 
 
 @exporter.export
