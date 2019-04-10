@@ -362,7 +362,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
+def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_start=None):
     r"""Calculate the level of free convection (LFC).
 
     This works by finding the first intersection of the ideal parcel path and
@@ -379,6 +379,9 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
     parcel_temperature_profile: `pint.Quantity`, optional
         The parcel temperature profile from which to calculate the LFC. Defaults to the
         surface parcel profile.
+    dewpt_start: `pint.Quantity`, optional
+        The dewpoint of the parcel for which to calculate the LFC. Defaults to the surface
+        dewpoint.
 
     Returns
     -------
@@ -397,13 +400,21 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None):
         temperature = temperature.to('degC')
         parcel_temperature_profile = parcel_temperature_profile.to('degC')
 
-    # The parcel profile and data have the same first data point, so we ignore
-    # that point to get the real first intersection for the LFC calculation.
-    x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
-                              temperature[1:], direction='increasing')
+    if dewpt_start is None:
+        dewpt_start = dewpt[0]
+
+    # The parcel profile and data may have the same first data point.
+    # If that is the case, ignore that point to get the real first
+    # intersection for the LFC calculation.
+    if np.isclose(parcel_temperature_profile[0].m, temperature[0].m):
+        x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
+                                  temperature[1:], direction='increasing')
+    else:
+        x, y = find_intersections(pressure, parcel_temperature_profile,
+                                  temperature, direction='increasing')
 
     # Compute LCL for this parcel for future comparisons
-    this_lcl = lcl(pressure[0], temperature[0], dewpt[0])
+    this_lcl = lcl(pressure[0], parcel_temperature_profile[0], dewpt_start)
 
     # The LFC could:
     # 1) Not exist
