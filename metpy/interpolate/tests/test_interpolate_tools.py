@@ -14,7 +14,6 @@ from scipy.spatial.distance import cdist
 from metpy.interpolate import (remove_nan_observations, remove_observations_below_value,
                                remove_repeat_coordinates, interpolate_to_grid)
 from metpy.interpolate.tools import barnes_weights, calc_kappa, cressman_weights
-from metpy.units import units
 
 
 @pytest.fixture()

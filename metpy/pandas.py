@@ -18,12 +18,6 @@ log = logging.getLogger(__name__)
 def preprocess_pandas(func):
     """Decorate a function to convert all data series arguments to np.ndarray.
     """
-    def _if_units_strip(val):
-        if hasattr(val, 'm'):
-            return val.m
-        else:
-            return val
-
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         # not using hasattr(a, values) because it picks up dict.values()
