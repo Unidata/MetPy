@@ -71,6 +71,7 @@ skew.ax.set_xlim(-40, 60)
 # should be selected.
 lcl_pressure, lcl_temperature = mpcalc.lcl(p[0], T[0], Td[0])
 skew.plot(lcl_pressure, lcl_temperature, 'ko', markerfacecolor='black')
+
 # Calculate full parcel profile and add to plot as black line
 prof = mpcalc.parcel_profile(p, T[0], Td[0]).to('degC')
 skew.plot(p, prof, 'k', linewidth=2)
