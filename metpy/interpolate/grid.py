@@ -13,6 +13,7 @@ from .points import (interpolate_to_points, inverse_distance_to_points,
                      natural_neighbor_to_points)
 from ..deprecation import deprecated
 from ..package_tools import Exporter
+from ..pandas import preprocess_pandas
 
 exporter = Exporter(globals())
 
@@ -255,6 +256,7 @@ inverse_distance.__doc__ = (inverse_distance_to_grid.__doc__
 
 
 @exporter.export
+@preprocess_pandas
 def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
                         minimum_neighbors=3, gamma=0.25, kappa_star=5.052,
                         search_radius=None, rbf_func='linear', rbf_smooth=0,
@@ -339,6 +341,7 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
 
 
 @exporter.export
+@preprocess_pandas
 def interpolate_to_isosurface(level_var, interp_var, level, **kwargs):
     r"""Linear interpolation of a variable to a given vertical level from given values.
 
