@@ -653,9 +653,6 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
         the size of `u` along the applicable axis.
     lats : (M, N) ndarray
         latitudes of the wind data in radians or with appropriate unit information attached
-    axis : int, optional
-        The axis corresponding to the vertical dimension in the potential temperature
-        and pressure arrays, defaults to 0, the first dimension.
 
     Returns
     -------
