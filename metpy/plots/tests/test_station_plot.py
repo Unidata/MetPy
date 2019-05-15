@@ -255,7 +255,7 @@ def test_layout_str():
     layout.add_value('W', 'temp')
     layout.add_symbol('C', 'cover', lambda x: x)
     assert str(layout) == ('{C: (symbol, cover, ...), E: (text, stid, ...), '
-                           'W: (value, temp, ...), barb: (barb, (\'u\', \'v\'), ...)}')
+                           "W: (value, temp, ...), barb: (barb, ('u', 'v'), ...)}")
 
 
 @pytest.mark.mpl_image_compare(tolerance={'1.4': 0.08}.get(MPL_VERSION, 0.00145),
