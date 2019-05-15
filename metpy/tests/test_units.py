@@ -144,7 +144,7 @@ def test_pandas_units_simple():
     assert_array_equal(res['colb'], colb_truth)
 
 
-@pytest.mark.filterwarnings('ignore:Pandas doesn\'t allow columns to be created')
+@pytest.mark.filterwarnings("ignore:Pandas doesn't allow columns to be created")
 def test_pandas_units_on_dataframe():
     """Unit attachment based on a units attribute to a dataframe."""
     df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])
@@ -156,7 +156,7 @@ def test_pandas_units_on_dataframe():
     assert_array_equal(res['colb'], colb_truth)
 
 
-@pytest.mark.filterwarnings('ignore:Pandas doesn\'t allow columns to be created')
+@pytest.mark.filterwarnings("ignore:Pandas doesn't allow columns to be created")
 def test_pandas_units_on_dataframe_not_all_united():
     """Unit attachment with units attribute with a column with no units."""
     df = pd.DataFrame(data=[[1, 4], [2, 5], [3, 6]], columns=['cola', 'colb'])

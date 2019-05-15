@@ -76,7 +76,7 @@ class MetPyAccessor(object):
                     return coord_var
             raise AttributeError(axis + ' attribute is not available.')
         else:
-            raise AttributeError('\'' + axis + '\' is not an interpretable axis.')
+            raise AttributeError("'" + axis + "' is not an interpretable axis.")
 
     def coordinates(self, *args):
         """Return the coordinate variables corresponding to the given axes types."""
