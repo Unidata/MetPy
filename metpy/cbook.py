@@ -5,7 +5,6 @@
 
 import os
 
-from matplotlib.cbook import iterable
 import numpy as np
 import pooch
 
