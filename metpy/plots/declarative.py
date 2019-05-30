@@ -476,7 +476,16 @@ class PanelContainer(HasTraits):
     """Hold multiple panels of plots."""
 
     size = Union([Tuple(Int(), Int()), Instance(type(None))], default_value=None)
+    size.__doc__ = """This trait takes a tuple of (width, height) to set the size of the
+    figure.
+
+    This trait defaults to None and will assume the default `matplotlib.pyplot.figure` size.
+    """
+
     panels = List(Instance(Panel))
+    panels.__doc__ = """A list of panels to plot on the figure.
+
+    This trait must contain at least one panel to plot on the figure."""
 
     @property
     def panel(self):
@@ -521,7 +530,11 @@ class PanelContainer(HasTraits):
                 panel.draw()
 
     def save(self, *args, **kwargs):
-        """Save the constructed graphic as an image file."""
+        """Save the constructed graphic as an image file.
+
+        This method takes a string for saved file name. Additionally, the same arguments and
+        keyword arguments that `matplotlib.pyplot.savefig` does.
+        """
         self.draw()
         self.figure.savefig(*args, **kwargs)
 
@@ -537,14 +550,64 @@ class MapPanel(Panel):
 
     parent = Instance(PanelContainer)
     layout = Tuple(Int(), Int(), Int(), default_value=(1, 1, 1))
+    layout.__doc__ = """A tuple that contains the description (nrows, ncols, index) of the
+    panel position; default value is (1, 1, 1).
+
+    This trait is set to describe the panel position and the default is for a single panel. For
+    example, a four-panel plot will have two rows and two columns with the tuple setting for
+    the upper-left panel as (2, 2, 1), upper-right as (2, 2, 2), lower-left as (2, 2, 3), and
+    lower-right as (2, 2, 4). For more details see the documentation for
+    `matplotlib.figure.Figure.add_subplot`.
+    """
+
     plots = List(Any())
+    plots.__doc__ = """A list of handles that represent the plots (e.g., `ContourPlot`,
+    `FilledContourPlot`, `ImagePlot`) to put on a given panel.
+
+    This trait collects the different plots, including contours and images, that are intended
+    for a given panel.
+    """
+
     _need_redraw = Bool(default_value=True)
 
     area = Union([Unicode(), Tuple(Float(), Float(), Float(), Float())], allow_none=True,
                  default_value=None)
+    area.__doc__ = """A tuple or string value that indicates the graphical area of the plot.
+
+    The tuple value coresponds to longitude/latitude box based on the projection of the map
+    with the format (west-most longitude, east-most longitude, south-most latitude,
+    north-most latitude). This tuple defines a box from the lower-left to the upper-right
+    corner.
+
+    This trait can also be set with a string value associated with the named geographic regions
+    within MetPy. The tuples associated with the names are based on a PlatteCarree projection.
+    For a CONUS region, the following strings can be used: 'us', 'spcus', 'ncus', and 'afus'.
+    For regional plots, US state postal codes can be used.
+    """
+
     projection = Union([Unicode(), Instance(ccrs.Projection)], default_value='data')
+    projection.__doc__ = """A string for a pre-defined projection or a Cartopy projection
+    object.
+
+    There are three pre-defined projections that can be called with a short name:
+    Lambert conformal conic ('lcc'), Mercator ('mer'), or polar-stereographic ('ps').
+    Additionally, this trait can be set to a Cartopy projection object.
+    """
+
     layers = List(Union([Unicode(), Instance(cfeature.Feature)]), default_value=['coastline'])
+    layers.__doc__ = """A string for a pre-defined feature layer or a Cartopy Feature object.
+
+    Like the projection, there are a couple of pre-defined feature layers that can be called
+    using a short name. The pre-defined layers are: 'coastline', 'states', 'borders', 'lakes',
+    'land', 'ocean', and 'rivers'. Additionally, this trait can be set using a Cartopy Feature
+    object.
+    """
+
     title = Unicode()
+    title.__doc__ = """A string to set a title for the figure.
+
+    This trait sets a user-defined title that will plot at the top center of the figure.
+    """
 
     @observe('plots')
     def _plots_changed(self, change):
@@ -670,15 +733,67 @@ class Plot2D(HasTraits):
     _need_redraw = Bool(default_value=True)
 
     field = Unicode()
+    field.__doc__ = """Name of the field to be plotted.
+
+    This is the name of the variable from the dataset that is to be plotted. An example,
+    from a model grid file that uses the THREDDS convention for naming would be
+    `Geopotential_height_isobaric` or `Temperature_isobaric`. For GOES-16/17 satellite data it
+    might be `Sectorized_CMI`. To check for the variables available within a dataset, list the
+    variables with the following command assuming the dataset was read using xarray as `ds`,
+    `list(ds)`
+    """
+
     level = Union([Int(allow_none=True, default_value=None), Instance(units.Quantity)])
+    level.__doc__ = """The level of the field to be plotted.
+
+    This is a value with units to choose the desired plot level. For example, selecting the
+    850-hPa level, set this parameter to ``850 * units.hPa``
+    """
+
     time = Instance(datetime, allow_none=True)
+    time.__doc__ = """Set the valid time to be plotted as a datetime object.
+
+    If a forecast hour is to be plotted the time should be set to the valid future time, which
+    can be done using the `~datetime.datetime` and `~datetime.timedelta` objects
+    from the Python standard library.
+    """
 
     contours = Union([List(Float()), Int()], default_value=25)
+    contours.__doc__ = """A list of values to contour or an integer number of contour levels.
+
+    This parameter sets contour or colorfill values for a plot. Values can be entered either
+    as a list of values or as an integer with the number of contours to be plotted (as per
+    matplotlib documentation). A list can be generated by using square brackets or creating
+    a numpy 1D array and converting it to a list with the `~numpy.ndarray.tolist` method.
+    """
+
     clabels = Bool(default_value=False)
+    clabels.__doc__ = """A boolean (True/False) on whether to plot contour labels.
+
+    To plot contour labels set this trait to ``True``, the default value is ``False``.
+    """
+
     colormap = Unicode(allow_none=True, default_value=None)
+    colormap.__doc__ = """The string name for a Matplolib or MetPy colormap.
+
+    For example, the Blue-Purple colormap from Matplotlib can be accessed using 'BuPu'.
+    """
+
     image_range = Union([Tuple(Int(allow_none=True), Int(allow_none=True)),
                          Instance(plt.Normalize)], default_value=(None, None))
+    image_range.__doc__ = """A tuple of min and max values that represent the range of values
+    to color the rasterized image.
+
+    The min and max values entered as a tuple will be converted to a
+    `matplotlib.colors.Normalize` instance for plotting.
+    """
+
     colorbar = Unicode(default_value=None, allow_none=True)
+    colorbar.__doc__ = """A boolean (True/False) on whether to add a colorbar to the plot.
+
+    To add a colorbar associated with the plot data set the trait to ``True``, the default
+    values is ``False``.
+    """
 
     @property
     def _cmap_obj(self):
@@ -744,7 +859,7 @@ class Plot2D(HasTraits):
     # notification never happens
     @property
     def data(self):
-        """Access the current data subset."""
+        """Xarray dataset that contains the field to be plotted."""
         return self._data
 
     @data.setter
@@ -867,8 +982,28 @@ class ContourPlot(Plot2D):
     """Represent a contour plot."""
 
     linecolor = Unicode('black')
+    linecolor.__doc__ = """A string value to set the color of plotted contours; default is
+    black.
+
+    This trait can be set to any Matplotlib color
+    (https://matplotlib.org/3.1.0/gallery/color/named_colors.html)
+    """
+
     linewidth = Int(2)
+    linewidth.__doc__ = """An integer value to set the width of plotted contours; default value
+    is 2.
+
+    This trait changes the thickness of contour lines with a higher value plotting a thicker
+    line.
+    """
+
     linestyle = Unicode('solid', allow_none=True)
+    linestyle.__doc__ = """A string value to set the linestyle (e.g., dashed); default is
+    solid.
+
+    The valid string values are those of Matplotlib which are solid, dashed, dotted, and
+    dashdot.
+    """
 
     @observe('contours', 'linecolor', 'linewidth', 'linestyle', 'clabels')
     def _set_need_rebuild(self, _):
