@@ -12,7 +12,8 @@ from scipy.spatial.distance import cdist
 
 from metpy.interpolate import (remove_nan_observations, remove_observations_below_value,
                                remove_repeat_coordinates)
-from metpy.interpolate.tools import barnes_weights, calc_kappa, cressman_weights
+from metpy.interpolate.tools import barnes_weights, calc_kappa, cressman_weights, station_info
+from metpy.units import units
 
 
 @pytest.fixture()
@@ -126,3 +127,24 @@ def test_cressman_weights():
              0.219512195121951]
 
     assert_array_almost_equal(truth, weights)
+
+
+def test_station_info_str():
+    r"""Test station information lookup with single ID."""
+    data = list(station_info('ewr'))[0]
+
+    ewr_lat = data['lat']
+
+    truth = 40.68333 * units('deg')
+
+    assert_almost_equal(truth, ewr_lat)
+
+
+def test_station_info_list():
+    r"""Test station information lookup with multiple IDs."""
+    data = station_info(['ewr', 'smq'])
+
+    truth = [-74.16667 * units('deg'), -74.66667 * units('deg')]
+
+    for d, t in zip(data, truth):
+        assert_almost_equal(d['lon'], t)

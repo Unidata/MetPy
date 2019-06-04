@@ -5,9 +5,12 @@
 
 from __future__ import division
 
+import urllib.request
+
 import numpy as np
 
 from ..package_tools import Exporter
+from ..units import units
 
 exporter = Exporter(globals())
 
@@ -174,3 +177,84 @@ def cressman_weights(sq_dist, r):
 
     """
     return (r * r - sq_dist) / (r * r + sq_dist)
+
+
+@exporter.export
+def station_info(stid, with_units=True):
+    r"""Provide information about weather stations.
+
+    Parameters
+    ----------
+    stid: str or iterable object containing strs
+        The ICAO or IATA code(s) for which station information is requested.
+    with_units: bool
+        Whether to include units for values that have them. Default True.
+
+    Returns
+    -------
+    info: dict
+        Information about the station(s) within a dictionary with these keys:
+            'state': Two-character ID of the state/province where the station is located,
+                      if applicable
+            'name': The name of the station
+            'lat': The latitude of the station [deg]
+            'lon': The longitude of the station [deg]
+            'elevation': The elevation of the station [m]
+            'country': Two-character ID of the country where the station is located
+
+    """
+    # Provide a helper function for later usage
+    def str2latlon(s):
+        deg = float(s[:3])
+        mn = float(s[-3:-1])
+        if s[-1] == 'S' or s[-1] == 'W':
+            deg = -deg
+            mn = -mn
+        res = deg + mn / 60.
+        return res
+
+    # Various constants describing the underlying data
+    url = 'http://weather.rap.ucar.edu/surface/stations.txt'
+    state_bnds = slice(0, 2)
+    name_bnds = slice(3, 19)
+    icao_bnds = slice(20, 24)
+    iata_bnds = slice(26, 29)
+    lat_bnds = slice(39, 45)
+    lon_bnds = slice(47, 54)
+    z_bnds = slice(55, 59)
+    cntry_bnds = slice(81, 83)
+
+    # Generalize to any number of IDs
+    if isinstance(stid, str):
+        stid = [stid]
+
+    # Get the station dataset
+    infile = urllib.request.urlopen(url)
+    data = infile.readlines()
+
+    for s in stid:
+        s = s.upper()
+        for line_bytes in data:
+            line = line_bytes.decode('UTF-8')
+            icao = line[icao_bnds]
+            iata = line[iata_bnds]
+            if len(s) == 3 and s in iata or len(s) == 4 and s in icao:
+                state = line[state_bnds].strip()
+                name = line[name_bnds].strip()
+                lat = str2latlon(line[lat_bnds])
+                lon = str2latlon(line[lon_bnds])
+                z = float(line[z_bnds])
+                cntry = line[cntry_bnds]
+
+                if with_units:
+                    lat = lat * units('deg')
+                    lon = lon * units('deg')
+                    z = z * units('m')
+
+                break
+        else:
+            raise ValueError('Station {} not found!'.format(s))
+
+        res = {'state': state, 'name': name, 'lat': lat, 'lon': lon, 'elevation': z,
+               'country': cntry}
+        yield res
