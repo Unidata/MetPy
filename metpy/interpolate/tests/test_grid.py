@@ -142,6 +142,7 @@ def test_generate_grid_coords():
     pts = generate_grid_coords(gx, gy)
 
     assert_array_almost_equal(truth, pts)
+    assert pts.flags['C_CONTIGUOUS']  # need output to be C-contiguous
 
 
 def test_natural_neighbor_to_grid(test_data, test_grid):

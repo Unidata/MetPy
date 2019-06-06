@@ -41,7 +41,7 @@ def test_points():
     r"""Return point locations used for tests in this file."""
     with get_test_data('interpolation_test_grid.npz') as fobj:
         data = np.load(fobj)
-        return np.vstack([data['xg'].reshape(-1), data['yg'].reshape(-1)]).transpose()
+        return np.stack([data['xg'].reshape(-1), data['yg'].reshape(-1)], axis=1)
 
 
 def test_nn_point(test_data):
