@@ -5,8 +5,8 @@
 
 import os
 
-from matplotlib.cbook import iterable
 import numpy as np
+from numpy import iterable
 import pooch
 
 from . import __version__
