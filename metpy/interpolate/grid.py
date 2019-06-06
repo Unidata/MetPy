@@ -59,7 +59,7 @@ def generate_grid_coords(gx, gy):
         List of coordinates in meshgrid
 
     """
-    return np.vstack([gx.ravel(), gy.ravel()]).T
+    return np.stack([gx.ravel(), gy.ravel()], axis=1)
 
 
 def get_xy_range(bbox):
