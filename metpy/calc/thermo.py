@@ -547,10 +547,10 @@ def parcel_profile_with_lcl(pressure, temperature, dewpt):
         The atmospheric pressure level(s) of interest. This array must be from high to low pressure.
     temperature : `pint.Quantity`
         The atmospheric temperature at the levels in `pressure`. The first entry should be at
-	the same level as the first `pressure` data point.
+        the same level as the first `pressure` data point.
     dewpt : `pint.Quantity`
         The atmospheric dew point at the levels in `pressure`. The first entry should be at
-	the same level as the first `pressure` data point.
+        the same level as the first `pressure` data point.
 
     Returns
     -------
@@ -1349,7 +1349,7 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     ----------
     pressure : `pint.Quantity`
         The atmospheric pressure level(s) of interest, in order from highest to
-	lowest pressure.
+        lowest pressure.
     temperature : `pint.Quantity`
         The atmospheric temperature corresponding to pressure.
     dewpt : `pint.Quantity`
