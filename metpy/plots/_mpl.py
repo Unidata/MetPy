@@ -328,7 +328,10 @@ if not hasattr(Axes, 'scattertext'):
                     y = y + posy
                     if renderer.flipy():
                         y = canvash - y
-                    clean_line, ismath = self.is_math_text(line)
+
+                    # Can simplify next two lines once support for matplotlib<3.1 is dropped
+                    check_line = getattr(self, '_preprocess_math', self.is_math_text)
+                    clean_line, ismath = check_line(line)
 
                     if self.get_path_effects():
                         from matplotlib.patheffects import PathEffectRenderer
