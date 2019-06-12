@@ -84,6 +84,14 @@ def test_units(test_var):
     assert test_var.metpy.units == units('kelvin')
 
 
+def test_units_percent():
+    """Test that '%' is converted to 'percent'."""
+    test_var_percent = xr.open_dataset(
+        get_test_data('irma_gfs_example.nc',
+                      as_file_obj=False))['Relative_humidity_isobaric']
+    assert test_var_percent.metpy.units == units('percent')
+
+
 def test_convert_units(test_var):
     """Test in-place conversion of units."""
     test_var.metpy.convert_units('degC')

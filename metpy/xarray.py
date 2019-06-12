@@ -34,7 +34,10 @@ class MetPyAccessor(object):
 
     @property
     def units(self):
-        return units(self._units)
+        if self._units != '%':
+            return units(self._units)
+        else:
+            return units('percent')
 
     @property
     def unit_array(self):
