@@ -986,13 +986,13 @@ def test_gradient_xarray(test_da_xy):
     xr.testing.assert_allclose(deriv_p, truth_p)
     assert deriv_p.metpy.units == truth_p.metpy.units
 
-    # Assert alternative specifications give same results
-    xr.testing.assert_identical(deriv_x_alt1, deriv_x)
-    xr.testing.assert_identical(deriv_y_alt1, deriv_y)
-    xr.testing.assert_identical(deriv_p_alt1, deriv_p)
-    xr.testing.assert_identical(deriv_x_alt2, deriv_x)
-    xr.testing.assert_identical(deriv_y_alt2, deriv_y)
-    xr.testing.assert_identical(deriv_p_alt2, deriv_p)
+    # Assert alternative specifications give same results (up to attribute differences)
+    xr.testing.assert_equal(deriv_x_alt1, deriv_x)
+    xr.testing.assert_equal(deriv_y_alt1, deriv_y)
+    xr.testing.assert_equal(deriv_p_alt1, deriv_p)
+    xr.testing.assert_equal(deriv_x_alt2, deriv_x)
+    xr.testing.assert_equal(deriv_y_alt2, deriv_y)
+    xr.testing.assert_equal(deriv_p_alt2, deriv_p)
 
 
 def test_gradient_xarray_implicit_axes(test_da_xy):

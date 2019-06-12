@@ -227,9 +227,9 @@ def test_cross_section_dataset_and_nearest_interp(test_ds_lonlat):
 
 def test_interpolate_to_slice_error_on_missing_coordinate(test_ds_lonlat):
     """Test that the proper error is raised with missing coordinate."""
-    # Use a variable with a coordinate dimension that has attributes removed
+    # Use a variable with a coordinate removed
     data_bad = test_ds_lonlat['temperature'].copy()
-    data_bad['lat'].attrs = {}
+    del data_bad['lat']
     path = np.array([[265.0, 30.],
                      [265.0, 36.],
                      [265.0, 42.]])

@@ -126,13 +126,102 @@ class MetPyDataArrayAccessor(object):
         """Return the globe belonging to the coordinate reference system (CRS)."""
         return self.crs.cartopy_globe
 
+    def _fixup_coordinate_map(self, coord_map):
+        """Ensure sure we have coordinate variables in map, not coordinate names."""
+        for axis in coord_map:
+            if coord_map[axis] is not None and not isinstance(coord_map[axis], xr.DataArray):
+                coord_map[axis] = self._data_array[coord_map[axis]]
+
+    def assign_coordinates(self, coordinates):
+        """Assign the given coordinates to the given CF axis types."""
+        if coordinates:
+            # Assign the _metpy_axis attributes according to supplied mapping
+            self._fixup_coordinate_map(coordinates)
+            for axis in coordinates:
+                if coordinates[axis] is not None:
+                    coordinates[axis].attrs['_metpy_axis'] = axis
+        else:
+            # Clear _metpy_axis attribute on all coordinates
+            for coord_var in self._data_array.coords.values():
+                coord_var.attrs.pop('_metpy_axis', None)
+
+    def _generate_coordinate_map(self):
+        """Generate a coordinate map via CF conventions and other methods."""
+        coords = self._data_array.coords.values()
+        # Parse all the coordinates, attempting to identify x, y, vertical, time
+        coord_lists = {'T': [], 'Z': [], 'Y': [], 'X': []}
+        for coord_var in coords:
+
+            # Identify the coordinate type using check_axis helper
+            axes_to_check = {
+                'T': ('time',),
+                'Z': ('vertical',),
+                'Y': ('y', 'lat'),
+                'X': ('x', 'lon')
+            }
+            for axis_cf, axes_readable in axes_to_check.items():
+                if check_axis(coord_var, *axes_readable):
+                    coord_lists[axis_cf].append(coord_var)
+
+        # Resolve any coordinate conflicts
+        axis_conflicts = [axis for axis in coord_lists if len(coord_lists[axis]) > 1]
+        for axis in axis_conflicts:
+            self._resolve_axis_conflict(axis, coord_lists)
+
+        # Collapse the coord_lists to a coord_map
+        return {axis: (coord_lists[axis][0] if len(coord_lists[axis]) > 0 else None)
+                for axis in coord_lists}
+
+    def _resolve_axis_conflict(self, axis, coord_lists):
+        """Handle axis conflicts if they arise."""
+        if axis in ('Y', 'X'):
+            # Horizontal coordinate, can be projection x/y or lon/lat. So, check for
+            # existence of unique projection x/y (preferred over lon/lat) and use that if
+            # it exists uniquely
+            projection_coords = [coord_var for coord_var in coord_lists[axis] if
+                                 check_axis(coord_var, 'x', 'y')]
+            if len(projection_coords) == 1:
+                coord_lists[axis] = projection_coords
+                return
+
+        # If one and only one of the possible axes is a dimension, use it
+        dimension_coords = [coord_var for coord_var in coord_lists[axis] if
+                            coord_var.name in coord_var.dims]
+        if len(dimension_coords) == 1:
+            coord_lists[axis] = dimension_coords
+            return
+
+        # Ambiguous axis, raise warning and do not parse
+        warnings.warn('More than one ' + cf_to_readable_axes[axis] + ' coordinate present '
+                      + 'for variable "' + self._data_array.name + '".')
+        coord_lists[axis] = []
+
+    def _parse_coordinates(self):
+        """Parse the coordinates for this variable to identify coordinate types."""
+        # Only parse if _metpy_axis is not present
+        if not any('_metpy_axis' in coord_var.attrs
+                   for coord_var in self._data_array.coords.values()):
+            self.assign_coordinates(self._generate_coordinate_map())
+
+    def _metpy_axis_search(self, cf_axis):
+        """Search for a cf_axis in the _metpy_axis attribute on the coordinates."""
+        for coord_var in self._data_array.coords.values():
+            if coord_var.attrs.get('_metpy_axis') == cf_axis:
+                return coord_var
+
     def _axis(self, axis):
         """Return the coordinate variable corresponding to the given individual axis type."""
         if axis in readable_to_cf_axes:
-            for coord_var in self._data_array.coords.values():
-                if coord_var.attrs.get('_metpy_axis') == readable_to_cf_axes[axis]:
-                    return coord_var
-            raise AttributeError(axis + ' attribute is not available.')
+            coord_var = self._metpy_axis_search(readable_to_cf_axes[axis])
+            if coord_var is None:
+                # See if failure is due to it not being parsed
+                self._parse_coordinates()
+                coord_var = self._metpy_axis_search(readable_to_cf_axes[axis])
+
+            if coord_var is not None:
+                return coord_var
+            else:
+                raise AttributeError(axis + ' attribute is not available.')
         else:
             raise AttributeError("'" + axis + "' is not an interpretable axis.")
 
@@ -282,16 +371,9 @@ class MetPyDatasetAccessor(object):
             if has_lat and has_lon:
                 var.coords['crs'] = CFProjection({'grid_mapping_name': 'latitude_longitude'})
 
-        # Obtain a map of axis types to coordinate variables
-        if coordinates is None:
-            # Generate the map from the supplied coordinates
-            coordinates = self._generate_coordinate_map(var.coords.values())
-        else:
-            # Verify that coordinates maps to coordinate variables, not coordinate names
-            self._fixup_coordinate_map(coordinates, var)
-
-        # Overwrite previous axis attributes, and use the coordinates to label anew
-        self._assign_axes(coordinates, var)
+        # Assign coordinates if the coordinates argument is given
+        if coordinates is not None:
+            var.metpy.assign_coordinates(coordinates)
 
         return var
 
@@ -308,71 +390,6 @@ class MetPyDatasetAccessor(object):
                         scaled_vals = new_data_array.metpy.unit_array * (height * units.meters)
                         new_data_array.metpy.unit_array = scaled_vals.to('meters')
                         var.coords[coord_name] = new_data_array
-
-    def _generate_coordinate_map(self, coords):
-        """Generate a coordinate map via CF conventions and other methods."""
-        # Parse all the coordinates, attempting to identify x, y, vertical, time
-        coord_lists = {'T': [], 'Z': [], 'Y': [], 'X': []}
-        for coord_var in coords:
-
-            # Identify the coordinate type using check_axis helper
-            axes_to_check = {
-                'T': ('time',),
-                'Z': ('vertical',),
-                'Y': ('y', 'lat'),
-                'X': ('x', 'lon')
-            }
-            for axis_cf, axes_readable in axes_to_check.items():
-                if check_axis(coord_var, *axes_readable):
-                    coord_lists[axis_cf].append(coord_var)
-
-        # Resolve any coordinate conflicts
-        axis_conflicts = [axis for axis in coord_lists if len(coord_lists[axis]) > 1]
-        for axis in axis_conflicts:
-            self._resolve_axis_conflict(axis, coord_lists)
-
-        # Collapse the coord_lists to a coord_map
-        return {axis: (coord_lists[axis][0] if len(coord_lists[axis]) > 0 else None)
-                for axis in coord_lists}
-
-    @staticmethod
-    def _fixup_coordinate_map(coord_map, var):
-        """Ensure sure we have coordinate variables in map, not coordinate names."""
-        for axis in coord_map:
-            if not isinstance(coord_map[axis], xr.DataArray):
-                coord_map[axis] = var[coord_map[axis]]
-
-    @staticmethod
-    def _assign_axes(coord_map, var):
-        """Assign axis attribute to coordinates in var according to coord_map."""
-        for axis in coord_map:
-            if coord_map[axis] is not None:
-                coord_map[axis].attrs['_metpy_axis'] = axis
-
-    def _resolve_axis_conflict(self, axis, coord_lists):
-        """Handle axis conflicts if they arise."""
-        if axis in ('Y', 'X'):
-            # Horizontal coordinate, can be projection x/y or lon/lat. So, check for
-            # existence of unique projection x/y (preferred over lon/lat) and use that if
-            # it exists uniquely
-            projection_coords = [coord_var for coord_var in coord_lists[axis] if
-                                 check_axis(coord_var, 'x', 'y')]
-            if len(projection_coords) == 1:
-                coord_lists[axis] = projection_coords
-                return
-
-        # If one and only one of the possible axes is a dimension, use it
-        dimension_coords = [coord_var for coord_var in coord_lists[axis] if
-                            coord_var.name in coord_var.dims]
-        if len(dimension_coords) == 1:
-            coord_lists[axis] = dimension_coords
-            return
-
-        # Ambiguous axis, raise warning and do not parse
-        warnings.warn('DataArray of requested variable has more than one '
-                      + cf_to_readable_axes[axis]
-                      + ' coordinate. Specify the unique axes using the coordinates argument.')
-        coord_lists[axis] = []
 
     class _LocIndexer(object):
         """Provide the unit-wrapped .loc indexer for datasets."""
