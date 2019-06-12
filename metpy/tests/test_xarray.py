@@ -13,7 +13,7 @@ import xarray as xr
 
 from metpy.testing import assert_almost_equal, assert_array_equal, get_test_data
 from metpy.units import units
-from metpy.xarray import check_matching_coordinates, preprocess_xarray
+from metpy.xarray import check_axis, check_matching_coordinates, preprocess_xarray
 
 
 # Seed RandomState for deterministic tests
@@ -231,7 +231,7 @@ def test_missing_coordinate_type(test_ds_generic):
 
 
 def test_assign_axes_not_overwrite(test_ds_generic):
-    """Test that CFConventionHandler._assign_axis does not overwrite past axis attributes."""
+    """Test that MetPyDatasetAccessor._assign_axis does not overwrite past axis attributes."""
     data = test_ds_generic.copy()
     data['c'].attrs['axis'] = 'X'
     data.metpy._assign_axes({'Y': data['c']}, data['test'])
@@ -334,7 +334,7 @@ criterion_matches = [
 def test_check_axis_criterion_match(test_ds_generic, test_tuple):
     """Test the variety of possibilities for check_axis in the criterion match."""
     test_ds_generic['e'].attrs[test_tuple[0]] = test_tuple[1]
-    assert test_ds_generic.metpy.check_axis(test_ds_generic['e'], test_tuple[2])
+    assert check_axis(test_ds_generic['e'], test_tuple[2])
 
 
 unit_matches = [
@@ -360,7 +360,7 @@ unit_matches = [
 def test_check_axis_unit_match(test_ds_generic, test_tuple):
     """Test the variety of possibilities for check_axis in the unit match."""
     test_ds_generic['e'].attrs['units'] = test_tuple[0]
-    assert test_ds_generic.metpy.check_axis(test_ds_generic['e'], test_tuple[1])
+    assert check_axis(test_ds_generic['e'], test_tuple[1])
 
 
 regex_matches = [
@@ -401,7 +401,7 @@ regex_matches = [
 def test_check_axis_regular_expression_match(test_ds_generic, test_tuple):
     """Test the variety of possibilities for check_axis in the regular expression match."""
     data = test_ds_generic.rename({'e': test_tuple[0]})
-    assert data.metpy.check_axis(data[test_tuple[0]], test_tuple[1])
+    assert check_axis(data[test_tuple[0]], test_tuple[1])
 
 
 def test_narr_example_variable_without_grid_mapping(test_ds):
