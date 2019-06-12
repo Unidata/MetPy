@@ -489,9 +489,11 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None):
     if parcel_temperature_profile[-1] > temperature[-1]:
         return np.nan * pressure.units, np.nan * temperature.units
 
-    # Otherwise the last intersection (as long as there is one) is the EL
+    # Otherwise the last intersection (as long as there is one, and it's not
+    # below the LCL) is the EL
     x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:])
-    if len(x) > 0:
+    lcl_p, _ = lcl(pressure[0], temperature[0], dewpt[0])
+    if len(x) > 0 and x[-1] < lcl_p:
         return x[-1], y[-1]
     else:
         return np.nan * pressure.units, np.nan * temperature.units
