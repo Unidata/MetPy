@@ -197,7 +197,8 @@ class CFConventionHandler(object):
         # If no varname is given, parse the entire dataset
         if varname is None:
             return self._dataset.apply(lambda da: self.parse_cf(da.name,
-                                                                coordinates=coordinates))
+                                                                coordinates=coordinates),
+                                       keep_attrs=True)
 
         var = self._dataset[varname]
         if 'grid_mapping' in var.attrs:

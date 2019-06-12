@@ -535,3 +535,11 @@ def test_dataset_loc_without_dict(test_ds):
     """Test that .metpy.loc for Datasets raises error when used with a non-dict."""
     with pytest.raises(TypeError):
         test_ds.metpy.loc[:, 700 * units.hPa]
+
+
+def test_dataset_parse_cf_keep_attrs(test_ds):
+    """Test that .parse_cf() does not remove attributes on the parsed dataset."""
+    parsed_ds = test_ds.metpy.parse_cf()
+
+    assert parsed_ds.attrs  # Must be non-empty
+    assert parsed_ds.attrs == test_ds.attrs  # Must match
