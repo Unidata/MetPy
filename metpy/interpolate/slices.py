@@ -7,7 +7,7 @@ import numpy as np
 import xarray as xr
 
 from ..package_tools import Exporter
-from ..xarray import CFConventionHandler
+from ..xarray import check_axis
 
 exporter = Exporter(globals())
 
@@ -166,7 +166,7 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
         points_cross = geodesic(crs_data, start, end, steps)
 
         # Patch points_cross to match given longitude range, whether [0, 360) or (-180,  180]
-        if CFConventionHandler.check_axis(x, 'lon') and (x > 180).any():
+        if check_axis(x, 'lon') and (x > 180).any():
             points_cross[points_cross[:, 0] < 0, 0] += 360.
 
         # Return the interpolated data

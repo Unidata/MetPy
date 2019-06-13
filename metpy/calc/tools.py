@@ -25,7 +25,7 @@ from ..deprecation import deprecated, metpyDeprecation
 from ..interpolate.one_dimension import interpolate_1d, interpolate_nans_1d, log_interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, diff, units
-from ..xarray import CFConventionHandler, preprocess_xarray
+from ..xarray import check_axis, preprocess_xarray
 
 exporter = Exporter(globals())
 
@@ -925,13 +925,13 @@ def xarray_derivative_wrap(func):
             # Initialize new kwargs with the axis number
             new_kwargs = {'axis': f.get_axis_num(axis)}
 
-            if f[axis].attrs.get('_metpy_axis') == 'T':
+            if check_axis(f[axis], 'time'):
                 # Time coordinate, need to convert to seconds from datetimes
                 new_kwargs['x'] = f[axis].metpy.as_timestamp().metpy.unit_array
-            elif CFConventionHandler.check_axis(f[axis], 'lon'):
+            elif check_axis(f[axis], 'lon'):
                 # Longitude coordinate, need to get grid deltas
                 new_kwargs['delta'], _ = grid_deltas_from_dataarray(f)
-            elif CFConventionHandler.check_axis(f[axis], 'lat'):
+            elif check_axis(f[axis], 'lat'):
                 # Latitude coordinate, need to get grid deltas
                 _, new_kwargs['delta'] = grid_deltas_from_dataarray(f)
             else:

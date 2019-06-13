@@ -20,11 +20,66 @@ __all__ = []
 readable_to_cf_axes = {'time': 'T', 'vertical': 'Z', 'y': 'Y', 'x': 'X'}
 cf_to_readable_axes = {readable_to_cf_axes[key]: key for key in readable_to_cf_axes}
 
+# Define the criteria for coordinate matches
+coordinate_criteria = {
+    'standard_name': {
+        'time': 'time',
+        'vertical': {'air_pressure', 'height', 'geopotential_height', 'altitude',
+                     'model_level_number', 'atmosphere_ln_pressure_coordinate',
+                     'atmosphere_sigma_coordinate',
+                     'atmosphere_hybrid_sigma_pressure_coordinate',
+                     'atmosphere_hybrid_height_coordinate', 'atmosphere_sleve_coordinate',
+                     'height_above_geopotential_datum', 'height_above_reference_ellipsoid',
+                     'height_above_mean_sea_level'},
+        'y': 'projection_y_coordinate',
+        'lat': 'latitude',
+        'x': 'projection_x_coordinate',
+        'lon': 'longitude'
+    },
+    '_CoordinateAxisType': {
+        'time': 'Time',
+        'vertical': {'GeoZ', 'Height', 'Pressure'},
+        'y': 'GeoY',
+        'lat': 'Lat',
+        'x': 'GeoX',
+        'lon': 'Lon'
+    },
+    'axis': readable_to_cf_axes,
+    'positive': {
+        'vertical': {'up', 'down'}
+    },
+    'units': {
+        'vertical': {
+            'match': 'dimensionality',
+            'units': 'Pa'
+        },
+        'lat': {
+            'match': 'name',
+            'units': {'degree_north', 'degree_N', 'degreeN', 'degrees_north', 'degrees_N',
+                      'degreesN'}
+        },
+        'lon': {
+            'match': 'name',
+            'units': {'degree_east', 'degree_E', 'degreeE', 'degrees_east', 'degrees_E',
+                      'degreesE'}
+        },
+    },
+    'regular_expression': {
+        'time': r'time[0-9]*',
+        'vertical': (r'(bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|'
+                     r'isotherm)[a-z_]*[0-9]*'),
+        'y': r'y',
+        'lat': r'x?lat[a-z0-9]*',
+        'x': r'x',
+        'lon': r'x?lon[a-z0-9]*'
+    }
+}
+
 log = logging.getLogger(__name__)
 
 
 @xr.register_dataarray_accessor('metpy')
-class MetPyAccessor(object):
+class MetPyDataArrayAccessor(object):
     """Provide custom attributes and methods on XArray DataArray for MetPy functionality."""
 
     def __init__(self, data_array):
@@ -71,13 +126,102 @@ class MetPyAccessor(object):
         """Return the globe belonging to the coordinate reference system (CRS)."""
         return self.crs.cartopy_globe
 
+    def _fixup_coordinate_map(self, coord_map):
+        """Ensure sure we have coordinate variables in map, not coordinate names."""
+        for axis in coord_map:
+            if coord_map[axis] is not None and not isinstance(coord_map[axis], xr.DataArray):
+                coord_map[axis] = self._data_array[coord_map[axis]]
+
+    def assign_coordinates(self, coordinates):
+        """Assign the given coordinates to the given CF axis types."""
+        if coordinates:
+            # Assign the _metpy_axis attributes according to supplied mapping
+            self._fixup_coordinate_map(coordinates)
+            for axis in coordinates:
+                if coordinates[axis] is not None:
+                    coordinates[axis].attrs['_metpy_axis'] = axis
+        else:
+            # Clear _metpy_axis attribute on all coordinates
+            for coord_var in self._data_array.coords.values():
+                coord_var.attrs.pop('_metpy_axis', None)
+
+    def _generate_coordinate_map(self):
+        """Generate a coordinate map via CF conventions and other methods."""
+        coords = self._data_array.coords.values()
+        # Parse all the coordinates, attempting to identify x, y, vertical, time
+        coord_lists = {'T': [], 'Z': [], 'Y': [], 'X': []}
+        for coord_var in coords:
+
+            # Identify the coordinate type using check_axis helper
+            axes_to_check = {
+                'T': ('time',),
+                'Z': ('vertical',),
+                'Y': ('y', 'lat'),
+                'X': ('x', 'lon')
+            }
+            for axis_cf, axes_readable in axes_to_check.items():
+                if check_axis(coord_var, *axes_readable):
+                    coord_lists[axis_cf].append(coord_var)
+
+        # Resolve any coordinate conflicts
+        axis_conflicts = [axis for axis in coord_lists if len(coord_lists[axis]) > 1]
+        for axis in axis_conflicts:
+            self._resolve_axis_conflict(axis, coord_lists)
+
+        # Collapse the coord_lists to a coord_map
+        return {axis: (coord_lists[axis][0] if len(coord_lists[axis]) > 0 else None)
+                for axis in coord_lists}
+
+    def _resolve_axis_conflict(self, axis, coord_lists):
+        """Handle axis conflicts if they arise."""
+        if axis in ('Y', 'X'):
+            # Horizontal coordinate, can be projection x/y or lon/lat. So, check for
+            # existence of unique projection x/y (preferred over lon/lat) and use that if
+            # it exists uniquely
+            projection_coords = [coord_var for coord_var in coord_lists[axis] if
+                                 check_axis(coord_var, 'x', 'y')]
+            if len(projection_coords) == 1:
+                coord_lists[axis] = projection_coords
+                return
+
+        # If one and only one of the possible axes is a dimension, use it
+        dimension_coords = [coord_var for coord_var in coord_lists[axis] if
+                            coord_var.name in coord_var.dims]
+        if len(dimension_coords) == 1:
+            coord_lists[axis] = dimension_coords
+            return
+
+        # Ambiguous axis, raise warning and do not parse
+        warnings.warn('More than one ' + cf_to_readable_axes[axis] + ' coordinate present '
+                      + 'for variable "' + self._data_array.name + '".')
+        coord_lists[axis] = []
+
+    def _parse_coordinates(self):
+        """Parse the coordinates for this variable to identify coordinate types."""
+        # Only parse if _metpy_axis is not present
+        if not any('_metpy_axis' in coord_var.attrs
+                   for coord_var in self._data_array.coords.values()):
+            self.assign_coordinates(self._generate_coordinate_map())
+
+    def _metpy_axis_search(self, cf_axis):
+        """Search for a cf_axis in the _metpy_axis attribute on the coordinates."""
+        for coord_var in self._data_array.coords.values():
+            if coord_var.attrs.get('_metpy_axis') == cf_axis:
+                return coord_var
+
     def _axis(self, axis):
         """Return the coordinate variable corresponding to the given individual axis type."""
         if axis in readable_to_cf_axes:
-            for coord_var in self._data_array.coords.values():
-                if coord_var.attrs.get('_metpy_axis') == readable_to_cf_axes[axis]:
-                    return coord_var
-            raise AttributeError(axis + ' attribute is not available.')
+            coord_var = self._metpy_axis_search(readable_to_cf_axes[axis])
+            if coord_var is None:
+                # See if failure is due to it not being parsed
+                self._parse_coordinates()
+                coord_var = self._metpy_axis_search(readable_to_cf_axes[axis])
+
+            if coord_var is not None:
+                return coord_var
+            else:
+                raise AttributeError(axis + ' attribute is not available.')
         else:
             raise AttributeError("'" + axis + "' is not an interpretable axis.")
 
@@ -183,7 +327,7 @@ class MetPyAccessor(object):
 
 
 @xr.register_dataset_accessor('metpy')
-class CFConventionHandler(object):
+class MetPyDatasetAccessor(object):
     """Provide custom attributes and methods on XArray Dataset for MetPy functionality."""
 
     def __init__(self, dataset):
@@ -197,7 +341,8 @@ class CFConventionHandler(object):
         # If no varname is given, parse the entire dataset
         if varname is None:
             return self._dataset.apply(lambda da: self.parse_cf(da.name,
-                                                                coordinates=coordinates))
+                                                                coordinates=coordinates),
+                                       keep_attrs=True)
 
         var = self._dataset[varname]
         if 'grid_mapping' in var.attrs:
@@ -215,120 +360,27 @@ class CFConventionHandler(object):
 
         # Trying to guess whether we should be adding a crs to this variable's coordinates
         # First make sure it's missing CRS but isn't lat/lon itself
-        if not self.check_axis(var, 'lat', 'lon') and 'crs' not in var.coords:
+        if not check_axis(var, 'lat', 'lon') and 'crs' not in var.coords:
             # Look for both lat/lon in the coordinates
             has_lat = has_lon = False
             for coord_var in var.coords.values():
-                has_lat = has_lat or self.check_axis(coord_var, 'lat')
-                has_lon = has_lon or self.check_axis(coord_var, 'lon')
+                has_lat = has_lat or check_axis(coord_var, 'lat')
+                has_lon = has_lon or check_axis(coord_var, 'lon')
 
             # If we found them, create a lat/lon projection as the crs coord
             if has_lat and has_lon:
                 var.coords['crs'] = CFProjection({'grid_mapping_name': 'latitude_longitude'})
 
-        # Obtain a map of axis types to coordinate variables
-        if coordinates is None:
-            # Generate the map from the supplied coordinates
-            coordinates = self._generate_coordinate_map(var.coords.values())
-        else:
-            # Verify that coordinates maps to coordinate variables, not coordinate names
-            self._fixup_coordinate_map(coordinates, var)
-
-        # Overwrite previous axis attributes, and use the coordinates to label anew
-        self._assign_axes(coordinates, var)
+        # Assign coordinates if the coordinates argument is given
+        if coordinates is not None:
+            var.metpy.assign_coordinates(coordinates)
 
         return var
-
-    # Define the criteria for coordinate matches
-    criteria = {
-        'standard_name': {
-            'time': 'time',
-            'vertical': {'air_pressure', 'height', 'geopotential_height', 'altitude',
-                         'model_level_number', 'atmosphere_ln_pressure_coordinate',
-                         'atmosphere_sigma_coordinate',
-                         'atmosphere_hybrid_sigma_pressure_coordinate',
-                         'atmosphere_hybrid_height_coordinate', 'atmosphere_sleve_coordinate',
-                         'height_above_geopotential_datum', 'height_above_reference_ellipsoid',
-                         'height_above_mean_sea_level'},
-            'y': 'projection_y_coordinate',
-            'lat': 'latitude',
-            'x': 'projection_x_coordinate',
-            'lon': 'longitude'
-        },
-        '_CoordinateAxisType': {
-            'time': 'Time',
-            'vertical': {'GeoZ', 'Height', 'Pressure'},
-            'y': 'GeoY',
-            'lat': 'Lat',
-            'x': 'GeoX',
-            'lon': 'Lon'
-        },
-        'axis': readable_to_cf_axes,
-        'positive': {
-            'vertical': {'up', 'down'}
-        },
-        'units': {
-            'vertical': {
-                'match': 'dimensionality',
-                'units': 'Pa'
-            },
-            'lat': {
-                'match': 'name',
-                'units': {'degree_north', 'degree_N', 'degreeN', 'degrees_north', 'degrees_N',
-                          'degreesN'}
-            },
-            'lon': {
-                'match': 'name',
-                'units': {'degree_east', 'degree_E', 'degreeE', 'degrees_east', 'degrees_E',
-                          'degreesE'}
-            },
-        },
-        'regular_expression': {
-            'time': r'time[0-9]*',
-            'vertical': (r'(bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|'
-                         r'isotherm)[a-z_]*[0-9]*'),
-            'y': r'y',
-            'lat': r'x?lat[a-z0-9]*',
-            'x': r'x',
-            'lon': r'x?lon[a-z0-9]*'
-        }
-    }
-
-    @classmethod
-    def check_axis(cls, var, *axes):
-        """Check if var satisfies the criteria for any of the given axes."""
-        for axis in axes:
-            # Check for
-            #   - standard name (CF option)
-            #   - _CoordinateAxisType (from THREDDS)
-            #   - axis (CF option)
-            #   - positive (CF standard for non-pressure vertical coordinate)
-            for criterion in ('standard_name', '_CoordinateAxisType', 'axis', 'positive'):
-                if (var.attrs.get(criterion, 'absent') in
-                        cls.criteria[criterion].get(axis, set())):
-                    return True
-
-            # Check for units, either by dimensionality or name
-            if (axis in cls.criteria['units'] and (
-                    (
-                        cls.criteria['units'][axis]['match'] == 'dimensionality'
-                        and (units.get_dimensionality(var.attrs.get('units'))
-                             == units.get_dimensionality(cls.criteria['units'][axis]['units']))
-                    ) or (
-                        cls.criteria['units'][axis]['match'] == 'name'
-                        and var.attrs.get('units') in cls.criteria['units'][axis]['units']
-                    ))):
-                return True
-
-            # Check if name matches regular expression (non-CF failsafe)
-            if re.match(cls.criteria['regular_expression'][axis], var.name.lower()):
-                return True
 
     def _fixup_coords(self, var):
         """Clean up the units on the coordinate variables."""
         for coord_name, data_array in var.coords.items():
-            if (self.check_axis(data_array, 'x', 'y')
-                    and not self.check_axis(data_array, 'lon', 'lat')):
+            if (check_axis(data_array, 'x', 'y') and not check_axis(data_array, 'lon', 'lat')):
                 try:
                     var.coords[coord_name].metpy.convert_units('meters')
                 except DimensionalityError:  # Radians!
@@ -338,71 +390,6 @@ class CFConventionHandler(object):
                         scaled_vals = new_data_array.metpy.unit_array * (height * units.meters)
                         new_data_array.metpy.unit_array = scaled_vals.to('meters')
                         var.coords[coord_name] = new_data_array
-
-    def _generate_coordinate_map(self, coords):
-        """Generate a coordinate map via CF conventions and other methods."""
-        # Parse all the coordinates, attempting to identify x, y, vertical, time
-        coord_lists = {'T': [], 'Z': [], 'Y': [], 'X': []}
-        for coord_var in coords:
-
-            # Identify the coordinate type using check_axis helper
-            axes_to_check = {
-                'T': ('time',),
-                'Z': ('vertical',),
-                'Y': ('y', 'lat'),
-                'X': ('x', 'lon')
-            }
-            for axis_cf, axes_readable in axes_to_check.items():
-                if self.check_axis(coord_var, *axes_readable):
-                    coord_lists[axis_cf].append(coord_var)
-
-        # Resolve any coordinate conflicts
-        axis_conflicts = [axis for axis in coord_lists if len(coord_lists[axis]) > 1]
-        for axis in axis_conflicts:
-            self._resolve_axis_conflict(axis, coord_lists)
-
-        # Collapse the coord_lists to a coord_map
-        return {axis: (coord_lists[axis][0] if len(coord_lists[axis]) > 0 else None)
-                for axis in coord_lists}
-
-    @staticmethod
-    def _fixup_coordinate_map(coord_map, var):
-        """Ensure sure we have coordinate variables in map, not coordinate names."""
-        for axis in coord_map:
-            if not isinstance(coord_map[axis], xr.DataArray):
-                coord_map[axis] = var[coord_map[axis]]
-
-    @staticmethod
-    def _assign_axes(coord_map, var):
-        """Assign axis attribute to coordinates in var according to coord_map."""
-        for axis in coord_map:
-            if coord_map[axis] is not None:
-                coord_map[axis].attrs['_metpy_axis'] = axis
-
-    def _resolve_axis_conflict(self, axis, coord_lists):
-        """Handle axis conflicts if they arise."""
-        if axis in ('Y', 'X'):
-            # Horizontal coordinate, can be projection x/y or lon/lat. So, check for
-            # existence of unique projection x/y (preferred over lon/lat) and use that if
-            # it exists uniquely
-            projection_coords = [coord_var for coord_var in coord_lists[axis] if
-                                 self.check_axis(coord_var, 'x', 'y')]
-            if len(projection_coords) == 1:
-                coord_lists[axis] = projection_coords
-                return
-
-        # If one and only one of the possible axes is a dimension, use it
-        dimension_coords = [coord_var for coord_var in coord_lists[axis] if
-                            coord_var.name in coord_var.dims]
-        if len(dimension_coords) == 1:
-            coord_lists[axis] = dimension_coords
-            return
-
-        # Ambiguous axis, raise warning and do not parse
-        warnings.warn('DataArray of requested variable has more than one '
-                      + cf_to_readable_axes[axis]
-                      + ' coordinate. Specify the unique axes using the coordinates argument.')
-        coord_lists[axis] = []
 
     class _LocIndexer(object):
         """Provide the unit-wrapped .loc indexer for datasets."""
@@ -424,6 +411,37 @@ class CFConventionHandler(object):
         indexers = either_dict_or_kwargs(indexers, indexers_kwargs, 'sel')
         indexers = _reassign_quantity_indexer(self._dataset, indexers)
         return self._dataset.sel(indexers, method=method, tolerance=tolerance, drop=drop)
+
+
+def check_axis(var, *axes):
+    """Check if var satisfies the criteria for any of the given axes."""
+    for axis in axes:
+        # Check for
+        #   - standard name (CF option)
+        #   - _CoordinateAxisType (from THREDDS)
+        #   - axis (CF option)
+        #   - positive (CF standard for non-pressure vertical coordinate)
+        for criterion in ('standard_name', '_CoordinateAxisType', 'axis', 'positive'):
+            if (var.attrs.get(criterion, 'absent') in
+                    coordinate_criteria[criterion].get(axis, set())):
+                return True
+
+        # Check for units, either by dimensionality or name
+        if (axis in coordinate_criteria['units'] and (
+                (
+                    coordinate_criteria['units'][axis]['match'] == 'dimensionality'
+                    and (units.get_dimensionality(var.attrs.get('units'))
+                         == units.get_dimensionality(
+                             coordinate_criteria['units'][axis]['units']))
+                ) or (
+                    coordinate_criteria['units'][axis]['match'] == 'name'
+                    and var.attrs.get('units') in coordinate_criteria['units'][axis]['units']
+                ))):
+            return True
+
+        # Check if name matches regular expression (non-CF failsafe)
+        if re.match(coordinate_criteria['regular_expression'][axis], var.name.lower()):
+            return True
 
 
 def preprocess_xarray(func):

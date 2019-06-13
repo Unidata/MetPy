@@ -13,7 +13,7 @@ import xarray as xr
 
 from metpy.testing import assert_almost_equal, assert_array_equal, get_test_data
 from metpy.units import units
-from metpy.xarray import check_matching_coordinates, preprocess_xarray
+from metpy.xarray import check_axis, check_matching_coordinates, preprocess_xarray
 
 
 # Seed RandomState for deterministic tests
@@ -230,11 +230,11 @@ def test_missing_coordinate_type(test_ds_generic):
     assert 'not available' in str(exc.value)
 
 
-def test_assign_axes_not_overwrite(test_ds_generic):
-    """Test that CFConventionHandler._assign_axis does not overwrite past axis attributes."""
+def test_assign_coordinates_not_overwrite(test_ds_generic):
+    """Test that assign_coordinates does not overwrite past axis attributes."""
     data = test_ds_generic.copy()
     data['c'].attrs['axis'] = 'X'
-    data.metpy._assign_axes({'Y': data['c']}, data['test'])
+    data['test'].metpy.assign_coordinates({'Y': data['c']})
     assert data['c'].identical(data['test'].metpy.y)
     assert data['c'].attrs['axis'] == 'X'
 
@@ -246,10 +246,8 @@ def test_resolve_axis_conflict_lonlat_and_xy(test_ds_generic):
     test_ds_generic['d'].attrs['_CoordinateAxisType'] = 'GeoY'
     test_ds_generic['e'].attrs['_CoordinateAxisType'] = 'Lat'
 
-    test_var = test_ds_generic.metpy.parse_cf('test')
-
-    assert test_var['b'].identical(test_var.metpy.x)
-    assert test_var['d'].identical(test_var.metpy.y)
+    assert test_ds_generic['test'].metpy.x.name == 'b'
+    assert test_ds_generic['test'].metpy.y.name == 'd'
 
 
 def test_resolve_axis_conflict_double_lonlat(test_ds_generic):
@@ -259,8 +257,12 @@ def test_resolve_axis_conflict_double_lonlat(test_ds_generic):
     test_ds_generic['d'].attrs['_CoordinateAxisType'] = 'Lat'
     test_ds_generic['e'].attrs['_CoordinateAxisType'] = 'Lon'
 
-    with pytest.warns(UserWarning, match='Specify the unique'):
-        test_ds_generic.metpy.parse_cf('test')
+    with pytest.warns(UserWarning, match='More than one x coordinate'):
+        with pytest.raises(AttributeError):
+            test_ds_generic['test'].metpy.x
+    with pytest.warns(UserWarning, match='More than one y coordinate'):
+        with pytest.raises(AttributeError):
+            test_ds_generic['test'].metpy.y
 
 
 def test_resolve_axis_conflict_double_xy(test_ds_generic):
@@ -270,8 +272,12 @@ def test_resolve_axis_conflict_double_xy(test_ds_generic):
     test_ds_generic['d'].attrs['standard_name'] = 'projection_x_coordinate'
     test_ds_generic['e'].attrs['standard_name'] = 'projection_y_coordinate'
 
-    with pytest.warns(UserWarning, match='Specify the unique'):
-        test_ds_generic.metpy.parse_cf('test')
+    with pytest.warns(UserWarning, match='More than one x coordinate'):
+        with pytest.raises(AttributeError):
+            test_ds_generic['test'].metpy.x
+    with pytest.warns(UserWarning, match='More than one y coordinate'):
+        with pytest.raises(AttributeError):
+            test_ds_generic['test'].metpy.y
 
 
 def test_resolve_axis_conflict_double_x_with_single_dim(test_ds_generic):
@@ -280,9 +286,7 @@ def test_resolve_axis_conflict_double_x_with_single_dim(test_ds_generic):
     test_ds_generic.coords['f'] = ('e', np.linspace(0, 1, 5))
     test_ds_generic['f'].attrs['standard_name'] = 'projection_x_coordinate'
 
-    test_var = test_ds_generic.metpy.parse_cf('test')
-
-    assert test_var['e'].identical(test_var.metpy.x)
+    assert test_ds_generic['test'].metpy.x.name == 'e'
 
 
 def test_resolve_axis_conflict_double_vertical(test_ds_generic):
@@ -290,8 +294,9 @@ def test_resolve_axis_conflict_double_vertical(test_ds_generic):
     test_ds_generic['b'].attrs['units'] = 'hPa'
     test_ds_generic['c'].attrs['units'] = 'Pa'
 
-    with pytest.warns(UserWarning, match='Specify the unique'):
-        test_ds_generic.metpy.parse_cf('test')
+    with pytest.warns(UserWarning, match='More than one vertical coordinate'):
+        with pytest.raises(AttributeError):
+            test_ds_generic['test'].metpy.vertical
 
 
 criterion_matches = [
@@ -334,7 +339,7 @@ criterion_matches = [
 def test_check_axis_criterion_match(test_ds_generic, test_tuple):
     """Test the variety of possibilities for check_axis in the criterion match."""
     test_ds_generic['e'].attrs[test_tuple[0]] = test_tuple[1]
-    assert test_ds_generic.metpy.check_axis(test_ds_generic['e'], test_tuple[2])
+    assert check_axis(test_ds_generic['e'], test_tuple[2])
 
 
 unit_matches = [
@@ -360,7 +365,7 @@ unit_matches = [
 def test_check_axis_unit_match(test_ds_generic, test_tuple):
     """Test the variety of possibilities for check_axis in the unit match."""
     test_ds_generic['e'].attrs['units'] = test_tuple[0]
-    assert test_ds_generic.metpy.check_axis(test_ds_generic['e'], test_tuple[1])
+    assert check_axis(test_ds_generic['e'], test_tuple[1])
 
 
 regex_matches = [
@@ -401,7 +406,7 @@ regex_matches = [
 def test_check_axis_regular_expression_match(test_ds_generic, test_tuple):
     """Test the variety of possibilities for check_axis in the regular expression match."""
     data = test_ds_generic.rename({'e': test_tuple[0]})
-    assert data.metpy.check_axis(data[test_tuple[0]], test_tuple[1])
+    assert check_axis(data[test_tuple[0]], test_tuple[1])
 
 
 def test_narr_example_variable_without_grid_mapping(test_ds):
@@ -512,8 +517,10 @@ def test_data_array_sel_dict_with_units(test_var):
 def test_data_array_sel_kwargs_with_units(test_var):
     """Test .sel on the metpy accessor with kwargs and axis type."""
     truth = test_var.loc[:, 500.][..., 122]
-    assert truth.identical(test_var.metpy.sel(vertical=5e4 * units.Pa, x=-16.569 * units.km,
-                                              tolerance=1., method='nearest'))
+    selection = test_var.metpy.sel(vertical=5e4 * units.Pa, x=-16.569 * units.km,
+                                   tolerance=1., method='nearest')
+    selection.metpy.assign_coordinates(None)  # truth was not parsed for coordinates
+    assert truth.identical(selection)
 
 
 def test_dataset_loc_with_units(test_ds):
@@ -535,3 +542,11 @@ def test_dataset_loc_without_dict(test_ds):
     """Test that .metpy.loc for Datasets raises error when used with a non-dict."""
     with pytest.raises(TypeError):
         test_ds.metpy.loc[:, 700 * units.hPa]
+
+
+def test_dataset_parse_cf_keep_attrs(test_ds):
+    """Test that .parse_cf() does not remove attributes on the parsed dataset."""
+    parsed_ds = test_ds.metpy.parse_cf()
+
+    assert parsed_ds.attrs  # Must be non-empty
+    assert parsed_ds.attrs == test_ds.attrs  # Must match

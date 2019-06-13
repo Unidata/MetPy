@@ -13,7 +13,7 @@ import xarray as xr
 from .basic import coriolis_parameter
 from .tools import first_derivative
 from ..package_tools import Exporter
-from ..xarray import CFConventionHandler, check_matching_coordinates
+from ..xarray import check_axis, check_matching_coordinates
 
 exporter = Exporter(globals())
 
@@ -33,8 +33,7 @@ def distances_from_cross_section(cross):
         A tuple of the x and y distances as DataArrays
 
     """
-    if (CFConventionHandler.check_axis(cross.metpy.x, 'lon')
-            and CFConventionHandler.check_axis(cross.metpy.y, 'lat')):
+    if check_axis(cross.metpy.x, 'lon') and check_axis(cross.metpy.y, 'lat'):
         # Use pyproj to obtain x and y distances
         from pyproj import Geod
 
@@ -53,8 +52,7 @@ def distances_from_cross_section(cross):
         x = xr.DataArray(x, coords=lon.coords, dims=lon.dims, attrs={'units': 'meters'})
         y = xr.DataArray(y, coords=lat.coords, dims=lat.dims, attrs={'units': 'meters'})
 
-    elif (CFConventionHandler.check_axis(cross.metpy.x, 'x')
-            and CFConventionHandler.check_axis(cross.metpy.y, 'y')):
+    elif check_axis(cross.metpy.x, 'x') and check_axis(cross.metpy.y, 'y'):
 
         # Simply return what we have
         x = cross.metpy.x
@@ -81,7 +79,7 @@ def latitude_from_cross_section(cross):
 
     """
     y = cross.metpy.y
-    if CFConventionHandler.check_axis(y, 'lat'):
+    if check_axis(y, 'lat'):
         return y
     else:
         import cartopy.crs as ccrs
