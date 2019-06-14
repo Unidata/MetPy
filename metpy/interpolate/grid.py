@@ -264,9 +264,9 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
     Parameters
     ----------
     x: array_like
-        x coordinate
+        x coordinate, can have units of linear distance or degrees
     y: array_like
-        y coordinate
+        y coordinate, can have units of linear distance or degrees
     z: array_like
         observation value
     interp_type: str
@@ -313,6 +313,9 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
     -----
     This function acts as a wrapper for `interpolate_points` to allow it to generate a regular
     grid.
+
+    This function interpolates points to a Cartesian plane, even if lat/lon coordinates
+    are provided.
 
     See Also
     --------
