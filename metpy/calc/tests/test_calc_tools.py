@@ -13,10 +13,9 @@ import xarray as xr
 
 from metpy.calc import (find_bounding_indices, find_intersections, first_derivative, get_layer,
                         get_layer_heights, gradient, grid_deltas_from_dataarray, interp,
-                        interpolate_nans, laplacian, lat_lon_grid_deltas, lat_lon_grid_spacing,
-                        log_interp, nearest_intersection_idx, parse_angle,
-                        pressure_to_height_std, reduce_point_density, resample_nn_1d,
-                        second_derivative)
+                        interpolate_nans, laplacian, lat_lon_grid_deltas, log_interp,
+                        nearest_intersection_idx, parse_angle, pressure_to_height_std,
+                        reduce_point_density, resample_nn_1d, second_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               DIR_STRS)
@@ -422,41 +421,6 @@ def test_get_layer_heights_agl_bottom_no_interp():
     data_true = np.array([50, 60, 70, 80, 90, 100]) * units.degC
     assert_array_almost_equal(heights_true, heights, 6)
     assert_array_almost_equal(data_true, data, 6)
-
-
-def test_lat_lon_grid_spacing_1d():
-    """Test for lat_lon_grid_spacing for variable grid."""
-    lat = np.arange(40, 50, 2.5)
-    lon = np.arange(-100, -90, 2.5)
-    with pytest.warns(MetpyDeprecationWarning):
-        dx, dy = lat_lon_grid_spacing(lon, lat)
-    dx_truth = np.array([[212943.5585, 212943.5585, 212943.5585],
-                         [204946.2305, 204946.2305, 204946.2305],
-                         [196558.8269, 196558.8269, 196558.8269],
-                         [187797.3216, 187797.3216, 187797.3216]]) * units.meter
-    dy_truth = np.array([[277987.1857, 277987.1857, 277987.1857, 277987.1857],
-                         [277987.1857, 277987.1857, 277987.1857, 277987.1857],
-                         [277987.1857, 277987.1857, 277987.1857, 277987.1857]]) * units.meter
-    assert_almost_equal(dx, dx_truth, 4)
-    assert_almost_equal(dy, dy_truth, 4)
-
-
-def test_lat_lon_grid_spacing_2d():
-    """Test for lat_lon_grid_spacing for variable grid."""
-    lat = np.arange(40, 50, 2.5)
-    lon = np.arange(-100, -90, 2.5)
-    lon, lat = np.meshgrid(lon, lat)
-    with pytest.warns(MetpyDeprecationWarning):
-        dx, dy = lat_lon_grid_spacing(lon, lat)
-    dx_truth = np.array([[212943.5585, 212943.5585, 212943.5585],
-                         [204946.2305, 204946.2305, 204946.2305],
-                         [196558.8269, 196558.8269, 196558.8269],
-                         [187797.3216, 187797.3216, 187797.3216]]) * units.meter
-    dy_truth = np.array([[277987.1857, 277987.1857, 277987.1857, 277987.1857],
-                         [277987.1857, 277987.1857, 277987.1857, 277987.1857],
-                         [277987.1857, 277987.1857, 277987.1857, 277987.1857]]) * units.meter
-    assert_almost_equal(dx, dx_truth, 4)
-    assert_almost_equal(dy, dy_truth, 4)
 
 
 def test_lat_lon_grid_deltas_1d():

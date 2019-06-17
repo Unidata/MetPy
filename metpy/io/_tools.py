@@ -12,8 +12,6 @@ import logging
 from struct import Struct
 import zlib
 
-from ..units import UndefinedUnitError, units
-
 log = logging.getLogger(__name__)
 
 
@@ -41,52 +39,6 @@ def open_as_needed(filename):
         return gzip.GzipFile(filename, 'rb')
     else:
         return open(filename, 'rb')
-
-
-class UnitLinker(object):
-    r"""Wrap a :class:`metpy.io.cdm.Variable` and handle units.
-
-    Converts any attached unit attribute to a class:`pint.Unit`. It also handles converting
-    data returns to be instances of class:`pint.Quantity` rather than bare (unit-less) arrays.
-
-    """
-
-    def __init__(self, var):
-        r"""Construct a new :class:`UnitLinker`.
-
-        Parameters
-        ----------
-        var : Variable
-            The :class:`metpy.io.cdm.Variable` to be wrapped.
-
-        """
-        self._var = var
-        try:
-            self._unit = units(self._var.units)
-        except (AttributeError, UndefinedUnitError):
-            self._unit = None
-
-    def __getitem__(self, ind):
-        """Get data from the underlying variable and add units."""
-        ret = self._var[ind]
-        return ret if self._unit is None else ret * self._unit
-
-    def __getattr__(self, item):
-        """Forward all attribute access onto underlying variable."""
-        return getattr(self._var, item)
-
-    @property
-    def units(self):
-        """Access the units from the underlying variable as a :class:`pint.Quantity`."""
-        return self._unit
-
-    @units.setter
-    def units(self, val):
-        """Override the units on the underlying variable."""
-        if isinstance(val, units.Unit):
-            self._unit = val
-        else:
-            self._unit = units(val)
 
 
 class NamedStruct(Struct):
@@ -377,34 +329,3 @@ def bits_to_code(val):
     else:
         log.warning('Unsupported bit size: %s. Returning "B"', val)
         return 'B'
-
-
-# For debugging
-def hexdump(buf, num_bytes, offset=0, width=32):
-    """Perform a hexudmp of the buffer.
-
-    Returns the hexdump as a canonically-formatted string.
-    """
-    ind = offset
-    end = offset + num_bytes
-    lines = []
-    while ind < end:
-        chunk = buf[ind:ind + width]
-        actual_width = len(chunk)
-        hexfmt = '{:02X}'
-        blocksize = 4
-        blocks = [hexfmt * blocksize for _ in range(actual_width // blocksize)]
-
-        # Need to get any partial lines
-        num_left = actual_width % blocksize  # noqa: S001  Fix false alarm
-        if num_left:
-            blocks += [hexfmt * num_left + '--' * (blocksize - num_left)]
-        blocks += ['--' * blocksize] * (width // blocksize - len(blocks))
-
-        hexoutput = ' '.join(blocks)
-        printable = tuple(chunk)
-        lines.append('  '.join((hexoutput.format(*printable), str(ind).ljust(len(str(end))),
-                                str(ind - offset).ljust(len(str(end))),
-                                ''.join(chr(c) if 31 < c < 128 else '.' for c in chunk))))
-        ind += width
-    return '\n'.join(lines)

@@ -12,7 +12,6 @@ import pytest
 import xarray as xr
 
 from metpy.cbook import get_test_data
-from metpy.deprecation import MetpyDeprecationWarning
 from metpy.io import GiniFile
 from metpy.io.gini import GiniProjection
 
@@ -94,50 +93,6 @@ gini_dataset_info = [('WEST-CONUS_4km_WV_20151208_2200.gini',
                        'longitude_of_projection_origin': -167.315}, (150, 150, 111),
                       datetime(2016, 6, 16, 17, 15, 18))
                      ]
-
-
-@pytest.mark.parametrize('filename,bounds,data_var,proj_attrs,image,dt', gini_dataset_info,
-                         ids=['LCC', 'Stereographic', 'Mercator'])
-def test_gini_dataset(filename, bounds, data_var, proj_attrs, image, dt):
-    """Test the dataset interface for GINI."""
-    f = GiniFile(get_test_data(filename))
-    with pytest.warns(MetpyDeprecationWarning):
-        ds = f.to_dataset()
-
-    # Check our calculated x and y arrays
-    x0, x1, y0, y1 = bounds
-    x = ds.variables['x']
-    assert_almost_equal(x[0], x0, 4)
-    assert_almost_equal(x[-1], x1, 4)
-
-    # Because the actual data raster has the top row first, the maximum y value is y[0],
-    # while the minimum y value is y[-1]
-    y = ds.variables['y']
-    assert_almost_equal(y[-1], y0, 4)
-    assert_almost_equal(y[0], y1, 4)
-
-    xmin, xmax, ymin, ymax = ds.img_extent
-    assert_almost_equal(xmin, x0, 4)
-    assert_almost_equal(xmax, x1, 4)
-    assert_almost_equal(ymin, y0, 4)
-    assert_almost_equal(ymax, y1, 4)
-
-    # Check the projection metadata
-    proj_name = ds.variables[data_var].grid_mapping
-    proj_var = ds.variables[proj_name]
-    for attr, val in proj_attrs.items():
-        assert getattr(proj_var, attr) == val, 'Values mismatch for ' + attr
-
-    # Check the lower left lon/lat corner
-    assert_almost_equal(ds.variables['lon'][-1, 0], f.prod_desc.lo1, 4)
-    assert_almost_equal(ds.variables['lat'][-1, 0], f.prod_desc.la1, 4)
-
-    # Check a pixel of the image to make sure we're decoding correctly
-    x_ind, y_ind, val = image
-    assert val == ds.variables[data_var][x_ind, y_ind]
-
-    # Check that the decoded date time will work properly
-    assert f.prod_desc.datetime == dt
 
 
 @pytest.mark.parametrize('filename,bounds,data_var,proj_attrs,image,dt', gini_dataset_info,
