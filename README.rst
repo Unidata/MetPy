@@ -114,7 +114,7 @@ Python 2.7 requires the enum34 package, which is a backport
 of the standard library enum module.
 
 There is also an optional dependency on the pyproj library for geographic
-projections (used with CDM interface).
+projections (used with cross sections, grid spacing calculation, and the GiniFile interface).
 
 See the `installation guide <https://unidata.github.io/MetPy/dev/installguide.html>`_
 for more information.

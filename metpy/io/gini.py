@@ -25,8 +25,6 @@ except ImportError:
     AbstractDataStore = object
 
 from ._tools import Bits, IOBuffer, NamedStruct, open_as_needed, zlib_decompress_all_frames
-from .cdm import cf_to_proj, Dataset
-from ..deprecation import deprecated
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -82,12 +80,7 @@ class GiniFile(AbstractDataStore):
 
     Notes
     -----
-    The internal data structures that things are decoded into are subject to change. For
-    a more stable interface, use the :meth:`to_dataset` method.
-
-    See Also
-    --------
-    GiniFile.to_dataset
+    The internal data structures that things are decoded into are subject to change.
 
     """
 
@@ -244,78 +237,6 @@ class GiniFile(AbstractDataStore):
 
         self.data = np.array(blob).reshape((self.prod_desc.ny,
                                             self.prod_desc.nx))
-
-    @deprecated(0.8, alternative='xarray.open_dataset(GiniFile)')
-    def to_dataset(self):
-        """Convert to a CDM dataset.
-
-        Gives a representation of the data in a much more user-friendly manner, providing
-        easy access to Variables and relevant attributes.
-
-        Returns
-        -------
-        Dataset
-
-        .. deprecated:: 0.8.0
-
-        """
-        ds = Dataset()
-
-        # Put in time
-        ds.createDimension('time', 1)
-        time_var = ds.createVariable('time', np.int32, dimensions=('time',))
-        base_time = self.prod_desc.datetime.replace(hour=0, minute=0, second=0, microsecond=0)
-        time_var.units = 'milliseconds since ' + base_time.isoformat()
-        offset = (self.prod_desc.datetime - base_time)
-        time_var[:] = offset.seconds * 1000 + offset.microseconds / 1000.
-
-        # Set up projection
-        if self.prod_desc.projection == GiniProjection.lambert_conformal:
-            proj_var = ds.createVariable('Lambert_Conformal', np.int32)
-            proj_var.grid_mapping_name = 'lambert_conformal_conic'
-            proj_var.standard_parallel = self.prod_desc2.lat_in
-            proj_var.longitude_of_central_meridian = self.proj_info.lov
-            proj_var.latitude_of_projection_origin = self.prod_desc2.lat_in
-            proj_var.earth_radius = 6371200.0
-            _add_projection_coords(ds, self.prod_desc, proj_var, self.proj_info.dx,
-                                   self.proj_info.dy)
-        elif self.prod_desc.projection == GiniProjection.polar_stereographic:
-            proj_var = ds.createVariable('Polar_Stereographic', np.int32)
-            proj_var.grid_mapping_name = 'polar_stereographic'
-            proj_var.straight_vertical_longitude_from_pole = self.proj_info.lov
-            proj_var.latitude_of_projection_origin = -90 if self.proj_info.proj_center else 90
-            proj_var.earth_radius = 6371200.0
-            proj_var.standard_parallel = 60.0  # See Note 2 for Table 4.4A in ICD
-            _add_projection_coords(ds, self.prod_desc, proj_var, self.proj_info.dx,
-                                   self.proj_info.dy)
-        elif self.prod_desc.projection == GiniProjection.mercator:
-            proj_var = ds.createVariable('Mercator', np.int32)
-            proj_var.grid_mapping_name = 'mercator'
-            proj_var.longitude_of_projection_origin = self.prod_desc.lo1
-            proj_var.latitude_of_projection_origin = self.prod_desc.la1
-            proj_var.standard_parallel = self.prod_desc2.lat_in
-            proj_var.earth_radius = 6371200.0
-            _add_projection_coords(ds, self.prod_desc, proj_var, self.prod_desc2.resolution,
-                                   self.prod_desc2.resolution)
-        else:
-            raise NotImplementedError('Need to add more projections to dataset!')
-
-        # Now the data
-        name = self.prod_desc.channel
-        if '(' in name:
-            name = name.split('(')[0].rstrip()
-        data_var = ds.createVariable(name, self.data.dtype, ('y', 'x'),
-                                     wrap_array=np.ma.array(self.data,
-                                                            mask=self.data == self.missing))
-        data_var.long_name = self.prod_desc.channel
-        data_var.missing_value = self.missing
-        data_var.coordinates = 'y x'
-        data_var.grid_mapping = proj_var.name
-
-        # Add a bit more metadata
-        ds.satellite = self.prod_desc.creating_entity
-        ds.sector = self.prod_desc.sector_id
-        return ds
 
     def _process_wmo_header(self):
         """Read off the WMO header from the file, if necessary."""
@@ -500,43 +421,3 @@ class GiniFile(AbstractDataStore):
 
         """
         return FrozenOrderedDict(x=self.prod_desc.nx, y=self.prod_desc.ny)
-
-
-def _add_projection_coords(ds, prod_desc, proj_var, dx, dy):
-    """Add coordinate variables (projection and lon/lat) to a dataset."""
-    proj = cf_to_proj(proj_var)
-
-    # Get projected location of lower left point
-    x0, y0 = proj(prod_desc.lo1, prod_desc.la1)
-
-    # Coordinate variable for x
-    ds.createDimension('x', prod_desc.nx)
-    x_var = ds.createVariable('x', np.float64, dimensions=('x',))
-    x_var.units = 'm'
-    x_var.long_name = 'x coordinate of projection'
-    x_var.standard_name = 'projection_x_coordinate'
-    x_var[:] = x0 + np.arange(prod_desc.nx) * (1000. * dx)
-
-    # Now y
-    ds.createDimension('y', prod_desc.ny)
-    y_var = ds.createVariable('y', np.float64, dimensions=('y',))
-    y_var.units = 'm'
-    y_var.long_name = 'y coordinate of projection'
-    y_var.standard_name = 'projection_y_coordinate'
-
-    # Need to flip y because we calculated from the lower left corner, but the raster data
-    # is stored with top row first.
-    y_var[::-1] = y0 + np.arange(prod_desc.ny) * (1000. * dy)
-
-    # Get the two-D lon,lat grid as well
-    x, y = np.meshgrid(x_var[:], y_var[:])
-    lon, lat = proj(x, y, inverse=True)
-    lon_var = ds.createVariable('lon', np.float64, dimensions=('y', 'x'), wrap_array=lon)
-    lon_var.long_name = 'longitude'
-    lon_var.units = 'degrees_east'
-
-    lat_var = ds.createVariable('lat', np.float64, dimensions=('y', 'x'), wrap_array=lat)
-    lat_var.long_name = 'latitude'
-    lat_var.units = 'degrees_north'
-
-    ds.img_extent = (x_var[:].min(), x_var[:].max(), y_var[:].min(), y_var[:].max())

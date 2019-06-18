@@ -54,17 +54,16 @@ setup(
                       'pint!=0.9', 'xarray>=0.10.7', 'enum34;python_version<"3.4"',
                       'pooch>=0.1, <0.3', 'traitlets>=4.3.0'],
     extras_require={
-        'cdm': ['pyproj>=1.9.4,!=2.0.0'],
         'dev': ['ipython[all]>=3.1'],
         'doc': ['sphinx>=1.4', 'sphinx-gallery', 'doc8', 'm2r',
                 'netCDF4'],
-        'examples': ['cartopy>=0.13.1', 'matplotlib>=2.2.0'],
+        'examples': ['cartopy>=0.13.1', 'matplotlib>=2.2.0', 'pyproj>=1.9.4,!=2.0.0'],
         'test': ['pytest>=2.4', 'pytest-runner', 'pytest-mpl', 'pytest-flake8',
                  'cartopy>=0.16.0', 'flake8>3.2.0', 'flake8-builtins!=1.4.0',
                  'flake8-comprehensions', 'flake8-copyright',
                  'flake8-docstrings', 'flake8-import-order', 'flake8-mutable',
                  'flake8-pep3101', 'flake8-print', 'flake8-quotes',
-                 'pep8-naming', 'netCDF4']
+                 'pep8-naming', 'netCDF4', 'pyproj>=1.9.4,!=2.0.0']
     },
 
     cmdclass=versioneer.get_cmdclass(),

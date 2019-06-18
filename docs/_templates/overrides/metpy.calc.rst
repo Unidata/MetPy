@@ -190,5 +190,4 @@ calc
       get_wind_speed
       interp
       interpolate_nans
-      lat_lon_grid_spacing
       log_interp
