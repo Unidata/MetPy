@@ -362,7 +362,8 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_start=None):
+def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_start=None,
+        which='top'):
     r"""Calculate the level of free convection (LFC).
 
     This works by finding the first intersection of the ideal parcel path and
@@ -382,11 +383,14 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     dewpt_start: `pint.Quantity`, optional
         The dewpoint of the parcel for which to calculate the LFC. Defaults to the surface
         dewpoint.
+    which: str, optional
+        Pick which LFC to return. Options are 'top', 'bottom', and 'all'.
+        Default is the 'top' (lowest pressure) LFC.
 
     Returns
     -------
     `pint.Quantity`
-        The LFC pressure and temperature
+        The LFC pressure and temperature, or arrays of same if which='all'
 
     See Also
     --------
@@ -439,17 +443,29 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         if not any(idx):
             x, y = this_lcl
             return x, y
-        # Otherwise, make select first candidate LFC above the LCL
+        # Otherwise, find all LFCs that exist above the LCL
+        # What is returned depends on which flag as described in the docstring
         else:
-            x = x[idx]
-            y = y[idx]
-            return x[0], y[0]
+            return _multiple_el_lfc_options(x, y, idx, which)
+
+
+def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_x,
+                             which):
+    """Choose which ELs and LFCs to return from a sounding."""
+    p_list, t_list = intersect_pressures[valid_x], intersect_temperatures[valid_x]
+    if which == 'all':
+        x, y = p_list, t_list
+    elif which == 'bottom':
+        x, y = p_list[0], t_list[0]
+    elif which == 'top':
+        x, y = p_list[-1], t_list[-1]
+    return x, y
 
 
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def el(pressure, temperature, dewpt, parcel_temperature_profile=None):
+def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top'):
     r"""Calculate the equilibrium level.
 
     This works by finding the last intersection of the ideal parcel path and
@@ -467,11 +483,14 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None):
     parcel_temperature_profile: `pint.Quantity`, optional
         The parcel temperature profile from which to calculate the EL. Defaults to the
         surface parcel profile.
+    which: str, optional
+        Pick which EL to return. Options are 'top', 'bottom', and 'all'.
+        Default is the 'top' (lowest pressure) EL.
 
     Returns
     -------
     `pint.Quantity, pint.Quantity`
-        The EL pressure and temperature
+        The EL pressure and temperature, or arrays of same if which='all'
 
     See Also
     --------
@@ -491,10 +510,12 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None):
 
     # Otherwise the last intersection (as long as there is one, and it's not
     # below the LCL) is the EL
-    x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:])
+    x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:],
+                              direction='decreasing')
     lcl_p, _ = lcl(pressure[0], temperature[0], dewpt[0])
+    idx = x < lcl_p
     if len(x) > 0 and x[-1] < lcl_p:
-        return x[-1], y[-1]
+        return _multiple_el_lfc_options(x, y, idx, which)
     else:
         return np.nan * pressure.units, np.nan * temperature.units
 

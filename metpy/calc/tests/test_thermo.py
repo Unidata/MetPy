@@ -1201,6 +1201,69 @@ def test_lfc_not_below_lcl():
     assert_almost_equal(lfc_temp, 6.4992871 * units.celsius, 6)
 
 
+def test_multiple_lfcs():
+    """Test sounding with multiple LFCs.
+
+    If which='top', return lowest-pressure LFC.
+    If which='all', return all LFCs
+
+    """
+    levels = np.array([966., 937.2, 925., 904.6, 872.6, 853., 850., 836., 821., 811.6, 782.3,
+                       754.2, 726.9, 700., 648.9, 624.6, 601.1, 595., 587., 576., 555.7,
+                       534.2, 524., 500., 473.3, 400., 384.5, 358., 343., 308.3, 300., 276.,
+                       273., 268.5, 250., 244.2, 233., 200.]) * units.mbar
+    temperatures = np.array([18.2, 16.8, 16.2, 15.1, 13.3, 12.2, 12.4, 14., 14.4,
+                             13.7, 11.4, 9.1, 6.8, 4.4, -1.4, -4.4, -7.3, -8.1,
+                             -7.9, -7.7, -8.7, -9.8, -10.3, -13.5, -17.1, -28.1, -30.7,
+                             -35.3, -37.1, -43.5, -45.1, -49.9, -50.4, -51.1, -54.1, -55.,
+                             -56.7, -57.5]) * units.degC
+    dewpoints = np.array([16.9, 15.9, 15.5, 14.2, 12.1, 10.8, 8.6, 0., -3.6, -4.4,
+                          -6.9, -9.5, -12., -14.6, -15.8, -16.4, -16.9, -17.1, -27.9, -42.7,
+                          -44.1, -45.6, -46.3, -45.5, -47.1, -52.1, -50.4, -47.3, -57.1,
+                          -57.9, -58.1, -60.9, -61.4, -62.1, -65.1, -65.6,
+                          -66.7, -70.5]) * units.degC
+    lfc_pressure_top, lfc_temp_top = lfc(levels, temperatures, dewpoints)
+    lfc_pressure_bottom, lfc_temp_bottom = lfc(levels, temperatures, dewpoints,
+                                               which='bottom')
+    lfc_pressure_all, _ = lfc(levels, temperatures, dewpoints, which='all')
+    assert_almost_equal(lfc_pressure_top, 705.5170051 * units.mbar, 6)
+    assert_almost_equal(lfc_temp_top, 4.8922235 * units.degC, 6)
+    assert_almost_equal(lfc_pressure_bottom, 884.3290151 * units.mbar, 6)
+    assert_almost_equal(lfc_temp_bottom, 13.9597571 * units.degC, 6)
+    assert_almost_equal(len(lfc_pressure_all), 2, 0)
+
+
+def test_multiple_els():
+    """Test sounding with multiple ELs.
+
+    If which='top', return lowest-pressure EL.
+    If which='all', return all ELs
+
+    """
+    levels = np.array([966., 937.2, 925., 904.6, 872.6, 853., 850., 836., 821., 811.6, 782.3,
+                       754.2, 726.9, 700., 648.9, 624.6, 601.1, 595., 587., 576., 555.7,
+                       534.2, 524., 500., 473.3, 400., 384.5, 358., 343., 308.3, 300., 276.,
+                       273., 268.5, 250., 244.2, 233., 200.]) * units.mbar
+    temperatures = np.array([18.2, 16.8, 16.2, 15.1, 13.3, 12.2, 12.4, 14., 14.4,
+                             13.7, 11.4, 9.1, 6.8, 4.4, -1.4, -4.4, -7.3, -8.1,
+                             -7.9, -7.7, -8.7, -9.8, -10.3, -13.5, -17.1, -28.1, -30.7,
+                             -35.3, -37.1, -43.5, -45.1, -49.9, -50.4, -51.1, -54.1, -55.,
+                             -56.7, -57.5]) * units.degC
+    dewpoints = np.array([16.9, 15.9, 15.5, 14.2, 12.1, 10.8, 8.6, 0., -3.6, -4.4,
+                          -6.9, -9.5, -12., -14.6, -15.8, -16.4, -16.9, -17.1, -27.9, -42.7,
+                          -44.1, -45.6, -46.3, -45.5, -47.1, -52.1, -50.4, -47.3, -57.1,
+                          -57.9, -58.1, -60.9, -61.4, -62.1, -65.1, -65.6,
+                          -66.7, -70.5]) * units.degC
+    el_pressure_top, el_temp_top = el(levels, temperatures, dewpoints)
+    el_pressure_bottom, el_temp_bottom = el(levels, temperatures, dewpoints, which='bottom')
+    el_pressure_all, _ = el(levels, temperatures, dewpoints, which='all')
+    assert_almost_equal(el_pressure_top, 228.3671032 * units.mbar, 6)
+    assert_almost_equal(el_temp_top, -56.8123126 * units.degC, 6)
+    assert_almost_equal(el_pressure_bottom, 849.7958931 * units.mbar, 6)
+    assert_almost_equal(el_temp_bottom, 12.4233265 * units.degC, 6)
+    assert_almost_equal(len(el_pressure_all), 2, 0)
+
+
 def test_cape_cin_custom_profile():
     """Test the CAPE and CIN calculation with a custom profile passed to LFC and EL."""
     p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
