@@ -370,6 +370,8 @@ class MetPyDatasetAccessor(object):
             # If we found them, create a lat/lon projection as the crs coord
             if has_lat and has_lon:
                 var.coords['crs'] = CFProjection({'grid_mapping_name': 'latitude_longitude'})
+                log.warning('Found lat/lon values, assuming latitude_longitude '
+                            'for projection grid_mapping variable')
 
         # Assign coordinates if the coordinates argument is given
         if coordinates is not None:
