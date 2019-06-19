@@ -2252,7 +2252,7 @@ def static_stability(pressure, temperature, axis=0):
 
     .. math:: \sigma = -\frac{RT}{p} \frac{\partial \ln \theta}{\partial p}
 
-    This formuala is based on equation 4.3.6 in [Bluestein1992]_.
+    This formula is based on equation 4.3.6 in [Bluestein1992]_.
 
     Parameters
     ----------
@@ -2318,7 +2318,7 @@ def vertical_velocity_pressure(w, pressure, temperature, mixing=0):
     assuming hydrostatic conditions on the synoptic scale.
     By Equation 7.33 in [Hobbs2006]_,
 
-    .. math: \omega \simeq -\rho g w
+    .. math:: \omega \simeq -\rho g w
 
     Density (:math:`\rho`) is calculated using the :func:`density` function,
     from the given pressure and temperature. If `mixing` is given, the virtual
@@ -2360,11 +2360,11 @@ def vertical_velocity(omega, pressure, temperature, mixing=0):
     :math:`\left(w = \frac{Dz}{Dt}\right)` assuming hydrostatic conditions on
     the synoptic scale. By Equation 7.33 in [Hobbs2006]_,
 
-    .. math: \omega \simeq -\rho g w
+    .. math:: \omega \simeq -\rho g w
 
     so that
 
-    .. math w \simeq \frac{- \omega}{\rho g}
+    .. math:: w \simeq \frac{- \omega}{\rho g}
 
     Density (:math:`\rho`) is calculated using the :func:`density` function,
     from the given pressure and temperature. If `mixing` is given, the virtual
