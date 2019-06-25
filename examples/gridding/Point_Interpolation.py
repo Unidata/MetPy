@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -7,30 +7,31 @@ Point Interpolation
 
 Compares different point interpolation approaches.
 """
-import cartopy
+
 import cartopy.crs as ccrs
+import cartopy.feature as cfeature
 from matplotlib.colors import BoundaryNorm
 import matplotlib.pyplot as plt
 import numpy as np
 
 from metpy.cbook import get_test_data
-from metpy.gridding.gridding_functions import (interpolate, remove_nan_observations,
-                                               remove_repeat_coordinates)
+from metpy.interpolate import (interpolate_to_grid, remove_nan_observations,
+                               remove_repeat_coordinates)
+from metpy.plots import add_metpy_logo
 
 
 ###########################################
 def basic_map(proj):
     """Make our basic default map for plotting"""
     fig = plt.figure(figsize=(15, 10))
+    add_metpy_logo(fig, 0, 80, size='large')
     view = fig.add_axes([0, 0, 1, 1], projection=proj)
     view.set_extent([-120, -70, 20, 50])
-    view.add_feature(cartopy.feature.NaturalEarthFeature(category='cultural',
-                                                         name='admin_1_states_provinces_lakes',
-                                                         scale='50m', facecolor='none'))
-    view.add_feature(cartopy.feature.OCEAN)
-    view.add_feature(cartopy.feature.COASTLINE)
-    view.add_feature(cartopy.feature.BORDERS, linestyle=':')
-    return view
+    view.add_feature(cfeature.STATES.with_scale('50m'))
+    view.add_feature(cfeature.OCEAN)
+    view.add_feature(cfeature.COASTLINE)
+    view.add_feature(cfeature.BORDERS, linestyle=':')
+    return fig, view
 
 
 def station_test_data(variable_names, proj_from=None, proj_to=None):
@@ -81,21 +82,21 @@ x, y, temp = remove_repeat_coordinates(x, y, temp)
 ###########################################
 # Scipy.interpolate linear
 # ------------------------
-gx, gy, img = interpolate(x, y, temp, interp_type='linear', hres=75000)
+gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='linear', hres=75000)
 img = np.ma.masked_where(np.isnan(img), img)
-view = basic_map(to_proj)
+fig, view = basic_map(to_proj)
 mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
-plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
+fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
 ###########################################
 # Natural neighbor interpolation (MetPy implementation)
 # -----------------------------------------------------
 # `Reference <https://github.com/Unidata/MetPy/files/138653/cwp-657.pdf>`_
-gx, gy, img = interpolate(x, y, temp, interp_type='natural_neighbor', hres=75000)
+gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='natural_neighbor', hres=75000)
 img = np.ma.masked_where(np.isnan(img), img)
-view = basic_map(to_proj)
+fig, view = basic_map(to_proj)
 mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
-plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
+fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
 ###########################################
 # Cressman interpolation
@@ -105,12 +106,12 @@ plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 # grid resolution = 25 km
 #
 # min_neighbors = 1
-gx, gy, img = interpolate(x, y, temp, interp_type='cressman', minimum_neighbors=1, hres=75000,
-                          search_radius=100000)
+gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='cressman', minimum_neighbors=1,
+                                  hres=75000, search_radius=100000)
 img = np.ma.masked_where(np.isnan(img), img)
-view = basic_map(to_proj)
+fig, view = basic_map(to_proj)
 mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
-plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
+fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
 ###########################################
 # Barnes Interpolation
@@ -118,21 +119,22 @@ plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 # search_radius = 100km
 #
 # min_neighbors = 3
-gx, gy, img1 = interpolate(x, y, temp, interp_type='barnes', hres=75000, search_radius=100000)
+gx, gy, img1 = interpolate_to_grid(x, y, temp, interp_type='barnes', hres=75000,
+                                   search_radius=100000)
 img1 = np.ma.masked_where(np.isnan(img1), img1)
-view = basic_map(to_proj)
+fig, view = basic_map(to_proj)
 mmb = view.pcolormesh(gx, gy, img1, cmap=cmap, norm=norm)
-plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
+fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
 ###########################################
 # Radial basis function interpolation
 # ------------------------------------
 # linear
-gx, gy, img = interpolate(x, y, temp, interp_type='rbf', hres=75000, rbf_func='linear',
-                          rbf_smooth=0)
+gx, gy, img = interpolate_to_grid(x, y, temp, interp_type='rbf', hres=75000, rbf_func='linear',
+                                  rbf_smooth=0)
 img = np.ma.masked_where(np.isnan(img), img)
-view = basic_map(to_proj)
+fig, view = basic_map(to_proj)
 mmb = view.pcolormesh(gx, gy, img, cmap=cmap, norm=norm)
-plt.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
+fig.colorbar(mmb, shrink=.4, pad=0, boundaries=levels)
 
 plt.show()

@@ -1,15 +1,37 @@
+The following are the contributors of code within MetPy:
+UCAR/Unidata
 Aaron Hill
+Abby Kenyon
 Alex Haberlie
+Andrew Huang
+Assela Pathirana
+Brian Mapes
+Bryan Guarente
+Claude Dicaire
+Dan Dawson
+Daryl Herzmann
+Denis Sergeev
 Eric Bruning
 John Leeman
+Jon Thielen
 Jonathan Helmus
 Kevin Goebbert
-kpozsonyi
+Kishan Mehta
+Kristen Pozsonyi
+Leonardo Uieda
+Lucas Sterzinger
+Matt Wilson
 Michael James
-mmorello1
 Nathan Wendt
 Patrick Marsh
 Ryan May
 Sean Arms
 Shawn Murdzek
+Stefan Hofer
+Tyler Wixtrom
+Warren Pettee
 Will Holmgren
+Zach Bruick
+eliteuser26
+kstilwell
+mmorello1

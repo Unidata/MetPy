@@ -119,7 +119,7 @@ class MetpyDeprecationWarning(UserWarning):
     pass
 
 
-metpyDeprecation = MetpyDeprecationWarning
+metpyDeprecation = MetpyDeprecationWarning  # noqa: N816
 
 
 def _generate_deprecation_message(since, message='', name='',
@@ -263,33 +263,17 @@ def deprecated(since, message='', name='', alternative='', pending=False,
             func = obj.__init__
 
             def finalize(wrapper, new_doc):
-                try:
-                    pass
-                    # obj.__doc = new_doc
-                except (AttributeError, TypeError):
-                    # cls.__doc__ is not writeable on Py2.
-                    # TypeError occurs on PyPy
-                    pass
                 obj.__init__ = wrapper
                 return obj
         else:
             obj_type = 'function'
-            if isinstance(obj, classmethod):
-                func = obj.__func__
-                old_doc = func.__doc__
+            func = obj
+            old_doc = func.__doc__
 
-                def finalize(wrapper, new_doc):
-                    wrapper = functools.wraps(func)(wrapper)
-                    # wrapper.__doc__ = new_doc
-                    return classmethod(wrapper)
-            else:
-                func = obj
-                old_doc = func.__doc__
-
-                def finalize(wrapper, new_doc):
-                    wrapper = functools.wraps(func)(wrapper)
-                    # wrapper.__doc__ = new_doc
-                    return wrapper
+            def finalize(wrapper, new_doc):
+                wrapper = functools.wraps(func)(wrapper)
+                # wrapper.__doc__ = new_doc
+                return wrapper
 
         message = _generate_deprecation_message(since, message, name,
                                                 alternative, pending,

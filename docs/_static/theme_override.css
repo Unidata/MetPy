@@ -9,3 +9,17 @@ div[class^="highlight"] a:hover {
 .wy-nav-content {
     max-width: 100%
 }
+
+/* For the link to edit the page on Github */
+.source-link {
+    float: right;
+}
+
+/* Don't let the edit link disappear on mobile. */
+@media screen and (max-width: 480px) {
+    .wy-breadcrumbs li.source-link {
+        float:none;
+        display: block;
+        margin-top: 20px;
+    }
+}

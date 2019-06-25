@@ -1,8 +1,8 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `wx_symbols` module."""
-from metpy.plots.wx_symbols import current_weather
+from metpy.plots import current_weather
 
 
 def test_mapper():

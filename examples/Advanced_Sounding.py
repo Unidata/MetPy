@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2015,2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -16,9 +16,10 @@ ambient profile and the parcel profile is colored as well.
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
-from metpy.plots import SkewT
+from metpy.plots import add_metpy_logo, SkewT
 from metpy.units import units
 
 ###########################################
@@ -30,8 +31,8 @@ col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'spee
 df = pd.read_fwf(get_test_data('may4_sounding.txt', as_file_obj=False),
                  skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
-df['u_wind'], df['v_wind'] = mpcalc.get_wind_components(df['speed'],
-                                                        np.deg2rad(df['direction']))
+df['u_wind'], df['v_wind'] = mpcalc.wind_components(df['speed'],
+                                                    np.deg2rad(df['direction']))
 
 # Drop any rows with all NaN values for T, Td, winds
 df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
@@ -46,23 +47,28 @@ T = df['temperature'].values * units.degC
 Td = df['dewpoint'].values * units.degC
 wind_speed = df['speed'].values * units.knots
 wind_dir = df['direction'].values * units.degrees
-u, v = mpcalc.get_wind_components(wind_speed, wind_dir)
+u, v = mpcalc.wind_components(wind_speed, wind_dir)
 
 ###########################################
 # Create a new figure. The dimensions here give a good aspect ratio.
 
 fig = plt.figure(figsize=(9, 9))
+add_metpy_logo(fig, 115, 100)
 skew = SkewT(fig, rotation=45)
 
 # Plot the data using normal plotting functions, in this case using
-# log scaling in Y, as dictated by the typical meteorological plot
+# log scaling in Y, as dictated by the typical meteorological plot.
 skew.plot(p, T, 'r')
 skew.plot(p, Td, 'g')
 skew.plot_barbs(p, u, v)
 skew.ax.set_ylim(1000, 100)
 skew.ax.set_xlim(-40, 60)
 
-# Calculate LCL height and plot as black dot
+# Calculate LCL height and plot as black dot. Because `p`'s first value is
+# ~1000 mb and its last value is ~250 mb, the `0` index is selected for
+# `p`, `T`, and `Td` to lift the parcel from the surface. If `p` was inverted,
+# i.e. start from low value, 250 mb, to a high value, 1000 mb, the `-1` index
+# should be selected.
 lcl_pressure, lcl_temperature = mpcalc.lcl(p[0], T[0], Td[0])
 skew.plot(lcl_pressure, lcl_temperature, 'ko', markerfacecolor='black')
 

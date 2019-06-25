@@ -1,0 +1,8 @@
+path_classifiers:
+    generated:
+        - metpy/_version.py
+    library:
+        - versioneer.py
+        - metpy/deprecation.py
+    test:
+        - exclude: metpy/testing.py

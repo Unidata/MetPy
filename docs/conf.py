@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-# MetPy documentation build configuration file, created by
-# sphinx-quickstart on Wed Apr 22 15:27:44 2015.
-#
 # This file is execfile()d with the current directory set to its
 # containing dir.
 #
@@ -42,28 +39,25 @@ extensions = [
     'sphinx.ext.napoleon',
     'sphinx.ext.viewcode',
     'sphinx_gallery.gen_gallery',
-    'matplotlib.sphinxext.plot_directive'
+    'matplotlib.sphinxext.plot_directive',
+    'm2r'
 ]
 
 sphinx_gallery_conf = {
     'doc_module': ('metpy',),
     'reference_url': {
         'metpy': None,
-        'matplotlib': 'http://matplotlib.org',
-        'numpy': 'http://docs.scipy.org/doc/numpy/',
-        'scipy': 'http://docs.scipy.org/doc/scipy/reference'},
+        'matplotlib': 'https://matplotlib.org/',
+        'numpy': 'https://docs.scipy.org/doc/numpy/',
+        'scipy': 'https://docs.scipy.org/doc/scipy/reference',
+        'xarray': 'https://xarray.pydata.org/en/stable/'},
     'examples_dirs': [os.path.join('..', 'examples'), os.path.join('..', 'tutorials')],
     'gallery_dirs': ['examples', 'tutorials'],
-    'filename_pattern': os.path.join('.', '*'),
+    'filename_pattern': '\.py',
     'backreferences_dir': os.path.join('api', 'generated'),
     'default_thumb_file': os.path.join('_static', 'metpy_150x150_white_bg.png'),
     'abort_on_example_error': True
 }
-
-source_parsers = {
-   '.md': 'recommonmark.parser.CommonMarkParser',
-}
-
 
 # Turn off code and image links for embedded mpl plots
 plot_html_show_source_link = False
@@ -72,10 +66,11 @@ plot_html_show_formats = False
 # Set up mapping for other projects' docs
 intersphinx_mapping = {
                        # 'pint': ('http://pint.readthedocs.io/en/stable/', None),
-                       'matplotlib': ('http://matplotlib.org/', None),
+                       'matplotlib': ('https://matplotlib.org/', None),
                        'python': ('https://docs.python.org/3/', None),
                        'numpy': ('https://docs.scipy.org/doc/numpy/', None),
-                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None)
+                       'scipy': ('https://docs.scipy.org/doc/scipy/reference/', None),
+                       'xarray': ('http://xarray.pydata.org/en/stable/', None)
                        }
 
 # Tweak how docs are formatted
@@ -99,7 +94,7 @@ master_doc = 'index'
 # General information about the project.
 project = 'MetPy'
 # noinspection PyShadowingBuiltins
-copyright = '2016, MetPy Developers'
+copyright = '2019, MetPy Developers'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -170,8 +165,21 @@ def setup(app):
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
-html_theme_options = {'canonical_url': 'https://unidata.github.io/MetPy/latest/',
-                      'versions': {'latest': '../latest', 'dev': '../dev'}}
+html_theme_options = {'canonical_url': 'https://unidata.github.io/MetPy/latest/'}
+if 'sphinx_rtd_theme' in vars() and sphinx_rtd_theme.__version__ == '0.2.5b1.post1':
+    html_theme_options['versions'] = {'latest': '../latest', 'dev': '../dev'}
+
+# Extra variables that will be available to the templates. Used to create the
+# links to the Github repository sources and issues
+html_context = {
+    'doc_path': 'docs',
+    'galleries': sphinx_gallery_conf['gallery_dirs'],
+    'gallery_dir': dict(zip(sphinx_gallery_conf['gallery_dirs'],
+                            sphinx_gallery_conf['examples_dirs'])),
+    'api_dir': 'api/generated',
+    'github_repo': 'Unidata/MetPy',
+    'github_version': 'master',  # Make changes to the master branch
+}
 
 # Add any paths that contain custom themes here, relative to this directory.
 # html_theme_path = []

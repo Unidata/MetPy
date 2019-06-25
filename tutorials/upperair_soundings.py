@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -10,7 +10,7 @@ Upper air analysis is a staple of many synoptic and mesoscale analysis
 problems. In this tutorial we will gather weather balloon data, plot it,
 perform a series of thermodynamic calculations, and summarize the results.
 To learn more about the Skew-T diagram and its use in weather analysis and
-forecasting, checkout `this <http://homes.comet.ucar.edu/~alanbol/aws-tr-79-006.pdf>`_
+forecasting, checkout `this <https://homes.comet.ucar.edu/~alanbol/aws-tr-79-006.pdf>`_
 air weather service guide.
 """
 
@@ -19,6 +19,7 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import numpy as np
 import pandas as pd
+
 import metpy.calc as mpcalc
 from metpy.cbook import get_test_data
 from metpy.plots import Hodograph, SkewT
@@ -36,8 +37,8 @@ col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'spee
 df = pd.read_fwf(get_test_data('nov11_sounding.txt', as_file_obj=False),
                  skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
-df['u_wind'], df['v_wind'] = mpcalc.get_wind_components(df['speed'],
-                                                        np.deg2rad(df['direction']))
+df['u_wind'], df['v_wind'] = mpcalc.wind_components(df['speed'],
+                                                    np.deg2rad(df['direction']))
 
 # Drop any rows with all NaN values for T, Td, winds
 df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
@@ -53,7 +54,7 @@ T = df['temperature'].values * units.degC
 Td = df['dewpoint'].values * units.degC
 wind_speed = df['speed'].values * units.knots
 wind_dir = df['direction'].values * units.degrees
-u, v = mpcalc.get_wind_components(wind_speed, wind_dir)
+u, v = mpcalc.wind_components(wind_speed, wind_dir)
 
 ##########################################################################
 # Thermodynamic Calculations
@@ -146,7 +147,7 @@ skew.shade_cin(p, T, parcel_prof)
 skew.shade_cape(p, T, parcel_prof)
 
 # Plot a zero degree isotherm
-l = skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
+skew.ax.axvline(0, color='c', linestyle='--', linewidth=2)
 
 # Add the relevant special lines
 skew.plot_dry_adiabats()

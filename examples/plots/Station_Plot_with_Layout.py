@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -18,13 +18,14 @@ the station plot. This makes it easy (if using standardized names) to re-use a g
 of a station plot.
 """
 import cartopy.crs as ccrs
-import cartopy.feature as feat
+import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
-import numpy as np
+import pandas as pd
 
-from metpy.calc import get_wind_components
+from metpy.calc import wind_components
 from metpy.cbook import get_test_data
-from metpy.plots import simple_layout, StationPlot, StationPlotLayout
+from metpy.plots import (add_metpy_logo, simple_layout, StationPlot,
+                         StationPlotLayout, wx_code_map)
 from metpy.units import units
 
 ###########################################
@@ -35,30 +36,30 @@ from metpy.units import units
 # `numpy.dtype` to allow different types for the various columns. This allows us to handle
 # the columns with string data.
 with get_test_data('station_data.txt') as f:
-    all_data = np.loadtxt(f, skiprows=1, delimiter=',',
-                          usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
-                          dtype=np.dtype([('stid', '3S'), ('lat', 'f'), ('lon', 'f'),
-                                          ('slp', 'f'), ('air_temperature', 'f'),
-                                          ('cloud_fraction', 'f'),
-                                          ('dew_point_temperature', 'f'), ('weather', '16S'),
-                                          ('wind_dir', 'f'), ('wind_speed', 'f')]))
+    data_arr = pd.read_csv(f, header=0, usecols=(1, 2, 3, 4, 5, 6, 7, 17, 18, 19),
+                           names=['stid', 'lat', 'lon', 'slp', 'air_temperature',
+                                  'cloud_fraction', 'dew_point_temperature', 'weather',
+                                  'wind_dir', 'wind_speed'],
+                           na_values=-99999)
+
+    data_arr.set_index('stid', inplace=True)
 
 ###########################################
 # This sample data has *way* too many stations to plot all of them. Instead, we just select
 # a few from around the U.S. and pull those out of the data file.
 
-# Get the full list of stations in the data
-all_stids = [s.decode('ascii') for s in all_data['stid']]
-
 # Pull out these specific stations
-whitelist = ['OKC', 'ICT', 'GLD', 'MEM', 'BOS', 'MIA', 'MOB', 'ABQ', 'PHX', 'TTF',
-             'ORD', 'BIL', 'BIS', 'CPR', 'LAX', 'ATL', 'MSP', 'SLC', 'DFW', 'NYC', 'PHL',
-             'PIT', 'IND', 'OLY', 'SYR', 'LEX', 'CHS', 'TLH', 'HOU', 'GJT', 'LBB', 'LSV',
-             'GRB', 'CLT', 'LNK', 'DSM', 'BOI', 'FSD', 'RAP', 'RIC', 'JAN', 'HSV', 'CRW',
-             'SAT', 'BUY', '0CO', 'ZPC', 'VIH']
+selected = ['OKC', 'ICT', 'GLD', 'MEM', 'BOS', 'MIA', 'MOB', 'ABQ', 'PHX', 'TTF',
+            'ORD', 'BIL', 'BIS', 'CPR', 'LAX', 'ATL', 'MSP', 'SLC', 'DFW', 'NYC', 'PHL',
+            'PIT', 'IND', 'OLY', 'SYR', 'LEX', 'CHS', 'TLH', 'HOU', 'GJT', 'LBB', 'LSV',
+            'GRB', 'CLT', 'LNK', 'DSM', 'BOI', 'FSD', 'RAP', 'RIC', 'JAN', 'HSV', 'CRW',
+            'SAT', 'BUY', '0CO', 'ZPC', 'VIH']
 
 # Loop over all the whitelisted sites, grab the first data, and concatenate them
-data_arr = np.concatenate([all_data[all_stids.index(site)].reshape(1,) for site in whitelist])
+data_arr = data_arr.loc[selected]
+
+# Drop rows with missing winds
+data_arr = data_arr.dropna(how='any', subset=['wind_dir', 'wind_speed'])
 
 # First, look at the names of variables that the layout is expecting:
 simple_layout.names()
@@ -72,11 +73,11 @@ data = {}
 
 # Copy out to stage everything together. In an ideal world, this would happen on
 # the data reading side of things, but we're not there yet.
-data['longitude'] = data_arr['lon']
-data['latitude'] = data_arr['lat']
-data['air_temperature'] = data_arr['air_temperature'] * units.degC
-data['dew_point_temperature'] = data_arr['dew_point_temperature'] * units.degC
-data['air_pressure_at_sea_level'] = data_arr['slp'] * units('mbar')
+data['longitude'] = data_arr['lon'].values
+data['latitude'] = data_arr['lat'].values
+data['air_temperature'] = data_arr['air_temperature'].values * units.degC
+data['dew_point_temperature'] = data_arr['dew_point_temperature'].values * units.degC
+data['air_pressure_at_sea_level'] = data_arr['slp'].values * units('mbar')
 
 ###########################################
 # Notice that the names (the keys) in the dictionary are the same as those that the
@@ -90,29 +91,24 @@ data['air_pressure_at_sea_level'] = data_arr['slp'] * units('mbar')
 
 # Get the wind components, converting from m/s to knots as will be appropriate
 # for the station plot
-u, v = get_wind_components(data_arr['wind_speed'] * units('m/s'),
-                           data_arr['wind_dir'] * units.degree)
+u, v = wind_components(data_arr['wind_speed'].values * units('m/s'),
+                       data_arr['wind_dir'].values * units.degree)
 data['eastward_wind'], data['northward_wind'] = u, v
 
 # Convert the fraction value into a code of 0-8, which can be used to pull out
 # the appropriate symbol
-data['cloud_coverage'] = (8 * data_arr['cloud_fraction']).astype(int)
+data['cloud_coverage'] = (8 * data_arr['cloud_fraction']).fillna(10).values.astype(int)
 
 # Map weather strings to WMO codes, which we can use to convert to symbols
 # Only use the first symbol if there are multiple
-wx_text = [s.decode('ascii') for s in data_arr['weather']]
-wx_codes = {'': 0, 'HZ': 5, 'BR': 10, '-DZ': 51, 'DZ': 53, '+DZ': 55,
-            '-RA': 61, 'RA': 63, '+RA': 65, '-SN': 71, 'SN': 73, '+SN': 75}
-data['present_weather'] = [wx_codes[s.split()[0] if ' ' in s else s] for s in wx_text]
+wx_text = data_arr['weather'].fillna('')
+data['present_weather'] = [wx_code_map[s.split()[0] if ' ' in s else s] for s in wx_text]
 
 ###########################################
 # All the data wrangling is finished, just need to set up plotting and go:
 # Set up the map projection and set up a cartopy feature for state borders
 proj = ccrs.LambertConformal(central_longitude=-95, central_latitude=35,
                              standard_parallels=[35])
-state_boundaries = feat.NaturalEarthFeature(category='cultural',
-                                            name='admin_1_states_provinces_lines',
-                                            scale='110m', facecolor='none')
 
 ###########################################
 # The payoff
@@ -124,15 +120,16 @@ plt.rcParams['savefig.dpi'] = 255
 
 # Create the figure and an axes set to the projection
 fig = plt.figure(figsize=(20, 10))
+add_metpy_logo(fig, 1080, 290, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Add some various map elements to the plot to make it recognizable
-ax.add_feature(feat.LAND, zorder=-1)
-ax.add_feature(feat.OCEAN, zorder=-1)
-ax.add_feature(feat.LAKES, zorder=-1)
-ax.coastlines(resolution='110m', zorder=2, color='black')
-ax.add_feature(state_boundaries, edgecolor='black')
-ax.add_feature(feat.BORDERS, linewidth='2', edgecolor='black')
+ax.add_feature(cfeature.LAND)
+ax.add_feature(cfeature.OCEAN)
+ax.add_feature(cfeature.LAKES)
+ax.add_feature(cfeature.COASTLINE)
+ax.add_feature(cfeature.STATES)
+ax.add_feature(cfeature.BORDERS, linewidth=2)
 
 # Set plot bounds
 ax.set_extent((-118, -73, 23, 50))
@@ -169,15 +166,16 @@ custom_layout.add_value('E', 'precipitation', fmt='0.2f', units='inch', color='b
 
 # Create the figure and an axes set to the projection
 fig = plt.figure(figsize=(20, 10))
+add_metpy_logo(fig, 1080, 290, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Add some various map elements to the plot to make it recognizable
-ax.add_feature(feat.LAND, zorder=-1)
-ax.add_feature(feat.OCEAN, zorder=-1)
-ax.add_feature(feat.LAKES, zorder=-1)
-ax.coastlines(resolution='110m', zorder=2, color='black')
-ax.add_feature(state_boundaries, edgecolor='black')
-ax.add_feature(feat.BORDERS, linewidth='2', edgecolor='black')
+ax.add_feature(cfeature.LAND)
+ax.add_feature(cfeature.OCEAN)
+ax.add_feature(cfeature.LAKES)
+ax.add_feature(cfeature.COASTLINE)
+ax.add_feature(cfeature.STATES)
+ax.add_feature(cfeature.BORDERS, linewidth=2)
 
 # Set plot bounds
 ax.set_extent((-118, -73, 23, 50))

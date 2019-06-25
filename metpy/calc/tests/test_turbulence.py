@@ -1,7 +1,7 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2008,2015 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Tests for the `turbulence` module."""
+"""Test the `turbulence` module."""
 
 import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_equal
@@ -239,9 +239,7 @@ def test_kf_2d_axis_last_zero_mean(uvw_and_known_kf_zero_mean):
     u = np.array([u, u, u])
     v = np.array([v, v, v])
     w = np.array([w, w, w])
-    for key in kf_true.keys():
-        tmp = kf_true[key]
-        kf_true[key] = np.array([tmp, tmp, tmp])
+
     assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=-1),
                        kf_true['uv'])
     assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=-1),
@@ -264,9 +262,7 @@ def test_kf_2d_axis_last_nonzero_mean(uvw_and_known_kf_nonzero_mean):
     u = np.array([u, u, u])
     v = np.array([v, v, v])
     w = np.array([w, w, w])
-    for key in kf_true.keys():
-        tmp = kf_true[key]
-        kf_true[key] = np.array([tmp, tmp, tmp])
+
     assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=-1),
                        kf_true['uv'])
     assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=-1),
@@ -281,9 +277,7 @@ def test_kf_2d_axis_first_zero_mean(uvw_and_known_kf_zero_mean):
     u = np.array([u, u, u]).transpose()
     v = np.array([v, v, v]).transpose()
     w = np.array([w, w, w]).transpose()
-    for key in kf_true.keys():
-        tmp = kf_true[key]
-        kf_true[key] = np.array([tmp, tmp, tmp]).transpose()
+
     assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=0),
                        kf_true['uv'])
     assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=0),
@@ -306,9 +300,7 @@ def test_kf_2d_axis_first_nonzero_mean(uvw_and_known_kf_nonzero_mean):
     u = np.array([u, u, u]).transpose()
     v = np.array([v, v, v]).transpose()
     w = np.array([w, w, w]).transpose()
-    for key in kf_true.keys():
-        tmp = kf_true[key]
-        kf_true[key] = np.array([tmp, tmp, tmp]).transpose()
+
     assert_array_equal(kinematic_flux(u, v, perturbation=False, axis=0),
                        kf_true['uv'])
     assert_array_equal(kinematic_flux(u, w, perturbation=False, axis=0),
@@ -364,9 +356,7 @@ def test_u_star_2d_axis_last_zero_mean(uvw_and_known_u_star_zero_mean):
     u = np.array([u, u, u])
     v = np.array([v, v, v])
     w = np.array([w, w, w])
-    for key in u_star_true.keys():
-        tmp = u_star_true[key]
-        u_star_true[key] = np.array([tmp, tmp, tmp])
+
     assert_almost_equal(friction_velocity(u, w, perturbation=False,
                         axis=-1), u_star_true['uw'])
     assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False,
@@ -379,9 +369,7 @@ def test_u_star_2d_axis_last_nonzero_mean(uvw_and_known_u_star_nonzero_mean):
     u = np.array([u, u, u])
     v = np.array([v, v, v])
     w = np.array([w, w, w])
-    for key in u_star_true.keys():
-        tmp = u_star_true[key]
-        u_star_true[key] = np.array([tmp, tmp, tmp])
+
     assert_almost_equal(friction_velocity(u, w, perturbation=False,
                         axis=-1), u_star_true['uw'])
     assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False,
@@ -394,9 +382,7 @@ def test_u_star_2d_axis_first_zero_mean(uvw_and_known_u_star_zero_mean):
     u = np.array([u, u, u]).transpose()
     v = np.array([v, v, v]).transpose()
     w = np.array([w, w, w]).transpose()
-    for key in u_star_true.keys():
-        tmp = u_star_true[key]
-        u_star_true[key] = np.array([tmp, tmp, tmp]).transpose()
+
     assert_almost_equal(friction_velocity(u, w, perturbation=False,
                         axis=0), u_star_true['uw'])
     assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False,
@@ -409,9 +395,7 @@ def test_u_star_2d_axis_first_nonzero_mean(uvw_and_known_u_star_nonzero_mean):
     u = np.array([u, u, u]).transpose()
     v = np.array([v, v, v]).transpose()
     w = np.array([w, w, w]).transpose()
-    for key in u_star_true.keys():
-        tmp = u_star_true[key]
-        u_star_true[key] = np.array([tmp, tmp, tmp]).transpose()
+
     assert_almost_equal(friction_velocity(u, w, perturbation=False,
                         axis=0), u_star_true['uw'])
     assert_almost_equal(friction_velocity(u, w, v=v, perturbation=False,

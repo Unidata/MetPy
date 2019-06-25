@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `_mpl` module."""
@@ -10,9 +10,9 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Needed to trigger scattertext monkey-patching
-import metpy.plots  # noqa: F401
+import metpy.plots  # noqa: F401, I202
 # Fixture to make sure we have the right backend
-from metpy.testing import set_agg_backend  # noqa: F401
+from metpy.testing import set_agg_backend  # noqa: F401, I202
 
 
 # Avoiding an image-based test here since that would involve text, which can be tricky

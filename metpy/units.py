@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2015,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Module to provide unit support.
@@ -17,10 +17,13 @@ units : :class:`pint.UnitRegistry`
 from __future__ import division
 
 import functools
+import logging
 
 import numpy as np
 import pint
 import pint.unit
+
+log = logging.getLogger(__name__)
 
 UndefinedUnitError = pint.UndefinedUnitError
 DimensionalityError = pint.DimensionalityError
@@ -30,6 +33,53 @@ units = pint.UnitRegistry(autoconvert_offset_to_baseunit=True)
 # For pint 0.6, this is the best way to define a dimensionless unit. See pint #185
 units.define(pint.unit.UnitDefinition('percent', '%', (),
              pint.converters.ScaleConverter(0.01)))
+
+# Define commonly encountered units not defined by pint
+units.define('degrees_north = degree = degrees_N = degreesN = degree_north = degree_N '
+             '= degreeN')
+units.define('degrees_east = degree = degrees_E = degreesE = degree_east = degree_E = degreeE')
+
+# Alias geopotential meters (gpm) to just meters
+try:
+    units._units['meter']._aliases = ('metre', 'gpm')
+    units._units['gpm'] = units._units['meter']
+except AttributeError:
+    log.warning('Failed to add gpm alias to meters.')
+
+
+def pandas_dataframe_to_unit_arrays(df, column_units=None):
+    """Attach units to data in pandas dataframes and return united arrays.
+
+    Parameters
+    ----------
+    df : `pandas.DataFrame`
+        Data in pandas dataframe.
+
+    column_units : dict
+        Dictionary of units to attach to columns of the dataframe. Overrides
+        the units attribute if it is attached to the dataframe.
+
+    Returns
+    -------
+        Dictionary containing united arrays with keys corresponding to the dataframe
+        column names.
+
+    """
+    if not column_units:
+        try:
+            column_units = df.units
+        except AttributeError:
+            raise ValueError('No units attribute attached to pandas '
+                             'dataframe and col_units not given.')
+
+    # Iterate through columns attaching units if we have them, if not, don't touch it
+    res = {}
+    for column in df:
+        if column in column_units and column_units[column]:
+            res[column] = df[column].values * units(column_units[column])
+        else:
+            res[column] = df[column].values
+    return res
 
 
 def concatenate(arrs, axis=0):
@@ -66,7 +116,48 @@ def concatenate(arrs, axis=0):
             a = a.to(dest).magnitude
         data.append(np.atleast_1d(a))
 
-    return units.Quantity(np.concatenate(data, axis=axis), dest)
+    # Use masked array concatenate to ensure masks are preserved, but convert to an
+    # array if there are no masked values.
+    data = np.ma.concatenate(data, axis=axis)
+    if not np.any(data.mask):
+        data = np.asarray(data)
+
+    return units.Quantity(data, dest)
+
+
+def diff(x, **kwargs):
+    """Calculate the n-th discrete difference along given axis.
+
+    Wraps :func:`numpy.diff` to handle units.
+
+    Parameters
+    ----------
+    x : array-like
+        Input data
+    n : int, optional
+        The number of times values are differenced.
+    axis : int, optional
+        The axis along which the difference is taken, default is the last axis.
+
+    Returns
+    -------
+    diff : ndarray
+        The n-th differences. The shape of the output is the same as `a`
+        except along `axis` where the dimension is smaller by `n`. The
+        type of the output is the same as that of the input.
+
+    See Also
+    --------
+    numpy.diff
+
+    """
+    ret = np.diff(x, **kwargs)
+    if hasattr(x, 'units'):
+        # Can't just use units because of how things like temperature work
+        it = x.flat
+        true_units = (next(it) - next(it)).units
+        ret = ret * true_units
+    return ret
 
 
 def atleast_1d(*arrs):
@@ -87,12 +178,15 @@ def atleast_1d(*arrs):
         A single quantity or a list of quantities, matching the number of inputs.
 
     """
-    mags = [a.magnitude for a in arrs]
-    orig_units = [a.units for a in arrs]
+    mags = [a.magnitude if hasattr(a, 'magnitude') else a for a in arrs]
+    orig_units = [a.units if hasattr(a, 'units') else None for a in arrs]
     ret = np.atleast_1d(*mags)
     if len(mags) == 1:
-        return units.Quantity(ret, orig_units[0])
-    return [units.Quantity(m, u) for m, u in zip(ret, orig_units)]
+        if orig_units[0] is not None:
+            return units.Quantity(ret, orig_units[0])
+        else:
+            return ret
+    return [units.Quantity(m, u) if u is not None else m for m, u in zip(ret, orig_units)]
 
 
 def atleast_2d(*arrs):
@@ -113,12 +207,15 @@ def atleast_2d(*arrs):
         A single quantity or a list of quantities, matching the number of inputs.
 
     """
-    mags = [a.magnitude for a in arrs]
-    orig_units = [a.units for a in arrs]
+    mags = [a.magnitude if hasattr(a, 'magnitude') else a for a in arrs]
+    orig_units = [a.units if hasattr(a, 'units') else None for a in arrs]
     ret = np.atleast_2d(*mags)
     if len(mags) == 1:
-        return units.Quantity(ret, orig_units[0])
-    return [units.Quantity(m, u) for m, u in zip(ret, orig_units)]
+        if orig_units[0] is not None:
+            return units.Quantity(ret, orig_units[0])
+        else:
+            return ret
+    return [units.Quantity(m, u) if u is not None else m for m, u in zip(ret, orig_units)]
 
 
 def masked_array(data, data_units=None, **kwargs):
@@ -263,7 +360,10 @@ except (AttributeError, RuntimeError):  # Pint's not available, try to enable ou
         @staticmethod
         def default_units(x, axis):
             """Get the default unit to use for the given combination of unit and axis."""
-            return getattr(x, 'units', None)
+            if isinstance(x, (tuple, list)):
+                return getattr(x[0], 'units', 'dimensionless')
+            else:
+                return getattr(x, 'units', 'dimensionless')
 
     # Register the class
     munits.registry[units.Quantity] = PintConverter(units)

@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2016 MetPy Developers.
+# Copyright (c) 2016 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -14,7 +14,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.spatial import Delaunay
 
-from metpy.gridding.triangles import find_natural_neighbors
+from metpy.interpolate.geometry import find_natural_neighbors
 
 # Create test observations, test points, and plot the triangulation and points.
 gx, gy = np.meshgrid(np.arange(0, 20, 4), np.arange(0, 20, 4))

@@ -71,12 +71,17 @@ MetPy
 MetPy is a collection of tools in Python for reading, visualizing and
 performing calculations with weather data.
 
-MetPy is still in an early stage of development, and as such
-**no APIs are considered stable.** While we won't break things
-just for fun, many things may still change as we work through
-design issues.
+MetPy follows `semantic versioning <https://semver.org>`_ in its version number. With our
+current 0.x version, that implies that MetPy's APIs (application programming interfaces) are
+still evolving (we won't break things just for fun, but many things are still changing as we
+work through design issues). Also, for a version `0.x.y`, we change `x` when we
+release new features, and `y` when we make a release with only bug fixes.
 
-We support Python 2.7 as well as Python >= 3.4.
+We support Python >= 3.6 and currently support Python 2.7.
+
+NOTE: We are dropping support for Python 2.7 in Fall 2019. See
+`here <https://github.com/Unidata/MetPy/blob/master/docs/installguide.rst>`_ for more
+information.
 
 Need Help?
 ----------
@@ -90,7 +95,9 @@ Important Links
 
 - Source code repository: https://github.com/Unidata/MetPy
 - HTML Documentation : http://unidata.github.io/MetPy
+- Unidata Python Gallery: https://unidata.github.io/python-gallery/
 - Issue tracker: http://github.com/Unidata/MetPy/issues
+- "metpy" tagged questions on Stack Overflow: https://stackoverflow.com/questions/tagged/metpy
 - Gitter chat room: https://gitter.im/Unidata/MetPy
 - Say Thanks: https://saythanks.io/to/unidata
 
@@ -103,11 +110,21 @@ Other required packages:
 - Matplotlib
 - Pint
 
-Python versions older than 3.4 require the enum34 package, which is a backport
+Python 2.7 requires the enum34 package, which is a backport
 of the standard library enum module.
 
 There is also an optional dependency on the pyproj library for geographic
-projections (used with CDM interface).
+projections (used with cross sections, grid spacing calculation, and the GiniFile interface).
+
+See the `installation guide <https://unidata.github.io/MetPy/dev/installguide.html>`_
+for more information.
+
+Code of Conduct
+---------------
+We want everyone to feel welcome to contribute to MetPy and participate in discussions. In that
+spirit please have a look at our `code of conduct`__.
+
+__ https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md
 
 Contributing
 ------------

@@ -1,4 +1,4 @@
-# Copyright (c) 2008-2015 MetPy Developers.
+# Copyright (c) 2016,2017 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Functionality that we have upstreamed or will upstream into matplotlib."""
@@ -9,7 +9,7 @@ import matplotlib
 import matplotlib.transforms as transforms
 import numpy as np
 
-if float(matplotlib.__version__[:3]) < 2.1:
+if matplotlib.__version__ < '2.1':
     from numpy import ma
     from matplotlib.patches import CirclePolygon
     from matplotlib.quiver import Barbs
@@ -120,7 +120,7 @@ if float(matplotlib.__version__[:3]) < 2.1:
 
 
 # See if we need to patch in our own scattertext implementation
-from matplotlib.axes import Axes  # noqa: E402
+from matplotlib.axes import Axes  # noqa: E402, I100, I202
 if not hasattr(Axes, 'scattertext'):
     import matplotlib.cbook as cbook
     import matplotlib.transforms as mtransforms
@@ -156,19 +156,19 @@ if not hasattr(Axes, 'scattertext'):
         Individual keyword arguments can be used to override any given
         parameter::
 
-            >>> ax = plt.axes()
+            >>> ax = plt.gca()
             >>> ax.scattertext([0.25, 0.75], [0.25, 0.75], ['aa', 'bb'],
             ... fontsize=12)  #doctest: +ELLIPSIS
-            <metpy.plots._mpl.TextCollection object at 0x...>
+            TextCollection
 
         The default setting to to center the text at the specified x, y
         locations in data coordinates. The example below places the text
         above and to the right by 10 pixels::
 
-            >>> ax = plt.axes()
+            >>> ax = plt.gca()
             >>> ax.scattertext([0.25, 0.75], [0.25, 0.75], ['aa', 'bb'],
             ... loc=(10, 10))  #doctest: +ELLIPSIS
-            <metpy.plots._mpl.TextCollection object at 0x...>
+            TextCollection
 
         """
         # Start with default args and update from kw
@@ -252,12 +252,12 @@ if not hasattr(Axes, 'scattertext'):
             self.y = y
             self.text = text
             self.offset = offset
-            if not hasattr(self, '_usetex'):  # Only needed for matplotlib 1.4 compatibility
-                self._usetex = None
 
         def __str__(self):
             """Make a string representation of `TextCollection`."""
             return 'TextCollection'
+
+        __repr__ = __str__
 
         def get_datalim(self, transData):  # noqa: N803
             """Return the limits of the data.
@@ -328,7 +328,10 @@ if not hasattr(Axes, 'scattertext'):
                     y = y + posy
                     if renderer.flipy():
                         y = canvash - y
-                    clean_line, ismath = self.is_math_text(line)
+
+                    # Can simplify next two lines once support for matplotlib<3.1 is dropped
+                    check_line = getattr(self, '_preprocess_math', self.is_math_text)
+                    clean_line, ismath = check_line(line)
 
                     if self.get_path_effects():
                         from matplotlib.patheffects import PathEffectRenderer
@@ -376,29 +379,3 @@ if not hasattr(Axes, 'scattertext'):
 
     # Monkey-patch scattertext onto Axes
     Axes.scattertext = scattertext
-
-
-# See if we need to add in the Tableau colors which were added in Matplotlib 2.0
-import matplotlib.colors  # noqa: E402
-if not hasattr(matplotlib.colors, 'TABLEAU_COLORS'):
-    from collections import OrderedDict
-
-    # These colors are from Tableau
-    TABLEAU_COLORS = (
-        ('blue', '#1f77b4'),
-        ('orange', '#ff7f0e'),
-        ('green', '#2ca02c'),
-        ('red', '#d62728'),
-        ('purple', '#9467bd'),
-        ('brown', '#8c564b'),
-        ('pink', '#e377c2'),
-        ('gray', '#7f7f7f'),
-        ('olive', '#bcbd22'),
-        ('cyan', '#17becf'),
-    )
-
-    # Normalize name to "tab:<name>" to avoid name collisions.
-    matplotlib.colors.TABLEAU_COLORS = OrderedDict(
-        ('tab:' + name, value) for name, value in TABLEAU_COLORS)
-
-    matplotlib.colors.cnames.update(matplotlib.colors.TABLEAU_COLORS)

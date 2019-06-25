@@ -1,24 +1,28 @@
 # Create full conda environment for development, including some useful tools
 name: devel
 channels:
+  - conda-forge/label/testing
   - conda-forge
 dependencies:
   - python=3
   - numpy
   - scipy
   - matplotlib
-  - pint
+  - pint!=0.9
   - netcdf4
+  - xarray
+  - pandas
   - jupyter
   - sphinx
   - sphinx-gallery
+  - sphinx_rtd_theme
   - pytest>=2.4
   - pytest-cov
   - pytest-flake8
   - pytest-mpl
   - pytest-runner
-  - flake8-builtins
-  - flake8-comprehensions
+  - flake8-builtins!=1.4.0
+  - flake8-comprehensions=1.4.1
   - flake8-copyright
   - flake8-docstrings
   - flake8-import-order
@@ -30,5 +34,5 @@ dependencies:
   - pyproj
   - cartopy
   - doc8
-  - pip:
-     - recommonmark
+  - m2r
+  - pooch>=0.1, <0.3
