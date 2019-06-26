@@ -843,20 +843,21 @@ def altimeter_to_station_pressure(altimeter_value, height):
     .. math:: p_{mb} = \left [A_{mb} ^ n - \left (\frac{p_{0} a H_{b}}{T_0} \right) \right] ^ \frac{1}{n} + 0.3
 
     """
-    #Make sure the input values have the correct units
+    # Make sure the input values have the correct units
     altim = altimeter_value.to('hPa')
     elev = height.to('meters')
 
-    #Constant for Mean Sea Level Pressure
+    # Constant for Mean Sea Level Pressure
     mslp = 1013.25 * units.hPa
-    #Mean Sea Level Temperature
+    # Mean Sea Level Temperature
     mslt = 288 * units.kelvin
-    #Lapse rate for a standard atmosphere
+    # Lapse rate for a standard atmosphere
     a = 0.0065 * (units.delta_degC / units.m)
-    #N-Value
+    # N-Value
     n = (mpconsts.Rd * a / mpconsts.g).to_base_units()
 
     return (altim ** n - ((mslp ** n * a * elev) / mslt)) ** (1/n) + (0.3 * units.hPa)
+
 
 @exporter.export
 @preprocess_xarray
@@ -923,18 +924,18 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     .. math:: p_{sea level} = p_{station} exp\left(\frac{\Delta z}{H}\right)
 
     where Delta_Z is the elevation in meters and H = \frac{R_{d}T}{g}
-    
+
     """
-    #Make sure the temperature is in Kelvin
+    # Make sure the temperature is in Kelvin
     temperature = temperature.to('kelvin')
 
-    #Make sure the elevation is measured in meters
+    # Make sure the elevation is measured in meters
     height = height.to('meter')
 
-    #Calculate the station pressure using the function altimeter_to_station_pressure()
+    # Calculate the station pressure using the function altimeter_to_station_pressure()
     psfc = altimeter_to_station_pressure(altimeter_value, height)
 
-    #Calculate the scale height
+    # Calculate the scale height
     H = mpconsts.Rd * temperature / mpconsts.g
 
     return psfc * np.exp(height/H)
