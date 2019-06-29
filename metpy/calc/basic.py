@@ -393,6 +393,15 @@ def pressure_to_height_std(pressure):
 def height_to_geopotential(height):
     r"""Compute geopotential for a given height.
 
+    Calculates the geopotential from height using the following formula, which is derived from
+    the definition of geopotential as given in [Hobbs2006]_ Pg. 69 Eq 3.21:
+
+    .. math:: \Phi = G m_e \left( \frac{1}{R_e} - \frac{1}{R_e + z}\right)
+
+    (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth
+    radius, :math:`G` is the (universal) gravitational constant, and :math:`m_e` is the
+    approximate mass of Earth.)
+
     Parameters
     ----------
     height : `pint.Quantity`
@@ -405,7 +414,6 @@ def height_to_geopotential(height):
 
     Examples
     --------
-    >>> from metpy.constants import g, G, me, Re
     >>> import metpy.calc
     >>> from metpy.units import units
     >>> height = np.linspace(0, 10000, num=11) * units.m
@@ -414,10 +422,6 @@ def height_to_geopotential(height):
     <Quantity([     0.           9817.46806283  19631.85526579  29443.16305887
     39251.39289118  49056.54621087  58858.62446524  68657.62910064
     78453.56156252  88246.42329544  98036.21574305], 'meter ** 2 / second ** 2')>
-
-    Notes
-    -----
-    Derived from definition of geopotential in [Hobbs2006]_ pg.14 Eq.1.8.
 
     """
     # Direct implementation of formula from Hobbs yields poor numerical results (see
@@ -429,6 +433,15 @@ def height_to_geopotential(height):
 @preprocess_xarray
 def geopotential_to_height(geopot):
     r"""Compute height from a given geopotential.
+
+    Calculates the height from geopotential using the following formula, which is derived from
+    the definition of geopotential as given in [Hobbs2006]_ Pg. 69 Eq 3.21:
+
+    .. math:: z = \frac{1}{\frac{1}{R_e} - \frac{\Phi}{G m_e}} - R_e
+
+    (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth
+    radius, :math:`G` is the (universal) gravitational constant, and :math:`m_e` is the
+    approximate mass of Earth.)
 
     Parameters
     ----------
@@ -442,7 +455,6 @@ def geopotential_to_height(geopot):
 
     Examples
     --------
-    >>> from metpy.constants import g, G, me, Re
     >>> import metpy.calc
     >>> from metpy.units import units
     >>> height = np.linspace(0, 10000, num=11) * units.m
@@ -455,10 +467,6 @@ def geopotential_to_height(geopot):
     >>> height
     <Quantity([     0.   1000.   2000.   3000.   4000.   5000.   6000.   7000.   8000.
     9000.  10000.], 'meter')>
-
-    Notes
-    -----
-    Derived from definition of geopotential in [Hobbs2006]_ pg.14 Eq.1.8.
 
     """
     # Direct implementation of formula from Hobbs yields poor numerical results (see
