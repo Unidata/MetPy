@@ -102,4 +102,12 @@ def broadcast_indices(x, minv, ndim, axis):
     return tuple(ret)
 
 
+def iterable(value):
+    """Determine if value can be iterated over."""
+    # Special case for pint Quantities
+    if hasattr(value, 'magnitude'):
+        value = value.magnitude
+    return np.iterable(value)
+
+
 __all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'is_string_like', 'iterable')

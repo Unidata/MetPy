@@ -10,7 +10,6 @@ import numpy as np
 
 from ..cbook import broadcast_indices
 from ..package_tools import Exporter
-from ..units import units
 from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
@@ -53,7 +52,6 @@ def interpolate_nans_1d(x, y, kind='linear'):
 
 @exporter.export
 @preprocess_xarray
-@units.wraps(None, ('=A', '=A'))
 def interpolate_1d(x, xp, *args, **kwargs):
     r"""Interpolates data with any shape over a specified axis.
 
@@ -99,6 +97,9 @@ def interpolate_1d(x, xp, *args, **kwargs):
     # Pull out keyword args
     fill_value = kwargs.pop('fill_value', np.nan)
     axis = kwargs.pop('axis', 0)
+
+    # Handle units
+    x, xp = _strip_matching_units(x, xp)
 
     # Make x an array
     x = np.asanyarray(x).reshape(-1)
@@ -175,7 +176,6 @@ def interpolate_1d(x, xp, *args, **kwargs):
 
 @exporter.export
 @preprocess_xarray
-@units.wraps(None, ('=A', '=A'))
 def log_interpolate_1d(x, xp, *args, **kwargs):
     r"""Interpolates data with logarithmic x-scale over a specified axis.
 
@@ -222,7 +222,22 @@ def log_interpolate_1d(x, xp, *args, **kwargs):
     fill_value = kwargs.pop('fill_value', np.nan)
     axis = kwargs.pop('axis', 0)
 
+    # Handle units
+    x, xp = _strip_matching_units(x, xp)
+
     # Log x and xp
     log_x = np.log(x)
     log_xp = np.log(xp)
     return interpolate_1d(log_x, log_xp, *args, axis=axis, fill_value=fill_value)
+
+
+def _strip_matching_units(*args):
+    """Ensure arguments have same units and return with units stripped.
+
+    Replaces `@units.wraps(None, ('=A', '=A'))`, which breaks with `*args` handling for
+    pint>=0.9.
+    """
+    if all(hasattr(arr, 'units') for arr in args):
+        return [arr.to(args[0].units).magnitude for arr in args]
+    else:
+        return args

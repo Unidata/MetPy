@@ -8,6 +8,7 @@ import sys
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+import pint
 import pytest
 
 from metpy.testing import assert_array_almost_equal, assert_array_equal
@@ -35,6 +36,8 @@ def test_concatenate_masked():
     assert_array_equal(result.mask, np.array([False, True, False, False]))
 
 
+@pytest.mark.skipif(pint.__version__ == '0.9', reason=('Currently broken upstream (see '
+                                                       'pint#751'))
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_axhline():
     r"""Ensure that passing a quantity to axhline does not error."""
@@ -45,6 +48,8 @@ def test_axhline():
     return fig
 
 
+@pytest.mark.skipif(pint.__version__ == '0.9', reason=('Currently broken upstream (see '
+                                                       'pint#751'))
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_axvline():
     r"""Ensure that passing a quantity to axvline does not error."""

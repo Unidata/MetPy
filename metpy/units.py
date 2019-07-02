@@ -18,6 +18,7 @@ from __future__ import division
 
 import functools
 import logging
+import warnings
 
 import numpy as np
 import pint
@@ -45,6 +46,10 @@ try:
     units._units['gpm'] = units._units['meter']
 except AttributeError:
     log.warning('Failed to add gpm alias to meters.')
+
+# Silence UnitStrippedWarning
+if hasattr(pint, 'UnitStrippedWarning'):
+    warnings.simplefilter('ignore', category=pint.UnitStrippedWarning)
 
 
 def pandas_dataframe_to_unit_arrays(df, column_units=None):
