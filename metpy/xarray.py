@@ -10,9 +10,8 @@ import re
 import warnings
 
 import xarray as xr
-from xarray.core.indexing import expanded_indexer
-from xarray.core.utils import either_dict_or_kwargs, is_dict_like
 
+from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
 from .units import DimensionalityError, units
 
 __all__ = []
