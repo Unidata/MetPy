@@ -10,7 +10,10 @@ from collections import namedtuple
 from datetime import datetime
 from metpy.io.metar_parse import ParseError
 
+# Ignore the pandas warning
 warnings.filterwarnings('ignore', 'Pandas doesn\'t allow columns to be created', UserWarning)
+
+# Configure the named tuple used for storing METAR data
 Metar = namedtuple('metar', ['station_id', 'latitude', 'longitude', 'elevation',
 'date_time', 'wind_direction', 'wind_speed', 'current_wx1',
 'current_wx2', 'current_wx3', 'skyc1', 'skylev1', 'skyc2', 'skylev2', 'skyc3',
@@ -18,33 +21,66 @@ Metar = namedtuple('metar', ['station_id', 'latitude', 'longitude', 'elevation',
 'current_wx1_symbol', 'current_wx2_symbol', 'current_wx3_symbol'])
 
 def parse_metar_to_pandas(metar_text, year = datetime.now().year, month = datetime.now().month):
-    """Takes in a metar file, in a text form, and creates a pandas
-    dataframe that can be easily subset
+    """A function that converts a metar from text to a Pandas DataFrame
+
+    Takes in a metar string, in a text form, and creates a pandas
+    dataframe including the essential information (not including the remarks)
+
+    The parser follows the WMO format, allowing for missing data and assigning
+    nan values where neccessary. The WMO code is also provided for current weather,
+    which can be utilized when plotting.
 
     Input:
     metar_text = string with the METAR data
-    create_df = True or False
-        True creates a Pandas dataframe as the Output
-        False creates a list of lists containing the values in the following order:
-
-        [station_id, latitude, longitude, elevation, date_time, day, time_utc,
-        wind_direction, wind_speed, wxsymbol1, wxsymbol2, skycover1, skylevel1,
-        skycover2, skylevel2, skycover3, skylevel3, skycover4, skylevel4,
-        cloudcover, temperature, dewpoint, altimeter_value, sea_level_pressure]
+    year = integer, year in which observation was taken, default is the current year
+    month = integer, month in which observation was taken, default is the current month
 
     Output:
-    Pandas Dataframe that can be subset easily
+    Pandas Dataframe with the following columns:
+    'station_id': Station Identifier (ex. KLOT)
+    'latitude': Latitude of the observation, measured in degrees
+    'longitude': Longitude of the observation, measured in degrees
+    'elevation': Elevation of the observation above sea level, measured in meters
+    'date_time': Date and time of the observation, datetime object
+    'wind_direction': Direction the wind is coming from, measured in degrees
+    'wind_spd': Wind speed, measured in knots
+    'current_wx1': Current weather (1 of 3)
+    'current_wx2': Current weather (2 of 3)
+    'current_wx3': Current weather (3 of 3)
+    'skyc1': Sky cover (ex. FEW)
+    'skylev1': Height of sky cover 1, measured in feet
+    'skyc2': Sky cover (ex. OVC)
+    'skylev2': Height of sky cover 2, measured in feet
+    'skyc3': Sky cover (ex. FEW)
+    'skylev3': Height of sky cover 3, measured in feet
+    'skyc4': Sky cover (ex. CLR)
+    'skylev4:': Height of sky cover 4, measured in feet
+    'cloudcover': Cloud coverage measured in oktas, taken from maximum of sky cover values
+    'temperature': Temperature, measured in degrees Celsius
+    'dewpoint': Dewpoint, measured in degrees Celsius
+    'altimeter': Altimeter value, measured in inches of mercury, float
+    'current_wx1_symbol': Current weather symbol (1 of 3), integer
+    'current_wx2_symbol': Current weather symbol (2 of 3), integer
+    'current_wx3_symbol': Current weather symbol (3 of 3), integer
+    'sea_level_pressure': Sea level pressure, derived from temperature, elevation
+    and altimeter value, float
+
+    Notes
+    ------
+    Utilized the canopy library to compile a Python parser, following WMO Handbook
+
     """
 
-    #Create a dictionary with all the station metadata
+    # Create a dictionary with all the station metadata
     station_metadata = surface_station_data.station_dict()
 
     # Decode the data using the parser (built using Canopy)
     tree = metar_parse.parse(metar_text)
 
-    #Station ID, Latitude, Longitude, and Elevation
+    # Station ID, Latitude, Longitude, and Elevation
     station_id = [tree.siteid.text.strip()]
-    #Extract the latitude and longitude values from 'master' dictionary
+
+    # Extract the latitude and longitude values from 'master' dictionary
     try:
         lat = station_metadata[tree.siteid.text.strip()].latitude
         lon = station_metadata[tree.siteid.text.strip()].longitude
@@ -142,7 +178,7 @@ def parse_metar_to_pandas(metar_text, year = datetime.now().year, month = dateti
             skyc4 = np.nan
             skylev4 = np.nan
 
-
+    # Set the cloud cover variable (measured in oktas)
     if ('OVC' or 'VV') in tree.skyc.text:
         cloudcover = 8
     elif 'BKN' in tree.skyc.text:
@@ -186,6 +222,7 @@ def parse_metar_to_pandas(metar_text, year = datetime.now().year, month = dateti
         else:
             altim = ((int(tree.altim.text.strip()[1:5])*units.hPa).to('inHg').magnitude)
 
+    # Dictionary for units
     col_units = {
     'station_id': None,
     'lat': 'degrees',
@@ -216,6 +253,7 @@ def parse_metar_to_pandas(metar_text, year = datetime.now().year, month = dateti
     'current_wx3_symbol': None,
     'slp': 'hectopascals'}
 
+    # Build the dataframe
     df = pd.DataFrame({'station_id':station_id, 'latitude':lat,
     'longitude':lon, 'elevation':elev, 'date_time':date_time,
     'wind_direction':wind_dir, 'wind_speed':wind_spd,'current_wx1':current_wx1,
@@ -227,6 +265,7 @@ def parse_metar_to_pandas(metar_text, year = datetime.now().year, month = dateti
     'current_wx2_symbol':current_wx2_symbol, 'current_wx3_symbol':current_wx3_symbol},
     index = station_id)
 
+    # Convert to sea level pressure using calculation in metpy.calc
     try:
         df['sea_level_pressure'] = float(format(altimeter_to_slp(
         altim * units('inHg'),
@@ -235,35 +274,65 @@ def parse_metar_to_pandas(metar_text, year = datetime.now().year, month = dateti
     except:
         df['sea_level_pressure'] = [np.nan]
 
+    # Round the altimeter and sea-level pressure values
     df['altimeter'] = df.altimeter.round(2)
     df['sea_level_pressure'] = df.sea_level_pressure.round(2)
 
+    # Set the index for the dataframe to the station id
     df.index = df.station_id
 
-    #Set the units for the dataframe
+    # Set the units for the dataframe
     df.units = col_units
+
+    # Add the array for units to the dataframe
     pandas_dataframe_to_unit_arrays(df)
 
     return df
 
-def parse_metar_to_named_tuple(metar_text, station_dict, year = datetime.now().year, month = datetime.now().month):
-    """Takes in a metar file, in a text form, and creates a pandas
-    dataframe that can be easily subset
+def parse_metar_to_named_tuple(metar_text, station_dict, year = datetime.now().year, \
+month = datetime.now().month):
+    """Takes a metar in text form and station dictionary, and outputs Pandas dataframe
 
     Input:
     metar_text = string with the METAR data
-    create_df = True or False
-        True creates a Pandas dataframe as the Output
-        False creates a list of lists containing the values in the following order:
-
-        [station_id, latitude, longitude, elevation, date_time, day, time_utc,
-        wind_direction, wind_speed, wxsymbol1, wxsymbol2, skycover1, skylevel1,
-        skycover2, skylevel2, skycover3, skylevel3, skycover4, skylevel4,
-        cloudcover, temperature, dewpoint, altimeter_value, sea_level_pressure]
+    station_dict = Dictionary with station identifiers and station metadata
 
     Output:
-    Pandas Dataframe that can be subset easily
+    Pandas Dataframe with the following columns:
+    'station_id': Station Identifier (ex. KLOT)
+    'latitude': Latitude of the observation, measured in degrees
+    'longitude': Longitude of the observation, measured in degrees
+    'elevation': Elevation of the observation above sea level, measured in meters
+    'date_time': Date and time of the observation, datetime object
+    'wind_direction': Direction the wind is coming from, measured in degrees
+    'wind_spd': Wind speed, measured in knots
+    'current_wx1': Current weather (1 of 3)
+    'current_wx2': Current weather (2 of 3)
+    'current_wx3': Current weather (3 of 3)
+    'skyc1': Sky cover (ex. FEW)
+    'skylev1': Height of sky cover 1, measured in feet
+    'skyc2': Sky cover (ex. OVC)
+    'skylev2': Height of sky cover 2, measured in feet
+    'skyc3': Sky cover (ex. FEW)
+    'skylev3': Height of sky cover 3, measured in feet
+    'skyc4': Sky cover (ex. CLR)
+    'skylev4:': Height of sky cover 4, measured in feet
+    'cloudcover': Cloud coverage measured in oktas, taken from maximum of sky cover values
+    'temperature': Temperature, measured in degrees Celsius
+    'dewpoint': Dewpoint, measured in degrees Celsius
+    'altimeter': Altimeter value, measured in inches of mercury, float
+    'current_wx1_symbol': Current weather symbol (1 of 3), integer
+    'current_wx2_symbol': Current weather symbol (2 of 3), integer
+    'current_wx3_symbol': Current weather symbol (3 of 3), integer
+    'sea_level_pressure': Sea level pressure, derived from temperature, elevation
+    and altimeter value, float
+
+    Notes
+    ------
+    Utilized the canopy library to compile a Python parser, following WMO Handbook
+
     """
+
     from datetime import datetime
     station_metadata = station_dict
 
@@ -435,18 +504,46 @@ def parse_metar_to_named_tuple(metar_text, station_dict, year = datetime.now().y
 
 
 def text_file_parse(file, year = datetime.now().year, month = datetime.now().month):
-    """ Takes a text file taken from the NOAA PORT system containing
-    METAR data and creates a dataframe with all the observations
+    """Parses a text file containing mulitple METARs
 
-    parameters
-    ----------
-    file: string
-          The path to the file containing the data. It should be extracted
-          from NOAA PORT and NOT be in binary format
+    Input:
+    file = text file containing data, make sure it is not in an encoded format
+    year = year = integer, year in which observation was taken, default is the current year
+    month = integer, month in which observation was taken, default is the current month
 
-    return
-    ---------
-    df : pandas dataframe wtih the station id as the index
+    Output:
+    Pandas Dataframe with the following columns:
+    'station_id': Station Identifier (ex. KLOT)
+    'latitude': Latitude of the observation, measured in degrees
+    'longitude': Longitude of the observation, measured in degrees
+    'elevation': Elevation of the observation above sea level, measured in meters
+    'date_time': Date and time of the observation, datetime object
+    'wind_direction': Direction the wind is coming from, measured in degrees
+    'wind_spd': Wind speed, measured in knots
+    'current_wx1': Current weather (1 of 3)
+    'current_wx2': Current weather (2 of 3)
+    'current_wx3': Current weather (3 of 3)
+    'skyc1': Sky cover (ex. FEW)
+    'skylev1': Height of sky cover 1, measured in feet
+    'skyc2': Sky cover (ex. OVC)
+    'skylev2': Height of sky cover 2, measured in feet
+    'skyc3': Sky cover (ex. FEW)
+    'skylev3': Height of sky cover 3, measured in feet
+    'skyc4': Sky cover (ex. CLR)
+    'skylev4:': Height of sky cover 4, measured in feet
+    'cloudcover': Cloud coverage measured in oktas, taken from maximum of sky cover values
+    'temperature': Temperature, measured in degrees Celsius
+    'dewpoint': Dewpoint, measured in degrees Celsius
+    'altimeter': Altimeter value, measured in inches of mercury, float
+    'current_wx1_symbol': Current weather symbol (1 of 3), integer
+    'current_wx2_symbol': Current weather symbol (2 of 3), integer
+    'current_wx3_symbol': Current weather symbol (3 of 3), integer
+    'sea_level_pressure': Sea level pressure, derived from temperature, elevation
+    and altimeter value, float
+
+    Notes
+    ------
+    Utilized the canopy library to compile a Python parser, following WMO Handbook
 
     """
 
