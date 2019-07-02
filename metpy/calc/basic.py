@@ -779,7 +779,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
     r"""Convert the altimeter measurement to station pressure.
 
     This function is useful for working with METARs since most will provide
-    altimeter values, but not sea level pressure or station pressure.
+    altimeter values, but not sea-level pressure or station pressure.
     The following definitions of altimeter setting and station pressure
     are taken from the Federal Meteorology Handbook (2013) p. 11-1.
     Altimeter setting is the pressure value to which an aircraft altimeter scale
@@ -787,7 +787,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
     on the ground at the location for which the value is determined. It assumes a
     standard atmosphere. Station pressure is the atmospheric pressure at the
     designated station elevation Finding the station pressure can be helpful for
-    calculating sea level pressure or other parameters.
+    calculating sea-level pressure or other parameters.
 
     Parameters
     ----------
@@ -800,7 +800,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
     Returns
     --------
     station_pressure: `pint.Quantity`
-            The station pressure in hPa, which can be used to calculate sea level pressure
+            The station pressure in hPa, which can be used to calculate sea-level pressure
 
     See Also
     ---------
@@ -820,7 +820,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
 
     Where
 
-    p_{0} = standard sea level pressure = 1013.25 mb
+    p_{0} = standard sea-level pressure = 1013.25 mb
 
     p_{1} = p_{mb} - 0.3 when p_{0} = 1013.25 mb
 
@@ -862,9 +862,9 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     r"""Convert the altimeter setting to sea level pressure.
 
     This function is useful for working with METARs since most will provide
-    altimeter values, but not sea level pressure, which is often plotted
+    altimeter values, but not sea-level pressure, which is often plotted
     on surface maps. The following definitions of altimeter setting, station pressure, and
-    sea level pressure are taken from the Federal Meteorology Handbook (2013)
+    sea-level pressure are taken from the Federal Meteorology Handbook (2013)
     p.11-1. Altimeter setting is the pressure value to which an aircraft altimeter scale
     is set so that it will indicate the altitude above mean sea level of an aircraft
     on the ground at the location for which the value is determined. It assumes a standard
@@ -874,7 +874,7 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     below the station and that the properties of the atmosphere are related to conditions
     observed at the station. This value is recorded by some surface observation stations,
     but not all. If the value is recorded, it can be found in the remarks section.Finding
-    the sea level pressure is helpful for plotting purposes and different calculations.
+    the sea-level pressure is helpful for plotting purposes and different calculations.
 
     Parameters
     ----------
@@ -889,7 +889,7 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     Returns
     -------
     pressure_at_sea_level: 'pint.Quantity'
-            The sea level pressur in hPa, which is often times plotted on surface maps
+            The sea-level pressure in hPa, which is often times plotted on surface maps
             and makes pressure values easier to compare between different stations
 
     See Also
@@ -910,7 +910,7 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
 
     Then by subsituting Delta Z for Z_{g} in Equation 2.31, we get
 
-    .. math:: p_{sea level} = p_{station} exp\left(\frac{\Delta z}{H}\right)
+    .. math:: p_{sea_level} = p_{station} exp\left(\frac{\Delta z}{H}\right)
 
     where Delta_Z is the elevation in meters and H = \frac{R_{d}T}{g}
 
