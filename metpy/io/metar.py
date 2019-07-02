@@ -43,37 +43,29 @@ def parse_metar_to_pandas(metar_text, year = datetime.now().year, month = dateti
     tree = metar_parse.parse(metar_text)
 
     #Station ID, Latitude, Longitude, and Elevation
-    if tree.siteid.text == '':
-        station_id = [np.nan]
-    else:
-        station_id = [tree.siteid.text.strip()]
-        #Extract the latitude and longitude values from 'master' dictionary
-        try:
-            lat = station_metadata[tree.siteid.text.strip()].latitude
-            lon = station_metadata[tree.siteid.text.strip()].longitude
-            elev = station_metadata[tree.siteid.text.strip()].altitude
-        except:
-            lat = np.nan
-            lon = np.nan
-            elev = np.nan
+    station_id = [tree.siteid.text.strip()]
+    #Extract the latitude and longitude values from 'master' dictionary
+    try:
+        lat = station_metadata[tree.siteid.text.strip()].latitude
+        lon = station_metadata[tree.siteid.text.strip()].longitude
+        elev = station_metadata[tree.siteid.text.strip()].altitude
+    except:
+        lat = np.nan
+        lon = np.nan
+        elev = np.nan
 
     # Set the datetime, day, and time_utc
-    if tree.datetime.text == '':
-        datetime = np.nan
-        day = np.nan
-        time_utc = np.nan
-    else:
+    try:
         day_time_utc = tree.datetime.text[:-1].strip()
         day = int(day_time_utc[0:2])
         hour = int(day_time_utc[2:4])
         minute = int(day_time_utc[4:7])
         date_time = datetime(year, month, day, hour, minute)
+    except:
+        date_time = np.nan
 
     # Set the wind variables
-    if tree.wind.text == '':
-        wind_dir = np.nan
-        wind_spd = np.nan
-    elif (tree.wind.text == '/////KT') or (tree.wind.text ==' /////KT') or (tree.wind.text == 'KT'):
+    if ('/' in tree.wind.text) or (tree.wind.text == 'KT') or (tree.wind.text == ''):
         wind_dir = np.nan
         wind_spd = np.nan
     else:
@@ -112,17 +104,7 @@ def parse_metar_to_pandas(metar_text, year = datetime.now().year, month = dateti
             current_wx3_symbol = np.nan
 
     # Set the sky conditions
-    if tree.skyc.text == '':
-        skyc1 = np.nan
-        skylev1 = np.nan
-        skyc2 = np.nan
-        skylev2 = np.nan
-        skyc3 = np.nan
-        skylev3 = np.nan
-        skyc4 = np.nan
-        skylev4 = np.nan
-
-    elif tree.skyc.text[1:3] == 'VV':
+    if tree.skyc.text[1:3] == 'VV':
         skyc1 = 'VV'
         skylev1 = tree.skyc.text.strip()[2:]
         skyc2 = np.nan
@@ -304,16 +286,11 @@ def parse_metar_to_named_tuple(metar_text, station_dict, year = datetime.now().y
             elev = np.nan
 
     # Set the datetime, day, and time_utc
-    if tree.datetime.text == '':
-        datetime = np.nan
-        day = np.nan
-        time_utc = np.nan
-    else:
-        day_time_utc = tree.datetime.text[:-1].strip()
-        day = int(day_time_utc[0:2])
-        hour = int(day_time_utc[2:4])
-        minute = int(day_time_utc[4:7])
-        date_time = datetime(year, month, day, hour, minute)
+    day_time_utc = tree.datetime.text[:-1].strip()
+    day = int(day_time_utc[0:2])
+    hour = int(day_time_utc[2:4])
+    minute = int(day_time_utc[4:7])
+    date_time = datetime(year, month, day, hour, minute)
 
     # Set the wind variables
     if ('/' in tree.wind.text) or (tree.wind.text == 'KT'):
