@@ -6,7 +6,6 @@
 import os
 
 import numpy as np
-from numpy import iterable
 import pooch
 
 from . import __version__
@@ -100,6 +99,14 @@ def broadcast_indices(x, minv, ndim, axis):
             dim_inds = np.arange(x.shape[dim])
             ret.append(dim_inds[tuple(broadcast_slice)])
     return tuple(ret)
+
+
+def iterable(value):
+    """Determine if value can be iterated over."""
+    # Special case for pint Quantities
+    if hasattr(value, 'magnitude'):
+        value = value.magnitude
+    return np.iterable(value)
 
 
 __all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'is_string_like', 'iterable')

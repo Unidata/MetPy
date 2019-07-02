@@ -8,7 +8,7 @@ dependencies:
   - numpy
   - scipy
   - matplotlib
-  - pint!=0.9
+  - pint
   - netcdf4
   - xarray
   - pandas
