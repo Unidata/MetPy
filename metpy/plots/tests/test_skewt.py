@@ -149,6 +149,20 @@ def test_skewt_shade_area_kwargs(test_profile):
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='mpl20')
+def test_skewt_wide_aspect_ratio(test_profile):
+    """Test plotting a skewT with a wide aspect ratio."""
+    p, t, tp = test_profile
+
+    fig = plt.figure(figsize=(12.5, 3))
+    skew = SkewT(fig)
+    skew.plot(p, t, 'r')
+    skew.plot(p, tp, 'k')
+    skew.ax.set_xlim(-30, 50)
+    skew.ax.set_ylim(1050, 700)
+    return fig
+
+
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_api():
     """Basic test of Hodograph API."""
