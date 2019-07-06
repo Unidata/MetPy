@@ -15,8 +15,7 @@ The MetPy function `metpy.interpolate.cross_section` can obtain a cross-sectiona
 gridded data.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     import cartopy.crs as ccrs
@@ -44,8 +43,7 @@ We use MetPy's CF parsing to get the data ready for use, and squeeze down the si
 dimension.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     data = xr.open_dataset(get_test_data('narr_example.nc', False))
@@ -79,13 +77,28 @@ dimension.
         v_wind               (isobaric, y, x) float32 ...
         Geopotential_height  (isobaric, y, x) float32 ...
         Specific_humidity    (isobaric, y, x) float32 ...
+    Attributes:
+        Conventions:              CF-1.0
+        Originating_center:       US National Weather Service - NCEP(WMC) (7)
+        Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
+        Generating_Model:         North American Regional Reanalysis (NARR)
+        Product_Type:             Forecast/Uninitialized Analysis/Image Product
+        title:                    US National Weather Service - NCEP(WMC) North A...
+        institution:              Center US National Weather Service - NCEP(WMC) ...
+        source:                   Forecast/Uninitialized Analysis/Image Product
+        history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
+        CF:feature_type:          GRID
+        file_format:              GRIB-1
+        location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
+        _CoordinateModelRunDate:  1987-04-04T18:00:00Z
+        History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
+
 
 
 Define start and end points:
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     start = (37.0, -105.0)
@@ -100,8 +113,7 @@ Define start and end points:
 Get the cross section, and convert lat/lon to supplementary coordinates:
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     cross = cross_section(data, start, end)
@@ -118,6 +130,8 @@ Get the cross section, and convert lat/lon to supplementary coordinates:
 
  .. code-block:: none
 
+    /home/travis/build/Unidata/MetPy/examples/cross_section.py:46: FutureWarning: The inplace argument has been deprecated and will be removed in a future version of xarray.
+      cross.set_coords(('lat', 'lon'), True)
     <xarray.Dataset>
     Dimensions:              (index: 100, isobaric: 29)
     Coordinates:
@@ -136,14 +150,29 @@ Get the cross section, and convert lat/lon to supplementary coordinates:
         v_wind               (isobaric, index) float64 8.473 5.723 ... -1.082
         Geopotential_height  (isobaric, index) float64 118.6 127.4 ... 1.636e+04
         Specific_humidity    (isobaric, index) float64 0.006367 ... 4.223e-06
+    Attributes:
+        Conventions:              CF-1.0
+        Originating_center:       US National Weather Service - NCEP(WMC) (7)
+        Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
+        Generating_Model:         North American Regional Reanalysis (NARR)
+        Product_Type:             Forecast/Uninitialized Analysis/Image Product
+        title:                    US National Weather Service - NCEP(WMC) North A...
+        institution:              Center US National Weather Service - NCEP(WMC) ...
+        source:                   Forecast/Uninitialized Analysis/Image Product
+        history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
+        CF:feature_type:          GRID
+        file_format:              GRIB-1
+        location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
+        _CoordinateModelRunDate:  1987-04-04T18:00:00Z
+        History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
+
 
 
 For this example, we will be plotting potential temperature, relative humidity, and
 tangential/normal winds. And so, we need to calculate those, and add them to the dataset:
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     temperature, pressure, specific_humidity = xr.broadcast(cross['Temperature'],
@@ -202,13 +231,28 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
         Relative_humidity      (isobaric, index) float64 0.6114 0.6195 ... 0.04498
         t_wind                 (isobaric, index) float64 -2.027 3.07 ... 45.18 43.27
         n_wind                 (isobaric, index) float64 17.18 10.73 ... -15.83
+    Attributes:
+        Conventions:              CF-1.0
+        Originating_center:       US National Weather Service - NCEP(WMC) (7)
+        Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
+        Generating_Model:         North American Regional Reanalysis (NARR)
+        Product_Type:             Forecast/Uninitialized Analysis/Image Product
+        title:                    US National Weather Service - NCEP(WMC) North A...
+        institution:              Center US National Weather Service - NCEP(WMC) ...
+        source:                   Forecast/Uninitialized Analysis/Image Product
+        history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
+        CF:feature_type:          GRID
+        file_format:              GRIB-1
+        location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
+        _CoordinateModelRunDate:  1987-04-04T18:00:00Z
+        History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
+
 
 
 Now, we can make the plot.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # Define the figure object and primary axes
@@ -273,13 +317,21 @@ Now, we can make the plot.
 
 
 
+
 .. image:: /examples/images/sphx_glr_cross_section_001.png
     :class: sphx-glr-single-img
 
 
 
 
-**Total running time of the script:** ( 0 minutes  0.568 seconds)
+Note: The x-axis can display any variable that is the same length as the
+plotted variables, including latitude. Additionally, arguments can be provided
+to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL output.
+
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  4.004 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:
@@ -307,4 +359,4 @@ Now, we can make the plot.
 
  .. rst-class:: sphx-glr-signature
 
-    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

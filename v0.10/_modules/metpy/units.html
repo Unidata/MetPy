@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -209,6 +210,7 @@
 
 <span class="kn">import</span> <span class="nn">functools</span>
 <span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pint</span>
@@ -236,6 +238,10 @@
     <span class="n">units</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;gpm&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">_units</span><span class="p">[</span><span class="s1">&#39;meter&#39;</span><span class="p">]</span>
 <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
     <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Failed to add gpm alias to meters.&#39;</span><span class="p">)</span>
+
+<span class="c1"># Silence UnitStrippedWarning</span>
+<span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">pint</span><span class="p">,</span> <span class="s1">&#39;UnitStrippedWarning&#39;</span><span class="p">):</span>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="n">pint</span><span class="o">.</span><span class="n">UnitStrippedWarning</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="pandas_dataframe_to_unit_arrays"><a class="viewcode-back" href="../../api/generated/metpy.units.pandas_dataframe_to_unit_arrays.html#metpy.units.pandas_dataframe_to_unit_arrays">[docs]</a><span class="k">def</span> <span class="nf">pandas_dataframe_to_unit_arrays</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column_units</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -508,33 +514,33 @@
 <span class="k">try</span><span class="p">:</span>
     <span class="c1"># Try to enable pint&#39;s built-in support</span>
     <span class="n">units</span><span class="o">.</span><span class="n">setup_matplotlib</span><span class="p">()</span>
-<span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">):</span>  <span class="c1"># Pint&#39;s not available, try to enable our own</span>
+<span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">,</span> <span class="ne">ImportError</span><span class="p">):</span>  <span class="c1"># Pint&#39;s not available, try our own</span>
     <span class="kn">import</span> <span class="nn">matplotlib.units</span> <span class="k">as</span> <span class="nn">munits</span>
 
     <span class="c1"># Inheriting from object fixes the fact that matplotlib 1.4 doesn&#39;t</span>
     <span class="c1"># TODO: Remove object when we drop support for matplotlib 1.4</span>
-<div class="viewcode-block" id="PintAxisInfo"><a class="viewcode-back" href="../../api/generated/metpy.units.PintAxisInfo.html#metpy.units.PintAxisInfo">[docs]</a>    <span class="k">class</span> <span class="nc">PintAxisInfo</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">AxisInfo</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">PintAxisInfo</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">AxisInfo</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Support default axis and tick labeling and default limits.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PintAxisInfo.__init__"><a class="viewcode-back" href="../../api/generated/metpy.units.PintAxisInfo.html#metpy.units.PintAxisInfo.__init__">[docs]</a>        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Set the default label to the pretty-print of the unit.&quot;&quot;&quot;</span>
-            <span class="nb">super</span><span class="p">(</span><span class="n">PintAxisInfo</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;{:P}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">units</span><span class="p">))</span></div></div>
+            <span class="nb">super</span><span class="p">(</span><span class="n">PintAxisInfo</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;{:P}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">units</span><span class="p">))</span>
 
     <span class="c1"># TODO: Remove object when we drop support for matplotlib 1.4</span>
-<div class="viewcode-block" id="PintConverter"><a class="viewcode-back" href="../../api/generated/metpy.units.PintConverter.html#metpy.units.PintConverter">[docs]</a>    <span class="k">class</span> <span class="nc">PintConverter</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">ConversionInterface</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">PintConverter</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">ConversionInterface</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Implement support for pint within matplotlib&#39;s unit conversion framework.&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="PintConverter.__init__"><a class="viewcode-back" href="../../api/generated/metpy.units.PintConverter.html#metpy.units.PintConverter.__init__">[docs]</a>        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">registry</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">registry</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Initialize converter for pint units.&quot;&quot;&quot;</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">PintConverter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_reg</span> <span class="o">=</span> <span class="n">registry</span></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_reg</span> <span class="o">=</span> <span class="n">registry</span>
 
-<div class="viewcode-block" id="PintConverter.convert"><a class="viewcode-back" href="../../api/generated/metpy.units.PintConverter.html#metpy.units.PintConverter.convert">[docs]</a>        <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
+        <span class="k">def</span> <span class="nf">convert</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Convert :`Quantity` instances for matplotlib to use.&quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
                 <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_convert_value</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">value</span><span class="p">]</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span></div>
+                <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_value</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
 
         <span class="k">def</span> <span class="nf">_convert_value</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Handle converting using attached unit or falling back to axis units.&quot;&quot;&quot;</span>
@@ -543,18 +549,18 @@
             <span class="k">else</span><span class="p">:</span>
                 <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reg</span><span class="o">.</span><span class="n">Quantity</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">axis</span><span class="o">.</span><span class="n">get_units</span><span class="p">())</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span>
 
-<div class="viewcode-block" id="PintConverter.axisinfo"><a class="viewcode-back" href="../../api/generated/metpy.units.PintConverter.html#metpy.units.PintConverter.axisinfo">[docs]</a>        <span class="nd">@staticmethod</span>
+        <span class="nd">@staticmethod</span>
         <span class="k">def</span> <span class="nf">axisinfo</span><span class="p">(</span><span class="n">unit</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Return axis information for this particular unit.&quot;&quot;&quot;</span>
-            <span class="k">return</span> <span class="n">PintAxisInfo</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span></div>
+            <span class="k">return</span> <span class="n">PintAxisInfo</span><span class="p">(</span><span class="n">unit</span><span class="p">)</span>
 
-<div class="viewcode-block" id="PintConverter.default_units"><a class="viewcode-back" href="../../api/generated/metpy.units.PintConverter.html#metpy.units.PintConverter.default_units">[docs]</a>        <span class="nd">@staticmethod</span>
+        <span class="nd">@staticmethod</span>
         <span class="k">def</span> <span class="nf">default_units</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">axis</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Get the default unit to use for the given combination of unit and axis.&quot;&quot;&quot;</span>
             <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="p">(</span><span class="nb">tuple</span><span class="p">,</span> <span class="nb">list</span><span class="p">)):</span>
                 <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span></div></div>
+                <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">,</span> <span class="s1">&#39;dimensionless&#39;</span><span class="p">)</span>
 
     <span class="c1"># Register the class</span>
     <span class="n">munits</span><span class="o">.</span><span class="n">registry</span><span class="p">[</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">]</span> <span class="o">=</span> <span class="n">PintConverter</span><span class="p">(</span><span class="n">units</span><span class="p">)</span>
@@ -575,8 +581,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -613,7 +619,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

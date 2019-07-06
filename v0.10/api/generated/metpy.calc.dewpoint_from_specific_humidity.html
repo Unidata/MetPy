@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a><ul class="current">
@@ -173,6 +172,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -253,27 +253,23 @@
 <h1>dewpoint_from_specific_humidity<a class="headerlink" href="#dewpoint-from-specific-humidity" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.dewpoint_from_specific_humidity">
-<code class="descclassname">metpy.calc.</code><code class="descname">dewpoint_from_specific_humidity</code><span class="sig-paren">(</span><em>specific_humidity</em>, <em>temperature</em>, <em>pressure</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#dewpoint_from_specific_humidity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.dewpoint_from_specific_humidity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">dewpoint_from_specific_humidity</code><span class="sig-paren">(</span><em class="sig-param">specific_humidity</em>, <em class="sig-param">temperature</em>, <em class="sig-param">pressure</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#dewpoint_from_specific_humidity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.dewpoint_from_specific_humidity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the dewpoint from specific humidity, temperature, and pressure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>specific_humidity</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Specific humidity of air</li>
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</li>
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>specific_humidity</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Specific humidity of air</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</p></li>
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – Dewpoint temperature</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – Dewpoint temperature</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio()</span></code></a>, <a class="reference internal" href="metpy.calc.dewpoint_rh.html#metpy.calc.dewpoint_rh" title="metpy.calc.dewpoint_rh"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint_rh()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio()</span></code></a>, <a class="reference internal" href="metpy.calc.dewpoint_rh.html#metpy.calc.dewpoint_rh" title="metpy.calc.dewpoint_rh"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint_rh()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -301,8 +297,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -339,7 +335,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

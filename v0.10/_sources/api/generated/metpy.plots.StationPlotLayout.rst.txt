@@ -16,6 +16,7 @@ StationPlotLayout
 
    .. autosummary::
    
+      ~StationPlotLayout.__init__
       ~StationPlotLayout.add_barb
       ~StationPlotLayout.add_symbol
       ~StationPlotLayout.add_text
@@ -47,6 +48,7 @@ StationPlotLayout
    .. rubric:: Methods Documentation
 
    
+   .. automethod:: __init__
    .. automethod:: add_barb
    .. automethod:: add_symbol
    .. automethod:: add_text

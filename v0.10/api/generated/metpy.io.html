@@ -132,7 +132,6 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.Level3File.html">Level3File</a></li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
@@ -140,6 +139,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -221,32 +221,32 @@
 this allows reading files that are already in memory (using <a class="reference external" href="https://docs.python.org/3/library/io.html#io.StringIO" title="(in Python v3.7)"><code class="docutils literal notranslate"><span class="pre">io.StringIO</span></code></a>)
 or remote files (using <a class="reference external" href="https://docs.python.org/3/library/urllib.request.html#urllib.request.urlopen" title="(in Python v3.7)"><code class="xref py py-func docutils literal notranslate"><span class="pre">urlopen()</span></code></a>).</p>
 <p class="rubric">Functions</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.io.is_precip_mode.html#metpy.io.is_precip_mode" title="metpy.io.is_precip_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_precip_mode</span></code></a>(vcp_num)</td>
-<td>Determine if the NEXRAD radar is operating in precipitation mode.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.io.is_precip_mode.html#metpy.io.is_precip_mode" title="metpy.io.is_precip_mode"><code class="xref py py-obj docutils literal notranslate"><span class="pre">is_precip_mode</span></code></a>(vcp_num)</p></td>
+<td><p>Determine if the NEXRAD radar is operating in precipitation mode.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Classes</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.io.GiniFile.html#metpy.io.GiniFile" title="metpy.io.GiniFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GiniFile</span></code></a>(filename)</td>
-<td>A class that handles reading the GINI format satellite images from the NWS.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.io.GiniFile.html#metpy.io.GiniFile" title="metpy.io.GiniFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GiniFile</span></code></a>(filename)</p></td>
+<td><p>A class that handles reading the GINI format satellite images from the NWS.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.io.Level2File.html#metpy.io.Level2File" title="metpy.io.Level2File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level2File</span></code></a>(filename)</td>
-<td>Handle reading the NEXRAD Level 2 data and its various messages.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.io.Level2File.html#metpy.io.Level2File" title="metpy.io.Level2File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level2File</span></code></a>(filename)</p></td>
+<td><p>Handle reading the NEXRAD Level 2 data and its various messages.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.io.Level3File.html#metpy.io.Level3File" title="metpy.io.Level3File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level3File</span></code></a>(filename)</td>
-<td>Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.io.Level3File.html#metpy.io.Level3File" title="metpy.io.Level3File"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Level3File</span></code></a>(filename)</p></td>
+<td><p>Handle reading the wide array of NEXRAD Level 3 (NIDS) product files.</p></td>
 </tr>
 </tbody>
 </table>
@@ -274,8 +274,8 @@ or remote files (using <a class="reference external" href="https://docs.python.o
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -312,7 +312,7 @@ or remote files (using <a class="reference external" href="https://docs.python.o
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

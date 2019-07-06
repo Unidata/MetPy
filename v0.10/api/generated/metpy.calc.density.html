@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a></li>
@@ -162,6 +161,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -242,29 +242,25 @@
 <h1>density<a class="headerlink" href="#density" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.density">
-<code class="descclassname">metpy.calc.</code><code class="descname">density</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>mixing</em>, <em>molecular_weight_ratio=&lt;Quantity(0.6219800858985514</em>, <em>'dimensionless')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.density" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">density</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">mixing</em>, <em class="sig-param">molecular_weight_ratio=&lt;Quantity(0.6219800858985514</em>, <em class="sig-param">'dimensionless')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.density" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate density.</p>
 <p>This calculation must be given an air parcel’s pressure, temperature, and mixing ratio.
-The implementation uses the formula outlined in <a class="reference internal" href="../../references.html#hobbs2006" id="id1">[Hobbs2006]</a> pg.67.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The temperature</li>
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</li>
-<li><strong>mixing</strong> (<em class="xref py py-obj">pint.Quantity</em>) – dimensionless mass mixing ratio</li>
-<li><strong>molecular_weight_ratio</strong> (<em class="xref py py-obj">pint.Quantity</em> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
+The implementation uses the formula outlined in <a class="reference internal" href="../../references.html#hobbs2006" id="id1"><span>[Hobbs2006]</span></a> pg.67.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The temperature</p></li>
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</p></li>
+<li><p><strong>mixing</strong> (<em class="xref py py-obj">pint.Quantity</em>) – dimensionless mass mixing ratio</p></li>
+<li><p><strong>molecular_weight_ratio</strong> (<em class="xref py py-obj">pint.Quantity</em> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
 for air. Defaults to the ratio for water vapor to dry air.
-(<span class="math notranslate nohighlight">\(\epsilon\approx0.622\)</span>).</li>
+(<span class="math notranslate nohighlight">\(\epsilon\approx0.622\)</span>).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The corresponding density of the parcel</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The corresponding density of the parcel</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <div class="math notranslate nohighlight">
 \[\rho = \frac{p}{R_dT_v}\]</div>
@@ -294,8 +290,8 @@ for air. Defaults to the ratio for water vapor to dry air.
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -332,7 +328,7 @@ for air. Defaults to the ratio for water vapor to dry air.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

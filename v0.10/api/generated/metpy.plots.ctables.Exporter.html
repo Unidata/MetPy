@@ -126,12 +126,13 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.convert_gempak_table.html">convert_gempak_table</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.resource_listdir.html">resource_listdir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.resource_stream.html">resource_stream</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.ColortableRegistry.html">ColortableRegistry</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Exporter</a></li>
 </ul>
@@ -140,6 +141,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -220,7 +222,7 @@
 <h1>Exporter<a class="headerlink" href="#exporter" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="metpy.plots.ctables.Exporter">
-<em class="property">class </em><code class="descclassname">metpy.plots.ctables.</code><code class="descname">Exporter</code><span class="sig-paren">(</span><em>globls</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/package_tools.html#Exporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.Exporter" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.ctables.</code><code class="sig-name descname">Exporter</code><span class="sig-paren">(</span><em class="sig-param">globls</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/package_tools.html#Exporter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.Exporter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Manages exporting of symbols from the module.</p>
 <p>Grabs a reference to <em class="xref py py-obj">globals()</em> for a module and provides a decorator to add
 functions and classes to <code class="xref py py-obj docutils literal notranslate"><span class="pre">__all__</span></code> rather than requiring a separately maintained list.
@@ -228,30 +230,30 @@ Also provides a context manager to do this for instances by adding all instances
 within a block to <code class="xref py py-obj docutils literal notranslate"><span class="pre">__all__</span></code>.</p>
 <p>Initialize the Exporter.</p>
 <p class="rubric">Methods Summary</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ctables.Exporter.__init__" title="metpy.plots.ctables.Exporter.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(globls)</td>
-<td>Initialize the Exporter.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.Exporter.__init__" title="metpy.plots.ctables.Exporter.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(globls)</p></td>
+<td><p>Initialize the Exporter.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ctables.Exporter.export" title="metpy.plots.ctables.Exporter.export"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export</span></code></a>(defn)</td>
-<td>Declare a function or class as exported.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.Exporter.export" title="metpy.plots.ctables.Exporter.export"><code class="xref py py-obj docutils literal notranslate"><span class="pre">export</span></code></a>(defn)</p></td>
+<td><p>Declare a function or class as exported.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods Documentation</p>
 <dl class="method">
 <dt id="metpy.plots.ctables.Exporter.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>globls</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/package_tools.html#Exporter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.Exporter.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">globls</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/package_tools.html#Exporter.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.Exporter.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize the Exporter.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.Exporter.export">
-<code class="descname">export</code><span class="sig-paren">(</span><em>defn</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/package_tools.html#Exporter.export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.Exporter.export" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">export</code><span class="sig-paren">(</span><em class="sig-param">defn</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/package_tools.html#Exporter.export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.Exporter.export" title="Permalink to this definition">¶</a></dt>
 <dd><p>Declare a function or class as exported.</p>
 </dd></dl>
 
@@ -281,8 +283,8 @@ within a block to <code class="xref py py-obj docutils literal notranslate"><spa
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -319,7 +321,7 @@ within a block to <code class="xref py py-obj docutils literal notranslate"><spa
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

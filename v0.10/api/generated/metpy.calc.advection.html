@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
@@ -169,6 +168,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -249,39 +249,35 @@
 <h1>advection<a class="headerlink" href="#advection" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.advection">
-<code class="descclassname">metpy.calc.</code><code class="descname">advection</code><span class="sig-paren">(</span><em>scalar</em>, <em>wind</em>, <em>deltas</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#advection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.advection" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">advection</code><span class="sig-paren">(</span><em class="sig-param">scalar</em>, <em class="sig-param">wind</em>, <em class="sig-param">deltas</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#advection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.advection" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the advection of a scalar field by the wind.</p>
 <p>The order of the dimensions of the arrays must match the order in which
 the wind components are given.  For example, if the winds are given [u, v],
 then the scalar and wind arrays must be indexed as x,y (which puts x as the
 rows, not columns).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>scalar</strong> (<em>N-dimensional array</em>) – Array (with N-dimensions) with the quantity to be advected.</li>
-<li><strong>wind</strong> (<em>sequence of arrays</em>) – Length M sequence of N-dimensional arrays.  Represents the flow,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scalar</strong> (<em>N-dimensional array</em>) – Array (with N-dimensions) with the quantity to be advected.</p></li>
+<li><p><strong>wind</strong> (<em>sequence of arrays</em>) – Length M sequence of N-dimensional arrays.  Represents the flow,
 with a component of the wind in each dimension.  For example, for
 horizontal advection, this could be a list: [u, v], where u and v
-are each a 2-dimensional array.</li>
-<li><strong>deltas</strong> (<em>sequence of float</em><em> or </em><em>ndarray</em>) – A (length M) sequence containing the grid spacing(s) in each dimension. If using
+are each a 2-dimensional array.</p></li>
+<li><p><strong>deltas</strong> (<em>sequence of float</em><em> or </em><em>ndarray</em>) – A (length M) sequence containing the grid spacing(s) in each dimension. If using
 arrays, in each array there should be one item less than the size of <em class="xref py py-obj">scalar</em> along the
-applicable axis.</li>
-<li><strong>dim_order</strong> (str or <code class="docutils literal notranslate"><span class="pre">None</span></code>, optional) – The ordering of dimensions in passed in arrays. Can be one of <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">'xy'</span></code>,
+applicable axis.</p></li>
+<li><p><strong>dim_order</strong> (str or <code class="docutils literal notranslate"><span class="pre">None</span></code>, optional) – The ordering of dimensions in passed in arrays. Can be one of <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">'xy'</span></code>,
 or <code class="docutils literal notranslate"><span class="pre">'yx'</span></code>. <code class="docutils literal notranslate"><span class="pre">'xy'</span></code> indicates that the dimension corresponding to x is the leading
 dimension, followed by y. <code class="docutils literal notranslate"><span class="pre">'yx'</span></code> indicates that x is the last dimension, preceded
 by y. <code class="docutils literal notranslate"><span class="pre">None</span></code> indicates that the default ordering should be assumed,
 which is ‘yx’. Can only be passed as a keyword argument, i.e.
-func(…, dim_order=’xy’).</li>
+func(…, dim_order=’xy’).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>N-dimensional array</em> – An N-dimensional array containing the advection at all grid points.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>N-dimensional array</em> – An N-dimensional array containing the advection at all grid points.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -308,8 +304,8 @@ func(…, dim_order=’xy’).</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -346,7 +342,7 @@ func(…, dim_order=’xy’).</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

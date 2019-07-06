@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a><ul class="current">
@@ -173,6 +172,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -253,24 +253,22 @@
 <h1>dewpoint<a class="headerlink" href="#dewpoint" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.dewpoint">
-<code class="descclassname">metpy.calc.</code><code class="descname">dewpoint</code><span class="sig-paren">(</span><em>e</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#dewpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.dewpoint" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">dewpoint</code><span class="sig-paren">(</span><em class="sig-param">e</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#dewpoint"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.dewpoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the ambient dewpoint given the vapor pressure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>e</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Water vapor partial pressure</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em class="xref py py-obj">pint.Quantity</em> – Dew point temperature</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>e</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Water vapor partial pressure</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – Dew point temperature</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.dewpoint_rh.html#metpy.calc.dewpoint_rh" title="metpy.calc.dewpoint_rh"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint_rh()</span></code></a>, <a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure" title="metpy.calc.saturation_vapor_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">saturation_vapor_pressure()</span></code></a>, <a class="reference internal" href="metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="metpy.calc.vapor_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">vapor_pressure()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.dewpoint_rh.html#metpy.calc.dewpoint_rh" title="metpy.calc.dewpoint_rh"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint_rh()</span></code></a>, <a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure" title="metpy.calc.saturation_vapor_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">saturation_vapor_pressure()</span></code></a>, <a class="reference internal" href="metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="metpy.calc.vapor_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">vapor_pressure()</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
-<p>This function inverts the <a class="reference internal" href="../../references.html#bolton1980" id="id1">[Bolton1980]</a> formula for saturation vapor
+<p>This function inverts the <a class="reference internal" href="../../references.html#bolton1980" id="id1"><span>[Bolton1980]</span></a> formula for saturation vapor
 pressure to instead calculate the temperature. This yield the following
 formula for dewpoint in degrees Celsius:</p>
 <div class="math notranslate nohighlight">
@@ -279,9 +277,9 @@ formula for dewpoint in degrees Celsius:</p>
 
 <div class="section" id="examples-using-metpy-calc-dewpoint">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.dewpoint</span></code><a class="headerlink" href="#examples-using-metpy-calc-dewpoint" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Use functions from `metpy.calc` as well as pint&#x27;s unit support to perform calculations."><div class="figure" id="id2">
+<div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png" src="../../_images/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/calculations/Dewpoint_and_Mixing_Ratio.html#sphx-glr-examples-calculations-dewpoint-and-mixing-ratio-py"><span class="std std-ref">Dewpoint and Mixing Ratio</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/calculations/Dewpoint_and_Mixing_Ratio.html#sphx-glr-examples-calculations-dewpoint-and-mixing-ratio-py"><span class="std std-ref">Dewpoint and Mixing Ratio</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -308,8 +306,8 @@ formula for dewpoint in degrees Celsius:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -346,7 +344,7 @@ formula for dewpoint in degrees Celsius:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

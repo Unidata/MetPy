@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
@@ -152,6 +151,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -232,32 +232,28 @@
 <h1>brunt_vaisala_period<a class="headerlink" href="#brunt-vaisala-period" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.brunt_vaisala_period">
-<code class="descclassname">metpy.calc.</code><code class="descname">brunt_vaisala_period</code><span class="sig-paren">(</span><em>heights</em>, <em>potential_temperature</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#brunt_vaisala_period"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.brunt_vaisala_period" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">brunt_vaisala_period</code><span class="sig-paren">(</span><em class="sig-param">heights</em>, <em class="sig-param">potential_temperature</em>, <em class="sig-param">axis=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#brunt_vaisala_period"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.brunt_vaisala_period" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the Brunt-Vaisala period.</p>
 <p>This function is a helper function for <a class="reference internal" href="metpy.calc.brunt_vaisala_frequency.html#metpy.calc.brunt_vaisala_frequency" title="metpy.calc.brunt_vaisala_frequency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">brunt_vaisala_frequency</span></code></a> that calculates the
-period of oscilation as in Exercise 3.13 of <a class="reference internal" href="../../references.html#hobbs2006" id="id1">[Hobbs2006]</a>:</p>
+period of oscilation as in Exercise 3.13 of <a class="reference internal" href="../../references.html#hobbs2006" id="id1"><span>[Hobbs2006]</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[\tau = \frac{2\pi}{N}\]</div>
 <p>Returns <em class="xref py py-obj">NaN</em> when <span class="math notranslate nohighlight">\(N^2 &gt; 0\)</span>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>heights</strong> (<em>array-like</em>) – One-dimensional profile of atmospheric height</li>
-<li><strong>potential_temperature</strong> (<em>array-like</em>) – Atmospheric potential temperature</li>
-<li><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to vertical in the potential temperature array, defaults to 0.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>heights</strong> (<em>array-like</em>) – One-dimensional profile of atmospheric height</p></li>
+<li><p><strong>potential_temperature</strong> (<em>array-like</em>) – Atmospheric potential temperature</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to vertical in the potential temperature array, defaults to 0.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array-like</em> – Brunt-Vaisala period.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>array-like</em> – Brunt-Vaisala period.</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.brunt_vaisala_frequency.html#metpy.calc.brunt_vaisala_frequency" title="metpy.calc.brunt_vaisala_frequency"><code class="xref py py-func docutils literal notranslate"><span class="pre">brunt_vaisala_frequency()</span></code></a>, <a class="reference internal" href="metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared" title="metpy.calc.brunt_vaisala_frequency_squared"><code class="xref py py-func docutils literal notranslate"><span class="pre">brunt_vaisala_frequency_squared()</span></code></a>, <a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">potential_temperature()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.brunt_vaisala_frequency.html#metpy.calc.brunt_vaisala_frequency" title="metpy.calc.brunt_vaisala_frequency"><code class="xref py py-func docutils literal notranslate"><span class="pre">brunt_vaisala_frequency()</span></code></a>, <a class="reference internal" href="metpy.calc.brunt_vaisala_frequency_squared.html#metpy.calc.brunt_vaisala_frequency_squared" title="metpy.calc.brunt_vaisala_frequency_squared"><code class="xref py py-func docutils literal notranslate"><span class="pre">brunt_vaisala_frequency_squared()</span></code></a>, <a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">potential_temperature()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -285,8 +281,8 @@ period of oscilation as in Exercise 3.13 of <a class="reference internal" href="
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -323,7 +319,7 @@ period of oscilation as in Exercise 3.13 of <a class="reference internal" href="
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

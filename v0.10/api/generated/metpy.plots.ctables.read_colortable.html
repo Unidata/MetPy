@@ -45,7 +45,7 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="ctables" href="metpy.plots.ctables.html"/>
-        <link rel="next" title="ColortableRegistry" href="metpy.plots.ctables.ColortableRegistry.html"/>
+        <link rel="next" title="resource_listdir" href="metpy.plots.ctables.resource_listdir.html"/>
         <link rel="prev" title="convert_gempak_table" href="metpy.plots.ctables.convert_gempak_table.html"/> 
 
   
@@ -126,12 +126,13 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.convert_gempak_table.html">convert_gempak_table</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">read_colortable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.resource_listdir.html">resource_listdir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.resource_stream.html">resource_stream</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.ColortableRegistry.html">ColortableRegistry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.Exporter.html">Exporter</a></li>
 </ul>
@@ -140,6 +141,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -220,22 +222,20 @@
 <h1>read_colortable<a class="headerlink" href="#read-colortable" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.plots.ctables.read_colortable">
-<code class="descclassname">metpy.plots.ctables.</code><code class="descname">read_colortable</code><span class="sig-paren">(</span><em>fobj</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#read_colortable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.read_colortable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.plots.ctables.</code><code class="sig-name descname">read_colortable</code><span class="sig-paren">(</span><em class="sig-param">fobj</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#read_colortable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.read_colortable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Read colortable information from a file.</p>
 <p>Reads a colortable, which consists of one color per line of the file, where
 a color can be one of: a tuple of 3 floats, a string with a HTML color name,
 or a string with a HTML hex color.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>fobj</strong> (<em>a file-like object</em>) – A file-like object to read the colors from</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>List of tuples</em> – A list of the RGB color values, where each RGB color is a tuple of 3 floats in the
-range of [0, 1].</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>fobj</strong> (<em>a file-like object</em>) – A file-like object to read the colors from</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>List of tuples</em> – A list of the RGB color values, where each RGB color is a tuple of 3 floats in the
+range of [0, 1].</p>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -250,7 +250,7 @@ range of [0, 1].</td>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.plots.ctables.ColortableRegistry.html" class="btn btn-neutral float-right" title="ColortableRegistry" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.plots.ctables.resource_listdir.html" class="btn btn-neutral float-right" title="resource_listdir" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="metpy.plots.ctables.convert_gempak_table.html" class="btn btn-neutral" title="convert_gempak_table" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -262,8 +262,8 @@ range of [0, 1].</td>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -300,7 +300,7 @@ range of [0, 1].</td>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

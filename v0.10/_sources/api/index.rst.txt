@@ -12,7 +12,6 @@ Reference Guide
    metpy.constants
    metpy.units
    metpy.io
-   metpy.io.cdm
    metpy.calc
    metpy.plots
    metpy.plots.ctables

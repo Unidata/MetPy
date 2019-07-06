@@ -46,7 +46,7 @@
     <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="interpolate" href="metpy.interpolate.html"/>
         <link rel="next" title="interpolate_to_slice" href="metpy.interpolate.interpolate_to_slice.html"/>
-        <link rel="prev" title="interpolate_to_grid" href="metpy.interpolate.interpolate_to_grid.html"/> 
+        <link rel="prev" title="interpolate_to_isosurface" href="metpy.interpolate.interpolate_to_isosurface.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
@@ -137,6 +136,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_1d.html">interpolate_1d</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">interpolate_nans_1d</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_grid.html">interpolate_to_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_isosurface.html">interpolate_to_isosurface</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">interpolate_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html">interpolate_to_slice</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance.html">inverse_distance</a></li>
@@ -154,6 +154,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -234,59 +235,55 @@
 <h1>interpolate_to_points<a class="headerlink" href="#interpolate-to-points" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.interpolate.interpolate_to_points">
-<code class="descclassname">metpy.interpolate.</code><code class="descname">interpolate_to_points</code><span class="sig-paren">(</span><em>points</em>, <em>values</em>, <em>xi</em>, <em>interp_type='linear'</em>, <em>minimum_neighbors=3</em>, <em>gamma=0.25</em>, <em>kappa_star=5.052</em>, <em>search_radius=None</em>, <em>rbf_func='linear'</em>, <em>rbf_smooth=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/points.html#interpolate_to_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.interpolate_to_points" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.interpolate.</code><code class="sig-name descname">interpolate_to_points</code><span class="sig-paren">(</span><em class="sig-param">points</em>, <em class="sig-param">values</em>, <em class="sig-param">xi</em>, <em class="sig-param">interp_type='linear'</em>, <em class="sig-param">minimum_neighbors=3</em>, <em class="sig-param">gamma=0.25</em>, <em class="sig-param">kappa_star=5.052</em>, <em class="sig-param">search_radius=None</em>, <em class="sig-param">rbf_func='linear'</em>, <em class="sig-param">rbf_smooth=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/points.html#interpolate_to_points"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.interpolate_to_points" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate unstructured point data to the given points.</p>
 <p>This function interpolates the given <em class="xref py py-obj">values</em> valid at <code class="xref py py-obj docutils literal notranslate"><span class="pre">points</span></code> to the points <em class="xref py py-obj">xi</em>. This is
-modeled after <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html#scipy.interpolate.griddata" title="(in SciPy v1.2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.griddata</span></code></a>, but acts as a generalization of it by including
+modeled after <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.griddata.html#scipy.interpolate.griddata" title="(in SciPy v1.3.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.griddata</span></code></a>, but acts as a generalization of it by including
 the following types of interpolation:</p>
 <ul class="simple">
-<li>Linear</li>
-<li>Nearest Neighbor</li>
-<li>Cubic</li>
-<li>Radial Basis Function</li>
-<li>Natural Neighbor (2D Only)</li>
-<li>Barnes (2D Only)</li>
-<li>Cressman (2D Only)</li>
+<li><p>Linear</p></li>
+<li><p>Nearest Neighbor</p></li>
+<li><p>Cubic</p></li>
+<li><p>Radial Basis Function</p></li>
+<li><p>Natural Neighbor (2D Only)</p></li>
+<li><p>Barnes (2D Only)</p></li>
+<li><p>Cressman (2D Only)</p></li>
 </ul>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>points</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>, </em><em>D</em><em>)</em>) – Coordinates of the data points.</li>
-<li><strong>values</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>,</em><em>)</em>) – Values of the data points.</li>
-<li><strong>xi</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>M</em><em>, </em><em>D</em><em>)</em>) – Points to interpolate the data onto.</li>
-<li><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – What type of interpolation to use. Available options include:
-1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>, </em><em>D</em><em>)</em>) – Coordinates of the data points.</p></li>
+<li><p><strong>values</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>n</em><em>,</em><em>)</em>) – Values of the data points.</p></li>
+<li><p><strong>xi</strong> (<em>array_like</em><em>, </em><em>shape</em><em> (</em><em>M</em><em>, </em><em>D</em><em>)</em>) – Points to interpolate the data onto.</p></li>
+<li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – What type of interpolation to use. Available options include:
+1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.3.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
 2) “natural_neighbor”, “barnes”, or “cressman” from <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>.
-Default “linear”.</li>
-<li><strong>minimum_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Minimum number of neighbors needed to perform barnes or cressman interpolation for a
-point. Default is 3.</li>
-<li><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</li>
-<li><strong>kappa_star</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Response parameter for barnes interpolation, specified nondimensionally
-in terms of the Nyquist. Default 5.052</li>
-<li><strong>search_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – A search radius to use for the barnes and cressman interpolation schemes.
+Default “linear”.</p></li>
+<li><p><strong>minimum_neighbors</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Minimum number of neighbors needed to perform barnes or cressman interpolation for a
+point. Default is 3.</p></li>
+<li><p><strong>gamma</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Adjustable smoothing parameter for the barnes interpolation. Default 0.25.</p></li>
+<li><p><strong>kappa_star</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Response parameter for barnes interpolation, specified nondimensionally
+in terms of the Nyquist. Default 5.052</p></li>
+<li><p><strong>search_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – A search radius to use for the barnes and cressman interpolation schemes.
 If search_radius is not specified, it will default to the average spacing of
-observations.</li>
-<li><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
+observations.</p></li>
+<li><p><strong>rbf_func</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Specifies which function to use for Rbf interpolation.
 Options include: ‘multiquadric’, ‘inverse’, ‘gaussian’, ‘linear’, ‘cubic’,
-‘quintic’, and ‘thin_plate’. Defualt ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.2.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
-information.</li>
-<li><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</li>
+‘quintic’, and ‘thin_plate’. Defualt ‘linear’. See <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.Rbf.html#scipy.interpolate.Rbf" title="(in SciPy v1.3.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate.Rbf</span></code></a> for more
+information.</p></li>
+<li><p><strong>rbf_smooth</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>values_interpolated</strong> (<em>(M,) ndarray</em>) – Array representing the interpolated values for each input point in <em class="xref py py-obj">xi</em>.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>values_interpolated</strong> (<em>(M,) ndarray</em>) – Array representing the interpolated values for each input point in <em class="xref py py-obj">xi</em>.</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>This function primarily acts as a wrapper for the individual interpolation routines. The
 individual functions are also available for direct use.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="metpy.interpolate.interpolate_to_grid"><code class="xref py py-func docutils literal notranslate"><span class="pre">interpolate_to_grid()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="metpy.interpolate.interpolate_to_grid"><code class="xref py py-func docutils literal notranslate"><span class="pre">interpolate_to_grid()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -305,7 +302,7 @@ individual functions are also available for direct use.</p>
         <a href="metpy.interpolate.interpolate_to_slice.html" class="btn btn-neutral float-right" title="interpolate_to_slice" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.interpolate.interpolate_to_grid.html" class="btn btn-neutral" title="interpolate_to_grid" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.interpolate.interpolate_to_isosurface.html" class="btn btn-neutral" title="interpolate_to_isosurface" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -314,8 +311,8 @@ individual functions are also available for direct use.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -352,7 +349,7 @@ individual functions are also available for direct use.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

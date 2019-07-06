@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -135,6 +134,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">ImagePlot</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-plots-imageplot">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.ImagePlot</span></code></a></li>
@@ -153,6 +153,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -233,135 +234,173 @@
 <h1>ImagePlot<a class="headerlink" href="#imageplot" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="metpy.plots.ImagePlot">
-<em class="property">class </em><code class="descclassname">metpy.plots.</code><code class="descname">ImagePlot</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#ImagePlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ImagePlot" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">ImagePlot</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#ImagePlot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ImagePlot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represent an image plot.</p>
 <p class="rubric">Attributes Summary</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.colormap" title="metpy.plots.ImagePlot.colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colormap</span></code></a></td>
-<td>A trait for unicode strings.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.clabels" title="metpy.plots.ImagePlot.clabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clabels</span></code></a></p></td>
+<td><p>A boolean (True/False) on whether to plot contour labels.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.cross_validation_lock" title="metpy.plots.ImagePlot.cross_validation_lock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_validation_lock</span></code></a></td>
-<td>A contextmanager for running a block with our cross validation lock set to True.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.colorbar" title="metpy.plots.ImagePlot.colorbar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colorbar</span></code></a></p></td>
+<td><p>A boolean (True/False) on whether to add a colorbar to the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.data" title="metpy.plots.ImagePlot.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></td>
-<td>Access the current data subset.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.colormap" title="metpy.plots.ImagePlot.colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colormap</span></code></a></p></td>
+<td><p>The string name for a Matplolib or MetPy colormap.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.field" title="metpy.plots.ImagePlot.field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field</span></code></a></td>
-<td>A trait for unicode strings.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.contours" title="metpy.plots.ImagePlot.contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contours</span></code></a></p></td>
+<td><p>A list of values to contour or an integer number of contour levels.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.griddata" title="metpy.plots.ImagePlot.griddata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">griddata</span></code></a></td>
-<td>Return the internal cached data.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.cross_validation_lock" title="metpy.plots.ImagePlot.cross_validation_lock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_validation_lock</span></code></a></p></td>
+<td><p>A contextmanager for running a block with our cross validation lock set to True.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.image_range" title="metpy.plots.ImagePlot.image_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_range</span></code></a></td>
-<td>A trait type representing a Union type.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.data" title="metpy.plots.ImagePlot.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
+<td><p>Xarray dataset that contains the field to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.level" title="metpy.plots.ImagePlot.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></td>
-<td>A trait type representing a Union type.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.field" title="metpy.plots.ImagePlot.field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field</span></code></a></p></td>
+<td><p>Name of the field to be plotted.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.name" title="metpy.plots.ImagePlot.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></td>
-<td>Generate a name for the plot.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.griddata" title="metpy.plots.ImagePlot.griddata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">griddata</span></code></a></p></td>
+<td><p>Return the internal cached data.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.parent" title="metpy.plots.ImagePlot.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></td>
-<td>A trait whose value must be an instance of a specified class.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.image_range" title="metpy.plots.ImagePlot.image_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_range</span></code></a></p></td>
+<td><p>A tuple of min and max values that represent the range of values to color the rasterized image.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.plotdata" title="metpy.plots.ImagePlot.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></td>
-<td>Return the data for plotting.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.level" title="metpy.plots.ImagePlot.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
+<td><p>The level of the field to be plotted.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.time" title="metpy.plots.ImagePlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></td>
-<td>A trait whose value must be an instance of a specified class.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.name" title="metpy.plots.ImagePlot.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>Generate a name for the plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.parent" title="metpy.plots.ImagePlot.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.plotdata" title="metpy.plots.ImagePlot.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
+<td><p>Return the data for plotting.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.time" title="metpy.plots.ImagePlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
+<td><p>Set the valid time to be plotted as a datetime object.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods Summary</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.__init__" title="metpy.plots.ImagePlot.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args,&nbsp;**kwargs)</td>
-<td>Initialize self.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.__init__" title="metpy.plots.ImagePlot.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.add_traits" title="metpy.plots.ImagePlot.add_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_traits</span></code></a>(**traits)</td>
-<td>Dynamically add trait attributes to the HasTraits instance.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.add_traits" title="metpy.plots.ImagePlot.add_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_traits</span></code></a>(**traits)</p></td>
+<td><p>Dynamically add trait attributes to the HasTraits instance.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.class_own_trait_events" title="metpy.plots.ImagePlot.class_own_trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_own_trait_events</span></code></a>(name)</td>
-<td>Get a dict of all event handlers defined on this class, not a parent.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.class_own_trait_events" title="metpy.plots.ImagePlot.class_own_trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_own_trait_events</span></code></a>(name)</p></td>
+<td><p>Get a dict of all event handlers defined on this class, not a parent.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.class_own_traits" title="metpy.plots.ImagePlot.class_own_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_own_traits</span></code></a>(**metadata)</td>
-<td>Get a dict of all the traitlets defined on this class, not a parent.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.class_own_traits" title="metpy.plots.ImagePlot.class_own_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_own_traits</span></code></a>(**metadata)</p></td>
+<td><p>Get a dict of all the traitlets defined on this class, not a parent.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.class_trait_names" title="metpy.plots.ImagePlot.class_trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_trait_names</span></code></a>(**metadata)</td>
-<td>Get a list of all the names of this class’ traits.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.class_trait_names" title="metpy.plots.ImagePlot.class_trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_trait_names</span></code></a>(**metadata)</p></td>
+<td><p>Get a list of all the names of this class’ traits.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.class_traits" title="metpy.plots.ImagePlot.class_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_traits</span></code></a>(**metadata)</td>
-<td>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.class_traits" title="metpy.plots.ImagePlot.class_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_traits</span></code></a>(**metadata)</p></td>
+<td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.clear" title="metpy.plots.ImagePlot.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</td>
-<td>Clear the plot.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.clear" title="metpy.plots.ImagePlot.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<td><p>Clear the plot.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.clear_handle" title="metpy.plots.ImagePlot.clear_handle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_handle</span></code></a>()</td>
-<td>Clear the handle to the plot instance.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.clear_collections" title="metpy.plots.ImagePlot.clear_collections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_collections</span></code></a>()</p></td>
+<td><p>Clear the handle collections to the plot instance.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.draw" title="metpy.plots.ImagePlot.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</td>
-<td>Draw the plot.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.clear_handle" title="metpy.plots.ImagePlot.clear_handle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_handle</span></code></a>()</p></td>
+<td><p>Clear the handle to the plot instance.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.has_trait" title="metpy.plots.ImagePlot.has_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_trait</span></code></a>(name)</td>
-<td>Returns True if the object has a trait with the specified name.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.draw" title="metpy.plots.ImagePlot.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<td><p>Draw the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.hold_trait_notifications" title="metpy.plots.ImagePlot.hold_trait_notifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hold_trait_notifications</span></code></a>()</td>
-<td>Context manager for bundling trait change notifications and cross validation.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.has_trait" title="metpy.plots.ImagePlot.has_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_trait</span></code></a>(name)</p></td>
+<td><p>Returns True if the object has a trait with the specified name.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.notify_change" title="metpy.plots.ImagePlot.notify_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notify_change</span></code></a>(change)</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.hold_trait_notifications" title="metpy.plots.ImagePlot.hold_trait_notifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hold_trait_notifications</span></code></a>()</p></td>
+<td><p>Context manager for bundling trait change notifications and cross validation.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.observe" title="metpy.plots.ImagePlot.observe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observe</span></code></a>(handler[,&nbsp;names,&nbsp;type])</td>
-<td>Setup a handler to be called when a trait changes.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.notify_change" title="metpy.plots.ImagePlot.notify_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notify_change</span></code></a>(change)</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.on_trait_change" title="metpy.plots.ImagePlot.on_trait_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_trait_change</span></code></a>([handler,&nbsp;name,&nbsp;remove])</td>
-<td>DEPRECATED: Setup a handler to be called when a trait changes.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.observe" title="metpy.plots.ImagePlot.observe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observe</span></code></a>(handler[, names, type])</p></td>
+<td><p>Setup a handler to be called when a trait changes.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.set_trait" title="metpy.plots.ImagePlot.set_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_trait</span></code></a>(name,&nbsp;value)</td>
-<td>Forcibly sets trait attribute, including read-only attributes.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.on_trait_change" title="metpy.plots.ImagePlot.on_trait_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_trait_change</span></code></a>([handler, name, remove])</p></td>
+<td><p>DEPRECATED: Setup a handler to be called when a trait changes.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.setup_instance" title="metpy.plots.ImagePlot.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(*args,&nbsp;**kwargs)</td>
-<td>This is called <strong>before</strong> self.__init__ is called.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.set_trait" title="metpy.plots.ImagePlot.set_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_trait</span></code></a>(name, value)</p></td>
+<td><p>Forcibly sets trait attribute, including read-only attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.trait_events" title="metpy.plots.ImagePlot.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</td>
-<td>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.setup_instance" title="metpy.plots.ImagePlot.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(*args, **kwargs)</p></td>
+<td><p>This is called <strong>before</strong> self.__init__ is called.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.trait_metadata" title="metpy.plots.ImagePlot.trait_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_metadata</span></code></a>(traitname,&nbsp;key[,&nbsp;default])</td>
-<td>Get metadata values for trait by key.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.trait_events" title="metpy.plots.ImagePlot.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</p></td>
+<td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.trait_names" title="metpy.plots.ImagePlot.trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_names</span></code></a>(**metadata)</td>
-<td>Get a list of all the names of this class’ traits.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.trait_metadata" title="metpy.plots.ImagePlot.trait_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_metadata</span></code></a>(traitname, key[, default])</p></td>
+<td><p>Get metadata values for trait by key.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.traits" title="metpy.plots.ImagePlot.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</td>
-<td>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.trait_names" title="metpy.plots.ImagePlot.trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_names</span></code></a>(**metadata)</p></td>
+<td><p>Get a list of all the names of this class’ traits.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ImagePlot.unobserve" title="metpy.plots.ImagePlot.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[,&nbsp;names,&nbsp;type])</td>
-<td>Remove a trait change handler.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.traits" title="metpy.plots.ImagePlot.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</p></td>
+<td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ImagePlot.unobserve_all" title="metpy.plots.ImagePlot.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</td>
-<td>Remove trait change handlers of any type for the specified name.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.unobserve" title="metpy.plots.ImagePlot.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[, names, type])</p></td>
+<td><p>Remove a trait change handler.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ImagePlot.unobserve_all" title="metpy.plots.ImagePlot.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</p></td>
+<td><p>Remove trait change handlers of any type for the specified name.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes Documentation</p>
 <dl class="attribute">
+<dt id="metpy.plots.ImagePlot.clabels">
+<code class="sig-name descname">clabels</code><a class="headerlink" href="#metpy.plots.ImagePlot.clabels" title="Permalink to this definition">¶</a></dt>
+<dd><p>A boolean (True/False) on whether to plot contour labels.</p>
+<p>To plot contour labels set this trait to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the default value is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.plots.ImagePlot.colorbar">
+<code class="sig-name descname">colorbar</code><a class="headerlink" href="#metpy.plots.ImagePlot.colorbar" title="Permalink to this definition">¶</a></dt>
+<dd><p>A boolean (True/False) on whether to add a colorbar to the plot.</p>
+<p>To add a colorbar associated with the plot data set the trait to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the default
+values is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="metpy.plots.ImagePlot.colormap">
-<code class="descname">colormap</code><a class="headerlink" href="#metpy.plots.ImagePlot.colormap" title="Permalink to this definition">¶</a></dt>
-<dd><p>A trait for unicode strings.</p>
+<code class="sig-name descname">colormap</code><a class="headerlink" href="#metpy.plots.ImagePlot.colormap" title="Permalink to this definition">¶</a></dt>
+<dd><p>The string name for a Matplolib or MetPy colormap.</p>
+<p>For example, the Blue-Purple colormap from Matplotlib can be accessed using ‘BuPu’.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="metpy.plots.ImagePlot.contours">
+<code class="sig-name descname">contours</code><a class="headerlink" href="#metpy.plots.ImagePlot.contours" title="Permalink to this definition">¶</a></dt>
+<dd><p>A list of values to contour or an integer number of contour levels.</p>
+<p>This parameter sets contour or colorfill values for a plot. Values can be entered either
+as a list of values or as an integer with the number of contours to be plotted (as per
+matplotlib documentation). A list can be generated by using square brackets or creating
+a numpy 1D array and converting it to a list with the <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.tolist.html#numpy.ndarray.tolist" title="(in NumPy v1.16)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolist</span></code></a> method.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ImagePlot.cross_validation_lock">
-<code class="descname">cross_validation_lock</code><a class="headerlink" href="#metpy.plots.ImagePlot.cross_validation_lock" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">cross_validation_lock</code><a class="headerlink" href="#metpy.plots.ImagePlot.cross_validation_lock" title="Permalink to this definition">¶</a></dt>
 <dd><p>A contextmanager for running a block with our cross validation lock set
 to True.</p>
 <p>At the end of the block, the lock’s value is restored to its value
@@ -370,43 +409,54 @@ prior to entering the block.</p>
 
 <dl class="attribute">
 <dt id="metpy.plots.ImagePlot.data">
-<code class="descname">data</code><a class="headerlink" href="#metpy.plots.ImagePlot.data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Access the current data subset.</p>
+<code class="sig-name descname">data</code><a class="headerlink" href="#metpy.plots.ImagePlot.data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Xarray dataset that contains the field to be plotted.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ImagePlot.field">
-<code class="descname">field</code><a class="headerlink" href="#metpy.plots.ImagePlot.field" title="Permalink to this definition">¶</a></dt>
-<dd><p>A trait for unicode strings.</p>
+<code class="sig-name descname">field</code><a class="headerlink" href="#metpy.plots.ImagePlot.field" title="Permalink to this definition">¶</a></dt>
+<dd><p>Name of the field to be plotted.</p>
+<p>This is the name of the variable from the dataset that is to be plotted. An example,
+from a model grid file that uses the THREDDS convention for naming would be
+<em class="xref py py-obj">Geopotential_height_isobaric</em> or <em class="xref py py-obj">Temperature_isobaric</em>. For GOES-16/17 satellite data it
+might be <em class="xref py py-obj">Sectorized_CMI</em>. To check for the variables available within a dataset, list the
+variables with the following command assuming the dataset was read using xarray as <em class="xref py py-obj">ds</em>,
+<em class="xref py py-obj">list(ds)</em></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ImagePlot.griddata">
-<code class="descname">griddata</code><a class="headerlink" href="#metpy.plots.ImagePlot.griddata" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">griddata</code><a class="headerlink" href="#metpy.plots.ImagePlot.griddata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the internal cached data.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ImagePlot.image_range">
-<code class="descname">image_range</code><a class="headerlink" href="#metpy.plots.ImagePlot.image_range" title="Permalink to this definition">¶</a></dt>
-<dd><p>A trait type representing a Union type.</p>
+<code class="sig-name descname">image_range</code><a class="headerlink" href="#metpy.plots.ImagePlot.image_range" title="Permalink to this definition">¶</a></dt>
+<dd><p>A tuple of min and max values that represent the range of values
+to color the rasterized image.</p>
+<p>The min and max values entered as a tuple will be converted to a
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Normalize.html#matplotlib.colors.Normalize" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.Normalize</span></code></a> instance for plotting.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ImagePlot.level">
-<code class="descname">level</code><a class="headerlink" href="#metpy.plots.ImagePlot.level" title="Permalink to this definition">¶</a></dt>
-<dd><p>A trait type representing a Union type.</p>
+<code class="sig-name descname">level</code><a class="headerlink" href="#metpy.plots.ImagePlot.level" title="Permalink to this definition">¶</a></dt>
+<dd><p>The level of the field to be plotted.</p>
+<p>This is a value with units to choose the desired plot level. For example, selecting the
+850-hPa level, set this parameter to <code class="docutils literal notranslate"><span class="pre">850</span> <span class="pre">*</span> <span class="pre">units.hPa</span></code></p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ImagePlot.name">
-<code class="descname">name</code><a class="headerlink" href="#metpy.plots.ImagePlot.name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#metpy.plots.ImagePlot.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a name for the plot.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ImagePlot.parent">
-<code class="descname">parent</code><a class="headerlink" href="#metpy.plots.ImagePlot.parent" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">parent</code><a class="headerlink" href="#metpy.plots.ImagePlot.parent" title="Permalink to this definition">¶</a></dt>
 <dd><p>A trait whose value must be an instance of a specified class.</p>
 <p>The value can also be an instance of a subclass of the specified class.</p>
 <p>Subclasses can declare default classes by overriding the klass attribute</p>
@@ -414,57 +464,58 @@ prior to entering the block.</p>
 
 <dl class="attribute">
 <dt id="metpy.plots.ImagePlot.plotdata">
-<code class="descname">plotdata</code><a class="headerlink" href="#metpy.plots.ImagePlot.plotdata" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plotdata</code><a class="headerlink" href="#metpy.plots.ImagePlot.plotdata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return the data for plotting.</p>
 <p>The data array, x coordinates, and y coordinates.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ImagePlot.time">
-<code class="descname">time</code><a class="headerlink" href="#metpy.plots.ImagePlot.time" title="Permalink to this definition">¶</a></dt>
-<dd><p>A trait whose value must be an instance of a specified class.</p>
-<p>The value can also be an instance of a subclass of the specified class.</p>
-<p>Subclasses can declare default classes by overriding the klass attribute</p>
+<code class="sig-name descname">time</code><a class="headerlink" href="#metpy.plots.ImagePlot.time" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set the valid time to be plotted as a datetime object.</p>
+<p>If a forecast hour is to be plotted the time should be set to the valid future time, which
+can be done using the <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timedelta</span></code></a> objects
+from the Python standard library.</p>
 </dd></dl>
 
 <p class="rubric">Methods Documentation</p>
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.add_traits">
-<code class="descname">add_traits</code><span class="sig-paren">(</span><em>**traits</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.add_traits" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_traits</code><span class="sig-paren">(</span><em class="sig-param">**traits</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.add_traits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dynamically add trait attributes to the HasTraits instance.</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="metpy.plots.ImagePlot.class_own_trait_events">
-<em class="property">classmethod </em><code class="descname">class_own_trait_events</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_own_trait_events" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">class_own_trait_events</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_own_trait_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a dict of all event handlers defined on this class, not a parent.</p>
 <p>Works like <code class="docutils literal notranslate"><span class="pre">event_handlers</span></code>, except for excluding traits from parents.</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="metpy.plots.ImagePlot.class_own_traits">
-<em class="property">classmethod </em><code class="descname">class_own_traits</code><span class="sig-paren">(</span><em>**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_own_traits" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">class_own_traits</code><span class="sig-paren">(</span><em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_own_traits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a dict of all the traitlets defined on this class, not a parent.</p>
 <p>Works like <a class="reference internal" href="#metpy.plots.ImagePlot.class_traits" title="metpy.plots.ImagePlot.class_traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">class_traits</span></code></a>, except for excluding traits from parents.</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="metpy.plots.ImagePlot.class_trait_names">
-<em class="property">classmethod </em><code class="descname">class_trait_names</code><span class="sig-paren">(</span><em>**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_trait_names" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">class_trait_names</code><span class="sig-paren">(</span><em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_trait_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
 <p>This method is just like the <a class="reference internal" href="#metpy.plots.ImagePlot.trait_names" title="metpy.plots.ImagePlot.trait_names"><code class="xref py py-meth docutils literal notranslate"><span class="pre">trait_names()</span></code></a> method,
 but is unbound.</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="metpy.plots.ImagePlot.class_traits">
-<em class="property">classmethod </em><code class="descname">class_traits</code><span class="sig-paren">(</span><em>**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_traits" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">class_traits</code><span class="sig-paren">(</span><em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.class_traits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.  The dictionary
 is keyed on the name and the values are the TraitType objects.</p>
 <p>This method is just like the <a class="reference internal" href="#metpy.plots.ImagePlot.traits" title="metpy.plots.ImagePlot.traits"><code class="xref py py-meth docutils literal notranslate"><span class="pre">traits()</span></code></a> method, but is unbound.</p>
@@ -480,32 +531,38 @@ to the function.</p>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.clear" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.clear" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear the plot.</p>
 <p>Resets all internal state and sets need for redraw.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="metpy.plots.ImagePlot.clear_collections">
+<code class="sig-name descname">clear_collections</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.clear_collections" title="Permalink to this definition">¶</a></dt>
+<dd><p>Clear the handle collections to the plot instance.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="metpy.plots.ImagePlot.clear_handle">
-<code class="descname">clear_handle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.clear_handle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clear_handle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.clear_handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear the handle to the plot instance.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.draw">
-<code class="descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.draw" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">draw</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.draw" title="Permalink to this definition">¶</a></dt>
 <dd><p>Draw the plot.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.has_trait">
-<code class="descname">has_trait</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.has_trait" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">has_trait</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.has_trait" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns True if the object has a trait with the specified name.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.hold_trait_notifications">
-<code class="descname">hold_trait_notifications</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.hold_trait_notifications" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">hold_trait_notifications</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.hold_trait_notifications" title="Permalink to this definition">¶</a></dt>
 <dd><p>Context manager for bundling trait change notifications and cross
 validation.</p>
 <p>Use this when doing multiple trait assignments (init, config), to avoid
@@ -515,20 +572,18 @@ All trait notifications will fire after all values have been assigned.</p>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.notify_change">
-<code class="descname">notify_change</code><span class="sig-paren">(</span><em>change</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.notify_change" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">notify_change</code><span class="sig-paren">(</span><em class="sig-param">change</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.notify_change" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.observe">
-<code class="descname">observe</code><span class="sig-paren">(</span><em>handler</em>, <em>names=traitlets.All</em>, <em>type='change'</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.observe" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">observe</code><span class="sig-paren">(</span><em class="sig-param">handler</em>, <em class="sig-param">names=traitlets.All</em>, <em class="sig-param">type='change'</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.observe" title="Permalink to this definition">¶</a></dt>
 <dd><p>Setup a handler to be called when a trait changes.</p>
 <p>This is used to setup dynamic notifications of trait changes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>handler</strong> (<em>callable</em>) – A callable that is called when a trait changes. Its
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handler</strong> (<em>callable</em>) – A callable that is called when a trait changes. Its
 signature should be <code class="docutils literal notranslate"><span class="pre">handler(change)</span></code>, where <code class="docutils literal notranslate"><span class="pre">change</span></code> is a
 dictionary. The change dictionary at least holds a ‘type’ key.
 * <code class="docutils literal notranslate"><span class="pre">type</span></code>: the type of notification.
@@ -537,22 +592,20 @@ case where type is ‘change’, we also have the following keys:
 * <code class="docutils literal notranslate"><span class="pre">owner</span></code> : the HasTraits instance
 * <code class="docutils literal notranslate"><span class="pre">old</span></code> : the old value of the modified trait attribute
 * <code class="docutils literal notranslate"><span class="pre">new</span></code> : the new value of the modified trait attribute
-* <code class="docutils literal notranslate"><span class="pre">name</span></code> : the name of the modified trait attribute.</li>
-<li><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>All</em>) – If names is All, the handler will apply to all traits.  If a list
+* <code class="docutils literal notranslate"><span class="pre">name</span></code> : the name of the modified trait attribute.</p></li>
+<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>All</em>) – If names is All, the handler will apply to all traits.  If a list
 of str, handler will apply to all names in the list.  If a
-str, the handler will apply just to that name.</li>
-<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>All</em><em> (</em><em>default: 'change'</em><em>)</em>) – The type of notification to filter by. If equal to All, then all
-notifications are passed to the observe handler.</li>
+str, the handler will apply just to that name.</p></li>
+<li><p><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>All</em><em> (</em><em>default: 'change'</em><em>)</em>) – The type of notification to filter by. If equal to All, then all
+notifications are passed to the observe handler.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.on_trait_change">
-<code class="descname">on_trait_change</code><span class="sig-paren">(</span><em>handler=None</em>, <em>name=None</em>, <em>remove=False</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.on_trait_change" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">on_trait_change</code><span class="sig-paren">(</span><em class="sig-param">handler=None</em>, <em class="sig-param">name=None</em>, <em class="sig-param">remove=False</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.on_trait_change" title="Permalink to this definition">¶</a></dt>
 <dd><p>DEPRECATED: Setup a handler to be called when a trait changes.</p>
 <p>This is used to setup dynamic notifications of trait changes.</p>
 <p>Static handlers can be created by creating methods on a HasTraits
@@ -562,70 +615,64 @@ _a_changed(self, name, old, new) (fewer arguments can be used, see
 below).</p>
 <p>If <em class="xref py py-obj">remove</em> is True and <em class="xref py py-obj">handler</em> is not specified, all change
 handlers for the specified name are uninstalled.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>handler</strong> (<em>callable</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – A callable that is called when a trait changes.  Its
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handler</strong> (<em>callable</em><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – A callable that is called when a trait changes.  Its
 signature can be handler(), handler(name), handler(name, new),
-handler(name, old, new), or handler(name, old, new, self).</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – If None, the handler will apply to all traits.  If a list
+handler(name, old, new), or handler(name, old, new, self).</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – If None, the handler will apply to all traits.  If a list
 of str, handler will apply to all names in the list.  If a
-str, the handler will apply just to that name.</li>
-<li><strong>remove</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If False (the default), then install the handler.  If True
-then unintall it.</li>
+str, the handler will apply just to that name.</p></li>
+<li><p><strong>remove</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – If False (the default), then install the handler.  If True
+then unintall it.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.set_trait">
-<code class="descname">set_trait</code><span class="sig-paren">(</span><em>name</em>, <em>value</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.set_trait" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">set_trait</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">value</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.set_trait" title="Permalink to this definition">¶</a></dt>
 <dd><p>Forcibly sets trait attribute, including read-only attributes.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.setup_instance">
-<code class="descname">setup_instance</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.setup_instance" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setup_instance</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.setup_instance" title="Permalink to this definition">¶</a></dt>
 <dd><p>This is called <strong>before</strong> self.__init__ is called.</p>
 </dd></dl>
 
-<dl class="classmethod">
+<dl class="method">
 <dt id="metpy.plots.ImagePlot.trait_events">
-<em class="property">classmethod </em><code class="descname">trait_events</code><span class="sig-paren">(</span><em>name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_events" title="Permalink to this definition">¶</a></dt>
+<em class="property">classmethod </em><code class="sig-name descname">trait_events</code><span class="sig-paren">(</span><em class="sig-param">name=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_events" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> (</em><em>default: None</em><em>)</em>) – The name of a trait of this class. If name is <code class="docutils literal notranslate"><span class="pre">None</span></code> then all
-the event handlers of this class will be returned instead.</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em>The event handlers associated with a trait name, or all event handlers.</em></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> (</em><em>default: None</em><em>)</em>) – The name of a trait of this class. If name is <code class="docutils literal notranslate"><span class="pre">None</span></code> then all
+the event handlers of this class will be returned instead.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>The event handlers associated with a trait name, or all event handlers.</em></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.trait_metadata">
-<code class="descname">trait_metadata</code><span class="sig-paren">(</span><em>traitname</em>, <em>key</em>, <em>default=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_metadata" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">trait_metadata</code><span class="sig-paren">(</span><em class="sig-param">traitname</em>, <em class="sig-param">key</em>, <em class="sig-param">default=None</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_metadata" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get metadata values for trait by key.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.trait_names">
-<code class="descname">trait_names</code><span class="sig-paren">(</span><em>**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_names" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">trait_names</code><span class="sig-paren">(</span><em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.trait_names" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of all the names of this class’ traits.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.traits">
-<code class="descname">traits</code><span class="sig-paren">(</span><em>**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.traits" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">traits</code><span class="sig-paren">(</span><em class="sig-param">**metadata</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.traits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.  The dictionary
 is keyed on the name and the values are the TraitType objects.</p>
 <p>The TraitTypes returned don’t know anything about the values
@@ -640,30 +687,26 @@ to the function.</p>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.unobserve">
-<code class="descname">unobserve</code><span class="sig-paren">(</span><em>handler</em>, <em>names=traitlets.All</em>, <em>type='change'</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.unobserve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">unobserve</code><span class="sig-paren">(</span><em class="sig-param">handler</em>, <em class="sig-param">names=traitlets.All</em>, <em class="sig-param">type='change'</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.unobserve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove a trait change handler.</p>
 <p>This is used to unregister handlers to trait change notifications.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>handler</strong> (<em>callable</em>) – The callable called when a trait attribute changes.</li>
-<li><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>All</em><em> (</em><em>default: All</em><em>)</em>) – The names of the traits for which the specified handler should be
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>handler</strong> (<em>callable</em>) – The callable called when a trait attribute changes.</p></li>
+<li><p><strong>names</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>All</em><em> (</em><em>default: All</em><em>)</em>) – The names of the traits for which the specified handler should be
 uninstalled. If names is All, the specified handler is uninstalled
-from the list of notifiers corresponding to all changes.</li>
-<li><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><em>All</em><em> (</em><em>default: 'change'</em><em>)</em>) – The type of notification to filter by. If All, the specified handler
-is uninstalled from the list of notifiers corresponding to all types.</li>
+from the list of notifiers corresponding to all changes.</p></li>
+<li><p><strong>type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em> or </em><em>All</em><em> (</em><em>default: 'change'</em><em>)</em>) – The type of notification to filter by. If All, the specified handler
+is uninstalled from the list of notifiers corresponding to all types.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ImagePlot.unobserve_all">
-<code class="descname">unobserve_all</code><span class="sig-paren">(</span><em>name=traitlets.All</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.unobserve_all" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">unobserve_all</code><span class="sig-paren">(</span><em class="sig-param">name=traitlets.All</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ImagePlot.unobserve_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove trait change handlers of any type for the specified name.
 If name is not specified, removes all trait notifiers.</p>
 </dd></dl>
@@ -672,13 +715,13 @@ If name is not specified, removes all trait notifiers.</p>
 
 <div class="section" id="examples-using-metpy-plots-imageplot">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.ImagePlot</span></code><a class="headerlink" href="#examples-using-metpy-plots-imageplot" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface."><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface."><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_Simplified_Image_Plot_thumb.png" src="../../_images/sphx_glr_Simplified_Image_Plot_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Simplified_Image_Plot.html#sphx-glr-examples-plots-simplified-image-plot-py"><span class="std std-ref">Simple Plotting</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Simplified_Image_Plot.html#sphx-glr-examples-plots-simplified-image-plot-py"><span class="std std-ref">Simple Plotting</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface combining multiple plots."><div class="figure" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Demonstrate the use of MetPy&#x27;s simplified plotting interface combining multiple plots."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_Combined_plotting_thumb.png" src="../../_images/sphx_glr_Combined_plotting_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Combined_plotting.html#sphx-glr-examples-plots-combined-plotting-py"><span class="std std-ref">Combined Plotting</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Combined_plotting.html#sphx-glr-examples-plots-combined-plotting-py"><span class="std std-ref">Combined Plotting</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -705,8 +748,8 @@ If name is not specified, removes all trait notifiers.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -743,7 +786,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a></li>
@@ -162,6 +161,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -242,27 +242,23 @@
 <h1>add_pressure_to_height<a class="headerlink" href="#add-pressure-to-height" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.add_pressure_to_height">
-<code class="descclassname">metpy.calc.</code><code class="descname">add_pressure_to_height</code><span class="sig-paren">(</span><em>height</em>, <em>pressure</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#add_pressure_to_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.add_pressure_to_height" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">add_pressure_to_height</code><span class="sig-paren">(</span><em class="sig-param">height</em>, <em class="sig-param">pressure</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#add_pressure_to_height"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.add_pressure_to_height" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the height at a certain pressure above another height.</p>
 <p>This assumes a standard atmosphere.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>height</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Height level</li>
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Pressure above height level</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>height</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Height level</p></li>
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Pressure above height level</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The corresponding height value for the pressure above the height level</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The corresponding height value for the pressure above the height level</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.pressure_to_height_std.html#metpy.calc.pressure_to_height_std" title="metpy.calc.pressure_to_height_std"><code class="xref py py-func docutils literal notranslate"><span class="pre">pressure_to_height_std()</span></code></a>, <a class="reference internal" href="metpy.calc.height_to_pressure_std.html#metpy.calc.height_to_pressure_std" title="metpy.calc.height_to_pressure_std"><code class="xref py py-func docutils literal notranslate"><span class="pre">height_to_pressure_std()</span></code></a>, <a class="reference internal" href="metpy.calc.add_height_to_pressure.html#metpy.calc.add_height_to_pressure" title="metpy.calc.add_height_to_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_height_to_pressure()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.pressure_to_height_std.html#metpy.calc.pressure_to_height_std" title="metpy.calc.pressure_to_height_std"><code class="xref py py-func docutils literal notranslate"><span class="pre">pressure_to_height_std()</span></code></a>, <a class="reference internal" href="metpy.calc.height_to_pressure_std.html#metpy.calc.height_to_pressure_std" title="metpy.calc.height_to_pressure_std"><code class="xref py py-func docutils literal notranslate"><span class="pre">height_to_pressure_std()</span></code></a>, <a class="reference internal" href="metpy.calc.add_height_to_pressure.html#metpy.calc.add_height_to_pressure" title="metpy.calc.add_height_to_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">add_height_to_pressure()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -290,8 +286,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -328,7 +324,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

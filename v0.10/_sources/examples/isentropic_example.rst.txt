@@ -15,8 +15,7 @@ The MetPy function `mpcalc.isentropic_interpolation` allows for isentropic analy
 analysis data in isobaric coordinates.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
     import cartopy.crs as ccrs
     import cartopy.feature as cfeature
@@ -42,8 +41,7 @@ for Environmental Information (https://www.ncdc.noaa.gov/data-access/model-data)
 will be used.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     data = xr.open_dataset(get_test_data('narr_example.nc', False))
@@ -55,7 +53,7 @@ will be used.
 
 
 
-.. code-block:: python
+.. code-block:: default
 
     print(list(data.variables))
 
@@ -72,12 +70,12 @@ will be used.
     ['Temperature', 'time', 'isobaric', 'y', 'x', 'Lambert_Conformal', 'lat', 'lon', 'u_wind', 'v_wind', 'Geopotential_height', 'Specific_humidity']
 
 
+
 We will reduce the dimensionality of the data as it is pulled in to remove an empty time
 dimension.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # Assign data to variable names
@@ -105,8 +103,7 @@ To properly interpolate to isentropic coordinates, the function must know the de
 isentropic levels. An array with these levels will be created below.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     isentlevs = [296.] * units.kelvin
@@ -126,8 +123,7 @@ levels, and temperature be input. Any additional inputs (in this case relative h
 and v wind components) will be linearly interpolated to isentropic space.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     isent_anal = mpcalc.isentropic_interpolation(isentlevs,
@@ -143,14 +139,22 @@ and v wind components) will be linearly interpolated to isentropic space.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/metpy/interpolate/one_dimension.py:149: UserWarning: Interpolation point out of data bounds encountered
+      warnings.warn('Interpolation point out of data bounds encountered')
+
 
 
 The output is a list, so now we will separate the variables to different names before
 plotting.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     isentprs, isenttmp, isentspech, isentu, isentv, isenthgt = isent_anal
@@ -167,8 +171,7 @@ A quick look at the shape of these variables will show that the data is now in i
 coordinates, with the number of vertical levels as specified above.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     print(isentprs.shape)
@@ -196,14 +199,14 @@ coordinates, with the number of vertical levels as specified above.
     (1, 118, 292)
 
 
+
 **Converting to Relative Humidity**
 
 The NARR only gives specific humidity on isobaric vertical levels, so relative humidity will
 have to be calculated after the interpolation to isentropic space.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     isentrh = 100 * mpcalc.relative_humidity_from_specific_humidity(isentspech, isenttmp, isentprs)
@@ -217,8 +220,7 @@ have to be calculated after the interpolation to isentropic space.
 **Plotting the Isentropic Analysis**
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # Set up our projection
@@ -267,6 +269,19 @@ have to be calculated after the interpolation to isentropic space.
     :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in less
+      u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
+    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in greater
+      u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
+    /home/travis/build/Unidata/MetPy/examples/isentropic_example.py:147: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
+      fig.tight_layout()
+
 
 
 **Montgomery Streamfunction**
@@ -276,8 +291,7 @@ gradient is proportional to the geostrophic wind in isentropic space. This can b
 calculated with `mpcalc.montgomery_streamfunction`.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
 
@@ -326,9 +340,25 @@ calculated with `mpcalc.montgomery_streamfunction`.
     :class: sphx-glr-single-img
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in less
+      u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
+    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in greater
+      u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
+    /home/travis/build/Unidata/MetPy/examples/isentropic_example.py:193: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations. 
+      fig.tight_layout()
 
 
-**Total running time of the script:** ( 0 minutes  13.009 seconds)
+
+
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  15.215 seconds)
 
 
 .. _sphx_glr_download_examples_isentropic_example.py:
@@ -356,4 +386,4 @@ calculated with `mpcalc.montgomery_streamfunction`.
 
  .. rst-class:: sphx-glr-signature
 
-    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

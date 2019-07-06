@@ -6,7 +6,7 @@ unit-correctness. This simplifies the MetPy API by eliminating the need to speci
 various functions. Instead, only the final results need to be converted to desired units. For
 more information on unit support, see the documentation for
 `Pint <http://pint.readthedocs.io>`_. Particular attention should be paid to the support
-for `temperature units <http://pint.readthedocs.io/en/latest/nonmult.html>`_.
+for `temperature units <https://pint.readthedocs.io/en/latest/nonmult.html>`_.
 
 ------------
 Construction

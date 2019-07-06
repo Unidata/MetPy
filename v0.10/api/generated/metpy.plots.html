@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">plots</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -135,6 +134,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.MapPanel.html">MapPanel</a></li>
@@ -150,6 +150,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -228,62 +229,65 @@
 <span id="plots"></span><h1>plots<a class="headerlink" href="#module-metpy.plots" title="Permalink to this headline">¶</a></h1>
 <p>Contains functionality for making meteorological plots.</p>
 <p class="rubric">Functions</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_metpy_logo</span></code></a>(fig[,&nbsp;x,&nbsp;y,&nbsp;zorder,&nbsp;size])</td>
-<td>Add the MetPy logo to a figure.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="metpy.plots.add_metpy_logo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_metpy_logo</span></code></a>(fig[, x, y, zorder, size])</p></td>
+<td><p>Add the MetPy logo to a figure.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="metpy.plots.add_timestamp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_timestamp</span></code></a>(ax[,&nbsp;time,&nbsp;x,&nbsp;y,&nbsp;ha,&nbsp;…])</td>
-<td>Add a timestamp to a plot.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="metpy.plots.add_timestamp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_timestamp</span></code></a>(ax[, time, x, y, ha, …])</p></td>
+<td><p>Add a timestamp to a plot.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.add_unidata_logo.html#metpy.plots.add_unidata_logo" title="metpy.plots.add_unidata_logo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_unidata_logo</span></code></a>(fig[,&nbsp;x,&nbsp;y,&nbsp;zorder,&nbsp;size])</td>
-<td>Add the Unidata logo to a figure.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.add_unidata_logo.html#metpy.plots.add_unidata_logo" title="metpy.plots.add_unidata_logo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_unidata_logo</span></code></a>(fig[, x, y, zorder, size])</p></td>
+<td><p>Add the Unidata logo to a figure.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.convert_gempak_color.html#metpy.plots.convert_gempak_color" title="metpy.plots.convert_gempak_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_gempak_color</span></code></a>(c[,&nbsp;style])</td>
-<td>Convert GEMPAK color numbers into corresponding Matplotlib colors.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.convert_gempak_color.html#metpy.plots.convert_gempak_color" title="metpy.plots.convert_gempak_color"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_gempak_color</span></code></a>(c[, style])</p></td>
+<td><p>Convert GEMPAK color numbers into corresponding Matplotlib colors.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.read_colortable.html#metpy.plots.read_colortable" title="metpy.plots.read_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_colortable</span></code></a>(fobj)</td>
-<td>Read colortable information from a file.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.read_colortable.html#metpy.plots.read_colortable" title="metpy.plots.read_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">read_colortable</span></code></a>(fobj)</p></td>
+<td><p>Read colortable information from a file.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Classes</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a>(*args,&nbsp;**kwargs)</td>
-<td>Represent a contour plot.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Represent a contour plot.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="metpy.plots.Hodograph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hodograph</span></code></a>([ax,&nbsp;component_range])</td>
-<td>Make a hodograph of wind data.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilledContourPlot</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Represent a contour fill plot.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>(*args,&nbsp;**kwargs)</td>
-<td>Represent an image plot.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.Hodograph.html#metpy.plots.Hodograph" title="metpy.plots.Hodograph"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Hodograph</span></code></a>([ax, component_range])</p></td>
+<td><p>Make a hodograph of wind data.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MapPanel</span></code></a>(*args,&nbsp;**kwargs)</td>
-<td>Draw one or more plots on a map.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Represent an image plot.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PanelContainer</span></code></a>(*args,&nbsp;**kwargs)</td>
-<td>Hold multiple panels of plots.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="metpy.plots.MapPanel"><code class="xref py py-obj docutils literal notranslate"><span class="pre">MapPanel</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Draw one or more plots on a map.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.Plot2D.html#metpy.plots.Plot2D" title="metpy.plots.Plot2D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plot2D</span></code></a>(*args,&nbsp;**kwargs)</td>
-<td>Represent plots of 2D data.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="metpy.plots.PanelContainer"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PanelContainer</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Hold multiple panels of plots.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig,&nbsp;rotation,&nbsp;subplot,&nbsp;rect])</td>
-<td>Make Skew-T log-P plots of data.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.Plot2D.html#metpy.plots.Plot2D" title="metpy.plots.Plot2D"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Plot2D</span></code></a>(*args, **kwargs)</p></td>
+<td><p>Represent plots of 2D data.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>(ax,&nbsp;x,&nbsp;y[,&nbsp;fontsize,&nbsp;spacing,&nbsp;…])</td>
-<td>Make a standard meteorological station plot.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.SkewT.html#metpy.plots.SkewT" title="metpy.plots.SkewT"><code class="xref py py-obj docutils literal notranslate"><span class="pre">SkewT</span></code></a>([fig, rotation, subplot, rect])</p></td>
+<td><p>Make Skew-T log-P plots of data.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout" title="metpy.plots.StationPlotLayout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlotLayout</span></code></a></td>
-<td>make a layout to encapsulate plotting using <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StationPlot</span></code></a>.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlot</span></code></a>(ax, x, y[, fontsize, spacing, …])</p></td>
+<td><p>Make a standard meteorological station plot.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.plots.StationPlotLayout.html#metpy.plots.StationPlotLayout" title="metpy.plots.StationPlotLayout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">StationPlotLayout</span></code></a></p></td>
+<td><p>make a layout to encapsulate plotting using <a class="reference internal" href="metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="metpy.plots.StationPlot"><code class="xref py py-class docutils literal notranslate"><span class="pre">StationPlot</span></code></a>.</p></td>
 </tr>
 </tbody>
 </table>
@@ -311,8 +315,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -349,7 +353,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

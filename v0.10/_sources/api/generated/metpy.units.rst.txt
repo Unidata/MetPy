@@ -25,16 +25,6 @@ units
 
    
    
-   .. rubric:: Classes
-
-   .. autosummary::
-      :toctree: ./
-
-   
-      PintAxisInfo
-      PintConverter
-
-   
    
 
    

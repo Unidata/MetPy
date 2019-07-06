@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Dimension &mdash; MetPy 0.10</title>
+  <title>Computation times &mdash; MetPy 0.10</title>
   
 
   
@@ -17,7 +17,7 @@
   
   
   
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.io.cdm.Dimension.html"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/gridding/sg_execution_times.html"/>
   
 
   
@@ -43,10 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
-        <link rel="up" title="cdm" href="metpy.io.cdm.html"/>
-        <link rel="next" title="Group" href="metpy.io.cdm.Group.html"/>
-        <link rel="prev" title="Dataset" href="metpy.io.cdm.Dataset.html"/> 
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -117,33 +114,13 @@
               
             
             
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="metpy.io.cdm.html">cdm</a><ul class="current">
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.cf_to_proj.html">cf_to_proj</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.deprecated.html">deprecated</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.AttributeContainer.html">AttributeContainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Dataset.html">Dataset</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">Dimension</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Group.html">Group</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.OrderedDict.html">OrderedDict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Variable.html">Variable</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -194,11 +171,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">Reference Guide</a> &raquo;</li>
-        
-          <li><a href="metpy.io.cdm.html">cdm</a> &raquo;</li>
-        
-      <li>Dimension</li>
+      <li>Computation times</li>
     
     
     <li class="source-link">
@@ -206,7 +179,10 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.io.cdm.Dimension&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/gridding/sg_execution_times.py"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -220,51 +196,17 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="dimension">
-<h1>Dimension<a class="headerlink" href="#dimension" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="metpy.io.cdm.Dimension">
-<em class="property">class </em><code class="descclassname">metpy.io.cdm.</code><code class="descname">Dimension</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/cdm.html#Dimension"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.Dimension" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represent a shared dimension between different Variables.</p>
-<p>For instance, variables that are dependent upon a common set of times.</p>
-<p class="rubric">Methods Summary</p>
-<table border="1" class="longtable docutils">
-<colgroup>
-<col width="10%" />
-<col width="90%" />
-</colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.Dimension.__init__" title="metpy.io.cdm.Dimension.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(**kwargs)</td>
-<td></td>
-</tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.Dimension.group" title="metpy.io.cdm.Dimension.group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group</span></code></a>()</td>
-<td>Get the Group that owns this Dimension.</td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Methods Documentation</p>
-<dl class="method">
-<dt id="metpy.io.cdm.Dimension.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Dimension.__init__" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="method">
-<dt id="metpy.io.cdm.Dimension.group">
-<code class="descname">group</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/cdm.html#Dimension.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.Dimension.group" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the Group that owns this Dimension.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>Group</em> – The parent Group.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-</dd></dl>
-
-<div style='clear:both'></div></div>
+  <div class="section" id="computation-times">
+<span id="sphx-glr-examples-gridding-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Permalink to this headline">¶</a></h1>
+<p><strong>00:14.901</strong> total execution time for <strong>examples_gridding</strong> files:</p>
+<ul class="simple">
+<li><p><strong>00:06.584</strong>: <a class="reference internal" href="Point_Interpolation.html#sphx-glr-examples-gridding-point-interpolation-py"><span class="std std-ref">Point Interpolation</span></a> (<code class="docutils literal notranslate"><span class="pre">Point_Interpolation.py</span></code>)</p></li>
+<li><p><strong>00:05.294</strong>: <a class="reference internal" href="Wind_SLP_Interpolation.html#sphx-glr-examples-gridding-wind-slp-interpolation-py"><span class="std std-ref">Wind and Sea Level Pressure Interpolation</span></a> (<code class="docutils literal notranslate"><span class="pre">Wind_SLP_Interpolation.py</span></code>)</p></li>
+<li><p><strong>00:01.135</strong>: <a class="reference internal" href="Natural_Neighbor_Verification.html#sphx-glr-examples-gridding-natural-neighbor-verification-py"><span class="std std-ref">Natural Neighbor Verification</span></a> (<code class="docutils literal notranslate"><span class="pre">Natural_Neighbor_Verification.py</span></code>)</p></li>
+<li><p><strong>00:00.969</strong>: <a class="reference internal" href="Inverse_Distance_Verification.html#sphx-glr-examples-gridding-inverse-distance-verification-py"><span class="std std-ref">Inverse Distance Verification: Cressman and Barnes</span></a> (<code class="docutils literal notranslate"><span class="pre">Inverse_Distance_Verification.py</span></code>)</p></li>
+<li><p><strong>00:00.919</strong>: <a class="reference internal" href="Find_Natural_Neighbors_Verification.html#sphx-glr-examples-gridding-find-natural-neighbors-verification-py"><span class="std std-ref">Find Natural Neighbors Verification</span></a> (<code class="docutils literal notranslate"><span class="pre">Find_Natural_Neighbors_Verification.py</span></code>)</p></li>
+</ul>
+</div>
 
 
            </div>
@@ -274,22 +216,13 @@
           </div>
           <footer>
   
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="metpy.io.cdm.Group.html" class="btn btn-neutral float-right" title="Group" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="metpy.io.cdm.Dataset.html" class="btn btn-neutral" title="Dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -326,7 +259,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

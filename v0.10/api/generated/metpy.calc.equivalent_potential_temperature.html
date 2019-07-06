@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a><ul class="current">
@@ -173,6 +172,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -253,10 +253,10 @@
 <h1>equivalent_potential_temperature<a class="headerlink" href="#equivalent-potential-temperature" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.equivalent_potential_temperature">
-<code class="descclassname">metpy.calc.</code><code class="descname">equivalent_potential_temperature</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>dewpoint</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#equivalent_potential_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.equivalent_potential_temperature" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">equivalent_potential_temperature</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpoint</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#equivalent_potential_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.equivalent_potential_temperature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate equivalent potential temperature.</p>
 <p>This calculation must be given an air parcel’s pressure, temperature, and dewpoint.
-The implementation uses the formula outlined in <a class="reference internal" href="../../references.html#bolton1980" id="id1">[Bolton1980]</a>:</p>
+The implementation uses the formula outlined in <a class="reference internal" href="../../references.html#bolton1980" id="id1"><span>[Bolton1980]</span></a>:</p>
 <p>First, the LCL temperature is calculated:</p>
 <div class="math notranslate nohighlight">
 \[T_{L}=\frac{1}{\frac{1}{T_{D}-56}+\frac{ln(T_{K}/T_{D})}{800}}+56\]</div>
@@ -268,25 +268,21 @@ The implementation uses the formula outlined in <a class="reference internal" hr
 <div class="math notranslate nohighlight">
 \[\theta_{E}=\theta_{DL}\exp\left[\left(\frac{3036.}{T_{L}}
 -1.78\right)*r(1+.448r)\right]\]</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</li>
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Temperature of parcel</li>
-<li><strong>dewpoint</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Dewpoint of parcel</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Temperature of parcel</p></li>
+<li><p><strong>dewpoint</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Dewpoint of parcel</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The equivalent potential temperature of the parcel</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The equivalent potential temperature of the parcel</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
-<p><a class="reference internal" href="../../references.html#bolton1980" id="id2">[Bolton1980]</a> formula for Theta-e is used, since according to
-<a class="reference internal" href="../../references.html#daviesjones2009" id="id3">[DaviesJones2009]</a> it is the most accurate non-iterative formulation
+<p><a class="reference internal" href="../../references.html#bolton1980" id="id2"><span>[Bolton1980]</span></a> formula for Theta-e is used, since according to
+<a class="reference internal" href="../../references.html#daviesjones2009" id="id3"><span>[DaviesJones2009]</span></a> it is the most accurate non-iterative formulation
 available.</p>
 </dd></dl>
 
@@ -314,8 +310,8 @@ available.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -352,7 +348,7 @@ available.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

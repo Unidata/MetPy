@@ -12,7 +12,10 @@ Plot2D
 
    .. autosummary::
    
+      ~Plot2D.clabels
+      ~Plot2D.colorbar
       ~Plot2D.colormap
+      ~Plot2D.contours
       ~Plot2D.cross_validation_lock
       ~Plot2D.data
       ~Plot2D.field
@@ -41,6 +44,7 @@ Plot2D
       ~Plot2D.class_trait_names
       ~Plot2D.class_traits
       ~Plot2D.clear
+      ~Plot2D.clear_collections
       ~Plot2D.clear_handle
       ~Plot2D.draw
       ~Plot2D.has_trait
@@ -66,7 +70,10 @@ Plot2D
    .. rubric:: Attributes Documentation
 
    
+   .. autoattribute:: clabels
+   .. autoattribute:: colorbar
    .. autoattribute:: colormap
+   .. autoattribute:: contours
    .. autoattribute:: cross_validation_lock
    .. autoattribute:: data
    .. autoattribute:: field
@@ -94,6 +101,7 @@ Plot2D
    .. automethod:: class_trait_names
    .. automethod:: class_traits
    .. automethod:: clear
+   .. automethod:: clear_collections
    .. automethod:: clear_handle
    .. automethod:: draw
    .. automethod:: has_trait

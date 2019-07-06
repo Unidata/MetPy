@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -135,6 +134,7 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.MapPanel.html">MapPanel</a></li>
@@ -150,6 +150,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -230,27 +231,23 @@
 <h1>convert_gempak_color<a class="headerlink" href="#convert-gempak-color" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.plots.convert_gempak_color">
-<code class="descclassname">metpy.plots.</code><code class="descname">convert_gempak_color</code><span class="sig-paren">(</span><em>c</em>, <em>style='psc'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/_util.html#convert_gempak_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.convert_gempak_color" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">convert_gempak_color</code><span class="sig-paren">(</span><em class="sig-param">c</em>, <em class="sig-param">style='psc'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/_util.html#convert_gempak_color"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.convert_gempak_color" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert GEMPAK color numbers into corresponding Matplotlib colors.</p>
 <p>Takes a sequence of GEMPAK color numbers and turns them into
 equivalent Matplotlib colors. Various GEMPAK quirks are respected,
 such as treating negative values as equivalent to 0.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>sequence of ints</em>) – GEMPAK color number(s)</li>
-<li><strong>style</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The GEMPAK ‘device’ to use to interpret color numbers. May be ‘psc’
-(the default; best for a white background) or ‘xw’ (best for a black background).</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><em>sequence of ints</em>) – GEMPAK color number(s)</p></li>
+<li><p><strong>style</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The GEMPAK ‘device’ to use to interpret color numbers. May be ‘psc’
+(the default; best for a white background) or ‘xw’ (best for a black background).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>List of strings of Matplotlib colors, or a single string if only one color requested.</em></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>List of strings of Matplotlib colors, or a single string if only one color requested.</em></p>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -277,8 +274,8 @@ such as treating negative values as equivalent to 0.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -315,7 +312,7 @@ such as treating negative values as equivalent to 0.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

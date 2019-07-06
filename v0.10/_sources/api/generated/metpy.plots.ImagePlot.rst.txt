@@ -12,7 +12,10 @@ ImagePlot
 
    .. autosummary::
    
+      ~ImagePlot.clabels
+      ~ImagePlot.colorbar
       ~ImagePlot.colormap
+      ~ImagePlot.contours
       ~ImagePlot.cross_validation_lock
       ~ImagePlot.data
       ~ImagePlot.field
@@ -41,6 +44,7 @@ ImagePlot
       ~ImagePlot.class_trait_names
       ~ImagePlot.class_traits
       ~ImagePlot.clear
+      ~ImagePlot.clear_collections
       ~ImagePlot.clear_handle
       ~ImagePlot.draw
       ~ImagePlot.has_trait
@@ -66,7 +70,10 @@ ImagePlot
    .. rubric:: Attributes Documentation
 
    
+   .. autoattribute:: clabels
+   .. autoattribute:: colorbar
    .. autoattribute:: colormap
+   .. autoattribute:: contours
    .. autoattribute:: cross_validation_lock
    .. autoattribute:: data
    .. autoattribute:: field
@@ -94,6 +101,7 @@ ImagePlot
    .. automethod:: class_trait_names
    .. automethod:: class_traits
    .. automethod:: clear
+   .. automethod:: clear_collections
    .. automethod:: clear_handle
    .. automethod:: draw
    .. automethod:: has_trait

@@ -57,14 +57,18 @@ add_metpy_logo(fig, 115, 100)
 skew = SkewT(fig, rotation=45)
 
 # Plot the data using normal plotting functions, in this case using
-# log scaling in Y, as dictated by the typical meteorological plot
+# log scaling in Y, as dictated by the typical meteorological plot.
 skew.plot(p, T, 'r')
 skew.plot(p, Td, 'g')
 skew.plot_barbs(p, u, v)
 skew.ax.set_ylim(1000, 100)
 skew.ax.set_xlim(-40, 60)
 
-# Calculate LCL height and plot as black dot
+# Calculate LCL height and plot as black dot. Because `p`'s first value is
+# ~1000 mb and its last value is ~250 mb, the `0` index is selected for
+# `p`, `T`, and `Td` to lift the parcel from the surface. If `p` was inverted,
+# i.e. start from low value, 250 mb, to a high value, 1000 mb, the `-1` index
+# should be selected.
 lcl_pressure, lcl_temperature = mpcalc.lcl(p[0], T[0], Td[0])
 skew.plot(lcl_pressure, lcl_temperature, 'ko', markerfacecolor='black')
 

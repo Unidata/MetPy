@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -204,7 +205,7 @@
 <span class="kn">from</span> <span class="nn">.basic</span> <span class="k">import</span> <span class="n">coriolis_parameter</span>
 <span class="kn">from</span> <span class="nn">.tools</span> <span class="k">import</span> <span class="n">first_derivative</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
-<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">CFConventionHandler</span><span class="p">,</span> <span class="n">check_matching_coordinates</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">check_axis</span><span class="p">,</span> <span class="n">check_matching_coordinates</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -224,8 +225,7 @@
 <span class="sd">        A tuple of the x and y distances as DataArrays</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="p">(</span><span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">)</span>
-            <span class="ow">and</span> <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">)):</span>
+    <span class="k">if</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">):</span>
         <span class="c1"># Use pyproj to obtain x and y distances</span>
         <span class="kn">from</span> <span class="nn">pyproj</span> <span class="k">import</span> <span class="n">Geod</span>
 
@@ -244,8 +244,7 @@
         <span class="n">x</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">lon</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">lon</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;meters&#39;</span><span class="p">})</span>
         <span class="n">y</span> <span class="o">=</span> <span class="n">xr</span><span class="o">.</span><span class="n">DataArray</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">coords</span><span class="o">=</span><span class="n">lat</span><span class="o">.</span><span class="n">coords</span><span class="p">,</span> <span class="n">dims</span><span class="o">=</span><span class="n">lat</span><span class="o">.</span><span class="n">dims</span><span class="p">,</span> <span class="n">attrs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;units&#39;</span><span class="p">:</span> <span class="s1">&#39;meters&#39;</span><span class="p">})</span>
 
-    <span class="k">elif</span> <span class="p">(</span><span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span>
-            <span class="ow">and</span> <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)):</span>
+    <span class="k">elif</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">)</span> <span class="ow">and</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">):</span>
 
         <span class="c1"># Simply return what we have</span>
         <span class="n">x</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">x</span>
@@ -272,7 +271,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">cross</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">y</span>
-    <span class="k">if</span> <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">y</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
@@ -516,8 +515,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -554,7 +553,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

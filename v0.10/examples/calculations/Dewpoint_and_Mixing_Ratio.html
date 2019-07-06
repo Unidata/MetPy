@@ -135,6 +135,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -213,8 +214,8 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-calculations-dewpoint-and-mixing-ratio-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-calculations-dewpoint-and-mixing-ratio-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="dewpoint-and-mixing-ratio">
 <span id="sphx-glr-examples-calculations-dewpoint-and-mixing-ratio-py"></span><h1>Dewpoint and Mixing Ratio<a class="headerlink" href="#dewpoint-and-mixing-ratio" title="Permalink to this headline">¶</a></h1>
@@ -223,13 +224,13 @@
 a value for vapor pressure assuming both 1000mb and 850mb ambient air
 pressure values. It also demonstrates converting the resulting dewpoint
 temperature to degrees Fahrenheit.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="kn">as</span> <span class="nn">mpcalc</span>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
 </pre></div>
 </div>
 <p>Create a test value of mixing ratio in grams per kilogram</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">mixing</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;g/kg&#39;</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">mixing</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">mixing</span> <span class="o">=</span> <span class="mi">10</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;g/kg&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">mixing</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -238,8 +239,8 @@ temperature to degrees Fahrenheit.</p>
 </div>
 <p>Now throw that value with units into the function to calculate
 the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="View documentation for metpy.calc.vapor_pressure"><span class="n">mpcalc</span><span class="o">.</span><span class="n">vapor_pressure</span></a><span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">,</span> <span class="n">mixing</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="View documentation for metpy.calc.vapor_pressure"><span class="n">mpcalc</span><span class="o">.</span><span class="n">vapor_pressure</span></a><span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">,</span> <span class="n">mixing</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -247,7 +248,7 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
 </pre></div>
 </div>
 <p>Take the odd units and force them to millibars</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -255,8 +256,8 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
 </pre></div>
 </div>
 <p>Take the raw vapor pressure and throw into the dewpoint function</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">td</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="View documentation for metpy.calc.dewpoint"><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint</span></a><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">td</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">td</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="View documentation for metpy.calc.dewpoint"><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint</span></a><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -264,7 +265,7 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
 </pre></div>
 </div>
 <p>Which can of course be converted to Fahrenheit</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -272,8 +273,8 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
 </pre></div>
 </div>
 <p>Now do the same thing for 850 mb, approximately the pressure of Denver</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="View documentation for metpy.calc.vapor_pressure"><span class="n">mpcalc</span><span class="o">.</span><span class="n">vapor_pressure</span></a><span class="p">(</span><span class="mf">850.</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">,</span> <span class="n">mixing</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">e</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.vapor_pressure.html#metpy.calc.vapor_pressure" title="View documentation for metpy.calc.vapor_pressure"><span class="n">mpcalc</span><span class="o">.</span><span class="n">vapor_pressure</span></a><span class="p">(</span><span class="mf">850.</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">,</span> <span class="n">mixing</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">mbar</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -281,22 +282,24 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
 </pre></div>
 </div>
 <p>And print the corresponding dewpoint</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">td</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="View documentation for metpy.calc.dewpoint"><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint</span></a><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="n">td</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">td</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="View documentation for metpy.calc.dewpoint"><span class="n">mpcalc</span><span class="o">.</span><span class="n">dewpoint</span></a><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">td</span><span class="p">,</span> <span class="n">td</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degF&#39;</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
 <div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>11.376545231347285 degC 52.47778181642507 degF
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.006 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.080 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-calculations-dewpoint-and-mixing-ratio-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/734fe1f00d566a906418b67fc0cbd566/Dewpoint_and_Mixing_Ratio.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Dewpoint_and_Mixing_Ratio.py</span></code></a></div>
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/058def73d39d8821fd00c07927b05967/Dewpoint_and_Mixing_Ratio.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Dewpoint_and_Mixing_Ratio.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/734fe1f00d566a906418b67fc0cbd566/Dewpoint_and_Mixing_Ratio.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Dewpoint_and_Mixing_Ratio.py</span></code></a></p>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/058def73d39d8821fd00c07927b05967/Dewpoint_and_Mixing_Ratio.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Dewpoint_and_Mixing_Ratio.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
@@ -321,8 +324,8 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -359,7 +362,7 @@ the corresponding vapor pressure, given a surface pressure of 1000 mb</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

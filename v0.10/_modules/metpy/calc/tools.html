@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -216,7 +217,7 @@
 <span class="kn">from</span> <span class="nn">..interpolate.one_dimension</span> <span class="k">import</span> <span class="n">interpolate_1d</span><span class="p">,</span> <span class="n">interpolate_nans_1d</span><span class="p">,</span> <span class="n">log_interpolate_1d</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">atleast_1d</span><span class="p">,</span> <span class="n">check_units</span><span class="p">,</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">diff</span><span class="p">,</span> <span class="n">units</span>
-<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">CFConventionHandler</span><span class="p">,</span> <span class="n">preprocess_xarray</span>
+<span class="kn">from</span> <span class="nn">..xarray</span> <span class="k">import</span> <span class="n">check_axis</span><span class="p">,</span> <span class="n">preprocess_xarray</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
 
@@ -964,47 +965,6 @@
     <span class="k">return</span> <span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="n">value</span><span class="p">)</span> <span class="o">|</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="lat_lon_grid_spacing"><a class="viewcode-back" href="../../../api/generated/metpy.calc.lat_lon_grid_spacing.html#metpy.calc.lat_lon_grid_spacing">[docs]</a><span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;0.8&#39;</span><span class="p">,</span> <span class="n">addendum</span><span class="o">=</span><span class="s1">&#39; This function has been replaced by the signed delta distance&#39;</span>
-                            <span class="s1">&#39;calculation lat_lon_grid_deltas and will be removed in MetPy&#39;</span>
-                            <span class="s1">&#39; 0.11.&#39;</span><span class="p">,</span>
-            <span class="n">pending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-<span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
-<span class="k">def</span> <span class="nf">lat_lon_grid_spacing</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the distance between grid points that are in a latitude/longitude format.</span>
-
-<span class="sd">    Calculate the distance between grid points when the grid spacing is defined by</span>
-<span class="sd">    delta lat/lon rather than delta x/y</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    longitude : array_like</span>
-<span class="sd">        array of longitudes defining the grid</span>
-<span class="sd">    latitude : array_like</span>
-<span class="sd">        array of latitudes defining the grid</span>
-<span class="sd">    kwargs</span>
-<span class="sd">        Other keyword arguments to pass to :class:`~pyproj.Geod`</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">     dx, dy: 2D arrays of distances between grid points in the x and y direction</span>
-
-<span class="sd">    Notes</span>
-<span class="sd">    -----</span>
-<span class="sd">    Accepts, 1D or 2D arrays for latitude and longitude</span>
-<span class="sd">    Assumes [Y, X] for 2D arrays</span>
-
-<span class="sd">    .. deprecated:: 0.8.0</span>
-<span class="sd">        Function has been replaced with the signed delta distance calculation</span>
-<span class="sd">        `lat_lon_grid_deltas` and will be removed from MetPy in 0.11.0.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Use the absolute value of the signed function replacing this</span>
-    <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <span class="n">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dx</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">dy</span><span class="p">)</span></div>
-
-
 <div class="viewcode-block" id="lat_lon_grid_deltas"><a class="viewcode-back" href="../../../api/generated/metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="k">def</span> <span class="nf">lat_lon_grid_deltas</span><span class="p">(</span><span class="n">longitude</span><span class="p">,</span> <span class="n">latitude</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -1116,13 +1076,13 @@
             <span class="c1"># Initialize new kwargs with the axis number</span>
             <span class="n">new_kwargs</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;axis&#39;</span><span class="p">:</span> <span class="n">f</span><span class="o">.</span><span class="n">get_axis_num</span><span class="p">(</span><span class="n">axis</span><span class="p">)}</span>
 
-            <span class="k">if</span> <span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">attrs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;_metpy_axis&#39;</span><span class="p">)</span> <span class="o">==</span> <span class="s1">&#39;T&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;time&#39;</span><span class="p">):</span>
                 <span class="c1"># Time coordinate, need to convert to seconds from datetimes</span>
                 <span class="n">new_kwargs</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">as_timestamp</span><span class="p">()</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">unit_array</span>
-            <span class="k">elif</span> <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;lon&#39;</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;lon&#39;</span><span class="p">):</span>
                 <span class="c1"># Longitude coordinate, need to get grid deltas</span>
                 <span class="n">new_kwargs</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">grid_deltas_from_dataarray</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
-            <span class="k">elif</span> <span class="n">CFConventionHandler</span><span class="o">.</span><span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;lat&#39;</span><span class="p">):</span>
+            <span class="k">elif</span> <span class="n">check_axis</span><span class="p">(</span><span class="n">f</span><span class="p">[</span><span class="n">axis</span><span class="p">],</span> <span class="s1">&#39;lat&#39;</span><span class="p">):</span>
                 <span class="c1"># Latitude coordinate, need to get grid deltas</span>
                 <span class="n">_</span><span class="p">,</span> <span class="n">new_kwargs</span><span class="p">[</span><span class="s1">&#39;delta&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">grid_deltas_from_dataarray</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
@@ -1580,8 +1540,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -1618,7 +1578,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

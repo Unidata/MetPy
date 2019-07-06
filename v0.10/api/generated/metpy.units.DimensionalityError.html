@@ -46,7 +46,7 @@
     <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="units" href="metpy.units.html"/>
         <link rel="next" title="UndefinedUnitError" href="metpy.units.UndefinedUnitError.html"/>
-        <link rel="prev" title="PintConverter" href="metpy.units.PintConverter.html"/> 
+        <link rel="prev" title="pandas_dataframe_to_unit_arrays" href="metpy.units.pandas_dataframe_to_unit_arrays.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -132,14 +132,11 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.diff.html">diff</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.masked_array.html">masked_array</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html">pandas_dataframe_to_unit_arrays</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.PintAxisInfo.html">PintAxisInfo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.PintConverter.html">PintConverter</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">DimensionalityError</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.UndefinedUnitError.html">UndefinedUnitError</a></li>
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
@@ -147,6 +144,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -227,7 +225,7 @@
 <h1>DimensionalityError<a class="headerlink" href="#dimensionalityerror" title="Permalink to this headline">¶</a></h1>
 <dl class="exception">
 <dt id="metpy.units.DimensionalityError">
-<em class="property">exception </em><code class="descclassname">metpy.units.</code><code class="descname">DimensionalityError</code><span class="sig-paren">(</span><em>units1</em>, <em>units2</em>, <em>dim1=None</em>, <em>dim2=None</em>, <em>extra_msg=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pint/errors.html#DimensionalityError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.units.DimensionalityError" title="Permalink to this definition">¶</a></dt>
+<em class="property">exception </em><code class="sig-prename descclassname">metpy.units.</code><code class="sig-name descname">DimensionalityError</code><span class="sig-paren">(</span><em class="sig-param">units1</em>, <em class="sig-param">units2</em>, <em class="sig-param">dim1=None</em>, <em class="sig-param">dim2=None</em>, <em class="sig-param">extra_msg=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/pint/errors.html#DimensionalityError"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.units.DimensionalityError" title="Permalink to this definition">¶</a></dt>
 <dd><p>Raised when trying to convert between incompatible units.</p>
 </dd></dl>
 
@@ -246,7 +244,7 @@
         <a href="metpy.units.UndefinedUnitError.html" class="btn btn-neutral float-right" title="UndefinedUnitError" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.units.PintConverter.html" class="btn btn-neutral" title="PintConverter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.units.pandas_dataframe_to_unit_arrays.html" class="btn btn-neutral" title="pandas_dataframe_to_unit_arrays" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -255,8 +253,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -293,7 +291,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

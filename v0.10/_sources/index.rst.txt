@@ -15,6 +15,7 @@
    examples/index
    tutorials/index
    api/index
+   roadmap
    gempak
    CONTRIBUTING
    infrastructureguide
@@ -73,7 +74,7 @@ Media
 * `SciPy 2017 poster`_ and `repository <https://github.com/jrleeman/CAPE-SciPy-2017>`_
   about reproducing a classic CAPE paper with MetPy.
 * `SciPy 2017 talk`_ and `slides
-  <http://nbviewer.jupyter.org/format/slides/github/dopplershift/
+  <https://nbviewer.jupyter.org/format/slides/github/dopplershift/
   Talks/blob/master/SciPy2017/MetPy%20Units.ipynb>`_
   about challenges developing MetPy with units
 * MetPy was featured on `Episode 100 of Podcast.__init__`_

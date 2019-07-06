@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -203,8 +204,6 @@
 <span class="kn">from</span> <span class="nn">struct</span> <span class="k">import</span> <span class="n">Struct</span>
 <span class="kn">import</span> <span class="nn">zlib</span>
 
-<span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">UndefinedUnitError</span><span class="p">,</span> <span class="n">units</span>
-
 <span class="n">log</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
@@ -232,52 +231,6 @@
         <span class="k">return</span> <span class="n">gzip</span><span class="o">.</span><span class="n">GzipFile</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="nb">open</span><span class="p">(</span><span class="n">filename</span><span class="p">,</span> <span class="s1">&#39;rb&#39;</span><span class="p">)</span>
-
-
-<span class="k">class</span> <span class="nc">UnitLinker</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Wrap a :class:`metpy.io.cdm.Variable` and handle units.</span>
-
-<span class="sd">    Converts any attached unit attribute to a class:`pint.Unit`. It also handles converting</span>
-<span class="sd">    data returns to be instances of class:`pint.Quantity` rather than bare (unit-less) arrays.</span>
-
-<span class="sd">    &quot;&quot;&quot;</span>
-
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">var</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Construct a new :class:`UnitLinker`.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        var : Variable</span>
-<span class="sd">            The :class:`metpy.io.cdm.Variable` to be wrapped.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_var</span> <span class="o">=</span> <span class="n">var</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_var</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
-        <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="n">UndefinedUnitError</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="kc">None</span>
-
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ind</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get data from the underlying variable and add units.&quot;&quot;&quot;</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_var</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
-        <span class="k">return</span> <span class="n">ret</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="ow">is</span> <span class="kc">None</span> <span class="k">else</span> <span class="n">ret</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span>
-
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Forward all attribute access onto underlying variable.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_var</span><span class="p">,</span> <span class="n">item</span><span class="p">)</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">units</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Access the units from the underlying variable as a :class:`pint.Quantity`.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span>
-
-    <span class="nd">@units</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">units</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Override the units on the underlying variable.&quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">val</span><span class="p">,</span> <span class="n">units</span><span class="o">.</span><span class="n">Unit</span><span class="p">):</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="n">val</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_unit</span> <span class="o">=</span> <span class="n">units</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">NamedStruct</span><span class="p">(</span><span class="n">Struct</span><span class="p">):</span>
@@ -568,37 +521,6 @@
     <span class="k">else</span><span class="p">:</span>
         <span class="n">log</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s1">&#39;Unsupported bit size: </span><span class="si">%s</span><span class="s1">. Returning &quot;B&quot;&#39;</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
         <span class="k">return</span> <span class="s1">&#39;B&#39;</span>
-
-
-<span class="c1"># For debugging</span>
-<span class="k">def</span> <span class="nf">hexdump</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">num_bytes</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">32</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Perform a hexudmp of the buffer.</span>
-
-<span class="sd">    Returns the hexdump as a canonically-formatted string.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ind</span> <span class="o">=</span> <span class="n">offset</span>
-    <span class="n">end</span> <span class="o">=</span> <span class="n">offset</span> <span class="o">+</span> <span class="n">num_bytes</span>
-    <span class="n">lines</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">while</span> <span class="n">ind</span> <span class="o">&lt;</span> <span class="n">end</span><span class="p">:</span>
-        <span class="n">chunk</span> <span class="o">=</span> <span class="n">buf</span><span class="p">[</span><span class="n">ind</span><span class="p">:</span><span class="n">ind</span> <span class="o">+</span> <span class="n">width</span><span class="p">]</span>
-        <span class="n">actual_width</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-        <span class="n">hexfmt</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{:02X}</span><span class="s1">&#39;</span>
-        <span class="n">blocksize</span> <span class="o">=</span> <span class="mi">4</span>
-        <span class="n">blocks</span> <span class="o">=</span> <span class="p">[</span><span class="n">hexfmt</span> <span class="o">*</span> <span class="n">blocksize</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">actual_width</span> <span class="o">//</span> <span class="n">blocksize</span><span class="p">)]</span>
-
-        <span class="c1"># Need to get any partial lines</span>
-        <span class="n">num_left</span> <span class="o">=</span> <span class="n">actual_width</span> <span class="o">%</span> <span class="n">blocksize</span>  <span class="c1"># noqa: S001  Fix false alarm</span>
-        <span class="k">if</span> <span class="n">num_left</span><span class="p">:</span>
-            <span class="n">blocks</span> <span class="o">+=</span> <span class="p">[</span><span class="n">hexfmt</span> <span class="o">*</span> <span class="n">num_left</span> <span class="o">+</span> <span class="s1">&#39;--&#39;</span> <span class="o">*</span> <span class="p">(</span><span class="n">blocksize</span> <span class="o">-</span> <span class="n">num_left</span><span class="p">)]</span>
-        <span class="n">blocks</span> <span class="o">+=</span> <span class="p">[</span><span class="s1">&#39;--&#39;</span> <span class="o">*</span> <span class="n">blocksize</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">width</span> <span class="o">//</span> <span class="n">blocksize</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">blocks</span><span class="p">))</span>
-
-        <span class="n">hexoutput</span> <span class="o">=</span> <span class="s1">&#39; &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">blocks</span><span class="p">)</span>
-        <span class="n">printable</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span>
-        <span class="n">lines</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;  &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="n">hexoutput</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="o">*</span><span class="n">printable</span><span class="p">),</span> <span class="nb">str</span><span class="p">(</span><span class="n">ind</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">end</span><span class="p">))),</span>
-                                <span class="nb">str</span><span class="p">(</span><span class="n">ind</span> <span class="o">-</span> <span class="n">offset</span><span class="p">)</span><span class="o">.</span><span class="n">ljust</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">end</span><span class="p">))),</span>
-                                <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">chr</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="k">if</span> <span class="mi">31</span> <span class="o">&lt;</span> <span class="n">c</span> <span class="o">&lt;</span> <span class="mi">128</span> <span class="k">else</span> <span class="s1">&#39;.&#39;</span> <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">chunk</span><span class="p">))))</span>
-        <span class="n">ind</span> <span class="o">+=</span> <span class="n">width</span>
-    <span class="k">return</span> <span class="s1">&#39;</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lines</span><span class="p">)</span>
 </pre></div>
 
            </div>
@@ -613,8 +535,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -651,7 +573,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

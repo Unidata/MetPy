@@ -132,7 +132,6 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
@@ -140,6 +139,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -219,248 +219,248 @@
 <p>A collection of meteorologically significant constants.</p>
 <div class="section" id="earth">
 <h2>Earth<a class="headerlink" href="#earth" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="19%" />
-<col width="12%" />
-<col width="9%" />
-<col width="30%" />
-<col width="31%" />
+<col style="width: 19%" />
+<col style="width: 12%" />
+<col style="width: 9%" />
+<col style="width: 30%" />
+<col style="width: 31%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>Name</td>
-<td>Symbol</td>
-<td>Short Name</td>
-<td>Units</td>
-<td>Description</td>
+<tbody>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Symbol</p></td>
+<td><p>Short Name</p></td>
+<td><p>Units</p></td>
+<td><p>Description</p></td>
 </tr>
-<tr class="row-even"><td>earth_avg_radius</td>
-<td><span class="math notranslate nohighlight">\(R_e\)</span></td>
-<td>Re</td>
-<td><span class="math notranslate nohighlight">\(\text{m}\)</span></td>
-<td>Avg. radius of the Earth</td>
+<tr class="row-even"><td><p>earth_avg_radius</p></td>
+<td><p><span class="math notranslate nohighlight">\(R_e\)</span></p></td>
+<td><p>Re</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{m}\)</span></p></td>
+<td><p>Avg. radius of the Earth</p></td>
 </tr>
-<tr class="row-odd"><td>earth_gravity</td>
-<td><span class="math notranslate nohighlight">\(g\)</span></td>
-<td>g</td>
-<td><span class="math notranslate nohighlight">\(\text{m s}^{-2}\)</span></td>
-<td>Avg. gravity acceleration on Earth</td>
+<tr class="row-odd"><td><p>earth_gravity</p></td>
+<td><p><span class="math notranslate nohighlight">\(g\)</span></p></td>
+<td><p>g</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{m s}^{-2}\)</span></p></td>
+<td><p>Avg. gravity acceleration on Earth</p></td>
 </tr>
-<tr class="row-even"><td>gravitational_constant</td>
-<td><span class="math notranslate nohighlight">\(G\)</span></td>
-<td>G</td>
-<td><span class="math notranslate nohighlight">\(\text{m}^{3} {kg}^{-1} {s}^{-2}\)</span></td>
-<td>Gravitational constant</td>
+<tr class="row-even"><td><p>gravitational_constant</p></td>
+<td><p><span class="math notranslate nohighlight">\(G\)</span></p></td>
+<td><p>G</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{m}^{3} {kg}^{-1} {s}^{-2}\)</span></p></td>
+<td><p>Gravitational constant</p></td>
 </tr>
-<tr class="row-odd"><td>earth_avg_angular_vel</td>
-<td><span class="math notranslate nohighlight">\(\Omega\)</span></td>
-<td>omega</td>
-<td><span class="math notranslate nohighlight">\(\text{rad s}^{-1}\)</span></td>
-<td>Avg. angular velocity of Earth</td>
+<tr class="row-odd"><td><p>earth_avg_angular_vel</p></td>
+<td><p><span class="math notranslate nohighlight">\(\Omega\)</span></p></td>
+<td><p>omega</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{rad s}^{-1}\)</span></p></td>
+<td><p>Avg. angular velocity of Earth</p></td>
 </tr>
-<tr class="row-even"><td>earth_sfc_avg_dist_sun</td>
-<td><span class="math notranslate nohighlight">\(d\)</span></td>
-<td>d</td>
-<td><span class="math notranslate nohighlight">\(\text{m}\)</span></td>
-<td>Avg. distance of the Earth from the Sun</td>
+<tr class="row-even"><td><p>earth_sfc_avg_dist_sun</p></td>
+<td><p><span class="math notranslate nohighlight">\(d\)</span></p></td>
+<td><p>d</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{m}\)</span></p></td>
+<td><p>Avg. distance of the Earth from the Sun</p></td>
 </tr>
-<tr class="row-odd"><td>earth_solar_irradiance</td>
-<td><span class="math notranslate nohighlight">\(S\)</span></td>
-<td>S</td>
-<td><span class="math notranslate nohighlight">\(\text{W m}^{-2}\)</span></td>
-<td>Avg. solar irradiance of Earth</td>
+<tr class="row-odd"><td><p>earth_solar_irradiance</p></td>
+<td><p><span class="math notranslate nohighlight">\(S\)</span></p></td>
+<td><p>S</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{W m}^{-2}\)</span></p></td>
+<td><p>Avg. solar irradiance of Earth</p></td>
 </tr>
-<tr class="row-even"><td>earth_max_declination</td>
-<td><span class="math notranslate nohighlight">\(\delta\)</span></td>
-<td>delta</td>
-<td><span class="math notranslate nohighlight">\(\text{degrees}\)</span></td>
-<td>Max. solar declination angle of Earth</td>
+<tr class="row-even"><td><p>earth_max_declination</p></td>
+<td><p><span class="math notranslate nohighlight">\(\delta\)</span></p></td>
+<td><p>delta</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{degrees}\)</span></p></td>
+<td><p>Max. solar declination angle of Earth</p></td>
 </tr>
-<tr class="row-odd"><td>earth_orbit_eccentricity</td>
-<td><span class="math notranslate nohighlight">\(e\)</span></td>
-<td>&#160;</td>
-<td><span class="math notranslate nohighlight">\(\text{None}\)</span></td>
-<td>Avg. eccentricity of Earth’s orbit</td>
+<tr class="row-odd"><td><p>earth_orbit_eccentricity</p></td>
+<td><p><span class="math notranslate nohighlight">\(e\)</span></p></td>
+<td></td>
+<td><p><span class="math notranslate nohighlight">\(\text{None}\)</span></p></td>
+<td><p>Avg. eccentricity of Earth’s orbit</p></td>
 </tr>
-<tr class="row-even"><td>earth_mass</td>
-<td><span class="math notranslate nohighlight">\(m_e\)</span></td>
-<td>me</td>
-<td><span class="math notranslate nohighlight">\(\text{kg}\)</span></td>
-<td>Total mass of the Earth (approx)</td>
+<tr class="row-even"><td><p>earth_mass</p></td>
+<td><p><span class="math notranslate nohighlight">\(m_e\)</span></p></td>
+<td><p>me</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{kg}\)</span></p></td>
+<td><p>Total mass of the Earth (approx)</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="water">
 <h2>Water<a class="headerlink" href="#water" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="18%" />
-<col width="12%" />
-<col width="8%" />
-<col width="22%" />
-<col width="40%" />
+<col style="width: 18%" />
+<col style="width: 12%" />
+<col style="width: 8%" />
+<col style="width: 22%" />
+<col style="width: 40%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>Name</td>
-<td>Symbol</td>
-<td>Short Name</td>
-<td>Units</td>
-<td>Description</td>
+<tbody>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Symbol</p></td>
+<td><p>Short Name</p></td>
+<td><p>Units</p></td>
+<td><p>Description</p></td>
 </tr>
-<tr class="row-even"><td>water_molecular_weight</td>
-<td><span class="math notranslate nohighlight">\(M_w\)</span></td>
-<td>Mw</td>
-<td><span class="math notranslate nohighlight">\(\text{g mol}^{-1}\)</span></td>
-<td>Molecular weight of water</td>
+<tr class="row-even"><td><p>water_molecular_weight</p></td>
+<td><p><span class="math notranslate nohighlight">\(M_w\)</span></p></td>
+<td><p>Mw</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{g mol}^{-1}\)</span></p></td>
+<td><p>Molecular weight of water</p></td>
 </tr>
-<tr class="row-odd"><td>water_gas_constant</td>
-<td><span class="math notranslate nohighlight">\(R_v\)</span></td>
-<td>Rv</td>
-<td><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></td>
-<td>Gas constant for water vapor</td>
+<tr class="row-odd"><td><p>water_gas_constant</p></td>
+<td><p><span class="math notranslate nohighlight">\(R_v\)</span></p></td>
+<td><p>Rv</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
+<td><p>Gas constant for water vapor</p></td>
 </tr>
-<tr class="row-even"><td>density_water</td>
-<td><span class="math notranslate nohighlight">\(\rho_l\)</span></td>
-<td>rho_l</td>
-<td><span class="math notranslate nohighlight">\(\text{kg m}^{-3}\)</span></td>
-<td>Nominal density of liquid water at 0C</td>
+<tr class="row-even"><td><p>density_water</p></td>
+<td><p><span class="math notranslate nohighlight">\(\rho_l\)</span></p></td>
+<td><p>rho_l</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{kg m}^{-3}\)</span></p></td>
+<td><p>Nominal density of liquid water at 0C</p></td>
 </tr>
-<tr class="row-odd"><td>wv_specific_heat_press</td>
-<td><span class="math notranslate nohighlight">\(C_{pv}\)</span></td>
-<td>Cp_v</td>
-<td><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></td>
-<td>Specific heat at constant pressure for water vapor</td>
+<tr class="row-odd"><td><p>wv_specific_heat_press</p></td>
+<td><p><span class="math notranslate nohighlight">\(C_{pv}\)</span></p></td>
+<td><p>Cp_v</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
+<td><p>Specific heat at constant pressure for water vapor</p></td>
 </tr>
-<tr class="row-even"><td>wv_specific_heat_vol</td>
-<td><span class="math notranslate nohighlight">\(C_{vv}\)</span></td>
-<td>Cv_v</td>
-<td><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></td>
-<td>Specific heat at constant volume for water vapor</td>
+<tr class="row-even"><td><p>wv_specific_heat_vol</p></td>
+<td><p><span class="math notranslate nohighlight">\(C_{vv}\)</span></p></td>
+<td><p>Cv_v</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
+<td><p>Specific heat at constant volume for water vapor</p></td>
 </tr>
-<tr class="row-odd"><td>water_specific_heat</td>
-<td><span class="math notranslate nohighlight">\(Cp_l\)</span></td>
-<td>Cp_l</td>
-<td><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></td>
-<td>Specific heat of liquid water at 0C</td>
+<tr class="row-odd"><td><p>water_specific_heat</p></td>
+<td><p><span class="math notranslate nohighlight">\(Cp_l\)</span></p></td>
+<td><p>Cp_l</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
+<td><p>Specific heat of liquid water at 0C</p></td>
 </tr>
-<tr class="row-even"><td>water_heat_vaporization</td>
-<td><span class="math notranslate nohighlight">\(L_v\)</span></td>
-<td>Lv</td>
-<td><span class="math notranslate nohighlight">\(\text{J kg}^{-1}\)</span></td>
-<td>Latent heat of vaporization for liquid water at 0C</td>
+<tr class="row-even"><td><p>water_heat_vaporization</p></td>
+<td><p><span class="math notranslate nohighlight">\(L_v\)</span></p></td>
+<td><p>Lv</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{J kg}^{-1}\)</span></p></td>
+<td><p>Latent heat of vaporization for liquid water at 0C</p></td>
 </tr>
-<tr class="row-odd"><td>water_heat_fusion</td>
-<td><span class="math notranslate nohighlight">\(L_f\)</span></td>
-<td>Lf</td>
-<td><span class="math notranslate nohighlight">\(\text{J kg}^{-1}\)</span></td>
-<td>Latent heat of fusion for liquid water at 0C</td>
+<tr class="row-odd"><td><p>water_heat_fusion</p></td>
+<td><p><span class="math notranslate nohighlight">\(L_f\)</span></p></td>
+<td><p>Lf</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{J kg}^{-1}\)</span></p></td>
+<td><p>Latent heat of fusion for liquid water at 0C</p></td>
 </tr>
-<tr class="row-even"><td>ice_specific_heat</td>
-<td><span class="math notranslate nohighlight">\(C_{pi}\)</span></td>
-<td>Cp_i</td>
-<td><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></td>
-<td>Specific heat of ice at 0C</td>
+<tr class="row-even"><td><p>ice_specific_heat</p></td>
+<td><p><span class="math notranslate nohighlight">\(C_{pi}\)</span></p></td>
+<td><p>Cp_i</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
+<td><p>Specific heat of ice at 0C</p></td>
 </tr>
-<tr class="row-odd"><td>density_ice</td>
-<td><span class="math notranslate nohighlight">\(\rho_i\)</span></td>
-<td>rho_i</td>
-<td><span class="math notranslate nohighlight">\(\text{kg m}^{-3}\)</span></td>
-<td>Density of ice at 0C</td>
+<tr class="row-odd"><td><p>density_ice</p></td>
+<td><p><span class="math notranslate nohighlight">\(\rho_i\)</span></p></td>
+<td><p>rho_i</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{kg m}^{-3}\)</span></p></td>
+<td><p>Density of ice at 0C</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="dry-air">
 <h2>Dry Air<a class="headerlink" href="#dry-air" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="17%" />
-<col width="11%" />
-<col width="9%" />
-<col width="19%" />
-<col width="44%" />
+<col style="width: 17%" />
+<col style="width: 11%" />
+<col style="width: 9%" />
+<col style="width: 19%" />
+<col style="width: 44%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>Name</td>
-<td>Symbol</td>
-<td>Short Name</td>
-<td>Units</td>
-<td>Description</td>
+<tbody>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Symbol</p></td>
+<td><p>Short Name</p></td>
+<td><p>Units</p></td>
+<td><p>Description</p></td>
 </tr>
-<tr class="row-even"><td>dry_air_molecular_weight</td>
-<td><span class="math notranslate nohighlight">\(M_d\)</span></td>
-<td>Md</td>
-<td><span class="math notranslate nohighlight">\(\text{g / mol}\)</span></td>
-<td>Nominal molecular weight of dry air at the surface of th Earth</td>
+<tr class="row-even"><td><p>dry_air_molecular_weight</p></td>
+<td><p><span class="math notranslate nohighlight">\(M_d\)</span></p></td>
+<td><p>Md</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{g / mol}\)</span></p></td>
+<td><p>Nominal molecular weight of dry air at the surface of th Earth</p></td>
 </tr>
-<tr class="row-odd"><td>dry_air_gas_constant</td>
-<td><span class="math notranslate nohighlight">\(R_d\)</span></td>
-<td>Rd</td>
-<td><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></td>
-<td>Gas constant for dry air at the surface of the Earth</td>
+<tr class="row-odd"><td><p>dry_air_gas_constant</p></td>
+<td><p><span class="math notranslate nohighlight">\(R_d\)</span></p></td>
+<td><p>Rd</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
+<td><p>Gas constant for dry air at the surface of the Earth</p></td>
 </tr>
-<tr class="row-even"><td>dry_air_spec_heat_press</td>
-<td><span class="math notranslate nohighlight">\(C_{pd}\)</span></td>
-<td>Cp_d</td>
-<td><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></td>
-<td>Specific heat at constant pressure for dry air</td>
+<tr class="row-even"><td><p>dry_air_spec_heat_press</p></td>
+<td><p><span class="math notranslate nohighlight">\(C_{pd}\)</span></p></td>
+<td><p>Cp_d</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
+<td><p>Specific heat at constant pressure for dry air</p></td>
 </tr>
-<tr class="row-odd"><td>dry_air_spec_heat_vol</td>
-<td><span class="math notranslate nohighlight">\(C_{vd}\)</span></td>
-<td>Cv_d</td>
-<td><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></td>
-<td>Specific heat at constant volume for dry air</td>
+<tr class="row-odd"><td><p>dry_air_spec_heat_vol</p></td>
+<td><p><span class="math notranslate nohighlight">\(C_{vd}\)</span></p></td>
+<td><p>Cv_d</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{J (K kg)}^{-1}\)</span></p></td>
+<td><p>Specific heat at constant volume for dry air</p></td>
 </tr>
-<tr class="row-even"><td>dry_air_density_stp</td>
-<td><span class="math notranslate nohighlight">\(\rho_d\)</span></td>
-<td>rho_d</td>
-<td><span class="math notranslate nohighlight">\(\text{kg m}^{-3}\)</span></td>
-<td>Density of dry air at 0C and 1000mb</td>
+<tr class="row-even"><td><p>dry_air_density_stp</p></td>
+<td><p><span class="math notranslate nohighlight">\(\rho_d\)</span></p></td>
+<td><p>rho_d</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{kg m}^{-3}\)</span></p></td>
+<td><p>Density of dry air at 0C and 1000mb</p></td>
 </tr>
 </tbody>
 </table>
 </div>
 <div class="section" id="general-meteorology-constants">
 <h2>General Meteorology Constants<a class="headerlink" href="#general-meteorology-constants" title="Permalink to this headline">¶</a></h2>
-<table border="1" class="docutils">
+<table class="docutils align-default">
 <colgroup>
-<col width="18%" />
-<col width="13%" />
-<col width="8%" />
-<col width="19%" />
-<col width="42%" />
+<col style="width: 18%" />
+<col style="width: 13%" />
+<col style="width: 8%" />
+<col style="width: 19%" />
+<col style="width: 42%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td>Name</td>
-<td>Symbol</td>
-<td>Short Name</td>
-<td>Units</td>
-<td>Description</td>
+<tbody>
+<tr class="row-odd"><td><p>Name</p></td>
+<td><p>Symbol</p></td>
+<td><p>Short Name</p></td>
+<td><p>Units</p></td>
+<td><p>Description</p></td>
 </tr>
-<tr class="row-even"><td>pot_temp_ref_press</td>
-<td><span class="math notranslate nohighlight">\(P_0\)</span></td>
-<td>P0</td>
-<td><span class="math notranslate nohighlight">\(\text{Pa}\)</span></td>
-<td>Reference pressure for potential temperature</td>
+<tr class="row-even"><td><p>pot_temp_ref_press</p></td>
+<td><p><span class="math notranslate nohighlight">\(P_0\)</span></p></td>
+<td><p>P0</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{Pa}\)</span></p></td>
+<td><p>Reference pressure for potential temperature</p></td>
 </tr>
-<tr class="row-odd"><td>poisson_exponent</td>
-<td><span class="math notranslate nohighlight">\(\kappa\)</span></td>
-<td>kappa</td>
-<td><span class="math notranslate nohighlight">\(\text{None}\)</span></td>
-<td>Exponent in Poisson’s equation (Rd/Cp_d)</td>
+<tr class="row-odd"><td><p>poisson_exponent</p></td>
+<td><p><span class="math notranslate nohighlight">\(\kappa\)</span></p></td>
+<td><p>kappa</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{None}\)</span></p></td>
+<td><p>Exponent in Poisson’s equation (Rd/Cp_d)</p></td>
 </tr>
-<tr class="row-even"><td>dry_adiabatic_lapse_rate</td>
-<td><span class="math notranslate nohighlight">\(\gamma_d\)</span></td>
-<td>gamma_d</td>
-<td><span class="math notranslate nohighlight">\(\text{K km}^{-1}\)</span></td>
-<td>The dry adiabatic lapse rate</td>
+<tr class="row-even"><td><p>dry_adiabatic_lapse_rate</p></td>
+<td><p><span class="math notranslate nohighlight">\(\gamma_d\)</span></p></td>
+<td><p>gamma_d</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{K km}^{-1}\)</span></p></td>
+<td><p>The dry adiabatic lapse rate</p></td>
 </tr>
-<tr class="row-odd"><td>molecular_weight_ratio</td>
-<td><span class="math notranslate nohighlight">\(\epsilon\)</span></td>
-<td>epsilon</td>
-<td><span class="math notranslate nohighlight">\(\text{None}\)</span></td>
-<td>Ratio of molecular weight of water to that of dry air</td>
+<tr class="row-odd"><td><p>molecular_weight_ratio</p></td>
+<td><p><span class="math notranslate nohighlight">\(\epsilon\)</span></p></td>
+<td><p>epsilon</p></td>
+<td><p><span class="math notranslate nohighlight">\(\text{None}\)</span></p></td>
+<td><p>Ratio of molecular weight of water to that of dry air</p></td>
 </tr>
 </tbody>
 </table>
@@ -489,8 +489,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -527,7 +527,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

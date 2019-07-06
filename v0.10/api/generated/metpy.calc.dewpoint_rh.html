@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a><ul class="current">
@@ -173,6 +172,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -253,34 +253,30 @@
 <h1>dewpoint_rh<a class="headerlink" href="#dewpoint-rh" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.dewpoint_rh">
-<code class="descclassname">metpy.calc.</code><code class="descname">dewpoint_rh</code><span class="sig-paren">(</span><em>temperature</em>, <em>rh</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#dewpoint_rh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.dewpoint_rh" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">dewpoint_rh</code><span class="sig-paren">(</span><em class="sig-param">temperature</em>, <em class="sig-param">rh</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#dewpoint_rh"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.dewpoint_rh" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the ambient dewpoint given air temperature and relative humidity.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</li>
-<li><strong>rh</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Relative humidity expressed as a ratio in the range 0 &lt; rh &lt;= 1</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</p></li>
+<li><p><strong>rh</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Relative humidity expressed as a ratio in the range 0 &lt; rh &lt;= 1</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The dew point temperature</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The dew point temperature</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint()</span></code></a>, <a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure" title="metpy.calc.saturation_vapor_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">saturation_vapor_pressure()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint()</span></code></a>, <a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure" title="metpy.calc.saturation_vapor_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">saturation_vapor_pressure()</span></code></a></p>
 </div>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-calc-dewpoint-rh">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.dewpoint_rh</span></code><a class="headerlink" href="#examples-using-metpy-calc-dewpoint-rh" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Plots time series data as a meteogram. "><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Plots time series data as a meteogram. "><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_meteogram_metpy_thumb.png" src="../../_images/sphx_glr_meteogram_metpy_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/meteogram_metpy.html#sphx-glr-examples-meteogram-metpy-py"><span class="std std-ref">Meteogram</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/meteogram_metpy.html#sphx-glr-examples-meteogram-metpy-py"><span class="std std-ref">Meteogram</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -307,8 +303,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -345,7 +341,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

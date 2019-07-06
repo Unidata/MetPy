@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
@@ -159,6 +158,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -239,24 +239,20 @@
 <h1>smooth_gaussian<a class="headerlink" href="#smooth-gaussian" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.smooth_gaussian">
-<code class="descclassname">metpy.calc.</code><code class="descname">smooth_gaussian</code><span class="sig-paren">(</span><em>scalar_grid</em>, <em>n</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#smooth_gaussian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.smooth_gaussian" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">smooth_gaussian</code><span class="sig-paren">(</span><em class="sig-param">scalar_grid</em>, <em class="sig-param">n</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#smooth_gaussian"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.smooth_gaussian" title="Permalink to this definition">¶</a></dt>
 <dd><p>Filter with normal distribution of weights.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>scalar_grid</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Some n-dimensional scalar grid. If more than two axes, smoothing
-is only done across the last two.</li>
-<li><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Degree of filtering</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>scalar_grid</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Some n-dimensional scalar grid. If more than two axes, smoothing
+is only done across the last two.</p></li>
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Degree of filtering</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The filtered 2D scalar grid</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The filtered 2D scalar grid</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>This function is a close replication of the GEMPAK function GWFS,
 but is not identical.  The following notes are incorporated from
@@ -267,7 +263,8 @@ low-pass filter whose weights are determined by the normal
 The weight given to any grid point within the area covered by the
 moving average for a target grid point is proportional to</p>
 <blockquote>
-<div>EXP [ -( D ** 2 ) ],</div></blockquote>
+<div><p>EXP [ -( D ** 2 ) ],</p>
+</div></blockquote>
 <p>where D is the distance from that point to the target point divided
 by the standard deviation of the normal distribution.  The value of
 the standard deviation is determined by the degree of filtering
@@ -301,7 +298,8 @@ function, the leftover weights are not used.</p>
 <p>When this function is invoked, the first argument is the grid to be
 smoothed, the second is the value of N as described above:</p>
 <blockquote>
-<div>GWFS ( S, N )</div></blockquote>
+<div><p>GWFS ( S, N )</p>
+</div></blockquote>
 <p>where N &gt; 1.  If N &lt;= 1, N = 2 is assumed.  For example, if N = 4,
 then the 4 delta x wave length is passed with approximate response
 1/e.</p>
@@ -331,8 +329,8 @@ then the 4 delta x wave length is passed with approximate response
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -369,7 +367,7 @@ then the 4 delta x wave length is passed with approximate response
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

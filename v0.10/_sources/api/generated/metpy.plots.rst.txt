@@ -30,6 +30,7 @@ plots
 
    
       ContourPlot
+      FilledContourPlot
       Hodograph
       ImagePlot
       MapPanel

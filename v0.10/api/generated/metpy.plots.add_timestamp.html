@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -138,6 +137,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.MapPanel.html">MapPanel</a></li>
@@ -153,6 +153,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -233,53 +234,49 @@
 <h1>add_timestamp<a class="headerlink" href="#add-timestamp" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.plots.add_timestamp">
-<code class="descclassname">metpy.plots.</code><code class="descname">add_timestamp</code><span class="sig-paren">(</span><em>ax</em>, <em>time=None</em>, <em>x=0.99</em>, <em>y=-0.04</em>, <em>ha='right'</em>, <em>high_contrast=False</em>, <em>pretext='Created: '</em>, <em>time_format='%Y-%m-%dT%H:%M:%SZ'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/_util.html#add_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.add_timestamp" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">add_timestamp</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">time=None</em>, <em class="sig-param">x=0.99</em>, <em class="sig-param">y=-0.04</em>, <em class="sig-param">ha='right'</em>, <em class="sig-param">high_contrast=False</em>, <em class="sig-param">pretext='Created: '</em>, <em class="sig-param">time_format='%Y-%m-%dT%H:%M:%SZ'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/_util.html#add_timestamp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.add_timestamp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a timestamp to a plot.</p>
 <p>Adds a timestamp to a plot, defaulting to the time of plot creation in ISO format.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>) – The <em class="xref py py-obj">Axes</em> instance used for plotting</li>
-<li><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Specific time to be plotted - datetime.utcnow will be use if not specified</li>
-<li><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Relative x position on the axes of the timestamp</li>
-<li><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Relative y position on the axes of the timestamp</li>
-<li><strong>ha</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Horizontal alignment of the time stamp string</li>
-<li><strong>high_contrast</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Outline text for increased contrast</li>
-<li><strong>pretext</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Text to appear before the timestamp, optional. Defaults to ‘Created: ‘</li>
-<li><strong>time_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Display format of time, optional. Defaults to ISO format.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>) – The <em class="xref py py-obj">Axes</em> instance used for plotting</p></li>
+<li><p><strong>time</strong> (<a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime.datetime</span></code></a>) – Specific time to be plotted - datetime.utcnow will be use if not specified</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Relative x position on the axes of the timestamp</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Relative y position on the axes of the timestamp</p></li>
+<li><p><strong>ha</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Horizontal alignment of the time stamp string</p></li>
+<li><p><strong>high_contrast</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Outline text for increased contrast</p></li>
+<li><p><strong>pretext</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Text to appear before the timestamp, optional. Defaults to ‘Created: ‘</p></li>
+<li><p><strong>time_format</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Display format of time, optional. Defaults to ISO format.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.text.Text</span></code></a> – The <a class="reference external" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.text.Text</span></code></a> instance created</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.text.Text</span></code></a> – The <a class="reference external" href="https://matplotlib.org/api/text_api.html#matplotlib.text.Text" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.text.Text</span></code></a> instance created</p>
+</dd>
+</dl>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-plots-add-timestamp">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.add_timestamp</span></code><a class="headerlink" href="#examples-using-metpy-plots-add-timestamp" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="By using `metpy.calc.log_interp`, data with sigma as the vertical coordinate can be interpolate..."><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="By using metpy.calc.log_interp, data with sigma as the vertical coordinate can be interpolated ..."><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_sigma_to_pressure_interpolation_thumb.png" src="../../_images/sphx_glr_sigma_to_pressure_interpolation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/sigma_to_pressure_interpolation.html#sphx-glr-examples-sigma-to-pressure-interpolation-py"><span class="std std-ref">Sigma to Pressure Interpolation</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/sigma_to_pressure_interpolation.html#sphx-glr-examples-sigma-to-pressure-interpolation-py"><span class="std std-ref">Sigma to Pressure Interpolation</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="The MetPy function `mpcalc.isentropic_interpolation` allows for isentropic analysis from model ..."><div class="figure" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="The MetPy function mpcalc.isentropic_interpolation allows for isentropic analysis from model an..."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_isentropic_example_thumb.png" src="../../_images/sphx_glr_isentropic_example_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/isentropic_example.html#sphx-glr-examples-isentropic-example-py"><span class="std std-ref">Isentropic Analysis</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/isentropic_example.html#sphx-glr-examples-isentropic-example-py"><span class="std std-ref">Isentropic Analysis</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s support for GINI files to read in a water vapor satellite image and plot the data u..."><div class="figure" id="id3">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy&#x27;s support for GINI files to read in a water vapor satellite image and plot the data u..."><div class="figure align-default" id="id3">
 <img alt="../../_images/sphx_glr_GINI_Water_Vapor_thumb.png" src="../../_images/sphx_glr_GINI_Water_Vapor_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/GINI_Water_Vapor.html#sphx-glr-examples-formats-gini-water-vapor-py"><span class="std std-ref">GINI Water Vapor Imagery</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/GINI_Water_Vapor.html#sphx-glr-examples-formats-gini-water-vapor-py"><span class="std std-ref">GINI Water Vapor Imagery</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot "><div class="figure" id="id4">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot "><div class="figure align-default" id="id4">
 <img alt="../../_images/sphx_glr_NEXRAD_Level_3_File_thumb.png" src="../../_images/sphx_glr_NEXRAD_Level_3_File_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/NEXRAD_Level_3_File.html#sphx-glr-examples-formats-nexrad-level-3-file-py"><span class="std std-ref">NEXRAD Level 3 File</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/NEXRAD_Level_3_File.html#sphx-glr-examples-formats-nexrad-level-3-file-py"><span class="std std-ref">NEXRAD Level 3 File</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot "><div class="figure" id="id5">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot "><div class="figure align-default" id="id5">
 <img alt="../../_images/sphx_glr_NEXRAD_Level_2_File_thumb.png" src="../../_images/sphx_glr_NEXRAD_Level_2_File_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/NEXRAD_Level_2_File.html#sphx-glr-examples-formats-nexrad-level-2-file-py"><span class="std std-ref">NEXRAD Level 2 File</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/NEXRAD_Level_2_File.html#sphx-glr-examples-formats-nexrad-level-2-file-py"><span class="std std-ref">NEXRAD Level 2 File</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -306,8 +303,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -344,7 +341,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

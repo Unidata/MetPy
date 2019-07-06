@@ -19,8 +19,7 @@ support is currently available in a limited fashion, but should be improved in f
 versions.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     import cartopy.crs as ccrs
@@ -49,8 +48,7 @@ tutorial, we will use an example subset of GFS data from Hurrican Irma (Septembe
 2017).
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # Open the netCDF file as a xarray Dataset
@@ -69,6 +67,8 @@ tutorial, we will use an example subset of GFS data from Hurrican Irma (Septembe
 
  .. code-block:: none
 
+    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'irma_gfs_example.nc' from remote data store 'https://github.com/Unidata/MetPy/raw/v0.10.1/staticdata/irma_gfs_example.nc' to '/home/travis/build/Unidata/MetPy/staticdata/v0.10.1'.
+      action_word[action], fname, self.get_url(fname), str(self.path)
     <xarray.Dataset>
     Dimensions:                              (isobaric1: 21, isobaric3: 31, latitude: 81, longitude: 131, time1: 9)
     Coordinates:
@@ -102,19 +102,19 @@ tutorial, we will use an example subset of GFS data from Hurrican Irma (Septembe
         geospatial_lon_max:                                                      ...
 
 
+
 Preparing Data
 --------------
 
-To make use of the data within MetPy, we need to parse the dataset for projection and
-coordinate information following the CF conventions. For this, we use the
+To make use of the data within MetPy, we need to parse the dataset for projection
+information following the CF conventions. For this, we use the
 ``data.metpy.parse_cf()`` method, which will return a new, parsed ``DataArray`` or
 ``Dataset``.
 
 Additionally, we rename our data variables for easier reference.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # To parse the full dataset, we can call parse_cf without an argument, and assign the returned
@@ -139,6 +139,15 @@ Additionally, we rename our data variables for easier reference.
 
 
 
+.. rst-class:: sphx-glr-script-out
+
+ Out:
+
+ .. code-block:: none
+
+    /home/travis/build/Unidata/MetPy/tutorials/xarray_tutorial.py:70: FutureWarning: The inplace argument has been deprecated and will be removed in a future version of xarray.
+      }, inplace=True)
+
 
 
 Units
@@ -150,8 +159,7 @@ convert the the data from one unit to another (keeping it as a DataArray). For n
 just use ``convert_units`` to convert our temperature to ``degC``.
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     data['temperature'].metpy.convert_units('degC')
@@ -184,8 +192,7 @@ The valid coordinate types are:
 (Both approaches and all four types are shown below)
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # Get multiple coordinates (for example, in just the x and y direction)
@@ -214,6 +221,7 @@ The valid coordinate types are:
     ['longitude', 'latitude', 'isobaric3', 'time1']
 
 
+
 Indexing and Selecting Data
 ---------------------------
 
@@ -223,8 +231,7 @@ mentioned above as aliases for the coordinates. And so, if we wanted 850 hPa hei
 we would take:
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     print(data['height'].metpy.sel(vertical=850 * units.hPa))
@@ -286,9 +293,9 @@ we would take:
         grid_mapping:                   LatLon_361X720-0p25S-180p00E
 
 
+
 For full details on xarray indexing/selection, see
 `xarray's documentation <http://xarray.pydata.org/en/stable/indexing.html>`_.
-
 
 Projections
 -----------
@@ -297,8 +304,7 @@ Getting the cartopy coordinate reference system (CRS) of the projection of a Dat
 straightforward as using the ``data_var.metpy.cartopy_crs`` property:
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     data_crs = data['temperature'].metpy.cartopy_crs
@@ -314,15 +320,15 @@ straightforward as using the ``data_var.metpy.cartopy_crs`` property:
 
  .. code-block:: none
 
-    <cartopy.crs.PlateCarree object at 0x7f1dee43e570>
+    <cartopy.crs.PlateCarree object at 0x7f5e30ce1d58>
+
 
 
 The cartopy ``Globe`` can similarly be accessed via the ``data_var.metpy.cartopy_globe``
 property:
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     data_globe = data['temperature'].metpy.cartopy_globe
@@ -338,7 +344,8 @@ property:
 
  .. code-block:: none
 
-    <cartopy._crs.Globe object at 0x7f1dee0e7470>
+    <cartopy._crs.Globe object at 0x7f5e3049ae10>
+
 
 
 Calculations
@@ -355,8 +362,7 @@ keep in mind that because the calculations are working with unit arrays and not 
 As an example, we calculate geostropic wind at 500 hPa below:
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     lat, lon = xr.broadcast(y, x)
@@ -381,6 +387,7 @@ As an example, we calculate geostropic wind at 500 hPa below:
     [[-14.79152481 -14.39816817 -16.89520568 ...   5.58291437   6.513699    7.39606131] [ -8.30101213 -13.77064356 -17.09080998 ...   5.27352106   6.10386071    7.17918929] [-11.98245151 -13.54015832 -14.85469639 ...   4.91926188   5.74746248    6.7213265 ] ... [  4.25739862   3.4827536    2.96632359 ...   3.2245386    3.2245386    1.93346357] [  6.60970778   3.10076929   2.02109591 ...   2.42597342   3.63896014    3.37233348] [  4.79936391   4.23716749   2.54368012 ...   1.55552506   2.96791422    3.81293338]] meter / second
 
 
+
 Also, a limited number of calculations directly support xarray DataArrays or Datasets (they
 can accept *and* return xarray objects). Right now, this includes
 
@@ -398,14 +405,12 @@ can accept *and* return xarray objects). Right now, this includes
 More details can be found by looking at the documentation for the specific function of
 interest.
 
-
 There is also the special case of the helper function, ``grid_deltas_from_dataarray``, which
 takes a ``DataArray`` input, but returns unit arrays for use in other calculations. We could
 rewrite the above geostrophic wind example using this helper function as follows:
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     heights = data['height'].metpy.loc[{'time': time[0], 'vertical': 500. * units.hPa}]
@@ -430,6 +435,7 @@ rewrite the above geostrophic wind example using this helper function as follows
     [[-14.79152481 -14.39816817 -16.89520568 ...   5.58291437   6.513699    7.39606131] [ -8.30101213 -13.77064356 -17.09080998 ...   5.27352106   6.10386071    7.17918929] [-11.98245151 -13.54015832 -14.85469639 ...   4.91926188   5.74746248    6.7213265 ] ... [  4.25739862   3.4827536    2.96632359 ...   3.2245386    3.2245386    1.93346357] [  6.60970778   3.10076929   2.02109591 ...   2.42597342   3.63896014    3.37233348] [  4.79936391   4.23716749   2.54368012 ...   1.55552506   2.96791422    3.81293338]] meter / second
 
 
+
 Plotting
 --------
 
@@ -442,8 +448,7 @@ the data.
 <http://xarray.pydata.org/en/stable/plotting.html>`_.)
 
 
-
-.. code-block:: python
+.. code-block:: default
 
 
     # A very simple example example of a plot of 500 hPa heights
@@ -460,7 +465,7 @@ the data.
 
 
 
-.. code-block:: python
+.. code-block:: default
 
 
     # Let's add a projection and coastlines to it
@@ -480,7 +485,7 @@ the data.
 
 
 
-.. code-block:: python
+.. code-block:: default
 
 
     # Or, let's make a full 500 hPa map with heights, temperature, winds, and humidity
@@ -538,7 +543,7 @@ What Could Go Wrong?
 Depending on your dataset and what you are trying to do, you might run into problems with
 xarray and MetPy. Below are examples of some of the most common issues
 
-- ``parse_cf`` not able to parse due to conflict
+- Multiple coordinate conflict
 - An axis not being available
 - An axis not being interpretable
 - Arrays not broadcasting in calculations
@@ -549,27 +554,36 @@ Code:
 
 ::
 
-    temperature = data.metpy.parse_cf('Temperature')
+    x = data['Temperature'].metpy.x
 
 Error Message:
 
 ::
 
-    /home/user/env/MetPy/metpy/xarray.py:305: UserWarning: DataArray
-    of requested variable has more than one x coordinate. Specify the
-    unique axes using the coordinates argument.
+    /home/user/env/MetPy/metpy/xarray.py:305: UserWarning: More than
+    one x coordinate present for variable "Temperature".
 
 Fix:
 
-Specify the ``coordinates`` argument to the ``parse_cf`` method to map the ``T`` (time),
-``Z`` (vertical), ``Y``, and ``X`` axes (as applicable to your dataset) to the corresponding
-coordinates.
+Manually assign the coordinates using the ``assign_coordinates()`` method on your DataArray,
+or by specifying the ``coordinates`` argument to the ``parse_cf()`` method on your Dataset,
+to map the ``T`` (time), ``Z`` (vertical), ``Y``, and ``X`` axes (as applicable to your
+data) to the corresponding coordinates.
+
+::
+
+    data['Temperature'].assign_coordinates({'T': 'time', 'Z': 'isobaric',
+                                            'Y': 'y', 'X': 'x'})
+    x = data['Temperature'].metpy.x
+
+or
 
 ::
 
     temperature = data.metpy.parse_cf('Temperature',
                                       coordinates={'T': 'time', 'Z': 'isobaric',
                                                    'Y': 'y', 'X': 'x'})
+    x = temperature.metpy.x
 
 **Axis Unavailable**
 
@@ -588,8 +602,7 @@ Error Message:
 This means that your data variable does not have the coordinate that was requested, at
 least as far as the parser can recognize. Verify that you are requesting a
 coordinate that your data actually has, and if it still is not available,
-you will need to manually specify the coordinates via the coordinates argument
-discussed above.
+you will need to manually specify the coordinates as discussed above.
 
 **Axis Not Interpretable**
 
@@ -647,7 +660,9 @@ Fix 2 (unit array broadcasting):
 
 
 
-**Total running time of the script:** ( 0 minutes  1.650 seconds)
+.. rst-class:: sphx-glr-timing
+
+   **Total running time of the script:** ( 0 minutes  17.025 seconds)
 
 
 .. _sphx_glr_download_tutorials_xarray_tutorial.py:
@@ -675,4 +690,4 @@ Fix 2 (unit array broadcasting):
 
  .. rst-class:: sphx-glr-signature
 
-    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.readthedocs.io>`_
+    `Gallery generated by Sphinx-Gallery <https://sphinx-gallery.github.io>`_

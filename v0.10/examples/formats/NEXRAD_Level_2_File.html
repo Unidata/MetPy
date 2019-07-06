@@ -135,6 +135,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -213,34 +214,36 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-formats-nexrad-level-2-file-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-formats-nexrad-level-2-file-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="nexrad-level-2-file">
 <span id="sphx-glr-examples-formats-nexrad-level-2-file-py"></span><h1>NEXRAD Level 2 File<a class="headerlink" href="#nexrad-level-2-file" title="Permalink to this headline">¶</a></h1>
 <p>Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.io</span> <span class="kn">import</span> <a href="../../api/generated/metpy.io.Level2File.html#metpy.io.Level2File" title="View documentation for metpy.io.Level2File"><span class="n">Level2File</span></a>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="View documentation for metpy.plots.add_timestamp"><span class="n">add_timestamp</span></a><span class="p">,</span> <span class="n">colortables</span>
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="k">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.io</span> <span class="k">import</span> <a href="../../api/generated/metpy.io.Level2File.html#metpy.io.Level2File" title="View documentation for metpy.io.Level2File"><span class="n">Level2File</span></a>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="View documentation for metpy.plots.add_timestamp"><span class="n">add_timestamp</span></a><span class="p">,</span> <span class="n">colortables</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open the file</span>
-<span class="n">name</span> <span class="o">=</span> <span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;KTLX20130520_201643_V06.gz&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open the file</span>
+<span class="n">name</span> <span class="o">=</span> <span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;KTLX20130520_201643_V06.gz&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <a href="../../api/generated/metpy.io.Level2File.html#metpy.io.Level2File" title="View documentation for metpy.io.Level2File"><span class="n">Level2File</span></a><span class="p">(</span><span class="n">name</span><span class="p">)</span>
 
-<span class="k">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">sweeps</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">f</span><span class="o">.</span><span class="n">sweeps</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(Msg31DataHdr(stid=b&#39;KTLX&#39;, time_ms=73003850, date=15846, az_num=1, az_angle=123.20343017578125, compression=0, rad_length=6856, az_spacing=1, rad_status=5, el_num=1, sector_num=1, el_angle=0.5987548828125, spot_blanking=None, az_index_mode=0.25, num_data_blks=7, vol_const_ptr=68, el_const_ptr=112, rad_const_ptr=124), VolConsts(type=b&#39;R&#39;, name=b&#39;VOL&#39;, size=44, major=1, minor=0, lat=35.33305740356445, lon=-97.27748107910156, site_amsl=369, feedhorn_agl=19, calib_dbz=-43.72919845581055, txpower_h=185.05685424804688, txpower_v=181.45559692382812, sys_zdr=-0.08510557562112808, phidp0=25.0, vcp=12, processing_status=None), ElConsts(type=b&#39;R&#39;, name=b&#39;ELV&#39;, size=12, atmos_atten=-0.012, calib_dbz0=-42.4375), RadConstsV1(type=b&#39;R&#39;, name=b&#39;RAD&#39;, size=20, unamb_range=466.0, noise_h=-79.71426391601562, noise_v=-79.39848327636719, nyq_vel=8.3), {b&#39;REF&#39;: (DataBlockHdr(type=b&#39;D&#39;, name=b&#39;REF&#39;, reserved=0, num_gates=1832, first_gate=2.125, gate_width=0.25, tover=5.0, snr_thresh=1.6, recombined=None, data_size=&#39;B&#39;, scale=2.0, offset=66.0), array([ 6.5,  2.5, 11. , ...,  nan,  nan,  nan])), b&#39;ZDR&#39;: (DataBlockHdr(type=b&#39;D&#39;, name=b&#39;ZDR&#39;, reserved=0, num_gates=1192, first_gate=2.125, gate_width=0.25, tover=5.0, snr_thresh=1.6, recombined=None, data_size=&#39;B&#39;, scale=16.0, offset=128.0), array([2.375 , 6.1875, 3.75  , ...,    nan,    nan,    nan])), b&#39;PHI&#39;: (DataBlockHdr(type=b&#39;D&#39;, name=b&#39;PHI&#39;, reserved=0, num_gates=1192, first_gate=2.125, gate_width=0.25, tover=5.0, snr_thresh=1.6, recombined=None, data_size=&#39;H&#39;, scale=2.8361001014709473, offset=2.0), array([32.79150829, 41.60642988, 30.32333025, ...,         nan,
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file &#39;KTLX20130520_201643_V06.gz&#39; from remote data store &#39;https://github.com/Unidata/MetPy/raw/v0.10.1/staticdata/KTLX20130520_201643_V06.gz&#39; to &#39;/home/travis/build/Unidata/MetPy/staticdata/v0.10.1&#39;.
+  action_word[action], fname, self.get_url(fname), str(self.path)
+(Msg31DataHdr(stid=b&#39;KTLX&#39;, time_ms=73003850, date=15846, az_num=1, az_angle=123.20343017578125, compression=0, rad_length=6856, az_spacing=1, rad_status=5, el_num=1, sector_num=1, el_angle=0.5987548828125, spot_blanking=None, az_index_mode=0.25, num_data_blks=7, vol_const_ptr=68, el_const_ptr=112, rad_const_ptr=124), VolConsts(type=b&#39;R&#39;, name=b&#39;VOL&#39;, size=44, major=1, minor=0, lat=35.33305740356445, lon=-97.27748107910156, site_amsl=369, feedhorn_agl=19, calib_dbz=-43.72919845581055, txpower_h=185.05685424804688, txpower_v=181.45559692382812, sys_zdr=-0.08510557562112808, phidp0=25.0, vcp=12, processing_status=None), ElConsts(type=b&#39;R&#39;, name=b&#39;ELV&#39;, size=12, atmos_atten=-0.012, calib_dbz0=-42.4375), RadConstsV1(type=b&#39;R&#39;, name=b&#39;RAD&#39;, size=20, unamb_range=466.0, noise_h=-79.71426391601562, noise_v=-79.39848327636719, nyq_vel=8.3), {b&#39;REF&#39;: (DataBlockHdr(type=b&#39;D&#39;, name=b&#39;REF&#39;, reserved=0, num_gates=1832, first_gate=2.125, gate_width=0.25, tover=5.0, snr_thresh=1.6, recombined=None, data_size=&#39;B&#39;, scale=2.0, offset=66.0), array([ 6.5,  2.5, 11. , ...,  nan,  nan,  nan])), b&#39;ZDR&#39;: (DataBlockHdr(type=b&#39;D&#39;, name=b&#39;ZDR&#39;, reserved=0, num_gates=1192, first_gate=2.125, gate_width=0.25, tover=5.0, snr_thresh=1.6, recombined=None, data_size=&#39;B&#39;, scale=16.0, offset=128.0), array([2.375 , 6.1875, 3.75  , ...,    nan,    nan,    nan])), b&#39;PHI&#39;: (DataBlockHdr(type=b&#39;D&#39;, name=b&#39;PHI&#39;, reserved=0, num_gates=1192, first_gate=2.125, gate_width=0.25, tover=5.0, snr_thresh=1.6, recombined=None, data_size=&#39;H&#39;, scale=2.8361001014709473, offset=2.0), array([32.79150829, 41.60642988, 30.32333025, ...,         nan,
                nan,         nan])), b&#39;RHO&#39;: (DataBlockHdr(type=b&#39;D&#39;, name=b&#39;RHO&#39;, reserved=0, num_gates=1192, first_gate=2.125, gate_width=0.25, tover=5.0, snr_thresh=1.6, recombined=None, data_size=&#39;B&#39;, scale=300.0, offset=-60.5), array([0.995     , 0.95833333, 0.99833333, ...,        nan,        nan,
               nan]))})
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pull data out of the file</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Pull data out of the file</span>
 <span class="n">sweep</span> <span class="o">=</span> <span class="mi">0</span>
 
 <span class="c1"># First item in ray is header, which has azimuth angle</span>
@@ -257,7 +260,7 @@
 <span class="n">rho</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">([</span><span class="n">ray</span><span class="p">[</span><span class="mi">4</span><span class="p">][</span><span class="sa">b</span><span class="s1">&#39;RHO&#39;</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">ray</span> <span class="ow">in</span> <span class="n">f</span><span class="o">.</span><span class="n">sweeps</span><span class="p">[</span><span class="n">sweep</span><span class="p">]])</span>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.rst.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.rst.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">8</span><span class="p">))</span>
 <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">190</span><span class="p">,</span> <span class="mi">85</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
 <span class="k">for</span> <span class="n">var_data</span><span class="p">,</span> <span class="n">var_range</span><span class="p">,</span> <span class="n">ax</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">((</span><span class="n">ref</span><span class="p">,</span> <span class="n">rho</span><span class="p">),</span> <span class="p">(</span><span class="n">ref_range</span><span class="p">,</span> <span class="n">rho_range</span><span class="p">),</span> <span class="n">axes</span><span class="p">):</span>
     <span class="c1"># Turn into an array, then mask</span>
@@ -274,20 +277,22 @@
     <span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="s1">&#39;equal&#39;</span><span class="p">,</span> <span class="s1">&#39;datalim&#39;</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span>
     <span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="o">-</span><span class="mi">30</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
-    <a href="../../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="View documentation for metpy.plots.add_timestamp"><span class="n">add_timestamp</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">high_contrast</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <a href="../../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="View documentation for metpy.plots.add_timestamp"><span class="n">add_timestamp</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">f</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_NEXRAD_Level_2_File_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_NEXRAD_Level_2_File_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  3.851 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.731 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-formats-nexrad-level-2-file-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/416ce5cbf070e2eecd1f2e7b0c8e144c/NEXRAD_Level_2_File.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">NEXRAD_Level_2_File.py</span></code></a></div>
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/b2064e03f5a2902d13f670fd954e5c3b/NEXRAD_Level_2_File.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">NEXRAD_Level_2_File.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/416ce5cbf070e2eecd1f2e7b0c8e144c/NEXRAD_Level_2_File.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">NEXRAD_Level_2_File.py</span></code></a></p>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/b2064e03f5a2902d13f670fd954e5c3b/NEXRAD_Level_2_File.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">NEXRAD_Level_2_File.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
@@ -312,8 +317,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -350,7 +355,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

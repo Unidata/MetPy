@@ -140,6 +140,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -218,25 +219,25 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-plots-combined-plotting-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-plots-combined-plotting-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="combined-plotting">
 <span id="sphx-glr-examples-plots-combined-plotting-py"></span><h1>Combined Plotting<a class="headerlink" href="#combined-plotting" title="Permalink to this headline">¶</a></h1>
 <p>Demonstrate the use of MetPy’s simplified plotting interface combining multiple plots.</p>
 <p>Also shows how to control the maps that are plotted. Plots sample NARR data.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="kn">as</span> <span class="nn">xr</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
-<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">ContourPlot</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">ImagePlot</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">PanelContainer</span></a>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="k">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">ContourPlot</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">ImagePlot</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">MapPanel</span></a><span class="p">,</span> <a href="../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer" title="View documentation for metpy.plots.PanelContainer"><span class="n">PanelContainer</span></a>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
 
 <span class="c1"># Use sample NARR data for plotting</span>
-<span class="n">narr</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="View documentation for xarray.open_dataset"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="bp">False</span><span class="p">))</span>
+<span class="n">narr</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="View documentation for xarray.open_dataset"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;narr_example.nc&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
 </pre></div>
 </div>
 <p>Create a contour plot of temperature</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">contour</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">ContourPlot</span></a><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">contour</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="View documentation for metpy.plots.ContourPlot"><span class="n">ContourPlot</span></a><span class="p">()</span>
 <span class="n">contour</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">narr</span>
 <span class="n">contour</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">&#39;Temperature&#39;</span>
 <span class="n">contour</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">850</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
@@ -245,14 +246,14 @@
 </pre></div>
 </div>
 <p>Create an image plot of Geopotential height</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">ImagePlot</span></a><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">img</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="View documentation for metpy.plots.ImagePlot"><span class="n">ImagePlot</span></a><span class="p">()</span>
 <span class="n">img</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">narr</span>
 <span class="n">img</span><span class="o">.</span><span class="n">field</span> <span class="o">=</span> <span class="s1">&#39;Geopotential_height&#39;</span>
 <span class="n">img</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="mi">850</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
 </pre></div>
 </div>
 <p>Plot the data on a map</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">panel</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">MapPanel</span></a><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">panel</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.MapPanel.html#metpy.plots.MapPanel" title="View documentation for metpy.plots.MapPanel"><span class="n">MapPanel</span></a><span class="p">()</span>
 <span class="n">panel</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="s1">&#39;us&#39;</span>
 <span class="n">panel</span><span class="o">.</span><span class="n">layers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;coastline&#39;</span><span class="p">,</span> <span class="s1">&#39;borders&#39;</span><span class="p">,</span> <span class="s1">&#39;states&#39;</span><span class="p">,</span> <span class="s1">&#39;rivers&#39;</span><span class="p">,</span> <span class="s1">&#39;ocean&#39;</span><span class="p">,</span> <span class="s1">&#39;land&#39;</span><span class="p">]</span>
 <span class="n">panel</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;NARR Example&#39;</span>
@@ -265,14 +266,23 @@
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_Combined_plotting_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Combined_plotting_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  5.287 seconds)</p>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_land.zip
+  warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
+/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_rivers_lake_centerlines.zip
+  warnings.warn(&#39;Downloading: {}&#39;.format(url), DownloadWarning)
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.570 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-combined-plotting-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/3802468f4807b541be8e40a55b4fcfd2/Combined_plotting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Combined_plotting.py</span></code></a></div>
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/395a4944c820661485ef078b05c2140c/Combined_plotting.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Combined_plotting.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/3802468f4807b541be8e40a55b4fcfd2/Combined_plotting.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Combined_plotting.py</span></code></a></p>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/395a4944c820661485ef078b05c2140c/Combined_plotting.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Combined_plotting.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 
 
@@ -297,8 +307,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -335,7 +345,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

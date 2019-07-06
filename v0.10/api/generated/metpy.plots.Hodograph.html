@@ -46,7 +46,7 @@
     <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="ImagePlot" href="metpy.plots.ImagePlot.html"/>
-        <link rel="prev" title="ContourPlot" href="metpy.plots.ContourPlot.html"/> 
+        <link rel="prev" title="FilledContourPlot" href="metpy.plots.FilledContourPlot.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -135,6 +134,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Hodograph</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-plots-hodograph">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.Hodograph</span></code></a></li>
 </ul>
@@ -153,6 +153,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -233,7 +234,7 @@
 <h1>Hodograph<a class="headerlink" href="#hodograph" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="metpy.plots.Hodograph">
-<em class="property">class </em><code class="descclassname">metpy.plots.</code><code class="descname">Hodograph</code><span class="sig-paren">(</span><em>ax=None</em>, <em>component_range=80</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">Hodograph</code><span class="sig-paren">(</span><em class="sig-param">ax=None</em>, <em class="sig-param">component_range=80</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make a hodograph of wind data.</p>
 <p>Plots the u and v components of the wind along the x and y axes, respectively.</p>
 <p>This class simplifies the process of creating a hodograph using matplotlib.
@@ -241,129 +242,110 @@ It provides helpers for creating a circular grid and for plotting the wind as a 
 colored by another value (such as wind speed).</p>
 <dl class="attribute">
 <dt id="metpy.plots.Hodograph.ax">
-<code class="descname">ax</code><a class="headerlink" href="#metpy.plots.Hodograph.ax" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ax</code><a class="headerlink" href="#metpy.plots.Hodograph.ax" title="Permalink to this definition">¶</a></dt>
 <dd><p>The underlying Axes instance used for all plotting</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <p>Create a Hodograph instance.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>, optional) – The <em class="xref py py-obj">Axes</em> instance used for plotting</li>
-<li><strong>component_range</strong> (<em>value</em>) – The maximum range of the plot. Used to set plot bounds and control the maximum
-number of grid rings needed.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>, optional) – The <em class="xref py py-obj">Axes</em> instance used for plotting</p></li>
+<li><p><strong>component_range</strong> (<em>value</em>) – The maximum range of the plot. Used to set plot bounds and control the maximum
+number of grid rings needed.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Methods Summary</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.Hodograph.__init__" title="metpy.plots.Hodograph.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([ax,&nbsp;component_range])</td>
-<td>Create a Hodograph instance.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Hodograph.__init__" title="metpy.plots.Hodograph.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([ax, component_range])</p></td>
+<td><p>Create a Hodograph instance.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.Hodograph.add_grid" title="metpy.plots.Hodograph.add_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_grid</span></code></a>([increment])</td>
-<td>Add grid lines to hodograph.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Hodograph.add_grid" title="metpy.plots.Hodograph.add_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_grid</span></code></a>([increment])</p></td>
+<td><p>Add grid lines to hodograph.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.Hodograph.plot" title="metpy.plots.Hodograph.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(u,&nbsp;v,&nbsp;**kwargs)</td>
-<td>Plot u, v data.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Hodograph.plot" title="metpy.plots.Hodograph.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(u, v, **kwargs)</p></td>
+<td><p>Plot u, v data.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.Hodograph.plot_colormapped" title="metpy.plots.Hodograph.plot_colormapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_colormapped</span></code></a>(u,&nbsp;v,&nbsp;c[,&nbsp;bounds,&nbsp;colors])</td>
-<td>Plot u, v data, with line colored based on a third set of data.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.Hodograph.plot_colormapped" title="metpy.plots.Hodograph.plot_colormapped"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot_colormapped</span></code></a>(u, v, c[, bounds, colors])</p></td>
+<td><p>Plot u, v data, with line colored based on a third set of data.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.Hodograph.wind_vectors" title="metpy.plots.Hodograph.wind_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wind_vectors</span></code></a>(u,&nbsp;v,&nbsp;**kwargs)</td>
-<td>Plot u, v data as wind vectors.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.Hodograph.wind_vectors" title="metpy.plots.Hodograph.wind_vectors"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wind_vectors</span></code></a>(u, v, **kwargs)</p></td>
+<td><p>Plot u, v data as wind vectors.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods Documentation</p>
 <dl class="method">
 <dt id="metpy.plots.Hodograph.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>ax=None</em>, <em>component_range=80</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">ax=None</em>, <em class="sig-param">component_range=80</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a Hodograph instance.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>, optional) – The <em class="xref py py-obj">Axes</em> instance used for plotting</li>
-<li><strong>component_range</strong> (<em>value</em>) – The maximum range of the plot. Used to set plot bounds and control the maximum
-number of grid rings needed.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ax</strong> (<a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a>, optional) – The <em class="xref py py-obj">Axes</em> instance used for plotting</p></li>
+<li><p><strong>component_range</strong> (<em>value</em>) – The maximum range of the plot. Used to set plot bounds and control the maximum
+number of grid rings needed.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.Hodograph.add_grid">
-<code class="descname">add_grid</code><span class="sig-paren">(</span><em>increment=10.0</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.add_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.add_grid" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_grid</code><span class="sig-paren">(</span><em class="sig-param">increment=10.0</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.add_grid"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.add_grid" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add grid lines to hodograph.</p>
 <p>Creates lines for the x- and y-axes, as well as circles denoting wind speed values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>increment</strong> (<em>value</em><em>, </em><em>optional</em>) – The value increment between rings</li>
-<li><strong>kwargs</strong> – Other kwargs to control appearance of lines</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>increment</strong> (<em>value</em><em>, </em><em>optional</em>) – The value increment between rings</p></li>
+<li><p><strong>kwargs</strong> – Other kwargs to control appearance of lines</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.patches.Circle.html#matplotlib.patches.Circle" title="(in Matplotlib v3.0.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.patches.Circle</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axhline.html#matplotlib.axes.Axes.axhline" title="(in Matplotlib v3.0.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.axhline()</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axvline.html#matplotlib.axes.Axes.axvline" title="(in Matplotlib v3.0.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.axvline()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.patches.Circle.html#matplotlib.patches.Circle" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.patches.Circle</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axhline.html#matplotlib.axes.Axes.axhline" title="(in Matplotlib v3.1.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.axhline()</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.axvline.html#matplotlib.axes.Axes.axvline" title="(in Matplotlib v3.1.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.axvline()</span></code></a></p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.Hodograph.plot">
-<code class="descname">plot</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.plot" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot u, v data.</p>
 <p>Plots the wind data on the hodograph.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u</strong> (<em>array_like</em>) – u-component of wind</li>
-<li><strong>v</strong> (<em>array_like</em>) – v-component of wind</li>
-<li><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.plot.html#matplotlib.axes.Axes.plot" title="(in Matplotlib v3.0.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.plot()</span></code></a></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>array_like</em>) – u-component of wind</p></li>
+<li><p><strong>v</strong> (<em>array_like</em>) – v-component of wind</p></li>
+<li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.plot.html#matplotlib.axes.Axes.plot" title="(in Matplotlib v3.1.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.plot()</span></code></a></p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>list[matplotlib.lines.Line2D]</em> – lines plotted</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list[matplotlib.lines.Line2D]</em> – lines plotted</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#metpy.plots.Hodograph.plot_colormapped" title="metpy.plots.Hodograph.plot_colormapped"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Hodograph.plot_colormapped()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#metpy.plots.Hodograph.plot_colormapped" title="metpy.plots.Hodograph.plot_colormapped"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Hodograph.plot_colormapped()</span></code></a></p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.Hodograph.plot_colormapped">
-<code class="descname">plot_colormapped</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>c</em>, <em>bounds=None</em>, <em>colors=None</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.plot_colormapped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.plot_colormapped" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">plot_colormapped</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">c</em>, <em class="sig-param">bounds=None</em>, <em class="sig-param">colors=None</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.plot_colormapped"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.plot_colormapped" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot u, v data, with line colored based on a third set of data.</p>
 <p>Plots the wind data on the hodograph, but with a colormapped line. Takes a third
 variable besides the winds and either a colormap to color it with or a series of
@@ -375,69 +357,61 @@ height AGL to height above MSL to work with the provided heights.</p>
 <p>Simple wrapper around plot so that pressure is the first (independent)
 input. This is essentially a wrapper around <em class="xref py py-obj">semilogy</em>. It also
 sets some appropriate ticking and plot ranges.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u</strong> (<em>array_like</em>) – u-component of wind</li>
-<li><strong>v</strong> (<em>array_like</em>) – v-component of wind</li>
-<li><strong>c</strong> (<em>array_like</em>) – data to use for colormapping</li>
-<li><strong>bounds</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Array of bounds for c to use in coloring the hodograph.</li>
-<li><strong>colors</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><em>optional</em>) – Array of strings representing colors for the hodograph segments.</li>
-<li><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v3.0.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.collections.LineCollection</span></code></a></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>array_like</em>) – u-component of wind</p></li>
+<li><p><strong>v</strong> (<em>array_like</em>) – v-component of wind</p></li>
+<li><p><strong>c</strong> (<em>array_like</em>) – data to use for colormapping</p></li>
+<li><p><strong>bounds</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Array of bounds for c to use in coloring the hodograph.</p></li>
+<li><p><strong>colors</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a><em>, </em><em>optional</em>) – Array of strings representing colors for the hodograph segments.</p></li>
+<li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/collections_api.html#matplotlib.collections.LineCollection" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.collections.LineCollection</span></code></a></p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.collections.LineCollection</em> – instance created</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>matplotlib.collections.LineCollection</em> – instance created</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="#metpy.plots.Hodograph.plot" title="metpy.plots.Hodograph.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Hodograph.plot()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#metpy.plots.Hodograph.plot" title="metpy.plots.Hodograph.plot"><code class="xref py py-meth docutils literal notranslate"><span class="pre">Hodograph.plot()</span></code></a></p>
 </div>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.Hodograph.wind_vectors">
-<code class="descname">wind_vectors</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.wind_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.wind_vectors" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">wind_vectors</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#Hodograph.wind_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.Hodograph.wind_vectors" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot u, v data as wind vectors.</p>
 <p>Plot the wind data as vectors for each level, beginning at the origin.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u</strong> (<em>array_like</em>) – u-component of wind</li>
-<li><strong>v</strong> (<em>array_like</em>) – v-component of wind</li>
-<li><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.quiver.html#matplotlib.axes.Axes.quiver" title="(in Matplotlib v3.0.2)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.quiver()</span></code></a></li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>array_like</em>) – u-component of wind</p></li>
+<li><p><strong>v</strong> (<em>array_like</em>) – v-component of wind</p></li>
+<li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.axes.Axes.quiver.html#matplotlib.axes.Axes.quiver" title="(in Matplotlib v3.1.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.axes.Axes.quiver()</span></code></a></p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>matplotlib.quiver.Quiver</em> – arrows plotted</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>matplotlib.quiver.Quiver</em> – arrows plotted</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-plots-hodograph">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.Hodograph</span></code><a class="headerlink" href="#examples-using-metpy-plots-hodograph" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s `GridSpec` layout capability. "><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability. "><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_Skew-T_Layout_thumb.png" src="../../_images/sphx_glr_Skew-T_Layout_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Skew-T_Layout.html#sphx-glr-examples-plots-skew-t-layout-py"><span class="std std-ref">Skew-T with Complex Layout</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Skew-T_Layout.html#sphx-glr-examples-plots-skew-t-layout-py"><span class="std std-ref">Skew-T with Complex Layout</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot. "><div class="figure" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot. "><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_Hodograph_Inset_thumb.png" src="../../_images/sphx_glr_Hodograph_Inset_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Hodograph_Inset.html#sphx-glr-examples-plots-hodograph-inset-py"><span class="std std-ref">Hodograph Inset</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Hodograph_Inset.html#sphx-glr-examples-plots-hodograph-inset-py"><span class="std std-ref">Hodograph Inset</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori..."><div class="figure" id="id3">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori..."><div class="figure align-default" id="id3">
 <img alt="../../_images/sphx_glr_upperair_soundings_thumb.png" src="../../_images/sphx_glr_upperair_soundings_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/upperair_soundings.html#sphx-glr-tutorials-upperair-soundings-py"><span class="std std-ref">Upper Air Sounding Tutorial</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/upperair_soundings.html#sphx-glr-tutorials-upperair-soundings-py"><span class="std std-ref">Upper Air Sounding Tutorial</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -455,7 +429,7 @@ sets some appropriate ticking and plot ranges.</p>
         <a href="metpy.plots.ImagePlot.html" class="btn btn-neutral float-right" title="ImagePlot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.plots.ContourPlot.html" class="btn btn-neutral" title="ContourPlot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.plots.FilledContourPlot.html" class="btn btn-neutral" title="FilledContourPlot" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -464,8 +438,8 @@ sets some appropriate ticking and plot ranges.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -502,7 +476,7 @@ sets some appropriate ticking and plot ranges.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

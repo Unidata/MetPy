@@ -126,7 +126,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a></li>
@@ -162,6 +161,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -242,41 +242,37 @@
 <h1>thickness_hydrostatic<a class="headerlink" href="#thickness-hydrostatic" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.thickness_hydrostatic">
-<code class="descclassname">metpy.calc.</code><code class="descname">thickness_hydrostatic</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#thickness_hydrostatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.thickness_hydrostatic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">thickness_hydrostatic</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#thickness_hydrostatic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.thickness_hydrostatic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the thickness of a layer via the hypsometric equation.</p>
 <p>This thickness calculation uses the pressure and temperature profiles (and optionally
 mixing ratio) via the hypsometric equation with virtual temperature adjustment</p>
 <div class="math notranslate nohighlight">
 \[Z_2 - Z_1 = -\frac{R_d}{g} \int_{p_1}^{p_2} T_v d\ln p,\]</div>
-<p>which is based off of Equation 3.24 in <a class="reference internal" href="../../references.html#hobbs2006" id="id1">[Hobbs2006]</a>.</p>
+<p>which is based off of Equation 3.24 in <a class="reference internal" href="../../references.html#hobbs2006" id="id1"><span>[Hobbs2006]</span></a>.</p>
 <p>This assumes a hydrostatic atmosphere.</p>
 <p>Layer bottom and depth specified in pressure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric pressure profile</li>
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric temperature profile</li>
-<li><strong>mixing</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Profile of dimensionless mass mixing ratio. If none is given, virtual temperature
-is simply set to be the given temperature.</li>
-<li><strong>molecular_weight_ratio</strong> (<em class="xref py py-obj">pint.Quantity</em> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric pressure profile</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric temperature profile</p></li>
+<li><p><strong>mixing</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Profile of dimensionless mass mixing ratio. If none is given, virtual temperature
+is simply set to be the given temperature.</p></li>
+<li><p><strong>molecular_weight_ratio</strong> (<em class="xref py py-obj">pint.Quantity</em> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
 for air. Defaults to the ratio for water vapor to dry air.
-(<span class="math notranslate nohighlight">\(\epsilon\approx0.622\)</span>).</li>
-<li><strong>bottom</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The bottom of the layer in pressure. Defaults to the first observation.</li>
-<li><strong>depth</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The depth of the layer in hPa. Defaults to the full profile if bottom is not given,
-and 100 hPa if bottom is given.</li>
+(<span class="math notranslate nohighlight">\(\epsilon\approx0.622\)</span>).</p></li>
+<li><p><strong>bottom</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The bottom of the layer in pressure. Defaults to the first observation.</p></li>
+<li><p><strong>depth</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The depth of the layer in hPa. Defaults to the full profile if bottom is not given,
+and 100 hPa if bottom is given.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The thickness of the layer in meters.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The thickness of the layer in meters.</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html#metpy.calc.thickness_hydrostatic_from_relative_humidity" title="metpy.calc.thickness_hydrostatic_from_relative_humidity"><code class="xref py py-func docutils literal notranslate"><span class="pre">thickness_hydrostatic_from_relative_humidity()</span></code></a>, <a class="reference internal" href="metpy.calc.pressure_to_height_std.html#metpy.calc.pressure_to_height_std" title="metpy.calc.pressure_to_height_std"><code class="xref py py-func docutils literal notranslate"><span class="pre">pressure_to_height_std()</span></code></a>, <a class="reference internal" href="metpy.calc.virtual_temperature.html#metpy.calc.virtual_temperature" title="metpy.calc.virtual_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">virtual_temperature()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html#metpy.calc.thickness_hydrostatic_from_relative_humidity" title="metpy.calc.thickness_hydrostatic_from_relative_humidity"><code class="xref py py-func docutils literal notranslate"><span class="pre">thickness_hydrostatic_from_relative_humidity()</span></code></a>, <a class="reference internal" href="metpy.calc.pressure_to_height_std.html#metpy.calc.pressure_to_height_std" title="metpy.calc.pressure_to_height_std"><code class="xref py py-func docutils literal notranslate"><span class="pre">pressure_to_height_std()</span></code></a>, <a class="reference internal" href="metpy.calc.virtual_temperature.html#metpy.calc.virtual_temperature" title="metpy.calc.virtual_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">virtual_temperature()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -304,8 +300,8 @@ and 100 hPa if bottom is given.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -342,7 +338,7 @@ and 100 hPa if bottom is given.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

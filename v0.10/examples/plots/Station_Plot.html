@@ -144,6 +144,7 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -222,8 +223,8 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-plots-station-plot-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-plots-station-plot-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="station-plot">
 <span id="sphx-glr-examples-plots-station-plot-py"></span><h1>Station Plot<a class="headerlink" href="#station-plot" title="Permalink to this headline">¶</a></h1>
@@ -231,24 +232,24 @@
 <p>The station plot itself is pretty straightforward, but there is a bit of code to perform the
 data-wrangling (hopefully that situation will improve in the future). Certainly, if you have
 existing point data in a format you can work with trivially, the station plot will be simple.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
-<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="kn">as</span> <span class="nn">cfeature</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="kn">as</span> <span class="nn">pd</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <a href="../../api/generated/metpy.calc.reduce_point_density.html#metpy.calc.reduce_point_density" title="View documentation for metpy.calc.reduce_point_density"><span class="n">reduce_point_density</span></a>
-<span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="kn">import</span> <a href="../../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components" title="View documentation for metpy.calc.wind_components"><span class="n">wind_components</span></a>
-<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">,</span> <span class="n">current_weather</span><span class="p">,</span> <span class="n">sky_cover</span><span class="p">,</span> <a href="../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="View documentation for metpy.plots.StationPlot"><span class="n">StationPlot</span></a><span class="p">,</span> <span class="n">wx_code_map</span>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
+<span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="k">import</span> <a href="../../api/generated/metpy.calc.reduce_point_density.html#metpy.calc.reduce_point_density" title="View documentation for metpy.calc.reduce_point_density"><span class="n">reduce_point_density</span></a>
+<span class="kn">from</span> <span class="nn">metpy.calc</span> <span class="k">import</span> <a href="../../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components" title="View documentation for metpy.calc.wind_components"><span class="n">wind_components</span></a>
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="k">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">,</span> <span class="n">current_weather</span><span class="p">,</span> <span class="n">sky_cover</span><span class="p">,</span> <a href="../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="View documentation for metpy.plots.StationPlot"><span class="n">StationPlot</span></a><span class="p">,</span> <span class="n">wx_code_map</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
 </pre></div>
 </div>
 <div class="section" id="the-setup">
 <h2>The setup<a class="headerlink" href="#the-setup" title="Permalink to this headline">¶</a></h2>
 <p>First read in the data. We use pandas because it simplifies a lot of tasks, like dealing
 with strings</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;station_data.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;station_data.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
     <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span>
                        <span class="n">names</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;stid&#39;</span><span class="p">,</span> <span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="s1">&#39;slp&#39;</span><span class="p">,</span> <span class="s1">&#39;air_temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;cloud_fraction&#39;</span><span class="p">,</span>
                               <span class="s1">&#39;dew_point_temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;weather&#39;</span><span class="p">,</span> <span class="s1">&#39;wind_dir&#39;</span><span class="p">,</span> <span class="s1">&#39;wind_speed&#39;</span><span class="p">],</span>
@@ -260,7 +261,7 @@ with strings</p>
 </div>
 <p>This sample data has <em>way</em> too many stations to plot all of them. The number
 of stations plotted will be reduced using <em class="xref py py-obj">reduce_point_density</em>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up the map projection</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up the map projection</span>
 <span class="n">proj</span> <span class="o">=</span> <span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">(</span><span class="n">central_longitude</span><span class="o">=-</span><span class="mi">95</span><span class="p">,</span> <span class="n">central_latitude</span><span class="o">=</span><span class="mi">35</span><span class="p">,</span>
                              <span class="n">standard_parallels</span><span class="o">=</span><span class="p">[</span><span class="mi">35</span><span class="p">])</span>
 
@@ -272,11 +273,11 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 </div>
 <p>Now that we have the data we want, we need to perform some conversions:</p>
 <ul class="simple">
-<li>Get wind components from speed and direction</li>
-<li>Convert cloud fraction values to integer codes [0 - 8]</li>
-<li>Map METAR weather codes to WMO codes for weather symbols</li>
+<li><p>Get wind components from speed and direction</p></li>
+<li><p>Convert cloud fraction values to integer codes [0 - 8]</p></li>
+<li><p>Map METAR weather codes to WMO codes for weather symbols</p></li>
 </ul>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the wind components, converting from m/s to knots as will be appropriate</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get the wind components, converting from m/s to knots as will be appropriate</span>
 <span class="c1"># for the station plot.</span>
 <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components" title="View documentation for metpy.calc.wind_components"><span class="n">wind_components</span></a><span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;wind_speed&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">))</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;knots&#39;</span><span class="p">),</span>
                        <span class="n">data</span><span class="p">[</span><span class="s1">&#39;wind_dir&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="o">.</span><span class="n">degree</span><span class="p">)</span>
@@ -295,7 +296,7 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 </div>
 <div class="section" id="the-payoff">
 <h2>The payoff<a class="headerlink" href="#the-payoff" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change the DPI of the resulting figure. Higher DPI drastically improves the</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change the DPI of the resulting figure. Higher DPI drastically improves the</span>
 <span class="c1"># look of the text rendering.</span>
 <a href="https://matplotlib.org/api/matplotlib_configuration_api.rst.html#matplotlib.rcParams" title="View documentation for matplotlib.pyplot.rcParams"><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span></a><span class="p">[</span><span class="s1">&#39;savefig.dpi&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">255</span>
 
@@ -321,7 +322,7 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 
 <span class="c1"># Start the station plot by specifying the axes to draw on, as well as the</span>
 <span class="c1"># lon/lat of the stations (with transform). We also the fontsize to 12 pt.</span>
-<span class="n">stationplot</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="View documentation for metpy.plots.StationPlot"><span class="n">StationPlot</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+<span class="n">stationplot</span> <span class="o">=</span> <a href="../../api/generated/metpy.plots.StationPlot.html#metpy.plots.StationPlot" title="View documentation for metpy.plots.StationPlot"><span class="n">StationPlot</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                           <span class="n">transform</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">(),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 
 <span class="c1"># Plot the temperature and dew point to the upper and lower left, respectively, of</span>
@@ -333,7 +334,7 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 <span class="c1"># A more complex example uses a custom formatter to control how the sea-level pressure</span>
 <span class="c1"># values are plotted. This uses the standard trailing 3-digits of the pressure value</span>
 <span class="c1"># in tenths of millibars.</span>
-<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">&#39;NE&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;slp&#39;</span><span class="p">],</span> <span class="n">formatter</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">format</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">v</span><span class="p">,</span> <span class="s1">&#39;.0f&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">:])</span>
+<span class="n">stationplot</span><span class="o">.</span><span class="n">plot_parameter</span><span class="p">(</span><span class="s1">&#39;NE&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;slp&#39;</span><span class="p">],</span> <span class="n">formatter</span><span class="o">=</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="nb">format</span><span class="p">(</span><span class="mi">10</span> <span class="o">*</span> <span class="n">v</span><span class="p">,</span> <span class="s1">&#39;.0f&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">3</span><span class="p">:])</span>
 
 <span class="c1"># Plot the cloud cover symbols in the center location. This uses the codes made above and</span>
 <span class="c1"># uses the `sky_cover` mapper to convert these values to font codes for the</span>
@@ -355,14 +356,16 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_Station_Plot_001.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Station_Plot_001.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  0.052 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.976 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-station-plot-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/77a41afe7b4b48010ff6048feccd95fe/Station_Plot.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Station_Plot.py</span></code></a></div>
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/98f29c056841d0a15e65eb4289574392/Station_Plot.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Station_Plot.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/77a41afe7b4b48010ff6048feccd95fe/Station_Plot.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Station_Plot.py</span></code></a></p>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/98f29c056841d0a15e65eb4289574392/Station_Plot.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Station_Plot.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 </div>
 
@@ -388,8 +391,8 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -426,7 +429,7 @@ of stations plotted will be reduced using <em class="xref py py-obj">reduce_poin
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

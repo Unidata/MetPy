@@ -1,0 +1,17 @@
+
+:orphan:
+
+.. _sphx_glr_examples_plots_sg_execution_times:
+
+Computation times
+=================
+**00:56.087** total execution time for **examples_plots** files:
+
+- **00:34.076**: :ref:`sphx_glr_examples_plots_US_Counties.py` (``US_Counties.py``)
+- **00:06.976**: :ref:`sphx_glr_examples_plots_Station_Plot.py` (``Station_Plot.py``)
+- **00:05.570**: :ref:`sphx_glr_examples_plots_Combined_plotting.py` (``Combined_plotting.py``)
+- **00:04.484**: :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py` (``Station_Plot_with_Layout.py``)
+- **00:01.823**: :ref:`sphx_glr_examples_plots_Simple_Sounding.py` (``Simple_Sounding.py``)
+- **00:01.527**: :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py` (``Simplified_Image_Plot.py``)
+- **00:00.839**: :ref:`sphx_glr_examples_plots_Hodograph_Inset.py` (``Hodograph_Inset.py``)
+- **00:00.793**: :ref:`sphx_glr_examples_plots_Skew-T_Layout.py` (``Skew-T_Layout.py``)

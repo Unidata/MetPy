@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cf_to_proj &mdash; MetPy 0.10</title>
+  <title>Computation times &mdash; MetPy 0.10</title>
   
 
   
@@ -17,7 +17,7 @@
   
   
   
-    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/api/generated/metpy.io.cdm.cf_to_proj.html"/>
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/formats/sg_execution_times.html"/>
   
 
   
@@ -43,10 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
-        <link rel="up" title="cdm" href="metpy.io.cdm.html"/>
-        <link rel="next" title="deprecated" href="metpy.io.cdm.deprecated.html"/>
-        <link rel="prev" title="cdm" href="metpy.io.cdm.html"/> 
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -117,33 +114,13 @@
               
             
             
-              <ul class="current">
+              <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="metpy.io.cdm.html">cdm</a><ul class="current">
-<li class="toctree-l3 current"><a class="current reference internal" href="#">cf_to_proj</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.deprecated.html">deprecated</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.AttributeContainer.html">AttributeContainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Dataset.html">Dataset</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Dimension.html">Dimension</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Group.html">Group</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.OrderedDict.html">OrderedDict</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.io.cdm.Variable.html">Variable</a></li>
-</ul>
-</li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
-</ul>
-</li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -194,11 +171,7 @@
     
       <li><a href="../../index.html">Docs</a> &raquo;</li>
         
-          <li><a href="../index.html">Reference Guide</a> &raquo;</li>
-        
-          <li><a href="metpy.io.cdm.html">cdm</a> &raquo;</li>
-        
-      <li>cf_to_proj</li>
+      <li>Computation times</li>
     
     
     <li class="source-link">
@@ -206,7 +179,10 @@
             
                 
                 
-                <a href="https://github.com/Unidata/MetPy/issues/new?title=Suggested%20improvement%20for%20api/generated/metpy.io.cdm.cf_to_proj&body=Please%20describe%20what%20could%20be%20improved%20about%20this%20page%20or%20the%20typo/mistake%20that%20you%20found%3A"
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/formats/sg_execution_times.py"
                    class="fa fa-github"> Improve this page</a>
             
         
@@ -220,25 +196,15 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="cf-to-proj">
-<h1>cf_to_proj<a class="headerlink" href="#cf-to-proj" title="Permalink to this headline">¶</a></h1>
-<dl class="function">
-<dt id="metpy.io.cdm.cf_to_proj">
-<code class="descclassname">metpy.io.cdm.</code><code class="descname">cf_to_proj</code><span class="sig-paren">(</span><em>var</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/cdm.html#cf_to_proj"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.cf_to_proj" title="Permalink to this definition">¶</a></dt>
-<dd><p>Convert a Variable with projection information to a Proj.4 Projection instance.</p>
-<p>The attributes of this Variable must conform to the Climate and Forecasting (CF)
-netCDF conventions.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>var</strong> (<a class="reference internal" href="metpy.io.cdm.Variable.html#metpy.io.cdm.Variable" title="metpy.io.cdm.Variable"><em>Variable</em></a>) – The projection variable with appropriate attributes.</td>
-</tr>
-</tbody>
-</table>
-</dd></dl>
-
-<div style='clear:both'></div></div>
+  <div class="section" id="computation-times">
+<span id="sphx-glr-examples-formats-sg-execution-times"></span><h1>Computation times<a class="headerlink" href="#computation-times" title="Permalink to this headline">¶</a></h1>
+<p><strong>00:10.144</strong> total execution time for <strong>examples_formats</strong> files:</p>
+<ul class="simple">
+<li><p><strong>00:06.731</strong>: <a class="reference internal" href="NEXRAD_Level_2_File.html#sphx-glr-examples-formats-nexrad-level-2-file-py"><span class="std std-ref">NEXRAD Level 2 File</span></a> (<code class="docutils literal notranslate"><span class="pre">NEXRAD_Level_2_File.py</span></code>)</p></li>
+<li><p><strong>00:01.837</strong>: <a class="reference internal" href="GINI_Water_Vapor.html#sphx-glr-examples-formats-gini-water-vapor-py"><span class="std std-ref">GINI Water Vapor Imagery</span></a> (<code class="docutils literal notranslate"><span class="pre">GINI_Water_Vapor.py</span></code>)</p></li>
+<li><p><strong>00:01.575</strong>: <a class="reference internal" href="NEXRAD_Level_3_File.html#sphx-glr-examples-formats-nexrad-level-3-file-py"><span class="std std-ref">NEXRAD Level 3 File</span></a> (<code class="docutils literal notranslate"><span class="pre">NEXRAD_Level_3_File.py</span></code>)</p></li>
+</ul>
+</div>
 
 
            </div>
@@ -248,22 +214,13 @@ netCDF conventions.</p>
           </div>
           <footer>
   
-    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="metpy.io.cdm.deprecated.html" class="btn btn-neutral float-right" title="deprecated" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="metpy.io.cdm.html" class="btn btn-neutral" title="cdm" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
-    </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -300,7 +257,7 @@ netCDF conventions.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

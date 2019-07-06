@@ -121,6 +121,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -667,7 +668,16 @@
     <span class="sd">&quot;&quot;&quot;Hold multiple panels of plots.&quot;&quot;&quot;</span>
 
     <span class="n">size</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Tuple</span><span class="p">(</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Int</span><span class="p">()),</span> <span class="n">Instance</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="kc">None</span><span class="p">))],</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">size</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;This trait takes a tuple of (width, height) to set the size of the</span>
+<span class="s2">    figure.</span>
+
+<span class="s2">    This trait defaults to None and will assume the default `matplotlib.pyplot.figure` size.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
     <span class="n">panels</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Instance</span><span class="p">(</span><span class="n">Panel</span><span class="p">))</span>
+    <span class="n">panels</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A list of panels to plot on the figure.</span>
+
+<span class="s2">    This trait must contain at least one panel to plot on the figure.&quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">panel</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -712,7 +722,11 @@
                 <span class="n">panel</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="PanelContainer.save"><a class="viewcode-back" href="../../../api/generated/metpy.plots.PanelContainer.html#metpy.plots.PanelContainer.save">[docs]</a>    <span class="k">def</span> <span class="nf">save</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Save the constructed graphic as an image file.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Save the constructed graphic as an image file.</span>
+
+<span class="sd">        This method takes a string for saved file name. Additionally, the same arguments and</span>
+<span class="sd">        keyword arguments that `matplotlib.pyplot.savefig` does.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
@@ -728,14 +742,64 @@
 
     <span class="n">parent</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">PanelContainer</span><span class="p">)</span>
     <span class="n">layout</span> <span class="o">=</span> <span class="n">Tuple</span><span class="p">(</span><span class="n">Int</span><span class="p">(),</span> <span class="n">Int</span><span class="p">(),</span> <span class="n">Int</span><span class="p">(),</span> <span class="n">default_value</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="n">layout</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A tuple that contains the description (nrows, ncols, index) of the</span>
+<span class="s2">    panel position; default value is (1, 1, 1).</span>
+
+<span class="s2">    This trait is set to describe the panel position and the default is for a single panel. For</span>
+<span class="s2">    example, a four-panel plot will have two rows and two columns with the tuple setting for</span>
+<span class="s2">    the upper-left panel as (2, 2, 1), upper-right as (2, 2, 2), lower-left as (2, 2, 3), and</span>
+<span class="s2">    lower-right as (2, 2, 4). For more details see the documentation for</span>
+<span class="s2">    `matplotlib.figure.Figure.add_subplot`.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
     <span class="n">plots</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Any</span><span class="p">())</span>
+    <span class="n">plots</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A list of handles that represent the plots (e.g., `ContourPlot`,</span>
+<span class="s2">    `FilledContourPlot`, `ImagePlot`) to put on a given panel.</span>
+
+<span class="s2">    This trait collects the different plots, including contours and images, that are intended</span>
+<span class="s2">    for a given panel.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
     <span class="n">_need_redraw</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">area</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Unicode</span><span class="p">(),</span> <span class="n">Tuple</span><span class="p">(</span><span class="n">Float</span><span class="p">(),</span> <span class="n">Float</span><span class="p">(),</span> <span class="n">Float</span><span class="p">(),</span> <span class="n">Float</span><span class="p">())],</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                  <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">area</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A tuple or string value that indicates the graphical area of the plot.</span>
+
+<span class="s2">    The tuple value coresponds to longitude/latitude box based on the projection of the map</span>
+<span class="s2">    with the format (west-most longitude, east-most longitude, south-most latitude,</span>
+<span class="s2">    north-most latitude). This tuple defines a box from the lower-left to the upper-right</span>
+<span class="s2">    corner.</span>
+
+<span class="s2">    This trait can also be set with a string value associated with the named geographic regions</span>
+<span class="s2">    within MetPy. The tuples associated with the names are based on a PlatteCarree projection.</span>
+<span class="s2">    For a CONUS region, the following strings can be used: &#39;us&#39;, &#39;spcus&#39;, &#39;ncus&#39;, and &#39;afus&#39;.</span>
+<span class="s2">    For regional plots, US state postal codes can be used.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
     <span class="n">projection</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Unicode</span><span class="p">(),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">ccrs</span><span class="o">.</span><span class="n">Projection</span><span class="p">)],</span> <span class="n">default_value</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">)</span>
+    <span class="n">projection</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A string for a pre-defined projection or a Cartopy projection</span>
+<span class="s2">    object.</span>
+
+<span class="s2">    There are three pre-defined projections that can be called with a short name:</span>
+<span class="s2">    Lambert conformal conic (&#39;lcc&#39;), Mercator (&#39;mer&#39;), or polar-stereographic (&#39;ps&#39;).</span>
+<span class="s2">    Additionally, this trait can be set to a Cartopy projection object.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
     <span class="n">layers</span> <span class="o">=</span> <span class="n">List</span><span class="p">(</span><span class="n">Union</span><span class="p">([</span><span class="n">Unicode</span><span class="p">(),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">Feature</span><span class="p">)]),</span> <span class="n">default_value</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;coastline&#39;</span><span class="p">])</span>
+    <span class="n">layers</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A string for a pre-defined feature layer or a Cartopy Feature object.</span>
+
+<span class="s2">    Like the projection, there are a couple of pre-defined feature layers that can be called</span>
+<span class="s2">    using a short name. The pre-defined layers are: &#39;coastline&#39;, &#39;states&#39;, &#39;borders&#39;, &#39;lakes&#39;,</span>
+<span class="s2">    &#39;land&#39;, &#39;ocean&#39;, and &#39;rivers&#39;. Additionally, this trait can be set using a Cartopy Feature</span>
+<span class="s2">    object.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
     <span class="n">title</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">()</span>
+    <span class="n">title</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A string to set a title for the figure.</span>
+
+<span class="s2">    This trait sets a user-defined title that will plot at the top center of the figure.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;plots&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_plots_changed</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">change</span><span class="p">):</span>
@@ -861,12 +925,67 @@
     <span class="n">_need_redraw</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
     <span class="n">field</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">()</span>
+    <span class="n">field</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Name of the field to be plotted.</span>
+
+<span class="s2">    This is the name of the variable from the dataset that is to be plotted. An example,</span>
+<span class="s2">    from a model grid file that uses the THREDDS convention for naming would be</span>
+<span class="s2">    `Geopotential_height_isobaric` or `Temperature_isobaric`. For GOES-16/17 satellite data it</span>
+<span class="s2">    might be `Sectorized_CMI`. To check for the variables available within a dataset, list the</span>
+<span class="s2">    variables with the following command assuming the dataset was read using xarray as `ds`,</span>
+<span class="s2">    `list(ds)`</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
     <span class="n">level</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">),</span> <span class="n">Instance</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">Quantity</span><span class="p">)])</span>
+    <span class="n">level</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The level of the field to be plotted.</span>
+
+<span class="s2">    This is a value with units to choose the desired plot level. For example, selecting the</span>
+<span class="s2">    850-hPa level, set this parameter to ``850 * units.hPa``</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
     <span class="n">time</span> <span class="o">=</span> <span class="n">Instance</span><span class="p">(</span><span class="n">datetime</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">time</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;Set the valid time to be plotted as a datetime object.</span>
+
+<span class="s2">    If a forecast hour is to be plotted the time should be set to the valid future time, which</span>
+<span class="s2">    can be done using the `~datetime.datetime` and `~datetime.timedelta` objects</span>
+<span class="s2">    from the Python standard library.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">contours</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">List</span><span class="p">(</span><span class="n">Float</span><span class="p">()),</span> <span class="n">Int</span><span class="p">()],</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+    <span class="n">contours</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A list of values to contour or an integer number of contour levels.</span>
+
+<span class="s2">    This parameter sets contour or colorfill values for a plot. Values can be entered either</span>
+<span class="s2">    as a list of values or as an integer with the number of contours to be plotted (as per</span>
+<span class="s2">    matplotlib documentation). A list can be generated by using square brackets or creating</span>
+<span class="s2">    a numpy 1D array and converting it to a list with the `~numpy.ndarray.tolist` method.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">clabels</span> <span class="o">=</span> <span class="n">Bool</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">clabels</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A boolean (True/False) on whether to plot contour labels.</span>
+
+<span class="s2">    To plot contour labels set this trait to ``True``, the default value is ``False``.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="n">colormap</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span>
+    <span class="n">colormap</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;The string name for a Matplolib or MetPy colormap.</span>
+
+<span class="s2">    For example, the Blue-Purple colormap from Matplotlib can be accessed using &#39;BuPu&#39;.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
     <span class="n">image_range</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">Tuple</span><span class="p">(</span><span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="n">Int</span><span class="p">(</span><span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)),</span>
                          <span class="n">Instance</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">Normalize</span><span class="p">)],</span> <span class="n">default_value</span><span class="o">=</span><span class="p">(</span><span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">))</span>
+    <span class="n">image_range</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A tuple of min and max values that represent the range of values</span>
+<span class="s2">    to color the rasterized image.</span>
+
+<span class="s2">    The min and max values entered as a tuple will be converted to a</span>
+<span class="s2">    `matplotlib.colors.Normalize` instance for plotting.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">colorbar</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="n">default_value</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">colorbar</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A boolean (True/False) on whether to add a colorbar to the plot.</span>
+
+<span class="s2">    To add a colorbar associated with the plot data set the trait to ``True``, the default</span>
+<span class="s2">    values is ``False``.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">_cmap_obj</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -896,12 +1015,21 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;handle&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">clear_handle</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="s1">&#39;collections&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear_collections</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">clear_handle</span><span class="p">()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">True</span></div>
 
 <div class="viewcode-block" id="Plot2D.clear_handle"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Plot2D.html#metpy.plots.Plot2D.clear_handle">[docs]</a>    <span class="k">def</span> <span class="nf">clear_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Clear the handle to the plot instance.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+<div class="viewcode-block" id="Plot2D.clear_collections"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Plot2D.html#metpy.plots.Plot2D.clear_collections">[docs]</a>    <span class="k">def</span> <span class="nf">clear_collections</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clear the handle collections to the plot instance.&quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">collections</span><span class="p">:</span>
+            <span class="n">col</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="kc">None</span></div>
 
     <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;parent&#39;</span><span class="p">)</span>
@@ -923,7 +1051,7 @@
     <span class="c1"># notification never happens</span>
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Access the current data subset.&quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Xarray dataset that contains the field to be plotted.&quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span>
 
     <span class="nd">@data</span><span class="o">.</span><span class="n">setter</span>
@@ -986,6 +1114,9 @@
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span><span class="p">:</span>
             <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s1">&#39;handle&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_build</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">colorbar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">figure</span><span class="o">.</span><span class="n">colorbar</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="p">,</span> <span class="n">orientation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">colorbar</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mi">50</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">False</span></div></div>
 
 
@@ -1000,6 +1131,13 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">set_cmap</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_cmap_obj</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">set_norm</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_norm_obj</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_need_redraw</span> <span class="o">=</span> <span class="kc">True</span>
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;colorbar&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_need_rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle changes to attributes that need to regenerate everything.&quot;&quot;&quot;</span>
+        <span class="c1"># Because matplotlib doesn&#39;t let you just change these properties, we need</span>
+        <span class="c1"># to trigger a clear and re-call of contour()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">plotdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -1036,28 +1174,65 @@
     <span class="sd">&quot;&quot;&quot;Represent a contour plot.&quot;&quot;&quot;</span>
 
     <span class="n">linecolor</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="s1">&#39;black&#39;</span><span class="p">)</span>
-    <span class="n">linewidth</span> <span class="o">=</span> <span class="n">Int</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
-    <span class="n">contours</span> <span class="o">=</span> <span class="n">Union</span><span class="p">([</span><span class="n">List</span><span class="p">(</span><span class="n">Float</span><span class="p">()),</span> <span class="n">Int</span><span class="p">()],</span> <span class="n">default_value</span><span class="o">=</span><span class="mi">25</span><span class="p">)</span>
+    <span class="n">linecolor</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A string value to set the color of plotted contours; default is</span>
+<span class="s2">    black.</span>
 
-    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;contours&#39;</span><span class="p">,</span> <span class="s1">&#39;linecolor&#39;</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span><span class="p">)</span>
+<span class="s2">    This trait can be set to any Matplotlib color</span>
+<span class="s2">    (https://matplotlib.org/3.1.0/gallery/color/named_colors.html)</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">linewidth</span> <span class="o">=</span> <span class="n">Int</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">linewidth</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;An integer value to set the width of plotted contours; default value</span>
+<span class="s2">    is 2.</span>
+
+<span class="s2">    This trait changes the thickness of contour lines with a higher value plotting a thicker</span>
+<span class="s2">    line.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="n">linestyle</span> <span class="o">=</span> <span class="n">Unicode</span><span class="p">(</span><span class="s1">&#39;solid&#39;</span><span class="p">,</span> <span class="n">allow_none</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">linestyle</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;A string value to set the linestyle (e.g., dashed); default is</span>
+<span class="s2">    solid.</span>
+
+<span class="s2">    The valid string values are those of Matplotlib which are solid, dashed, dotted, and</span>
+<span class="s2">    dashdot.</span>
+<span class="s2">    &quot;&quot;&quot;</span>
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;contours&#39;</span><span class="p">,</span> <span class="s1">&#39;linecolor&#39;</span><span class="p">,</span> <span class="s1">&#39;linewidth&#39;</span><span class="p">,</span> <span class="s1">&#39;linestyle&#39;</span><span class="p">,</span> <span class="s1">&#39;clabels&#39;</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">_set_need_rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Handle changes to attributes that need to regenerate everything.&quot;&quot;&quot;</span>
         <span class="c1"># Because matplotlib doesn&#39;t let you just change these properties, we need</span>
         <span class="c1"># to trigger a clear and re-call of contour()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
 
-<div class="viewcode-block" id="ContourPlot.clear_handle"><a class="viewcode-back" href="../../../api/generated/metpy.plots.ContourPlot.html#metpy.plots.ContourPlot.clear_handle">[docs]</a>    <span class="k">def</span> <span class="nf">clear_handle</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Clear the handle to the plot instance.&quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">collections</span><span class="p">:</span>
-            <span class="n">col</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="kc">None</span></div>
-
     <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Build the plot by calling any plotting methods as necessary.&quot;&quot;&quot;</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">imdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contours</span><span class="p">,</span>
                                              <span class="n">colors</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linecolor</span><span class="p">,</span> <span class="n">linewidths</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linewidth</span><span class="p">,</span>
-                                             <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span></div>
+                                             <span class="n">linestyles</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">linestyle</span><span class="p">,</span>
+                                             <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">clabels</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">handle</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%.0f</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                               <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="FilledContourPlot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
+<span class="k">class</span> <span class="nc">FilledContourPlot</span><span class="p">(</span><span class="n">Plot2D</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent a contour fill plot.&quot;&quot;&quot;</span>
+
+    <span class="nd">@observe</span><span class="p">(</span><span class="s1">&#39;contours&#39;</span><span class="p">,</span> <span class="s1">&#39;colorbar&#39;</span><span class="p">,</span> <span class="s1">&#39;colormap&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">_set_need_rebuild</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handle changes to attributes that need to regenerate everything.&quot;&quot;&quot;</span>
+        <span class="c1"># Because matplotlib doesn&#39;t let you just change these properties, we need</span>
+        <span class="c1"># to trigger a clear and re-call of contour()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build the plot by calling any plotting methods as necessary.&quot;&quot;&quot;</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">imdata</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">plotdata</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">handle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">contourf</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">imdata</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">contours</span><span class="p">,</span>
+                                              <span class="n">cmap</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_cmap_obj</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_norm_obj</span><span class="p">,</span>
+                                              <span class="n">transform</span><span class="o">=</span><span class="n">imdata</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
@@ -1072,8 +1247,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:33:59.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 21:02:32.
 
     </p>
   </div>
@@ -1110,7 +1285,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.10.0',
+            VERSION:'0.10.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

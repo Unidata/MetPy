@@ -37,8 +37,8 @@ MetPy contributions. We're glad you're here!
 
 ## Ground Rules
 The goal is to maintain a diverse community that's pleasant for everyone. Please
-be considerate and respectful of others by following our 
-[code of conduct](https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md). 
+be considerate and respectful of others by following our
+[code of conduct](https://github.com/Unidata/MetPy/blob/master/CODE_OF_CONDUCT.md).
 
 Other items:
 
@@ -59,18 +59,18 @@ requesting something you think is missing.
 * Head over to the [issues](https://github.com/Unidata/MetPy/issues) page.
 * Search to see if your issue already exists or has even been solved previously.
 * If you indeed have a new issue or request, click the "New Issue" button.
-* Fill in as much of the issue template as is relevant. Please be as specific as possible. 
-  Include the version of the code you were using, as well as what operating system you 
+* Fill in as much of the issue template as is relevant. Please be as specific as possible.
+  Include the version of the code you were using, as well as what operating system you
   are running. If possible, include complete, minimal example code that reproduces the problem.
 
 ## Setting up your development environment
-We recommend using the [conda](https://conda.io/docs/) package manager for your Python 
+We recommend using the [conda](https://conda.io/docs/) package manager for your Python
 environments. Our recommended setup for contributing is:
 
-* Install [miniconda](https://conda.io/miniconda.html) on your system.
+* Install [miniconda](https://docs.conda.io/en/latest/miniconda.html) on your system.
 * Install git on your system if it is not already there (install XCode command line tools on
   a Mac or git bash on Windows)
-* Login to your GitHub account and make a fork of the 
+* Login to your GitHub account and make a fork of the
   [MetPy repository](https://github.com/unidata/metpy/) by clicking the "Fork" button.
 * Clone your fork of the MetPy repository (in terminal on Mac/Linux or git shell/
   GUI on Windows) in the location you'd like to keep it. We are partial to creating a
@@ -138,7 +138,7 @@ You can build the documentation locally to see how your changes will look.
 Unit tests are the lifeblood of the project, as it ensures that we can continue to add and
 change the code and stay confident that things have not broken. Running the tests requires
 ``pytest``, which is easily available through ``conda`` or ``pip``. It was also installed if
-you made our default ``devel`` environment. 
+you made our default ``devel`` environment.
 
 ### Running Tests
 Running the tests can be done by running ``py.test``
@@ -147,7 +147,7 @@ Running the whole test suite isn't that slow, but can be a burden if you're work
 one module or a specific test. It is easy to run tests on a single directory:
 
     py.test metpy/calc
-    
+
 A specific test can be run as:
 
     py.test -k test_my_test_func_name
@@ -166,16 +166,16 @@ purposes.)
         if as_string:
            return string(res)
         return res
-        
+
 I can see two easy tests here: one for the results as a float and one for the results as a
-string. If I had added this to the ``calc`` module, I'd add those two tests in 
+string. If I had added this to the ``calc`` module, I'd add those two tests in
 ``tests/test_calc.py``.
 
     def test_add_as_float_or_string_defaults():
         res = add_as_float_or_string(3, 4)
         assert(res, 7)
-        
-    
+
+
     def test_add_as_float_or_string_string_return():
         res = add_as_float_or_string(3, 4, as_string=True)
         assert(res, '7')
@@ -194,11 +194,11 @@ When adding new image comparison tests, start by creating the baseline images fo
 
     py.test --mpl-generate-path=baseline
 
-That command runs the tests and saves the images in the ``baseline`` directory. 
+That command runs the tests and saves the images in the ``baseline`` directory.
 For MetPy this is generally ``metpy/plots/tests/baseline/``. We recommend using the ``-k`` flag
 to run only the test you just created for this step.
 
-For more information, see the `docs for mpl-test <https://github.com/astrofrog/pytest-mpl>`_.
+For more information, see the [docs for pytest-mpl](https://github.com/astrofrog/pytest-mpl).
 
 
 ## Cached Data Files
@@ -213,10 +213,9 @@ Make sure that no system files (like `.DS_Store`) are in the manifest and add it
 contribution.
 
 ## Code Style
-MetPy uses the Python code style outlined in `PEP8
-<http://pep8.org>`_. For better or worse, this is what the majority
-of the Python world uses. The one deviation is that line length limit is 95 characters. 80 is a
-good target, but some times longer lines are needed.
+MetPy uses the Python code style outlined in [PEP8](https://pep8.org). For better or worse, this
+is what the majority of the Python world uses. The one deviation is that line length limit is
+95 characters. 80 is a good target, but some times longer lines are needed.
 
 While the authors are no fans of blind adherence to style and so-called project "clean-ups"
 that go through and correct code style, MetPy has adopted this style from the outset.
@@ -225,7 +224,7 @@ uniform. To this end, part of the automated testing for MetPy checks style. To c
 locally within the source directory you can use the ``flake8`` tool. Running it
 from the root of the source directory is as easy as running ``pytest --flake8`` in the base
 of the repository.
-    
+
 You can also just submit your PR and the kind robots will comment on all style violations as
 well. It can be a pain to make sure you have the right number of spaces around things, imports
 in order, and all of the other nits that the bots will find. It is very important though as
@@ -233,7 +232,7 @@ this consistent style helps us keep MetPy readable, maintainable, and uniform.
 
 ## What happens after the pull request
 You've make your changes, documented them, added some tests, and submitted a pull request.
-What now? 
+What now?
 
 ### Automated Testing
 First, our army of never sleeping robots will begin a series of automated checks.
@@ -255,7 +254,7 @@ couple of days. We may suggest some changes or improvements or alternatives.
 Some things that will increase the chance that your pull request is accepted quickly:
 
 * Write tests.
-* Follow [PEP8][http://pep8.org] for style. (The `flake8` utility can help with this.)
+* Follow [PEP8][https://pep8.org] for style. (The `flake8` utility can help with this.)
 * Write a [good commit message][https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html].
 
 Pull requests will automatically have tests run by Travis. This includes
