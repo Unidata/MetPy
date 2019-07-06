@@ -322,7 +322,7 @@ def check_units(*units_by_pos, **units_by_name):
 try:
     # Try to enable pint's built-in support
     units.setup_matplotlib()
-except (AttributeError, RuntimeError):  # Pint's not available, try to enable our own
+except (AttributeError, RuntimeError, ImportError):  # Pint's not available, try our own
     import matplotlib.units as munits
 
     # Inheriting from object fixes the fact that matplotlib 1.4 doesn't
