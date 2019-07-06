@@ -44,8 +44,8 @@ print(data)
 # Preparing Data
 # --------------
 #
-# To make use of the data within MetPy, we need to parse the dataset for projection
-# information following the CF conventions. For this, we use the
+# To make use of the data within MetPy, we need to parse the dataset for projection and
+# coordinate information following the CF conventions. For this, we use the
 # ``data.metpy.parse_cf()`` method, which will return a new, parsed ``DataArray`` or
 # ``Dataset``.
 #
@@ -274,7 +274,7 @@ plt.show()
 # Depending on your dataset and what you are trying to do, you might run into problems with
 # xarray and MetPy. Below are examples of some of the most common issues
 #
-# - Multiple coordinate conflict
+# - ``parse_cf`` not able to parse due to conflict
 # - An axis not being available
 # - An axis not being interpretable
 # - Arrays not broadcasting in calculations
@@ -285,36 +285,27 @@ plt.show()
 #
 # ::
 #
-#     x = data['Temperature'].metpy.x
+#     temperature = data.metpy.parse_cf('Temperature')
 #
 # Error Message:
 #
 # ::
 #
-#     /home/user/env/MetPy/metpy/xarray.py:305: UserWarning: More than
-#     one x coordinate present for variable "Temperature".
+#     /home/user/env/MetPy/metpy/xarray.py:305: UserWarning: DataArray
+#     of requested variable has more than one x coordinate. Specify the
+#     unique axes using the coordinates argument.
 #
 # Fix:
 #
-# Manually assign the coordinates using the ``assign_coordinates()`` method on your DataArray,
-# or by specifying the ``coordinates`` argument to the ``parse_cf()`` method on your Dataset,
-# to map the ``T`` (time), ``Z`` (vertical), ``Y``, and ``X`` axes (as applicable to your
-# data) to the corresponding coordinates.
-#
-# ::
-#
-#     data['Temperature'].assign_coordinates({'T': 'time', 'Z': 'isobaric',
-#                                             'Y': 'y', 'X': 'x'})
-#     x = data['Temperature'].metpy.x
-#
-# or
+# Specify the ``coordinates`` argument to the ``parse_cf`` method to map the ``T`` (time),
+# ``Z`` (vertical), ``Y``, and ``X`` axes (as applicable to your dataset) to the corresponding
+# coordinates.
 #
 # ::
 #
 #     temperature = data.metpy.parse_cf('Temperature',
 #                                       coordinates={'T': 'time', 'Z': 'isobaric',
 #                                                    'Y': 'y', 'X': 'x'})
-#     x = temperature.metpy.x
 #
 # **Axis Unavailable**
 #
@@ -333,7 +324,8 @@ plt.show()
 # This means that your data variable does not have the coordinate that was requested, at
 # least as far as the parser can recognize. Verify that you are requesting a
 # coordinate that your data actually has, and if it still is not available,
-# you will need to manually specify the coordinates as discussed above.
+# you will need to manually specify the coordinates via the coordinates argument
+# discussed above.
 #
 # **Axis Not Interpretable**
 #

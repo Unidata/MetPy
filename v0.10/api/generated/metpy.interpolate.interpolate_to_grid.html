@@ -45,7 +45,7 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="interpolate" href="metpy.interpolate.html"/>
-        <link rel="next" title="interpolate_to_isosurface" href="metpy.interpolate.interpolate_to_isosurface.html"/>
+        <link rel="next" title="interpolate_to_points" href="metpy.interpolate.interpolate_to_points.html"/>
         <link rel="prev" title="interpolate_nans_1d" href="metpy.interpolate.interpolate_nans_1d.html"/> 
 
   
@@ -126,6 +126,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
@@ -139,7 +140,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-interpolate-interpolate-to-grid">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.interpolate.interpolate_to_grid</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_isosurface.html">interpolate_to_isosurface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_points.html">interpolate_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html">interpolate_to_slice</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance.html">inverse_distance</a></li>
@@ -157,7 +157,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -243,8 +242,8 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>array_like</em>) – x coordinate, can have units of linear distance or degrees</p></li>
-<li><p><strong>y</strong> (<em>array_like</em>) – y coordinate, can have units of linear distance or degrees</p></li>
+<li><p><strong>x</strong> (<em>array_like</em>) – x coordinate</p></li>
+<li><p><strong>y</strong> (<em>array_like</em>) – y coordinate</p></li>
 <li><p><strong>z</strong> (<em>array_like</em>) – observation value</p></li>
 <li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – What type of interpolation to use. Available options include:
 1) “linear”, “nearest”, “cubic”, or “rbf” from <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/interpolate.html#module-scipy.interpolate" title="(in SciPy v1.3.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scipy.interpolate</span></code></a>.
@@ -281,8 +280,6 @@ should be in format: {‘west’: west, ‘south’: south, ‘east’: east, �
 <p class="rubric">Notes</p>
 <p>This function acts as a wrapper for <em class="xref py py-obj">interpolate_points</em> to allow it to generate a regular
 grid.</p>
-<p>This function interpolates points to a Cartesian plane, even if lat/lon coordinates
-are provided.</p>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
 <p><a class="reference internal" href="metpy.interpolate.interpolate_to_points.html#metpy.interpolate.interpolate_to_points" title="metpy.interpolate.interpolate_to_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">interpolate_to_points()</span></code></a></p>
@@ -312,7 +309,7 @@ are provided.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.interpolate.interpolate_to_isosurface.html" class="btn btn-neutral float-right" title="interpolate_to_isosurface" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.interpolate.interpolate_to_points.html" class="btn btn-neutral float-right" title="interpolate_to_points" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="metpy.interpolate.interpolate_nans_1d.html" class="btn btn-neutral" title="interpolate_nans_1d" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -325,7 +322,7 @@ are provided.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 21:02:32.
+      Last updated on Jul 06, 2019 at 21:39:00.
 
     </p>
   </div>
@@ -362,7 +359,7 @@ are provided.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.1',
+            VERSION:'0.10.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

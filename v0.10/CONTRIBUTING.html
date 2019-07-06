@@ -122,7 +122,6 @@
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">Reference Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Contributors Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#introduction">Introduction</a></li>
@@ -288,7 +287,7 @@ are running. If possible, include complete, minimal example code that reproduces
 <p>We recommend using the <a class="reference external" href="https://conda.io/docs/">conda</a> package manager for your Python
 environments. Our recommended setup for contributing is:</p>
 <ul class="simple">
-<li><p>Install <a class="reference external" href="https://docs.conda.io/en/latest/miniconda.html">miniconda</a> on your system.</p></li>
+<li><p>Install <a class="reference external" href="https://conda.io/miniconda.html">miniconda</a> on your system.</p></li>
 <li><p>Install git on your system if it is not already there (install XCode command line tools on
 a Mac or git bash on Windows)</p></li>
 <li><p>Login to your GitHub account and make a fork of the
@@ -417,7 +416,7 @@ pytest-mpl plugin. To run these tests, use:</p>
 <p>That command runs the tests and saves the images in the <code class="docutils literal notranslate"><span class="pre">baseline</span></code> directory.
 For MetPy this is generally <code class="docutils literal notranslate"><span class="pre">metpy/plots/tests/baseline/</span></code>. We recommend using the <code class="docutils literal notranslate"><span class="pre">-k</span></code> flag
 to run only the test you just created for this step.</p>
-<p>For more information, see the <a class="reference external" href="https://github.com/astrofrog/pytest-mpl">docs for pytest-mpl</a>.</p>
+<p>For more information, see the <a class="reference external" href="https://github.com/astrofrog/pytest-mpl">docs for mpl-test</a>.</p>
 </div>
 </div>
 <div class="section" id="cached-data-files">
@@ -432,9 +431,9 @@ contribution.</p>
 </div>
 <div class="section" id="code-style">
 <h2>Code Style<a class="headerlink" href="#code-style" title="Permalink to this headline">¶</a></h2>
-<p>MetPy uses the Python code style outlined in <a class="reference external" href="https://pep8.org">PEP8</a>. For better or worse, this
-is what the majority of the Python world uses. The one deviation is that line length limit is
-95 characters. 80 is a good target, but some times longer lines are needed.</p>
+<p>MetPy uses the Python code style outlined in <a class="reference external" href="http://pep8.org">PEP8</a>. For better or worse, this is what the majority
+of the Python world uses. The one deviation is that line length limit is 95 characters. 80 is a
+good target, but some times longer lines are needed.</p>
 <p>While the authors are no fans of blind adherence to style and so-called project “clean-ups”
 that go through and correct code style, MetPy has adopted this style from the outset.
 Therefore, it makes sense to enforce this style as code is added to keep everything clean and
@@ -471,7 +470,7 @@ couple of days. We may suggest some changes or improvements or alternatives.</p>
 <p>Some things that will increase the chance that your pull request is accepted quickly:</p>
 <ul class="simple">
 <li><p>Write tests.</p></li>
-<li><p>Follow [PEP8][<a class="reference external" href="https://pep8.org">https://pep8.org</a>] for style. (The <code class="docutils literal notranslate"><span class="pre">flake8</span></code> utility can help with this.)</p></li>
+<li><p>Follow [PEP8][<a class="reference external" href="http://pep8.org">http://pep8.org</a>] for style. (The <code class="docutils literal notranslate"><span class="pre">flake8</span></code> utility can help with this.)</p></li>
 <li><p>Write a [good commit message][<a class="reference external" href="https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html">https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html</a>].</p></li>
 </ul>
 <p>Pull requests will automatically have tests run by Travis. This includes
@@ -531,7 +530,7 @@ importance of writing tested and maintainable software.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 21:02:32.
+      Last updated on Jul 06, 2019 at 21:39:00.
 
     </p>
   </div>
@@ -568,7 +567,7 @@ importance of writing tested and maintainable software.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.10.1',
+            VERSION:'0.10.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -1,0 +1,12 @@
+cf_to_proj
+=======================
+
+.. currentmodule:: metpy.io.cdm
+
+.. autofunction:: cf_to_proj
+
+.. include:: metpy.io.cdm.cf_to_proj.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

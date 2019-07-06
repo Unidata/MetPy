@@ -121,7 +121,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -554,8 +553,7 @@
 <div class="viewcode-block" id="lfc"><a class="viewcode-back" href="../../../api/generated/metpy.calc.lfc.html#metpy.calc.lfc">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">lfc</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">,</span> <span class="n">parcel_temperature_profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dewpt_start</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">which</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">lfc</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">,</span> <span class="n">parcel_temperature_profile</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the level of free convection (LFC).</span>
 
 <span class="sd">    This works by finding the first intersection of the ideal parcel path and</span>
@@ -572,17 +570,11 @@
 <span class="sd">    parcel_temperature_profile: `pint.Quantity`, optional</span>
 <span class="sd">        The parcel temperature profile from which to calculate the LFC. Defaults to the</span>
 <span class="sd">        surface parcel profile.</span>
-<span class="sd">    dewpt_start: `pint.Quantity`, optional</span>
-<span class="sd">        The dewpoint of the parcel for which to calculate the LFC. Defaults to the surface</span>
-<span class="sd">        dewpoint.</span>
-<span class="sd">    which: str, optional</span>
-<span class="sd">        Pick which LFC to return. Options are &#39;top&#39;, &#39;bottom&#39;, and &#39;all&#39;.</span>
-<span class="sd">        Default is the &#39;top&#39; (lowest pressure) LFC.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity`</span>
-<span class="sd">        The LFC pressure and temperature, or arrays of same if which=&#39;all&#39;</span>
+<span class="sd">        The LFC pressure and temperature</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -596,21 +588,10 @@
         <span class="n">temperature</span> <span class="o">=</span> <span class="n">temperature</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
         <span class="n">parcel_temperature_profile</span> <span class="o">=</span> <span class="n">parcel_temperature_profile</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
 
-    <span class="k">if</span> <span class="n">dewpt_start</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">dewpt_start</span> <span class="o">=</span> <span class="n">dewpt</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-
-    <span class="c1"># The parcel profile and data may have the same first data point.</span>
-    <span class="c1"># If that is the case, ignore that point to get the real first</span>
-    <span class="c1"># intersection for the LFC calculation.</span>
-    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">isclose</span><span class="p">(</span><span class="n">parcel_temperature_profile</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">m</span><span class="p">):</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">find_intersections</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">parcel_temperature_profile</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
-                                  <span class="n">temperature</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;increasing&#39;</span><span class="p">)</span>
-    <span class="k">else</span><span class="p">:</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">find_intersections</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">parcel_temperature_profile</span><span class="p">,</span>
-                                  <span class="n">temperature</span><span class="p">,</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;increasing&#39;</span><span class="p">)</span>
-
-    <span class="c1"># Compute LCL for this parcel for future comparisons</span>
-    <span class="n">this_lcl</span> <span class="o">=</span> <span class="n">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">parcel_temperature_profile</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dewpt_start</span><span class="p">)</span>
+    <span class="c1"># The parcel profile and data have the same first data point, so we ignore</span>
+    <span class="c1"># that point to get the real first intersection for the LFC calculation.</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">find_intersections</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">parcel_temperature_profile</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
+                              <span class="n">temperature</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;increasing&#39;</span><span class="p">)</span>
 
     <span class="c1"># The LFC could:</span>
     <span class="c1"># 1) Not exist</span>
@@ -619,45 +600,25 @@
 
     <span class="c1"># LFC does not exist or is LCL</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
-        <span class="c1"># Is there any positive area above the LCL?</span>
-        <span class="n">mask</span> <span class="o">=</span> <span class="n">pressure</span> <span class="o">&lt;</span> <span class="n">this_lcl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">_less_or_close</span><span class="p">(</span><span class="n">parcel_temperature_profile</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">temperature</span><span class="p">[</span><span class="n">mask</span><span class="p">])):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">_less_or_close</span><span class="p">(</span><span class="n">parcel_temperature_profile</span><span class="p">,</span> <span class="n">temperature</span><span class="p">)):</span>
             <span class="c1"># LFC doesn&#39;t exist</span>
             <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span>
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># LFC = LCL</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">this_lcl</span>
+            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dewpt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
 
-    <span class="c1"># LFC exists. Make sure it is no lower than the LCL</span>
+    <span class="c1"># LFC exists and is not LCL. Make sure it is above the LCL.</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="n">idx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">this_lcl</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="c1"># LFC height &lt; LCL height, so set LFC = LCL</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">idx</span><span class="p">):</span>
-            <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">this_lcl</span>
-            <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
-        <span class="c1"># Otherwise, find all LFCs that exist above the LCL</span>
-        <span class="c1"># What is returned depends on which flag as described in the docstring</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="k">return</span> <span class="n">_multiple_el_lfc_options</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">which</span><span class="p">)</span></div>
-
-
-<span class="k">def</span> <span class="nf">_multiple_el_lfc_options</span><span class="p">(</span><span class="n">intersect_pressures</span><span class="p">,</span> <span class="n">intersect_temperatures</span><span class="p">,</span> <span class="n">valid_x</span><span class="p">,</span>
-                             <span class="n">which</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Choose which ELs and LFCs to return from a sounding.&quot;&quot;&quot;</span>
-    <span class="n">p_list</span><span class="p">,</span> <span class="n">t_list</span> <span class="o">=</span> <span class="n">intersect_pressures</span><span class="p">[</span><span class="n">valid_x</span><span class="p">],</span> <span class="n">intersect_temperatures</span><span class="p">[</span><span class="n">valid_x</span><span class="p">]</span>
-    <span class="k">if</span> <span class="n">which</span> <span class="o">==</span> <span class="s1">&#39;all&#39;</span><span class="p">:</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">p_list</span><span class="p">,</span> <span class="n">t_list</span>
-    <span class="k">elif</span> <span class="n">which</span> <span class="o">==</span> <span class="s1">&#39;bottom&#39;</span><span class="p">:</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">p_list</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">t_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
-    <span class="k">elif</span> <span class="n">which</span> <span class="o">==</span> <span class="s1">&#39;top&#39;</span><span class="p">:</span>
-        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">p_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">t_list</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
-    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+        <span class="n">idx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dewpt</span><span class="p">[</span><span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="el"><a class="viewcode-back" href="../../../api/generated/metpy.calc.el.html#metpy.calc.el">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[pressure]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[temperature]&#39;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">el</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">,</span> <span class="n">parcel_temperature_profile</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">el</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">temperature</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">,</span> <span class="n">parcel_temperature_profile</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the equilibrium level.</span>
 
 <span class="sd">    This works by finding the last intersection of the ideal parcel path and</span>
@@ -667,7 +628,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure profile</span>
+<span class="sd">        The atmospheric pressure</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        The temperature at the levels given by `pressure`</span>
 <span class="sd">    dewpt : `pint.Quantity`</span>
@@ -675,14 +636,11 @@
 <span class="sd">    parcel_temperature_profile: `pint.Quantity`, optional</span>
 <span class="sd">        The parcel temperature profile from which to calculate the EL. Defaults to the</span>
 <span class="sd">        surface parcel profile.</span>
-<span class="sd">    which: str, optional</span>
-<span class="sd">        Pick which EL to return. Options are &#39;top&#39;, &#39;bottom&#39;, and &#39;all&#39;.</span>
-<span class="sd">        Default is the &#39;top&#39; (lowest pressure) EL.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    `pint.Quantity, pint.Quantity`</span>
-<span class="sd">        The EL pressure and temperature, or arrays of same if which=&#39;all&#39;</span>
+<span class="sd">        The EL pressure and temperature</span>
 
 <span class="sd">    See Also</span>
 <span class="sd">    --------</span>
@@ -700,14 +658,10 @@
     <span class="k">if</span> <span class="n">parcel_temperature_profile</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">temperature</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span>
 
-    <span class="c1"># Otherwise the last intersection (as long as there is one, and it&#39;s not</span>
-    <span class="c1"># below the LCL) is the EL</span>
-    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">find_intersections</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">parcel_temperature_profile</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span>
-                              <span class="n">direction</span><span class="o">=</span><span class="s1">&#39;decreasing&#39;</span><span class="p">)</span>
-    <span class="n">lcl_p</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">lcl</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dewpt</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
-    <span class="n">idx</span> <span class="o">=</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="n">lcl_p</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="ow">and</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">lcl_p</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">_multiple_el_lfc_options</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">idx</span><span class="p">,</span> <span class="n">which</span><span class="p">)</span>
+    <span class="c1"># Otherwise the last intersection (as long as there is one) is the EL</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">find_intersections</span><span class="p">(</span><span class="n">pressure</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">parcel_temperature_profile</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">temperature</span><span class="p">[</span><span class="mi">1</span><span class="p">:])</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">x</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">y</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span> <span class="o">*</span> <span class="n">temperature</span><span class="o">.</span><span class="n">units</span></div>
 
@@ -725,8 +679,8 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure level(s) of interest. This array must be from</span>
-<span class="sd">        high to low pressure.</span>
+<span class="sd">        The atmospheric pressure level(s) of interest. The first entry should be the starting</span>
+<span class="sd">        point pressure.</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        The starting temperature</span>
 <span class="sd">    dewpt : `pint.Quantity`</span>
@@ -760,14 +714,14 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure level(s) of interest. This array must be from</span>
-<span class="sd">        high to low pressure.</span>
+<span class="sd">        The atmospheric pressure level(s) of interest. The first entry should be the starting</span>
+<span class="sd">        point pressure.</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        The atmospheric temperature at the levels in `pressure`. The first entry should be at</span>
-<span class="sd">        the same level as the first `pressure` data point.</span>
+<span class="sd">        The atmospheric temperature at the levels in `pressure`. The first entry should be the</span>
+<span class="sd">        starting point temperature.</span>
 <span class="sd">    dewpt : `pint.Quantity`</span>
-<span class="sd">        The atmospheric dew point at the levels in `pressure`. The first entry should be at</span>
-<span class="sd">        the same level as the first `pressure` data point.</span>
+<span class="sd">        The atmospheric dew point at the levels in `pressure`. The first entry should be the</span>
+<span class="sd">        starting dew point.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1565,14 +1519,14 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
-<span class="sd">        The atmospheric pressure level(s) of interest, in order from highest to</span>
-<span class="sd">        lowest pressure.</span>
+<span class="sd">        The atmospheric pressure level(s) of interest. The first entry should be the starting</span>
+<span class="sd">        point pressure.</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
 <span class="sd">        The atmospheric temperature corresponding to pressure.</span>
 <span class="sd">    dewpt : `pint.Quantity`</span>
 <span class="sd">        The atmospheric dew point corresponding to pressure.</span>
 <span class="sd">    parcel_profile : `pint.Quantity`</span>
-<span class="sd">        The temperature profile of the parcel.</span>
+<span class="sd">        The temperature profile of the parcel</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -1912,11 +1866,11 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Atmospheric pressure profile. The first entry should be the starting</span>
-<span class="sd">        (surface) observation, with the array going from high to low pressure.</span>
+<span class="sd">        (surface) observation.</span>
 <span class="sd">    temperature : `pint.Quantity`</span>
-<span class="sd">        Temperature profile corresponding to the `pressure` profile.</span>
+<span class="sd">        Temperature profile</span>
 <span class="sd">    dewpoint : `pint.Quantity`</span>
-<span class="sd">        Dewpoint profile corresponding to the `pressure` profile.</span>
+<span class="sd">        Dewpoint profile</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -2465,7 +2419,7 @@
 
 <span class="sd">    .. math:: \sigma = -\frac{RT}{p} \frac{\partial \ln \theta}{\partial p}</span>
 
-<span class="sd">    This formula is based on equation 4.3.6 in [Bluestein1992]_.</span>
+<span class="sd">    This formuala is based on equation 4.3.6 in [Bluestein1992]_.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -2531,7 +2485,7 @@
 <span class="sd">    assuming hydrostatic conditions on the synoptic scale.</span>
 <span class="sd">    By Equation 7.33 in [Hobbs2006]_,</span>
 
-<span class="sd">    .. math:: \omega \simeq -\rho g w</span>
+<span class="sd">    .. math: \omega \simeq -\rho g w</span>
 
 <span class="sd">    Density (:math:`\rho`) is calculated using the :func:`density` function,</span>
 <span class="sd">    from the given pressure and temperature. If `mixing` is given, the virtual</span>
@@ -2573,11 +2527,11 @@
 <span class="sd">    :math:`\left(w = \frac{Dz}{Dt}\right)` assuming hydrostatic conditions on</span>
 <span class="sd">    the synoptic scale. By Equation 7.33 in [Hobbs2006]_,</span>
 
-<span class="sd">    .. math:: \omega \simeq -\rho g w</span>
+<span class="sd">    .. math: \omega \simeq -\rho g w</span>
 
 <span class="sd">    so that</span>
 
-<span class="sd">    .. math:: w \simeq \frac{- \omega}{\rho g}</span>
+<span class="sd">    .. math w \simeq \frac{- \omega}{\rho g}</span>
 
 <span class="sd">    Density (:math:`\rho`) is calculated using the :func:`density` function,</span>
 <span class="sd">    from the given pressure and temperature. If `mixing` is given, the virtual</span>
@@ -2621,7 +2575,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 21:02:32.
+      Last updated on Jul 06, 2019 at 21:39:00.
 
     </p>
   </div>
@@ -2658,7 +2612,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.10.1',
+            VERSION:'0.10.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -135,6 +135,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.io.Level3File.html">Level3File</a></li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
@@ -142,7 +143,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -227,7 +227,12 @@
 <dd><p>A class that handles reading the GINI format satellite images from the NWS.</p>
 <p>This class attempts to decode every byte that is in a given GINI file.</p>
 <p class="rubric">Notes</p>
-<p>The internal data structures that things are decoded into are subject to change.</p>
+<p>The internal data structures that things are decoded into are subject to change. For
+a more stable interface, use the <a class="reference internal" href="#metpy.io.GiniFile.to_dataset" title="metpy.io.GiniFile.to_dataset"><code class="xref py py-meth docutils literal notranslate"><span class="pre">to_dataset()</span></code></a> method.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="#metpy.io.GiniFile.to_dataset" title="metpy.io.GiniFile.to_dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">GiniFile.to_dataset</span></code></a></p>
+</div>
 <p>Create an instance of <a class="reference internal" href="#metpy.io.GiniFile" title="metpy.io.GiniFile"><code class="xref py py-obj docutils literal notranslate"><span class="pre">GiniFile</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -322,7 +327,10 @@ this will be read from directly.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.load" title="metpy.io.GiniFile.load"><code class="xref py py-obj docutils literal notranslate"><span class="pre">load</span></code></a>()</p></td>
 <td><p>Load the variables and attributes simultaneously.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.values" title="metpy.io.GiniFile.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.GiniFile.to_dataset" title="metpy.io.GiniFile.to_dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">to_dataset</span></code></a>()</p></td>
+<td><p>Convert to a CDM dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.GiniFile.values" title="metpy.io.GiniFile.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a>()</p></td>
 <td><p></p></td>
 </tr>
 </tbody>
@@ -477,6 +485,23 @@ are requested, so care should be taken to make sure its fast.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="metpy.io.GiniFile.to_dataset">
+<code class="sig-name descname">to_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/gini.html#GiniFile.to_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.GiniFile.to_dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Convert to a CDM dataset.</p>
+<p>Gives a representation of the data in a much more user-friendly manner, providing
+easy access to Variables and relevant attributes.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><ul class="simple">
+<li><p><em>Dataset</em></p></li>
+<li><p><em>.. deprecated:: 0.8.0</em></p></li>
+</ul>
+</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
 <dt id="metpy.io.GiniFile.values">
 <code class="sig-name descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#metpy.io.GiniFile.values" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -519,7 +544,7 @@ are requested, so care should be taken to make sure its fast.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 21:02:32.
+      Last updated on Jul 06, 2019 at 21:39:00.
 
     </p>
   </div>
@@ -556,7 +581,7 @@ are requested, so care should be taken to make sure its fast.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.1',
+            VERSION:'0.10.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -12,8 +12,6 @@ ContourPlot
 
    .. autosummary::
    
-      ~ContourPlot.clabels
-      ~ContourPlot.colorbar
       ~ContourPlot.colormap
       ~ContourPlot.contours
       ~ContourPlot.cross_validation_lock
@@ -23,7 +21,6 @@ ContourPlot
       ~ContourPlot.image_range
       ~ContourPlot.level
       ~ContourPlot.linecolor
-      ~ContourPlot.linestyle
       ~ContourPlot.linewidth
       ~ContourPlot.name
       ~ContourPlot.parent
@@ -47,7 +44,6 @@ ContourPlot
       ~ContourPlot.class_trait_names
       ~ContourPlot.class_traits
       ~ContourPlot.clear
-      ~ContourPlot.clear_collections
       ~ContourPlot.clear_handle
       ~ContourPlot.draw
       ~ContourPlot.has_trait
@@ -73,8 +69,6 @@ ContourPlot
    .. rubric:: Attributes Documentation
 
    
-   .. autoattribute:: clabels
-   .. autoattribute:: colorbar
    .. autoattribute:: colormap
    .. autoattribute:: contours
    .. autoattribute:: cross_validation_lock
@@ -84,7 +78,6 @@ ContourPlot
    .. autoattribute:: image_range
    .. autoattribute:: level
    .. autoattribute:: linecolor
-   .. autoattribute:: linestyle
    .. autoattribute:: linewidth
    .. autoattribute:: name
    .. autoattribute:: parent
@@ -107,7 +100,6 @@ ContourPlot
    .. automethod:: class_trait_names
    .. automethod:: class_traits
    .. automethod:: clear
-   .. automethod:: clear_collections
    .. automethod:: clear_handle
    .. automethod:: draw
    .. automethod:: has_trait

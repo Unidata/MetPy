@@ -121,7 +121,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -217,6 +216,8 @@
     <span class="n">AbstractDataStore</span> <span class="o">=</span> <span class="nb">object</span>
 
 <span class="kn">from</span> <span class="nn">._tools</span> <span class="k">import</span> <span class="n">Bits</span><span class="p">,</span> <span class="n">IOBuffer</span><span class="p">,</span> <span class="n">NamedStruct</span><span class="p">,</span> <span class="n">open_as_needed</span><span class="p">,</span> <span class="n">zlib_decompress_all_frames</span>
+<span class="kn">from</span> <span class="nn">.cdm</span> <span class="k">import</span> <span class="n">cf_to_proj</span><span class="p">,</span> <span class="n">Dataset</span>
+<span class="kn">from</span> <span class="nn">..deprecation</span> <span class="k">import</span> <span class="n">deprecated</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
@@ -272,7 +273,12 @@
 
 <span class="sd">    Notes</span>
 <span class="sd">    -----</span>
-<span class="sd">    The internal data structures that things are decoded into are subject to change.</span>
+<span class="sd">    The internal data structures that things are decoded into are subject to change. For</span>
+<span class="sd">    a more stable interface, use the :meth:`to_dataset` method.</span>
+
+<span class="sd">    See Also</span>
+<span class="sd">    --------</span>
+<span class="sd">    GiniFile.to_dataset</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -429,6 +435,78 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">blob</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">ny</span><span class="p">,</span>
                                             <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">nx</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="GiniFile.to_dataset"><a class="viewcode-back" href="../../../api/generated/metpy.io.GiniFile.html#metpy.io.GiniFile.to_dataset">[docs]</a>    <span class="nd">@deprecated</span><span class="p">(</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">alternative</span><span class="o">=</span><span class="s1">&#39;xarray.open_dataset(GiniFile)&#39;</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">to_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Convert to a CDM dataset.</span>
+
+<span class="sd">        Gives a representation of the data in a much more user-friendly manner, providing</span>
+<span class="sd">        easy access to Variables and relevant attributes.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        Dataset</span>
+
+<span class="sd">        .. deprecated:: 0.8.0</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">()</span>
+
+        <span class="c1"># Put in time</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">time_var</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;time&#39;</span><span class="p">,))</span>
+        <span class="n">base_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">hour</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">minute</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">second</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">microsecond</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">time_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;milliseconds since &#39;</span> <span class="o">+</span> <span class="n">base_time</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span>
+        <span class="n">offset</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">datetime</span> <span class="o">-</span> <span class="n">base_time</span><span class="p">)</span>
+        <span class="n">time_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">offset</span><span class="o">.</span><span class="n">seconds</span> <span class="o">*</span> <span class="mi">1000</span> <span class="o">+</span> <span class="n">offset</span><span class="o">.</span><span class="n">microseconds</span> <span class="o">/</span> <span class="mf">1000.</span>
+
+        <span class="c1"># Set up projection</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="n">GiniProjection</span><span class="o">.</span><span class="n">lambert_conformal</span><span class="p">:</span>
+            <span class="n">proj_var</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;Lambert_Conformal&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">grid_mapping_name</span> <span class="o">=</span> <span class="s1">&#39;lambert_conformal_conic&#39;</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">standard_parallel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">longitude_of_central_meridian</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj_info</span><span class="o">.</span><span class="n">lov</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">latitude_of_projection_origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">earth_radius</span> <span class="o">=</span> <span class="mf">6371200.0</span>
+            <span class="n">_add_projection_coords</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj_info</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">proj_info</span><span class="o">.</span><span class="n">dy</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="n">GiniProjection</span><span class="o">.</span><span class="n">polar_stereographic</span><span class="p">:</span>
+            <span class="n">proj_var</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;Polar_Stereographic&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">grid_mapping_name</span> <span class="o">=</span> <span class="s1">&#39;polar_stereographic&#39;</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">straight_vertical_longitude_from_pole</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj_info</span><span class="o">.</span><span class="n">lov</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">latitude_of_projection_origin</span> <span class="o">=</span> <span class="o">-</span><span class="mi">90</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj_info</span><span class="o">.</span><span class="n">proj_center</span> <span class="k">else</span> <span class="mi">90</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">earth_radius</span> <span class="o">=</span> <span class="mf">6371200.0</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">standard_parallel</span> <span class="o">=</span> <span class="mf">60.0</span>  <span class="c1"># See Note 2 for Table 4.4A in ICD</span>
+            <span class="n">_add_projection_coords</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">proj_info</span><span class="o">.</span><span class="n">dx</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">proj_info</span><span class="o">.</span><span class="n">dy</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">projection</span> <span class="o">==</span> <span class="n">GiniProjection</span><span class="o">.</span><span class="n">mercator</span><span class="p">:</span>
+            <span class="n">proj_var</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;Mercator&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">int32</span><span class="p">)</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">grid_mapping_name</span> <span class="o">=</span> <span class="s1">&#39;mercator&#39;</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">longitude_of_projection_origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">lo1</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">latitude_of_projection_origin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">la1</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">standard_parallel</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="o">.</span><span class="n">lat_in</span>
+            <span class="n">proj_var</span><span class="o">.</span><span class="n">earth_radius</span> <span class="o">=</span> <span class="mf">6371200.0</span>
+            <span class="n">_add_projection_coords</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="o">.</span><span class="n">resolution</span><span class="p">,</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc2</span><span class="o">.</span><span class="n">resolution</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;Need to add more projections to dataset!&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Now the data</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">channel</span>
+        <span class="k">if</span> <span class="s1">&#39;(&#39;</span> <span class="ow">in</span> <span class="n">name</span><span class="p">:</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">rstrip</span><span class="p">()</span>
+        <span class="n">data_var</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span>
+                                     <span class="n">wrap_array</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">,</span>
+                                                            <span class="n">mask</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">missing</span><span class="p">))</span>
+        <span class="n">data_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">channel</span>
+        <span class="n">data_var</span><span class="o">.</span><span class="n">missing_value</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">missing</span>
+        <span class="n">data_var</span><span class="o">.</span><span class="n">coordinates</span> <span class="o">=</span> <span class="s1">&#39;y x&#39;</span>
+        <span class="n">data_var</span><span class="o">.</span><span class="n">grid_mapping</span> <span class="o">=</span> <span class="n">proj_var</span><span class="o">.</span><span class="n">name</span>
+
+        <span class="c1"># Add a bit more metadata</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">satellite</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">creating_entity</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">sector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">sector_id</span>
+        <span class="k">return</span> <span class="n">ds</span></div>
 
     <span class="k">def</span> <span class="nf">_process_wmo_header</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Read off the WMO header from the file, if necessary.&quot;&quot;&quot;</span>
@@ -613,6 +691,46 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="n">FrozenOrderedDict</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">nx</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span></div></div>
+
+
+<span class="k">def</span> <span class="nf">_add_projection_coords</span><span class="p">(</span><span class="n">ds</span><span class="p">,</span> <span class="n">prod_desc</span><span class="p">,</span> <span class="n">proj_var</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add coordinate variables (projection and lon/lat) to a dataset.&quot;&quot;&quot;</span>
+    <span class="n">proj</span> <span class="o">=</span> <span class="n">cf_to_proj</span><span class="p">(</span><span class="n">proj_var</span><span class="p">)</span>
+
+    <span class="c1"># Get projected location of lower left point</span>
+    <span class="n">x0</span><span class="p">,</span> <span class="n">y0</span> <span class="o">=</span> <span class="n">proj</span><span class="p">(</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">lo1</span><span class="p">,</span> <span class="n">prod_desc</span><span class="o">.</span><span class="n">la1</span><span class="p">)</span>
+
+    <span class="c1"># Coordinate variable for x</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">prod_desc</span><span class="o">.</span><span class="n">nx</span><span class="p">)</span>
+    <span class="n">x_var</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,))</span>
+    <span class="n">x_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;m&#39;</span>
+    <span class="n">x_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">&#39;x coordinate of projection&#39;</span>
+    <span class="n">x_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">&#39;projection_x_coordinate&#39;</span>
+    <span class="n">x_var</span><span class="p">[:]</span> <span class="o">=</span> <span class="n">x0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">nx</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <span class="n">dx</span><span class="p">)</span>
+
+    <span class="c1"># Now y</span>
+    <span class="n">ds</span><span class="o">.</span><span class="n">createDimension</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">prod_desc</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span>
+    <span class="n">y_var</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,))</span>
+    <span class="n">y_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;m&#39;</span>
+    <span class="n">y_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">&#39;y coordinate of projection&#39;</span>
+    <span class="n">y_var</span><span class="o">.</span><span class="n">standard_name</span> <span class="o">=</span> <span class="s1">&#39;projection_y_coordinate&#39;</span>
+
+    <span class="c1"># Need to flip y because we calculated from the lower left corner, but the raster data</span>
+    <span class="c1"># is stored with top row first.</span>
+    <span class="n">y_var</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">y0</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">prod_desc</span><span class="o">.</span><span class="n">ny</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mf">1000.</span> <span class="o">*</span> <span class="n">dy</span><span class="p">)</span>
+
+    <span class="c1"># Get the two-D lon,lat grid as well</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">x_var</span><span class="p">[:],</span> <span class="n">y_var</span><span class="p">[:])</span>
+    <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span> <span class="o">=</span> <span class="n">proj</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">inverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">lon_var</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;lon&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">wrap_array</span><span class="o">=</span><span class="n">lon</span><span class="p">)</span>
+    <span class="n">lon_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">&#39;longitude&#39;</span>
+    <span class="n">lon_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;degrees_east&#39;</span>
+
+    <span class="n">lat_var</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">createVariable</span><span class="p">(</span><span class="s1">&#39;lat&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">,</span> <span class="n">dimensions</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">),</span> <span class="n">wrap_array</span><span class="o">=</span><span class="n">lat</span><span class="p">)</span>
+    <span class="n">lat_var</span><span class="o">.</span><span class="n">long_name</span> <span class="o">=</span> <span class="s1">&#39;latitude&#39;</span>
+    <span class="n">lat_var</span><span class="o">.</span><span class="n">units</span> <span class="o">=</span> <span class="s1">&#39;degrees_north&#39;</span>
+
+    <span class="n">ds</span><span class="o">.</span><span class="n">img_extent</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">x_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">max</span><span class="p">(),</span> <span class="n">y_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">y_var</span><span class="p">[:]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
 </pre></div>
 
            </div>
@@ -628,7 +746,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 21:02:32.
+      Last updated on Jul 06, 2019 at 21:39:00.
 
     </p>
   </div>
@@ -665,7 +783,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.10.1',
+            VERSION:'0.10.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

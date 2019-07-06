@@ -71,7 +71,7 @@ some of MetPy's sample data. This event is the Veterans Day tornado outbreak in 
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'nov11_sounding.txt' from remote data store 'https://github.com/Unidata/MetPy/raw/v0.10.1/staticdata/nov11_sounding.txt' to '/home/travis/build/Unidata/MetPy/staticdata/v0.10.1'.
+    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'nov11_sounding.txt' from remote data store 'https://github.com/Unidata/MetPy/raw/v0.10.2/staticdata/nov11_sounding.txt' to '/home/travis/build/Unidata/MetPy/staticdata/v0.10.2'.
       action_word[action], fname, self.get_url(fname), str(self.path)
 
 
@@ -303,7 +303,7 @@ which are not drawn.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.327 seconds)
+   **Total running time of the script:** ( 0 minutes  2.336 seconds)
 
 
 .. _sphx_glr_download_tutorials_upperair_soundings.py:

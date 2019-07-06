@@ -126,6 +126,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
@@ -163,7 +164,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -244,7 +244,7 @@
 <h1>el<a class="headerlink" href="#el" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.el">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">el</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpt</em>, <em class="sig-param">parcel_temperature_profile=None</em>, <em class="sig-param">which='top'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#el"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.el" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">el</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpt</em>, <em class="sig-param">parcel_temperature_profile=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#el"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.el" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the equilibrium level.</p>
 <p>This works by finding the last intersection of the ideal parcel path and
 the measured environmental temperature. If there is one or fewer intersections, there is
@@ -252,17 +252,15 @@ no equilibrium level.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure profile</p></li>
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure</p></li>
 <li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The temperature at the levels given by <em class="xref py py-obj">pressure</em></p></li>
 <li><p><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The dew point at the levels given by <em class="xref py py-obj">pressure</em></p></li>
 <li><p><strong>parcel_temperature_profile</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The parcel temperature profile from which to calculate the EL. Defaults to the
 surface parcel profile.</p></li>
-<li><p><strong>which</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Pick which EL to return. Options are ‘top’, ‘bottom’, and ‘all’.
-Default is the ‘top’ (lowest pressure) EL.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity, pint.Quantity</em> – The EL pressure and temperature, or arrays of same if which=’all’</p>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity, pint.Quantity</em> – The EL pressure and temperature</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -296,7 +294,7 @@ Default is the ‘top’ (lowest pressure) EL.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 21:02:32.
+      Last updated on Jul 06, 2019 at 21:39:00.
 
     </p>
   </div>
@@ -333,7 +331,7 @@ Default is the ‘top’ (lowest pressure) EL.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.1',
+            VERSION:'0.10.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

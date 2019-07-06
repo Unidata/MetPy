@@ -75,9 +75,9 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'nids/KOUN_SDUS54_N0QTLX_201305202016' from remote data store 'https://github.com/Unidata/MetPy/raw/v0.10.1/staticdata/nids/KOUN_SDUS54_N0QTLX_201305202016' to '/home/travis/build/Unidata/MetPy/staticdata/v0.10.1'.
+    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'nids/KOUN_SDUS54_N0QTLX_201305202016' from remote data store 'https://github.com/Unidata/MetPy/raw/v0.10.2/staticdata/nids/KOUN_SDUS54_N0QTLX_201305202016' to '/home/travis/build/Unidata/MetPy/staticdata/v0.10.2'.
       action_word[action], fname, self.get_url(fname), str(self.path)
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'nids/KOUN_SDUS54_N0UTLX_201305202016' from remote data store 'https://github.com/Unidata/MetPy/raw/v0.10.1/staticdata/nids/KOUN_SDUS54_N0UTLX_201305202016' to '/home/travis/build/Unidata/MetPy/staticdata/v0.10.1'.
+    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'nids/KOUN_SDUS54_N0UTLX_201305202016' from remote data store 'https://github.com/Unidata/MetPy/raw/v0.10.2/staticdata/nids/KOUN_SDUS54_N0UTLX_201305202016' to '/home/travis/build/Unidata/MetPy/staticdata/v0.10.2'.
       action_word[action], fname, self.get_url(fname), str(self.path)
 
 
@@ -85,7 +85,7 @@ Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.575 seconds)
+   **Total running time of the script:** ( 0 minutes  1.424 seconds)
 
 
 .. _sphx_glr_download_examples_formats_NEXRAD_Level_3_File.py:

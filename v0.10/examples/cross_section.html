@@ -123,8 +123,8 @@
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="XArray_Projections.html">XArray Projection Handling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Four_Panel_Map.html">Four Panel Map</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Cross Section Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isentropic_example.html">Isentropic Analysis</a></li>
@@ -139,7 +139,6 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -264,21 +263,6 @@ Data variables:
     v_wind               (isobaric, y, x) float32 ...
     Geopotential_height  (isobaric, y, x) float32 ...
     Specific_humidity    (isobaric, y, x) float32 ...
-Attributes:
-    Conventions:              CF-1.0
-    Originating_center:       US National Weather Service - NCEP(WMC) (7)
-    Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
-    Generating_Model:         North American Regional Reanalysis (NARR)
-    Product_Type:             Forecast/Uninitialized Analysis/Image Product
-    title:                    US National Weather Service - NCEP(WMC) North A...
-    institution:              Center US National Weather Service - NCEP(WMC) ...
-    source:                   Forecast/Uninitialized Analysis/Image Product
-    history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
-    CF:feature_type:          GRID
-    file_format:              GRIB-1
-    location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
-    _CoordinateModelRunDate:  1987-04-04T18:00:00Z
-    History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
 </pre></div>
 </div>
 <p>Define start and end points:</p>
@@ -313,21 +297,6 @@ Data variables:
     v_wind               (isobaric, index) float64 8.473 5.723 ... -1.082
     Geopotential_height  (isobaric, index) float64 118.6 127.4 ... 1.636e+04
     Specific_humidity    (isobaric, index) float64 0.006367 ... 4.223e-06
-Attributes:
-    Conventions:              CF-1.0
-    Originating_center:       US National Weather Service - NCEP(WMC) (7)
-    Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
-    Generating_Model:         North American Regional Reanalysis (NARR)
-    Product_Type:             Forecast/Uninitialized Analysis/Image Product
-    title:                    US National Weather Service - NCEP(WMC) North A...
-    institution:              Center US National Weather Service - NCEP(WMC) ...
-    source:                   Forecast/Uninitialized Analysis/Image Product
-    history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
-    CF:feature_type:          GRID
-    file_format:              GRIB-1
-    location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
-    _CoordinateModelRunDate:  1987-04-04T18:00:00Z
-    History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
 </pre></div>
 </div>
 <p>For this example, we will be plotting potential temperature, relative humidity, and
@@ -380,21 +349,6 @@ Data variables:
     Relative_humidity      (isobaric, index) float64 0.6114 0.6195 ... 0.04498
     t_wind                 (isobaric, index) float64 -2.027 3.07 ... 45.18 43.27
     n_wind                 (isobaric, index) float64 17.18 10.73 ... -15.83
-Attributes:
-    Conventions:              CF-1.0
-    Originating_center:       US National Weather Service - NCEP(WMC) (7)
-    Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
-    Generating_Model:         North American Regional Reanalysis (NARR)
-    Product_Type:             Forecast/Uninitialized Analysis/Image Product
-    title:                    US National Weather Service - NCEP(WMC) North A...
-    institution:              Center US National Weather Service - NCEP(WMC) ...
-    source:                   Forecast/Uninitialized Analysis/Image Product
-    history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
-    CF:feature_type:          GRID
-    file_format:              GRIB-1
-    location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
-    _CoordinateModelRunDate:  1987-04-04T18:00:00Z
-    History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
 </pre></div>
 </div>
 <p>Now, we can make the plot.</p>
@@ -460,10 +414,7 @@ Attributes:
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_cross_section_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_cross_section_001.png" />
-<p>Note: The x-axis can display any variable that is the same length as the
-plotted variables, including latitude. Additionally, arguments can be provided
-to <code class="docutils literal notranslate"><span class="pre">ax.set_xticklabels</span></code> to label lat/lon pairs, similar to the default NCL output.</p>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  4.004 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  3.880 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-cross-section-py">
 <div class="sphx-glr-download docutils container">
 <p><a class="reference download internal" download="" href="../_downloads/38e6da5cf826f2b9110ea4c61c481a51/cross_section.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">cross_section.py</span></code></a></p>
@@ -498,7 +449,7 @@ to <code class="docutils literal notranslate"><span class="pre">ax.set_xticklabe
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 21:02:32.
+      Last updated on Jul 06, 2019 at 21:39:00.
 
     </p>
   </div>
@@ -535,7 +486,7 @@ to <code class="docutils literal notranslate"><span class="pre">ax.set_xticklabe
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.10.1',
+            VERSION:'0.10.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -41,26 +41,6 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="By using metpy.calc.log_interp, data with sigma as the vertical coordinate can be interpolated ...">
-
-.. only:: html
-
-    .. figure:: /examples/images/thumb/sphx_glr_sigma_to_pressure_interpolation_thumb.png
-
-        :ref:`sphx_glr_examples_sigma_to_pressure_interpolation.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /examples/sigma_to_pressure_interpolation
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="Plot a sounding using MetPy with more advanced features.">
 
 .. only:: html
@@ -78,6 +58,26 @@ Examples of using a variety of MetPy's functionality together.
    :hidden:
 
    /examples/Advanced_Sounding
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="By using metpy.calc.log_interp, data with sigma as the vertical coordinate can be interpolated ...">
+
+.. only:: html
+
+    .. figure:: /examples/images/thumb/sphx_glr_sigma_to_pressure_interpolation_thumb.png
+
+        :ref:`sphx_glr_examples_sigma_to_pressure_interpolation.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/sigma_to_pressure_interpolation
 
 .. raw:: html
 

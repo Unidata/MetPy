@@ -24,7 +24,7 @@ Plots time series data as a meteogram.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'timeseries.csv' from remote data store 'https://github.com/Unidata/MetPy/raw/v0.10.1/staticdata/timeseries.csv' to '/home/travis/build/Unidata/MetPy/staticdata/v0.10.1'.
+    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'timeseries.csv' from remote data store 'https://github.com/Unidata/MetPy/raw/v0.10.2/staticdata/timeseries.csv' to '/home/travis/build/Unidata/MetPy/staticdata/v0.10.2'.
       action_word[action], fname, self.get_url(fname), str(self.path)
     /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pandas/plotting/_converter.py:129: FutureWarning: Using an implicitly registered datetime converter for a matplotlib plotting method. The converter was registered by pandas on import. Future versions of pandas will require you to explicitly register matplotlib converters.
 
@@ -255,7 +255,7 @@ Plots time series data as a meteogram.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.682 seconds)
+   **Total running time of the script:** ( 0 minutes  1.488 seconds)
 
 
 .. _sphx_glr_download_examples_meteogram_metpy.py:

@@ -136,8 +136,3 @@ ax.set_xlabel('Longitude (degrees east)')
 rh_colorbar.set_label('Relative Humidity (dimensionless)')
 
 plt.show()
-
-##############################
-# Note: The x-axis can display any variable that is the same length as the
-# plotted variables, including latitude. Additionally, arguments can be provided
-# to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL output.

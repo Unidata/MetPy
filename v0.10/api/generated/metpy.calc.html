@@ -46,7 +46,7 @@
     <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="Reference Guide" href="../index.html"/>
         <link rel="next" title="add_height_to_pressure" href="metpy.calc.add_height_to_pressure.html"/>
-        <link rel="prev" title="Level3File" href="metpy.io.Level3File.html"/> 
+        <link rel="prev" title="Variable" href="metpy.io.cdm.Variable.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -126,6 +126,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">calc</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#dry-thermodynamics">Dry Thermodynamics</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a></li>
@@ -267,6 +268,7 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.get_wind_speed.html">get_wind_speed</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.interp.html">interp</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.interpolate_nans.html">interpolate_nans</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.lat_lon_grid_spacing.html">lat_lon_grid_spacing</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.log_interp.html">log_interp</a></li>
 </ul>
 </li>
@@ -278,7 +280,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -798,7 +799,10 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.interpolate_nans.html#metpy.calc.interpolate_nans" title="metpy.calc.interpolate_nans"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_nans</span></code></a>(x, y[, kind])</p></td>
 <td><p>Interpolate NaN values in y.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.log_interp.html#metpy.calc.log_interp" title="metpy.calc.log_interp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_interp</span></code></a>(x, xp, *args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.calc.lat_lon_grid_spacing.html#metpy.calc.lat_lon_grid_spacing" title="metpy.calc.lat_lon_grid_spacing"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lat_lon_grid_spacing</span></code></a>(longitude, latitude, …)</p></td>
+<td><p>Calculate the distance between grid points that are in a latitude/longitude format.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.calc.log_interp.html#metpy.calc.log_interp" title="metpy.calc.log_interp"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_interp</span></code></a>(x, xp, *args, **kwargs)</p></td>
 <td><p>Interpolates data with logarithmic x-scale over a specified axis.</p></td>
 </tr>
 </tbody>
@@ -819,7 +823,7 @@
         <a href="metpy.calc.add_height_to_pressure.html" class="btn btn-neutral float-right" title="add_height_to_pressure" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.io.Level3File.html" class="btn btn-neutral" title="Level3File" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.io.cdm.Variable.html" class="btn btn-neutral" title="Variable" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -829,7 +833,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 21:02:32.
+      Last updated on Jul 06, 2019 at 21:39:00.
 
     </p>
   </div>
@@ -866,7 +870,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.1',
+            VERSION:'0.10.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

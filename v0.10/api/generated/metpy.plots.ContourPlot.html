@@ -45,7 +45,7 @@
         <link rel="search" title="Search" href="../../search.html"/>
     <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
-        <link rel="next" title="FilledContourPlot" href="metpy.plots.FilledContourPlot.html"/>
+        <link rel="next" title="Hodograph" href="metpy.plots.Hodograph.html"/>
         <link rel="prev" title="read_colortable" href="metpy.plots.read_colortable.html"/> 
 
   
@@ -126,6 +126,7 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -137,7 +138,6 @@
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-plots-contourplot">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.ContourPlot</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.MapPanel.html">MapPanel</a></li>
@@ -153,7 +153,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
@@ -243,56 +242,47 @@
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.clabels" title="metpy.plots.ContourPlot.clabels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clabels</span></code></a></p></td>
-<td><p>A boolean (True/False) on whether to plot contour labels.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.colorbar" title="metpy.plots.ContourPlot.colorbar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colorbar</span></code></a></p></td>
-<td><p>A boolean (True/False) on whether to add a colorbar to the plot.</p></td>
-</tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.colormap" title="metpy.plots.ContourPlot.colormap"><code class="xref py py-obj docutils literal notranslate"><span class="pre">colormap</span></code></a></p></td>
-<td><p>The string name for a Matplolib or MetPy colormap.</p></td>
+<td><p>A trait for unicode strings.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.contours" title="metpy.plots.ContourPlot.contours"><code class="xref py py-obj docutils literal notranslate"><span class="pre">contours</span></code></a></p></td>
-<td><p>A list of values to contour or an integer number of contour levels.</p></td>
+<td><p>A trait type representing a Union type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.cross_validation_lock" title="metpy.plots.ContourPlot.cross_validation_lock"><code class="xref py py-obj docutils literal notranslate"><span class="pre">cross_validation_lock</span></code></a></p></td>
 <td><p>A contextmanager for running a block with our cross validation lock set to True.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.data" title="metpy.plots.ContourPlot.data"><code class="xref py py-obj docutils literal notranslate"><span class="pre">data</span></code></a></p></td>
-<td><p>Xarray dataset that contains the field to be plotted.</p></td>
+<td><p>Access the current data subset.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.field" title="metpy.plots.ContourPlot.field"><code class="xref py py-obj docutils literal notranslate"><span class="pre">field</span></code></a></p></td>
-<td><p>Name of the field to be plotted.</p></td>
+<td><p>A trait for unicode strings.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.griddata" title="metpy.plots.ContourPlot.griddata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">griddata</span></code></a></p></td>
 <td><p>Return the internal cached data.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.image_range" title="metpy.plots.ContourPlot.image_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">image_range</span></code></a></p></td>
-<td><p>A tuple of min and max values that represent the range of values to color the rasterized image.</p></td>
+<td><p>A trait type representing a Union type.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.level" title="metpy.plots.ContourPlot.level"><code class="xref py py-obj docutils literal notranslate"><span class="pre">level</span></code></a></p></td>
-<td><p>The level of the field to be plotted.</p></td>
+<td><p>A trait type representing a Union type.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.linecolor" title="metpy.plots.ContourPlot.linecolor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linecolor</span></code></a></p></td>
-<td><p>A string value to set the color of plotted contours; default is black.</p></td>
+<td><p>A trait for unicode strings.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.linestyle" title="metpy.plots.ContourPlot.linestyle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linestyle</span></code></a></p></td>
-<td><p>A string value to set the linestyle (e.g., dashed); default is solid.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.linewidth" title="metpy.plots.ContourPlot.linewidth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linewidth</span></code></a></p></td>
+<td><p>An int trait.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.linewidth" title="metpy.plots.ContourPlot.linewidth"><code class="xref py py-obj docutils literal notranslate"><span class="pre">linewidth</span></code></a></p></td>
-<td><p>An integer value to set the width of plotted contours; default value is 2.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.name" title="metpy.plots.ContourPlot.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.name" title="metpy.plots.ContourPlot.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
 <td><p>Generate a name for the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.parent" title="metpy.plots.ContourPlot.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.parent" title="metpy.plots.ContourPlot.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.plotdata" title="metpy.plots.ContourPlot.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.plotdata" title="metpy.plots.ContourPlot.plotdata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plotdata</span></code></a></p></td>
 <td><p>Return the data for plotting.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.time" title="metpy.plots.ContourPlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
-<td><p>Set the valid time to be plotted as a datetime object.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.time" title="metpy.plots.ContourPlot.time"><code class="xref py py-obj docutils literal notranslate"><span class="pre">time</span></code></a></p></td>
+<td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
 </tbody>
 </table>
@@ -324,87 +314,64 @@
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.clear" title="metpy.plots.ContourPlot.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
 <td><p>Clear the plot.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.clear_collections" title="metpy.plots.ContourPlot.clear_collections"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_collections</span></code></a>()</p></td>
-<td><p>Clear the handle collections to the plot instance.</p></td>
-</tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.clear_handle" title="metpy.plots.ContourPlot.clear_handle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_handle</span></code></a>()</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.clear_handle" title="metpy.plots.ContourPlot.clear_handle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear_handle</span></code></a>()</p></td>
 <td><p>Clear the handle to the plot instance.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.draw" title="metpy.plots.ContourPlot.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.draw" title="metpy.plots.ContourPlot.draw"><code class="xref py py-obj docutils literal notranslate"><span class="pre">draw</span></code></a>()</p></td>
 <td><p>Draw the plot.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.has_trait" title="metpy.plots.ContourPlot.has_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_trait</span></code></a>(name)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.has_trait" title="metpy.plots.ContourPlot.has_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">has_trait</span></code></a>(name)</p></td>
 <td><p>Returns True if the object has a trait with the specified name.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.hold_trait_notifications" title="metpy.plots.ContourPlot.hold_trait_notifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hold_trait_notifications</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.hold_trait_notifications" title="metpy.plots.ContourPlot.hold_trait_notifications"><code class="xref py py-obj docutils literal notranslate"><span class="pre">hold_trait_notifications</span></code></a>()</p></td>
 <td><p>Context manager for bundling trait change notifications and cross validation.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.notify_change" title="metpy.plots.ContourPlot.notify_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notify_change</span></code></a>(change)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.notify_change" title="metpy.plots.ContourPlot.notify_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">notify_change</span></code></a>(change)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.observe" title="metpy.plots.ContourPlot.observe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observe</span></code></a>(handler[, names, type])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.observe" title="metpy.plots.ContourPlot.observe"><code class="xref py py-obj docutils literal notranslate"><span class="pre">observe</span></code></a>(handler[, names, type])</p></td>
 <td><p>Setup a handler to be called when a trait changes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.on_trait_change" title="metpy.plots.ContourPlot.on_trait_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_trait_change</span></code></a>([handler, name, remove])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.on_trait_change" title="metpy.plots.ContourPlot.on_trait_change"><code class="xref py py-obj docutils literal notranslate"><span class="pre">on_trait_change</span></code></a>([handler, name, remove])</p></td>
 <td><p>DEPRECATED: Setup a handler to be called when a trait changes.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.set_trait" title="metpy.plots.ContourPlot.set_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_trait</span></code></a>(name, value)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.set_trait" title="metpy.plots.ContourPlot.set_trait"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_trait</span></code></a>(name, value)</p></td>
 <td><p>Forcibly sets trait attribute, including read-only attributes.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.setup_instance" title="metpy.plots.ContourPlot.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(*args, **kwargs)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.setup_instance" title="metpy.plots.ContourPlot.setup_instance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setup_instance</span></code></a>(*args, **kwargs)</p></td>
 <td><p>This is called <strong>before</strong> self.__init__ is called.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.trait_events" title="metpy.plots.ContourPlot.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.trait_events" title="metpy.plots.ContourPlot.trait_events"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_events</span></code></a>([name])</p></td>
 <td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the event handlers of this class.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.trait_metadata" title="metpy.plots.ContourPlot.trait_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_metadata</span></code></a>(traitname, key[, default])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.trait_metadata" title="metpy.plots.ContourPlot.trait_metadata"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_metadata</span></code></a>(traitname, key[, default])</p></td>
 <td><p>Get metadata values for trait by key.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.trait_names" title="metpy.plots.ContourPlot.trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_names</span></code></a>(**metadata)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.trait_names" title="metpy.plots.ContourPlot.trait_names"><code class="xref py py-obj docutils literal notranslate"><span class="pre">trait_names</span></code></a>(**metadata)</p></td>
 <td><p>Get a list of all the names of this class’ traits.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.traits" title="metpy.plots.ContourPlot.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.traits" title="metpy.plots.ContourPlot.traits"><code class="xref py py-obj docutils literal notranslate"><span class="pre">traits</span></code></a>(**metadata)</p></td>
 <td><p>Get a <code class="docutils literal notranslate"><span class="pre">dict</span></code> of all the traits of this class.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.unobserve" title="metpy.plots.ContourPlot.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[, names, type])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.unobserve" title="metpy.plots.ContourPlot.unobserve"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve</span></code></a>(handler[, names, type])</p></td>
 <td><p>Remove a trait change handler.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.unobserve_all" title="metpy.plots.ContourPlot.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ContourPlot.unobserve_all" title="metpy.plots.ContourPlot.unobserve_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">unobserve_all</span></code></a>([name])</p></td>
 <td><p>Remove trait change handlers of any type for the specified name.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes Documentation</p>
 <dl class="attribute">
-<dt id="metpy.plots.ContourPlot.clabels">
-<code class="sig-name descname">clabels</code><a class="headerlink" href="#metpy.plots.ContourPlot.clabels" title="Permalink to this definition">¶</a></dt>
-<dd><p>A boolean (True/False) on whether to plot contour labels.</p>
-<p>To plot contour labels set this trait to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the default value is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="metpy.plots.ContourPlot.colorbar">
-<code class="sig-name descname">colorbar</code><a class="headerlink" href="#metpy.plots.ContourPlot.colorbar" title="Permalink to this definition">¶</a></dt>
-<dd><p>A boolean (True/False) on whether to add a colorbar to the plot.</p>
-<p>To add a colorbar associated with the plot data set the trait to <code class="docutils literal notranslate"><span class="pre">True</span></code>, the default
-values is <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p>
-</dd></dl>
-
-<dl class="attribute">
 <dt id="metpy.plots.ContourPlot.colormap">
 <code class="sig-name descname">colormap</code><a class="headerlink" href="#metpy.plots.ContourPlot.colormap" title="Permalink to this definition">¶</a></dt>
-<dd><p>The string name for a Matplolib or MetPy colormap.</p>
-<p>For example, the Blue-Purple colormap from Matplotlib can be accessed using ‘BuPu’.</p>
+<dd><p>A trait for unicode strings.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ContourPlot.contours">
 <code class="sig-name descname">contours</code><a class="headerlink" href="#metpy.plots.ContourPlot.contours" title="Permalink to this definition">¶</a></dt>
-<dd><p>A list of values to contour or an integer number of contour levels.</p>
-<p>This parameter sets contour or colorfill values for a plot. Values can be entered either
-as a list of values or as an integer with the number of contours to be plotted (as per
-matplotlib documentation). A list can be generated by using square brackets or creating
-a numpy 1D array and converting it to a list with the <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.tolist.html#numpy.ndarray.tolist" title="(in NumPy v1.16)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">tolist</span></code></a> method.</p>
+<dd><p>A trait type representing a Union type.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -419,19 +386,13 @@ prior to entering the block.</p>
 <dl class="attribute">
 <dt id="metpy.plots.ContourPlot.data">
 <code class="sig-name descname">data</code><a class="headerlink" href="#metpy.plots.ContourPlot.data" title="Permalink to this definition">¶</a></dt>
-<dd><p>Xarray dataset that contains the field to be plotted.</p>
+<dd><p>Access the current data subset.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ContourPlot.field">
 <code class="sig-name descname">field</code><a class="headerlink" href="#metpy.plots.ContourPlot.field" title="Permalink to this definition">¶</a></dt>
-<dd><p>Name of the field to be plotted.</p>
-<p>This is the name of the variable from the dataset that is to be plotted. An example,
-from a model grid file that uses the THREDDS convention for naming would be
-<em class="xref py py-obj">Geopotential_height_isobaric</em> or <em class="xref py py-obj">Temperature_isobaric</em>. For GOES-16/17 satellite data it
-might be <em class="xref py py-obj">Sectorized_CMI</em>. To check for the variables available within a dataset, list the
-variables with the following command assuming the dataset was read using xarray as <em class="xref py py-obj">ds</em>,
-<em class="xref py py-obj">list(ds)</em></p>
+<dd><p>A trait for unicode strings.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -443,45 +404,25 @@ variables with the following command assuming the dataset was read using xarray 
 <dl class="attribute">
 <dt id="metpy.plots.ContourPlot.image_range">
 <code class="sig-name descname">image_range</code><a class="headerlink" href="#metpy.plots.ContourPlot.image_range" title="Permalink to this definition">¶</a></dt>
-<dd><p>A tuple of min and max values that represent the range of values
-to color the rasterized image.</p>
-<p>The min and max values entered as a tuple will be converted to a
-<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.Normalize.html#matplotlib.colors.Normalize" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.Normalize</span></code></a> instance for plotting.</p>
+<dd><p>A trait type representing a Union type.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ContourPlot.level">
 <code class="sig-name descname">level</code><a class="headerlink" href="#metpy.plots.ContourPlot.level" title="Permalink to this definition">¶</a></dt>
-<dd><p>The level of the field to be plotted.</p>
-<p>This is a value with units to choose the desired plot level. For example, selecting the
-850-hPa level, set this parameter to <code class="docutils literal notranslate"><span class="pre">850</span> <span class="pre">*</span> <span class="pre">units.hPa</span></code></p>
+<dd><p>A trait type representing a Union type.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ContourPlot.linecolor">
 <code class="sig-name descname">linecolor</code><a class="headerlink" href="#metpy.plots.ContourPlot.linecolor" title="Permalink to this definition">¶</a></dt>
-<dd><p>A string value to set the color of plotted contours; default is
-black.</p>
-<p>This trait can be set to any Matplotlib color
-(<a class="reference external" href="https://matplotlib.org/3.1.0/gallery/color/named_colors.html">https://matplotlib.org/3.1.0/gallery/color/named_colors.html</a>)</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="metpy.plots.ContourPlot.linestyle">
-<code class="sig-name descname">linestyle</code><a class="headerlink" href="#metpy.plots.ContourPlot.linestyle" title="Permalink to this definition">¶</a></dt>
-<dd><p>A string value to set the linestyle (e.g., dashed); default is
-solid.</p>
-<p>The valid string values are those of Matplotlib which are solid, dashed, dotted, and
-dashdot.</p>
+<dd><p>A trait for unicode strings.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.ContourPlot.linewidth">
 <code class="sig-name descname">linewidth</code><a class="headerlink" href="#metpy.plots.ContourPlot.linewidth" title="Permalink to this definition">¶</a></dt>
-<dd><p>An integer value to set the width of plotted contours; default value
-is 2.</p>
-<p>This trait changes the thickness of contour lines with a higher value plotting a thicker
-line.</p>
+<dd><p>An int trait.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -508,10 +449,9 @@ line.</p>
 <dl class="attribute">
 <dt id="metpy.plots.ContourPlot.time">
 <code class="sig-name descname">time</code><a class="headerlink" href="#metpy.plots.ContourPlot.time" title="Permalink to this definition">¶</a></dt>
-<dd><p>Set the valid time to be plotted as a datetime object.</p>
-<p>If a forecast hour is to be plotted the time should be set to the valid future time, which
-can be done using the <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.datetime" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datetime</span></code></a> and <a class="reference external" href="https://docs.python.org/3/library/datetime.html#datetime.timedelta" title="(in Python v3.7)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">timedelta</span></code></a> objects
-from the Python standard library.</p>
+<dd><p>A trait whose value must be an instance of a specified class.</p>
+<p>The value can also be an instance of a subclass of the specified class.</p>
+<p>Subclasses can declare default classes by overriding the klass attribute</p>
 </dd></dl>
 
 <p class="rubric">Methods Documentation</p>
@@ -573,14 +513,8 @@ to the function.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="metpy.plots.ContourPlot.clear_collections">
-<code class="sig-name descname">clear_collections</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ContourPlot.clear_collections" title="Permalink to this definition">¶</a></dt>
-<dd><p>Clear the handle collections to the plot instance.</p>
-</dd></dl>
-
-<dl class="method">
 <dt id="metpy.plots.ContourPlot.clear_handle">
-<code class="sig-name descname">clear_handle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ContourPlot.clear_handle" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clear_handle</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#ContourPlot.clear_handle"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ContourPlot.clear_handle" title="Permalink to this definition">¶</a></dt>
 <dd><p>Clear the handle to the plot instance.</p>
 </dd></dl>
 
@@ -768,7 +702,7 @@ If name is not specified, removes all trait notifiers.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.plots.FilledContourPlot.html" class="btn btn-neutral float-right" title="FilledContourPlot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.plots.Hodograph.html" class="btn btn-neutral float-right" title="Hodograph" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="metpy.plots.read_colortable.html" class="btn btn-neutral" title="read_colortable" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -781,7 +715,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 21:02:32.
+      Last updated on Jul 06, 2019 at 21:39:00.
 
     </p>
   </div>
@@ -818,7 +752,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.1',
+            VERSION:'0.10.2',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
