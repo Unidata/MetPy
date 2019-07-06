@@ -1,0 +1,12 @@
+
+:orphan:
+
+.. _sphx_glr_examples_calculations_sg_execution_times:
+
+Computation times
+=================
+**00:00.256** total execution time for **examples_calculations** files:
+
+- **00:00.093**: :ref:`sphx_glr_examples_calculations_Gradient.py` (``Gradient.py``)
+- **00:00.087**: :ref:`sphx_glr_examples_calculations_Parse_Angles.py` (``Parse_Angles.py``)
+- **00:00.077**: :ref:`sphx_glr_examples_calculations_Dewpoint_and_Mixing_Ratio.py` (``Dewpoint_and_Mixing_Ratio.py``)

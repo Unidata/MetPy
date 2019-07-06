@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>shearing_deformation &mdash; MetPy 0.9</title>
+  <title>shearing_deformation &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="stretching_deformation" href="metpy.calc.stretching_deformation.html"/>
         <link rel="prev" title="q_vector" href="metpy.calc.q_vector.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -249,36 +249,32 @@
 <h1>shearing_deformation<a class="headerlink" href="#shearing-deformation" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.shearing_deformation">
-<code class="descclassname">metpy.calc.</code><code class="descname">shearing_deformation</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>dx</em>, <em>dy</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#shearing_deformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.shearing_deformation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">shearing_deformation</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#shearing_deformation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.shearing_deformation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the shearing deformation of the horizontal wind.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the wind</li>
-<li><strong>v</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the wind</li>
-<li><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis.</li>
-<li><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis.</li>
-<li><strong>dim_order</strong> (str or <code class="docutils literal notranslate"><span class="pre">None</span></code>, optional) – The ordering of dimensions in passed in arrays. Can be one of <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">'xy'</span></code>,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the wind</p></li>
+<li><p><strong>v</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the wind</p></li>
+<li><p><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
+<li><p><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
+<li><p><strong>dim_order</strong> (str or <code class="docutils literal notranslate"><span class="pre">None</span></code>, optional) – The ordering of dimensions in passed in arrays. Can be one of <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">'xy'</span></code>,
 or <code class="docutils literal notranslate"><span class="pre">'yx'</span></code>. <code class="docutils literal notranslate"><span class="pre">'xy'</span></code> indicates that the dimension corresponding to x is the leading
 dimension, followed by y. <code class="docutils literal notranslate"><span class="pre">'yx'</span></code> indicates that x is the last dimension, preceded
 by y. <code class="docutils literal notranslate"><span class="pre">None</span></code> indicates that the default ordering should be assumed,
 which is ‘yx’. Can only be passed as a keyword argument, i.e.
-func(…, dim_order=’xy’).</li>
+func(…, dim_order=’xy’).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(M, N) ndarray</em> – Shearing Deformation</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>(M, N) ndarray</em> – Shearing Deformation</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation" title="metpy.calc.stretching_deformation"><code class="xref py py-func docutils literal notranslate"><span class="pre">stretching_deformation()</span></code></a>, <a class="reference internal" href="metpy.calc.total_deformation.html#metpy.calc.total_deformation" title="metpy.calc.total_deformation"><code class="xref py py-func docutils literal notranslate"><span class="pre">total_deformation()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation" title="metpy.calc.stretching_deformation"><code class="xref py py-func docutils literal notranslate"><span class="pre">stretching_deformation()</span></code></a>, <a class="reference internal" href="metpy.calc.total_deformation.html#metpy.calc.total_deformation" title="metpy.calc.total_deformation"><code class="xref py py-func docutils literal notranslate"><span class="pre">total_deformation()</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
 <p>If inputs have more than two dimensions, they are assumed to have either leading dimensions
@@ -309,8 +305,8 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -347,7 +343,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

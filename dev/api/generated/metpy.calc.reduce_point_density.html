@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>reduce_point_density &mdash; MetPy 0.9</title>
+  <title>reduce_point_density &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="resample_nn_1d" href="metpy.calc.resample_nn_1d.html"/>
         <link rel="prev" title="parse_angle" href="metpy.calc.parse_angle.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -239,34 +239,30 @@
 <h1>reduce_point_density<a class="headerlink" href="#reduce-point-density" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.reduce_point_density">
-<code class="descclassname">metpy.calc.</code><code class="descname">reduce_point_density</code><span class="sig-paren">(</span><em>points</em>, <em>radius</em>, <em>priority=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#reduce_point_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.reduce_point_density" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">reduce_point_density</code><span class="sig-paren">(</span><em class="sig-param">points</em>, <em class="sig-param">radius</em>, <em class="sig-param">priority=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#reduce_point_density"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.reduce_point_density" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a mask to reduce the density of points in irregularly-spaced data.</p>
 <p>This function is used to down-sample a collection of scattered points (e.g. surface
 data), returning a mask that can be used to select the points from one or more arrays
 (e.g. arrays of temperature and dew point). The points selected can be controlled by
 providing an array of <code class="docutils literal notranslate"><span class="pre">priority</span></code> values (e.g. rainfall totals to ensure that
 stations with higher precipitation remain in the mask).</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>points</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em>) – N locations of the points in K dimensional space</li>
-<li><strong>radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – minimum radius allowed between points</li>
-<li><strong>priority</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em><em>, </em><em>optional</em>) – If given, this should have the same shape as <code class="docutils literal notranslate"><span class="pre">points</span></code>; these values will
-be used to control selection priority for points.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>points</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em>) – N locations of the points in K dimensional space</p></li>
+<li><p><strong>radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – minimum radius allowed between points</p></li>
+<li><p><strong>priority</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em><em>, </em><em>optional</em>) – If given, this should have the same shape as <code class="docutils literal notranslate"><span class="pre">points</span></code>; these values will
+be used to control selection priority for points.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>(N,) array-like of boolean values indicating whether points should be kept. This</em></li>
-<li><em>can be used directly to index numpy arrays to return only the desired points.</em></li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>(N,) array-like of boolean values indicating whether points should be kept. This</em></p></li>
+<li><p><em>can be used directly to index numpy arrays to return only the desired points.</em></p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">reduce_point_density</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="mf">1.</span><span class="p">)</span>
 <span class="go">array([ True, False,  True])</span>
@@ -279,9 +275,9 @@ be used to control selection priority for points.</li>
 
 <div class="section" id="examples-using-metpy-calc-reduce-point-density">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.reduce_point_density</span></code><a class="headerlink" href="#examples-using-metpy-calc-reduce-point-density" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols."><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols."><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_Station_Plot_thumb.png" src="../../_images/sphx_glr_Station_Plot_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -308,8 +304,8 @@ be used to control selection priority for points.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -346,7 +342,7 @@ be used to control selection priority for points.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

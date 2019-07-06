@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>static_stability &mdash; MetPy 0.9</title>
+  <title>static_stability &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="temperature_from_potential_temperature" href="metpy.calc.temperature_from_potential_temperature.html"/>
         <link rel="prev" title="sigma_to_pressure" href="metpy.calc.sigma_to_pressure.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -242,28 +242,24 @@
 <h1>static_stability<a class="headerlink" href="#static-stability" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.static_stability">
-<code class="descclassname">metpy.calc.</code><code class="descname">static_stability</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#static_stability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.static_stability" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">static_stability</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">axis=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#static_stability"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.static_stability" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the static stability within a vertical profile.</p>
 <div class="math notranslate nohighlight">
 \[\sigma = -\frac{RT}{p} \frac{\partial \ln \theta}{\partial p}\]</div>
-<p>This formuala is based on equation 4.3.6 in <a class="reference internal" href="../../references.html#bluestein1992" id="id1">[Bluestein1992]</a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pressure</strong> (<em>array-like</em>) – Profile of atmospheric pressure</li>
-<li><strong>temperature</strong> (<em>array-like</em>) – Profile of temperature</li>
-<li><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to vertical in the pressure and temperature arrays, defaults
-to 0.</li>
+<p>This formuala is based on equation 4.3.6 in <a class="reference internal" href="../../references.html#bluestein1992" id="id1"><span>[Bluestein1992]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<em>array-like</em>) – Profile of atmospheric pressure</p></li>
+<li><p><strong>temperature</strong> (<em>array-like</em>) – Profile of temperature</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to vertical in the pressure and temperature arrays, defaults
+to 0.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array-like</em> – The profile of static stability.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>array-like</em> – The profile of static stability.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -290,8 +286,8 @@ to 0.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -328,7 +324,7 @@ to 0.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

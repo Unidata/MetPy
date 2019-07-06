@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>first_derivative &mdash; MetPy 0.9</title>
+  <title>first_derivative &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="gradient" href="metpy.calc.gradient.html"/>
         <link rel="prev" title="cross_section_components" href="metpy.calc.cross_section_components.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -237,43 +237,39 @@
 <h1>first_derivative<a class="headerlink" href="#first-derivative" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.first_derivative">
-<code class="descclassname">metpy.calc.</code><code class="descname">first_derivative</code><span class="sig-paren">(</span><em>f</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#first_derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.first_derivative" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">first_derivative</code><span class="sig-paren">(</span><em class="sig-param">f</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#first_derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.first_derivative" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the first derivative of a grid of values.</p>
 <p>Works for both regularly-spaced data and grids with varying spacing.</p>
-<p>Either <em class="xref py py-obj">x</em> or <em class="xref py py-obj">delta</em> must be specified, or <em class="xref py py-obj">f</em> must be given as an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
-attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, and <em class="xref py py-obj">x</em> or
+<p>Either <em class="xref py py-obj">x</em> or <em class="xref py py-obj">delta</em> must be specified, or <em class="xref py py-obj">f</em> must be given as an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
+attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, and <em class="xref py py-obj">x</em> or
 <em class="xref py py-obj">delta</em> are given, <em class="xref py py-obj">f</em> will be converted to a <em class="xref py py-obj">pint.Quantity</em> and the derivative returned
 as a <em class="xref py py-obj">pint.Quantity</em>, otherwise, if neither <em class="xref py py-obj">x</em> nor <em class="xref py py-obj">delta</em> are given, the attached
 coordinate information belonging to <em class="xref py py-obj">axis</em> will be used and the derivative will be returned
-as an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
+as an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
 <p>This uses 3 points to calculate the derivative, using forward or backward at the edges of
 the grid as appropriate, and centered elsewhere. The irregular spacing is handled
-explicitly, using the formulation as specified by <a class="reference internal" href="../../references.html#bowen2005" id="id1">[Bowen2005]</a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>f</strong> (<em>array-like</em>) – Array of values of which to calculate the derivative</li>
-<li><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The array axis along which to take the derivative. If <em class="xref py py-obj">f</em> is ndarray-like, must be an
+explicitly, using the formulation as specified by <a class="reference internal" href="../../references.html#bowen2005" id="id1"><span>[Bowen2005]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>f</strong> (<em>array-like</em>) – Array of values of which to calculate the derivative</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The array axis along which to take the derivative. If <em class="xref py py-obj">f</em> is ndarray-like, must be an
 integer. If <em class="xref py py-obj">f</em> is a <em class="xref py py-obj">DataArray</em>, can be a string (referring to either the coordinate
 dimension name or the axis type) or integer (referring to axis number), unless using
 implicit conversion to <em class="xref py py-obj">pint.Quantity</em>, in which case it must be an integer. Defaults
-to 0.</li>
-<li><strong>x</strong> (<em>array-like</em><em>, </em><em>optional</em>) – The coordinate values corresponding to the grid points in <em class="xref py py-obj">f</em>.</li>
-<li><strong>delta</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Spacing between the grid points in <em class="xref py py-obj">f</em>. Should be one item less than the size
-of <em class="xref py py-obj">f</em> along <em class="xref py py-obj">axis</em>.</li>
+to 0.</p></li>
+<li><p><strong>x</strong> (<em>array-like</em><em>, </em><em>optional</em>) – The coordinate values corresponding to the grid points in <em class="xref py py-obj">f</em>.</p></li>
+<li><p><strong>delta</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Spacing between the grid points in <em class="xref py py-obj">f</em>. Should be one item less than the size
+of <em class="xref py py-obj">f</em> along <em class="xref py py-obj">axis</em>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array-like</em> – The first derivative calculated along the selected axis.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>array-like</em> – The first derivative calculated along the selected axis.</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.second_derivative.html#metpy.calc.second_derivative" title="metpy.calc.second_derivative"><code class="xref py py-func docutils literal notranslate"><span class="pre">second_derivative()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.second_derivative.html#metpy.calc.second_derivative" title="metpy.calc.second_derivative"><code class="xref py py-func docutils literal notranslate"><span class="pre">second_derivative()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -301,8 +297,8 @@ of <em class="xref py py-obj">f</em> along <em class="xref py py-obj">axis</em>.
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -339,7 +335,7 @@ of <em class="xref py py-obj">f</em> along <em class="xref py py-obj">axis</em>.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

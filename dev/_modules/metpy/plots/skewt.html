@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.plots.skewt &mdash; MetPy 0.9</title>
+  <title>metpy.plots.skewt &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -198,6 +198,11 @@
 <span class="sd">`SkewT`, as well as a class for making a `Hodograph`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="k">try</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">ExitStack</span>
+<span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
+    <span class="kn">from</span> <span class="nn">contextlib2</span> <span class="k">import</span> <span class="n">ExitStack</span>
+
 <span class="kn">import</span> <span class="nn">matplotlib</span>
 <span class="kn">from</span> <span class="nn">matplotlib.axes</span> <span class="k">import</span> <span class="n">Axes</span>
 <span class="kn">import</span> <span class="nn">matplotlib.axis</span> <span class="k">as</span> <span class="nn">maxis</span>
@@ -228,69 +233,31 @@
 <span class="sd">    and draw as appropriate. It also performs similar checking for gridlines.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">update_position</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">loc</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Set the location of tick in data coords with scalar *loc*.&quot;&quot;&quot;</span>
-        <span class="c1"># This ensures that the new value of the location is set before</span>
-        <span class="c1"># any other updates take place.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_loc</span> <span class="o">=</span> <span class="n">loc</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">SkewXTick</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">update_position</span><span class="p">(</span><span class="n">loc</span><span class="p">)</span>
-
-    <span class="k">def</span> <span class="nf">_has_default_loc</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">()</span> <span class="ow">is</span> <span class="kc">None</span>
-
-    <span class="k">def</span> <span class="nf">_need_lower</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_has_default_loc</span><span class="p">()</span>
-                <span class="ow">or</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">lower_xlim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">()))</span>
-
-    <span class="k">def</span> <span class="nf">_need_upper</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_has_default_loc</span><span class="p">()</span>
-                <span class="ow">or</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">upper_xlim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">()))</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">gridOn</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
-        <span class="sd">&quot;&quot;&quot;Control whether the gridline is drawn for this tick.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_gridOn</span> <span class="ow">and</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_has_default_loc</span><span class="p">()</span>
-                <span class="ow">or</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_view_interval</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())))</span>
-
-    <span class="nd">@gridOn</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">gridOn</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_gridOn</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">tick1On</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
-        <span class="sd">&quot;&quot;&quot;Control whether the lower tick mark is drawn for this tick.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick1On</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_lower</span><span class="p">()</span>
-
-    <span class="nd">@tick1On</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">tick1On</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tick1On</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">label1On</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
-        <span class="sd">&quot;&quot;&quot;Control whether the lower tick label is drawn for this tick.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label1On</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_lower</span><span class="p">()</span>
-
-    <span class="nd">@label1On</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">label1On</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_label1On</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">tick2On</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
-        <span class="sd">&quot;&quot;&quot;Control whether the upper tick mark is drawn for this tick.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick2On</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_upper</span><span class="p">()</span>
-
-    <span class="nd">@tick2On</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">tick2On</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_tick2On</span> <span class="o">=</span> <span class="n">value</span>
-
-    <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">label2On</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
-        <span class="sd">&quot;&quot;&quot;Control whether the upper tick label is drawn for this tick.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_label2On</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">_need_upper</span><span class="p">()</span>
-
-    <span class="nd">@label2On</span><span class="o">.</span><span class="n">setter</span>
-    <span class="k">def</span> <span class="nf">label2On</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>  <span class="c1"># noqa: N802</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_label2On</span> <span class="o">=</span> <span class="n">value</span>
+    <span class="c1"># Taken from matplotlib&#39;s SkewT example to update for matplotlib 3.1&#39;s changes to</span>
+    <span class="c1"># state management for ticks. See matplotlib/matplotlib#10088</span>
+    <span class="k">def</span> <span class="nf">draw</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Draw the tick.&quot;&quot;&quot;</span>
+        <span class="c1"># When adding the callbacks with `stack.callback`, we fetch the current</span>
+        <span class="c1"># visibility state of the artist with `get_visible`; the ExitStack will</span>
+        <span class="c1"># restore these states (`set_visible`) at the end of the block (after</span>
+        <span class="c1"># the draw).</span>
+        <span class="k">with</span> <span class="n">ExitStack</span><span class="p">()</span> <span class="k">as</span> <span class="n">stack</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">artist</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gridline</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tick1line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tick2line</span><span class="p">,</span>
+                           <span class="bp">self</span><span class="o">.</span><span class="n">label1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label2</span><span class="p">]:</span>
+                <span class="n">stack</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">artist</span><span class="o">.</span><span class="n">set_visible</span><span class="p">,</span> <span class="n">artist</span><span class="o">.</span><span class="n">get_visible</span><span class="p">())</span>
+            <span class="n">needs_lower</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">lower_xlim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())</span>
+            <span class="n">needs_upper</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">upper_xlim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tick1line</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tick1line</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">needs_lower</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">needs_lower</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tick2line</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">tick2line</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">needs_upper</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label2</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">label2</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">needs_upper</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">(</span><span class="n">SkewXTick</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">get_view_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the view interval.&quot;&quot;&quot;</span>
@@ -359,7 +326,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># This needs to be popped and set before moving on</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">rot</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;rotation&#39;</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
-        <span class="n">Axes</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Axes</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_init_axis</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="c1"># Taken from Axes and modified to use our modified X-axis</span>
@@ -386,7 +353,7 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Get the standard transform setup from the Axes base class</span>
-        <span class="n">Axes</span><span class="o">.</span><span class="n">_set_lim_and_transforms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Axes</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_set_lim_and_transforms</span><span class="p">()</span>
 
         <span class="c1"># Need to put the skew in the middle, after the scale and limits,</span>
         <span class="c1"># but before the transAxes. This way, the skew is done in Axes</span>
@@ -1117,8 +1084,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -1155,7 +1122,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

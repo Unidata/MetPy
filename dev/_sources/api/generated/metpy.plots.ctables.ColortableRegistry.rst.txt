@@ -16,6 +16,7 @@ ColortableRegistry
 
    .. autosummary::
    
+      ~ColortableRegistry.__init__
       ~ColortableRegistry.add_colortable
       ~ColortableRegistry.clear
       ~ColortableRegistry.copy
@@ -48,6 +49,7 @@ ColortableRegistry
    .. rubric:: Methods Documentation
 
    
+   .. automethod:: __init__
    .. automethod:: add_colortable
    .. automethod:: clear
    .. automethod:: copy

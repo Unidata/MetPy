@@ -16,6 +16,7 @@ OrderedDict
 
    .. autosummary::
    
+      ~OrderedDict.__init__
       ~OrderedDict.clear
       ~OrderedDict.copy
       ~OrderedDict.fromkeys
@@ -42,6 +43,7 @@ OrderedDict
    .. rubric:: Methods Documentation
 
    
+   .. automethod:: __init__
    .. automethod:: clear
    .. automethod:: copy
    .. automethod:: fromkeys

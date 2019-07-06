@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>get_wind_dir &mdash; MetPy 0.9</title>
+  <title>get_wind_dir &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="get_wind_speed" href="metpy.calc.get_wind_speed.html"/>
         <link rel="prev" title="get_wind_components" href="metpy.calc.get_wind_components.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -234,33 +234,29 @@
 <h1>get_wind_dir<a class="headerlink" href="#get-wind-dir" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.get_wind_dir">
-<code class="descclassname">metpy.calc.</code><code class="descname">get_wind_dir</code><span class="sig-paren">(</span><em>u</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#get_wind_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.get_wind_dir" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">get_wind_dir</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#get_wind_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.get_wind_dir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the wind direction from u and v-components.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u</strong> (<em>array_like</em>) – Wind component in the X (East-West) direction</li>
-<li><strong>v</strong> (<em>array_like</em>) – Wind component in the Y (North-South) direction</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>array_like</em>) – Wind component in the X (East-West) direction</p></li>
+<li><p><strong>v</strong> (<em>array_like</em>) – Wind component in the Y (North-South) direction</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>direction</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The direction of the wind in interval [0, 360] degrees, specified as the direction from
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>direction</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The direction of the wind in interval [0, 360] degrees, specified as the direction from
 which it is blowing, with 360 being North.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.wind_components.html#metpy.calc.wind_components" title="metpy.calc.wind_components"><code class="xref py py-func docutils literal notranslate"><span class="pre">wind_components()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.wind_components.html#metpy.calc.wind_components" title="metpy.calc.wind_components"><code class="xref py py-func docutils literal notranslate"><span class="pre">wind_components()</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
 <p>In the case of calm winds (where <em class="xref py py-obj">u</em> and <em class="xref py py-obj">v</em> are zero), this function returns a direction
 of 0.</p>
 <div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.9.0: </span>Function has been renamed to <a class="reference internal" href="metpy.calc.wind_direction.html#metpy.calc.wind_direction" title="metpy.calc.wind_direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wind_direction</span></code></a> and will be removed from MetPy in 0.12.0.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 0.9.0: </span>Function has been renamed to <a class="reference internal" href="metpy.calc.wind_direction.html#metpy.calc.wind_direction" title="metpy.calc.wind_direction"><code class="xref py py-obj docutils literal notranslate"><span class="pre">wind_direction</span></code></a> and will be removed from MetPy in 0.12.0.</p>
 </div>
 </dd></dl>
 
@@ -288,8 +284,8 @@ of 0.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -326,7 +322,7 @@ of 0.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

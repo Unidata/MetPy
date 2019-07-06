@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>storm_relative_helicity &mdash; MetPy 0.9</title>
+  <title>storm_relative_helicity &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="supercell_composite" href="metpy.calc.supercell_composite.html"/>
         <link rel="prev" title="significant_tornado" href="metpy.calc.significant_tornado.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -244,7 +244,7 @@
 <h1>storm_relative_helicity<a class="headerlink" href="#storm-relative-helicity" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.storm_relative_helicity">
-<code class="descclassname">metpy.calc.</code><code class="descname">storm_relative_helicity</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>heights</em>, <em>depth</em>, <em>bottom=&lt;Quantity(0</em>, <em>'meter')&gt;</em>, <em>storm_u=&lt;Quantity(0.0</em>, <em>'meter / second')&gt;</em>, <em>storm_v=&lt;Quantity(0.0</em>, <em>'meter / second')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#storm_relative_helicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.storm_relative_helicity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">storm_relative_helicity</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">heights</em>, <em class="sig-param">depth</em>, <em class="sig-param">bottom=&lt;Quantity(0</em>, <em class="sig-param">'meter')&gt;</em>, <em class="sig-param">storm_u=&lt;Quantity(0.0</em>, <em class="sig-param">'meter / second')&gt;</em>, <em class="sig-param">storm_v=&lt;Quantity(0.0</em>, <em class="sig-param">'meter / second')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#storm_relative_helicity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.storm_relative_helicity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate storm relative helicity.</p>
 <p>Calculates storm relatively helicity following [Markowski2010] 230-231.</p>
 <div class="math notranslate nohighlight">
@@ -253,26 +253,22 @@
 <div class="math notranslate nohighlight">
 \[\sum_{n = 1}^{N-1} [(u_{n+1} - c_{x})(v_{n} - c_{y}) -
 (u_{n} - c_{x})(v_{n+1} - c_{y})]\]</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u</strong> (<em>array-like</em>) – u component winds</li>
-<li><strong>v</strong> (<em>array-like</em>) – v component winds</li>
-<li><strong>heights</strong> (<em>array-like</em>) – atmospheric heights, will be converted to AGL</li>
-<li><strong>depth</strong> (<em>number</em>) – depth of the layer</li>
-<li><strong>bottom</strong> (<em>number</em>) – height of layer bottom AGL (default is surface)</li>
-<li><strong>storm_u</strong> (<em>number</em>) – u component of storm motion (default is 0 m/s)</li>
-<li><strong>storm_v</strong> (<em>number</em>) – v component of storm motion (default is 0 m/s)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>array-like</em>) – u component winds</p></li>
+<li><p><strong>v</strong> (<em>array-like</em>) – v component winds</p></li>
+<li><p><strong>heights</strong> (<em>array-like</em>) – atmospheric heights, will be converted to AGL</p></li>
+<li><p><strong>depth</strong> (<em>number</em>) – depth of the layer</p></li>
+<li><p><strong>bottom</strong> (<em>number</em>) – height of layer bottom AGL (default is surface)</p></li>
+<li><p><strong>storm_u</strong> (<em>number</em>) – u component of storm motion (default is 0 m/s)</p></li>
+<li><p><strong>storm_v</strong> (<em>number</em>) – v component of storm motion (default is 0 m/s)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity, pint.Quantity, pint.Quantity</em> – positive, negative, total storm-relative helicity</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity, pint.Quantity, pint.Quantity</em> – positive, negative, total storm-relative helicity</p>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -299,8 +295,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -337,7 +333,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

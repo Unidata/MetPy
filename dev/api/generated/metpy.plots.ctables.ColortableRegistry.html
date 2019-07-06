@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>ColortableRegistry &mdash; MetPy 0.9</title>
+  <title>ColortableRegistry &mdash; MetPy 0.10</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="ctables" href="metpy.plots.ctables.html"/>
         <link rel="next" title="Exporter" href="metpy.plots.ctables.Exporter.html"/>
-        <link rel="prev" title="read_colortable" href="metpy.plots.ctables.read_colortable.html"/> 
+        <link rel="prev" title="resource_stream" href="metpy.plots.ctables.resource_stream.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -132,6 +132,8 @@
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.convert_gempak_table.html">convert_gempak_table</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.resource_listdir.html">resource_listdir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.resource_stream.html">resource_stream</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">ColortableRegistry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.Exporter.html">Exporter</a></li>
 </ul>
@@ -220,263 +222,247 @@
 <h1>ColortableRegistry<a class="headerlink" href="#colortableregistry" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="metpy.plots.ctables.ColortableRegistry">
-<em class="property">class </em><code class="descclassname">metpy.plots.ctables.</code><code class="descname">ColortableRegistry</code><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.ctables.</code><code class="sig-name descname">ColortableRegistry</code><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry" title="Permalink to this definition">¶</a></dt>
 <dd><p>Manages the collection of color tables.</p>
 <p>Provides access to color tables, read collections of files, and generates
 matplotlib’s Normalize instances to go with the colortable.</p>
 <p class="rubric">Methods Summary</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.add_colortable" title="metpy.plots.ctables.ColortableRegistry.add_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_colortable</span></code></a>(fobj,&nbsp;name)</td>
-<td>Add a color table from a file to the registry.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.__init__" title="metpy.plots.ctables.ColortableRegistry.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a></p></td>
+<td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.clear" title="metpy.plots.ctables.ColortableRegistry.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.add_colortable" title="metpy.plots.ctables.ColortableRegistry.add_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">add_colortable</span></code></a>(fobj, name)</p></td>
+<td><p>Add a color table from a file to the registry.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.copy" title="metpy.plots.ctables.ColortableRegistry.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.clear" title="metpy.plots.ctables.ColortableRegistry.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.fromkeys" title="metpy.plots.ctables.ColortableRegistry.fromkeys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fromkeys</span></code></a></td>
-<td>Returns a new dict with keys from iterable and values equal to value.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.copy" title="metpy.plots.ctables.ColortableRegistry.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.get" title="metpy.plots.ctables.ColortableRegistry.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(k[,d])</td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.fromkeys" title="metpy.plots.ctables.ColortableRegistry.fromkeys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fromkeys</span></code></a></p></td>
+<td><p>Returns a new dict with keys from iterable and values equal to value.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.get_colortable" title="metpy.plots.ctables.ColortableRegistry.get_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_colortable</span></code></a>(name)</td>
-<td>Get a color table from the registry.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.get" title="metpy.plots.ctables.ColortableRegistry.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(k[,d])</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.get_with_boundaries" title="metpy.plots.ctables.ColortableRegistry.get_with_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_with_boundaries</span></code></a>(name,&nbsp;boundaries)</td>
-<td>Get a color table from the registry with a corresponding norm.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.get_colortable" title="metpy.plots.ctables.ColortableRegistry.get_colortable"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_colortable</span></code></a>(name)</p></td>
+<td><p>Get a color table from the registry.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.get_with_range" title="metpy.plots.ctables.ColortableRegistry.get_with_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_with_range</span></code></a>(name,&nbsp;start,&nbsp;end)</td>
-<td>Get a color table from the registry with a corresponding norm.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.get_with_boundaries" title="metpy.plots.ctables.ColortableRegistry.get_with_boundaries"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_with_boundaries</span></code></a>(name, boundaries)</p></td>
+<td><p>Get a color table from the registry with a corresponding norm.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.get_with_steps" title="metpy.plots.ctables.ColortableRegistry.get_with_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_with_steps</span></code></a>(name,&nbsp;start,&nbsp;step)</td>
-<td>Get a color table from the registry with a corresponding norm.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.get_with_range" title="metpy.plots.ctables.ColortableRegistry.get_with_range"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_with_range</span></code></a>(name, start, end)</p></td>
+<td><p>Get a color table from the registry with a corresponding norm.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.items" title="metpy.plots.ctables.ColortableRegistry.items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code></a>()</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.get_with_steps" title="metpy.plots.ctables.ColortableRegistry.get_with_steps"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_with_steps</span></code></a>(name, start, step)</p></td>
+<td><p>Get a color table from the registry with a corresponding norm.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.keys" title="metpy.plots.ctables.ColortableRegistry.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></a>()</td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.items" title="metpy.plots.ctables.ColortableRegistry.items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.pop" title="metpy.plots.ctables.ColortableRegistry.pop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code></a>(k[,d])</td>
-<td>If key is not found, d is returned if given, otherwise KeyError is raised</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.keys" title="metpy.plots.ctables.ColortableRegistry.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.popitem" title="metpy.plots.ctables.ColortableRegistry.popitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code></a>()</td>
-<td>2-tuple; but raise KeyError if D is empty.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.pop" title="metpy.plots.ctables.ColortableRegistry.pop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code></a>(k[,d])</p></td>
+<td><p>If key is not found, d is returned if given, otherwise KeyError is raised</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.scan_dir" title="metpy.plots.ctables.ColortableRegistry.scan_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scan_dir</span></code></a>(path)</td>
-<td>Scan a directory on disk for color table files and add them to the registry.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.popitem" title="metpy.plots.ctables.ColortableRegistry.popitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code></a>()</p></td>
+<td><p>2-tuple; but raise KeyError if D is empty.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.scan_resource" title="metpy.plots.ctables.ColortableRegistry.scan_resource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scan_resource</span></code></a>(pkg,&nbsp;path)</td>
-<td>Scan a resource directory for colortable files and add them to the registry.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.scan_dir" title="metpy.plots.ctables.ColortableRegistry.scan_dir"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scan_dir</span></code></a>(path)</p></td>
+<td><p>Scan a directory on disk for color table files and add them to the registry.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.setdefault" title="metpy.plots.ctables.ColortableRegistry.setdefault"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setdefault</span></code></a>(k[,d])</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.scan_resource" title="metpy.plots.ctables.ColortableRegistry.scan_resource"><code class="xref py py-obj docutils literal notranslate"><span class="pre">scan_resource</span></code></a>(pkg, path)</p></td>
+<td><p>Scan a resource directory for colortable files and add them to the registry.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.update" title="metpy.plots.ctables.ColortableRegistry.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>([E,&nbsp;]**F)</td>
-<td>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.setdefault" title="metpy.plots.ctables.ColortableRegistry.setdefault"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setdefault</span></code></a>(k[,d])</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.values" title="metpy.plots.ctables.ColortableRegistry.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a>()</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.update" title="metpy.plots.ctables.ColortableRegistry.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>([E, ]**F)</p></td>
+<td><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.ctables.ColortableRegistry.values" title="metpy.plots.ctables.ColortableRegistry.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods Documentation</p>
 <dl class="method">
+<dt id="metpy.plots.ctables.ColortableRegistry.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.add_colortable">
-<code class="descname">add_colortable</code><span class="sig-paren">(</span><em>fobj</em>, <em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.add_colortable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.add_colortable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">add_colortable</code><span class="sig-paren">(</span><em class="sig-param">fobj</em>, <em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.add_colortable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.add_colortable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add a color table from a file to the registry.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>fobj</strong> (<em>file-like object</em>) – The file to read the color table from</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name under which the color table will be stored</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fobj</strong> (<em>file-like object</em>) – The file to read the color table from</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name under which the color table will be stored</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None.  Remove all items from D.<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.clear" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None.  Remove all items from D.<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.clear" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.copy">
-<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a shallow copy of D<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.copy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a shallow copy of D<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.copy" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.fromkeys">
-<code class="descname">fromkeys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.fromkeys" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fromkeys</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.fromkeys" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns a new dict with keys from iterable and values equal to value.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D[k] if k in D, else d.  d defaults to None.<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">k</em><span class="optional">[</span>, <em class="sig-param">d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D[k] if k in D, else d.  d defaults to None.<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.get_colortable">
-<code class="descname">get_colortable</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.get_colortable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get_colortable" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_colortable</code><span class="sig-paren">(</span><em class="sig-param">name</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.get_colortable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get_colortable" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a color table from the registry.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name under which the color table will be stored</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.ListedColormap.html#matplotlib.colors.ListedColormap" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.ListedColormap</span></code></a> – The color table corresponding to <em class="xref py py-obj">name</em></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name under which the color table will be stored</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.ListedColormap.html#matplotlib.colors.ListedColormap" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.ListedColormap</span></code></a> – The color table corresponding to <em class="xref py py-obj">name</em></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.get_with_boundaries">
-<code class="descname">get_with_boundaries</code><span class="sig-paren">(</span><em>name</em>, <em>boundaries</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.get_with_boundaries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get_with_boundaries" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_with_boundaries</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">boundaries</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.get_with_boundaries"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get_with_boundaries" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a color table from the registry with a corresponding norm.</p>
-<p>Builds a <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a> using <em class="xref py py-obj">boundaries</em>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name under which the color table will be stored</li>
-<li><strong>boundaries</strong> (<em>array_like</em>) – The list of boundaries for the norm</li>
+<p>Builds a <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a> using <em class="xref py py-obj">boundaries</em>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name under which the color table will be stored</p></li>
+<li><p><strong>boundaries</strong> (<em>array_like</em>) – The list of boundaries for the norm</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.ListedColormap.html#matplotlib.colors.ListedColormap" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.ListedColormap</span></code></a> – The boundary norm based on <em class="xref py py-obj">boundaries</em>, and the color table itself.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.ListedColormap.html#matplotlib.colors.ListedColormap" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.ListedColormap</span></code></a> – The boundary norm based on <em class="xref py py-obj">boundaries</em>, and the color table itself.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.get_with_range">
-<code class="descname">get_with_range</code><span class="sig-paren">(</span><em>name</em>, <em>start</em>, <em>end</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.get_with_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get_with_range" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_with_range</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">start</em>, <em class="sig-param">end</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.get_with_range"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get_with_range" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a color table from the registry with a corresponding norm.</p>
-<p>Builds a <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a> using <em class="xref py py-obj">start</em>, <em class="xref py py-obj">end</em>, and
+<p>Builds a <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a> using <em class="xref py py-obj">start</em>, <em class="xref py py-obj">end</em>, and
 the number of colors, based on the color table obtained from <em class="xref py py-obj">name</em>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name under which the color table will be stored</li>
-<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The starting boundary</li>
-<li><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The ending boundary</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name under which the color table will be stored</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The starting boundary</p></li>
+<li><p><strong>end</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The ending boundary</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.ListedColormap.html#matplotlib.colors.ListedColormap" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.ListedColormap</span></code></a> – The boundary norm based on <em class="xref py py-obj">start</em> and <em class="xref py py-obj">end</em> with the number of colors
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.ListedColormap.html#matplotlib.colors.ListedColormap" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.ListedColormap</span></code></a> – The boundary norm based on <em class="xref py py-obj">start</em> and <em class="xref py py-obj">end</em> with the number of colors
 from the number of entries matching the color table, and the color table itself.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.get_with_steps">
-<code class="descname">get_with_steps</code><span class="sig-paren">(</span><em>name</em>, <em>start</em>, <em>step</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.get_with_steps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get_with_steps" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get_with_steps</code><span class="sig-paren">(</span><em class="sig-param">name</em>, <em class="sig-param">start</em>, <em class="sig-param">step</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.get_with_steps"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.get_with_steps" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a color table from the registry with a corresponding norm.</p>
-<p>Builds a <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a> using <em class="xref py py-obj">start</em>, <em class="xref py py-obj">step</em>, and
+<p>Builds a <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a> using <em class="xref py py-obj">start</em>, <em class="xref py py-obj">step</em>, and
 the number of colors, based on the color table obtained from <em class="xref py py-obj">name</em>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name under which the color table will be stored</li>
-<li><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The starting boundary</li>
-<li><strong>step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The step between boundaries</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The name under which the color table will be stored</p></li>
+<li><p><strong>start</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The starting boundary</p></li>
+<li><p><strong>step</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – The step between boundaries</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.ListedColormap.html#matplotlib.colors.ListedColormap" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.ListedColormap</span></code></a> – The boundary norm based on <em class="xref py py-obj">start</em> and <em class="xref py py-obj">step</em> with the number of colors
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.html#matplotlib.colors.BoundaryNorm" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.BoundaryNorm</span></code></a>, <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.colors.ListedColormap.html#matplotlib.colors.ListedColormap" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.colors.ListedColormap</span></code></a> – The boundary norm based on <em class="xref py py-obj">start</em> and <em class="xref py py-obj">step</em> with the number of colors
 from the number of entries matching the color table, and the color table itself.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.items">
-<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.items" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.items" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.keys">
-<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.keys" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.pop">
-<code class="descname">pop</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; v, remove specified key and return the corresponding value.<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.pop" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pop</code><span class="sig-paren">(</span><em class="sig-param">k</em><span class="optional">[</span>, <em class="sig-param">d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; v, remove specified key and return the corresponding value.<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.pop" title="Permalink to this definition">¶</a></dt>
 <dd><p>If key is not found, d is returned if given, otherwise KeyError is raised</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.popitem">
-<code class="descname">popitem</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; (k, v), remove and return some (key, value) pair as a<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.popitem" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">popitem</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; (k, v), remove and return some (key, value) pair as a<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.popitem" title="Permalink to this definition">¶</a></dt>
 <dd><p>2-tuple; but raise KeyError if D is empty.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.scan_dir">
-<code class="descname">scan_dir</code><span class="sig-paren">(</span><em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.scan_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.scan_dir" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">scan_dir</code><span class="sig-paren">(</span><em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.scan_dir"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.scan_dir" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scan a directory on disk for color table files and add them to the registry.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the directory with the color tables</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the directory with the color tables</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.scan_resource">
-<code class="descname">scan_resource</code><span class="sig-paren">(</span><em>pkg</em>, <em>path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.scan_resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.scan_resource" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">scan_resource</code><span class="sig-paren">(</span><em class="sig-param">pkg</em>, <em class="sig-param">path</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#ColortableRegistry.scan_resource"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.scan_resource" title="Permalink to this definition">¶</a></dt>
 <dd><p>Scan a resource directory for colortable files and add them to the registry.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>pkg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The package containing the resource directory</li>
-<li><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the directory with the color tables</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pkg</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The package containing the resource directory</p></li>
+<li><p><strong>path</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The path to the directory with the color tables</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.setdefault">
-<code class="descname">setdefault</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D.get(k,d), also set D[k]=d if k not in D<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.setdefault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setdefault</code><span class="sig-paren">(</span><em class="sig-param">k</em><span class="optional">[</span>, <em class="sig-param">d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D.get(k,d), also set D[k]=d if k not in D<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.setdefault" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.update">
-<code class="descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em>E</em>, <span class="optional">]</span><em>**F</em><span class="sig-paren">)</span> &#x2192; None.  Update D from dict/iterable E and F.<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param">E</em>, <span class="optional">]</span><em class="sig-param">**F</em><span class="sig-paren">)</span> &#x2192; None.  Update D from dict/iterable E and F.<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
 If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
 In either case, this is followed by: for k in F:  D[k] = F[k]</p>
@@ -484,7 +470,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
 <dl class="method">
 <dt id="metpy.plots.ctables.ColortableRegistry.values">
-<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.values" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#metpy.plots.ctables.ColortableRegistry.values" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -504,7 +490,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
         <a href="metpy.plots.ctables.Exporter.html" class="btn btn-neutral float-right" title="Exporter" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.plots.ctables.read_colortable.html" class="btn btn-neutral" title="read_colortable" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.plots.ctables.resource_stream.html" class="btn btn-neutral" title="resource_stream" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -513,8 +499,8 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -551,7 +537,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

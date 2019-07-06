@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>mixing_ratio_from_specific_humidity &mdash; MetPy 0.9</title>
+  <title>mixing_ratio_from_specific_humidity &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="moist_lapse" href="metpy.calc.moist_lapse.html"/>
         <link rel="prev" title="mixing_ratio_from_relative_humidity" href="metpy.calc.mixing_ratio_from_relative_humidity.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -253,29 +253,27 @@
 <h1>mixing_ratio_from_specific_humidity<a class="headerlink" href="#mixing-ratio-from-specific-humidity" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.mixing_ratio_from_specific_humidity">
-<code class="descclassname">metpy.calc.</code><code class="descname">mixing_ratio_from_specific_humidity</code><span class="sig-paren">(</span><em>specific_humidity</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#mixing_ratio_from_specific_humidity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.mixing_ratio_from_specific_humidity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">mixing_ratio_from_specific_humidity</code><span class="sig-paren">(</span><em class="sig-param">specific_humidity</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#mixing_ratio_from_specific_humidity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.mixing_ratio_from_specific_humidity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the mixing ratio from specific humidity.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>specific_humidity</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Specific humidity of air</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em class="xref py py-obj">pint.Quantity</em> – Mixing ratio</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>specific_humidity</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Specific humidity of air</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – Mixing ratio</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
-<p>Formula from <a class="reference internal" href="../../references.html#salby1996" id="id1">[Salby1996]</a> pg. 118.</p>
+<p>Formula from <a class="reference internal" href="../../references.html#salby1996" id="id1"><span>[Salby1996]</span></a> pg. 118.</p>
 <div class="math notranslate nohighlight">
 \[w = \frac{q}{1-q}\]</div>
 <ul class="simple">
-<li><span class="math notranslate nohighlight">\(w\)</span> is mixing ratio</li>
-<li><span class="math notranslate nohighlight">\(q\)</span> is the specific humidity</li>
+<li><p><span class="math notranslate nohighlight">\(w\)</span> is mixing ratio</p></li>
+<li><p><span class="math notranslate nohighlight">\(q\)</span> is the specific humidity</p></li>
 </ul>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.mixing_ratio.html#metpy.calc.mixing_ratio" title="metpy.calc.mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">mixing_ratio()</span></code></a>, <a class="reference internal" href="metpy.calc.specific_humidity_from_mixing_ratio.html#metpy.calc.specific_humidity_from_mixing_ratio" title="metpy.calc.specific_humidity_from_mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">specific_humidity_from_mixing_ratio()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.mixing_ratio.html#metpy.calc.mixing_ratio" title="metpy.calc.mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">mixing_ratio()</span></code></a>, <a class="reference internal" href="metpy.calc.specific_humidity_from_mixing_ratio.html#metpy.calc.specific_humidity_from_mixing_ratio" title="metpy.calc.specific_humidity_from_mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">specific_humidity_from_mixing_ratio()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -303,8 +301,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -341,7 +339,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

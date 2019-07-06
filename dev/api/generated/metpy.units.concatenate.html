@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>concatenate &mdash; MetPy 0.9</title>
+  <title>concatenate &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="units" href="metpy.units.html"/>
         <link rel="next" title="diff" href="metpy.units.diff.html"/>
         <link rel="prev" title="check_units" href="metpy.units.check_units.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -132,8 +132,6 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.diff.html">diff</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.masked_array.html">masked_array</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html">pandas_dataframe_to_unit_arrays</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.PintAxisInfo.html">PintAxisInfo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.PintConverter.html">PintConverter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.DimensionalityError.html">DimensionalityError</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.UndefinedUnitError.html">UndefinedUnitError</a></li>
 </ul>
@@ -227,27 +225,23 @@
 <h1>concatenate<a class="headerlink" href="#concatenate" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.units.concatenate">
-<code class="descclassname">metpy.units.</code><code class="descname">concatenate</code><span class="sig-paren">(</span><em>arrs</em>, <em>axis=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/units.html#concatenate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.units.concatenate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.units.</code><code class="sig-name descname">concatenate</code><span class="sig-paren">(</span><em class="sig-param">arrs</em>, <em class="sig-param">axis=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/units.html#concatenate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.units.concatenate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Concatenate multiple values into a new unitized object.</p>
-<p>This is essentially a unit-aware version of <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.concatenate.html#numpy.concatenate" title="(in NumPy v1.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.concatenate</span></code></a>. All items
+<p>This is essentially a unit-aware version of <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.concatenate.html#numpy.concatenate" title="(in NumPy v1.16)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.concatenate</span></code></a>. All items
 must be able to be converted to the same units. If an item has no units, it will be given
 those of the rest of the collection, without conversion. The first units found in the
 arguments is used as the final output units.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>arrs</strong> (<em>Sequence of arrays</em>) – The items to be joined together</li>
-<li><strong>axis</strong> (<em>integer</em><em>, </em><em>optional</em>) – The array axis along which to join the arrays. Defaults to 0 (the first dimension)</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>arrs</strong> (<em>Sequence of arrays</em>) – The items to be joined together</p></li>
+<li><p><strong>axis</strong> (<em>integer</em><em>, </em><em>optional</em>) – The array axis along which to join the arrays. Defaults to 0 (the first dimension)</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – New container with the value passed in and units corresponding to the first item.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – New container with the value passed in and units corresponding to the first item.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -274,8 +268,8 @@ arguments is used as the final output units.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -312,7 +306,7 @@ arguments is used as the final output units.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

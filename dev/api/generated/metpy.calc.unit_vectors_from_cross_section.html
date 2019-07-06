@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>unit_vectors_from_cross_section &mdash; MetPy 0.9</title>
+  <title>unit_vectors_from_cross_section &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="apparent_temperature" href="metpy.calc.apparent_temperature.html"/>
         <link rel="prev" title="tangential_component" href="metpy.calc.tangential_component.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -237,7 +237,7 @@
 <h1>unit_vectors_from_cross_section<a class="headerlink" href="#unit-vectors-from-cross-section" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.unit_vectors_from_cross_section">
-<code class="descclassname">metpy.calc.</code><code class="descname">unit_vectors_from_cross_section</code><span class="sig-paren">(</span><em>cross</em>, <em>index='index'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/cross_sections.html#unit_vectors_from_cross_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.unit_vectors_from_cross_section" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">unit_vectors_from_cross_section</code><span class="sig-paren">(</span><em class="sig-param">cross</em>, <em class="sig-param">index='index'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/cross_sections.html#unit_vectors_from_cross_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.unit_vectors_from_cross_section" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the unit tanget and unit normal vectors from a cross-section.</p>
 <p>Given a path described parametrically by <span class="math notranslate nohighlight">\(\vec{l}(i) = (x(i), y(i))\)</span>, we can find
 the unit tangent vector by the formula</p>
@@ -247,23 +247,19 @@ the unit tangent vector by the formula</p>
 \left( \frac{dx}{di}, \frac{dy}{di} \right)\]</div>
 <p>From this, because this is a two-dimensional path, the normal vector can be obtained by a
 simple <span class="math notranslate nohighlight">\(\frac{\pi}{2}\)</span> rotation.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>cross</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of a cross-section from which to obtain latitudes.</li>
-<li><strong>index</strong> (<em class="xref py py-obj">str</em>, optional) – A string denoting the index coordinate of the cross section, defaults to ‘index’ as
-set by <a class="reference internal" href="metpy.interpolate.cross_section.html#metpy.interpolate.cross_section" title="metpy.interpolate.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate.cross_section</span></code></a>.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cross</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of a cross-section from which to obtain latitudes.</p></li>
+<li><p><strong>index</strong> (<em class="xref py py-obj">str</em>, optional) – A string denoting the index coordinate of the cross section, defaults to ‘index’ as
+set by <a class="reference internal" href="metpy.interpolate.cross_section.html#metpy.interpolate.cross_section" title="metpy.interpolate.cross_section"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate.cross_section</span></code></a>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>unit_tangent_vector, unit_normal_vector</strong> (tuple of <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.15)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – Arrays describing the unit tangent and unit normal vectors (in x,y) for all points
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>unit_tangent_vector, unit_normal_vector</strong> (tuple of <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>) – Arrays describing the unit tangent and unit normal vectors (in x,y) for all points
 along the cross section.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -290,8 +286,8 @@ along the cross section.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -328,7 +324,7 @@ along the cross section.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

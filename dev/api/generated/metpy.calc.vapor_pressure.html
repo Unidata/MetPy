@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>vapor_pressure &mdash; MetPy 0.9</title>
+  <title>vapor_pressure &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="vertical_velocity" href="metpy.calc.vertical_velocity.html"/>
         <link rel="prev" title="thickness_hydrostatic_from_relative_humidity" href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -253,42 +253,38 @@
 <h1>vapor_pressure<a class="headerlink" href="#vapor-pressure" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.vapor_pressure">
-<code class="descclassname">metpy.calc.</code><code class="descname">vapor_pressure</code><span class="sig-paren">(</span><em>pressure</em>, <em>mixing</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#vapor_pressure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.vapor_pressure" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">vapor_pressure</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">mixing</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#vapor_pressure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.vapor_pressure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate water vapor (partial) pressure.</p>
 <p>Given total <em class="xref py py-obj">pressure</em> and water vapor <em class="xref py py-obj">mixing</em> ratio, calculates the
 partial pressure of water vapor.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – total atmospheric pressure</li>
-<li><strong>mixing</strong> (<em class="xref py py-obj">pint.Quantity</em>) – dimensionless mass mixing ratio</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – total atmospheric pressure</p></li>
+<li><p><strong>mixing</strong> (<em class="xref py py-obj">pint.Quantity</em>) – dimensionless mass mixing ratio</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The ambient water vapor (partial) pressure in the same units as
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The ambient water vapor (partial) pressure in the same units as
 <em class="xref py py-obj">pressure</em>.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>This function is a straightforward implementation of the equation given in many places,
-such as <a class="reference internal" href="../../references.html#hobbs1977" id="id1">[Hobbs1977]</a> pg.71:</p>
+such as <a class="reference internal" href="../../references.html#hobbs1977" id="id1"><span>[Hobbs1977]</span></a> pg.71:</p>
 <div class="math notranslate nohighlight">
 \[e = p \frac{r}{r + \epsilon}\]</div>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure" title="metpy.calc.saturation_vapor_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">saturation_vapor_pressure()</span></code></a>, <a class="reference internal" href="metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure" title="metpy.calc.saturation_vapor_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">saturation_vapor_pressure()</span></code></a>, <a class="reference internal" href="metpy.calc.dewpoint.html#metpy.calc.dewpoint" title="metpy.calc.dewpoint"><code class="xref py py-func docutils literal notranslate"><span class="pre">dewpoint()</span></code></a></p>
 </div>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-calc-vapor-pressure">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.vapor_pressure</span></code><a class="headerlink" href="#examples-using-metpy-calc-vapor-pressure" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Use functions from `metpy.calc` as well as pint&#x27;s unit support to perform calculations."><div class="figure" id="id2">
+<div class="sphx-glr-thumbcontainer" tooltip="Use functions from metpy.calc as well as pint&#x27;s unit support to perform calculations."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png" src="../../_images/sphx_glr_Dewpoint_and_Mixing_Ratio_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/calculations/Dewpoint_and_Mixing_Ratio.html#sphx-glr-examples-calculations-dewpoint-and-mixing-ratio-py"><span class="std std-ref">Dewpoint and Mixing Ratio</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/calculations/Dewpoint_and_Mixing_Ratio.html#sphx-glr-examples-calculations-dewpoint-and-mixing-ratio-py"><span class="std std-ref">Dewpoint and Mixing Ratio</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -315,8 +311,8 @@ such as <a class="reference internal" href="../../references.html#hobbs1977" id=
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -353,7 +349,7 @@ such as <a class="reference internal" href="../../references.html#hobbs1977" id=
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

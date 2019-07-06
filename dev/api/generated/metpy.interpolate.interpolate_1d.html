@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>interpolate_1d &mdash; MetPy 0.9</title>
+  <title>interpolate_1d &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="interpolate" href="metpy.interpolate.html"/>
         <link rel="next" title="interpolate_nans_1d" href="metpy.interpolate.interpolate_nans_1d.html"/>
         <link rel="prev" title="interpolate" href="metpy.interpolate.interpolate.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -234,29 +234,25 @@
 <h1>interpolate_1d<a class="headerlink" href="#interpolate-1d" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.interpolate.interpolate_1d">
-<code class="descclassname">metpy.interpolate.</code><code class="descname">interpolate_1d</code><span class="sig-paren">(</span><em>x</em>, <em>xp</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/one_dimension.html#interpolate_1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.interpolate_1d" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.interpolate.</code><code class="sig-name descname">interpolate_1d</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">xp</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/one_dimension.html#interpolate_1d"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.interpolate_1d" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolates data with any shape over a specified axis.</p>
 <p>Interpolation over a specified axis for arrays of any shape.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>array-like</em>) – 1-D array of desired interpolated values.</li>
-<li><strong>xp</strong> (<em>array-like</em>) – The x-coordinates of the data points.</li>
-<li><strong>args</strong> (<em>array-like</em>) – The data to be interpolated. Can be multiple arguments, all must be the same shape as
-xp.</li>
-<li><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis to interpolate over. Defaults to 0.</li>
-<li><strong>fill_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Specify handling of interpolation points out of data bounds. If None, will return
-ValueError if points are out of bounds. Defaults to nan.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like</em>) – 1-D array of desired interpolated values.</p></li>
+<li><p><strong>xp</strong> (<em>array-like</em>) – The x-coordinates of the data points.</p></li>
+<li><p><strong>args</strong> (<em>array-like</em>) – The data to be interpolated. Can be multiple arguments, all must be the same shape as
+xp.</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis to interpolate over. Defaults to 0.</p></li>
+<li><p><strong>fill_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Specify handling of interpolation points out of data bounds. If None, will return
+ValueError if points are out of bounds. Defaults to nan.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array-like</em> – Interpolated values for each point with coordinates sorted in ascending order.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>array-like</em> – Interpolated values for each point with coordinates sorted in ascending order.</p>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">,</span> <span class="mf">4.</span><span class="p">])</span>
@@ -293,8 +289,8 @@ ValueError if points are out of bounds. Defaults to nan.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -331,7 +327,7 @@ ValueError if points are out of bounds. Defaults to nan.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

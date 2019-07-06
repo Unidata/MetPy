@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>windchill &mdash; MetPy 0.9</title>
+  <title>windchill &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="find_bounding_indices" href="metpy.calc.find_bounding_indices.html"/>
         <link rel="prev" title="heat_index" href="metpy.calc.heat_index.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -230,41 +230,37 @@
 <h1>windchill<a class="headerlink" href="#windchill" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.windchill">
-<code class="descclassname">metpy.calc.</code><code class="descname">windchill</code><span class="sig-paren">(</span><em>temperature</em>, <em>speed</em>, <em>face_level_winds=False</em>, <em>mask_undefined=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#windchill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.windchill" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">windchill</code><span class="sig-paren">(</span><em class="sig-param">temperature</em>, <em class="sig-param">speed</em>, <em class="sig-param">face_level_winds=False</em>, <em class="sig-param">mask_undefined=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#windchill"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.windchill" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the Wind Chill Temperature Index (WCTI).</p>
 <p>Calculates WCTI from the current temperature and wind speed using the formula
-outlined by the FCM <a class="reference internal" href="../../references.html#fcmr192003" id="id1">[FCMR192003]</a>.</p>
+outlined by the FCM <a class="reference internal" href="../../references.html#fcmr192003" id="id1"><span>[FCMR192003]</span></a>.</p>
 <p>Specifically, these formulas assume that wind speed is measured at
 10m.  If, instead, the speeds are measured at face level, the winds
 need to be multiplied by a factor of 1.5 (this can be done by specifying
 <em class="xref py py-obj">face_level_winds</em> as <em class="xref py py-obj">True</em>.)</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The air temperature</li>
-<li><strong>speed</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The wind speed at 10m.  If instead the winds are at face level,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The air temperature</p></li>
+<li><p><strong>speed</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The wind speed at 10m.  If instead the winds are at face level,
 <em class="xref py py-obj">face_level_winds</em> should be set to <em class="xref py py-obj">True</em> and the 1.5 multiplicative
-correction will be applied automatically.</li>
-<li><strong>face_level_winds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – A flag indicating whether the wind speeds were measured at facial
+correction will be applied automatically.</p></li>
+<li><p><strong>face_level_winds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – A flag indicating whether the wind speeds were measured at facial
 level instead of 10m, thus requiring a correction.  Defaults to
-<em class="xref py py-obj">False</em>.</li>
-<li><strong>mask_undefined</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – A flag indicating whether a masked array should be returned with
+<em class="xref py py-obj">False</em>.</p></li>
+<li><p><strong>mask_undefined</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – A flag indicating whether a masked array should be returned with
 values where wind chill is undefined masked.  These are values where
 the temperature &gt; 50F or wind speed &lt;= 3 miles per hour. Defaults
-to <em class="xref py py-obj">True</em>.</li>
+to <em class="xref py py-obj">True</em>.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The corresponding Wind Chill Temperature Index value(s)</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The corresponding Wind Chill Temperature Index value(s)</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.heat_index.html#metpy.calc.heat_index" title="metpy.calc.heat_index"><code class="xref py py-func docutils literal notranslate"><span class="pre">heat_index()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.heat_index.html#metpy.calc.heat_index" title="metpy.calc.heat_index"><code class="xref py py-func docutils literal notranslate"><span class="pre">heat_index()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -292,8 +288,8 @@ to <em class="xref py py-obj">True</em>.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -330,7 +326,7 @@ to <em class="xref py py-obj">True</em>.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

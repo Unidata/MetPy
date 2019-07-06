@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>gridding &mdash; MetPy 0.9</title>
+  <title>gridding &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="Reference Guide" href="../index.html"/>
         <link rel="next" title="interpolate" href="metpy.gridding.interpolate.html"/>
         <link rel="prev" title="remove_repeat_coordinates" href="metpy.interpolate.remove_repeat_coordinates.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -221,29 +221,29 @@
 <p>Provides tools for interpolating irregularly spaced data onto a regular grid.</p>
 <p>Deprecated in 0.9 in favor of the more general <a class="reference internal" href="metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="metpy.gridding.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate</span></code></a> subpackage.</p>
 <p class="rubric">Functions</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="metpy.gridding.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate</span></code></a>(x,&nbsp;y,&nbsp;z[,&nbsp;interp_type,&nbsp;hres,&nbsp;…])</td>
-<td>Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.gridding.interpolate.html#metpy.gridding.interpolate" title="metpy.gridding.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate</span></code></a>(x, y, z[, interp_type, hres, …])</p></td>
+<td><p>Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.gridding.inverse_distance.html#metpy.gridding.inverse_distance" title="metpy.gridding.inverse_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_distance</span></code></a>(xp,&nbsp;yp,&nbsp;variable,&nbsp;grid_x,&nbsp;…)</td>
-<td>Generate an inverse distance interpolation of the given points to a regular grid.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.gridding.inverse_distance.html#metpy.gridding.inverse_distance" title="metpy.gridding.inverse_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_distance</span></code></a>(xp, yp, variable, grid_x, …)</p></td>
+<td><p>Generate an inverse distance interpolation of the given points to a regular grid.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.gridding.natural_neighbor.html#metpy.gridding.natural_neighbor" title="metpy.gridding.natural_neighbor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_neighbor</span></code></a>(xp,&nbsp;yp,&nbsp;variable,&nbsp;grid_x,&nbsp;…)</td>
-<td>Generate a natural neighbor interpolation of the given points to a regular grid.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.gridding.natural_neighbor.html#metpy.gridding.natural_neighbor" title="metpy.gridding.natural_neighbor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_neighbor</span></code></a>(xp, yp, variable, grid_x, …)</p></td>
+<td><p>Generate a natural neighbor interpolation of the given points to a regular grid.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.gridding.remove_nan_observations.html#metpy.gridding.remove_nan_observations" title="metpy.gridding.remove_nan_observations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_nan_observations</span></code></a>(x,&nbsp;y,&nbsp;z)</td>
-<td>Remove all x, y, and z where z is nan.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.gridding.remove_nan_observations.html#metpy.gridding.remove_nan_observations" title="metpy.gridding.remove_nan_observations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_nan_observations</span></code></a>(x, y, z)</p></td>
+<td><p>Remove all x, y, and z where z is nan.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="metpy.gridding.remove_observations_below_value.html#metpy.gridding.remove_observations_below_value" title="metpy.gridding.remove_observations_below_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_observations_below_value</span></code></a>(x,&nbsp;y,&nbsp;z[,&nbsp;val])</td>
-<td>Remove all x, y, and z where z is less than val.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.gridding.remove_observations_below_value.html#metpy.gridding.remove_observations_below_value" title="metpy.gridding.remove_observations_below_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_observations_below_value</span></code></a>(x, y, z[, val])</p></td>
+<td><p>Remove all x, y, and z where z is less than val.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="metpy.gridding.remove_repeat_coordinates.html#metpy.gridding.remove_repeat_coordinates" title="metpy.gridding.remove_repeat_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_repeat_coordinates</span></code></a>(x,&nbsp;y,&nbsp;z)</td>
-<td>Remove all x, y, and z where (x,y) is repeated and keep the first occurrence only.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.gridding.remove_repeat_coordinates.html#metpy.gridding.remove_repeat_coordinates" title="metpy.gridding.remove_repeat_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_repeat_coordinates</span></code></a>(x, y, z)</p></td>
+<td><p>Remove all x, y, and z where (x,y) is repeated and keep the first occurrence only.</p></td>
 </tr>
 </tbody>
 </table>
@@ -271,8 +271,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -309,7 +309,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

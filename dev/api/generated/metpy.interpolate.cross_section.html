@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cross_section &mdash; MetPy 0.9</title>
+  <title>cross_section &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="interpolate" href="metpy.interpolate.html"/>
         <link rel="next" title="geodesic" href="metpy.interpolate.geodesic.html"/>
         <link rel="prev" title="interpolate" href="metpy.interpolate.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -237,47 +237,43 @@
 <h1>cross_section<a class="headerlink" href="#cross-section" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.interpolate.cross_section">
-<code class="descclassname">metpy.interpolate.</code><code class="descname">cross_section</code><span class="sig-paren">(</span><em>data</em>, <em>start</em>, <em>end</em>, <em>steps=100</em>, <em>interp_type='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/slices.html#cross_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.cross_section" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.interpolate.</code><code class="sig-name descname">cross_section</code><span class="sig-paren">(</span><em class="sig-param">data</em>, <em class="sig-param">start</em>, <em class="sig-param">end</em>, <em class="sig-param">steps=100</em>, <em class="sig-param">interp_type='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/slices.html#cross_section"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.cross_section" title="Permalink to this definition">¶</a></dt>
 <dd><p>Obtain an interpolated cross-sectional slice through gridded data.</p>
 <p>Utilizing the interpolation functionality in <code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray</span></code>, this function takes a vertical
 cross-sectional slice along a geodesic through the given data on a regular grid, which is
-given as an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> so that we can utilize its coordinate and projection
+given as an <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> so that we can utilize its coordinate and projection
 metadata.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>data</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – Three- (or higher) dimensional field(s) to interpolate. The DataArray (or each
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a>) – Three- (or higher) dimensional field(s) to interpolate. The DataArray (or each
 DataArray in the Dataset) must have been parsed by MetPy and include both an x and
-y coordinate dimension and the added <em class="xref py py-obj">crs</em> coordinate.</li>
-<li><strong>start</strong> (<em>(</em><em>2</em><em>, </em><em>) </em><em>array_like</em>) – A latitude-longitude pair designating the start point of the cross section (units are
-degrees north and degrees east).</li>
-<li><strong>end</strong> (<em>(</em><em>2</em><em>, </em><em>) </em><em>array_like</em>) – A latitude-longitude pair designating the end point of the cross section (units are
-degrees north and degrees east).</li>
-<li><strong>steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The number of points along the geodesic between the start and the end point
-(including the end points) to use in the cross section. Defaults to 100.</li>
-<li><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The interpolation method, either ‘linear’ or ‘nearest’ (see
-<em class="xref py py-obj">xarray.DataArray.interp()</em> for details). Defaults to ‘linear’.</li>
+y coordinate dimension and the added <em class="xref py py-obj">crs</em> coordinate.</p></li>
+<li><p><strong>start</strong> (<em>(</em><em>2</em><em>, </em><em>) </em><em>array_like</em>) – A latitude-longitude pair designating the start point of the cross section (units are
+degrees north and degrees east).</p></li>
+<li><p><strong>end</strong> (<em>(</em><em>2</em><em>, </em><em>) </em><em>array_like</em>) – A latitude-longitude pair designating the end point of the cross section (units are
+degrees north and degrees east).</p></li>
+<li><p><strong>steps</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The number of points along the geodesic between the start and the end point
+(including the end points) to use in the cross section. Defaults to 100.</p></li>
+<li><p><strong>interp_type</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The interpolation method, either ‘linear’ or ‘nearest’ (see
+<em class="xref py py-obj">xarray.DataArray.interp()</em> for details). Defaults to ‘linear’.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – The interpolated cross section, with new index dimension along the cross-section.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> or <a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.Dataset.html#xarray.Dataset" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.Dataset</span></code></a> – The interpolated cross section, with new index dimension along the cross-section.</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html#metpy.interpolate.interpolate_to_slice" title="metpy.interpolate.interpolate_to_slice"><code class="xref py py-func docutils literal notranslate"><span class="pre">interpolate_to_slice()</span></code></a>, <a class="reference internal" href="metpy.interpolate.geodesic.html#metpy.interpolate.geodesic" title="metpy.interpolate.geodesic"><code class="xref py py-func docutils literal notranslate"><span class="pre">geodesic()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html#metpy.interpolate.interpolate_to_slice" title="metpy.interpolate.interpolate_to_slice"><code class="xref py py-func docutils literal notranslate"><span class="pre">interpolate_to_slice()</span></code></a>, <a class="reference internal" href="metpy.interpolate.geodesic.html#metpy.interpolate.geodesic" title="metpy.interpolate.geodesic"><code class="xref py py-func docutils literal notranslate"><span class="pre">geodesic()</span></code></a></p>
 </div>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-interpolate-cross-section">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.interpolate.cross_section</span></code><a class="headerlink" href="#examples-using-metpy-interpolate-cross-section" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="The MetPy function `metpy.interpolate.cross_section` can obtain a cross-sectional slice through..."><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="The MetPy function metpy.interpolate.cross_section can obtain a cross-sectional slice through g..."><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_cross_section_thumb.png" src="../../_images/sphx_glr_cross_section_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/cross_section.html#sphx-glr-examples-cross-section-py"><span class="std std-ref">Cross Section Analysis</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/cross_section.html#sphx-glr-examples-cross-section-py"><span class="std std-ref">Cross Section Analysis</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -304,8 +300,8 @@ degrees north and degrees east).</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -342,7 +338,7 @@ degrees north and degrees east).</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

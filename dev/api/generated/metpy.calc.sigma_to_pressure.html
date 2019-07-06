@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>sigma_to_pressure &mdash; MetPy 0.9</title>
+  <title>sigma_to_pressure &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="static_stability" href="metpy.calc.static_stability.html"/>
         <link rel="prev" title="pressure_to_height_std" href="metpy.calc.pressure_to_height_std.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -242,33 +242,29 @@
 <h1>sigma_to_pressure<a class="headerlink" href="#sigma-to-pressure" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.sigma_to_pressure">
-<code class="descclassname">metpy.calc.</code><code class="descname">sigma_to_pressure</code><span class="sig-paren">(</span><em>sigma</em>, <em>psfc</em>, <em>ptop</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#sigma_to_pressure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.sigma_to_pressure" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">sigma_to_pressure</code><span class="sig-paren">(</span><em class="sig-param">sigma</em>, <em class="sig-param">psfc</em>, <em class="sig-param">ptop</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#sigma_to_pressure"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.sigma_to_pressure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate pressure from sigma values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>sigma</strong> (<em>ndarray</em>) – The sigma levels to be converted to pressure levels.</li>
-<li><strong>psfc</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The surface pressure value.</li>
-<li><strong>ptop</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The pressure value at the top of the model domain.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sigma</strong> (<em>ndarray</em>) – The sigma levels to be converted to pressure levels.</p></li>
+<li><p><strong>psfc</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The surface pressure value.</p></li>
+<li><p><strong>ptop</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The pressure value at the top of the model domain.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The pressure values at the given sigma levels.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The pressure values at the given sigma levels.</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
-<p>Sigma definition adapted from <a class="reference internal" href="../../references.html#philips1957" id="id1">[Philips1957]</a>.</p>
+<p>Sigma definition adapted from <a class="reference internal" href="../../references.html#philips1957" id="id1"><span>[Philips1957]</span></a>.</p>
 <div class="math notranslate nohighlight">
 \[p = \sigma * (p_{sfc} - p_{top}) + p_{top}\]</div>
 <ul class="simple">
-<li><span class="math notranslate nohighlight">\(p\)</span> is pressure at a given <em class="xref py py-obj">sigma</em> level</li>
-<li><span class="math notranslate nohighlight">\(\sigma\)</span> is non-dimensional, scaled pressure</li>
-<li><span class="math notranslate nohighlight">\(p_{sfc}\)</span> is pressure at the surface or model floor</li>
-<li><span class="math notranslate nohighlight">\(p_{top}\)</span> is pressure at the top of the model domain</li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> is pressure at a given <em class="xref py py-obj">sigma</em> level</p></li>
+<li><p><span class="math notranslate nohighlight">\(\sigma\)</span> is non-dimensional, scaled pressure</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_{sfc}\)</span> is pressure at the surface or model floor</p></li>
+<li><p><span class="math notranslate nohighlight">\(p_{top}\)</span> is pressure at the top of the model domain</p></li>
 </ul>
 </dd></dl>
 
@@ -296,8 +292,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -334,7 +330,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

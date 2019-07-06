@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>height_to_pressure_std &mdash; MetPy 0.9</title>
+  <title>height_to_pressure_std &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="mean_pressure_weighted" href="metpy.calc.mean_pressure_weighted.html"/>
         <link rel="prev" title="height_to_geopotential" href="metpy.calc.height_to_geopotential.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -242,19 +242,17 @@
 <h1>height_to_pressure_std<a class="headerlink" href="#height-to-pressure-std" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.height_to_pressure_std">
-<code class="descclassname">metpy.calc.</code><code class="descname">height_to_pressure_std</code><span class="sig-paren">(</span><em>height</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#height_to_pressure_std"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.height_to_pressure_std" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">height_to_pressure_std</code><span class="sig-paren">(</span><em class="sig-param">height</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#height_to_pressure_std"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.height_to_pressure_std" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert height data to pressures using the U.S. standard atmosphere.</p>
-<p>The implementation inverts the formula outlined in <a class="reference internal" href="../../references.html#hobbs1977" id="id1">[Hobbs1977]</a> pg.60-61.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>height</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric height</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><em class="xref py py-obj">pint.Quantity</em> – The corresponding pressure value(s)</td>
-</tr>
-</tbody>
-</table>
+<p>The implementation inverts the formula outlined in <a class="reference internal" href="../../references.html#hobbs1977" id="id1"><span>[Hobbs1977]</span></a> pg.60-61.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>height</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric height</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The corresponding pressure value(s)</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <div class="math notranslate nohighlight">
 \[p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}\]</div>
@@ -284,8 +282,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -322,7 +320,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

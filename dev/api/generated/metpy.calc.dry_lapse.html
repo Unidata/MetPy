@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dry_lapse &mdash; MetPy 0.9</title>
+  <title>dry_lapse &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="dry_static_energy" href="metpy.calc.dry_static_energy.html"/>
         <link rel="prev" title="density" href="metpy.calc.density.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -242,36 +242,32 @@
 <h1>dry_lapse<a class="headerlink" href="#dry-lapse" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.dry_lapse">
-<code class="descclassname">metpy.calc.</code><code class="descname">dry_lapse</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>ref_pressure=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#dry_lapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.dry_lapse" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">dry_lapse</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">ref_pressure=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#dry_lapse"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.dry_lapse" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the temperature at a level assuming only dry processes.</p>
 <p>This function lifts a parcel starting at <em class="xref py py-obj">temperature</em>, conserving
 potential temperature. The starting pressure can be given by <em class="xref py py-obj">ref_pressure</em>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure level(s) of interest</li>
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The starting temperature</li>
-<li><strong>ref_pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The reference pressure. If not given, it defaults to the first element of the
-pressure array.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure level(s) of interest</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The starting temperature</p></li>
+<li><p><strong>ref_pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The reference pressure. If not given, it defaults to the first element of the
+pressure array.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The resulting parcel temperature at levels given by <em class="xref py py-obj">pressure</em></p>
-</td>
-</tr>
-</tbody>
-</table>
-<div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<dl class="docutils">
-<dt><a class="reference internal" href="metpy.calc.moist_lapse.html#metpy.calc.moist_lapse" title="metpy.calc.moist_lapse"><code class="xref py py-func docutils literal notranslate"><span class="pre">moist_lapse()</span></code></a></dt>
-<dd>Calculate parcel temperature assuming liquid saturation processes</dd>
-<dt><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a></dt>
-<dd>Calculate complete parcel profile</dd>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The resulting parcel temperature at levels given by <em class="xref py py-obj">pressure</em></p>
+</dd>
 </dl>
-<p class="last"><a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">potential_temperature()</span></code></a></p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<dl class="simple">
+<dt><a class="reference internal" href="metpy.calc.moist_lapse.html#metpy.calc.moist_lapse" title="metpy.calc.moist_lapse"><code class="xref py py-func docutils literal notranslate"><span class="pre">moist_lapse()</span></code></a></dt><dd><p>Calculate parcel temperature assuming liquid saturation processes</p>
+</dd>
+<dt><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a></dt><dd><p>Calculate complete parcel profile</p>
+</dd>
+</dl>
+<p><a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">potential_temperature()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -299,8 +295,8 @@ pressure array.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -337,7 +333,7 @@ pressure array.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

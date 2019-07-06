@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>deprecated &mdash; MetPy 0.9</title>
+  <title>deprecated &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="cdm" href="metpy.io.cdm.html"/>
         <link rel="next" title="AttributeContainer" href="metpy.io.cdm.AttributeContainer.html"/>
         <link rel="prev" title="cf_to_proj" href="metpy.io.cdm.cf_to_proj.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -224,22 +224,20 @@
 <h1>deprecated<a class="headerlink" href="#deprecated" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.io.cdm.deprecated">
-<code class="descclassname">metpy.io.cdm.</code><code class="descname">deprecated</code><span class="sig-paren">(</span><em>since</em>, <em>message=''</em>, <em>name=''</em>, <em>alternative=''</em>, <em>pending=False</em>, <em>obj_type=None</em>, <em>addendum=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/deprecation.html#deprecated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.deprecated" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.io.cdm.</code><code class="sig-name descname">deprecated</code><span class="sig-paren">(</span><em class="sig-param">since</em>, <em class="sig-param">message=''</em>, <em class="sig-param">name=''</em>, <em class="sig-param">alternative=''</em>, <em class="sig-param">pending=False</em>, <em class="sig-param">obj_type=None</em>, <em class="sig-param">addendum=''</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/deprecation.html#deprecated"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.deprecated" title="Permalink to this definition">¶</a></dt>
 <dd><p>Mark a function or a class as deprecated.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>since</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The release at which this API became deprecated.  This is
-required.</li>
-<li><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Override the default deprecation message.  The format
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>since</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The release at which this API became deprecated.  This is
+required.</p></li>
+<li><p><strong>message</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Override the default deprecation message.  The format
 specifier <em class="xref py py-obj">%(name)s</em> may be used for the name of the object,
 and <em class="xref py py-obj">%(alternative)s</em> may be used in the deprecation message
 to insert the name of an alternative to the deprecated
 object.  <em class="xref py py-obj">%(obj_type)s</em> may be used to insert a friendly name
-for the type of object being deprecated.</li>
-<li><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – <p>The name of the deprecated object; if not provided the name
+for the type of object being deprecated.</p></li>
+<li><p><strong>name</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – <p>The name of the deprecated object; if not provided the name
 is automatically determined from the passed in object,
 though this is useful in the case of renamed functions, where
 the new function is just assigned to the name of the
@@ -249,18 +247,16 @@ deprecated function.  For example:</p>
 <span class="n">oldFunction</span> <span class="o">=</span> <span class="n">new_function</span>
 </pre></div>
 </div>
-</li>
-<li><strong>alternative</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – An alternative object that the user may use in place of the
+</p></li>
+<li><p><strong>alternative</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – An alternative object that the user may use in place of the
 deprecated object.  The deprecation warning will tell the user
-about this alternative if provided.</li>
-<li><strong>pending</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, uses a PendingDeprecationWarning instead of a
-DeprecationWarning.</li>
-<li><strong>addendum</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Additional text appended directly to the final message.</li>
+about this alternative if provided.</p></li>
+<li><p><strong>pending</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – If True, uses a PendingDeprecationWarning instead of a
+DeprecationWarning.</p></li>
+<li><p><strong>addendum</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – Additional text appended directly to the final message.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Examples</p>
 <p>Basic example:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@deprecated</span><span class="p">(</span><span class="s1">&#39;1.4.0&#39;</span><span class="p">)</span>
@@ -294,8 +290,8 @@ DeprecationWarning.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -332,7 +328,7 @@ DeprecationWarning.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

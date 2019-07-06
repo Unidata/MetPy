@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>convert_gempak_table &mdash; MetPy 0.9</title>
+  <title>convert_gempak_table &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="ctables" href="metpy.plots.ctables.html"/>
         <link rel="next" title="read_colortable" href="metpy.plots.ctables.read_colortable.html"/>
         <link rel="prev" title="ctables" href="metpy.plots.ctables.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -132,6 +132,8 @@
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">convert_gempak_table</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.resource_listdir.html">resource_listdir</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.resource_stream.html">resource_stream</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.ColortableRegistry.html">ColortableRegistry</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ctables.Exporter.html">Exporter</a></li>
 </ul>
@@ -220,22 +222,18 @@
 <h1>convert_gempak_table<a class="headerlink" href="#convert-gempak-table" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.plots.ctables.convert_gempak_table">
-<code class="descclassname">metpy.plots.ctables.</code><code class="descname">convert_gempak_table</code><span class="sig-paren">(</span><em>infile</em>, <em>outfile</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#convert_gempak_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.convert_gempak_table" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.plots.ctables.</code><code class="sig-name descname">convert_gempak_table</code><span class="sig-paren">(</span><em class="sig-param">infile</em>, <em class="sig-param">outfile</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/ctables.html#convert_gempak_table"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.ctables.convert_gempak_table" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert a GEMPAK color table to one MetPy can read.</p>
 <p>Reads lines from a GEMPAK-style color table file, and writes them to another file in
 a format that MetPy can parse.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>infile</strong> (<em>file-like object</em>) – The file-like object to read from</li>
-<li><strong>outfile</strong> (<em>file-like object</em>) – The file-like object to write to</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>infile</strong> (<em>file-like object</em>) – The file-like object to read from</p></li>
+<li><p><strong>outfile</strong> (<em>file-like object</em>) – The file-like object to write to</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -262,8 +260,8 @@ a format that MetPy can parse.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -300,7 +298,7 @@ a format that MetPy can parse.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>parcel_profile_with_lcl &mdash; MetPy 0.9</title>
+  <title>parcel_profile_with_lcl &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="significant_tornado" href="metpy.calc.significant_tornado.html"/>
         <link rel="prev" title="parcel_profile" href="metpy.calc.parcel_profile.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -244,41 +244,37 @@
 <h1>parcel_profile_with_lcl<a class="headerlink" href="#parcel-profile-with-lcl" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.parcel_profile_with_lcl">
-<code class="descclassname">metpy.calc.</code><code class="descname">parcel_profile_with_lcl</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>dewpt</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#parcel_profile_with_lcl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.parcel_profile_with_lcl" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">parcel_profile_with_lcl</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpt</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#parcel_profile_with_lcl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.parcel_profile_with_lcl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the profile a parcel takes through the atmosphere.</p>
 <p>The parcel starts at <em class="xref py py-obj">temperature</em>, and <em class="xref py py-obj">dewpt</em>, lifted up
 dry adiabatically to the LCL, and then moist adiabatically from there.
 <em class="xref py py-obj">pressure</em> specifies the pressure levels for the profile. This function returns
 a profile that includes the LCL.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure level(s) of interest. The first entry should be the starting
-point pressure.</li>
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric temperature at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be the
-starting point temperature.</li>
-<li><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric dew point at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be the
-starting dew point.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure level(s) of interest. The first entry should be the starting
+point pressure.</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric temperature at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be the
+starting point temperature.</p></li>
+<li><p><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric dew point at the levels in <em class="xref py py-obj">pressure</em>. The first entry should be the
+starting dew point.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The parcel profile pressures, which includes the specified levels and the LCL</li>
-<li><strong>ambient_temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric temperature values, including the value interpolated to the LCL level</li>
-<li><strong>ambient_dew_point</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric dew point values, including the value interpolated to the LCL level</li>
-<li><strong>profile_temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The parcel profile temperatures at all of the levels in the returned pressures array,
-including the LCL.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The parcel profile pressures, which includes the specified levels and the LCL</p></li>
+<li><p><strong>ambient_temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric temperature values, including the value interpolated to the LCL level</p></li>
+<li><p><strong>ambient_dew_point</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric dew point values, including the value interpolated to the LCL level</p></li>
+<li><p><strong>profile_temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The parcel profile temperatures at all of the levels in the returned pressures array,
+including the LCL.</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.lcl.html#metpy.calc.lcl" title="metpy.calc.lcl"><code class="xref py py-func docutils literal notranslate"><span class="pre">lcl()</span></code></a>, <a class="reference internal" href="metpy.calc.moist_lapse.html#metpy.calc.moist_lapse" title="metpy.calc.moist_lapse"><code class="xref py py-func docutils literal notranslate"><span class="pre">moist_lapse()</span></code></a>, <a class="reference internal" href="metpy.calc.dry_lapse.html#metpy.calc.dry_lapse" title="metpy.calc.dry_lapse"><code class="xref py py-func docutils literal notranslate"><span class="pre">dry_lapse()</span></code></a>, <a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.lcl.html#metpy.calc.lcl" title="metpy.calc.lcl"><code class="xref py py-func docutils literal notranslate"><span class="pre">lcl()</span></code></a>, <a class="reference internal" href="metpy.calc.moist_lapse.html#metpy.calc.moist_lapse" title="metpy.calc.moist_lapse"><code class="xref py py-func docutils literal notranslate"><span class="pre">moist_lapse()</span></code></a>, <a class="reference internal" href="metpy.calc.dry_lapse.html#metpy.calc.dry_lapse" title="metpy.calc.dry_lapse"><code class="xref py py-func docutils literal notranslate"><span class="pre">dry_lapse()</span></code></a>, <a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -306,8 +302,8 @@ including the LCL.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -344,7 +340,7 @@ including the LCL.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

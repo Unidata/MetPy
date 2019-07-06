@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>remove_observations_below_value &mdash; MetPy 0.9</title>
+  <title>remove_observations_below_value &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="interpolate" href="metpy.interpolate.html"/>
         <link rel="next" title="remove_repeat_coordinates" href="metpy.interpolate.remove_repeat_coordinates.html"/>
         <link rel="prev" title="remove_nan_observations" href="metpy.interpolate.remove_nan_observations.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -234,27 +234,23 @@
 <h1>remove_observations_below_value<a class="headerlink" href="#remove-observations-below-value" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.interpolate.remove_observations_below_value">
-<code class="descclassname">metpy.interpolate.</code><code class="descname">remove_observations_below_value</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em>, <em>val=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/tools.html#remove_observations_below_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.remove_observations_below_value" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.interpolate.</code><code class="sig-name descname">remove_observations_below_value</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z</em>, <em class="sig-param">val=0</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/tools.html#remove_observations_below_value"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.remove_observations_below_value" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all x, y, and z where z is less than val.</p>
 <p>Will not destroy original values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>array_like</em>) – x coordinate.</li>
-<li><strong>y</strong> (<em>array_like</em>) – y coordinate.</li>
-<li><strong>z</strong> (<em>array_like</em>) – Observation value.</li>
-<li><strong>val</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value at which to threshold z.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array_like</em>) – x coordinate.</p></li>
+<li><p><strong>y</strong> (<em>array_like</em>) – y coordinate.</p></li>
+<li><p><strong>z</strong> (<em>array_like</em>) – Observation value.</p></li>
+<li><p><strong>val</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Value at which to threshold z.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>x, y, z</em> – List of coordinate observation pairs without
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>x, y, z</em> – List of coordinate observation pairs without
 observation values less than val.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -281,8 +277,8 @@ observation values less than val.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -319,7 +315,7 @@ observation values less than val.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

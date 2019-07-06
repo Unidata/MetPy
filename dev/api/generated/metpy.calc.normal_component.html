@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>normal_component &mdash; MetPy 0.9</title>
+  <title>normal_component &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="second_derivative" href="metpy.calc.second_derivative.html"/>
         <link rel="prev" title="lat_lon_grid_deltas" href="metpy.calc.lat_lon_grid_deltas.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -237,28 +237,24 @@
 <h1>normal_component<a class="headerlink" href="#normal-component" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.normal_component">
-<code class="descclassname">metpy.calc.</code><code class="descname">normal_component</code><span class="sig-paren">(</span><em>data_x</em>, <em>data_y</em>, <em>index='index'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/cross_sections.html#normal_component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.normal_component" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">normal_component</code><span class="sig-paren">(</span><em class="sig-param">data_x</em>, <em class="sig-param">data_y</em>, <em class="sig-param">index='index'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/cross_sections.html#normal_component"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.normal_component" title="Permalink to this definition">¶</a></dt>
 <dd><p>Obtain the normal component of a cross-section of a vector field.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>data_x</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the x-component (in terms of data projection) of the vector
-field.</li>
-<li><strong>data_y</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the y-component (in terms of data projection) of the vector
-field.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_x</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the x-component (in terms of data projection) of the vector
+field.</p></li>
+<li><p><strong>data_y</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the y-component (in terms of data projection) of the vector
+field.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>component_normal</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The component of the vector field in the normal directions.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>component_normal</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The component of the vector field in the normal directions.</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.cross_section_components.html#metpy.calc.cross_section_components" title="metpy.calc.cross_section_components"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross_section_components()</span></code></a>, <a class="reference internal" href="metpy.calc.tangential_component.html#metpy.calc.tangential_component" title="metpy.calc.tangential_component"><code class="xref py py-func docutils literal notranslate"><span class="pre">tangential_component()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.cross_section_components.html#metpy.calc.cross_section_components" title="metpy.calc.cross_section_components"><code class="xref py py-func docutils literal notranslate"><span class="pre">cross_section_components()</span></code></a>, <a class="reference internal" href="metpy.calc.tangential_component.html#metpy.calc.tangential_component" title="metpy.calc.tangential_component"><code class="xref py py-func docutils literal notranslate"><span class="pre">tangential_component()</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
 <p>The coordinates of <em class="xref py py-obj">data_x</em> and <em class="xref py py-obj">data_y</em> must match.</p>
@@ -288,8 +284,8 @@ field.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -326,7 +322,7 @@ field.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

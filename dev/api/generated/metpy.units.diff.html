@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>diff &mdash; MetPy 0.9</title>
+  <title>diff &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="units" href="metpy.units.html"/>
         <link rel="next" title="masked_array" href="metpy.units.masked_array.html"/>
         <link rel="prev" title="concatenate" href="metpy.units.concatenate.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -132,8 +132,6 @@
 <li class="toctree-l3 current"><a class="current reference internal" href="#">diff</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.masked_array.html">masked_array</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.pandas_dataframe_to_unit_arrays.html">pandas_dataframe_to_unit_arrays</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.PintAxisInfo.html">PintAxisInfo</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.units.PintConverter.html">PintConverter</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.DimensionalityError.html">DimensionalityError</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.units.UndefinedUnitError.html">UndefinedUnitError</a></li>
 </ul>
@@ -227,30 +225,26 @@
 <h1>diff<a class="headerlink" href="#diff" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.units.diff">
-<code class="descclassname">metpy.units.</code><code class="descname">diff</code><span class="sig-paren">(</span><em>x</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/units.html#diff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.units.diff" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.units.</code><code class="sig-name descname">diff</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/units.html#diff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.units.diff" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the n-th discrete difference along given axis.</p>
-<p>Wraps <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.diff.html#numpy.diff" title="(in NumPy v1.15)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.diff()</span></code></a> to handle units.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>array-like</em>) – Input data</li>
-<li><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The number of times values are differenced.</li>
-<li><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis along which the difference is taken, default is the last axis.</li>
+<p>Wraps <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.diff.html#numpy.diff" title="(in NumPy v1.16)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.diff()</span></code></a> to handle units.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like</em>) – Input data</p></li>
+<li><p><strong>n</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The number of times values are differenced.</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis along which the difference is taken, default is the last axis.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>diff</strong> (<em>ndarray</em>) – The n-th differences. The shape of the output is the same as <em class="xref py py-obj">a</em>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>diff</strong> (<em>ndarray</em>) – The n-th differences. The shape of the output is the same as <em class="xref py py-obj">a</em>
 except along <em class="xref py py-obj">axis</em> where the dimension is smaller by <em class="xref py py-obj">n</em>. The
 type of the output is the same as that of the input.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.diff.html#numpy.diff" title="(in NumPy v1.15)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.diff()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.diff.html#numpy.diff" title="(in NumPy v1.16)"><code class="xref py py-func docutils literal notranslate"><span class="pre">numpy.diff()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -278,8 +272,8 @@ type of the output is the same as that of the input.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -316,7 +310,7 @@ type of the output is the same as that of the input.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Infrastructure Guide &mdash; MetPy 0.9</title>
+  <title>Infrastructure Guide &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.9" href="index.html"/>
+    <link rel="top" title="MetPy 0.10" href="index.html"/>
         <link rel="next" title="Citing MetPy" href="citing.html"/>
         <link rel="prev" title="Contributors Guide" href="CONTRIBUTING.html"/> 
 
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -254,9 +254,9 @@ is a similar service; here the tests and examples are run against Python 2 and 3
 <p>Test coverage is monitored by <a class="reference external" href="https://codecov.io/github/Unidata/MetPy">codecov.io</a>.</p>
 <p>The following services are used to track code quality:</p>
 <ul class="simple">
-<li><a class="reference external" href="https://app.codacy.com/project/Unidata/MetPy/dashboard">Codacy</a></li>
-<li><a class="reference external" href="https://codeclimate.com/github/Unidata/MetPy">Code Climate</a></li>
-<li><a class="reference external" href="https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)">Scrutinizer</a></li>
+<li><p><a class="reference external" href="https://app.codacy.com/project/Unidata/MetPy/dashboard">Codacy</a></p></li>
+<li><p><a class="reference external" href="https://codeclimate.com/github/Unidata/MetPy">Code Climate</a></p></li>
+<li><p><a class="reference external" href="https://scrutinizer-ci.com/g/Unidata/MetPy/?branch=master)">Scrutinizer</a></p></li>
 </ul>
 </div>
 <div class="section" id="releasing">
@@ -274,15 +274,15 @@ Travis (currently Python 3 tests) succeeds, Travis will handle building the sour
 distribution and wheels, and upload them to PyPI.</p>
 <p>To build and upload manually (if for some reason it is necessary):</p>
 <ol class="arabic simple">
-<li>Do a pull locally to grab the new tag. This will ensure that <code class="docutils literal notranslate"><span class="pre">versioneer</span></code> will give you
-the proper version.</li>
-<li>(optional) Perform a <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clean</span> <span class="pre">-f</span> <span class="pre">-x</span> <span class="pre">-d</span></code> from the root of the repository. This will
+<li><p>Do a pull locally to grab the new tag. This will ensure that <code class="docutils literal notranslate"><span class="pre">versioneer</span></code> will give you
+the proper version.</p></li>
+<li><p>(optional) Perform a <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clean</span> <span class="pre">-f</span> <span class="pre">-x</span> <span class="pre">-d</span></code> from the root of the repository. This will
 <strong>delete</strong> everything not tracked by git, but will also ensure clean source distribution.
-<code class="docutils literal notranslate"><span class="pre">MANIFEST.in</span></code> is set to include/exclude mostly correctly, but could miss some things.</li>
-<li>Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">sdist</span> <span class="pre">bdist_wheel</span></code> (this requires that <code class="docutils literal notranslate"><span class="pre">wheel</span></code> is installed).</li>
-<li>Upload using <code class="docutils literal notranslate"><span class="pre">twine</span></code>: <code class="docutils literal notranslate"><span class="pre">twine</span> <span class="pre">upload</span> <span class="pre">dist/*</span></code>, assuming the <code class="docutils literal notranslate"><span class="pre">dist/</span></code> directory contains
+<code class="docutils literal notranslate"><span class="pre">MANIFEST.in</span></code> is set to include/exclude mostly correctly, but could miss some things.</p></li>
+<li><p>Run <code class="docutils literal notranslate"><span class="pre">python</span> <span class="pre">setup.py</span> <span class="pre">sdist</span> <span class="pre">bdist_wheel</span></code> (this requires that <code class="docutils literal notranslate"><span class="pre">wheel</span></code> is installed).</p></li>
+<li><p>Upload using <code class="docutils literal notranslate"><span class="pre">twine</span></code>: <code class="docutils literal notranslate"><span class="pre">twine</span> <span class="pre">upload</span> <span class="pre">dist/*</span></code>, assuming the <code class="docutils literal notranslate"><span class="pre">dist/</span></code> directory contains
 only files for this release. This upload process will include any changes to the <code class="docutils literal notranslate"><span class="pre">README</span></code>
-as well as any updated flags from <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</li>
+as well as any updated flags from <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.</p></li>
 </ol>
 </div>
 <div class="section" id="conda">
@@ -293,10 +293,10 @@ release is built and uploaded to PyPI, then a Pull Request should be made agains
 <a class="reference external" href="https://github.com/conda-forge/metpy-feedstock">MetPy feedstock</a>, which contains the
 recipe for building MetPy’s conda packages. The Pull Request should:</p>
 <ol class="arabic simple">
-<li>Update the version</li>
-<li>Update the hash to match that of the new source distribution <strong>uploaded to PyPI</strong></li>
-<li>Reset the build number to 0 (if necessary)</li>
-<li>Update the dependencies (and their versions) as necessary</li>
+<li><p>Update the version</p></li>
+<li><p>Update the hash to match that of the new source distribution <strong>uploaded to PyPI</strong></p></li>
+<li><p>Reset the build number to 0 (if necessary)</p></li>
+<li><p>Update the dependencies (and their versions) as necessary</p></li>
 </ol>
 <p>The Pull Request will test building the packages on all the platforms. Once this succeeds,
 the Pull Request can be merged, which will trigger the final build and upload of the
@@ -327,8 +327,8 @@ packages to anaconda.org.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -365,7 +365,7 @@ packages to anaconda.org.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

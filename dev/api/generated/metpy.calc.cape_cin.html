@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>cape_cin &mdash; MetPy 0.9</title>
+  <title>cape_cin &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="critical_angle" href="metpy.calc.critical_angle.html"/>
         <link rel="prev" title="bunkers_storm_motion" href="metpy.calc.bunkers_storm_motion.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -244,55 +244,51 @@
 <h1>cape_cin<a class="headerlink" href="#cape-cin" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.cape_cin">
-<code class="descclassname">metpy.calc.</code><code class="descname">cape_cin</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>dewpt</em>, <em>parcel_profile</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#cape_cin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.cape_cin" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">cape_cin</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpt</em>, <em class="sig-param">parcel_profile</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#cape_cin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.cape_cin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate CAPE and CIN.</p>
 <p>Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
 of a given upper air profile and parcel path. CIN is integrated between the surface and
 LFC, CAPE is integrated between the LFC and EL (or top of sounding). Intersection points of
 the measured temperature profile and parcel profile are linearly interpolated.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure level(s) of interest. The first entry should be the starting
-point pressure.</li>
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric temperature corresponding to pressure.</li>
-<li><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric dew point corresponding to pressure.</li>
-<li><strong>parcel_profile</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The temperature profile of the parcel</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure level(s) of interest. The first entry should be the starting
+point pressure.</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric temperature corresponding to pressure.</p></li>
+<li><p><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric dew point corresponding to pressure.</p></li>
+<li><p><strong>parcel_profile</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The temperature profile of the parcel</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em class="xref py py-obj">pint.Quantity</em> – Convective available potential energy (CAPE).</li>
-<li><em class="xref py py-obj">pint.Quantity</em> – Convective inhibition (CIN).</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em class="xref py py-obj">pint.Quantity</em> – Convective available potential energy (CAPE).</p></li>
+<li><p><em class="xref py py-obj">pint.Quantity</em> – Convective inhibition (CIN).</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
-<p>Formula adopted from <a class="reference internal" href="../../references.html#hobbs1977" id="id1">[Hobbs1977]</a>.</p>
+<p>Formula adopted from <a class="reference internal" href="../../references.html#hobbs1977" id="id1"><span>[Hobbs1977]</span></a>.</p>
 <div class="math notranslate nohighlight">
 \[\text{CAPE} = -R_d \int_{LFC}^{EL} (T_{parcel} - T_{env}) d\text{ln}(p)\]</div>
 <div class="math notranslate nohighlight">
 \[\text{CIN} = -R_d \int_{SFC}^{LFC} (T_{parcel} - T_{env}) d\text{ln}(p)\]</div>
 <ul class="simple">
-<li><span class="math notranslate nohighlight">\(CAPE\)</span> Convective available potential energy</li>
-<li><span class="math notranslate nohighlight">\(CIN\)</span> Convective inhibition</li>
-<li><span class="math notranslate nohighlight">\(LFC\)</span> Pressure of the level of free convection</li>
-<li><span class="math notranslate nohighlight">\(EL\)</span> Pressure of the equilibrium level</li>
-<li><span class="math notranslate nohighlight">\(SFC\)</span> Level of the surface or beginning of parcel path</li>
-<li><span class="math notranslate nohighlight">\(R_d\)</span> Gas constant</li>
-<li><span class="math notranslate nohighlight">\(g\)</span> Gravitational acceleration</li>
-<li><span class="math notranslate nohighlight">\(T_{parcel}\)</span> Parcel temperature</li>
-<li><span class="math notranslate nohighlight">\(T_{env}\)</span> Environment temperature</li>
-<li><span class="math notranslate nohighlight">\(p\)</span> Atmospheric pressure</li>
+<li><p><span class="math notranslate nohighlight">\(CAPE\)</span> Convective available potential energy</p></li>
+<li><p><span class="math notranslate nohighlight">\(CIN\)</span> Convective inhibition</p></li>
+<li><p><span class="math notranslate nohighlight">\(LFC\)</span> Pressure of the level of free convection</p></li>
+<li><p><span class="math notranslate nohighlight">\(EL\)</span> Pressure of the equilibrium level</p></li>
+<li><p><span class="math notranslate nohighlight">\(SFC\)</span> Level of the surface or beginning of parcel path</p></li>
+<li><p><span class="math notranslate nohighlight">\(R_d\)</span> Gas constant</p></li>
+<li><p><span class="math notranslate nohighlight">\(g\)</span> Gravitational acceleration</p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{parcel}\)</span> Parcel temperature</p></li>
+<li><p><span class="math notranslate nohighlight">\(T_{env}\)</span> Environment temperature</p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> Atmospheric pressure</p></li>
 </ul>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.lfc.html#metpy.calc.lfc" title="metpy.calc.lfc"><code class="xref py py-func docutils literal notranslate"><span class="pre">lfc()</span></code></a>, <a class="reference internal" href="metpy.calc.el.html#metpy.calc.el" title="metpy.calc.el"><code class="xref py py-func docutils literal notranslate"><span class="pre">el()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.lfc.html#metpy.calc.lfc" title="metpy.calc.lfc"><code class="xref py py-func docutils literal notranslate"><span class="pre">lfc()</span></code></a>, <a class="reference internal" href="metpy.calc.el.html#metpy.calc.el" title="metpy.calc.el"><code class="xref py py-func docutils literal notranslate"><span class="pre">el()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -320,8 +316,8 @@ point pressure.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -358,7 +354,7 @@ point pressure.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

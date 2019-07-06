@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>OrderedDict &mdash; MetPy 0.9</title>
+  <title>OrderedDict &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="cdm" href="metpy.io.cdm.html"/>
         <link rel="next" title="Variable" href="metpy.io.cdm.Variable.html"/>
         <link rel="prev" title="Group" href="metpy.io.cdm.Group.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -224,88 +224,97 @@
 <h1>OrderedDict<a class="headerlink" href="#ordereddict" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="metpy.io.cdm.OrderedDict">
-<em class="property">class </em><code class="descclassname">metpy.io.cdm.</code><code class="descname">OrderedDict</code><a class="reference internal" href="../../_modules/collections.html#OrderedDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.OrderedDict" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.io.cdm.</code><code class="sig-name descname">OrderedDict</code><a class="reference internal" href="../../_modules/collections.html#OrderedDict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.OrderedDict" title="Permalink to this definition">¶</a></dt>
 <dd><p>Dictionary that remembers insertion order</p>
 <p class="rubric">Methods Summary</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.clear" title="metpy.io.cdm.OrderedDict.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</td>
-<td></td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.__init__" title="metpy.io.cdm.OrderedDict.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a></p></td>
+<td><p>Initialize self.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.copy" title="metpy.io.cdm.OrderedDict.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.clear" title="metpy.io.cdm.OrderedDict.clear"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clear</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.fromkeys" title="metpy.io.cdm.OrderedDict.fromkeys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fromkeys</span></code></a>(S[,&nbsp;v])</td>
-<td>If not specified, the value defaults to None.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.copy" title="metpy.io.cdm.OrderedDict.copy"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.get" title="metpy.io.cdm.OrderedDict.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(k[,d])</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.fromkeys" title="metpy.io.cdm.OrderedDict.fromkeys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">fromkeys</span></code></a>(S[, v])</p></td>
+<td><p>If not specified, the value defaults to None.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.items" title="metpy.io.cdm.OrderedDict.items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code></a>()</td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.get" title="metpy.io.cdm.OrderedDict.get"><code class="xref py py-obj docutils literal notranslate"><span class="pre">get</span></code></a>(k[,d])</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.keys" title="metpy.io.cdm.OrderedDict.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></a>()</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.items" title="metpy.io.cdm.OrderedDict.items"><code class="xref py py-obj docutils literal notranslate"><span class="pre">items</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.move_to_end" title="metpy.io.cdm.OrderedDict.move_to_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_to_end</span></code></a></td>
-<td>Move an existing element to the end (or beginning if last==False).</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.keys" title="metpy.io.cdm.OrderedDict.keys"><code class="xref py py-obj docutils literal notranslate"><span class="pre">keys</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.pop" title="metpy.io.cdm.OrderedDict.pop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code></a>(k[,d])</td>
-<td>value.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.move_to_end" title="metpy.io.cdm.OrderedDict.move_to_end"><code class="xref py py-obj docutils literal notranslate"><span class="pre">move_to_end</span></code></a></p></td>
+<td><p>Move an existing element to the end (or beginning if last==False).</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.popitem" title="metpy.io.cdm.OrderedDict.popitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code></a></td>
-<td>Remove and return a (key, value) pair from the dictionary.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.pop" title="metpy.io.cdm.OrderedDict.pop"><code class="xref py py-obj docutils literal notranslate"><span class="pre">pop</span></code></a>(k[,d])</p></td>
+<td><p>value.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.setdefault" title="metpy.io.cdm.OrderedDict.setdefault"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setdefault</span></code></a>(k[,d])</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.popitem" title="metpy.io.cdm.OrderedDict.popitem"><code class="xref py py-obj docutils literal notranslate"><span class="pre">popitem</span></code></a></p></td>
+<td><p>Remove and return a (key, value) pair from the dictionary.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.update" title="metpy.io.cdm.OrderedDict.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>([E,&nbsp;]**F)</td>
-<td>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.setdefault" title="metpy.io.cdm.OrderedDict.setdefault"><code class="xref py py-obj docutils literal notranslate"><span class="pre">setdefault</span></code></a>(k[,d])</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.OrderedDict.values" title="metpy.io.cdm.OrderedDict.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a>()</td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.update" title="metpy.io.cdm.OrderedDict.update"><code class="xref py py-obj docutils literal notranslate"><span class="pre">update</span></code></a>([E, ]**F)</p></td>
+<td><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k] If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v In either case, this is followed by: for k in F:  D[k] = F[k]</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.OrderedDict.values" title="metpy.io.cdm.OrderedDict.values"><code class="xref py py-obj docutils literal notranslate"><span class="pre">values</span></code></a>()</p></td>
+<td><p></p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods Documentation</p>
 <dl class="method">
+<dt id="metpy.io.cdm.OrderedDict.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.OrderedDict.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize self.  See help(type(self)) for accurate signature.</p>
+</dd></dl>
+
+<dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.clear">
-<code class="descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None.  Remove all items from od.<a class="headerlink" href="#metpy.io.cdm.OrderedDict.clear" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">clear</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; None.  Remove all items from od.<a class="headerlink" href="#metpy.io.cdm.OrderedDict.clear" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.copy">
-<code class="descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a shallow copy of od<a class="headerlink" href="#metpy.io.cdm.OrderedDict.copy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">copy</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a shallow copy of od<a class="headerlink" href="#metpy.io.cdm.OrderedDict.copy" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.fromkeys">
-<code class="descname">fromkeys</code><span class="sig-paren">(</span><em>S</em><span class="optional">[</span>, <em>v</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; New ordered dictionary with keys from S.<a class="headerlink" href="#metpy.io.cdm.OrderedDict.fromkeys" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fromkeys</code><span class="sig-paren">(</span><em class="sig-param">S</em><span class="optional">[</span>, <em class="sig-param">v</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; New ordered dictionary with keys from S.<a class="headerlink" href="#metpy.io.cdm.OrderedDict.fromkeys" title="Permalink to this definition">¶</a></dt>
 <dd><p>If not specified, the value defaults to None.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.get">
-<code class="descname">get</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D[k] if k in D, else d.  d defaults to None.<a class="headerlink" href="#metpy.io.cdm.OrderedDict.get" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">get</code><span class="sig-paren">(</span><em class="sig-param">k</em><span class="optional">[</span>, <em class="sig-param">d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; D[k] if k in D, else d.  d defaults to None.<a class="headerlink" href="#metpy.io.cdm.OrderedDict.get" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.items">
-<code class="descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#metpy.io.cdm.OrderedDict.items" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">items</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's items<a class="headerlink" href="#metpy.io.cdm.OrderedDict.items" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.keys">
-<code class="descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#metpy.io.cdm.OrderedDict.keys" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">keys</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; a set-like object providing a view on D's keys<a class="headerlink" href="#metpy.io.cdm.OrderedDict.keys" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.move_to_end">
-<code class="descname">move_to_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.OrderedDict.move_to_end" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">move_to_end</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.OrderedDict.move_to_end" title="Permalink to this definition">¶</a></dt>
 <dd><p>Move an existing element to the end (or beginning if last==False).</p>
 <p>Raises KeyError if the element does not exist.
 When last=True, acts like a fast version of self[key]=self.pop(key).</p>
@@ -313,26 +322,26 @@ When last=True, acts like a fast version of self[key]=self.pop(key).</p>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.pop">
-<code class="descname">pop</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; v, remove specified key and return the corresponding<a class="headerlink" href="#metpy.io.cdm.OrderedDict.pop" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">pop</code><span class="sig-paren">(</span><em class="sig-param">k</em><span class="optional">[</span>, <em class="sig-param">d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; v, remove specified key and return the corresponding<a class="headerlink" href="#metpy.io.cdm.OrderedDict.pop" title="Permalink to this definition">¶</a></dt>
 <dd><p>value.  If key is not found, d is returned if given, otherwise KeyError
 is raised.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.popitem">
-<code class="descname">popitem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.OrderedDict.popitem" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">popitem</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.OrderedDict.popitem" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove and return a (key, value) pair from the dictionary.</p>
 <p>Pairs are returned in LIFO order if last is true or FIFO order if false.</p>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.setdefault">
-<code class="descname">setdefault</code><span class="sig-paren">(</span><em>k</em><span class="optional">[</span>, <em>d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; od.get(k,d), also set od[k]=d if k not in od<a class="headerlink" href="#metpy.io.cdm.OrderedDict.setdefault" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">setdefault</code><span class="sig-paren">(</span><em class="sig-param">k</em><span class="optional">[</span>, <em class="sig-param">d</em><span class="optional">]</span><span class="sig-paren">)</span> &#x2192; od.get(k,d), also set od[k]=d if k not in od<a class="headerlink" href="#metpy.io.cdm.OrderedDict.setdefault" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.update">
-<code class="descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em>E</em>, <span class="optional">]</span><em>**F</em><span class="sig-paren">)</span> &#x2192; None.  Update D from dict/iterable E and F.<a class="headerlink" href="#metpy.io.cdm.OrderedDict.update" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">update</code><span class="sig-paren">(</span><span class="optional">[</span><em class="sig-param">E</em>, <span class="optional">]</span><em class="sig-param">**F</em><span class="sig-paren">)</span> &#x2192; None.  Update D from dict/iterable E and F.<a class="headerlink" href="#metpy.io.cdm.OrderedDict.update" title="Permalink to this definition">¶</a></dt>
 <dd><p>If E is present and has a .keys() method, then does:  for k in E: D[k] = E[k]
 If E is present and lacks a .keys() method, then does:  for k, v in E: D[k] = v
 In either case, this is followed by: for k in F:  D[k] = F[k]</p>
@@ -340,7 +349,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
 <dl class="method">
 <dt id="metpy.io.cdm.OrderedDict.values">
-<code class="descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#metpy.io.cdm.OrderedDict.values" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">values</code><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; an object providing a view on D's values<a class="headerlink" href="#metpy.io.cdm.OrderedDict.values" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -369,8 +378,8 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -407,7 +416,7 @@ In either case, this is followed by: for k in F:  D[k] = F[k]</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

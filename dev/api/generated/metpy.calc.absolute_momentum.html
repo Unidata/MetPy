@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>absolute_momentum &mdash; MetPy 0.9</title>
+  <title>absolute_momentum &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="absolute_vorticity" href="metpy.calc.absolute_vorticity.html"/>
         <link rel="prev" title="surface_based_cape_cin" href="metpy.calc.surface_based_cape_cin.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -249,9 +249,9 @@
 <h1>absolute_momentum<a class="headerlink" href="#absolute-momentum" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.absolute_momentum">
-<code class="descclassname">metpy.calc.</code><code class="descname">absolute_momentum</code><span class="sig-paren">(</span><em>u_wind</em>, <em>v_wind</em>, <em>index='index'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/cross_sections.html#absolute_momentum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.absolute_momentum" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">absolute_momentum</code><span class="sig-paren">(</span><em class="sig-param">u_wind</em>, <em class="sig-param">v_wind</em>, <em class="sig-param">index='index'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/cross_sections.html#absolute_momentum"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.absolute_momentum" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate cross-sectional absolute momentum (also called pseudoangular momentum).</p>
-<p>As given in <a class="reference internal" href="../../references.html#schultz1999" id="id1">[Schultz1999]</a>, absolute momentum (also called pseudoangular momentum) is
+<p>As given in <a class="reference internal" href="../../references.html#schultz1999" id="id1"><span>[Schultz1999]</span></a>, absolute momentum (also called pseudoangular momentum) is
 given by</p>
 <div class="math notranslate nohighlight">
 \[M = v + fx\]</div>
@@ -260,22 +260,18 @@ distance. Applied to a cross-section taken perpendicular to the front, <span cla
 the normal component of the wind and <span class="math notranslate nohighlight">\(x\)</span> the tangential distance.</p>
 <p>If using this calculation in assessing symmetric instability, geostrophic wind should be
 used so that geostrophic absolute momentum <span class="math notranslate nohighlight">\(\left(M_g\right)\)</span> is obtained, as
-described in <a class="reference internal" href="../../references.html#schultz1999" id="id2">[Schultz1999]</a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u_wind</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the x-component (in terms of data projection) of the wind.</li>
-<li><strong>v_wind</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the y-component (in terms of data projection) of the wind.</li>
+described in <a class="reference internal" href="../../references.html#schultz1999" id="id2"><span>[Schultz1999]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u_wind</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the x-component (in terms of data projection) of the wind.</p></li>
+<li><p><strong>v_wind</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The input DataArray of the y-component (in terms of data projection) of the wind.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>absolute_momentum</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.11.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The absolute momentum</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>absolute_momentum</strong> (<a class="reference external" href="http://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.12.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>) – The absolute momentum</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>The coordinates of <em class="xref py py-obj">u_wind</em> and <em class="xref py py-obj">v_wind</em> must match.</p>
 </dd></dl>
@@ -304,8 +300,8 @@ described in <a class="reference internal" href="../../references.html#schultz19
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -342,7 +338,7 @@ described in <a class="reference internal" href="../../references.html#schultz19
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

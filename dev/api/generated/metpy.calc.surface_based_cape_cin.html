@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>surface_based_cape_cin &mdash; MetPy 0.9</title>
+  <title>surface_based_cape_cin &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="absolute_momentum" href="metpy.calc.absolute_momentum.html"/>
         <link rel="prev" title="supercell_composite" href="metpy.calc.supercell_composite.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -244,37 +244,33 @@
 <h1>surface_based_cape_cin<a class="headerlink" href="#surface-based-cape-cin" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.surface_based_cape_cin">
-<code class="descclassname">metpy.calc.</code><code class="descname">surface_based_cape_cin</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>dewpoint</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#surface_based_cape_cin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.surface_based_cape_cin" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">surface_based_cape_cin</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpoint</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#surface_based_cape_cin"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.surface_based_cape_cin" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate surface-based CAPE and CIN.</p>
 <p>Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
 of a given upper air profile for a surface-based parcel. CIN is integrated
 between the surface and LFC, CAPE is integrated between the LFC and EL (or top of
 sounding). Intersection points of the measured temperature profile and parcel profile are
 linearly interpolated.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric pressure profile. The first entry should be the starting
-(surface) observation.</li>
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Temperature profile</li>
-<li><strong>dewpoint</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Dewpoint profile</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric pressure profile. The first entry should be the starting
+(surface) observation.</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Temperature profile</p></li>
+<li><p><strong>dewpoint</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Dewpoint profile</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em class="xref py py-obj">pint.Quantity</em> – Surface based Convective Available Potential Energy (CAPE).</li>
-<li><em class="xref py py-obj">pint.Quantity</em> – Surface based Convective INhibition (CIN).</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em class="xref py py-obj">pint.Quantity</em> – Surface based Convective Available Potential Energy (CAPE).</p></li>
+<li><p><em class="xref py py-obj">pint.Quantity</em> – Surface based Convective INhibition (CIN).</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.cape_cin.html#metpy.calc.cape_cin" title="metpy.calc.cape_cin"><code class="xref py py-func docutils literal notranslate"><span class="pre">cape_cin()</span></code></a>, <a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.cape_cin.html#metpy.calc.cape_cin" title="metpy.calc.cape_cin"><code class="xref py py-func docutils literal notranslate"><span class="pre">cape_cin()</span></code></a>, <a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -302,8 +298,8 @@ linearly interpolated.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -340,7 +336,7 @@ linearly interpolated.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

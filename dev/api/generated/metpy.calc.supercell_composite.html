@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>supercell_composite &mdash; MetPy 0.9</title>
+  <title>supercell_composite &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="surface_based_cape_cin" href="metpy.calc.surface_based_cape_cin.html"/>
         <link rel="prev" title="storm_relative_helicity" href="metpy.calc.storm_relative_helicity.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -244,34 +244,30 @@
 <h1>supercell_composite<a class="headerlink" href="#supercell-composite" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.supercell_composite">
-<code class="descclassname">metpy.calc.</code><code class="descname">supercell_composite</code><span class="sig-paren">(</span><em>mucape</em>, <em>effective_storm_helicity</em>, <em>effective_shear</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/indices.html#supercell_composite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.supercell_composite" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">supercell_composite</code><span class="sig-paren">(</span><em class="sig-param">mucape</em>, <em class="sig-param">effective_storm_helicity</em>, <em class="sig-param">effective_shear</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/indices.html#supercell_composite"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.supercell_composite" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the supercell composite parameter.</p>
 <p>The supercell composite parameter is designed to identify
 environments favorable for the development of supercells,
 and is calculated using the formula developed by
-<a class="reference internal" href="../../references.html#thompson2004" id="id1">[Thompson2004]</a>:</p>
+<a class="reference internal" href="../../references.html#thompson2004" id="id1"><span>[Thompson2004]</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[\text{SCP} = \frac{\text{MUCAPE}}{1000 \text{J/kg}} *
 \frac{\text{Effective SRH}}{50 \text{m}^2/\text{s}^2} *
 \frac{\text{Effective Shear}}{20 \text{m/s}}\]</div>
 <p>The effective_shear term is set to zero below 10 m/s and
 capped at 1 when effective_shear exceeds 20 m/s.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>mucape</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Most-unstable CAPE</li>
-<li><strong>effective_storm_helicity</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Effective-layer storm-relative helicity</li>
-<li><strong>effective_shear</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Effective bulk shear</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>mucape</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Most-unstable CAPE</p></li>
+<li><p><strong>effective_storm_helicity</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Effective-layer storm-relative helicity</p></li>
+<li><p><strong>effective_shear</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Effective bulk shear</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array-like</em> – supercell composite</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>array-like</em> – supercell composite</p>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -298,8 +294,8 @@ capped at 1 when effective_shear exceeds 20 m/s.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -336,7 +332,7 @@ capped at 1 when effective_shear exceeds 20 m/s.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

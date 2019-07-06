@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>xarray with MetPy Tutorial &mdash; MetPy 0.9</title>
+  <title>xarray with MetPy Tutorial &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../index.html"/>
         <link rel="up" title="Tutorials" href="index.html"/>
         <link rel="next" title="Reference Guide" href="../api/index.html"/>
         <link rel="prev" title="Upper Air Sounding Tutorial" href="upperair_soundings.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -217,8 +217,8 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-tutorials-xarray-tutorial-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-tutorials-xarray-tutorial-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="xarray-with-metpy-tutorial">
 <span id="sphx-glr-tutorials-xarray-tutorial-py"></span><h1>xarray with MetPy Tutorial<a class="headerlink" href="#xarray-with-metpy-tutorial" title="Permalink to this headline">¶</a></h1>
@@ -229,15 +229,15 @@ within the current version of MetPy. MetPy’s integration primarily works throu
 which allow simplified projection handling and coordinate identification. Unit and calculation
 support is currently available in a limited fashion, but should be improved in future
 versions.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
-<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="kn">as</span> <span class="nn">cfeature</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">xarray</span> <span class="kn">as</span> <span class="nn">xr</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">xarray</span> <span class="k">as</span> <span class="nn">xr</span>
 
 <span class="c1"># Any import of metpy will activate the accessors</span>
-<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="kn">as</span> <span class="nn">mpcalc</span>
-<span class="kn">from</span> <span class="nn">metpy.testing</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="kn">import</span> <span class="n">units</span>
+<span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.testing</span> <span class="k">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <span class="n">units</span>
 </pre></div>
 </div>
 <div class="section" id="getting-data">
@@ -247,15 +247,17 @@ be stored in a netCDF file), a common use case is working with model output. Suc
 data can be obtained from a THREDDS Data Server using the siphon package, but for this
 tutorial, we will use an example subset of GFS data from Hurrican Irma (September 5th,
 2017).</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open the netCDF file as a xarray Dataset</span>
-<span class="n">data</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="View documentation for xarray.open_dataset"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;irma_gfs_example.nc&#39;</span><span class="p">,</span> <span class="bp">False</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Open the netCDF file as a xarray Dataset</span>
+<span class="n">data</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.open_dataset.html#xarray.open_dataset" title="View documentation for xarray.open_dataset"><span class="n">xr</span><span class="o">.</span><span class="n">open_dataset</span></a><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;irma_gfs_example.nc&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">))</span>
 
 <span class="c1"># View a summary of the Dataset</span>
-<span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;xarray.Dataset&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file &#39;irma_gfs_example.nc&#39; from remote data store &#39;https://github.com/Unidata/MetPy/raw/master/staticdata/irma_gfs_example.nc&#39; to &#39;/home/travis/build/Unidata/MetPy/staticdata/master&#39;.
+  action_word[action], fname, self.get_url(fname), str(self.path)
+&lt;xarray.Dataset&gt;
 Dimensions:                              (isobaric1: 21, isobaric3: 31, latitude: 81, longitude: 131, time1: 9)
 Coordinates:
   * time1                                (time1) datetime64[ns] 2017-09-05T12:00:00 ... 2017-09-06T12:00:00
@@ -296,7 +298,7 @@ coordinate information following the CF conventions. For this, we use the
 <code class="docutils literal notranslate"><span class="pre">data.metpy.parse_cf()</span></code> method, which will return a new, parsed <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> or
 <code class="docutils literal notranslate"><span class="pre">Dataset</span></code>.</p>
 <p>Additionally, we rename our data variables for easier reference.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># To parse the full dataset, we can call parse_cf without an argument, and assign the returned</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># To parse the full dataset, we can call parse_cf without an argument, and assign the returned</span>
 <span class="c1"># Dataset.</span>
 <span class="n">data</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">parse_cf</span><span class="p">()</span>
 
@@ -312,7 +314,12 @@ coordinate information following the CF conventions. For this, we use the
     <span class="s1">&#39;u-component_of_wind_isobaric&#39;</span><span class="p">:</span> <span class="s1">&#39;u&#39;</span><span class="p">,</span>
     <span class="s1">&#39;v-component_of_wind_isobaric&#39;</span><span class="p">:</span> <span class="s1">&#39;v&#39;</span><span class="p">,</span>
     <span class="s1">&#39;Geopotential_height_isobaric&#39;</span><span class="p">:</span> <span class="s1">&#39;height&#39;</span>
-<span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="p">},</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/build/Unidata/MetPy/tutorials/xarray_tutorial.py:70: FutureWarning: The inplace argument has been deprecated and will be removed in a future version of xarray.
+  }, inplace=True)
 </pre></div>
 </div>
 </div>
@@ -322,7 +329,7 @@ coordinate information following the CF conventions. For this, we use the
 of just the data from the DataArray (metadata is removed) and a <code class="docutils literal notranslate"><span class="pre">convert_units</span></code> method to
 convert the the data from one unit to another (keeping it as a DataArray). For now, we’ll
 just use <code class="docutils literal notranslate"><span class="pre">convert_units</span></code> to convert our temperature to <code class="docutils literal notranslate"><span class="pre">degC</span></code>.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">convert_units</span><span class="p">(</span><span class="s1">&#39;degC&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -333,19 +340,19 @@ names. However, in general, if we are working with a particular DataArray, we do
 worry about that since MetPy is able to parse the coordinates and so obtain a particular
 coordinate type directly. There are two ways to do this:</p>
 <ol class="arabic simple">
-<li>Use the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.coordinates</span></code> method</li>
-<li>Use the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.x</span></code>, <code class="docutils literal notranslate"><span class="pre">data_var.metpy.y</span></code>, <code class="docutils literal notranslate"><span class="pre">data_var.metpy.vertical</span></code>,
-<code class="docutils literal notranslate"><span class="pre">data_var.metpy.time</span></code> properties</li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.coordinates</span></code> method</p></li>
+<li><p>Use the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.x</span></code>, <code class="docutils literal notranslate"><span class="pre">data_var.metpy.y</span></code>, <code class="docutils literal notranslate"><span class="pre">data_var.metpy.vertical</span></code>,
+<code class="docutils literal notranslate"><span class="pre">data_var.metpy.time</span></code> properties</p></li>
 </ol>
 <p>The valid coordinate types are:</p>
 <ul class="simple">
-<li>x</li>
-<li>y</li>
-<li>vertical</li>
-<li>time</li>
+<li><p>x</p></li>
+<li><p>y</p></li>
+<li><p>vertical</p></li>
+<li><p>time</p></li>
 </ul>
 <p>(Both approaches and all four types are shown below)</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get multiple coordinates (for example, in just the x and y direction)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Get multiple coordinates (for example, in just the x and y direction)</span>
 <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">coordinates</span><span class="p">(</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">)</span>
 
 <span class="c1"># If we want to get just a single coordinate from the coordinates method, we have to use</span>
@@ -356,7 +363,7 @@ coordinate type directly. There are two ways to do this:</p>
 <span class="n">time</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">time</span>
 
 <span class="c1"># To verify, we can inspect all their names</span>
-<span class="k">print</span><span class="p">([</span><span class="n">coord</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">vertical</span><span class="p">,</span> <span class="n">time</span><span class="p">)])</span>
+<span class="nb">print</span><span class="p">([</span><span class="n">coord</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">coord</span> <span class="ow">in</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">vertical</span><span class="p">,</span> <span class="n">time</span><span class="p">)])</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -370,7 +377,7 @@ coordinate type directly. There are two ways to do this:</p>
 quantities with units. For DataArrays, MetPy also allows using the coordinate axis types
 mentioned above as aliases for the coordinates. And so, if we wanted 850 hPa heights,
 we would take:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="mi">850</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">sel</span><span class="p">(</span><span class="n">vertical</span><span class="o">=</span><span class="mi">850</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">))</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -428,22 +435,22 @@ Attributes:
 <h2>Projections<a class="headerlink" href="#projections" title="Permalink to this headline">¶</a></h2>
 <p>Getting the cartopy coordinate reference system (CRS) of the projection of a DataArray is as
 straightforward as using the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.cartopy_crs</span></code> property:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_crs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
-<span class="k">print</span><span class="p">(</span><span class="n">data_crs</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_crs</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_crs</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_crs</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.crs.PlateCarree object at 0x7ff9d64e4e08&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy.crs.PlateCarree object at 0x7ff9adf500f8&gt;
 </pre></div>
 </div>
 <p>The cartopy <code class="docutils literal notranslate"><span class="pre">Globe</span></code> can similarly be accessed via the <code class="docutils literal notranslate"><span class="pre">data_var.metpy.cartopy_globe</span></code>
 property:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">data_globe</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_globe</span>
-<span class="k">print</span><span class="p">(</span><span class="n">data_globe</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">data_globe</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">cartopy_globe</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">data_globe</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy._crs.Globe object at 0x7ff9d8c63e48&gt;
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>&lt;cartopy._crs.Globe object at 0x7ff9aa0f9940&gt;
 </pre></div>
 </div>
 </div>
@@ -453,18 +460,18 @@ property:</p>
 into their corresponding unit arrays. While this may often work without any issues, we must
 keep in mind that because the calculations are working with unit arrays and not DataArrays:</p>
 <ul class="simple">
-<li>The calculations will return unit arrays rather than DataArrays</li>
-<li>Broadcasting must be taken care of outside of the calculation, as it would only recognize
-dimensions by order, not name</li>
+<li><p>The calculations will return unit arrays rather than DataArrays</p></li>
+<li><p>Broadcasting must be taken care of outside of the calculation, as it would only recognize
+dimensions by order, not name</p></li>
 </ul>
 <p>As an example, we calculate geostropic wind at 500 hPa below:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.broadcast.html#xarray.broadcast" title="View documentation for xarray.broadcast"><span class="n">xr</span><span class="o">.</span><span class="n">broadcast</span></a><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.broadcast.html#xarray.broadcast" title="View documentation for xarray.broadcast"><span class="n">xr</span><span class="o">.</span><span class="n">broadcast</span></a><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter" title="View documentation for metpy.calc.coriolis_parameter"><span class="n">mpcalc</span><span class="o">.</span><span class="n">coriolis_parameter</span></a><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
 <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.lat_lon_grid_deltas.html#metpy.calc.lat_lon_grid_deltas" title="View documentation for metpy.calc.lat_lon_grid_deltas"><span class="n">mpcalc</span><span class="o">.</span><span class="n">lat_lon_grid_deltas</span></a><span class="p">(</span><span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">initstring</span><span class="o">=</span><span class="n">data_crs</span><span class="o">.</span><span class="n">proj4_init</span><span class="p">)</span>
 <span class="n">heights</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span>
 <span class="n">u_geo</span><span class="p">,</span> <span class="n">v_geo</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="View documentation for metpy.calc.geostrophic_wind"><span class="n">mpcalc</span><span class="o">.</span><span class="n">geostrophic_wind</span></a><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">u_geo</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">v_geo</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">u_geo</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v_geo</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -475,24 +482,22 @@ dimensions by order, not name</li>
 <p>Also, a limited number of calculations directly support xarray DataArrays or Datasets (they
 can accept <em>and</em> return xarray objects). Right now, this includes</p>
 <ul class="simple">
-<li><dl class="first docutils">
-<dt>Derivative functions</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">first_derivative</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">second_derivative</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">gradient</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">laplacian</span></code></li>
+<li><dl class="simple">
+<dt>Derivative functions</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">first_derivative</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">second_derivative</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">gradient</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">laplacian</span></code></p></li>
 </ul>
 </dd>
 </dl>
 </li>
-<li><dl class="first docutils">
-<dt>Cross-section functions</dt>
-<dd><ul class="first last">
-<li><code class="docutils literal notranslate"><span class="pre">cross_section_components</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">normal_component</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">tangential_component</span></code></li>
-<li><code class="docutils literal notranslate"><span class="pre">absolute_momentum</span></code></li>
+<li><dl class="simple">
+<dt>Cross-section functions</dt><dd><ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">cross_section_components</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">normal_component</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">tangential_component</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">absolute_momentum</span></code></p></li>
 </ul>
 </dd>
 </dl>
@@ -503,13 +508,13 @@ interest.</p>
 <p>There is also the special case of the helper function, <code class="docutils literal notranslate"><span class="pre">grid_deltas_from_dataarray</span></code>, which
 takes a <code class="docutils literal notranslate"><span class="pre">DataArray</span></code> input, but returns unit arrays for use in other calculations. We could
 rewrite the above geostrophic wind example using this helper function as follows:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">heights</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">heights</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span>
 <span class="n">lat</span><span class="p">,</span> <span class="n">lon</span> <span class="o">=</span> <a href="https://xarray.pydata.org/en/stable/generated/xarray.broadcast.html#xarray.broadcast" title="View documentation for xarray.broadcast"><span class="n">xr</span><span class="o">.</span><span class="n">broadcast</span></a><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
 <span class="n">f</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.coriolis_parameter.html#metpy.calc.coriolis_parameter" title="View documentation for metpy.calc.coriolis_parameter"><span class="n">mpcalc</span><span class="o">.</span><span class="n">coriolis_parameter</span></a><span class="p">(</span><span class="n">lat</span><span class="p">)</span>
 <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.grid_deltas_from_dataarray.html#metpy.calc.grid_deltas_from_dataarray" title="View documentation for metpy.calc.grid_deltas_from_dataarray"><span class="n">mpcalc</span><span class="o">.</span><span class="n">grid_deltas_from_dataarray</span></a><span class="p">(</span><span class="n">heights</span><span class="p">)</span>
 <span class="n">u_geo</span><span class="p">,</span> <span class="n">v_geo</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind" title="View documentation for metpy.calc.geostrophic_wind"><span class="n">mpcalc</span><span class="o">.</span><span class="n">geostrophic_wind</span></a><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">u_geo</span><span class="p">)</span>
-<span class="k">print</span><span class="p">(</span><span class="n">v_geo</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">u_geo</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">v_geo</span><span class="p">)</span>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
@@ -525,13 +530,13 @@ like normal numpy arrays in plotting code, which is the recommended process at t
 point in time, or we can use some of xarray’s plotting functionality for quick inspection of
 the data.</p>
 <p>(More detail beyond the following can be found at <a class="reference external" href="http://xarray.pydata.org/en/stable/plotting.html">xarray’s plotting reference</a>.)</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># A very simple example example of a plot of 500 hPa heights</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># A very simple example example of a plot of 500 hPa heights</span>
 <span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_xarray_tutorial_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_001.png" />
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s add a projection and coastlines to it</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Let&#39;s add a projection and coastlines to it</span>
 <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.axes.rst.html#matplotlib.pyplot.axes" title="View documentation for matplotlib.pyplot.axes"><span class="n">plt</span><span class="o">.</span><span class="n">axes</span></a><span class="p">(</span><span class="n">projection</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">LambertConformal</span><span class="p">())</span>
 <span class="n">data</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="s1">&#39;time&#39;</span><span class="p">:</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
                           <span class="s1">&#39;vertical&#39;</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">data_crs</span><span class="p">)</span>
@@ -540,7 +545,7 @@ the data.</p>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_xarray_tutorial_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_xarray_tutorial_002.png" />
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># Or, let&#39;s make a full 500 hPa map with heights, temperature, winds, and humidity</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Or, let&#39;s make a full 500 hPa map with heights, temperature, winds, and humidity</span>
 
 <span class="c1"># Select the data for this time and level</span>
 <span class="n">data_level</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">metpy</span><span class="o">.</span><span class="n">loc</span><span class="p">[{</span><span class="n">time</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="n">time</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">vertical</span><span class="o">.</span><span class="n">name</span><span class="p">:</span> <span class="mf">500.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">}]</span>
@@ -562,11 +567,11 @@ the data.</p>
 <span class="c1"># Plot heights and temperature as contours</span>
 <span class="n">h_contour</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">data_level</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">levels</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="mi">5400</span><span class="p">,</span> <span class="mi">6000</span><span class="p">,</span> <span class="mi">60</span><span class="p">))</span>
 <span class="n">h_contour</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-                 <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                 <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">t_contour</span> <span class="o">=</span> <span class="n">ax</span><span class="o">.</span><span class="n">contour</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">data_level</span><span class="p">[</span><span class="s1">&#39;temperature&#39;</span><span class="p">],</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;xkcd:deep blue&#39;</span><span class="p">,</span>
                        <span class="n">levels</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">26</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.8</span><span class="p">,</span> <span class="n">linestyles</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
 <span class="n">t_contour</span><span class="o">.</span><span class="n">clabel</span><span class="p">(</span><span class="n">fontsize</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="s1">&#39;xkcd:deep blue&#39;</span><span class="p">,</span> <span class="n">inline</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inline_spacing</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
-                 <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+                 <span class="n">fmt</span><span class="o">=</span><span class="s1">&#39;</span><span class="si">%i</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">rightside_up</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">use_clabeltext</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="c1"># Add geographic features</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">LAND</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">facecolor</span><span class="o">=</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COLORS</span><span class="p">[</span><span class="s1">&#39;land&#39;</span><span class="p">])</span>
@@ -588,10 +593,10 @@ the data.</p>
 <p>Depending on your dataset and what you are trying to do, you might run into problems with
 xarray and MetPy. Below are examples of some of the most common issues</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">parse_cf</span></code> not able to parse due to conflict</li>
-<li>An axis not being available</li>
-<li>An axis not being interpretable</li>
-<li>Arrays not broadcasting in calculations</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">parse_cf</span></code> not able to parse due to conflict</p></li>
+<li><p>An axis not being available</p></li>
+<li><p>An axis not being interpretable</p></li>
+<li><p>Arrays not broadcasting in calculations</p></li>
 </ul>
 <p><strong>Coordinate Conflict</strong></p>
 <p>Code:</p>
@@ -665,14 +670,16 @@ coordinates match with which. And so, we must do some manipulations.</p>
 <span class="p">)</span>
 </pre></div>
 </div>
-<p><strong>Total running time of the script:</strong> ( 0 minutes  1.764 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  17.378 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-xarray-tutorial-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/3968de774b60095b98a68cfa785cfc3e/xarray_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">xarray_tutorial.py</span></code></a></div>
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../_downloads/7dd7941230ab04d65d899c66ed400ef4/xarray_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">xarray_tutorial.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../_downloads/3968de774b60095b98a68cfa785cfc3e/xarray_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">xarray_tutorial.py</span></code></a></p>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../_downloads/7dd7941230ab04d65d899c66ed400ef4/xarray_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">xarray_tutorial.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 </div>
 
@@ -698,8 +705,8 @@ coordinates match with which. And so, we must do some manipulations.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -736,7 +743,7 @@ coordinates match with which. And so, we must do some manipulations.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

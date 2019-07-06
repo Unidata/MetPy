@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>geostrophic_wind &mdash; MetPy 0.9</title>
+  <title>geostrophic_wind &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="inertial_advective_wind" href="metpy.calc.inertial_advective_wind.html"/>
         <link rel="prev" title="frontogenesis" href="metpy.calc.frontogenesis.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -249,35 +249,31 @@
 <h1>geostrophic_wind<a class="headerlink" href="#geostrophic-wind" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.geostrophic_wind">
-<code class="descclassname">metpy.calc.</code><code class="descname">geostrophic_wind</code><span class="sig-paren">(</span><em>heights</em>, <em>f</em>, <em>dx</em>, <em>dy</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#geostrophic_wind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.geostrophic_wind" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">geostrophic_wind</code><span class="sig-paren">(</span><em class="sig-param">heights</em>, <em class="sig-param">f</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#geostrophic_wind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.geostrophic_wind" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the geostrophic wind given from the heights or geopotential.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>heights</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – The height field, with either leading dimensions of (x, y) or trailing dimensions
-of (y, x), depending on the value of <code class="docutils literal notranslate"><span class="pre">dim_order</span></code>.</li>
-<li><strong>f</strong> (<em>array_like</em>) – The coriolis parameter.  This can be a scalar to be applied
-everywhere or an array of values.</li>
-<li><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">heights</em> along the applicable axis.</li>
-<li><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">heights</em> along the applicable axis.</li>
-<li><strong>dim_order</strong> (str or <code class="docutils literal notranslate"><span class="pre">None</span></code>, optional) – The ordering of dimensions in passed in arrays. Can be one of <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">'xy'</span></code>,
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>heights</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – The height field, with either leading dimensions of (x, y) or trailing dimensions
+of (y, x), depending on the value of <code class="docutils literal notranslate"><span class="pre">dim_order</span></code>.</p></li>
+<li><p><strong>f</strong> (<em>array_like</em>) – The coriolis parameter.  This can be a scalar to be applied
+everywhere or an array of values.</p></li>
+<li><p><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">heights</em> along the applicable axis.</p></li>
+<li><p><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">heights</em> along the applicable axis.</p></li>
+<li><p><strong>dim_order</strong> (str or <code class="docutils literal notranslate"><span class="pre">None</span></code>, optional) – The ordering of dimensions in passed in arrays. Can be one of <code class="docutils literal notranslate"><span class="pre">None</span></code>, <code class="docutils literal notranslate"><span class="pre">'xy'</span></code>,
 or <code class="docutils literal notranslate"><span class="pre">'yx'</span></code>. <code class="docutils literal notranslate"><span class="pre">'xy'</span></code> indicates that the dimension corresponding to x is the leading
 dimension, followed by y. <code class="docutils literal notranslate"><span class="pre">'yx'</span></code> indicates that x is the last dimension, preceded
 by y. <code class="docutils literal notranslate"><span class="pre">None</span></code> indicates that the default ordering should be assumed,
 which is ‘yx’. Can only be passed as a keyword argument, i.e.
-func(…, dim_order=’xy’).</li>
+func(…, dim_order=’xy’).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>A 2-item tuple of arrays</em> – A tuple of the u-component and v-component of the geostrophic wind.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>A 2-item tuple of arrays</em> – A tuple of the u-component and v-component of the geostrophic wind.</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>If inputs have more than two dimensions, they are assumed to have either leading dimensions
 of (x, y) or trailing dimensions of (y, x), depending on the value of <code class="docutils literal notranslate"><span class="pre">dim_order</span></code>.</p>
@@ -285,9 +281,9 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
 
 <div class="section" id="examples-using-metpy-calc-geostrophic-wind">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.geostrophic_wind</span></code><a class="headerlink" href="#examples-using-metpy-calc-geostrophic-wind" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="`xarray &lt;http://xarray.pydata.org/&gt;`_ is a powerful Python package that provides N-dimensional ..."><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="`xarray &lt;http://xarray.pydata.org/&gt;`_ is a powerful Python package that provides N-dimensional ..."><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_xarray_tutorial_thumb.png" src="../../_images/sphx_glr_xarray_tutorial_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/xarray_tutorial.html#sphx-glr-tutorials-xarray-tutorial-py"><span class="std std-ref">xarray with MetPy Tutorial</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/xarray_tutorial.html#sphx-glr-tutorials-xarray-tutorial-py"><span class="std std-ref">xarray with MetPy Tutorial</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -314,8 +310,8 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -352,7 +348,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

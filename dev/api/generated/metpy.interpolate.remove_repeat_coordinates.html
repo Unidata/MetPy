@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>remove_repeat_coordinates &mdash; MetPy 0.9</title>
+  <title>remove_repeat_coordinates &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="interpolate" href="metpy.interpolate.html"/>
         <link rel="next" title="gridding" href="metpy.gridding.html"/>
         <link rel="prev" title="remove_observations_below_value" href="metpy.interpolate.remove_observations_below_value.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -237,33 +237,29 @@
 <h1>remove_repeat_coordinates<a class="headerlink" href="#remove-repeat-coordinates" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.interpolate.remove_repeat_coordinates">
-<code class="descclassname">metpy.interpolate.</code><code class="descname">remove_repeat_coordinates</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>z</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/tools.html#remove_repeat_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.remove_repeat_coordinates" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.interpolate.</code><code class="sig-name descname">remove_repeat_coordinates</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">z</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/tools.html#remove_repeat_coordinates"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.remove_repeat_coordinates" title="Permalink to this definition">¶</a></dt>
 <dd><p>Remove all x, y, and z where (x,y) is repeated and keep the first occurrence only.</p>
 <p>Will not destroy original values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>array_like</em>) – x coordinate</li>
-<li><strong>y</strong> (<em>array_like</em>) – y coordinate</li>
-<li><strong>z</strong> (<em>array_like</em>) – observation value</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array_like</em>) – x coordinate</p></li>
+<li><p><strong>y</strong> (<em>array_like</em>) – y coordinate</p></li>
+<li><p><strong>z</strong> (<em>array_like</em>) – observation value</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>x, y, z</em> – List of coordinate observation pairs without
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>x, y, z</em> – List of coordinate observation pairs without
 repeated coordinates.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-interpolate-remove-repeat-coordinates">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.interpolate.remove_repeat_coordinates</span></code><a class="headerlink" href="#examples-using-metpy-interpolate-remove-repeat-coordinates" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Compares different point interpolation approaches. "><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Compares different point interpolation approaches. "><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_Point_Interpolation_thumb.png" src="../../_images/sphx_glr_Point_Interpolation_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/gridding/Point_Interpolation.html#sphx-glr-examples-gridding-point-interpolation-py"><span class="std std-ref">Point Interpolation</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/gridding/Point_Interpolation.html#sphx-glr-examples-gridding-point-interpolation-py"><span class="std std-ref">Point Interpolation</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -290,8 +286,8 @@ repeated coordinates.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -328,7 +324,7 @@ repeated coordinates.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

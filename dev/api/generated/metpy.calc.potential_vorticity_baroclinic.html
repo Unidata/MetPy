@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>potential_vorticity_baroclinic &mdash; MetPy 0.9</title>
+  <title>potential_vorticity_baroclinic &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="potential_vorticity_barotropic" href="metpy.calc.potential_vorticity_barotropic.html"/>
         <link rel="prev" title="montgomery_streamfunction" href="metpy.calc.montgomery_streamfunction.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -249,37 +249,33 @@
 <h1>potential_vorticity_baroclinic<a class="headerlink" href="#potential-vorticity-baroclinic" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.potential_vorticity_baroclinic">
-<code class="descclassname">metpy.calc.</code><code class="descname">potential_vorticity_baroclinic</code><span class="sig-paren">(</span><em>potential_temperature</em>, <em>pressure</em>, <em>u</em>, <em>v</em>, <em>dx</em>, <em>dy</em>, <em>lats</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#potential_vorticity_baroclinic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.potential_vorticity_baroclinic" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">potential_vorticity_baroclinic</code><span class="sig-paren">(</span><em class="sig-param">potential_temperature</em>, <em class="sig-param">pressure</em>, <em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em>, <em class="sig-param">lats</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#potential_vorticity_baroclinic"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.potential_vorticity_baroclinic" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the baroclinic potential vorticity.</p>
 <div class="math notranslate nohighlight">
 \[PV = -g \left(\frac{\partial u}{\partial p}\frac{\partial \theta}{\partial y}
 - \frac{\partial v}{\partial p}\frac{\partial \theta}{\partial x}
 + \frac{\partial \theta}{\partial p}(\zeta + f) \right)\]</div>
-<p>This formula is based on equation 4.5.93 <a class="reference internal" href="../../references.html#bluestein1993" id="id1">[Bluestein1993]</a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>potential_temperature</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – potential temperature</li>
-<li><strong>pressure</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – vertical pressures</li>
-<li><strong>u</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the wind</li>
-<li><strong>v</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the wind</li>
-<li><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis.</li>
-<li><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis.</li>
-<li><strong>lats</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – latitudes of the wind data</li>
-<li><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to the vertical dimension in the potential temperature
-and pressure arrays, defaults to 0, the first dimension.</li>
+<p>This formula is based on equation 4.5.93 <a class="reference internal" href="../../references.html#bluestein1993" id="id1"><span>[Bluestein1993]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>potential_temperature</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – potential temperature</p></li>
+<li><p><strong>pressure</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – vertical pressures</p></li>
+<li><p><strong>u</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the wind</p></li>
+<li><p><strong>v</strong> (<em>(</em><em>P</em><em>, </em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the wind</p></li>
+<li><p><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
+<li><p><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
+<li><p><strong>lats</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – latitudes of the wind data</p></li>
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to the vertical dimension in the potential temperature
+and pressure arrays, defaults to 0, the first dimension.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>(P, M, N) ndarray</em> – baroclinic potential vorticity</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>(P, M, N) ndarray</em> – baroclinic potential vorticity</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>This function will only work with data that is in (P, Y, X) format. If your data
 is in a different order you will need to re-order your data in order to get correct
@@ -319,8 +315,8 @@ one-dimensional p[:, None, None] can be used to make it appear multi-dimensional
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -357,7 +353,7 @@ one-dimensional p[:, None, None] can be used to make it appear multi-dimensional
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

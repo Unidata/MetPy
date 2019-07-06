@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>pint.errors &mdash; MetPy 0.9</title>
+  <title>pint.errors &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -216,7 +216,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lineno</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">mess</span> <span class="o">=</span> <span class="s2">&quot;While opening </span><span class="si">{0}</span><span class="s2">, in line </span><span class="si">{1}</span><span class="s2">: &quot;</span>
+        <span class="n">mess</span> <span class="o">=</span> <span class="s2">&quot;While opening </span><span class="si">{}</span><span class="s2">, in line </span><span class="si">{}</span><span class="s2">: &quot;</span>
         <span class="k">return</span> <span class="n">mess</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineno</span><span class="p">)</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">msg</span>
 
 
@@ -232,10 +232,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">lineno</span> <span class="o">=</span> <span class="kc">None</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;cannot redefine &#39;</span><span class="si">{0}</span><span class="s2">&#39; (</span><span class="si">{1}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;cannot redefine &#39;</span><span class="si">{}</span><span class="s2">&#39; (</span><span class="si">{}</span><span class="s2">)&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
                                                    <span class="bp">self</span><span class="o">.</span><span class="n">definition_type</span><span class="p">)</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">:</span>
-            <span class="n">mess</span> <span class="o">=</span> <span class="s2">&quot;While opening </span><span class="si">{0}</span><span class="s2">, in line </span><span class="si">{1}</span><span class="s2">: &quot;</span>
+            <span class="n">mess</span> <span class="o">=</span> <span class="s2">&quot;While opening </span><span class="si">{}</span><span class="s2">, in line </span><span class="si">{}</span><span class="s2">: &quot;</span>
             <span class="k">return</span> <span class="n">mess</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">filename</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">lineno</span><span class="p">)</span> <span class="o">+</span> <span class="n">msg</span>
         <span class="k">return</span> <span class="n">msg</span>
 
@@ -249,8 +249,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">unit_names</span> <span class="o">=</span> <span class="n">unit_names</span>
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">mess</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; is not defined in the unit registry&quot;</span>
-        <span class="n">mess_plural</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{0}</span><span class="s2">&#39; are not defined in the unit registry&quot;</span>
+        <span class="n">mess</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; is not defined in the unit registry&quot;</span>
+        <span class="n">mess_plural</span> <span class="o">=</span> <span class="s2">&quot;&#39;</span><span class="si">{}</span><span class="s2">&#39; are not defined in the unit registry&quot;</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_names</span><span class="p">,</span> <span class="n">string_types</span><span class="p">):</span>
             <span class="k">return</span> <span class="n">mess</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_names</span><span class="p">)</span>
         <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">unit_names</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">))</span>\
@@ -277,13 +277,13 @@
 
     <span class="k">def</span> <span class="nf">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim1</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">dim2</span><span class="p">:</span>
-            <span class="n">dim1</span> <span class="o">=</span> <span class="s1">&#39; (</span><span class="si">{0}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim1</span><span class="p">)</span>
-            <span class="n">dim2</span> <span class="o">=</span> <span class="s1">&#39; (</span><span class="si">{0}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim2</span><span class="p">)</span>
+            <span class="n">dim1</span> <span class="o">=</span> <span class="s1">&#39; (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim1</span><span class="p">)</span>
+            <span class="n">dim2</span> <span class="o">=</span> <span class="s1">&#39; (</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dim2</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">dim1</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
             <span class="n">dim2</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
 
-        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Cannot convert from &#39;</span><span class="si">{0}</span><span class="s2">&#39;</span><span class="si">{1}</span><span class="s2"> to &#39;</span><span class="si">{2}</span><span class="s2">&#39;</span><span class="si">{3}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_msg</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Cannot convert from &#39;</span><span class="si">{}</span><span class="s2">&#39;</span><span class="si">{}</span><span class="s2"> to &#39;</span><span class="si">{}</span><span class="s2">&#39;</span><span class="si">{}</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_msg</span>
 
         <span class="k">return</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">units1</span><span class="p">,</span> <span class="n">dim1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">units2</span><span class="p">,</span> <span class="n">dim2</span><span class="p">)</span></div>
 
@@ -302,6 +302,10 @@
                <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="s1">&#39;</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">u</span> <span class="k">for</span> <span class="n">u</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">units1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">units2</span><span class="p">]</span> <span class="k">if</span> <span class="n">u</span><span class="p">])</span>
                <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">extra_msg</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">msg</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">units1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">units2</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">UnitStrippedWarning</span><span class="p">(</span><span class="ne">UserWarning</span><span class="p">):</span>
+    <span class="k">pass</span>
 </pre></div>
 
            </div>
@@ -316,8 +320,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -354,7 +358,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

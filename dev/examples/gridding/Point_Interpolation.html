@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Point Interpolation &mdash; MetPy 0.9</title>
+  <title>Point Interpolation &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="Inverse Distance Verification: Cressman and Barnes" href="Inverse_Distance_Verification.html"/>
         <link rel="prev" title="Wind and Sea Level Pressure Interpolation" href="Wind_SLP_Interpolation.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -222,25 +222,25 @@
            <div itemprop="articleBody">
             
   <div class="sphx-glr-download-link-note admonition note">
-<p class="first admonition-title">Note</p>
-<p class="last">Click <a class="reference internal" href="#sphx-glr-download-examples-gridding-point-interpolation-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-gridding-point-interpolation-py"><span class="std std-ref">here</span></a> to download the full example code</p>
 </div>
 <div class="sphx-glr-example-title section" id="point-interpolation">
 <span id="sphx-glr-examples-gridding-point-interpolation-py"></span><h1>Point Interpolation<a class="headerlink" href="#point-interpolation" title="Permalink to this headline">¶</a></h1>
 <p>Compares different point interpolation approaches.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="kn">as</span> <span class="nn">ccrs</span>
-<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="kn">as</span> <span class="nn">cfeature</span>
-<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="kn">import</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.rst.html#matplotlib.colors.BoundaryNorm" title="View documentation for matplotlib.colors.BoundaryNorm"><span class="n">BoundaryNorm</span></a>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cartopy.crs</span> <span class="k">as</span> <span class="nn">ccrs</span>
+<span class="kn">import</span> <span class="nn">cartopy.feature</span> <span class="k">as</span> <span class="nn">cfeature</span>
+<span class="kn">from</span> <span class="nn">matplotlib.colors</span> <span class="k">import</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.rst.html#matplotlib.colors.BoundaryNorm" title="View documentation for matplotlib.colors.BoundaryNorm"><span class="n">BoundaryNorm</span></a>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="kn">import</span> <span class="n">get_test_data</span>
-<span class="kn">from</span> <span class="nn">metpy.interpolate</span> <span class="kn">import</span> <span class="p">(</span><a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">,</span> <a href="../../api/generated/metpy.interpolate.remove_nan_observations.html#metpy.interpolate.remove_nan_observations" title="View documentation for metpy.interpolate.remove_nan_observations"><span class="n">remove_nan_observations</span></a><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">metpy.cbook</span> <span class="k">import</span> <span class="n">get_test_data</span>
+<span class="kn">from</span> <span class="nn">metpy.interpolate</span> <span class="k">import</span> <span class="p">(</span><a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">,</span> <a href="../../api/generated/metpy.interpolate.remove_nan_observations.html#metpy.interpolate.remove_nan_observations" title="View documentation for metpy.interpolate.remove_nan_observations"><span class="n">remove_nan_observations</span></a><span class="p">,</span>
                                <a href="../../api/generated/metpy.interpolate.remove_repeat_coordinates.html#metpy.interpolate.remove_repeat_coordinates" title="View documentation for metpy.interpolate.remove_repeat_coordinates"><span class="n">remove_repeat_coordinates</span></a><span class="p">)</span>
-<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="kn">import</span> <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a>
+<span class="kn">from</span> <span class="nn">metpy.plots</span> <span class="k">import</span> <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a>
 </pre></div>
 </div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">basic_map</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">basic_map</span><span class="p">(</span><span class="n">proj</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Make our basic default map for plotting&quot;&quot;&quot;</span>
     <span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.rst.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
     <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
@@ -253,7 +253,7 @@
     <span class="k">return</span> <span class="n">fig</span><span class="p">,</span> <span class="n">view</span>
 
 
-<span class="k">def</span> <span class="nf">station_test_data</span><span class="p">(</span><span class="n">variable_names</span><span class="p">,</span> <span class="n">proj_from</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">proj_to</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">station_test_data</span><span class="p">(</span><span class="n">variable_names</span><span class="p">,</span> <span class="n">proj_from</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">proj_to</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="k">with</span> <span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;station_data.txt&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
         <span class="n">all_data</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.loadtxt.html#numpy.loadtxt" title="View documentation for numpy.loadtxt"><span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span></a><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">skiprows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>
                               <span class="n">usecols</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">19</span><span class="p">),</span>
@@ -271,7 +271,7 @@
     <span class="n">lon</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;lon&#39;</span><span class="p">]</span>
     <span class="n">lat</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;lat&#39;</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">proj_from</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span> <span class="ow">and</span> <span class="n">proj_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="bp">None</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">proj_from</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">proj_to</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
 
         <span class="k">try</span><span class="p">:</span>
 
@@ -280,8 +280,8 @@
 
         <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
 
-            <span class="k">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-            <span class="k">return</span> <span class="bp">None</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="k">return</span> <span class="kc">None</span>
 
     <span class="k">return</span> <span class="n">lon</span><span class="p">,</span> <span class="n">lat</span><span class="p">,</span> <span class="n">value</span>
 
@@ -291,7 +291,7 @@
 
 <span class="n">levels</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">20</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;magma&#39;</span><span class="p">)</span>
-<span class="n">norm</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.rst.html#matplotlib.colors.BoundaryNorm" title="View documentation for matplotlib.colors.BoundaryNorm"><span class="n">BoundaryNorm</span></a><span class="p">(</span><span class="n">levels</span><span class="p">,</span> <span class="n">ncolors</span><span class="o">=</span><span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">norm</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.colors.BoundaryNorm.rst.html#matplotlib.colors.BoundaryNorm" title="View documentation for matplotlib.colors.BoundaryNorm"><span class="n">BoundaryNorm</span></a><span class="p">(</span><span class="n">levels</span><span class="p">,</span> <span class="n">ncolors</span><span class="o">=</span><span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">,</span> <span class="n">clip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temp</span> <span class="o">=</span> <span class="n">station_test_data</span><span class="p">(</span><span class="s1">&#39;air_temperature&#39;</span><span class="p">,</span> <span class="n">from_proj</span><span class="p">,</span> <span class="n">to_proj</span><span class="p">)</span>
 
@@ -301,7 +301,7 @@
 </div>
 <div class="section" id="scipy-interpolate-linear">
 <h2>Scipy.interpolate linear<a class="headerlink" href="#scipy-interpolate-linear" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">75000</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">75000</span><span class="p">)</span>
 <span class="n">img</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ma.masked_where.html#numpy.ma.masked_where" title="View documentation for numpy.ma.masked_where"><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.isnan.html#numpy.isnan" title="View documentation for numpy.isnan"><span class="n">np</span><span class="o">.</span><span class="n">isnan</span></a><span class="p">(</span><span class="n">img</span><span class="p">),</span> <span class="n">img</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">view</span> <span class="o">=</span> <span class="n">basic_map</span><span class="p">(</span><span class="n">to_proj</span><span class="p">)</span>
 <span class="n">mmb</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
@@ -313,7 +313,7 @@
 <div class="section" id="natural-neighbor-interpolation-metpy-implementation">
 <h2>Natural neighbor interpolation (MetPy implementation)<a class="headerlink" href="#natural-neighbor-interpolation-metpy-implementation" title="Permalink to this headline">¶</a></h2>
 <p><a class="reference external" href="https://github.com/Unidata/MetPy/files/138653/cwp-657.pdf">Reference</a></p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;natural_neighbor&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">75000</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;natural_neighbor&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">75000</span><span class="p">)</span>
 <span class="n">img</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ma.masked_where.html#numpy.ma.masked_where" title="View documentation for numpy.ma.masked_where"><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.isnan.html#numpy.isnan" title="View documentation for numpy.isnan"><span class="n">np</span><span class="o">.</span><span class="n">isnan</span></a><span class="p">(</span><span class="n">img</span><span class="p">),</span> <span class="n">img</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">view</span> <span class="o">=</span> <span class="n">basic_map</span><span class="p">(</span><span class="n">to_proj</span><span class="p">)</span>
 <span class="n">mmb</span> <span class="o">=</span> <span class="n">view</span><span class="o">.</span><span class="n">pcolormesh</span><span class="p">(</span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="n">cmap</span><span class="p">,</span> <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">)</span>
@@ -327,7 +327,7 @@
 <p>search_radius = 100 km</p>
 <p>grid resolution = 25 km</p>
 <p>min_neighbors = 1</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span> <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;cressman&#39;</span><span class="p">,</span> <span class="n">minimum_neighbors</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
                                   <span class="n">hres</span><span class="o">=</span><span class="mi">75000</span><span class="p">,</span> <span class="n">search_radius</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
 <span class="n">img</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ma.masked_where.html#numpy.ma.masked_where" title="View documentation for numpy.ma.masked_where"><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.isnan.html#numpy.isnan" title="View documentation for numpy.isnan"><span class="n">np</span><span class="o">.</span><span class="n">isnan</span></a><span class="p">(</span><span class="n">img</span><span class="p">),</span> <span class="n">img</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">view</span> <span class="o">=</span> <span class="n">basic_map</span><span class="p">(</span><span class="n">to_proj</span><span class="p">)</span>
@@ -341,7 +341,7 @@
 <h2>Barnes Interpolation<a class="headerlink" href="#barnes-interpolation" title="Permalink to this headline">¶</a></h2>
 <p>search_radius = 100km</p>
 <p>min_neighbors = 3</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img1</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;barnes&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">75000</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img1</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;barnes&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">75000</span><span class="p">,</span>
                                    <span class="n">search_radius</span><span class="o">=</span><span class="mi">100000</span><span class="p">)</span>
 <span class="n">img1</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ma.masked_where.html#numpy.ma.masked_where" title="View documentation for numpy.ma.masked_where"><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.isnan.html#numpy.isnan" title="View documentation for numpy.isnan"><span class="n">np</span><span class="o">.</span><span class="n">isnan</span></a><span class="p">(</span><span class="n">img1</span><span class="p">),</span> <span class="n">img1</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">view</span> <span class="o">=</span> <span class="n">basic_map</span><span class="p">(</span><span class="n">to_proj</span><span class="p">)</span>
@@ -354,7 +354,7 @@
 <div class="section" id="radial-basis-function-interpolation">
 <h2>Radial basis function interpolation<a class="headerlink" href="#radial-basis-function-interpolation" title="Permalink to this headline">¶</a></h2>
 <p>linear</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">75000</span><span class="p">,</span> <span class="n">rbf_func</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">,</span> <span class="n">img</span> <span class="o">=</span> <a href="../../api/generated/metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="View documentation for metpy.interpolate.interpolate_to_grid"><span class="n">interpolate_to_grid</span></a><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">temp</span><span class="p">,</span> <span class="n">interp_type</span><span class="o">=</span><span class="s1">&#39;rbf&#39;</span><span class="p">,</span> <span class="n">hres</span><span class="o">=</span><span class="mi">75000</span><span class="p">,</span> <span class="n">rbf_func</span><span class="o">=</span><span class="s1">&#39;linear&#39;</span><span class="p">,</span>
                                   <span class="n">rbf_smooth</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 <span class="n">img</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ma.masked_where.html#numpy.ma.masked_where" title="View documentation for numpy.ma.masked_where"><span class="n">np</span><span class="o">.</span><span class="n">ma</span><span class="o">.</span><span class="n">masked_where</span></a><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.isnan.html#numpy.isnan" title="View documentation for numpy.isnan"><span class="n">np</span><span class="o">.</span><span class="n">isnan</span></a><span class="p">(</span><span class="n">img</span><span class="p">),</span> <span class="n">img</span><span class="p">)</span>
 <span class="n">fig</span><span class="p">,</span> <span class="n">view</span> <span class="o">=</span> <span class="n">basic_map</span><span class="p">(</span><span class="n">to_proj</span><span class="p">)</span>
@@ -365,14 +365,16 @@
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_Point_Interpolation_005.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Point_Interpolation_005.png" />
-<p><strong>Total running time of the script:</strong> ( 0 minutes  4.811 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.658 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gridding-point-interpolation-py">
 <div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/76fb42ec94523fce53e0fc4588840e9e/Point_Interpolation.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Point_Interpolation.py</span></code></a></div>
-<div class="sphx-glr-download docutils container">
-<a class="reference download internal" download="" href="../../_downloads/8b48dbfbd7332023b4aeb5274ed5d62e/Point_Interpolation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Point_Interpolation.ipynb</span></code></a></div>
+<p><a class="reference download internal" download="" href="../../_downloads/76fb42ec94523fce53e0fc4588840e9e/Point_Interpolation.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Point_Interpolation.py</span></code></a></p>
 </div>
-<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.readthedocs.io">Gallery generated by Sphinx-Gallery</a></p>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/8b48dbfbd7332023b4aeb5274ed5d62e/Point_Interpolation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Point_Interpolation.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
 </div>
 </div>
 
@@ -398,8 +400,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -436,7 +438,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

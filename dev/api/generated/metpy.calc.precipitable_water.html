@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>precipitable_water &mdash; MetPy 0.9</title>
+  <title>precipitable_water &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="psychrometric_vapor_pressure_wet" href="metpy.calc.psychrometric_vapor_pressure_wet.html"/>
         <link rel="prev" title="moist_static_energy" href="metpy.calc.moist_static_energy.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -253,29 +253,25 @@
 <h1>precipitable_water<a class="headerlink" href="#precipitable-water" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.precipitable_water">
-<code class="descclassname">metpy.calc.</code><code class="descname">precipitable_water</code><span class="sig-paren">(</span><em>dewpt</em>, <em>pressure</em>, <em>bottom=None</em>, <em>top=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/indices.html#precipitable_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.precipitable_water" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">precipitable_water</code><span class="sig-paren">(</span><em class="sig-param">dewpt</em>, <em class="sig-param">pressure</em>, <em class="sig-param">bottom=None</em>, <em class="sig-param">top=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/indices.html#precipitable_water"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.precipitable_water" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate precipitable water through the depth of a sounding.</p>
 <p>Formula used is:</p>
 <div class="math notranslate nohighlight">
 \[-\frac{1}{\rho_l g} \int\limits_{p_\text{bottom}}^{p_\text{top}} r dp\]</div>
-<p>from <a class="reference internal" href="../../references.html#salby1996" id="id1">[Salby1996]</a>, p. 28.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric dewpoint profile</li>
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric pressure profile</li>
-<li><strong>bottom</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Bottom of the layer, specified in pressure. Defaults to None (highest pressure).</li>
-<li><strong>top</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The top of the layer, specified in pressure. Defaults to None (lowest pressure).</li>
+<p>from <a class="reference internal" href="../../references.html#salby1996" id="id1"><span>[Salby1996]</span></a>, p. 28.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric dewpoint profile</p></li>
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric pressure profile</p></li>
+<li><p><strong>bottom</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Bottom of the layer, specified in pressure. Defaults to None (highest pressure).</p></li>
+<li><p><strong>top</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The top of the layer, specified in pressure. Defaults to None (lowest pressure).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The precipitable water in the layer</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The precipitable water in the layer</p>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -302,8 +298,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -340,7 +336,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

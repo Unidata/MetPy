@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>mixing_ratio_from_relative_humidity &mdash; MetPy 0.9</title>
+  <title>mixing_ratio_from_relative_humidity &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="mixing_ratio_from_specific_humidity" href="metpy.calc.mixing_ratio_from_specific_humidity.html"/>
         <link rel="prev" title="mixing_ratio" href="metpy.calc.mixing_ratio.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -253,37 +253,33 @@
 <h1>mixing_ratio_from_relative_humidity<a class="headerlink" href="#mixing-ratio-from-relative-humidity" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.mixing_ratio_from_relative_humidity">
-<code class="descclassname">metpy.calc.</code><code class="descname">mixing_ratio_from_relative_humidity</code><span class="sig-paren">(</span><em>relative_humidity</em>, <em>temperature</em>, <em>pressure</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#mixing_ratio_from_relative_humidity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.mixing_ratio_from_relative_humidity" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">mixing_ratio_from_relative_humidity</code><span class="sig-paren">(</span><em class="sig-param">relative_humidity</em>, <em class="sig-param">temperature</em>, <em class="sig-param">pressure</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#mixing_ratio_from_relative_humidity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.mixing_ratio_from_relative_humidity" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the mixing ratio from relative humidity, temperature, and pressure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>relative_humidity</strong> (<em>array_like</em>) – The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass
-a percentage if proper units are attached.</li>
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</li>
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>relative_humidity</strong> (<em>array_like</em>) – The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass
+a percentage if proper units are attached.</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</p></li>
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – Dimensionless mixing ratio</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – Dimensionless mixing ratio</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
-<p>Formula adapted from <a class="reference internal" href="../../references.html#hobbs1977" id="id1">[Hobbs1977]</a> pg. 74.</p>
+<p>Formula adapted from <a class="reference internal" href="../../references.html#hobbs1977" id="id1"><span>[Hobbs1977]</span></a> pg. 74.</p>
 <div class="math notranslate nohighlight">
 \[w = (RH)(w_s)\]</div>
 <ul class="simple">
-<li><span class="math notranslate nohighlight">\(w\)</span> is mixing ratio</li>
-<li><span class="math notranslate nohighlight">\(RH\)</span> is relative humidity as a unitless ratio</li>
-<li><span class="math notranslate nohighlight">\(w_s\)</span> is the saturation mixing ratio</li>
+<li><p><span class="math notranslate nohighlight">\(w\)</span> is mixing ratio</p></li>
+<li><p><span class="math notranslate nohighlight">\(RH\)</span> is relative humidity as a unitless ratio</p></li>
+<li><p><span class="math notranslate nohighlight">\(w_s\)</span> is the saturation mixing ratio</p></li>
 </ul>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio()</span></code></a>, <a class="reference internal" href="metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio" title="metpy.calc.saturation_mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">saturation_mixing_ratio()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.relative_humidity_from_mixing_ratio.html#metpy.calc.relative_humidity_from_mixing_ratio" title="metpy.calc.relative_humidity_from_mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">relative_humidity_from_mixing_ratio()</span></code></a>, <a class="reference internal" href="metpy.calc.saturation_mixing_ratio.html#metpy.calc.saturation_mixing_ratio" title="metpy.calc.saturation_mixing_ratio"><code class="xref py py-func docutils literal notranslate"><span class="pre">saturation_mixing_ratio()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -311,8 +307,8 @@ a percentage if proper units are attached.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -349,7 +345,7 @@ a percentage if proper units are attached.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

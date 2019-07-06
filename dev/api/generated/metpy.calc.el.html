@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>el &mdash; MetPy 0.9</title>
+  <title>el &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="lcl" href="metpy.calc.lcl.html"/>
         <link rel="prev" title="critical_angle" href="metpy.calc.critical_angle.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -244,32 +244,28 @@
 <h1>el<a class="headerlink" href="#el" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.el">
-<code class="descclassname">metpy.calc.</code><code class="descname">el</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>dewpt</em>, <em>parcel_temperature_profile=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#el"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.el" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">el</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpt</em>, <em class="sig-param">parcel_temperature_profile=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#el"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.el" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the equilibrium level.</p>
 <p>This works by finding the last intersection of the ideal parcel path and
 the measured environmental temperature. If there is one or fewer intersections, there is
 no equilibrium level.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure</li>
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The temperature at the levels given by <em class="xref py py-obj">pressure</em></li>
-<li><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The dew point at the levels given by <em class="xref py py-obj">pressure</em></li>
-<li><strong>parcel_temperature_profile</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The parcel temperature profile from which to calculate the EL. Defaults to the
-surface parcel profile.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The atmospheric pressure</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The temperature at the levels given by <em class="xref py py-obj">pressure</em></p></li>
+<li><p><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The dew point at the levels given by <em class="xref py py-obj">pressure</em></p></li>
+<li><p><strong>parcel_temperature_profile</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The parcel temperature profile from which to calculate the EL. Defaults to the
+surface parcel profile.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity, pint.Quantity</em> – The EL pressure and temperature</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity, pint.Quantity</em> – The EL pressure and temperature</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -297,8 +293,8 @@ surface parcel profile.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -335,7 +331,7 @@ surface parcel profile.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

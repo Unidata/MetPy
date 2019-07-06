@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>interpolate_nans &mdash; MetPy 0.9</title>
+  <title>interpolate_nans &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="lat_lon_grid_spacing" href="metpy.calc.lat_lon_grid_spacing.html"/>
         <link rel="prev" title="interp" href="metpy.calc.interp.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -234,28 +234,24 @@
 <h1>interpolate_nans<a class="headerlink" href="#interpolate-nans" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.interpolate_nans">
-<code class="descclassname">metpy.calc.</code><code class="descname">interpolate_nans</code><span class="sig-paren">(</span><em>x</em>, <em>y</em>, <em>kind='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#interpolate_nans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.interpolate_nans" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">interpolate_nans</code><span class="sig-paren">(</span><em class="sig-param">x</em>, <em class="sig-param">y</em>, <em class="sig-param">kind='linear'</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#interpolate_nans"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.interpolate_nans" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate NaN values in y.</p>
 <p>Interpolate NaN values in the y dimension. Works with unsorted x values.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>x</strong> (<em>array-like</em>) – 1-dimensional array of numeric x-values</li>
-<li><strong>y</strong> (<em>array-like</em>) – 1-dimensional array of numeric y-values</li>
-<li><strong>kind</strong> (<em>string</em>) – specifies the kind of interpolation x coordinate - ‘linear’ or ‘log’, optional.
-Defaults to ‘linear’.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>x</strong> (<em>array-like</em>) – 1-dimensional array of numeric x-values</p></li>
+<li><p><strong>y</strong> (<em>array-like</em>) – 1-dimensional array of numeric y-values</p></li>
+<li><p><strong>kind</strong> (<em>string</em>) – specifies the kind of interpolation x coordinate - ‘linear’ or ‘log’, optional.
+Defaults to ‘linear’.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>An array of the y coordinate data with NaN values interpolated.</em></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>An array of the y coordinate data with NaN values interpolated.</em></p>
+</dd>
+</dl>
 <div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.9.0: </span>Function has been renamed <em class="xref py py-obj">interpolate_nans_1d</em> and moved to <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>, and will be removed from MetPy in 0.12.0.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 0.9.0: </span>Function has been renamed <em class="xref py py-obj">interpolate_nans_1d</em> and moved to <a class="reference internal" href="metpy.interpolate.html#module-metpy.interpolate" title="metpy.interpolate"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metpy.interpolate</span></code></a>, and will be removed from MetPy in 0.12.0.</p>
 </div>
 </dd></dl>
 
@@ -283,8 +279,8 @@ Defaults to ‘linear’.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -321,7 +317,7 @@ Defaults to ‘linear’.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

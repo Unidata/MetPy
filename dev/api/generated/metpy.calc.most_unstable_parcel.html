@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>most_unstable_parcel &mdash; MetPy 0.9</title>
+  <title>most_unstable_parcel &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="parcel_profile" href="metpy.calc.parcel_profile.html"/>
         <link rel="prev" title="most_unstable_cape_cin" href="metpy.calc.most_unstable_cape_cin.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -244,38 +244,34 @@
 <h1>most_unstable_parcel<a class="headerlink" href="#most-unstable-parcel" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.most_unstable_parcel">
-<code class="descclassname">metpy.calc.</code><code class="descname">most_unstable_parcel</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>dewpoint</em>, <em>heights=None</em>, <em>bottom=None</em>, <em>depth=&lt;Quantity(300</em>, <em>'hectopascal')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#most_unstable_parcel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.most_unstable_parcel" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">most_unstable_parcel</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpoint</em>, <em class="sig-param">heights=None</em>, <em class="sig-param">bottom=None</em>, <em class="sig-param">depth=&lt;Quantity(300</em>, <em class="sig-param">'hectopascal')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#most_unstable_parcel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.most_unstable_parcel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Determine the most unstable parcel in a layer.</p>
 <p>Determines the most unstable parcel of air by calculating the equivalent
 potential temperature and finding its maximum in the specified layer.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric pressure profile</li>
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric temperature profile</li>
-<li><strong>dewpoint</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric dewpoint profile</li>
-<li><strong>heights</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Atmospheric height profile. Standard atmosphere assumed when None (the default).</li>
-<li><strong>bottom</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Bottom of the layer to consider for the calculation in pressure or height.
-Defaults to using the bottom pressure or height.</li>
-<li><strong>depth</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Depth of the layer to consider for the calculation in pressure or height. Defaults
-to 300 hPa.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric pressure profile</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric temperature profile</p></li>
+<li><p><strong>dewpoint</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Atmospheric dewpoint profile</p></li>
+<li><p><strong>heights</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Atmospheric height profile. Standard atmosphere assumed when None (the default).</p></li>
+<li><p><strong>bottom</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Bottom of the layer to consider for the calculation in pressure or height.
+Defaults to using the bottom pressure or height.</p></li>
+<li><p><strong>depth</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Depth of the layer to consider for the calculation in pressure or height. Defaults
+to 300 hPa.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em class="xref py py-obj">pint.Quantity</em> – Pressure, temperature, and dew point of most unstable parcel in the profile.</li>
-<li><em>integer</em> – Index of the most unstable parcel in the given profile</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em class="xref py py-obj">pint.Quantity</em> – Pressure, temperature, and dew point of most unstable parcel in the profile.</p></li>
+<li><p><em>integer</em> – Index of the most unstable parcel in the given profile</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.get_layer.html#metpy.calc.get_layer" title="metpy.calc.get_layer"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_layer()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.get_layer.html#metpy.calc.get_layer" title="metpy.calc.get_layer"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_layer()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -303,8 +299,8 @@ to 300 hPa.</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -341,7 +337,7 @@ to 300 hPa.</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

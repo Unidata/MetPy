@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>lcl &mdash; MetPy 0.9</title>
+  <title>lcl &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="lfc" href="metpy.calc.lfc.html"/>
         <link rel="prev" title="el" href="metpy.calc.el.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -244,57 +244,52 @@
 <h1>lcl<a class="headerlink" href="#lcl" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.lcl">
-<code class="descclassname">metpy.calc.</code><code class="descname">lcl</code><span class="sig-paren">(</span><em>pressure</em>, <em>temperature</em>, <em>dewpt</em>, <em>max_iters=50</em>, <em>eps=1e-05</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#lcl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.lcl" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">lcl</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpt</em>, <em class="sig-param">max_iters=50</em>, <em class="sig-param">eps=1e-05</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#lcl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.lcl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the lifted condensation level (LCL) using from the starting point.</p>
 <p>The starting state for the parcel is defined by <em class="xref py py-obj">temperature</em>, <em class="xref py py-obj">dewpt</em>,
 and <em class="xref py py-obj">pressure</em>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The starting atmospheric pressure</li>
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The starting temperature</li>
-<li><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The starting dew point</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The starting atmospheric pressure</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The starting temperature</p></li>
+<li><p><strong>dewpt</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The starting dew point</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em class="xref py py-obj">(pint.Quantity, pint.Quantity)</em> – The LCL pressure and temperature</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
-<li><strong>max_iters</strong> (<em>int, optional</em>) – The maximum number of iterations to use in calculation, defaults to 50.</li>
-<li><strong>eps</strong> (<em>float, optional</em>) – The desired relative error in the calculated value, defaults to 1e-5.</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">(pint.Quantity, pint.Quantity)</em> – The LCL pressure and temperature</p>
+</dd>
+<dt class="field-odd">Other Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>max_iters</strong> (<em>int, optional</em>) – The maximum number of iterations to use in calculation, defaults to 50.</p></li>
+<li><p><strong>eps</strong> (<em>float, optional</em>) – The desired relative error in the calculated value, defaults to 1e-5.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.parcel_profile.html#metpy.calc.parcel_profile" title="metpy.calc.parcel_profile"><code class="xref py py-func docutils literal notranslate"><span class="pre">parcel_profile()</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
 <p>This function is implemented using an iterative approach to solve for the
 LCL. The basic algorithm is:</p>
 <ol class="arabic simple">
-<li>Find the dew point from the LCL pressure and starting mixing ratio</li>
-<li>Find the LCL pressure from the starting temperature and dewpoint</li>
-<li>Iterate until convergence</li>
+<li><p>Find the dew point from the LCL pressure and starting mixing ratio</p></li>
+<li><p>Find the LCL pressure from the starting temperature and dewpoint</p></li>
+<li><p>Iterate until convergence</p></li>
 </ol>
 <p>The function is guaranteed to finish by virtue of the <em class="xref py py-obj">max_iters</em> counter.</p>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-calc-lcl">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.lcl</span></code><a class="headerlink" href="#examples-using-metpy-calc-lcl" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Plot a sounding using MetPy with more advanced features."><div class="figure" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Plot a sounding using MetPy with more advanced features."><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_Advanced_Sounding_thumb.png" src="../../_images/sphx_glr_Advanced_Sounding_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/Advanced_Sounding.html#sphx-glr-examples-advanced-sounding-py"><span class="std std-ref">Advanced Sounding</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/Advanced_Sounding.html#sphx-glr-examples-advanced-sounding-py"><span class="std std-ref">Advanced Sounding</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori..."><div class="figure" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori..."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_upperair_soundings_thumb.png" src="../../_images/sphx_glr_upperair_soundings_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/upperair_soundings.html#sphx-glr-tutorials-upperair-soundings-py"><span class="std std-ref">Upper Air Sounding Tutorial</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/upperair_soundings.html#sphx-glr-tutorials-upperair-soundings-py"><span class="std std-ref">Upper Air Sounding Tutorial</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -321,8 +316,8 @@ LCL. The basic algorithm is:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -359,7 +354,7 @@ LCL. The basic algorithm is:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

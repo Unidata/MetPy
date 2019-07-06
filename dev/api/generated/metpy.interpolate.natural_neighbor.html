@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>natural_neighbor &mdash; MetPy 0.9</title>
+  <title>natural_neighbor &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="interpolate" href="metpy.interpolate.html"/>
         <link rel="next" title="natural_neighbor_to_grid" href="metpy.interpolate.natural_neighbor_to_grid.html"/>
         <link rel="prev" title="log_interpolate_1d" href="metpy.interpolate.log_interpolate_1d.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -234,35 +234,31 @@
 <h1>natural_neighbor<a class="headerlink" href="#natural-neighbor" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.interpolate.natural_neighbor">
-<code class="descclassname">metpy.interpolate.</code><code class="descname">natural_neighbor</code><span class="sig-paren">(</span><em>xp</em>, <em>yp</em>, <em>variable</em>, <em>grid_x</em>, <em>grid_y</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/grid.html#natural_neighbor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.natural_neighbor" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.interpolate.</code><code class="sig-name descname">natural_neighbor</code><span class="sig-paren">(</span><em class="sig-param">xp</em>, <em class="sig-param">yp</em>, <em class="sig-param">variable</em>, <em class="sig-param">grid_x</em>, <em class="sig-param">grid_y</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/interpolate/grid.html#natural_neighbor"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.interpolate.natural_neighbor" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a natural neighbor interpolation of the given points to a regular grid.</p>
-<p>This assigns values to the given grid using the Liang and Hale <a class="reference internal" href="../../references.html#liang2010" id="id1">[Liang2010]</a>.
+<p>This assigns values to the given grid using the Liang and Hale <a class="reference internal" href="../../references.html#liang2010" id="id1"><span>[Liang2010]</span></a>.
 approach.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>xp</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray</em>) – x-coordinates of observations</li>
-<li><strong>yp</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray</em>) – y-coordinates of observations</li>
-<li><strong>variable</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray</em>) – observation values associated with (xp, yp) pairs.
-IE, variable[i] is a unique observation at (xp[i], yp[i])</li>
-<li><strong>grid_x</strong> (<em>(</em><em>M</em><em>, </em><em>2</em><em>) </em><em>ndarray</em>) – Meshgrid associated with x dimension</li>
-<li><strong>grid_y</strong> (<em>(</em><em>M</em><em>, </em><em>2</em><em>) </em><em>ndarray</em>) – Meshgrid associated with y dimension</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>xp</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray</em>) – x-coordinates of observations</p></li>
+<li><p><strong>yp</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray</em>) – y-coordinates of observations</p></li>
+<li><p><strong>variable</strong> (<em>(</em><em>N</em><em>, </em><em>) </em><em>ndarray</em>) – observation values associated with (xp, yp) pairs.
+IE, variable[i] is a unique observation at (xp[i], yp[i])</p></li>
+<li><p><strong>grid_x</strong> (<em>(</em><em>M</em><em>, </em><em>2</em><em>) </em><em>ndarray</em>) – Meshgrid associated with x dimension</p></li>
+<li><p><strong>grid_y</strong> (<em>(</em><em>M</em><em>, </em><em>2</em><em>) </em><em>ndarray</em>) – Meshgrid associated with y dimension</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><strong>img</strong> (<em>(M, N) ndarray</em>) – Interpolated values on a 2-dimensional grid</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>img</strong> (<em>(M, N) ndarray</em>) – Interpolated values on a 2-dimensional grid</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html#metpy.interpolate.natural_neighbor_to_points" title="metpy.interpolate.natural_neighbor_to_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">natural_neighbor_to_points()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html#metpy.interpolate.natural_neighbor_to_points" title="metpy.interpolate.natural_neighbor_to_points"><code class="xref py py-func docutils literal notranslate"><span class="pre">natural_neighbor_to_points()</span></code></a></p>
 </div>
 <div class="deprecated">
-<p><span class="versionmodified">Deprecated since version 0.9.0: </span>Function has been renamed to <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html#metpy.interpolate.natural_neighbor_to_grid" title="metpy.interpolate.natural_neighbor_to_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_neighbor_to_grid</span></code></a> and will be removed from MetPy in 0.12.0.</p>
+<p><span class="versionmodified deprecated">Deprecated since version 0.9.0: </span>Function has been renamed to <a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html#metpy.interpolate.natural_neighbor_to_grid" title="metpy.interpolate.natural_neighbor_to_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_neighbor_to_grid</span></code></a> and will be removed from MetPy in 0.12.0.</p>
 </div>
 </dd></dl>
 
@@ -290,8 +286,8 @@ IE, variable[i] is a unique observation at (xp[i], yp[i])</li>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -328,7 +324,7 @@ IE, variable[i] is a unique observation at (xp[i], yp[i])</li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

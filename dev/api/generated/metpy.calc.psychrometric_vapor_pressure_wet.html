@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>psychrometric_vapor_pressure_wet &mdash; MetPy 0.9</title>
+  <title>psychrometric_vapor_pressure_wet &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="relative_humidity_from_dewpoint" href="metpy.calc.relative_humidity_from_dewpoint.html"/>
         <link rel="prev" title="precipitable_water" href="metpy.calc.precipitable_water.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -253,44 +253,40 @@
 <h1>psychrometric_vapor_pressure_wet<a class="headerlink" href="#psychrometric-vapor-pressure-wet" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.psychrometric_vapor_pressure_wet">
-<code class="descclassname">metpy.calc.</code><code class="descname">psychrometric_vapor_pressure_wet</code><span class="sig-paren">(</span><em>dry_bulb_temperature</em>, <em>wet_bulb_temperature</em>, <em>pressure</em>, <em>psychrometer_coefficient=&lt;Quantity(0.000621</em>, <em>'1 / kelvin')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#psychrometric_vapor_pressure_wet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.psychrometric_vapor_pressure_wet" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">psychrometric_vapor_pressure_wet</code><span class="sig-paren">(</span><em class="sig-param">dry_bulb_temperature</em>, <em class="sig-param">wet_bulb_temperature</em>, <em class="sig-param">pressure</em>, <em class="sig-param">psychrometer_coefficient=&lt;Quantity(0.000621</em>, <em class="sig-param">'1 / kelvin')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#psychrometric_vapor_pressure_wet"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.psychrometric_vapor_pressure_wet" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the vapor pressure with wet bulb and dry bulb temperatures.</p>
-<p>This uses a psychrometric relationship as outlined in <a class="reference internal" href="../../references.html#wmo8-2014" id="id1">[WMO8-2014]</a>, with
-coefficients from <a class="reference internal" href="../../references.html#fan1987" id="id2">[Fan1987]</a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>dry_bulb_temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Dry bulb temperature</li>
-<li><strong>wet_bulb_temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Wet bulb temperature</li>
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</li>
-<li><strong>psychrometer_coefficient</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Psychrometer coefficient. Defaults to 6.21e-4 K^-1.</li>
+<p>This uses a psychrometric relationship as outlined in <a class="reference internal" href="../../references.html#wmo8-2014" id="id1"><span>[WMO8-2014]</span></a>, with
+coefficients from <a class="reference internal" href="../../references.html#fan1987" id="id2"><span>[Fan1987]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dry_bulb_temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Dry bulb temperature</p></li>
+<li><p><strong>wet_bulb_temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Wet bulb temperature</p></li>
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Total atmospheric pressure</p></li>
+<li><p><strong>psychrometer_coefficient</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – Psychrometer coefficient. Defaults to 6.21e-4 K^-1.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – Vapor pressure</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – Vapor pressure</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <div class="math notranslate nohighlight">
 \[e' = e'_w(T_w) - A p (T - T_w)\]</div>
 <ul class="simple">
-<li><span class="math notranslate nohighlight">\(e'\)</span> is vapor pressure</li>
-<li><span class="math notranslate nohighlight">\(e'_w(T_w)\)</span> is the saturation vapor pressure with respect to water at temperature
-<span class="math notranslate nohighlight">\(T_w\)</span></li>
-<li><span class="math notranslate nohighlight">\(p\)</span> is the pressure of the wet bulb</li>
-<li><span class="math notranslate nohighlight">\(T\)</span> is the temperature of the dry bulb</li>
-<li><span class="math notranslate nohighlight">\(T_w\)</span> is the temperature of the wet bulb</li>
-<li><span class="math notranslate nohighlight">\(A\)</span> is the psychrometer coefficient</li>
+<li><p><span class="math notranslate nohighlight">\(e'\)</span> is vapor pressure</p></li>
+<li><p><span class="math notranslate nohighlight">\(e'_w(T_w)\)</span> is the saturation vapor pressure with respect to water at temperature
+<span class="math notranslate nohighlight">\(T_w\)</span></p></li>
+<li><p><span class="math notranslate nohighlight">\(p\)</span> is the pressure of the wet bulb</p></li>
+<li><p><span class="math notranslate nohighlight">\(T\)</span> is the temperature of the dry bulb</p></li>
+<li><p><span class="math notranslate nohighlight">\(T_w\)</span> is the temperature of the wet bulb</p></li>
+<li><p><span class="math notranslate nohighlight">\(A\)</span> is the psychrometer coefficient</p></li>
 </ul>
 <p>Psychrometer coefficient depends on the specific instrument being used and the ventilation
 of the instrument.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure" title="metpy.calc.saturation_vapor_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">saturation_vapor_pressure()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html#metpy.calc.saturation_vapor_pressure" title="metpy.calc.saturation_vapor_pressure"><code class="xref py py-func docutils literal notranslate"><span class="pre">saturation_vapor_pressure()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -318,8 +314,8 @@ of the instrument.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -356,7 +352,7 @@ of the instrument.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

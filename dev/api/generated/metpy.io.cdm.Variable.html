@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Variable &mdash; MetPy 0.9</title>
+  <title>Variable &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="cdm" href="metpy.io.cdm.html"/>
         <link rel="next" title="calc" href="metpy.calc.html"/>
         <link rel="prev" title="OrderedDict" href="metpy.io.cdm.OrderedDict.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -224,190 +224,163 @@
 <h1>Variable<a class="headerlink" href="#variable" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="metpy.io.cdm.Variable">
-<em class="property">class </em><code class="descclassname">metpy.io.cdm.</code><code class="descname">Variable</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/cdm.html#Variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.Variable" title="Permalink to this definition">¶</a></dt>
-<dd><p>Holds typed data (using a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>), as well as attributes (e.g. units).</p>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.io.cdm.</code><code class="sig-name descname">Variable</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/cdm.html#Variable"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.Variable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Holds typed data (using a <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a>), as well as attributes (e.g. units).</p>
 <p>In addition to its various attributes, the Variable supports getting <em>and</em> setting data
 using the <code class="docutils literal notranslate"><span class="pre">[]</span></code> operator and indices or slices. Getting data returns
-<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.15)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> instances.</p>
+<a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> instances.</p>
 <p class="rubric">Attributes Summary</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.Variable.datatype" title="metpy.io.cdm.Variable.datatype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datatype</span></code></a></td>
-<td>Describes the layout of each element of the data.</td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.Variable.datatype" title="metpy.io.cdm.Variable.datatype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">datatype</span></code></a></p></td>
+<td><p>Describes the layout of each element of the data.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.Variable.dimensions" title="metpy.io.cdm.Variable.dimensions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dimensions</span></code></a></td>
-<td>all the names of <a class="reference internal" href="metpy.io.cdm.Dimension.html#metpy.io.cdm.Dimension" title="metpy.io.cdm.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a> used by this <a class="reference internal" href="#metpy.io.cdm.Variable" title="metpy.io.cdm.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></a>.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.cdm.Variable.dimensions" title="metpy.io.cdm.Variable.dimensions"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dimensions</span></code></a></p></td>
+<td><p>all the names of <a class="reference internal" href="metpy.io.cdm.Dimension.html#metpy.io.cdm.Dimension" title="metpy.io.cdm.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a> used by this <a class="reference internal" href="#metpy.io.cdm.Variable" title="metpy.io.cdm.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></a>.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.Variable.dtype" title="metpy.io.cdm.Variable.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></td>
-<td>Describes the layout of each element of the data.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.Variable.dtype" title="metpy.io.cdm.Variable.dtype"><code class="xref py py-obj docutils literal notranslate"><span class="pre">dtype</span></code></a></p></td>
+<td><p>Describes the layout of each element of the data.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.Variable.name" title="metpy.io.cdm.Variable.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></td>
-<td>the name of the variable.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.cdm.Variable.name" title="metpy.io.cdm.Variable.name"><code class="xref py py-obj docutils literal notranslate"><span class="pre">name</span></code></a></p></td>
+<td><p>the name of the variable.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.Variable.ndim" title="metpy.io.cdm.Variable.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></td>
-<td>the number of dimensions used by this variable.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.Variable.ndim" title="metpy.io.cdm.Variable.ndim"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ndim</span></code></a></p></td>
+<td><p>the number of dimensions used by this variable.</p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.Variable.shape" title="metpy.io.cdm.Variable.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></td>
-<td>Describes the size of the Variable along each of its dimensions.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.cdm.Variable.shape" title="metpy.io.cdm.Variable.shape"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shape</span></code></a></p></td>
+<td><p>Describes the size of the Variable along each of its dimensions.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.Variable.size" title="metpy.io.cdm.Variable.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></td>
-<td>the total number of elements.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.Variable.size" title="metpy.io.cdm.Variable.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
+<td><p>the total number of elements.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Methods Summary</p>
-<table border="1" class="longtable docutils">
+<table class="longtable docutils align-default">
 <colgroup>
-<col width="10%" />
-<col width="90%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
-<tbody valign="top">
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.Variable.__init__" title="metpy.io.cdm.Variable.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(**kwargs)</td>
-<td></td>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.Variable.__init__" title="metpy.io.cdm.Variable.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(**kwargs)</p></td>
+<td><p></p></td>
 </tr>
-<tr class="row-even"><td><a class="reference internal" href="#metpy.io.cdm.Variable.group" title="metpy.io.cdm.Variable.group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group</span></code></a>()</td>
-<td>Get the Group that owns this Variable.</td>
+<tr class="row-even"><td><p><a class="reference internal" href="#metpy.io.cdm.Variable.group" title="metpy.io.cdm.Variable.group"><code class="xref py py-obj docutils literal notranslate"><span class="pre">group</span></code></a>()</p></td>
+<td><p>Get the Group that owns this Variable.</p></td>
 </tr>
-<tr class="row-odd"><td><a class="reference internal" href="#metpy.io.cdm.Variable.ncattrs" title="metpy.io.cdm.Variable.ncattrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ncattrs</span></code></a>()</td>
-<td>Get a list of the names of the netCDF attributes.</td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.io.cdm.Variable.ncattrs" title="metpy.io.cdm.Variable.ncattrs"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ncattrs</span></code></a>()</p></td>
+<td><p>Get a list of the names of the netCDF attributes.</p></td>
 </tr>
 </tbody>
 </table>
 <p class="rubric">Attributes Documentation</p>
 <dl class="attribute">
 <dt id="metpy.io.cdm.Variable.datatype">
-<code class="descname">datatype</code><a class="headerlink" href="#metpy.io.cdm.Variable.datatype" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">datatype</code><a class="headerlink" href="#metpy.io.cdm.Variable.datatype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Describes the layout of each element of the data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.15)">numpy.dtype</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.16)">numpy.dtype</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.cdm.Variable.dimensions">
-<code class="descname">dimensions</code><a class="headerlink" href="#metpy.io.cdm.Variable.dimensions" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">dimensions</code><a class="headerlink" href="#metpy.io.cdm.Variable.dimensions" title="Permalink to this definition">¶</a></dt>
 <dd><p>all the names of <a class="reference internal" href="metpy.io.cdm.Dimension.html#metpy.io.cdm.Dimension" title="metpy.io.cdm.Dimension"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dimension</span></code></a> used by this <a class="reference internal" href="#metpy.io.cdm.Variable" title="metpy.io.cdm.Variable"><code class="xref py py-class docutils literal notranslate"><span class="pre">Variable</span></code></a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.cdm.Variable.dtype">
-<code class="descname">dtype</code><a class="headerlink" href="#metpy.io.cdm.Variable.dtype" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">dtype</code><a class="headerlink" href="#metpy.io.cdm.Variable.dtype" title="Permalink to this definition">¶</a></dt>
 <dd><p>Describes the layout of each element of the data.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.15)">numpy.dtype</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.dtype.html#numpy.dtype" title="(in NumPy v1.16)">numpy.dtype</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.cdm.Variable.name">
-<code class="descname">name</code><a class="headerlink" href="#metpy.io.cdm.Variable.name" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">name</code><a class="headerlink" href="#metpy.io.cdm.Variable.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>the name of the variable.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)">str</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.cdm.Variable.ndim">
-<code class="descname">ndim</code><a class="headerlink" href="#metpy.io.cdm.Variable.ndim" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ndim</code><a class="headerlink" href="#metpy.io.cdm.Variable.ndim" title="Permalink to this definition">¶</a></dt>
 <dd><p>the number of dimensions used by this variable.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.cdm.Variable.shape">
-<code class="descname">shape</code><a class="headerlink" href="#metpy.io.cdm.Variable.shape" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">shape</code><a class="headerlink" href="#metpy.io.cdm.Variable.shape" title="Permalink to this definition">¶</a></dt>
 <dd><p>Describes the size of the Variable along each of its dimensions.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>]</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a>[<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a>]</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.io.cdm.Variable.size">
-<code class="descname">size</code><a class="headerlink" href="#metpy.io.cdm.Variable.size" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">size</code><a class="headerlink" href="#metpy.io.cdm.Variable.size" title="Permalink to this definition">¶</a></dt>
 <dd><p>the total number of elements.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Type:</th><td class="field-body"><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)">int</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <p class="rubric">Methods Documentation</p>
 <dl class="method">
 <dt id="metpy.io.cdm.Variable.__init__">
-<code class="descname">__init__</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Variable.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Variable.__init__" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.Variable.group">
-<code class="descname">group</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/cdm.html#Variable.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.Variable.group" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">group</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/io/cdm.html#Variable.group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.io.cdm.Variable.group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the Group that owns this Variable.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>Group</em> – The parent Group.</td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>Group</em> – The parent Group.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="metpy.io.cdm.Variable.ncattrs">
-<code class="descname">ncattrs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Variable.ncattrs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ncattrs</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#metpy.io.cdm.Variable.ncattrs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get a list of the names of the netCDF attributes.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body"><em>List[str]</em></td>
-</tr>
-</tbody>
-</table>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>List[str]</em></p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -436,8 +409,8 @@ using the <code class="docutils literal notranslate"><span class="pre">[]</span>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -474,7 +447,7 @@ using the <code class="docutils literal notranslate"><span class="pre">[]</span>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

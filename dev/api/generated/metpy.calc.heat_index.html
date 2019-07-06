@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>heat_index &mdash; MetPy 0.9</title>
+  <title>heat_index &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="windchill" href="metpy.calc.windchill.html"/>
         <link rel="prev" title="apparent_temperature" href="metpy.calc.apparent_temperature.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -230,36 +230,31 @@
 <h1>heat_index<a class="headerlink" href="#heat-index" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.heat_index">
-<code class="descclassname">metpy.calc.</code><code class="descname">heat_index</code><span class="sig-paren">(</span><em>temperature</em>, <em>rh</em>, <em>mask_undefined=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#heat_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.heat_index" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">heat_index</code><span class="sig-paren">(</span><em class="sig-param">temperature</em>, <em class="sig-param">rh</em>, <em class="sig-param">mask_undefined=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#heat_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.heat_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the Heat Index from the current temperature and relative humidity.</p>
-<p>The implementation uses the formula outlined in <a class="reference internal" href="../../references.html#rothfusz1990" id="id1">[Rothfusz1990]</a>. This equation is a
-multi-variable least-squares regression of the values obtained in <a class="reference internal" href="../../references.html#steadman1979" id="id2">[Steadman1979]</a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</li>
-<li><strong>rh</strong> (<em>array_like</em>) – The relative humidity expressed as a unitless ratio in the range [0, 1].
-Can also pass a percentage if proper units are attached.</li>
+<p>The implementation uses the formula outlined in <a class="reference internal" href="../../references.html#rothfusz1990" id="id1"><span>[Rothfusz1990]</span></a>. This equation is a
+multi-variable least-squares regression of the values obtained in <a class="reference internal" href="../../references.html#steadman1979" id="id2"><span>[Steadman1979]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</p></li>
+<li><p><strong>rh</strong> (<em>array_like</em>) – The relative humidity expressed as a unitless ratio in the range [0, 1].
+Can also pass a percentage if proper units are attached.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em class="xref py py-obj">pint.Quantity</em> – The corresponding Heat Index value(s)</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><p class="first last"><strong>mask_undefined</strong> (<em>bool, optional</em>) – A flag indicating whether a masked array should be returned with
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The corresponding Heat Index value(s)</p>
+</dd>
+<dt class="field-odd">Other Parameters</dt>
+<dd class="field-odd"><p><strong>mask_undefined</strong> (<em>bool, optional</em>) – A flag indicating whether a masked array should be returned with
 values where heat index is undefined masked.  These are values where
 the temperature &lt; 80F or relative humidity &lt; 40 percent. Defaults
 to <em class="xref py py-obj">True</em>.</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.windchill.html#metpy.calc.windchill" title="metpy.calc.windchill"><code class="xref py py-func docutils literal notranslate"><span class="pre">windchill()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.windchill.html#metpy.calc.windchill" title="metpy.calc.windchill"><code class="xref py py-func docutils literal notranslate"><span class="pre">windchill()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -287,8 +282,8 @@ to <em class="xref py py-obj">True</em>.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -325,7 +320,7 @@ to <em class="xref py py-obj">True</em>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

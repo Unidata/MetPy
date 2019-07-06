@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>virtual_temperature &mdash; MetPy 0.9</title>
+  <title>virtual_temperature &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="wet_bulb_temperature" href="metpy.calc.wet_bulb_temperature.html"/>
         <link rel="prev" title="virtual_potential_temperature" href="metpy.calc.virtual_potential_temperature.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -253,28 +253,24 @@
 <h1>virtual_temperature<a class="headerlink" href="#virtual-temperature" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.virtual_temperature">
-<code class="descclassname">metpy.calc.</code><code class="descname">virtual_temperature</code><span class="sig-paren">(</span><em>temperature</em>, <em>mixing</em>, <em>molecular_weight_ratio=&lt;Quantity(0.6219800858985514</em>, <em>'dimensionless')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#virtual_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.virtual_temperature" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">virtual_temperature</code><span class="sig-paren">(</span><em class="sig-param">temperature</em>, <em class="sig-param">mixing</em>, <em class="sig-param">molecular_weight_ratio=&lt;Quantity(0.6219800858985514</em>, <em class="sig-param">'dimensionless')&gt;</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#virtual_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.virtual_temperature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate virtual temperature.</p>
 <p>This calculation must be given an air parcel’s temperature and mixing ratio.
-The implementation uses the formula outlined in <a class="reference internal" href="../../references.html#hobbs2006" id="id1">[Hobbs2006]</a> pg.80.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The temperature</li>
-<li><strong>mixing</strong> (<em class="xref py py-obj">pint.Quantity</em>) – dimensionless mass mixing ratio</li>
-<li><strong>molecular_weight_ratio</strong> (<em class="xref py py-obj">pint.Quantity</em> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
+The implementation uses the formula outlined in <a class="reference internal" href="../../references.html#hobbs2006" id="id1"><span>[Hobbs2006]</span></a> pg.80.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The temperature</p></li>
+<li><p><strong>mixing</strong> (<em class="xref py py-obj">pint.Quantity</em>) – dimensionless mass mixing ratio</p></li>
+<li><p><strong>molecular_weight_ratio</strong> (<em class="xref py py-obj">pint.Quantity</em> or float, optional) – The ratio of the molecular weight of the constituent gas to that assumed
 for air. Defaults to the ratio for water vapor to dry air.
-(<span class="math notranslate nohighlight">\(\epsilon\approx0.622\)</span>).</li>
+(<span class="math notranslate nohighlight">\(\epsilon\approx0.622\)</span>).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em class="xref py py-obj">pint.Quantity</em> – The corresponding virtual temperature of the parcel</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The corresponding virtual temperature of the parcel</p>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <div class="math notranslate nohighlight">
 \[T_v = T \frac{\text{w} + \epsilon}{\epsilon\,(1 + \text{w})}\]</div>
@@ -304,8 +300,8 @@ for air. Defaults to the ratio for water vapor to dry air.
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -342,7 +338,7 @@ for air. Defaults to the ratio for water vapor to dry air.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

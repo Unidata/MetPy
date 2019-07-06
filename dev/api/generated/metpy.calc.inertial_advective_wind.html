@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>inertial_advective_wind &mdash; MetPy 0.9</title>
+  <title>inertial_advective_wind &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="kinematic_flux" href="metpy.calc.kinematic_flux.html"/>
         <link rel="prev" title="geostrophic_wind" href="metpy.calc.geostrophic_wind.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -249,7 +249,7 @@
 <h1>inertial_advective_wind<a class="headerlink" href="#inertial-advective-wind" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.inertial_advective_wind">
-<code class="descclassname">metpy.calc.</code><code class="descname">inertial_advective_wind</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>u_geostrophic</em>, <em>v_geostrophic</em>, <em>dx</em>, <em>dy</em>, <em>lats</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#inertial_advective_wind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.inertial_advective_wind" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">inertial_advective_wind</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">u_geostrophic</em>, <em class="sig-param">v_geostrophic</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em>, <em class="sig-param">lats</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#inertial_advective_wind"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.inertial_advective_wind" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the inertial advective wind.</p>
 <div class="math notranslate nohighlight">
 \[\frac{\hat k}{f} \times (\vec V \cdot \nabla)\hat V_g\]</div>
@@ -262,33 +262,29 @@
 \frac{\partial v_g}{\partial y} \right) \right] \hat i + \left[ \frac{1}{f}
 \left( u \frac{\partial u_g}{\partial x} + v \frac{\partial u_g}{\partial y}
 \right) \right] \hat j\]</div>
-<p>This formula is based on equation 27 of <a class="reference internal" href="../../references.html#rochette2006" id="id1">[Rochette2006]</a>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the advecting wind</li>
-<li><strong>v</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the advecting wind</li>
-<li><strong>u_geostrophic</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the geostrophic (advected) wind</li>
-<li><strong>v_geostrophic</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the geostrophic (advected) wind</li>
-<li><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis.</li>
-<li><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis.</li>
-<li><strong>lats</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – latitudes of the wind data</li>
+<p>This formula is based on equation 27 of <a class="reference internal" href="../../references.html#rochette2006" id="id1"><span>[Rochette2006]</span></a>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the advecting wind</p></li>
+<li><p><strong>v</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the advecting wind</p></li>
+<li><p><strong>u_geostrophic</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the geostrophic (advected) wind</p></li>
+<li><p><strong>v_geostrophic</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the geostrophic (advected) wind</p></li>
+<li><p><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
+<li><p><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
+<li><p><strong>lats</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – latitudes of the wind data</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><ul class="simple">
-<li><em>(M, N) ndarray</em> – x component of inertial advective wind</li>
-<li><em>(M, N) ndarray</em> – y component of inertial advective wind</li>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><ul class="simple">
+<li><p><em>(M, N) ndarray</em> – x component of inertial advective wind</p></li>
+<li><p><em>(M, N) ndarray</em> – y component of inertial advective wind</p></li>
 </ul>
 </p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>Many forms of the inertial advective wind assume the advecting and advected
 wind to both be the geostrophic wind. To do so, pass the x and y components
@@ -321,8 +317,8 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -359,7 +355,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

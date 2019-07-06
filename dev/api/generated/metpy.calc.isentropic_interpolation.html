@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>isentropic_interpolation &mdash; MetPy 0.9</title>
+  <title>isentropic_interpolation &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="nearest_intersection_idx" href="metpy.calc.nearest_intersection_idx.html"/>
         <link rel="prev" title="get_perturbation" href="metpy.calc.get_perturbation.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -239,56 +239,51 @@
 <h1>isentropic_interpolation<a class="headerlink" href="#isentropic-interpolation" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.isentropic_interpolation">
-<code class="descclassname">metpy.calc.</code><code class="descname">isentropic_interpolation</code><span class="sig-paren">(</span><em>theta_levels</em>, <em>pressure</em>, <em>temperature</em>, <em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#isentropic_interpolation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.isentropic_interpolation" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">isentropic_interpolation</code><span class="sig-paren">(</span><em class="sig-param">theta_levels</em>, <em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#isentropic_interpolation"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.isentropic_interpolation" title="Permalink to this definition">¶</a></dt>
 <dd><p>Interpolate data in isobaric coordinates to isentropic coordinates.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>theta_levels</strong> (<em>array</em>) – One-dimensional array of desired theta surfaces</li>
-<li><strong>pressure</strong> (<em>array</em>) – One-dimensional array of pressure levels</li>
-<li><strong>temperature</strong> (<em>array</em>) – Array of temperature</li>
-<li><strong>args</strong> (<em>array</em><em>, </em><em>optional</em>) – Any additional variables will be interpolated to each isentropic level.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>theta_levels</strong> (<em>array</em>) – One-dimensional array of desired theta surfaces</p></li>
+<li><p><strong>pressure</strong> (<em>array</em>) – One-dimensional array of pressure levels</p></li>
+<li><p><strong>temperature</strong> (<em>array</em>) – Array of temperature</p></li>
+<li><p><strong>args</strong> (<em>array</em><em>, </em><em>optional</em>) – Any additional variables will be interpolated to each isentropic level.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><em>list</em> – List with pressure at each isentropic level, followed by each additional
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>list</em> – List with pressure at each isentropic level, followed by each additional
 argument interpolated to isentropic coordinates.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name" colspan="2">Other Parameters:</th></tr>
-<tr class="field-odd field"><td>&#160;</td><td class="field-body"><ul class="first last simple">
-<li><strong>axis</strong> (<em>int, optional</em>) – The axis corresponding to the vertical in the temperature array, defaults to 0.</li>
-<li><strong>tmpk_out</strong> (<em>bool, optional</em>) – If true, will calculate temperature and output as the last item in the output list.
-Defaults to False.</li>
-<li><strong>max_iters</strong> (<em>int, optional</em>) – The maximum number of iterations to use in calculation, defaults to 50.</li>
-<li><strong>eps</strong> (<em>float, optional</em>) – The desired absolute error in the calculated value, defaults to 1e-6.</li>
-<li><strong>bottom_up_search</strong> (<em>bool, optional</em>) – Controls whether to search for theta levels bottom-up, or top-down. Defaults to
-True, which is bottom-up search.</li>
+</dd>
+<dt class="field-odd">Other Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>axis</strong> (<em>int, optional</em>) – The axis corresponding to the vertical in the temperature array, defaults to 0.</p></li>
+<li><p><strong>tmpk_out</strong> (<em>bool, optional</em>) – If true, will calculate temperature and output as the last item in the output list.
+Defaults to False.</p></li>
+<li><p><strong>max_iters</strong> (<em>int, optional</em>) – The maximum number of iterations to use in calculation, defaults to 50.</p></li>
+<li><p><strong>eps</strong> (<em>float, optional</em>) – The desired absolute error in the calculated value, defaults to 1e-6.</p></li>
+<li><p><strong>bottom_up_search</strong> (<em>bool, optional</em>) – Controls whether to search for theta levels bottom-up, or top-down. Defaults to
+True, which is bottom-up search.</p></li>
 </ul>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+</dl>
 <p class="rubric">Notes</p>
 <p>Input variable arrays must have the same number of vertical levels as the pressure levels
 array. Pressure is calculated on isentropic surfaces by assuming that temperature varies
 linearly with the natural log of pressure. Linear interpolation is then used in the
 vertical to find the pressure at each isentropic level. Interpolation method from
-<a class="reference internal" href="../../references.html#ziv1994" id="id1">[Ziv1994]</a>. Any additional arguments are assumed to vary linearly with temperature and will
+<a class="reference internal" href="../../references.html#ziv1994" id="id1"><span>[Ziv1994]</span></a>. Any additional arguments are assumed to vary linearly with temperature and will
 be linearly interpolated to the new isentropic levels.</p>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">potential_temperature()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.potential_temperature.html#metpy.calc.potential_temperature" title="metpy.calc.potential_temperature"><code class="xref py py-func docutils literal notranslate"><span class="pre">potential_temperature()</span></code></a></p>
 </div>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-calc-isentropic-interpolation">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.isentropic_interpolation</span></code><a class="headerlink" href="#examples-using-metpy-calc-isentropic-interpolation" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="The MetPy function `mpcalc.isentropic_interpolation` allows for isentropic analysis from model ..."><div class="figure" id="id2">
+<div class="sphx-glr-thumbcontainer" tooltip="The MetPy function mpcalc.isentropic_interpolation allows for isentropic analysis from model an..."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_isentropic_example_thumb.png" src="../../_images/sphx_glr_isentropic_example_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/isentropic_example.html#sphx-glr-examples-isentropic-example-py"><span class="std std-ref">Isentropic Analysis</span></a></span></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/isentropic_example.html#sphx-glr-examples-isentropic-example-py"><span class="std std-ref">Isentropic Analysis</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -315,8 +310,8 @@ be linearly interpolated to the new isentropic levels.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -353,7 +348,7 @@ be linearly interpolated to the new isentropic levels.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

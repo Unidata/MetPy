@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>q_vector &mdash; MetPy 0.9</title>
+  <title>q_vector &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="shearing_deformation" href="metpy.calc.shearing_deformation.html"/>
         <link rel="prev" title="potential_vorticity_barotropic" href="metpy.calc.potential_vorticity_barotropic.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -249,7 +249,7 @@
 <h1>q_vector<a class="headerlink" href="#q-vector" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.q_vector">
-<code class="descclassname">metpy.calc.</code><code class="descname">q_vector</code><span class="sig-paren">(</span><em>u</em>, <em>v</em>, <em>temperature</em>, <em>pressure</em>, <em>dx</em>, <em>dy</em>, <em>static_stability=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#q_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.q_vector" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">q_vector</code><span class="sig-paren">(</span><em class="sig-param">u</em>, <em class="sig-param">v</em>, <em class="sig-param">temperature</em>, <em class="sig-param">pressure</em>, <em class="sig-param">dx</em>, <em class="sig-param">dy</em>, <em class="sig-param">static_stability=1</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/kinematics.html#q_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.q_vector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate Q-vector at a given pressure level using the u, v winds and temperature.</p>
 <div class="math notranslate nohighlight">
 \[\vec{Q} = (Q_1, Q_2)
@@ -257,40 +257,36 @@
          \frac{\partial \vec{v}_g}{\partial x} \cdot \nabla_p T,
          \frac{\partial \vec{v}_g}{\partial y} \cdot \nabla_p T
      \right)\]</div>
-<p>This formula follows equation 5.7.55 from <a class="reference internal" href="../../references.html#bluestein1992" id="id1">[Bluestein1992]</a>, and can be used with the
+<p>This formula follows equation 5.7.55 from <a class="reference internal" href="../../references.html#bluestein1992" id="id1"><span>[Bluestein1992]</span></a>, and can be used with the
 the below form of the quasigeostrophic omega equation to assess vertical motion
-(<a class="reference internal" href="../../references.html#bluestein1992" id="id2">[Bluestein1992]</a> equation 5.7.54):</p>
+(<a class="reference internal" href="../../references.html#bluestein1992" id="id2"><span>[Bluestein1992]</span></a> equation 5.7.54):</p>
 <div class="math notranslate nohighlight">
 \[\left( \nabla_p^2 + \frac{f_0^2}{\sigma} \frac{\partial^2}{\partial p^2}
     \right) \omega =
 - 2 \nabla_p \cdot \vec{Q} -
     \frac{R}{\sigma p} \beta \frac{\partial T}{\partial x}.\]</div>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>u</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the wind (geostrophic in QG-theory)</li>
-<li><strong>v</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the wind (geostrophic in QG-theory)</li>
-<li><strong>temperature</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – Array of temperature at pressure level</li>
-<li><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Pressure at level</li>
-<li><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis.</li>
-<li><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
-the size of <em class="xref py py-obj">u</em> along the applicable axis.</li>
-<li><strong>static_stability</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The static stability at the pressure level. Defaults to 1 if not given to calculate
-the Q-vector without factoring in static stability.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>u</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – x component of the wind (geostrophic in QG-theory)</p></li>
+<li><p><strong>v</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – y component of the wind (geostrophic in QG-theory)</p></li>
+<li><p><strong>temperature</strong> (<em>(</em><em>M</em><em>, </em><em>N</em><em>) </em><em>ndarray</em>) – Array of temperature at pressure level</p></li>
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Pressure at level</p></li>
+<li><p><strong>dx</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the x-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
+<li><p><strong>dy</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><em>ndarray</em>) – The grid spacing(s) in the y-direction. If an array, there should be one item less than
+the size of <em class="xref py py-obj">u</em> along the applicable axis.</p></li>
+<li><p><strong>static_stability</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The static stability at the pressure level. Defaults to 1 if not given to calculate
+the Q-vector without factoring in static stability.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>tuple of (M, N) ndarrays</em> – The components of the Q-vector in the u- and v-directions respectively</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple of (M, N) ndarrays</em> – The components of the Q-vector in the u- and v-directions respectively</p>
+</dd>
+</dl>
 <div class="admonition seealso">
-<p class="first admonition-title">See also</p>
-<p class="last"><a class="reference internal" href="metpy.calc.static_stability.html#metpy.calc.static_stability" title="metpy.calc.static_stability"><code class="xref py py-func docutils literal notranslate"><span class="pre">static_stability()</span></code></a></p>
+<p class="admonition-title">See also</p>
+<p><a class="reference internal" href="metpy.calc.static_stability.html#metpy.calc.static_stability" title="metpy.calc.static_stability"><code class="xref py py-func docutils literal notranslate"><span class="pre">static_stability()</span></code></a></p>
 </div>
 <p class="rubric">Notes</p>
 <p>If inputs have more than two dimensions, they are assumed to have either leading dimensions
@@ -321,8 +317,8 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -359,7 +355,7 @@ of (x, y) or trailing dimensions of (y, x), depending on the value of <code clas
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

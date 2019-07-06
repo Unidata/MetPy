@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>significant_tornado &mdash; MetPy 0.9</title>
+  <title>significant_tornado &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="storm_relative_helicity" href="metpy.calc.storm_relative_helicity.html"/>
         <link rel="prev" title="parcel_profile_with_lcl" href="metpy.calc.parcel_profile_with_lcl.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -244,13 +244,13 @@
 <h1>significant_tornado<a class="headerlink" href="#significant-tornado" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.significant_tornado">
-<code class="descclassname">metpy.calc.</code><code class="descname">significant_tornado</code><span class="sig-paren">(</span><em>sbcape</em>, <em>surface_based_lcl_height</em>, <em>storm_helicity_1km</em>, <em>shear_6km</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/indices.html#significant_tornado"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.significant_tornado" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">significant_tornado</code><span class="sig-paren">(</span><em class="sig-param">sbcape</em>, <em class="sig-param">surface_based_lcl_height</em>, <em class="sig-param">storm_helicity_1km</em>, <em class="sig-param">shear_6km</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/indices.html#significant_tornado"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.significant_tornado" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the significant tornado parameter (fixed layer).</p>
 <p>The significant tornado parameter is designed to identify
 environments favorable for the production of significant
 tornadoes contingent upon the development of supercells.
 It’s calculated according to the formula used on the SPC
-mesoanalysis page, updated in <a class="reference internal" href="../../references.html#thompson2004" id="id1">[Thompson2004]</a>:</p>
+mesoanalysis page, updated in <a class="reference internal" href="../../references.html#thompson2004" id="id1"><span>[Thompson2004]</span></a>:</p>
 <div class="math notranslate nohighlight">
 \[\text{SIGTOR} = \frac{\text{SBCAPE}}{1500 \text{J/kg}} * \frac{(2000 \text{m} -
 \text{LCL}_\text{SB})}{1000 \text{m}} *
@@ -260,23 +260,19 @@ mesoanalysis page, updated in <a class="reference internal" href="../../referenc
 capped at 1 when below 1000m, and the shr6 term is set to 0
 when shr6 is below 12.5 m/s and maxed out at 1.5 when shr6
 exceeds 30 m/s.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>sbcape</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Surface-based CAPE</li>
-<li><strong>surface_based_lcl_height</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Surface-based lifted condensation level</li>
-<li><strong>storm_helicity_1km</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Surface-1km storm-relative helicity</li>
-<li><strong>shear_6km</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Surface-6km bulk shear</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>sbcape</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Surface-based CAPE</p></li>
+<li><p><strong>surface_based_lcl_height</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Surface-based lifted condensation level</p></li>
+<li><p><strong>storm_helicity_1km</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Surface-1km storm-relative helicity</p></li>
+<li><p><strong>shear_6km</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Surface-6km bulk shear</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><em>array-like</em> – significant tornado parameter</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>array-like</em> – significant tornado parameter</p>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -303,8 +299,8 @@ exceeds 30 m/s.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -341,7 +337,7 @@ exceeds 30 m/s.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

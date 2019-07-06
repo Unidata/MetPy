@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>add_unidata_logo &mdash; MetPy 0.9</title>
+  <title>add_unidata_logo &mdash; MetPy 0.10</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.9" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="convert_gempak_color" href="metpy.plots.convert_gempak_color.html"/>
         <link rel="prev" title="add_timestamp" href="metpy.plots.add_timestamp.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.9</option>
+                      <option value=''>0.10</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -230,28 +230,24 @@
 <h1>add_unidata_logo<a class="headerlink" href="#add-unidata-logo" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.plots.add_unidata_logo">
-<code class="descclassname">metpy.plots.</code><code class="descname">add_unidata_logo</code><span class="sig-paren">(</span><em>fig</em>, <em>x=10</em>, <em>y=25</em>, <em>zorder=100</em>, <em>size='small'</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/_util.html#add_unidata_logo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.add_unidata_logo" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">add_unidata_logo</code><span class="sig-paren">(</span><em class="sig-param">fig</em>, <em class="sig-param">x=10</em>, <em class="sig-param">y=25</em>, <em class="sig-param">zorder=100</em>, <em class="sig-param">size='small'</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/_util.html#add_unidata_logo"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.add_unidata_logo" title="Permalink to this definition">¶</a></dt>
 <dd><p>Add the Unidata logo to a figure.</p>
 <p>Adds an image of the MetPy logo to the figure.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>fig</strong> (<a class="reference external" href="https://matplotlib.org/api/figure_api.html#module-matplotlib.figure" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.figure</span></code></a>) – The <em class="xref py py-obj">figure</em> instance used for plotting</li>
-<li><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – x position padding in pixels</li>
-<li><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – y position padding in pixels</li>
-<li><strong>zorder</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The zorder of the logo</li>
-<li><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Size of logo to be used. Can be ‘small’ for 75 px square or ‘large’ for
-150 px square.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fig</strong> (<a class="reference external" href="https://matplotlib.org/api/figure_api.html#module-matplotlib.figure" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.figure</span></code></a>) – The <em class="xref py py-obj">figure</em> instance used for plotting</p></li>
+<li><p><strong>x</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – x position padding in pixels</p></li>
+<li><p><strong>y</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – y position padding in pixels</p></li>
+<li><p><strong>zorder</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The zorder of the logo</p></li>
+<li><p><strong>size</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Size of logo to be used. Can be ‘small’ for 75 px square or ‘large’ for
+150 px square.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/image_api.html#matplotlib.image.FigureImage" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.image.FigureImage</span></code></a> – The <a class="reference external" href="https://matplotlib.org/api/image_api.html#matplotlib.image.FigureImage" title="(in Matplotlib v3.0.2)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.image.FigureImage</span></code></a> instance created</p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><a class="reference external" href="https://matplotlib.org/api/image_api.html#matplotlib.image.FigureImage" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.image.FigureImage</span></code></a> – The <a class="reference external" href="https://matplotlib.org/api/image_api.html#matplotlib.image.FigureImage" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.image.FigureImage</span></code></a> instance created</p>
+</dd>
+</dl>
 </dd></dl>
 
 <div style='clear:both'></div></div>
@@ -278,8 +274,8 @@
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2017, MetPy Developers.
-      Last updated on Jan 06, 2019 at 02:18:28.
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Jul 06, 2019 at 20:25:37.
 
     </p>
   </div>
@@ -316,7 +312,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.9.1+87.gcee9d4d',
+            VERSION:'0.10.0+15.gcdfad57',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
