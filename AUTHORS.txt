@@ -15,6 +15,7 @@ Eric Bruning
 John Leeman
 Jon Thielen
 Jonathan Helmus
+Joy Monteiro
 Kevin Goebbert
 Kishan Mehta
 Kristen Pozsonyi
@@ -24,11 +25,15 @@ Matt Wilson
 Michael James
 Nathan Wendt
 Patrick Marsh
+Raul Mendez
 Ryan May
 Sean Arms
 Shawn Murdzek
 Stefan Hofer
+Steven Decker
+Tim Supinie
 Tyler Wixtrom
+Varden Nadkarni
 Warren Pettee
 Will Holmgren
 Zach Bruick
