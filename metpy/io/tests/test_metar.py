@@ -35,8 +35,8 @@ def test_all_weather_given():
     BKN015 OVC030 OVC040 22/21 A2987 RMK SHRAB35E44 SLP114 VCSH S-NW P0000 60021 70021 \
     T02220206 10256 20211 55000=')
     assert df.station_id.values == 'RJOI'
-    assert_almost_equal(df.latitude.values, 34.14, decimal = 2)
-    assert_almost_equal(df.longitude.values, 132.24, decimal = 2)
+    assert_almost_equal(df.latitude.values, 34.14, decimal=2)
+    assert_almost_equal(df.longitude.values, 132.24, decimal=2)
     assert df.current_wx1.values == '-SHRA'
     assert df.current_wx2.values == 'BR'
     assert df.current_wx3.values == 'VCSH'
@@ -71,9 +71,10 @@ def test_vertical_vis():
     A1013 RMK AO2 SLP151 70043 T01390133 10139 20094 53002=')
     assert df.skyc1.values == 'VV'
 
+
 def test_date_time_given():
     df = metar.parse_metar_to_pandas('K6B0 261200Z AUTO 00000KT 10SM CLR 20/M17 A3002 \
-    RMK AO2 T01990165=', year= 2019, month = 6)
+    RMK AO2 T01990165=', year=2019, month=6)
     assert_equal(df['date_time'][0], datetime(2019, 6, 26, 12))
 
 
