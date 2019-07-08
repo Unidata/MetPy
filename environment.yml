@@ -8,7 +8,7 @@ dependencies:
   - numpy
   - scipy
   - matplotlib
-  - pint!=0.9
+  - pint
   - netcdf4
   - xarray
   - pandas
@@ -35,4 +35,4 @@ dependencies:
   - cartopy
   - doc8
   - m2r
-  - pooch>=0.1, <0.3
+  - pooch>=0.1

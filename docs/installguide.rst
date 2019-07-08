@@ -42,7 +42,7 @@ currently supporting Python 2.7.
 * xarray >= 0.10.7
 * traitlets >= 4.3.0
 * enum34 (for python < 3.4)
-* pooch >= 0.1, < 0.3
+* pooch >= 0.1
 
 ------------
 Installation
