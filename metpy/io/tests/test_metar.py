@@ -1,6 +1,5 @@
 from metpy.io import metar, surface_station_data
-from metpy.units import units
-from numpy.testing import assert_array_almost_equal, assert_almost_equal, assert_equal
+from numpy.testing import assert_almost_equal, assert_equal
 import numpy as np
 from datetime import datetime
 
@@ -29,10 +28,6 @@ def test_few_clouds_():
     assert df.cloudcover.values == 2
     assert_almost_equal(df.wind_direction.values, np.nan)
     assert_almost_equal(df.wind_speed.values, np.nan)
-
-
-def test_var_wind():
-    df = metar.parse_metar_to_pandas
 
 
 def test_all_weather_given():

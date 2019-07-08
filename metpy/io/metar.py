@@ -333,7 +333,6 @@ month = datetime.now().month):
 
     """
 
-    from datetime import datetime
     station_metadata = station_dict
 
     # Decode the data using the parser (built using Canopy)
@@ -578,8 +577,8 @@ def text_file_parse(file, year = datetime.now().year, month = datetime.now().mon
     for metar in list_values:
         if len(metar) > 25:
             metars.append(metar)
-    else:
-        None
+        else:
+            None
 
     #Create a dictionary with all the station name, locations, and elevations
     master = surface_station_data.station_dict()
@@ -680,13 +679,11 @@ def text_file_parse(file, year = datetime.now().year, month = datetime.now().mon
     'altimeter':altim, 'current_wx1_symbol':current_wx2_symbol,
     'current_wx2_symbol':current_wx2_symbol, 'current_wx3_symbol':current_wx3_symbol})
 
-    try:
-        df['sea_level_pressure'] = altimeter_to_sea_level_pressure(
-        altim * units('inHg'),
-        elev * units('meters'),
-        temp * units('degC')).magnitude
-    except:
-        df['sea_level_pressure'] = [np.nan]
+    df['sea_level_pressure'] = altimeter_to_sea_level_pressure(
+    altim * units('inHg'),
+    elev * units('meters'),
+    temp * units('degC')).magnitude
+
     #Drop duplicates
     df = df.drop_duplicates(subset = ['date_time','latitude', 'longitude'], keep = 'last')
 

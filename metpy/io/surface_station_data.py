@@ -133,7 +133,7 @@ class StationLookup:
         self.sources.append(('airport', read_airports_file()))
         self.sites = defaultdict(set)
 
-    def __call__(self, stid):
+    def call(self, stid):
         for name, table in self.sources:
             if stid in table:
                 self.sites[name].add(stid)
