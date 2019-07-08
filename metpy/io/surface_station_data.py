@@ -152,21 +152,3 @@ def station_dict():
     for station in StationLookup().sources:
         master = {**master, **station[1]}
     return master
-
-
-if __name__ == '__main__':
-    import argparse
-
-    parser = argparse.ArgumentParser(description='Read in station tables and dump out a few'
-                                                 'in GEMPAK format.')
-    parser.add_argument('stations', nargs='+', type=str, help='Stations to write out')
-    args = parser.parse_args()
-
-    lookup = StationLookup()
-    stations = [lookup(stid) for stid in args.stations]
-    for station in sorted(stations, key=lambda s: (s.country, s.state, s.name)):
-        print('{0.id:9}{3:<7}{0.name:33}{0.state:3}{0.country:2}{1:>6.0f}{2:>7.0f}'
-              '{0.altitude:>6}  0'.format(station, station.latitude * 100,
-                                          station.longitude * 100,
-                                          station.synop_id if station.synop_id else '999999')
-              .upper())
