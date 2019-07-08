@@ -142,7 +142,7 @@ class StationLookup:
         log.warning('Missing station: %s', stid)
         raise KeyError('')
 
-    def __str__(self):
+    def str(self):
         return '\n'.join('{0}: ({1}) {2}'.format(s, len(v), ' '.join(str(i) for i in v))
                          for s, v in self.sites.items())
 
