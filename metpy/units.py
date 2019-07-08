@@ -18,6 +18,7 @@ from __future__ import division
 
 import functools
 import logging
+import warnings
 
 import numpy as np
 import pint
@@ -45,6 +46,10 @@ try:
     units._units['gpm'] = units._units['meter']
 except AttributeError:
     log.warning('Failed to add gpm alias to meters.')
+
+# Silence UnitStrippedWarning
+if hasattr(pint, 'UnitStrippedWarning'):
+    warnings.simplefilter('ignore', category=pint.UnitStrippedWarning)
 
 
 def pandas_dataframe_to_unit_arrays(df, column_units=None):
@@ -317,7 +322,7 @@ def check_units(*units_by_pos, **units_by_name):
 try:
     # Try to enable pint's built-in support
     units.setup_matplotlib()
-except (AttributeError, RuntimeError):  # Pint's not available, try to enable our own
+except (AttributeError, RuntimeError, ImportError):  # Pint's not available, try our own
     import matplotlib.units as munits
 
     # Inheriting from object fixes the fact that matplotlib 1.4 doesn't

@@ -7,6 +7,11 @@ Contain tools for making Skew-T Log-P plots, including the base plotting class,
 `SkewT`, as well as a class for making a `Hodograph`.
 """
 
+try:
+    from contextlib import ExitStack
+except ImportError:
+    from contextlib2 import ExitStack
+
 import matplotlib
 from matplotlib.axes import Axes
 import matplotlib.axis as maxis
@@ -37,69 +42,31 @@ class SkewXTick(maxis.XTick):
     and draw as appropriate. It also performs similar checking for gridlines.
     """
 
-    def update_position(self, loc):
-        """Set the location of tick in data coords with scalar *loc*."""
-        # This ensures that the new value of the location is set before
-        # any other updates take place.
-        self._loc = loc
-        super(SkewXTick, self).update_position(loc)
-
-    def _has_default_loc(self):
-        return self.get_loc() is None
-
-    def _need_lower(self):
-        return (self._has_default_loc()
-                or transforms.interval_contains(self.axes.lower_xlim, self.get_loc()))
-
-    def _need_upper(self):
-        return (self._has_default_loc()
-                or transforms.interval_contains(self.axes.upper_xlim, self.get_loc()))
-
-    @property
-    def gridOn(self):  # noqa: N802
-        """Control whether the gridline is drawn for this tick."""
-        return (self._gridOn and (self._has_default_loc()
-                or transforms.interval_contains(self.get_view_interval(), self.get_loc())))
-
-    @gridOn.setter
-    def gridOn(self, value):  # noqa: N802
-        self._gridOn = value
-
-    @property
-    def tick1On(self):  # noqa: N802
-        """Control whether the lower tick mark is drawn for this tick."""
-        return self._tick1On and self._need_lower()
-
-    @tick1On.setter
-    def tick1On(self, value):  # noqa: N802
-        self._tick1On = value
-
-    @property
-    def label1On(self):  # noqa: N802
-        """Control whether the lower tick label is drawn for this tick."""
-        return self._label1On and self._need_lower()
-
-    @label1On.setter
-    def label1On(self, value):  # noqa: N802
-        self._label1On = value
-
-    @property
-    def tick2On(self):  # noqa: N802
-        """Control whether the upper tick mark is drawn for this tick."""
-        return self._tick2On and self._need_upper()
-
-    @tick2On.setter
-    def tick2On(self, value):  # noqa: N802
-        self._tick2On = value
-
-    @property
-    def label2On(self):  # noqa: N802
-        """Control whether the upper tick label is drawn for this tick."""
-        return self._label2On and self._need_upper()
-
-    @label2On.setter
-    def label2On(self, value):  # noqa: N802
-        self._label2On = value
+    # Taken from matplotlib's SkewT example to update for matplotlib 3.1's changes to
+    # state management for ticks. See matplotlib/matplotlib#10088
+    def draw(self, renderer):
+        """Draw the tick."""
+        # When adding the callbacks with `stack.callback`, we fetch the current
+        # visibility state of the artist with `get_visible`; the ExitStack will
+        # restore these states (`set_visible`) at the end of the block (after
+        # the draw).
+        with ExitStack() as stack:
+            for artist in [self.gridline, self.tick1line, self.tick2line,
+                           self.label1, self.label2]:
+                stack.callback(artist.set_visible, artist.get_visible())
+            needs_lower = transforms.interval_contains(
+                self.axes.lower_xlim, self.get_loc())
+            needs_upper = transforms.interval_contains(
+                self.axes.upper_xlim, self.get_loc())
+            self.tick1line.set_visible(
+                self.tick1line.get_visible() and needs_lower)
+            self.label1.set_visible(
+                self.label1.get_visible() and needs_lower)
+            self.tick2line.set_visible(
+                self.tick2line.get_visible() and needs_upper)
+            self.label2.set_visible(
+                self.label2.get_visible() and needs_upper)
+            super(SkewXTick, self).draw(renderer)
 
     def get_view_interval(self):
         """Get the view interval."""
@@ -168,7 +135,7 @@ class SkewXAxes(Axes):
         """
         # This needs to be popped and set before moving on
         self.rot = kwargs.pop('rotation', 30)
-        Axes.__init__(self, *args, **kwargs)
+        super(Axes, self).__init__(*args, **kwargs)
 
     def _init_axis(self):
         # Taken from Axes and modified to use our modified X-axis
@@ -195,7 +162,7 @@ class SkewXAxes(Axes):
 
         """
         # Get the standard transform setup from the Axes base class
-        Axes._set_lim_and_transforms(self)
+        super(Axes, self)._set_lim_and_transforms()
 
         # Need to put the skew in the middle, after the scale and limits,
         # but before the transAxes. This way, the skew is done in Axes

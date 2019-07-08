@@ -10,10 +10,8 @@ import re
 import warnings
 
 import xarray as xr
-from xarray.core.accessors import DatetimeAccessor
-from xarray.core.indexing import expanded_indexer
-from xarray.core.utils import either_dict_or_kwargs, is_dict_like
 
+from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
 from .units import DimensionalityError, units
 
 __all__ = []
@@ -475,17 +473,21 @@ def check_matching_coordinates(func):
     return wrapper
 
 
-# If DatetimeAccessor does not have a strftime, monkey patch one in
-if not hasattr(DatetimeAccessor, 'strftime'):
-    def strftime(self, date_format):
-        """Format time as a string."""
-        import pandas as pd
-        values = self._obj.data
-        values_as_series = pd.Series(values.ravel())
-        strs = values_as_series.dt.strftime(date_format)
-        return strs.values.reshape(values.shape)
+# If DatetimeAccessor does not have a strftime (xarray <0.12.2), monkey patch one in
+try:
+    from xarray.core.accessors import DatetimeAccessor
+    if not hasattr(DatetimeAccessor, 'strftime'):
+        def strftime(self, date_format):
+            """Format time as a string."""
+            import pandas as pd
+            values = self._obj.data
+            values_as_series = pd.Series(values.ravel())
+            strs = values_as_series.dt.strftime(date_format)
+            return strs.values.reshape(values.shape)
 
-    DatetimeAccessor.strftime = strftime
+        DatetimeAccessor.strftime = strftime
+except ImportError:
+    pass
 
 
 def _reassign_quantity_indexer(data, indexers):

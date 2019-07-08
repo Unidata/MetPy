@@ -507,6 +507,24 @@ def test_data_array_loc_set_with_units(test_var):
     assert not np.isnan(temperature.loc[:, 700.]).any()
 
 
+def test_data_array_loc_with_ellipsis(test_var):
+    """Test the .loc indexer using multiple Ellipses to verify expansion behavior."""
+    truth = test_var[:, :, -1, :]
+    assert truth.identical(test_var.metpy.loc[..., 711.3653535503963 * units.km, ...])
+
+
+def test_data_array_loc_non_tuple(test_var):
+    """Test the .loc indexer with a non-tuple indexer."""
+    truth = test_var[-1]
+    assert truth.identical(test_var.metpy.loc['1987-04-04T18:00'])
+
+
+def test_data_array_loc_too_many_indices(test_var):
+    """Test the .loc indexer when too many indices are given."""
+    with pytest.raises(IndexError):
+        test_var.metpy.loc[:, 8.5e4 * units.Pa, :, :, :]
+
+
 def test_data_array_sel_dict_with_units(test_var):
     """Test .sel on the metpy accessor with dictionary."""
     truth = test_var.squeeze().loc[500.]
@@ -536,6 +554,21 @@ def test_dataset_sel_kwargs_with_units(test_ds):
     assert truth.identical(test_ds.metpy.sel(time='1987-04-04T18:00:00', y=-1.464e6 * units.m,
                                              x=-17. * units.km, tolerance=1.,
                                              method='nearest'))
+
+
+def test_dataset_sel_non_dict_pos_arg(test_ds):
+    """Test that .sel errors when first positional argument is not a dict."""
+    with pytest.raises(ValueError) as exc:
+        test_ds.metpy.sel('1987-04-04T18:00:00')
+    assert 'must be a dictionary' in str(exc.value)
+
+
+def test_dataset_sel_mixed_dict_and_kwarg(test_ds):
+    """Test that .sel errors when dict positional argument and kwargs are mixed."""
+    with pytest.raises(ValueError) as exc:
+        test_ds.metpy.sel({'isobaric': slice(8.5e4 * units.Pa, 5e4 * units.Pa)},
+                          time='1987-04-04T18:00:00')
+    assert 'cannot specify both keyword and positional arguments' in str(exc.value)
 
 
 def test_dataset_loc_without_dict(test_ds):

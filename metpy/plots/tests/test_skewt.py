@@ -17,7 +17,7 @@ from metpy.units import units
 MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.021, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.224, remove_text=True)
 def test_skewt_api():
     """Test the SkewT API."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -87,7 +87,8 @@ def test_profile():
     return np.linspace(1000, 100, 10), np.linspace(20, -20, 10), np.linspace(25, -30, 10)
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2.0': 1.12}.get(MPL_VERSION, 0.), remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'2.0': 1.12}.get(MPL_VERSION, 0.2432),
+                               remove_text=True)
 def test_skewt_shade_cape_cin(test_profile):
     """Test shading CAPE and CIN on a SkewT plot."""
     p, t, tp = test_profile
@@ -104,7 +105,8 @@ def test_skewt_shade_cape_cin(test_profile):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.70}.get(MPL_VERSION, 0.), remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.70}.get(MPL_VERSION, 0.2432),
+                               remove_text=True)
 def test_skewt_shade_area(test_profile):
     """Test shading areas on a SkewT plot."""
     p, t, tp = test_profile
@@ -131,7 +133,8 @@ def test_skewt_shade_area_invalid(test_profile):
         skew.shade_area(p, t, tp, which='positve')
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.75}.get(MPL_VERSION, 0.), remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.75}.get(MPL_VERSION, 0.2432),
+                               remove_text=True)
 def test_skewt_shade_area_kwargs(test_profile):
     """Test shading areas on a SkewT plot with kwargs."""
     p, t, tp = test_profile
@@ -208,7 +211,7 @@ def test_skewt_barb_color():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2.0': 0.2}.get(MPL_VERSION, 0), remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.2, remove_text=True)
 def test_skewt_barb_unit_conversion():
     """Test that barbs units can be converted at plot time (#737)."""
     u_wind = np.array([3.63767155210412]) * units('m/s')
