@@ -39,4 +39,5 @@ exclude_patterns:
 - "metpy/io/_nexrad_msgs/msg*.py"
 - "metpy/io/metar_parse.peg"
 - "metpy/io/metar_parse.py"
+- "metpy/io/metar.py"
 - "docs/**/*"
