@@ -21,6 +21,7 @@ def test_broken_clouds():
     assert df.skyc1.values == 'BKN'
     assert df.cloudcover.values == 6
 
+
 def test_few_clouds_():
     df = metar.parse_metar_to_pandas('METAR KHCR 261155Z AUTO /////KT 10SM FEW100 05/00 A3001 \
     RMK AO2=')

@@ -9,7 +9,7 @@ class TreeNode(object):
         self.elements = elements or []
 
     def __iter__(self):
-        for el in self.elements:
+        for el in self.elements:z
             yield el
 
 
