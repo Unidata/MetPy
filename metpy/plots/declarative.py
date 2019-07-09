@@ -466,6 +466,9 @@ _areas = {
     'zw': (25., 34., -22.9, -15.5)
 }
 
+_station_plot_layout = {'temperature': (-1,1), 'current_wx1_symbol': (-1,0),
+'dewpoint': (-1,-1), 'sea_level_pressure': (1,1), 'station_id': (1,-1),
+'cloud_coverage': (0,0)}
 
 class Panel(HasTraits):
     """Draw one or more plots."""
@@ -953,6 +956,13 @@ class SurfaceStationPlot(HasTraits):
     """
 
 
+    fontsize = Unicode()
+    field.__fontsize__ = """Desired fontsize for the fonts
+
+    This is similar to the Text-Size variable in GEMPAK
+    """
+
+
     @property
     def data(self):
         """Xarray dataset that contains the field to be plotted."""
@@ -969,8 +979,10 @@ class SurfaceStationPlot(HasTraits):
         y = self.data.latitude
         return x, y
 
+    def plot_symbol(self, )
 
-    def draw(self):
+
+    def _build(self):
         for var in self.field:
             print(self.data[var][0:5])
 
