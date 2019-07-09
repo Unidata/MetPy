@@ -929,6 +929,53 @@ class Plot2D(HasTraits):
 
 
 @exporter.export
+class SurfaceStationPlot(HasTraits):
+    """Plot surface station data from a Pandas Dataframe"""
+
+    parent = Instance(Panel)
+    _need_redraw = Bool(default_value=True)
+
+
+    field = List(Unicode())
+    field.__doc__ = """The variables that will be plotted on the stations
+
+
+    This is a list of variables. Typical variables include temperature, dewpoint,
+    mean_sea_level_pressure, skyc (skycover)
+    """
+
+
+    dattim = Instance(datetime, allow_none=True)
+    field.__dattim__ = """Datetime object that will easily allow user to subset data
+
+    Make sure this is a datetime object, and by default, the time range will be set
+    to one hour
+    """
+
+
+    @property
+    def data(self):
+        """Xarray dataset that contains the field to be plotted."""
+        return self._data
+
+
+    @data.setter
+    def data(self, val):
+        self._data = val
+
+
+    def get_lat_lons(self):
+        x = self.data.longitude
+        y = self.data.latitude
+        return x, y
+
+
+    def draw(self):
+        for var in self.field:
+            print(self.data[var][0:5])
+
+
+@exporter.export
 class ImagePlot(Plot2D):
     """Represent an image plot."""
 
