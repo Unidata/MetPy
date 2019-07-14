@@ -25,6 +25,7 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         saturation_equivalent_potential_temperature,
                         saturation_mixing_ratio,
                         saturation_vapor_pressure,
+                        specific_humidity_from_dewpoint,
                         specific_humidity_from_mixing_ratio, static_stability,
                         surface_based_cape_cin, temperature_from_potential_temperature,
                         thickness_hydrostatic,
@@ -1319,3 +1320,10 @@ def test_vertical_velocity_moist_air():
     w_truth = 0.968897557 * units('cm/s')
     w_test = vertical_velocity(omega, 850. * units.mbar, 280. * units.K, 8 * units('g/kg'))
     assert_almost_equal(w_test, w_truth, 6)
+
+
+def test_specific_humidity_from_dewpoint():
+    """Specific humidity from dewpoint."""
+    p = 1013.25 * units.mbar
+    q = specific_humidity_from_dewpoint(16.973 * units.degC, p)
+    assert_almost_equal(q, 0.012 * units.dimensionless, 3)
