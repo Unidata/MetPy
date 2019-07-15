@@ -51,6 +51,7 @@ calc
       saturation_equivalent_potential_temperature
       saturation_mixing_ratio
       saturation_vapor_pressure
+      specific_humidity_from_dewpoint
       specific_humidity_from_mixing_ratio
       thickness_hydrostatic_from_relative_humidity
       vapor_pressure

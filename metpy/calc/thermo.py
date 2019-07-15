@@ -2427,7 +2427,7 @@ def specific_humidity_from_dewpoint(dewpoint, pressure):
     dewpoint: `pint.Quantity`
         dewpoint temperature
 
-    pressure: `pint.Quantity
+    pressure: `pint.Quantity`
         pressure
 
     Returns
