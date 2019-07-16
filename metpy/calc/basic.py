@@ -297,7 +297,7 @@ def heat_index(temperature, rh, mask_undefined=True):
 @exporter.export
 @preprocess_xarray
 @check_units(temperature='[temperature]', speed='[speed]')
-def apparent_temperature(temperature, rh, speed, face_level_winds=False):
+def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_undefined=True):
     r"""Calculate the current apparent temperature.
 
     Calculates the current apparent temperature based on the wind chill or heat index
@@ -318,6 +318,13 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
         A flag indicating whether the wind speeds were measured at facial
         level instead of 10m, thus requiring a correction.  Defaults to
         `False`.
+    mask_undefined : bool, optional
+        A flag indicating whether a masked array should be returned with
+        values where wind chill or heat_index is undefined masked. For wind
+        chill, these are values where the temperature > 50F or
+        wind speed <= 3 miles per hour. For heat index, these are values
+        where the temperature < 80F or relative humidity < 40 percent.
+        Defaults to `True`.
 
     Returns
     -------
@@ -336,10 +343,10 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False):
     speed = atleast_1d(speed)
 
     wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
-                                       mask_undefined=True).to(temperature.units)
+                                       mask_undefined=mask_undefined).to(temperature.units)
 
     heat_index_temperature = heat_index(temperature, rh,
-                                        mask_undefined=True).to(temperature.units)
+                                        mask_undefined=mask_undefined).to(temperature.units)
 
     # Combine the heat index and wind chill arrays (no point has a value in both)
     app_temperature = np.ma.where(masked_array(wind_chill_temperature).mask,
