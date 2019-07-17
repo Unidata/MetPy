@@ -2414,3 +2414,31 @@ def vertical_velocity(omega, pressure, temperature, mixing=0):
     """
     rho = density(pressure, temperature, mixing)
     return (omega / (- mpconsts.g * rho)).to('m/s')
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[temperature]', '[pressure]')
+def specific_humidity_from_dewpoint(dewpoint, pressure):
+    r"""Calculate the specific humidity from the dewpoint temperature and pressure.
+
+    Parameters
+    ----------
+    dewpoint: `pint.Quantity`
+        dewpoint temperature
+
+    pressure: `pint.Quantity`
+        pressure
+
+    Returns
+    -------
+    `pint.Quantity`
+        Specific humidity
+
+    See Also
+    --------
+    mixing_ratio, saturation_mixing_ratio
+
+    """
+    mixing_ratio = saturation_mixing_ratio(pressure, dewpoint)
+    return specific_humidity_from_mixing_ratio(mixing_ratio)
