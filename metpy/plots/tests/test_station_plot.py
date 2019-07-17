@@ -277,6 +277,20 @@ def test_barb_projection():
     return fig
 
 
+def test_barb_projection_list():
+    """Test that barbs will be projected when lat/lon lists are provided."""
+    lat = [38.22, 38.18, 38.25]
+    lon = [-85.76, -85.86, -85.77]
+    u = [1.89778964, -3.83776523, 3.64147732] * units('m/s')
+    v = [1.93480072, 1.31000184, 1.36075552] * units('m/s')
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    stnplot = StationPlot(ax, lon, lat)
+    stnplot.plot_barb(u, v)
+    assert stnplot.barbs
+
+
 @pytest.mark.mpl_image_compare(tolerance={'1.4': 2.28}.get(MPL_VERSION, 0.0048),
                                remove_text=True)
 def test_barb_unit_conversion():
