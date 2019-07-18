@@ -15,11 +15,8 @@ from . import cartopy_utils, ctables
 from ..cbook import is_string_like
 from ..package_tools import Exporter
 from ..units import units
-<<<<<<< HEAD
-=======
 from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
                          pressure_tendency, sky_cover, wx_symbol_font)
->>>>>>> 2053e262... Changed functions
 
 exporter = Exporter(globals())
 
@@ -938,24 +935,20 @@ class Plot2D(HasTraits):
 
 @exporter.export
 class SurfaceStationPlot(HasTraits):
-    """Plot surface station data from a Pandas Dataframe
-    """
+    """Plot surface station data from a Pandas Dataframe"""
 
-<<<<<<< HEAD
-=======
-    location_names = {'C': (0, 0), 'N': (0, 1), 'NE': (1, 1), 'E': (1, 0), 'SE': (1, -1),
-                      'S': (0, -1), 'SW': (-1, -1), 'W': (-1, 0), 'NW': (-1, 1)}
-
->>>>>>> 1a87f102... Change documentation
     parent = Instance(Panel)
     _need_redraw = Bool(default_value=True)
+
 
     field = List(Unicode())
     field.__doc__ = """The variables that will be plotted on the stations
 
+
     This is a list of variables. Typical variables include temperature, dewpoint,
-    current_wx1_symbol, sea_level_pressure, cloud coverage, and station_id
+    mean_sea_level_pressure, skyc (skycover)
     """
+
 
     dattim = Instance(datetime, allow_none=True)
     field.__dattim__ = """Datetime object that will easily allow user to subset data
@@ -964,27 +957,18 @@ class SurfaceStationPlot(HasTraits):
     to one hour
     """
 
-<<<<<<< HEAD
 
     fontsize = Unicode()
     field.__fontsize__ = """Desired fontsize for the fonts
-=======
-    fontsize = Int(default_value=10)
-    fontsize.__doc__ = """Desired fontsize for the fonts
->>>>>>> 1a87f102... Change documentation
 
     This is similar to the Text-Size variable in GEMPAK
     """
 
-<<<<<<< HEAD
 
-<<<<<<< HEAD
-=======
-=======
->>>>>>> 1a87f102... Change documentation
     spacing = Int(default_value=10)
     spacing.__doc__ = """Spacing between different parameters
     """
+
 
     tranform = Union([Unicode(), Instance(ccrs.Projection)], default_value=_projections['lcc'])
     tranform.__doc__ = """Transform that would like to be used to create the maps
@@ -992,11 +976,11 @@ class SurfaceStationPlot(HasTraits):
     Essential for converting points to the proper coordinate system
     """
 
+
     default_kwargs = Unicode()
     default_kwargs.__doc__ = """Keyword arguments
     """
 
->>>>>>> 2053e262... Changed functions
     @property
     def data(self):
         """Xarray dataset that contains the field to be plotted."""
