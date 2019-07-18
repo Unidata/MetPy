@@ -98,7 +98,8 @@ def test_lcc_single_std_parallel():
 def test_mercator():
     """Test handling a mercator projection."""
     attrs = {'grid_mapping_name': 'mercator', 'standard_parallel': 25,
-             'longitude_of_projection_origin': -100, 'false_easting': 0, 'false_westing': 0}
+             'longitude_of_projection_origin': -100, 'false_easting': 0, 'false_westing': 0,
+             'central_latitude': 0}
     crs = CFProjection(attrs).to_cartopy()
 
     assert isinstance(crs, ccrs.Mercator)
