@@ -15,6 +15,11 @@ from . import cartopy_utils, ctables
 from ..cbook import is_string_like
 from ..package_tools import Exporter
 from ..units import units
+<<<<<<< HEAD
+=======
+from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
+                         pressure_tendency, sky_cover, wx_symbol_font)
+>>>>>>> 2053e262... Changed functions
 
 exporter = Exporter(globals())
 
@@ -963,6 +968,25 @@ class SurfaceStationPlot(HasTraits):
     """
 
 
+<<<<<<< HEAD
+=======
+    spacing = Int(default_value=10)
+    spacing.__doc__ = """Spacing between different parameters
+    """
+
+
+    tranform = Union([Unicode(), Instance(ccrs.Projection)], default_value=_projections['lcc'])
+    tranform.__doc__ = """Transform that would like to be used to create the maps
+
+    Essential for converting points to the proper coordinate system
+    """
+
+
+    default_kwargs = Unicode()
+    default_kwargs.__doc__ = """Keyword arguments
+    """
+
+>>>>>>> 2053e262... Changed functions
     @property
     def data(self):
         """Xarray dataset that contains the field to be plotted."""
