@@ -1,0 +1,24 @@
+grammar METAR
+ob       <- metar siteid datetime auto wind vis run curwx skyc temp_dewp altim remarks end
+metar    <- (("METAR" / "SPECI"))? (" AUTO" / " COR")?
+sep      <- " "+
+siteid   <- sep? [0-9A-Z] [0-9A-Z] [0-9A-Z] [0-9A-Z]
+datetime <- sep [\d]+ "Z"
+auto     <- sep ("AUTO" / "COR")?
+wind     <- ((sep? wind_dir wind_spd (gust)? ("KT" / "MPS") varwind?))?
+wind_dir <- (([\d] [\d] [\d]) / 'VAR' / 'VRB' / "///")?
+wind_spd <- (([\d] [\d] [\d]?) / "//")?
+gust     <- "G" [\d]+
+varwind  <- sep [\d] [\d] [\d] "V" [\d] [\d] [\d]
+vis      <- ((sep ( ([\d] [\d] [\d] [\d] ("NDV")?) / ([\d] ([\d] / ((" " [\d])? "/" [\d]))? "SM") / "CAVOK")))?
+run      <- ((sep "R" [LRC]? [\d] [\d] [LRC]? "/" ([\d] [\d] [\d] [\d] "V")? ["M" / "P"]? [\d] [\d] [\d] [\d] "FT"))?
+curwx    <- (((sep (wx))*))?
+wx       <- (([-+] / "VC")? ("MI" / "PR" / "DR" / "BL" / "SH" / "TS" / "FG" / "TS" / "FZ" / "RA" / "BR" / "HZ" / "SN") ([-+])? ("RA" / "BR" / "DZ" / "FG" / "FU" / "VA" / "DU" / "SA" / "SA" / "HZ" / "PY")?)
+skyc     <- ((sep (cover))*)?
+cover    <- (("FEW" / "SCT" / "BKN" / "OVC" / "VV" / "///") ([\d]*)? ("TCU" / "CB" / "///")?) / ("CLR" / "SKC" / "NSC" / "NCD") / wx / "//"
+temp_dewp <- ((sep "//"? temp "/" dewp "//"?))?
+temp     <- (([M])?  [\d]? [\d]?)
+dewp     <- (([M])?  [\d]? [\d]?)
+altim    <- ((sep? ["Q" / "A"] [\d] [\d] [\d] [\d] "="?))?
+remarks  <- ((sep? ("RMK" / ("NOSIG"*)) .*))?
+end      <- ((sep? "="))?
