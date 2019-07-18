@@ -1,7 +1,6 @@
 # Import the neccessary libraries
 from collections import namedtuple
 from datetime import datetime
-
 import warnings
 
 import numpy as np
@@ -9,13 +8,11 @@ import pandas as pd
 
 from . import metar_parse
 from . import surface_station_data
-from ..calc import altimeter_to_sea_level_pressure
-from ..plots.wx_symbols import wx_code_map
-from ..units import units, pandas_dataframe_to_unit_arrays
-
 from .metar_parse import ParseError
-
+from ..calc import altimeter_to_sea_level_pressure, wind_components
 from ..package_tools import Exporter
+from ..plots.wx_symbols import wx_code_map
+from ..units import pandas_dataframe_to_unit_arrays, units
 
 exporter = Exporter(globals())
 
@@ -665,6 +662,8 @@ def text_file_parse(file, year=datetime.now().year, month=datetime.now().month):
                  'date_time': None,
                  'wind_direction': 'degrees',
                  'wind_speed': 'kts',
+                 'u_wind': 'kts',
+                 'v_wind': 'kts',
                  'current_wx1': None,
                  'current_wx2': None,
                  'current_wx3': None,
@@ -698,10 +697,15 @@ def text_file_parse(file, year=datetime.now().year, month=datetime.now().month):
                        'current_wx2_symbol': current_wx2_symbol,
                        'current_wx3_symbol': current_wx3_symbol})
 
+    # Calculate sea-level pressure
     df['sea_level_pressure'] = altimeter_to_sea_level_pressure(
         altim * units('inHg'),
         elev * units('meters'),
         temp * units('degC')).to('hPa').magnitude
+
+    # Use get wind components and assign them to u and v variables
+    df['u_wind'], df['v_wind'] = wind_components((df.wind_speed.values * units.kts),
+                                                 df.wind_direction.values * units.degree)
 
     # Drop duplicates
     df = df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last')

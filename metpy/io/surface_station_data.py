@@ -10,6 +10,8 @@ log.setLevel(logging.WARNING)
 Station = namedtuple('Station', ['id', 'synop_id', 'name', 'state', 'country',
                                  'longitude', 'latitude', 'altitude'])
 
+station_map = dict()
+
 
 def to_dec_deg(dms):
     if not dms:
@@ -22,7 +24,6 @@ def to_dec_deg(dms):
 
 
 def _read_station_table(filename='sfstns.tbl'):
-    station_map = dict()
     with open(filename, 'rt') as station_file:
         for line in station_file:
             stid = line[:9].strip()
@@ -41,7 +42,6 @@ def _read_station_table(filename='sfstns.tbl'):
 
 
 def _read_world_table(filename='sfworld.tbl'):
-    station_map = dict()
     with open(filename, 'rt') as station_file:
         for line in station_file:
             stid = line[:10].strip()
@@ -57,7 +57,6 @@ def _read_world_table(filename='sfworld.tbl'):
 
 
 def _read_master_text_file(filename='master.txt'):
-    station_map = dict()
     with open(filename, 'rt') as station_file:
         station_file.readline()
         for line in station_file:
@@ -83,7 +82,6 @@ def _read_master_text_file(filename='master.txt'):
 
 
 def _read_station_text_file(filename='stations.txt'):
-    station_map = dict()
     with open(filename, 'rt') as station_file:
         for line in station_file:
             if line[0] == '!':
@@ -107,7 +105,6 @@ def _read_station_text_file(filename='stations.txt'):
 
 
 def _read_airports_file(filename='airport-codes.csv'):
-    station_map = dict()
     with open(filename, 'rt') as station_file:
         station_file.readline()  # Skip header
         csvreader = csv.reader(station_file)
