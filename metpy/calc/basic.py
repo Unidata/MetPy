@@ -387,26 +387,34 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_un
     rh = atleast_1d(rh)
     speed = atleast_1d(speed)
 
+    # NB: mask_defined=True is needed to know where computed values exist
     wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
-                                       mask_undefined=mask_undefined).to(temperature.units)
+                                       mask_undefined=True).to(temperature.units)
 
     heat_index_temperature = heat_index(temperature, rh,
-                                        mask_undefined=mask_undefined).to(temperature.units)
+                                        mask_undefined=True).to(temperature.units)
 
     # Combine the heat index and wind chill arrays (no point has a value in both)
-    app_temperature = np.ma.where(masked_array(wind_chill_temperature).mask,
-                                  heat_index_temperature,
-                                  wind_chill_temperature)
+    # NB: older numpy.ma.where does not return a masked array
+    app_temperature = masked_array(
+        np.ma.where(masked_array(wind_chill_temperature).mask,
+                    heat_index_temperature.to(temperature.units),
+                    wind_chill_temperature.to(temperature.units)
+                    ), temperature.units)
+
+    # If mask_undefined is False, then set any masked values to the temperature
+    if not mask_undefined:
+        app_temperature[app_temperature.mask] = temperature[app_temperature.mask]
+
+    # If no values are masked and provided temperature does not have a mask
+    # we should return a non-masked array
+    if not np.any(app_temperature.mask) and not hasattr(temperature, 'mask'):
+        app_temperature = np.array(app_temperature.m) * temperature.units
 
     if is_not_scalar:
-        # Fill in missing areas where neither wind chill or heat index are applicable with the
-        # ambient temperature.
-        app_temperature[app_temperature.mask] = temperature[app_temperature.mask]
-        return np.array(app_temperature) * temperature.units
+        return app_temperature
     else:
-        if app_temperature.mask:
-            app_temperature = temperature.m
-        return atleast_1d(app_temperature)[0] * temperature.units
+        return atleast_1d(app_temperature)[0]
 
 
 @exporter.export
