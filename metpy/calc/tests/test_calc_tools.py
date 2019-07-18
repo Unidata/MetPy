@@ -77,6 +77,17 @@ def test_find_intersections_invalid_direction():
         find_intersections(x, y1, y2, direction='increaing')
 
 
+def test_find_intersections_units():
+    """Test handling of units when logarithmic interpolation is called."""
+    x = np.linspace(5, 30, 17) * units.hPa
+    y1 = 3 * x.m**2
+    y2 = 100 * x.m - 650
+    truth = np.array([24.43, 1794.54])
+    x_test, y_test = find_intersections(x, y1, y2, direction='increasing', log_x=True)
+    assert_array_almost_equal(truth, np.array([x_test.m, y_test.m]).flatten(), 2)
+    assert x_test.units == units.hPa
+
+
 @pytest.mark.parametrize('direction, expected', [
     ('all', np.array([[0., 3.5, 4.33333333, 7., 9., 10., 11.5, 13.], np.zeros(8)])),
     ('increasing', np.array([[0., 4.333, 7., 11.5], np.zeros(4)])),
