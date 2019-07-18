@@ -214,11 +214,11 @@ def test_windchill_face_level():
 
 def test_heat_index_basic():
     """Test the basic heat index calculation."""
-    temp = np.array([80, 88, 92, 110]) * units.degF
-    rh = np.array([40, 100, 70, 40]) * units.percent
+    temp = np.array([80, 88, 92, 110, 86]) * units.degF
+    rh = np.array([40, 100, 70, 40, 88]) * units.percent
 
     hi = heat_index(temp, rh)
-    values = np.array([80, 121, 112, 136]) * units.degF
+    values = np.array([80, 121, 112, 136, 104]) * units.degF
     assert_array_almost_equal(hi, values, 0)
 
 
@@ -234,7 +234,7 @@ def test_heat_index_invalid():
     rh = np.array([40, 39, 2, 70, 50, 39]) * units.percent
 
     hi = heat_index(temp, rh)
-    mask = np.array([False, True, True, True, True, True])
+    mask = np.array([False, False, False, True, True, False])
     assert_array_equal(hi.mask, mask)
 
 
@@ -262,6 +262,16 @@ def test_heat_index_ratio():
     rh = 0.7
     hi = heat_index(temp, rh)
     assert_almost_equal(hi.to('degC'), units.Quantity([50.3405, np.nan], units.degC), 4)
+
+
+def test_heat_index_vs_nws():
+    """Test heat_index against online calculated HI from NWS Website."""
+    # https://www.wpc.ncep.noaa.gov/html/heatindex.shtml, visited 2019-Jul-17
+    temp = units.Quantity(np.array([86, 111, 40, 96]), units.degF)
+    rh = np.ma.array([45, 27, 99, 60]) * units.percent
+    hi = heat_index(temp, rh)
+    truth = units.Quantity(np.ma.array([87, 121, 40, 116]), units.degF)
+    assert_array_almost_equal(hi, truth, 0)
 
 
 def test_heat_index_kelvin():
@@ -424,7 +434,7 @@ def test_apparent_temperature():
                              [10, 10, 10]]) * units.percent
     wind = np.array([[5, 3, 3],
                      [10, 1, 10]]) * units.mph
-    truth = np.array([[99.6777178, 90, 70],
+    truth = np.array([[99.6777178, 86.3357671, 70],
                       [8.8140662, 20, 60]]) * units.degF
     res = apparent_temperature(temperature, rel_humidity, wind)
     assert_array_almost_equal(res, truth, 6)

@@ -2,6 +2,11 @@
 References
 ==========
 
+.. [Anderson2013] Anderson, G. B., M. L. Bell, and R. D. Peng, 2013: Methods to
+           Calculate the Heat Index as an Exposure Metric in Environmental Health
+           Research. *Environmental Health Perspectives*, **121**, 1111-1119,
+           doi: `10.1289/ehp.1206273 <https://doi.org/10.1289/ehp.1206273>`_.
+
 .. [Bakhshaii2013] Bakhshaii, A. and R. Stull, 2013: Saturated pseudoadiabats--A
            noniterative approximation. *J. Appl. Meteor. Clim.*, **52**, 5-15,
            doi:`10.1175/JAMC-D-12-062.1 <https://doi.org/10.1175/JAMC-D-12-062.1>`_.

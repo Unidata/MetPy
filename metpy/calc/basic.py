@@ -241,8 +241,11 @@ def windchill(temperature, speed, face_level_winds=False, mask_undefined=True):
 def heat_index(temperature, rh, mask_undefined=True):
     r"""Calculate the Heat Index from the current temperature and relative humidity.
 
-    The implementation uses the formula outlined in [Rothfusz1990]_. This equation is a
+    The implementation uses the formula outlined in [Rothfusz1990]_, which is a
     multi-variable least-squares regression of the values obtained in [Steadman1979]_.
+    Additional conditional corrections are applied to match what the National
+    Weather Service operationally uses. See Figure 3 of [Anderson2013]_ for a
+    depiction of this algorithm and further discussion.
 
     Parameters
     ----------
@@ -261,36 +264,78 @@ def heat_index(temperature, rh, mask_undefined=True):
     ----------------
     mask_undefined : bool, optional
         A flag indicating whether a masked array should be returned with
-        values where heat index is undefined masked.  These are values where
-        the temperature < 80F or relative humidity < 40 percent. Defaults
-        to `True`.
+        values masked where the temperature < 80F. Defaults to `True`.
 
     See Also
     --------
     windchill
 
     """
+    temperature = atleast_1d(temperature)
+    rh = atleast_1d(rh)
+    # assign units to rh if they currently are not present
+    if not hasattr(rh, 'units'):
+        rh = rh * units.dimensionless
     delta = temperature.to(units.degF) - 0. * units.degF
     rh2 = rh * rh
     delta2 = delta * delta
 
-    # Calculate the Heat Index -- constants converted for RH in [0, 1]
-    hi = (-42.379 * units.degF
-          + 2.04901523 * delta
-          + 1014.333127 * units.delta_degF * rh
-          - 22.475541 * delta * rh
-          - 6.83783e-3 / units.delta_degF * delta2
-          - 5.481717e2 * units.delta_degF * rh2
-          + 1.22874e-1 / units.delta_degF * delta2 * rh
-          + 8.5282 * delta * rh2
-          - 1.99e-2 / units.delta_degF * delta2 * rh2)
+    # Simplifed Heat Index -- constants converted for RH in [0, 1]
+    a = -10.3 * units.degF + 1.1 * delta + 4.7 * units.delta_degF * rh
+
+    # More refined Heat Index -- constants converted for RH in [0, 1]
+    b = (-42.379 * units.degF
+         + 2.04901523 * delta
+         + 1014.333127 * units.delta_degF * rh
+         - 22.475541 * delta * rh
+         - 6.83783e-3 / units.delta_degF * delta2
+         - 5.481717e2 * units.delta_degF * rh2
+         + 1.22874e-1 / units.delta_degF * delta2 * rh
+         + 8.5282 * delta * rh2
+         - 1.99e-2 / units.delta_degF * delta2 * rh2)
+
+    # Create return heat index
+    hi = np.full(np.shape(temperature), np.nan) * units.degF
+    # Retain masked status of temperature with resulting heat index
+    if hasattr(temperature, 'mask'):
+        hi = masked_array(hi)
+
+    # If T <= 40F, Heat Index is T
+    sel = (temperature <= 40. * units.degF)
+    if np.any(sel):
+        hi[sel] = temperature[sel].to(units.degF)
+
+    # If a < 79F and hi is unset, Heat Index is a
+    sel = (a < 79. * units.degF) & np.isnan(hi)
+    if np.any(sel):
+        hi[sel] = a[sel]
+
+    # Use b now for anywhere hi has yet to be set
+    sel = np.isnan(hi)
+    if np.any(sel):
+        hi[sel] = b[sel]
+
+    # Adjustment for RH <= 13% and 80F <= T <= 112F
+    sel = ((rh <= 13. * units.percent) & (temperature >= 80. * units.degF)
+           & (temperature <= 112. * units.degF))
+    if np.any(sel):
+        rh15adj = ((13. - rh * 100.) / 4.
+                   * ((17. * units.delta_degF - np.abs(delta - 95. * units.delta_degF))
+                      / 17. * units.delta_degF) ** 0.5)
+        hi[sel] = hi[sel] - rh15adj[sel]
+
+    # Adjustment for RH > 85% and 80F <= T <= 87F
+    sel = ((rh > 85. * units.percent) & (temperature >= 80. * units.degF)
+           & (temperature <= 87. * units.degF))
+    if np.any(sel):
+        rh85adj = 0.02 * (rh * 100. - 85.) * (87. * units.delta_degF - delta)
+        hi[sel] = hi[sel] + rh85adj[sel]
 
     # See if we need to mask any undefined values
     if mask_undefined:
-        mask = np.array((temperature < 80. * units.degF) | (rh < 40 * units.percent))
+        mask = np.array(temperature < 80. * units.degF)
         if mask.any():
             hi = masked_array(hi, mask=mask)
-
     return hi
 
 
@@ -323,7 +368,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_un
         values where wind chill or heat_index is undefined masked. For wind
         chill, these are values where the temperature > 50F or
         wind speed <= 3 miles per hour. For heat index, these are values
-        where the temperature < 80F or relative humidity < 40 percent.
+        where the temperature < 80F.
         Defaults to `True`.
 
     Returns
