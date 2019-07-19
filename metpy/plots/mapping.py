@@ -139,11 +139,13 @@ def make_mercator(attrs_dict, globe):
     kwargs = CFProjection.build_projection_kwargs(attrs_dict, attr_mapping)
 
     # Work around the fact that in CartoPy <= 0.16 can't handle the easting/northing
-    # in Mercator
+    # or central_latitude in Mercator
     if not kwargs.get('false_easting'):
         kwargs.pop('false_easting', None)
     if not kwargs.get('false_northing'):
         kwargs.pop('false_northing', None)
+    if not kwargs.get('central_latitude'):
+        kwargs.pop('central_latitude', None)
 
     return ccrs.Mercator(globe=globe, **kwargs)
 
