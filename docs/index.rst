@@ -71,6 +71,8 @@ __ https://github.com/Unidata/MetPy/issues
 Media
 -----
 
+* `AMS 2019 talk`_ on bringing GEMPAK-like syntax to MetPy's declaritive plotting interface
+* `AMS 2019 poster`_ on recent development and community building with MetPy
 * `SciPy 2018 poster`_ and `abstract <http://johnrleeman.com/pubs/2018/Leeman_2018_SciPy_Abstract.pdf>`_ on building community by John Leeman
 * `SciPy 2018 talk`_ on prototyping MetPy's future declarative plotting interface
 * Presentation on MetPy and Community Development at the `2018 AMS Annual Meeting`_ by Ryan May
@@ -96,6 +98,8 @@ Media
 .. _`2018 AMS Annual Meeting`: https://ams.confex.com/ams/98Annual/webprogram/Paper333578.html
 .. _`SciPy 2018 talk`: https://youtu.be/OKQlUdPY0Jc
 .. _`SciPy 2018 poster`: http://johnrleeman.com/pubs/2018/Leeman_2018_SciPy_Poster.pdf
+.. _`AMS 2019 talk`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/352384
+.. _`AMS 2019 poster`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/354058
 
 -------
 License
