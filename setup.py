@@ -56,7 +56,7 @@ setup(
                       'pooch>=0.1', 'traitlets>=4.3.0'],
     extras_require={
         'dev': ['ipython[all]>=3.1'],
-        'doc': ['sphinx>=1.4', 'sphinx-gallery', 'doc8', 'm2r',
+        'doc': ['sphinx>=1.8', 'sphinx-gallery', 'doc8', 'm2r',
                 'netCDF4'],
         'examples': ['cartopy>=0.13.1', 'matplotlib>=2.2.0', 'pyproj>=1.9.4,!=2.0.0'],
         'test': ['pytest>=2.4', 'pytest-runner', 'pytest-mpl', 'pytest-flake8',
