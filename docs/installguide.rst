@@ -74,4 +74,5 @@ Examples
 
 The MetPy source comes with a set of example scripts in the ``examples``
 directory. These are also available as notebooks in the gallery in
-the :doc:`examples/index`.
+the :doc:`examples/index`. Further examples of MetPy usage are available
+in the `Unidata Python Gallery <https://unidata.github.io/python-gallery/>`_.
