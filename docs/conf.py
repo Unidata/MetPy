@@ -157,11 +157,6 @@ try:
 except ImportError:
     pass
 
-
-def setup(app):
-    app.add_stylesheet('theme_override.css')
-
-
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
@@ -205,6 +200,7 @@ html_favicon = os.path.join('_static', 'metpy_32x32.ico')
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
+html_css_files = ['theme_override.css']
 html_js_files = ['pop_ver.js']
 
 # Add any extra paths that contain custom files (such as robots.txt or
