@@ -25,6 +25,7 @@ coverage:
         paths:
           - "metpy/.*/tests/.*"
           - "metpy/tests/.*"
+          - "metpy/testing.py"
 
   notify:
     gitter:
