@@ -347,8 +347,8 @@ def test_no_lfc():
     temperatures = np.array([22.2, 17.4, 14.6, 1.4, -17.6, -39.4, -52.5]) * units.celsius
     dewpoints = np.array([9., 4.3, -21.2, -26.7, -31., -53.3, -66.7]) * units.celsius
     lfc_pressure, lfc_temperature = lfc(levels, temperatures, dewpoints)
-    assert assert_nan(lfc_pressure, levels.units)
-    assert assert_nan(lfc_temperature, temperatures.units)
+    assert_nan(lfc_pressure, levels.units)
+    assert_nan(lfc_temperature, temperatures.units)
 
 
 def test_lfc_inversion():
@@ -432,8 +432,8 @@ def test_lfc_pos_area_below_lcl():
           -92.92464, -91.57479] * units.degC
     prof = parcel_profile(p, t[0], td[0]).to('degC')
     lfc_p, lfc_t = lfc(p, t, td, prof)
-    assert assert_nan(lfc_p, p.units)
-    assert assert_nan(lfc_t, t.units)
+    assert_nan(lfc_p, p.units)
+    assert_nan(lfc_t, t.units)
 
 
 def test_saturation_mixing_ratio():
@@ -516,8 +516,8 @@ def test_no_el():
     temperatures = np.array([22.2, 17.4, 14.6, 1.4, -17.6, -39.4, -52.5]) * units.celsius
     dewpoints = np.array([19., 14.3, -11.2, -16.7, -21., -43.3, -56.7]) * units.celsius
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
-    assert assert_nan(el_pressure, levels.units)
-    assert assert_nan(el_temperature, temperatures.units)
+    assert_nan(el_pressure, levels.units)
+    assert_nan(el_temperature, temperatures.units)
 
 
 def test_no_el_multi_crossing():
@@ -530,8 +530,8 @@ def test_no_el_multi_crossing():
     dewpoints = np.array([19.5, 17.8, 16.7, 16.5, 15.8, 15.7, 15.3, 13.1, 12.9, 11.9, 6.4,
                           3.2, 2.6, -0.6, -4.4, -6.6, -9.3, -10.4, -10.5]) * units.celsius
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
-    assert assert_nan(el_pressure, levels.units)
-    assert assert_nan(el_temperature, temperatures.units)
+    assert_nan(el_pressure, levels.units)
+    assert_nan(el_temperature, temperatures.units)
 
 
 def test_el_lfc_equals_lcl():
@@ -567,8 +567,8 @@ def test_el_small_surface_instability():
                           -10.4, -10.2, -9.8, -9.4, -9., -15.8, -15.7, -14.8, -14.,
                           -13.9, -17.9]) * units.degC
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
-    assert assert_nan(el_pressure, levels.units)
-    assert assert_nan(el_temperature, temperatures.units)
+    assert_nan(el_pressure, levels.units)
+    assert_nan(el_temperature, temperatures.units)
 
 
 def test_no_el_parcel_colder():
@@ -586,8 +586,8 @@ def test_no_el_parcel_colder():
                           -8.8, -28.1, -18.9, -14.5, -15.2, -15.1, -21.6, -41.5, -45.5,
                           -29.6, -30.6, -32.1]) * units.celsius
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
-    assert assert_nan(el_pressure, levels.units)
-    assert assert_nan(el_temperature, temperatures.units)
+    assert_nan(el_pressure, levels.units)
+    assert_nan(el_temperature, temperatures.units)
 
 
 def test_el_below_lcl():
@@ -611,8 +611,8 @@ def test_el_below_lcl():
           -92.92464, -91.57479] * units.degC
     prof = parcel_profile(p, t[0], td[0]).to('degC')
     el_p, el_t = el(p, t, td, prof)
-    assert assert_nan(el_p, p.units)
-    assert assert_nan(el_t, t.units)
+    assert_nan(el_p, p.units)
+    assert_nan(el_t, t.units)
 
 
 def test_wet_psychrometric_vapor_pressure():
