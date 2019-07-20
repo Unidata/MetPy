@@ -196,11 +196,12 @@ def patch_round(monkeypatch):
     monkeypatch.setitem(__builtins__, 'round', np.round)
 
 
-def ignore_deprecation(func):
+def check_and_silence_deprecation(func):
     """Decorate a function to swallow metpy deprecation warnings, making sure they are present.
 
-    This should be used on deprecation function tests to make sure the deprecation warnings
-    are not failing the tests, but still allow testing of those functions.
+    This should be used on deprecated function tests to make sure the deprecation warnings
+    are not printing in the tests, but checks that the warning is present and makes sure
+    the function still works as intended.
     """
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
