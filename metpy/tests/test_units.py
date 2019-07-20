@@ -12,7 +12,7 @@ import pint
 import pytest
 
 from metpy.testing import assert_array_almost_equal, assert_array_equal
-from metpy.testing import set_agg_backend  # noqa: F401
+from metpy.testing import assert_nan, set_agg_backend  # noqa: F401
 from metpy.units import (atleast_1d, atleast_2d, check_units, concatenate, diff,
                          pandas_dataframe_to_unit_arrays, units)
 
@@ -205,3 +205,15 @@ def test_gpm_unit():
     """Test that the gpm unit does alias to meters."""
     x = 1 * units('gpm')
     assert str(x.units) == 'meter'
+
+
+def test_assert_nan():
+    """Test that assert_nan actually fails when not given a NaN."""
+    with pytest.raises(AssertionError):
+        assert_nan(1.0 * units.m, units.inches)
+
+
+def test_assert_nan_checks_units():
+    """Test that assert_nan properly checks units."""
+    with pytest.raises(AssertionError):
+        assert_nan(np.nan * units.m, units.second)
