@@ -76,6 +76,10 @@ def interpolate_1d(x, xp, *args, **kwargs):
         Specify handling of interpolation points out of data bounds. If None, will return
         ValueError if points are out of bounds. Defaults to nan.
 
+    return_list_always: bool, optional
+        Whether to always return a list of interpolated arrays, even when only a single
+        array is passed to `args`. Defaults to ``False``.
+
     Returns
     -------
     array-like
@@ -97,6 +101,7 @@ def interpolate_1d(x, xp, *args, **kwargs):
     # Pull out keyword args
     fill_value = kwargs.pop('fill_value', np.nan)
     axis = kwargs.pop('axis', 0)
+    return_list_always = kwargs.pop('return_list_always', False)
 
     # Handle units
     x, xp = _strip_matching_units(x, xp)
@@ -168,10 +173,11 @@ def interpolate_1d(x, xp, *args, **kwargs):
             var_interp = np.swapaxes(np.swapaxes(var_interp, 0, axis)[::-1], 0, axis)
         # Output to list
         ret.append(var_interp)
-    if len(ret) == 1:
-        return ret[0]
-    else:
+
+    if return_list_always or len(ret) > 1:
         return ret
+    else:
+        return ret[0]
 
 
 @exporter.export

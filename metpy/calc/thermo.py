@@ -1694,11 +1694,8 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     # do an interpolation for each additional argument
     if args:
         others = interpolate_1d(isentlevels, pres_theta.m, *(arr[sorter] for arr in args),
-                                axis=axis)
-        if len(args) > 1:
-            ret.extend(others)
-        else:
-            ret.append(others)
+                                axis=axis, return_list_always=True)
+        ret.extend(others)
 
     return ret
 
