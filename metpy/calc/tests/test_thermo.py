@@ -672,9 +672,23 @@ def test_mixing_ratio_from_specific_humidity():
     assert_almost_equal(w, 0.01215, 3)
 
 
+def test_mixing_ratio_from_specific_humidity_no_units():
+    """Test mixing ratio from specific humidity works without units."""
+    q = 0.012
+    w = mixing_ratio_from_specific_humidity(q)
+    assert_almost_equal(w, 0.01215, 3)
+
+
 def test_specific_humidity_from_mixing_ratio():
     """Test specific humidity from mixing ratio."""
     w = 0.01215 * units.dimensionless
+    q = specific_humidity_from_mixing_ratio(w)
+    assert_almost_equal(q, 0.01200, 5)
+
+
+def test_specific_humidity_from_mixing_ratio_no_units():
+    """Test specific humidity from mixing ratio works without units."""
+    w = 0.01215
     q = specific_humidity_from_mixing_ratio(w)
     assert_almost_equal(q, 0.01200, 5)
 
@@ -793,7 +807,7 @@ def test_isentropic_pressure_p_increase():
     assert_almost_equal(isentprs[0], trueprs, 3)
 
 
-def test_isentropic_pressure_adition_args():
+def test_isentropic_pressure_additional_args():
     """Test calculation of isentropic pressure function, additional args."""
     lev = [100000., 95000., 90000., 85000.] * units.Pa
     tmp = np.ones((4, 5, 5))
