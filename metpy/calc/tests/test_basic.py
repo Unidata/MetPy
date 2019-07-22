@@ -456,7 +456,7 @@ def test_apparent_temperature_scalar_no_modification():
     rel_humidity = 60 * units.percent
     wind = 5 * units.mph
     truth = 70 * units.degF
-    res = apparent_temperature(temperature, rel_humidity, wind)
+    res = apparent_temperature(temperature, rel_humidity, wind, mask_undefined=False)
     assert_almost_equal(res, truth, 6)
 
 
@@ -468,6 +468,27 @@ def test_apparent_temperature_windchill():
     truth = -18.9357 * units.degC
     res = apparent_temperature(temperature, rel_humidity, wind)
     assert_almost_equal(res, truth, 0)
+
+
+def test_apparent_temperature_mask_undefined_false():
+    """Test that apparent temperature works when mask_undefined is False."""
+    temp = np.array([80, 55, 10]) * units.degF
+    rh = np.array([40, 50, 25]) * units.percent
+    wind = np.array([5, 4, 10]) * units('m/s')
+
+    app_temperature = apparent_temperature(temp, rh, wind, mask_undefined=False)
+    assert not hasattr(app_temperature, 'mask')
+
+
+def test_apparent_temperature_mask_undefined_true():
+    """Test that apparent temperature works when mask_undefined is True."""
+    temp = np.array([80, 55, 10]) * units.degF
+    rh = np.array([40, 50, 25]) * units.percent
+    wind = np.array([5, 4, 10]) * units('m/s')
+
+    app_temperature = apparent_temperature(temp, rh, wind, mask_undefined=True)
+    mask = [False, True, False]
+    assert_array_equal(app_temperature.mask, mask)
 
 
 def test_smooth_gaussian():
