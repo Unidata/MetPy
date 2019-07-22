@@ -1,8 +1,12 @@
+"""Pull out station metadata for metars."""
+from collections import defaultdict, namedtuple
 import csv
 import logging
-from collections import defaultdict, namedtuple
 
-log = logging.getLogger("stations")
+
+from metpy.cbook import get_test_data
+
+log = logging.getLogger('stations')
 log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
 log.setLevel(logging.WARNING)
 
@@ -10,10 +14,11 @@ log.setLevel(logging.WARNING)
 Station = namedtuple('Station', ['id', 'synop_id', 'name', 'state', 'country',
                                  'longitude', 'latitude', 'altitude'])
 
-station_map = dict()
+station_map = {}
 
 
 def to_dec_deg(dms):
+    """Convert to decimal degrees."""
     if not dms:
         return 0.
     deg, minutes = dms.split()
@@ -23,8 +28,11 @@ def to_dec_deg(dms):
     return float_deg if side in ('N', 'E') else -float_deg
 
 
-def _read_station_table(filename='sfstns.tbl'):
-    with open(filename, 'rt') as station_file:
+def _read_station_table(input_file=None):
+    """Read in the station table."""
+    if input_file is None:
+        input_file = get_test_data('sfstns.tbl', as_file_obj=False)
+    with open(input_file, 'rt') as station_file:
         for line in station_file:
             stid = line[:9].strip()
             synop_id = int(line[9:16].strip())
@@ -41,23 +49,11 @@ def _read_station_table(filename='sfstns.tbl'):
     return station_map
 
 
-def _read_world_table(filename='sfworld.tbl'):
-    with open(filename, 'rt') as station_file:
-        for line in station_file:
-            stid = line[:10].strip()
-            synop_id = int(line[10:16].strip())
-            name = line[16:49].strip().replace('_', ' ')
-            state = line[50:52].strip()
-            country = line[53:55].strip()
-            lat = int(line[56:61].strip()) / 100.
-            lon = int(line[62:68].strip()) / 100.
-            alt = int(line[69:74].strip())
-            station_map[stid] = Station(stid, synop_id, name, state, country, lon, lat, alt)
-    return station_map
-
-
-def _read_master_text_file(filename='master.txt'):
-    with open(filename, 'rt') as station_file:
+def _read_master_text_file(input_file=None):
+    """Read in the master text file."""
+    if input_file is None:
+        input_file = get_test_data('master.txt', as_file_obj=False)
+    with open(input_file, 'rt') as station_file:
         station_file.readline()
         for line in station_file:
             state = line[:3].strip()
@@ -81,8 +77,11 @@ def _read_master_text_file(filename='master.txt'):
     return station_map
 
 
-def _read_station_text_file(filename='stations.txt'):
-    with open(filename, 'rt') as station_file:
+def _read_station_text_file(input_file=None):
+    """Read the station text file."""
+    if input_file is None:
+        input_file = get_test_data('stations.txt', as_file_obj=False)
+    with open(input_file, 'rt') as station_file:
         for line in station_file:
             if line[0] == '!':
                 continue
@@ -104,25 +103,32 @@ def _read_station_text_file(filename='stations.txt'):
     return station_map
 
 
-def _read_airports_file(filename='airport-codes.csv'):
-    with open(filename, 'rt') as station_file:
+def _read_airports_file(input_file=None):
+    """Read the airports file."""
+    if input_file is None:
+        input_file = get_test_data('airport-codes.csv', as_file_obj=False)
+    with open(input_file, 'rt') as station_file:
         station_file.readline()  # Skip header
         csvreader = csv.reader(station_file)
-        for stid, *info in csvreader:
-            new_stid = info[9]  # Use GPS code rather than ID at start of line
+        for info in csvreader:
+            stid = info[0]
+            new_stid = info[10]  # Use GPS code rather than ID at start of line
             if not stid.endswith(new_stid):
                 stid = new_stid
             station_map[stid] = Station(stid, synop_id=99999,
-                                        latitude=float(info[2]), longitude=float(info[3]),
-                                        altitude=float(info[4] if info[4]
+                                        latitude=float(info[3]), longitude=float(info[4]),
+                                        altitude=float(info[5] if info[5]
                                                        else 0) * (25.4 * 12 / 1000.),
-                                        country=info[6],
-                                        state=info[7].split('-')[-1], name=info[8])
+                                        country=info[7],
+                                        state=info[8].split('-')[-1], name=info[9])
     return station_map
 
 
 class StationLookup:
+    """Utilize all the different tables puts dictionaries together."""
+
     def __init__(self):
+        """Initialize different files."""
         self.sources = []
         self.sources.append(('gempak', _read_station_table()))
         self.sources.append(('master', _read_master_text_file()))
@@ -131,6 +137,7 @@ class StationLookup:
         self.sites = defaultdict(set)
 
     def call(self, stid):
+        """Call different tables and files."""
         for name, table in self.sources:
             if stid in table:
                 self.sites[name].add(stid)
@@ -139,13 +146,15 @@ class StationLookup:
         log.warning('Missing station: %s', stid)
         raise KeyError('')
 
-    def str(self):
+    def string(self):
+        """Join strings."""
         return '\n'.join('{0}: ({1}) {2}'.format(s, len(v), ' '.join(str(i) for i in v))
                          for s, v in self.sites.items())
 
 
 def station_dict():
+    """Assemble a master dictionary from StationLookup Function."""
     master = StationLookup().sources[0][1]
     for station in StationLookup().sources:
-        master = {**master, **station[1]}
+        master.update(**station[1])
     return master
