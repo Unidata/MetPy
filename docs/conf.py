@@ -25,7 +25,7 @@ sys.path.insert(0, os.path.abspath(os.path.join('..', '..')))
 # -- General configuration ------------------------------------------------
 
 # If your documentation needs a minimal Sphinx version, state it here.
-# needs_sphinx = '1.0'
+needs_sphinx = '1.8'
 
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
@@ -157,11 +157,6 @@ try:
 except ImportError:
     pass
 
-
-def setup(app):
-    app.add_stylesheet('theme_override.css')
-
-
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
 # documentation.
@@ -204,6 +199,9 @@ html_favicon = os.path.join('_static', 'metpy_32x32.ico')
 # relative to this directory. They are copied after the builtin static files,
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
+
+html_css_files = ['theme_override.css']
+html_js_files = ['pop_ver.js']
 
 # Add any extra paths that contain custom files (such as robots.txt or
 # .htaccess) here, relative to this directory. These files are copied
@@ -331,3 +329,5 @@ texinfo_documents = [
 
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 # texinfo_no_detailmenu = False
+
+linkcheck_ignore = [r'https://www\.youtube\.com/watch\?v=[\d\w\-_]+']

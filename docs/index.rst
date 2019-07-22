@@ -90,13 +90,13 @@ Media
 
 .. _`2015 Unidata Users Workshop`: https://www.youtube.com/watch?v=umwauHAL-0M
 .. _`2016 AMS Annual Meeting`: https://ams.confex.com/ams/96Annual/webprogram/Paper286983.html
-.. _`SSEC/Wisconsin AOS Python Workshop`: https://youtu.be/RRvJI_vouQc
-.. _`SciPy 2016`: https://youtu.be/moLKGjbXvgE
+.. _`SSEC/Wisconsin AOS Python Workshop`: https://www.youtube.com/watch?v=RRvJI_vouQc
+.. _`SciPy 2016`: https://www.youtube.com/watch?v=moLKGjbXvgE
 .. _`Episode 100 of Podcast.__init__`: https://www.podcastinit.com/episode-100-metpy-with-ryan-may-sean-arms-and-john-leeman/
-.. _`SciPy 2017 talk`: https://youtu.be/qCo9bkT9sow
+.. _`SciPy 2017 talk`: https://www.youtube.com/watch?v=qCo9bkT9sow
 .. _`SciPy 2017 poster`: https://github.com/jrleeman/CAPE-SciPy-2017/blob/master/Poster/SciPy_Poster_2017.pdf
 .. _`2018 AMS Annual Meeting`: https://ams.confex.com/ams/98Annual/webprogram/Paper333578.html
-.. _`SciPy 2018 talk`: https://youtu.be/OKQlUdPY0Jc
+.. _`SciPy 2018 talk`: https://www.youtube.com/watch?v=OKQlUdPY0Jc
 .. _`SciPy 2018 poster`: http://johnrleeman.com/pubs/2018/Leeman_2018_SciPy_Poster.pdf
 .. _`AMS 2019 talk`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/352384
 .. _`AMS 2019 poster`: https://ams.confex.com/ams/2019Annual/meetingapp.cgi/Paper/354058
