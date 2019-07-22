@@ -98,7 +98,7 @@ def nearest_intersection_idx(a, b):
 @exporter.export
 @preprocess_xarray
 @units.wraps(('=A', '=B'), ('=A', '=B', '=B'))
-def find_intersections(x, a, b, direction='all'):
+def find_intersections(x, a, b, direction='all', log_x=False):
     """Calculate the best estimate of intersection.
 
     Calculates the best estimates of the intersection of two y-value
@@ -115,6 +115,9 @@ def find_intersections(x, a, b, direction='all'):
     direction : string, optional
         specifies direction of crossing. 'all', 'increasing' (a becoming greater than b),
         or 'decreasing' (b becoming greater than a). Defaults to 'all'.
+    log_x : bool, optional
+        Use logarithmic interpolation along the `x` axis (i.e. for finding intersections
+        in pressure coordinates). Default is False.
 
     Returns
     -------
@@ -122,6 +125,10 @@ def find_intersections(x, a, b, direction='all'):
         intersections of the lines.
 
     """
+    # Change x to logarithmic if log_x=True
+    if log_x is True:
+        x = np.log(x)
+
     # Find the index of the points just before the intersection(s)
     nearest_idx = nearest_intersection_idx(a, b)
     next_idx = nearest_idx + 1
@@ -156,6 +163,10 @@ def find_intersections(x, a, b, direction='all'):
     # If there's no intersections, return
     if len(intersect_x) == 0:
         return intersect_x, intersect_y
+
+    # Return x to linear if log_x is True
+    if log_x is True:
+        intersect_x = np.exp(intersect_x)
 
     # Check for duplicates
     duplicate_mask = (np.ediff1d(intersect_x, to_end=1) != 0)

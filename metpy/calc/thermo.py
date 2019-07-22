@@ -409,13 +409,13 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
 
     # The parcel profile and data may have the same first data point.
     # If that is the case, ignore that point to get the real first
-    # intersection for the LFC calculation.
+    # intersection for the LFC calculation. Use logarithmic interpolation.
     if np.isclose(parcel_temperature_profile[0].m, temperature[0].m):
         x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
-                                  temperature[1:], direction='increasing')
+                                  temperature[1:], direction='increasing', log_x=True)
     else:
         x, y = find_intersections(pressure, parcel_temperature_profile,
-                                  temperature, direction='increasing')
+                                  temperature, direction='increasing', log_x=True)
 
     # Compute LCL for this parcel for future comparisons
     this_lcl = lcl(pressure[0], parcel_temperature_profile[0], dewpt_start)
@@ -508,10 +508,10 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     if parcel_temperature_profile[-1] > temperature[-1]:
         return np.nan * pressure.units, np.nan * temperature.units
 
-    # Otherwise the last intersection (as long as there is one, and it's not
-    # below the LCL) is the EL
+    # Interpolate in log space to find the appropriate pressure - units have to be stripped
+    # and reassigned to allow np.log() to function properly.
     x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:], temperature[1:],
-                              direction='decreasing')
+                              direction='decreasing', log_x=True)
     lcl_p, _ = lcl(pressure[0], temperature[0], dewpt[0])
     idx = x < lcl_p
     if len(x) > 0 and x[-1] < lcl_p:
@@ -1481,8 +1481,7 @@ def _find_append_zero_crossings(x, y):
         y values of data
 
     """
-    # Find and append crossings to the data
-    crossings = find_intersections(x[1:], y[1:], np.zeros_like(y[1:]) * y.units)
+    crossings = find_intersections(x[1:], y[1:], np.zeros_like(y[1:]) * y.units, log_x=True)
     x = concatenate((x, crossings[0]))
     y = concatenate((y, crossings[1]))
 
@@ -1492,7 +1491,7 @@ def _find_append_zero_crossings(x, y):
     y = y[sort_idx]
 
     # Remove duplicate data points if there are any
-    keep_idx = np.ediff1d(x, to_end=[1]) > 0
+    keep_idx = np.ediff1d(x, to_end=[1]) > 1e-6
     x = x[keep_idx]
     y = y[keep_idx]
     return x, y
