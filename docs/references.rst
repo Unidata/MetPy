@@ -117,6 +117,10 @@ References
            doi:`10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2>`_.
 
+.. [Smithsonian1951] Smithsonian Institution and List, Robert J. 1951: `Smithsonian
+           meteorological tables <_static/Smithsonian1951.pdf>`  *Smithsonian Miscellaneous
+           Collections*, **144**, 151 pp.
+
 .. [Steadman1979] Steadman, R.G., 1979: The assessment of sultriness. Part I: A
            temperature-humidity index based on human physiology and clothing
            science. *J. Appl. Meteor.*, **18**, 861-873,

@@ -6,12 +6,14 @@
 import numpy as np
 import pytest
 
-from metpy.calc import (add_height_to_pressure, add_pressure_to_height, apparent_temperature,
-                        coriolis_parameter, geopotential_to_height, get_wind_components,
-                        get_wind_dir, get_wind_speed, heat_index, height_to_geopotential,
-                        height_to_pressure_std, pressure_to_height_std, sigma_to_pressure,
-                        smooth_gaussian, smooth_n_point, wind_components, wind_direction,
-                        wind_speed, windchill)
+from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
+                        altimeter_to_sea_level_pressure, altimeter_to_station_pressure,
+                        apparent_temperature, coriolis_parameter, geopotential_to_height,
+                        get_wind_components, get_wind_dir, get_wind_speed, heat_index,
+                        height_to_geopotential, height_to_pressure_std,
+                        pressure_to_height_std, sigma_to_pressure, smooth_gaussian,
+                        smooth_n_point, wind_components, wind_direction, wind_speed,
+                        windchill)
 from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from metpy.units import units
@@ -626,3 +628,41 @@ def test_smooth_n_pt_wrong_number():
                     [5816., 5784., 5744., 5716., 5684.]])
     with pytest.raises(ValueError):
         smooth_n_point(hght, 7)
+
+
+def test_altimeter_to_station_pressure_inhg():
+    """Test the altimeter to station pressure function with inches of mercury."""
+    altim = 29.8 * units.inHg
+    elev = 500 * units.m
+    res = altimeter_to_station_pressure(altim, elev)
+    truth = 950.967 * units.hectopascal
+    assert_almost_equal(res, truth, 3)
+
+
+def test_altimeter_to_station_pressure_hpa():
+    """Test the altimeter to station pressure function with hectopascals."""
+    altim = 1013 * units.hectopascal
+    elev = 500 * units.m
+    res = altimeter_to_station_pressure(altim, elev)
+    truth = 954.641 * units.hectopascal
+    assert_almost_equal(res, truth, 3)
+
+
+def test_altimiter_to_sea_level_pressure_inhg():
+    """Test the altimeter to sea level pressure function with inches of mercury."""
+    altim = 29.8 * units.inHg
+    elev = 500 * units.m
+    temp = 30 * units.degC
+    res = altimeter_to_sea_level_pressure(altim, elev, temp)
+    truth = 1006.089 * units.hectopascal
+    assert_almost_equal(res, truth, 3)
+
+
+def test_altimeter_to_sea_level_pressure_hpa():
+    """Test the altimeter to sea level pressure function with hectopascals."""
+    altim = 1013 * units.hectopascal
+    elev = 500 * units.m
+    temp = 0 * units.degC
+    res = altimeter_to_sea_level_pressure(altim, elev, temp)
+    truth = 1016.246 * units.hectopascal
+    assert_almost_equal(res, truth, 3)

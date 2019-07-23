@@ -17,10 +17,8 @@ calc
       dry_static_energy
       geopotential_to_height
       height_to_geopotential
-      height_to_pressure_std
       mean_pressure_weighted
       potential_temperature
-      pressure_to_height_std
       sigma_to_pressure
       static_stability
       temperature_from_potential_temperature
@@ -157,6 +155,17 @@ calc
       apparent_temperature
       heat_index
       windchill
+
+   Standard Atmosphere
+   -------------------
+
+   .. autosummary::
+      :toctree: ./
+
+      altimeter_to_sea_level_pressure
+      altimeter_to_station_pressure
+      height_to_pressure_std
+      pressure_to_height_std
 
    Other
    -----
