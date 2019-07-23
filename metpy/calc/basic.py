@@ -25,6 +25,10 @@ from ..xarray import preprocess_xarray
 
 exporter = Exporter(globals())
 
+# The following variables are constants for a standard atmosphere
+t0 = 288. * units.kelvin
+p0 = 1013.25 * units.hPa
+
 
 @exporter.export
 @preprocess_xarray
@@ -368,7 +372,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_un
         values where wind chill or heat_index is undefined masked. For wind
         chill, these are values where the temperature > 50F or
         wind speed <= 3 miles per hour. For heat index, these are values
-        where the temperature < 80F.
+        where the temperature < 80F or relative humidity < 40 percent.
         Defaults to `True`.
 
     Returns
@@ -389,10 +393,10 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_un
 
     # NB: mask_defined=True is needed to know where computed values exist
     wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
-                                       mask_undefined=True).to(temperature.units)
+                                       mask_undefined=mask_undefined).to(temperature.units)
 
     heat_index_temperature = heat_index(temperature, rh,
-                                        mask_undefined=True).to(temperature.units)
+                                        mask_undefined=mask_undefined).to(temperature.units)
 
     # Combine the heat index and wind chill arrays (no point has a value in both)
     # NB: older numpy.ma.where does not return a masked array
@@ -440,9 +444,7 @@ def pressure_to_height_std(pressure):
     .. math:: Z = \frac{T_0}{\Gamma}[1-\frac{p}{p_0}^\frac{R\Gamma}{g}]
 
     """
-    t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
-    p0 = 1013.25 * units.mbar
     return (t0 / gamma) * (1 - (pressure / p0).to('dimensionless')**(
         mpconsts.Rd * gamma / mpconsts.g))
 
@@ -558,9 +560,7 @@ def height_to_pressure_std(height):
     .. math:: p = p_0 e^{\frac{g}{R \Gamma} \text{ln}(1-\frac{Z \Gamma}{T_0})}
 
     """
-    t0 = 288. * units.kelvin
     gamma = 6.5 * units('K/km')
-    p0 = 1013.25 * units.mbar
     return p0 * (1 - (gamma / t0) * height) ** (mpconsts.g / (mpconsts.Rd * gamma))
 
 
@@ -838,6 +838,156 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
                                    + r * (smooth_grid[2:, 2:] + smooth_grid[2:, :-2] +
                                           + smooth_grid[:-2, 2:] + smooth_grid[:-2, :-2]))
     return smooth_grid
+
+
+@exporter.export
+@preprocess_xarray
+def altimeter_to_station_pressure(altimeter_value, height):
+    r"""Convert the altimeter measurement to station pressure.
+
+    This function is useful for working with METARs since they do not provide
+    altimeter values, but not sea-level pressure or station pressure.
+    The following definitions of altimeter setting and station pressure
+    are taken from [Smithsonian1951]_ Altimeter setting is the
+    pressure value to which an aircraft altimeter scale is set so that it will
+    indicate the altitude above mean sea-level of an aircraft on the ground at the
+    location for which the value is determined. It assumes a standard atmosphere.
+    Station pressure is the atmospheric pressure at the designated station elevation.
+    Finding the station pressure can be helpful for calculating sea-level pressure
+    or other parameters.
+
+    Parameters
+    ----------
+    altimeter_value : `pint.Quantity`
+        The altimeter setting value as defined by the METAR or other observation,
+        which can be measured in either inches of mercury (in. Hg) or millibars (mb)
+    height: `pint.Quantity`
+        Elevation of the station measuring pressure.
+
+    Returns
+    --------
+    station_pressure: `pint.Quantity`
+        The station pressure in hPa or in. Hg, which can be used to calculate sea-level
+        pressure
+
+    See Also
+    ---------
+    altimeter_to_sea_level_pressure
+
+    Notes
+    -------
+    This function is implemented using the following equations from the
+    Smithsonian Handbook (1951) p. 269
+
+    Equation 1:
+     .. math:: A_{mb} = (p_{mb} - 0.3)F
+
+    Equation 3:
+     .. math::  F = \left [1 + \left(\frac{p_{0}^n a}{T_{0}} \right)
+                   \frac{H_{b}}{p_{1}^n} \right ] ^ \frac{1}{n}
+
+    Where
+
+    :math:`p_{0}` = standard sea-level pressure = 1013.25 mb
+
+    :math:`p_{1} = p_{mb} - 0.3` when :math:`p_{0} = 1013.25 mb`
+
+    gamma = lapse rate in NACA standard atmosphere below the isothermal layer
+    :math:`6.5^{\circ}C. km.^{-1}`
+
+    :math:`t_{0}` = standard sea-level temperature 288 K
+
+    :math:`H_{b} =` station elevation in meters (elevation for which station
+      pressure is given)
+
+    :math:`n = \frac{a R_{d}}{g} = 0.190284` where :math:`R_{d}` is the gas
+      constant for dry air
+
+    And solving for :math:`p_{mb}` results in the equation below, which is used to
+    calculate station pressure :math:`(p_{mb})`
+
+    .. math:: p_{mb} = \left [A_{mb} ^ n - \left (\frac{p_{0} a H_{b}}{T_0}
+                       \right) \right] ^ \frac{1}{n} + 0.3
+
+    """
+    # Gamma Value for this case
+    gamma = 0.0065 * units('K/m')
+
+    # N-Value
+    n = (mpconsts.Rd * gamma / mpconsts.g).to_base_units()
+
+    return ((altimeter_value ** n - ((p0 ** n * gamma * height) / t0)) ** (1 / n) + (
+            0.3 * units.hPa))
+
+
+@exporter.export
+@preprocess_xarray
+def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
+    r"""Convert the altimeter setting to sea-level pressure.
+
+    This function is useful for working with METARs since most provide
+    altimeter values, but not sea-level pressure, which is often plotted
+    on surface maps. The following definitions of altimeter setting, station pressure, and
+    sea-level pressure are taken from [Smithsonian1951]_
+    Altimeter setting is the pressure value to which an aircraft altimeter scale
+    is set so that it will indicate the altitude above mean sea-level of an aircraft
+    on the ground at the location for which the value is determined. It assumes a standard
+    atmosphere. Station pressure is the atmospheric pressure at the designated station
+    elevation. Sea-level pressure is a pressure value obtained by the theoretical reduction
+    of barometric pressure to sea level. It is assumed that atmosphere extends to sea level
+    below the station and that the properties of the atmosphere are related to conditions
+    observed at the station. This value is recorded by some surface observation stations,
+    but not all. If the value is recorded, it can be found in the remarks section. Finding
+    the sea-level pressure is helpful for plotting purposes and different calculations.
+
+    Parameters
+    ----------
+    altimeter_value : 'pint.Quantity'
+        The altimeter setting value is defined by the METAR or other observation,
+        with units of inches of mercury (in Hg) or millibars (hPa)
+    height  : 'pint.Quantity'
+        Elevation of the station measuring pressure. Often times measured in meters
+    temperature : 'pint.Quantity'
+        Temperature at the station
+
+    Returns
+    -------
+    pressure_at_sea_level: 'pint.Quantity'
+        The sea-level pressure in hPa and makes pressure values easier to compare
+        between different stations
+
+    See Also
+    --------
+    altimeter_to_station_pressure
+
+    Notes
+    -------
+    This function is implemented using the following equations from Wallace and Hobbs (1977)
+
+    Equation 2.29:
+     .. math::
+       \Delta z = Z_{2} - Z_{1}
+       = \frac{R_{d} \bar T_{v}}{g_0}ln\left(\frac{p_{1}}{p_{2}}\right)
+       = \bar H ln \left (\frac {p_{1}}{p_{2}} \right)
+
+    Equation 2.31:
+     .. math::
+       p_{0} = p_{g}exp \left(\frac{Z_{g}}{\bar H} \right) \\
+       = p_{g}exp \left(\frac{g_{0}Z_{g}}{R_{d}\bar T_{v}} \right)
+
+    Then by substituting :math:`Delta_{Z}` for :math:`Z_{g}` in Equation 2.31:
+     .. math:: p_{sea_level} = p_{station} exp\left(\frac{\Delta z}{H}\right)
+
+    where :math:`Delta_{Z}` is the elevation in meters and :math:`H = \frac{R_{d}T}{g}`
+
+    """
+    # Calculate the station pressure using function altimeter_to_station_pressure()
+    psfc = altimeter_to_station_pressure(altimeter_value, height)
+
+    # Calculate the scale height
+    h = mpconsts.Rd * temperature / mpconsts.g
+
+    return psfc * np.exp(height / h)
 
 
 def _check_radians(value, max_radians=2 * np.pi):
