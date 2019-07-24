@@ -1774,13 +1774,11 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     cape_cin, most_unstable_parcel, parcel_profile
 
     """
-    _, parcel_temperature, parcel_dewpoint, parcel_idx = most_unstable_parcel(pressure,
-                                                                              temperature,
-                                                                              dewpoint,
-                                                                              **kwargs)
-    mu_profile = parcel_profile(pressure[parcel_idx:], parcel_temperature, parcel_dewpoint)
-    return cape_cin(pressure[parcel_idx:], temperature[parcel_idx:],
-                    dewpoint[parcel_idx:], mu_profile)
+    _, _, _, parcel_idx = most_unstable_parcel(pressure, temperature, dewpoint, **kwargs)
+    p, t, td, mu_profile = parcel_profile_with_lcl(pressure[parcel_idx:],
+                                                   temperature[parcel_idx:],
+                                                   dewpoint[parcel_idx:])
+    return cape_cin(p, t, td, mu_profile)
 
 
 @exporter.export
