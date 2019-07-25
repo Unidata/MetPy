@@ -258,15 +258,15 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
         try:
             current_wx1_symbol = int(wx_code_map[wx[0]])
         except (IndexError, KeyError):
-            current_wx1_symbol = np.nan
+            current_wx1_symbol = 0
         try:
             current_wx2_symbol = int(wx_code_map[wx[1]])
         except (IndexError, KeyError):
-            current_wx2_symbol = np.nan
+            current_wx2_symbol = 0
         try:
             current_wx3_symbol = int(wx_code_map[wx[3]])
         except (IndexError, KeyError):
-            current_wx3_symbol = np.nan
+            current_wx3_symbol = 0
 
     # Set the sky conditions
     if tree.skyc.text[1:3] == 'VV':
