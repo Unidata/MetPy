@@ -372,7 +372,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_un
         values where wind chill or heat_index is undefined masked. For wind
         chill, these are values where the temperature > 50F or
         wind speed <= 3 miles per hour. For heat index, these are values
-        where the temperature < 80F or relative humidity < 40 percent.
+        where the temperature < 80F.
         Defaults to `True`.
 
     Returns
@@ -393,10 +393,10 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_un
 
     # NB: mask_defined=True is needed to know where computed values exist
     wind_chill_temperature = windchill(temperature, speed, face_level_winds=face_level_winds,
-                                       mask_undefined=mask_undefined).to(temperature.units)
+                                       mask_undefined=True).to(temperature.units)
 
     heat_index_temperature = heat_index(temperature, rh,
-                                        mask_undefined=mask_undefined).to(temperature.units)
+                                        mask_undefined=True).to(temperature.units)
 
     # Combine the heat index and wind chill arrays (no point has a value in both)
     # NB: older numpy.ma.where does not return a masked array
