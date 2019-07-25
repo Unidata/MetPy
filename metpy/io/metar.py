@@ -246,9 +246,9 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
         current_wx1 = np.nan
         current_wx2 = np.nan
         current_wx3 = np.nan
-        current_wx1_symbol = np.nan
-        current_wx2_symbol = np.nan
-        current_wx3_symbol = np.nan
+        current_wx1_symbol = 0
+        current_wx2_symbol = 0
+        current_wx3_symbol = 0
     else:
         wx = [np.nan, np.nan, np.nan]
         wx[0:len((tree.curwx.text.strip()).split())] = tree.curwx.text.strip().split()
