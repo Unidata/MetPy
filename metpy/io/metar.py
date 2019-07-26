@@ -1,3 +1,6 @@
+# Copyright (c) 2008,2015,2016,2017,2018, 2019 MetPy Developers.
+# Distributed under the terms of the BSD 3-Clause License.
+# SPDX-License-Identifier: BSD-3-Clause
 """Parse metars to dataframes or named tuples."""
 # Import the neccessary libraries
 from collections import namedtuple
