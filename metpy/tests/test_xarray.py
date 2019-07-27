@@ -583,3 +583,10 @@ def test_dataset_parse_cf_keep_attrs(test_ds):
 
     assert parsed_ds.attrs  # Must be non-empty
     assert parsed_ds.attrs == test_ds.attrs  # Must match
+
+
+def test_check_axis_with_bad_unit(test_ds_generic):
+    """Test that check_axis does not raise an exception when provided a bad unit."""
+    var = test_ds_generic['e']
+    var.attrs['units'] = 'nondimensional'
+    assert not check_axis(var, 'x', 'y', 'vertical', 'time')
