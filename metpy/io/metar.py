@@ -145,6 +145,10 @@ def parse_metar_to_pandas(metar_text, year=datetime.now().year, month=datetime.n
     except AttributeError:
         df['sea_level_pressure'] = [np.nan]
 
+    # Use get wind components and assign them to u and v variables
+    df['u_wind'], df['v_wind'] = wind_components((df.wind_speed.values * units.kts),
+                                                 df.wind_direction.values * units.degree)
+
     # Round the altimeter and sea-level pressure values
     df['altimeter'] = df.altimeter.round(2)
     df['sea_level_pressure'] = df.sea_level_pressure.round(2)
