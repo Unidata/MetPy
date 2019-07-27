@@ -8,8 +8,8 @@ Hodograph Inset
 Layout a Skew-T plot with a hodograph inset into the plot.
 """
 
-import matplotlib.pyplot as plt
 import matplotlib as mpl
+import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
 import numpy as np
 import pandas as pd
