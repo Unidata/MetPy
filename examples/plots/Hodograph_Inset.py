@@ -8,7 +8,6 @@ Hodograph Inset
 Layout a Skew-T plot with a hodograph inset into the plot.
 """
 
-from matplotlib import cm
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
@@ -96,9 +95,13 @@ skew.ax.set_xlim(-50, 60)
 ax_hod = inset_axes(skew.ax, "40%", "40%", loc=1)
 h = Hodograph(ax_hod, component_range=80.0)
 h.add_grid(increment=20)
+# create array of data to use for colormapping
 c = np.hypot(u, v)
+# Pass in a custom norm and colormap (from mpl.cm)
 norm = mpl.colors.Normalize(vmin=c.min(), vmax=c.max())
-colors = [cm.YlOrBr(norm(level)) for level in c]
+colors = [mpl.cm.YlOrBr(norm(level)) for level in c]
+
+# Create and show plot
 h.plot_colormapped(u, v, c, bounds=c[:-1], colors=colors)
 # Show the plot
 plt.show()
