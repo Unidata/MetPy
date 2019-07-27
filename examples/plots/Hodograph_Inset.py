@@ -71,7 +71,7 @@ skew.plot_mixing_lines()
 skew.ax.set_xlim(-50, 60)
 
 # Create a hodograph
-ax_hod = inset_axes(skew.ax, "40%", "40%", loc=1)
+ax_hod = inset_axes(skew.ax, '40%', '40%', loc=1)
 h = Hodograph(ax_hod, component_range=80.0)
 h.add_grid(increment=20)
 # create array of data to use for colormapping
