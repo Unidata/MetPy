@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Pull out station metadata for metars."""
 from collections import defaultdict, namedtuple
-import csv
-import io
 import logging
 
 import pandas as pd
