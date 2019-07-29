@@ -110,7 +110,7 @@ def _read_airports_file(input_file=None):
     """Read the airports file."""
     if input_file is None:
         input_file = get_test_data('airport-codes.csv', as_file_obj=False)
-    with open(input_file, 'rt') as station_file:
+    with open(input_file, 'rt', encoding='utf-8') as station_file:
         station_file.readline()  # Skip header
         csvreader = csv.reader(station_file)
         for info in csvreader:
