@@ -9,7 +9,8 @@ import logging
 
 import pandas as pd
 
-from metpy.cbook import get_test_data
+from ..cbook import get_test_data
+from ..units import units
 
 log = logging.getLogger('stations')
 log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
@@ -113,13 +114,13 @@ def _read_airports_file(input_file=None):
     if input_file is None:
         input_file = get_test_data('airport-codes.csv', as_file_obj=False)
     df = pd.read_csv(input_file).drop_duplicates()
-    station_map = pd.DataFrame({'id':df.ident.values, 'synop_id':99999,
-                                'latitude':df.latitude_deg.values,
-                                'longitude':df.longitude_deg.values,
-                                'altitude':((df.elevation_ft.values * units.ft) * units.m).m,
-                                'country':df.iso_country.values,
-                                'state':df.iso_region.str.split("-", n = 1,
-                                expand = True)[1].values}).to_dict()
+    station_map = pd.DataFrame({'id': df.ident.values, 'synop_id': 99999,
+                                'latitude': df.latitude_deg.values,
+                                'longitude': df.longitude_deg.values,
+                                'altitude': ((df.elevation_ft.values * units.ft) * units.m).m,
+                                'country': df.iso_country.values,
+                                'state': df.iso_region.str.split("-", n=1,
+                                expand=True)[1].values}).to_dict()
     return station_map
 
 
