@@ -38,27 +38,27 @@ col_units = {'station_id': None,
              'date_time': None,
              'wind_direction': 'degrees',
              'wind_speed': 'kts',
-             'u_wind': 'kts',
-             'v_wind': 'kts',
+             'eastward_wind': 'kts',
+             'northward_wind': 'kts',
              'current_wx1': None,
              'current_wx2': None,
              'current_wx3': None,
-             'skyc1': None,
-             'skylev1': 'feet',
-             'skyc2': None,
-             'skylev2': 'feet',
-             'skyc3': None,
-             'skylev3': 'feet',
-             'skyc4': None,
-             'skylev4:': None,
-             'cloudcover': None,
-             'temperature': 'degC',
-             'dewpoint': 'degC',
+             'low_cloud_type': None,
+             'low_cloud_level': 'feet',
+             'medium_cloud_type': None,
+             'medium_cloud_level': 'feet',
+             'high_cloud_type': None,
+             'high_cloud_level': 'feet',
+             'highest_cloud_type': None,
+             'highest_cloud_level:': None,
+             'cloud_coverage': None,
+             'air_temperature': 'degC',
+             'dew_point_temperature': 'degC',
              'altimeter': 'inHg',
-             'sea_level_pressure': 'hPa',
-             'current_wx1_symbol': None,
-             'current_wx2_symbol': None,
-             'current_wx3_symbol': None}
+             'air_pressure_at_sea_level': 'hPa',
+             'present_weather': None,
+             'past_weather': None,
+             'past_weather2': None}
 
 
 @exporter.export
@@ -116,42 +116,51 @@ def parse_metar_to_pandas(metar_text, year=datetime.now().year, month=datetime.n
     metar_vars = parse_metar_to_named_tuple(metar_text, station_dict(), year, month)
 
     # Build the dataframe
-    df = pd.DataFrame({'station_id': metar_vars.station_id, 'latitude': metar_vars.latitude,
-                       'longitude': metar_vars.longitude, 'elevation': metar_vars.elevation,
+    df = pd.DataFrame({'station_id': metar_vars.station_id,
+                       'latitude': metar_vars.latitude,
+                       'longitude': metar_vars.longitude,
+                       'elevation': metar_vars.elevation,
                        'date_time': metar_vars.date_time,
                        'wind_direction': metar_vars.wind_direction,
                        'wind_speed': metar_vars.wind_speed,
                        'current_wx1': metar_vars.current_wx1,
                        'current_wx2': metar_vars.current_wx2,
-                       'current_wx3': metar_vars.current_wx3, 'skyc1': metar_vars.skyc1,
-                       'skylev1': metar_vars.skylev1, 'skyc2': metar_vars.skyc2,
-                       'skylev2': metar_vars.skylev2, 'skyc3': metar_vars.skyc3,
-                       'skylev3': metar_vars.skylev3, 'skyc4': metar_vars.skyc4,
-                       'skylev4': metar_vars.skylev4, 'cloudcover': metar_vars.cloudcover,
-                       'temperature': metar_vars.temperature,
-                       'dewpoint': metar_vars.dewpoint,
+                       'current_wx3': metar_vars.current_wx3,
+                       'low_cloud_type': metar_vars.skyc1,
+                       'low_cloud_level': metar_vars.skylev1,
+                       'medium_cloud_type': metar_vars.skyc2,
+                       'medium_cloud_level': metar_vars.skylev2,
+                       'high_cloud_type': metar_vars.skyc3,
+                       'high_cloud_level': metar_vars.skylev3,
+                       'highest_cloud_type': metar_vars.skyc4,
+                       'highest_cloud_level': metar_vars.skylev4,
+                       'cloud_coverage': metar_vars.cloudcover,
+                       'air_temperature': metar_vars.temperature,
+                       'dew_point_temperature': metar_vars.dewpoint,
                        'altimeter': metar_vars.altimeter,
-                       'current_wx1_symbol': metar_vars.current_wx1_symbol,
-                       'current_wx2_symbol': metar_vars.current_wx2_symbol,
-                       'current_wx3_symbol': metar_vars.current_wx3_symbol},
+                       'present_weather': metar_vars.current_wx1_symbol,
+                       'past_weather': metar_vars.current_wx2_symbol,
+                       'past_weather2': metar_vars.current_wx3_symbol},
                       index=[metar_vars.station_id])
 
     # Convert to sea level pressure using calculation in metpy.calc
     try:
-        df['sea_level_pressure'] = float(altimeter_to_sea_level_pressure(
+        df['air_pressure_at_sea_level'] = float(altimeter_to_sea_level_pressure(
             df.altimeter.values * units('inHg'),
             df.elevation.values * units('meters'),
             df.temperature.values * units('degC')).to('hPa').magnitude)
     except AttributeError:
-        df['sea_level_pressure'] = [np.nan]
+        df['air_pressure_at_sea_level'] = [np.nan]
 
     # Use get wind components and assign them to u and v variables
-    df['u_wind'], df['v_wind'] = wind_components((df.wind_speed.values * units.kts),
-                                                 df.wind_direction.values * units.degree)
+    df['eastward_wind'], df['northward_wind'] = wind_components((df.wind_speed.values
+                                                                 * units.kts),
+                                                                 df.wind_direction.values
+                                                                 * units.degree)
 
     # Round the altimeter and sea-level pressure values
     df['altimeter'] = df.altimeter.round(2)
-    df['sea_level_pressure'] = df.sea_level_pressure.round(2)
+    df['air_pressure_at_sea_level'] = df.sea_level_pressure.round(2)
 
     # Set the units for the dataframe
     df.units = col_units
@@ -543,28 +552,44 @@ def text_file_parse(input_file, year=datetime.now().year, month=datetime.now().m
         except ParseError:
             continue
 
-    df = pd.DataFrame({'station_id': station_id, 'latitude': lat, 'longitude': lon,
-                       'elevation': elev, 'date_time': date_time,
-                       'wind_direction': wind_dir, 'wind_speed': wind_spd,
-                       'current_wx1': current_wx1, 'current_wx2': current_wx2,
-                       'current_wx3': current_wx3, 'skyc1': skyc1,
-                       'skylev1': skylev1, 'skyc2': skyc2, 'skylev2': skylev2,
-                       'skyc3': skyc3, 'skylev3': skylev3, 'skyc4': skyc4,
-                       'skylev4': skylev4, 'cloudcover': cloudcover, 'temperature': temp,
-                       'dewpoint': dewp, 'altimeter': altim,
-                       'current_wx1_symbol': current_wx1_symbol,
-                       'current_wx2_symbol': current_wx2_symbol,
-                       'current_wx3_symbol': current_wx3_symbol})
+    df = pd.DataFrame({'station_id': metar_vars.station_id,
+                       'latitude': metar_vars.latitude,
+                       'longitude': metar_vars.longitude,
+                       'elevation': metar_vars.elevation,
+                       'date_time': metar_vars.date_time,
+                       'wind_direction': metar_vars.wind_direction,
+                       'wind_speed': metar_vars.wind_speed,
+                       'current_wx1': metar_vars.current_wx1,
+                       'current_wx2': metar_vars.current_wx2,
+                       'current_wx3': metar_vars.current_wx3,
+                       'low_cloud_type': metar_vars.skyc1,
+                       'low_cloud_level': metar_vars.skylev1,
+                       'medium_cloud_type': metar_vars.skyc2,
+                       'medium_cloud_level': metar_vars.skylev2,
+                       'high_cloud_type': metar_vars.skyc3,
+                       'high_cloud_level': metar_vars.skylev3,
+                       'highest_cloud_type': metar_vars.skyc4,
+                       'highest_cloud_level': metar_vars.skylev4,
+                       'cloud_coverage': metar_vars.cloudcover,
+                       'air_temperature': metar_vars.temperature,
+                       'dew_point_temperature': metar_vars.dewpoint,
+                       'altimeter': metar_vars.altimeter,
+                       'present_weather': metar_vars.current_wx1_symbol,
+                       'past_weather': metar_vars.current_wx2_symbol,
+                       'past_weather2': metar_vars.current_wx3_symbol},
+                      index=[metar_vars.station_id])
 
     # Calculate sea-level pressure
-    df['sea_level_pressure'] = altimeter_to_sea_level_pressure(
+    df['air_pressure_at_sea_level'] = altimeter_to_sea_level_pressure(
         altim * units('inHg'),
         elev * units('meters'),
         temp * units('degC')).to('hPa').magnitude
 
     # Use get wind components and assign them to u and v variables
-    df['u_wind'], df['v_wind'] = wind_components((df.wind_speed.values * units.kts),
-                                                 df.wind_direction.values * units.degree)
+    df['eastward_wind'], df['northward_wind'] = wind_components((df.wind_speed.values
+                                                                 * units.kts),
+                                                                 df.wind_direction.values
+                                                                 * units.degree)
 
     # Drop duplicates
     df = df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last')
