@@ -117,7 +117,7 @@ def _read_airports_file(input_file=None):
                                 'longitude': df.longitude_deg.values,
                                 'altitude': ((df.elevation_ft.values * units.ft) * units.m).m,
                                 'country': df.iso_country.values,
-                                'state': df.iso_region.str.split("-", n=1, expand=True
+                                'state': df.iso_region.str.split('-', n=1, expand=True
                                                                  )[1].values}).to_dict()
     return station_map
 
