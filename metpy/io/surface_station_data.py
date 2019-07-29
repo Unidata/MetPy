@@ -5,6 +5,7 @@
 from collections import defaultdict, namedtuple
 import csv
 import logging
+from io import open
 
 
 from metpy.cbook import get_test_data
