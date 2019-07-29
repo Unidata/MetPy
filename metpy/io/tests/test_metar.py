@@ -49,7 +49,7 @@ def test_all_weather_given():
                                      '10256 20211 55000=')
     assert df.station_id.values == 'RJOI'
     assert_almost_equal(df.latitude.values, 34.14, decimal=2)
-    assert_almost_equal(df.longitude.values, 132.24, decimal=2)
+    assert_almost_equal(df.longitude.values, 132.22, decimal=2)
     assert df.current_wx1.values == '-SHRA'
     assert df.current_wx2.values == 'BR'
     assert df.current_wx3.values == 'VCSH'
