@@ -263,13 +263,13 @@ def test_hodograph_plot_layers():
     u = np.zeros((6)) * units.knots
     v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
     heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
-    bounds = np.array([500, 1500, 2500, 3500, 4500]) * units.m
+    cint = np.array([500, 1500, 2500, 3500, 4500]) * units.m
     colors = ['r', 'g', 'b', 'r']
     fig = plt.figure(figsize=(7, 7))
     ax1 = fig.add_subplot(1, 1, 1)
     h = Hodograph(ax1)
     h.add_grid(increment=10)
-    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    h.plot_colormapped(u, v, heights, colors=colors, cint=cint)
     ax1.set_xlim(-50, 50)
     ax1.set_ylim(-5, 50)
 
@@ -282,13 +282,13 @@ def test_hodograph_plot_layers_different_units():
     u = np.zeros((6)) * units.knots
     v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
     heights = np.array([0, 1, 2, 3, 4, 5]) * units.km
-    bounds = np.array([500, 1500, 2500, 3500, 4500]) * units.m
+    cint = np.array([500, 1500, 2500, 3500, 4500]) * units.m
     colors = ['r', 'g', 'b', 'r']
     fig = plt.figure(figsize=(7, 7))
     ax1 = fig.add_subplot(1, 1, 1)
     h = Hodograph(ax1)
     h.add_grid(increment=10)
-    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    h.plot_colormapped(u, v, heights, colors=colors, cint=cint)
     ax1.set_xlim(-50, 50)
     ax1.set_ylim(-5, 50)
     return fig
@@ -300,13 +300,13 @@ def test_hodograph_plot_layers_bound_units():
     u = np.zeros((6)) * units.knots
     v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
     heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
-    bounds = np.array([0.5, 1.5, 2.5, 3.5, 4.5]) * units.km
+    cint = np.array([0.5, 1.5, 2.5, 3.5, 4.5]) * units.km
     colors = ['r', 'g', 'b', 'r']
     fig = plt.figure(figsize=(7, 7))
     ax1 = fig.add_subplot(1, 1, 1)
     h = Hodograph(ax1)
     h.add_grid(increment=10)
-    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    h.plot_colormapped(u, v, heights, colors=colors, cint=cint)
     ax1.set_xlim(-50, 50)
     ax1.set_ylim(-5, 50)
     return fig
@@ -324,7 +324,7 @@ def test_hodograph_plot_arbitrary_layer():
     ax = fig.add_subplot(1, 1, 1)
     hodo = Hodograph(ax, component_range=80)
     hodo.add_grid(increment=20, color='k')
-    hodo.plot_colormapped(u, v, speed, bounds=levels, colors=colors)
+    hodo.plot_colormapped(u, v, speed, cint=levels, colors=colors)
 
     return fig
 

@@ -791,20 +791,17 @@ class Hodograph(object):
         return self.ax.quiver(center_position, center_position,
                               u, v, **quiver_args)
 
-    def plot_colormapped(self, u, v, c, bounds=None, colors=None, **kwargs):
+    def plot_colormapped(self, u, v, c, cint=None, colors=None, **kwargs):
         r"""Plot u, v data, with line colored based on a third set of data.
 
         Plots the wind data on the hodograph, but with a colormapped line. Takes a third
-        variable besides the winds and either a colormap to color it with or a series of
-        bounds and colors to create a colormap and norm to control colormapping.
-        The bounds must always be in increasing order. For using custom bounds with
-        height data, the function will automatically interpolate to the actual bounds from the
-        height and wind data, as well as convert the input bounds from
-        height AGL to height above MSL to work with the provided heights.
-
-        Simple wrapper around plot so that pressure is the first (independent)
-        input. This is essentially a wrapper around `semilogy`. It also
-        sets some appropriate ticking and plot ranges.
+        variable besides the winds (e.g. heights or pressure levels) and either a colormap to
+        color it with or a series of contour intervals and colors to create a colormap and
+        norm to control colormapping. The contour intervals (`cint`) must always be in
+        increasing order. For using custom contour intervals with height data, the function
+        will automatically interpolate to the contour intervals from the height and wind data,
+        as well as convert the input contour intervals from height AGL to MSL to work with the
+        provided heights.
 
         Parameters
         ----------
@@ -813,9 +810,9 @@ class Hodograph(object):
         v : array_like
             v-component of wind
         c : array_like
-            data to use for colormapping
-        bounds: array-like, optional
-            Array of bounds for c to use in coloring the hodograph.
+            data to use for colormapping (e.g. heights, pressure, wind speed)
+        cint: array-like, optional
+            Array of contour intervals for c to use in coloring the hodograph.
         colors: list, optional
             Array of strings representing colors for the hodograph segments.
         kwargs
@@ -836,12 +833,12 @@ class Hodograph(object):
         # Plotting a color segmented hodograph
         if colors:
             cmap = mcolors.ListedColormap(colors)
-            # If we are segmenting by height (a length), interpolate the bounds
-            if bounds.dimensionality == {'[length]': 1.0}:
+            # If we are segmenting by height (a length), interpolate the contour intervals
+            if cint.dimensionality == {'[length]': 1.0}:
 
-                # Find any bounds not in the data and interpolate them
-                interpolation_heights = [bound.m for bound in bounds if bound not in c]
-                interpolation_heights = np.array(interpolation_heights) * bounds.units
+                # Find any contour intervals not in the data and interpolate them
+                interpolation_heights = [bound.m for bound in cint if bound not in c]
+                interpolation_heights = np.array(interpolation_heights) * cint.units
                 interpolation_heights = (np.sort(interpolation_heights)
                                          * interpolation_heights.units)
                 (interpolated_heights, interpolated_u,
@@ -859,12 +856,12 @@ class Hodograph(object):
                 # Unit conversion required for coloring of bounds/data in dissimilar units
                 # to work properly.
                 c = c.to_base_units()  # TODO: This shouldn't be required!
-                bounds = bounds.to_base_units()
+                cint = cint.to_base_units()
             # If segmenting by anything else, do not interpolate, just use the data
             else:
-                bounds = np.asarray(bounds) * bounds.units
+                cint = np.asarray(cint) * cint.units
 
-            norm = mcolors.BoundaryNorm(bounds.magnitude, cmap.N)
+            norm = mcolors.BoundaryNorm(cint.magnitude, cmap.N)
             cmap.set_over('none')
             cmap.set_under('none')
             kwargs['cmap'] = cmap
