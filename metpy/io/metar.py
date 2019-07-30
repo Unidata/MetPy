@@ -160,7 +160,7 @@ def parse_metar_to_pandas(metar_text, year=datetime.now().year, month=datetime.n
 
     # Round the altimeter and sea-level pressure values
     df['altimeter'] = df.altimeter.round(2)
-    df['air_pressure_at_sea_level'] = df.sea_level_pressure.round(2)
+    df['air_pressure_at_sea_level'] = df.air_pressure_at_sea_level.round(2)
 
     # Set the units for the dataframe
     df.units = col_units
@@ -552,32 +552,32 @@ def text_file_parse(input_file, year=datetime.now().year, month=datetime.now().m
         except ParseError:
             continue
 
-    df = pd.DataFrame({'station_id': metar_vars.station_id,
-                       'latitude': metar_vars.latitude,
-                       'longitude': metar_vars.longitude,
-                       'elevation': metar_vars.elevation,
-                       'date_time': metar_vars.date_time,
-                       'wind_direction': metar_vars.wind_direction,
-                       'wind_speed': metar_vars.wind_speed,
-                       'current_wx1': metar_vars.current_wx1,
-                       'current_wx2': metar_vars.current_wx2,
-                       'current_wx3': metar_vars.current_wx3,
-                       'low_cloud_type': metar_vars.skyc1,
-                       'low_cloud_level': metar_vars.skylev1,
-                       'medium_cloud_type': metar_vars.skyc2,
-                       'medium_cloud_level': metar_vars.skylev2,
-                       'high_cloud_type': metar_vars.skyc3,
-                       'high_cloud_level': metar_vars.skylev3,
-                       'highest_cloud_type': metar_vars.skyc4,
-                       'highest_cloud_level': metar_vars.skylev4,
-                       'cloud_coverage': metar_vars.cloudcover,
-                       'air_temperature': metar_vars.temperature,
-                       'dew_point_temperature': metar_vars.dewpoint,
-                       'altimeter': metar_vars.altimeter,
-                       'present_weather': metar_vars.current_wx1_symbol,
-                       'past_weather': metar_vars.current_wx2_symbol,
-                       'past_weather2': metar_vars.current_wx3_symbol},
-                      index=[metar_vars.station_id])
+    df = pd.DataFrame({'station_id': station_id,
+                       'latitude': lat,
+                       'longitude': lon,
+                       'elevation': elev,
+                       'date_time': date_time,
+                       'wind_direction': wind_dir,
+                       'wind_speed': wind_spd,
+                       'current_wx1': current_wx1,
+                       'current_wx2': current_wx2,
+                       'current_wx3': current_wx3,
+                       'low_cloud_type': skyc1,
+                       'low_cloud_level': skylev1,
+                       'medium_cloud_type': skyc2,
+                       'medium_cloud_level': skylev2,
+                       'high_cloud_type': skyc3,
+                       'high_cloud_level': skylev3,
+                       'highest_cloud_type': skyc4,
+                       'highest_cloud_level': skylev4,
+                       'cloud_coverage': cloudcover,
+                       'air_temperature': temp,
+                       'dew_point_temperature': dewp,
+                       'altimeter': altim,
+                       'present_weather': current_wx1_symbol,
+                       'past_weather': current_wx2_symbol,
+                       'past_weather2': current_wx3_symbol},
+                      index=station_id)
 
     # Calculate sea-level pressure
     df['air_pressure_at_sea_level'] = altimeter_to_sea_level_pressure(
@@ -596,7 +596,7 @@ def text_file_parse(input_file, year=datetime.now().year, month=datetime.now().m
 
     # Round altimeter and sea-level pressure values
     df['altimeter'] = df.altimeter.round(2)
-    df['sea_level_pressure'] = df.sea_level_pressure.round(2)
+    df['air_pressure_at_sea_level'] = df.air_pressure_at_sea_level.round(2)
 
     # Set the units for the dataframe
     df.units = col_units
