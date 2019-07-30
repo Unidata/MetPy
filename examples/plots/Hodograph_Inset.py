@@ -38,6 +38,7 @@ df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
 # We will pull the data out of the example dataset into individual variables and
 # assign units.
 
+hght = df['height'].values * units.hPa
 p = df['pressure'].values * units.hPa
 T = df['temperature'].values * units.degC
 Td = df['dewpoint'].values * units.degC
@@ -73,7 +74,7 @@ skew.ax.set_xlim(-50, 60)
 ax_hod = inset_axes(skew.ax, '40%', '40%', loc=1)
 h = Hodograph(ax_hod, component_range=80.)
 h.add_grid(increment=20)
-h.plot_colormapped(u, v, np.hypot(u, v))
+h.plot_colormapped(u, v, hght)
 
 # Show the plot
 plt.show()
