@@ -155,8 +155,8 @@ def parse_metar_to_pandas(metar_text, year=datetime.now().year, month=datetime.n
     # Use get wind components and assign them to u and v variables
     df['eastward_wind'], df['northward_wind'] = wind_components((df.wind_speed.values
                                                                  * units.kts),
-                                                                 df.wind_direction.values
-                                                                 * units.degree)
+                                                                df.wind_direction.values
+                                                                * units.degree)
 
     # Round the altimeter and sea-level pressure values
     df['altimeter'] = df.altimeter.round(2)
@@ -588,8 +588,8 @@ def text_file_parse(input_file, year=datetime.now().year, month=datetime.now().m
     # Use get wind components and assign them to u and v variables
     df['eastward_wind'], df['northward_wind'] = wind_components((df.wind_speed.values
                                                                  * units.kts),
-                                                                 df.wind_direction.values
-                                                                 * units.degree)
+                                                                df.wind_direction.values
+                                                                * units.degree)
 
     # Drop duplicates
     df = df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last')

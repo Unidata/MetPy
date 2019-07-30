@@ -50,9 +50,9 @@ def test_all_weather_given():
     assert df.station_id.values == 'RJOI'
     assert_almost_equal(df.latitude.values, 34.14, decimal=2)
     assert_almost_equal(df.longitude.values, 132.22, decimal=2)
-    assert df.present_weather.values == '-SHRA'
-    assert df.past_weather.values == 'BR'
-    assert df.past_weather2.values == 'VCSH'
+    assert df.current_wx1.values == '-SHRA'
+    assert df.current_wx2.values == 'BR'
+    assert df.current_wx3.values == 'VCSH'
     assert df.low_cloud_type.values == 'BKN'
     assert df.low_cloud_level.values == 900
     assert df.high_cloud_type.values == 'OVC'
@@ -109,8 +109,8 @@ def test_named_tuple_test1():
                                           surface_station_data.station_dict())
     assert_equal(df.wind_direction, 90)
     assert_equal(df.wind_speed, 10)
-    assert_equal(df.air_temperature, 27)
-    assert_equal(df.dew_point_temperature, 13)
+    assert_equal(df.temperature, 27)
+    assert_equal(df.dewpoint, 13)
 
 
 def test_file_test(input_file=None):
@@ -120,4 +120,4 @@ def test_file_test(input_file=None):
     df = metar.text_file_parse(input_file)
     test = df[df.station_id == 'KVPZ']
     assert test.air_temperature.values == 23
-    assert test.air_pressure_at_sea_level.values == 1016.75
+    assert test.air_pressure_at_sea_level.values == 1016.76
