@@ -32,11 +32,10 @@ from metpy.units import units
 # like dealing with seperating text and assembling a pandas dataframe
 # https://thredds-test.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.html
 
-with get_test_data('metar_20190701_1200.txt') as f:
-    data = metar.text_file_parse(f, year=2019, month=7)
+data = metar.text_file_parse(get_test_data('metar_20190701_1200.txt', as_file_obj=False))
 
-    # Drop rows with missing winds
-    data = data.dropna(how='any', subset=['wind_dir', 'wind_speed'])
+# Drop rows with missing winds
+data = data.dropna(how='any', subset=['wind_direction', 'wind_speed'])
 
 ###########################################
 # This sample data has *way* too many stations to plot all of them. The number
@@ -62,7 +61,7 @@ plt.rcParams['savefig.dpi'] = 255
 
 # Create the figure and an axes set to the projection.
 fig = plt.figure(figsize=(20, 10))
-add_metpy_logo(fig, 1080, 290, size='small')
+add_metpy_logo(fig, 1100, 300, size='large')
 ax = fig.add_subplot(1, 1, 1, projection=proj)
 
 # Add some various map elements to the plot to make it recognizable.
@@ -100,14 +99,14 @@ stationplot.plot_parameter('NE', data['air_pressure_at_sea_level'].values,
 # Plot the cloud cover symbols in the center location. This uses the codes made above and
 # uses the `sky_cover` mapper to convert these values to font codes for the
 # weather symbol font.
-stationplot.plot_symbol('C', data['cloud_cover'].values, sky_cover)
+stationplot.plot_symbol('C', data['cloud_coverage'].values, sky_cover)
 
 # Same this time, but plot current weather to the left of center, using the
 # `current_weather` mapper to convert symbols to the right glyphs.
 stationplot.plot_symbol('W', data['present_weather'].values, current_weather)
 
 # Add wind barbs
-stationplot.plot_barb(data['eastward_wind'].values, v['westward_wind'].values)
+stationplot.plot_barb(data['eastward_wind'].values, data['northward_wind'].values)
 
 # Also plot the actual text of the station id. Instead of cardinal directions,
 # plot further out by specifying a location of 2 increments in x and 0 in y.
