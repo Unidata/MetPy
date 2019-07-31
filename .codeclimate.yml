@@ -37,8 +37,4 @@ exclude_patterns:
 - "versioneer.py"
 - "metpy/_version.py"
 - "metpy/io/_nexrad_msgs/msg*.py"
-- "metpy/io/metar_parse.peg"
-- "metpy/io/metar_parser.py"
-- "metpy/io/metar.py"
-- "metpy/io/surface_station_data.py"
 - "docs/**/*"
