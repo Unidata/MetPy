@@ -14,14 +14,12 @@ existing point data in a format you can work with trivially, the station plot wi
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib.pyplot as plt
-import numpy as np
-import pandas as pd
 
 from metpy.calc import reduce_point_density
 from metpy.calc import wind_components
 from metpy.cbook import get_test_data
 from metpy.io import metar
-from metpy.plots import add_metpy_logo, current_weather, sky_cover, StationPlot, wx_code_map
+from metpy.plots import add_metpy_logo, current_weather, sky_cover, StationPlot
 from metpy.units import units
 
 ###########################################

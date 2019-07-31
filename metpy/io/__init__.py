@@ -14,4 +14,3 @@ from .nexrad import *  # noqa: F403
 
 __all__ = gini.__all__[:]  # pylint: disable=undefined-variable
 __all__.extend(nexrad.__all__)  # pylint: disable=undefined-variable
-__all__.extend(metar.__all__)  # pylint: disable=undefined-variable
