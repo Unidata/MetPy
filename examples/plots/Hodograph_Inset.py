@@ -78,7 +78,7 @@ h.add_grid(increment=20)
 c = np.hypot(u, v)
 # Pass in a custom norm and colormap (from mpl.cm)
 norm = mpl.colors.Normalize(vmin=c.min(), vmax=c.max())
-colors = [mpl.cm.YlOrBr(norm(level)) for level in c]
+colors = [mpl.cm.viridis(norm(level)) for level in c]
 
 # Create and show plot
 h.plot_colormapped(u, v, c, bounds=c[:-1], colors=colors)
