@@ -12,7 +12,7 @@ import warnings
 import xarray as xr
 
 from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
-from .units import DimensionalityError, units
+from .units import DimensionalityError, UndefinedUnitError, units
 
 __all__ = []
 readable_to_cf_axes = {'time': 'T', 'vertical': 'Z', 'y': 'Y', 'x': 'X'}
@@ -427,21 +427,28 @@ def check_axis(var, *axes):
                 return True
 
         # Check for units, either by dimensionality or name
-        if (axis in coordinate_criteria['units'] and (
-                (
-                    coordinate_criteria['units'][axis]['match'] == 'dimensionality'
-                    and (units.get_dimensionality(var.attrs.get('units'))
-                         == units.get_dimensionality(
-                             coordinate_criteria['units'][axis]['units']))
-                ) or (
-                    coordinate_criteria['units'][axis]['match'] == 'name'
-                    and var.attrs.get('units') in coordinate_criteria['units'][axis]['units']
-                ))):
-            return True
+        try:
+            if (axis in coordinate_criteria['units'] and (
+                    (
+                        coordinate_criteria['units'][axis]['match'] == 'dimensionality'
+                        and (units.get_dimensionality(var.attrs.get('units'))
+                             == units.get_dimensionality(
+                                 coordinate_criteria['units'][axis]['units']))
+                    ) or (
+                        coordinate_criteria['units'][axis]['match'] == 'name'
+                        and var.attrs.get('units')
+                        in coordinate_criteria['units'][axis]['units']
+                    ))):
+                return True
+        except UndefinedUnitError:
+            pass
 
         # Check if name matches regular expression (non-CF failsafe)
         if re.match(coordinate_criteria['regular_expression'][axis], var.name.lower()):
             return True
+
+    # If no match has been made, return False (rather than None)
+    return False
 
 
 def preprocess_xarray(func):
