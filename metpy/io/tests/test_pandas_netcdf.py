@@ -15,7 +15,7 @@ from metpy.cbook import get_test_data
 from metpy.io import dataframe_to_netcdf, netcdf_to_dataframe
 
 # Turn off the warnings for tests
-logging.getLogger('metpy.io.pandas_to_netcdf').setLevel(logging.CRITICAL)
+logging.getLogger('metpy.io.pandas_netcdf').setLevel(logging.CRITICAL)
 
 
 def test_dataframe_to_netcdf_basic(tmpdir):
@@ -80,19 +80,7 @@ def test_no_dataframe(tmpdir):
                             sampling_data_vars=None)
 
 
-def test_file_exists(tmpdir):
-    """Test error message if netCDF file already exists."""
-    df = pd.DataFrame({
-        'temperature': pd.Series([1, 2, 2, 3]), 'pressure': pd.Series([1, 2, 2, 3]),
-        'latitude': pd.Series([4, 5, 6, 7]), 'longitude': pd.Series([1, 2, 3, 4]),
-        'station_id': pd.Series(['KFNL', 'KDEN', 'KVPZ', 'KORD'])})
-    open(str(tmpdir) + '/test.nc', 'wb')
-    with pytest.raises(ValueError, match='File already exists - please delete and run again'):
-        dataframe_to_netcdf(df, path_to_save=str(tmpdir) + '/test.nc', sampling_var='station_id',
-                            sampling_data_vars=['station_id', 'latitude', 'longitude'])
-
-
-def test_netcdf_to_dataframe(tmpdir):
+def test_netcdf_to_dataframe():
     """Test netCDF to dataframe conversion."""
     df = netcdf_to_dataframe(get_test_data('DSG_test.nc', as_file_obj=False))
     assert np.max(df['temperature'] == 3)

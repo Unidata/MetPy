@@ -13,8 +13,8 @@ format if applicable).
 
 from .gini import *  # noqa: F403
 from .nexrad import *  # noqa: F403
-from .pandas_to_netcdf import *  # noqa: F403
+from .pandas_netcdf import *  # noqa: F403
 
 __all__ = gini.__all__[:]  # pylint: disable=undefined-variable
 __all__.extend(nexrad.__all__)  # pylint: disable=undefined-variable
-__all__.extend(pandas_to_netcdf.__all__)  # pylint: disable=undefined-variable
+__all__.extend(pandas_netcdf.__all__)  # pylint: disable=undefined-variable

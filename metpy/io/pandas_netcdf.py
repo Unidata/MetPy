@@ -1,7 +1,7 @@
 # Copyright (c) 2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Support reading a pandas dataframe to a DSG netCDF."""
+"""Support reading a Pandas DataFrame to a DSG netCDF and vice versa."""
 
 import logging
 from os import path
