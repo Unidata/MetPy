@@ -170,3 +170,29 @@ def _assign_metadata(dataset, units_dict, standard_names_dict, long_names_dict):
         final_long_names.update(long_names_dict)
         for var in dataset.variables:
             dataset[var].attrs['long_name'] = final_long_names[var]
+
+
+@exporter.export
+def netcdf_to_dataframe(netcdf_file):
+    r"""Convert a discrete sampling geometry (DSG) netCDF file to a Pandas Dataframe.
+
+    If given a DSG netCDF file, this function will open it as an XArray Dataset,
+    extract the necessary metadata, and convert it to a Pandas Dataframe. Coordinates
+    of the netCDF file will become the indices of the dataframe.
+
+    This function is ideal for point data, such as station observations, trajectories,
+    or profile data, which is discretely sampled at individual points.
+
+    Parameters
+    ----------
+    netcdf_file : `netCDF file`
+        A netCDF file, ideally formatted as a CF-compliant DSG file.
+
+    Returns
+    -------
+    `pandas.Dataframe`
+
+    """
+    dataset = xr.open_dataset(netcdf_file, decode_cf=True, decode_coords=True)
+
+    return dataset.to_dataframe()

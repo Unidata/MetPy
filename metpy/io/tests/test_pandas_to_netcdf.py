@@ -12,7 +12,7 @@ import pytest
 import xarray as xr
 
 from metpy.cbook import get_test_data
-from metpy.io import dataframe_to_netcdf
+from metpy.io import dataframe_to_netcdf, netcdf_to_dataframe
 
 # Turn off the warnings for tests
 logging.getLogger('metpy.io.pandas_to_netcdf').setLevel(logging.CRITICAL)
@@ -90,3 +90,10 @@ def test_file_exists(tmpdir):
     with pytest.raises(ValueError, match='File already exists - please delete and run again'):
         dataframe_to_netcdf(df, path_to_save=str(tmpdir) + '/test.nc', sampling_var='station_id',
                             sampling_data_vars=['station_id', 'latitude', 'longitude'])
+
+
+def test_netcdf_to_dataframe(tmpdir):
+    """Test netCDF to dataframe conversion."""
+    df = netcdf_to_dataframe(get_test_data('DSG_test.nc', as_file_obj=False))
+    assert np.max(df['temperature'] == 3)
+    assert df.iloc[0]['station_id'] == 'KFNL'
