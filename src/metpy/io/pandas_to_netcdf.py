@@ -4,9 +4,10 @@
 """Support reading a pandas dataframe to a DSG netCDF."""
 
 import logging
-from os import path
+import os
 
 from numpy import arange
+import pandas as pd
 import xarray as xr
 
 from ..package_tools import Exporter
@@ -17,9 +18,9 @@ log = logging.getLogger(__name__)
 
 
 @exporter.export
-def dataframe_to_netcdf(df, sampling_var, sampling_data_vars, path_to_save, netcdf_format=None,
-                        column_units=None, standard_names=None, long_names=None,
-                        dataset_type=None):
+def dataframe_to_netcdf(df, mode, sampling_var, sampling_data_vars, path_to_save,
+                        netcdf_format=None, column_units=None, standard_names=None,
+                        long_names=None, dataset_type=None):
     r"""Take a Pandas DataFrame and convert it to a netCDF file.
 
     If given a Pandas DataFrame, this function will first convert
@@ -36,6 +37,11 @@ def dataframe_to_netcdf(df, sampling_var, sampling_data_vars, path_to_save, netc
     ----------
     df : `pandas.DataFrame`
         Point data in pandas dataframe.
+
+    mode : str
+        Specify whether to write ('w') a new netCDF file or append ('a') to an existing file.
+        If 'w' is specified and the `path_to_save` already exists, the file will be
+        overwritten.
 
     sampling_var : str
         Column name that is the sampling dimension: for surface observations,
@@ -71,6 +77,29 @@ def dataframe_to_netcdf(df, sampling_var, sampling_data_vars, path_to_save, netc
     -------
     NetCDF file saved to `path_to_save`.
 
+    Notes
+    -----
+    If append mode is used, all metadata will be preserved, but will be overwritten by
+    user input.
+
+    """
+    if mode == 'w':
+        _write_to_netcdf(df, sampling_var, sampling_data_vars, path_to_save,
+                         netcdf_format, column_units, standard_names, long_names,
+                         dataset_type)
+    elif mode == 'a':
+        _append_to_netcdf(df, sampling_var, sampling_data_vars, path_to_save,
+                          netcdf_format, column_units, standard_names, long_names,
+                          dataset_type)
+    else:
+        raise ValueError('Mode must either be "w" or "a".')
+
+
+def _write_to_netcdf(df, sampling_var, sampling_data_vars, path_to_save, netcdf_format,
+                     column_units, standard_names, long_names, dataset_type):
+    """Write Pandas DataFrame to netCDF file.
+
+    This will overwrite any existing file at `path_to_save`.
     """
     # Verify_integrity must be true in order for conversion to netCDF to work
     # Return a TypeError if not provided a Pandas DataFrame
@@ -105,18 +134,15 @@ def dataframe_to_netcdf(df, sampling_var, sampling_data_vars, path_to_save, netc
     # Attach dataset-specific metadata
     if dataset_type:
         dataset_final.attrs['featureType'] = dataset_type
+        dataset_final[sampling_var].attrs['cf_role'] = dataset_type.lower() + '_id'
     else:
         log.warning('No dataset type provided - netCDF will not have appropriate metadata'
                     'for a DSG dataset.')
-    if dataset_type:
-        dataset_final[sampling_var].attrs['cf_role'] = dataset_type.lower() + '_id'
     dataset_final['samplingIndex'].attrs['instance_dimension'] = 'samples'
 
-    # Determine mode to write to netCDF
-    write_mode = 'w'
-    if path.exists(path_to_save):
-        # Eventually switch to 'a' to allow appending and delete error
-        raise ValueError('File already exists - please delete and run again')
+    # Remove any existing file
+    if os.path.exists(str(path_to_save)):
+        os.remove(str(path_to_save))
 
     # Check if netCDF4 is installed to see how many unlimited dimensions we can use
     # Need conditional import for checking due to Python 2
@@ -126,9 +152,6 @@ def dataframe_to_netcdf(df, sampling_var, sampling_data_vars, path_to_save, netc
     except ImportError:
         from imp import find_module
         check_netcdf4 = find_module('netCDF4')
-
-    # Make sure path is a string to allow netCDF4 to be used - needed for tests to pass
-    path_to_save = str(path_to_save)
 
     if check_netcdf4 is not None:
         unlimited_dimensions = ['samples', 'observations']
@@ -141,27 +164,52 @@ def dataframe_to_netcdf(df, sampling_var, sampling_data_vars, path_to_save, netc
         unlimited_dimensions = ['observations']
 
     # Convert to netCDF
-    dataset_final.to_netcdf(path=path_to_save, mode=write_mode, format=netcdf_format,
+    dataset_final.to_netcdf(path=str(path_to_save), mode='w', format=netcdf_format,
                             unlimited_dims=unlimited_dimensions, compute=True)
+
+
+def _append_to_netcdf(df, sampling_var, sampling_data_vars, path_to_save,
+                      netcdf_format, column_units, standard_names, long_names, dataset_type):
+    """Append to existing netCDF file."""
+    ds = xr.open_dataset(str(path_to_save))
+    df_old = (ds.to_dataframe().reset_index()
+              .drop(columns=['samplingIndex', 'observations', 'samples']))
+    df_new = pd.concat([df_old, df], sort=False).reset_index(drop=True)  # Pandas dependency
+
+    # Assign metadata here
+    if dataset_type is None and 'featureType' in ds.attrs:
+        dataset_type = ds.attrs['featureType']
+    append_column_units = {}
+    append_standard_names = {}
+    append_long_names = {}
+    for var_name, da in ds.data_vars.items():
+        if 'units' in da.attrs:
+            append_column_units[var_name] = da.attrs['units']
+        if 'standard_name' in da.attrs:
+            append_standard_names[var_name] = da.attrs['standard_name']
+        if 'long_name' in da.attrs:
+            append_long_names[var_name] = da.attrs['long_name']
+    if column_units is not None:
+        append_column_units.update(column_units)
+    if standard_names is not None:
+        append_standard_names.update(standard_names)
+    if long_names is not None:
+        append_long_names.update(long_names)
+
+    _write_to_netcdf(df_new, sampling_var, sampling_data_vars, path_to_save,
+                     netcdf_format, append_column_units, append_standard_names,
+                     append_long_names, dataset_type)
 
 
 def _assign_metadata(dataset, units_dict, standard_names_dict, long_names_dict):
     if units_dict is not None:
-        final_column_units = {}
-        final_column_units['samples'] = ''
-        final_column_units['observations'] = ''
-        final_column_units['samplingIndex'] = ''
-        final_column_units.update(units_dict)
         for var in dataset.variables:
-            dataset[var].attrs['units'] = final_column_units[var]
+            if var in units_dict:
+                dataset[var].attrs['units'] = units_dict[var]
     if standard_names_dict is not None:
-        final_std_names = {}
-        final_std_names['samples'] = ''
-        final_std_names['observations'] = ''
-        final_std_names['samplingIndex'] = ''
-        final_std_names.update(standard_names_dict)
         for var in dataset.variables:
-            dataset[var].attrs['standard_name'] = final_std_names[var]
+            if var in standard_names_dict:
+                dataset[var].attrs['standard_name'] = standard_names_dict[var]
     if long_names_dict is not None:
         final_long_names = {}
         final_long_names['samples'] = 'Sampling dimension'
@@ -169,4 +217,5 @@ def _assign_metadata(dataset, units_dict, standard_names_dict, long_names_dict):
         final_long_names['samplingIndex'] = 'Index of station for this observation'
         final_long_names.update(long_names_dict)
         for var in dataset.variables:
-            dataset[var].attrs['long_name'] = final_long_names[var]
+            if var in final_long_names:
+                dataset[var].attrs['long_name'] = final_long_names[var]
