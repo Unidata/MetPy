@@ -148,45 +148,6 @@ def distance(p0, p1):
     return math.sqrt(dist_2(p0[0], p0[1], p1[0], p1[1]))
 
 
-def circumcircle_radius_2(pt0, pt1, pt2):
-    r"""Calculate and return the squared radius of a given triangle's circumcircle.
-
-    This is faster than calculating radius but should only be used with comparable ratios.
-
-    Parameters
-    ----------
-    pt0: (x, y)
-        Starting vertex of triangle
-    pt1: (x, y)
-        Second vertex of triangle
-    pt2: (x, y)
-        Final vertex of a triangle
-
-    Returns
-    -------
-    r: float
-        circumcircle radius
-
-    See Also
-    --------
-    circumcenter
-
-    """
-    a = distance(pt0, pt1)
-    b = distance(pt1, pt2)
-    c = distance(pt2, pt0)
-
-    t_area = triangle_area(pt0, pt1, pt2)
-    prod2 = a * b * c
-
-    if t_area > 0:
-        radius = prod2 * prod2 / (16 * t_area * t_area)
-    else:
-        radius = np.nan
-
-    return radius
-
-
 def circumcircle_radius(pt0, pt1, pt2):
     r"""Calculate and return the radius of a given triangle's circumcircle.
 
@@ -365,9 +326,9 @@ def find_nn_triangles_point(tri, cur_tri, point):
 
         triangle = tri.points[tri.simplices[neighbor]]
         cur_x, cur_y = circumcenter(triangle[0], triangle[1], triangle[2])
-        r = circumcircle_radius_2(triangle[0], triangle[1], triangle[2])
+        r = circumcircle_radius(triangle[0], triangle[1], triangle[2])
 
-        if dist_2(point[0], point[1], cur_x, cur_y) < r:
+        if dist_2(point[0], point[1], cur_x, cur_y) < r * r:
 
             nn.append(neighbor)
 

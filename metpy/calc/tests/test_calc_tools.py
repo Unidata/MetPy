@@ -20,7 +20,8 @@ from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               DIR_STRS)
 from metpy.deprecation import MetpyDeprecationWarning
-from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
+                           check_and_silence_deprecation)
 from metpy.units import units
 
 
@@ -105,6 +106,7 @@ def test_find_intersections_intersections_in_data_at_ends(direction, expected):
     assert_array_almost_equal(expected, find_intersections(x, y1, y2, direction=direction), 2)
 
 
+@check_and_silence_deprecation
 def test_interpolate_nan_linear():
     """Test deprecated interpolate_nans function."""
     x = np.linspace(0, 20, 15)
@@ -112,8 +114,7 @@ def test_interpolate_nan_linear():
     nan_indexes = [1, 5, 11, 12]
     y_with_nan = y.copy()
     y_with_nan[nan_indexes] = np.nan
-    with pytest.warns(MetpyDeprecationWarning):
-        assert_array_almost_equal(y, interpolate_nans(x, y_with_nan), 2)
+    assert_array_almost_equal(y, interpolate_nans(x, y_with_nan), 2)
 
 
 @pytest.mark.parametrize('mask, expected_idx, expected_element', [
@@ -190,25 +191,25 @@ def test_delete_masked_points():
     assert_array_equal(b, expected)
 
 
+@check_and_silence_deprecation
 def test_interp():
     """Test deprecated interp function."""
     x = np.array([1., 2., 3., 4.])
     y = x
     x_interp = np.array([3.5000000, 2.5000000])
     y_interp_truth = np.array([3.5000000, 2.5000000])
-    with pytest.warns(MetpyDeprecationWarning):
-        y_interp = interp(x_interp, x, y)
+    y_interp = interp(x_interp, x, y)
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
 
 
+@check_and_silence_deprecation
 def test_log_interp():
     """Test deprecated log_interp function."""
     x_log = np.array([1e3, 1e4, 1e5, 1e6])
     y_log = np.log(x_log) * 2 + 3
     x_interp = np.array([5e3, 5e4, 5e5])
     y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
-    with pytest.warns(MetpyDeprecationWarning):
-        y_interp = log_interp(x_interp, x_log, y_log)
+    y_interp = log_interp(x_interp, x_log, y_log)
     assert_array_almost_equal(y_interp, y_interp_truth, 7)
 
 

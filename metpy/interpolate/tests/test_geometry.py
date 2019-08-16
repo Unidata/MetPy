@@ -11,9 +11,8 @@ import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_almost_equal, assert_array_equal
 from scipy.spatial import Delaunay
 
-from metpy.interpolate.geometry import (area, circumcenter, circumcircle_radius,
-                                        circumcircle_radius_2, dist_2, distance,
-                                        find_local_boundary, find_natural_neighbors,
+from metpy.interpolate.geometry import (area, circumcenter, circumcircle_radius, dist_2,
+                                        distance, find_local_boundary, find_natural_neighbors,
                                         find_nn_triangles_point, get_point_count_within_r,
                                         get_points_within_r, order_edges, triangle_area)
 
@@ -104,19 +103,6 @@ def test_distance():
     assert_almost_equal(truth, dist)
 
 
-def test_circumcircle_radius_2():
-    r"""Test squared circumcircle radius function."""
-    pt0 = [0, 0]
-    pt1 = [10, 10]
-    pt2 = [10, 0]
-
-    cc_r2 = circumcircle_radius_2(pt0, pt1, pt2)
-
-    truth = 50
-
-    assert_almost_equal(truth, cc_r2, decimal=2)
-
-
 def test_circumcircle_radius():
     r"""Test circumcircle radius function."""
     pt0 = [0, 0]
@@ -128,6 +114,15 @@ def test_circumcircle_radius():
     truth = 7.07
 
     assert_almost_equal(truth, cc_r, decimal=2)
+
+
+def test_circumcircle_radius_degenerate():
+    """Test that circumcircle_radius handles a degenerate triangle."""
+    pt0 = [0, 0]
+    pt1 = [10, 10]
+    pt2 = [0, 0]
+
+    assert np.isnan(circumcircle_radius(pt0, pt1, pt2))
 
 
 def test_circumcenter():
