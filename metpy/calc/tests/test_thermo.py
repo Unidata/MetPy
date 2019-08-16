@@ -34,7 +34,8 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         virtual_potential_temperature, virtual_temperature,
                         wet_bulb_temperature)
 from metpy.calc.thermo import _find_append_zero_crossings
-from metpy.testing import assert_almost_equal, assert_array_almost_equal, assert_nan
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_nan,
+                           check_and_silence_deprecation)
 from metpy.units import units
 
 
@@ -838,6 +839,22 @@ def test_isentropic_pressure_tmp_out():
     tmp[3, :] = 288.
     tmpk = tmp * units.kelvin
     isentlev = [296.] * units.kelvin
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk, temperature_out=True)
+    truetmp = 296. * units.kelvin
+    assert_almost_equal(isentprs[1], truetmp, 3)
+
+
+@check_and_silence_deprecation
+def test_isentropic_pressure_tmpk_out_deprecation():
+    """Test deprecation warning of `tmpk_out`."""
+    lev = [100000., 95000., 90000., 85000.] * units.Pa
+    tmp = np.ones((4, 5, 5))
+    tmp[0, :] = 296.
+    tmp[1, :] = 292.
+    tmp[2, :] = 290.
+    tmp[3, :] = 288.
+    tmpk = tmp * units.kelvin
+    isentlev = [296.] * units.kelvin
     isentprs = isentropic_interpolation(isentlev, lev, tmpk, tmpk_out=True)
     truetmp = 296. * units.kelvin
     assert_almost_equal(isentprs[1], truetmp, 3)
@@ -910,7 +927,7 @@ def test_isentropic_pressure_tmp_out_interp():
     tmp[3, :] = 288.
     tmpk = tmp * units.kelvin
     isentlev = [296., 297.] * units.kelvin
-    isentprs = isentropic_interpolation(isentlev, lev, tmpk, tmpk_out=True)
+    isentprs = isentropic_interpolation(isentlev, lev, tmpk, temperature_out=True)
     truetmp = 291.4579 * units.kelvin
     assert_almost_equal(isentprs[1][1], truetmp, 3)
 
