@@ -17,8 +17,7 @@ from metpy.testing import set_agg_backend  # noqa: F401, I202
 MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 5.58}.get(MPL_VERSION, 0.01),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.01, remove_text=True)
 def test_add_timestamp():
     """Test adding a timestamp to an axes object."""
     fig = plt.figure(figsize=(9, 9))
@@ -27,8 +26,7 @@ def test_add_timestamp():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 6.03}.get(MPL_VERSION, 0.01),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.01, remove_text=True)
 def test_add_timestamp_custom_format():
     """Test adding a timestamp to an axes object with custom time formatting."""
     fig = plt.figure(figsize=(9, 9))
@@ -37,8 +35,7 @@ def test_add_timestamp_custom_format():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 5.58}.get(MPL_VERSION, 0.01),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.01, remove_text=True)
 def test_add_timestamp_pretext():
     """Test adding a timestamp to an axes object with custom pre-text."""
     fig = plt.figure(figsize=(9, 9))
@@ -57,8 +54,7 @@ def test_add_timestamp_high_contrast():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.004}.get(MPL_VERSION, 0.01),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.004, remove_text=True)
 def test_add_metpy_logo_small():
     """Test adding a MetPy logo to a figure."""
     fig = plt.figure(figsize=(9, 9))
@@ -66,8 +62,7 @@ def test_add_metpy_logo_small():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.004}.get(MPL_VERSION, 0.01),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.004, remove_text=True)
 def test_add_metpy_logo_large():
     """Test adding a large MetPy logo to a figure."""
     fig = plt.figure(figsize=(9, 9))
@@ -75,8 +70,7 @@ def test_add_metpy_logo_large():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.004}.get(MPL_VERSION, 0.01),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.004, remove_text=True)
 def test_add_unidata_logo():
     """Test adding a Unidata logo to a figure."""
     fig = plt.figure(figsize=(9, 9))
@@ -91,8 +85,7 @@ def test_add_logo_invalid_size():
         add_metpy_logo(fig, size='jumbo')
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.069}.get(MPL_VERSION, 0.01),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.01, remove_text=True)
 def test_gempak_color_image_compare():
     """Test creating a plot with all the GEMPAK colors."""
     c = range(32)
@@ -111,8 +104,7 @@ def test_gempak_color_image_compare():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.07}.get(MPL_VERSION, 0.01),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.01, remove_text=True)
 def test_gempak_color_xw_image_compare():
     """Test creating a plot with all the GEMPAK colors using xw style."""
     c = range(32)
