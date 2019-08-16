@@ -316,8 +316,9 @@ def test_no_ageostrophic_geopotential():
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
     u = np.array([[-2, 0, 2]] * 3) * units('m/s')
     v = -u.T
-    uag, vag = ageostrophic_wind(z, 1 / units.sec, 100. * units.meter, 100. * units.meter,
-                                 u, v, dim_order='xy')
+    with pytest.warns(FutureWarning):
+        uag, vag = ageostrophic_wind(z, 1 / units.sec, 100. * units.meter, 100. * units.meter,
+                                     u, v, dim_order='xy')
     true = np.array([[0, 0, 0]] * 3) * units('m/s')
     assert_array_equal(uag, true)
     assert_array_equal(vag, true)
@@ -327,8 +328,9 @@ def test_ageostrophic_geopotential():
     """Test ageostrophic wind calculation with geopotential and ageostrophic wind."""
     z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
     u = v = np.array([[0, 0, 0]] * 3) * units('m/s')
-    uag, vag = ageostrophic_wind(z, 1 / units.sec, 100. * units.meter, 100. * units.meter,
-                                 u, v, dim_order='xy')
+    with pytest.warns(FutureWarning):
+        uag, vag = ageostrophic_wind(z, 1 / units.sec, 100. * units.meter, 100. * units.meter,
+                                     u, v, dim_order='xy')
 
     u_true = np.array([[2, 0, -2]] * 3) * units('m/s')
     v_true = -u_true.T

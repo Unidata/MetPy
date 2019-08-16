@@ -5,6 +5,7 @@
 from __future__ import division
 
 import functools
+import warnings
 
 import numpy as np
 
@@ -477,6 +478,8 @@ def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
 
     """
     u_geostrophic, v_geostrophic = geostrophic_wind(heights, f, dx, dy, dim_order=dim_order)
+    warnings.warn('Input variables will be reordered in 1.0 to be (heights, u, v, f, dx, dy)',
+                  FutureWarning)
     return u - u_geostrophic, v - v_geostrophic
 
 
