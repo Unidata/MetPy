@@ -15,6 +15,7 @@ from .tools import (_greater_or_close, _less_or_close, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
 from .. import constants as mpconsts
 from ..cbook import broadcast_indices
+from ..deprecation import metpyDeprecation
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
@@ -1571,7 +1572,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     ----------------
     axis : int, optional
         The axis corresponding to the vertical in the temperature array, defaults to 0.
-    tmpk_out : bool, optional
+    temperature_out : bool, optional
         If true, will calculate temperature and output as the last item in the output list.
         Defaults to False.
     max_iters : int, optional
@@ -1591,6 +1592,9 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     [Ziv1994]_. Any additional arguments are assumed to vary linearly with temperature and will
     be linearly interpolated to the new isentropic levels.
 
+    `isentropic_interpolation` previously accepted `tmpk_out` as an argument. That has been
+    deprecated in 0.11 in favor of `temperature_out` and support will end in 1.0.
+
     See Also
     --------
     potential_temperature
@@ -1608,7 +1612,11 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
 
     # Change when Python 2.7 no longer supported
     # Pull out keyword arguments
-    tmpk_out = kwargs.pop('tmpk_out', False)
+    temperature_out = kwargs.get('tmpk_out')
+    if temperature_out is not None:
+        warnings.warn('The use of "tmpk_out" has been deprecated in favor of'
+                      '"temperature_out",', metpyDeprecation)
+    temperature_out = kwargs.pop('temperature_out', temperature_out)
     max_iters = kwargs.pop('max_iters', 50)
     eps = kwargs.pop('eps', 1e-6)
     axis = kwargs.pop('axis', 0)
@@ -1687,8 +1695,8 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     # create list for storing output data
     ret = [isentprs * units.hPa]
 
-    # if tmpk_out = true, calculate temperature and output as last item in list
-    if tmpk_out:
+    # if temperature_out = true, calculate temperature and output as last item in list
+    if temperature_out:
         ret.append((isentlevs_nd / ((mpconsts.P0.m / isentprs) ** ka)) * units.kelvin)
 
     # do an interpolation for each additional argument
