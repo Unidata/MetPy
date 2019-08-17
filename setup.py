@@ -63,7 +63,7 @@ setup(
                  'cartopy>=0.16.0', 'flake8>3.2.0', 'flake8-builtins!=1.4.0',
                  'flake8-comprehensions', 'flake8-copyright',
                  'flake8-docstrings', 'flake8-import-order', 'flake8-mutable',
-                 'flake8-pep3101', 'flake8-print', 'flake8-quotes',
+                 'flake8-pep3101', 'flake8-print', 'flake8-quotes', 'flake8-rst-docstrings',
                  'pep8-naming', 'netCDF4', 'pyproj>=1.9.4,!=2.0.0']
     },
 
