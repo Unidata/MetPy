@@ -76,7 +76,7 @@ def mean_pressure_weighted(pressure, *args, **kwargs):
     ----------
     pressure : `pint.Quantity`
         Atmospheric pressure profile
-    *args : `pint.Quantity`
+    args : `pint.Quantity`
         Parameters for which the pressure-weighted mean is to be calculated.
     heights : `pint.Quantity`, optional
         Heights from sounding. Standard atmosphere heights assumed (if needed)

@@ -437,7 +437,7 @@ def get_layer_heights(heights, depth, *args, **kwargs):
         Atmospheric heights
     depth : `pint.Quantity`
         The thickness of the layer
-    *args : array-like
+    args : array-like
         Atmospheric variable(s) measured at the given pressures
     bottom : `pint.Quantity`, optional
         The bottom of the layer
@@ -530,7 +530,7 @@ def get_layer(pressure, *args, **kwargs):
     ----------
     pressure : array-like
         Atmospheric pressure profile
-    *args : array-like
+    args : array-like
         Atmospheric variable(s) measured at the given pressures
     heights: array-like, optional
         Atmospheric heights corresponding to the given pressures. Defaults to using
