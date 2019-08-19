@@ -1,4 +1,4 @@
-# Copyright (c) 2008,2015,2017,2018 MetPy Developers.
+# Copyright (c) 2008,2015,2017,2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `kinematics` module."""
@@ -17,6 +17,7 @@ from metpy.calc import (absolute_vorticity, advection, ageostrophic_wind, coriol
                         static_stability, storm_relative_helicity, stretching_deformation,
                         total_deformation, vorticity, wind_components)
 from metpy.constants import g, omega, Re
+from metpy.future import ageostrophic_wind as ageostrophic_wind_future
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            get_test_data)
 from metpy.units import concatenate, units
@@ -335,6 +336,30 @@ def test_ageostrophic_geopotential():
     u_true = np.array([[2, 0, -2]] * 3) * units('m/s')
     v_true = -u_true.T
 
+    assert_array_equal(uag, u_true)
+    assert_array_equal(vag, v_true)
+
+
+def test_no_ageostrophic_geopotential_future():
+    """Test the updated ageostrophic wind function."""
+    z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
+    u = np.array([[-2, 0, 2]] * 3) * units('m/s')
+    v = -u.T
+    uag, vag = ageostrophic_wind_future(z, u, v, 1 / units.sec, 100. * units.meter,
+                                        100. * units.meter, dim_order='xy')
+    true = np.array([[0, 0, 0]] * 3) * units('m/s')
+    assert_array_equal(uag, true)
+    assert_array_equal(vag, true)
+
+
+def test_ageostrophic_geopotential_future():
+    """Test ageostrophic wind calculation with future input variable order."""
+    z = np.array([[48, 49, 48], [49, 50, 49], [48, 49, 48]]) * 100. * units('m^2/s^2')
+    u = v = np.array([[0, 0, 0]] * 3) * units('m/s')
+    uag, vag = ageostrophic_wind_future(z, u, v, 1 / units.sec, 100. * units.meter,
+                                        100. * units.meter, dim_order='xy')
+    u_true = np.array([[2, 0, -2]] * 3) * units('m/s')
+    v_true = -u_true.T
     assert_array_equal(uag, u_true)
     assert_array_equal(vag, v_true)
 

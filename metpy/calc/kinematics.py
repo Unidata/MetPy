@@ -1,4 +1,4 @@
-# Copyright (c) 2009,2017,2018 MetPy Developers.
+# Copyright (c) 2009,2017,2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of kinematic parameters (e.g. divergence or vorticity)."""
@@ -443,8 +443,6 @@ def geostrophic_wind(heights, f, dx, dy):
 
 
 @exporter.export
-@preprocess_xarray
-@ensure_yx_order
 def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
     r"""Calculate the ageostrophic wind given from the heights or geopotential.
 
@@ -476,11 +474,15 @@ def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
     If inputs have more than two dimensions, they are assumed to have either leading dimensions
     of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.
 
+    The order of the inputs will be changed in 1.0 to be (heights, u, v, f, dx, dy).
+    To updated to the new format, use `from metpy.future import ageostrophic_wind`.
+
     """
-    u_geostrophic, v_geostrophic = geostrophic_wind(heights, f, dx, dy, dim_order=dim_order)
-    warnings.warn('Input variables will be reordered in 1.0 to be (heights, u, v, f, dx, dy)',
-                  FutureWarning)
-    return u - u_geostrophic, v - v_geostrophic
+    warnings.warn('Input variables will be reordered in 1.0 to be (heights, u, v, f, dx, dy).'
+                  'To update to new input format before 1.0 is released, use'
+                  '`from metpy.future import ageostrophic_wind`.', FutureWarning)
+    from ..future import ageostrophic_wind as _ageostrophic_wind
+    return _ageostrophic_wind(heights, u, v, f, dx, dy, dim_order=dim_order)
 
 
 @exporter.export
