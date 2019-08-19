@@ -7,6 +7,7 @@ Contain tools for making Skew-T Log-P plots, including the base plotting class,
 `SkewT`, as well as a class for making a `Hodograph`.
 """
 
+import warnings
 try:
     from contextlib import ExitStack
 except ImportError:
@@ -27,6 +28,7 @@ import numpy as np
 from ._util import colored_line
 from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
 from ..calc.tools import _delete_masked_points
+from ..deprecation import metpyDeprecation
 from ..interpolate import interpolate_1d
 from ..package_tools import Exporter
 from ..units import concatenate, units
@@ -824,20 +826,17 @@ class Hodograph(object):
         return self.ax.quiver(center_position, center_position,
                               u, v, **quiver_args)
 
-    def plot_colormapped(self, u, v, c, bounds=None, colors=None, **kwargs):
+    def plot_colormapped(self, u, v, c, intervals=None, colors=None, **kwargs):
         r"""Plot u, v data, with line colored based on a third set of data.
 
         Plots the wind data on the hodograph, but with a colormapped line. Takes a third
-        variable besides the winds and either a colormap to color it with or a series of
-        bounds and colors to create a colormap and norm to control colormapping.
-        The bounds must always be in increasing order. For using custom bounds with
-        height data, the function will automatically interpolate to the actual bounds from the
-        height and wind data, as well as convert the input bounds from
-        height AGL to height above MSL to work with the provided heights.
-
-        Simple wrapper around plot so that pressure is the first (independent)
-        input. This is essentially a wrapper around `semilogy`. It also
-        sets some appropriate ticking and plot ranges.
+        variable besides the winds (e.g. heights or pressure levels) and either a colormap to
+        color it with or a series of contour intervals and colors to create a colormap and
+        norm to control colormapping. The intervals must always be in increasing
+        order. For using custom contour intervals with height data, the function will
+        automatically interpolate to the contour intervals from the height and wind data,
+        as well as convert the input contour intervals from height AGL to MSL to work with the
+        provided heights.
 
         Parameters
         ----------
@@ -846,9 +845,9 @@ class Hodograph(object):
         v : array_like
             v-component of wind
         c : array_like
-            data to use for colormapping
-        bounds: array-like, optional
-            Array of bounds for c to use in coloring the hodograph.
+            data to use for colormapping (e.g. heights, pressure, wind speed)
+        intervals: array-like, optional
+            Array of intervals for c to use in coloring the hodograph.
         colors: list, optional
             Array of strings representing colors for the hodograph segments.
         kwargs
@@ -863,18 +862,29 @@ class Hodograph(object):
         --------
         :meth:`Hodograph.plot`
 
+        Notes
+        -----
+        `plot_colormapped` previously accepted `bounds` as a parameter for coordinate values.
+        This has been deprecated in 0.11 in favor of `intervals`.
+
         """
+        bounds = kwargs.pop('bounds', None)
+        if bounds is not None:
+            intervals = bounds
+            warnings.warn('The use of "bounds" as a parameter has been deprecated in '
+                          'favor of "intervals",', metpyDeprecation)
+
         u, v, c = _delete_masked_points(u, v, c)
 
         # Plotting a color segmented hodograph
         if colors:
             cmap = mcolors.ListedColormap(colors)
-            # If we are segmenting by height (a length), interpolate the bounds
-            if bounds.dimensionality == {'[length]': 1.0}:
+            # If we are segmenting by height (a length), interpolate the contour intervals
+            if intervals.dimensionality == {'[length]': 1.0}:
 
-                # Find any bounds not in the data and interpolate them
-                interpolation_heights = [bound.m for bound in bounds if bound not in c]
-                interpolation_heights = np.array(interpolation_heights) * bounds.units
+                # Find any intervals not in the data and interpolate them
+                interpolation_heights = [bound.m for bound in intervals if bound not in c]
+                interpolation_heights = np.array(interpolation_heights) * intervals.units
                 interpolation_heights = (np.sort(interpolation_heights)
                                          * interpolation_heights.units)
                 (interpolated_heights, interpolated_u,
@@ -892,12 +902,12 @@ class Hodograph(object):
                 # Unit conversion required for coloring of bounds/data in dissimilar units
                 # to work properly.
                 c = c.to_base_units()  # TODO: This shouldn't be required!
-                bounds = bounds.to_base_units()
+                intervals = intervals.to_base_units()
             # If segmenting by anything else, do not interpolate, just use the data
             else:
-                bounds = np.asarray(bounds) * bounds.units
+                intervals = np.asarray(intervals) * intervals.units
 
-            norm = mcolors.BoundaryNorm(bounds.magnitude, cmap.N)
+            norm = mcolors.BoundaryNorm(intervals.magnitude, cmap.N)
             cmap.set_over('none')
             cmap.set_under('none')
             kwargs['cmap'] = cmap

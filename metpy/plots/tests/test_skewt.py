@@ -10,6 +10,7 @@ import numpy as np
 import pytest
 
 from metpy.plots import Hodograph, SkewT
+from metpy.testing import check_and_silence_deprecation
 # Fixtures to make sure we have the right backend and consistent round
 from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
@@ -282,13 +283,13 @@ def test_hodograph_plot_layers():
     u = np.zeros((6)) * units.knots
     v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
     heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
-    bounds = np.array([500, 1500, 2500, 3500, 4500]) * units.m
+    intervals = np.array([500, 1500, 2500, 3500, 4500]) * units.m
     colors = ['r', 'g', 'b', 'r']
     fig = plt.figure(figsize=(7, 7))
     ax1 = fig.add_subplot(1, 1, 1)
     h = Hodograph(ax1)
     h.add_grid(increment=10)
-    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    h.plot_colormapped(u, v, heights, colors=colors, intervals=intervals)
     ax1.set_xlim(-50, 50)
     ax1.set_ylim(-5, 50)
 
@@ -301,13 +302,13 @@ def test_hodograph_plot_layers_different_units():
     u = np.zeros((6)) * units.knots
     v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
     heights = np.array([0, 1, 2, 3, 4, 5]) * units.km
-    bounds = np.array([500, 1500, 2500, 3500, 4500]) * units.m
+    intervals = np.array([500, 1500, 2500, 3500, 4500]) * units.m
     colors = ['r', 'g', 'b', 'r']
     fig = plt.figure(figsize=(7, 7))
     ax1 = fig.add_subplot(1, 1, 1)
     h = Hodograph(ax1)
     h.add_grid(increment=10)
-    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    h.plot_colormapped(u, v, heights, colors=colors, intervals=intervals)
     ax1.set_xlim(-50, 50)
     ax1.set_ylim(-5, 50)
     return fig
@@ -319,13 +320,13 @@ def test_hodograph_plot_layers_bound_units():
     u = np.zeros((6)) * units.knots
     v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
     heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
-    bounds = np.array([0.5, 1.5, 2.5, 3.5, 4.5]) * units.km
+    intervals = np.array([0.5, 1.5, 2.5, 3.5, 4.5]) * units.km
     colors = ['r', 'g', 'b', 'r']
     fig = plt.figure(figsize=(7, 7))
     ax1 = fig.add_subplot(1, 1, 1)
     h = Hodograph(ax1)
     h.add_grid(increment=10)
-    h.plot_colormapped(u, v, heights, colors=colors, bounds=bounds)
+    h.plot_colormapped(u, v, heights, colors=colors, intervals=intervals)
     ax1.set_xlim(-50, 50)
     ax1.set_ylim(-5, 50)
     return fig
@@ -343,7 +344,7 @@ def test_hodograph_plot_arbitrary_layer():
     ax = fig.add_subplot(1, 1, 1)
     hodo = Hodograph(ax, component_range=80)
     hodo.add_grid(increment=20, color='k')
-    hodo.plot_colormapped(u, v, speed, bounds=levels, colors=colors)
+    hodo.plot_colormapped(u, v, speed, intervals=levels, colors=colors)
 
     return fig
 
@@ -367,3 +368,17 @@ def test_united_hodograph_range():
     fig = plt.figure(figsize=(6, 6))
     ax = fig.add_subplot(1, 1, 1)
     Hodograph(ax, component_range=60. * units.knots)
+
+
+@check_and_silence_deprecation
+def test_plot_colormapped_bounds_deprecation():
+    """Test deprecation of bounds kwarg in `plot_colormapped`."""
+    u = np.zeros((6)) * units.knots
+    v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
+    heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
+    intervals = np.array([500, 1500, 2500, 3500, 4500]) * units.m
+    colors = ['r', 'g', 'b', 'r']
+    fig = plt.figure(figsize=(7, 7))
+    ax1 = fig.add_subplot(1, 1, 1)
+    h = Hodograph(ax1)
+    h.plot_colormapped(u, v, heights, colors=colors, bounds=intervals)
