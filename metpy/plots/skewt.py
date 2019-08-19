@@ -34,6 +34,47 @@ from ..units import concatenate, units
 exporter = Exporter(globals())
 
 
+class SkewTTransform(transforms.Affine2D):
+    """Perform Skew transform for Skew-T plotting.
+
+    This works in pixel space, so is designed to be applied after the normal plotting
+    transformations.
+    """
+
+    def __init__(self, bbox, rot):
+        """Initialize skew transform.
+
+        This needs a reference to the parent bounding box to do the appropriate math and
+        to register it as a child so that the transform is invalidated and regenerated if
+        the bounding box changes.
+        """
+        super(transforms.Affine2D, self).__init__()
+        self._bbox = bbox
+        self.set_children(bbox)
+        self.invalidate()
+
+        # We're not trying to support changing the rotation, so go ahead and convert to
+        # the right factor for skewing here and just save that.
+        self._rot_factor = np.tan(np.deg2rad(rot))
+
+    def get_matrix(self):
+        """Return transformation matrix."""
+        if self._invalid:
+            # The following matrix is equivalent to the following:
+            # x0, y0 = self._bbox.xmin, self._bbox.ymin
+            # self.translate(-x0, -y0).skew_deg(self._rot, 0).translate(x0, y0)
+            # Setting it this way is just more efficient.
+            self._mtx = np.array([[1.0, self._rot_factor, -self._rot_factor * self._bbox.ymin],
+                                  [0.0, 1.0, 0.0],
+                                  [0.0, 0.0, 1.0]])
+
+            # Need to clear both the invalid flag *and* reset the inverse, which is cached
+            # by the parent class.
+            self._invalid = 0
+            self._inverted = None
+        return self._mtx
+
+
 class SkewXTick(maxis.XTick):
     r"""Make x-axis ticks for Skew-T plots.
 
@@ -77,7 +118,7 @@ class SkewXAxis(maxis.XAxis):
     r"""Make an x-axis that works properly for Skew-T plots.
 
     This class exists to force the use of our custom :class:`SkewXTick` as well
-    as provide a custom value for interview that combines the extents of the
+    as provide a custom value for interval that combines the extents of the
     upper and lower x-limits from the axes.
     """
 
@@ -164,24 +205,15 @@ class SkewXAxes(Axes):
         # Get the standard transform setup from the Axes base class
         super(Axes, self)._set_lim_and_transforms()
 
-        # Need to put the skew in the middle, after the scale and limits,
-        # but before the transAxes. This way, the skew is done in Axes
-        # coordinates thus performing the transform around the proper origin
-        # We keep the pre-transAxes transform around for other users, like the
-        # spines for finding bounds
-        self.transDataToAxes = (self.transScale
-                                + (self.transLimits
-                                   + transforms.Affine2D().skew_deg(self.rot, 0)))
+        # This transformation handles the skewing
+        skew_trans = SkewTTransform(self.bbox, self.rot)
 
         # Create the full transform from Data to Pixels
-        self.transData = self.transDataToAxes + self.transAxes
+        self.transData += skew_trans
 
         # Blended transforms like this need to have the skewing applied using
         # both axes, in axes coords like before.
-        self._xaxis_transform = (
-            transforms.blended_transform_factory(self.transScale + self.transLimits,
-                                                 transforms.IdentityTransform())
-            + transforms.Affine2D().skew_deg(self.rot, 0)) + self.transAxes
+        self._xaxis_transform += skew_trans
 
     @property
     def lower_xlim(self):
@@ -191,11 +223,12 @@ class SkewXAxes(Axes):
     @property
     def upper_xlim(self):
         """Get the data limits for the x-axis along the top of the axes."""
-        return self.transDataToAxes.inverted().transform([[0., 1.], [1., 1.]])[:, 0]
+        ret = self.transData.inverted().transform([[self.bbox.xmin, self.bbox.ymax],
+                                                   self.bbox.max])[:, 0]
+        return ret
 
 
-# Now register the projection with matplotlib so the user can select
-# it.
+# Now register the projection with matplotlib so the user can select it.
 register_projection(SkewXAxes)
 
 

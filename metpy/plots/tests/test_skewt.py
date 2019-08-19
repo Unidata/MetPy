@@ -14,10 +14,11 @@ from metpy.plots import Hodograph, SkewT
 from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
-MPL_VERSION = matplotlib.__version__[:3]
+MPL_VERSION = matplotlib.__version__[0]
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.224, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'2': 6.45}.get(MPL_VERSION, 0.02), remove_text=True,
+                               style='default')
 def test_skewt_api():
     """Test the SkewT API."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -43,7 +44,7 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
 def test_skewt_subplot():
     """Test using SkewT on a sub-plot."""
     fig = plt.figure(figsize=(9, 9))
@@ -51,7 +52,7 @@ def test_skewt_subplot():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
 def test_skewt_gridspec():
     """Test using SkewT on a sub-plot."""
     fig = plt.figure(figsize=(9, 9))
@@ -67,7 +68,7 @@ def test_skewt_with_grid_enabled():
         SkewT()
 
 
-@pytest.mark.mpl_image_compare(tolerance=0., remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
 def test_skewt_arbitrary_rect():
     """Test placing the SkewT in an arbitrary rectangle."""
     fig = plt.figure(figsize=(9, 9))
@@ -87,8 +88,8 @@ def test_profile():
     return np.linspace(1000, 100, 10), np.linspace(20, -20, 10), np.linspace(25, -30, 10)
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2.0': 1.12}.get(MPL_VERSION, 0.2432),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance={'2': 0.89}.get(MPL_VERSION, 0.02), remove_text=True,
+                               style='default')
 def test_skewt_shade_cape_cin(test_profile):
     """Test shading CAPE and CIN on a SkewT plot."""
     p, t, tp = test_profile
@@ -101,12 +102,12 @@ def test_skewt_shade_cape_cin(test_profile):
         skew.shade_cape(p, t, tp)
         skew.shade_cin(p, t, tp)
         skew.ax.set_xlim(-50, 50)
+        skew.ax.set_ylim(1000, 100)
 
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.70}.get(MPL_VERSION, 0.2432),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.02, remove_text=True, style='default')
 def test_skewt_shade_area(test_profile):
     """Test shading areas on a SkewT plot."""
     p, t, tp = test_profile
@@ -118,6 +119,7 @@ def test_skewt_shade_area(test_profile):
         skew.plot(p, tp, 'k')
         skew.shade_area(p, t, tp)
         skew.ax.set_xlim(-50, 50)
+        skew.ax.set_ylim(1000, 100)
 
     return fig
 
@@ -133,8 +135,7 @@ def test_skewt_shade_area_invalid(test_profile):
         skew.shade_area(p, t, tp, which='positve')
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.75}.get(MPL_VERSION, 0.2432),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.02, remove_text=True, style='default')
 def test_skewt_shade_area_kwargs(test_profile):
     """Test shading areas on a SkewT plot with kwargs."""
     p, t, tp = test_profile
@@ -146,6 +147,22 @@ def test_skewt_shade_area_kwargs(test_profile):
         skew.plot(p, tp, 'k')
         skew.shade_area(p, t, tp, facecolor='m')
         skew.ax.set_xlim(-50, 50)
+        skew.ax.set_ylim(1000, 100)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
+def test_skewt_wide_aspect_ratio(test_profile):
+    """Test plotting a skewT with a wide aspect ratio."""
+    p, t, tp = test_profile
+
+    fig = plt.figure(figsize=(12.5, 3))
+    skew = SkewT(fig)
+    skew.plot(p, t, 'r')
+    skew.plot(p, tp, 'k')
+    skew.ax.set_xlim(-30, 50)
+    skew.ax.set_ylim(1050, 700)
     return fig
 
 
@@ -198,7 +215,7 @@ def test_hodograph_plot_colormapped():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.021, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
 def test_skewt_barb_color():
     """Test plotting colored wind barbs on the Skew-T."""
     fig = plt.figure(figsize=(9, 9))
@@ -211,7 +228,7 @@ def test_skewt_barb_color():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.2, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
 def test_skewt_barb_unit_conversion():
     """Test that barbs units can be converted at plot time (#737)."""
     u_wind = np.array([3.63767155210412]) * units('m/s')
@@ -224,11 +241,12 @@ def test_skewt_barb_unit_conversion():
     skew.plot_barbs(p_wind, u_wind, v_wind, plot_units='knots')
     skew.ax.set_ylim(1000, 500)
     skew.ax.set_yticks([1000, 750, 500])
+    skew.ax.set_xlim(-20, 20)
 
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 1.88}.get(MPL_VERSION, 0), remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
 def test_skewt_barb_no_default_unit_conversion():
     """Test that barbs units are left alone by default (#737)."""
     u_wind = np.array([3.63767155210412]) * units('m/s')
@@ -241,6 +259,7 @@ def test_skewt_barb_no_default_unit_conversion():
     skew.plot_barbs(p_wind, u_wind, v_wind)
     skew.ax.set_ylim(1000, 500)
     skew.ax.set_yticks([1000, 750, 500])
+    skew.ax.set_xlim(-20, 20)
 
     return fig
 
