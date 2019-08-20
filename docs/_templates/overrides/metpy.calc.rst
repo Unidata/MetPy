@@ -4,8 +4,8 @@ calc
 .. automodule:: metpy.calc
 
 
-   Dry Thermodynamics
-   ------------------
+Dry Thermodynamics
+------------------
 
    .. autosummary::
       :toctree: ./
@@ -25,8 +25,8 @@ calc
       thickness_hydrostatic
 
 
-   Moist Thermodynamics
-   --------------------
+Moist Thermodynamics
+--------------------
 
    .. autosummary::
       :toctree: ./
@@ -60,8 +60,8 @@ calc
       wet_bulb_temperature
 
 
-   Soundings
-   ---------
+Soundings
+---------
 
    .. autosummary::
       :toctree: ./
@@ -85,8 +85,8 @@ calc
       surface_based_cape_cin
 
 
-   Dynamic/Kinematic
-   -----------------
+Dynamic/Kinematic
+-----------------
 
    .. autosummary::
       :toctree: ./
@@ -115,8 +115,8 @@ calc
       wind_speed
 
 
-   Boundary Layer/Turbulence
-   -------------------------
+Boundary Layer/Turbulence
+-------------------------
 
    .. autosummary::
       :toctree: ./
@@ -128,8 +128,8 @@ calc
       tke
 
 
-   Mathematical Functions
-   ----------------------
+Mathematical Functions
+----------------------
 
    .. autosummary::
       :toctree: ./
@@ -146,8 +146,8 @@ calc
       unit_vectors_from_cross_section
 
 
-   Apparent Temperature
-   --------------------
+Apparent Temperature
+--------------------
 
    .. autosummary::
       :toctree: ./
@@ -156,8 +156,8 @@ calc
       heat_index
       windchill
 
-   Standard Atmosphere
-   -------------------
+Standard Atmosphere
+-------------------
 
    .. autosummary::
       :toctree: ./
@@ -167,8 +167,8 @@ calc
       height_to_pressure_std
       pressure_to_height_std
 
-   Other
-   -----
+Other
+-----
 
    .. autosummary::
       :toctree: ./
@@ -187,10 +187,10 @@ calc
       smooth_n_point
 
 
-   Deprecated
-   ----------
+Deprecated
+----------
 
-   Do not use these functions in new code, please see their documentation for their replacements.
+Do not use these functions in new code, please see their documentation for their replacements.
 
    .. autosummary::
       :toctree: ./
