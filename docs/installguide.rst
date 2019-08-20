@@ -39,6 +39,7 @@ currently supporting Python 2.7.
 * numpy >= 1.12.0
 * scipy >= 0.17.0
 * pint >= 0.8
+* pandas >= 0.20.0
 * xarray >= 0.10.7
 * traitlets >= 4.3.0
 * enum34 (for python < 3.4)
