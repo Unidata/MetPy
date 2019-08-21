@@ -7,6 +7,7 @@ import cartopy.crs as ccrs
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 import pytest
 
 from metpy.plots import (current_weather, high_clouds, nws_layout, simple_layout,
@@ -341,3 +342,20 @@ def test_barb_unit_conversion_exception(u, v):
     stnplot = StationPlot(ax, x_pos, y_pos)
     with pytest.raises(ValueError):
         stnplot.plot_barb(u, v, plot_units='knots')
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, savefig_kwargs={'dpi': 300}, remove_text=True)
+def test_symbol_pandas_timeseries():
+    """Test the usage of Pandas DatetimeIndex as a valid `x` input into StationPlot."""
+    pd.plotting.register_matplotlib_converters()
+    rng = pd.date_range('12/1/2017', periods=5, freq='D')
+    sc = [1, 2, 3, 4, 5]
+    ts = pd.Series(sc, index=rng)
+    fig, ax = plt.subplots()
+    y = np.ones(len(ts.index))
+    stationplot = StationPlot(ax, ts.index, y, fontsize=12)
+    stationplot.plot_symbol('C', ts, sky_cover)
+    ax.xaxis.set_major_locator(matplotlib.dates.DayLocator())
+    ax.xaxis.set_major_formatter(matplotlib.dates.DateFormatter('%-d'))
+
+    return fig
