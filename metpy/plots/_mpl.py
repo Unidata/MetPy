@@ -273,7 +273,9 @@ if not hasattr(Axes, 'scattertext'):
 
             """
             full_transform = self.get_transform() - transData
-            XY = full_transform.transform(np.vstack((self.x, self.y)).T)  # noqa: N806
+            posx = self.convert_xunits(self.x)
+            posy = self.convert_yunits(self.y)
+            XY = full_transform.transform(np.vstack((posx, posy)).T)  # noqa: N806
             bbox = transforms.Bbox.null()
             bbox.update_from_data_xy(XY, ignore=True)
             return bbox
