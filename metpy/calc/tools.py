@@ -259,14 +259,15 @@ def reduce_point_density(points, radius, priority=None):
     data), returning a mask that can be used to select the points from one or more arrays
     (e.g. arrays of temperature and dew point). The points selected can be controlled by
     providing an array of ``priority`` values (e.g. rainfall totals to ensure that
-    stations with higher precipitation remain in the mask).
+    stations with higher precipitation remain in the mask). The radius can be specified
+    as a `pint.Quantity` with units. If none are provided, meters are assumed.
 
     Parameters
     ----------
     points : (N, K) array-like
         N locations of the points in K dimensional space
-    radius : float
-        minimum radius allowed between points
+    radius : `pint.Quantity` or float
+        Minimum radius allowed between points. If units are not provided, meters is assumed.
     priority : (N, K) array-like, optional
         If given, this should have the same shape as ``points``; these values will
         be used to control selection priority for points.
@@ -285,6 +286,10 @@ def reduce_point_density(points, radius, priority=None):
     array([False,  True, False])
 
     """
+    # Handle a radius with units. Assume meters if units are not specified
+    if hasattr(radius, 'units'):
+        radius = radius.to('m').m
+
     # Handle 1D input
     if points.ndim < 2:
         points = points.reshape(-1, 1)
