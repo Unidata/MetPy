@@ -88,7 +88,7 @@ before_install:
       export EXTRA_PACKAGES="$EXTRA_PACKAGES pillow sphinx_rtd_theme==0.2.5b1.post1 pytest";
     else
       export TEST_OPTS="--flake8 --mpl -W error::metpy.deprecation.MetpyDeprecationWarning";
-      if [[ $TRAVIS_PYTHON_VERSION == 3.6 ]]; then
+      if [[ $TRAVIS_PYTHON_VERSION != 2.7 ]]; then
         export EXTRA_PACKAGES="$EXTRA_PACKAGES flake8-bugbear";
       fi;
       if [[ $TASK == "coverage" ]]; then
@@ -116,7 +116,7 @@ script:
       make clean overridecheck html linkcheck O=-W;
       export DOC_BUILD_RESULT=$?;
       popd;
-      if [[ $TRAVIS_PYTHON_VERSION == 3.6* ]]; then
+      if [[ $TRAVIS_PYTHON_VERSION != 2.7 ]]; then
         MPLBACKEND='agg' pytest --doctest-modules -k "not test" metpy;
         export DOC_TEST_RESULT=$?;
       else
