@@ -30,6 +30,7 @@ dependencies:
   - flake8-pep3101
   - flake8-print
   - flake8-quotes
+  - flake8-rst-docstrings
   - pep8-naming
   - pyproj
   - cartopy

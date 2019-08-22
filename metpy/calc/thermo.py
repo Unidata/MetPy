@@ -204,8 +204,7 @@ def dry_lapse(pressure, temperature, ref_pressure=None):
 
     See Also
     --------
-    moist_lapse : Calculate parcel temperature assuming liquid saturation
-                  processes
+    moist_lapse : Calculate parcel temperature assuming liquid saturation processes
     parcel_profile : Calculate complete parcel profile
     potential_temperature
 

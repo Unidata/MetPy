@@ -56,14 +56,14 @@ setup(
                       'pooch>=0.1', 'traitlets>=4.3.0'],
     extras_require={
         'dev': ['ipython[all]>=3.1'],
-        'doc': ['sphinx>=1.8', 'sphinx-gallery', 'doc8', 'm2r',
+        'doc': ['sphinx>=1.8', 'sphinx-gallery>=0.4', 'doc8', 'm2r',
                 'netCDF4'],
         'examples': ['cartopy>=0.13.1', 'matplotlib>=2.2.0', 'pyproj>=1.9.4,!=2.0.0'],
         'test': ['pytest>=2.4', 'pytest-runner', 'pytest-mpl', 'pytest-flake8',
                  'cartopy>=0.16.0', 'flake8>3.2.0', 'flake8-builtins!=1.4.0',
                  'flake8-comprehensions', 'flake8-copyright',
                  'flake8-docstrings', 'flake8-import-order', 'flake8-mutable',
-                 'flake8-pep3101', 'flake8-print', 'flake8-quotes',
+                 'flake8-pep3101', 'flake8-print', 'flake8-quotes', 'flake8-rst-docstrings',
                  'pep8-naming', 'netCDF4', 'pyproj>=1.9.4,!=2.0.0']
     },
 

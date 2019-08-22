@@ -228,17 +228,18 @@ def masked_array(data, data_units=None, **kwargs):
 
     This is a thin wrapper around :func:`numpy.ma.masked_array` that ensures that
     units are properly attached to the result (otherwise units are silently lost). Units
-    are taken from the ``units`` argument, or if this is ``None``, the units on ``data``
+    are taken from the ``data_units`` argument, or if this is ``None``, the units on ``data``
     are used.
 
     Parameters
     ----------
     data : array_like
-        The source data. If ``units`` is `None`, this should be a `pint.Quantity` with
+        The source data. If ``data_units`` is `None`, this should be a `pint.Quantity` with
         the desired units.
-    data_units : str or `pint.Unit`
+    data_units : str or `pint.Unit`, optional
         The units for the resulting `pint.Quantity`
-    **kwargs : Arbitrary keyword arguments passed to `numpy.ma.masked_array`
+    kwargs
+        Arbitrary keyword arguments passed to `numpy.ma.masked_array`, optional
 
     Returns
     -------

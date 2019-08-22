@@ -28,12 +28,13 @@ def get_upper_air_data(date, station):
     """Get upper air observations from the test data cache.
 
     Parameters
-     ----------
+    ----------
     time : datetime
           The date and time of the desired observation.
     station : str
          The three letter ICAO identifier of the station for which data should be
          downloaded.
+
     Returns
     -------
         dict : upper air data
