@@ -58,7 +58,7 @@ def wind_speed(u, v):
 
 @exporter.export
 @preprocess_xarray
-def wind_direction(u, v):
+def wind_direction(u, v, convention='from'):
     r"""Compute the wind direction from u and v-components.
 
     Parameters
@@ -67,12 +67,16 @@ def wind_direction(u, v):
         Wind component in the X (East-West) direction
     v : array_like
         Wind component in the Y (North-South) direction
+    convention : str
+        Convention to return direction. 'from' returns the direction the wind is coming from
+        (meteorological convention). 'to' returns the direction the wind is going towards
+        (oceanographic convention). Default is 'from'.
 
     Returns
     -------
     direction: `pint.Quantity`
-        The direction of the wind in interval [0, 360] degrees, specified as the direction from
-        which it is blowing, with 360 being North.
+        The direction of the wind in interval [0, 360] degrees, with 360 being North, with the
+        direction defined by the convention kwarg.
 
     See Also
     --------
@@ -87,6 +91,13 @@ def wind_direction(u, v):
     wdir = 90. * units.deg - np.arctan2(-v, -u)
     origshape = wdir.shape
     wdir = atleast_1d(wdir)
+
+    # Handle oceanographic convection
+    if convention == 'to':
+        wdir -= 180 * units.deg
+    elif convention not in ('to', 'from'):
+        raise KeyError('Invalid kwarg for "convention". Valid options are "from" or "to".')
+
     wdir[wdir <= 0] += 360. * units.deg
     # Need to be able to handle array-like u and v (with or without units)
     # np.any check required for legacy numpy which treats 0-d False boolean index as zero
