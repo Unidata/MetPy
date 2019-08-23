@@ -110,6 +110,19 @@ def test_direction_dimensions():
     assert str(d.units) == 'degree'
 
 
+def test_oceanographic_direction():
+    """Test oceanographic direction (to) convention."""
+    d = wind_direction(5 * units('m/s'), -5 * units('m/s'), convention='to')
+    true_dir = 135 * units.deg
+    assert_almost_equal(d, true_dir, 4)
+
+
+def test_invalid_direction_convention():
+    """Test the error that is returned if the convention kwarg is not valid."""
+    with pytest.raises(KeyError):
+        wind_direction(1 * units('m/s'), 5 * units('m/s'), convention='test')
+
+
 def test_speed_direction_roundtrip():
     """Test round-tripping between speed/direction and components."""
     # Test each quadrant of the whole circle
