@@ -36,7 +36,7 @@ using ``pip install versioneer``. Then recreate the ``_version.py`` file using:
 Documentation
 -------------
 
-MetPy's documentation is built using sphinx >= 1.4. API documentation is automatically
+MetPy's documentation is built using sphinx >= 1.8. API documentation is automatically
 generated from docstrings, written using the
 `NumPy docstring standard <https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt>`_.
 There are also example scripts in the ``examples`` directory. Using the ``sphinx-gallery``
