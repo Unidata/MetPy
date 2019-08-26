@@ -467,11 +467,12 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         else:
             return _multiple_el_lfc_options(x, y, idx, which, pressure,
                                             parcel_temperature_profile, temperature,
-                                            type='LFC')
+                                            dewpt, type='LFC')
 
 
 def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_x,
-                             which, pressure, parcel_temperature_profile, temperature, type):
+                             which, pressure, parcel_temperature_profile, temperature,
+                             dewpoint, type):
     """Choose which ELs and LFCs to return from a sounding."""
     p_list, t_list = intersect_pressures[valid_x], intersect_temperatures[valid_x]
     if which == 'all':
@@ -488,21 +489,38 @@ def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_
             el_p_list, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
                                               temperature[1:], direction='decreasing',
                                               log_x=True)
-
-        elif type == 'EL':
+        else:  # type == 'EL'
             el_p_list = p_list
             # Find LFC intersection pressure values
             lfc_p_list, _ = find_intersections(pressure, parcel_temperature_profile,
                                                temperature, direction='increasing',
                                                log_x=True)
         diff = []
-        [diff.append(lfc_p.m-el_p.m) for lfc_p, el_p in zip(lfc_p_list, el_p_list)]
-        x, y = p_list[np.where(diff == np.max(diff))][0], t_list[np.where(diff == np.max(diff))][0]
+        [diff.append(lfc_p.m - el_p.m) for lfc_p, el_p in zip(lfc_p_list, el_p_list)]
+        x, y = (p_list[np.where(diff == np.max(diff))][0],
+                t_list[np.where(diff == np.max(diff))][0])
 
     elif which == 'most_cape':
         # Need to loop through all possible combinations of cape, find greatest cape profile
-        x, y = 1, 2
+        cape_list, pair_list = []
+        for which_lfc in ['top', 'bottom']:
+            for which_el in ['top', 'bottom']:
+                cape, _ = cape_cin(pressure, temperature, dewpoint, parcel_temperature_profile,
+                                   which_lfc=which_lfc, which_el=which_el)
+                cape_list.append(cape.m)
+                pair_list.append([which_lfc, which_el])
 
+        lfc_chosen, el_chosen = pair_list[np.where(cape_list == np.max(cape_list))]
+        if type == 'LFC':
+            if lfc_chosen == 'top':
+                x, y = p_list[-1], t_list[-1]
+            else:  # 'bottom' is returned
+                x, y = p_list[0], t_list[0]
+        else:  # EL is returned
+            if el_chosen == 'top':
+                x, y = p_list[-1], t_list[-1]
+            else:
+                x, y = p_list[0], t_list[0]
     else:
         raise KeyError('Invalid option for "which". Valid options are "top", "bottom", "wide"'
                        ', "most_cape", and "all".')
@@ -568,7 +586,8 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     idx = x < lcl_p
     if len(x) > 0 and x[-1] < lcl_p:
         return _multiple_el_lfc_options(x, y, idx, which, pressure,
-                                        parcel_temperature_profile, temperature, type='EL')
+                                        parcel_temperature_profile, temperature, dewpt,
+                                        type='EL')
     else:
         return np.nan * pressure.units, np.nan * temperature.units
 
@@ -1829,8 +1848,8 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
     of a given upper air profile and most unstable parcel path. CIN is integrated between the
     surface and LFC, CAPE is integrated between the LFC and EL (or top of sounding).
-    Intersection points of the measured temperature profile and parcel profile are logarithmically
-    interpolated.
+    Intersection points of the measured temperature profile and parcel profile are
+    logarithmically interpolated.
 
     Parameters
     ----------
