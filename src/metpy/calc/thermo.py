@@ -467,12 +467,12 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         else:
             return _multiple_el_lfc_options(x, y, idx, which, pressure,
                                             parcel_temperature_profile, temperature,
-                                            dewpt, type='LFC')
+                                            dewpt, intersect_type='LFC')
 
 
 def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_x,
                              which, pressure, parcel_temperature_profile, temperature,
-                             dewpoint, type):
+                             dewpoint, intersect_type):
     """Choose which ELs and LFCs to return from a sounding."""
     p_list, t_list = intersect_pressures[valid_x], intersect_temperatures[valid_x]
     if which == 'all':
@@ -483,13 +483,13 @@ def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_
         x, y = p_list[-1], t_list[-1]
     elif which == 'wide':
         # zip the LFC and EL lists together and find greatest difference
-        if type == 'LFC':
+        if intersect_type == 'LFC':
             # Find EL intersection pressure values
             lfc_p_list = p_list
             el_p_list, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
                                               temperature[1:], direction='decreasing',
                                               log_x=True)
-        else:  # type == 'EL'
+        else:  # intersect_type == 'EL'
             el_p_list = p_list
             # Find LFC intersection pressure values
             lfc_p_list, _ = find_intersections(pressure, parcel_temperature_profile,
@@ -502,16 +502,15 @@ def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_
 
     elif which == 'most_cape':
         # Need to loop through all possible combinations of cape, find greatest cape profile
-        cape_list, pair_list = []
+        cape_list, pair_list = [], []
         for which_lfc in ['top', 'bottom']:
             for which_el in ['top', 'bottom']:
                 cape, _ = cape_cin(pressure, temperature, dewpoint, parcel_temperature_profile,
                                    which_lfc=which_lfc, which_el=which_el)
                 cape_list.append(cape.m)
                 pair_list.append([which_lfc, which_el])
-
-        lfc_chosen, el_chosen = pair_list[np.where(cape_list == np.max(cape_list))]
-        if type == 'LFC':
+        (lfc_chosen, el_chosen) = pair_list[np.where(cape_list == np.max(cape_list))[0][0]]
+        if intersect_type == 'LFC':
             if lfc_chosen == 'top':
                 x, y = p_list[-1], t_list[-1]
             else:  # 'bottom' is returned
@@ -587,7 +586,7 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     if len(x) > 0 and x[-1] < lcl_p:
         return _multiple_el_lfc_options(x, y, idx, which, pressure,
                                         parcel_temperature_profile, temperature, dewpt,
-                                        type='EL')
+                                        intersect_type='EL')
     else:
         return np.nan * pressure.units, np.nan * temperature.units
 

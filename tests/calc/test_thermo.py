@@ -1375,6 +1375,7 @@ def test_invalid_which(multiple_intersections):
     levels, temperatures, dewpoints = multiple_intersections
     with pytest.raises(KeyError):
         lfc(levels, temperatures, dewpoints, which='test')
+    with pytest.raises(KeyError):
         el(levels, temperatures, dewpoints, which='test')
 
 
@@ -1401,6 +1402,14 @@ def test_multiple_el_wide(multiple_intersections):
     """Test 'wide' EL for sounding with multiple ELs."""
     levels, temperatures, dewpoints = multiple_intersections
     el_pressure_wide, el_temp_wide = el(levels, temperatures, dewpoints, which='wide')
+    assert_almost_equal(el_pressure_wide, 228.0575059 * units.hPa, 6)
+    assert_almost_equal(el_temp_wide, -56.8123126 * units.degC, 6)
+
+
+def test_muliple_el_most_cape(multiple_intersections):
+    """Test 'most_cape' EL for sounding with multiple ELs."""
+    levels, temperatures, dewpoints = multiple_intersections
+    el_pressure_wide, el_temp_wide = el(levels, temperatures, dewpoints, which='most_cape')
     assert_almost_equal(el_pressure_wide, 228.0575059 * units.hPa, 6)
     assert_almost_equal(el_temp_wide, -56.8123126 * units.degC, 6)
 
