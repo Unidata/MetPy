@@ -1322,13 +1322,9 @@ def test_lfc_not_below_lcl():
     assert_almost_equal(lfc_temp, 6.4992871 * units.celsius, 3)
 
 
-def test_multiple_lfcs():
-    """Test sounding with multiple LFCs.
-
-    If which='top', return lowest-pressure LFC.
-    If which='all', return all LFCs
-
-    """
+@pytest.fixture
+def multiple_intersections():
+    """Create profile with multiple LFCs and ELs for testing."""
     levels = np.array([966., 937.2, 925., 904.6, 872.6, 853., 850., 836., 821., 811.6, 782.3,
                        754.2, 726.9, 700., 648.9, 624.6, 601.1, 595., 587., 576., 555.7,
                        534.2, 524., 500., 473.3, 400., 384.5, 358., 343., 308.3, 300., 276.,
@@ -1343,6 +1339,18 @@ def test_multiple_lfcs():
                           -44.1, -45.6, -46.3, -45.5, -47.1, -52.1, -50.4, -47.3, -57.1,
                           -57.9, -58.1, -60.9, -61.4, -62.1, -65.1, -65.6,
                           -66.7, -70.5]) * units.degC
+    return levels, temperatures, dewpoints
+
+
+def test_multiple_lfcs_simple(multiple_intersections):
+    """Test sounding with multiple LFCs.
+
+    If which='top', return lowest-pressure LFC.
+    If which='bottom', return the highest-pressure LFC.
+    If which='all', return all LFCs
+
+    """
+    levels, temperatures, dewpoints = multiple_intersections
     lfc_pressure_top, lfc_temp_top = lfc(levels, temperatures, dewpoints)
     lfc_pressure_bottom, lfc_temp_bottom = lfc(levels, temperatures, dewpoints,
                                                which='bottom')
@@ -1354,27 +1362,31 @@ def test_multiple_lfcs():
     assert_almost_equal(len(lfc_pressure_all), 2, 0)
 
 
-def test_multiple_els():
+def test_multiple_lfs_wide(multiple_intersections):
+    """Test 'wide' LFC for sounding with multiple LFCs."""
+    levels, temperatures, dewpoints = multiple_intersections
+    lfc_pressure_wide, lfc_temp_wide = lfc(levels, temperatures, dewpoints, which='wide')
+    assert_almost_equal(lfc_pressure_wide, 705.4346277 * units.hPa, 6)
+    assert_almost_equal(lfc_temp_wide, 4.8922235 * units.degC, 6)
+
+
+def test_invalid_which(multiple_intersections):
+    """Test error message for invalid which option for LFC and EL."""
+    levels, temperatures, dewpoints = multiple_intersections
+    with pytest.raises(KeyError):
+        lfc(levels, temperatures, dewpoints, which='test')
+        el(levels, temperatures, dewpoints, which='test')
+
+
+def test_multiple_els_simple(multiple_intersections):
     """Test sounding with multiple ELs.
 
     If which='top', return lowest-pressure EL.
+    If which='bottom', return the highest-pressure EL.
     If which='all', return all ELs
 
     """
-    levels = np.array([966., 937.2, 925., 904.6, 872.6, 853., 850., 836., 821., 811.6, 782.3,
-                       754.2, 726.9, 700., 648.9, 624.6, 601.1, 595., 587., 576., 555.7,
-                       534.2, 524., 500., 473.3, 400., 384.5, 358., 343., 308.3, 300., 276.,
-                       273., 268.5, 250., 244.2, 233., 200.]) * units.mbar
-    temperatures = np.array([18.2, 16.8, 16.2, 15.1, 13.3, 12.2, 12.4, 14., 14.4,
-                             13.7, 11.4, 9.1, 6.8, 4.4, -1.4, -4.4, -7.3, -8.1,
-                             -7.9, -7.7, -8.7, -9.8, -10.3, -13.5, -17.1, -28.1, -30.7,
-                             -35.3, -37.1, -43.5, -45.1, -49.9, -50.4, -51.1, -54.1, -55.,
-                             -56.7, -57.5]) * units.degC
-    dewpoints = np.array([16.9, 15.9, 15.5, 14.2, 12.1, 10.8, 8.6, 0., -3.6, -4.4,
-                          -6.9, -9.5, -12., -14.6, -15.8, -16.4, -16.9, -17.1, -27.9, -42.7,
-                          -44.1, -45.6, -46.3, -45.5, -47.1, -52.1, -50.4, -47.3, -57.1,
-                          -57.9, -58.1, -60.9, -61.4, -62.1, -65.1, -65.6,
-                          -66.7, -70.5]) * units.degC
+    levels, temperatures, dewpoints = multiple_intersections
     el_pressure_top, el_temp_top = el(levels, temperatures, dewpoints)
     el_pressure_bottom, el_temp_bottom = el(levels, temperatures, dewpoints, which='bottom')
     el_pressure_all, _ = el(levels, temperatures, dewpoints, which='all')

@@ -392,8 +392,11 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         The dewpoint of the parcel for which to calculate the LFC. Defaults to the surface
         dewpoint.
     which: str, optional
-        Pick which LFC to return. Options are 'top', 'bottom', and 'all'.
-        Default is the 'top' (lowest pressure) LFC.
+        Pick which LFC to return. Options are 'top', 'bottom', 'wide', 'most_cape', and 'all'.
+        'top' returns the lowest-pressure LFC, default.
+        'bottom' returns the highest-pressure LFC.
+        'wide' returns the LFC whose corresponding EL is farthest away.
+        'most_cape' returns the LFC that results in the most CAPE in the profile.
 
     Returns
     -------
@@ -462,11 +465,13 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         # Otherwise, find all LFCs that exist above the LCL
         # What is returned depends on which flag as described in the docstring
         else:
-            return _multiple_el_lfc_options(x, y, idx, which)
+            return _multiple_el_lfc_options(x, y, idx, which, pressure,
+                                            parcel_temperature_profile, temperature,
+                                            type='LFC')
 
 
 def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_x,
-                             which):
+                             which, pressure, parcel_temperature_profile, temperature, type):
     """Choose which ELs and LFCs to return from a sounding."""
     p_list, t_list = intersect_pressures[valid_x], intersect_temperatures[valid_x]
     if which == 'all':
@@ -475,6 +480,27 @@ def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_
         x, y = p_list[0], t_list[0]
     elif which == 'top':
         x, y = p_list[-1], t_list[-1]
+    elif which == 'wide':
+        # zip the LFC and EL lists together and find greatest difference
+        if type == 'LFC':
+            # Find EL intersection pressure values
+            p_list_other, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
+                                                 temperature[1:], direction='decreasing',
+                                                 log_x=True)
+        elif type == 'EL':
+            # Find LFC intersection pressure values
+            p_list_other, _ = find_intersections(pressure, parcel_temperature_profile,
+                                                 temperature, direction='increasing',
+                                                 log_x=True)
+        diff = []
+        [diff.append(lfc_p.m-el_p.m) for lfc_p, el_p in zip(p_list, p_list_other)]
+        x, y = p_list[np.where(diff == np.max(diff))][0], t_list[np.where(diff == np.max(diff))][0]
+
+    elif which == 'most_cape':
+
+    else:
+        raise KeyError('Invalid option for "which". Valid options are "top", "bottom", "wide"'
+                       ', "most_cape", and "all".')
     return x, y
 
 
@@ -500,8 +526,11 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
         The parcel temperature profile from which to calculate the EL. Defaults to the
         surface parcel profile.
     which: str, optional
-        Pick which EL to return. Options are 'top', 'bottom', and 'all'.
-        Default is the 'top' (lowest pressure) EL.
+        Pick which LFC to return. Options are 'top', 'bottom', 'wide', 'most_cape', and 'all'.
+        'top' returns the lowest-pressure EL, default.
+        'bottom' returns the highest-pressure EL.
+        'wide' returns the EL whose corresponding LFC is farthest away.
+        'most_cape' returns the EL that results in the most CAPE in the profile.
 
     Returns
     -------
@@ -533,7 +562,8 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     lcl_p, _ = lcl(pressure[0], temperature[0], dewpt[0])
     idx = x < lcl_p
     if len(x) > 0 and x[-1] < lcl_p:
-        return _multiple_el_lfc_options(x, y, idx, which)
+        return _multiple_el_lfc_options(x, y, idx, which, pressure,
+                                        parcel_temperature_profile, temperature,type='EL')
     else:
         return np.nan * pressure.units, np.nan * temperature.units
 
