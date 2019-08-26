@@ -1397,6 +1397,15 @@ def test_multiple_els_simple(multiple_intersections):
     assert_almost_equal(len(el_pressure_all), 2, 0)
 
 
+def test_cape_cin_top_el_lfc(multiple_intersections):
+    """Test using LFC/EL options for CAPE/CIN."""
+    levels, temperatures, dewpoints = multiple_intersections
+    parcel_prof = parcel_profile(levels, temperatures[0], dewpoints[0]).to('degC')
+    cape, cin = cape_cin(levels, temperatures, dewpoints, parcel_prof, which_lfc='top')
+    assert_almost_equal(cape, 1262.8618 * units('joule / kilogram'), 3)
+    assert_almost_equal(cin, -97.6499 * units('joule / kilogram'), 3)
+
+
 def test_cape_cin_custom_profile():
     """Test the CAPE and CIN calculation with a custom profile passed to LFC and EL."""
     p = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
