@@ -259,8 +259,8 @@ def reduce_point_density(points, radius, priority=None):
     data), returning a mask that can be used to select the points from one or more arrays
     (e.g. arrays of temperature and dew point). The points selected can be controlled by
     providing an array of ``priority`` values (e.g. rainfall totals to ensure that
-    stations with higher precipitation remain in the mask). The radius can be specified
-    as a `pint.Quantity` with units. If none are provided, meters are assumed.
+    stations with higher precipitation remain in the mask). The points and radius can be
+    specified with units. If none are provided, meters are assumed.
 
     Parameters
     ----------
@@ -280,15 +280,18 @@ def reduce_point_density(points, radius, priority=None):
     Examples
     --------
     >>> metpy.calc.reduce_point_density(np.array([1, 2, 3]), 1.)
-    array([ True, False,  True])
+    array([ True, False, True])
     >>> metpy.calc.reduce_point_density(np.array([1, 2, 3]), 1.,
     ... priority=np.array([0.1, 0.9, 0.3]))
-    array([False,  True, False])
+    array([False, True, False])
 
     """
-    # Handle a radius with units. Assume meters if units are not specified
+    # Handle input with units. Assume meters if units are not specified
     if hasattr(radius, 'units'):
         radius = radius.to('m').m
+
+    if hasattr(points, 'units'):
+        points = points.to('m').m
 
     # Handle 1D input
     if points.ndim < 2:

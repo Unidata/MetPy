@@ -162,15 +162,16 @@ def test_reduce_point_density(thin_point_data, radius, truth):
                          [(2.0, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
                                           0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=np.bool)),
                           (1.0, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=np.bool)),
-                          (0.3, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                          0, 0, 0, 0, 0, 0, 0, 0, 0, 0], dtype=np.bool)),
-                          (0.1, np.array([1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-                                          0, 0, 0, 0, 0, 0, 0, 0, 1, 0], dtype=np.bool))
+                                          0, 0, 0, 0, 0, 0, 0, 0, 1, 0], dtype=np.bool)),
+                          (0.3, np.array([1, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0,
+                                          0, 0, 0, 0, 0, 1, 0, 0, 0, 0], dtype=np.bool)),
+                          (0.1, np.array([1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
+                                          0, 1, 1, 1, 1, 1, 1, 1, 1, 1], dtype=np.bool))
                           ])
 def test_reduce_point_density_units(thin_point_data, radius, truth):
     r"""Test that reduce_point_density works with units."""
-    assert_array_equal(reduce_point_density(thin_point_data, radius=radius * units.dam), truth)
+    assert_array_equal(reduce_point_density(thin_point_data * units.dam,
+                                            radius=radius * units.dam), truth)
 
 
 @pytest.mark.parametrize('radius, truth',
