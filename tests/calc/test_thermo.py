@@ -1397,11 +1397,38 @@ def test_multiple_els_simple(multiple_intersections):
     assert_almost_equal(len(el_pressure_all), 2, 0)
 
 
+def test_multiple_el_wide(multiple_intersections):
+    """Test 'wide' EL for sounding with multiple ELs."""
+    levels, temperatures, dewpoints = multiple_intersections
+    el_pressure_wide, el_temp_wide = el(levels, temperatures, dewpoints, which='wide')
+    assert_almost_equal(el_pressure_wide, 228.0575059 * units.hPa, 6)
+    assert_almost_equal(el_temp_wide, -56.8123126 * units.degC, 6)
+
+
 def test_cape_cin_top_el_lfc(multiple_intersections):
     """Test using LFC/EL options for CAPE/CIN."""
     levels, temperatures, dewpoints = multiple_intersections
     parcel_prof = parcel_profile(levels, temperatures[0], dewpoints[0]).to('degC')
     cape, cin = cape_cin(levels, temperatures, dewpoints, parcel_prof, which_lfc='top')
+    assert_almost_equal(cape, 1262.8618 * units('joule / kilogram'), 3)
+    assert_almost_equal(cin, -97.6499 * units('joule / kilogram'), 3)
+
+
+def test_cape_cin_bottom_el_lfc(multiple_intersections):
+    """Test using LFC/EL options for CAPE/CIN."""
+    levels, temperatures, dewpoints = multiple_intersections
+    parcel_prof = parcel_profile(levels, temperatures[0], dewpoints[0]).to('degC')
+    cape, cin = cape_cin(levels, temperatures, dewpoints, parcel_prof, which_el='bottom')
+    assert_almost_equal(cape, 2.1967 * units('joule / kilogram'), 3)
+    assert_almost_equal(cin, -8.1545 * units('joule / kilogram'), 3)
+
+
+def test_cape_cin_wide_el_lfc(multiple_intersections):
+    """Test using LFC/EL options for CAPE/CIN."""
+    levels, temperatures, dewpoints = multiple_intersections
+    parcel_prof = parcel_profile(levels, temperatures[0], dewpoints[0]).to('degC')
+    cape, cin = cape_cin(levels, temperatures, dewpoints, parcel_prof, which_lfc='wide',
+                         which_el='wide')
     assert_almost_equal(cape, 1262.8618 * units('joule / kilogram'), 3)
     assert_almost_equal(cin, -97.6499 * units('joule / kilogram'), 3)
 

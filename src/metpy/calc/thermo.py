@@ -484,16 +484,19 @@ def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_
         # zip the LFC and EL lists together and find greatest difference
         if type == 'LFC':
             # Find EL intersection pressure values
-            p_list_other, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
-                                                 temperature[1:], direction='decreasing',
-                                                 log_x=True)
+            lfc_p_list = p_list
+            el_p_list, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
+                                              temperature[1:], direction='decreasing',
+                                              log_x=True)
+
         elif type == 'EL':
+            el_p_list = p_list
             # Find LFC intersection pressure values
-            p_list_other, _ = find_intersections(pressure, parcel_temperature_profile,
-                                                 temperature, direction='increasing',
-                                                 log_x=True)
+            lfc_p_list, _ = find_intersections(pressure, parcel_temperature_profile,
+                                               temperature, direction='increasing',
+                                               log_x=True)
         diff = []
-        [diff.append(lfc_p.m-el_p.m) for lfc_p, el_p in zip(p_list, p_list_other)]
+        [diff.append(lfc_p.m-el_p.m) for lfc_p, el_p in zip(lfc_p_list, el_p_list)]
         x, y = p_list[np.where(diff == np.max(diff))][0], t_list[np.where(diff == np.max(diff))][0]
 
     elif which == 'most_cape':
@@ -565,7 +568,7 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     idx = x < lcl_p
     if len(x) > 0 and x[-1] < lcl_p:
         return _multiple_el_lfc_options(x, y, idx, which, pressure,
-                                        parcel_temperature_profile, temperature,type='EL')
+                                        parcel_temperature_profile, temperature, type='EL')
     else:
         return np.nan * pressure.units, np.nan * temperature.units
 
