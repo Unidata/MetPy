@@ -1,7 +1,7 @@
 # Copyright (c) 2015,2016,2017,2018 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-r"""This module contains a variety of meteorological calculations."""
+r"""Provide tools for unit-aware, meteorological calculations."""
 
 from .basic import *  # noqa: F403
 from .cross_sections import *  # noqa: F403

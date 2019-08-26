@@ -876,17 +876,17 @@ def altimeter_to_station_pressure(altimeter_value, height):
         Elevation of the station measuring pressure.
 
     Returns
-    --------
+    -------
     station_pressure: `pint.Quantity`
         The station pressure in hPa or in. Hg, which can be used to calculate sea-level
         pressure
 
     See Also
-    ---------
+    --------
     altimeter_to_sea_level_pressure
 
     Notes
-    -------
+    -----
     This function is implemented using the following equations from the
     Smithsonian Handbook (1951) p. 269
 
@@ -972,7 +972,7 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     altimeter_to_station_pressure
 
     Notes
-    -------
+    -----
     This function is implemented using the following equations from Wallace and Hobbs (1977)
 
     Equation 2.29:

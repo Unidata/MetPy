@@ -1938,6 +1938,7 @@ def moist_static_energy(heights, temperature, specific_humidity):
 
     This function will calculate the moist static energy following
     equation 3.72 in [Hobbs2006]_.
+
     Notes
     -----
     .. math::\text{moist static energy} = c_{pd} * T + gz + L_v q
