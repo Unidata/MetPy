@@ -497,6 +497,8 @@ def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_
         x, y = p_list[np.where(diff == np.max(diff))][0], t_list[np.where(diff == np.max(diff))][0]
 
     elif which == 'most_cape':
+        # Need to loop through all possible combinations of cape, find greatest cape profile
+        x, y = 1, 2
 
     else:
         raise KeyError('Invalid option for "which". Valid options are "top", "bottom", "wide"'
@@ -1432,7 +1434,7 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
     of a given upper air profile and parcel path. CIN is integrated between the surface and
     LFC, CAPE is integrated between the LFC and EL (or top of sounding). Intersection points of
-    the measured temperature profile and parcel profile are linearly interpolated.
+    the measured temperature profile and parcel profile are logarithmically interpolated.
 
     Parameters
     ----------
@@ -1779,7 +1781,7 @@ def surface_based_cape_cin(pressure, temperature, dewpoint):
     of a given upper air profile for a surface-based parcel. CIN is integrated
     between the surface and LFC, CAPE is integrated between the LFC and EL (or top of
     sounding). Intersection points of the measured temperature profile and parcel profile are
-    linearly interpolated.
+    logarithmically interpolated.
 
     Parameters
     ----------
@@ -1817,7 +1819,7 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
     of a given upper air profile and most unstable parcel path. CIN is integrated between the
     surface and LFC, CAPE is integrated between the LFC and EL (or top of sounding).
-    Intersection points of the measured temperature profile and parcel profile are linearly
+    Intersection points of the measured temperature profile and parcel profile are logarithmically
     interpolated.
 
     Parameters
