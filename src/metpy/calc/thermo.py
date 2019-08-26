@@ -1428,13 +1428,14 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def cape_cin(pressure, temperature, dewpt, parcel_profile):
+def cape_cin(pressure, temperature, dewpt, parcel_profile, which_lfc='bottom',
+             which_el='top'):
     r"""Calculate CAPE and CIN.
 
     Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
     of a given upper air profile and parcel path. CIN is integrated between the surface and
-    LFC, CAPE is integrated between the LFC and EL (or top of sounding). Intersection points of
-    the measured temperature profile and parcel profile are logarithmically interpolated.
+    LFC, CAPE is integrated between the LFC and EL (or top of sounding). Intersection points
+    of the measured temperature profile and parcel profile are logarithmically interpolated.
 
     Parameters
     ----------
@@ -1447,6 +1448,12 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
         The atmospheric dewpoint corresponding to pressure.
     parcel_profile : `pint.Quantity`
         The temperature profile of the parcel.
+    which_lfc : str
+        Choose which LFC to integrate from. Valid options are 'top', 'bottom', 'wide',
+        and 'most_cape'. Default is 'bottom'.
+    which_el : str
+        Choose which EL to integrate to. Valid options are 'top', 'bottom', 'wide',
+        and 'most_cape'. Default is 'top'.
 
     Returns
     -------
@@ -1484,7 +1491,7 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
                                                                 parcel_profile)
     # Calculate LFC limit of integration
     lfc_pressure, _ = lfc(pressure, temperature, dewpt,
-                          parcel_temperature_profile=parcel_profile)
+                          parcel_temperature_profile=parcel_profile, which=which_lfc)
 
     # If there is no LFC, no need to proceed.
     if np.isnan(lfc_pressure):
@@ -1494,7 +1501,7 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
 
     # Calculate the EL limit of integration
     el_pressure, _ = el(pressure, temperature, dewpt,
-                        parcel_temperature_profile=parcel_profile)
+                        parcel_temperature_profile=parcel_profile, which=which_el)
 
     # No EL and we use the top reading of the sounding.
     if np.isnan(el_pressure):
