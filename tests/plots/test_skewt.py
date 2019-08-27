@@ -174,7 +174,7 @@ def test_profile():
     return pressure, temperature, dewpoint, profile
 
 
-@pytest.mark.mpl_image_compare(tolerance=.02, remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=.033, remove_text=True, style='default')
 def test_skewt_shade_cape_cin(test_profile):
     """Test shading CAPE and CIN on a SkewT plot."""
     p, t, td, tp = test_profile
@@ -192,8 +192,7 @@ def test_skewt_shade_cape_cin(test_profile):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2': 2.02}.get(MPL_VERSION, 0.02), remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=0.033, remove_text=True, style='default')
 def test_skewt_shade_cape_cin_no_limit(test_profile):
     """Test shading CIN without limits."""
     p, t, td, tp = test_profile
@@ -211,10 +210,10 @@ def test_skewt_shade_cape_cin_no_limit(test_profile):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02, remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0.033, remove_text=True, style='default')
 def test_skewt_shade_area(test_profile):
     """Test shading areas on a SkewT plot."""
-    p, t, td, tp = test_profile
+    p, t, _, tp = test_profile
 
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
@@ -230,7 +229,7 @@ def test_skewt_shade_area(test_profile):
 
 def test_skewt_shade_area_invalid(test_profile):
     """Test shading areas on a SkewT plot."""
-    p, t, td, tp = test_profile
+    p, t, _, tp = test_profile
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig, aspect='auto')
     skew.plot(p, t, 'r')
@@ -239,10 +238,10 @@ def test_skewt_shade_area_invalid(test_profile):
         skew.shade_area(p, t, tp, which='positve')
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.02, remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0.033, remove_text=True, style='default')
 def test_skewt_shade_area_kwargs(test_profile):
     """Test shading areas on a SkewT plot with kwargs."""
-    p, t, td, tp = test_profile
+    p, t, _, tp = test_profile
 
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
@@ -256,10 +255,10 @@ def test_skewt_shade_area_kwargs(test_profile):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0.039, remove_text=True, style='default')
 def test_skewt_wide_aspect_ratio(test_profile):
     """Test plotting a skewT with a wide aspect ratio."""
-    p, t, td, tp = test_profile
+    p, t, _, tp = test_profile
 
     fig = plt.figure(figsize=(12.5, 3))
     skew = SkewT(fig, aspect='auto')

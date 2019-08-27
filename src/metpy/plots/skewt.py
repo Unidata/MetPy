@@ -666,7 +666,7 @@ class SkewT(object):
         return self.ax.fill_betweenx(*arrs, **fill_args)
 
     def shade_cape(self, p, t, t_parcel, **kwargs):
-        r"""Shade areas of convective available potential energy (CAPE).
+        r"""Shade areas of Convective Available Potential Energy (CAPE).
 
         Shades areas where the parcel is warmer than the environment (areas of positive
         buoyancy.
@@ -699,7 +699,7 @@ class SkewT(object):
         return self.shade_area(p, t_parcel, t, which='positive', **kwargs)
 
     def shade_cin(self, p, t, dewpoint, t_parcel, limit_shading=True, **kwargs):
-        r"""Shade areas of convective inhibition (CIN).
+        r"""Shade areas of Convective INhibition (CIN).
 
         Shades areas where the parcel is cooler than the environment (areas of negative
         buoyancy. Has option to not shade negative area below the lifting condensation level
