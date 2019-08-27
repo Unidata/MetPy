@@ -23,7 +23,7 @@ import matplotlib.transforms as transforms
 import numpy as np
 
 from ._util import colored_line
-from ..calc import dewpoint, dry_lapse, moist_lapse, vapor_pressure
+from ..calc import dewpoint, dry_lapse, el, lcl, moist_lapse, vapor_pressure
 from ..calc.tools import _delete_masked_points
 from ..deprecation import metpyDeprecation
 from ..interpolate import interpolate_1d
@@ -666,7 +666,7 @@ class SkewT(object):
         return self.ax.fill_betweenx(*arrs, **fill_args)
 
     def shade_cape(self, p, t, t_parcel, **kwargs):
-        r"""Shade areas of CAPE.
+        r"""Shade areas of convective available potential energy (CAPE).
 
         Shades areas where the parcel is warmer than the environment (areas of positive
         buoyancy.
@@ -677,8 +677,12 @@ class SkewT(object):
             Pressure values
         t : array_like
             Temperature values
+        dewpoint : array_like
+            Dewpoint values
         t_parcel : array_like
             Parcel path temperature values
+        limit_shading : bool
+            Eliminate shading below the LCL or above the EL, default is True
         kwargs
             Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`
 
@@ -694,11 +698,12 @@ class SkewT(object):
         """
         return self.shade_area(p, t_parcel, t, which='positive', **kwargs)
 
-    def shade_cin(self, p, t, t_parcel, **kwargs):
-        r"""Shade areas of CIN.
+    def shade_cin(self, p, t, dewpoint, t_parcel, limit_shading=True, **kwargs):
+        r"""Shade areas of convective inhibition (CIN).
 
         Shades areas where the parcel is cooler than the environment (areas of negative
-        buoyancy.
+        buoyancy. Has option to not shade negative area below the lifting condensation level
+        or above the equilibrium level, which defaults to True.
 
         Parameters
         ----------
@@ -721,7 +726,13 @@ class SkewT(object):
         :func:`matplotlib.axes.Axes.fill_betweenx`
 
         """
-        return self.shade_area(p, t_parcel, t, which='negative', **kwargs)
+        if limit_shading:
+            lcl_p, _ = lcl(p[0], t[0], dewpoint[0])
+            el_p, _ = el(p, t, dewpoint, t_parcel)
+            idx = np.logical_and(p > el_p, p < lcl_p)
+        else:
+            idx = np.arange(0, len(p))
+        return self.shade_area(p[idx], t_parcel[idx], t[idx], which='negative', **kwargs)
 
 
 @exporter.export
