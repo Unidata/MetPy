@@ -17,11 +17,7 @@ from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
 
-MPL_VERSION = matplotlib.__version__[:3]
-
-
-@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.04625, '1.4': 4.1}.get(MPL_VERSION, 0.0033),
-                               savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.0033, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_stationplot_api():
     """Test the StationPlot API."""
     fig = plt.figure(figsize=(9, 9))
@@ -43,8 +39,7 @@ def test_stationplot_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 2.81}.get(MPL_VERSION, 0.003),
-                               savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.003, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_stationplot_clipping():
     """Test the that clipping can be enabled as a default parameter."""
     fig = plt.figure(figsize=(9, 9))
@@ -66,8 +61,7 @@ def test_stationplot_clipping():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05974, '1.4': 3.7}.get(MPL_VERSION, 0.25),
-                               savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.25, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_station_plot_replace():
     """Test that locations are properly replaced."""
     fig = plt.figure(figsize=(3, 3))
@@ -89,8 +83,8 @@ def test_station_plot_replace():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.036, '1.4': 2.02}.get(MPL_VERSION, 0.00413),
-                               savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.00413, savefig_kwargs={'dpi': 300},
+                               remove_text=True)
 def test_stationlayout_api():
     """Test the StationPlot API."""
     fig = plt.figure(figsize=(9, 9))
@@ -157,8 +151,7 @@ def test_station_layout_names():
     assert sorted(layout.names()) == ['cover', 'stid', 'temp', 'u', 'v']
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.5': 0.05447, '1.4': 3.0}.get(MPL_VERSION, 0.0072),
-                               savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.0072, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_simple_layout():
     """Test metpy's simple layout for station plots."""
     fig = plt.figure(figsize=(9, 9))
@@ -183,8 +176,7 @@ def test_simple_layout():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 7.02}.get(MPL_VERSION, 0.1848),
-                               savefig_kwargs={'dpi': 300}, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.1848, savefig_kwargs={'dpi': 300}, remove_text=True)
 def test_nws_layout():
     """Test metpy's NWS layout for station plots."""
     fig = plt.figure(figsize=(3, 3))
@@ -212,8 +204,7 @@ def test_nws_layout():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 6.68}.get(MPL_VERSION, 1.05),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=1.05, remove_text=True)
 def test_plot_text_fontsize():
     """Test changing fontsize in plot_text."""
     fig = plt.figure(figsize=(3, 3))
@@ -234,8 +225,7 @@ def test_plot_text_fontsize():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 26.8}.get(MPL_VERSION, 1.05),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=1.05, remove_text=True)
 def test_plot_symbol_fontsize():
     """Test changing fontsize in plotting of symbols."""
     fig = plt.figure(figsize=(3, 3))
@@ -259,8 +249,7 @@ def test_layout_str():
                            "W: (value, temp, ...), barb: (barb, ('u', 'v'), ...)}")
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 0.08}.get(MPL_VERSION, 0.00145),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.00145, remove_text=True)
 def test_barb_projection():
     """Test that barbs are properly projected (#598)."""
     # Test data of all southerly winds
@@ -292,8 +281,7 @@ def test_barb_projection_list():
     assert stnplot.barbs
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 2.28}.get(MPL_VERSION, 0.0048),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.0048, remove_text=True)
 def test_barb_unit_conversion():
     """Test that barbs units can be converted at plot time (#737)."""
     x_pos = np.array([0])
@@ -311,8 +299,7 @@ def test_barb_unit_conversion():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'1.4': 2.22}.get(MPL_VERSION, 0.0048),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.0048, remove_text=True)
 def test_barb_no_default_unit_conversion():
     """Test that barbs units are left alone by default (#737)."""
     x_pos = np.array([0])
