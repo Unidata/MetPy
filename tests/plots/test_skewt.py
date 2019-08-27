@@ -147,13 +147,37 @@ def test_skewt_units():
 @pytest.fixture()
 def test_profile():
     """Return data for a test profile."""
-    return np.linspace(1000, 100, 10), np.linspace(20, -20, 10), np.linspace(25, -30, 10)
+    pressure = np.array([966., 937.2, 925., 904.6, 872.6, 853., 850., 836., 821., 811.6, 782.3,
+                         754.2, 726.9, 700., 648.9, 624.6, 601.1, 595., 587., 576., 555.7,
+                         534.2, 524., 500., 473.3, 400., 384.5, 358., 343., 308.3, 300., 276.,
+                         273., 268.5, 250., 244.2, 233., 200.]) * units.mbar
+    temperature = np.array([18.2, 16.8, 16.2, 15.1, 13.3, 12.2, 12.4, 14., 14.4,
+                            13.7, 11.4, 9.1, 6.8, 4.4, -1.4, -4.4, -7.3, -8.1,
+                            -7.9, -7.7, -8.7, -9.8, -10.3, -13.5, -17.1, -28.1, -30.7,
+                            -35.3, -37.1, -43.5, -45.1, -49.9, -50.4, -51.1, -54.1, -55.,
+                            -56.7, -57.5]) * units.degC
+    dewpoint = np.array([16.9, 15.9, 15.5, 14.2, 12.1, 10.8, 8.6, 0., -3.6, -4.4,
+                        -6.9, -9.5, -12., -14.6, -15.8, -16.4, -16.9, -17.1, -27.9, -42.7,
+                        -44.1, -45.6, -46.3, -45.5, -47.1, -52.1, -50.4, -47.3, -57.1,
+                        -57.9, -58.1, -60.9, -61.4, -62.1, -65.1, -65.6,
+                        -66.7, -70.5]) * units.degC
+    profile = np. array([18.2, 16.18287437, 15.68644745, 14.8369451,
+                        13.45220646, 12.57020365, 12.43280242, 11.78283506,
+                        11.0698586, 10.61393901, 9.14490966, 7.66233636,
+                        6.1454231, 4.56888673, 1.31644072, -0.36678427,
+                        -2.09120703, -2.55566745, -3.17594616, -4.05032505,
+                        -5.73356001, -7.62361933, -8.56236581, -10.88846868,
+                        -13.69095789, -22.82604468, -25.08463516, -29.26014016,
+                        -31.81335912, -38.29612829, -39.97374452, -45.11966793,
+                        -45.79482793, -46.82129892, -51.21936594, -52.65924319,
+                        -55.52598916, -64.68843697]) * units.degC
+    return pressure, temperature, dewpoint, profile
 
 
 @pytest.mark.mpl_image_compare(tolerance=.02, remove_text=True, style='default')
 def test_skewt_shade_cape_cin(test_profile):
     """Test shading CAPE and CIN on a SkewT plot."""
-    p, t, tp = test_profile
+    p, t, td, tp = test_profile
 
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
@@ -161,7 +185,26 @@ def test_skewt_shade_cape_cin(test_profile):
         skew.plot(p, t, 'r')
         skew.plot(p, tp, 'k')
         skew.shade_cape(p, t, tp)
-        skew.shade_cin(p, t, tp)
+        skew.shade_cin(p, t, td, tp)
+        skew.ax.set_xlim(-50, 50)
+        skew.ax.set_ylim(1000, 100)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance={'2': 2.02}.get(MPL_VERSION, 0.02), remove_text=True,
+                               style='default')
+def test_skewt_shade_cape_cin_no_limit(test_profile):
+    """Test shading CIN without limits."""
+    p, t, td, tp = test_profile
+
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
+        skew.plot(p, t, 'r')
+        skew.plot(p, tp, 'k')
+        skew.shade_cape(p, t, tp)
+        skew.shade_cin(p, t, td, tp, limit_shading=False)
         skew.ax.set_xlim(-50, 50)
         skew.ax.set_ylim(1000, 100)
 
@@ -171,7 +214,7 @@ def test_skewt_shade_cape_cin(test_profile):
 @pytest.mark.mpl_image_compare(tolerance=0.02, remove_text=True, style='default')
 def test_skewt_shade_area(test_profile):
     """Test shading areas on a SkewT plot."""
-    p, t, tp = test_profile
+    p, t, td, tp = test_profile
 
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
@@ -187,7 +230,7 @@ def test_skewt_shade_area(test_profile):
 
 def test_skewt_shade_area_invalid(test_profile):
     """Test shading areas on a SkewT plot."""
-    p, t, tp = test_profile
+    p, t, td, tp = test_profile
     fig = plt.figure(figsize=(9, 9))
     skew = SkewT(fig, aspect='auto')
     skew.plot(p, t, 'r')
@@ -199,7 +242,7 @@ def test_skewt_shade_area_invalid(test_profile):
 @pytest.mark.mpl_image_compare(tolerance=0.02, remove_text=True, style='default')
 def test_skewt_shade_area_kwargs(test_profile):
     """Test shading areas on a SkewT plot with kwargs."""
-    p, t, tp = test_profile
+    p, t, td, tp = test_profile
 
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
@@ -216,7 +259,7 @@ def test_skewt_shade_area_kwargs(test_profile):
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
 def test_skewt_wide_aspect_ratio(test_profile):
     """Test plotting a skewT with a wide aspect ratio."""
-    p, t, tp = test_profile
+    p, t, td, tp = test_profile
 
     fig = plt.figure(figsize=(12.5, 3))
     skew = SkewT(fig, aspect='auto')
