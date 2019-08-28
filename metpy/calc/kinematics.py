@@ -88,25 +88,26 @@ def ensure_yx_order(func):
 @exporter.export
 @preprocess_xarray
 @ensure_yx_order
+@check_units('[speed]', '[speed]', '[length]', '[length]')
 def vorticity(u, v, dx, dy):
     r"""Calculate the vertical vorticity of the horizontal wind.
 
     Parameters
     ----------
-    u : (M, N) ndarray
+    u : (M, N) `pint.Quantity`
         x component of the wind
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         y component of the wind
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
 
     Returns
     -------
-    (M, N) ndarray
+    (M, N) `pint.Quantity`
         vertical vorticity
 
     See Also
@@ -127,25 +128,26 @@ def vorticity(u, v, dx, dy):
 @exporter.export
 @preprocess_xarray
 @ensure_yx_order
+@check_units('[speed]', '[speed]', '[length]', '[length]')
 def divergence(u, v, dx, dy):
     r"""Calculate the horizontal divergence of the horizontal wind.
 
     Parameters
     ----------
-    u : (M, N) ndarray
+    u : (M, N) `pint.Quantity`
         x component of the wind
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         y component of the wind
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
 
     Returns
     -------
-    (M, N) ndarray
+    (M, N) `pint.Quantity`
         The horizontal divergence
 
     See Also
@@ -166,25 +168,26 @@ def divergence(u, v, dx, dy):
 @exporter.export
 @preprocess_xarray
 @ensure_yx_order
+@check_units('[speed]', '[speed]', '[length]', '[length]')
 def shearing_deformation(u, v, dx, dy):
     r"""Calculate the shearing deformation of the horizontal wind.
 
     Parameters
     ----------
-    u : (M, N) ndarray
+    u : (M, N) `pint.Quantity`
         x component of the wind
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         y component of the wind
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
 
     Returns
     -------
-    (M, N) ndarray
+    (M, N) `pint.Quantity`
         Shearing Deformation
 
     See Also
@@ -205,25 +208,26 @@ def shearing_deformation(u, v, dx, dy):
 @exporter.export
 @preprocess_xarray
 @ensure_yx_order
+@check_units('[speed]', '[speed]', '[length]', '[length]')
 def stretching_deformation(u, v, dx, dy):
     r"""Calculate the stretching deformation of the horizontal wind.
 
     Parameters
     ----------
-    u : (M, N) ndarray
+    u : (M, N) `pint.Quantity`
         x component of the wind
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         y component of the wind
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
 
     Returns
     -------
-    (M, N) ndarray
+    (M, N) `pint.Quantity`
         Stretching Deformation
 
     See Also
@@ -244,25 +248,26 @@ def stretching_deformation(u, v, dx, dy):
 @exporter.export
 @preprocess_xarray
 @ensure_yx_order
+@check_units('[speed]', '[speed]', '[length]', '[length]')
 def total_deformation(u, v, dx, dy):
     r"""Calculate the horizontal total deformation of the horizontal wind.
 
     Parameters
     ----------
-    u : (M, N) ndarray
+    u : (M, N) `pint.Quantity`
         x component of the wind
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         y component of the wind
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
 
     Returns
     -------
-    (M, N) ndarray
+    (M, N) `pint.Quantity`
         Total Deformation
 
     See Also
@@ -335,6 +340,7 @@ def advection(scalar, wind, deltas):
 @exporter.export
 @preprocess_xarray
 @ensure_yx_order
+@check_units('[temperature]', '[speed]', '[speed]', '[length]', '[length]')
 def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
     r"""Calculate the 2D kinematic frontogenesis of a temperature field.
 
@@ -351,22 +357,22 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
 
     Parameters
     ----------
-    thta : (M, N) ndarray
+    thta : (M, N) `pint.Quantity`
         Potential temperature
-    u : (M, N) ndarray
+    u : (M, N) `pint.Quantity`
         x component of the wind
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         y component of the wind
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
 
     Returns
     -------
-    (M, N) ndarray
+    (M, N) `pint.Quantity`
         2D Frontogenesis in [temperature units]/m/s
 
     Notes
@@ -403,27 +409,28 @@ def frontogenesis(thta, u, v, dx, dy, dim_order='yx'):
 @exporter.export
 @preprocess_xarray
 @ensure_yx_order
+@check_units(f='[frequency]', dx='[length]', dy='[length]')
 def geostrophic_wind(heights, f, dx, dy):
     r"""Calculate the geostrophic wind given from the heights or geopotential.
 
     Parameters
     ----------
-    heights : (M, N) ndarray
+    heights : (M, N) `pint.Quantity`
         The height field, with either leading dimensions of (x, y) or trailing dimensions
         of (y, x), depending on the value of ``dim_order``.
     f : array_like
         The coriolis parameter.  This can be a scalar to be applied
         everywhere or an array of values.
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `heights` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `heights` along the applicable axis.
 
     Returns
     -------
-    A 2-item tuple of arrays
+    A 2-item tuple of arrays, `pint.Quantity`
         A tuple of the u-component and v-component of the geostrophic wind.
 
     Notes
@@ -443,30 +450,31 @@ def geostrophic_wind(heights, f, dx, dy):
 
 
 @exporter.export
+@check_units(f='[frequency]', dx='[length]', dy='[length]', u='[speed]', v='[speed]')
 def ageostrophic_wind(heights, f, dx, dy, u, v, dim_order='yx'):
     r"""Calculate the ageostrophic wind given from the heights or geopotential.
 
     Parameters
     ----------
     heights : (M, N) ndarray
-        The height field.
+        The height or geopotential field.
     f : array_like
         The coriolis parameter.  This can be a scalar to be applied
         everywhere or an array of values.
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `heights` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `heights` along the applicable axis.
-    u : (M, N) ndarray
+    u : (M, N) `pint.Quantity`
         The u wind field.
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         The u wind field.
 
     Returns
     -------
-    A 2-item tuple of arrays
+    A 2-item tuple of arrays, `pint.Quantity`
         A tuple of the u-component and v-component of the ageostrophic wind.
 
     Notes
@@ -564,8 +572,12 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
 
     Returns
     -------
-    `pint.Quantity, pint.Quantity, pint.Quantity`
-        positive, negative, total storm-relative helicity
+    `pint.Quantity`
+        positive storm-relative helicity
+    `pint.Quantity`
+        negative storm-relative helicity
+    `pint.Quantity`
+        total storm-relative helicity
 
     """
     _, u, v = get_layer_heights(heights, depth, u, v, with_agl=True, bottom=bottom)
@@ -598,14 +610,14 @@ def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
 
     Parameters
     ----------
-    u : (M, N) ndarray
+    u : (M, N) `pint.Quantity`
         x component of the wind
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         y component of the wind
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
     lats : (M, N) ndarray
@@ -613,7 +625,7 @@ def absolute_vorticity(u, v, dx, dy, lats, dim_order='yx'):
 
     Returns
     -------
-    (M, N) ndarray
+    (M, N) `pint.Quantity`
         absolute vorticity
 
     Notes
@@ -642,18 +654,18 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
 
     Parameters
     ----------
-    potential_temperature : (P, M, N) ndarray
+    potential_temperature : (P, M, N) `pint.Quantity`
         potential temperature
-    pressure : (P, M, N) ndarray
+    pressure : (P, M, N) `pint.Quantity`
         vertical pressures
-    u : (P, M, N) ndarray
+    u : (P, M, N) `pint.Quantity`
         x component of the wind
-    v : (P, M, N) ndarray
+    v : (P, M, N) `pint.Quantity`
         y component of the wind
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
     lats : (M, N) ndarray
@@ -661,7 +673,7 @@ def potential_vorticity_baroclinic(potential_temperature, pressure, u, v, dx, dy
 
     Returns
     -------
-    (P, M, N) ndarray
+    (P, M, N) `pint.Quantity`
         baroclinic potential vorticity
 
     Notes
@@ -717,16 +729,16 @@ def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
 
     Parameters
     ----------
-    heights : (M, N) ndarray
+    heights : (M, N) `pint.Quantity`
         atmospheric heights
-    u : (M, N) ndarray
+    u : (M, N) `pint.Quantity`
         x component of the wind
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         y component of the wind
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
     lats : (M, N) ndarray
@@ -734,7 +746,7 @@ def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
 
     Returns
     -------
-    (M, N) ndarray
+    (M, N) `pint.Quantity`
         barotropic potential vorticity
 
     Notes
@@ -749,6 +761,8 @@ def potential_vorticity_barotropic(heights, u, v, dx, dy, lats, dim_order='yx'):
 
 @exporter.export
 @preprocess_xarray
+@check_units('[speed]', '[speed]', '[speed]', '[speed]', '[length]', '[length]',
+             '[dimensionless]')
 def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
     r"""Calculate the inertial advective wind.
 
@@ -767,18 +781,18 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
 
     Parameters
     ----------
-    u : (M, N) ndarray
+    u : (M, N) `pint.Quantity`
         x component of the advecting wind
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         y component of the advecting wind
-    u_geostrophic : (M, N) ndarray
+    u_geostrophic : (M, N) `pint.Quantity`
         x component of the geostrophic (advected) wind
-    v_geostrophic : (M, N) ndarray
+    v_geostrophic : (M, N) `pint.Quantity`
         y component of the geostrophic (advected) wind
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
     lats : (M, N) ndarray
@@ -786,9 +800,9 @@ def inertial_advective_wind(u, v, u_geostrophic, v_geostrophic, dx, dy, lats):
 
     Returns
     -------
-    (M, N) ndarray
+    (M, N) `pint.Quantity`
         x component of inertial advective wind
-    (M, N) ndarray
+    (M, N) `pint.Quantity`
         y component of inertial advective wind
 
     Notes
@@ -835,18 +849,18 @@ def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
 
     Parameters
     ----------
-    u : (M, N) ndarray
+    u : (M, N) `pint.Quantity`
         x component of the wind (geostrophic in QG-theory)
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         y component of the wind (geostrophic in QG-theory)
-    temperature : (M, N) ndarray
+    temperature : (M, N) `pint.Quantity`
         Array of temperature at pressure level
     pressure : `pint.Quantity`
         Pressure at level
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
     static_stability : `pint.Quantity`, optional
@@ -855,7 +869,7 @@ def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
 
     Returns
     -------
-    tuple of (M, N) ndarrays
+    tuple of (M, N) `pint.Quantity`s
         The components of the Q-vector in the u- and v-directions respectively
 
     See Also
