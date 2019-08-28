@@ -32,20 +32,20 @@ sat_pressure_0c = 6.112 * units.millibar
 def relative_humidity_from_dewpoint(temperature, dewpt):
     r"""Calculate the relative humidity.
 
-    Uses temperature and dewpoint in celsius to calculate relative
+    Uses temperature and dew point in celsius to calculate relative
     humidity using the ratio of vapor pressure to saturation vapor pressures.
 
     Parameters
     ----------
     temperature : `pint.Quantity`
-        The temperature
-    dew point : `pint.Quantity`
-        The dew point temperature
+        temperature
+    dewpoint : `pint.Quantity`
+        dew point temperature
 
     Returns
     -------
     `pint.Quantity`
-        The relative humidity
+        relative humidity
 
     See Also
     --------
@@ -103,9 +103,9 @@ def potential_temperature(pressure, temperature):
     Parameters
     ----------
     pressure : `pint.Quantity`
-        The total atmospheric pressure
+        total atmospheric pressure
     temperature : `pint.Quantity`
-        The temperature
+        temperature
 
     Returns
     -------
@@ -145,9 +145,9 @@ def temperature_from_potential_temperature(pressure, theta):
     Parameters
     ----------
     pressure : `pint.Quantity`
-        The total atmospheric pressure
+        total atmospheric pressure
     theta : `pint.Quantity`
-        The potential temperature
+        potential temperature
 
     Returns
     -------
@@ -322,8 +322,10 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
 
     Returns
     -------
-    `(pint.Quantity, pint.Quantity)`
-        The LCL pressure and temperature
+    `pint.Quantity`
+        The LCL pressure
+    `pint.Quantity`
+        The LCL temperature
 
     Other Parameters
     ----------------
@@ -342,7 +344,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     LCL. The basic algorithm is:
 
     1. Find the dew point from the LCL pressure and starting mixing ratio
-    2. Find the LCL pressure from the starting temperature and dewpoint
+    2. Find the LCL pressure from the starting temperature and dew point
     3. Iterate until convergence
 
     The function is guaranteed to finish by virtue of the `max_iters` counter.
@@ -381,8 +383,8 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         The parcel temperature profile from which to calculate the LFC. Defaults to the
         surface parcel profile.
     dewpt_start: `pint.Quantity`, optional
-        The dewpoint of the parcel for which to calculate the LFC. Defaults to the surface
-        dewpoint.
+        The dewp oint of the parcel for which to calculate the LFC. Defaults to the surface
+        dew point.
     which: str, optional
         Pick which LFC to return. Options are 'top', 'bottom', and 'all'.
         Default is the 'top' (lowest pressure) LFC.
@@ -390,7 +392,9 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     Returns
     -------
     `pint.Quantity`
-        The LFC pressure and temperature, or arrays of same if which='all'
+        The LFC pressure, or array of same if which='all'
+    `pint.Quantity`
+        The LFC temperature, or array of same if which='all'
 
     See Also
     --------
@@ -489,8 +493,10 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
 
     Returns
     -------
-    `pint.Quantity, pint.Quantity`
-        The EL pressure and temperature, or arrays of same if which='all'
+    `pint.Quantity`
+        The EL pressure, or array of same if which='all'
+    `pint.Quantity`
+        The EL temperature, or array of same if which='all'
 
     See Also
     --------
@@ -703,7 +709,7 @@ def saturation_vapor_pressure(temperature):
 
     Notes
     -----
-    Instead of temperature, dewpoint may be used in order to calculate
+    Instead of temperature, dew point may be used in order to calculate
     the actual (ambient) water vapor (partial) pressure.
 
     The formula used is that from [Bolton1980]_ for T in degrees Celsius:
@@ -721,7 +727,7 @@ def saturation_vapor_pressure(temperature):
 @preprocess_xarray
 @check_units('[temperature]', '[dimensionless]')
 def dewpoint_rh(temperature, rh):
-    r"""Calculate the ambient dewpoint given air temperature and relative humidity.
+    r"""Calculate the ambient dew point given air temperature and relative humidity.
 
     Parameters
     ----------
@@ -749,7 +755,7 @@ def dewpoint_rh(temperature, rh):
 @preprocess_xarray
 @check_units('[pressure]')
 def dewpoint(e):
-    r"""Calculate the ambient dewpoint given the vapor pressure.
+    r"""Calculate the ambient dew point given the vapor pressure.
 
     Parameters
     ----------
@@ -769,7 +775,7 @@ def dewpoint(e):
     -----
     This function inverts the [Bolton1980]_ formula for saturation vapor
     pressure to instead calculate the temperature. This yield the following
-    formula for dewpoint in degrees Celsius:
+    formula for dew point in degrees Celsius:
 
     .. math:: T = \frac{243.5 log(e / 6.112)}{17.67 - log(e / 6.112)}
 
@@ -851,7 +857,7 @@ def saturation_mixing_ratio(tot_press, temperature):
 def equivalent_potential_temperature(pressure, temperature, dewpoint):
     r"""Calculate equivalent potential temperature.
 
-    This calculation must be given an air parcel's pressure, temperature, and dewpoint.
+    This calculation must be given an air parcel's pressure, temperature, and dew point.
     The implementation uses the formula outlined in [Bolton1980]_:
 
     First, the LCL temperature is calculated:
@@ -1385,9 +1391,9 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     Returns
     -------
     `pint.Quantity`
-        Convective available potential energy (CAPE).
+        Convective Available Potential Energy (CAPE).
     `pint.Quantity`
-        Convective inhibition (CIN).
+        Convective INhibition (CIN).
 
     Notes
     -----
@@ -1515,7 +1521,7 @@ def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
     temperature: `pint.Quantity`
         Atmospheric temperature profile
     dewpoint: `pint.Quantity`
-        Atmospheric dewpoint profile
+        Atmospheric dew point profile
     heights: `pint.Quantity`, optional
         Atmospheric height profile. Standard atmosphere assumed when None (the default).
     bottom: `pint.Quantity`, optional
@@ -1764,7 +1770,7 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     temperature : `pint.Quantity`
         Temperature profile
     dewpoint : `pint.Quantity`
-        Dewpoint profile
+        Dew point profile
 
     Returns
     -------
@@ -1802,7 +1808,7 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
     temperature : `pint.Quantity`
         Atmospheric temperature profile
     dewpt : `pint.Quantity`
-        Atmospheric dewpoint profile
+        Atmospheric dew point profile
     parcel_start_pressure : `pint.Quantity`, optional
         Pressure at which the mixed parcel should begin (default None)
     heights: `pint.Quantity`, optional
@@ -1818,8 +1824,12 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
 
     Returns
     -------
-    `pint.Quantity, pint.Quantity, pint.Quantity`
-        The pressure, temperature, and dewpoint of the mixed parcel.
+    `pint.Quantity`
+        The pressure of the mixed parcel
+    `pint.Quantity`
+        The temperature of the mixed parcel
+    `pint.Quantity`
+        The dew point of the mixed parcel
 
     """
     # If a parcel starting pressure is not provided, use the surface
@@ -2109,16 +2119,16 @@ def brunt_vaisala_frequency_squared(heights, potential_temperature, axis=0):
 
     Parameters
     ----------
-    heights : array-like
+    heights : `pint.Quantity`
         One-dimensional profile of atmospheric height
-    potential_temperature : array-like
+    potential_temperature : `pint.Quantity`
         Atmospheric potential temperature
     axis : int, optional
         The axis corresponding to vertical in the potential temperature array, defaults to 0.
 
     Returns
     -------
-    array-like
+    `pint.Quantity`
         The square of the Brunt-Vaisala frequency.
 
     See Also
@@ -2151,16 +2161,16 @@ def brunt_vaisala_frequency(heights, potential_temperature, axis=0):
 
     Parameters
     ----------
-    heights : array-like
+    heights : `pint.Quantity`
         One-dimensional profile of atmospheric height
-    potential_temperature : array-like
+    potential_temperature : `pint.Quantity`
         Atmospheric potential temperature
     axis : int, optional
         The axis corresponding to vertical in the potential temperature array, defaults to 0.
 
     Returns
     -------
-    array-like
+    `pint.Quantity`
         Brunt-Vaisala frequency.
 
     See Also
@@ -2190,16 +2200,16 @@ def brunt_vaisala_period(heights, potential_temperature, axis=0):
 
     Parameters
     ----------
-    heights : array-like
+    heights : `pint.Quantity`
         One-dimensional profile of atmospheric height
-    potential_temperature : array-like
+    potential_temperature : pint.Quantity`
         Atmospheric potential temperature
     axis : int, optional
         The axis corresponding to vertical in the potential temperature array, defaults to 0.
 
     Returns
     -------
-    array-like
+    `pint.Quantity`
         Brunt-Vaisala period.
 
     See Also
@@ -2231,11 +2241,11 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     temperature : `pint.Quantity`
         Initial atmospheric temperature
     dewpoint : `pint.Quantity`
-        Initial atmospheric dewpoint
+        Initial atmospheric dew point
 
     Returns
     -------
-    array-like
+    `pint.Quantity`
         Wet-bulb temperature
 
     See Also
@@ -2279,9 +2289,9 @@ def static_stability(pressure, temperature, axis=0):
 
     Parameters
     ----------
-    pressure : array-like
+    pressure : `pint.Quantity`
         Profile of atmospheric pressure
-    temperature : array-like
+    temperature : `pint.Quantity`
         Profile of temperature
     axis : int, optional
         The axis corresponding to vertical in the pressure and temperature arrays, defaults
@@ -2289,7 +2299,7 @@ def static_stability(pressure, temperature, axis=0):
 
     Returns
     -------
-    array-like
+    `pint.Quantity`
         The profile of static stability.
 
     """
@@ -2303,7 +2313,7 @@ def static_stability(pressure, temperature, axis=0):
 @preprocess_xarray
 @check_units('[dimensionless]', '[temperature]', '[pressure]')
 def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
-    r"""Calculate the dewpoint from specific humidity, temperature, and pressure.
+    r"""Calculate the dew point from specific humidity, temperature, and pressure.
 
     Parameters
     ----------
@@ -2317,7 +2327,7 @@ def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
     Returns
     -------
     `pint.Quantity`
-        Dewpoint temperature
+        Dew point temperature
 
     See Also
     --------
@@ -2422,12 +2432,12 @@ def vertical_velocity(omega, pressure, temperature, mixing=0):
 @preprocess_xarray
 @check_units('[temperature]', '[pressure]')
 def specific_humidity_from_dewpoint(dewpoint, pressure):
-    r"""Calculate the specific humidity from the dewpoint temperature and pressure.
+    r"""Calculate the specific humidity from the dew point temperature and pressure.
 
     Parameters
     ----------
     dewpoint: `pint.Quantity`
-        dewpoint temperature
+        dew point temperature
 
     pressure: `pint.Quantity`
         pressure
