@@ -383,7 +383,7 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         The parcel temperature profile from which to calculate the LFC. Defaults to the
         surface parcel profile.
     dewpt_start: `pint.Quantity`, optional
-        The dewp oint of the parcel for which to calculate the LFC. Defaults to the surface
+        The dew point of the parcel for which to calculate the LFC. Defaults to the surface
         dew point.
     which: str, optional
         Pick which LFC to return. Options are 'top', 'bottom', and 'all'.

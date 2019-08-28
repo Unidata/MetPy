@@ -92,18 +92,6 @@ def test_direction_with_north_and_calm():
     assert_array_almost_equal(true_dir, direc, 4)
 
 
-def test_direction_without_units():
-    """Test calculating wind direction without units."""
-    u = np.array([0., -5., -4., -3.])
-    v = np.array([0., 5., 0., -3.])
-
-    direc = wind_direction(u, v)
-
-    true_dir = np.array([0., 135., 90., 45.]) * units.deg
-
-    assert_array_almost_equal(true_dir, direc, 4)
-
-
 def test_direction_dimensions():
     """Verify wind_direction returns degrees."""
     d = wind_direction(3. * units('m/s'), 4. * units('m/s'))

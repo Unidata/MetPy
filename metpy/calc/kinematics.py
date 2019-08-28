@@ -869,7 +869,7 @@ def q_vector(u, v, temperature, pressure, dx, dy, static_stability=1):
 
     Returns
     -------
-    tuple of (M, N) `pint.Quantity`s
+    tuple of (M, N) `pint.Quantity`
         The components of the Q-vector in the u- and v-directions respectively
 
     See Also
