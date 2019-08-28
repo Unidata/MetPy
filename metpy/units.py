@@ -156,13 +156,14 @@ def diff(x, **kwargs):
     numpy.diff
 
     """
-    ret = np.diff(x, **kwargs)
     if hasattr(x, 'units'):
+        ret = np.diff(x.magnitude, **kwargs)
         # Can't just use units because of how things like temperature work
         it = x.flat
         true_units = (next(it) - next(it)).units
-        ret = ret * true_units
-    return ret
+        return ret * true_units
+    else:
+        return np.diff(x, **kwargs)
 
 
 def atleast_1d(*arrs):

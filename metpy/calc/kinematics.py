@@ -21,7 +21,7 @@ exporter = Exporter(globals())
 
 
 def _stack(arrs):
-    return concatenate([a[np.newaxis] for a in arrs], axis=0)
+    return concatenate([a[np.newaxis] if iterable(a) else a for a in arrs], axis=0)
 
 
 def _is_x_first_dim(dim_order):

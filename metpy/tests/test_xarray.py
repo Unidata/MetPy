@@ -97,7 +97,7 @@ def test_convert_units(test_var):
     test_var.metpy.convert_units('degC')
 
     # Check that variable metadata is updated
-    assert test_var.attrs['units'] == 'degC'
+    assert units(test_var.attrs['units']) == units('degC')
 
     # Make sure we now get an array back with properly converted values
     assert test_var.metpy.unit_array.units == units.degC
@@ -634,3 +634,10 @@ def test_coordinate_identification_shared_but_not_equal_coords():
     # Check vertical coordinate on u
     # Fails prior to resolution of Issue #1124
     assert ds['isobaric2'].identical(ds['u'].metpy.vertical)
+
+
+def test_check_no_quantification_of_xarray_data(test_ds_generic):
+    """Test that .unit_array setter does not insert a `pint.Quantity` into the DataArray."""
+    var = test_ds_generic['e']
+    var.metpy.unit_array = [1000, 925, 850, 700, 500] * units.hPa
+    assert not isinstance(var.data, units.Quantity)

@@ -1086,8 +1086,8 @@ def test_q_vector_without_static_stability(q_vector_data):
                           [8.6038280e-14, 4.6968342e-13, -4.6968342e-13, -8.6038280e-14]])
                 * units('m^2 kg^-1 s^-1'))
 
-    assert_almost_equal(q1, q1_truth, 20)
-    assert_almost_equal(q2, q2_truth, 20)
+    assert_almost_equal(q1, q1_truth, 18)
+    assert_almost_equal(q2, q2_truth, 18)
 
 
 def test_q_vector_with_static_stability(q_vector_data):
@@ -1110,8 +1110,8 @@ def test_q_vector_with_static_stability(q_vector_data):
                           [4.4714390e-08, 2.3490489e-07, -2.2635441e-07, -4.0003646e-08]])
                 * units('kg m^-2 s^-3'))
 
-    assert_almost_equal(q1, q1_truth, 14)
-    assert_almost_equal(q2, q2_truth, 14)
+    assert_almost_equal(q1, q1_truth, 12)
+    assert_almost_equal(q2, q2_truth, 12)
 
 
 @pytest.fixture
@@ -1726,5 +1726,5 @@ def test_q_vector_4d(data_4d):
                            [-1.06658890e-13, -2.19817426e-13, -8.35968065e-14, 1.88190788e-13],
                            [-2.27182863e-13, -2.74607819e-13, -1.10587309e-13,
                             -3.88915866e-13]]]]) * units('m^2 kg^-1 s^-1')
-    assert_array_almost_equal(q1, q1_truth, 20)
-    assert_array_almost_equal(q2, q2_truth, 20)
+    assert_array_almost_equal(q1, q1_truth, 18)
+    assert_array_almost_equal(q2, q2_truth, 18)
