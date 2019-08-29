@@ -32,7 +32,7 @@ sat_pressure_0c = 6.112 * units.millibar
 def relative_humidity_from_dewpoint(temperature, dewpt):
     r"""Calculate the relative humidity.
 
-    Uses temperature and dew point in celsius to calculate relative
+    Uses temperature and dewpoint in celsius to calculate relative
     humidity using the ratio of vapor pressure to saturation vapor pressures.
 
     Parameters
@@ -40,7 +40,7 @@ def relative_humidity_from_dewpoint(temperature, dewpt):
     temperature : `pint.Quantity`
         temperature
     dewpoint : `pint.Quantity`
-        dew point temperature
+        dewpoint temperature
 
     Returns
     -------
@@ -318,7 +318,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     temperature : `pint.Quantity`
         The starting temperature
     dewpt : `pint.Quantity`
-        The starting dew point
+        The starting dewpoint
 
     Returns
     -------
@@ -343,8 +343,8 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     This function is implemented using an iterative approach to solve for the
     LCL. The basic algorithm is:
 
-    1. Find the dew point from the LCL pressure and starting mixing ratio
-    2. Find the LCL pressure from the starting temperature and dew point
+    1. Find the dewpoint from the LCL pressure and starting mixing ratio
+    2. Find the LCL pressure from the starting temperature and dewpoint
     3. Iterate until convergence
 
     The function is guaranteed to finish by virtue of the `max_iters` counter.
@@ -378,13 +378,13 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     temperature : `pint.Quantity`
         The temperature at the levels given by `pressure`
     dewpt : `pint.Quantity`
-        The dew point at the levels given by `pressure`
+        The dewpoint at the levels given by `pressure`
     parcel_temperature_profile: `pint.Quantity`, optional
         The parcel temperature profile from which to calculate the LFC. Defaults to the
         surface parcel profile.
     dewpt_start: `pint.Quantity`, optional
-        The dew point of the parcel for which to calculate the LFC. Defaults to the surface
-        dew point.
+        The dewpoint of the parcel for which to calculate the LFC. Defaults to the surface
+        dewpoint.
     which: str, optional
         Pick which LFC to return. Options are 'top', 'bottom', and 'all'.
         Default is the 'top' (lowest pressure) LFC.
@@ -483,7 +483,7 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     temperature : `pint.Quantity`
         The temperature at the levels given by `pressure`
     dewpt : `pint.Quantity`
-        The dew point at the levels given by `pressure`
+        The dewpoint at the levels given by `pressure`
     parcel_temperature_profile: `pint.Quantity`, optional
         The parcel temperature profile from which to calculate the EL. Defaults to the
         surface parcel profile.
@@ -544,7 +544,7 @@ def parcel_profile(pressure, temperature, dewpt):
     temperature : `pint.Quantity`
         The starting temperature
     dewpt : `pint.Quantity`
-        The starting dew point
+        The starting dewpoint
 
     Returns
     -------
@@ -580,7 +580,7 @@ def parcel_profile_with_lcl(pressure, temperature, dewpt):
         The atmospheric temperature at the levels in `pressure`. The first entry should be at
         the same level as the first `pressure` data point.
     dewpt : `pint.Quantity`
-        The atmospheric dew point at the levels in `pressure`. The first entry should be at
+        The atmospheric dewpoint at the levels in `pressure`. The first entry should be at
         the same level as the first `pressure` data point.
 
     Returns
@@ -590,7 +590,7 @@ def parcel_profile_with_lcl(pressure, temperature, dewpt):
     ambient_temperature : `pint.Quantity`
         The atmospheric temperature values, including the value interpolated to the LCL level
     ambient_dew_point : `pint.Quantity`
-        The atmospheric dew point values, including the value interpolated to the LCL level
+        The atmospheric dewpoint values, including the value interpolated to the LCL level
     profile_temperature : `pint.Quantity`
         The parcel profile temperatures at all of the levels in the returned pressures array,
         including the LCL.
@@ -709,7 +709,7 @@ def saturation_vapor_pressure(temperature):
 
     Notes
     -----
-    Instead of temperature, dew point may be used in order to calculate
+    Instead of temperature, dewpoint may be used in order to calculate
     the actual (ambient) water vapor (partial) pressure.
 
     The formula used is that from [Bolton1980]_ for T in degrees Celsius:
@@ -727,7 +727,7 @@ def saturation_vapor_pressure(temperature):
 @preprocess_xarray
 @check_units('[temperature]', '[dimensionless]')
 def dewpoint_rh(temperature, rh):
-    r"""Calculate the ambient dew point given air temperature and relative humidity.
+    r"""Calculate the ambient dewpoint given air temperature and relative humidity.
 
     Parameters
     ----------
@@ -739,7 +739,7 @@ def dewpoint_rh(temperature, rh):
     Returns
     -------
     `pint.Quantity`
-        The dew point temperature
+        The dewpoint temperature
 
     See Also
     --------
@@ -755,7 +755,7 @@ def dewpoint_rh(temperature, rh):
 @preprocess_xarray
 @check_units('[pressure]')
 def dewpoint(e):
-    r"""Calculate the ambient dew point given the vapor pressure.
+    r"""Calculate the ambient dewpoint given the vapor pressure.
 
     Parameters
     ----------
@@ -775,7 +775,7 @@ def dewpoint(e):
     -----
     This function inverts the [Bolton1980]_ formula for saturation vapor
     pressure to instead calculate the temperature. This yield the following
-    formula for dew point in degrees Celsius:
+    formula for dewpoint in degrees Celsius:
 
     .. math:: T = \frac{243.5 log(e / 6.112)}{17.67 - log(e / 6.112)}
 
@@ -857,7 +857,7 @@ def saturation_mixing_ratio(tot_press, temperature):
 def equivalent_potential_temperature(pressure, temperature, dewpoint):
     r"""Calculate equivalent potential temperature.
 
-    This calculation must be given an air parcel's pressure, temperature, and dew point.
+    This calculation must be given an air parcel's pressure, temperature, and dewpoint.
     The implementation uses the formula outlined in [Bolton1980]_:
 
     First, the LCL temperature is calculated:
@@ -1384,7 +1384,7 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     temperature : `pint.Quantity`
         The atmospheric temperature corresponding to pressure.
     dewpt : `pint.Quantity`
-        The atmospheric dew point corresponding to pressure.
+        The atmospheric dewpoint corresponding to pressure.
     parcel_profile : `pint.Quantity`
         The temperature profile of the parcel.
 
@@ -1521,7 +1521,7 @@ def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
     temperature: `pint.Quantity`
         Atmospheric temperature profile
     dewpoint: `pint.Quantity`
-        Atmospheric dew point profile
+        Atmospheric dewpoint profile
     heights: `pint.Quantity`, optional
         Atmospheric height profile. Standard atmosphere assumed when None (the default).
     bottom: `pint.Quantity`, optional
@@ -1534,7 +1534,7 @@ def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
     Returns
     -------
     `pint.Quantity`
-        Pressure, temperature, and dew point of most unstable parcel in the profile.
+        Pressure, temperature, and dewpoint of most unstable parcel in the profile.
     integer
         Index of the most unstable parcel in the given profile
 
@@ -1808,7 +1808,7 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
     temperature : `pint.Quantity`
         Atmospheric temperature profile
     dewpt : `pint.Quantity`
-        Atmospheric dew point profile
+        Atmospheric dewpoint profile
     parcel_start_pressure : `pint.Quantity`, optional
         Pressure at which the mixed parcel should begin (default None)
     heights: `pint.Quantity`, optional
@@ -1829,7 +1829,7 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
     `pint.Quantity`
         The temperature of the mixed parcel
     `pint.Quantity`
-        The dew point of the mixed parcel
+        The dewpoint of the mixed parcel
 
     """
     # If a parcel starting pressure is not provided, use the surface
@@ -2241,7 +2241,7 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
     temperature : `pint.Quantity`
         Initial atmospheric temperature
     dewpoint : `pint.Quantity`
-        Initial atmospheric dew point
+        Initial atmospheric dewpoint
 
     Returns
     -------
@@ -2313,7 +2313,7 @@ def static_stability(pressure, temperature, axis=0):
 @preprocess_xarray
 @check_units('[dimensionless]', '[temperature]', '[pressure]')
 def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
-    r"""Calculate the dew point from specific humidity, temperature, and pressure.
+    r"""Calculate the dewpoint from specific humidity, temperature, and pressure.
 
     Parameters
     ----------
@@ -2432,12 +2432,12 @@ def vertical_velocity(omega, pressure, temperature, mixing=0):
 @preprocess_xarray
 @check_units('[temperature]', '[pressure]')
 def specific_humidity_from_dewpoint(dewpoint, pressure):
-    r"""Calculate the specific humidity from the dew point temperature and pressure.
+    r"""Calculate the specific humidity from the dewpoint temperature and pressure.
 
     Parameters
     ----------
     dewpoint: `pint.Quantity`
-        dew point temperature
+        dewpoint temperature
 
     pressure: `pint.Quantity`
         pressure
