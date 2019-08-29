@@ -52,7 +52,7 @@ matrix:
   include:
     - python: 2.7
       env:
-        - VERSIONS="numpy==1.12.0 matplotlib==2.0.0 scipy==0.17.0 pint==0.8 xarray==0.10.7 pandas==0.20.0"
+        - VERSIONS="numpy==1.12.0 matplotlib==2.0.0 scipy==0.17.0 pint==0.8 xarray==0.10.7 pandas==0.20.1"
         - TASK="coverage"
         - TEST_OUTPUT_CONTROL=""
     - python: "3.7-dev"
