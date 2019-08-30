@@ -10,6 +10,7 @@ import pandas
 import pint
 import pytest
 import scipy
+import xarray
 
 import metpy.calc
 
@@ -17,9 +18,10 @@ import metpy.calc
 def pytest_report_header(config, startdir):
     """Add dependency information to pytest output."""
     return ('Dependencies: Matplotlib ({}), NumPy ({}), Pandas ({}), '
-            'Pint ({}), SciPy ({})'.format(matplotlib.__version__, numpy.__version__,
-                                           pandas.__version__, pint.__version__,
-                                           scipy.__version__))
+            'Pint ({}), SciPy ({}), Xarray ({})'.format(matplotlib.__version__,
+                                                        numpy.__version__, pandas.__version__,
+                                                        pint.__version__, scipy.__version__,
+                                                        xarray.__version__))
 
 
 @pytest.fixture(autouse=True)
