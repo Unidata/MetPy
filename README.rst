@@ -111,7 +111,9 @@ Other required packages:
 - Numpy
 - Scipy
 - Matplotlib
+- Pandas
 - Pint
+- Xarray
 
 Python 2.7 requires the enum34 package, which is a backport
 of the standard library enum module.
