@@ -38,7 +38,7 @@ def relative_humidity_from_dewpoint(temperature, dewpt):
     Parameters
     ----------
     temperature : `pint.Quantity`
-        temperature
+        air temperature
     dewpoint : `pint.Quantity`
         dewpoint temperature
 
@@ -73,9 +73,10 @@ def exner_function(pressure, reference_pressure=mpconsts.P0):
     Parameters
     ----------
     pressure : `pint.Quantity`
-        The total atmospheric pressure
+        total atmospheric pressure
     reference_pressure : `pint.Quantity`, optional
-        The reference pressure against which to calculate the Exner function, defaults to P0
+        The reference pressure against which to calculate the Exner function, defaults to
+        metpy.constants.P0
 
     Returns
     -------
@@ -105,7 +106,7 @@ def potential_temperature(pressure, temperature):
     pressure : `pint.Quantity`
         total atmospheric pressure
     temperature : `pint.Quantity`
-        temperature
+        air temperature
 
     Returns
     -------
@@ -696,7 +697,7 @@ def saturation_vapor_pressure(temperature):
     Parameters
     ----------
     temperature : `pint.Quantity`
-        The temperature
+        air temperature
 
     Returns
     -------
@@ -732,9 +733,9 @@ def dewpoint_rh(temperature, rh):
     Parameters
     ----------
     temperature : `pint.Quantity`
-        Air temperature
+        air temperature
     rh : `pint.Quantity`
-        Relative humidity expressed as a ratio in the range 0 < rh <= 1
+        relative humidity expressed as a ratio in the range 0 < rh <= 1
 
     Returns
     -------
@@ -765,7 +766,7 @@ def dewpoint(e):
     Returns
     -------
     `pint.Quantity`
-        Dew point temperature
+        dewpoint temperature
 
     See Also
     --------
@@ -840,7 +841,7 @@ def saturation_mixing_ratio(tot_press, temperature):
     tot_press: `pint.Quantity`
         Total atmospheric pressure
     temperature: `pint.Quantity`
-        The temperature
+        air temperature
 
     Returns
     -------
@@ -987,7 +988,7 @@ def virtual_temperature(temperature, mixing, molecular_weight_ratio=mpconsts.eps
     Parameters
     ----------
     temperature: `pint.Quantity`
-        The temperature
+        air temperature
     mixing : `pint.Quantity`
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
@@ -1024,7 +1025,7 @@ def virtual_potential_temperature(pressure, temperature, mixing,
     pressure: `pint.Quantity`
         Total atmospheric pressure
     temperature: `pint.Quantity`
-        The temperature
+        air temperature
     mixing : `pint.Quantity`
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
@@ -1057,10 +1058,10 @@ def density(pressure, temperature, mixing, molecular_weight_ratio=mpconsts.epsil
 
     Parameters
     ----------
-    temperature: `pint.Quantity`
-        The temperature
     pressure: `pint.Quantity`
         Total atmospheric pressure
+    temperature: `pint.Quantity`
+        air temperature
     mixing : `pint.Quantity`
         dimensionless mass mixing ratio
     molecular_weight_ratio : `pint.Quantity` or float, optional
@@ -1926,10 +1927,10 @@ def dry_static_energy(heights, temperature):
 
     Parameters
     ----------
-    heights : array-like
+    heights : `pint.Quantity`
         Atmospheric height
-    temperature : array-like
-        Atmospheric temperature
+    temperature : `pint.Quantity`
+        Air temperature
 
     Returns
     -------
@@ -1959,11 +1960,11 @@ def moist_static_energy(heights, temperature, specific_humidity):
 
     Parameters
     ----------
-    heights : array-like
+    heights : `pint.Quantity`
         Atmospheric height
-    temperature : array-like
-        Atmospheric temperature
-    specific_humidity : array-like
+    temperature : `pint.Quantity`
+        Air temperature
+    specific_humidity : `pint.Quantity`
         Atmospheric specific humidity
 
     Returns
