@@ -1895,6 +1895,58 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]')
+def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
+    r"""Calculate mixed-layer CAPE and CIN.
+
+    Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
+    of a given upper air profile and mixed-layer parcel path. CIN is integrated between the
+    surface and LFC, CAPE is integrated between the LFC and EL (or top of sounding).
+    Intersection points of the measured temperature profile and parcel profile are
+    logarithmically interpolated. Kwargs for `mixed_parcel` can be provided, such as `depth`.
+    Default mixed-layer depth is 100 hPa.
+
+    Parameters
+    ----------
+    pressure : `pint.Quantity`
+        Pressure profile
+    temperature : `pint.Quantity`
+        Temperature profile
+    dewpoint : `pint.Quantity`
+        Dewpoint profile
+
+    Returns
+    -------
+    `pint.Quantity`
+        Mixed-layer Convective Available Potential Energy (CAPE).
+    `pint.Quantity`
+        Mixed-layer Convective INhibition (CIN).
+
+    See Also
+    --------
+    cape_cin, mixed_parcel, parcel_profile
+    """
+    depth = kwargs.get('depth', 100 * units.hPa)
+    _, parcel_temp, parcel_dewpoint = mixed_parcel(pressure, temperature,
+                                                   dewpoint, **kwargs)
+
+    # Find the mean pressure value in the layer
+    parcel_pressure = mixed_layer(pressure, pressure, **kwargs)[0]
+
+    # Remove values below top of mixed layer and add in the mixed layer values
+    pressure_prof = pressure[pressure < (pressure[0] - depth)]
+    temp_prof = temperature[pressure < (pressure[0] - depth)]
+    dew_prof = dewpoint[pressure < (pressure[0] - depth)]
+    pressure_prof = concatenate([parcel_pressure, pressure_prof])
+    temp_prof = concatenate([parcel_temp, temp_prof])
+    dew_prof = concatenate([parcel_dewpoint, dew_prof])
+
+    p, t, td, ml_profile = parcel_profile_with_lcl(pressure_prof, temp_prof, dew_prof)
+    return cape_cin(p, t, td, ml_profile)
+
+
+@exporter.export
+@preprocess_xarray
+@check_units('[pressure]', '[temperature]', '[temperature]')
 def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
                  heights=None, bottom=None, depth=100 * units.hPa, interpolate=True):
     r"""Calculate the properties of a parcel mixed from a layer.
