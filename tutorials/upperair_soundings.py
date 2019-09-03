@@ -17,7 +17,6 @@ air weather service guide.
 
 import matplotlib.pyplot as plt
 from mpl_toolkits.axes_grid1.inset_locator import inset_axes
-import numpy as np
 import pandas as pd
 
 import metpy.calc as mpcalc
@@ -37,12 +36,9 @@ col_names = ['pressure', 'height', 'temperature', 'dewpoint', 'direction', 'spee
 df = pd.read_fwf(get_test_data('nov11_sounding.txt', as_file_obj=False),
                  skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
-df['u_wind'], df['v_wind'] = mpcalc.wind_components(df['speed'],
-                                                    np.deg2rad(df['direction']))
-
 # Drop any rows with all NaN values for T, Td, winds
-df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
-                       'u_wind', 'v_wind'), how='all').reset_index(drop=True)
+df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'
+                       ), how='all').reset_index(drop=True)
 
 ##########################################################################
 

@@ -32,19 +32,20 @@ p0 = 1013.25 * units.hPa
 
 @exporter.export
 @preprocess_xarray
+@check_units('[speed]', '[speed]')
 def wind_speed(u, v):
     r"""Compute the wind speed from u and v-components.
 
     Parameters
     ----------
-    u : array_like
+    u : `pint.Quantity`
         Wind component in the X (East-West) direction
-    v : array_like
+    v : `pint.Quantity`
         Wind component in the Y (North-South) direction
 
     Returns
     -------
-    wind speed: array_like
+    wind speed: `pint.Quantity`
         The speed of the wind
 
     See Also
@@ -58,14 +59,15 @@ def wind_speed(u, v):
 
 @exporter.export
 @preprocess_xarray
+@check_units('[speed]', '[speed]')
 def wind_direction(u, v, convention='from'):
     r"""Compute the wind direction from u and v-components.
 
     Parameters
     ----------
-    u : array_like
+    u : `pint.Quantity`
         Wind component in the X (East-West) direction
-    v : array_like
+    v : `pint.Quantity`
         Wind component in the Y (North-South) direction
     convention : str
         Convention to return direction. 'from' returns the direction the wind is coming from
@@ -109,20 +111,21 @@ def wind_direction(u, v, convention='from'):
 
 @exporter.export
 @preprocess_xarray
+@check_units('[speed]')
 def wind_components(speed, wdir):
     r"""Calculate the U, V wind vector components from the speed and direction.
 
     Parameters
     ----------
-    speed : array_like
+    speed : `pint.Quantity`
         The wind speed (magnitude)
-    wdir : array_like
+    wdir : `pint.Quantity`
         The wind direction, specified as the direction from which the wind is
         blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.
 
     Returns
     -------
-    u, v : tuple of array_like
+    u, v : tuple of `pint.Quantity`
         The wind components in the X (East-West) and Y (North-South)
         directions, respectively.
 
@@ -266,7 +269,7 @@ def heat_index(temperature, rh, mask_undefined=True):
     ----------
     temperature : `pint.Quantity`
         Air temperature
-    rh : array_like
+    rh : `pint.Quantity`
         The relative humidity expressed as a unitless ratio in the range [0, 1].
         Can also pass a percentage if proper units are attached.
 
@@ -478,7 +481,7 @@ def height_to_geopotential(height):
     Parameters
     ----------
     height : `pint.Quantity`
-        Height above sea level (array_like)
+        Height above sea level
 
     Returns
     -------
@@ -519,7 +522,7 @@ def geopotential_to_height(geopot):
     Parameters
     ----------
     geopotential : `pint.Quantity`
-        Geopotential (array_like)
+        Geopotential
 
     Returns
     -------
@@ -853,6 +856,7 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
 
 @exporter.export
 @preprocess_xarray
+@check_units('[pressure]', '[length]')
 def altimeter_to_station_pressure(altimeter_value, height):
     r"""Convert the altimeter measurement to station pressure.
 
@@ -877,7 +881,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
 
     Returns
     -------
-    station_pressure: `pint.Quantity`
+    `pint.Quantity`
         The station pressure in hPa or in. Hg, which can be used to calculate sea-level
         pressure
 
@@ -933,6 +937,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
 
 @exporter.export
 @preprocess_xarray
+@check_units('[pressure]', '[length]', '[temperature]')
 def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
     r"""Convert the altimeter setting to sea-level pressure.
 
@@ -963,7 +968,7 @@ def altimeter_to_sea_level_pressure(altimeter_value, height, temperature):
 
     Returns
     -------
-    pressure_at_sea_level: 'pint.Quantity'
+    'pint.Quantity'
         The sea-level pressure in hPa and makes pressure values easier to compare
         between different stations
 
