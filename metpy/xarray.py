@@ -333,14 +333,37 @@ class MetPyDatasetAccessor(object):
         self._dataset = dataset
 
     def parse_cf(self, varname=None, coordinates=None):
-        """Parse Climate and Forecasting (CF) convention metadata."""
+        """Parse Climate and Forecasting (CF) convention metadata.
+
+        Parameters
+        ----------
+        varname : str or iterable of str, optional
+            Name of the variable(s) to extract from the dataset while parsing for CF metadata.
+            Defaults to all variables.
+        coordinates : dict, optional
+            Dictionary mapping CF axis types to coordinates of the variable(s). Only specify
+            if you wish to override MetPy's automatic parsing of some axis type(s).
+
+        Returns
+        -------
+        `xarray.DataArray` or `xarray.Dataset`
+            Parsed DataArray (if varname is a string) or Dataset
+
+        """
+        from .cbook import is_string_like, iterable
         from .plots.mapping import CFProjection
 
-        # If no varname is given, parse the entire dataset
         if varname is None:
+            # If no varname is given, parse the entire dataset
             return self._dataset.apply(lambda da: self.parse_cf(da.name,
                                                                 coordinates=coordinates),
                                        keep_attrs=True)
+        elif iterable(varname) and not is_string_like(varname):
+            # If non-string iterable is given, apply recursively across the varnames
+            subset = xr.merge([self.parse_cf(single_varname, coordinates=coordinates)
+                               for single_varname in varname])
+            subset.attrs = self._dataset.attrs
+            return subset
 
         var = self._dataset[varname]
         if 'grid_mapping' in var.attrs:

@@ -590,3 +590,11 @@ def test_check_axis_with_bad_unit(test_ds_generic):
     var = test_ds_generic['e']
     var.attrs['units'] = 'nondimensional'
     assert not check_axis(var, 'x', 'y', 'vertical', 'time')
+
+
+def test_dataset_parse_cf_varname_list(test_ds):
+    """Test that .parse_cf() returns correct subset of dataset when given list of vars."""
+    full_ds = test_ds.copy().metpy.parse_cf()
+    partial_ds = test_ds.metpy.parse_cf(['u_wind', 'v_wind'])
+
+    assert full_ds[['u_wind', 'v_wind']].identical(partial_ds)
