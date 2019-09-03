@@ -194,28 +194,28 @@ class MetPyDataArrayAccessor(object):
                       + 'for variable "' + self._data_array.name + '".')
         coord_lists[axis] = []
 
-    def _parse_coordinates(self):
-        """Parse the coordinates for this variable to identify coordinate types."""
-        # Only parse if _metpy_axis is not present
-        if not any('_metpy_axis' in coord_var.attrs
-                   for coord_var in self._data_array.coords.values()):
-            self.assign_coordinates(self._generate_coordinate_map())
-
     def _metpy_axis_search(self, cf_axis):
-        """Search for a cf_axis in the _metpy_axis attribute on the coordinates."""
-        for coord_var in self._data_array.coords.values():
+        """Search for cached _metpy_axis attribute on the coordinates, otherwise parse."""
+        # Search for coord with proper _metpy_axis
+        coords = self._data_array.coords.values()
+        for coord_var in coords:
             if coord_var.attrs.get('_metpy_axis') == cf_axis:
                 return coord_var
+
+        # Opportunistically parse all coordinates, and assign if not already assigned
+        coord_map = self._generate_coordinate_map()
+        for axis, coord_var in coord_map.items():
+            if coord_var is not None and not any(coord.attrs.get('_metpy_axis') == axis
+                                                 for coord in coords):
+                coord_var.attrs['_metpy_axis'] = axis
+
+        # Return parsed result (can be None if none found)
+        return coord_map[cf_axis]
 
     def _axis(self, axis):
         """Return the coordinate variable corresponding to the given individual axis type."""
         if axis in readable_to_cf_axes:
             coord_var = self._metpy_axis_search(readable_to_cf_axes[axis])
-            if coord_var is None:
-                # See if failure is due to it not being parsed
-                self._parse_coordinates()
-                coord_var = self._metpy_axis_search(readable_to_cf_axes[axis])
-
             if coord_var is not None:
                 return coord_var
             else:
