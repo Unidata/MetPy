@@ -85,3 +85,9 @@ def test_netcdf_to_dataframe():
     df = netcdf_to_dataframe(get_test_data('DSG_test.nc', as_file_obj=False))
     assert np.max(df['temperature'] == 3)
     assert df.iloc[0]['station_id'] == 'KFNL'
+
+
+def test_netcdf_to_dataframe_profile():
+    """Test netCDF to dataframe conversion for CAMPS profile data."""
+    df = netcdf_to_dataframe(get_test_data('CAMPS_DSG_test.nc', as_file_obj=False))
+    assert df.index.names == ['pressure_level', 'station', 'time']
