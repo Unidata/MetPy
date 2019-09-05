@@ -1840,7 +1840,7 @@ def mixing_ratio_from_relative_humidity(pressure, temperature, relative_humidity
     temperature: `pint.Quantity`
         Air temperature
 
-    relative_humidity: array_like
+    relative_humidity: array-like
         The relative humidity expressed as a unitless ratio in the range [0, 1]. Can also pass
         a percentage if proper units are attached.
 

@@ -484,7 +484,7 @@ def ageostrophic_wind(height, u, v, dx=None, dy=None, latitude=None, x_dim=-1, y
 
     Parameters
     ----------
-    height : (M, N) ndarray
+    height : (M, N) `xarray.DataArray` or `pint.Quantity`
         The height or geopotential field.
     u : (..., M, N) `xarray.DataArray` or `pint.Quantity`
         The u wind field.

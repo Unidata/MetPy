@@ -79,19 +79,20 @@ intersphinx_mapping = {
 
 nitpicky = True
 nitpick_ignore = [('py:class', 'M'), ('py:class', 'N'), ('py:class', 'optional'),
-                  ('py:class', 'array_like'), ('py:class', 'array-like'),
-                  ('py:class', 'ndarray'), ('py:class', 'sequence of arrays'),
+                  ('py:class', 'array-like'), ('py:obj', 'pyproj'),
+                  ('py:class', 'sequence of arrays'), ('py:obj', 'pyproj.Geod'),
                   ('py:class', 'sequence of floats'), ('py:class', 'sequence'),
                   ('py:class', 'array-like of strings'), ('py:class', 'K'), ('py:class', '2'),
                   ('py:class', 'P'), ('py:class', 'D'), ('py:class', 'file-like object'),
                   ('py:class', 'compatible'), ('py:class', 'callable'),
                   ('py:data', 'wx_symbol_font'), ('py:class', 'default: None'),
-                  ('py:class', 'default: All'), ('py:class:', "default: 'change'"),
+                  ('py:class', 'default: All'), ('py:class:', 'default: change'),
                   ('py:class', 'array_like of strings'), ('py:class', 'pint.Unit'),
                   ('py:mod', 'metpy.plots.wx_symbols'), ('py:class', 'Datetime instance'),
                   ('py:class', 'namedtuple'), ('py:class', 'list of tuples'),
                   ('py:class', 'Mapper'), ('py:class', 'All'), ('py:class', 'points'),
-                  ('py:obj', '__all__'), ('py:class', 'sequence of ints')]
+                  ('py:obj', '__all__'), ('py:class', 'sequence of ints'),
+                  ('py:obj', 'cartopy.crs')]
 
 # Tweak how docs are formatted
 napoleon_use_rtype = False

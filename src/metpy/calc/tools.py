@@ -786,17 +786,20 @@ def lat_lon_grid_deltas(longitude, latitude, x_dim=-1, y_dim=-2, geod=None):
 
     Parameters
     ----------
-    longitude : array_like
+    longitude : array-like
         Array of longitudes defining the grid. If not a `pint.Quantity`, assumed to be in
         degrees.
 
-    latitude : array_like
+    latitude : array-like
         Array of latitudes defining the grid. If not a `pint.Quantity`, assumed to be in
         degrees.
+
     x_dim: int
         axis number for the x dimension, defaults to -1.
+
     y_dim : int
         axis number for the y dimension, defaults to -2.
+
     geod : `pyproj.Geod` or ``None``
         PyProj Geod to use for forward azimuth and distance calculations. If ``None``, use a
         default spherical ellipsoid.

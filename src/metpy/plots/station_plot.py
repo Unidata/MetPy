@@ -39,9 +39,9 @@ class StationPlot:
         ----------
         ax : matplotlib.axes.Axes
             The :class:`~matplotlib.axes.Axes` for plotting
-        x : array_like
+        x : array-like
             The x location of the stations in the plot
-        y : array_like
+        y : array-like
             The y location of the stations in the plot
         fontsize : int
             The fontsize to use for drawing text
@@ -86,7 +86,7 @@ class StationPlot:
             'C', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', or 'NW'. Otherwise, should be a tuple
             specifying the number of increments in the x and y directions; increments
             are multiplied by `spacing` to give offsets in x and y relative to the center.
-        codes : array_like
+        codes : array-like
             The numeric values that should be converted to unicode characters for plotting.
         symbol_mapper : callable
             Controls converting data values to unicode code points for the
@@ -179,7 +179,7 @@ class StationPlot:
             'C', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', or 'NW'. Otherwise, should be a tuple
             specifying the number of increments in the x and y directions; increments
             are multiplied by `spacing` to give offsets in x and y relative to the center.
-        parameter : array_like
+        parameter : array-like
             The numeric values that should be plotted
         formatter : str or callable, optional
             How to format the data as a string for plotting. If a string, it should be
@@ -222,7 +222,7 @@ class StationPlot:
             'C', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', or 'NW'. Otherwise, should be a tuple
             specifying the number of increments in the x and y directions; increments
             are multiplied by `spacing` to give offsets in x and y relative to the center.
-        text : array_like of strings
+        text : array-like of strings
             The strings that should be plotted
         kwargs
             Additional keyword arguments to use for matplotlib's plotting functions.

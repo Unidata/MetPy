@@ -152,14 +152,14 @@ def concatenate(arrs, axis=0):
 def masked_array(data, data_units=None, **kwargs):
     """Create a :class:`numpy.ma.MaskedArray` with units attached.
 
-    This is a thin wrapper around :func:`numpy.ma.masked_array` that ensures that
+    This is a thin wrapper around :class:`numpy.ma.MaskedArray` that ensures that
     units are properly attached to the result (otherwise units are silently lost). Units
     are taken from the ``data_units`` argument, or if this is ``None``, the units on ``data``
     are used.
 
     Parameters
     ----------
-    data : array_like
+    data : array-like
         The source data. If ``data_units`` is `None`, this should be a `pint.Quantity` with
         the desired units.
     data_units : str or `pint.Unit`, optional

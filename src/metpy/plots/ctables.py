@@ -242,7 +242,7 @@ class ColortableRegistry(dict):
         ----------
         name : str
             The name under which the color table will be stored
-        boundaries : array_like
+        boundaries : array-like
             The list of boundaries for the norm
 
         Returns
