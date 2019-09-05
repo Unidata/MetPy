@@ -10,7 +10,7 @@ See Also: :doc:`Working with Units </tutorials/unit_tutorial>`.
 
 Attributes
 ----------
-units : :class:`pint.UnitRegistry`
+units : :class: `pint.UnitRegistry()`
     The unit registry used throughout the package. Any use of units in MetPy should
     import this registry and use it to grab units.
 
@@ -116,10 +116,10 @@ def concatenate(arrs, axis=0):
 
     Parameters
     ----------
-    arrs : Sequence of arrays
+    arrs : sequence of arrays
         The items to be joined together
 
-    axis : integer, optional
+    axis : int, optional
         The array axis along which to join the arrays. Defaults to 0 (the first dimension)
 
     Returns

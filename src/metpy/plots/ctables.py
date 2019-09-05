@@ -73,7 +73,7 @@ def read_colortable(fobj):
 
     Parameters
     ----------
-    fobj : a file-like object
+    fobj : file-like object
         A file-like object to read the colors from
 
     Returns

@@ -2363,14 +2363,26 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
 
     Parameters
     ----------
-    levels : array
+    levels : array-like
         One-dimensional array of desired potential temperature surfaces
 
-    pressure : array
+    pressure : array-like
         One-dimensional array of pressure levels
 
-    temperature : array
+    temperature : array-like
         Array of temperature
+
+    args : array-like, optional
+        Any additional variables will be interpolated to each isentropic level.
+
+    Returns
+    -------
+    list
+        List with pressure at each isentropic level, followed by each additional
+        argument interpolated to isentropic coordinates.
+
+    Other Parameters
+    ----------------
     vertical_dim : int, optional
         The axis corresponding to the vertical in the temperature array, defaults to 0.
 
@@ -2387,15 +2399,6 @@ def isentropic_interpolation(levels, pressure, temperature, *args, vertical_dim=
     bottom_up_search : bool, optional
         Controls whether to search for levels bottom-up, or top-down. Defaults to
         True, which is bottom-up search.
-
-    args : array, optional
-        Any additional variables will be interpolated to each isentropic level
-
-    Returns
-    -------
-    list
-        List with pressure at each isentropic level, followed by each additional
-        argument interpolated to isentropic coordinates.
 
     See Also
     --------

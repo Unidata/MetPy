@@ -264,7 +264,7 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
         information.
     rbf_smooth: float
         Smoothing value applied to rbf interpolation.  Higher values result in more smoothing.
-    boundary_coords: dictionary
+    boundary_coords: dict
         Optional dictionary containing coordinates of the study area boundary. Dictionary
         should be in format: {'west': west, 'south': south, 'east': east, 'north': north}
 

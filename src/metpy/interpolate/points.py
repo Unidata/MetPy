@@ -177,11 +177,11 @@ def natural_neighbor_to_points(points, values, xi):
 
     Parameters
     ----------
-    points: array_like, shape (n, 2)
+    points: array_like, (N, 2)
         Coordinates of the data points.
-    values: array_like, shape (n,)
+    values: array_like, (N,)
         Values of the data points.
-    xi: array_like, shape (M, 2)
+    xi: array_like, (M, 2)
         Points to interpolate the data onto.
 
     Returns
@@ -224,11 +224,11 @@ def inverse_distance_to_points(points, values, xi, r, gamma=None, kappa=None, mi
 
     Parameters
     ----------
-    points: array_like, shape (n, 2)
+    points: array_like, (N, 2)
         Coordinates of the data points.
-    values: array_like, shape (n,)
+    values: array_like, (N,)
         Values of the data points.
-    xi: array_like, shape (M, 2)
+    xi: array_like, (M, 2)
         Points to interpolate the data onto.
     r: float
         Radius from grid center, within which observations are considered and weighted.
@@ -285,7 +285,7 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
                           rbf_smooth=0):
     r"""Interpolate unstructured point data to the given points.
 
-    This function interpolates the given `values` valid at `points` to the points `xi`. This is
+    This function interpolates the given `values` valid at :class:`points` to the points `xi`. This is
     modeled after `scipy.interpolate.griddata`, but acts as a generalization of it by including
     the following types of interpolation:
 
@@ -299,11 +299,11 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
 
     Parameters
     ----------
-    points: array_like, shape (n, D)
+    points: array_like, (N, D)
         Coordinates of the data points.
-    values: array_like, shape (n,)
+    values: array_like, (N,)
         Values of the data points.
-    xi: array_like, shape (M, D)
+    xi: array_like, (M, D)
         Points to interpolate the data onto.
     interp_type: str
         What type of interpolation to use. Available options include:

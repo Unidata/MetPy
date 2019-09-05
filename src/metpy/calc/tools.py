@@ -108,7 +108,7 @@ def find_intersections(x, a, b, direction='all', log_x=False):
         1-dimensional array of y-values for line 1
     b : array-like
         1-dimensional array of y-values for line 2
-    direction : string, optional
+    direction : str, optional
         specifies direction of crossing. 'all', 'increasing' (a becoming greater than b),
         or 'decreasing' (b becoming greater than a). Defaults to 'all'.
     log_x : bool, optional
@@ -1324,7 +1324,7 @@ def parse_angle(input_dir):
 
     Parameters
     ----------
-    input_dir : string or array-like
+    input_dir : str or array-like of strings
         Directional text such as west, [south-west, ne], etc.
 
     Returns

@@ -26,7 +26,7 @@ def interpolate_nans_1d(x, y, kind='linear'):
         1-dimensional array of numeric x-values
     y : array-like
         1-dimensional array of numeric y-values
-    kind : string
+    kind : str
         specifies the kind of interpolation x coordinate - 'linear' or 'log', optional.
         Defaults to 'linear'.
 

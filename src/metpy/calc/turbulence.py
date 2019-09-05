@@ -61,8 +61,7 @@ def tke(u, v, w, perturbation=False, axis=-1):
         The wind component along the y-axis
     w : array_like
         The wind component along the z-axis
-
-    perturbation : {False, True}, optional
+    perturbation : bool, optional
                    True if the `u`, `v`, and `w` components of wind speed
                    supplied to the function are perturbation velocities.
                    If False, perturbation velocities will be calculated by
@@ -197,7 +196,7 @@ def friction_velocity(u, w, v=None, perturbation=False, axis=-1):
     v : array_like, optional
         The wind component along the y-axis.
 
-    perturbation : {False, True}, optional
+    perturbation : bool, optional
                    True if the `u`, `w`, and `v` components of wind speed
                    supplied to the function are perturbation velocities.
                    If False, perturbation velocities will be calculated by

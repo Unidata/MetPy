@@ -396,7 +396,7 @@ class SkewT:
         y_clip_radius : float, optional
             Space, in normalized axes coordinates, to leave above/below plot
             before clipping wind barbs in the y-direction. Defaults to 0.08.
-        plot_units: `pint.unit`
+        plot_units: `pint.Unit`
             Units to plot in (performing conversion if necessary). Defaults to given units.
         kwargs
             Other keyword arguments to pass to :func:`~matplotlib.pyplot.barbs`
@@ -469,7 +469,7 @@ class SkewT:
 
         See Also
         --------
-        :func:`~metpy.calc.thermo.dry_lapse`
+        :func:`~metpy.calc.dry_lapse`
         :meth:`plot_moist_adiabats`
         :class:`matplotlib.collections.LineCollection`
 
@@ -528,7 +528,7 @@ class SkewT:
 
         See Also
         --------
-        :func:`~metpy.calc.thermo.moist_lapse`
+        :func:`~metpy.calc.moist_lapse`
         :meth:`plot_dry_adiabats`
         :class:`matplotlib.collections.LineCollection`
 
@@ -627,7 +627,7 @@ class SkewT:
             1-dimensional array of numeric x-values
         x2 : array_like
             1-dimensional array of numeric x-values
-        which : string
+        which : str
             Specifies if `positive`, `negative`, or `both` areas are being shaded.
             Will be overridden by where.
         kwargs
@@ -640,7 +640,7 @@ class SkewT:
         See Also
         --------
         :class:`matplotlib.collections.PolyCollection`
-        :func:`matplotlib.axes.Axes.fill_betweenx`
+        :meth:`matplotlib.axes.Axes.fill_betweenx`
 
         """
         fill_properties = {'positive':
@@ -696,7 +696,7 @@ class SkewT:
         See Also
         --------
         :class:`matplotlib.collections.PolyCollection`
-        :func:`matplotlib.axes.Axes.fill_betweenx`
+        :meth:`matplotlib.axes.Axes.fill_betweenx`
 
         """
         return self.shade_area(pressure, t_parcel, t, which='positive', **kwargs)
@@ -728,7 +728,7 @@ class SkewT:
         See Also
         --------
         :class:`matplotlib.collections.PolyCollection`
-        :func:`matplotlib.axes.Axes.fill_betweenx`
+        :meth:`matplotlib.axes.Axes.fill_betweenx`
 
         """
         if dewpoint is not None:
@@ -765,7 +765,7 @@ class Hodograph:
         ----------
         ax : `matplotlib.axes.Axes`, optional
             The `Axes` instance used for plotting
-        component_range : value
+        component_range : int
             The maximum range of the plot. Used to set plot bounds and control the maximum
             number of grid rings needed.
 
@@ -789,7 +789,7 @@ class Hodograph:
 
         Parameters
         ----------
-        increment : value, optional
+        increment : int, optional
             The value increment between rings
         kwargs
             Other kwargs to control appearance of lines

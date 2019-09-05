@@ -599,16 +599,16 @@ def storm_relative_helicity(height, u, v, depth, *, bottom=None, storm_u=None, s
     height : array-like
         Atmospheric height, will be converted to AGL
 
-    depth : number
+    depth : float or int
         Depth of the layer
 
-    bottom : number
+    bottom : float or int
         Height of layer bottom AGL (default is surface)
 
-    storm_u : number
+    storm_u : float or int
         U component of storm motion (default is 0 m/s)
 
-    storm_v : number
+    storm_v : float or int
         V component of storm motion (default is 0 m/s)
 
     Returns
