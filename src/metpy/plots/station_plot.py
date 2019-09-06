@@ -67,6 +67,7 @@ class StationPlot(object):
         self.transform = transform
         self.items = {}
         self.barbs = None
+        self.arrows = None
         self.default_kwargs = kwargs
 
     def plot_symbol(self, location, codes, symbol_mapper, **kwargs):
@@ -259,7 +260,7 @@ class StationPlot(object):
 
         See Also
         --------
-        plot_parameter, plot_symbol, plot_text
+        plot_arrow, plot_parameter, plot_symbol, plot_text
 
         """
         kwargs = self._make_kwargs(kwargs)
@@ -303,6 +304,69 @@ class StationPlot(object):
             self.barbs = matplotlib.axes.Axes.barbs(self.ax, self.x, self.y, u, v, **defaults)
         else:
             self.barbs = self.ax.barbs(self.x, self.y, u, v, **defaults)
+
+    def plot_arrow(self, u, v, **kwargs):
+        r"""At the center of the station model plot wind arrows.
+
+        Additional keyword arguments given will be passed onto matplotlib's
+        :meth:`~matplotlib.axes.Axes.quiver` function; this is useful for specifying things
+        like color or line width.
+
+        Parameters
+        ----------
+        u : array-like
+            The data to use for the u-component of the arrows.
+        v : array-like
+            The data to use for the v-component of the arrows.
+        plot_units: `pint.unit`
+            Units to plot in (performing conversion if necessary). Defaults to given units.
+        kwargs
+            Additional keyword arguments to pass to matplotlib's
+            :meth:`~matplotlib.axes.Axes.barbs` function.
+
+        See Also
+        --------
+        plot_barb, plot_parameter, plot_symbol, plot_text
+
+        """
+        kwargs = self._make_kwargs(kwargs)
+
+        # If plot_units specified, convert the data to those units
+        plotting_units = kwargs.pop('plot_units', None)
+        if plotting_units:
+            if hasattr(u, 'units') and hasattr(v, 'units'):
+                u = u.to(plotting_units)
+                v = v.to(plotting_units)
+            else:
+                raise ValueError('To convert to plotting units, units must be attached to '
+                                 'u and v wind components.')
+
+        # Strip units, CartoPy transform doesn't like
+        u = np.array(u)
+        v = np.array(v)
+
+        defaults = {'pivot': 'tail', 'scale': 20, 'scale_units': 'inches', 'width': 0.002}
+        defaults.update(kwargs)
+
+        # Remove old arrows
+        if self.arrows:
+            self.arrows.remove()
+
+        # Handle transforming our center points. CartoPy doesn't like 1D arrows
+        # TODO: This can be removed for cartopy > 0.14.3
+        if hasattr(self.ax, 'projection') and 'transform' in kwargs:
+            trans = kwargs['transform']
+            try:
+                kwargs['transform'] = trans._as_mpl_transform(self.ax)
+            except AttributeError:
+                pass
+            u, v = self.ax.projection.transform_vectors(trans, self.x, self.y, u, v)
+
+            # Since we've re-implemented CartoPy's arrows, we need to skip calling it here
+            self.arrows = matplotlib.axes.Axes.quiver(self.ax, self.x, self.y, u, v, **defaults)
+        else:
+            self.arrows = self.ax.quiver(self.x, self.y, u, v, **defaults)
+
 
     def _make_kwargs(self, kwargs):
         """Assemble kwargs as necessary.
