@@ -267,17 +267,7 @@ class StationPlot(object):
 
         # If plot_units specified, convert the data to those units
         plotting_units = kwargs.pop('plot_units', None)
-        if plotting_units:
-            if hasattr(u, 'units') and hasattr(v, 'units'):
-                u = u.to(plotting_units)
-                v = v.to(plotting_units)
-            else:
-                raise ValueError('To convert to plotting units, units must be attached to '
-                                 'u and v wind components.')
-
-        # Strip units, CartoPy transform doesn't like
-        u = np.array(u)
-        v = np.array(v)
+        u, v = self._plotting_units(u, v, plotting_units)
 
         # Empirically determined
         pivot = 0.51 * np.sqrt(self.fontsize)
@@ -333,17 +323,7 @@ class StationPlot(object):
 
         # If plot_units specified, convert the data to those units
         plotting_units = kwargs.pop('plot_units', None)
-        if plotting_units:
-            if hasattr(u, 'units') and hasattr(v, 'units'):
-                u = u.to(plotting_units)
-                v = v.to(plotting_units)
-            else:
-                raise ValueError('To convert to plotting units, units must be attached to '
-                                 'u and v wind components.')
-
-        # Strip units, CartoPy transform doesn't like
-        u = np.array(u)
-        v = np.array(v)
+        u, v = self._plotting_units(u, v, plotting_units)
 
         defaults = {'pivot': 'tail', 'scale': 20, 'scale_units': 'inches', 'width': 0.002}
         defaults.update(kwargs)
@@ -367,6 +347,21 @@ class StationPlot(object):
         else:
             self.arrows = self.ax.quiver(self.x, self.y, u, v, **defaults)
 
+    @staticmethod
+    def _plotting_units(u, v, plotting_units):
+        """Handle conversion to plotting units for barbs and arrows."""
+        if plotting_units:
+            if hasattr(u, 'units') and hasattr(v, 'units'):
+                u = u.to(plotting_units)
+                v = v.to(plotting_units)
+            else:
+                raise ValueError('To convert to plotting units, units must be attached to '
+                                 'u and v wind components.')
+
+        # Strip units, CartoPy transform doesn't like
+        u = np.array(u)
+        v = np.array(v)
+        return u, v
 
     def _make_kwargs(self, kwargs):
         """Assemble kwargs as necessary.
