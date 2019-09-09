@@ -343,7 +343,8 @@ class StationPlot(object):
             u, v = self.ax.projection.transform_vectors(trans, self.x, self.y, u, v)
 
             # Since we've re-implemented CartoPy's arrows, we need to skip calling it here
-            self.arrows = matplotlib.axes.Axes.quiver(self.ax, self.x, self.y, u, v, **defaults)
+            self.arrows = matplotlib.axes.Axes.quiver(self.ax, self.x, self.y, u, v,
+                                                      **defaults)
         else:
             self.arrows = self.ax.quiver(self.x, self.y, u, v, **defaults)
 

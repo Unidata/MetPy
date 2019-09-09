@@ -273,7 +273,7 @@ def test_barb_projection(wind_plot):
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.00145, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.00205, remove_text=True)
 def test_arrow_projection(wind_plot):
     """Test that arrows are properly projected."""
     u, v, x, y = wind_plot
@@ -284,6 +284,7 @@ def test_arrow_projection(wind_plot):
     ax.gridlines(xlocs=[-135, -120, -105, -90, -75, -60, -45])
     sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree())
     sp.plot_arrow(u, v)
+    sp.plot_arrow(u, v)  # plot_arrow used twice to hit removal if statement
 
     return fig
 
