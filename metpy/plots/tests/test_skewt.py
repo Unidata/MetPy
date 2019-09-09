@@ -50,6 +50,28 @@ def test_skewt_api():
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance={'2': 9.57}.get(MPL_VERSION, 0.027),
+                               remove_text=True, style='default')
+def test_skewt_api_units():
+    """#Test the SkewT API when units are provided."""
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
+        p = (np.linspace(950, 100, 10) * units.hPa).to(units.Pa)
+        t = (np.linspace(18, -20, 10) * units.degC).to(units.kelvin)
+        u = np.linspace(-20, 20, 10) * units.knots
+
+        skew.plot(p, t, 'r')
+        skew.plot_barbs(p, u, u)
+
+        # Add the relevant special lines
+        skew.plot_dry_adiabats()
+        skew.plot_moist_adiabats()
+        skew.plot_mixing_lines()
+
+    return fig
+
+
 @pytest.mark.mpl_image_compare(tolerance=0. if matplotlib.__version__ >= '3.2' else 30.,
                                remove_text=True, style='default')
 def test_skewt_default_aspect_empty():

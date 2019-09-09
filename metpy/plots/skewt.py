@@ -433,11 +433,11 @@ class SkewT(object):
         if c is not None:
             b = self.ax.barbs(x, p, u, v, c,
                               transform=self.ax.get_yaxis_transform(which='tick2'),
-                              clip_on=True, **kwargs)
+                              clip_on=True, zorder=2, **kwargs)
         else:
             b = self.ax.barbs(x, p, u, v,
                               transform=self.ax.get_yaxis_transform(which='tick2'),
-                              clip_on=True, **kwargs)
+                              clip_on=True, zorder=2, **kwargs)
 
         # Override the default clip box, which is the axes rectangle, so we can have
         # barbs that extend outside.
