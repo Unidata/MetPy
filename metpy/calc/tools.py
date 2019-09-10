@@ -1327,17 +1327,15 @@ def parse_angle(input_dir):
 
     Returns
     -------
-    angle
+    `pint.Quantity`
         The angle in degrees
 
     """
     if isinstance(input_dir, str):
-        # abb_dirs = abbrieviated directions
         abb_dirs = [_abbrieviate_direction(input_dir)]
-    elif isinstance(input_dir, list):
-        input_dir_str = ','.join(input_dir)
-        abb_dir_str = _abbrieviate_direction(input_dir_str)
-        abb_dirs = abb_dir_str.split(',')
+    else:
+        input_dir_str = ','.join(list(input_dir))
+        abb_dirs = _abbrieviate_direction(input_dir_str).split(',')
     return itemgetter(*abb_dirs)(DIR_DICT)
 
 
