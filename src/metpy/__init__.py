@@ -16,9 +16,5 @@ from .xarray import *  # noqa: F401, F403
 __version__ = get_version()
 del get_version
 
-try:
-    # Added in Python 3.2, will log anything warning or higher to stderr
-    logging.lastResort
-except AttributeError:
-    # Add our own for MetPy on Python 2.7
-    logging.getLogger(__name__).addHandler(logging.StreamHandler())
+# Added in Python 3.2, will log anything warning or higher to stderr
+logging.lastResort

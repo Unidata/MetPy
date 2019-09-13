@@ -38,8 +38,6 @@ specific set of constraints (e.g. step size) for mapping.
    plt.show()
 """
 
-from __future__ import division
-
 import ast
 import contextlib
 import glob

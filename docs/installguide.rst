@@ -2,47 +2,19 @@
 Installation Guide
 ==================
 
-.. _python27:
-
-------------------
-Python 2.7 Support
-------------------
-In the Fall 2019, we will be dropping support for Python 2.7. This follows movement from
-other packages within the `scientific Python ecosystem <https://python3statement.org/>`_.
-This includes:
-
-* Core Python developers will
-  `stop support for Python 2.7 January 1, 2020 <https://pythonclock.org/>`_
-* NumPy feature releases will be
-  `Python 3 only starting January 1, 2019 <https://numpy.org/neps/nep-0014-dropping-python2.7-proposal.html>`_,
-  and support for the last release supporting Python 2 will end January 1, 2020.
-* XArray will drop
-  `2.7 January 1, 2019 as well <https://github.com/pydata/xarray/issues/1830>`_
-* Matplotlib's 3.0 release, tentatively Summer 2018,
-  `will be Python 3 only <https://mail.python.org/pipermail/matplotlib-devel/2017-October/000892.html>`_;
-  the current 2.2 release will be the last long term release that supports 2.7, and its support
-  will cease January 1, 2020.
-
-The last release of MetPy before this time (Spring or Summer 2019) will be the last that
-support Python 2.7. This version of MetPy will **not** receive any long term support or
-additional bug fix releases after the next minor release. The packages for this version *will*
-remain available on Conda or PyPI.
-
 ------------
 Requirements
 ------------
 In general, MetPy tries to support minor versions of dependencies released within the last two
-years. For Python itself, that means supporting the last two minor releases, as well as
-currently supporting Python 2.7.
+years. For Python itself, that means supporting the last two minor releases.
 
 * matplotlib >= 2.1.0
-* numpy >= 1.12.0
-* scipy >= 0.17.0
+* numpy >= 1.13.0
+* scipy >= 1.0.0
 * pint >= 0.8
 * pandas >= 0.22.0
 * xarray >= 0.10.7
 * traitlets >= 4.3.0
-* enum34 (for python < 3.4)
 * pooch >= 0.1
 
 ------------

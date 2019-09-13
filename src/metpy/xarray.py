@@ -15,8 +15,6 @@ Dataset.
 
 See Also: :doc:`xarray with MetPy Tutorial </tutorials/xarray_tutorial>`.
 """
-from __future__ import absolute_import
-
 import functools
 import logging
 import re
@@ -424,14 +422,14 @@ class MetPyDatasetAccessor(object):
             Parsed DataArray (if varname is a string) or Dataset
 
         """
-        from .cbook import is_string_like, iterable
+        from .cbook import iterable
         from .plots.mapping import CFProjection
 
         if varname is None:
             # If no varname is given, parse all variables in the dataset
             varname = list(self._dataset.data_vars)
 
-        if iterable(varname) and not is_string_like(varname):
+        if iterable(varname) and not isinstance(varname, str):
             # If non-string iterable is given, apply recursively across the varnames
             subset = xr.merge([self.parse_cf(single_varname, coordinates=coordinates)
                                for single_varname in varname])

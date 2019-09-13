@@ -2,9 +2,6 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of thermodynamic calculations."""
-
-from __future__ import division
-
 import warnings
 
 import numpy as np

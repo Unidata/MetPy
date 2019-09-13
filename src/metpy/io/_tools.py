@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """A collection of general purpose tools for reading files."""
 
-from __future__ import print_function
-
 import bz2
 from collections import namedtuple
 import gzip
@@ -14,14 +12,7 @@ import zlib
 
 log = logging.getLogger(__name__)
 
-
-# This works around problems on early Python 2.7 where Struct.unpack_from() can't handle
-# being given a bytearray; use memoryview on Python 3, since calling bytearray again isn't
-# cheap.
-try:
-    bytearray_to_buff = buffer
-except NameError:
-    bytearray_to_buff = memoryview
+bytearray_to_buff = memoryview
 
 
 def open_as_needed(filename):

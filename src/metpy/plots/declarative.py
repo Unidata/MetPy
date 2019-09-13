@@ -16,7 +16,6 @@ from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe
                        Unicode, Union)
 
 from . import ctables
-from ..cbook import is_string_like
 from ..package_tools import Exporter
 from ..units import units
 
@@ -663,7 +662,7 @@ class MapPanel(Panel):
         is set to ``'data'`` looks at the data for the projection.
 
         """
-        if is_string_like(self.projection):
+        if isinstance(self.projection, str):
             if self.projection == 'data':
                 if isinstance(self.plots[0].griddata, tuple):
                     return self.plots[0].griddata[0].metpy.cartopy_crs
@@ -682,7 +681,7 @@ class MapPanel(Panel):
 
         """
         for item in self.layers:
-            if is_string_like(item):
+            if isinstance(item, str):
                 feat = lookup_map_feature(item)
             else:
                 feat = item
@@ -742,7 +741,7 @@ class MapPanel(Panel):
                 self.ax.set_global()
             elif self.area is not None:
                 # Try to look up if we have a string
-                if is_string_like(self.area):
+                if isinstance(self.area, str):
                     area = _areas[self.area]
                 # Otherwise, assume we have a tuple to use as the extent
                 else:

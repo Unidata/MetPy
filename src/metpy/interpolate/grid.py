@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools and calculations for interpolating specifically to a grid."""
 
-from __future__ import division
-
 import numpy as np
 
 # Change when Python 2.7 no longer supported

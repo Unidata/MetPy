@@ -16,12 +16,6 @@ except NameError:
     string_type = str
 
 
-# TODO: This can go away when we remove Python 2
-def is_string_like(s):
-    """Check if an object is a string."""
-    return isinstance(s, string_type)
-
-
 POOCH = pooch.create(
     path=pooch.os_cache('metpy'),
     base_url='https://github.com/Unidata/MetPy/raw/{version}/staticdata/',
@@ -111,18 +105,4 @@ def iterable(value):
     return np.iterable(value)
 
 
-def result_type(value):
-    """Determine the type for numpy type casting in a pint-version-safe way."""
-    try:
-        return np.result_type(value)
-    except TypeError:
-        if hasattr(value, 'dtype'):
-            return value.dtype
-        elif hasattr(value, 'magnitude'):
-            return np.result_type(value.magnitude)
-        else:
-            raise TypeError('Cannot determine dtype for type {}'.format(type(value)))
-
-
-__all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'is_string_like', 'iterable',
-           'result_type')
+__all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'iterable')

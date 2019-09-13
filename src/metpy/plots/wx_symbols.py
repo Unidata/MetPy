@@ -17,12 +17,7 @@ exporter = Exporter(globals())
 wx_symbol_font = fm.FontProperties(fname=resource_filename('metpy.plots',
                                                            'fonts/wx_symbols.ttf'))
 
-# Deal with the fact that Python 2 chr() can't handle unicode, but unichr is gone
-# on python 3
-try:
-    code_point = unichr
-except NameError:
-    code_point = chr
+code_point = chr
 
 
 class CodePointMapping(object):

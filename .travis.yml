@@ -23,7 +23,6 @@ git:
 python:
   - 3.7
   - 3.6
-  - 2.7
 
 cache:
   - pip
@@ -50,7 +49,7 @@ env:
 
 matrix:
   include:
-    - python: 2.7
+    - python: 3.6
       env:
         - VERSIONS="numpy==1.12.0 matplotlib==2.1.0 scipy==0.17.0 pint==0.8 xarray==0.10.7 pandas==0.22.0"
         - TASK="coverage"

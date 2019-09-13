@@ -4,8 +4,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Parse specification extracted from NEXRAD ICD PDFs and generate Python code."""
 
-from __future__ import print_function
-
 import warnings
 
 

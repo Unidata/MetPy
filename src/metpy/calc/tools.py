@@ -2,18 +2,11 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
-from __future__ import division
-
 import functools
 from operator import itemgetter
 
 import numpy as np
-try:
-    from numpy.core.numeric import normalize_axis_index
-except ImportError:  # Only available in numpy >=1.13.0
-    def normalize_axis_index(a, n):
-        """No op version of :func:`numpy.core.numeric.normalize_axis_index`."""
-        return a
+from numpy.core.numeric import normalize_axis_index
 import numpy.ma as ma
 from scipy.spatial import cKDTree
 import xarray as xr

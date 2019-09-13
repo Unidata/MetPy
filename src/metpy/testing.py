@@ -7,9 +7,6 @@ This includes:
 * unit-aware test functions
 * code for testing matplotlib figures
 """
-
-from __future__ import absolute_import
-
 import functools
 
 import numpy as np

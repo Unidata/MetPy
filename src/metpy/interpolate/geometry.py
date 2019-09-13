@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools for working with geometric objects (points, triangles, polygons)."""
 
-from __future__ import division
-
 import logging
 import math
 

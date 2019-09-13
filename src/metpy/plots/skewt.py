@@ -8,10 +8,7 @@ Contain tools for making Skew-T Log-P plots, including the base plotting class,
 """
 
 import warnings
-try:
-    from contextlib import ExitStack
-except ImportError:
-    from contextlib2 import ExitStack
+from contextlib import ExitStack
 
 import matplotlib
 from matplotlib.axes import Axes

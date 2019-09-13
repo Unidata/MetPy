@@ -13,9 +13,6 @@ units : :class:`pint.UnitRegistry`
     import this registry and use it to grab units.
 
 """
-
-from __future__ import division
-
 import functools
 import logging
 import warnings
