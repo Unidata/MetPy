@@ -37,3 +37,4 @@ dependencies:
   - doc8
   - m2r
   - pooch>=0.1
+  - setuptools_scm

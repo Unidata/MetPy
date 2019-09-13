@@ -1,7 +1,6 @@
 ignore-paths:
   - doc
   - build
-  - versioneer.py
   - metpy/_version.py
   - examples
   - tutorials

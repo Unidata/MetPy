@@ -1,4 +1,4 @@
-# Copyright (c) 2008,2010,2015,2016 MetPy Developers.
+# Copyright (c) 2008,2010,2015,2016,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Setup script for installing MetPy."""
@@ -6,13 +6,19 @@
 from __future__ import print_function
 
 from setuptools import find_packages, setup
-import versioneer
 
-ver = versioneer.get_version()
+
+def metpy_version():
+    from setuptools_scm.version import get_local_dirty_tag
+
+    def clean_scheme(version):
+        return get_local_dirty_tag(version) if version.dirty else '+clean'
+
+    return {'local_scheme': clean_scheme}
+
 
 setup(
     name='MetPy',
-    version=ver,
     description='Collection of tools for reading, visualizing and'
                 'performing calculations with weather data.',
     long_description='The space MetPy aims for is GEMPAK '
@@ -48,7 +54,9 @@ setup(
                                   '_static/metpy_150x150.png', '_static/unidata_75x75.png',
                                   '_static/unidata_150x150.png'],
                   'metpy': ['static-data-manifest.txt']},
-
+    use_scm_version={'write_to': 'metpy/_version.py',
+                    'write_to_template': "version = '{version}'"},
+    setup_requires=['setuptools_scm'],
     python_requires='>=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*',
     install_requires=['matplotlib>=2.0.0', 'numpy>=1.12.0', 'scipy>=0.17.0',
                       'pint', 'xarray>=0.10.7', 'enum34;python_version<"3.4"',
@@ -67,8 +75,6 @@ setup(
                  'pep8-naming', 'netCDF4', 'pyproj>=1.9.4,!=2.0.0']
     },
 
-    cmdclass=versioneer.get_cmdclass(),
-
     zip_safe=True,
 
-    download_url='https://github.com/Unidata/MetPy/archive/v{}.tar.gz'.format(ver), )
+    download_url='https://github.com/Unidata/MetPy/archive/v{}.tar.gz'.format(metpy_version))
