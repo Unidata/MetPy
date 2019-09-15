@@ -7,10 +7,12 @@ from __future__ import division
 
 import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_almost_equal
+import pandas as pd
 import pytest
 from scipy.spatial.distance import cdist
 
-from metpy.interpolate import (remove_nan_observations, remove_observations_below_value,
+from metpy.interpolate import (interpolate_to_grid, remove_nan_observations,
+                               remove_observations_below_value,
                                remove_repeat_coordinates)
 from metpy.interpolate.tools import barnes_weights, calc_kappa, cressman_weights
 
@@ -126,3 +128,15 @@ def test_cressman_weights():
              0.219512195121951]
 
     assert_array_almost_equal(truth, weights)
+
+
+def test_interpolate_to_grid_pandas():
+    r"""Test whether this accepts a `pd.Series` without crashing."""
+    df = pd.DataFrame({
+        'lat': [38, 39, 31, 30, 41, 35],
+        'lon': [-106, -105, -86, -96, -74, -70],
+        'tmp': [-10, -16, 13, 16, 0, 3.5]
+    }, index=[1, 2, 3, 4, 5, 6])
+    interpolate_to_grid(
+        df['lon'], df['lat'], df['tmp'],
+        interp_type='natural_neighbor', hres=0.5)

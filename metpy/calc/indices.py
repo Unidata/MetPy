@@ -125,13 +125,13 @@ def bunkers_storm_motion(pressure, u, v, heights):
 
     Parameters
     ----------
-    pressure : array-like
+    pressure : `pint.Quantity`
         Pressure from sounding
-    u : array-like
+    u : `pint.Quantity`
         U component of the wind
-    v : array-like
+    v : `pint.Quantity`
         V component of the wind
-    heights : array-like
+    heights : `pint.Quantity`
         Heights from sounding
 
     Returns
@@ -246,7 +246,7 @@ def supercell_composite(mucape, effective_storm_helicity, effective_shear):
 
     Returns
     -------
-    array-like
+    `pint.Quantity`
         supercell composite
 
     """
@@ -294,7 +294,7 @@ def significant_tornado(sbcape, surface_based_lcl_height, storm_helicity_1km, sh
 
     Returns
     -------
-    array-like
+    `pint.Quantity`
         significant tornado parameter
 
     """

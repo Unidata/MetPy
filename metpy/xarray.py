@@ -194,28 +194,28 @@ class MetPyDataArrayAccessor(object):
                       + 'for variable "' + self._data_array.name + '".')
         coord_lists[axis] = []
 
-    def _parse_coordinates(self):
-        """Parse the coordinates for this variable to identify coordinate types."""
-        # Only parse if _metpy_axis is not present
-        if not any('_metpy_axis' in coord_var.attrs
-                   for coord_var in self._data_array.coords.values()):
-            self.assign_coordinates(self._generate_coordinate_map())
-
     def _metpy_axis_search(self, cf_axis):
-        """Search for a cf_axis in the _metpy_axis attribute on the coordinates."""
-        for coord_var in self._data_array.coords.values():
+        """Search for cached _metpy_axis attribute on the coordinates, otherwise parse."""
+        # Search for coord with proper _metpy_axis
+        coords = self._data_array.coords.values()
+        for coord_var in coords:
             if coord_var.attrs.get('_metpy_axis') == cf_axis:
                 return coord_var
+
+        # Opportunistically parse all coordinates, and assign if not already assigned
+        coord_map = self._generate_coordinate_map()
+        for axis, coord_var in coord_map.items():
+            if coord_var is not None and not any(coord.attrs.get('_metpy_axis') == axis
+                                                 for coord in coords):
+                coord_var.attrs['_metpy_axis'] = axis
+
+        # Return parsed result (can be None if none found)
+        return coord_map[cf_axis]
 
     def _axis(self, axis):
         """Return the coordinate variable corresponding to the given individual axis type."""
         if axis in readable_to_cf_axes:
             coord_var = self._metpy_axis_search(readable_to_cf_axes[axis])
-            if coord_var is None:
-                # See if failure is due to it not being parsed
-                self._parse_coordinates()
-                coord_var = self._metpy_axis_search(readable_to_cf_axes[axis])
-
             if coord_var is not None:
                 return coord_var
             else:
@@ -333,14 +333,37 @@ class MetPyDatasetAccessor(object):
         self._dataset = dataset
 
     def parse_cf(self, varname=None, coordinates=None):
-        """Parse Climate and Forecasting (CF) convention metadata."""
+        """Parse Climate and Forecasting (CF) convention metadata.
+
+        Parameters
+        ----------
+        varname : str or iterable of str, optional
+            Name of the variable(s) to extract from the dataset while parsing for CF metadata.
+            Defaults to all variables.
+        coordinates : dict, optional
+            Dictionary mapping CF axis types to coordinates of the variable(s). Only specify
+            if you wish to override MetPy's automatic parsing of some axis type(s).
+
+        Returns
+        -------
+        `xarray.DataArray` or `xarray.Dataset`
+            Parsed DataArray (if varname is a string) or Dataset
+
+        """
+        from .cbook import is_string_like, iterable
         from .plots.mapping import CFProjection
 
-        # If no varname is given, parse the entire dataset
         if varname is None:
+            # If no varname is given, parse the entire dataset
             return self._dataset.apply(lambda da: self.parse_cf(da.name,
                                                                 coordinates=coordinates),
                                        keep_attrs=True)
+        elif iterable(varname) and not is_string_like(varname):
+            # If non-string iterable is given, apply recursively across the varnames
+            subset = xr.merge([self.parse_cf(single_varname, coordinates=coordinates)
+                               for single_varname in varname])
+            subset.attrs = self._dataset.attrs
+            return subset
 
         var = self._dataset[varname]
         if 'grid_mapping' in var.attrs:

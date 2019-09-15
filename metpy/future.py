@@ -5,6 +5,7 @@
 
 from .calc.kinematics import ensure_yx_order, geostrophic_wind
 from .package_tools import Exporter
+from .units import check_units
 from .xarray import preprocess_xarray
 
 
@@ -14,24 +15,25 @@ exporter = Exporter(globals())
 @exporter.export
 @preprocess_xarray
 @ensure_yx_order
+@check_units(f='[frequency]', u='[speed]', v='[speed]', dx='[length]', dy='[length]')
 def ageostrophic_wind(heights, u, v, f, dx, dy, dim_order='yx'):
     r"""Calculate the ageostrophic wind given from the heights or geopotential.
 
     Parameters
     ----------
     heights : (M, N) ndarray
-        The height field.
-    u : (M, N) ndarray
+        The height or geopotential field.
+    u : (M, N) `pint.Quantity`
         The u wind field.
-    v : (M, N) ndarray
+    v : (M, N) `pint.Quantity`
         The u wind field.
     f : array_like
         The coriolis parameter.  This can be a scalar to be applied
         everywhere or an array of values.
-    dx : float or ndarray
+    dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `heights` along the applicable axis.
-    dy : float or ndarray
+    dy : `pint.Quantity`
         The grid spacing(s) in the y-direction. If an array, there should be one item less than
         the size of `heights` along the applicable axis.
 

@@ -590,3 +590,47 @@ def test_check_axis_with_bad_unit(test_ds_generic):
     var = test_ds_generic['e']
     var.attrs['units'] = 'nondimensional'
     assert not check_axis(var, 'x', 'y', 'vertical', 'time')
+
+
+def test_dataset_parse_cf_varname_list(test_ds):
+    """Test that .parse_cf() returns correct subset of dataset when given list of vars."""
+    full_ds = test_ds.copy().metpy.parse_cf()
+    partial_ds = test_ds.metpy.parse_cf(['u_wind', 'v_wind'])
+
+    assert full_ds[['u_wind', 'v_wind']].identical(partial_ds)
+
+
+def test_coordinate_identification_shared_but_not_equal_coords():
+    """Test that non-shared coords are not skipped after parsing shared coords.
+
+    See GH Issue #1124.
+    """
+    # Create minimal dataset
+    temperature = xr.DataArray([[8, 4], [13, 12]], name='temperature',
+                               dims=('isobaric1', 'x'),
+                               coords={
+                                   'isobaric1': xr.DataArray([700, 850],
+                                                             name='isobaric1',
+                                                             dims='isobaric1',
+                                                             attrs={'units': 'hPa',
+                                                                    'axis': 'Z'}),
+                                   'x': xr.DataArray([0, 450], name='x', dims='x',
+                                                     attrs={'units': 'km', 'axis': 'X'})},
+                               attrs={'units': 'degC'})
+    u = xr.DataArray([[30, 20], [10, 10]], name='u', dims=('isobaric2', 'x'),
+                     coords={
+                         'isobaric2': xr.DataArray([500, 850], name='isobaric2',
+                                                   dims='isobaric2',
+                                                   attrs={'units': 'hPa', 'axis': 'Z'}),
+                         'x': xr.DataArray([0, 450], name='x', dims='x',
+                                           attrs={'units': 'km', 'axis': 'X'})},
+                     attrs={'units': 'kts'})
+    ds = xr.Dataset({'temperature': temperature, 'u': u})
+
+    # Check coordinates on temperature
+    assert ds['isobaric1'].identical(ds['temperature'].metpy.vertical)
+    assert ds['x'].identical(ds['temperature'].metpy.x)
+
+    # Check vertical coordinate on u
+    # Fails prior to resolution of Issue #1124
+    assert ds['isobaric2'].identical(ds['u'].metpy.vertical)

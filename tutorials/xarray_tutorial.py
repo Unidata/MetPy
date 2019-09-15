@@ -59,6 +59,10 @@ data = data.metpy.parse_cf()
 # it will return just that data variable as a DataArray.
 data_var = data.metpy.parse_cf('Temperature_isobaric')
 
+# If we want only a subset of variables, we can pass a list of variable names as well.
+data_subset = data.metpy.parse_cf(['u-component_of_wind_isobaric',
+                                   'v-component_of_wind_isobaric'])
+
 # To rename variables, supply a dictionary between old and new names to the rename method
 data.rename({
     'Vertical_velocity_pressure_isobaric': 'omega',
@@ -264,7 +268,7 @@ ax.add_feature(cfeature.LAKES.with_scale('50m'), facecolor=cfeature.COLORS['wate
 
 # Set a title and show the plot
 ax.set_title('500 hPa Heights (m), Temperature (\u00B0C), Humidity (%) at '
-             + time[0].dt.strftime('%Y-%m-%d %H:%MZ'))
+             + time[0].dt.strftime('%Y-%m-%d %H:%MZ').item())
 plt.show()
 
 #########################################################################
