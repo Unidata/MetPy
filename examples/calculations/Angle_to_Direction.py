@@ -10,8 +10,6 @@ Demonstrate how to convert angles to direction strings.
 The code below shows how to convert angles into directional text.
 It also  demonstrates the function's flexibility.
 """
-import numpy as np
-
 import metpy.calc as mpcalc
 from metpy.units import units
 
