@@ -12,14 +12,17 @@ DOI: `10.5065/D6WW7G29 <https://doi.org/10.5065/D6WW7G29>`_
 BibTeX entry
 ************
 
-Example BibTeX entry::
+Example BibTeX entry:
+
+.. parsed-literal::
 
   @software{metpy,
-    author = {May, Ryan and Arms, Sean and Marsh, Patrick and Bruning, Eric and Leeman, John },
+    author = {May, Ryan M. and Arms, Sean C. and Marsh, Patrick and Bruning, Eric and Leeman, John R.
+              and Goebbert, Kevin and Thielen, Jonathan E. and Bruck, Zachary},
     organization = {Unidata},
     title = {MetPy: A {Python} Package for Meteorological Data},
-    year = {2008 - 2017},
-    version = {0.4.3},
+    year = {2008 - |cite_year|},
+    version = {|cite_version|},
     doi = {10.5065/D6WW7G29},
     url = {https://github.com/Unidata/MetPy},
     address = {Boulder, Colorado}
@@ -30,10 +33,12 @@ Example BibTeX entry::
 AMS Journal Style
 *****************
 
-Example Citation::
+Example Citation:
 
-  May, R. M., Arms, S. C., Marsh, P., Bruning, E. and Leeman, J. R., 2017:
-      MetPy: A Python Package for Meteorological Data.
-      Unidata, Accessed 31 March 2017.
+.. parsed-literal::
+
+  May, R. M., Arms, S. C., Marsh, P., Bruning, E., Leeman, J. R., Goebbert, K., Thielen, J. E.,
+      and Bruick, Z., |cite_year|: MetPy: A Python Package for Meteorological Data.
+      Version |cite_version|, Unidata, Accessed |access_date|.
       [Available online at https://github.com/Unidata/MetPy.]
       doi:10.5065/D6WW7G29.
