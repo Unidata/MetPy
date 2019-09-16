@@ -426,7 +426,7 @@ class SkewT(object):
         Parameters
         ----------
         t0 : array_like, optional
-            Starting temperature values in Kelvin. If none are given, they will be
+            Starting temperature values. If none are given, they will be
             generated using the current temperature range at the bottom of
             the plot.
         p : array_like, optional
@@ -451,14 +451,14 @@ class SkewT(object):
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
-            t0 = np.arange(xmin, xmax + 1, 10) * units.degC
+            t0 = np.arange(xmin, xmax + 1, 10) * self.ax.xaxis.units
 
         # Get pressure levels based on ylims if necessary
         if p is None:
             p = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = dry_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
+        t = dry_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(t0.units)
         linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
@@ -503,15 +503,14 @@ class SkewT(object):
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
-            t0 = np.concatenate((np.arange(xmin, 0, 10),
-                                 np.arange(0, xmax + 1, 5))) * units.degC
+            t0 = np.arange(xmin, xmax + 1, 10) * self.ax.xaxis.units
 
         # Get pressure levels based on ylims if necessary
         if p is None:
             p = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = moist_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
+        t = moist_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(t0.units)
         linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
@@ -558,8 +557,12 @@ class SkewT(object):
         if p is None:
             p = np.linspace(600, max(self.ax.get_ylim())) * units.mbar
 
-        # Assemble data for plotting
+        # Dewpoint contours calculated and converted to xaxis units
         td = dewpoint(vapor_pressure(p, w))
+        if self.ax.xaxis.units is not None:
+            td=td.to(self.ax.xaxis.units)
+
+        # Assemble data for plotting
         linedata = [np.vstack((t, p)).T for t in td]
 
         # Add to plot
