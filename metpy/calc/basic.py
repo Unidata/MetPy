@@ -1,4 +1,4 @@
-# Copyright (c) 2008,2015,2016,2017,2018 MetPy Developers.
+# Copyright (c) 2008,2015,2016,2017,2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of basic calculations.
@@ -439,7 +439,7 @@ def apparent_temperature(temperature, rh, speed, face_level_winds=False, mask_un
 @preprocess_xarray
 @check_units('[pressure]')
 def pressure_to_height_std(pressure):
-    r"""Convert pressure data to heights using the U.S. standard atmosphere.
+    r"""Convert pressure data to heights using the U.S. standard atmosphere [NOAA1976]_.
 
     The implementation uses the formula outlined in [Hobbs1977]_ pg.60-61.
 
@@ -555,7 +555,7 @@ def geopotential_to_height(geopot):
 @preprocess_xarray
 @check_units('[length]')
 def height_to_pressure_std(height):
-    r"""Convert height data to pressures using the U.S. standard atmosphere.
+    r"""Convert height data to pressures using the U.S. standard atmosphere [NOAA1976]_.
 
     The implementation inverts the formula outlined in [Hobbs1977]_ pg.60-61.
 
@@ -606,7 +606,7 @@ def coriolis_parameter(latitude):
 def add_height_to_pressure(pressure, height):
     r"""Calculate the pressure at a certain height above another pressure level.
 
-    This assumes a standard atmosphere.
+    This assumes a standard atmosphere [NOAA1976]_.
 
     Parameters
     ----------
@@ -635,7 +635,7 @@ def add_height_to_pressure(pressure, height):
 def add_pressure_to_height(height, pressure):
     r"""Calculate the height at a certain pressure above another height.
 
-    This assumes a standard atmosphere.
+    This assumes a standard atmosphere [NOAA1976]_.
 
     Parameters
     ----------
@@ -866,7 +866,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
     are taken from [Smithsonian1951]_ Altimeter setting is the
     pressure value to which an aircraft altimeter scale is set so that it will
     indicate the altitude above mean sea-level of an aircraft on the ground at the
-    location for which the value is determined. It assumes a standard atmosphere.
+    location for which the value is determined. It assumes a standard atmosphere [NOAA1976]_.
     Station pressure is the atmospheric pressure at the designated station elevation.
     Finding the station pressure can be helpful for calculating sea-level pressure
     or other parameters.
@@ -907,7 +907,7 @@ def altimeter_to_station_pressure(altimeter_value, height):
 
     :math:`p_{1} = p_{mb} - 0.3` when :math:`p_{0} = 1013.25 mb`
 
-    gamma = lapse rate in NACA standard atmosphere below the isothermal layer
+    gamma = lapse rate in [NOAA1976]_ standard atmosphere below the isothermal layer
     :math:`6.5^{\circ}C. km.^{-1}`
 
     :math:`t_{0}` = standard sea-level temperature 288 K

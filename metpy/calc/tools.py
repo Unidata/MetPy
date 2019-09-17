@@ -1,4 +1,4 @@
-# Copyright (c) 2016,2017,2018 MetPy Developers.
+# Copyright (c) 2016,2017,2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
@@ -330,8 +330,8 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
     """Calculate the bounding pressure and height in a layer.
 
     Given pressure, optional heights, and a bound, return either the closest pressure/height
-    or interpolated pressure/height. If no heights are provided, a standard atmosphere is
-    assumed.
+    or interpolated pressure/height. If no heights are provided, a standard atmosphere
+    ([NOAA1976]_) is assumed.
 
     Parameters
     ----------
@@ -542,7 +542,7 @@ def get_layer(pressure, *args, **kwargs):
         Atmospheric variable(s) measured at the given pressures
     heights: array-like, optional
         Atmospheric heights corresponding to the given pressures. Defaults to using
-        heights calculated from ``p`` assuming a standard atmosphere.
+        heights calculated from ``p`` assuming a standard atmosphere [NOAA1976]_.
     bottom : `pint.Quantity`, optional
         The bottom of the layer as a pressure or height above the surface pressure. Defaults
         to the highest pressure or lowest height given.
