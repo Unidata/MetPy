@@ -474,6 +474,7 @@ class SkewT(object):
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
         self.dry_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.dry_adiabats
 
     def plot_moist_adiabats(self, t0=None, p=None, **kwargs):
         r"""Plot moist adiabats.
@@ -531,6 +532,7 @@ class SkewT(object):
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
         self.moist_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.moist_adiabats
 
     def plot_mixing_lines(self, w=None, p=None, **kwargs):
         r"""Plot lines of constant mixing ratio.
@@ -583,6 +585,7 @@ class SkewT(object):
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.8)
         self.mixing_lines = self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.mixing_lines
 
     def shade_area(self, y, x1, x2=0, which='both', **kwargs):
         r"""Shade area between two curves.
