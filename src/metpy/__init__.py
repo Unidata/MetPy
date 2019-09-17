@@ -5,7 +5,6 @@
 
 # What do we want to pull into the top-level namespace?
 
-import logging
 import warnings
 
 # Must occur before below imports
@@ -15,6 +14,3 @@ from ._version import get_version  # noqa: E402
 from .xarray import *  # noqa: F401, F403
 __version__ = get_version()
 del get_version
-
-# Added in Python 3.2, will log anything warning or higher to stderr
-logging.lastResort
