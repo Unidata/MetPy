@@ -21,7 +21,7 @@ print(angle_deg)
 ###########################################
 # Now throw that angle into the function to
 # get the corresponding direction
-dir_str = mpcalc.angle_to_dir(angle_deg)
+dir_str = mpcalc.angle_to_direction(angle_deg)
 print(dir_str)
 
 ###########################################
@@ -29,10 +29,10 @@ print(dir_str)
 # rounding to the nearest direction, handling angles > 360,
 # and defaulting to degrees if no units are specified.
 angle_deg_list = [0, 361, 719]
-dir_str_list = mpcalc.angle_to_dir(angle_deg_list)
+dir_str_list = mpcalc.angle_to_direction(angle_deg_list)
 print(dir_str_list)
 
 ###########################################
 # If you want the unabbrieviated version, input full=True
-full_dir_str_list = mpcalc.angle_to_dir(angle_deg_list, full=True)
+full_dir_str_list = mpcalc.angle_to_direction(angle_deg_list, full=True)
 print(full_dir_str_list)
