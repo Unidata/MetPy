@@ -7,8 +7,8 @@ Contain tools for making Skew-T Log-P plots, including the base plotting class,
 `SkewT`, as well as a class for making a `Hodograph`.
 """
 
-import warnings
 from contextlib import ExitStack
+import warnings
 
 import matplotlib
 from matplotlib.axes import Axes

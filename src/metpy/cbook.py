@@ -1,4 +1,4 @@
-# Copyright (c) 2008,2015,2018 MetPy Developers.
+# Copyright (c) 2008,2015,2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Collection of generally useful utility code from the cookbook."""
@@ -9,12 +9,6 @@ import numpy as np
 import pooch
 
 from . import __version__
-
-try:
-    string_type = basestring
-except NameError:
-    string_type = str
-
 
 POOCH = pooch.create(
     path=pooch.os_cache('metpy'),
