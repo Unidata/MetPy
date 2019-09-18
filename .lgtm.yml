@@ -1,6 +1,4 @@
 path_classifiers:
-    generated:
-        - metpy/_version.py
     library:
         - metpy/deprecation.py
     test:
