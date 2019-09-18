@@ -1,4 +1,4 @@
-# Copyright (c) 2008,2015,2016,2017,2018 MetPy Developers.
+# Copyright (c) 2008,2015,2016,2017,2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `thermo` module."""
@@ -260,6 +260,16 @@ def test_lcl():
     assert_almost_equal(lcl_temperature, 17.676 * units.degC, 2)
 
 
+def test_lcl_kelvin():
+    """Test LCL temperature is returned as Kelvin, if temperature is Kelvin."""
+    temperature = 273.09723 * units.kelvin
+    lcl_pressure, lcl_temperature = lcl(1017.16 * units.mbar, temperature,
+                                        264.5351 * units.kelvin)
+    assert_almost_equal(lcl_pressure, 889.416 * units.mbar, 2)
+    assert_almost_equal(lcl_temperature, 262.827 * units.kelvin, 2)
+    assert lcl_temperature.units == temperature.units
+
+
 def test_lcl_convergence():
     """Test LCL calculation convergence failure."""
     with pytest.raises(RuntimeError):
@@ -274,6 +284,19 @@ def test_lfc_basic():
     lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints)
     assert_almost_equal(lfc_pressure, 727.415 * units.mbar, 2)
     assert_almost_equal(lfc_temp, 9.705 * units.celsius, 2)
+
+
+def test_lfc_kelvin():
+    """Test that LFC temperature returns Kelvin if Kelvin is provided."""
+    pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperature = (np.array([22.2, 14.6, 12., 9.4, 7., -49.]
+                            ) + 273.15) * units.kelvin
+    dewpoint = (np.array([19., -11.2, -10.8, -10.4, -10., -53.2]
+                         ) + 273.15) * units.kelvin
+    lfc_pressure, lfc_temp = lfc(pressure, temperature, dewpoint)
+    assert_almost_equal(lfc_pressure, 727.415 * units.mbar, 2)
+    assert_almost_equal(lfc_temp, 9.705 * units.degC, 2)
+    assert lfc_temp.units == temperature.units
 
 
 def test_lfc_ml():
@@ -499,6 +522,17 @@ def test_el():
     assert_almost_equal(el_temperature, -11.7027 * units.degC, 3)
 
 
+def test_el_kelvin():
+    """Test that EL temperature returns Kelvin if Kelvin is provided."""
+    levels = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
+    temperatures = (np.array([22.2, 14.6, 12., 9.4, 7., -38.]) + 273.15) * units.kelvin
+    dewpoints = (np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) + 273.15) * units.kelvin
+    el_pressure, el_temp = el(levels, temperatures, dewpoints)
+    assert_almost_equal(el_pressure, 470.4075 * units.mbar, 3)
+    assert_almost_equal(el_temp, -11.7027 * units.degC, 3)
+    assert el_temp.units == temperatures.units
+
+
 def test_el_ml():
     """Test equilibrium layer calculation for a mixed parcel."""
     levels = np.array([959., 779.2, 751.3, 724.3, 700., 400., 269.]) * units.mbar
@@ -533,6 +567,20 @@ def test_no_el_multi_crossing():
     el_pressure, el_temperature = el(levels, temperatures, dewpoints)
     assert_nan(el_pressure, levels.units)
     assert_nan(el_temperature, temperatures.units)
+
+
+def test_lfc_and_el_below_lcl():
+    """Test that LFC and EL are returned as NaN if both are below LCL."""
+    dewpoint = [264.5351, 261.13443, 259.0122, 252.30063, 248.58017, 242.66582] * units.kelvin
+    temperature = [273.09723, 268.40173, 263.56207, 260.257, 256.63538,
+                   252.91345] * units.kelvin
+    pressure = [1017.16, 950, 900, 850, 800, 750] * units.hPa
+    el_pressure, el_temperature = el(pressure, temperature, dewpoint)
+    lfc_pressure, lfc_temperature = lfc(pressure, temperature, dewpoint)
+    assert_nan(lfc_pressure, pressure.units)
+    assert_nan(lfc_temperature, temperature.units)
+    assert_nan(el_pressure, pressure.units)
+    assert_nan(el_temperature, temperature.units)
 
 
 def test_el_lfc_equals_lcl():

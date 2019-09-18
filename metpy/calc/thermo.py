@@ -1,4 +1,4 @@
-# Copyright (c) 2008,2015,2016,2017,2018 MetPy Developers.
+# Copyright (c) 2008,2015,2016,2017,2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of thermodynamic calculations."""
@@ -359,7 +359,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     fp = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
                         xtol=eps, maxiter=max_iters)
     lcl_p = fp * pressure.units
-    return lcl_p, dewpoint(vapor_pressure(lcl_p, w))
+    return lcl_p, dewpoint(vapor_pressure(lcl_p, w)).to(temperature.units)
 
 
 @exporter.export
@@ -406,8 +406,7 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     if parcel_temperature_profile is None:
         new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpt)
         pressure, temperature, _, parcel_temperature_profile = new_stuff
-        temperature = temperature.to('degC')
-        parcel_temperature_profile = parcel_temperature_profile.to('degC')
+        parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
 
     if dewpt_start is None:
         dewpt_start = dewpt[0]
@@ -446,8 +445,14 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         idx = x < this_lcl[0]
         # LFC height < LCL height, so set LFC = LCL
         if not any(idx):
-            x, y = this_lcl
-            return x, y
+            el_pres, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
+                                            temperature[1:], direction='decreasing',
+                                            log_x=True)
+            if el_pres > this_lcl[0]:
+                return np.nan * pressure.units, np.nan * temperature.units
+            else:
+                x, y = this_lcl
+                return x, y
         # Otherwise, find all LFCs that exist above the LCL
         # What is returned depends on which flag as described in the docstring
         else:
@@ -508,8 +513,7 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     if parcel_temperature_profile is None:
         new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpt)
         pressure, temperature, _, parcel_temperature_profile = new_stuff
-        temperature = temperature.to('degC')
-        parcel_temperature_profile = parcel_temperature_profile.to('degC')
+        parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
 
     # If the top of the sounding parcel is warmer than the environment, there is no EL
     if parcel_temperature_profile[-1] > temperature[-1]:
