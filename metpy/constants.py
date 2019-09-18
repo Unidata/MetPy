@@ -97,6 +97,7 @@ with exporter:
     Cv_v = wv_specific_heat_vol = units.Quantity(1463., 'm^2 / s^2 / K')
     Cp_l = water_specific_heat = units.Quantity(4218., 'm^2 / s^2 / K')  # at 0C
     Lv = water_heat_vaporization = units.Quantity(2.501e6, 'm^2 / s^2')  # at 0C
+    Lv_no_units = Lv.to_base_units().magnitude # 2501000.0 # meter ** 2 / second ** 2
     Lf = water_heat_fusion = units.Quantity(3.34e5, 'm^2 / s^2')  # at 0C
     Cp_i = ice_specific_heat = units.Quantity(2106, 'm^2 / s^2 / K')  # at 0C
     rho_i = density_ice = units.Quantity(917, 'kg / m^3')  # at 0C
@@ -104,8 +105,10 @@ with exporter:
     # Dry air -- standard atmosphere
     Md = dry_air_molecular_weight = units.Quantity(28.9644, 'g / mol')
     Rd = dry_air_gas_constant = R / Md
+    Rd_no_units = Rd.to_base_units().magnitude # 0.2870579780696303*1000 # joule / kilogram / kelvin
     dry_air_spec_heat_ratio = 1.4
     Cp_d = dry_air_spec_heat_press = units.Quantity(1005, 'm^2 / s^2 / K')  # Bolton 1980
+    Cp_d_no_units = Cp_d.to_base_units().magnitude # 1005 # meter ** 2 / kelvin / second ** 2
     Cv_d = dry_air_spec_heat_vol = Cp_d / dry_air_spec_heat_ratio
     rho_d = dry_air_density_stp = ((1000. * units.mbar)
                                    / (Rd * 273.15 * units.K)).to('kg / m^3')
@@ -115,5 +118,6 @@ with exporter:
     kappa = poisson_exponent = (Rd / Cp_d).to('dimensionless')
     gamma_d = dry_adiabatic_lapse_rate = g / Cp_d
     epsilon = molecular_weight_ratio = (Mw / Md).to('dimensionless')
+    epsilon_no_units = epsilon.to_base_units().magnitude # 18.01528 / 28.9644
 
 del Exporter
