@@ -145,7 +145,7 @@ script:
       fi;
     else
       flake8 --version;
-      python setup.py test --addopts "$TEST_OUTPUT_CONTROL $TEST_OPTS";
+      pytest $TEST_OUTPUT_CONTROL $TEST_OPTS;
     fi
 
 after_script:
