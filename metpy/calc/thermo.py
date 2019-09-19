@@ -10,6 +10,7 @@ import warnings
 import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
+import logging
 
 from .tools import (_greater_or_close, _less_or_close, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
@@ -376,13 +377,25 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     The function is guaranteed to finish by virtue of the `max_iters` counter.
 
     """
-    def _lcl_iter(p, p0, w, t):
+    def _lcl_iter_units(p, p0, w, t):
         td = dewpoint(vapor_pressure(units.Quantity(p, pressure.units), w))
         return (p0 * (td / t) ** (1. / mpconsts.kappa)).m
 
+    def _lcl_iter_no_units(p, p0, w, t):
+        td = dewpoint_no_units(vapor_pressure_no_units(p, w))
+        return (p0 * (td / t) ** (1. / mpconsts.kappa_no_units))
+
+    _lcl_iter = _lcl_iter_no_units if USE_NO_UNITS else _lcl_iter_units
+
     w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
-    fp = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
-                        xtol=eps, maxiter=max_iters)
+
+    if USE_NO_UNITS:
+        fp = so.fixed_point(_lcl_iter, pressure.m*100, args=(pressure.m*100, w.m, temperature.m),
+                            xtol=eps, maxiter=max_iters)/100
+    else:
+        fp = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
+                            xtol=eps, maxiter=max_iters)
+
     lcl_p = fp * pressure.units
     return lcl_p, dewpoint(vapor_pressure(lcl_p, w))
 
@@ -715,6 +728,12 @@ def vapor_pressure(pressure, mixing):
 
 @exporter.export
 @preprocess_xarray
+def vapor_pressure_no_units(pressure, mixing):
+    return pressure * mixing / (mpconsts.epsilon_no_units + mixing)
+
+
+@exporter.export
+@preprocess_xarray
 @check_units('[temperature]')
 def saturation_vapor_pressure(temperature):
     r"""Calculate the saturation water vapor (partial) pressure.
@@ -813,6 +832,12 @@ def dewpoint(e):
     """
     val = np.log(e / sat_pressure_0c)
     return 0. * units.degC + 243.5 * units.delta_degC * val / (17.67 - val)
+
+@exporter.export
+@preprocess_xarray
+def dewpoint_no_units(e):
+    val = np.log(e / sat_pressure_0c_no_units)
+    return mpconsts.zero_degC + 243.5 * val / (17.67 - val)
 
 
 @exporter.export
