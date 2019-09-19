@@ -85,7 +85,6 @@ before_install:
   # We hard-code the sphinx_rtd_theme to lock in our build with patch for
   # version chooser
   - pip install --upgrade pip;
-  - pip install --upgrade setuptools;
   - if [[ ! -f $HOME/local/lib/libproj.so ]]; then
         wget http://download.osgeo.org/proj/proj-4.9.3.tar.gz;
         tar xf proj-4.9.3.tar.gz;
@@ -113,6 +112,8 @@ before_install:
       fi;
     fi;
   - mkdir $WHEELDIR;
+  # These need to be downloaded because when we run builds later we disable the index
+  - pip download -d $WHEELDIR -f $WHEELHOUSE setuptools wheel setuptools_scm;
   # Cython needs to be installed before even downloading CartoPy
   - pip install Cython;
   - pip download -d $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
