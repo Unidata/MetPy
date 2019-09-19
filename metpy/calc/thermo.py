@@ -11,6 +11,7 @@ import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
 import logging
+import functools
 
 from .tools import (_greater_or_close, _less_or_close, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
@@ -328,10 +329,20 @@ def moist_lapse(pressure, temperature, ref_pressure=None):
 
     return units.Quantity(ret_temperatures.T.squeeze(), temperature.units)
 
+def memoize(func):
+    cache = func.cache = {}
+    @functools.wraps(func)
+    def memoized_func(*args, **kwargs):
+        key = str(args) + str(kwargs)
+        if key not in cache:
+            cache[key] = func(*args, **kwargs)
+        return cache[key]
+    return memoized_func
 
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]')
+@memoize
 def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     r"""Calculate the lifted condensation level (LCL) using from the starting point.
 
