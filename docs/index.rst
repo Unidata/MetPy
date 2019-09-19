@@ -18,6 +18,7 @@
    api/index
    roadmap
    gempak
+   SUPPORT
    CONTRIBUTING
    infrastructureguide
    citing
