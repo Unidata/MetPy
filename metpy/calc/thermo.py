@@ -435,10 +435,10 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         mask = pressure < this_lcl[0]
         if np.all(_less_or_close(parcel_temperature_profile[mask], temperature[mask])):
             # LFC doesn't exist
-            return np.nan * pressure.units, np.nan * temperature.units
+            x, y = np.nan * pressure.units, np.nan * temperature.units
         else:  # LFC = LCL
             x, y = this_lcl
-            return x, y
+        return x, y
 
     # LFC exists. Make sure it is no lower than the LCL
     else:
@@ -448,11 +448,11 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
             el_pres, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
                                             temperature[1:], direction='decreasing',
                                             log_x=True)
-            if el_pres > this_lcl[0]:
-                return np.nan * pressure.units, np.nan * temperature.units
+            if np.min(el_pres) > this_lcl[0]:
+                x, y = np.nan * pressure.units, np.nan * temperature.units
             else:
                 x, y = this_lcl
-                return x, y
+            return x, y
         # Otherwise, find all LFCs that exist above the LCL
         # What is returned depends on which flag as described in the docstring
         else:
