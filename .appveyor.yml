@@ -1,3 +1,4 @@
+image: Visual Studio 2019
 clone_depth: 5
 
 environment:
@@ -16,6 +17,8 @@ install:
     # Use the pre-installed Miniconda for the desired arch
     - ps: if($env:PYTHON_VERSION -eq '3.6')
             { $env:CONDA_PATH="$($env:CONDA_PATH)36" }
+    - ps: if($env:PYTHON_VERSION -eq '3.7')
+            { $env:CONDA_PATH="$($env:CONDA_PATH)37" }
     - ps: if($env:PLATFORM -eq 'x64')
             { $env:CONDA_PATH="$($env:CONDA_PATH)-x64" }
     - ps: $env:path="$($env:CONDA_PATH);$($env:CONDA_PATH)\Scripts;$($env:CONDA_PATH)\Library\bin;C:\cygwin\bin;$($env:PATH)"
