@@ -1,4 +1,4 @@
-# Copyright (c) 2015 MetPy Developers.
+# Copyright (c) 2015,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools for reading, calculating, and plotting with weather data."""
@@ -11,10 +11,10 @@ import warnings
 # Must occur before below imports
 warnings.filterwarnings('ignore', 'numpy.dtype size changed')
 
-from ._version import get_versions  # noqa: E402
+from ._version import get_version  # noqa: E402
 from .xarray import *  # noqa: F401, F403
-__version__ = get_versions()['version']
-del get_versions
+__version__ = get_version()
+del get_version
 
 try:
     # Added in Python 3.2, will log anything warning or higher to stderr

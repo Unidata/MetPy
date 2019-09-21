@@ -1,3 +1,4 @@
+image: Visual Studio 2019
 clone_depth: 5
 
 environment:
@@ -16,6 +17,8 @@ install:
     # Use the pre-installed Miniconda for the desired arch
     - ps: if($env:PYTHON_VERSION -eq '3.6')
             { $env:CONDA_PATH="$($env:CONDA_PATH)36" }
+    - ps: if($env:PYTHON_VERSION -eq '3.7')
+            { $env:CONDA_PATH="$($env:CONDA_PATH)37" }
     - ps: if($env:PLATFORM -eq 'x64')
             { $env:CONDA_PATH="$($env:CONDA_PATH)-x64" }
     - ps: $env:path="$($env:CONDA_PATH);$($env:CONDA_PATH)\Scripts;$($env:CONDA_PATH)\Library\bin;C:\cygwin\bin;$($env:PATH)"
@@ -39,7 +42,7 @@ build: off
 
 test_script:
     - cmd: set TEST_DATA_DIR=%APPVEYOR_BUILD_FOLDER%\\staticdata
-    - cmd: python setup.py test --addopts "-s --junitxml=tests.xml --flake8 --mpl --cov=metpy -W error::metpy.deprecation.MetpyDeprecationWarning"
+    - cmd: pytest -s --junitxml=tests.xml --flake8 --mpl --cov=metpy -W error::metpy.deprecation.MetpyDeprecationWarning
     - cmd: cd docs
     - cmd: make overridecheck html
     - cmd: cd ..

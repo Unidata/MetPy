@@ -9,6 +9,7 @@
 .coverage.*
 .cache
 .pytest_cache
+pip-wheel-metadata/
 
 .ipynb_checkpoints/
 

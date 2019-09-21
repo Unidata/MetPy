@@ -1,4 +1,2 @@
-metpy/_version.py export-subst
-
 *.ipynb	diff=jupyternotebook
 talks/* linguist-documentation
