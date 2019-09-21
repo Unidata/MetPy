@@ -420,16 +420,16 @@ def pressure_to_height_std(pressure):
 @preprocess_xarray
 @check_units('[length]')
 def height_to_geopotential(height):
-    r"""Compute geopotential for a given height.
+    r"""Compute geopotential for a given height above sea level.
 
-    Calculates the geopotential from height using the following formula, which is derived from
-    the definition of geopotential as given in [Hobbs2006]_ Pg. 69 Eq 3.21:
+    Calculates the geopotential from height above mean sea level using the following formula,
+    which is derived from the definition of geopotential as given in [Hobbs2006]_ Pg. 69 Eq
+    3.21, along with an approximation for variation of gravity with altitude:
 
-    .. math:: \Phi = G m_e \left( \frac{1}{R_e} - \frac{1}{R_e + z}\right)
+    .. math:: \Phi = \frac{g R_e z}{R_e + z}
 
     (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth
-    radius, :math:`G` is the (universal) gravitational constant, and :math:`m_e` is the
-    approximate mass of Earth.)
+    radius, and :math:`g` is standard gravity.)
 
     Parameters
     ----------
@@ -448,29 +448,44 @@ def height_to_geopotential(height):
     >>> height = np.linspace(0, 10000, num=11) * units.m
     >>> geopot = metpy.calc.height_to_geopotential(height)
     >>> geopot
-    <Quantity([     0.           9817.46806283  19631.85526579  29443.16305887
-    39251.39289118  49056.54621087  58858.62446524  68657.62910064
-    78453.56156252  88246.42329544  98036.21574305], 'meter ** 2 / second ** 2')>
+    <Quantity([     0.           9805.11102602  19607.14506998  29406.10358006
+    39201.98800351  48994.79978671  58784.54037509  68571.21121319
+    78354.81374467  88135.34941224  97912.81965774], 'meter ** 2 / second ** 2')>
+
+    Notes
+    -----
+    This calculation approximates :math:`g(z)` as
+
+    .. math:: g(z) = g_0 \left( \frac{R_e}{R_e + z} \right)^2
+
+    where :math:`g_0` is standard gravity. It thereby accounts for the average effects of
+    centrifugal force on apparent gravity, but neglects latitudinal variations due to
+    centrifugal force and Earth's eccentricity.
+
+    (Prior to MetPy v0.11, this formula instead calculated :math:`g(z)` from Newton's Law of
+    Gravitation assuming a spherical Earth and no centrifugal force effects.)
+
+    See Also
+    --------
+    geopotential_to_height
 
     """
-    # Direct implementation of formula from Hobbs yields poor numerical results (see
-    # gh-1075), so was replaced with algebraic equivalent.
-    return (mpconsts.G * mpconsts.me / mpconsts.Re) * (height / (mpconsts.Re + height))
+    return (mpconsts.g * mpconsts.Re * height) / (mpconsts.Re + height)
 
 
 @exporter.export
 @preprocess_xarray
 def geopotential_to_height(geopot):
-    r"""Compute height from a given geopotential.
+    r"""Compute height above sea level from a given geopotential.
 
-    Calculates the height from geopotential using the following formula, which is derived from
-    the definition of geopotential as given in [Hobbs2006]_ Pg. 69 Eq 3.21:
+    Calculates the height above mean sea level from geopotential using the following formula,
+    which is derived from the definition of geopotential as given in [Hobbs2006]_ Pg. 69 Eq
+    3.21, along with an approximation for variation of gravity with altitude:
 
-    .. math:: z = \frac{1}{\frac{1}{R_e} - \frac{\Phi}{G m_e}} - R_e
+    .. math:: z = \frac{\Phi R_e}{gR_e - \Phi}
 
     (where :math:`\Phi` is geopotential, :math:`z` is height, :math:`R_e` is average Earth
-    radius, :math:`G` is the (universal) gravitational constant, and :math:`m_e` is the
-    approximate mass of Earth.)
+    radius, and :math:`g` is standard gravity.)
 
     Parameters
     ----------
@@ -480,7 +495,7 @@ def geopotential_to_height(geopot):
     Returns
     -------
     `pint.Quantity`
-        The corresponding height value(s)
+        The corresponding value(s) of height above sea level
 
     Examples
     --------
@@ -489,19 +504,33 @@ def geopotential_to_height(geopot):
     >>> height = np.linspace(0, 10000, num=11) * units.m
     >>> geopot = metpy.calc.height_to_geopotential(height)
     >>> geopot
-    <Quantity([     0.           9817.46806283  19631.85526579  29443.16305887
-    39251.39289118  49056.54621087  58858.62446524  68657.62910064
-    78453.56156252  88246.42329544  98036.21574305], 'meter ** 2 / second ** 2')>
+    <Quantity([     0.           9805.11102602  19607.14506998  29406.10358006
+    39201.98800351  48994.79978671  58784.54037509  68571.21121319
+    78354.81374467  88135.34941224  97912.81965774], 'meter ** 2 / second ** 2')>
     >>> height = metpy.calc.geopotential_to_height(geopot)
     >>> height
     <Quantity([     0.   1000.   2000.   3000.   4000.   5000.   6000.   7000.   8000.
     9000.  10000.], 'meter')>
 
+    Notes
+    -----
+    This calculation approximates :math:`g(z)` as
+
+    .. math:: g(z) = g_0 \left( \frac{R_e}{R_e + z} \right)^2
+
+    where :math:`g_0` is standard gravity. It thereby accounts for the average effects of
+    centrifugal force on apparent gravity, but neglects latitudinal variations due to
+    centrifugal force and Earth's eccentricity.
+
+    (Prior to MetPy v0.11, this formula instead calculated :math:`g(z)` from Newton's Law of
+    Gravitation assuming a spherical Earth and no centrifugal force effects.)
+
+    See Also
+    --------
+    height_to_geopotential
+
     """
-    # Direct implementation of formula from Hobbs yields poor numerical results (see
-    # gh-1075), so was replaced with algebraic equivalent.
-    scaled = geopot * mpconsts.Re
-    return scaled * mpconsts.Re / (mpconsts.G * mpconsts.me - scaled)
+    return (geopot * mpconsts.Re) / (mpconsts.g * mpconsts.Re - geopot)
 
 
 @exporter.export

@@ -265,24 +265,24 @@ def test_height_to_geopotential():
     """Test conversion from height to geopotential."""
     height = units.Quantity([0, 1000, 2000, 3000], units.m)
     geopot = height_to_geopotential(height)
-    assert_array_almost_equal(geopot, units.Quantity([0., 9817, 19632,
-                              29443], units('m**2 / second**2')), 0)
+    assert_array_almost_equal(geopot, units.Quantity([0., 9805, 19607,
+                              29406], units('m**2 / second**2')), 0)
 
 
 # See #1075 regarding previous destructive cancellation in floating point
 def test_height_to_geopotential_32bit():
     """Test conversion to geopotential with 32-bit values."""
     heights = np.linspace(20597, 20598, 11, dtype=np.float32) * units.m
-    truth = np.array([201590.422, 201591.391, 201592.375, 201593.344,
-                      201594.312, 201595.297, 201596.266, 201597.250,
-                      201598.219, 201599.203, 201600.172], dtype=np.float32) * units('J/kg')
+    truth = np.array([201336.67, 201337.66, 201338.62, 201339.61, 201340.58, 201341.56,
+                      201342.53, 201343.52, 201344.48, 201345.44, 201346.42],
+                     dtype=np.float32) * units('J/kg')
     assert_almost_equal(height_to_geopotential(heights), truth, 2)
 
 
 def test_geopotential_to_height():
     """Test conversion from geopotential to height."""
-    geopotential = units.Quantity([0, 9817.70342881, 19632.32592389,
-                                  29443.86893527], units('m**2 / second**2'))
+    geopotential = units.Quantity([0., 9805.11102602, 19607.14506998, 29406.10358006],
+                                  units('m**2 / second**2'))
     height = geopotential_to_height(geopotential)
     assert_array_almost_equal(height, units.Quantity([0, 1000, 2000, 3000], units.m), 0)
 
@@ -291,9 +291,9 @@ def test_geopotential_to_height():
 def test_geopotential_to_height_32bit():
     """Test conversion from geopotential to height with 32-bit values."""
     geopot = np.arange(201590, 201600, dtype=np.float32) * units('J/kg')
-    truth = np.array([20596.957, 20597.059, 20597.162, 20597.266,
-                      20597.365, 20597.469, 20597.570, 20597.674,
-                      20597.777, 20597.881], dtype=np.float32) * units.m
+    truth = np.array([20623.000, 20623.102, 20623.203, 20623.307, 20623.408,
+                      20623.512, 20623.615, 20623.717, 20623.820, 20623.924],
+                     dtype=np.float32) * units.m
     assert_almost_equal(geopotential_to_height(geopot), truth, 2)
 
 
