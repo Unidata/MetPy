@@ -396,7 +396,7 @@ def test_add_height_to_pressure():
 def test_add_pressure_to_height():
     """Test the height at pressure above height calculation."""
     height = add_pressure_to_height(110.8286757 * units.m, 100 * units.hPa)
-    assert_almost_equal(height, 988.0028867 * units.meter, 5)
+    assert_almost_equal(height, 988.0028867 * units.meter, 3)
 
 
 def test_sigma_to_pressure():

@@ -459,7 +459,7 @@ class SkewT(object):
 
         # Assemble into data for plotting
         t = dry_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
-        linedata = [np.vstack((ti, p)).T for ti in t]
+        linedata = [np.vstack((ti.m, p.m)).T for ti in t]
 
         # Add to plot
         kwargs.setdefault('colors', 'r')
@@ -512,7 +512,7 @@ class SkewT(object):
 
         # Assemble into data for plotting
         t = moist_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(units.degC)
-        linedata = [np.vstack((ti, p)).T for ti in t]
+        linedata = [np.vstack((ti.m, p.m)).T for ti in t]
 
         # Add to plot
         kwargs.setdefault('colors', 'b')
@@ -560,7 +560,7 @@ class SkewT(object):
 
         # Assemble data for plotting
         td = dewpoint(vapor_pressure(p, w))
-        linedata = [np.vstack((t, p)).T for t in td]
+        linedata = [np.vstack((t.m, p.m)).T for t in td]
 
         # Add to plot
         kwargs.setdefault('colors', 'g')
@@ -885,7 +885,7 @@ class Hodograph(object):
                 # Find any intervals not in the data and interpolate them
                 interpolation_heights = [bound.m for bound in intervals if bound not in c]
                 interpolation_heights = np.array(interpolation_heights) * intervals.units
-                interpolation_heights = (np.sort(interpolation_heights)
+                interpolation_heights = (np.sort(interpolation_heights.magnitude)
                                          * interpolation_heights.units)
                 (interpolated_heights, interpolated_u,
                  interpolated_v) = interpolate_1d(interpolation_heights, c, c, u, v)

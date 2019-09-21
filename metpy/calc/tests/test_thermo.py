@@ -710,8 +710,8 @@ def test_cape_cin():
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
     parcel_prof = parcel_profile(p, temperature[0], dewpoint[0])
     cape, cin = cape_cin(p, temperature, dewpoint, parcel_prof)
-    assert_almost_equal(cape, 75.7340825 * units('joule / kilogram'), 6)
-    assert_almost_equal(cin, -89.8179205 * units('joule / kilogram'), 6)
+    assert_almost_equal(cape, 75.7340825 * units('joule / kilogram'), 2)
+    assert_almost_equal(cin, -89.8179205 * units('joule / kilogram'), 2)
 
 
 def test_cape_cin_no_el():
@@ -721,8 +721,8 @@ def test_cape_cin_no_el():
     dewpoint = np.array([19., -11.2, -10.8, -10.4]) * units.celsius
     parcel_prof = parcel_profile(p, temperature[0], dewpoint[0]).to('degC')
     cape, cin = cape_cin(p, temperature, dewpoint, parcel_prof)
-    assert_almost_equal(cape, 0.08610409 * units('joule / kilogram'), 6)
-    assert_almost_equal(cin, -89.8179205 * units('joule / kilogram'), 6)
+    assert_almost_equal(cape, 0.08610409 * units('joule / kilogram'), 2)
+    assert_almost_equal(cin, -89.8179205 * units('joule / kilogram'), 2)
 
 
 def test_cape_cin_no_lfc():
@@ -732,8 +732,8 @@ def test_cape_cin_no_lfc():
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
     parcel_prof = parcel_profile(p, temperature[0], dewpoint[0]).to('degC')
     cape, cin = cape_cin(p, temperature, dewpoint, parcel_prof)
-    assert_almost_equal(cape, 0.0 * units('joule / kilogram'), 6)
-    assert_almost_equal(cin, 0.0 * units('joule / kilogram'), 6)
+    assert_almost_equal(cape, 0.0 * units('joule / kilogram'), 2)
+    assert_almost_equal(cin, 0.0 * units('joule / kilogram'), 2)
 
 
 def test_find_append_zero_crossings():
@@ -980,8 +980,8 @@ def test_surface_based_cape_cin():
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
     cape, cin = surface_based_cape_cin(p, temperature, dewpoint)
-    assert_almost_equal(cape, 75.7340825 * units('joule / kilogram'), 6)
-    assert_almost_equal(cin, -136.607809 * units('joule / kilogram'), 6)
+    assert_almost_equal(cape, 75.7340825 * units('joule / kilogram'), 2)
+    assert_almost_equal(cin, -136.607809 * units('joule / kilogram'), 2)
 
 
 def test_most_unstable_cape_cin_surface():
@@ -990,8 +990,8 @@ def test_most_unstable_cape_cin_surface():
     temperature = np.array([22.2, 14.6, 12., 9.4, 7., -38.]) * units.celsius
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
     mucape, mucin = most_unstable_cape_cin(pressure, temperature, dewpoint)
-    assert_almost_equal(mucape, 75.7340825 * units('joule / kilogram'), 6)
-    assert_almost_equal(mucin, -136.607809 * units('joule / kilogram'), 6)
+    assert_almost_equal(mucape, 75.7340825 * units('joule / kilogram'), 2)
+    assert_almost_equal(mucin, -136.607809 * units('joule / kilogram'), 2)
 
 
 def test_most_unstable_cape_cin():
@@ -1151,7 +1151,7 @@ def test_wet_bulb_temperature():
     """Test wet bulb calculation with scalars."""
     val = wet_bulb_temperature(1000 * units.hPa, 25 * units.degC, 15 * units.degC)
     truth = 18.34345936 * units.degC  # 18.59 from NWS calculator
-    assert_almost_equal(val, truth)
+    assert_almost_equal(val, truth, 5)
 
 
 def test_wet_bulb_temperature_1d():
@@ -1162,7 +1162,7 @@ def test_wet_bulb_temperature_1d():
     val = wet_bulb_temperature(pressures, temperatures, dewpoints)
     truth = [21.4449794, 16.7368576, 12.0656909] * units.degC
     # 21.58, 16.86, 12.18 from NWS Calculator
-    assert_array_almost_equal(val, truth)
+    assert_array_almost_equal(val, truth, 5)
 
 
 def test_wet_bulb_temperature_2d():
@@ -1178,7 +1178,7 @@ def test_wet_bulb_temperature_2d():
              [20.5021631, 15.801218, 11.1361878]] * units.degC
     # 21.58, 16.86, 12.18
     # 20.6, 15.9, 11.2 from NWS Calculator
-    assert_array_almost_equal(val, truth)
+    assert_array_almost_equal(val, truth, 5)
 
 
 def test_static_stability_adiabatic():
@@ -1229,8 +1229,8 @@ def test_lfc_not_below_lcl():
                           8.6, 8.1, 7.6, 7., 6.5, 6., 5.4]) * units.degC
     lfc_pressure, lfc_temp = lfc(levels, temperatures, dewpoints)
     # Before patch, LFC pressure would show 1000.5912165339967 hPa
-    assert_almost_equal(lfc_pressure, 811.8263397 * units.mbar, 6)
-    assert_almost_equal(lfc_temp, 6.4992871 * units.celsius, 6)
+    assert_almost_equal(lfc_pressure, 811.8263397 * units.mbar, 3)
+    assert_almost_equal(lfc_temp, 6.4992871 * units.celsius, 3)
 
 
 def test_multiple_lfcs():
@@ -1258,10 +1258,10 @@ def test_multiple_lfcs():
     lfc_pressure_bottom, lfc_temp_bottom = lfc(levels, temperatures, dewpoints,
                                                which='bottom')
     lfc_pressure_all, _ = lfc(levels, temperatures, dewpoints, which='all')
-    assert_almost_equal(lfc_pressure_top, 705.4346277 * units.mbar, 6)
-    assert_almost_equal(lfc_temp_top, 4.8922235 * units.degC, 6)
-    assert_almost_equal(lfc_pressure_bottom, 884.1954356 * units.mbar, 6)
-    assert_almost_equal(lfc_temp_bottom, 13.9597571 * units.degC, 6)
+    assert_almost_equal(lfc_pressure_top, 705.4346277 * units.mbar, 3)
+    assert_almost_equal(lfc_temp_top, 4.8922235 * units.degC, 3)
+    assert_almost_equal(lfc_pressure_bottom, 884.1954356 * units.mbar, 3)
+    assert_almost_equal(lfc_temp_bottom, 13.9597571 * units.degC, 3)
     assert_almost_equal(len(lfc_pressure_all), 2, 0)
 
 
@@ -1289,10 +1289,10 @@ def test_multiple_els():
     el_pressure_top, el_temp_top = el(levels, temperatures, dewpoints)
     el_pressure_bottom, el_temp_bottom = el(levels, temperatures, dewpoints, which='bottom')
     el_pressure_all, _ = el(levels, temperatures, dewpoints, which='all')
-    assert_almost_equal(el_pressure_top, 228.0575059 * units.mbar, 6)
-    assert_almost_equal(el_temp_top, -56.8123126 * units.degC, 6)
-    assert_almost_equal(el_pressure_bottom, 849.7942185 * units.mbar, 6)
-    assert_almost_equal(el_temp_bottom, 12.4233265 * units.degC, 6)
+    assert_almost_equal(el_pressure_top, 228.0575059 * units.mbar, 3)
+    assert_almost_equal(el_temp_top, -56.8123126 * units.degC, 3)
+    assert_almost_equal(el_pressure_bottom, 849.7942185 * units.mbar, 3)
+    assert_almost_equal(el_temp_bottom, 12.4233265 * units.degC, 3)
     assert_almost_equal(len(el_pressure_all), 2, 0)
 
 
@@ -1303,8 +1303,8 @@ def test_cape_cin_custom_profile():
     dewpoint = np.array([19., -11.2, -10.8, -10.4, -10., -53.2]) * units.celsius
     parcel_prof = parcel_profile(p, temperature[0], dewpoint[0]) + 5 * units.delta_degC
     cape, cin = cape_cin(p, temperature, dewpoint, parcel_prof)
-    assert_almost_equal(cape, 1443.505086499895 * units('joule / kilogram'), 6)
-    assert_almost_equal(cin, 0.0 * units('joule / kilogram'), 6)
+    assert_almost_equal(cape, 1443.505086499895 * units('joule / kilogram'), 2)
+    assert_almost_equal(cin, 0.0 * units('joule / kilogram'), 2)
 
 
 def test_parcel_profile_below_lcl():

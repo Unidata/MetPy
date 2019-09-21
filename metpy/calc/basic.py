@@ -931,8 +931,9 @@ def altimeter_to_station_pressure(altimeter_value, height):
     # N-Value
     n = (mpconsts.Rd * gamma / mpconsts.g).to_base_units()
 
-    return ((altimeter_value ** n - ((p0 ** n * gamma * height) / t0)) ** (1 / n) + (
-            0.3 * units.hPa))
+    return ((altimeter_value ** n
+             - ((p0.to(altimeter_value.units) ** n * gamma * height) / t0)) ** (1 / n)
+            + 0.3 * units.hPa)
 
 
 @exporter.export

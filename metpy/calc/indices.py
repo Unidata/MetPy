@@ -49,10 +49,10 @@ def precipitable_water(dewpt, pressure, bottom=None, top=None):
     dewpt = dewpt[sort_inds]
 
     if top is None:
-        top = np.nanmin(pressure) * pressure.units
+        top = np.nanmin(pressure.magnitude) * pressure.units
 
     if bottom is None:
-        bottom = np.nanmax(pressure) * pressure.units
+        bottom = np.nanmax(pressure.magnitude) * pressure.units
 
     pres_layer, dewpt_layer = get_layer(pressure, dewpt, bottom=bottom, depth=bottom - top)
 
@@ -109,7 +109,8 @@ def mean_pressure_weighted(pressure, *args, **kwargs):
     # function. Said integral works out to this function:
     pres_int = 0.5 * (layer_p[-1].magnitude**2 - layer_p[0].magnitude**2)
     for i, datavar in enumerate(args):
-        arg_mean = np.trapz(layer_arg[i] * layer_p, x=layer_p) / pres_int
+        arg_mean = np.trapz((layer_arg[i] * layer_p).magnitude,
+                            x=layer_p.magnitude) / pres_int
         ret.append(arg_mean * datavar.units)
 
     return ret
@@ -163,7 +164,8 @@ def bunkers_storm_motion(pressure, u, v, heights):
     # Take the cross product of the wind shear and k, and divide by the vector magnitude and
     # multiply by the deviaton empirically calculated in Bunkers (2000) (7.5 m/s)
     shear_cross = concatenate([shear[1], -shear[0]])
-    rdev = shear_cross * (7.5 * units('m/s').to(u.units) / np.hypot(*shear))
+    shear_mag = np.hypot(*(arg.magnitude for arg in shear)) * shear.units
+    rdev = shear_cross * (7.5 * units('m/s').to(u.units) / shear_mag)
 
     # Add the deviations to the layer average wind to get the RM motion
     right_mover = wind_mean + rdev
