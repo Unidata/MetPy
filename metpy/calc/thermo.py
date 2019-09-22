@@ -264,7 +264,7 @@ def moist_lapse(pressure, temperature, ref_pressure=None):
         frac = ((mpconsts.Rd * t + mpconsts.Lv * rs)
                 / (mpconsts.Cp_d + (mpconsts.Lv * mpconsts.Lv * rs * mpconsts.epsilon
                                     / (mpconsts.Rd * t * t)))).to('kelvin')
-        return frac / p
+        return (frac / p).magnitude
 
     if ref_pressure is None:
         ref_pressure = pressure[0]
@@ -287,14 +287,14 @@ def moist_lapse(pressure, temperature, ref_pressure=None):
 
     if ref_pressure > pressure.min():
         # Integrate downward in pressure
-        pres_down = np.append(ref_pressure, pressure[(ref_pres_idx - 1)::-1])
-        trace_down = si.odeint(dt, temperature.squeeze(), pres_down.squeeze())
+        pres_down = np.append(ref_pressure.m, pressure[(ref_pres_idx - 1)::-1].m)
+        trace_down = si.odeint(dt, temperature.m.squeeze(), pres_down.squeeze())
         ret_temperatures = np.concatenate((ret_temperatures, trace_down[:0:-1]))
 
     if ref_pressure < pressure.max():
         # Integrate upward in pressure
-        pres_up = np.append(ref_pressure, pressure[ref_pres_idx:])
-        trace_up = si.odeint(dt, temperature.squeeze(), pres_up.squeeze())
+        pres_up = np.append(ref_pressure.m, pressure[ref_pres_idx:].m)
+        trace_up = si.odeint(dt, temperature.m.squeeze(), pres_up.squeeze())
         ret_temperatures = np.concatenate((ret_temperatures, trace_up[1:]))
 
     if pres_decreasing:
@@ -628,7 +628,7 @@ def _parcel_profile_helper(pressure, temperature, dewpt):
     temp_lower = dry_lapse(press_lower, temperature)
 
     # If the pressure profile doesn't make it to the lcl, we can stop here
-    if _greater_or_close(np.nanmin(pressure), press_lcl.m):
+    if _greater_or_close(np.nanmin(pressure.m), press_lcl.m):
         return (press_lower[:-1], press_lcl, np.array([]) * press_lower.units,
                 temp_lower[:-1], temp_lcl, np.array([]) * temp_lower.units)
 
@@ -1449,17 +1449,17 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
 
     # CAPE
     # Only use data between the LFC and EL for calculation
-    p_mask = _less_or_close(x, lfc_pressure) & _greater_or_close(x, el_pressure)
-    x_clipped = x[p_mask]
-    y_clipped = y[p_mask]
+    p_mask = _less_or_close(x.m, lfc_pressure) & _greater_or_close(x.m, el_pressure)
+    x_clipped = x[p_mask].magnitude
+    y_clipped = y[p_mask].magnitude
     cape = (mpconsts.Rd
             * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
     # CIN
     # Only use data between the surface and LFC for calculation
-    p_mask = _greater_or_close(x, lfc_pressure)
-    x_clipped = x[p_mask]
-    y_clipped = y[p_mask]
+    p_mask = _greater_or_close(x.m, lfc_pressure)
+    x_clipped = x[p_mask].magnitude
+    y_clipped = y[p_mask].magnitude
     cin = (mpconsts.Rd
            * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
@@ -1498,7 +1498,7 @@ def _find_append_zero_crossings(x, y):
     y = y[sort_idx]
 
     # Remove duplicate data points if there are any
-    keep_idx = np.ediff1d(x, to_end=[1]) > 1e-6
+    keep_idx = np.ediff1d(x.magnitude, to_end=[1]) > 1e-6
     x = x[keep_idx]
     y = y[keep_idx]
     return x, y
@@ -1638,7 +1638,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     slices = [np.newaxis] * ndim
     slices[axis] = slice(None)
     slices = tuple(slices)
-    pres = np.broadcast_to(pres[slices], temperature.shape) * pres.units
+    pres = np.broadcast_to(pres[slices].magnitude, temperature.shape) * pres.units
 
     # Sort input data
     sort_pres = np.argsort(pres.m, axis=axis)
@@ -1904,7 +1904,7 @@ def mixed_layer(p, *args, **kwargs):
     ret = []
     for datavar_layer in datavars_layer:
         actual_depth = abs(p_layer[0] - p_layer[-1])
-        ret.append((-1. / actual_depth.m) * np.trapz(datavar_layer, p_layer)
+        ret.append((-1. / actual_depth.m) * np.trapz(datavar_layer.m, p_layer.m)
                    * datavar_layer.units)
     return ret
 
@@ -2047,7 +2047,7 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
 
     # Take the integral (with unit handling) and return the result in meters
     return (- mpconsts.Rd / mpconsts.g * np.trapz(
-        layer_virttemp.to('K'), x=np.log(layer_p / units.hPa)) * units.K).to('m')
+        layer_virttemp.m_as('K'), x=np.log(layer_p.m_as('hPa'))) * units.K).to('m')
 
 
 @exporter.export
@@ -2306,7 +2306,7 @@ def static_stability(pressure, temperature, axis=0):
     """
     theta = potential_temperature(pressure, temperature)
 
-    return - mpconsts.Rd * temperature / pressure * first_derivative(np.log(theta / units.K),
+    return - mpconsts.Rd * temperature / pressure * first_derivative(np.log(theta.m_as('K')),
                                                                      x=pressure, axis=axis)
 
 

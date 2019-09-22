@@ -99,8 +99,8 @@ class MetPyDataArrayAccessor(object):
 
     @unit_array.setter
     def unit_array(self, values):
-        """Set data values as a `pint.Quantity`."""
-        self._data_array.values = values
+        """Set data values from a `pint.Quantity`."""
+        self._data_array.values = values.magnitude
         self._units = self._data_array.attrs['units'] = str(values.units)
 
     def convert_units(self, units):

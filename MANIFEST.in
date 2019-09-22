@@ -1,17 +1,3 @@
-include README.rst
-include CITATION.txt
-include AUTHORS.txt
-include LICENSE
-include CONTRIBUTING.md
-include versioneer.py
-include metpy/_version.py
-include metpy/static-data-manifest.txt
-recursive-include examples *.py *.txt
-recursive-include tutorials *.py *.txt
-recursive-include docs *
-prune docs/build
-prune docs/examples
-prune docs/tutorials
-prune docs/api/generated
-prune **/__pycache__
-exclude .ipynb_checkpoints/*
+prune staticdata
+prune talks
+exclude docs/_static/*.pdf

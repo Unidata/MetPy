@@ -64,14 +64,14 @@ data_subset = data.metpy.parse_cf(['u-component_of_wind_isobaric',
                                    'v-component_of_wind_isobaric'])
 
 # To rename variables, supply a dictionary between old and new names to the rename method
-data.rename({
+data = data.rename({
     'Vertical_velocity_pressure_isobaric': 'omega',
     'Relative_humidity_isobaric': 'relative_humidity',
     'Temperature_isobaric': 'temperature',
     'u-component_of_wind_isobaric': 'u',
     'v-component_of_wind_isobaric': 'v',
     'Geopotential_height_isobaric': 'height'
-}, inplace=True)
+})
 
 #########################################################################
 # Units

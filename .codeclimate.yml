@@ -34,7 +34,5 @@ plugins:
         enabled: false
 
 exclude_patterns:
-- "versioneer.py"
-- "metpy/_version.py"
 - "metpy/io/_nexrad_msgs/msg*.py"
 - "docs/**/*"

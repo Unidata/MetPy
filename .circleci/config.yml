@@ -33,13 +33,13 @@ jobs:
           paths:
             - ./venv
           key: v1-dependencies-{{ checksum "setup.py" }}
-        
+
       # run tests!
       - run:
           name: run tests
           command: |
             . venv/bin/activate
-            python setup.py test --addopts "-s --flake8 --mpl"
+            pytest -s --flake8 --mpl
 
       - store_artifacts:
           path: test-reports

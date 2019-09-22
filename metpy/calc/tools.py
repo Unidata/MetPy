@@ -20,7 +20,7 @@ from scipy.spatial import cKDTree
 import xarray as xr
 
 from . import height_to_pressure_std, pressure_to_height_std
-from ..cbook import broadcast_indices
+from ..cbook import broadcast_indices, result_type
 from ..deprecation import deprecated, metpyDeprecation
 from ..interpolate.one_dimension import interpolate_1d, interpolate_nans_1d, log_interpolate_1d
 from ..package_tools import Exporter
@@ -403,8 +403,9 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
                     # Need to cast back to the input type since interp (up to at least numpy
                     # 1.13 always returns float64. This can cause upstream users problems,
                     # resulting in something like np.append() to upcast.
-                    bound_pressure = np.interp(np.atleast_1d(bound), heights,
-                                               pressure).astype(bound.dtype) * pressure.units
+                    bound_pressure = (np.interp(np.atleast_1d(bound.m), heights.m,
+                                                pressure.m).astype(result_type(bound))
+                                      * pressure.units)
                 else:
                     idx = (np.abs(heights - bound)).argmin()
                     bound_pressure = pressure[idx]
@@ -424,13 +425,15 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
         raise ValueError('Bound must be specified in units of length or pressure.')
 
     # If the bound is out of the range of the data, we shouldn't extrapolate
-    if not (_greater_or_close(bound_pressure, np.nanmin(pressure) * pressure.units)
-            and _less_or_close(bound_pressure, np.nanmax(pressure) * pressure.units)):
+    if not (_greater_or_close(bound_pressure, np.nanmin(pressure.m) * pressure.units)
+            and _less_or_close(bound_pressure, np.nanmax(pressure.m) * pressure.units)):
         raise ValueError('Specified bound is outside pressure range.')
-    if heights is not None:
-        if not (_less_or_close(bound_height, np.nanmax(heights) * heights.units)
-                and _greater_or_close(bound_height, np.nanmin(heights) * heights.units)):
-            raise ValueError('Specified bound is outside height range.')
+    if heights is not None and not (_less_or_close(bound_height,
+                                                   np.nanmax(heights.m) * heights.units)
+                                    and _greater_or_close(bound_height,
+                                                          np.nanmin(heights.m)
+                                                          * heights.units)):
+        raise ValueError('Specified bound is outside height range.')
 
     return bound_pressure, bound_height
 
@@ -506,9 +509,9 @@ def get_layer_heights(heights, depth, *args, **kwargs):
     if interpolate:
         # If we don't have the bottom or top requested, append them
         if top not in heights_interp:
-            heights_interp = np.sort(np.append(heights_interp, top)) * heights.units
+            heights_interp = np.sort(np.append(heights_interp.m, top.m)) * heights.units
         if bottom not in heights_interp:
-            heights_interp = np.sort(np.append(heights_interp, bottom)) * heights.units
+            heights_interp = np.sort(np.append(heights_interp.m, bottom.m)) * heights.units
 
     ret.append(heights_interp)
 
@@ -581,7 +584,7 @@ def get_layer(pressure, *args, **kwargs):
 
     # If the bottom is not specified, make it the surface pressure
     if bottom is None:
-        bottom = np.nanmax(pressure) * pressure.units
+        bottom = np.nanmax(pressure.m) * pressure.units
 
     bottom_pressure, bottom_height = _get_bound_pressure_height(pressure, bottom,
                                                                 heights=heights,
@@ -613,9 +616,9 @@ def get_layer(pressure, *args, **kwargs):
     if interpolate:
         # If we don't have the bottom or top requested, append them
         if not np.any(np.isclose(top_pressure, p_interp)):
-            p_interp = np.sort(np.append(p_interp, top_pressure)) * pressure.units
+            p_interp = np.sort(np.append(p_interp.m, top_pressure.m)) * pressure.units
         if not np.any(np.isclose(bottom_pressure, p_interp)):
-            p_interp = np.sort(np.append(p_interp, bottom_pressure)) * pressure.units
+            p_interp = np.sort(np.append(p_interp.m, bottom_pressure.m)) * pressure.units
 
     ret.append(p_interp[::-1])
 
@@ -1304,7 +1307,7 @@ def _process_deriv_args(f, kwargs):
             diff_size[axis] -= 1
             delta_units = getattr(delta, 'units', None)
             delta = np.broadcast_to(delta, diff_size, subok=True)
-            if delta_units is not None:
+            if not hasattr(delta, 'units') and delta_units is not None:
                 delta = delta * delta_units
         else:
             delta = _broadcast_to_axis(delta, axis, n)

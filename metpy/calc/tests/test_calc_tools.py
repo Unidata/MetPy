@@ -278,8 +278,8 @@ def get_bounds_data():
 def test_get_bound_pressure_height(pressure, bound, hgts, interp, expected):
     """Test getting bounds in layers with various parameter combinations."""
     bounds = _get_bound_pressure_height(pressure, bound, heights=hgts, interpolate=interp)
-    assert_array_almost_equal(bounds[0], expected[0], 5)
-    assert_array_almost_equal(bounds[1], expected[1], 5)
+    assert_array_almost_equal(bounds[0], expected[0], 4)
+    assert_array_almost_equal(bounds[1], expected[1], 4)
 
 
 def test_get_bound_invalid_bound_units():
@@ -366,8 +366,8 @@ def test_get_layer(pressure, variable, heights, bottom, depth, interp, expected)
     """Test get_layer functionality."""
     p_layer, y_layer = get_layer(pressure, variable, heights=heights, bottom=bottom,
                                  depth=depth, interpolate=interp)
-    assert_array_almost_equal(p_layer, expected[0], 5)
-    assert_array_almost_equal(y_layer, expected[1], 5)
+    assert_array_almost_equal(p_layer, expected[0], 4)
+    assert_array_almost_equal(y_layer, expected[1], 4)
 
 
 def test_greater_or_close():
