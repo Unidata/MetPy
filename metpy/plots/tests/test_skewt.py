@@ -77,6 +77,58 @@ def test_skewt_arbitrary_rect():
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
+def test_skewt_kelvin_units():
+    """Test skewt plots correctly using kelvin instead of celcius."""
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
+
+        # Plot the data using subroutines which are affected by axis units
+        p = np.linspace(1000, 100, 10)
+        t = (np.linspace(20, -20, 10) * units.degC).to(units.degK)
+        u = np.linspace(-10, 10, 10)
+        skew.plot(p, t, 'r')
+        skew.plot_barbs(p, u, u)
+
+        skew.ax.set_xlim(252.15, 302.15)
+        skew.ax.set_ylim(1000, 100)
+
+        # Add the relevant special lines
+        skew.plot_dry_adiabats()
+        skew.plot_moist_adiabats()
+        skew.plot_mixing_lines()
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
+def test_skewt_unnatural_units():
+    """Test skewt plots correctly with no units instead of celcius."""
+    with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
+        fig = plt.figure(figsize=(9, 9))
+        skew = SkewT(fig)
+
+        # Plot the data using subroutines which are affected by axis units
+        p  = np.linspace(1000, 100, 10)
+        # Plot xaxis will be in Kelvin
+        t  = (np.linspace(20, -20, 10) * units.degC).to(units.degK)
+        u  = np.linspace(-10, 10, 10)
+        skew.plot(p, t, 'r')
+        skew.plot_barbs(p, u, u)
+
+        skew.ax.set_xlim(252.15, 302.15)
+        skew.ax.set_ylim(1000, 100)
+
+        # Add adiabats using t0 in celcius
+        t0 = (np.linspace(260,300,10) * units.degK).to(units.degC)
+        skew.plot_dry_adiabats(t0 = t0)
+        skew.plot_moist_adiabats(t0 = t0)
+        skew.plot_mixing_lines()
+
+    return fig
+
+
 def test_skewt_subplot_rect_conflict():
     """Test the subplot/rect conflict failure."""
     with pytest.raises(ValueError):

@@ -418,28 +418,30 @@ class SkewT(object):
 
     def get_t0(self, spacing=10):
         r"""
-        
+
         Return range of temperatures based on xaxis
         Parameters
         ----------
         spacing : int or float, optional
             Space between returned temperature values
-        
+
         Returns
         -------
-        units.Quantity 
+        units.Quantity
         """
         # minimum and maximum temperature
         xmin, xmax = self.ax.get_xlim()
-        
+
         # units if they were supplied are stored in the xaxis
         tunits = self.ax.xaxis.units
-        
+
         # if temperature has no units, guess from the lower bound
         if tunits is None:
-            tunits = [units.degC, units.degK][xmin > 150]
+            tunits = units.degC
+            if xmin > 150:
+                tunits = units.degK
         return np.arange(xmin, xmax + 1, spacing) * tunits
-    
+
     def plot_dry_adiabats(self, t0=None, p=None, **kwargs):
         r"""Plot dry adiabats.
 
@@ -473,15 +475,16 @@ class SkewT(object):
 
         """
         # Determine set of starting temps if necessary
+        T_ax = self.get_t0()
         if t0 is None:
-            t0 = self.get_t0()
+            t0 = T_ax
 
         # Get pressure levels based on ylims if necessary
         if p is None:
             p = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = dry_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(t0.units)
+        t = dry_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(T_ax.units)
         linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
@@ -524,15 +527,17 @@ class SkewT(object):
 
         """
         # Determine set of starting temps if necessary
+        T_ax = self.get_t0()
         if t0 is None:
-            t0 = self.get_t0()
+            t0 = T_ax
 
         # Get pressure levels based on ylims if necessary
         if p is None:
             p = np.linspace(*self.ax.get_ylim()) * units.mbar
 
         # Assemble into data for plotting
-        t = moist_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(t0.units)
+
+        t = moist_lapse(p, t0[:, np.newaxis], 1000. * units.mbar).to(T_ax.units)
         linedata = [np.vstack((ti, p)).T for ti in t]
 
         # Add to plot
