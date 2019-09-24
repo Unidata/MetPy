@@ -121,7 +121,8 @@ before_install:
   - travis_wait python -m pip wheel -w $WHEELDIR $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
   - python -m pip install $EXTRA_PACKAGES --upgrade --upgrade-strategy=eager --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
   - travis_wait 30 python -m pip wheel -w $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-  - rm -f $WHEELDIR/MetPy*.whl;
+  # Make sure we don't upload MetPy or other development build wheels
+  - rm -f $WHEELDIR/MetPy*.whl $WHEELDIR/xarray-*+*.whl $WHEELDIR/Pint-*dev*.whl;
 
 install:
   - python -m pip install ".[$EXTRA_INSTALLS]" --upgrade --upgrade-strategy=eager --no-index $PRE -f file://$PWD/$WHEELDIR $VERSIONS;
