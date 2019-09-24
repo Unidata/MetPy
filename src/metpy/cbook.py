@@ -99,4 +99,17 @@ def iterable(value):
     return np.iterable(value)
 
 
-__all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'iterable')
+def result_type(value):
+    """Determine the type for numpy type casting in a pint-version-safe way."""
+    try:
+        return np.result_type(value)
+    except TypeError:
+        if hasattr(value, 'dtype'):
+            return value.dtype
+        elif hasattr(value, 'magnitude'):
+            return np.result_type(value.magnitude)
+        else:
+            raise TypeError('Cannot determine dtype for type {}'.format(type(value)))
+
+
+__all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'iterable', 'result_type')

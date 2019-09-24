@@ -1,4 +1,4 @@
-# Copyright (c) 2009,2016 MetPy Developers.
+# Copyright (c) 2009,2016,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """A collection of general purpose tools for reading files."""
@@ -11,8 +11,6 @@ from struct import Struct
 import zlib
 
 log = logging.getLogger(__name__)
-
-bytearray_to_buff = memoryview
 
 
 def open_as_needed(filename):
@@ -204,7 +202,7 @@ class IOBuffer(object):
 
     def read_struct(self, struct_class):
         """Parse and return a structure from the current buffer offset."""
-        struct = struct_class.unpack_from(bytearray_to_buff(self._data), self._offset)
+        struct = struct_class.unpack_from(memoryview(self._data), self._offset)
         self.skip(struct_class.size)
         return struct
 

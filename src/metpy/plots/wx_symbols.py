@@ -1,4 +1,4 @@
-# Copyright (c) 2016,2017 MetPy Developers.
+# Copyright (c) 2016,2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Simplify using the weather symbol font.
@@ -16,8 +16,6 @@ exporter = Exporter(globals())
 # Create a matplotlib font object pointing to our weather symbol font
 wx_symbol_font = fm.FontProperties(fname=resource_filename('metpy.plots',
                                                            'fonts/wx_symbols.ttf'))
-
-code_point = chr
 
 
 class CodePointMapping(object):
@@ -56,7 +54,7 @@ class CodePointMapping(object):
                 self.chrs.extend([''] * jump_len)
                 next_char_jump = self._safe_pop(char_jumps)
             else:
-                self.chrs.append(code_point(font_point))
+                self.chrs.append(chr(font_point))
                 if next_font_jump and code >= next_font_jump[0]:
                     font_point += next_font_jump[1]
                     next_font_jump = self._safe_pop(font_jumps)
@@ -99,7 +97,7 @@ class CodePointMapping(object):
             The appropriate code point in the font
 
         """
-        return code_point(ord(self(code)) + alt)
+        return chr(ord(self(code)) + alt)
 
 
 #
