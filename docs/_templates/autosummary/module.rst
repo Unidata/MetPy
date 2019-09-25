@@ -1,4 +1,4 @@
-{% if fullname in ['metpy.calc'] %}
+{% if fullname in ['metpy.calc', 'metpy.xarray'] %}
 
 {% include 'overrides/' ~ fullname ~ '.rst' with context %}
 

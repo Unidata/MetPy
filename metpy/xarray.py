@@ -1,7 +1,20 @@
-# Copyright (c) 2018 MetPy Developers.
+# Copyright (c) 2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Provide accessors to enhance interoperability between XArray and MetPy."""
+"""Provide accessors to enhance interoperability between xarray and MetPy.
+
+MetPy relies upon the `CF Conventions <http://cfconventions.org/>`_. to provide helpful
+attributes and methods on xarray DataArrays and Dataset for working with
+coordinate-related metadata. Also included are several attributes and methods for unit
+operations.
+
+These accessors will be activated with any import of MetPy. Do not use the
+``MetPyDataArrayAccessor`` or ``MetPyDatasetAccessor`` classes directly, instead, utilize the
+applicable properties and methods via the ``.metpy`` attribute on an xarray DataArray or
+Dataset.
+
+See Also: :doc:`xarray with MetPy Tutorial </tutorials/xarray_tutorial>`.
+"""
 from __future__ import absolute_import
 
 import functools
@@ -78,15 +91,34 @@ log = logging.getLogger(__name__)
 
 @xr.register_dataarray_accessor('metpy')
 class MetPyDataArrayAccessor(object):
-    """Provide custom attributes and methods on XArray DataArray for MetPy functionality."""
+    r"""Provide custom attributes and methods on xarray DataArrays for MetPy functionality.
 
-    def __init__(self, data_array):
-        """Initialize accessor with a DataArray."""
+    This accessor provides several convenient attributes and methods through the `.metpy`
+    attribute on a DataArray. For example, MetPy can identify the coordinate corresponding
+    to a particular axis (given sufficent metadata):
+
+        >>> import xarray as xr
+        >>> temperature = xr.DataArray([[0, 1], [2, 3]], dims=('lat', 'lon'),
+        ...                            coords={'lat': [40, 41], 'lon': [-105, -104]},
+        ...                            attrs={'units': 'degC'})
+        >>> temperature.metpy.x
+        <xarray.DataArray 'lon' (lon: 2)>
+        array([-105, -104])
+        Coordinates:
+          * lon      (lon) int64 -105 -104
+        Attributes:
+            _metpy_axis:  X
+
+    """
+
+    def __init__(self, data_array):  # noqa: D107
+        # Initialize accessor with a DataArray. (Do not use directly).
         self._data_array = data_array
         self._units = self._data_array.attrs.get('units', 'dimensionless')
 
     @property
     def units(self):
+        """Return the units of this DataArray as a `pint.Quantity`."""
         if self._units != '%':
             return units(self._units)
         else:
@@ -94,7 +126,7 @@ class MetPyDataArrayAccessor(object):
 
     @property
     def unit_array(self):
-        """Return data values as a `pint.Quantity`."""
+        """Return the data values of this DataArray as a `pint.Quantity`."""
         return self._data_array.values * self.units
 
     @unit_array.setter
@@ -109,7 +141,7 @@ class MetPyDataArrayAccessor(object):
 
     @property
     def crs(self):
-        """Provide easy access to the `crs` coordinate."""
+        """Return the coordinate reference system (CRS) as a CFProjection object."""
         if 'crs' in self._data_array.coords:
             return self._data_array.coords['crs'].item()
         raise AttributeError('crs attribute is not available.')
@@ -131,7 +163,17 @@ class MetPyDataArrayAccessor(object):
                 coord_map[axis] = self._data_array[coord_map[axis]]
 
     def assign_coordinates(self, coordinates):
-        """Assign the given coordinates to the given CF axis types."""
+        """Assign the given coordinates to the given CF axis types.
+
+        Parameters
+        ----------
+        coordinates : dict or None
+            Mapping from axis types ('T', 'Z', 'Y', 'X') to coordinates of this DataArray.
+            Coordinates can either be specified directly or by their name. If ``None``, clears
+            the `_metpy_axis` attribute on all coordinates, which will trigger reparsing of
+            all coordinates on next access.
+
+        """
         if coordinates:
             # Assign the _metpy_axis attributes according to supplied mapping
             self._fixup_coordinate_map(coordinates)
@@ -224,24 +266,42 @@ class MetPyDataArrayAccessor(object):
             raise AttributeError("'" + axis + "' is not an interpretable axis.")
 
     def coordinates(self, *args):
-        """Return the coordinate variables corresponding to the given axes types."""
+        """Return the coordinate variables corresponding to the given axes types.
+
+        Parameters
+        ----------
+        args : str
+            Strings describing the axes type(s) to obtain. Currently understood types are
+            'time', 'vertical', 'y', and 'x'.
+
+        Notes
+        -----
+        This method is designed for use with mutliple coordinates; it returns a generator. To
+        access a single coordinate, use the appropriate attribute on the accessor, or use tuple
+        unpacking.
+
+        """
         for arg in args:
             yield self._axis(arg)
 
     @property
     def time(self):
+        """Return the time coordinate."""
         return self._axis('time')
 
     @property
     def vertical(self):
+        """Return the vertical coordinate."""
         return self._axis('vertical')
 
     @property
     def y(self):
+        """Return the y or latitude coordinate."""
         return self._axis('y')
 
     @property
     def x(self):
+        """Return the x or longitude coordinate."""
         return self._axis('x')
 
     def coordinates_identical(self, other):
@@ -273,8 +333,12 @@ class MetPyDataArrayAccessor(object):
     def find_axis_name(self, axis):
         """Return the name of the axis corresponding to the given identifier.
 
-        The given indentifer can be an axis number (integer), dimension coordinate name
-        (string) or a standard axis type (string).
+        Parameters
+        ----------
+        axis : str or int
+            Identifier for an axis. Can be the an axis number (integer), dimension coordinate
+            name (string) or a standard axis type (string).
+
         """
         if isinstance(axis, int):
             # If an integer, use the corresponding dimension
@@ -314,11 +378,11 @@ class MetPyDataArrayAccessor(object):
 
     @property
     def loc(self):
-        """Make the LocIndexer available as a property."""
+        """Wrap DataArray.loc with an indexer to handle units and coordinate types."""
         return self._LocIndexer(self._data_array)
 
     def sel(self, indexers=None, method=None, tolerance=None, drop=False, **indexers_kwargs):
-        """Wrap DataArray.sel to handle units."""
+        """Wrap DataArray.sel to handle units and coordinate types."""
         indexers = either_dict_or_kwargs(indexers, indexers_kwargs, 'sel')
         indexers = _reassign_quantity_indexer(self._data_array, indexers)
         return self._data_array.sel(indexers, method=method, tolerance=tolerance, drop=drop)
@@ -326,10 +390,20 @@ class MetPyDataArrayAccessor(object):
 
 @xr.register_dataset_accessor('metpy')
 class MetPyDatasetAccessor(object):
-    """Provide custom attributes and methods on XArray Dataset for MetPy functionality."""
+    """Provide custom attributes and methods on XArray Datasets for MetPy functionality.
 
-    def __init__(self, dataset):
-        """Initialize accessor with a Dataset."""
+    This accessor provides parsing of CF metadata and unit-/coordinate-type-aware selection.
+
+        >>> import xarray as xr
+        >>> from metpy.testing import get_test_data
+        >>> ds = xr.open_dataset(get_test_data('narr_example.nc', False)).metpy.parse_cf()
+        >>> print(ds['crs'].item())
+        Projection: lambert_conformal_conic
+
+    """
+
+    def __init__(self, dataset):  # noqa: D107
+        # Initialize accessor with a Dataset. (Do not use directly).
         self._dataset = dataset
 
     def parse_cf(self, varname=None, coordinates=None):
@@ -426,7 +500,7 @@ class MetPyDatasetAccessor(object):
 
     @property
     def loc(self):
-        """Make the LocIndexer available as a property."""
+        """Wrap Dataset.loc with an indexer to handle units and coordinate types."""
         return self._LocIndexer(self._dataset)
 
     def sel(self, indexers=None, method=None, tolerance=None, drop=False, **indexers_kwargs):
@@ -437,7 +511,17 @@ class MetPyDatasetAccessor(object):
 
 
 def check_axis(var, *axes):
-    """Check if var satisfies the criteria for any of the given axes."""
+    """Check if the criteria for any of the given axes are satisfied.
+
+    Parameters
+    ----------
+    var : `xarray.DataArray`
+        DataArray belonging to the coordinate to be checked
+    axes : str
+        Axis type(s) to check for. Currently can check for 'time', 'vertical', 'y', 'lat', 'x',
+        and 'lon'.
+
+    """
     for axis in axes:
         # Check for
         #   - standard name (CF option)
@@ -549,3 +633,6 @@ def _reassign_quantity_indexer(data, indexers):
                                              data[coord_name].metpy.units)
 
     return indexers
+
+
+__all__ = ('MetPyDataArrayAccessor', 'MetPyDatasetAccessor')

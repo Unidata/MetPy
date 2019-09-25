@@ -13,11 +13,17 @@ import os
 import sys
 
 
+modules_to_skip = ['metpy.xarray']
+
+
 failed = False
 for full_path in glob.glob('_templates/overrides/metpy.*.rst'):
 
     filename = os.path.basename(full_path)
     module = filename.split('.rst')[0]
+
+    if module in modules_to_skip:
+        continue
 
     # Get all functions in the module
     i = importlib.import_module(module)
