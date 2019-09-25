@@ -61,25 +61,17 @@ matrix:
       env: TASK="docs" PRE="--pre"
     - python: nightly
       env: PRE="--pre"
-    - python: 3.7
+    - python: "3.7-dev"
       env:
         - TASK="coverage"
         - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
-    - python: 3.7
+    - python: "3.7-dev"
       env:
         - TASK="docs"
         - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
   allow_failures:
     - python: "3.7-dev"
     - python: nightly
-    - python: 3.7
-      env:
-        - TASK="coverage"
-        - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
-    - python: 3.7
-      env:
-        - TASK="docs"
-        - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
 
 before_install:
   # We hard-code the sphinx_rtd_theme to lock in our build with patch for
@@ -175,7 +167,7 @@ deploy:
     upload_docs: no
     on:
       repo: Unidata/MetPy
-      python: 3.6
+      python: 3.7
       condition: '$TASK != "docs"'
       tags: true
   - provider: script
@@ -183,7 +175,7 @@ deploy:
     skip_cleanup: true
     on:
       all_branches: true
-      python: 3.6
+      python: 3.7
       condition: '$TASK == "docs"'
 
 notifications:
