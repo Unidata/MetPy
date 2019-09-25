@@ -109,7 +109,7 @@ before_install:
   # Cython needs to be installed before even downloading CartoPy
   - python -m pip install Cython;
   - python -m pip download -d $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-  - touch $WHEELDIR/download_marker && ls -lrt $WHEELDIR;
+  - touch $WHEELDIR/download_marker;
   - travis_wait python -m pip wheel -w $WHEELDIR $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
   - python -m pip install $EXTRA_PACKAGES --upgrade --upgrade-strategy=eager --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
   - travis_wait 30 python -m pip wheel -w $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
@@ -149,6 +149,8 @@ after_script:
       python-codacy-coverage -r coverage.xml;
       codeclimate-test-reporter;
     fi
+  - ls -lr --full-time $WHEELDIR;
+  - echo $(find $WHEELDIR -newer $WHEELDIR/download_marker -name *.whl | tr [:space:] :)
 
 before_deploy:
   # Remove unused, unminified javascript from sphinx
