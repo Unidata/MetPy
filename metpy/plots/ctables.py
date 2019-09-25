@@ -185,7 +185,7 @@ class ColortableRegistry(dict):
 
         """
         with warnings.catch_warnings():
-            warnings.filterwarnings("ignore", category=metpyDeprecation)
+            warnings.filterwarnings('ignore', category=metpyDeprecation)
             self[name] = read_colortable(fobj)
             self[name + '_r'] = self[name][::-1]
 

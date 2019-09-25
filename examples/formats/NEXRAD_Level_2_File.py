@@ -1,4 +1,4 @@
-# Copyright (c) 2015,2018 MetPy Developers.
+# Copyright (c) 2015,2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -12,7 +12,7 @@ import numpy as np
 
 from metpy.cbook import get_test_data
 from metpy.io import Level2File
-from metpy.plots import add_metpy_logo, add_timestamp, colortables
+from metpy.plots import add_metpy_logo, add_timestamp
 
 ###########################################
 
@@ -53,8 +53,7 @@ for var_data, var_range, ax in zip((ref, rho), (ref_range, rho_range), axes):
     ylocs = var_range * np.cos(np.deg2rad(az[:, np.newaxis]))
 
     # Plot the data
-    cmap = colortables.get_colortable('viridis')
-    ax.pcolormesh(xlocs, ylocs, data, cmap=cmap)
+    ax.pcolormesh(xlocs, ylocs, data, cmap='viridis')
     ax.set_aspect('equal', 'datalim')
     ax.set_xlim(-40, 20)
     ax.set_ylim(-30, 30)
