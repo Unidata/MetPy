@@ -297,6 +297,22 @@ class SkewT(object):
                 subplot = (1, 1, 1)
 
             self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
+
+        # Set the yaxis as inverted with log scaling
+        self.ax.set_yscale('log')
+
+        # Override default ticking for log scaling
+        self.ax.yaxis.set_major_formatter(ScalarFormatter())
+        self.ax.yaxis.set_major_locator(MultipleLocator(100))
+        self.ax.yaxis.set_minor_formatter(NullFormatter())
+
+        # Needed to make sure matplotlib doesn't freak out and create a bunch of ticks
+        # Also takes care of inverting the y-axis
+        self.ax.set_ylim(1050, 100)
+
+        # Try to make sane default temperature plotting ticks
+        self.ax.xaxis.set_major_locator(MultipleLocator(10))
+        self.ax.set_xlim(-40, 50)
         self.ax.grid(True)
 
         self.mixing_lines = None
@@ -307,8 +323,7 @@ class SkewT(object):
         r"""Plot data.
 
         Simple wrapper around plot so that pressure is the first (independent)
-        input. This is essentially a wrapper around `semilogy`. It also
-        sets some appropriate ticking and plot ranges.
+        input. This is essentially a wrapper around `plot`.
 
         Parameters
         ----------
@@ -317,9 +332,9 @@ class SkewT(object):
         t : array_like
             temperature values, can also be used for things like dew point
         args
-            Other positional arguments to pass to :func:`~matplotlib.pyplot.semilogy`
+            Other positional arguments to pass to :func:`~matplotlib.pyplot.plot`
         kwargs
-            Other keyword arguments to pass to :func:`~matplotlib.pyplot.semilogy`
+            Other keyword arguments to pass to :func:`~matplotlib.pyplot.plot`
 
         Returns
         -------
@@ -328,24 +343,12 @@ class SkewT(object):
 
         See Also
         --------
-        :func:`matplotlib.pyplot.semilogy`
+        :func:`matplotlib.pyplot.plot`
 
         """
         # Skew-T logP plotting
         t, p = _delete_masked_points(t, p)
-        lines = self.ax.semilogy(t, p, *args, **kwargs)
-
-        # Disables the log-formatting that comes with semilogy
-        self.ax.yaxis.set_major_formatter(ScalarFormatter())
-        self.ax.yaxis.set_major_locator(MultipleLocator(100))
-        self.ax.yaxis.set_minor_formatter(NullFormatter())
-        if not self.ax.yaxis_inverted():
-            self.ax.invert_yaxis()
-
-        # Try to make sane default temperature plotting
-        self.ax.xaxis.set_major_locator(MultipleLocator(10))
-
-        return lines
+        return self.ax.plot(t, p, *args, **kwargs)
 
     def plot_barbs(self, p, u, v, c=None, xloc=1.0, x_clip_radius=0.1,
                    y_clip_radius=0.08, **kwargs):
