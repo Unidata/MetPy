@@ -251,7 +251,7 @@ class SkewT(object):
 
     """
 
-    def __init__(self, fig=None, rotation=30, subplot=None, rect=None):
+    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, aspect=80.5):
         r"""Create SkewT - logP plots.
 
         Parameters
@@ -272,6 +272,10 @@ class SkewT(object):
         rect : tuple[float, float, float, float], optional
             Rectangle (left, bottom, width, height) in which to place the axes. This
             allows the user to place the axes at an arbitrary point on the figure.
+        aspect : float, int, or 'auto', optional
+            Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
+            Defaults to 80.5. Passing the string ``'auto'`` tells matplotlib to handle
+            the aspect ratio automatically (this is not recommended for SkewT).
 
         """
         if fig is None:
@@ -318,6 +322,10 @@ class SkewT(object):
         self.mixing_lines = None
         self.dry_adiabats = None
         self.moist_adiabats = None
+
+        # Maintain a reasonable ratio of data limits. Only works on Matplotlib >= 3.2
+        if matplotlib.__version__[:3] > '3.1':
+            self.ax.set_aspect(aspect, adjustable='box')
 
     def plot(self, p, t, *args, **kwargs):
         r"""Plot data.
