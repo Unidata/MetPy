@@ -544,7 +544,7 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
     # Partially adapted from similar SharpPy code
     r"""Calculate storm relative helicity.
 
-    Calculates storm relatively helicity following [Markowski2010] 230-231.
+    Calculates storm relatively helicity following [Markowski2010]_ 230-231.
 
     .. math:: \int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz
 
