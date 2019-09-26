@@ -60,7 +60,7 @@ def test_skewt_subplot():
 
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
 def test_skewt_gridspec():
-    """Test using SkewT on a sub-plot."""
+    """Test using SkewT on a GridSpec sub-plot."""
     fig = plt.figure(figsize=(9, 9))
     gs = GridSpec(1, 2)
     SkewT(fig, subplot=gs[0, 1])
