@@ -313,9 +313,11 @@ class SkewT(object):
         # Needed to make sure matplotlib doesn't freak out and create a bunch of ticks
         # Also takes care of inverting the y-axis
         self.ax.set_ylim(1050, 100)
+        self.ax.yaxis.set_units(units.hPa)
 
         # Try to make sane default temperature plotting ticks
         self.ax.xaxis.set_major_locator(MultipleLocator(10))
+        self.ax.xaxis.set_units(units.degC)
         self.ax.set_xlim(-40, 50)
         self.ax.grid(True)
 
