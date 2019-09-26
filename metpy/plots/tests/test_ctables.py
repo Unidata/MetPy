@@ -15,8 +15,8 @@ except ImportError:
 import numpy as np
 import pytest
 
+from metpy.deprecation import MetpyDeprecationWarning
 from metpy.plots.ctables import ColortableRegistry, convert_gempak_table
-from metpy.testing import check_and_silence_deprecation
 
 
 @pytest.fixture()
@@ -139,8 +139,8 @@ def test_gempak():
     assert result == '(0.000000, 0.000000, 0.000000)\n(1.000000, 1.000000, 1.000000)\n'
 
 
-@check_and_silence_deprecation
 def test_viridis(registry):
     """Test viridis deprecation warning."""
-    registry.scan_resource('metpy.plots', 'colortable_files')
-    registry.get_colortable('viridis')
+    with pytest.warns(MetpyDeprecationWarning):
+        registry.scan_resource('metpy.plots', 'colortable_files')
+        registry.get_colortable('viridis')
