@@ -24,7 +24,7 @@ def test_skewt_api():
     """Test the SkewT API."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
-        skew = SkewT(fig)
+        skew = SkewT(fig, aspect='auto')
 
         # Plot the data using normal plotting functions, in this case using
         # log scaling in Y, as dictated by the typical meteorological plot
@@ -54,7 +54,7 @@ def test_skewt_api():
 def test_skewt_subplot():
     """Test using SkewT on a sub-plot."""
     fig = plt.figure(figsize=(9, 9))
-    SkewT(fig, subplot=(2, 2, 1))
+    SkewT(fig, subplot=(2, 2, 1), aspect='auto')
     return fig
 
 
@@ -63,7 +63,7 @@ def test_skewt_gridspec():
     """Test using SkewT on a GridSpec sub-plot."""
     fig = plt.figure(figsize=(9, 9))
     gs = GridSpec(1, 2)
-    SkewT(fig, subplot=gs[0, 1])
+    SkewT(fig, subplot=gs[0, 1], aspect='auto')
     return fig
 
 
@@ -71,14 +71,14 @@ def test_skewt_with_grid_enabled():
     """Test using SkewT when gridlines are already enabled (#271)."""
     with plt.rc_context(rc={'axes.grid': True}):
         # Also tests when we don't pass in Figure
-        SkewT()
+        SkewT(aspect='auto')
 
 
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
 def test_skewt_arbitrary_rect():
     """Test placing the SkewT in an arbitrary rectangle."""
     fig = plt.figure(figsize=(9, 9))
-    SkewT(fig, rect=(0.15, 0.35, 0.8, 0.3))
+    SkewT(fig, rect=(0.15, 0.35, 0.8, 0.3), aspect='auto')
     return fig
 
 
@@ -102,7 +102,7 @@ def test_skewt_shade_cape_cin(test_profile):
 
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
-        skew = SkewT(fig)
+        skew = SkewT(fig, aspect='auto')
         skew.plot(p, t, 'r')
         skew.plot(p, tp, 'k')
         skew.shade_cape(p, t, tp)
@@ -120,7 +120,7 @@ def test_skewt_shade_area(test_profile):
 
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
-        skew = SkewT(fig)
+        skew = SkewT(fig, aspect='auto')
         skew.plot(p, t, 'r')
         skew.plot(p, tp, 'k')
         skew.shade_area(p, t, tp)
@@ -134,7 +134,7 @@ def test_skewt_shade_area_invalid(test_profile):
     """Test shading areas on a SkewT plot."""
     p, t, tp = test_profile
     fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
+    skew = SkewT(fig, aspect='auto')
     skew.plot(p, t, 'r')
     skew.plot(p, tp, 'k')
     with pytest.raises(ValueError):
@@ -148,7 +148,7 @@ def test_skewt_shade_area_kwargs(test_profile):
 
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
-        skew = SkewT(fig)
+        skew = SkewT(fig, aspect='auto')
         skew.plot(p, t, 'r')
         skew.plot(p, tp, 'k')
         skew.shade_area(p, t, tp, facecolor='m')
@@ -164,7 +164,7 @@ def test_skewt_wide_aspect_ratio(test_profile):
     p, t, tp = test_profile
 
     fig = plt.figure(figsize=(12.5, 3))
-    skew = SkewT(fig)
+    skew = SkewT(fig, aspect='auto')
     skew.plot(p, t, 'r')
     skew.plot(p, tp, 'k')
     skew.ax.set_xlim(-30, 50)
@@ -225,7 +225,7 @@ def test_hodograph_plot_colormapped():
 def test_skewt_barb_color():
     """Test plotting colored wind barbs on the Skew-T."""
     fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
+    skew = SkewT(fig, aspect='auto')
 
     p = np.linspace(1000, 100, 10)
     u = np.linspace(-10, 10, 10)
@@ -242,7 +242,7 @@ def test_skewt_barb_unit_conversion():
     p_wind = np.array([500]) * units.hPa
 
     fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
+    skew = SkewT(fig, aspect='auto')
     skew.ax.set_ylabel('')  # remove_text doesn't do this as of pytest 0.9
     skew.plot_barbs(p_wind, u_wind, v_wind, plot_units='knots')
     skew.ax.set_ylim(1000, 500)
@@ -260,7 +260,7 @@ def test_skewt_barb_no_default_unit_conversion():
     p_wind = np.array([500]) * units.hPa
 
     fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
+    skew = SkewT(fig, aspect='auto')
     skew.ax.set_ylabel('')  # remove_text doesn't do this as of pytest 0.9
     skew.plot_barbs(p_wind, u_wind, v_wind)
     skew.ax.set_ylim(1000, 500)
@@ -277,7 +277,7 @@ def test_skewt_barb_unit_conversion_exception(u, v):
     p_wind = np.array([500]) * units.hPa
 
     fig = plt.figure(figsize=(9, 9))
-    skew = SkewT(fig)
+    skew = SkewT(fig, aspect='auto')
     with pytest.raises(ValueError):
         skew.plot_barbs(p_wind, u, v, plot_units='knots')
 
