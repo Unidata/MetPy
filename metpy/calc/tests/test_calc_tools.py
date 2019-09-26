@@ -7,6 +7,7 @@ from collections import namedtuple
 
 import numpy as np
 import numpy.ma as ma
+import pandas as pd
 import pytest
 import xarray as xr
 
@@ -649,7 +650,7 @@ def test_laplacian_x_deprecation(deriv_2d_data):
 def test_parse_angle_abbrieviated():
     """Test abbrieviated directional text in degrees."""
     expected_angles_degrees = np.arange(0, 360, 22.5) * units.degree
-    output_angles_degrees = list(map(parse_angle, DIR_STRS))
+    output_angles_degrees = parse_angle(DIR_STRS)
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
 
 
@@ -660,7 +661,7 @@ def test_parse_angle_ext():
                      'SOUTH', 'SOUTH SOUTH WEST', 'southWEST', 'WEST south_WEST',
                      'WeSt', 'WestNorth West', 'North West', 'NORTH north_WeSt']
     expected_angles_degrees = np.arange(0, 360, 22.5) * units.degree
-    output_angles_degrees = list(map(parse_angle, test_dir_strs))
+    output_angles_degrees = parse_angle(test_dir_strs)
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
 
 
@@ -673,6 +674,29 @@ def test_parse_angle_mix_multiple():
     expected_angles_degrees = np.arange(0, 360, 22.5) * units.degree
     output_angles_degrees = parse_angle(test_dir_strs)
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
+
+
+def test_parse_angles_array():
+    """Test array of angles to parse."""
+    angles = np.array(['N', 'S', 'E', 'W'])
+    expected_angles = np.array([0, 180, 90, 270]) * units.degree
+    calculated_angles = parse_angle(angles)
+    assert_array_almost_equal(calculated_angles, expected_angles)
+
+
+def test_parse_angles_series():
+    """Test pandas.Series of angles to parse."""
+    angles = pd.Series(['N', 'S', 'E', 'W'])
+    expected_angles = np.array([0, 180, 90, 270]) * units.degree
+    calculated_angles = parse_angle(angles)
+    assert_array_almost_equal(calculated_angles, expected_angles)
+
+
+def test_parse_angles_single():
+    """Test single input into `parse_angles`."""
+    calculated_angle = parse_angle('SOUTH SOUTH EAST')
+    expected_angle = 157.5 * units.degree
+    assert_almost_equal(calculated_angle, expected_angle)
 
 
 def test_gradient_2d(deriv_2d_data):
