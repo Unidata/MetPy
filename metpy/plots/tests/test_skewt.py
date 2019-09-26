@@ -88,6 +88,19 @@ def test_skewt_subplot_rect_conflict():
         SkewT(rect=(0.15, 0.35, 0.8, 0.3), subplot=(1, 1, 1))
 
 
+@pytest.mark.mpl_image_compare(tolerance=0., remove_text=True, style='default')
+def test_skewt_units():
+    """Test that plotting with SkewT works with units properly."""
+    fig = plt.figure(figsize=(9, 9))
+    skew = SkewT(fig, aspect='auto')
+
+    skew.ax.axvline(np.array([273]) * units.kelvin, color='purple')
+    skew.ax.axhline(np.array([50000]) * units.Pa, color='red')
+    skew.ax.axvline(np.array([-20]) * units.degC, color='darkred')
+    skew.ax.axvline(-10, color='orange')
+    return fig
+
+
 @pytest.fixture()
 def test_profile():
     """Return data for a test profile."""
