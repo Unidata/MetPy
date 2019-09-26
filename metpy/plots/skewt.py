@@ -97,23 +97,29 @@ class SkewXTick(maxis.XTick):
             for artist in [self.gridline, self.tick1line, self.tick2line,
                            self.label1, self.label2]:
                 stack.callback(artist.set_visible, artist.get_visible())
-            needs_lower = transforms.interval_contains(
-                self.axes.lower_xlim, self.get_loc())
-            needs_upper = transforms.interval_contains(
-                self.axes.upper_xlim, self.get_loc())
-            self.tick1line.set_visible(
-                self.tick1line.get_visible() and needs_lower)
-            self.label1.set_visible(
-                self.label1.get_visible() and needs_lower)
-            self.tick2line.set_visible(
-                self.tick2line.get_visible() and needs_upper)
-            self.label2.set_visible(
-                self.label2.get_visible() and needs_upper)
+
+            self.tick1line.set_visible(self.tick1line.get_visible() and self.lower_in_bounds)
+            self.label1.set_visible(self.label1.get_visible() and self.lower_in_bounds)
+            self.tick2line.set_visible(self.tick2line.get_visible() and self.upper_in_bounds)
+            self.label2.set_visible(self.label2.get_visible() and self.upper_in_bounds)
+            self.gridline.set_visible(self.gridline.get_visible() and self.grid_in_bounds)
             super(SkewXTick, self).draw(renderer)
 
-    def get_view_interval(self):
-        """Get the view interval."""
-        return self.axes.xaxis.get_view_interval()
+    @property
+    def lower_in_bounds(self):
+        """Whether the lower part of the tick is in bounds."""
+        return transforms.interval_contains(self.axes.lower_xlim, self.get_loc())
+
+    @property
+    def upper_in_bounds(self):
+        """Whether the upper part of the tick is in bounds."""
+        return transforms.interval_contains(self.axes.upper_xlim, self.get_loc())
+
+    @property
+    def grid_in_bounds(self):
+        """Whether any of the tick grid line is in bounds."""
+        return transforms.interval_contains(self.axes.xaxis.get_view_interval(),
+                                            self.get_loc())
 
 
 class SkewXAxis(maxis.XAxis):
@@ -126,6 +132,14 @@ class SkewXAxis(maxis.XAxis):
 
     def _get_tick(self, major):
         return SkewXTick(self.axes, None, '', major=major)
+
+    # Needed to properly handle tight bbox
+    def _get_tick_bboxes(self, ticks, renderer):
+        """Return lists of bboxes for ticks' label1's and label2's."""
+        return ([tick.label1.get_window_extent(renderer)
+                 for tick in ticks if tick.label1.get_visible() and tick.lower_in_bounds],
+                [tick.label2.get_window_extent(renderer)
+                 for tick in ticks if tick.label2.get_visible() and tick.upper_in_bounds])
 
     def get_view_interval(self):
         """Get the view interval."""
@@ -225,9 +239,8 @@ class SkewXAxes(Axes):
     @property
     def upper_xlim(self):
         """Get the data limits for the x-axis along the top of the axes."""
-        ret = self.transData.inverted().transform([[self.bbox.xmin, self.bbox.ymax],
-                                                   self.bbox.max])[:, 0]
-        return ret
+        return self.transData.inverted().transform([[self.bbox.xmin, self.bbox.ymax],
+                                                    self.bbox.max])[:, 0]
 
 
 # Now register the projection with matplotlib so the user can select it.

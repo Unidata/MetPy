@@ -63,6 +63,17 @@ def test_skewt_default_aspect_empty():
     return fig
 
 
+@pytest.mark.skipif(matplotlib.__version__ < '3',
+                    reason='Matplotlib 2 generates a different image size.')
+@pytest.mark.mpl_image_compare(tolerance=0., remove_text=False, style='default',
+                               savefig_kwargs={'bbox_inches': 'tight'})
+def test_skewt_tight_bbox():
+    """Test SkewT when saved with `savefig(..., bbox_inches='tight')`."""
+    fig = plt.figure(figsize=(12, 9))
+    SkewT(fig)
+    return fig
+
+
 @pytest.mark.mpl_image_compare(tolerance=0.811, remove_text=True, style='default')
 def test_skewt_subplot():
     """Test using SkewT on a sub-plot."""
