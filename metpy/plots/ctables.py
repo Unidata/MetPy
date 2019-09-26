@@ -1,4 +1,4 @@
-# Copyright (c) 2014,2015,2017 MetPy Developers.
+# Copyright (c) 2014,2015,2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Work with custom color tables.
@@ -46,10 +46,12 @@ import glob
 import logging
 import os.path
 import posixpath
+import warnings
 
 import matplotlib.colors as mcolors
 from pkg_resources import resource_listdir, resource_stream
 
+from ..deprecation import metpyDeprecation
 from ..package_tools import Exporter
 
 exporter = Exporter(globals())
@@ -127,6 +129,13 @@ class ColortableRegistry(dict):
     matplotlib's Normalize instances to go with the colortable.
     """
 
+    def __getitem__(self, key):
+        """Handle viridis deprecation."""
+        if key == 'viridis':
+            warnings.warn('Viridis has been deprecated in v0.11. Please use '
+                          "matplotlib's 'viridis'.", metpyDeprecation)
+        return super(ColortableRegistry, self).__getitem__(key)
+
     def scan_resource(self, pkg, path):
         r"""Scan a resource directory for colortable files and add them to the registry.
 
@@ -175,8 +184,10 @@ class ColortableRegistry(dict):
             The name under which the color table will be stored
 
         """
-        self[name] = read_colortable(fobj)
-        self[name + '_r'] = self[name][::-1]
+        with warnings.catch_warnings():
+            warnings.filterwarnings('ignore', category=metpyDeprecation)
+            self[name] = read_colortable(fobj)
+            self[name + '_r'] = self[name][::-1]
 
     def get_with_steps(self, name, start, step):
         r"""Get a color table from the registry with a corresponding norm.
