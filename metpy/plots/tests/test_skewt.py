@@ -50,6 +50,19 @@ def test_skewt_api():
     return fig
 
 
+@pytest.mark.mpl_image_compare(tolerance=0. if matplotlib.__version__ >= '3.2' else 30.,
+                               remove_text=True, style='default')
+def test_skewt_default_aspect_empty():
+    """Test SkewT with default aspect and no plots, only special lines."""
+    # With this rotation and the default aspect, this matches exactly the NWS SkewT PDF
+    fig = plt.figure(figsize=(12, 9))
+    skew = SkewT(fig, rotation=43)
+    skew.plot_dry_adiabats()
+    skew.plot_moist_adiabats()
+    skew.plot_mixing_lines()
+    return fig
+
+
 @pytest.mark.mpl_image_compare(tolerance=0.811, remove_text=True, style='default')
 def test_skewt_subplot():
     """Test using SkewT on a sub-plot."""
