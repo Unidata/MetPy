@@ -50,7 +50,7 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0.811, remove_text=True, style='default')
 def test_skewt_subplot():
     """Test using SkewT on a sub-plot."""
     fig = plt.figure(figsize=(9, 9))
@@ -234,7 +234,7 @@ def test_skewt_barb_color():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0.02, remove_text=True, style='default')
 def test_skewt_barb_unit_conversion():
     """Test that barbs units can be converted at plot time (#737)."""
     u_wind = np.array([3.63767155210412]) * units('m/s')
@@ -252,7 +252,7 @@ def test_skewt_barb_unit_conversion():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=0.02, remove_text=True, style='default')
 def test_skewt_barb_no_default_unit_conversion():
     """Test that barbs units are left alone by default (#737)."""
     u_wind = np.array([3.63767155210412]) * units('m/s')
