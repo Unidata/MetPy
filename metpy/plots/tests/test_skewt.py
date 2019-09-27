@@ -1,4 +1,4 @@
-# Copyright (c) 2015,2016,2017 MetPy Developers.
+# Copyright (c) 2015,2016,2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `skewt` module."""
@@ -18,8 +18,7 @@ from metpy.units import units
 MPL_VERSION = matplotlib.__version__[0]
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2': 6.45}.get(MPL_VERSION, 0.02), remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=.02, remove_text=True, style='default')
 def test_skewt_api():
     """Test the SkewT API."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -50,8 +49,7 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2': 9.57}.get(MPL_VERSION, 0.027),
-                               remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=.027, remove_text=True, style='default')
 def test_skewt_api_units():
     """#Test the SkewT API when units are provided."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -153,8 +151,7 @@ def test_profile():
     return np.linspace(1000, 100, 10), np.linspace(20, -20, 10), np.linspace(25, -30, 10)
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2': 0.89}.get(MPL_VERSION, 0.02), remove_text=True,
-                               style='default')
+@pytest.mark.mpl_image_compare(tolerance=.02, remove_text=True, style='default')
 def test_skewt_shade_cape_cin(test_profile):
     """Test shading CAPE and CIN on a SkewT plot."""
     p, t, tp = test_profile
