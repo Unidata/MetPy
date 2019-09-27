@@ -321,7 +321,7 @@ def test_latlon():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.005)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.37)
 def test_declarative_barb_options():
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
@@ -349,7 +349,7 @@ def test_declarative_barb_options():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.005)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.612)
 def test_declarative_barb_earth_relative():
     """Test making a contour plot."""
     import numpy as np
@@ -388,7 +388,7 @@ def test_declarative_barb_earth_relative():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.005)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.174)
 def test_declarative_barb_gfs():
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
