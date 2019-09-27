@@ -321,18 +321,40 @@ def test_arrow_projection_list(wind_projection_list):
     assert stnplot.arrows
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.0048, remove_text=True)
-def test_barb_unit_conversion():
-    """Test that barbs units can be converted at plot time (#737)."""
+@pytest.fixture
+def barbs_units():
+    """Create barbs with units for testing."""
     x_pos = np.array([0])
     y_pos = np.array([0])
     u_wind = np.array([3.63767155210412]) * units('m/s')
     v_wind = np.array([3.63767155210412]) * units('m/s')
+    return x_pos, y_pos, u_wind, v_wind
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.0048, remove_text=True)
+def test_barb_unit_conversion(barbs_units):
+    """Test that barbs units can be converted at plot time (#737)."""
+    x_pos, y_pos, u_wind, v_wind = barbs_units
 
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
     stnplot = StationPlot(ax, x_pos, y_pos)
     stnplot.plot_barb(u_wind, v_wind, plot_units='knots')
+    ax.set_xlim(-5, 5)
+    ax.set_ylim(-5, 5)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.0048, remove_text=True)
+def test_arrow_unit_conversion(barbs_units):
+    """Test that arrow units can be converted at plot time (#737)."""
+    x_pos, y_pos, u_wind, v_wind = barbs_units
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    stnplot = StationPlot(ax, x_pos, y_pos)
+    stnplot.plot_arrow(u_wind, v_wind, plot_units='knots')
     ax.set_xlim(-5, 5)
     ax.set_ylim(-5, 5)
 
