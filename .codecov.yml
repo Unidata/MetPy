@@ -18,13 +18,12 @@ coverage:
         if_not_found: success
         if_ci_failed: failure
         paths:
-          - "metpy/(\w+/)?[^/]+\.py$"
+          - "metpy/.*"
 
       tests:
         target: 100%
         paths:
-          - "metpy/.*/tests/.*"
-          - "metpy/tests/.*"
+          - "tests/.*"
           - "metpy/testing.py"
 
   notify:
