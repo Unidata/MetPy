@@ -1,4 +1,4 @@
-# Copyright (c) 2015,2016,2017 MetPy Developers.
+# Copyright (c) 2015,2016,2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tests for the `ctables` module."""
@@ -15,6 +15,7 @@ except ImportError:
 import numpy as np
 import pytest
 
+from metpy.deprecation import MetpyDeprecationWarning
 from metpy.plots.ctables import ColortableRegistry, convert_gempak_table
 
 
@@ -136,3 +137,10 @@ def test_gempak():
     result = outfile.read()
 
     assert result == '(0.000000, 0.000000, 0.000000)\n(1.000000, 1.000000, 1.000000)\n'
+
+
+def test_viridis(registry):
+    """Test viridis deprecation warning."""
+    with pytest.warns(MetpyDeprecationWarning):
+        registry.scan_resource('metpy.plots', 'colortable_files')
+        registry.get_colortable('viridis')

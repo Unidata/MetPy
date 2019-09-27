@@ -61,25 +61,17 @@ matrix:
       env: TASK="docs" PRE="--pre"
     - python: nightly
       env: PRE="--pre"
-    - python: 3.7
+    - python: "3.7-dev"
       env:
         - TASK="coverage"
         - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
-    - python: 3.7
+    - python: "3.7-dev"
       env:
         - TASK="docs"
         - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
   allow_failures:
     - python: "3.7-dev"
     - python: nightly
-    - python: 3.7
-      env:
-        - TASK="coverage"
-        - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
-    - python: 3.7
-      env:
-        - TASK="docs"
-        - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
 
 before_install:
   # We hard-code the sphinx_rtd_theme to lock in our build with patch for
@@ -117,11 +109,12 @@ before_install:
   # Cython needs to be installed before even downloading CartoPy
   - python -m pip install Cython;
   - python -m pip download -d $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-  - touch $WHEELDIR/download_marker && ls -lrt $WHEELDIR;
+  - touch $WHEELDIR/download_marker;
   - travis_wait python -m pip wheel -w $WHEELDIR $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
   - python -m pip install $EXTRA_PACKAGES --upgrade --upgrade-strategy=eager --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
   - travis_wait 30 python -m pip wheel -w $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-  - rm -f $WHEELDIR/MetPy*.whl;
+  # Make sure we don't upload MetPy or other development build wheels
+  - rm -f $WHEELDIR/MetPy*.whl $WHEELDIR/xarray-*+*.whl $WHEELDIR/Pint-*dev*.whl;
 
 install:
   - python -m pip install ".[$EXTRA_INSTALLS]" --upgrade --upgrade-strategy=eager --no-index $PRE -f file://$PWD/$WHEELDIR $VERSIONS;
@@ -156,6 +149,8 @@ after_script:
       python-codacy-coverage -r coverage.xml;
       codeclimate-test-reporter;
     fi
+  - ls -lr --full-time $WHEELDIR;
+  - echo $(find $WHEELDIR -newer $WHEELDIR/download_marker -name *.whl | tr [:space:] :)
 
 before_deploy:
   # Remove unused, unminified javascript from sphinx
@@ -167,14 +162,11 @@ before_deploy:
 
 deploy:
   - provider: pypi
-    user: dopplershift
-    password:
-      secure: VYbxLZZnQ1hR2WZwe6+NXLNVbxceDQzlaVM/G3PW8mYlnyWgIVJBgCcgpH22wT4IsNQqo1r9ow9HiybzwcU1VTZ9KXjYsjre/kCZob0jmuPKlDtujOLaMJFf0XzOw7Y/AFXaMakFA8ZOYJLaMXc0WMLwGT7Hw/oP/e2ztpVLxRA=
+    username: __token__
     distributions: sdist bdist_wheel
-    upload_docs: no
     on:
       repo: Unidata/MetPy
-      python: 3.6
+      python: 3.7
       condition: '$TASK != "docs"'
       tags: true
   - provider: script
@@ -182,7 +174,7 @@ deploy:
     skip_cleanup: true
     on:
       all_branches: true
-      python: 3.6
+      python: 3.7
       condition: '$TASK == "docs"'
 
 notifications:

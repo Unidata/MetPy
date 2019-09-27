@@ -42,6 +42,11 @@ def test_skewt_api():
         skew.plot_moist_adiabats()
         skew.plot_mixing_lines()
 
+        # Call again to hit removal statements
+        skew.plot_dry_adiabats()
+        skew.plot_moist_adiabats()
+        skew.plot_mixing_lines()
+
     return fig
 
 

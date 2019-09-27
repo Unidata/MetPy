@@ -299,6 +299,10 @@ class SkewT(object):
             self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
         self.ax.grid(True)
 
+        self.mixing_lines = None
+        self.dry_adiabats = None
+        self.moist_adiabats = None
+
     def plot(self, p, t, *args, **kwargs):
         r"""Plot data.
 
@@ -448,6 +452,10 @@ class SkewT(object):
         :class:`matplotlib.collections.LineCollection`
 
         """
+        # Remove old lines
+        if self.dry_adiabats:
+            self.dry_adiabats.remove()
+
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
@@ -465,7 +473,8 @@ class SkewT(object):
         kwargs.setdefault('colors', 'r')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
-        return self.ax.add_collection(LineCollection(linedata, **kwargs))
+        self.dry_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.dry_adiabats
 
     def plot_moist_adiabats(self, t0=None, p=None, **kwargs):
         r"""Plot moist adiabats.
@@ -500,6 +509,10 @@ class SkewT(object):
         :class:`matplotlib.collections.LineCollection`
 
         """
+        # Remove old lines
+        if self.moist_adiabats:
+            self.moist_adiabats.remove()
+
         # Determine set of starting temps if necessary
         if t0 is None:
             xmin, xmax = self.ax.get_xlim()
@@ -518,7 +531,8 @@ class SkewT(object):
         kwargs.setdefault('colors', 'b')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.5)
-        return self.ax.add_collection(LineCollection(linedata, **kwargs))
+        self.moist_adiabats = self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.moist_adiabats
 
     def plot_mixing_lines(self, w=None, p=None, **kwargs):
         r"""Plot lines of constant mixing ratio.
@@ -549,6 +563,10 @@ class SkewT(object):
         :class:`matplotlib.collections.LineCollection`
 
         """
+        # Remove old lines
+        if self.mixing_lines:
+            self.mixing_lines.remove()
+
         # Default mixing level values if necessary
         if w is None:
             w = np.array([0.0004, 0.001, 0.002, 0.004, 0.007, 0.01,
@@ -566,7 +584,8 @@ class SkewT(object):
         kwargs.setdefault('colors', 'g')
         kwargs.setdefault('linestyles', 'dashed')
         kwargs.setdefault('alpha', 0.8)
-        return self.ax.add_collection(LineCollection(linedata, **kwargs))
+        self.mixing_lines = self.ax.add_collection(LineCollection(linedata, **kwargs))
+        return self.mixing_lines
 
     def shade_area(self, y, x1, x2=0, which='both', **kwargs):
         r"""Shade area between two curves.

@@ -11,12 +11,14 @@
    :hidden:
 
    installguide
+   startingguide
    units
    examples/index
    tutorials/index
    api/index
    roadmap
    gempak
+   SUPPORT
    CONTRIBUTING
    infrastructureguide
    citing
@@ -27,7 +29,8 @@ MetPy
 =====
 
 MetPy is a collection of tools in Python for reading, visualizing, and
-performing calculations with weather data.
+performing calculations with weather data. If you're new to MetPy, check
+out our :doc:`Getting Started <startingguide>` guide.
 
 MetPy follows `semantic versioning <https://semver.org>`_ in its version number. With our
 current 0.x version, that implies that MetPy's APIs (application programming interfaces) are
@@ -122,11 +125,11 @@ Related Projects
 ----------------
 
 * netCDF4-python_ is the officially blessed Python API for netCDF_
-* siphon_ is an API for accessing remote data on `THREDDS Data Server`__
-* unidata_python_gallery_ is a collection of meteorological Python scripts
+* siphon_ is a Python API for accessing remote data on `THREDDS Data Servers`__
+* The `Unidata Python Gallery`_ is a collection of meteorological Python scripts
 
 .. _netCDF4-python: https://unidata.github.io/netcdf4-python/
 .. _netCDF: https://www.unidata.ucar.edu/software/netcdf/
 .. _siphon: https://unidata.github.io/siphon/
-.. _unidata_python_gallery: https://unidata.github.io/python-gallery/
+.. _Unidata Python Gallery: https://unidata.github.io/python-gallery/
 __ https://www.unidata.ucar.edu/software/thredds/current/tds/

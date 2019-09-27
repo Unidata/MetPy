@@ -1335,7 +1335,7 @@ def parse_angle(input_dir):
 
     Returns
     -------
-    angle
+    `pint.Quantity`
         The angle in degrees
 
     """
