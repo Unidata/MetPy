@@ -5,23 +5,22 @@
 
 from datetime import datetime
 
-import cartopy.crs as ccrs
-import cartopy.feature as cfeature
+try:
+    import cartopy.crs as ccrs
+    DEFAULT_LAT_LON = ccrs.PlateCarree()
+except ImportError:
+    DEFAULT_LAT_LON = None
 import matplotlib.pyplot as plt
+import numpy as np
 from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe, Tuple,
                        Unicode, Union)
 
-from . import cartopy_utils, ctables
+from . import ctables
 from ..cbook import is_string_like
 from ..package_tools import Exporter
 from ..units import units
 
 exporter = Exporter(globals())
-
-_projections = {'lcc': ccrs.LambertConformal(central_latitude=40, central_longitude=-100,
-                                             standard_parallels=[30, 60]),
-                'ps': ccrs.NorthPolarStereo(central_longitude=-100),
-                'mer': ccrs.Mercator()}
 
 _areas = {
     '105': (-129.3, -22.37, 17.52, 53.78),
@@ -467,6 +466,32 @@ _areas = {
 }
 
 
+def lookup_projection(projection_code):
+    """Get a Cartopy projection based on a short abbreviation."""
+    import cartopy.crs as ccrs
+
+    projections = {'lcc': ccrs.LambertConformal(central_latitude=40, central_longitude=-100,
+                                                standard_parallels=[30, 60]),
+                   'ps': ccrs.NorthPolarStereo(central_longitude=-100),
+                   'mer': ccrs.Mercator()}
+    return projections[projection_code]
+
+
+def lookup_map_feature(feature_name):
+    """Get a Cartopy map feature based on a name."""
+    import cartopy.feature as cfeature
+    from . import cartopy_utils
+
+    name = feature_name.upper()
+    try:
+        feat = getattr(cfeature, name)
+        scaler = cfeature.AdaptiveScaler('110m', (('50m', 50), ('10m', 15)))
+    except AttributeError:
+        feat = getattr(cartopy_utils, name)
+        scaler = cfeature.AdaptiveScaler('20m', (('5m', 5), ('500k', 1)))
+    return feat.with_scale(scaler)
+
+
 class Panel(HasTraits):
     """Draw one or more plots."""
 
@@ -592,7 +617,7 @@ class MapPanel(Panel):
     For regional plots, US state postal codes can be used.
     """
 
-    projection = Union([Unicode(), Instance(ccrs.Projection)], default_value='data')
+    projection = Union([Unicode(), Instance('cartopy.crs.Projection')], default_value='data')
     projection.__doc__ = """A string for a pre-defined projection or a Cartopy projection
     object.
 
@@ -601,7 +626,8 @@ class MapPanel(Panel):
     Additionally, this trait can be set to a Cartopy projection object.
     """
 
-    layers = List(Union([Unicode(), Instance(cfeature.Feature)]), default_value=['coastline'])
+    layers = List(Union([Unicode(), Instance('cartopy.feature.Feature')]),
+                  default_value=['coastline'])
     layers.__doc__ = """A string for a pre-defined feature layer or a Cartopy Feature object.
 
     Like the projection, there are a couple of pre-defined feature layers that can be called
@@ -644,7 +670,7 @@ class MapPanel(Panel):
                 else:
                     return self.plots[0].griddata.metpy.cartopy_crs
             else:
-                return _projections[self.projection]
+                return lookup_projection(self.projection)
         else:
             return self.projection
 
@@ -657,13 +683,7 @@ class MapPanel(Panel):
         """
         for item in self.layers:
             if is_string_like(item):
-                item = item.upper()
-                try:
-                    scaler = cfeature.AdaptiveScaler('110m', (('50m', 50), ('10m', 15)))
-                    feat = getattr(cfeature, item).with_scale(scaler)
-                except AttributeError:
-                    scaler = cfeature.AdaptiveScaler('20m', (('5m', 5), ('500k', 1)))
-                    feat = getattr(cartopy_utils, item).with_scale(scaler)
+                feat = lookup_map_feature(item)
             else:
                 feat = item
 
@@ -727,7 +747,7 @@ class MapPanel(Panel):
                 # Otherwise, assume we have a tuple to use as the extent
                 else:
                     area = self.area
-                self.ax.set_extent(area, ccrs.PlateCarree())
+                self.ax.set_extent(area, DEFAULT_LAT_LON)
 
             # Use the set title or generate one.
             title = self.title or ',\n'.join(plot.name for plot in self.plots)
@@ -911,8 +931,7 @@ class PlotScalar(Plots2D):
         y = self.griddata.metpy.y
 
         if 'degree' in x.units:
-            import numpy as np
-            x, y, _ = self.griddata.metpy.cartopy_crs.transform_points(ccrs.PlateCarree(),
+            x, y, _ = self.griddata.metpy.cartopy_crs.transform_points(DEFAULT_LAT_LON,
                                                                        *np.meshgrid(x, y)).T
             x = x[:, 0] % 360
             y = y[0, :]
@@ -1181,21 +1200,18 @@ class PlotVector(Plots2D):
         The data array, x coordinates, and y coordinates.
 
         """
-        import numpy as np
-
         x = self.griddata[0].metpy.x
         y = self.griddata[0].metpy.y
 
         if self.earth_relative:
-            x, y, _ = ccrs.PlateCarree().transform_points(self.griddata[0].metpy.cartopy_crs,
-                                                          *np.meshgrid(x, y)).T
+            x, y, _ = DEFAULT_LAT_LON.transform_points(self.griddata[0].metpy.cartopy_crs,
+                                                       *np.meshgrid(x, y)).T
             x = x.T
             y = y.T
         else:
             if 'degree' in x.units:
                 x, y, _ = self.griddata[0].metpy.cartopy_crs.transform_points(
-                    ccrs.PlateCarree(),
-                    *np.meshgrid(x, y)).T
+                    DEFAULT_LAT_LON, *np.meshgrid(x, y)).T
                 x = x.T % 360
                 y = y.T
 
@@ -1236,7 +1252,7 @@ class BarbPlot(PlotVector):
         """Build the plot by calling needed plotting methods as necessary."""
         x, y, u, v = self.plotdata
         if self.earth_relative:
-            transform = ccrs.PlateCarree()
+            transform = DEFAULT_LAT_LON
         else:
             transform = u.metpy.cartopy_crs
 
