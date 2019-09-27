@@ -1,4 +1,4 @@
-# Copyright (c) 2014,2015,2016,2017 MetPy Developers.
+# Copyright (c) 2014,2015,2016,2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Make Skew-T Log-P based plots.
@@ -662,8 +662,7 @@ class SkewT(object):
             arrs = arrs + (fill_args['where'],)
             fill_args.pop('where', None)
 
-        if matplotlib.__version__ >= '2.1':
-            fill_args['interpolate'] = True
+        fill_args['interpolate'] = True
 
         arrs = _delete_masked_points(*arrs)
 

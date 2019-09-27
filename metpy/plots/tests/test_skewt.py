@@ -15,8 +15,6 @@ from metpy.testing import check_and_silence_deprecation
 from metpy.testing import patch_round, set_agg_backend  # noqa: F401, I202
 from metpy.units import units
 
-MPL_VERSION = matplotlib.__version__[0]
-
 
 @pytest.mark.mpl_image_compare(tolerance=.02, remove_text=True, style='default')
 def test_skewt_api():
