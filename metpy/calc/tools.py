@@ -29,16 +29,21 @@ from ..xarray import check_axis, preprocess_xarray
 
 exporter = Exporter(globals())
 
-DIR_STRS = [
+UND = 'UND'
+UND_ANGLE = -999.
+DIR_STRS = (
     'N', 'NNE', 'NE', 'ENE',
     'E', 'ESE', 'SE', 'SSE',
     'S', 'SSW', 'SW', 'WSW',
-    'W', 'WNW', 'NW', 'NNW'
-]
+    'W', 'WNW', 'NW', 'NNW',
+    UND
+)  # note the order matters!
 
+MAX_DEGREE_ANGLE = 360 * units.degree
 BASE_DEGREE_MULTIPLIER = 22.5 * units.degree
 
 DIR_DICT = {dir_str: i * BASE_DEGREE_MULTIPLIER for i, dir_str in enumerate(DIR_STRS)}
+DIR_DICT[UND] = np.nan
 
 
 @exporter.export
@@ -1325,7 +1330,7 @@ def parse_angle(input_dir):
 
     Parameters
     ----------
-    input_dir : string or array-like strings
+    input_dir : string or array-like
         Directional text such as west, [south-west, ne], etc
 
     Returns
@@ -1335,11 +1340,26 @@ def parse_angle(input_dir):
 
     """
     if isinstance(input_dir, str):
-        abb_dirs = [_abbrieviate_direction(input_dir)]
-    else:
-        input_dir_str = ','.join(list(input_dir))
-        abb_dirs = _abbrieviate_direction(input_dir_str).split(',')
+        # abb_dirs = abbrieviated directions
+        abb_dirs = _clean_direction([_abbrieviate_direction(input_dir)])
+    elif hasattr(input_dir, '__len__'):  # handle np.array, pd.Series, list, and array-like
+        input_dir_str = ','.join(_clean_direction(input_dir, preprocess=True))
+        abb_dir_str = _abbrieviate_direction(input_dir_str)
+        abb_dirs = _clean_direction(abb_dir_str.split(','))
+    else:  # handle unrecognizable scalar
+        return np.nan
+
     return itemgetter(*abb_dirs)(DIR_DICT)
+
+
+def _clean_direction(dir_list, preprocess=False):
+    """Handle None if preprocess, else handles anything not in DIR_STRS."""
+    if preprocess:  # primarily to remove None from list so ','.join works
+        return [UND if not isinstance(the_dir, str) else the_dir
+                for the_dir in dir_list]
+    else:  # remove extraneous abbrieviated directions
+        return [UND if the_dir not in DIR_STRS else the_dir
+                for the_dir in dir_list]
 
 
 def _abbrieviate_direction(ext_dir_str):
@@ -1354,3 +1374,109 @@ def _abbrieviate_direction(ext_dir_str):
             .replace('SOUTH', 'S')
             .replace('WEST', 'W')
             )
+
+
+@exporter.export
+@preprocess_xarray
+def angle_to_direction(input_angle, full=False, level=3):
+    """Convert the meteorological angle to directional text.
+
+    Works for angles greater than or equal to 360 (360 -> N | 405 -> NE)
+    and rounds to the nearest angle (355 -> N | 404 -> NNE)
+
+    Parameters
+    ----------
+    input_angle : numeric or array-like numeric
+        Angles such as 0, 25, 45, 360, 410, etc
+    full : boolean
+        True returns full text (South), False returns abbrieviated text (S)
+    level : int
+        Level of detail (3 = N/NNE/NE/ENE/E... 2 = N/NE/E/SE... 1 = N/E/S/W)
+
+    Returns
+    -------
+    direction
+        The directional text
+
+    """
+    try:  # strip units temporarily
+        origin_units = input_angle.units
+        input_angle = input_angle.m
+    except AttributeError:  # no units associated
+        origin_units = units.degree
+
+    if not hasattr(input_angle, '__len__') or isinstance(input_angle, str):
+        input_angle = [input_angle]
+        scalar = True
+    else:
+        scalar = False
+
+    # clean any numeric strings, negatives, and None
+    # does not handle strings with alphabet
+    input_angle = np.array(input_angle).astype(float)
+    with np.errstate(invalid='ignore'):  # warns about the np.nan
+        input_angle[np.where(input_angle < 0)] = np.nan
+
+    input_angle = input_angle * origin_units
+
+    # normalizer used for angles > 360 degree to normalize between 0 - 360
+    normalizer = np.array(input_angle.m / MAX_DEGREE_ANGLE.m, dtype=int)
+    norm_angles = abs(input_angle - MAX_DEGREE_ANGLE * normalizer)
+
+    if level == 3:
+        nskip = 1
+    elif level == 2:
+        nskip = 2
+    elif level == 1:
+        nskip = 4
+    else:
+        err_msg = 'Level of complexity cannot be less than 1 or greater than 3!'
+        raise ValueError(err_msg)
+
+    angle_dict = {i * BASE_DEGREE_MULTIPLIER.m * nskip: dir_str
+                  for i, dir_str in enumerate(DIR_STRS[::nskip])}
+    angle_dict[MAX_DEGREE_ANGLE.m] = 'N'  # handle edge case of 360.
+    angle_dict[UND_ANGLE] = UND
+
+    # round to the nearest angles for dict lookup
+    # 0.001 is subtracted so there's an equal number of dir_str from
+    # np.arange(0, 360, 22.5), or else some dir_str will be preferred
+
+    # without the 0.001, level=2 would yield:
+    # ['N', 'N', 'NE', 'E', 'E', 'E', 'SE', 'S', 'S',
+    #  'S', 'SW', 'W', 'W', 'W', 'NW', 'N']
+
+    # with the -0.001, level=2 would yield:
+    # ['N', 'N', 'NE', 'NE', 'E', 'E', 'SE', 'SE',
+    #  'S', 'S', 'SW', 'SW', 'W', 'W', 'NW', 'NW']
+
+    multiplier = np.round(
+        (norm_angles / BASE_DEGREE_MULTIPLIER / nskip) - 0.001).m
+    round_angles = (multiplier * BASE_DEGREE_MULTIPLIER.m * nskip)
+    round_angles[np.where(np.isnan(round_angles))] = UND_ANGLE
+
+    dir_str_arr = itemgetter(*round_angles)(angle_dict)  # for array
+    if full:
+        dir_str_arr = ','.join(dir_str_arr)
+        dir_str_arr = _unabbrieviate_direction(dir_str_arr)
+        if not scalar:
+            dir_str = dir_str_arr.split(',')
+        else:
+            dir_str = dir_str_arr.replace(',', ' ')
+    else:
+        dir_str = dir_str_arr
+
+    return dir_str
+
+
+def _unabbrieviate_direction(abb_dir_str):
+    """Convert abbrieviated directions to non-abbrieviated direction."""
+    return (abb_dir_str
+            .upper()
+            .replace(UND, 'Undefined ')
+            .replace('N', 'North ')
+            .replace('E', 'East ')
+            .replace('S', 'South ')
+            .replace('W', 'West ')
+            .replace(' ,', ',')
+            ).strip()

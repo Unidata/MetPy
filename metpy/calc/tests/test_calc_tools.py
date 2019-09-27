@@ -11,19 +11,22 @@ import pandas as pd
 import pytest
 import xarray as xr
 
-
-from metpy.calc import (find_bounding_indices, find_intersections, first_derivative, get_layer,
-                        get_layer_heights, gradient, grid_deltas_from_dataarray, interp,
-                        interpolate_nans, laplacian, lat_lon_grid_deltas, log_interp,
+from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersections,
+                        first_derivative, get_layer, get_layer_heights, gradient,
+                        grid_deltas_from_dataarray, interp, interpolate_nans,
+                        laplacian, lat_lon_grid_deltas, log_interp,
                         nearest_intersection_idx, parse_angle, pressure_to_height_std,
                         reduce_point_density, resample_nn_1d, second_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
-                              DIR_STRS)
+                              BASE_DEGREE_MULTIPLIER, DIR_STRS, UND)
 from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            check_and_silence_deprecation)
 from metpy.units import units
+
+
+FULL_CIRCLE_DEGREES = np.arange(0, 360, BASE_DEGREE_MULTIPLIER.m) * units.degree
 
 
 def test_resample_nn():
@@ -649,8 +652,8 @@ def test_laplacian_x_deprecation(deriv_2d_data):
 
 def test_parse_angle_abbrieviated():
     """Test abbrieviated directional text in degrees."""
-    expected_angles_degrees = np.arange(0, 360, 22.5) * units.degree
-    output_angles_degrees = parse_angle(DIR_STRS)
+    expected_angles_degrees = FULL_CIRCLE_DEGREES
+    output_angles_degrees = parse_angle(DIR_STRS[:-1])
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
 
 
@@ -671,7 +674,42 @@ def test_parse_angle_mix_multiple():
                      'easT', 'east  se', 'south east', ' south southeast',
                      'SOUTH', 'SOUTH SOUTH WEST', 'sw', 'WEST south_WEST',
                      'w', 'wnw', 'North West', 'nnw']
-    expected_angles_degrees = np.arange(0, 360, 22.5) * units.degree
+    expected_angles_degrees = FULL_CIRCLE_DEGREES
+    output_angles_degrees = parse_angle(test_dir_strs)
+    assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
+
+
+def test_parse_angle_none():
+    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    test_dir_strs = None
+    expected_angles_degrees = np.nan
+    output_angles_degrees = parse_angle(test_dir_strs)
+    assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
+
+
+def test_parse_angle_invalid_number():
+    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    test_dir_strs = 365.
+    expected_angles_degrees = np.nan
+    output_angles_degrees = parse_angle(test_dir_strs)
+    assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
+
+
+def test_parse_angle_invalid_arr():
+    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    test_dir_strs = ['nan', None, np.nan, 35, 35.5, 'north', 'andrewiscool']
+    expected_angles_degrees = [np.nan, np.nan, np.nan, np.nan, np.nan, 0, np.nan]
+    output_angles_degrees = parse_angle(test_dir_strs)
+    assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
+
+
+def test_parse_angle_mix_multiple_arr():
+    """Test list of extended (unabbrieviated) directional text in degrees in one go."""
+    test_dir_strs = np.array(['NORTH', 'nne', 'ne', 'east north east',
+                              'easT', 'east  se', 'south east', ' south southeast',
+                              'SOUTH', 'SOUTH SOUTH WEST', 'sw', 'WEST south_WEST',
+                              'w', 'wnw', 'North West', 'nnw'])
+    expected_angles_degrees = FULL_CIRCLE_DEGREES
     output_angles_degrees = parse_angle(test_dir_strs)
     assert_array_almost_equal(output_angles_degrees, expected_angles_degrees)
 
@@ -768,6 +806,93 @@ def test_bounding_indices_above():
     assert_array_equal(above[1], np.array([[3, 0], [0, 3]]))
     assert_array_equal(below[1], np.array([[2, -1], [-1, 2]]))
     assert_array_equal(good, np.array([[True, False], [False, True]]))
+
+
+def test_angle_to_direction():
+    """Test single angle in degree."""
+    expected_dirs = DIR_STRS[:-1]  # UND at -1
+    output_dirs = [angle_to_direction(angle) for angle in FULL_CIRCLE_DEGREES]
+    assert_array_equal(output_dirs, expected_dirs)
+
+
+def test_angle_to_direction_edge():
+    """Test single angle edge case (360 and no units) in degree."""
+    expected_dirs = 'N'
+    output_dirs = angle_to_direction(360)
+    assert_array_equal(output_dirs, expected_dirs)
+
+
+def test_angle_to_direction_list():
+    """Test list of angles in degree."""
+    expected_dirs = DIR_STRS[:-1]
+    output_dirs = list(angle_to_direction(FULL_CIRCLE_DEGREES))
+    assert_array_equal(output_dirs, expected_dirs)
+
+
+def test_angle_to_direction_arr():
+    """Test array of angles in degree."""
+    expected_dirs = DIR_STRS[:-1]
+    output_dirs = angle_to_direction(FULL_CIRCLE_DEGREES)
+    assert_array_equal(output_dirs, expected_dirs)
+
+
+def test_angle_to_direction_full():
+    """Test the `full` keyword argument, expecting unabbrieviated output."""
+    expected_dirs = [
+        'North', 'North North East', 'North East', 'East North East',
+        'East', 'East South East', 'South East', 'South South East',
+        'South', 'South South West', 'South West', 'West South West',
+        'West', 'West North West', 'North West', 'North North West'
+    ]
+    output_dirs = angle_to_direction(FULL_CIRCLE_DEGREES, full=True)
+    assert_array_equal(output_dirs, expected_dirs)
+
+
+def test_angle_to_direction_invalid_scalar():
+    """Test invalid angle."""
+    expected_dirs = UND
+    output_dirs = angle_to_direction(None)
+    assert_array_equal(output_dirs, expected_dirs)
+
+
+def test_angle_to_direction_invalid_arr():
+    """Test array of invalid angles."""
+    expected_dirs = ['NE', UND, UND, UND, 'N']
+    output_dirs = angle_to_direction(['46', None, np.nan, None, '362.'])
+    assert_array_equal(output_dirs, expected_dirs)
+
+
+def test_angle_to_direction_level_4():
+    """Test non-existent level of complexity."""
+    with pytest.raises(ValueError) as exc:
+        angle_to_direction(FULL_CIRCLE_DEGREES, level=4)
+    assert 'cannot be less than 1 or greater than 3' in str(exc.value)
+
+
+def test_angle_to_direction_level_3():
+    """Test array of angles in degree."""
+    expected_dirs = DIR_STRS[:-1]  # UND at -1
+    output_dirs = angle_to_direction(FULL_CIRCLE_DEGREES, level=3)
+    assert_array_equal(output_dirs, expected_dirs)
+
+
+def test_angle_to_direction_level_2():
+    """Test array of angles in degree."""
+    expected_dirs = [
+        'N', 'N', 'NE', 'NE', 'E', 'E', 'SE', 'SE',
+        'S', 'S', 'SW', 'SW', 'W', 'W', 'NW', 'NW'
+    ]
+    output_dirs = angle_to_direction(FULL_CIRCLE_DEGREES, level=2)
+    assert_array_equal(output_dirs, expected_dirs)
+
+
+def test_angle_to_direction_level_1():
+    """Test array of angles in degree."""
+    expected_dirs = [
+        'N', 'N', 'N', 'E', 'E', 'E', 'E', 'S', 'S', 'S', 'S',
+        'W', 'W', 'W', 'W', 'N']
+    output_dirs = angle_to_direction(FULL_CIRCLE_DEGREES, level=1)
+    assert_array_equal(output_dirs, expected_dirs)
 
 
 def test_3d_gradient_3d_data_no_axes(deriv_4d_data):
