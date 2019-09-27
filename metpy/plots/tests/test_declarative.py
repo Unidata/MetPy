@@ -11,11 +11,13 @@ import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib
 import pytest
+from traitlets import TraitError
 import xarray as xr
 
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
-from metpy.plots import ContourPlot, FilledContourPlot, ImagePlot, MapPanel, PanelContainer
+from metpy.plots import (BarbPlot, ContourPlot, FilledContourPlot, ImagePlot, MapPanel,
+                         PanelContainer)
 # Fixtures to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401, I202
 from metpy.units import units
@@ -156,6 +158,18 @@ def test_no_field_error():
 
     with pytest.raises(ValueError):
         contour.draw()
+
+
+def test_no_field_error_barbs():
+    """Make sure we get a useful error when the field is not set."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    barbs = BarbPlot()
+    barbs.data = data
+    barbs.level = 700 * units.hPa
+
+    with pytest.raises(TraitError):
+        barbs.draw()
 
 
 def test_projection_object():
@@ -303,6 +317,101 @@ def test_latlon():
     pc = PanelContainer()
     pc.panel = panel
     pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.37)
+def test_declarative_barb_options():
+    """Test making a contour plot."""
+    data = xr.open_dataset(get_test_data('narr_example.nc', as_file_obj=False))
+
+    barb = BarbPlot()
+    barb.data = data
+    barb.level = 300 * units.hPa
+    barb.field = ['u_wind', 'v_wind']
+    barb.skip = (10, 10)
+    barb.color = 'blue'
+    barb.pivot = 'tip'
+    barb.barblength = 6.5
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'data'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [barb]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.612)
+def test_declarative_barb_earth_relative():
+    """Test making a contour plot."""
+    import numpy as np
+    data = xr.open_dataset(get_test_data('NAM_test.nc', as_file_obj=False))
+
+    contour = ContourPlot()
+    contour.data = data
+    contour.field = 'Geopotential_height_isobaric'
+    contour.level = 300 * units.hPa
+    contour.linecolor = 'red'
+    contour.linestyle = '-'
+    contour.linewidth = 2
+    contour.contours = np.arange(0, 20000, 120).tolist()
+
+    barb = BarbPlot()
+    barb.data = data
+    barb.level = 300 * units.hPa
+    barb.time = datetime(2016, 10, 31, 12)
+    barb.field = ['u-component_of_wind_isobaric', 'v-component_of_wind_isobaric']
+    barb.skip = (5, 5)
+    barb.color = 'black'
+    barb.barblength = 6.5
+    barb.earth_relative = False
+
+    panel = MapPanel()
+    panel.area = (-124, -72, 20, 53)
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [contour, barb]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.174)
+def test_declarative_barb_gfs():
+    """Test making a contour plot."""
+    data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))
+
+    barb = BarbPlot()
+    barb.data = data
+    barb.level = 300 * units.hPa
+    barb.field = ['u-component_of_wind_isobaric', 'v-component_of_wind_isobaric']
+    barb.skip = (2, 2)
+    barb.earth_relative = False
+
+    panel = MapPanel()
+    panel.area = 'us'
+    panel.projection = 'data'
+    panel.layers = ['coastline', 'borders', 'usstates']
+    panel.plots = [barb]
+
+    pc = PanelContainer()
+    pc.size = (8, 8)
+    pc.panels = [panel]
+    pc.draw()
+
+    barb.level = 700 * units.hPa
 
     return pc.figure
 
