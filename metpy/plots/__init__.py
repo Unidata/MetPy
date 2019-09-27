@@ -27,4 +27,4 @@ try:
     from .cartopy_utils import USCOUNTIES, USSTATES
     __all__.extend([USCOUNTIES, USSTATES])
 except ImportError:
-    logger.warning('Cannot import USCOUNTIES without cartopy installed.')
+    logger.warning('Cannot import USCOUNTIES and USSTATES without Cartopy installed.')
