@@ -97,23 +97,29 @@ class SkewXTick(maxis.XTick):
             for artist in [self.gridline, self.tick1line, self.tick2line,
                            self.label1, self.label2]:
                 stack.callback(artist.set_visible, artist.get_visible())
-            needs_lower = transforms.interval_contains(
-                self.axes.lower_xlim, self.get_loc())
-            needs_upper = transforms.interval_contains(
-                self.axes.upper_xlim, self.get_loc())
-            self.tick1line.set_visible(
-                self.tick1line.get_visible() and needs_lower)
-            self.label1.set_visible(
-                self.label1.get_visible() and needs_lower)
-            self.tick2line.set_visible(
-                self.tick2line.get_visible() and needs_upper)
-            self.label2.set_visible(
-                self.label2.get_visible() and needs_upper)
+
+            self.tick1line.set_visible(self.tick1line.get_visible() and self.lower_in_bounds)
+            self.label1.set_visible(self.label1.get_visible() and self.lower_in_bounds)
+            self.tick2line.set_visible(self.tick2line.get_visible() and self.upper_in_bounds)
+            self.label2.set_visible(self.label2.get_visible() and self.upper_in_bounds)
+            self.gridline.set_visible(self.gridline.get_visible() and self.grid_in_bounds)
             super(SkewXTick, self).draw(renderer)
 
-    def get_view_interval(self):
-        """Get the view interval."""
-        return self.axes.xaxis.get_view_interval()
+    @property
+    def lower_in_bounds(self):
+        """Whether the lower part of the tick is in bounds."""
+        return transforms.interval_contains(self.axes.lower_xlim, self.get_loc())
+
+    @property
+    def upper_in_bounds(self):
+        """Whether the upper part of the tick is in bounds."""
+        return transforms.interval_contains(self.axes.upper_xlim, self.get_loc())
+
+    @property
+    def grid_in_bounds(self):
+        """Whether any of the tick grid line is in bounds."""
+        return transforms.interval_contains(self.axes.xaxis.get_view_interval(),
+                                            self.get_loc())
 
 
 class SkewXAxis(maxis.XAxis):
@@ -126,6 +132,14 @@ class SkewXAxis(maxis.XAxis):
 
     def _get_tick(self, major):
         return SkewXTick(self.axes, None, '', major=major)
+
+    # Needed to properly handle tight bbox
+    def _get_tick_bboxes(self, ticks, renderer):
+        """Return lists of bboxes for ticks' label1's and label2's."""
+        return ([tick.label1.get_window_extent(renderer)
+                 for tick in ticks if tick.label1.get_visible() and tick.lower_in_bounds],
+                [tick.label2.get_window_extent(renderer)
+                 for tick in ticks if tick.label2.get_visible() and tick.upper_in_bounds])
 
     def get_view_interval(self):
         """Get the view interval."""
@@ -225,9 +239,8 @@ class SkewXAxes(Axes):
     @property
     def upper_xlim(self):
         """Get the data limits for the x-axis along the top of the axes."""
-        ret = self.transData.inverted().transform([[self.bbox.xmin, self.bbox.ymax],
-                                                   self.bbox.max])[:, 0]
-        return ret
+        return self.transData.inverted().transform([[self.bbox.xmin, self.bbox.ymax],
+                                                    self.bbox.max])[:, 0]
 
 
 # Now register the projection with matplotlib so the user can select it.
@@ -251,7 +264,7 @@ class SkewT(object):
 
     """
 
-    def __init__(self, fig=None, rotation=30, subplot=None, rect=None):
+    def __init__(self, fig=None, rotation=30, subplot=None, rect=None, aspect=80.5):
         r"""Create SkewT - logP plots.
 
         Parameters
@@ -272,6 +285,10 @@ class SkewT(object):
         rect : tuple[float, float, float, float], optional
             Rectangle (left, bottom, width, height) in which to place the axes. This
             allows the user to place the axes at an arbitrary point on the figure.
+        aspect : float, int, or 'auto', optional
+            Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
+            Defaults to 80.5. Passing the string ``'auto'`` tells matplotlib to handle
+            the aspect ratio automatically (this is not recommended for SkewT).
 
         """
         if fig is None:
@@ -297,18 +314,39 @@ class SkewT(object):
                 subplot = (1, 1, 1)
 
             self.ax = fig.add_subplot(*subplot, projection='skewx', rotation=rotation)
+
+        # Set the yaxis as inverted with log scaling
+        self.ax.set_yscale('log')
+
+        # Override default ticking for log scaling
+        self.ax.yaxis.set_major_formatter(ScalarFormatter())
+        self.ax.yaxis.set_major_locator(MultipleLocator(100))
+        self.ax.yaxis.set_minor_formatter(NullFormatter())
+
+        # Needed to make sure matplotlib doesn't freak out and create a bunch of ticks
+        # Also takes care of inverting the y-axis
+        self.ax.set_ylim(1050, 100)
+        self.ax.yaxis.set_units(units.hPa)
+
+        # Try to make sane default temperature plotting ticks
+        self.ax.xaxis.set_major_locator(MultipleLocator(10))
+        self.ax.xaxis.set_units(units.degC)
+        self.ax.set_xlim(-40, 50)
         self.ax.grid(True)
 
         self.mixing_lines = None
         self.dry_adiabats = None
         self.moist_adiabats = None
 
+        # Maintain a reasonable ratio of data limits. Only works on Matplotlib >= 3.2
+        if matplotlib.__version__[:3] > '3.1':
+            self.ax.set_aspect(aspect, adjustable='box')
+
     def plot(self, p, t, *args, **kwargs):
         r"""Plot data.
 
         Simple wrapper around plot so that pressure is the first (independent)
-        input. This is essentially a wrapper around `semilogy`. It also
-        sets some appropriate ticking and plot ranges.
+        input. This is essentially a wrapper around `plot`.
 
         Parameters
         ----------
@@ -317,9 +355,9 @@ class SkewT(object):
         t : array_like
             temperature values, can also be used for things like dew point
         args
-            Other positional arguments to pass to :func:`~matplotlib.pyplot.semilogy`
+            Other positional arguments to pass to :func:`~matplotlib.pyplot.plot`
         kwargs
-            Other keyword arguments to pass to :func:`~matplotlib.pyplot.semilogy`
+            Other keyword arguments to pass to :func:`~matplotlib.pyplot.plot`
 
         Returns
         -------
@@ -328,24 +366,12 @@ class SkewT(object):
 
         See Also
         --------
-        :func:`matplotlib.pyplot.semilogy`
+        :func:`matplotlib.pyplot.plot`
 
         """
         # Skew-T logP plotting
         t, p = _delete_masked_points(t, p)
-        lines = self.ax.semilogy(t, p, *args, **kwargs)
-
-        # Disables the log-formatting that comes with semilogy
-        self.ax.yaxis.set_major_formatter(ScalarFormatter())
-        self.ax.yaxis.set_major_locator(MultipleLocator(100))
-        self.ax.yaxis.set_minor_formatter(NullFormatter())
-        if not self.ax.yaxis_inverted():
-            self.ax.invert_yaxis()
-
-        # Try to make sane default temperature plotting
-        self.ax.xaxis.set_major_locator(MultipleLocator(10))
-
-        return lines
+        return self.ax.plot(t, p, *args, **kwargs)
 
     def plot_barbs(self, p, u, v, c=None, xloc=1.0, x_clip_radius=0.1,
                    y_clip_radius=0.08, **kwargs):
