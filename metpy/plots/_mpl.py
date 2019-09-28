@@ -1,123 +1,12 @@
-# Copyright (c) 2016,2017 MetPy Developers.
+# Copyright (c) 2016,2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Functionality that we have upstreamed or will upstream into matplotlib."""
 from __future__ import division
 
 # See if we should monkey-patch Barbs for better pivot
-import matplotlib
 import matplotlib.transforms as transforms
 import numpy as np
-
-if matplotlib.__version__ < '2.1':
-    from numpy import ma
-    from matplotlib.patches import CirclePolygon
-    from matplotlib.quiver import Barbs
-
-    def _make_barbs(self, u, v, nflags, nbarbs, half_barb, empty_flag, length,
-                    pivot, sizes, fill_empty, flip):
-        """Monkey-patch _make_barbs. Allows pivot to be a float value."""
-        # These control the spacing and size of barb elements relative to the
-        # length of the shaft
-        spacing = length * sizes.get('spacing', 0.125)
-        full_height = length * sizes.get('height', 0.4)
-        full_width = length * sizes.get('width', 0.25)
-        empty_rad = length * sizes.get('emptybarb', 0.15)
-
-        # Controls y point where to pivot the barb.
-        pivot_points = dict(tip=0.0, middle=-length / 2.)  # noqa: C408
-
-        # Check for flip
-        if flip:
-            full_height = -full_height
-
-        endx = 0.0
-        try:
-            endy = float(pivot)
-        except ValueError:
-            endy = pivot_points[pivot.lower()]
-
-        # Get the appropriate angle for the vector components.  The offset is
-        # due to the way the barb is initially drawn, going down the y-axis.
-        # This makes sense in a meteorological mode of thinking since there 0
-        # degrees corresponds to north (the y-axis traditionally)
-        angles = -(ma.arctan2(v, u) + np.pi / 2)
-
-        # Used for low magnitude.  We just get the vertices, so if we make it
-        # out here, it can be reused.  The center set here should put the
-        # center of the circle at the location(offset), rather than at the
-        # same point as the barb pivot; this seems more sensible.
-        circ = CirclePolygon((0, 0), radius=empty_rad).get_verts()
-        if fill_empty:
-            empty_barb = circ
-        else:
-            # If we don't want the empty one filled, we make a degenerate
-            # polygon that wraps back over itself
-            empty_barb = np.concatenate((circ, circ[::-1]))
-
-        barb_list = []
-        for index, angle in np.ndenumerate(angles):
-            # If the vector magnitude is too weak to draw anything, plot an
-            # empty circle instead
-            if empty_flag[index]:
-                # We can skip the transform since the circle has no preferred
-                # orientation
-                barb_list.append(empty_barb)
-                continue
-
-            poly_verts = [(endx, endy)]
-            offset = length
-
-            # Add vertices for each flag
-            for _ in range(nflags[index]):
-                # The spacing that works for the barbs is a little to much for
-                # the flags, but this only occurs when we have more than 1
-                # flag.
-                if offset != length:
-                    offset += spacing / 2.
-                poly_verts.extend(
-                    [[endx, endy + offset],
-                     [endx + full_height, endy - full_width / 2 + offset],
-                     [endx, endy - full_width + offset]])
-
-                offset -= full_width + spacing
-
-            # Add vertices for each barb.  These really are lines, but works
-            # great adding 3 vertices that basically pull the polygon out and
-            # back down the line
-            for _ in range(nbarbs[index]):
-                poly_verts.extend(
-                    [(endx, endy + offset),
-                     (endx + full_height, endy + offset + full_width / 2),
-                     (endx, endy + offset)])
-
-                offset -= spacing
-
-            # Add the vertices for half a barb, if needed
-            if half_barb[index]:
-                # If the half barb is the first on the staff, traditionally it
-                # is offset from the end to make it easy to distinguish from a
-                # barb with a full one
-                if offset == length:
-                    poly_verts.append((endx, endy + offset))
-                    offset -= 1.5 * spacing
-                poly_verts.extend(
-                    [(endx, endy + offset),
-                     (endx + full_height / 2, endy + offset + full_width / 4),
-                     (endx, endy + offset)])
-
-            # Rotate the barb according the angle. Making the barb first and
-            # then rotating it made the math for drawing the barb really easy.
-            # Also, the transform framework makes doing the rotation simple.
-            poly_verts = transforms.Affine2D().rotate(-angle).transform(
-                poly_verts)
-            barb_list.append(poly_verts)
-
-        return barb_list
-
-    # Replace existing method
-    Barbs._make_barbs = _make_barbs
-
 
 # See if we need to patch in our own scattertext implementation
 from matplotlib.axes import Axes  # noqa: E402, I100, I202
