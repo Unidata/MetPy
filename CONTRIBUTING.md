@@ -118,6 +118,15 @@ upon submission of a Pull Request.
 See [here](https://github.com/Unidata/MetPy/blob/master/CLA.md) for more
 explanation and rationale behind MetPy's CLA.
 
+## Source Code
+MetPy's source code is located in the `src/` directory in the root of the repository. Within
+`src/` is the `metpy/` directory, which is the base package. Inside here are the main
+top-level subpackages of MetPy:
+- `calc`: Calculations and tools
+- `interpolate`: Interpolating data points to other locations
+- `io`: Tools for reading and writing files
+- `plots`: Plotting tools using Matplotlib (and Cartopy)
+
 ## Documentation
 Now that you've made your awesome contribution, it's time to tell the world how to use it.
 Writing documentation strings is really important to make sure others use your functionality
