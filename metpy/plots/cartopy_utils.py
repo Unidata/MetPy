@@ -3,13 +3,12 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Cartopy specific mapping utilities."""
 
-import cartopy.feature as cfeat
-import cartopy.io.shapereader as shpreader
+import cartopy.feature as cfeature
 
 from ..cbook import get_test_data
 
 
-class MetPyMapFeature(cfeat.NaturalEarthFeature):
+class MetPyMapFeature(cfeature.NaturalEarthFeature):
     """A simple interface to US County shapefiles."""
 
     def __init__(self, name, scale, **kwargs):
@@ -18,12 +17,13 @@ class MetPyMapFeature(cfeat.NaturalEarthFeature):
 
     def geometries(self):
         """Return an iterator of (shapely) geometries for this feature."""
+        import cartopy.io.shapereader as shapereader
         # Ensure that the associated files are in the cache
         fname = '{}_{}'.format(self.name, self.scale)
         for extension in ['.dbf', '.shx']:
             get_test_data(fname + extension)
         path = get_test_data(fname + '.shp', as_file_obj=False)
-        return iter(tuple(shpreader.Reader(path).geometries()))
+        return iter(tuple(shapereader.Reader(path).geometries()))
 
     def with_scale(self, new_scale):
         """
