@@ -1,0 +1,12 @@
+lfc
+==============
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: lfc
+
+.. include:: metpy.calc.lfc.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

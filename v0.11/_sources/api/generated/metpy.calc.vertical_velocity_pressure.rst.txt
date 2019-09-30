@@ -1,0 +1,12 @@
+vertical_velocity_pressure
+=====================================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: vertical_velocity_pressure
+
+.. include:: metpy.calc.vertical_velocity_pressure.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

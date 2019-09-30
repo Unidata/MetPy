@@ -1,0 +1,128 @@
+FilledContourPlot
+=============================
+
+.. currentmodule:: metpy.plots
+
+.. autoclass:: FilledContourPlot
+
+   
+   
+
+   .. rubric:: Attributes Summary
+
+   .. autosummary::
+   
+      ~FilledContourPlot.clabels
+      ~FilledContourPlot.colorbar
+      ~FilledContourPlot.colormap
+      ~FilledContourPlot.contours
+      ~FilledContourPlot.cross_validation_lock
+      ~FilledContourPlot.data
+      ~FilledContourPlot.field
+      ~FilledContourPlot.griddata
+      ~FilledContourPlot.image_range
+      ~FilledContourPlot.level
+      ~FilledContourPlot.name
+      ~FilledContourPlot.parent
+      ~FilledContourPlot.plotdata
+      ~FilledContourPlot.time
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Summary
+
+   .. autosummary::
+   
+      ~FilledContourPlot.__init__
+      ~FilledContourPlot.add_traits
+      ~FilledContourPlot.class_own_trait_events
+      ~FilledContourPlot.class_own_traits
+      ~FilledContourPlot.class_trait_names
+      ~FilledContourPlot.class_traits
+      ~FilledContourPlot.clear
+      ~FilledContourPlot.clear_collections
+      ~FilledContourPlot.clear_handle
+      ~FilledContourPlot.draw
+      ~FilledContourPlot.has_trait
+      ~FilledContourPlot.hold_trait_notifications
+      ~FilledContourPlot.notify_change
+      ~FilledContourPlot.observe
+      ~FilledContourPlot.on_trait_change
+      ~FilledContourPlot.set_trait
+      ~FilledContourPlot.setup_instance
+      ~FilledContourPlot.trait_events
+      ~FilledContourPlot.trait_metadata
+      ~FilledContourPlot.trait_names
+      ~FilledContourPlot.traits
+      ~FilledContourPlot.unobserve
+      ~FilledContourPlot.unobserve_all
+
+   
+   
+
+   
+   
+
+   .. rubric:: Attributes Documentation
+
+   
+   .. autoattribute:: clabels
+   .. autoattribute:: colorbar
+   .. autoattribute:: colormap
+   .. autoattribute:: contours
+   .. autoattribute:: cross_validation_lock
+   .. autoattribute:: data
+   .. autoattribute:: field
+   .. autoattribute:: griddata
+   .. autoattribute:: image_range
+   .. autoattribute:: level
+   .. autoattribute:: name
+   .. autoattribute:: parent
+   .. autoattribute:: plotdata
+   .. autoattribute:: time
+
+   
+   
+
+   
+   
+
+   .. rubric:: Methods Documentation
+
+   
+   .. automethod:: __init__
+   .. automethod:: add_traits
+   .. automethod:: class_own_trait_events
+   .. automethod:: class_own_traits
+   .. automethod:: class_trait_names
+   .. automethod:: class_traits
+   .. automethod:: clear
+   .. automethod:: clear_collections
+   .. automethod:: clear_handle
+   .. automethod:: draw
+   .. automethod:: has_trait
+   .. automethod:: hold_trait_notifications
+   .. automethod:: notify_change
+   .. automethod:: observe
+   .. automethod:: on_trait_change
+   .. automethod:: set_trait
+   .. automethod:: setup_instance
+   .. automethod:: trait_events
+   .. automethod:: trait_metadata
+   .. automethod:: trait_names
+   .. automethod:: traits
+   .. automethod:: unobserve
+   .. automethod:: unobserve_all
+
+   
+   
+
+.. include:: metpy.plots.FilledContourPlot.examples
+
+.. raw:: html
+
+     <div style='clear:both'></div>

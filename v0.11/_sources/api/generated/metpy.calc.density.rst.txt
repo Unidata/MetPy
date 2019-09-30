@@ -1,0 +1,12 @@
+density
+==================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: density
+
+.. include:: metpy.calc.density.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

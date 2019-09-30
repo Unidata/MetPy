@@ -1,0 +1,12 @@
+vorticity
+====================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: vorticity
+
+.. include:: metpy.calc.vorticity.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

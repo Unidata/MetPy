@@ -1,0 +1,12 @@
+most_unstable_parcel
+===============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: most_unstable_parcel
+
+.. include:: metpy.calc.most_unstable_parcel.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

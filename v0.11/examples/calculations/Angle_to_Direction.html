@@ -1,0 +1,376 @@
+
+
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Angle to Direction &mdash; MetPy 0.11</title>
+  
+
+  
+  
+    <link rel="shortcut icon" href="../../_static/metpy_32x32.ico"/>
+  
+  
+  
+    <link rel="canonical" href="https://unidata.github.io/MetPy/latest/examples/calculations/Angle_to_Direction.html"/>
+  
+
+  
+
+  
+  
+    
+
+  
+
+  
+  
+    <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+  
+
+  
+    <link rel="stylesheet" href="../../_static/gallery.css" type="text/css" />
+  
+    <link rel="stylesheet" href="../../_static/theme_override.css" type="text/css" />
+  
+
+  
+        <link rel="index" title="Index"
+              href="../../genindex.html"/>
+        <link rel="search" title="Search" href="../../search.html"/>
+    <link rel="top" title="MetPy 0.11" href="../../index.html"/>
+        <link rel="up" title="Examples" href="../index.html"/>
+        <link rel="next" title="Gradient" href="Gradient.html"/>
+        <link rel="prev" title="Dewpoint and Mixing Ratio" href="Dewpoint_and_Mixing_Ratio.html"/> 
+
+  
+  <script src="../../_static/js/modernizr.min.js"></script>
+
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+   
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search">
+          
+
+          
+            <a href="../../index.html" class="icon icon-home"> MetPy
+          
+
+          
+            
+            <img src="../../_static/metpy_150x150.png" class="logo" />
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                
+                  <div class="version-dropdown">
+                    <select class="version-list" id="version-list">
+                      <option value=''>0.11</option>
+                      
+                        
+                          <option value="../latest">latest</option>
+                        
+                      
+                        
+                          <option value="../dev">dev</option>
+                        
+                      
+                    </select>
+                  </div>
+                
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../index.html#calculations">Calculations</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="Parse_Angles.html">Parse angles</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Dewpoint_and_Mixing_Ratio.html">Dewpoint and Mixing Ratio</a></li>
+<li class="toctree-l3 current"><a class="current reference internal" href="#">Angle to Direction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Gradient.html">Gradient</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#file-formats">File Formats</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#gridding">Gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../index.html#plotting">Plotting</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../references.html">References</a></li>
+</ul>
+
+            
+          
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">MetPy</a>
+        
+      </nav>
+
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../index.html">Docs</a> &raquo;</li>
+        
+          <li><a href="../index.html">Examples</a> &raquo;</li>
+        
+      <li>Angle to Direction</li>
+    
+    
+    <li class="source-link">
+        
+            
+                
+                
+                
+                    
+                
+                <a href="https://github.com/Unidata/MetPy/edit/master/docs/../examples/calculations/Angle_to_Direction.py"
+                   class="fa fa-github"> Improve this page</a>
+            
+        
+    </li>
+
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="sphx-glr-download-link-note admonition note">
+<p class="admonition-title">Note</p>
+<p>Click <a class="reference internal" href="#sphx-glr-download-examples-calculations-angle-to-direction-py"><span class="std std-ref">here</span></a> to download the full example code</p>
+</div>
+<div class="sphx-glr-example-title section" id="angle-to-direction">
+<span id="sphx-glr-examples-calculations-angle-to-direction-py"></span><h1>Angle to Direction<a class="headerlink" href="#angle-to-direction" title="Permalink to this headline">¶</a></h1>
+<p>Demonstrate how to convert angles to direction strings.</p>
+<p>The code below shows how to convert angles into directional text.
+It also  demonstrates the function’s flexibility.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
+<span class="kn">from</span> <span class="nn">metpy.units</span> <span class="k">import</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a>
+</pre></div>
+</div>
+<p>Create a test value of an angle</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">angle_deg</span> <span class="o">=</span> <span class="mi">70</span> <span class="o">*</span> <a href="../../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;degree&#39;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">angle_deg</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>70 degree
+</pre></div>
+</div>
+<p>Now throw that angle into the function to
+get the corresponding direction</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dir_str</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="View documentation for metpy.calc.angle_to_direction"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><span class="n">angle_deg</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dir_str</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>ENE
+</pre></div>
+</div>
+<p>The function can also handle array of angles,
+rounding to the nearest direction, handling angles &gt; 360,
+and defaulting to degrees if no units are specified.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">angle_deg_list</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">361</span><span class="p">,</span> <span class="mi">719</span><span class="p">]</span>
+<span class="n">dir_str_list</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="View documentation for metpy.calc.angle_to_direction"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><span class="n">angle_deg_list</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">dir_str_list</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>(&#39;N&#39;, &#39;N&#39;, &#39;N&#39;)
+</pre></div>
+</div>
+<p>If you want the unabbrieviated version, input full=True</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">full_dir_str_list</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.angle_to_direction.html#metpy.calc.angle_to_direction" title="View documentation for metpy.calc.angle_to_direction"><span class="n">mpcalc</span><span class="o">.</span><span class="n">angle_to_direction</span></a><span class="p">(</span><span class="n">angle_deg_list</span><span class="p">,</span> <span class="n">full</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">full_dir_str_list</span><span class="p">)</span>
+</pre></div>
+</div>
+<p class="sphx-glr-script-out">Out:</p>
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>[&#39;North&#39;, &#39;North&#39;, &#39;North&#39;]
+</pre></div>
+</div>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.074 seconds)</p>
+<div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-calculations-angle-to-direction-py">
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/d87dba94c16d6daf41f860da9254ad0c/Angle_to_Direction.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Angle_to_Direction.py</span></code></a></p>
+</div>
+<div class="sphx-glr-download docutils container">
+<p><a class="reference download internal" download="" href="../../_downloads/5e50ab42ac6ec7bf58df35e403f36520/Angle_to_Direction.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Angle_to_Direction.ipynb</span></code></a></p>
+</div>
+</div>
+<p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
+</div>
+
+
+           </div>
+           <div class="articleComments">
+            
+           </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Gradient.html" class="btn btn-neutral float-right" title="Gradient" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="Dewpoint_and_Mixing_Ratio.html" class="btn btn-neutral" title="Dewpoint and Mixing Ratio" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        &copy; Copyright 2019, MetPy Developers.
+      Last updated on Sep 30, 2019 at 20:57:58.
+
+    </p>
+  </div>
+  Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+     
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-92978945-1', 'auto');
+  ga('send', 'pageview');
+</script>
+<script>var version_json_loc = "../../../versions.json";</script>
+<p>Do you enjoy using MetPy?
+  <a href="https://saythanks.io/to/unidata" class="btn btn-neutral" title="Say Thanks!" accesskey="n">Say Thanks!</a>
+</p>
+
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+
+  
+
+    <script type="text/javascript">
+        var DOCUMENTATION_OPTIONS = {
+            URL_ROOT:'../../',
+            VERSION:'0.11.0',
+            LANGUAGE:'None',
+            COLLAPSE_INDEX:false,
+            FILE_SUFFIX:'.html',
+            HAS_SOURCE:  true,
+            SOURCELINK_SUFFIX: '.txt'
+        };
+    </script>
+      <script type="text/javascript" src="../../_static/jquery.js"></script>
+      <script type="text/javascript" src="../../_static/underscore.js"></script>
+      <script type="text/javascript" src="../../_static/doctools.js"></script>
+      <script type="text/javascript" src="../../_static/language_data.js"></script>
+      <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+  
+
+  
+  
+    <script type="text/javascript" src="../../_static/js/theme.js"></script>
+  
+
+  
+  
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.StickyNav.enable();
+      });
+  </script>
+   
+
+</body>
+</html>

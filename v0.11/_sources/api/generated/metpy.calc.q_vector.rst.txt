@@ -1,0 +1,12 @@
+q_vector
+===================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: q_vector
+
+.. include:: metpy.calc.q_vector.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

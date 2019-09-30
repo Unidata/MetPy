@@ -1,0 +1,12 @@
+atleast_2d
+======================
+
+.. currentmodule:: metpy.units
+
+.. autofunction:: atleast_2d
+
+.. include:: metpy.units.atleast_2d.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

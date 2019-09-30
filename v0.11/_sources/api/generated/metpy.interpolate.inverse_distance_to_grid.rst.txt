@@ -1,0 +1,12 @@
+inverse_distance_to_grid
+==========================================
+
+.. currentmodule:: metpy.interpolate
+
+.. autofunction:: inverse_distance_to_grid
+
+.. include:: metpy.interpolate.inverse_distance_to_grid.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>
