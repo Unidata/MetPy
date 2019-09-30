@@ -127,7 +127,7 @@ script:
       export DOC_BUILD_RESULT=$?;
       popd;
       if [[ $TRAVIS_PYTHON_VERSION != 2.7 ]]; then
-        MPLBACKEND='agg' pytest --doctest-modules -k "not test" metpy;
+        PY_IGNORE_IMPORTMISMATCH=1 python -m pytest --doctest-modules -k "not test" src;
         export DOC_TEST_RESULT=$?;
       else
         export DOC_TEST_RESULT=0;
