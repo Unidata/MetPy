@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.interpolate.one_dimension &mdash; MetPy 0.10</title>
+  <title>metpy.interpolate.one_dimension &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -117,11 +117,14 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
@@ -267,6 +270,10 @@
 <span class="sd">        Specify handling of interpolation points out of data bounds. If None, will return</span>
 <span class="sd">        ValueError if points are out of bounds. Defaults to nan.</span>
 
+<span class="sd">    return_list_always: bool, optional</span>
+<span class="sd">        Whether to always return a list of interpolated arrays, even when only a single</span>
+<span class="sd">        array is passed to `args`. Defaults to ``False``.</span>
+
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">    array-like</span>
@@ -277,7 +284,7 @@
 <span class="sd">     &gt;&gt;&gt; x = np.array([1., 2., 3., 4.])</span>
 <span class="sd">     &gt;&gt;&gt; y = np.array([1., 2., 3., 4.])</span>
 <span class="sd">     &gt;&gt;&gt; x_interp = np.array([2.5, 3.5])</span>
-<span class="sd">     &gt;&gt;&gt; metpy.calc.interp(x_interp, x, y)</span>
+<span class="sd">     &gt;&gt;&gt; metpy.interpolate.interpolate_1d(x_interp, x, y)</span>
 <span class="sd">     array([2.5, 3.5])</span>
 
 <span class="sd">    Notes</span>
@@ -288,6 +295,7 @@
     <span class="c1"># Pull out keyword args</span>
     <span class="n">fill_value</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;fill_value&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">)</span>
     <span class="n">axis</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;axis&#39;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">return_list_always</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;return_list_always&#39;</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
 
     <span class="c1"># Handle units</span>
     <span class="n">x</span><span class="p">,</span> <span class="n">xp</span> <span class="o">=</span> <span class="n">_strip_matching_units</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">xp</span><span class="p">)</span>
@@ -359,10 +367,11 @@
             <span class="n">var_interp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">swapaxes</span><span class="p">(</span><span class="n">var_interp</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="mi">0</span><span class="p">,</span> <span class="n">axis</span><span class="p">)</span>
         <span class="c1"># Output to list</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">var_interp</span><span class="p">)</span>
-    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">if</span> <span class="n">return_list_always</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">ret</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">ret</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">ret</span></div>
+        <span class="k">return</span> <span class="n">ret</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="log_interpolate_1d"><a class="viewcode-back" href="../../../api/generated/metpy.interpolate.log_interpolate_1d.html#metpy.interpolate.log_interpolate_1d">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -401,7 +410,7 @@
 <span class="sd">     &gt;&gt;&gt; x_log = np.array([1e3, 1e4, 1e5, 1e6])</span>
 <span class="sd">     &gt;&gt;&gt; y_log = np.log(x_log) * 2 + 3</span>
 <span class="sd">     &gt;&gt;&gt; x_interp = np.array([5e3, 5e4, 5e5])</span>
-<span class="sd">     &gt;&gt;&gt; metpy.calc.log_interp(x_interp, x_log, y_log)</span>
+<span class="sd">     &gt;&gt;&gt; metpy.interpolate.log_interpolate_1d(x_interp, x_log, y_log)</span>
 <span class="sd">     array([20.03438638, 24.63955657, 29.24472675])</span>
 
 <span class="sd">    Notes</span>
@@ -447,7 +456,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -484,7 +493,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -496,8 +505,8 @@
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

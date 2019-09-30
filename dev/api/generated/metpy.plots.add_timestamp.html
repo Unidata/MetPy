@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>add_timestamp &mdash; MetPy 0.10</title>
+  <title>add_timestamp &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="add_unidata_logo" href="metpy.plots.add_unidata_logo.html"/>
         <link rel="prev" title="add_metpy_logo" href="metpy.plots.add_metpy_logo.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -137,12 +137,16 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.BarbPlot.html">BarbPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.MapPanel.html">MapPanel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.PanelContainer.html">PanelContainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Plot2D.html">Plot2D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotScalar.html">PlotScalar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotVector.html">PlotVector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Plots2D.html">Plots2D</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a></li>
@@ -151,9 +155,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -269,11 +276,11 @@
 <img alt="../../_images/sphx_glr_GINI_Water_Vapor_thumb.png" src="../../_images/sphx_glr_GINI_Water_Vapor_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/GINI_Water_Vapor.html#sphx-glr-examples-formats-gini-water-vapor-py"><span class="std std-ref">GINI Water Vapor Imagery</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot "><div class="figure align-default" id="id4">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot"><div class="figure align-default" id="id4">
 <img alt="../../_images/sphx_glr_NEXRAD_Level_3_File_thumb.png" src="../../_images/sphx_glr_NEXRAD_Level_3_File_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/NEXRAD_Level_3_File.html#sphx-glr-examples-formats-nexrad-level-3-file-py"><span class="std std-ref">NEXRAD Level 3 File</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot "><div class="figure align-default" id="id5">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot"><div class="figure align-default" id="id5">
 <img alt="../../_images/sphx_glr_NEXRAD_Level_2_File_thumb.png" src="../../_images/sphx_glr_NEXRAD_Level_2_File_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/formats/NEXRAD_Level_2_File.html#sphx-glr-examples-formats-nexrad-level-2-file-py"><span class="std std-ref">NEXRAD Level 2 File</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
@@ -303,7 +310,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -340,7 +347,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -352,8 +359,8 @@
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

@@ -46,7 +46,6 @@ GiniFile
       ~GiniFile.items
       ~GiniFile.keys
       ~GiniFile.load
-      ~GiniFile.to_dataset
       ~GiniFile.values
 
    
@@ -91,7 +90,6 @@ GiniFile
    .. automethod:: items
    .. automethod:: keys
    .. automethod:: load
-   .. automethod:: to_dataset
    .. automethod:: values
 
    

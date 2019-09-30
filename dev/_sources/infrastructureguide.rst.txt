@@ -9,13 +9,14 @@ information on how we manage MetPy and the infrastructure behind it.
 Versioning
 ----------
 
-To manage identifying the version of the code, MetPy relies upon `versioneer
-<https://github.com/warner/python-versioneer>`_. ``versioneer`` takes the current version of
-the source from git tags and any additional commits. For development, the version will have a
-string like ``0.1.1+76.g136e37b.dirty``, which comes from ``git describe``. This version means
-that the current code is 76 commits past the 0.1.1 tag, on git hash ``136e37b``, with local
-changes on top (indicated by ``dirty``). For a release, or non-git repo source dir, the version
-will just come from the most recent tag (i.e. ``v0.1.1``).
+To manage identifying the version of the code, MetPy relies upon `setuptools_scm
+<https://github.com/pypa/setuptools_scm>`_. ``setuptools_scm`` takes the current version of the
+source from git tags and any additional commits. For development, the version will have a
+string like ``0.10.0.post209+gff2e549f.d20190918``, which comes from ``git describe``. This
+version means that the current code is 209 commits past the 0.10.0 tag, on git hash
+``ff2e549f``, with local changes on top, last made on a date (indicated by ``d20190918``). For
+a release, or non-git repo source dir, the version will just come from the most recent tag
+(i.e. ``v0.10.0``).
 
 To make a new version, simply add a new tag with a name like ``vMajor.Minor.Bugfix`` and push
 to GitHub. Github will add a new release with a source archive.zip file. Running
@@ -26,17 +27,11 @@ to GitHub. Github will add a new release with a source archive.zip file. Running
 will build a new source distribution with the appropriately generated version file as well.
 This will also create a new stable set of documentation.
 
-``versioneer`` is installed in the base of the repository. To update, install the latest copy
-using ``pip install versioneer``. Then recreate the ``_version.py`` file using:
-
-.. parsed-literal::
-    python setup.py versioneer
-
 -------------
 Documentation
 -------------
 
-MetPy's documentation is built using sphinx >= 1.4. API documentation is automatically
+MetPy's documentation is built using sphinx >= 1.8. API documentation is automatically
 generated from docstrings, written using the
 `NumPy docstring standard <https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt>`_.
 There are also example scripts in the ``examples`` directory. Using the ``sphinx-gallery``
@@ -91,8 +86,8 @@ distribution and wheels, and upload them to PyPI.
 
 To build and upload manually (if for some reason it is necessary):
 
-1. Do a pull locally to grab the new tag. This will ensure that ``versioneer`` will give you
-   the proper version.
+1. Do a pull locally to grab the new tag. This will ensure that ``setuptools_scm`` will give
+   you the proper version.
 2. (optional) Perform a ``git clean -f -x -d`` from the root of the repository. This will
    **delete** everything not tracked by git, but will also ensure clean source distribution.
    ``MANIFEST.in`` is set to include/exclude mostly correctly, but could miss some things.

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Natural Neighbor Verification &mdash; MetPy 0.10</title>
+  <title>Natural Neighbor Verification &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
         <link rel="next" title="Simple Plotting" href="../plots/Simplified_Image_Plot.html"/>
         <link rel="prev" title="Inverse Distance Verification: Cressman and Barnes" href="Inverse_Distance_Verification.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
@@ -137,7 +138,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -267,16 +270,16 @@ value divided by 1000.</p>
 <p>We then create two test points (grid 0 &amp; grid 1) at which we want to
 estimate a value using natural neighbor interpolation.</p>
 <p>The locations of these observations are then used to generate a Delaunay triangulation.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.seed.html#numpy.random.seed" title="View documentation for numpy.random.seed"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span></a><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
 
-<span class="n">pts</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randint.html#numpy.random.randint" title="View documentation for numpy.random.randint"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
+<span class="n">pts</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
 <span class="n">xp</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span>
 <span class="n">yp</span> <span class="o">=</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
 <span class="n">zp</span> <span class="o">=</span> <span class="p">(</span><span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">pts</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">])</span> <span class="o">/</span> <span class="mi">1000</span>
 
 <span class="n">tri</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.Delaunay.html#scipy.spatial.Delaunay" title="View documentation for scipy.spatial.Delaunay"><span class="n">Delaunay</span></a><span class="p">(</span><span class="n">pts</span><span class="p">)</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.rst.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">ishold</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">True</span>  <span class="c1"># Work-around for Matplotlib 3.0.0 incompatibility</span>
 <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.delaunay_plot_2d.html#scipy.spatial.delaunay_plot_2d" title="View documentation for scipy.spatial.delaunay_plot_2d"><span class="n">delaunay_plot_2d</span></a><span class="p">(</span><span class="n">tri</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
@@ -315,7 +318,7 @@ examine the results to see if they are correct.</p>
 
 <span class="n">members</span><span class="p">,</span> <span class="n">tri_info</span> <span class="o">=</span> <span class="n">geometry</span><span class="o">.</span><span class="n">find_natural_neighbors</span><span class="p">(</span><span class="n">tri</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">sim_gridx</span><span class="p">,</span> <span class="n">sim_gridy</span><span class="p">)))</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.rst.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">ishold</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">True</span>  <span class="c1"># Work-around for Matplotlib 3.0.0 incompatibility</span>
 <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.delaunay_plot_2d.html#scipy.spatial.delaunay_plot_2d" title="View documentation for scipy.spatial.delaunay_plot_2d"><span class="n">delaunay_plot_2d</span></a><span class="p">(</span><span class="n">tri</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">sim_gridx</span><span class="p">,</span> <span class="n">sim_gridy</span><span class="p">,</span> <span class="s1">&#39;ks&#39;</span><span class="p">,</span> <span class="n">markersize</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
@@ -381,7 +384,7 @@ Notice that the two natural neighbor triangle circumcenters are also vertices
 in the Voronoi plot (green dots), and the observations are in the polygons (blue dots).</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">vor</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.Voronoi.html#scipy.spatial.Voronoi" title="View documentation for scipy.spatial.Voronoi"><span class="n">Voronoi</span></a><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="n">xp</span><span class="p">,</span> <span class="n">yp</span><span class="p">)))</span>
 
-<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.rst.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots.html#matplotlib.pyplot.subplots" title="View documentation for matplotlib.pyplot.subplots"><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span></a><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">ishold</span> <span class="o">=</span> <span class="k">lambda</span><span class="p">:</span> <span class="kc">True</span>  <span class="c1"># Work-around for Matplotlib 3.0.0 incompatibility</span>
 <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.spatial.voronoi_plot_2d.html#scipy.spatial.voronoi_plot_2d" title="View documentation for scipy.spatial.voronoi_plot_2d"><span class="n">voronoi_plot_2d</span></a><span class="p">(</span><span class="n">vor</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
@@ -486,16 +489,16 @@ Calculate the total area of all of the generated polygons.</p>
 </div>
 <p>The values are slightly different due to truncating the area values in
 the above visual example to the 3rd decimal place.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.143 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.083 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-gridding-natural-neighbor-verification-py">
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/8f5097950a17259b91afebe0b1b55da0/Natural_Neighbor_Verification.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Natural_Neighbor_Verification.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/d04a9494716f000a1433c75d1fe171ba/Natural_Neighbor_Verification.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Natural_Neighbor_Verification.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/56e68110d2faf6be8284d896c8f4cd23/Natural_Neighbor_Verification.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Natural_Neighbor_Verification.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/e5685967297554788de3cf5858571b23/Natural_Neighbor_Verification.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Natural_Neighbor_Verification.ipynb</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -524,7 +527,7 @@ the above visual example to the 3rd decimal place.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -561,7 +564,7 @@ the above visual example to the 3rd decimal place.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -573,8 +576,8 @@ the above visual example to the 3rd decimal place.</p>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

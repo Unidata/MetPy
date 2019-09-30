@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>interpolate &mdash; MetPy 0.10</title>
+  <title>interpolate &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="Reference Guide" href="../index.html"/>
         <link rel="next" title="cross_section" href="metpy.interpolate.cross_section.html"/>
-        <link rel="prev" title="Exporter" href="metpy.plots.ctables.Exporter.html"/> 
+        <link rel="prev" title="colortables" href="metpy.plots.ctables.colortables.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.html">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
@@ -137,6 +137,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_1d.html">interpolate_1d</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_nans_1d.html">interpolate_nans_1d</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_grid.html">interpolate_to_grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_isosurface.html">interpolate_to_isosurface</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_points.html">interpolate_to_points</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html">interpolate_to_slice</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.interpolate.inverse_distance.html">inverse_distance</a></li>
@@ -152,9 +153,12 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -256,40 +260,43 @@
 <tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.interpolate_to_grid.html#metpy.interpolate.interpolate_to_grid" title="metpy.interpolate.interpolate_to_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_to_grid</span></code></a>(x, y, z[, interp_type, …])</p></td>
 <td><p>Interpolate given (x,y), observation (z) pairs to a grid based on given parameters.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.interpolate_to_points.html#metpy.interpolate.interpolate_to_points" title="metpy.interpolate.interpolate_to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_to_points</span></code></a>(points, values, xi[, …])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.interpolate_to_isosurface.html#metpy.interpolate.interpolate_to_isosurface" title="metpy.interpolate.interpolate_to_isosurface"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_to_isosurface</span></code></a>(level_var, …)</p></td>
+<td><p>Linear interpolation of a variable to a given vertical level from given values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.interpolate_to_points.html#metpy.interpolate.interpolate_to_points" title="metpy.interpolate.interpolate_to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_to_points</span></code></a>(points, values, xi[, …])</p></td>
 <td><p>Interpolate unstructured point data to the given points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html#metpy.interpolate.interpolate_to_slice" title="metpy.interpolate.interpolate_to_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_to_slice</span></code></a>(data, points[, interp_type])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.interpolate_to_slice.html#metpy.interpolate.interpolate_to_slice" title="metpy.interpolate.interpolate_to_slice"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_to_slice</span></code></a>(data, points[, interp_type])</p></td>
 <td><p>Obtain an interpolated slice through data using xarray.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.inverse_distance.html#metpy.interpolate.inverse_distance" title="metpy.interpolate.inverse_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_distance</span></code></a>(xp, yp, variable, grid_x, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.inverse_distance.html#metpy.interpolate.inverse_distance" title="metpy.interpolate.inverse_distance"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_distance</span></code></a>(xp, yp, variable, grid_x, …)</p></td>
 <td><p>Generate an inverse distance interpolation of the given points to a regular grid.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.inverse_distance_to_grid.html#metpy.interpolate.inverse_distance_to_grid" title="metpy.interpolate.inverse_distance_to_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_distance_to_grid</span></code></a>(xp, yp, variable, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.inverse_distance_to_grid.html#metpy.interpolate.inverse_distance_to_grid" title="metpy.interpolate.inverse_distance_to_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_distance_to_grid</span></code></a>(xp, yp, variable, …)</p></td>
 <td><p>Generate an inverse distance interpolation of the given points to a regular grid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.inverse_distance_to_points.html#metpy.interpolate.inverse_distance_to_points" title="metpy.interpolate.inverse_distance_to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_distance_to_points</span></code></a>(points, values, xi, r)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.inverse_distance_to_points.html#metpy.interpolate.inverse_distance_to_points" title="metpy.interpolate.inverse_distance_to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">inverse_distance_to_points</span></code></a>(points, values, xi, r)</p></td>
 <td><p>Generate an inverse distance weighting interpolation to the given points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.log_interpolate_1d.html#metpy.interpolate.log_interpolate_1d" title="metpy.interpolate.log_interpolate_1d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_interpolate_1d</span></code></a>(x, xp, *args, **kwargs)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.log_interpolate_1d.html#metpy.interpolate.log_interpolate_1d" title="metpy.interpolate.log_interpolate_1d"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_interpolate_1d</span></code></a>(x, xp, *args, **kwargs)</p></td>
 <td><p>Interpolates data with logarithmic x-scale over a specified axis.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.natural_neighbor.html#metpy.interpolate.natural_neighbor" title="metpy.interpolate.natural_neighbor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_neighbor</span></code></a>(xp, yp, variable, grid_x, …)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.natural_neighbor.html#metpy.interpolate.natural_neighbor" title="metpy.interpolate.natural_neighbor"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_neighbor</span></code></a>(xp, yp, variable, grid_x, …)</p></td>
 <td><p>Generate a natural neighbor interpolation of the given points to a regular grid.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html#metpy.interpolate.natural_neighbor_to_grid" title="metpy.interpolate.natural_neighbor_to_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_neighbor_to_grid</span></code></a>(xp, yp, variable, …)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_grid.html#metpy.interpolate.natural_neighbor_to_grid" title="metpy.interpolate.natural_neighbor_to_grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_neighbor_to_grid</span></code></a>(xp, yp, variable, …)</p></td>
 <td><p>Generate a natural neighbor interpolation of the given points to a regular grid.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html#metpy.interpolate.natural_neighbor_to_points" title="metpy.interpolate.natural_neighbor_to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_neighbor_to_points</span></code></a>(points, values, xi)</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.natural_neighbor_to_points.html#metpy.interpolate.natural_neighbor_to_points" title="metpy.interpolate.natural_neighbor_to_points"><code class="xref py py-obj docutils literal notranslate"><span class="pre">natural_neighbor_to_points</span></code></a>(points, values, xi)</p></td>
 <td><p>Generate a natural neighbor interpolation to the given points.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.remove_nan_observations.html#metpy.interpolate.remove_nan_observations" title="metpy.interpolate.remove_nan_observations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_nan_observations</span></code></a>(x, y, z)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.remove_nan_observations.html#metpy.interpolate.remove_nan_observations" title="metpy.interpolate.remove_nan_observations"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_nan_observations</span></code></a>(x, y, z)</p></td>
 <td><p>Remove all x, y, and z where z is nan.</p></td>
 </tr>
-<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.remove_observations_below_value.html#metpy.interpolate.remove_observations_below_value" title="metpy.interpolate.remove_observations_below_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_observations_below_value</span></code></a>(x, y, z[, val])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.remove_observations_below_value.html#metpy.interpolate.remove_observations_below_value" title="metpy.interpolate.remove_observations_below_value"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_observations_below_value</span></code></a>(x, y, z[, val])</p></td>
 <td><p>Remove all x, y, and z where z is less than val.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="metpy.interpolate.remove_repeat_coordinates.html#metpy.interpolate.remove_repeat_coordinates" title="metpy.interpolate.remove_repeat_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_repeat_coordinates</span></code></a>(x, y, z)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="metpy.interpolate.remove_repeat_coordinates.html#metpy.interpolate.remove_repeat_coordinates" title="metpy.interpolate.remove_repeat_coordinates"><code class="xref py py-obj docutils literal notranslate"><span class="pre">remove_repeat_coordinates</span></code></a>(x, y, z)</p></td>
 <td><p>Remove all x, y, and z where (x,y) is repeated and keep the first occurrence only.</p></td>
 </tr>
 </tbody>
@@ -309,7 +316,7 @@
         <a href="metpy.interpolate.cross_section.html" class="btn btn-neutral float-right" title="cross_section" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.plots.ctables.Exporter.html" class="btn btn-neutral" title="Exporter" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.plots.ctables.colortables.html" class="btn btn-neutral" title="colortables" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -319,7 +326,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -356,7 +363,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -368,8 +375,8 @@
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

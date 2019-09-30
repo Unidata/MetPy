@@ -9,6 +9,8 @@
 Examples
 ========
 
+For more MetPy examples, please visit the `Unidata Python Gallery
+<https://unidata.github.io/python-gallery/>`_.
 
 .. _general-examples:
 
@@ -41,26 +43,6 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Plot a sounding using MetPy with more advanced features.">
-
-.. only:: html
-
-    .. figure:: /examples/images/thumb/sphx_glr_Advanced_Sounding_thumb.png
-
-        :ref:`sphx_glr_examples_Advanced_Sounding.py`
-
-.. raw:: html
-
-    </div>
-
-
-.. toctree::
-   :hidden:
-
-   /examples/Advanced_Sounding
-
-.. raw:: html
-
     <div class="sphx-glr-thumbcontainer" tooltip="By using metpy.calc.log_interp, data with sigma as the vertical coordinate can be interpolated ...">
 
 .. only:: html
@@ -78,6 +60,26 @@ Examples of using a variety of MetPy's functionality together.
    :hidden:
 
    /examples/sigma_to_pressure_interpolation
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Plot a sounding using MetPy with more advanced features.">
+
+.. only:: html
+
+    .. figure:: /examples/images/thumb/sphx_glr_Advanced_Sounding_thumb.png
+
+        :ref:`sphx_glr_examples_Advanced_Sounding.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/Advanced_Sounding
 
 .. raw:: html
 
@@ -141,7 +143,7 @@ Examples of using a variety of MetPy's functionality together.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Plots time series data as a meteogram. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Plots time series data as a meteogram.">
 
 .. only:: html
 
@@ -217,6 +219,26 @@ Examples using various calculation functions from MetPy.
 
 .. raw:: html
 
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to convert angles to direction strings.">
+
+.. only:: html
+
+    .. figure:: /examples/calculations/images/thumb/sphx_glr_Angle_to_Direction_thumb.png
+
+        :ref:`sphx_glr_examples_calculations_Angle_to_Direction.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/calculations/Angle_to_Direction
+
+.. raw:: html
+
     <div class="sphx-glr-thumbcontainer" tooltip="Use metpy.calc.gradient.">
 
 .. only:: html
@@ -273,7 +295,7 @@ Examples using MetPy's support for reading various file formats.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 3 (NIDS product) file and plot">
 
 .. only:: html
 
@@ -293,7 +315,7 @@ Examples using MetPy's support for reading various file formats.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy to read information from a NEXRAD Level 2 (volume) file and plot">
 
 .. only:: html
 
@@ -369,7 +391,7 @@ Examples generating a grid of data from scattered point observations.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Compares different point interpolation approaches. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Compares different point interpolation approaches.">
 
 .. only:: html
 
@@ -465,7 +487,7 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to plot US counties at all three available resolutions. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Demonstrate how to plot US counties at all three available resolutions.">
 
 .. only:: html
 
@@ -505,7 +527,7 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability.">
 
 .. only:: html
 
@@ -525,7 +547,7 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot.">
 
 .. only:: html
 
@@ -545,7 +567,7 @@ Examples using MetPy's various specialty plotting routines.
 
 .. raw:: html
 
-    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy as straightforward as possible to make a Skew-T LogP plot. ">
+    <div class="sphx-glr-thumbcontainer" tooltip="Use MetPy as straightforward as possible to make a Skew-T LogP plot.">
 
 .. only:: html
 
@@ -562,6 +584,26 @@ Examples using MetPy's various specialty plotting routines.
    :hidden:
 
    /examples/plots/Simple_Sounding
+
+.. raw:: html
+
+    <div class="sphx-glr-thumbcontainer" tooltip="Make a surface station plot with Oklahoma Mesonet data.">
+
+.. only:: html
+
+    .. figure:: /examples/plots/images/thumb/sphx_glr_Mesonet_Stationplot_thumb.png
+
+        :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py`
+
+.. raw:: html
+
+    </div>
+
+
+.. toctree::
+   :hidden:
+
+   /examples/plots/Mesonet_Stationplot
 
 .. raw:: html
 

@@ -26,8 +26,6 @@ Plots a sample satellite image file.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'NHEM-MULTICOMP_1km_IR_20151208_2100.gini' from remote data store 'https://github.com/Unidata/MetPy/raw/master/staticdata/NHEM-MULTICOMP_1km_IR_20151208_2100.gini' to '/home/travis/build/Unidata/MetPy/staticdata/master'.
-      action_word[action], fname, self.get_url(fname), str(self.path)
     Adjusting bad PDB size from 0 to 512.
 
 
@@ -63,7 +61,7 @@ Plots a sample satellite image file.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.597 seconds)
+   **Total running time of the script:** ( 0 minutes  0.847 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simplified_Image_Plot.py:

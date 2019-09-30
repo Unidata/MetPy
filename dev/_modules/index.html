@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Overview: module code &mdash; MetPy 0.10</title>
+  <title>Overview: module code &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../index.html"/> 
+    <link rel="top" title="MetPy 0.10.0" href="../index.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -78,7 +78,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -116,11 +116,14 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
@@ -186,32 +189,29 @@
            <div itemprop="articleBody">
             
   <h1>All modules for which code is available</h1>
-<ul><li><a href="collections.html">collections</a></li>
 <ul><li><a href="collections/abc.html">collections.abc</a></li>
-</ul><li><a href="metpy/calc/basic.html">metpy.calc.basic</a></li>
+<li><a href="metpy/calc/basic.html">metpy.calc.basic</a></li>
 <li><a href="metpy/calc/cross_sections.html">metpy.calc.cross_sections</a></li>
 <li><a href="metpy/calc/indices.html">metpy.calc.indices</a></li>
 <li><a href="metpy/calc/kinematics.html">metpy.calc.kinematics</a></li>
 <li><a href="metpy/calc/thermo.html">metpy.calc.thermo</a></li>
 <li><a href="metpy/calc/tools.html">metpy.calc.tools</a></li>
 <li><a href="metpy/calc/turbulence.html">metpy.calc.turbulence</a></li>
-<li><a href="metpy/deprecation.html">metpy.deprecation</a></li>
 <li><a href="metpy/interpolate/grid.html">metpy.interpolate.grid</a></li>
 <li><a href="metpy/interpolate/one_dimension.html">metpy.interpolate.one_dimension</a></li>
 <li><a href="metpy/interpolate/points.html">metpy.interpolate.points</a></li>
 <li><a href="metpy/interpolate/slices.html">metpy.interpolate.slices</a></li>
 <li><a href="metpy/interpolate/tools.html">metpy.interpolate.tools</a></li>
 <li><a href="metpy/io/_tools.html">metpy.io._tools</a></li>
-<li><a href="metpy/io/cdm.html">metpy.io.cdm</a></li>
 <li><a href="metpy/io/gini.html">metpy.io.gini</a></li>
 <li><a href="metpy/io/nexrad.html">metpy.io.nexrad</a></li>
-<li><a href="metpy/package_tools.html">metpy.package_tools</a></li>
 <li><a href="metpy/plots/_util.html">metpy.plots._util</a></li>
 <li><a href="metpy/plots/ctables.html">metpy.plots.ctables</a></li>
 <li><a href="metpy/plots/declarative.html">metpy.plots.declarative</a></li>
 <li><a href="metpy/plots/skewt.html">metpy.plots.skewt</a></li>
 <li><a href="metpy/plots/station_plot.html">metpy.plots.station_plot</a></li>
 <li><a href="metpy/units.html">metpy.units</a></li>
+<li><a href="metpy/xarray.html">metpy.xarray</a></li>
 <li><a href="pint/errors.html">pint.errors</a></li>
 <li><a href="pint/registry.html">pint.registry</a></li>
 <li><a href="pkg_resources.html">pkg_resources</a></li>
@@ -232,7 +232,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -269,7 +269,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -281,8 +281,8 @@
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
       <script type="text/javascript" src="../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

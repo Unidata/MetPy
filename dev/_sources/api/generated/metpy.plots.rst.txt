@@ -29,12 +29,16 @@ plots
       :toctree: ./
 
    
+      BarbPlot
       ContourPlot
+      FilledContourPlot
       Hodograph
       ImagePlot
       MapPanel
       PanelContainer
-      Plot2D
+      PlotScalar
+      PlotVector
+      Plots2D
       SkewT
       StationPlot
       StationPlotLayout

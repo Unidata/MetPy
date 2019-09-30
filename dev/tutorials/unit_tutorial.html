@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Units Tutorial &mdash; MetPy 0.10</title>
+  <title>Units Tutorial &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../index.html"/>
         <link rel="up" title="Tutorials" href="index.html"/>
         <link rel="next" title="Upper Air Sounding Tutorial" href="upperair_soundings.html"/>
         <link rel="prev" title="Tutorials" href="index.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
@@ -134,7 +135,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
@@ -331,8 +334,8 @@ delta version of the unit.</p>
 <h2>Compound Units<a class="headerlink" href="#compound-units" title="Permalink to this headline">¶</a></h2>
 <p>We can create compound units for things like speed by parsing a string of
 units. Abbreviations or full unit names are acceptable.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randint.html#numpy.random.randint" title="View documentation for numpy.random.randint"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
-<span class="n">v</span> <span class="o">=</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.random.randint.html#numpy.random.randint" title="View documentation for numpy.random.randint"><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span></a><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;meters/second&#39;</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span>
+<span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;meters/second&#39;</span><span class="p">)</span>
 
 <span class="nb">print</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
@@ -356,13 +359,13 @@ will be addressed in the future, but is a current limitation in the
 ecosystem. The expected error will be
 <em class="xref py py-obj">AttributeError: ‘MaskedArray’ object has no attribute ‘units’</em></p></li>
 </ul>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.085 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  0.077 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-unit-tutorial-py">
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/db0e1e5e91ce2c347b38bc42ec6be7e7/unit_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">unit_tutorial.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/5efd259fad2625b979995a43ebbb8b81/unit_tutorial.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">unit_tutorial.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/e8749c670d85c7ee86146b51f47ef020/unit_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">unit_tutorial.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/c93092487c8713b537d47b1774b1c063/unit_tutorial.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">unit_tutorial.ipynb</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -392,7 +395,7 @@ ecosystem. The expected error will be
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -429,7 +432,7 @@ ecosystem. The expected error will be
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -441,8 +444,8 @@ ecosystem. The expected error will be
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
       <script type="text/javascript" src="../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

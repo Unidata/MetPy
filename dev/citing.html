@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Citing MetPy &mdash; MetPy 0.10</title>
+  <title>Citing MetPy &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.10" href="index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="index.html"/>
         <link rel="next" title="References" href="references.html"/>
         <link rel="prev" title="Infrastructure Guide" href="infrastructureguide.html"/> 
 
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -118,11 +118,14 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Citing MetPy</a><ul>
@@ -204,29 +207,26 @@ your reference list using one of the options below.</p>
 <div class="section" id="bibtex-entry">
 <h2>BibTeX entry<a class="headerlink" href="#bibtex-entry" title="Permalink to this headline">¶</a></h2>
 <p>Example BibTeX entry:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@software</span><span class="p">{</span><span class="n">metpy</span><span class="p">,</span>
-  <span class="n">author</span> <span class="o">=</span> <span class="p">{</span><span class="n">May</span><span class="p">,</span> <span class="n">Ryan</span> <span class="ow">and</span> <span class="n">Arms</span><span class="p">,</span> <span class="n">Sean</span> <span class="ow">and</span> <span class="n">Marsh</span><span class="p">,</span> <span class="n">Patrick</span> <span class="ow">and</span> <span class="n">Bruning</span><span class="p">,</span> <span class="n">Eric</span> <span class="ow">and</span> <span class="n">Leeman</span><span class="p">,</span> <span class="n">John</span> <span class="p">},</span>
-  <span class="n">organization</span> <span class="o">=</span> <span class="p">{</span><span class="n">Unidata</span><span class="p">},</span>
-  <span class="n">title</span> <span class="o">=</span> <span class="p">{</span><span class="n">MetPy</span><span class="p">:</span> <span class="n">A</span> <span class="p">{</span><span class="n">Python</span><span class="p">}</span> <span class="n">Package</span> <span class="k">for</span> <span class="n">Meteorological</span> <span class="n">Data</span><span class="p">},</span>
-  <span class="n">year</span> <span class="o">=</span> <span class="p">{</span><span class="mi">2008</span> <span class="o">-</span> <span class="mi">2017</span><span class="p">},</span>
-  <span class="n">version</span> <span class="o">=</span> <span class="p">{</span><span class="mf">0.4</span><span class="o">.</span><span class="mi">3</span><span class="p">},</span>
-  <span class="n">doi</span> <span class="o">=</span> <span class="p">{</span><span class="mf">10.5065</span><span class="o">/</span><span class="n">D6WW7G29</span><span class="p">},</span>
-  <span class="n">url</span> <span class="o">=</span> <span class="p">{</span><span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">Unidata</span><span class="o">/</span><span class="n">MetPy</span><span class="p">},</span>
-  <span class="n">address</span> <span class="o">=</span> <span class="p">{</span><span class="n">Boulder</span><span class="p">,</span> <span class="n">Colorado</span><span class="p">}</span>
-<span class="p">}</span>
-</pre></div>
-</div>
+<pre class="literal-block">&#64;software{metpy,
+  author = {May, Ryan M. and Arms, Sean C. and Marsh, Patrick and Bruning, Eric and Leeman, John R.
+            and Goebbert, Kevin and Thielen, Jonathan E. and Bruck, Zachary},
+  organization = {Unidata},
+  title = {MetPy: A {Python} Package for Meteorological Data},
+  year = {2008 - 2019},
+  version = {0.10.0.post299},
+  doi = {10.5065/D6WW7G29},
+  url = {<a class="reference external" href="https://github.com/Unidata/MetPy">https://github.com/Unidata/MetPy</a>},
+  address = {Boulder, Colorado}
+}</pre>
 </div>
 <div class="section" id="ams-journal-style">
 <h2>AMS Journal Style<a class="headerlink" href="#ams-journal-style" title="Permalink to this headline">¶</a></h2>
 <p>Example Citation:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">May</span><span class="p">,</span> <span class="n">R</span><span class="o">.</span> <span class="n">M</span><span class="o">.</span><span class="p">,</span> <span class="n">Arms</span><span class="p">,</span> <span class="n">S</span><span class="o">.</span> <span class="n">C</span><span class="o">.</span><span class="p">,</span> <span class="n">Marsh</span><span class="p">,</span> <span class="n">P</span><span class="o">.</span><span class="p">,</span> <span class="n">Bruning</span><span class="p">,</span> <span class="n">E</span><span class="o">.</span> <span class="ow">and</span> <span class="n">Leeman</span><span class="p">,</span> <span class="n">J</span><span class="o">.</span> <span class="n">R</span><span class="o">.</span><span class="p">,</span> <span class="mi">2017</span><span class="p">:</span>
-    <span class="n">MetPy</span><span class="p">:</span> <span class="n">A</span> <span class="n">Python</span> <span class="n">Package</span> <span class="k">for</span> <span class="n">Meteorological</span> <span class="n">Data</span><span class="o">.</span>
-    <span class="n">Unidata</span><span class="p">,</span> <span class="n">Accessed</span> <span class="mi">31</span> <span class="n">March</span> <span class="mf">2017.</span>
-    <span class="p">[</span><span class="n">Available</span> <span class="n">online</span> <span class="n">at</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">github</span><span class="o">.</span><span class="n">com</span><span class="o">/</span><span class="n">Unidata</span><span class="o">/</span><span class="n">MetPy</span><span class="o">.</span><span class="p">]</span>
-    <span class="n">doi</span><span class="p">:</span><span class="mf">10.5065</span><span class="o">/</span><span class="n">D6WW7G29</span><span class="o">.</span>
-</pre></div>
-</div>
+<pre class="literal-block">May, R. M., Arms, S. C., Marsh, P., Bruning, E., Leeman, J. R., Goebbert, K., Thielen, J. E.,
+    and Bruick, Z., 2019: MetPy: A Python Package for Meteorological Data.
+    Version 0.10.0.post299, Unidata, Accessed 30 September 2019.
+    [Available online at <a class="reference external" href="https://github.com/Unidata/MetPy">https://github.com/Unidata/MetPy</a>.]
+    doi:10.5065/D6WW7G29.</pre>
 </div>
 </div>
 
@@ -253,7 +253,7 @@ your reference list using one of the options below.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -290,7 +290,7 @@ your reference list using one of the options below.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -302,8 +302,8 @@ your reference list using one of the options below.</p>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
       <script type="text/javascript" src="_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

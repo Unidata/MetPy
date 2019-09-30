@@ -1,0 +1,12 @@
+angle_to_direction
+=============================
+
+.. currentmodule:: metpy.calc
+
+.. autofunction:: angle_to_direction
+
+.. include:: metpy.calc.angle_to_direction.examples
+
+.. raw:: html
+
+      <div style='clear:both'></div>

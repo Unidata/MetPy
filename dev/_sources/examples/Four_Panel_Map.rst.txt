@@ -86,8 +86,6 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'gfs_output.nc' from remote data store 'https://github.com/Unidata/MetPy/raw/master/staticdata/gfs_output.nc' to '/home/travis/build/Unidata/MetPy/staticdata/master'.
-      action_word[action], fname, self.get_url(fname), str(self.path)
     <xarray.Dataset>
     Dimensions:       (lat: 201, lon: 361, time: 1)
     Coordinates:
@@ -231,7 +229,7 @@ By reading model output data from a netCDF file, we can create a four panel plot
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  9.489 seconds)
+   **Total running time of the script:** ( 0 minutes  8.580 seconds)
 
 
 .. _sphx_glr_download_examples_Four_Panel_Map.py:

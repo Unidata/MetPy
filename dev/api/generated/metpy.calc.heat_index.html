@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>heat_index &mdash; MetPy 0.10</title>
+  <title>heat_index &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="windchill" href="metpy.calc.windchill.html"/>
         <link rel="prev" title="apparent_temperature" href="metpy.calc.apparent_temperature.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
@@ -140,6 +140,7 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.windchill.html">windchill</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#other">Other</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#deprecated">Deprecated</a></li>
 </ul>
@@ -148,9 +149,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -232,13 +236,16 @@
 <dt id="metpy.calc.heat_index">
 <code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">heat_index</code><span class="sig-paren">(</span><em class="sig-param">temperature</em>, <em class="sig-param">rh</em>, <em class="sig-param">mask_undefined=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#heat_index"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.heat_index" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the Heat Index from the current temperature and relative humidity.</p>
-<p>The implementation uses the formula outlined in <a class="reference internal" href="../../references.html#rothfusz1990" id="id1"><span>[Rothfusz1990]</span></a>. This equation is a
-multi-variable least-squares regression of the values obtained in <a class="reference internal" href="../../references.html#steadman1979" id="id2"><span>[Steadman1979]</span></a>.</p>
+<p>The implementation uses the formula outlined in <a class="reference internal" href="../../references.html#rothfusz1990" id="id1"><span>[Rothfusz1990]</span></a>, which is a
+multi-variable least-squares regression of the values obtained in <a class="reference internal" href="../../references.html#steadman1979" id="id2"><span>[Steadman1979]</span></a>.
+Additional conditional corrections are applied to match what the National
+Weather Service operationally uses. See Figure 3 of <a class="reference internal" href="../../references.html#anderson2013" id="id3"><span>[Anderson2013]</span></a> for a
+depiction of this algorithm and further discussion.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</p></li>
-<li><p><strong>rh</strong> (<em>array_like</em>) – The relative humidity expressed as a unitless ratio in the range [0, 1].
+<li><p><strong>rh</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The relative humidity expressed as a unitless ratio in the range [0, 1].
 Can also pass a percentage if proper units are attached.</p></li>
 </ul>
 </dd>
@@ -247,9 +254,7 @@ Can also pass a percentage if proper units are attached.</p></li>
 </dd>
 <dt class="field-odd">Other Parameters</dt>
 <dd class="field-odd"><p><strong>mask_undefined</strong> (<em>bool, optional</em>) – A flag indicating whether a masked array should be returned with
-values where heat index is undefined masked.  These are values where
-the temperature &lt; 80F or relative humidity &lt; 40 percent. Defaults
-to <em class="xref py py-obj">True</em>.</p>
+values masked where the temperature &lt; 80F. Defaults to <em class="xref py py-obj">True</em>.</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -283,7 +288,7 @@ to <em class="xref py py-obj">True</em>.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -320,7 +325,7 @@ to <em class="xref py py-obj">True</em>.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -332,8 +337,8 @@ to <em class="xref py py-obj">True</em>.</p>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

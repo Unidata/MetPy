@@ -57,25 +57,13 @@ Use MetPy as straightforward as possible to make a Skew-T LogP plot.
     df = pd.read_fwf(get_test_data('jan20_sounding.txt', as_file_obj=False),
                      skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
-    df['u_wind'], df['v_wind'] = mpcalc.wind_components(df['speed'],
-                                                        np.deg2rad(df['direction']))
-
     # Drop any rows with all NaN values for T, Td, winds
-    df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
-                           'u_wind', 'v_wind'), how='all').reset_index(drop=True)
+    df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'
+                           ), how='all').reset_index(drop=True)
 
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'jan20_sounding.txt' from remote data store 'https://github.com/Unidata/MetPy/raw/master/staticdata/jan20_sounding.txt' to '/home/travis/build/Unidata/MetPy/staticdata/master'.
-      action_word[action], fname, self.get_url(fname), str(self.path)
 
 
 
@@ -175,7 +163,7 @@ assign units.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.920 seconds)
+   **Total running time of the script:** ( 0 minutes  1.374 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Simple_Sounding.py:

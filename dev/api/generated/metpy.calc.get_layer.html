@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>get_layer &mdash; MetPy 0.10</title>
+  <title>get_layer &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="get_layer_heights" href="metpy.calc.get_layer_heights.html"/>
         <link rel="prev" title="find_intersections" href="metpy.calc.find_intersections.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
@@ -135,7 +135,9 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#boundary-layer-turbulence">Boundary Layer/Turbulence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#other">Other</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.angle_to_direction.html">angle_to_direction</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.find_bounding_indices.html">find_bounding_indices</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.find_intersections.html">find_intersections</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">get_layer</a></li>
@@ -157,9 +159,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -250,9 +255,9 @@ bottom of the layer are not in the data, they are interpolated by default.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>pressure</strong> (<em>array-like</em>) – Atmospheric pressure profile</p></li>
-<li><p><strong>*args</strong> (<em>array-like</em>) – Atmospheric variable(s) measured at the given pressures</p></li>
+<li><p><strong>args</strong> (<em>array-like</em>) – Atmospheric variable(s) measured at the given pressures</p></li>
 <li><p><strong>heights</strong> (<em>array-like</em><em>, </em><em>optional</em>) – Atmospheric heights corresponding to the given pressures. Defaults to using
-heights calculated from <code class="docutils literal notranslate"><span class="pre">p</span></code> assuming a standard atmosphere.</p></li>
+heights calculated from <code class="docutils literal notranslate"><span class="pre">p</span></code> assuming a standard atmosphere <a class="reference internal" href="../../references.html#noaa1976" id="id1"><span>[NOAA1976]</span></a>.</p></li>
 <li><p><strong>bottom</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The bottom of the layer as a pressure or height above the surface pressure. Defaults
 to the highest pressure or lowest height given.</p></li>
 <li><p><strong>depth</strong> (<em class="xref py py-obj">pint.Quantity</em>, optional) – The thickness of the layer as a pressure or height above the bottom of the layer.
@@ -292,7 +297,7 @@ to True.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -329,7 +334,7 @@ to True.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -341,8 +346,8 @@ to True.</p></li>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

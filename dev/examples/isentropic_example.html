@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Isentropic Analysis &mdash; MetPy 0.10</title>
+  <title>Isentropic Analysis &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../index.html"/>
         <link rel="up" title="Examples" href="index.html"/>
         <link rel="next" title="Meteogram" href="meteogram_metpy.html"/>
         <link rel="prev" title="Cross Section Analysis" href="cross_section.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,12 +119,13 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="XArray_Projections.html">XArray Projection Handling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Four_Panel_Map.html">Four Panel Map</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cross_section.html">Cross Section Analysis</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Isentropic Analysis</a></li>
@@ -139,7 +140,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
@@ -290,7 +293,9 @@ and v wind components) will be linearly interpolated to isentropic space.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/metpy/interpolate/one_dimension.py:149: UserWarning: Interpolation point out of data bounds encountered
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/calc/thermo.py:1628: MetpyDeprecationWarning: The use of &quot;tmpk_out&quot; has been deprecated in favor of&quot;temperature_out&quot;,
+  &#39;&quot;temperature_out&quot;,&#39;, metpyDeprecation)
+/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:154: UserWarning: Interpolation point out of data bounds encountered
   warnings.warn(&#39;Interpolation point out of data bounds encountered&#39;)
 </pre></div>
 </div>
@@ -335,7 +340,7 @@ have to be calculated after the interpolation to isentropic space.</p>
 <span class="c1"># Choose a level to plot, in this case 296 K</span>
 <span class="n">level</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.rst.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">))</span>
 <a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">245</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
 <span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="o">*</span><span class="n">bounds</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
@@ -369,9 +374,9 @@ have to be calculated after the interpolation to isentropic space.</p>
 </div>
 <img alt="../_images/sphx_glr_isentropic_example_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_isentropic_example_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in less
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in less
   u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
-/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in greater
+/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in greater
   u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
 /home/travis/build/Unidata/MetPy/examples/isentropic_example.py:147: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
   fig.tight_layout()
@@ -387,9 +392,9 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
 <span class="c1"># Choose a level to plot, in this case 296 K</span>
 <span class="n">level</span> <span class="o">=</span> <span class="mi">0</span>
 
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.rst.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mf">17.</span><span class="p">,</span> <span class="mf">12.</span><span class="p">))</span>
 <a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
-<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.rst.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">set_extent</span><span class="p">(</span><span class="o">*</span><span class="n">bounds</span><span class="p">,</span> <span class="n">crs</span><span class="o">=</span><span class="n">ccrs</span><span class="o">.</span><span class="n">PlateCarree</span><span class="p">())</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
@@ -418,26 +423,26 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
 <a href="../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="View documentation for metpy.plots.add_timestamp"><span class="n">add_timestamp</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">times</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">dt</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">pretext</span><span class="o">=</span><span class="s1">&#39;Valid: &#39;</span><span class="p">,</span> <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <span class="n">fig</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_isentropic_example_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_isentropic_example_002.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in less
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in less
   u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
-/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in greater
+/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/vector_transform.py:140: RuntimeWarning: invalid value encountered in greater
   u, v = target_proj.transform_vectors(src_crs, x, y, u, v)
 /home/travis/build/Unidata/MetPy/examples/isentropic_example.py:193: UserWarning: Tight layout not applied. The left and right margins cannot be made large enough to accommodate all axes decorations.
   fig.tight_layout()
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  15.322 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  14.573 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-isentropic-example-py">
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/8591910a2b42dadcf3b05658ddd9c600/isentropic_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">isentropic_example.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/9dcdf4bbc3c0720b95e846f48b609c2e/isentropic_example.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">isentropic_example.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/d5ee7fed8071553be26c422a7518141c/isentropic_example.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">isentropic_example.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/83b6998284b63bb8a8f46a92e71d6000/isentropic_example.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">isentropic_example.ipynb</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -466,7 +471,7 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -503,7 +508,7 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -515,8 +520,8 @@ calculated with <em class="xref py py-obj">mpcalc.montgomery_streamfunction</em>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
       <script type="text/javascript" src="../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

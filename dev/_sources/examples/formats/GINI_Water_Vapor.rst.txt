@@ -48,8 +48,6 @@ data using CartoPy.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'WEST-CONUS_4km_WV_20151208_2200.gini' from remote data store 'https://github.com/Unidata/MetPy/raw/master/staticdata/WEST-CONUS_4km_WV_20151208_2200.gini' to '/home/travis/build/Unidata/MetPy/staticdata/master'.
-      action_word[action], fname, self.get_url(fname), str(self.path)
     GiniFile: GOES-15 West CONUS WV (6.5/6.7 micron)
             Time: 2015-12-08 22:00:19
             Size: 1280x1100
@@ -107,7 +105,7 @@ the projection information.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.912 seconds)
+   **Total running time of the script:** ( 0 minutes  1.325 seconds)
 
 
 .. _sphx_glr_download_examples_formats_GINI_Water_Vapor.py:

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Infrastructure Guide &mdash; MetPy 0.10</title>
+  <title>Infrastructure Guide &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.10" href="index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="index.html"/>
         <link rel="next" title="Citing MetPy" href="citing.html"/>
         <link rel="prev" title="Contributors Guide" href="CONTRIBUTING.html"/> 
 
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -118,11 +118,14 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Infrastructure Guide</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#versioning">Versioning</a></li>
@@ -208,12 +211,13 @@
 information on how we manage MetPy and the infrastructure behind it.</p>
 <div class="section" id="versioning">
 <h2>Versioning<a class="headerlink" href="#versioning" title="Permalink to this headline">¶</a></h2>
-<p>To manage identifying the version of the code, MetPy relies upon <a class="reference external" href="https://github.com/warner/python-versioneer">versioneer</a>. <code class="docutils literal notranslate"><span class="pre">versioneer</span></code> takes the current version of
-the source from git tags and any additional commits. For development, the version will have a
-string like <code class="docutils literal notranslate"><span class="pre">0.1.1+76.g136e37b.dirty</span></code>, which comes from <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">describe</span></code>. This version means
-that the current code is 76 commits past the 0.1.1 tag, on git hash <code class="docutils literal notranslate"><span class="pre">136e37b</span></code>, with local
-changes on top (indicated by <code class="docutils literal notranslate"><span class="pre">dirty</span></code>). For a release, or non-git repo source dir, the version
-will just come from the most recent tag (i.e. <code class="docutils literal notranslate"><span class="pre">v0.1.1</span></code>).</p>
+<p>To manage identifying the version of the code, MetPy relies upon <a class="reference external" href="https://github.com/pypa/setuptools_scm">setuptools_scm</a>. <code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code> takes the current version of the
+source from git tags and any additional commits. For development, the version will have a
+string like <code class="docutils literal notranslate"><span class="pre">0.10.0.post209+gff2e549f.d20190918</span></code>, which comes from <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">describe</span></code>. This
+version means that the current code is 209 commits past the 0.10.0 tag, on git hash
+<code class="docutils literal notranslate"><span class="pre">ff2e549f</span></code>, with local changes on top, last made on a date (indicated by <code class="docutils literal notranslate"><span class="pre">d20190918</span></code>). For
+a release, or non-git repo source dir, the version will just come from the most recent tag
+(i.e. <code class="docutils literal notranslate"><span class="pre">v0.10.0</span></code>).</p>
 <p>To make a new version, simply add a new tag with a name like <code class="docutils literal notranslate"><span class="pre">vMajor.Minor.Bugfix</span></code> and push
 to GitHub. Github will add a new release with a source archive.zip file. Running</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">sdist</span>
@@ -221,15 +225,10 @@ to GitHub. Github will add a new release with a source archive.zip file. Running
 </div>
 <p>will build a new source distribution with the appropriately generated version file as well.
 This will also create a new stable set of documentation.</p>
-<p><code class="docutils literal notranslate"><span class="pre">versioneer</span></code> is installed in the base of the repository. To update, install the latest copy
-using <code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">versioneer</span></code>. Then recreate the <code class="docutils literal notranslate"><span class="pre">_version.py</span></code> file using:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">setup</span><span class="o">.</span><span class="n">py</span> <span class="n">versioneer</span>
-</pre></div>
-</div>
 </div>
 <div class="section" id="documentation">
 <h2>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h2>
-<p>MetPy’s documentation is built using sphinx &gt;= 1.4. API documentation is automatically
+<p>MetPy’s documentation is built using sphinx &gt;= 1.8. API documentation is automatically
 generated from docstrings, written using the
 <a class="reference external" href="https://github.com/numpy/numpy/blob/master/doc/HOWTO_DOCUMENT.rst.txt">NumPy docstring standard</a>.
 There are also example scripts in the <code class="docutils literal notranslate"><span class="pre">examples</span></code> directory. Using the <code class="docutils literal notranslate"><span class="pre">sphinx-gallery</span></code>
@@ -274,8 +273,8 @@ Travis (currently Python 3 tests) succeeds, Travis will handle building the sour
 distribution and wheels, and upload them to PyPI.</p>
 <p>To build and upload manually (if for some reason it is necessary):</p>
 <ol class="arabic simple">
-<li><p>Do a pull locally to grab the new tag. This will ensure that <code class="docutils literal notranslate"><span class="pre">versioneer</span></code> will give you
-the proper version.</p></li>
+<li><p>Do a pull locally to grab the new tag. This will ensure that <code class="docutils literal notranslate"><span class="pre">setuptools_scm</span></code> will give
+you the proper version.</p></li>
 <li><p>(optional) Perform a <code class="docutils literal notranslate"><span class="pre">git</span> <span class="pre">clean</span> <span class="pre">-f</span> <span class="pre">-x</span> <span class="pre">-d</span></code> from the root of the repository. This will
 <strong>delete</strong> everything not tracked by git, but will also ensure clean source distribution.
 <code class="docutils literal notranslate"><span class="pre">MANIFEST.in</span></code> is set to include/exclude mostly correctly, but could miss some things.</p></li>
@@ -328,7 +327,7 @@ packages to anaconda.org.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -365,7 +364,7 @@ packages to anaconda.org.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -377,8 +376,8 @@ packages to anaconda.org.</p>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
       <script type="text/javascript" src="_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

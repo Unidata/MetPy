@@ -22,7 +22,6 @@ ambient profile and the parcel profile is colored as well.
 
 
     import matplotlib.pyplot as plt
-    import numpy as np
     import pandas as pd
 
     import metpy.calc as mpcalc
@@ -48,25 +47,13 @@ some of MetPy's sample data.
     df = pd.read_fwf(get_test_data('may4_sounding.txt', as_file_obj=False),
                      skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
-    df['u_wind'], df['v_wind'] = mpcalc.wind_components(df['speed'],
-                                                        np.deg2rad(df['direction']))
-
     # Drop any rows with all NaN values for T, Td, winds
-    df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
-                           'u_wind', 'v_wind'), how='all').reset_index(drop=True)
+    df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'), how='all'
+                   ).reset_index(drop=True)
 
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'may4_sounding.txt' from remote data store 'https://github.com/Unidata/MetPy/raw/master/staticdata/may4_sounding.txt' to '/home/travis/build/Unidata/MetPy/staticdata/master'.
-      action_word[action], fname, self.get_url(fname), str(self.path)
 
 
 
@@ -101,14 +88,18 @@ Create a new figure. The dimensions here give a good aspect ratio.
     skew = SkewT(fig, rotation=45)
 
     # Plot the data using normal plotting functions, in this case using
-    # log scaling in Y, as dictated by the typical meteorological plot
+    # log scaling in Y, as dictated by the typical meteorological plot.
     skew.plot(p, T, 'r')
     skew.plot(p, Td, 'g')
     skew.plot_barbs(p, u, v)
     skew.ax.set_ylim(1000, 100)
     skew.ax.set_xlim(-40, 60)
 
-    # Calculate LCL height and plot as black dot
+    # Calculate LCL height and plot as black dot. Because `p`'s first value is
+    # ~1000 mb and its last value is ~250 mb, the `0` index is selected for
+    # `p`, `T`, and `Td` to lift the parcel from the surface. If `p` was inverted,
+    # i.e. start from low value, 250 mb, to a high value, 1000 mb, the `-1` index
+    # should be selected.
     lcl_pressure, lcl_temperature = mpcalc.lcl(p[0], T[0], Td[0])
     skew.plot(lcl_pressure, lcl_temperature, 'ko', markerfacecolor='black')
 
@@ -143,7 +134,7 @@ Create a new figure. The dimensions here give a good aspect ratio.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  1.308 seconds)
+   **Total running time of the script:** ( 0 minutes  0.865 seconds)
 
 
 .. _sphx_glr_download_examples_Advanced_Sounding.py:

@@ -96,9 +96,9 @@ Plot the data on a map
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_land.zip
+    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_land.zip
       warnings.warn('Downloading: {}'.format(url), DownloadWarning)
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_rivers_lake_centerlines.zip
+    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/cartopy/io/__init__.py:260: DownloadWarning: Downloading: http://naciscdn.org/naturalearth/110m/physical/ne_110m_rivers_lake_centerlines.zip
       warnings.warn('Downloading: {}'.format(url), DownloadWarning)
 
 
@@ -106,7 +106,7 @@ Plot the data on a map
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  5.571 seconds)
+   **Total running time of the script:** ( 0 minutes  5.391 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Combined_plotting.py:

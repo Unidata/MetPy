@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Upper Air Sounding Tutorial &mdash; MetPy 0.10</title>
+  <title>Upper Air Sounding Tutorial &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../index.html"/>
         <link rel="up" title="Tutorials" href="index.html"/>
         <link rel="next" title="xarray with MetPy Tutorial" href="xarray_tutorial.html"/>
         <link rel="prev" title="Units Tutorial" href="unit_tutorial.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/index.html">Examples</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Tutorials</a><ul class="current">
@@ -135,7 +136,9 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
@@ -226,7 +229,6 @@ forecasting, checkout <a class="reference external" href="https://homes.comet.uc
 air weather service guide.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1.inset_locator</span> <span class="k">import</span> <span class="n">inset_axes</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
 <span class="kn">import</span> <span class="nn">metpy.calc</span> <span class="k">as</span> <span class="nn">mpcalc</span>
@@ -244,17 +246,9 @@ some of MetPy’s sample data. This event is the Veterans Day tornado outbreak i
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;nov11_sounding.txt&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
                  <span class="n">skiprows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="n">col_names</span><span class="p">)</span>
 
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;v_wind&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components" title="View documentation for metpy.calc.wind_components"><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_components</span></a><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">],</span>
-                                                    <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.deg2rad.html#numpy.deg2rad" title="View documentation for numpy.deg2rad"><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span></a><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;direction&#39;</span><span class="p">]))</span>
-
 <span class="c1"># Drop any rows with all NaN values for T, Td, winds</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span><span class="p">,</span>
-                       <span class="s1">&#39;u_wind&#39;</span><span class="p">,</span> <span class="s1">&#39;v_wind&#39;</span><span class="p">),</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file &#39;nov11_sounding.txt&#39; from remote data store &#39;https://github.com/Unidata/MetPy/raw/master/staticdata/nov11_sounding.txt&#39; to &#39;/home/travis/build/Unidata/MetPy/staticdata/master&#39;.
-  action_word[action], fname, self.get_url(fname), str(self.path)
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span>
+                       <span class="p">),</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># We will pull the data out of the example dataset into individual variables and</span>
@@ -314,7 +308,7 @@ the independent variable, is first even though it is plotted on the y-axis).</p>
 components.</p></li>
 </ol>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.rst.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
 <span class="n">skew</span> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><span class="n">fig</span><span class="p">)</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
@@ -324,7 +318,7 @@ components.</p></li>
 <span class="n">skew</span><span class="o">.</span><span class="n">plot_barbs</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
 <span class="c1"># Show the plot</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_upperair_soundings_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_upperair_soundings_001.png" />
@@ -335,7 +329,7 @@ components.</p></li>
 useful when performing further analysis on the Skew-T diagram. Often the
 0C isotherm is emphasized and areas of CAPE and CIN are shaded.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.rst.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
 <span class="n">skew</span> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
@@ -365,7 +359,7 @@ useful when performing further analysis on the Skew-T diagram. Often the
 <span class="n">skew</span><span class="o">.</span><span class="n">plot_mixing_lines</span><span class="p">()</span>
 
 <span class="c1"># Show the plot</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_upperair_soundings_002.png" class="sphx-glr-single-img" src="../_images/sphx_glr_upperair_soundings_002.png" />
@@ -378,7 +372,7 @@ from the vertical axes representing the direction, and the length representing t
 The line plotted on the hodograph is a line connecting the tips of these vectors,
 which are not drawn.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Create a new figure. The dimensions here give a good aspect ratio</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.rst.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">))</span>
 <span class="n">skew</span> <span class="o">=</span> <a href="../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT" title="View documentation for metpy.plots.SkewT"><span class="n">SkewT</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
 
 <span class="c1"># Plot the data using normal plotting functions, in this case using</span>
@@ -416,17 +410,17 @@ which are not drawn.</p>
 <span class="n">h</span><span class="o">.</span><span class="n">plot_colormapped</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">wind_speed</span><span class="p">)</span>  <span class="c1"># Plot a line colored by wind speed</span>
 
 <span class="c1"># Show the plot</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_upperair_soundings_003.png" class="sphx-glr-single-img" src="../_images/sphx_glr_upperair_soundings_003.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  2.488 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.784 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-tutorials-upperair-soundings-py">
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/f75ec8f72f39298e6276f0e75600fdcb/upperair_soundings.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">upperair_soundings.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/cf626a06a2e16be83be26aa926cd5642/upperair_soundings.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">upperair_soundings.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/e379551d6fc4f1810666043df78073ac/upperair_soundings.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">upperair_soundings.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/cdca3e0cb8a2930cccab0e29b97ef52a/upperair_soundings.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">upperair_soundings.ipynb</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -456,7 +450,7 @@ which are not drawn.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -493,7 +487,7 @@ which are not drawn.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -505,8 +499,8 @@ which are not drawn.</p>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
       <script type="text/javascript" src="../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

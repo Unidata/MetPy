@@ -6,8 +6,8 @@ calc
 .. automodule:: metpy.calc
 
 
-   Dry Thermodynamics
-   ------------------
+Dry Thermodynamics
+------------------
 
    .. autosummary::
       :toctree: ./
@@ -19,18 +19,16 @@ calc
       dry_static_energy
       geopotential_to_height
       height_to_geopotential
-      height_to_pressure_std
       mean_pressure_weighted
       potential_temperature
-      pressure_to_height_std
       sigma_to_pressure
       static_stability
       temperature_from_potential_temperature
       thickness_hydrostatic
 
 
-   Moist Thermodynamics
-   --------------------
+Moist Thermodynamics
+--------------------
 
    .. autosummary::
       :toctree: ./
@@ -53,6 +51,7 @@ calc
       saturation_equivalent_potential_temperature
       saturation_mixing_ratio
       saturation_vapor_pressure
+      specific_humidity_from_dewpoint
       specific_humidity_from_mixing_ratio
       thickness_hydrostatic_from_relative_humidity
       vapor_pressure
@@ -63,8 +62,8 @@ calc
       wet_bulb_temperature
 
 
-   Soundings
-   ---------
+Soundings
+---------
 
    .. autosummary::
       :toctree: ./
@@ -88,8 +87,8 @@ calc
       surface_based_cape_cin
 
 
-   Dynamic/Kinematic
-   -----------------
+Dynamic/Kinematic
+-----------------
 
    .. autosummary::
       :toctree: ./
@@ -118,8 +117,8 @@ calc
       wind_speed
 
 
-   Boundary Layer/Turbulence
-   -------------------------
+Boundary Layer/Turbulence
+-------------------------
 
    .. autosummary::
       :toctree: ./
@@ -131,8 +130,8 @@ calc
       tke
 
 
-   Mathematical Functions
-   ----------------------
+Mathematical Functions
+----------------------
 
    .. autosummary::
       :toctree: ./
@@ -149,8 +148,8 @@ calc
       unit_vectors_from_cross_section
 
 
-   Apparent Temperature
-   --------------------
+Apparent Temperature
+--------------------
 
    .. autosummary::
       :toctree: ./
@@ -159,12 +158,24 @@ calc
       heat_index
       windchill
 
-   Other
-   -----
+Standard Atmosphere
+-------------------
 
    .. autosummary::
       :toctree: ./
 
+      altimeter_to_sea_level_pressure
+      altimeter_to_station_pressure
+      height_to_pressure_std
+      pressure_to_height_std
+
+Other
+-----
+
+   .. autosummary::
+      :toctree: ./
+
+      angle_to_direction
       find_bounding_indices
       find_intersections
       get_layer
@@ -179,10 +190,10 @@ calc
       smooth_n_point
 
 
-   Deprecated
-   ----------
+Deprecated
+----------
 
-   Do not use these functions in new code, please see their documentation for their replacements.
+Do not use these functions in new code, please see their documentation for their replacements.
 
    .. autosummary::
       :toctree: ./
@@ -192,6 +203,5 @@ calc
       get_wind_speed
       interp
       interpolate_nans
-      lat_lon_grid_spacing
       log_interp
 

@@ -25,7 +25,6 @@ air weather service guide.
 
     import matplotlib.pyplot as plt
     from mpl_toolkits.axes_grid1.inset_locator import inset_axes
-    import numpy as np
     import pandas as pd
 
     import metpy.calc as mpcalc
@@ -54,25 +53,13 @@ some of MetPy's sample data. This event is the Veterans Day tornado outbreak in 
     df = pd.read_fwf(get_test_data('nov11_sounding.txt', as_file_obj=False),
                      skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
-    df['u_wind'], df['v_wind'] = mpcalc.wind_components(df['speed'],
-                                                        np.deg2rad(df['direction']))
-
     # Drop any rows with all NaN values for T, Td, winds
-    df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
-                           'u_wind', 'v_wind'), how='all').reset_index(drop=True)
+    df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'
+                           ), how='all').reset_index(drop=True)
 
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'nov11_sounding.txt' from remote data store 'https://github.com/Unidata/MetPy/raw/master/staticdata/nov11_sounding.txt' to '/home/travis/build/Unidata/MetPy/staticdata/master'.
-      action_word[action], fname, self.get_url(fname), str(self.path)
 
 
 
@@ -303,7 +290,7 @@ which are not drawn.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  2.488 seconds)
+   **Total running time of the script:** ( 0 minutes  1.784 seconds)
 
 
 .. _sphx_glr_download_tutorials_upperair_soundings.py:

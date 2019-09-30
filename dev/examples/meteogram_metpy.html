@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Meteogram &mdash; MetPy 0.10</title>
+  <title>Meteogram &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../index.html"/>
         <link rel="up" title="Examples" href="index.html"/>
         <link rel="next" title="Parse angles" href="calculations/Parse_Angles.html"/>
         <link rel="prev" title="Isentropic Analysis" href="isentropic_example.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,12 +119,13 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="XArray_Projections.html">XArray Projection Handling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="sigma_to_pressure_interpolation.html">Sigma to Pressure Interpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Four_Panel_Map.html">Four Panel Map</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cross_section.html">Cross Section Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isentropic_example.html">Isentropic Analysis</a></li>
@@ -139,7 +140,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
@@ -225,9 +228,7 @@
 <p>Plots time series data as a meteogram.</p>
 <img alt="../_images/sphx_glr_meteogram_metpy_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_meteogram_metpy_001.png" />
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file &#39;timeseries.csv&#39; from remote data store &#39;https://github.com/Unidata/MetPy/raw/master/staticdata/timeseries.csv&#39; to &#39;/home/travis/build/Unidata/MetPy/staticdata/master&#39;.
-  action_word[action], fname, self.get_url(fname), str(self.path)
-/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pandas/plotting/_converter.py:129: FutureWarning: Using an implicitly registered datetime converter for a matplotlib plotting method. The converter was registered by pandas on import. Future versions of pandas will require you to explicitly register matplotlib converters.
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/pandas/plotting/_matplotlib/converter.py:103: FutureWarning: Using an implicitly registered datetime converter for a matplotlib plotting method. The converter was registered by pandas on import. Future versions of pandas will require you to explicitly register matplotlib converters.
 
 To register the converters:
         &gt;&gt;&gt; from pandas.plotting import register_matplotlib_converters
@@ -279,7 +280,7 @@ To register the converters:
         <span class="bp">self</span><span class="o">.</span><span class="n">fig</span> <span class="o">=</span> <span class="n">fig</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">end</span> <span class="o">=</span> <span class="n">dates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">axis_num</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">dates</span> <span class="o">=</span> <a href="https://matplotlib.org/api/dates_api.rst.html#matplotlib.dates.date2num" title="View documentation for matplotlib.dates.date2num"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span></a><span class="p">(</span><span class="n">dates</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dates</span> <span class="o">=</span> <a href="https://matplotlib.org/api/dates_api.html#matplotlib.dates.date2num" title="View documentation for matplotlib.dates.date2num"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">date2num</span></a><span class="p">(</span><span class="n">dates</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%Y-%m-</span><span class="si">%d</span><span class="s1"> %H:%M UTC&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Latest Ob Time: </span><span class="si">{0}</span><span class="se">\n</span><span class="s1">Probe ID: </span><span class="si">{1}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">probeid</span><span class="p">)</span>
 
@@ -312,7 +313,7 @@ To register the converters:
         <span class="n">ax7</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.arange.html#numpy.arange" title="View documentation for numpy.arange"><span class="n">np</span><span class="o">.</span><span class="n">arange</span></a><span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="mi">405</span><span class="p">,</span> <span class="mi">90</span><span class="p">),</span> <span class="p">[</span><span class="s1">&#39;NE&#39;</span><span class="p">,</span> <span class="s1">&#39;SE&#39;</span><span class="p">,</span> <span class="s1">&#39;SW&#39;</span><span class="p">,</span> <span class="s1">&#39;NW&#39;</span><span class="p">])</span>
         <span class="n">lns</span> <span class="o">=</span> <span class="n">ln1</span> <span class="o">+</span> <span class="n">ln2</span> <span class="o">+</span> <span class="n">ln3</span>
         <span class="n">labs</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">get_label</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lns</span><span class="p">]</span>
-        <span class="n">ax7</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/api/dates_api.rst.html#matplotlib.dates.DateFormatter" title="View documentation for matplotlib.dates.DateFormatter"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
+        <span class="n">ax7</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/api/dates_api.html#matplotlib.dates.DateFormatter" title="View documentation for matplotlib.dates.DateFormatter"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
         <span class="n">ax7</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">lns</span><span class="p">,</span> <span class="n">labs</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span>
                    <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
 
@@ -343,7 +344,7 @@ To register the converters:
         <span class="n">ax_twin</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">plot_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">lns</span> <span class="o">=</span> <span class="n">ln4</span> <span class="o">+</span> <span class="n">ln5</span>
         <span class="n">labs</span> <span class="o">=</span> <span class="p">[</span><span class="n">l</span><span class="o">.</span><span class="n">get_label</span><span class="p">()</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">lns</span><span class="p">]</span>
-        <span class="n">ax_twin</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/api/dates_api.rst.html#matplotlib.dates.DateFormatter" title="View documentation for matplotlib.dates.DateFormatter"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
+        <span class="n">ax_twin</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/api/dates_api.html#matplotlib.dates.DateFormatter" title="View documentation for matplotlib.dates.DateFormatter"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ax2</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">lns</span><span class="p">,</span> <span class="n">labs</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span>
                         <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">ncol</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
@@ -367,7 +368,7 @@ To register the converters:
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <span class="n">rh</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;g&#39;</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Relative Humidity</span><span class="se">\n</span><span class="s1">(%)&#39;</span><span class="p">,</span> <span class="n">multialignment</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/api/dates_api.rst.html#matplotlib.dates.DateFormatter" title="View documentation for matplotlib.dates.DateFormatter"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/api/dates_api.html#matplotlib.dates.DateFormatter" title="View documentation for matplotlib.dates.DateFormatter"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
         <span class="n">axtwin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax3</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
         <span class="n">axtwin</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">plot_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
 
@@ -389,7 +390,7 @@ To register the converters:
         <span class="n">axtwin</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax4</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
         <span class="n">axtwin</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">plot_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">plot_range</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
         <span class="n">axtwin</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dates</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">axtwin</span><span class="o">.</span><span class="n">get_ylim</span><span class="p">()[</span><span class="mi">0</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;m&#39;</span><span class="p">)</span>
-        <span class="n">axtwin</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/api/dates_api.rst.html#matplotlib.dates.DateFormatter" title="View documentation for matplotlib.dates.DateFormatter"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
+        <span class="n">axtwin</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><a href="https://matplotlib.org/api/dates_api.html#matplotlib.dates.DateFormatter" title="View documentation for matplotlib.dates.DateFormatter"><span class="n">mpl</span><span class="o">.</span><span class="n">dates</span><span class="o">.</span><span class="n">DateFormatter</span></a><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">/%H UTC&#39;</span><span class="p">))</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">ax4</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper center&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.2</span><span class="p">),</span> <span class="n">prop</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;size&#39;</span><span class="p">:</span> <span class="mi">12</span><span class="p">})</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ax4</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">b</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;major&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">,</span>
@@ -437,7 +438,7 @@ To register the converters:
         <span class="s1">&#39;mean_slp&#39;</span><span class="p">:</span> <span class="n">calc_mslp</span><span class="p">(</span><a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">temp</span><span class="p">),</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">pres</span><span class="p">),</span> <span class="n">hgt_example</span><span class="p">)</span> <span class="o">*</span> <a href="../api/generated/metpy.units.html#metpy.units.units" title="View documentation for metpy.units.units"><span class="n">units</span></a><span class="p">(</span><span class="s1">&#39;hPa&#39;</span><span class="p">),</span>
         <span class="s1">&#39;relative_humidity&#39;</span><span class="p">:</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">rh</span><span class="p">),</span> <span class="s1">&#39;times&#39;</span><span class="p">:</span> <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.array.html#numpy.array" title="View documentation for numpy.array"><span class="n">np</span><span class="o">.</span><span class="n">array</span></a><span class="p">(</span><span class="n">date</span><span class="p">)}</span>
 
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.rst.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
 <a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">180</span><span class="p">)</span>
 <span class="n">meteogram</span> <span class="o">=</span> <span class="n">Meteogram</span><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;times&#39;</span><span class="p">],</span> <span class="n">probe_id</span><span class="p">)</span>
 <span class="n">meteogram</span><span class="o">.</span><span class="n">plot_winds</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;wind_speed&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;wind_direction&#39;</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;wind_speed_max&#39;</span><span class="p">])</span>
@@ -445,16 +446,16 @@ To register the converters:
 <span class="n">meteogram</span><span class="o">.</span><span class="n">plot_rh</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;relative_humidity&#39;</span><span class="p">])</span>
 <span class="n">meteogram</span><span class="o">.</span><span class="n">plot_pressure</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;mean_slp&#39;</span><span class="p">])</span>
 <span class="n">fig</span><span class="o">.</span><span class="n">subplots_adjust</span><span class="p">(</span><span class="n">hspace</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.847 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.113 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-meteogram-metpy-py">
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/fb52546ad5afeec720b844ca9df5e649/meteogram_metpy.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">meteogram_metpy.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/133a14b679bd8a5b58cfff249184243a/meteogram_metpy.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">meteogram_metpy.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/08b34ce2868bbe652796e7203c4e357f/meteogram_metpy.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">meteogram_metpy.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/4ffa5cd26bc6bf5eedb6ebf217b5c874/meteogram_metpy.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">meteogram_metpy.ipynb</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -483,7 +484,7 @@ To register the converters:
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -520,7 +521,7 @@ To register the converters:
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -532,8 +533,8 @@ To register the converters:
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
       <script type="text/javascript" src="../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

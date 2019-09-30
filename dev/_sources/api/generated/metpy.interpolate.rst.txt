@@ -19,6 +19,7 @@ interpolate
       interpolate_1d
       interpolate_nans_1d
       interpolate_to_grid
+      interpolate_to_isosurface
       interpolate_to_points
       interpolate_to_slice
       inverse_distance

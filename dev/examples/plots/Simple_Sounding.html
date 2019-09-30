@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Simple Sounding &mdash; MetPy 0.10</title>
+  <title>Simple Sounding &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,9 +43,9 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="Examples" href="../index.html"/>
-        <link rel="next" title="Station Plot" href="Station_Plot.html"/>
+        <link rel="next" title="Mesonet Station Plot" href="Mesonet_Stationplot.html"/>
         <link rel="prev" title="Hodograph Inset" href="Hodograph_Inset.html"/> 
 
   
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Examples</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../index.html#general-examples">General Examples</a></li>
@@ -132,6 +133,7 @@
 <li class="toctree-l3"><a class="reference internal" href="Skew-T_Layout.html">Skew-T with Complex Layout</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Hodograph_Inset.html">Hodograph Inset</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Simple Sounding</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Mesonet_Stationplot.html">Mesonet Station Plot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Station_Plot.html">Station Plot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Station_Plot_with_Layout.html">Station Plot with Layout</a></li>
 </ul>
@@ -140,7 +142,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -235,7 +239,7 @@
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Change default to be better for skew-T</span>
-<a href="https://matplotlib.org/api/matplotlib_configuration_api.rst.html#matplotlib.rcParams" title="View documentation for matplotlib.pyplot.rcParams"><span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span></a><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">rcParams</span><span class="p">[</span><span class="s1">&#39;figure.figsize&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">9</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="c1"># Upper air data can be obtained using the siphon package, but for this example we will use</span>
@@ -246,17 +250,9 @@
 <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_fwf</span><span class="p">(</span><span class="n">get_test_data</span><span class="p">(</span><span class="s1">&#39;jan20_sounding.txt&#39;</span><span class="p">,</span> <span class="n">as_file_obj</span><span class="o">=</span><span class="kc">False</span><span class="p">),</span>
                  <span class="n">skiprows</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">usecols</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">],</span> <span class="n">names</span><span class="o">=</span><span class="n">col_names</span><span class="p">)</span>
 
-<span class="n">df</span><span class="p">[</span><span class="s1">&#39;u_wind&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;v_wind&#39;</span><span class="p">]</span> <span class="o">=</span> <a href="../../api/generated/metpy.calc.wind_components.html#metpy.calc.wind_components" title="View documentation for metpy.calc.wind_components"><span class="n">mpcalc</span><span class="o">.</span><span class="n">wind_components</span></a><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;speed&#39;</span><span class="p">],</span>
-                                                    <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.deg2rad.html#numpy.deg2rad" title="View documentation for numpy.deg2rad"><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span></a><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;direction&#39;</span><span class="p">]))</span>
-
 <span class="c1"># Drop any rows with all NaN values for T, Td, winds</span>
-<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span><span class="p">,</span>
-                       <span class="s1">&#39;u_wind&#39;</span><span class="p">,</span> <span class="s1">&#39;v_wind&#39;</span><span class="p">),</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-</pre></div>
-</div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file &#39;jan20_sounding.txt&#39; from remote data store &#39;https://github.com/Unidata/MetPy/raw/master/staticdata/jan20_sounding.txt&#39; to &#39;/home/travis/build/Unidata/MetPy/staticdata/master&#39;.
-  action_word[action], fname, self.get_url(fname), str(self.path)
+<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">dropna</span><span class="p">(</span><span class="n">subset</span><span class="o">=</span><span class="p">(</span><span class="s1">&#39;temperature&#39;</span><span class="p">,</span> <span class="s1">&#39;dewpoint&#39;</span><span class="p">,</span> <span class="s1">&#39;direction&#39;</span><span class="p">,</span> <span class="s1">&#39;speed&#39;</span>
+                       <span class="p">),</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;all&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>We will pull the data out of the example dataset into individual variables and
@@ -284,7 +280,7 @@ assign units.</p>
 <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
 <span class="c1"># Add the MetPy logo!</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.gcf.rst.html#matplotlib.pyplot.gcf" title="View documentation for matplotlib.pyplot.gcf"><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span></a><span class="p">()</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.gcf.html#matplotlib.pyplot.gcf" title="View documentation for matplotlib.pyplot.gcf"><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span></a><span class="p">()</span>
 <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -313,21 +309,21 @@ assign units.</p>
 <span class="n">skew</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
 <span class="c1"># Add the MetPy logo!</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.gcf.rst.html#matplotlib.pyplot.gcf" title="View documentation for matplotlib.pyplot.gcf"><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span></a><span class="p">()</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.gcf.html#matplotlib.pyplot.gcf" title="View documentation for matplotlib.pyplot.gcf"><span class="n">plt</span><span class="o">.</span><span class="n">gcf</span></a><span class="p">()</span>
 <a href="../../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
 
 <span class="c1"># Show the plot</span>
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../../_images/sphx_glr_Simple_Sounding_002.png" class="sphx-glr-single-img" src="../../_images/sphx_glr_Simple_Sounding_002.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.920 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  1.374 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-plots-simple-sounding-py">
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/3bc54791e5cd0cc3a49ebff67ae43c26/Simple_Sounding.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Simple_Sounding.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/5d499b01a6d5ae71915e8f1e1c082361/Simple_Sounding.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">Simple_Sounding.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../../_downloads/ef4bfbf049be071a6c648d7918a50105/Simple_Sounding.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Simple_Sounding.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../../_downloads/0eff36d3fdf633f2a71ae3e92fdeb5b8/Simple_Sounding.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">Simple_Sounding.ipynb</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -343,7 +339,7 @@ assign units.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Station_Plot.html" class="btn btn-neutral float-right" title="Station Plot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Mesonet_Stationplot.html" class="btn btn-neutral float-right" title="Mesonet Station Plot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="Hodograph_Inset.html" class="btn btn-neutral" title="Hodograph Inset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -356,7 +352,7 @@ assign units.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -393,7 +389,7 @@ assign units.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -405,8 +401,8 @@ assign units.</p>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>wind_components &mdash; MetPy 0.10</title>
+  <title>wind_components &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="wind_direction" href="metpy.calc.wind_direction.html"/>
         <link rel="prev" title="vorticity" href="metpy.calc.vorticity.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
@@ -159,6 +159,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#boundary-layer-turbulence">Boundary Layer/Turbulence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#other">Other</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#deprecated">Deprecated</a></li>
 </ul>
@@ -167,9 +168,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -254,13 +258,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>speed</strong> (<em>array_like</em>) – The wind speed (magnitude)</p></li>
-<li><p><strong>wdir</strong> (<em>array_like</em>) – The wind direction, specified as the direction from which the wind is
+<li><p><strong>speed</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The wind speed (magnitude)</p></li>
+<li><p><strong>wdir</strong> (<em class="xref py py-obj">pint.Quantity</em>) – The wind direction, specified as the direction from which the wind is
 blowing (0-2 pi radians or 0-360 degrees), with 360 degrees being North.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>u, v</strong> (<em>tuple of array_like</em>) – The wind components in the X (East-West) and Y (North-South)
+<dd class="field-even"><p><strong>u, v</strong> (tuple of <em class="xref py py-obj">pint.Quantity</em>) – The wind components in the X (East-West) and Y (North-South)
 directions, respectively.</p>
 </dd>
 </dl>
@@ -287,29 +291,33 @@ directions, respectively.</p>
 <img alt="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" src="../../_images/sphx_glr_Wind_SLP_Interpolation_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/gridding/Wind_SLP_Interpolation.html#sphx-glr-examples-gridding-wind-slp-interpolation-py"><span class="std std-ref">Wind and Sea Level Pressure Interpolation</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability. "><div class="figure align-default" id="id3">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability."><div class="figure align-default" id="id3">
 <img alt="../../_images/sphx_glr_Skew-T_Layout_thumb.png" src="../../_images/sphx_glr_Skew-T_Layout_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Skew-T_Layout.html#sphx-glr-examples-plots-skew-t-layout-py"><span class="std std-ref">Skew-T with Complex Layout</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot. "><div class="figure align-default" id="id4">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot."><div class="figure align-default" id="id4">
 <img alt="../../_images/sphx_glr_Hodograph_Inset_thumb.png" src="../../_images/sphx_glr_Hodograph_Inset_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Hodograph_Inset.html#sphx-glr-examples-plots-hodograph-inset-py"><span class="std std-ref">Hodograph Inset</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy as straightforward as possible to make a Skew-T LogP plot. "><div class="figure align-default" id="id5">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy as straightforward as possible to make a Skew-T LogP plot."><div class="figure align-default" id="id5">
 <img alt="../../_images/sphx_glr_Simple_Sounding_thumb.png" src="../../_images/sphx_glr_Simple_Sounding_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Simple_Sounding.html#sphx-glr-examples-plots-simple-sounding-py"><span class="std std-ref">Simple Sounding</span></a></span><a class="headerlink" href="#id5" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols."><div class="figure align-default" id="id6">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Make a surface station plot with Oklahoma Mesonet data."><div class="figure align-default" id="id6">
+<img alt="../../_images/sphx_glr_Mesonet_Stationplot_thumb.png" src="../../_images/sphx_glr_Mesonet_Stationplot_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Mesonet_Stationplot.html#sphx-glr-examples-plots-mesonet-stationplot-py"><span class="std std-ref">Mesonet Station Plot</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols."><div class="figure align-default" id="id7">
 <img alt="../../_images/sphx_glr_Station_Plot_thumb.png" src="../../_images/sphx_glr_Station_Plot_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a></span><a class="headerlink" href="#id6" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b..."><div class="figure align-default" id="id7">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols, using a station plot layout b..."><div class="figure align-default" id="id8">
 <img alt="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" src="../../_images/sphx_glr_Station_Plot_with_Layout_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot_with_Layout.html#sphx-glr-examples-plots-station-plot-with-layout-py"><span class="std std-ref">Station Plot with Layout</span></a></span><a class="headerlink" href="#id7" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot_with_Layout.html#sphx-glr-examples-plots-station-plot-with-layout-py"><span class="std std-ref">Station Plot with Layout</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori..."><div class="figure align-default" id="id8">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Upper air analysis is a staple of many synoptic and mesoscale analysis problems. In this tutori..."><div class="figure align-default" id="id9">
 <img alt="../../_images/sphx_glr_upperair_soundings_thumb.png" src="../../_images/sphx_glr_upperair_soundings_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/upperair_soundings.html#sphx-glr-tutorials-upperair-soundings-py"><span class="std std-ref">Upper Air Sounding Tutorial</span></a></span><a class="headerlink" href="#id8" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../tutorials/upperair_soundings.html#sphx-glr-tutorials-upperair-soundings-py"><span class="std std-ref">Upper Air Sounding Tutorial</span></a></span><a class="headerlink" href="#id9" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -337,7 +345,7 @@ directions, respectively.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -374,7 +382,7 @@ directions, respectively.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -386,8 +394,8 @@ directions, respectively.</p>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

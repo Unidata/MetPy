@@ -18,7 +18,6 @@ Layout a Skew-T plot with a hodograph inset into the plot.
 
     import matplotlib.pyplot as plt
     from mpl_toolkits.axes_grid1.inset_locator import inset_axes
-    import numpy as np
     import pandas as pd
 
     import metpy.calc as mpcalc
@@ -44,12 +43,9 @@ some of MetPy's sample data.
     df = pd.read_fwf(get_test_data('may4_sounding.txt', as_file_obj=False),
                      skiprows=5, usecols=[0, 1, 2, 3, 6, 7], names=col_names)
 
-    df['u_wind'], df['v_wind'] = mpcalc.wind_components(df['speed'],
-                                                        np.deg2rad(df['direction']))
-
     # Drop any rows with all NaN values for T, Td, winds
-    df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed',
-                           'u_wind', 'v_wind'), how='all').reset_index(drop=True)
+    df = df.dropna(subset=('temperature', 'dewpoint', 'direction', 'speed'
+                           ), how='all').reset_index(drop=True)
 
 
 
@@ -64,6 +60,7 @@ assign units.
 .. code-block:: default
 
 
+    hght = df['height'].values * units.hPa
     p = df['pressure'].values * units.hPa
     T = df['temperature'].values * units.degC
     Td = df['dewpoint'].values * units.degC
@@ -107,7 +104,7 @@ assign units.
     ax_hod = inset_axes(skew.ax, '40%', '40%', loc=1)
     h = Hodograph(ax_hod, component_range=80.)
     h.add_grid(increment=20)
-    h.plot_colormapped(u, v, np.hypot(u, v))
+    h.plot_colormapped(u, v, hght)
 
     # Show the plot
     plt.show()
@@ -123,7 +120,7 @@ assign units.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  0.853 seconds)
+   **Total running time of the script:** ( 0 minutes  0.779 seconds)
 
 
 .. _sphx_glr_download_examples_plots_Hodograph_Inset.py:

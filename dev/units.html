@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Unit Support &mdash; MetPy 0.10</title>
+  <title>Unit Support &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,9 +43,9 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.10" href="index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="index.html"/>
         <link rel="next" title="Examples" href="examples/index.html"/>
-        <link rel="prev" title="Installation Guide" href="installguide.html"/> 
+        <link rel="prev" title="Getting Started with MetPy" href="startingguide.html"/> 
 
   
   <script src="_static/js/modernizr.min.js"></script>
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -118,6 +118,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Unit Support</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#construction">Construction</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#operations">Operations</a></li>
@@ -127,7 +128,9 @@
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing MetPy</a></li>
@@ -204,7 +207,7 @@ unit-correctness. This simplifies the MetPy API by eliminating the need to speci
 various functions. Instead, only the final results need to be converted to desired units. For
 more information on unit support, see the documentation for
 <a class="reference external" href="http://pint.readthedocs.io">Pint</a>. Particular attention should be paid to the support
-for <a class="reference external" href="http://pint.readthedocs.io/en/latest/nonmult.html">temperature units</a>.</p>
+for <a class="reference external" href="https://pint.readthedocs.io/en/latest/nonmult.html">temperature units</a>.</p>
 <div class="section" id="construction">
 <h2>Construction<a class="headerlink" href="#construction" title="Permalink to this headline">¶</a></h2>
 <p>To use units, the first step is to import the default MetPy units registry from the
@@ -216,7 +219,7 @@ for <a class="reference external" href="http://pint.readthedocs.io/en/latest/non
 <p>The unit registry encapsulates all of the available units, as well as any pertinent settings.
 The registry also understands unit prefixes and suffixes; this allows the registry to
 understand <code class="docutils literal notranslate"><span class="pre">'kilometer'</span></code> and <code class="docutils literal notranslate"><span class="pre">'meters'</span></code> in addition to the base <code class="docutils literal notranslate"><span class="pre">'meter'</span></code> unit.</p>
-<p>In general, using units is only a small step on top of using the <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.16)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> object.
+<p>In general, using units is only a small step on top of using the <a class="reference external" href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.17)"><code class="xref py py-class docutils literal notranslate"><span class="pre">numpy.ndarray</span></code></a> object.
 The easiest way to attach units to an array is to multiply by the units:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meters</span>
 </pre></div>
@@ -308,7 +311,7 @@ converts a quantity to SI units, performing any needed cancellation:</p>
         <a href="examples/index.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="installguide.html" class="btn btn-neutral" title="Installation Guide" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="startingguide.html" class="btn btn-neutral" title="Getting Started with MetPy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -318,7 +321,7 @@ converts a quantity to SI units, performing any needed cancellation:</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -355,7 +358,7 @@ converts a quantity to SI units, performing any needed cancellation:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -367,8 +370,8 @@ converts a quantity to SI units, performing any needed cancellation:</p>
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
       <script type="text/javascript" src="_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

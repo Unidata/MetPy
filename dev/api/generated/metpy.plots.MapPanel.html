@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>MapPanel &mdash; MetPy 0.10</title>
+  <title>MapPanel &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="PanelContainer" href="metpy.plots.PanelContainer.html"/>
         <link rel="prev" title="ImagePlot" href="metpy.plots.ImagePlot.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -134,7 +134,9 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.BarbPlot.html">BarbPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">MapPanel</a><ul>
@@ -142,7 +144,9 @@
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.PanelContainer.html">PanelContainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Plot2D.html">Plot2D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotScalar.html">PlotScalar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotVector.html">PlotVector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Plots2D.html">Plots2D</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a></li>
@@ -151,9 +155,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -234,7 +241,11 @@
 <dl class="class">
 <dt id="metpy.plots.MapPanel">
 <em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">MapPanel</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#MapPanel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.MapPanel" title="Permalink to this definition">¶</a></dt>
-<dd><p>Draw one or more plots on a map.</p>
+<dd><p>Set figure related elements for an individual panel.</p>
+<p>Parameters that need to be set include collecting all plotting types
+(e.g., contours, wind barbs, etc.) that are desired to be in a given panel.
+Additionally, traits can be set to plot map related features (e.g., coastlines, borders),
+projection, graphics area, and title.</p>
 <p class="rubric">Attributes Summary</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -243,7 +254,7 @@
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.area" title="metpy.plots.MapPanel.area"><code class="xref py py-obj docutils literal notranslate"><span class="pre">area</span></code></a></p></td>
-<td><p>A trait type representing a Union type.</p></td>
+<td><p>A tuple or string value that indicates the graphical area of the plot.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.ax" title="metpy.plots.MapPanel.ax"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ax</span></code></a></p></td>
 <td><p>Get the <a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a> to draw on.</p></td>
@@ -252,22 +263,22 @@
 <td><p>A contextmanager for running a block with our cross validation lock set to True.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layers" title="metpy.plots.MapPanel.layers"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layers</span></code></a></p></td>
-<td><p>An instance of a Python list.</p></td>
+<td><p>A string for a pre-defined feature layer or a Cartopy Feature object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.layout" title="metpy.plots.MapPanel.layout"><code class="xref py py-obj docutils literal notranslate"><span class="pre">layout</span></code></a></p></td>
-<td><p>An instance of a Python tuple.</p></td>
+<td><p>A tuple that contains the description (nrows, ncols, index) of the panel position; default value is (1, 1, 1).</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.parent" title="metpy.plots.MapPanel.parent"><code class="xref py py-obj docutils literal notranslate"><span class="pre">parent</span></code></a></p></td>
 <td><p>A trait whose value must be an instance of a specified class.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.plots" title="metpy.plots.MapPanel.plots"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plots</span></code></a></p></td>
-<td><p>An instance of a Python list.</p></td>
+<td><p>A list of handles that represent the plots (e.g., <a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a>, <a class="reference internal" href="metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilledContourPlot</span></code></a>, <a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>) to put on a given panel.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.projection" title="metpy.plots.MapPanel.projection"><code class="xref py py-obj docutils literal notranslate"><span class="pre">projection</span></code></a></p></td>
-<td><p>A trait type representing a Union type.</p></td>
+<td><p>A string for a pre-defined projection or a Cartopy projection object.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.MapPanel.title" title="metpy.plots.MapPanel.title"><code class="xref py py-obj docutils literal notranslate"><span class="pre">title</span></code></a></p></td>
-<td><p>A trait for unicode strings.</p></td>
+<td><p>A string to set a title for the figure.</p></td>
 </tr>
 </tbody>
 </table>
@@ -347,7 +358,15 @@
 <dl class="attribute">
 <dt id="metpy.plots.MapPanel.area">
 <code class="sig-name descname">area</code><a class="headerlink" href="#metpy.plots.MapPanel.area" title="Permalink to this definition">¶</a></dt>
-<dd><p>A trait type representing a Union type.</p>
+<dd><p>A tuple or string value that indicates the graphical area of the plot.</p>
+<p>The tuple value coresponds to longitude/latitude box based on the projection of the map
+with the format (west-most longitude, east-most longitude, south-most latitude,
+north-most latitude). This tuple defines a box from the lower-left to the upper-right
+corner.</p>
+<p>This trait can also be set with a string value associated with the named geographic regions
+within MetPy. The tuples associated with the names are based on a PlatteCarree projection.
+For a CONUS region, the following strings can be used: ‘us’, ‘spcus’, ‘ncus’, and ‘afus’.
+For regional plots, US state postal codes can be used.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -369,13 +388,23 @@ prior to entering the block.</p>
 <dl class="attribute">
 <dt id="metpy.plots.MapPanel.layers">
 <code class="sig-name descname">layers</code><a class="headerlink" href="#metpy.plots.MapPanel.layers" title="Permalink to this definition">¶</a></dt>
-<dd><p>An instance of a Python list.</p>
+<dd><p>A string for a pre-defined feature layer or a Cartopy Feature object.</p>
+<p>Like the projection, there are a couple of pre-defined feature layers that can be called
+using a short name. The pre-defined layers are: ‘coastline’, ‘states’, ‘borders’, ‘lakes’,
+‘land’, ‘ocean’, and ‘rivers’. Additionally, this trait can be set using a Cartopy Feature
+object.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.MapPanel.layout">
 <code class="sig-name descname">layout</code><a class="headerlink" href="#metpy.plots.MapPanel.layout" title="Permalink to this definition">¶</a></dt>
-<dd><p>An instance of a Python tuple.</p>
+<dd><p>A tuple that contains the description (nrows, ncols, index) of the
+panel position; default value is (1, 1, 1).</p>
+<p>This trait is set to describe the panel position and the default is for a single panel. For
+example, a four-panel plot will have two rows and two columns with the tuple setting for
+the upper-left panel as (2, 2, 1), upper-right as (2, 2, 2), lower-left as (2, 2, 3), and
+lower-right as (2, 2, 4). For more details see the documentation for
+<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.add_subplot" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.figure.Figure.add_subplot</span></code></a>.</p>
 </dd></dl>
 
 <dl class="attribute">
@@ -389,19 +418,27 @@ prior to entering the block.</p>
 <dl class="attribute">
 <dt id="metpy.plots.MapPanel.plots">
 <code class="sig-name descname">plots</code><a class="headerlink" href="#metpy.plots.MapPanel.plots" title="Permalink to this definition">¶</a></dt>
-<dd><p>An instance of a Python list.</p>
+<dd><p>A list of handles that represent the plots (e.g., <a class="reference internal" href="metpy.plots.ContourPlot.html#metpy.plots.ContourPlot" title="metpy.plots.ContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ContourPlot</span></code></a>,
+<a class="reference internal" href="metpy.plots.FilledContourPlot.html#metpy.plots.FilledContourPlot" title="metpy.plots.FilledContourPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FilledContourPlot</span></code></a>, <a class="reference internal" href="metpy.plots.ImagePlot.html#metpy.plots.ImagePlot" title="metpy.plots.ImagePlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ImagePlot</span></code></a>) to put on a given panel.</p>
+<p>This trait collects the different plots, including contours and images, that are intended
+for a given panel.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.MapPanel.projection">
 <code class="sig-name descname">projection</code><a class="headerlink" href="#metpy.plots.MapPanel.projection" title="Permalink to this definition">¶</a></dt>
-<dd><p>A trait type representing a Union type.</p>
+<dd><p>A string for a pre-defined projection or a Cartopy projection
+object.</p>
+<p>There are three pre-defined projections that can be called with a short name:
+Lambert conformal conic (‘lcc’), Mercator (‘mer’), or polar-stereographic (‘ps’).
+Additionally, this trait can be set to a Cartopy projection object.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.MapPanel.title">
 <code class="sig-name descname">title</code><a class="headerlink" href="#metpy.plots.MapPanel.title" title="Permalink to this definition">¶</a></dt>
-<dd><p>A trait for unicode strings.</p>
+<dd><p>A string to set a title for the figure.</p>
+<p>This trait sets a user-defined title that will plot at the top center of the figure.</p>
 </dd></dl>
 
 <p class="rubric">Methods Documentation</p>
@@ -662,7 +699,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -699,7 +736,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -711,8 +748,8 @@ If name is not specified, removes all trait notifiers.</p>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

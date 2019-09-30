@@ -2,6 +2,11 @@
 References
 ==========
 
+.. [Anderson2013] Anderson, G. B., M. L. Bell, and R. D. Peng, 2013: Methods to
+           Calculate the Heat Index as an Exposure Metric in Environmental Health
+           Research. *Environmental Health Perspectives*, **121**, 1111-1119,
+           doi: `10.1289/ehp.1206273 <https://doi.org/10.1289/ehp.1206273>`_.
+
 .. [Bakhshaii2013] Bakhshaii, A. and R. Stull, 2013: Saturated pseudoadiabats--A
            noniterative approximation. *J. Appl. Meteor. Clim.*, **52**, 5-15,
            doi:`10.1175/JAMC-D-12-062.1 <https://doi.org/10.1175/JAMC-D-12-062.1>`_.
@@ -90,6 +95,11 @@ References
 .. [Markowski2010] Markowski, P. and Y. Richardson, 2010: *Mesoscale Meteorology in the
            Midlatitudes*. Wiley, 430 pp.
 
+.. [NOAA1976] National Oceanic and Atmospheric Administration, National Aeronautics and
+           Space Administration, and U. S. Air Force, 1976: `U. S. Standard Atmosphere 1976
+           <https://ntrs.nasa.gov/archive/nasa/casi.ntrs.nasa.gov/19770009539.pdf>`_,
+           U.S. Government Printing Office, Washington, DC.
+
 .. [NWS10201] 2017: `National Weather Service Instruction 10-201 <_static/NWS_10-201.pdf>`_.
 
 .. [Philips1957] Philips, N. A., 1957: A coordinate system having some special
@@ -111,6 +121,10 @@ References
            Symmetric Instability. Mon. Wea. Rev., 127, 2709–2732,
            doi:`10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2
            <https://doi.org/10.1175/1520-0493(1999)127%3C2709%3ATUAMOC%3E2.0.CO;2>`_.
+
+.. [Smithsonian1951] Smithsonian Institution and List, Robert J. 1951: `Smithsonian
+           meteorological tables <_static/Smithsonian1951.pdf>`  *Smithsonian Miscellaneous
+           Collections*, **144**, 151 pp.
 
 .. [Steadman1979] Steadman, R.G., 1979: The assessment of sultriness. Part I: A
            temperature-humidity index based on human physiology and clothing

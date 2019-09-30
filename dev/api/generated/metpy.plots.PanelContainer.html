@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>PanelContainer &mdash; MetPy 0.10</title>
+  <title>PanelContainer &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,9 +43,9 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
-        <link rel="next" title="Plot2D" href="metpy.plots.Plot2D.html"/>
+        <link rel="next" title="PlotScalar" href="metpy.plots.PlotScalar.html"/>
         <link rel="prev" title="MapPanel" href="metpy.plots.MapPanel.html"/> 
 
   
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -134,7 +134,9 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.BarbPlot.html">BarbPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.MapPanel.html">MapPanel</a></li>
@@ -142,7 +144,9 @@
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-plots-panelcontainer">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.PanelContainer</span></code></a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Plot2D.html">Plot2D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotScalar.html">PlotScalar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotVector.html">PlotVector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Plots2D.html">Plots2D</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.SkewT.html">SkewT</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlot.html">StationPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.StationPlotLayout.html">StationPlotLayout</a></li>
@@ -151,9 +155,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -234,7 +241,7 @@
 <dl class="class">
 <dt id="metpy.plots.PanelContainer">
 <em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">PanelContainer</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#PanelContainer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.PanelContainer" title="Permalink to this definition">¶</a></dt>
-<dd><p>Hold multiple panels of plots.</p>
+<dd><p>Collects panels and set complete figure related settings (e.g., figsize).</p>
 <p class="rubric">Attributes Summary</p>
 <table class="longtable docutils align-default">
 <colgroup>
@@ -252,10 +259,10 @@
 <td><p>Provide simple access for a single panel.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.PanelContainer.panels" title="metpy.plots.PanelContainer.panels"><code class="xref py py-obj docutils literal notranslate"><span class="pre">panels</span></code></a></p></td>
-<td><p>An instance of a Python list.</p></td>
+<td><p>A list of panels to plot on the figure.</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.PanelContainer.size" title="metpy.plots.PanelContainer.size"><code class="xref py py-obj docutils literal notranslate"><span class="pre">size</span></code></a></p></td>
-<td><p>A trait type representing a Union type.</p></td>
+<td><p>This trait takes a tuple of (width, height) to set the size of the figure.</p></td>
 </tr>
 </tbody>
 </table>
@@ -362,13 +369,16 @@ prior to entering the block.</p>
 <dl class="attribute">
 <dt id="metpy.plots.PanelContainer.panels">
 <code class="sig-name descname">panels</code><a class="headerlink" href="#metpy.plots.PanelContainer.panels" title="Permalink to this definition">¶</a></dt>
-<dd><p>An instance of a Python list.</p>
+<dd><p>A list of panels to plot on the figure.</p>
+<p>This trait must contain at least one panel to plot on the figure.</p>
 </dd></dl>
 
 <dl class="attribute">
 <dt id="metpy.plots.PanelContainer.size">
 <code class="sig-name descname">size</code><a class="headerlink" href="#metpy.plots.PanelContainer.size" title="Permalink to this definition">¶</a></dt>
-<dd><p>A trait type representing a Union type.</p>
+<dd><p>This trait takes a tuple of (width, height) to set the size of the
+figure.</p>
+<p>This trait defaults to None and will assume the default <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.pyplot.figure</span></code></a> size.</p>
 </dd></dl>
 
 <p class="rubric">Methods Documentation</p>
@@ -515,6 +525,8 @@ then unintall it.</p></li>
 <dt id="metpy.plots.PanelContainer.save">
 <code class="sig-name descname">save</code><span class="sig-paren">(</span><em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/declarative.html#PanelContainer.save"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.PanelContainer.save" title="Permalink to this definition">¶</a></dt>
 <dd><p>Save the constructed graphic as an image file.</p>
+<p>This method takes a string for saved file name. Additionally, the same arguments and
+keyword arguments that <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.savefig.html#matplotlib.pyplot.savefig" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.pyplot.savefig</span></code></a> does.</p>
 </dd></dl>
 
 <dl class="method">
@@ -628,7 +640,7 @@ If name is not specified, removes all trait notifiers.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="metpy.plots.Plot2D.html" class="btn btn-neutral float-right" title="Plot2D" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="metpy.plots.PlotScalar.html" class="btn btn-neutral float-right" title="PlotScalar" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="metpy.plots.MapPanel.html" class="btn btn-neutral" title="MapPanel" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -641,7 +653,7 @@ If name is not specified, removes all trait notifiers.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -678,7 +690,7 @@ If name is not specified, removes all trait notifiers.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -690,8 +702,8 @@ If name is not specified, removes all trait notifiers.</p>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

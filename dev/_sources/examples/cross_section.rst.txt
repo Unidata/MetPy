@@ -77,6 +77,21 @@ dimension.
         v_wind               (isobaric, y, x) float32 ...
         Geopotential_height  (isobaric, y, x) float32 ...
         Specific_humidity    (isobaric, y, x) float32 ...
+    Attributes:
+        Conventions:              CF-1.0
+        Originating_center:       US National Weather Service - NCEP(WMC) (7)
+        Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
+        Generating_Model:         North American Regional Reanalysis (NARR)
+        Product_Type:             Forecast/Uninitialized Analysis/Image Product
+        title:                    US National Weather Service - NCEP(WMC) North A...
+        institution:              Center US National Weather Service - NCEP(WMC) ...
+        source:                   Forecast/Uninitialized Analysis/Image Product
+        history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
+        CF:feature_type:          GRID
+        file_format:              GRIB-1
+        location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
+        _CoordinateModelRunDate:  1987-04-04T18:00:00Z
+        History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
 
 
 
@@ -101,8 +116,7 @@ Get the cross section, and convert lat/lon to supplementary coordinates:
 .. code-block:: default
 
 
-    cross = cross_section(data, start, end)
-    cross.set_coords(('lat', 'lon'), True)
+    cross = cross_section(data, start, end).set_coords(('lat', 'lon'))
     print(cross)
 
 
@@ -115,8 +129,6 @@ Get the cross section, and convert lat/lon to supplementary coordinates:
 
  .. code-block:: none
 
-    /home/travis/build/Unidata/MetPy/examples/cross_section.py:46: FutureWarning: The inplace argument has been deprecated and will be removed in a future version of xarray.
-      cross.set_coords(('lat', 'lon'), True)
     <xarray.Dataset>
     Dimensions:              (index: 100, isobaric: 29)
     Coordinates:
@@ -135,6 +147,21 @@ Get the cross section, and convert lat/lon to supplementary coordinates:
         v_wind               (isobaric, index) float64 8.473 5.723 ... -1.082
         Geopotential_height  (isobaric, index) float64 118.6 127.4 ... 1.636e+04
         Specific_humidity    (isobaric, index) float64 0.006367 ... 4.223e-06
+    Attributes:
+        Conventions:              CF-1.0
+        Originating_center:       US National Weather Service - NCEP(WMC) (7)
+        Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
+        Generating_Model:         North American Regional Reanalysis (NARR)
+        Product_Type:             Forecast/Uninitialized Analysis/Image Product
+        title:                    US National Weather Service - NCEP(WMC) North A...
+        institution:              Center US National Weather Service - NCEP(WMC) ...
+        source:                   Forecast/Uninitialized Analysis/Image Product
+        history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
+        CF:feature_type:          GRID
+        file_format:              GRIB-1
+        location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
+        _CoordinateModelRunDate:  1987-04-04T18:00:00Z
+        History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
 
 
 
@@ -197,10 +224,25 @@ tangential/normal winds. And so, we need to calculate those, and add them to the
         v_wind                 (isobaric, index) float64 16.47 11.13 ... -2.104
         Geopotential_height    (isobaric, index) float64 118.6 127.4 ... 1.636e+04
         Specific_humidity      (isobaric, index) float64 0.006367 ... 4.223e-06
-        Potential_temperature  (isobaric, index) float64 287.7 286.9 ... 408.1 408.1
-        Relative_humidity      (isobaric, index) float64 0.6114 0.6195 ... 0.04498
+        Potential_temperature  (isobaric, index) float64 <Quantity([[287.71705253...
+        Relative_humidity      (isobaric, index) float64 <Quantity([[0.61136026 0...
         t_wind                 (isobaric, index) float64 -2.027 3.07 ... 45.18 43.27
         n_wind                 (isobaric, index) float64 17.18 10.73 ... -15.83
+    Attributes:
+        Conventions:              CF-1.0
+        Originating_center:       US National Weather Service - NCEP(WMC) (7)
+        Originating_subcenter:    The North American Regional Reanalysis (NARR) P...
+        Generating_Model:         North American Regional Reanalysis (NARR)
+        Product_Type:             Forecast/Uninitialized Analysis/Image Product
+        title:                    US National Weather Service - NCEP(WMC) North A...
+        institution:              Center US National Weather Service - NCEP(WMC) ...
+        source:                   Forecast/Uninitialized Analysis/Image Product
+        history:                  Direct read of GRIB-1 into NetCDF-Java 4 API
+        CF:feature_type:          GRID
+        file_format:              GRIB-1
+        location:                 /nomads3_data/raid2/noaaport/merged/narr/198704...
+        _CoordinateModelRunDate:  1987-04-04T18:00:00Z
+        History:                  Translated to CF-1.0 Conventions by Netcdf-Java...
 
 
 
@@ -272,16 +314,21 @@ Now, we can make the plot.
 
 
 
+
 .. image:: /examples/images/sphx_glr_cross_section_001.png
     :class: sphx-glr-single-img
 
 
 
 
+Note: The x-axis can display any variable that is the same length as the
+plotted variables, including latitude. Additionally, arguments can be provided
+to ``ax.set_xticklabels`` to label lat/lon pairs, similar to the default NCL output.
+
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  4.015 seconds)
+   **Total running time of the script:** ( 0 minutes  3.808 seconds)
 
 
 .. _sphx_glr_download_examples_cross_section.py:

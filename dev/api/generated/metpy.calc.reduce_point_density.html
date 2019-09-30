@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>reduce_point_density &mdash; MetPy 0.10</title>
+  <title>reduce_point_density &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="resample_nn_1d" href="metpy.calc.resample_nn_1d.html"/>
         <link rel="prev" title="parse_angle" href="metpy.calc.parse_angle.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
@@ -135,7 +135,9 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#boundary-layer-turbulence">Boundary Layer/Turbulence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#other">Other</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.angle_to_direction.html">angle_to_direction</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.find_bounding_indices.html">find_bounding_indices</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.find_intersections.html">find_intersections</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.get_layer.html">get_layer</a></li>
@@ -157,9 +159,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -245,12 +250,13 @@
 data), returning a mask that can be used to select the points from one or more arrays
 (e.g. arrays of temperature and dew point). The points selected can be controlled by
 providing an array of <code class="docutils literal notranslate"><span class="pre">priority</span></code> values (e.g. rainfall totals to ensure that
-stations with higher precipitation remain in the mask).</p>
+stations with higher precipitation remain in the mask). The points and radius can be
+specified with units. If none are provided, meters are assumed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>points</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em>) – N locations of the points in K dimensional space</p></li>
-<li><p><strong>radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – minimum radius allowed between points</p></li>
+<li><p><strong>radius</strong> (<em class="xref py py-obj">pint.Quantity</em> or float) – Minimum radius allowed between points. If units are not provided, meters is assumed.</p></li>
 <li><p><strong>priority</strong> (<em>(</em><em>N</em><em>, </em><em>K</em><em>) </em><em>array-like</em><em>, </em><em>optional</em>) – If given, this should have the same shape as <code class="docutils literal notranslate"><span class="pre">points</span></code>; these values will
 be used to control selection priority for points.</p></li>
 </ul>
@@ -265,19 +271,23 @@ be used to control selection priority for points.</p></li>
 </dl>
 <p class="rubric">Examples</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">reduce_point_density</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="mf">1.</span><span class="p">)</span>
-<span class="go">array([ True, False,  True])</span>
+<span class="go">array([ True, False, True])</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">metpy</span><span class="o">.</span><span class="n">calc</span><span class="o">.</span><span class="n">reduce_point_density</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]),</span> <span class="mf">1.</span><span class="p">,</span>
 <span class="gp">... </span><span class="n">priority</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.1</span><span class="p">,</span> <span class="mf">0.9</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">]))</span>
-<span class="go">array([False,  True, False])</span>
+<span class="go">array([False, True, False])</span>
 </pre></div>
 </div>
 </dd></dl>
 
 <div class="section" id="examples-using-metpy-calc-reduce-point-density">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.reduce_point_density</span></code><a class="headerlink" href="#examples-using-metpy-calc-reduce-point-density" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols."><div class="figure align-default" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Make a surface station plot with Oklahoma Mesonet data."><div class="figure align-default" id="id1">
+<img alt="../../_images/sphx_glr_Mesonet_Stationplot_thumb.png" src="../../_images/sphx_glr_Mesonet_Stationplot_thumb.png" />
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Mesonet_Stationplot.html#sphx-glr-examples-plots-mesonet-stationplot-py"><span class="std std-ref">Mesonet Station Plot</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+</div>
+</div><div class="sphx-glr-thumbcontainer" tooltip="Make a station plot, complete with sky cover and weather symbols."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_Station_Plot_thumb.png" src="../../_images/sphx_glr_Station_Plot_thumb.png" />
-<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
+<p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Station_Plot.html#sphx-glr-examples-plots-station-plot-py"><span class="std std-ref">Station Plot</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
 </div><div style='clear:both'></div></div>
 </div>
@@ -305,7 +315,7 @@ be used to control selection priority for points.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -342,7 +352,7 @@ be used to control selection priority for points.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -354,8 +364,8 @@ be used to control selection priority for points.</p></li>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

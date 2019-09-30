@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.indices &mdash; MetPy 0.10</title>
+  <title>metpy.calc.indices &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -117,11 +117,14 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
@@ -240,10 +243,10 @@
     <span class="n">dewpt</span> <span class="o">=</span> <span class="n">dewpt</span><span class="p">[</span><span class="n">sort_inds</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">top</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">top</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
+        <span class="n">top</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
 
     <span class="k">if</span> <span class="n">bottom</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">bottom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">pressure</span><span class="p">)</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
+        <span class="n">bottom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">pressure</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">*</span> <span class="n">pressure</span><span class="o">.</span><span class="n">units</span>
 
     <span class="n">pres_layer</span><span class="p">,</span> <span class="n">dewpt_layer</span> <span class="o">=</span> <span class="n">get_layer</span><span class="p">(</span><span class="n">pressure</span><span class="p">,</span> <span class="n">dewpt</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">,</span> <span class="n">depth</span><span class="o">=</span><span class="n">bottom</span> <span class="o">-</span> <span class="n">top</span><span class="p">)</span>
 
@@ -267,7 +270,7 @@
 <span class="sd">    ----------</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Atmospheric pressure profile</span>
-<span class="sd">    *args : `pint.Quantity`</span>
+<span class="sd">    args : `pint.Quantity`</span>
 <span class="sd">        Parameters for which the pressure-weighted mean is to be calculated.</span>
 <span class="sd">    heights : `pint.Quantity`, optional</span>
 <span class="sd">        Heights from sounding. Standard atmosphere heights assumed (if needed)</span>
@@ -300,7 +303,8 @@
     <span class="c1"># function. Said integral works out to this function:</span>
     <span class="n">pres_int</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">layer_p</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">magnitude</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">layer_p</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">magnitude</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
     <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">datavar</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">args</span><span class="p">):</span>
-        <span class="n">arg_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">(</span><span class="n">layer_arg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">layer_p</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="n">layer_p</span><span class="p">)</span> <span class="o">/</span> <span class="n">pres_int</span>
+        <span class="n">arg_mean</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">trapz</span><span class="p">((</span><span class="n">layer_arg</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">*</span> <span class="n">layer_p</span><span class="p">)</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span>
+                            <span class="n">x</span><span class="o">=</span><span class="n">layer_p</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span> <span class="o">/</span> <span class="n">pres_int</span>
         <span class="n">ret</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">arg_mean</span> <span class="o">*</span> <span class="n">datavar</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ret</span></div>
@@ -316,13 +320,13 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    pressure : array-like</span>
+<span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Pressure from sounding</span>
-<span class="sd">    u : array-like</span>
+<span class="sd">    u : `pint.Quantity`</span>
 <span class="sd">        U component of the wind</span>
-<span class="sd">    v : array-like</span>
+<span class="sd">    v : `pint.Quantity`</span>
 <span class="sd">        V component of the wind</span>
-<span class="sd">    heights : array-like</span>
+<span class="sd">    heights : `pint.Quantity`</span>
 <span class="sd">        Heights from sounding</span>
 
 <span class="sd">    Returns</span>
@@ -354,7 +358,8 @@
     <span class="c1"># Take the cross product of the wind shear and k, and divide by the vector magnitude and</span>
     <span class="c1"># multiply by the deviaton empirically calculated in Bunkers (2000) (7.5 m/s)</span>
     <span class="n">shear_cross</span> <span class="o">=</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">shear</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="o">-</span><span class="n">shear</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
-    <span class="n">rdev</span> <span class="o">=</span> <span class="n">shear_cross</span> <span class="o">*</span> <span class="p">(</span><span class="mf">7.5</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">units</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="o">*</span><span class="n">shear</span><span class="p">))</span>
+    <span class="n">shear_mag</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">arg</span><span class="o">.</span><span class="n">magnitude</span> <span class="k">for</span> <span class="n">arg</span> <span class="ow">in</span> <span class="n">shear</span><span class="p">))</span> <span class="o">*</span> <span class="n">shear</span><span class="o">.</span><span class="n">units</span>
+    <span class="n">rdev</span> <span class="o">=</span> <span class="n">shear_cross</span> <span class="o">*</span> <span class="p">(</span><span class="mf">7.5</span> <span class="o">*</span> <span class="n">units</span><span class="p">(</span><span class="s1">&#39;m/s&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">u</span><span class="o">.</span><span class="n">units</span><span class="p">)</span> <span class="o">/</span> <span class="n">shear_mag</span><span class="p">)</span>
 
     <span class="c1"># Add the deviations to the layer average wind to get the RM motion</span>
     <span class="n">right_mover</span> <span class="o">=</span> <span class="n">wind_mean</span> <span class="o">+</span> <span class="n">rdev</span>
@@ -437,7 +442,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    array-like</span>
+<span class="sd">    `pint.Quantity`</span>
 <span class="sd">        supercell composite</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -485,7 +490,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    array-like</span>
+<span class="sd">    `pint.Quantity`</span>
 <span class="sd">        significant tornado parameter</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -578,7 +583,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -615,7 +620,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -627,8 +632,8 @@
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

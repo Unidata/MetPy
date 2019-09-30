@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>dewpoint_rh &mdash; MetPy 0.10</title>
+  <title>dewpoint_rh &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="equivalent_potential_temperature" href="metpy.calc.equivalent_potential_temperature.html"/>
         <link rel="prev" title="dewpoint_from_specific_humidity" href="metpy.calc.dewpoint_from_specific_humidity.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a><ul class="current">
@@ -148,6 +148,7 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.saturation_equivalent_potential_temperature.html">saturation_equivalent_potential_temperature</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.saturation_mixing_ratio.html">saturation_mixing_ratio</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.saturation_vapor_pressure.html">saturation_vapor_pressure</a></li>
+<li class="toctree-l4"><a class="reference internal" href="metpy.calc.specific_humidity_from_dewpoint.html">specific_humidity_from_dewpoint</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.specific_humidity_from_mixing_ratio.html">specific_humidity_from_mixing_ratio</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.thickness_hydrostatic_from_relative_humidity.html">thickness_hydrostatic_from_relative_humidity</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.vapor_pressure.html">vapor_pressure</a></li>
@@ -163,6 +164,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#boundary-layer-turbulence">Boundary Layer/Turbulence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#other">Other</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#deprecated">Deprecated</a></li>
 </ul>
@@ -171,9 +173,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -258,12 +263,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Air temperature</p></li>
-<li><p><strong>rh</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Relative humidity expressed as a ratio in the range 0 &lt; rh &lt;= 1</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – air temperature</p></li>
+<li><p><strong>rh</strong> (<em class="xref py py-obj">pint.Quantity</em>) – relative humidity expressed as a ratio in the range 0 &lt; rh &lt;= 1</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The dew point temperature</p>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The dewpoint temperature</p>
 </dd>
 </dl>
 <div class="admonition seealso">
@@ -274,7 +279,7 @@
 
 <div class="section" id="examples-using-metpy-calc-dewpoint-rh">
 <h2>Examples using <code class="docutils literal notranslate"><span class="pre">metpy.calc.dewpoint_rh</span></code><a class="headerlink" href="#examples-using-metpy-calc-dewpoint-rh" title="Permalink to this headline">¶</a></h2>
-<div class="sphx-glr-thumbcontainer" tooltip="Plots time series data as a meteogram. "><div class="figure align-default" id="id1">
+<div class="sphx-glr-thumbcontainer" tooltip="Plots time series data as a meteogram."><div class="figure align-default" id="id1">
 <img alt="../../_images/sphx_glr_meteogram_metpy_thumb.png" src="../../_images/sphx_glr_meteogram_metpy_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/meteogram_metpy.html#sphx-glr-examples-meteogram-metpy-py"><span class="std std-ref">Meteogram</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
@@ -304,7 +309,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -341,7 +346,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -353,8 +358,8 @@
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Sigma to Pressure Interpolation &mdash; MetPy 0.10</title>
+  <title>Sigma to Pressure Interpolation &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../genindex.html"/>
         <link rel="search" title="Search" href="../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../index.html"/>
         <link rel="up" title="Examples" href="index.html"/>
-        <link rel="next" title="Four Panel Map" href="Four_Panel_Map.html"/>
-        <link rel="prev" title="Advanced Sounding" href="Advanced_Sounding.html"/> 
+        <link rel="next" title="Advanced Sounding" href="Advanced_Sounding.html"/>
+        <link rel="prev" title="XArray Projection Handling" href="XArray_Projections.html"/> 
 
   
   <script src="../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,12 +119,13 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../units.html">Unit Support</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="index.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="index.html#general-examples">General Examples</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="XArray_Projections.html">XArray Projection Handling</a></li>
-<li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">Sigma to Pressure Interpolation</a></li>
+<li class="toctree-l3"><a class="reference internal" href="Advanced_Sounding.html">Advanced Sounding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="Four_Panel_Map.html">Four Panel Map</a></li>
 <li class="toctree-l3"><a class="reference internal" href="cross_section.html">Cross Section Analysis</a></li>
 <li class="toctree-l3"><a class="reference internal" href="isentropic_example.html">Isentropic Analysis</a></li>
@@ -139,7 +140,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../citing.html">Citing MetPy</a></li>
@@ -249,11 +252,6 @@ University Department of Geography and Meteorology.</p>
 <span class="n">hgt</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">variables</span><span class="p">[</span><span class="s1">&#39;height&#39;</span><span class="p">][:]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">meter</span>
 </pre></div>
 </div>
-<p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file &#39;wrf_example.nc&#39; from remote data store &#39;https://github.com/Unidata/MetPy/raw/master/staticdata/wrf_example.nc&#39; to &#39;/home/travis/build/Unidata/MetPy/staticdata/master&#39;.
-  action_word[action], fname, self.get_url(fname), str(self.path)
-</pre></div>
-</div>
 <p>Array of desired pressure levels</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plevs</span> <span class="o">=</span> <span class="p">[</span><span class="mf">700.</span><span class="p">]</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">hPa</span>
 </pre></div>
@@ -269,7 +267,7 @@ variable for plotting.</p>
 </pre></div>
 </div>
 <p class="sphx-glr-script-out">Out:</p>
-<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/metpy/interpolate/one_dimension.py:139: UserWarning: Interpolation point out of data bounds encountered
+<div class="sphx-glr-script-out highlight-none notranslate"><div class="highlight"><pre><span></span>/home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:144: UserWarning: Interpolation point out of data bounds encountered
   warnings.warn(&#39;Interpolation point out of data bounds encountered&#39;)
 </pre></div>
 </div>
@@ -281,11 +279,11 @@ variable for plotting.</p>
 <span class="n">FH</span> <span class="o">=</span> <span class="mi">1</span>
 
 <span class="c1"># Create the figure and grid for subplots</span>
-<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.rst.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
+<span class="n">fig</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.figure.html#matplotlib.pyplot.figure" title="View documentation for matplotlib.pyplot.figure"><span class="n">plt</span><span class="o">.</span><span class="n">figure</span></a><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="mi">12</span><span class="p">))</span>
 <a href="../api/generated/metpy.plots.add_metpy_logo.html#metpy.plots.add_metpy_logo" title="View documentation for metpy.plots.add_metpy_logo"><span class="n">add_metpy_logo</span></a><span class="p">(</span><span class="n">fig</span><span class="p">,</span> <span class="mi">470</span><span class="p">,</span> <span class="mi">320</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">)</span>
 
 <span class="c1"># Plot 700 hPa</span>
-<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.rst.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
+<span class="n">ax</span> <span class="o">=</span> <a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplot.html#matplotlib.pyplot.subplot" title="View documentation for matplotlib.pyplot.subplot"><span class="n">plt</span><span class="o">.</span><span class="n">subplot</span></a><span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="n">crs</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">COASTLINE</span><span class="o">.</span><span class="n">with_scale</span><span class="p">(</span><span class="s1">&#39;50m&#39;</span><span class="p">),</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.75</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">add_feature</span><span class="p">(</span><span class="n">cfeature</span><span class="o">.</span><span class="n">STATES</span><span class="p">,</span> <span class="n">linewidth</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
@@ -312,17 +310,17 @@ variable for plotting.</p>
 <span class="n">fig</span><span class="o">.</span><span class="n">suptitle</span><span class="p">(</span><span class="s1">&#39;WRF-ARW Forecast VALID: </span><span class="si">{:s}</span><span class="s1"> UTC&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">vtimes</span><span class="p">[</span><span class="n">FH</span><span class="p">])),</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">14</span><span class="p">)</span>
 <a href="../api/generated/metpy.plots.add_timestamp.html#metpy.plots.add_timestamp" title="View documentation for metpy.plots.add_timestamp"><span class="n">add_timestamp</span></a><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">vtimes</span><span class="p">[</span><span class="n">FH</span><span class="p">],</span> <span class="n">y</span><span class="o">=</span><span class="mf">0.02</span><span class="p">,</span> <span class="n">high_contrast</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.rst.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
+<a href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.show.html#matplotlib.pyplot.show" title="View documentation for matplotlib.pyplot.show"><span class="n">plt</span><span class="o">.</span><span class="n">show</span></a><span class="p">()</span>
 </pre></div>
 </div>
 <img alt="../_images/sphx_glr_sigma_to_pressure_interpolation_001.png" class="sphx-glr-single-img" src="../_images/sphx_glr_sigma_to_pressure_interpolation_001.png" />
-<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  6.486 seconds)</p>
+<p class="sphx-glr-timing"><strong>Total running time of the script:</strong> ( 0 minutes  5.167 seconds)</p>
 <div class="sphx-glr-footer class sphx-glr-footer-example docutils container" id="sphx-glr-download-examples-sigma-to-pressure-interpolation-py">
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/c171adb3e19b07e2aeaaa846b872c110/sigma_to_pressure_interpolation.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">sigma_to_pressure_interpolation.py</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/0f93e682cc461be360e2fd037bf1fb7e/sigma_to_pressure_interpolation.py"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Python</span> <span class="pre">source</span> <span class="pre">code:</span> <span class="pre">sigma_to_pressure_interpolation.py</span></code></a></p>
 </div>
 <div class="sphx-glr-download docutils container">
-<p><a class="reference download internal" download="" href="../_downloads/5cc8c933308256fdd187d33e36e5143c/sigma_to_pressure_interpolation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sigma_to_pressure_interpolation.ipynb</span></code></a></p>
+<p><a class="reference download internal" download="" href="../_downloads/d4dcac00a3f9fe87c2dfb49b8fcc70fb/sigma_to_pressure_interpolation.ipynb"><code class="xref download docutils literal notranslate"><span class="pre">Download</span> <span class="pre">Jupyter</span> <span class="pre">notebook:</span> <span class="pre">sigma_to_pressure_interpolation.ipynb</span></code></a></p>
 </div>
 </div>
 <p class="sphx-glr-signature"><a class="reference external" href="https://sphinx-gallery.github.io">Gallery generated by Sphinx-Gallery</a></p>
@@ -338,10 +336,10 @@ variable for plotting.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="Four_Panel_Map.html" class="btn btn-neutral float-right" title="Four Panel Map" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="Advanced_Sounding.html" class="btn btn-neutral float-right" title="Advanced Sounding" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="Advanced_Sounding.html" class="btn btn-neutral" title="Advanced Sounding" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="XArray_Projections.html" class="btn btn-neutral" title="XArray Projection Handling" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -351,7 +349,7 @@ variable for plotting.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -388,7 +386,7 @@ variable for plotting.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -400,8 +398,8 @@ variable for plotting.</p>
       <script type="text/javascript" src="../_static/underscore.js"></script>
       <script type="text/javascript" src="../_static/doctools.js"></script>
       <script type="text/javascript" src="../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

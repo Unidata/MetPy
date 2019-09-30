@@ -8,13 +8,13 @@ Installation Guide
 Python 2.7 Support
 ------------------
 In the Fall 2019, we will be dropping support for Python 2.7. This follows movement from
-other packages within the `scientific Python ecosystem <http://python3statement.org/>`_.
+other packages within the `scientific Python ecosystem <https://python3statement.org/>`_.
 This includes:
 
 * Core Python developers will
   `stop support for Python 2.7 January 1, 2020 <https://pythonclock.org/>`_
 * NumPy feature releases will be
-  `Python 3 only starting January 1, 2019 <https://www.numpy.org/neps/nep-0014-dropping-python2.7-proposal.html>`_,
+  `Python 3 only starting January 1, 2019 <https://numpy.org/neps/nep-0014-dropping-python2.7-proposal.html>`_,
   and support for the last release supporting Python 2 will end January 1, 2020.
 * XArray will drop
   `2.7 January 1, 2019 as well <https://github.com/pydata/xarray/issues/1830>`_
@@ -35,10 +35,11 @@ In general, MetPy tries to support minor versions of dependencies released withi
 years. For Python itself, that means supporting the last two minor releases, as well as
 currently supporting Python 2.7.
 
-* matplotlib >= 2.0.0
+* matplotlib >= 2.1.0
 * numpy >= 1.12.0
 * scipy >= 0.17.0
 * pint >= 0.8
+* pandas >= 0.22.0
 * xarray >= 0.10.7
 * traitlets >= 4.3.0
 * enum34 (for python < 3.4)
@@ -74,4 +75,5 @@ Examples
 
 The MetPy source comes with a set of example scripts in the ``examples``
 directory. These are also available as notebooks in the gallery in
-the :doc:`examples/index`.
+the :doc:`examples/index`. Further examples of MetPy usage are available
+in the `Unidata Python Gallery <https://unidata.github.io/python-gallery/>`_.

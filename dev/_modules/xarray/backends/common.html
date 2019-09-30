@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>xarray.backends.common &mdash; MetPy 0.10</title>
+  <title>xarray.backends.common &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -117,11 +117,14 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
@@ -207,7 +210,7 @@
 <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span>
 
 
-<span class="n">NONE_VAR_NAME</span> <span class="o">=</span> <span class="s1">&#39;__values__&#39;</span>
+<span class="n">NONE_VAR_NAME</span> <span class="o">=</span> <span class="s2">&quot;__values__&quot;</span>
 
 
 <span class="k">def</span> <span class="nf">_encode_variable_name</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
@@ -222,17 +225,17 @@
     <span class="k">return</span> <span class="n">name</span>
 
 
-<span class="k">def</span> <span class="nf">find_root</span><span class="p">(</span><span class="n">ds</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Helper function to find the root of a netcdf or h5netcdf dataset.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="k">def</span> <span class="nf">find_root_and_group</span><span class="p">(</span><span class="n">ds</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Find the root and group name of a netCDF4/h5netcdf dataset.&quot;&quot;&quot;</span>
+    <span class="n">hierarchy</span> <span class="o">=</span> <span class="p">()</span>
     <span class="k">while</span> <span class="n">ds</span><span class="o">.</span><span class="n">parent</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">hierarchy</span> <span class="o">=</span> <span class="p">(</span><span class="n">ds</span><span class="o">.</span><span class="n">name</span><span class="p">,)</span> <span class="o">+</span> <span class="n">hierarchy</span>
         <span class="n">ds</span> <span class="o">=</span> <span class="n">ds</span><span class="o">.</span><span class="n">parent</span>
-    <span class="k">return</span> <span class="n">ds</span>
+    <span class="n">group</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">hierarchy</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ds</span><span class="p">,</span> <span class="n">group</span>
 
 
-<span class="k">def</span> <span class="nf">robust_getitem</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">catch</span><span class="o">=</span><span class="ne">Exception</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span>
-                   <span class="n">initial_delay</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">robust_getitem</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">catch</span><span class="o">=</span><span class="ne">Exception</span><span class="p">,</span> <span class="n">max_retries</span><span class="o">=</span><span class="mi">6</span><span class="p">,</span> <span class="n">initial_delay</span><span class="o">=</span><span class="mi">500</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Robustly index an array, using retry logic with exponential backoff if any</span>
 <span class="sd">    of the errors ``catch`` are raised. The initial_delay is measured in ms.</span>
@@ -249,14 +252,17 @@
                 <span class="k">raise</span>
             <span class="n">base_delay</span> <span class="o">=</span> <span class="n">initial_delay</span> <span class="o">*</span> <span class="mi">2</span> <span class="o">**</span> <span class="n">n</span>
             <span class="n">next_delay</span> <span class="o">=</span> <span class="n">base_delay</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">base_delay</span><span class="p">)</span>
-            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;getitem failed, waiting </span><span class="si">%s</span><span class="s1"> ms before trying again &#39;</span>
-                   <span class="s1">&#39;(</span><span class="si">%s</span><span class="s1"> tries remaining). Full traceback: </span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span>
-                   <span class="p">(</span><span class="n">next_delay</span><span class="p">,</span> <span class="n">max_retries</span> <span class="o">-</span> <span class="n">n</span><span class="p">,</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">()))</span>
+            <span class="n">msg</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="s2">&quot;getitem failed, waiting </span><span class="si">%s</span><span class="s2"> ms before trying again &quot;</span>
+                <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2"> tries remaining). Full traceback: </span><span class="si">%s</span><span class="s2">&quot;</span>
+                <span class="o">%</span> <span class="p">(</span><span class="n">next_delay</span><span class="p">,</span> <span class="n">max_retries</span> <span class="o">-</span> <span class="n">n</span><span class="p">,</span> <span class="n">traceback</span><span class="o">.</span><span class="n">format_exc</span><span class="p">())</span>
+            <span class="p">)</span>
             <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
             <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">1e-3</span> <span class="o">*</span> <span class="n">next_delay</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">BackendArray</span><span class="p">(</span><span class="n">NdimSizeLenMixin</span><span class="p">,</span> <span class="n">indexing</span><span class="o">.</span><span class="n">ExplicitlyIndexed</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__array__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="n">key</span> <span class="o">=</span> <span class="n">indexing</span><span class="o">.</span><span class="n">BasicIndexer</span><span class="p">((</span><span class="nb">slice</span><span class="p">(</span><span class="kc">None</span><span class="p">),)</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">ndim</span><span class="p">)</span>
@@ -264,6 +270,7 @@
 
 
 <span class="k">class</span> <span class="nc">AbstractDataStore</span><span class="p">(</span><span class="n">Mapping</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variables</span><span class="p">)</span>
@@ -307,32 +314,42 @@
 <span class="sd">        This function will be called anytime variables or attributes</span>
 <span class="sd">        are requested, so care should be taken to make sure its fast.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">variables</span> <span class="o">=</span> <span class="n">FrozenOrderedDict</span><span class="p">((</span><span class="n">_decode_variable_name</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span>
-                                      <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_variables</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="n">FrozenOrderedDict</span><span class="p">(</span>
+            <span class="p">(</span><span class="n">_decode_variable_name</span><span class="p">(</span><span class="n">k</span><span class="p">),</span> <span class="n">v</span><span class="p">)</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_variables</span><span class="p">()</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+        <span class="p">)</span>
         <span class="n">attributes</span> <span class="o">=</span> <span class="n">FrozenOrderedDict</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">get_attrs</span><span class="p">())</span>
         <span class="k">return</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The ``variables`` property has been deprecated and &#39;</span>
-                      <span class="s1">&#39;will be removed in xarray v0.11.&#39;</span><span class="p">,</span>
-                      <span class="ne">FutureWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">variables</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;The ``variables`` property has been deprecated and &quot;</span>
+            <span class="s2">&quot;will be removed in xarray v0.11.&quot;</span><span class="p">,</span>
+            <span class="ne">FutureWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">variables</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">variables</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The ``attrs`` property has been deprecated and &#39;</span>
-                      <span class="s1">&#39;will be removed in xarray v0.11.&#39;</span><span class="p">,</span>
-                      <span class="ne">FutureWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;The ``attrs`` property has been deprecated and &quot;</span>
+            <span class="s2">&quot;will be removed in xarray v0.11.&quot;</span><span class="p">,</span>
+            <span class="ne">FutureWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="n">_</span><span class="p">,</span> <span class="n">attrs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">attrs</span>
 
     <span class="nd">@property</span>
-    <span class="k">def</span> <span class="nf">dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The ``dimensions`` property has been deprecated and &#39;</span>
-                      <span class="s1">&#39;will be removed in xarray v0.11.&#39;</span><span class="p">,</span>
-                      <span class="ne">FutureWarning</span><span class="p">,</span> <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">dimensions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>  <span class="c1"># pragma: no cover</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="s2">&quot;The ``dimensions`` property has been deprecated and &quot;</span>
+            <span class="s2">&quot;will be removed in xarray v0.11.&quot;</span><span class="p">,</span>
+            <span class="ne">FutureWarning</span><span class="p">,</span>
+            <span class="n">stacklevel</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_dimensions</span><span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">close</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -346,6 +363,8 @@
 
 
 <span class="k">class</span> <span class="nc">ArrayWriter</span><span class="p">:</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">(</span><span class="s2">&quot;sources&quot;</span><span class="p">,</span> <span class="s2">&quot;targets&quot;</span><span class="p">,</span> <span class="s2">&quot;regions&quot;</span><span class="p">,</span> <span class="s2">&quot;lock&quot;</span><span class="p">)</span>
+
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lock</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sources</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="p">[]</span>
@@ -366,13 +385,19 @@
     <span class="k">def</span> <span class="nf">sync</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">:</span>
             <span class="kn">import</span> <span class="nn">dask.array</span> <span class="k">as</span> <span class="nn">da</span>
+
             <span class="c1"># TODO: consider wrapping targets with dask.delayed, if this makes</span>
             <span class="c1"># for any discernable difference in perforance, e.g.,</span>
             <span class="c1"># targets = [dask.delayed(t) for t in self.targets]</span>
 
-            <span class="n">delayed_store</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
-                                     <span class="n">lock</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">,</span> <span class="n">compute</span><span class="o">=</span><span class="n">compute</span><span class="p">,</span>
-                                     <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">regions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">)</span>
+            <span class="n">delayed_store</span> <span class="o">=</span> <span class="n">da</span><span class="o">.</span><span class="n">store</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sources</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">targets</span><span class="p">,</span>
+                <span class="n">lock</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">lock</span><span class="p">,</span>
+                <span class="n">compute</span><span class="o">=</span><span class="n">compute</span><span class="p">,</span>
+                <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                <span class="n">regions</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">regions</span><span class="p">,</span>
+            <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">sources</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">targets</span> <span class="o">=</span> <span class="p">[]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">regions</span> <span class="o">=</span> <span class="p">[]</span>
@@ -380,6 +405,7 @@
 
 
 <span class="k">class</span> <span class="nc">AbstractWritableDataStore</span><span class="p">(</span><span class="n">AbstractDataStore</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -398,10 +424,12 @@
 <span class="sd">        attributes : dict-like</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">variables</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_variable</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-                                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
-        <span class="n">attributes</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_attribute</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-                                  <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_variable</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="p">)</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_attribute</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span>
 
     <span class="k">def</span> <span class="nf">encode_variable</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
@@ -430,8 +458,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">store</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">dataset</span><span class="o">.</span><span class="n">attrs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span><span class="p">,</span> <span class="n">check_encoding_set</span><span class="o">=</span><span class="nb">frozenset</span><span class="p">(),</span>
-              <span class="n">writer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">store</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">variables</span><span class="p">,</span>
+        <span class="n">attributes</span><span class="p">,</span>
+        <span class="n">check_encoding_set</span><span class="o">=</span><span class="nb">frozenset</span><span class="p">(),</span>
+        <span class="n">writer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">unlimited_dims</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Top level method for putting data on this store, this method:</span>
 <span class="sd">          - encodes variables/attributes</span>
@@ -459,8 +493,9 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">set_attributes</span><span class="p">(</span><span class="n">attributes</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">set_dimensions</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="n">unlimited_dims</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">set_variables</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">check_encoding_set</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span>
-                           <span class="n">unlimited_dims</span><span class="o">=</span><span class="n">unlimited_dims</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_variables</span><span class="p">(</span>
+            <span class="n">variables</span><span class="p">,</span> <span class="n">check_encoding_set</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="n">unlimited_dims</span>
+        <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">set_attributes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -475,8 +510,7 @@
         <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">set_attribute</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">check_encoding_set</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span>
-                      <span class="n">unlimited_dims</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">set_variables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">check_encoding_set</span><span class="p">,</span> <span class="n">writer</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        This provides a centralized method to set the variables on the data</span>
 <span class="sd">        store.</span>
@@ -498,7 +532,8 @@
             <span class="n">name</span> <span class="o">=</span> <span class="n">_encode_variable_name</span><span class="p">(</span><span class="n">vn</span><span class="p">)</span>
             <span class="n">check</span> <span class="o">=</span> <span class="n">vn</span> <span class="ow">in</span> <span class="n">check_encoding_set</span>
             <span class="n">target</span><span class="p">,</span> <span class="n">source</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prepare_variable</span><span class="p">(</span>
-                <span class="n">name</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">check</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="n">unlimited_dims</span><span class="p">)</span>
+                <span class="n">name</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">check</span><span class="p">,</span> <span class="n">unlimited_dims</span><span class="o">=</span><span class="n">unlimited_dims</span>
+            <span class="p">)</span>
 
             <span class="n">writer</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">source</span><span class="p">,</span> <span class="n">target</span><span class="p">)</span>
 
@@ -530,22 +565,26 @@
             <span class="k">if</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">existing_dims</span> <span class="ow">and</span> <span class="n">length</span> <span class="o">!=</span> <span class="n">existing_dims</span><span class="p">[</span><span class="n">dim</span><span class="p">]:</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                     <span class="s2">&quot;Unable to update size for existing dimension&quot;</span>
-                    <span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> (</span><span class="si">%d</span><span class="s2"> != </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">existing_dims</span><span class="p">[</span><span class="n">dim</span><span class="p">]))</span>
+                    <span class="s2">&quot;</span><span class="si">%r</span><span class="s2"> (</span><span class="si">%d</span><span class="s2"> != </span><span class="si">%d</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">existing_dims</span><span class="p">[</span><span class="n">dim</span><span class="p">])</span>
+                <span class="p">)</span>
             <span class="k">elif</span> <span class="n">dim</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">existing_dims</span><span class="p">:</span>
                 <span class="n">is_unlimited</span> <span class="o">=</span> <span class="n">dim</span> <span class="ow">in</span> <span class="n">unlimited_dims</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">set_dimension</span><span class="p">(</span><span class="n">dim</span><span class="p">,</span> <span class="n">length</span><span class="p">,</span> <span class="n">is_unlimited</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">WritableCFDataStore</span><span class="p">(</span><span class="n">AbstractWritableDataStore</span><span class="p">):</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">()</span>
 
     <span class="k">def</span> <span class="nf">encode</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span><span class="p">):</span>
         <span class="c1"># All NetCDF files get CF encoded by default, without this attempting</span>
         <span class="c1"># to write times, for example, would fail.</span>
         <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span> <span class="o">=</span> <span class="n">cf_encoder</span><span class="p">(</span><span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span><span class="p">)</span>
-        <span class="n">variables</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_variable</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-                                 <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
-        <span class="n">attributes</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">([(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_attribute</span><span class="p">(</span><span class="n">v</span><span class="p">))</span>
-                                  <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()])</span>
+        <span class="n">variables</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_variable</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">variables</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="p">)</span>
+        <span class="n">attributes</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">(</span>
+            <span class="p">[(</span><span class="n">k</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">encode_attribute</span><span class="p">(</span><span class="n">v</span><span class="p">))</span> <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">attributes</span><span class="o">.</span><span class="n">items</span><span class="p">()]</span>
+        <span class="p">)</span>
         <span class="k">return</span> <span class="n">variables</span><span class="p">,</span> <span class="n">attributes</span>
 </pre></div>
 
@@ -562,7 +601,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -599,7 +638,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -611,8 +650,8 @@
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

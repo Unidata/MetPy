@@ -67,8 +67,6 @@ tutorial, we will use an example subset of GFS data from Hurrican Irma (Septembe
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'irma_gfs_example.nc' from remote data store 'https://github.com/Unidata/MetPy/raw/master/staticdata/irma_gfs_example.nc' to '/home/travis/build/Unidata/MetPy/staticdata/master'.
-      action_word[action], fname, self.get_url(fname), str(self.path)
     <xarray.Dataset>
     Dimensions:                              (isobaric1: 21, isobaric3: 31, latitude: 81, longitude: 131, time1: 9)
     Coordinates:
@@ -106,8 +104,8 @@ tutorial, we will use an example subset of GFS data from Hurrican Irma (Septembe
 Preparing Data
 --------------
 
-To make use of the data within MetPy, we need to parse the dataset for projection and
-coordinate information following the CF conventions. For this, we use the
+To make use of the data within MetPy, we need to parse the dataset for projection
+information following the CF conventions. For this, we use the
 ``data.metpy.parse_cf()`` method, which will return a new, parsed ``DataArray`` or
 ``Dataset``.
 
@@ -125,28 +123,23 @@ Additionally, we rename our data variables for easier reference.
     # it will return just that data variable as a DataArray.
     data_var = data.metpy.parse_cf('Temperature_isobaric')
 
+    # If we want only a subset of variables, we can pass a list of variable names as well.
+    data_subset = data.metpy.parse_cf(['u-component_of_wind_isobaric',
+                                       'v-component_of_wind_isobaric'])
+
     # To rename variables, supply a dictionary between old and new names to the rename method
-    data.rename({
+    data = data.rename({
         'Vertical_velocity_pressure_isobaric': 'omega',
         'Relative_humidity_isobaric': 'relative_humidity',
         'Temperature_isobaric': 'temperature',
         'u-component_of_wind_isobaric': 'u',
         'v-component_of_wind_isobaric': 'v',
         'Geopotential_height_isobaric': 'height'
-    }, inplace=True)
+    })
 
 
 
 
-
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/travis/build/Unidata/MetPy/tutorials/xarray_tutorial.py:70: FutureWarning: The inplace argument has been deprecated and will be removed in a future version of xarray.
-      }, inplace=True)
 
 
 
@@ -320,7 +313,7 @@ straightforward as using the ``data_var.metpy.cartopy_crs`` property:
 
  .. code-block:: none
 
-    <cartopy.crs.PlateCarree object at 0x7ff9adf500f8>
+    <cartopy.crs.PlateCarree object at 0x7f5a152ada40>
 
 
 
@@ -344,7 +337,7 @@ property:
 
  .. code-block:: none
 
-    <cartopy._crs.Globe object at 0x7ff9aa0f9940>
+    <cartopy._crs.Globe object at 0x7f5a110d2e48>
 
 
 
@@ -525,7 +518,7 @@ the data.
 
     # Set a title and show the plot
     ax.set_title('500 hPa Heights (m), Temperature (\u00B0C), Humidity (%) at '
-                 + time[0].dt.strftime('%Y-%m-%d %H:%MZ'))
+                 + time[0].dt.strftime('%Y-%m-%d %H:%MZ').item())
     plt.show()
 
 
@@ -543,7 +536,7 @@ What Could Go Wrong?
 Depending on your dataset and what you are trying to do, you might run into problems with
 xarray and MetPy. Below are examples of some of the most common issues
 
-- ``parse_cf`` not able to parse due to conflict
+- Multiple coordinate conflict
 - An axis not being available
 - An axis not being interpretable
 - Arrays not broadcasting in calculations
@@ -554,27 +547,36 @@ Code:
 
 ::
 
-    temperature = data.metpy.parse_cf('Temperature')
+    x = data['Temperature'].metpy.x
 
 Error Message:
 
 ::
 
-    /home/user/env/MetPy/metpy/xarray.py:305: UserWarning: DataArray
-    of requested variable has more than one x coordinate. Specify the
-    unique axes using the coordinates argument.
+    /home/user/env/MetPy/metpy/xarray.py:305: UserWarning: More than
+    one x coordinate present for variable "Temperature".
 
 Fix:
 
-Specify the ``coordinates`` argument to the ``parse_cf`` method to map the ``T`` (time),
-``Z`` (vertical), ``Y``, and ``X`` axes (as applicable to your dataset) to the corresponding
-coordinates.
+Manually assign the coordinates using the ``assign_coordinates()`` method on your DataArray,
+or by specifying the ``coordinates`` argument to the ``parse_cf()`` method on your Dataset,
+to map the ``T`` (time), ``Z`` (vertical), ``Y``, and ``X`` axes (as applicable to your
+data) to the corresponding coordinates.
+
+::
+
+    data['Temperature'].assign_coordinates({'T': 'time', 'Z': 'isobaric',
+                                            'Y': 'y', 'X': 'x'})
+    x = data['Temperature'].metpy.x
+
+or
 
 ::
 
     temperature = data.metpy.parse_cf('Temperature',
                                       coordinates={'T': 'time', 'Z': 'isobaric',
                                                    'Y': 'y', 'X': 'x'})
+    x = temperature.metpy.x
 
 **Axis Unavailable**
 
@@ -593,8 +595,7 @@ Error Message:
 This means that your data variable does not have the coordinate that was requested, at
 least as far as the parser can recognize. Verify that you are requesting a
 coordinate that your data actually has, and if it still is not available,
-you will need to manually specify the coordinates via the coordinates argument
-discussed above.
+you will need to manually specify the coordinates as discussed above.
 
 **Axis Not Interpretable**
 
@@ -654,7 +655,7 @@ Fix 2 (unit array broadcasting):
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  17.378 seconds)
+   **Total running time of the script:** ( 0 minutes  15.251 seconds)
 
 
 .. _sphx_glr_download_tutorials_xarray_tutorial.py:

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.units &mdash; MetPy 0.10</title>
+  <title>metpy.units &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="Module code" href="../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -117,11 +117,14 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -347,13 +350,14 @@
 <span class="sd">    numpy.diff</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">hasattr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="s1">&#39;units&#39;</span><span class="p">):</span>
+        <span class="n">ret</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="c1"># Can&#39;t just use units because of how things like temperature work</span>
         <span class="n">it</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">flat</span>
         <span class="n">true_units</span> <span class="o">=</span> <span class="p">(</span><span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="o">-</span> <span class="nb">next</span><span class="p">(</span><span class="n">it</span><span class="p">))</span><span class="o">.</span><span class="n">units</span>
-        <span class="n">ret</span> <span class="o">=</span> <span class="n">ret</span> <span class="o">*</span> <span class="n">true_units</span>
-    <span class="k">return</span> <span class="n">ret</span></div>
+        <span class="k">return</span> <span class="n">ret</span> <span class="o">*</span> <span class="n">true_units</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="atleast_1d"><a class="viewcode-back" href="../../api/generated/metpy.units.atleast_1d.html#metpy.units.atleast_1d">[docs]</a><span class="k">def</span> <span class="nf">atleast_1d</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">):</span>
@@ -419,17 +423,18 @@
 
 <span class="sd">    This is a thin wrapper around :func:`numpy.ma.masked_array` that ensures that</span>
 <span class="sd">    units are properly attached to the result (otherwise units are silently lost). Units</span>
-<span class="sd">    are taken from the ``units`` argument, or if this is ``None``, the units on ``data``</span>
+<span class="sd">    are taken from the ``data_units`` argument, or if this is ``None``, the units on ``data``</span>
 <span class="sd">    are used.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    data : array_like</span>
-<span class="sd">        The source data. If ``units`` is `None`, this should be a `pint.Quantity` with</span>
+<span class="sd">        The source data. If ``data_units`` is `None`, this should be a `pint.Quantity` with</span>
 <span class="sd">        the desired units.</span>
-<span class="sd">    data_units : str or `pint.Unit`</span>
+<span class="sd">    data_units : str or `pint.Unit`, optional</span>
 <span class="sd">        The units for the resulting `pint.Quantity`</span>
-<span class="sd">    **kwargs : Arbitrary keyword arguments passed to `numpy.ma.masked_array`</span>
+<span class="sd">    kwargs</span>
+<span class="sd">        Arbitrary keyword arguments passed to `numpy.ma.masked_array`, optional</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -516,17 +521,14 @@
 <span class="k">except</span> <span class="p">(</span><span class="ne">AttributeError</span><span class="p">,</span> <span class="ne">RuntimeError</span><span class="p">,</span> <span class="ne">ImportError</span><span class="p">):</span>  <span class="c1"># Pint&#39;s not available, try our own</span>
     <span class="kn">import</span> <span class="nn">matplotlib.units</span> <span class="k">as</span> <span class="nn">munits</span>
 
-    <span class="c1"># Inheriting from object fixes the fact that matplotlib 1.4 doesn&#39;t</span>
-    <span class="c1"># TODO: Remove object when we drop support for matplotlib 1.4</span>
-    <span class="k">class</span> <span class="nc">PintAxisInfo</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">AxisInfo</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">PintAxisInfo</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">AxisInfo</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Support default axis and tick labeling and default limits.&quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">units</span><span class="p">):</span>
             <span class="sd">&quot;&quot;&quot;Set the default label to the pretty-print of the unit.&quot;&quot;&quot;</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">PintAxisInfo</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">label</span><span class="o">=</span><span class="s1">&#39;{:P}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">units</span><span class="p">))</span>
 
-    <span class="c1"># TODO: Remove object when we drop support for matplotlib 1.4</span>
-    <span class="k">class</span> <span class="nc">PintConverter</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">ConversionInterface</span><span class="p">,</span> <span class="nb">object</span><span class="p">):</span>
+    <span class="k">class</span> <span class="nc">PintConverter</span><span class="p">(</span><span class="n">munits</span><span class="o">.</span><span class="n">ConversionInterface</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Implement support for pint within matplotlib&#39;s unit conversion framework.&quot;&quot;&quot;</span>
 
         <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">registry</span><span class="p">):</span>
@@ -581,7 +583,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -618,7 +620,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -630,8 +632,8 @@
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

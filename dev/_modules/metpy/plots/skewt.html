@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.plots.skewt &mdash; MetPy 0.10</title>
+  <title>metpy.plots.skewt &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -117,11 +117,14 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
@@ -189,7 +192,7 @@
            <div itemprop="articleBody">
             
   <h1>Source code for metpy.plots.skewt</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright (c) 2014,2015,2016,2017 MetPy Developers.</span>
+<span></span><span class="c1"># Copyright (c) 2014,2015,2016,2017,2019 MetPy Developers.</span>
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Make Skew-T Log-P based plots.</span>
@@ -198,6 +201,7 @@
 <span class="sd">`SkewT`, as well as a class for making a `Hodograph`.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 
+<span class="kn">import</span> <span class="nn">warnings</span>
 <span class="k">try</span><span class="p">:</span>
     <span class="kn">from</span> <span class="nn">contextlib</span> <span class="k">import</span> <span class="n">ExitStack</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
@@ -218,11 +222,53 @@
 <span class="kn">from</span> <span class="nn">._util</span> <span class="k">import</span> <span class="n">colored_line</span>
 <span class="kn">from</span> <span class="nn">..calc</span> <span class="k">import</span> <span class="n">dewpoint</span><span class="p">,</span> <span class="n">dry_lapse</span><span class="p">,</span> <span class="n">moist_lapse</span><span class="p">,</span> <span class="n">vapor_pressure</span>
 <span class="kn">from</span> <span class="nn">..calc.tools</span> <span class="k">import</span> <span class="n">_delete_masked_points</span>
+<span class="kn">from</span> <span class="nn">..deprecation</span> <span class="k">import</span> <span class="n">metpyDeprecation</span>
 <span class="kn">from</span> <span class="nn">..interpolate</span> <span class="k">import</span> <span class="n">interpolate_1d</span>
 <span class="kn">from</span> <span class="nn">..package_tools</span> <span class="k">import</span> <span class="n">Exporter</span>
 <span class="kn">from</span> <span class="nn">..units</span> <span class="k">import</span> <span class="n">concatenate</span><span class="p">,</span> <span class="n">units</span>
 
 <span class="n">exporter</span> <span class="o">=</span> <span class="n">Exporter</span><span class="p">(</span><span class="nb">globals</span><span class="p">())</span>
+
+
+<span class="k">class</span> <span class="nc">SkewTTransform</span><span class="p">(</span><span class="n">transforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Perform Skew transform for Skew-T plotting.</span>
+
+<span class="sd">    This works in pixel space, so is designed to be applied after the normal plotting</span>
+<span class="sd">    transformations.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bbox</span><span class="p">,</span> <span class="n">rot</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize skew transform.</span>
+
+<span class="sd">        This needs a reference to the parent bounding box to do the appropriate math and</span>
+<span class="sd">        to register it as a child so that the transform is invalidated and regenerated if</span>
+<span class="sd">        the bounding box changes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">transforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_bbox</span> <span class="o">=</span> <span class="n">bbox</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_children</span><span class="p">(</span><span class="n">bbox</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">invalidate</span><span class="p">()</span>
+
+        <span class="c1"># We&#39;re not trying to support changing the rotation, so go ahead and convert to</span>
+        <span class="c1"># the right factor for skewing here and just save that.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_rot_factor</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tan</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">deg2rad</span><span class="p">(</span><span class="n">rot</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">get_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return transformation matrix.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_invalid</span><span class="p">:</span>
+            <span class="c1"># The following matrix is equivalent to the following:</span>
+            <span class="c1"># x0, y0 = self._bbox.xmin, self._bbox.ymin</span>
+            <span class="c1"># self.translate(-x0, -y0).skew_deg(self._rot, 0).translate(x0, y0)</span>
+            <span class="c1"># Setting it this way is just more efficient.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_mtx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_rot_factor</span><span class="p">,</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">_rot_factor</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bbox</span><span class="o">.</span><span class="n">ymin</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">],</span>
+                                  <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">]])</span>
+
+            <span class="c1"># Need to clear both the invalid flag *and* reset the inverse, which is cached</span>
+            <span class="c1"># by the parent class.</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_invalid</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inverted</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mtx</span>
 
 
 <span class="k">class</span> <span class="nc">SkewXTick</span><span class="p">(</span><span class="n">maxis</span><span class="o">.</span><span class="n">XTick</span><span class="p">):</span>
@@ -245,35 +291,49 @@
             <span class="k">for</span> <span class="n">artist</span> <span class="ow">in</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">gridline</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tick1line</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">tick2line</span><span class="p">,</span>
                            <span class="bp">self</span><span class="o">.</span><span class="n">label1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">label2</span><span class="p">]:</span>
                 <span class="n">stack</span><span class="o">.</span><span class="n">callback</span><span class="p">(</span><span class="n">artist</span><span class="o">.</span><span class="n">set_visible</span><span class="p">,</span> <span class="n">artist</span><span class="o">.</span><span class="n">get_visible</span><span class="p">())</span>
-            <span class="n">needs_lower</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">lower_xlim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())</span>
-            <span class="n">needs_upper</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">upper_xlim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">tick1line</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">tick1line</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">needs_lower</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">needs_lower</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">tick2line</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">tick2line</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">needs_upper</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">label2</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">label2</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">needs_upper</span><span class="p">)</span>
+
+            <span class="bp">self</span><span class="o">.</span><span class="n">tick1line</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tick1line</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_in_bounds</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">lower_in_bounds</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tick2line</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">tick2line</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_in_bounds</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">label2</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">label2</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">upper_in_bounds</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gridline</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">gridline</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">grid_in_bounds</span><span class="p">)</span>
             <span class="nb">super</span><span class="p">(</span><span class="n">SkewXTick</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">draw</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">get_view_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Get the view interval.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_view_interval</span><span class="p">()</span>
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">lower_in_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Whether the lower part of the tick is in bounds.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">lower_xlim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">upper_in_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Whether the upper part of the tick is in bounds.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">upper_xlim</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())</span>
+
+    <span class="nd">@property</span>
+    <span class="k">def</span> <span class="nf">grid_in_bounds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Whether any of the tick grid line is in bounds.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">transforms</span><span class="o">.</span><span class="n">interval_contains</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">get_view_interval</span><span class="p">(),</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">get_loc</span><span class="p">())</span>
 
 
 <span class="k">class</span> <span class="nc">SkewXAxis</span><span class="p">(</span><span class="n">maxis</span><span class="o">.</span><span class="n">XAxis</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Make an x-axis that works properly for Skew-T plots.</span>
 
 <span class="sd">    This class exists to force the use of our custom :class:`SkewXTick` as well</span>
-<span class="sd">    as provide a custom value for interview that combines the extents of the</span>
+<span class="sd">    as provide a custom value for interval that combines the extents of the</span>
 <span class="sd">    upper and lower x-limits from the axes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">_get_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">major</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">SkewXTick</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">axes</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">major</span><span class="o">=</span><span class="n">major</span><span class="p">)</span>
+
+    <span class="c1"># Needed to properly handle tight bbox</span>
+    <span class="k">def</span> <span class="nf">_get_tick_bboxes</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ticks</span><span class="p">,</span> <span class="n">renderer</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Return lists of bboxes for ticks&#39; label1&#39;s and label2&#39;s.&quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">([</span><span class="n">tick</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ticks</span> <span class="k">if</span> <span class="n">tick</span><span class="o">.</span><span class="n">label1</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">tick</span><span class="o">.</span><span class="n">lower_in_bounds</span><span class="p">],</span>
+                <span class="p">[</span><span class="n">tick</span><span class="o">.</span><span class="n">label2</span><span class="o">.</span><span class="n">get_window_extent</span><span class="p">(</span><span class="n">renderer</span><span class="p">)</span>
+                 <span class="k">for</span> <span class="n">tick</span> <span class="ow">in</span> <span class="n">ticks</span> <span class="k">if</span> <span class="n">tick</span><span class="o">.</span><span class="n">label2</span><span class="o">.</span><span class="n">get_visible</span><span class="p">()</span> <span class="ow">and</span> <span class="n">tick</span><span class="o">.</span><span class="n">upper_in_bounds</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">get_view_interval</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the view interval.&quot;&quot;&quot;</span>
@@ -355,24 +415,15 @@
         <span class="c1"># Get the standard transform setup from the Axes base class</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">Axes</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">_set_lim_and_transforms</span><span class="p">()</span>
 
-        <span class="c1"># Need to put the skew in the middle, after the scale and limits,</span>
-        <span class="c1"># but before the transAxes. This way, the skew is done in Axes</span>
-        <span class="c1"># coordinates thus performing the transform around the proper origin</span>
-        <span class="c1"># We keep the pre-transAxes transform around for other users, like the</span>
-        <span class="c1"># spines for finding bounds</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">transDataToAxes</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transScale</span>
-                                <span class="o">+</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transLimits</span>
-                                   <span class="o">+</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">skew_deg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rot</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span>
+        <span class="c1"># This transformation handles the skewing</span>
+        <span class="n">skew_trans</span> <span class="o">=</span> <span class="n">SkewTTransform</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rot</span><span class="p">)</span>
 
         <span class="c1"># Create the full transform from Data to Pixels</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">transData</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">transDataToAxes</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transAxes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transData</span> <span class="o">+=</span> <span class="n">skew_trans</span>
 
         <span class="c1"># Blended transforms like this need to have the skewing applied using</span>
         <span class="c1"># both axes, in axes coords like before.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_xaxis_transform</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">transforms</span><span class="o">.</span><span class="n">blended_transform_factory</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transScale</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transLimits</span><span class="p">,</span>
-                                                 <span class="n">transforms</span><span class="o">.</span><span class="n">IdentityTransform</span><span class="p">())</span>
-            <span class="o">+</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Affine2D</span><span class="p">()</span><span class="o">.</span><span class="n">skew_deg</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">rot</span><span class="p">,</span> <span class="mi">0</span><span class="p">))</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">transAxes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_xaxis_transform</span> <span class="o">+=</span> <span class="n">skew_trans</span>
 
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">lower_xlim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
@@ -382,11 +433,11 @@
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">upper_xlim</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the data limits for the x-axis along the top of the axes.&quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transDataToAxes</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="mf">0.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">],</span> <span class="p">[</span><span class="mf">1.</span><span class="p">,</span> <span class="mf">1.</span><span class="p">]])[:,</span> <span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">transData</span><span class="o">.</span><span class="n">inverted</span><span class="p">()</span><span class="o">.</span><span class="n">transform</span><span class="p">([[</span><span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">xmin</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">ymax</span><span class="p">],</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">bbox</span><span class="o">.</span><span class="n">max</span><span class="p">])[:,</span> <span class="mi">0</span><span class="p">]</span>
 
 
-<span class="c1"># Now register the projection with matplotlib so the user can select</span>
-<span class="c1"># it.</span>
+<span class="c1"># Now register the projection with matplotlib so the user can select it.</span>
 <span class="n">register_projection</span><span class="p">(</span><span class="n">SkewXAxes</span><span class="p">)</span>
 
 
@@ -407,7 +458,7 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="SkewT.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">subplot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="SkewT.__init__"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.__init__">[docs]</a>    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">fig</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="mi">30</span><span class="p">,</span> <span class="n">subplot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">rect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">aspect</span><span class="o">=</span><span class="mf">80.5</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Create SkewT - logP plots.</span>
 
 <span class="sd">        Parameters</span>
@@ -428,6 +479,10 @@
 <span class="sd">        rect : tuple[float, float, float, float], optional</span>
 <span class="sd">            Rectangle (left, bottom, width, height) in which to place the axes. This</span>
 <span class="sd">            allows the user to place the axes at an arbitrary point on the figure.</span>
+<span class="sd">        aspect : float, int, or &#39;auto&#39;, optional</span>
+<span class="sd">            Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.</span>
+<span class="sd">            Defaults to 80.5. Passing the string ``&#39;auto&#39;`` tells matplotlib to handle</span>
+<span class="sd">            the aspect ratio automatically (this is not recommended for SkewT).</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">fig</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -453,14 +508,39 @@
                 <span class="n">subplot</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="o">*</span><span class="n">subplot</span><span class="p">,</span> <span class="n">projection</span><span class="o">=</span><span class="s1">&#39;skewx&#39;</span><span class="p">,</span> <span class="n">rotation</span><span class="o">=</span><span class="n">rotation</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span></div>
+
+        <span class="c1"># Set the yaxis as inverted with log scaling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_yscale</span><span class="p">(</span><span class="s1">&#39;log&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Override default ticking for log scaling</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ScalarFormatter</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_formatter</span><span class="p">(</span><span class="n">NullFormatter</span><span class="p">())</span>
+
+        <span class="c1"># Needed to make sure matplotlib doesn&#39;t freak out and create a bunch of ticks</span>
+        <span class="c1"># Also takes care of inverting the y-axis</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="mi">1050</span><span class="p">,</span> <span class="mi">100</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_units</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">hPa</span><span class="p">)</span>
+
+        <span class="c1"># Try to make sane default temperature plotting ticks</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_units</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">-</span><span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mixing_lines</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Maintain a reasonable ratio of data limits. Only works on Matplotlib &gt;= 3.2</span>
+        <span class="k">if</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">&gt;</span> <span class="s1">&#39;3.1&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">set_aspect</span><span class="p">(</span><span class="n">aspect</span><span class="p">,</span> <span class="n">adjustable</span><span class="o">=</span><span class="s1">&#39;box&#39;</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SkewT.plot"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot">[docs]</a>    <span class="k">def</span> <span class="nf">plot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot data.</span>
 
 <span class="sd">        Simple wrapper around plot so that pressure is the first (independent)</span>
-<span class="sd">        input. This is essentially a wrapper around `semilogy`. It also</span>
-<span class="sd">        sets some appropriate ticking and plot ranges.</span>
+<span class="sd">        input. This is essentially a wrapper around `plot`.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -469,9 +549,9 @@
 <span class="sd">        t : array_like</span>
 <span class="sd">            temperature values, can also be used for things like dew point</span>
 <span class="sd">        args</span>
-<span class="sd">            Other positional arguments to pass to :func:`~matplotlib.pyplot.semilogy`</span>
+<span class="sd">            Other positional arguments to pass to :func:`~matplotlib.pyplot.plot`</span>
 <span class="sd">        kwargs</span>
-<span class="sd">            Other keyword arguments to pass to :func:`~matplotlib.pyplot.semilogy`</span>
+<span class="sd">            Other keyword arguments to pass to :func:`~matplotlib.pyplot.plot`</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -480,24 +560,12 @@
 
 <span class="sd">        See Also</span>
 <span class="sd">        --------</span>
-<span class="sd">        :func:`matplotlib.pyplot.semilogy`</span>
+<span class="sd">        :func:`matplotlib.pyplot.plot`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Skew-T logP plotting</span>
         <span class="n">t</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">_delete_masked_points</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-        <span class="n">lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">semilogy</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
-
-        <span class="c1"># Disables the log-formatting that comes with semilogy</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">ScalarFormatter</span><span class="p">())</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">100</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_formatter</span><span class="p">(</span><span class="n">NullFormatter</span><span class="p">())</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">yaxis_inverted</span><span class="p">():</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">invert_yaxis</span><span class="p">()</span>
-
-        <span class="c1"># Try to make sane default temperature plotting</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="mi">10</span><span class="p">))</span>
-
-        <span class="k">return</span> <span class="n">lines</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="SkewT.plot_barbs"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_barbs">[docs]</a>    <span class="k">def</span> <span class="nf">plot_barbs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">xloc</span><span class="o">=</span><span class="mf">1.0</span><span class="p">,</span> <span class="n">x_clip_radius</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                    <span class="n">y_clip_radius</span><span class="o">=</span><span class="mf">0.08</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
@@ -559,11 +627,11 @@
         <span class="k">if</span> <span class="n">c</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span>
                               <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yaxis_transform</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;tick2&#39;</span><span class="p">),</span>
-                              <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                              <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">b</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">barbs</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span>
                               <span class="n">transform</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_yaxis_transform</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;tick2&#39;</span><span class="p">),</span>
-                              <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+                              <span class="n">clip_on</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
         <span class="c1"># Override the default clip box, which is the axes rectangle, so we can have</span>
         <span class="c1"># barbs that extend outside.</span>
@@ -604,6 +672,10 @@
 <span class="sd">        :class:`matplotlib.collections.LineCollection`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Remove old lines</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+
         <span class="c1"># Determine set of starting temps if necessary</span>
         <span class="k">if</span> <span class="n">t0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
@@ -615,13 +687,14 @@
 
         <span class="c1"># Assemble into data for plotting</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">dry_lapse</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t0</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="mf">1000.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
-        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ti</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">ti</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
+        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ti</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">m</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">ti</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
 
         <span class="c1"># Add to plot</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;linestyles&#39;</span><span class="p">,</span> <span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">dry_adiabats</span></div>
 
 <div class="viewcode-block" id="SkewT.plot_moist_adiabats"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_moist_adiabats">[docs]</a>    <span class="k">def</span> <span class="nf">plot_moist_adiabats</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot moist adiabats.</span>
@@ -656,6 +729,10 @@
 <span class="sd">        :class:`matplotlib.collections.LineCollection`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Remove old lines</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+
         <span class="c1"># Determine set of starting temps if necessary</span>
         <span class="k">if</span> <span class="n">t0</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">xmin</span><span class="p">,</span> <span class="n">xmax</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">get_xlim</span><span class="p">()</span>
@@ -668,13 +745,14 @@
 
         <span class="c1"># Assemble into data for plotting</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">moist_lapse</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">t0</span><span class="p">[:,</span> <span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">],</span> <span class="mf">1000.</span> <span class="o">*</span> <span class="n">units</span><span class="o">.</span><span class="n">mbar</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">units</span><span class="o">.</span><span class="n">degC</span><span class="p">)</span>
-        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ti</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">ti</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
+        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">ti</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">m</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">ti</span> <span class="ow">in</span> <span class="n">t</span><span class="p">]</span>
 
         <span class="c1"># Add to plot</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;linestyles&#39;</span><span class="p">,</span> <span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">moist_adiabats</span></div>
 
 <div class="viewcode-block" id="SkewT.plot_mixing_lines"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.plot_mixing_lines">[docs]</a>    <span class="k">def</span> <span class="nf">plot_mixing_lines</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">w</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">p</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot lines of constant mixing ratio.</span>
@@ -705,6 +783,10 @@
 <span class="sd">        :class:`matplotlib.collections.LineCollection`</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Remove old lines</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">mixing_lines</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">mixing_lines</span><span class="o">.</span><span class="n">remove</span><span class="p">()</span>
+
         <span class="c1"># Default mixing level values if necessary</span>
         <span class="k">if</span> <span class="n">w</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0004</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.002</span><span class="p">,</span> <span class="mf">0.004</span><span class="p">,</span> <span class="mf">0.007</span><span class="p">,</span> <span class="mf">0.01</span><span class="p">,</span>
@@ -716,13 +798,14 @@
 
         <span class="c1"># Assemble data for plotting</span>
         <span class="n">td</span> <span class="o">=</span> <span class="n">dewpoint</span><span class="p">(</span><span class="n">vapor_pressure</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">w</span><span class="p">))</span>
-        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="p">,</span> <span class="n">p</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">td</span><span class="p">]</span>
+        <span class="n">linedata</span> <span class="o">=</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">((</span><span class="n">t</span><span class="o">.</span><span class="n">m</span><span class="p">,</span> <span class="n">p</span><span class="o">.</span><span class="n">m</span><span class="p">))</span><span class="o">.</span><span class="n">T</span> <span class="k">for</span> <span class="n">t</span> <span class="ow">in</span> <span class="n">td</span><span class="p">]</span>
 
         <span class="c1"># Add to plot</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;colors&#39;</span><span class="p">,</span> <span class="s1">&#39;g&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;linestyles&#39;</span><span class="p">,</span> <span class="s1">&#39;dashed&#39;</span><span class="p">)</span>
         <span class="n">kwargs</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="s1">&#39;alpha&#39;</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mixing_lines</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">add_collection</span><span class="p">(</span><span class="n">LineCollection</span><span class="p">(</span><span class="n">linedata</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">))</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mixing_lines</span></div>
 
 <div class="viewcode-block" id="SkewT.shade_area"><a class="viewcode-back" href="../../../api/generated/metpy.plots.SkewT.html#metpy.plots.SkewT.shade_area">[docs]</a>    <span class="k">def</span> <span class="nf">shade_area</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Shade area between two curves.</span>
@@ -773,8 +856,7 @@
             <span class="n">arrs</span> <span class="o">=</span> <span class="n">arrs</span> <span class="o">+</span> <span class="p">(</span><span class="n">fill_args</span><span class="p">[</span><span class="s1">&#39;where&#39;</span><span class="p">],)</span>
             <span class="n">fill_args</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;where&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
 
-        <span class="k">if</span> <span class="n">matplotlib</span><span class="o">.</span><span class="n">__version__</span> <span class="o">&gt;=</span> <span class="s1">&#39;2.1&#39;</span><span class="p">:</span>
-            <span class="n">fill_args</span><span class="p">[</span><span class="s1">&#39;interpolate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="n">fill_args</span><span class="p">[</span><span class="s1">&#39;interpolate&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
 
         <span class="n">arrs</span> <span class="o">=</span> <span class="n">_delete_masked_points</span><span class="p">(</span><span class="o">*</span><span class="n">arrs</span><span class="p">)</span>
 
@@ -982,20 +1064,17 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ax</span><span class="o">.</span><span class="n">quiver</span><span class="p">(</span><span class="n">center_position</span><span class="p">,</span> <span class="n">center_position</span><span class="p">,</span>
                               <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="o">**</span><span class="n">quiver_args</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="Hodograph.plot_colormapped"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.plot_colormapped">[docs]</a>    <span class="k">def</span> <span class="nf">plot_colormapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">bounds</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="Hodograph.plot_colormapped"><a class="viewcode-back" href="../../../api/generated/metpy.plots.Hodograph.html#metpy.plots.Hodograph.plot_colormapped">[docs]</a>    <span class="k">def</span> <span class="nf">plot_colormapped</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">intervals</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">colors</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Plot u, v data, with line colored based on a third set of data.</span>
 
 <span class="sd">        Plots the wind data on the hodograph, but with a colormapped line. Takes a third</span>
-<span class="sd">        variable besides the winds and either a colormap to color it with or a series of</span>
-<span class="sd">        bounds and colors to create a colormap and norm to control colormapping.</span>
-<span class="sd">        The bounds must always be in increasing order. For using custom bounds with</span>
-<span class="sd">        height data, the function will automatically interpolate to the actual bounds from the</span>
-<span class="sd">        height and wind data, as well as convert the input bounds from</span>
-<span class="sd">        height AGL to height above MSL to work with the provided heights.</span>
-
-<span class="sd">        Simple wrapper around plot so that pressure is the first (independent)</span>
-<span class="sd">        input. This is essentially a wrapper around `semilogy`. It also</span>
-<span class="sd">        sets some appropriate ticking and plot ranges.</span>
+<span class="sd">        variable besides the winds (e.g. heights or pressure levels) and either a colormap to</span>
+<span class="sd">        color it with or a series of contour intervals and colors to create a colormap and</span>
+<span class="sd">        norm to control colormapping. The intervals must always be in increasing</span>
+<span class="sd">        order. For using custom contour intervals with height data, the function will</span>
+<span class="sd">        automatically interpolate to the contour intervals from the height and wind data,</span>
+<span class="sd">        as well as convert the input contour intervals from height AGL to MSL to work with the</span>
+<span class="sd">        provided heights.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -1004,9 +1083,9 @@
 <span class="sd">        v : array_like</span>
 <span class="sd">            v-component of wind</span>
 <span class="sd">        c : array_like</span>
-<span class="sd">            data to use for colormapping</span>
-<span class="sd">        bounds: array-like, optional</span>
-<span class="sd">            Array of bounds for c to use in coloring the hodograph.</span>
+<span class="sd">            data to use for colormapping (e.g. heights, pressure, wind speed)</span>
+<span class="sd">        intervals: array-like, optional</span>
+<span class="sd">            Array of intervals for c to use in coloring the hodograph.</span>
 <span class="sd">        colors: list, optional</span>
 <span class="sd">            Array of strings representing colors for the hodograph segments.</span>
 <span class="sd">        kwargs</span>
@@ -1021,19 +1100,30 @@
 <span class="sd">        --------</span>
 <span class="sd">        :meth:`Hodograph.plot`</span>
 
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        `plot_colormapped` previously accepted `bounds` as a parameter for coordinate values.</span>
+<span class="sd">        This has been deprecated in 0.11 in favor of `intervals`.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">bounds</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s1">&#39;bounds&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">bounds</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">intervals</span> <span class="o">=</span> <span class="n">bounds</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;The use of &quot;bounds&quot; as a parameter has been deprecated in &#39;</span>
+                          <span class="s1">&#39;favor of &quot;intervals&quot;,&#39;</span><span class="p">,</span> <span class="n">metpyDeprecation</span><span class="p">)</span>
+
         <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">_delete_masked_points</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">c</span><span class="p">)</span>
 
         <span class="c1"># Plotting a color segmented hodograph</span>
         <span class="k">if</span> <span class="n">colors</span><span class="p">:</span>
             <span class="n">cmap</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">ListedColormap</span><span class="p">(</span><span class="n">colors</span><span class="p">)</span>
-            <span class="c1"># If we are segmenting by height (a length), interpolate the bounds</span>
-            <span class="k">if</span> <span class="n">bounds</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}:</span>
+            <span class="c1"># If we are segmenting by height (a length), interpolate the contour intervals</span>
+            <span class="k">if</span> <span class="n">intervals</span><span class="o">.</span><span class="n">dimensionality</span> <span class="o">==</span> <span class="p">{</span><span class="s1">&#39;[length]&#39;</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}:</span>
 
-                <span class="c1"># Find any bounds not in the data and interpolate them</span>
-                <span class="n">interpolation_heights</span> <span class="o">=</span> <span class="p">[</span><span class="n">bound</span><span class="o">.</span><span class="n">m</span> <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="n">bounds</span> <span class="k">if</span> <span class="n">bound</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]</span>
-                <span class="n">interpolation_heights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">interpolation_heights</span><span class="p">)</span> <span class="o">*</span> <span class="n">bounds</span><span class="o">.</span><span class="n">units</span>
-                <span class="n">interpolation_heights</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">interpolation_heights</span><span class="p">)</span>
+                <span class="c1"># Find any intervals not in the data and interpolate them</span>
+                <span class="n">interpolation_heights</span> <span class="o">=</span> <span class="p">[</span><span class="n">bound</span><span class="o">.</span><span class="n">m</span> <span class="k">for</span> <span class="n">bound</span> <span class="ow">in</span> <span class="n">intervals</span> <span class="k">if</span> <span class="n">bound</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">c</span><span class="p">]</span>
+                <span class="n">interpolation_heights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">interpolation_heights</span><span class="p">)</span> <span class="o">*</span> <span class="n">intervals</span><span class="o">.</span><span class="n">units</span>
+                <span class="n">interpolation_heights</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">interpolation_heights</span><span class="o">.</span><span class="n">magnitude</span><span class="p">)</span>
                                          <span class="o">*</span> <span class="n">interpolation_heights</span><span class="o">.</span><span class="n">units</span><span class="p">)</span>
                 <span class="p">(</span><span class="n">interpolated_heights</span><span class="p">,</span> <span class="n">interpolated_u</span><span class="p">,</span>
                  <span class="n">interpolated_v</span><span class="p">)</span> <span class="o">=</span> <span class="n">interpolate_1d</span><span class="p">(</span><span class="n">interpolation_heights</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
@@ -1050,12 +1140,12 @@
                 <span class="c1"># Unit conversion required for coloring of bounds/data in dissimilar units</span>
                 <span class="c1"># to work properly.</span>
                 <span class="n">c</span> <span class="o">=</span> <span class="n">c</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>  <span class="c1"># TODO: This shouldn&#39;t be required!</span>
-                <span class="n">bounds</span> <span class="o">=</span> <span class="n">bounds</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
+                <span class="n">intervals</span> <span class="o">=</span> <span class="n">intervals</span><span class="o">.</span><span class="n">to_base_units</span><span class="p">()</span>
             <span class="c1"># If segmenting by anything else, do not interpolate, just use the data</span>
             <span class="k">else</span><span class="p">:</span>
-                <span class="n">bounds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">bounds</span><span class="p">)</span> <span class="o">*</span> <span class="n">bounds</span><span class="o">.</span><span class="n">units</span>
+                <span class="n">intervals</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">intervals</span><span class="p">)</span> <span class="o">*</span> <span class="n">intervals</span><span class="o">.</span><span class="n">units</span>
 
-            <span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">bounds</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
+            <span class="n">norm</span> <span class="o">=</span> <span class="n">mcolors</span><span class="o">.</span><span class="n">BoundaryNorm</span><span class="p">(</span><span class="n">intervals</span><span class="o">.</span><span class="n">magnitude</span><span class="p">,</span> <span class="n">cmap</span><span class="o">.</span><span class="n">N</span><span class="p">)</span>
             <span class="n">cmap</span><span class="o">.</span><span class="n">set_over</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
             <span class="n">cmap</span><span class="o">.</span><span class="n">set_under</span><span class="p">(</span><span class="s1">&#39;none&#39;</span><span class="p">)</span>
             <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;cmap&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cmap</span>
@@ -1085,7 +1175,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -1122,7 +1212,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1134,8 +1224,8 @@
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

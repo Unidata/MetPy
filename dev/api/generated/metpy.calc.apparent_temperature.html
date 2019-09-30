@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>apparent_temperature &mdash; MetPy 0.10</title>
+  <title>apparent_temperature &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="heat_index" href="metpy.calc.heat_index.html"/>
         <link rel="prev" title="unit_vectors_from_cross_section" href="metpy.calc.unit_vectors_from_cross_section.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#moist-thermodynamics">Moist Thermodynamics</a></li>
@@ -140,6 +140,7 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.windchill.html">windchill</a></li>
 </ul>
 </li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#other">Other</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#deprecated">Deprecated</a></li>
 </ul>
@@ -148,9 +149,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -230,7 +234,7 @@
 <h1>apparent_temperature<a class="headerlink" href="#apparent-temperature" title="Permalink to this headline">¶</a></h1>
 <dl class="function">
 <dt id="metpy.calc.apparent_temperature">
-<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">apparent_temperature</code><span class="sig-paren">(</span><em class="sig-param">temperature</em>, <em class="sig-param">rh</em>, <em class="sig-param">speed</em>, <em class="sig-param">face_level_winds=False</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#apparent_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.apparent_temperature" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">apparent_temperature</code><span class="sig-paren">(</span><em class="sig-param">temperature</em>, <em class="sig-param">rh</em>, <em class="sig-param">speed</em>, <em class="sig-param">face_level_winds=False</em>, <em class="sig-param">mask_undefined=True</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/basic.html#apparent_temperature"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.apparent_temperature" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the current apparent temperature.</p>
 <p>Calculates the current apparent temperature based on the wind chill or heat index
 as appropriate for the current conditions. Follows <a class="reference internal" href="../../references.html#nws10201" id="id1"><span>[NWS10201]</span></a>.</p>
@@ -246,6 +250,12 @@ correction will be applied automatically.</p></li>
 <li><p><strong>face_level_winds</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – A flag indicating whether the wind speeds were measured at facial
 level instead of 10m, thus requiring a correction.  Defaults to
 <em class="xref py py-obj">False</em>.</p></li>
+<li><p><strong>mask_undefined</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – A flag indicating whether a masked array should be returned with
+values where wind chill or heat_index is undefined masked. For wind
+chill, these are values where the temperature &gt; 50F or
+wind speed &lt;= 3 miles per hour. For heat index, these are values
+where the temperature &lt; 80F.
+Defaults to <em class="xref py py-obj">True</em>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -283,7 +293,7 @@ level instead of 10m, thus requiring a correction.  Defaults to
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -320,7 +330,7 @@ level instead of 10m, thus requiring a correction.  Defaults to
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -332,8 +342,8 @@ level instead of 10m, thus requiring a correction.  Defaults to
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

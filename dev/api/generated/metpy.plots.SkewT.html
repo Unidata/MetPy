@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>SkewT &mdash; MetPy 0.10</title>
+  <title>SkewT &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,10 +43,10 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="StationPlot" href="metpy.plots.StationPlot.html"/>
-        <link rel="prev" title="Plot2D" href="metpy.plots.Plot2D.html"/> 
+        <link rel="prev" title="Plots2D" href="metpy.plots.Plots2D.html"/> 
 
   
   <script src="../../_static/js/modernizr.min.js"></script>
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.calc.html">calc</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.plots.html">plots</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_metpy_logo.html">add_metpy_logo</a></li>
@@ -134,12 +134,16 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.add_unidata_logo.html">add_unidata_logo</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.convert_gempak_color.html">convert_gempak_color</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.read_colortable.html">read_colortable</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.BarbPlot.html">BarbPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ContourPlot.html">ContourPlot</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.FilledContourPlot.html">FilledContourPlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.Hodograph.html">Hodograph</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.ImagePlot.html">ImagePlot</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.MapPanel.html">MapPanel</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.plots.PanelContainer.html">PanelContainer</a></li>
-<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Plot2D.html">Plot2D</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotScalar.html">PlotScalar</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.PlotVector.html">PlotVector</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.plots.Plots2D.html">Plots2D</a></li>
 <li class="toctree-l3 current"><a class="current reference internal" href="#">SkewT</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#examples-using-metpy-plots-skewt">Examples using <code class="docutils literal notranslate"><span class="pre">metpy.plots.SkewT</span></code></a></li>
 </ul>
@@ -151,9 +155,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -233,7 +240,7 @@
 <h1>SkewT<a class="headerlink" href="#skewt" title="Permalink to this headline">¶</a></h1>
 <dl class="class">
 <dt id="metpy.plots.SkewT">
-<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">SkewT</code><span class="sig-paren">(</span><em class="sig-param">fig=None</em>, <em class="sig-param">rotation=30</em>, <em class="sig-param">subplot=None</em>, <em class="sig-param">rect=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">metpy.plots.</code><code class="sig-name descname">SkewT</code><span class="sig-paren">(</span><em class="sig-param">fig=None</em>, <em class="sig-param">rotation=30</em>, <em class="sig-param">subplot=None</em>, <em class="sig-param">rect=None</em>, <em class="sig-param">aspect=80.5</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make Skew-T log-P plots of data.</p>
 <p>This class simplifies the process of creating Skew-T log-P plots in
 using matplotlib. It handles requesting the appropriate skewed projection,
@@ -267,6 +274,9 @@ should conform to the specification used for
 can be created by using <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.gridspec.GridSpec.html#matplotlib.gridspec.GridSpec" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.gridspec.GridSpec</span></code></a>.</p></li>
 <li><p><strong>rect</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – Rectangle (left, bottom, width, height) in which to place the axes. This
 allows the user to place the axes at an arbitrary point on the figure.</p></li>
+<li><p><strong>aspect</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, or </em><em>'auto'</em><em>, </em><em>optional</em>) – Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
+Defaults to 80.5. Passing the string <code class="docutils literal notranslate"><span class="pre">'auto'</span></code> tells matplotlib to handle
+the aspect ratio automatically (this is not recommended for SkewT).</p></li>
 </ul>
 </dd>
 </dl>
@@ -277,7 +287,7 @@ allows the user to place the axes at an arbitrary point on the figure.</p></li>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.SkewT.__init__" title="metpy.plots.SkewT.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([fig, rotation, subplot, rect])</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#metpy.plots.SkewT.__init__" title="metpy.plots.SkewT.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([fig, rotation, subplot, rect, aspect])</p></td>
 <td><p>Create SkewT - logP plots.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#metpy.plots.SkewT.plot" title="metpy.plots.SkewT.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>(p, t, *args, **kwargs)</p></td>
@@ -309,7 +319,7 @@ allows the user to place the axes at an arbitrary point on the figure.</p></li>
 <p class="rubric">Methods Documentation</p>
 <dl class="method">
 <dt id="metpy.plots.SkewT.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">fig=None</em>, <em class="sig-param">rotation=30</em>, <em class="sig-param">subplot=None</em>, <em class="sig-param">rect=None</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.__init__" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">fig=None</em>, <em class="sig-param">rotation=30</em>, <em class="sig-param">subplot=None</em>, <em class="sig-param">rect=None</em>, <em class="sig-param">aspect=80.5</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.__init__" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create SkewT - logP plots.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -326,6 +336,9 @@ should conform to the specification used for
 can be created by using <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.gridspec.GridSpec.html#matplotlib.gridspec.GridSpec" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.gridspec.GridSpec</span></code></a>.</p></li>
 <li><p><strong>rect</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – Rectangle (left, bottom, width, height) in which to place the axes. This
 allows the user to place the axes at an arbitrary point on the figure.</p></li>
+<li><p><strong>aspect</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, or </em><em>'auto'</em><em>, </em><em>optional</em>) – Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
+Defaults to 80.5. Passing the string <code class="docutils literal notranslate"><span class="pre">'auto'</span></code> tells matplotlib to handle
+the aspect ratio automatically (this is not recommended for SkewT).</p></li>
 </ul>
 </dd>
 </dl>
@@ -336,15 +349,14 @@ allows the user to place the axes at an arbitrary point on the figure.</p></li>
 <code class="sig-name descname">plot</code><span class="sig-paren">(</span><em class="sig-param">p</em>, <em class="sig-param">t</em>, <em class="sig-param">*args</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/plots/skewt.html#SkewT.plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.plots.SkewT.plot" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot data.</p>
 <p>Simple wrapper around plot so that pressure is the first (independent)
-input. This is essentially a wrapper around <em class="xref py py-obj">semilogy</em>. It also
-sets some appropriate ticking and plot ranges.</p>
+input. This is essentially a wrapper around <a class="reference internal" href="#metpy.plots.SkewT.plot" title="metpy.plots.SkewT.plot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">plot</span></code></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>p</strong> (<em>array_like</em>) – pressure values</p></li>
 <li><p><strong>t</strong> (<em>array_like</em>) – temperature values, can also be used for things like dew point</p></li>
-<li><p><strong>args</strong> – Other positional arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.semilogy.html#matplotlib.pyplot.semilogy" title="(in Matplotlib v3.1.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">semilogy()</span></code></a></p></li>
-<li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.semilogy.html#matplotlib.pyplot.semilogy" title="(in Matplotlib v3.1.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">semilogy()</span></code></a></p></li>
+<li><p><strong>args</strong> – Other positional arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.1.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot()</span></code></a></p></li>
+<li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.1.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">plot()</span></code></a></p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -353,7 +365,7 @@ sets some appropriate ticking and plot ranges.</p>
 </dl>
 <div class="admonition seealso">
 <p class="admonition-title">See also</p>
-<p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.semilogy.html#matplotlib.pyplot.semilogy" title="(in Matplotlib v3.1.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.semilogy()</span></code></a></p>
+<p><a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.plot.html#matplotlib.pyplot.plot" title="(in Matplotlib v3.1.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">matplotlib.pyplot.plot()</span></code></a></p>
 </div>
 </dd></dl>
 
@@ -567,15 +579,15 @@ buoyancy.</p>
 <img alt="../../_images/sphx_glr_Advanced_Sounding_thumb.png" src="../../_images/sphx_glr_Advanced_Sounding_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/Advanced_Sounding.html#sphx-glr-examples-advanced-sounding-py"><span class="std std-ref">Advanced Sounding</span></a></span><a class="headerlink" href="#id1" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability. "><div class="figure align-default" id="id2">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Combine a Skew-T and a hodograph using Matplotlib&#x27;s GridSpec layout capability."><div class="figure align-default" id="id2">
 <img alt="../../_images/sphx_glr_Skew-T_Layout_thumb.png" src="../../_images/sphx_glr_Skew-T_Layout_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Skew-T_Layout.html#sphx-glr-examples-plots-skew-t-layout-py"><span class="std std-ref">Skew-T with Complex Layout</span></a></span><a class="headerlink" href="#id2" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot. "><div class="figure align-default" id="id3">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Layout a Skew-T plot with a hodograph inset into the plot."><div class="figure align-default" id="id3">
 <img alt="../../_images/sphx_glr_Hodograph_Inset_thumb.png" src="../../_images/sphx_glr_Hodograph_Inset_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Hodograph_Inset.html#sphx-glr-examples-plots-hodograph-inset-py"><span class="std std-ref">Hodograph Inset</span></a></span><a class="headerlink" href="#id3" title="Permalink to this image">¶</a></p>
 </div>
-</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy as straightforward as possible to make a Skew-T LogP plot. "><div class="figure align-default" id="id4">
+</div><div class="sphx-glr-thumbcontainer" tooltip="Use MetPy as straightforward as possible to make a Skew-T LogP plot."><div class="figure align-default" id="id4">
 <img alt="../../_images/sphx_glr_Simple_Sounding_thumb.png" src="../../_images/sphx_glr_Simple_Sounding_thumb.png" />
 <p class="caption"><span class="caption-text"><a class="reference internal" href="../../examples/plots/Simple_Sounding.html#sphx-glr-examples-plots-simple-sounding-py"><span class="std std-ref">Simple Sounding</span></a></span><a class="headerlink" href="#id4" title="Permalink to this image">¶</a></p>
 </div>
@@ -599,7 +611,7 @@ buoyancy.</p>
         <a href="metpy.plots.StationPlot.html" class="btn btn-neutral float-right" title="StationPlot" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="metpy.plots.Plot2D.html" class="btn btn-neutral" title="Plot2D" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="metpy.plots.Plots2D.html" class="btn btn-neutral" title="Plots2D" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
@@ -609,7 +621,7 @@ buoyancy.</p>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -646,7 +658,7 @@ buoyancy.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -658,8 +670,8 @@ buoyancy.</p>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

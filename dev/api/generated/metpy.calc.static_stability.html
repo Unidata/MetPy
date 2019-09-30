@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>static_stability &mdash; MetPy 0.10</title>
+  <title>static_stability &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
         <link rel="up" title="calc" href="metpy.calc.html"/>
         <link rel="next" title="temperature_from_potential_temperature" href="metpy.calc.temperature_from_potential_temperature.html"/>
         <link rel="prev" title="sigma_to_pressure" href="metpy.calc.sigma_to_pressure.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -119,6 +119,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
@@ -126,7 +127,6 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.units.html">units</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.io.html">io</a></li>
-<li class="toctree-l2"><a class="reference internal" href="metpy.io.cdm.html">cdm</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="metpy.calc.html">calc</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="metpy.calc.html#dry-thermodynamics">Dry Thermodynamics</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.add_height_to_pressure.html">add_height_to_pressure</a></li>
@@ -136,10 +136,8 @@
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.dry_static_energy.html">dry_static_energy</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.geopotential_to_height.html">geopotential_to_height</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.height_to_geopotential.html">height_to_geopotential</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.height_to_pressure_std.html">height_to_pressure_std</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.mean_pressure_weighted.html">mean_pressure_weighted</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.potential_temperature.html">potential_temperature</a></li>
-<li class="toctree-l4"><a class="reference internal" href="metpy.calc.pressure_to_height_std.html">pressure_to_height_std</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.sigma_to_pressure.html">sigma_to_pressure</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">static_stability</a></li>
 <li class="toctree-l4"><a class="reference internal" href="metpy.calc.temperature_from_potential_temperature.html">temperature_from_potential_temperature</a></li>
@@ -152,6 +150,7 @@
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#boundary-layer-turbulence">Boundary Layer/Turbulence</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#mathematical-functions">Mathematical Functions</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#apparent-temperature">Apparent Temperature</a></li>
+<li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#standard-atmosphere">Standard Atmosphere</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#other">Other</a></li>
 <li class="toctree-l3"><a class="reference internal" href="metpy.calc.html#deprecated">Deprecated</a></li>
 </ul>
@@ -160,9 +159,12 @@
 <li class="toctree-l2"><a class="reference internal" href="metpy.plots.ctables.html">ctables</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.interpolate.html">interpolate</a></li>
 <li class="toctree-l2"><a class="reference internal" href="metpy.gridding.html">gridding</a></li>
+<li class="toctree-l2"><a class="reference internal" href="metpy.xarray.html">xarray</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../citing.html">Citing MetPy</a></li>
@@ -246,18 +248,18 @@
 <dd><p>Calculate the static stability within a vertical profile.</p>
 <div class="math notranslate nohighlight">
 \[\sigma = -\frac{RT}{p} \frac{\partial \ln \theta}{\partial p}\]</div>
-<p>This formuala is based on equation 4.3.6 in <a class="reference internal" href="../../references.html#bluestein1992" id="id1"><span>[Bluestein1992]</span></a>.</p>
+<p>This formula is based on equation 4.3.6 in <a class="reference internal" href="../../references.html#bluestein1992" id="id1"><span>[Bluestein1992]</span></a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>pressure</strong> (<em>array-like</em>) – Profile of atmospheric pressure</p></li>
-<li><p><strong>temperature</strong> (<em>array-like</em>) – Profile of temperature</p></li>
+<li><p><strong>pressure</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Profile of atmospheric pressure</p></li>
+<li><p><strong>temperature</strong> (<em class="xref py py-obj">pint.Quantity</em>) – Profile of temperature</p></li>
 <li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis corresponding to vertical in the pressure and temperature arrays, defaults
 to 0.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>array-like</em> – The profile of static stability.</p>
+<dd class="field-even"><p><em class="xref py py-obj">pint.Quantity</em> – The profile of static stability.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -287,7 +289,7 @@ to 0.</p></li>
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -324,7 +326,7 @@ to 0.</p></li>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -336,8 +338,8 @@ to 0.</p></li>
       <script type="text/javascript" src="../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>Installation Guide &mdash; MetPy 0.10</title>
+  <title>Installation Guide &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,8 +43,8 @@
         <link rel="index" title="Index"
               href="genindex.html"/>
         <link rel="search" title="Search" href="search.html"/>
-    <link rel="top" title="MetPy 0.10" href="index.html"/>
-        <link rel="next" title="Unit Support" href="units.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="index.html"/>
+        <link rel="next" title="Getting Started with MetPy" href="startingguide.html"/>
         <link rel="prev" title="MetPy" href="index.html"/> 
 
   
@@ -80,7 +80,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -124,11 +124,14 @@
 <li class="toctree-l2"><a class="reference internal" href="#examples">Examples</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="citing.html">Citing MetPy</a></li>
@@ -203,13 +206,13 @@
 <div class="section" id="python-2-7-support">
 <span id="python27"></span><h2>Python 2.7 Support<a class="headerlink" href="#python-2-7-support" title="Permalink to this headline">¶</a></h2>
 <p>In the Fall 2019, we will be dropping support for Python 2.7. This follows movement from
-other packages within the <a class="reference external" href="http://python3statement.org/">scientific Python ecosystem</a>.
+other packages within the <a class="reference external" href="https://python3statement.org/">scientific Python ecosystem</a>.
 This includes:</p>
 <ul class="simple">
 <li><p>Core Python developers will
 <a class="reference external" href="https://pythonclock.org/">stop support for Python 2.7 January 1, 2020</a></p></li>
 <li><p>NumPy feature releases will be
-<a class="reference external" href="https://www.numpy.org/neps/nep-0014-dropping-python2.7-proposal.html">Python 3 only starting January 1, 2019</a>,
+<a class="reference external" href="https://numpy.org/neps/nep-0014-dropping-python2.7-proposal.html">Python 3 only starting January 1, 2019</a>,
 and support for the last release supporting Python 2 will end January 1, 2020.</p></li>
 <li><p>XArray will drop
 <a class="reference external" href="https://github.com/pydata/xarray/issues/1830">2.7 January 1, 2019 as well</a></p></li>
@@ -229,10 +232,11 @@ remain available on Conda or PyPI.</p>
 years. For Python itself, that means supporting the last two minor releases, as well as
 currently supporting Python 2.7.</p>
 <ul class="simple">
-<li><p>matplotlib &gt;= 2.0.0</p></li>
+<li><p>matplotlib &gt;= 2.1.0</p></li>
 <li><p>numpy &gt;= 1.12.0</p></li>
 <li><p>scipy &gt;= 0.17.0</p></li>
 <li><p>pint &gt;= 0.8</p></li>
+<li><p>pandas &gt;= 0.22.0</p></li>
 <li><p>xarray &gt;= 0.10.7</p></li>
 <li><p>traitlets &gt;= 4.3.0</p></li>
 <li><p>enum34 (for python &lt; 3.4)</p></li>
@@ -262,7 +266,8 @@ the base of the source directory, run:</p>
 <h2>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h2>
 <p>The MetPy source comes with a set of example scripts in the <code class="docutils literal notranslate"><span class="pre">examples</span></code>
 directory. These are also available as notebooks in the gallery in
-the <a class="reference internal" href="examples/index.html"><span class="doc">Examples</span></a>.</p>
+the <a class="reference internal" href="examples/index.html"><span class="doc">Examples</span></a>. Further examples of MetPy usage are available
+in the <a class="reference external" href="https://unidata.github.io/python-gallery/">Unidata Python Gallery</a>.</p>
 </div>
 </div>
 
@@ -276,7 +281,7 @@ the <a class="reference internal" href="examples/index.html"><span class="doc">E
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="units.html" class="btn btn-neutral float-right" title="Unit Support" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="startingguide.html" class="btn btn-neutral float-right" title="Getting Started with MetPy" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="index.html" class="btn btn-neutral" title="MetPy" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
@@ -289,7 +294,7 @@ the <a class="reference internal" href="examples/index.html"><span class="doc">E
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -326,7 +331,7 @@ the <a class="reference internal" href="examples/index.html"><span class="doc">E
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'./',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -338,8 +343,8 @@ the <a class="reference internal" href="examples/index.html"><span class="doc">E
       <script type="text/javascript" src="_static/underscore.js"></script>
       <script type="text/javascript" src="_static/doctools.js"></script>
       <script type="text/javascript" src="_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

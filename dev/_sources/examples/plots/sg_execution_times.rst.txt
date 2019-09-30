@@ -5,13 +5,14 @@
 
 Computation times
 =================
-**00:56.103** total execution time for **examples_plots** files:
+**00:46.967** total execution time for **examples_plots** files:
 
-- **00:33.724**: :ref:`sphx_glr_examples_plots_US_Counties.py` (``US_Counties.py``)
-- **00:07.023**: :ref:`sphx_glr_examples_plots_Station_Plot.py` (``Station_Plot.py``)
-- **00:05.571**: :ref:`sphx_glr_examples_plots_Combined_plotting.py` (``Combined_plotting.py``)
-- **00:04.627**: :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py` (``Station_Plot_with_Layout.py``)
-- **00:01.920**: :ref:`sphx_glr_examples_plots_Simple_Sounding.py` (``Simple_Sounding.py``)
-- **00:01.597**: :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py` (``Simplified_Image_Plot.py``)
-- **00:00.853**: :ref:`sphx_glr_examples_plots_Hodograph_Inset.py` (``Hodograph_Inset.py``)
-- **00:00.789**: :ref:`sphx_glr_examples_plots_Skew-T_Layout.py` (``Skew-T_Layout.py``)
+- **00:26.190**: :ref:`sphx_glr_examples_plots_US_Counties.py` (``US_Counties.py``)
+- **00:06.672**: :ref:`sphx_glr_examples_plots_Station_Plot.py` (``Station_Plot.py``)
+- **00:05.391**: :ref:`sphx_glr_examples_plots_Combined_plotting.py` (``Combined_plotting.py``)
+- **00:04.360**: :ref:`sphx_glr_examples_plots_Station_Plot_with_Layout.py` (``Station_Plot_with_Layout.py``)
+- **00:01.374**: :ref:`sphx_glr_examples_plots_Simple_Sounding.py` (``Simple_Sounding.py``)
+- **00:00.847**: :ref:`sphx_glr_examples_plots_Simplified_Image_Plot.py` (``Simplified_Image_Plot.py``)
+- **00:00.779**: :ref:`sphx_glr_examples_plots_Hodograph_Inset.py` (``Hodograph_Inset.py``)
+- **00:00.731**: :ref:`sphx_glr_examples_plots_Skew-T_Layout.py` (``Skew-T_Layout.py``)
+- **00:00.624**: :ref:`sphx_glr_examples_plots_Mesonet_Stationplot.py` (``Mesonet_Stationplot.py``)

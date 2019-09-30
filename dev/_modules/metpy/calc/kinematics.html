@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>metpy.calc.kinematics &mdash; MetPy 0.10</title>
+  <title>metpy.calc.kinematics &mdash; MetPy 0.10.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../../genindex.html"/>
         <link rel="search" title="Search" href="../../../search.html"/>
-    <link rel="top" title="MetPy 0.10" href="../../../index.html"/>
+    <link rel="top" title="MetPy 0.10.0" href="../../../index.html"/>
         <link rel="up" title="Module code" href="../../index.html"/> 
 
   
@@ -79,7 +79,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10</option>
+                      <option value=''>0.10.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -117,11 +117,14 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../installguide.html">Installation Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../units.html">Unit Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../examples/index.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/index.html">Reference Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../roadmap.html">MetPy Roadmap</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../gempak.html">GEMPAK Conversion Guide</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../SUPPORT.html">Support</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">Contributors Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../infrastructureguide.html">Infrastructure Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../citing.html">Citing MetPy</a></li>
@@ -189,13 +192,14 @@
            <div itemprop="articleBody">
             
   <h1>Source code for metpy.calc.kinematics</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Copyright (c) 2009,2017,2018 MetPy Developers.</span>
+<span></span><span class="c1"># Copyright (c) 2009,2017,2018,2019 MetPy Developers.</span>
 <span class="c1"># Distributed under the terms of the BSD 3-Clause License.</span>
 <span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
 <span class="sd">&quot;&quot;&quot;Contains calculation of kinematic parameters (e.g. divergence or vorticity).&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span>
 
 <span class="kn">import</span> <span class="nn">functools</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
@@ -211,7 +215,7 @@
 
 
 <span class="k">def</span> <span class="nf">_stack</span><span class="p">(</span><span class="n">arrs</span><span class="p">):</span>
-    <span class="k">return</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">a</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">concatenate</span><span class="p">([</span><span class="n">a</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">newaxis</span><span class="p">]</span> <span class="k">if</span> <span class="n">iterable</span><span class="p">(</span><span class="n">a</span><span class="p">)</span> <span class="k">else</span> <span class="n">a</span> <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">arrs</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_is_x_first_dim</span><span class="p">(</span><span class="n">dim_order</span><span class="p">):</span>
@@ -278,25 +282,26 @@
 <div class="viewcode-block" id="vorticity"><a class="viewcode-back" href="../../../api/generated/metpy.calc.vorticity.html#metpy.calc.vorticity">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@ensure_yx_order</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">vorticity</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the vertical vorticity of the horizontal wind.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the wind</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the wind</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (M, N) ndarray</span>
+<span class="sd">    (M, N) `pint.Quantity`</span>
 <span class="sd">        vertical vorticity</span>
 
 <span class="sd">    See Also</span>
@@ -317,25 +322,26 @@
 <div class="viewcode-block" id="divergence"><a class="viewcode-back" href="../../../api/generated/metpy.calc.divergence.html#metpy.calc.divergence">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@ensure_yx_order</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">divergence</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the horizontal divergence of the horizontal wind.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the wind</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the wind</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (M, N) ndarray</span>
+<span class="sd">    (M, N) `pint.Quantity`</span>
 <span class="sd">        The horizontal divergence</span>
 
 <span class="sd">    See Also</span>
@@ -356,25 +362,26 @@
 <div class="viewcode-block" id="shearing_deformation"><a class="viewcode-back" href="../../../api/generated/metpy.calc.shearing_deformation.html#metpy.calc.shearing_deformation">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@ensure_yx_order</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">shearing_deformation</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the shearing deformation of the horizontal wind.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the wind</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the wind</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (M, N) ndarray</span>
+<span class="sd">    (M, N) `pint.Quantity`</span>
 <span class="sd">        Shearing Deformation</span>
 
 <span class="sd">    See Also</span>
@@ -395,25 +402,26 @@
 <div class="viewcode-block" id="stretching_deformation"><a class="viewcode-back" href="../../../api/generated/metpy.calc.stretching_deformation.html#metpy.calc.stretching_deformation">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@ensure_yx_order</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">stretching_deformation</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the stretching deformation of the horizontal wind.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the wind</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the wind</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (M, N) ndarray</span>
+<span class="sd">    (M, N) `pint.Quantity`</span>
 <span class="sd">        Stretching Deformation</span>
 
 <span class="sd">    See Also</span>
@@ -434,25 +442,26 @@
 <div class="viewcode-block" id="total_deformation"><a class="viewcode-back" href="../../../api/generated/metpy.calc.total_deformation.html#metpy.calc.total_deformation">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@ensure_yx_order</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">total_deformation</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the horizontal total deformation of the horizontal wind.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the wind</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the wind</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (M, N) ndarray</span>
+<span class="sd">    (M, N) `pint.Quantity`</span>
 <span class="sd">        Total Deformation</span>
 
 <span class="sd">    See Also</span>
@@ -525,6 +534,7 @@
 <div class="viewcode-block" id="frontogenesis"><a class="viewcode-back" href="../../../api/generated/metpy.calc.frontogenesis.html#metpy.calc.frontogenesis">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@ensure_yx_order</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[temperature]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">frontogenesis</span><span class="p">(</span><span class="n">thta</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">&#39;yx&#39;</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the 2D kinematic frontogenesis of a temperature field.</span>
 
@@ -541,22 +551,22 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    thta : (M, N) ndarray</span>
+<span class="sd">    thta : (M, N) `pint.Quantity`</span>
 <span class="sd">        Potential temperature</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the wind</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the wind</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (M, N) ndarray</span>
+<span class="sd">    (M, N) `pint.Quantity`</span>
 <span class="sd">        2D Frontogenesis in [temperature units]/m/s</span>
 
 <span class="sd">    Notes</span>
@@ -593,27 +603,28 @@
 <div class="viewcode-block" id="geostrophic_wind"><a class="viewcode-back" href="../../../api/generated/metpy.calc.geostrophic_wind.html#metpy.calc.geostrophic_wind">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
 <span class="nd">@ensure_yx_order</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="s1">&#39;[frequency]&#39;</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="s1">&#39;[length]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">geostrophic_wind</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the geostrophic wind given from the heights or geopotential.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    heights : (M, N) ndarray</span>
+<span class="sd">    heights : (M, N) `pint.Quantity`</span>
 <span class="sd">        The height field, with either leading dimensions of (x, y) or trailing dimensions</span>
 <span class="sd">        of (y, x), depending on the value of ``dim_order``.</span>
 <span class="sd">    f : array_like</span>
 <span class="sd">        The coriolis parameter.  This can be a scalar to be applied</span>
 <span class="sd">        everywhere or an array of values.</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `heights` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `heights` along the applicable axis.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    A 2-item tuple of arrays</span>
+<span class="sd">    A 2-item tuple of arrays, `pint.Quantity`</span>
 <span class="sd">        A tuple of the u-component and v-component of the geostrophic wind.</span>
 
 <span class="sd">    Notes</span>
@@ -633,32 +644,31 @@
 
 
 <div class="viewcode-block" id="ageostrophic_wind"><a class="viewcode-back" href="../../../api/generated/metpy.calc.ageostrophic_wind.html#metpy.calc.ageostrophic_wind">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
-<span class="nd">@preprocess_xarray</span>
-<span class="nd">@ensure_yx_order</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="n">f</span><span class="o">=</span><span class="s1">&#39;[frequency]&#39;</span><span class="p">,</span> <span class="n">dx</span><span class="o">=</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="n">dy</span><span class="o">=</span><span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="n">u</span><span class="o">=</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="n">v</span><span class="o">=</span><span class="s1">&#39;[speed]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">ageostrophic_wind</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="s1">&#39;yx&#39;</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the ageostrophic wind given from the heights or geopotential.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    heights : (M, N) ndarray</span>
-<span class="sd">        The height field.</span>
+<span class="sd">        The height or geopotential field.</span>
 <span class="sd">    f : array_like</span>
 <span class="sd">        The coriolis parameter.  This can be a scalar to be applied</span>
 <span class="sd">        everywhere or an array of values.</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `heights` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `heights` along the applicable axis.</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (M, N) `pint.Quantity`</span>
 <span class="sd">        The u wind field.</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (M, N) `pint.Quantity`</span>
 <span class="sd">        The u wind field.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    A 2-item tuple of arrays</span>
+<span class="sd">    A 2-item tuple of arrays, `pint.Quantity`</span>
 <span class="sd">        A tuple of the u-component and v-component of the ageostrophic wind.</span>
 
 <span class="sd">    Notes</span>
@@ -666,9 +676,15 @@
 <span class="sd">    If inputs have more than two dimensions, they are assumed to have either leading dimensions</span>
 <span class="sd">    of (x, y) or trailing dimensions of (y, x), depending on the value of ``dim_order``.</span>
 
+<span class="sd">    The order of the inputs will be changed in 1.0 to be (heights, u, v, f, dx, dy).</span>
+<span class="sd">    To updated to the new format, use `from metpy.future import ageostrophic_wind`.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">u_geostrophic</span><span class="p">,</span> <span class="n">v_geostrophic</span> <span class="o">=</span> <span class="n">geostrophic_wind</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="n">dim_order</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">u</span> <span class="o">-</span> <span class="n">u_geostrophic</span><span class="p">,</span> <span class="n">v</span> <span class="o">-</span> <span class="n">v_geostrophic</span></div>
+    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Input variables will be reordered in 1.0 to be (heights, u, v, f, dx, dy).&#39;</span>
+                  <span class="s1">&#39;To update to new input format before 1.0 is released, use&#39;</span>
+                  <span class="s1">&#39;`from metpy.future import ageostrophic_wind`.&#39;</span><span class="p">,</span> <span class="ne">FutureWarning</span><span class="p">)</span>
+    <span class="kn">from</span> <span class="nn">..future</span> <span class="k">import</span> <span class="n">ageostrophic_wind</span> <span class="k">as</span> <span class="n">_ageostrophic_wind</span>
+    <span class="k">return</span> <span class="n">_ageostrophic_wind</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">f</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dim_order</span><span class="o">=</span><span class="n">dim_order</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="montgomery_streamfunction"><a class="viewcode-back" href="../../../api/generated/metpy.calc.montgomery_streamfunction.html#metpy.calc.montgomery_streamfunction">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
@@ -722,7 +738,7 @@
     <span class="c1"># Partially adapted from similar SharpPy code</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate storm relative helicity.</span>
 
-<span class="sd">    Calculates storm relatively helicity following [Markowski2010] 230-231.</span>
+<span class="sd">    Calculates storm relatively helicity following [Markowski2010]_ 230-231.</span>
 
 <span class="sd">    .. math:: \int\limits_0^d (\bar v - c) \cdot \bar\omega_{h} \,dz</span>
 
@@ -750,8 +766,12 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    `pint.Quantity, pint.Quantity, pint.Quantity`</span>
-<span class="sd">        positive, negative, total storm-relative helicity</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        positive storm-relative helicity</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        negative storm-relative helicity</span>
+<span class="sd">    `pint.Quantity`</span>
+<span class="sd">        total storm-relative helicity</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">get_layer_heights</span><span class="p">(</span><span class="n">heights</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">with_agl</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="n">bottom</span><span class="p">)</span>
@@ -784,22 +804,22 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the wind</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the wind</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
 <span class="sd">    lats : (M, N) ndarray</span>
-<span class="sd">        latitudes of the wind data</span>
+<span class="sd">        latitudes of the wind data in radians or with appropriate unit information attached</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (M, N) ndarray</span>
+<span class="sd">    (M, N) `pint.Quantity`</span>
 <span class="sd">        absolute vorticity</span>
 
 <span class="sd">    Notes</span>
@@ -828,29 +848,26 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    potential_temperature : (P, M, N) ndarray</span>
+<span class="sd">    potential_temperature : (P, M, N) `pint.Quantity`</span>
 <span class="sd">        potential temperature</span>
-<span class="sd">    pressure : (P, M, N) ndarray</span>
+<span class="sd">    pressure : (P, M, N) `pint.Quantity`</span>
 <span class="sd">        vertical pressures</span>
-<span class="sd">    u : (P, M, N) ndarray</span>
+<span class="sd">    u : (P, M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the wind</span>
-<span class="sd">    v : (P, M, N) ndarray</span>
+<span class="sd">    v : (P, M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the wind</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
 <span class="sd">    lats : (M, N) ndarray</span>
-<span class="sd">        latitudes of the wind data</span>
-<span class="sd">    axis : int, optional</span>
-<span class="sd">        The axis corresponding to the vertical dimension in the potential temperature</span>
-<span class="sd">        and pressure arrays, defaults to 0, the first dimension.</span>
+<span class="sd">        latitudes of the wind data in radians or with appropriate unit information attached</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (P, M, N) ndarray</span>
+<span class="sd">    (P, M, N) `pint.Quantity`</span>
 <span class="sd">        baroclinic potential vorticity</span>
 
 <span class="sd">    Notes</span>
@@ -906,24 +923,24 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    heights : (M, N) ndarray</span>
+<span class="sd">    heights : (M, N) `pint.Quantity`</span>
 <span class="sd">        atmospheric heights</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the wind</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the wind</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
 <span class="sd">    lats : (M, N) ndarray</span>
-<span class="sd">        latitudes of the wind data</span>
+<span class="sd">        latitudes of the wind data in radians or with appropriate unit information attached</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (M, N) ndarray</span>
+<span class="sd">    (M, N) `pint.Quantity`</span>
 <span class="sd">        barotropic potential vorticity</span>
 
 <span class="sd">    Notes</span>
@@ -938,6 +955,8 @@
 
 <div class="viewcode-block" id="inertial_advective_wind"><a class="viewcode-back" href="../../../api/generated/metpy.calc.inertial_advective_wind.html#metpy.calc.inertial_advective_wind">[docs]</a><span class="nd">@exporter</span><span class="o">.</span><span class="n">export</span>
 <span class="nd">@preprocess_xarray</span>
+<span class="nd">@check_units</span><span class="p">(</span><span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[speed]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span> <span class="s1">&#39;[length]&#39;</span><span class="p">,</span>
+             <span class="s1">&#39;[dimensionless]&#39;</span><span class="p">)</span>
 <span class="k">def</span> <span class="nf">inertial_advective_wind</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">u_geostrophic</span><span class="p">,</span> <span class="n">v_geostrophic</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">dy</span><span class="p">,</span> <span class="n">lats</span><span class="p">):</span>
     <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the inertial advective wind.</span>
 
@@ -956,28 +975,28 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the advecting wind</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the advecting wind</span>
-<span class="sd">    u_geostrophic : (M, N) ndarray</span>
+<span class="sd">    u_geostrophic : (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the geostrophic (advected) wind</span>
-<span class="sd">    v_geostrophic : (M, N) ndarray</span>
+<span class="sd">    v_geostrophic : (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the geostrophic (advected) wind</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
 <span class="sd">    lats : (M, N) ndarray</span>
-<span class="sd">        latitudes of the wind data</span>
+<span class="sd">        latitudes of the wind data in radians or with appropriate unit information attached</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    (M, N) ndarray</span>
+<span class="sd">    (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of inertial advective wind</span>
-<span class="sd">    (M, N) ndarray</span>
+<span class="sd">    (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of inertial advective wind</span>
 
 <span class="sd">    Notes</span>
@@ -1024,18 +1043,18 @@
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
-<span class="sd">    u : (M, N) ndarray</span>
+<span class="sd">    u : (M, N) `pint.Quantity`</span>
 <span class="sd">        x component of the wind (geostrophic in QG-theory)</span>
-<span class="sd">    v : (M, N) ndarray</span>
+<span class="sd">    v : (M, N) `pint.Quantity`</span>
 <span class="sd">        y component of the wind (geostrophic in QG-theory)</span>
-<span class="sd">    temperature : (M, N) ndarray</span>
+<span class="sd">    temperature : (M, N) `pint.Quantity`</span>
 <span class="sd">        Array of temperature at pressure level</span>
 <span class="sd">    pressure : `pint.Quantity`</span>
 <span class="sd">        Pressure at level</span>
-<span class="sd">    dx : float or ndarray</span>
+<span class="sd">    dx : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the x-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
-<span class="sd">    dy : float or ndarray</span>
+<span class="sd">    dy : `pint.Quantity`</span>
 <span class="sd">        The grid spacing(s) in the y-direction. If an array, there should be one item less than</span>
 <span class="sd">        the size of `u` along the applicable axis.</span>
 <span class="sd">    static_stability : `pint.Quantity`, optional</span>
@@ -1044,7 +1063,7 @@
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
-<span class="sd">    tuple of (M, N) ndarrays</span>
+<span class="sd">    tuple of (M, N) `pint.Quantity`</span>
 <span class="sd">        The components of the Q-vector in the u- and v-directions respectively</span>
 
 <span class="sd">    See Also</span>
@@ -1080,7 +1099,7 @@
   <div role="contentinfo">
     <p>
         &copy; Copyright 2019, MetPy Developers.
-      Last updated on Jul 06, 2019 at 20:25:37.
+      Last updated on Sep 30, 2019 at 14:05:22.
 
     </p>
   </div>
@@ -1117,7 +1136,7 @@
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../../',
-            VERSION:'0.10.0+15.gcdfad57',
+            VERSION:'0.10.0.post299+ga31af23',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
@@ -1129,8 +1148,8 @@
       <script type="text/javascript" src="../../../_static/underscore.js"></script>
       <script type="text/javascript" src="../../../_static/doctools.js"></script>
       <script type="text/javascript" src="../../../_static/language_data.js"></script>
-      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
       <script type="text/javascript" src="../../../_static/pop_ver.js"></script>
+      <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
 
   
 

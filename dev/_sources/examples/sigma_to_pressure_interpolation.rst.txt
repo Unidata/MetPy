@@ -58,15 +58,6 @@ University Department of Geography and Meteorology.
 
 
 
-.. rst-class:: sphx-glr-script-out
-
- Out:
-
- .. code-block:: none
-
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/pooch/core.py:352: UserWarning: Downloading data file 'wrf_example.nc' from remote data store 'https://github.com/Unidata/MetPy/raw/master/staticdata/wrf_example.nc' to '/home/travis/build/Unidata/MetPy/staticdata/master'.
-      action_word[action], fname, self.get_url(fname), str(self.path)
-
 
 
 Array of desired pressure levels
@@ -107,7 +98,7 @@ variable for plotting.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.6.7/lib/python3.6/site-packages/metpy/interpolate/one_dimension.py:139: UserWarning: Interpolation point out of data bounds encountered
+    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:144: UserWarning: Interpolation point out of data bounds encountered
       warnings.warn('Interpolation point out of data bounds encountered')
 
 
@@ -169,7 +160,7 @@ variable for plotting.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  6.486 seconds)
+   **Total running time of the script:** ( 0 minutes  5.167 seconds)
 
 
 .. _sphx_glr_download_examples_sigma_to_pressure_interpolation.py:
