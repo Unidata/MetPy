@@ -22,6 +22,7 @@ Kristen Pozsonyi
 Leonardo Uieda
 Lucas Sterzinger
 Matt Wilson
+Max Grover
 Michael James
 Nathan Wendt
 Patrick Marsh
@@ -33,10 +34,9 @@ Stefan Hofer
 Steven Decker
 Tim Supinie
 Tyler Wixtrom
-Varden Nadkarni
+Vardan Nadkarni
 Warren Pettee
 Will Holmgren
 Zach Bruick
-eliteuser26
 kstilwell
 mmorello1

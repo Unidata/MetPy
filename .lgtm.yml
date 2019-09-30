@@ -1,5 +1,5 @@
 path_classifiers:
     library:
-        - metpy/deprecation.py
+        - src/metpy/deprecation.py
     test:
-        - exclude: metpy/testing.py
+        - exclude: src/metpy/testing.py

@@ -32,7 +32,8 @@ POOCH = pooch.create(
 # TEST_DATA_DIR variable, or looking relative to the path of this module's file. Use this
 # to override Pooch's path.
 dev_data_path = os.environ.get('TEST_DATA_DIR',
-                               os.path.join(os.path.dirname(__file__), '..', 'staticdata'))
+                               os.path.join(os.path.dirname(__file__),
+                                            '..', '..', 'staticdata'))
 if os.path.exists(dev_data_path):
     POOCH.path = dev_data_path
 

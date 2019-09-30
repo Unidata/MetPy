@@ -18,7 +18,7 @@ plugins:
     enabled: true
     config:
       test_patterns:
-        - "metpy/**/tests/*.py"
+        - "tests/*.py"
     checks:
       python:S3776:
         enabled: false
@@ -34,5 +34,5 @@ plugins:
         enabled: false
 
 exclude_patterns:
-- "metpy/io/_nexrad_msgs/msg*.py"
+- "src/metpy/io/_nexrad_msgs/msg*.py"
 - "docs/**/*"

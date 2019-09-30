@@ -7,5 +7,5 @@
 import glob
 
 with open('versions.json', 'wt') as version_file:
-    version_strings = ','.join('"{}"'.format(d) for d in glob.glob('v*.[0-9]*'))
+    version_strings = ','.join('"{}"'.format(d) for d in sorted(glob.glob('v*.[0-9]*')))
     version_file.write('{"versions":["latest","dev",' + version_strings + ']}\n')

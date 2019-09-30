@@ -118,6 +118,15 @@ upon submission of a Pull Request.
 See [here](https://github.com/Unidata/MetPy/blob/master/CLA.md) for more
 explanation and rationale behind MetPy's CLA.
 
+## Source Code
+MetPy's source code is located in the `src/` directory in the root of the repository. Within
+`src/` is the `metpy/` directory, which is the base package. Inside here are the main
+top-level subpackages of MetPy:
+- `calc`: Calculations and tools
+- `interpolate`: Interpolating data points to other locations
+- `io`: Tools for reading and writing files
+- `plots`: Plotting tools using Matplotlib (and Cartopy)
+
 ## Documentation
 Now that you've made your awesome contribution, it's time to tell the world how to use it.
 Writing documentation strings is really important to make sure others use your functionality
@@ -141,16 +150,16 @@ change the code and stay confident that things have not broken. Running the test
 you made our default ``devel`` environment.
 
 ### Running Tests
-Running the tests can be done by running ``py.test``
+Running the tests can be done by running ``pytest``
 
 Running the whole test suite isn't that slow, but can be a burden if you're working on just
 one module or a specific test. It is easy to run tests on a single directory:
 
-    py.test metpy/calc
+    pytest tests/calc
 
 A specific test can be run as:
 
-    py.test -k test_my_test_func_name
+    pytest -k test_my_test_func_name
 
 ### Writing Tests
 Tests should ideally hit all of the lines of code added or changed. We have automated
@@ -169,7 +178,7 @@ purposes.)
 
 I can see two easy tests here: one for the results as a float and one for the results as a
 string. If I had added this to the ``calc`` module, I'd add those two tests in
-``tests/test_calc.py``.
+``tests/calc/test_calc.py``.
 
     def test_add_as_float_or_string_defaults():
         res = add_as_float_or_string(3, 4)
@@ -188,14 +197,14 @@ at the existing tests to get an idea of some of the common patterns.
 Some tests (for matplotlib plotting code) are done as an image comparison, using the
 pytest-mpl plugin. To run these tests, use:
 
-    py.test --mpl
+    pytest --mpl
 
 When adding new image comparison tests, start by creating the baseline images for the tests:
 
-    py.test --mpl-generate-path=baseline
+    pytest --mpl-generate-path=baseline
 
 That command runs the tests and saves the images in the ``baseline`` directory.
-For MetPy this is generally ``metpy/plots/tests/baseline/``. We recommend using the ``-k`` flag
+For MetPy this is generally ``tests/plots/baseline/``. We recommend using the ``-k`` flag
 to run only the test you just created for this step.
 
 For more information, see the [docs for pytest-mpl](https://github.com/astrofrog/pytest-mpl).

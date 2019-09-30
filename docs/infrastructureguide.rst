@@ -14,7 +14,7 @@ To manage identifying the version of the code, MetPy relies upon `setuptools_scm
 source from git tags and any additional commits. For development, the version will have a
 string like ``0.10.0.post209+gff2e549f.d20190918``, which comes from ``git describe``. This
 version means that the current code is 209 commits past the 0.10.0 tag, on git hash
-``gff2e549f``, with local changes on top, last made on a date (indicated by ``d20190918``). For
+``ff2e549f``, with local changes on top, last made on a date (indicated by ``d20190918``). For
 a release, or non-git repo source dir, the version will just come from the most recent tag
 (i.e. ``v0.10.0``).
 

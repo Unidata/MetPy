@@ -90,7 +90,7 @@ def interpolate_1d(x, xp, *args, **kwargs):
      >>> x = np.array([1., 2., 3., 4.])
      >>> y = np.array([1., 2., 3., 4.])
      >>> x_interp = np.array([2.5, 3.5])
-     >>> metpy.calc.interp(x_interp, x, y)
+     >>> metpy.interpolate.interpolate_1d(x_interp, x, y)
      array([2.5, 3.5])
 
     Notes
@@ -216,7 +216,7 @@ def log_interpolate_1d(x, xp, *args, **kwargs):
      >>> x_log = np.array([1e3, 1e4, 1e5, 1e6])
      >>> y_log = np.log(x_log) * 2 + 3
      >>> x_interp = np.array([5e3, 5e4, 5e5])
-     >>> metpy.calc.log_interp(x_interp, x_log, y_log)
+     >>> metpy.interpolate.log_interpolate_1d(x_interp, x_log, y_log)
      array([20.03438638, 24.63955657, 29.24472675])
 
     Notes
