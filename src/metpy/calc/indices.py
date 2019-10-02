@@ -45,8 +45,11 @@ def precipitable_water(dewpt, pressure, bottom=None, top=None):
     """
     # Sort pressure and dewpoint to be in decreasing pressure order (increasing height)
     sort_inds = np.argsort(pressure)[::-1]
-    pressure = pressure[sort_inds]
-    dewpt = dewpt[sort_inds]
+    pressure_inter = pressure[sort_inds]
+    dewpt_inter = dewpt[sort_inds]
+
+    dewpt = dewpt_inter[~np.isnan(dewpt_inter) & ~np.isnan(pressure_inter)]
+    pressure = pressure[~np.isnan(dewpt_inter) & ~np.isnan(pressure_inter)]
 
     if top is None:
         top = np.nanmin(pressure.magnitude) * pressure.units

@@ -1,4 +1,4 @@
-# Copyright (c) 2017 MetPy Developers.
+# Copyright (c) 2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `indices` module."""
@@ -42,6 +42,22 @@ def test_precipitable_water_bound_error():
                          -86.5, -88.1]) * units.degC
     pw = precipitable_water(dewpoint, pressure)
     truth = 89.86955998646951 * units('millimeters')
+    assert_almost_equal(pw, truth, 8)
+
+
+def test_precipitable_water_nans():
+    """Test that PW returns appropriate number if NaNs are present."""
+    pressure = np.array([1001, 1000, 997, 977.9, 977, 957, 937.8, 925, 906, 899.3, 887, 862.5,
+                         854, 850, 800, 793.9, 785, 777, 771, 762, 731.8, 726, 703, 700, 655,
+                         630, 621.2, 602, 570.7, 548, 546.8, 539, 513, 511, 485, 481, 468,
+                         448, 439, 424, 420, 412]) * units.hPa
+    dewpoint = np.array([-25.1, -26.1, -26.8, np.nan, -27.3, -28.2, np.nan, -27.2, -26.6,
+                        np.nan, -27.4, np.nan, -23.5, -23.5, -25.1, np.nan, -22.9, -17.8,
+                        -16.6, np.nan, np.nan, -16.4, np.nan, -18.5, -21., -23.7, np.nan,
+                        -28.3, np.nan, -32.6, np.nan, -33.8, -35., -35.1, -38.1, -40.,
+                        -43.3, -44.6, -46.4, -47., -49.2, -50.7]) * units.degC
+    pw = precipitable_water(dewpoint, pressure)
+    truth = 4.003709214463873 * units.mm
     assert_almost_equal(pw, truth, 8)
 
 
