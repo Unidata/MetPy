@@ -34,7 +34,7 @@ env:
   global:
     - secure: "MOw+6pAQ8s7XX1U9Pbgw8SIuz5MHODj6PXe6xCSIyGR14/0KFNiR9s6NEIa9i7qnp7HOq/V2M9ZFPPioQCrL8k5V4XzZfNz6kXGUT8DoSAAnAAnDWy4yMRxYMlEcjSY8l0KZ9B3szxypkLh0Qd9+pHZYvRSLt8A8UcZSVSNGDjg="
     - WHEELHOUSE="https://unidata-python.s3.amazonaws.com/wheelhouse/index.html"
-    - WHEELDIR="wheelhouse/"
+    - WHEELDIR="$HOME/wheelhouse/"
     # Shapely dependency needed to keep from using Shapely's manylinux wheels
     # which use a different geos that what we build cartopy with on Travis
     # Codecov only works with coverage < 4.4
@@ -111,13 +111,14 @@ before_install:
   - python -m pip download -d $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
   - touch $WHEELDIR/download_marker;
   - travis_wait python -m pip wheel -w $WHEELDIR $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
-  - python -m pip install $EXTRA_PACKAGES --upgrade --upgrade-strategy=eager --no-index -f file://$PWD/$WHEELDIR $VERSIONS;
+  - python -m pip install $EXTRA_PACKAGES --upgrade --upgrade-strategy=eager --no-index -f file://$WHEELDIR $VERSIONS;
   - travis_wait 30 python -m pip wheel -w $WHEELDIR ".[$EXTRA_INSTALLS]" $EXTRA_PACKAGES -f $WHEELHOUSE $PRE $VERSIONS;
   # Make sure we don't upload MetPy or other development build wheels
   - rm -f $WHEELDIR/MetPy*.whl $WHEELDIR/xarray-*+*.whl $WHEELDIR/Pint-*dev*.whl;
+  - ls -lrt --full-time $WHEELDIR;
 
 install:
-  - python -m pip install ".[$EXTRA_INSTALLS]" --upgrade --upgrade-strategy=eager --no-index $PRE -f file://$PWD/$WHEELDIR $VERSIONS;
+  - python -m pip install ".[$EXTRA_INSTALLS]" --upgrade --upgrade-strategy=eager --no-index $PRE -f file://$WHEELDIR $VERSIONS;
 
 script:
   - if [[ $TASK == "docs" ]]; then
@@ -149,7 +150,7 @@ after_script:
       python-codacy-coverage -r coverage.xml;
       codeclimate-test-reporter;
     fi
-  - ls -lr --full-time $WHEELDIR;
+  - ls -lrt --full-time $WHEELDIR;
   - echo $(find $WHEELDIR -newer $WHEELDIR/download_marker -name *.whl | tr [:space:] :)
 
 before_deploy:
