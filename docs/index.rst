@@ -30,7 +30,8 @@ MetPy
 
 MetPy is a collection of tools in Python for reading, visualizing, and
 performing calculations with weather data. If you're new to MetPy, check
-out our :doc:`Getting Started <startingguide>` guide.
+out our :doc:`Getting Started <startingguide>` guide. Development is
+supported by the National Science Foundation.
 
 MetPy follows `semantic versioning <https://semver.org>`_ in its version number. With our
 current 0.x version, that implies that MetPy's APIs (application programming interfaces) are
