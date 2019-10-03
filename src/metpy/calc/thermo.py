@@ -419,7 +419,7 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     # The parcel profile and data may have the same first data point.
     # If that is the case, ignore that point to get the real first
     # intersection for the LFC calculation. Use logarithmic interpolation.
-    if np.isclose(parcel_temperature_profile[0].m, temperature[0].m):
+    if np.isclose(parcel_temperature_profile[0].to(temperature.units).m, temperature[0].m):
         x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
                                   temperature[1:], direction='increasing', log_x=True)
     else:

@@ -1417,6 +1417,32 @@ def test_lcl_convergence_issue():
     assert_almost_equal(lcl_pressure, 990 * units.hPa, 0)
 
 
+def test_cape_cin_value_error():
+    """Test a profile that originally caused a ValueError in #1190."""
+    pressure = np.array([1012.0, 1009.0, 1002.0, 1000.0, 925.0, 896.0, 855.0, 850.0, 849.0,
+                         830.0, 775.0, 769.0, 758.0, 747.0, 741.0, 731.0, 712.0, 700.0, 691.0,
+                         671.0, 636.0, 620.0, 610.0, 601.0, 594.0, 587.0, 583.0, 580.0, 571.0,
+                         569.0, 554.0, 530.0, 514.0, 506.0, 502.0, 500.0, 492.0, 484.0, 475.0,
+                         456.0, 449.0, 442.0, 433.0, 427.0, 400.0, 395.0, 390.0, 351.0, 300.0,
+                         298.0, 294.0, 274.0, 250.0]) * units.hPa
+    temperature = np.array([27.8, 25.8, 24.2, 24, 18.8, 16, 13, 12.6, 12.6, 11.6,  9.2, 8.6,
+                            8.4, 9.2, 10, 9.4, 7.4, 6.2, 5.2, 3.2, -0.3, -2.3, -3.3, -4.5,
+                            -5.5, -6.1, -6.1, -6.1, -6.3, -6.3, -7.7, -9.5, -9.9, -10.3,
+                            -10.9, -11.1, -11.9, -12.7, -13.7, -16.1, -16.9, -17.9, -19.1,
+                            -19.9, -23.9, -24.7, -25.3, -29.5, -39.3, -39.7, -40.5, -44.3,
+                            -49.3]) * units.degC
+    dewpoint = np.array([19.8, 16.8, 16.2, 16, 13.8, 12.8, 10.1, 9.7, 9.7,
+                         8.6, 4.2, 3.9, 0.4, -5.8, -32, -34.6, -35.6, -34.8,
+                         -32.8, -10.8,  -9.3, -10.3,  -9.3, -10.5, -10.5, -10, -16.1,
+                         -19.1, -23.3, -18.3, -17.7, -20.5, -27.9, -32.3, -33.9, -34.1,
+                         -35.9, -26.7, -37.7, -43.1, -33.9, -40.9, -46.1, -34.9, -33.9,
+                         -33.7, -33.3, -42.5, -50.3, -49.7, -49.5, -58.3, -61.3]) * units.degC
+    cape, cin = surface_based_cape_cin(pressure, temperature, dewpoint)
+    expected_cape, expected_cin = [2010.4136 * units('joules/kg'), -10 * units('joules/kg')]
+    assert_almost_equal(cape, expected_cape, 3)
+    assert_almost_equal(cin, expected_cin, 3)
+
+
 def test_lcl_grid_surface_LCLs():
     """Test surface grid where some values have LCLs at the surface."""
     pressure = np.array([1000, 990, 1010]) * units.hPa
