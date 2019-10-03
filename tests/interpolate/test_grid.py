@@ -1,4 +1,4 @@
-# Copyright (c) 2018 MetPy Developers.
+# Copyright (c) 2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `grid` module."""
@@ -13,12 +13,10 @@ import pytest
 import scipy
 
 from metpy.cbook import get_test_data
-from metpy.deprecation import MetpyDeprecationWarning
 from metpy.interpolate.grid import (generate_grid, generate_grid_coords, get_boundary_coords,
-                                    get_xy_range, get_xy_steps, interpolate,
-                                    interpolate_to_grid, interpolate_to_isosurface,
-                                    inverse_distance, inverse_distance_to_grid,
-                                    natural_neighbor, natural_neighbor_to_grid)
+                                    get_xy_range, get_xy_steps, interpolate_to_grid,
+                                    interpolate_to_isosurface, inverse_distance_to_grid,
+                                    natural_neighbor_to_grid)
 
 logging.getLogger('metpy.interpolate.grid').setLevel(logging.ERROR)
 
@@ -158,20 +156,6 @@ def test_natural_neighbor_to_grid(test_data, test_grid):
     assert_array_almost_equal(truth, img)
 
 
-def test_natural_neighbor(test_data, test_grid):
-    r"""Test deprecated natural neighbor interpolation function."""
-    xp, yp, z = test_data
-    xg, yg = test_grid
-
-    with pytest.warns(MetpyDeprecationWarning):
-        img = natural_neighbor(xp, yp, z, xg, yg)
-
-    with get_test_data('nn_bbox0to100.npz') as fobj:
-        truth = np.load(fobj)['img']
-
-    assert_array_almost_equal(truth, img)
-
-
 interp_methods = ['cressman', 'barnes']
 
 
@@ -192,31 +176,6 @@ def test_inverse_distance_to_grid(method, test_data, test_grid):
         test_file = 'barnes_r40_k100.npz'
 
     img = inverse_distance_to_grid(xp, yp, z, xg, yg, kind=method, **extra_kw)
-
-    with get_test_data(test_file) as fobj:
-        truth = np.load(fobj)['img']
-
-    assert_array_almost_equal(truth, img)
-
-
-@pytest.mark.parametrize('method', interp_methods)
-def test_inverse_distance(method, test_data, test_grid):
-    r"""Test inverse distance interpolation function."""
-    xp, yp, z = test_data
-    xg, yg = test_grid
-
-    extra_kw = {}
-    if method == 'cressman':
-        extra_kw['r'] = 20
-        extra_kw['min_neighbors'] = 1
-        test_file = 'cressman_r20_mn1.npz'
-    elif method == 'barnes':
-        extra_kw['r'] = 40
-        extra_kw['kappa'] = 100
-        test_file = 'barnes_r40_k100.npz'
-
-    with pytest.warns(MetpyDeprecationWarning):
-        img = inverse_distance(xp, yp, z, xg, yg, kind=method, **extra_kw)
 
     with get_test_data(test_file) as fobj:
         truth = np.load(fobj)['img']
@@ -260,39 +219,6 @@ def test_interpolate_to_grid(method, test_coords, boundary_coords):
         extra_kw['boundary_coords'] = boundary_coords
 
     _, _, img = interpolate_to_grid(xp, yp, z, hres=10, interp_type=method, **extra_kw)
-
-    with get_test_data('{0}_test.npz'.format(method)) as fobj:
-        truth = np.load(fobj)['img']
-
-    assert_array_almost_equal(truth, img)
-
-
-@pytest.mark.parametrize('method', interp_methods)
-@pytest.mark.parametrize('boundary_coords', boundary_types)
-def test_interpolate(method, test_coords, boundary_coords):
-    r"""Test deprecated main interpolate function."""
-    xp, yp = test_coords
-
-    xp *= 10
-    yp *= 10
-
-    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225, 3.364])
-
-    extra_kw = {}
-    if method == 'cressman':
-        extra_kw['search_radius'] = 200
-        extra_kw['minimum_neighbors'] = 1
-    elif method == 'barnes':
-        extra_kw['search_radius'] = 400
-        extra_kw['minimum_neighbors'] = 1
-        extra_kw['gamma'] = 1
-
-    if boundary_coords is not None:
-        extra_kw['boundary_coords'] = boundary_coords
-
-    with pytest.warns(MetpyDeprecationWarning):
-        _, _, img = interpolate(xp, yp, z, hres=10, interp_type=method, **extra_kw)
 
     with get_test_data('{0}_test.npz'.format(method)) as fobj:
         truth = np.load(fobj)['img']

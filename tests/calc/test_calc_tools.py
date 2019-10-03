@@ -13,16 +13,13 @@ import xarray as xr
 
 from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersections,
                         first_derivative, get_layer, get_layer_heights, gradient,
-                        grid_deltas_from_dataarray, interp, interpolate_nans,
-                        laplacian, lat_lon_grid_deltas, log_interp,
+                        grid_deltas_from_dataarray, laplacian, lat_lon_grid_deltas,
                         nearest_intersection_idx, parse_angle, pressure_to_height_std,
                         reduce_point_density, resample_nn_1d, second_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
                               _remove_nans, BASE_DEGREE_MULTIPLIER, DIR_STRS, UND)
-from metpy.deprecation import MetpyDeprecationWarning
-from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           check_and_silence_deprecation)
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal)
 from metpy.units import units
 
 
@@ -108,17 +105,6 @@ def test_find_intersections_intersections_in_data_at_ends(direction, expected):
     y1 = np.array([0, 3, 2, 1, -1, 2, 2, 0, 1, 0, 0, -2, 2, 0])
     y2 = np.zeros_like(y1)
     assert_array_almost_equal(expected, find_intersections(x, y1, y2, direction=direction), 2)
-
-
-@check_and_silence_deprecation
-def test_interpolate_nan_linear():
-    """Test deprecated interpolate_nans function."""
-    x = np.linspace(0, 20, 15)
-    y = 5 * x + 3
-    nan_indexes = [1, 5, 11, 12]
-    y_with_nan = y.copy()
-    y_with_nan[nan_indexes] = np.nan
-    assert_array_almost_equal(y, interpolate_nans(x, y_with_nan), 2)
 
 
 @pytest.mark.parametrize('mask, expected_idx, expected_element', [
@@ -209,28 +195,6 @@ def test_delete_masked_points():
     a, b = _delete_masked_points(a, b)
     assert_array_equal(a, expected)
     assert_array_equal(b, expected)
-
-
-@check_and_silence_deprecation
-def test_interp():
-    """Test deprecated interp function."""
-    x = np.array([1., 2., 3., 4.])
-    y = x
-    x_interp = np.array([3.5000000, 2.5000000])
-    y_interp_truth = np.array([3.5000000, 2.5000000])
-    y_interp = interp(x_interp, x, y)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
-
-
-@check_and_silence_deprecation
-def test_log_interp():
-    """Test deprecated log_interp function."""
-    x_log = np.array([1e3, 1e4, 1e5, 1e6])
-    y_log = np.log(x_log) * 2 + 3
-    x_interp = np.array([5e3, 5e4, 5e5])
-    y_interp_truth = np.array([20.0343863828, 24.6395565688, 29.2447267548])
-    y_interp = log_interp(x_interp, x_log, y_log)
-    assert_array_almost_equal(y_interp, y_interp_truth, 7)
 
 
 def get_bounds_data():
@@ -642,14 +606,6 @@ def test_laplacian_2d(deriv_2d_data):
     assert_array_almost_equal(laplac, laplac_true, 5)
 
 
-def test_laplacian_x_deprecation(deriv_2d_data):
-    """Test deprecation of x keyword argument."""
-    laplac_true = 2 * (np.ones_like(deriv_2d_data.f) * (deriv_2d_data.a + deriv_2d_data.b))
-    with pytest.warns(MetpyDeprecationWarning):
-        laplac = laplacian(deriv_2d_data.f, x=(deriv_2d_data.y, deriv_2d_data.x))
-    assert_array_almost_equal(laplac, laplac_true, 5)
-
-
 def test_parse_angle_abbrieviated():
     """Test abbrieviated directional text in degrees."""
     expected_angles_degrees = FULL_CIRCLE_DEGREES
@@ -770,21 +726,6 @@ def test_gradient_restricted_axes(deriv_2d_data):
                        [[-3], [-1], [4]],
                        [[-3], [-1], [4]],
                        [[-3], [-1], [4]]]))
-    assert_array_almost_equal(res, truth, 5)
-
-
-def test_gradient_x_deprecation(deriv_2d_data):
-    """Test deprecation of x keyword argument."""
-    with pytest.warns(MetpyDeprecationWarning):
-        res = gradient(deriv_2d_data.f, x=(deriv_2d_data.y, deriv_2d_data.x))
-    truth = (np.array([[-0.25, -0.25, -0.25],
-                       [1.75, 1.75, 1.75],
-                       [4.75, 4.75, 4.75],
-                       [5.75, 5.75, 5.75]]),
-             np.array([[-3, -1, 4],
-                       [-3, -1, 4],
-                       [-3, -1, 4],
-                       [-3, -1, 4]]))
     assert_array_almost_equal(res, truth, 5)
 
 

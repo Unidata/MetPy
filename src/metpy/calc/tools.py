@@ -6,7 +6,6 @@ from __future__ import division
 
 import functools
 from operator import itemgetter
-import warnings
 
 import numpy as np
 try:
@@ -20,8 +19,7 @@ from scipy.spatial import cKDTree
 import xarray as xr
 
 from ..cbook import broadcast_indices, result_type
-from ..deprecation import deprecated, metpyDeprecation
-from ..interpolate.one_dimension import interpolate_1d, interpolate_nans_1d, log_interpolate_1d
+from ..interpolate.one_dimension import interpolate_1d, log_interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, diff, units
 from ..xarray import check_axis, preprocess_xarray
@@ -186,21 +184,6 @@ def find_intersections(x, a, b, direction='all', log_x=False):
         raise ValueError('Unknown option for direction: {0}'.format(str(direction)))
 
     return intersect_x[mask & duplicate_mask], intersect_y[mask & duplicate_mask]
-
-
-@exporter.export
-@preprocess_xarray
-@deprecated('0.9', addendum=(' This function has been moved to metpy.interpolate and renamed '
-                             'interpolate_nans_1d.'), pending=False)
-def interpolate_nans(x, y, kind='linear'):
-    """Wrap interpolate_nans_1d for deprecated interpolate_nans."""
-    return interpolate_nans_1d(x, y, kind=kind)
-
-
-interpolate_nans.__doc__ = (interpolate_nans_1d.__doc__
-                            + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                              '`interpolate_nans_1d` and moved to `metpy.interpolate`, and '
-                              'will be removed from MetPy in 0.12.0.')
 
 
 def _next_non_masked_element(a, idx):
@@ -640,21 +623,6 @@ def get_layer(pressure, *args, **kwargs):
 
 @exporter.export
 @preprocess_xarray
-@deprecated('0.9', addendum=(' This function has been moved to metpy.interpolate and renamed '
-                             'interpolate_1d.'), pending=False)
-def interp(x, xp, *args, **kwargs):
-    """Wrap interpolate_1d for deprecated interp."""
-    return interpolate_1d(x, xp, *args, **kwargs)
-
-
-interp.__doc__ = (interpolate_1d.__doc__
-                  + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                    '`interpolate_1d` and moved to `metpy.interpolate`, and '
-                    'will be removed from MetPy in 0.12.0.')
-
-
-@exporter.export
-@preprocess_xarray
 def find_bounding_indices(arr, values, axis, from_below=True):
     """Find the indices surrounding the values within arr along axis.
 
@@ -740,21 +708,6 @@ def find_bounding_indices(arr, values, axis, from_below=True):
     below = broadcast_indices(arr, indices - 1, arr.ndim, axis)
 
     return above, below, good
-
-
-@exporter.export
-@preprocess_xarray
-@deprecated('0.9', addendum=(' This function has been moved to metpy.interpolate and renamed '
-                             'log_interpolate_1d.'), pending=False)
-def log_interp(x, xp, *args, **kwargs):
-    """Wrap log_interpolate_1d for deprecated log_interp."""
-    return log_interpolate_1d(x, xp, *args, **kwargs)
-
-
-log_interp.__doc__ = (log_interpolate_1d.__doc__
-                      + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                        '`log_interpolate_1d` and moved to `metpy.interpolate`, and '
-                        'will be removed from MetPy in 0.12.0.')
 
 
 def _greater_or_close(a, value, **kwargs):
@@ -1177,9 +1130,6 @@ def gradient(f, **kwargs):
 
     Notes
     -----
-    `gradient` previously accepted `x` as a parameter for coordinate values. This has been
-    deprecated in 0.9 in favor of `coordinates`.
-
     If this function is used without the `axes` parameter, the length of `coordinates` or
     `deltas` (as applicable) should match the number of dimensions of `f`.
 
@@ -1229,9 +1179,6 @@ def laplacian(f, **kwargs):
 
     Notes
     -----
-    `laplacian` previously accepted `x` as a parameter for coordinate values. This has been
-    deprecated in 0.9 in favor of `coordinates`.
-
     If this function is used without the `axes` parameter, the length of `coordinates` or
     `deltas` (as applicable) should match the number of dimensions of `f`.
 
@@ -1278,11 +1225,6 @@ def _process_gradient_args(f, kwargs):
     elif 'coordinates' in kwargs:
         _check_length(kwargs['coordinates'])
         return 'x', kwargs['coordinates'], axes
-    elif 'x' in kwargs:
-        warnings.warn('The use of "x" as a parameter for coordinate values has been '
-                      'deprecated. Use "coordinates" instead.', metpyDeprecation)
-        _check_length(kwargs['x'])
-        return 'x', kwargs['x'], axes
     elif isinstance(f, xr.DataArray):
         return 'pass', axes, axes  # only the axis argument matters
     else:

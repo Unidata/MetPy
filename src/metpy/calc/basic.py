@@ -18,7 +18,6 @@ import numpy as np
 from scipy.ndimage import gaussian_filter
 
 from .. import constants as mpconsts
-from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, masked_array, units
 from ..xarray import preprocess_xarray
@@ -146,49 +145,6 @@ def wind_components(speed, wdir):
     u = -speed * np.sin(wdir)
     v = -speed * np.cos(wdir)
     return u, v
-
-
-@exporter.export
-@preprocess_xarray
-@deprecated('0.9', addendum=' This function has been renamed wind_speed.',
-            pending=False)
-def get_wind_speed(u, v):
-    """Wrap wind_speed for deprecated get_wind_speed function."""
-    return wind_speed(u, v)
-
-
-get_wind_speed.__doc__ = (wind_speed.__doc__
-                          + '\n    .. deprecated:: 0.9.0\n        Function has been renamed to'
-                            ' `wind_speed` and will be removed from MetPy in 0.12.0.')
-
-
-@exporter.export
-@preprocess_xarray
-@deprecated('0.9', addendum=' This function has been renamed wind_direction.',
-            pending=False)
-def get_wind_dir(u, v):
-    """Wrap wind_direction for deprecated get_wind_dir function."""
-    return wind_direction(u, v)
-
-
-get_wind_dir.__doc__ = (wind_direction.__doc__
-                        + '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
-                          '`wind_direction` and will be removed from MetPy in 0.12.0.')
-
-
-@exporter.export
-@preprocess_xarray
-@deprecated('0.9', addendum=' This function has been renamed wind_components.',
-            pending=False)
-def get_wind_components(u, v):
-    """Wrap wind_components for deprecated get_wind_components function."""
-    return wind_components(u, v)
-
-
-get_wind_components.__doc__ = (wind_components.__doc__
-                               + '\n    .. deprecated:: 0.9.0\n        Function has been '
-                                 'renamed to `wind_components` and will be removed from MetPy '
-                                 'in 0.12.0.')
 
 
 @exporter.export

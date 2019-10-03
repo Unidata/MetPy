@@ -1,4 +1,4 @@
-# Copyright (c) 2008,2015,2017 MetPy Developers.
+# Copyright (c) 2008,2015,2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `basic` module."""
@@ -9,13 +9,11 @@ import pytest
 from metpy.calc import (add_height_to_pressure, add_pressure_to_height,
                         altimeter_to_sea_level_pressure, altimeter_to_station_pressure,
                         apparent_temperature, coriolis_parameter, geopotential_to_height,
-                        get_wind_components, get_wind_dir, get_wind_speed, heat_index,
-                        height_to_geopotential, height_to_pressure_std,
+                        heat_index, height_to_geopotential, height_to_pressure_std,
                         pressure_to_height_std, sigma_to_pressure, smooth_gaussian,
                         smooth_n_point, wind_components, wind_direction, wind_speed,
                         windchill)
-from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
-                           check_and_silence_deprecation)
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal)
 from metpy.units import units
 
 
@@ -135,28 +133,6 @@ def test_scalar_speed():
 def test_scalar_direction():
     """Test wind direction with scalars."""
     d = wind_direction(3. * units('m/s'), 4. * units('m/s'))
-    assert_almost_equal(d, 216.870 * units.deg, 3)
-
-
-@check_and_silence_deprecation
-def test_get_wind_components():
-    """Test that get_wind_components wrapper works (deprecated in 0.9)."""
-    u, v = get_wind_components(8 * units('m/s'), 150 * units.deg)
-    assert_almost_equal(u, -4 * units('m/s'), 3)
-    assert_almost_equal(v, 6.9282 * units('m/s'), 3)
-
-
-@check_and_silence_deprecation
-def test_get_wind_speed():
-    """Test that get_wind_speed wrapper works (deprecated in 0.9)."""
-    s = get_wind_speed(-3. * units('m/s'), -4. * units('m/s'))
-    assert_almost_equal(s, 5. * units('m/s'), 3)
-
-
-@check_and_silence_deprecation
-def test_get_wind_dir():
-    """Test that get_wind_dir wrapper works (deprecated in 0.9)."""
-    d = get_wind_dir(3. * units('m/s'), 4. * units('m/s'))
     assert_almost_equal(d, 216.870 * units.deg, 3)
 
 
