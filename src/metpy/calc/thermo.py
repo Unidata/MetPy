@@ -359,6 +359,12 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     fp = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
                         xtol=eps, maxiter=max_iters)
     lcl_p = fp * pressure.units
+
+    # Conditional needed due to precision error with np.log in dewpoint.
+    # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
+    if np.isclose(lcl_p, pressure):
+        lcl_p = pressure
+
     return lcl_p, dewpoint(vapor_pressure(lcl_p, w)).to(temperature.units)
 
 
