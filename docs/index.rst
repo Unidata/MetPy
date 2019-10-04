@@ -6,6 +6,10 @@
    :width: 150 px
    :align: left
 
+.. image:: _static/NSF.jpg
+   :width: 100 px
+   :align: right
+
 .. toctree::
    :maxdepth: 1
    :hidden:
@@ -31,7 +35,8 @@ MetPy
 MetPy is a collection of tools in Python for reading, visualizing, and
 performing calculations with weather data. If you're new to MetPy, check
 out our :doc:`Getting Started <startingguide>` guide. Development is
-supported by the National Science Foundation.
+supported by the National Science Foundation through grants AGS-1344155,
+OAC-1740315, AGS-1901712.
 
 MetPy follows `semantic versioning <https://semver.org>`_ in its version number. With our
 current 0.x version, that implies that MetPy's APIs (application programming interfaces) are
