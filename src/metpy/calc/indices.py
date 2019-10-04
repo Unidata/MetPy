@@ -1,11 +1,11 @@
-# Copyright (c) 2017 MetPy Developers.
+# Copyright (c) 2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of various derived indices."""
 import numpy as np
 
 from .thermo import mixing_ratio, saturation_vapor_pressure
-from .tools import get_layer
+from .tools import _remove_nans, get_layer
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
@@ -45,11 +45,10 @@ def precipitable_water(dewpt, pressure, bottom=None, top=None):
     """
     # Sort pressure and dewpoint to be in decreasing pressure order (increasing height)
     sort_inds = np.argsort(pressure)[::-1]
-    pressure_inter = pressure[sort_inds]
-    dewpt_inter = dewpt[sort_inds]
+    pressure = pressure[sort_inds]
+    dewpt = dewpt[sort_inds]
 
-    dewpt = dewpt_inter[~np.isnan(dewpt_inter) & ~np.isnan(pressure_inter)]
-    pressure = pressure[~np.isnan(dewpt_inter) & ~np.isnan(pressure_inter)]
+    pressure, dewpt = _remove_nans(pressure, dewpt)
 
     if top is None:
         top = np.nanmin(pressure.magnitude) * pressure.units

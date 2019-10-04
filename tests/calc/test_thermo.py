@@ -1032,6 +1032,37 @@ def test_surface_based_cape_cin():
     assert_almost_equal(cin, -136.607809 * units('joule / kilogram'), 2)
 
 
+def test_profile_with_nans():
+    """Test a profile with nans to make sure it calculates functions appropriately (#1187)."""
+    pressure = np.array([1001, 1000, 997, 977.9, 977, 957, 937.8, 925, 906, 899.3, 887, 862.5,
+                         854, 850, 800, 793.9, 785, 777, 771, 762, 731.8, 726, 703, 700, 655,
+                         630, 621.2, 602, 570.7, 548, 546.8, 539, 513, 511, 485, 481, 468,
+                         448, 439, 424, 420, 412]) * units.hPa
+    temperature = np.array([-22.5, -22.7, -23.1, np.nan, -24.5, -25.1, np.nan, -24.5, -23.9,
+                            np.nan, -24.7, np.nan, -21.3, -21.3, -22.7, np.nan, -20.7, -16.3,
+                            -15.5, np.nan, np.nan, -15.3, np.nan, -17.3, -20.9, -22.5,
+                            np.nan, -25.5, np.nan, -31.5, np.nan, -31.5, -34.1, -34.3,
+                            -37.3, -37.7, -39.5, -42.1, -43.1, -45.1, -45.7, -46.7]
+                           ) * units.degC
+    dewpoint = np.array([-25.1, -26.1, -26.8, np.nan, -27.3, -28.2, np.nan, -27.2, -26.6,
+                         np.nan, -27.4, np.nan, -23.5, -23.5, -25.1, np.nan, -22.9, -17.8,
+                         -16.6, np.nan, np.nan, -16.4, np.nan, -18.5, -21, -23.7, np.nan,
+                         -28.3, np.nan, -32.6, np.nan, -33.8, -35, -35.1, -38.1, -40,
+                         -43.3, -44.6, -46.4, -47, -49.2, -50.7]) * units.degC
+    lfc_p, _ = lfc(pressure, temperature, dewpoint)
+    profile = parcel_profile(pressure, temperature[0], dewpoint[0])
+    cape, cin = cape_cin(pressure, temperature, dewpoint, profile)
+    sbcape, sbcin = surface_based_cape_cin(pressure, temperature, dewpoint)
+    mucape, mucin = most_unstable_cape_cin(pressure, temperature, dewpoint)
+    assert_nan(lfc_p, units.hPa)
+    assert_almost_equal(cape, 0 * units('J/kg'), 0)
+    assert_almost_equal(cin, 0 * units('J/kg'), 0)
+    assert_almost_equal(sbcape, 0 * units('J/kg'), 0)
+    assert_almost_equal(sbcin, 0 * units('J/kg'), 0)
+    assert_almost_equal(mucape, 0 * units('J/kg'), 0)
+    assert_almost_equal(mucin, 0 * units('J/kg'), 0)
+
+
 def test_most_unstable_cape_cin_surface():
     """Test the most unstable CAPE/CIN calculation when surface is most unstable."""
     pressure = np.array([959., 779.2, 751.3, 724.3, 700., 269.]) * units.mbar
