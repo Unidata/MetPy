@@ -1406,3 +1406,12 @@ def test_specific_humidity_from_dewpoint():
     p = 1013.25 * units.mbar
     q = specific_humidity_from_dewpoint(16.973 * units.degC, p)
     assert_almost_equal(q, 0.012 * units.dimensionless, 3)
+
+
+def test_lcl_convergence_issue():
+    """Test profile where LCL wouldn't converge (#1187)."""
+    pressure = np.array([990, 973, 931, 925, 905]) * units.hPa
+    temperature = np.array([14.4, 14.2, 13, 12.6, 11.4]) * units.degC
+    dewpoint = np.array([14.4, 11.7, 8.2, 7.8, 7.6]) * units.degC
+    lcl_pressure, _ = lcl(pressure[0], temperature[0], dewpoint[0])
+    assert_almost_equal(lcl_pressure, 990 * units.hPa, 0)
