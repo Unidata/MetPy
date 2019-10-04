@@ -74,6 +74,7 @@ Soundings
       lcl
       lfc
       mixed_layer
+      mixed_layer_cape_cin
       mixed_parcel
       most_unstable_cape_cin
       most_unstable_parcel
