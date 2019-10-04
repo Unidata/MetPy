@@ -13,7 +13,8 @@
    installguide
    startingguide
    units
-   examples/index
+   Reference/API Examples <examples/index>
+   Topical Examples <https://unidata.github.io/python-gallery/examples/index.html>
    tutorials/index
    api/index
    roadmap
