@@ -128,16 +128,16 @@ def vorticity(u, v, dx, dy):
 @exporter.export
 @preprocess_xarray
 @ensure_yx_order
-@check_units('[speed]', '[speed]', '[length]', '[length]')
+@check_units(dx='[length]', dy='[length]')
 def divergence(u, v, dx, dy):
-    r"""Calculate the horizontal divergence of the horizontal wind.
+    r"""Calculate the horizontal divergence of a vector.
 
     Parameters
     ----------
     u : (M, N) `pint.Quantity`
-        x component of the wind
+        x component of the vector
     v : (M, N) `pint.Quantity`
-        y component of the wind
+        y component of the vector
     dx : `pint.Quantity`
         The grid spacing(s) in the x-direction. If an array, there should be one item less than
         the size of `u` along the applicable axis.
