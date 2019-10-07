@@ -1414,6 +1414,30 @@ def test_muliple_el_most_cape(multiple_intersections):
     assert_almost_equal(el_temp_wide, -56.8123126 * units.degC, 6)
 
 
+def test_muliple_lfc_most_cape(multiple_intersections):
+    """Test 'most_cape' LFC for sounding with multiple LFCs."""
+    levels, temperatures, dewpoints = multiple_intersections
+    lfc_pressure_wide, lfc_temp_wide = lfc(levels, temperatures, dewpoints, which='most_cape')
+    assert_almost_equal(lfc_pressure_wide, 705.4346277 * units.hPa, 6)
+    assert_almost_equal(lfc_temp_wide, 4.8922235 * units.degC, 6)
+
+
+def test_el_lfc_most_cape_bottom():
+    """Test 'most_cape' LFC/EL when the bottom combination produces the most CAPE."""
+    levels = np.array([966., 937.2, 904.6, 872.6, 853., 850., 836., 821., 811.6, 782.3,
+                       754.2, 726.9, 700., 648.9]) * units.mbar
+    temperatures = np.array([18.2, 16.5, 15.1, 11.5, 11.0, 12.4, 14., 14.4,
+                             13.7, 11.4, 9.1, 6.8, 3.8, 1.5]) * units.degC
+    dewpoints = np.array([16.9, 15.9, 14.2, 11, 9.5, 8.6, 0., -3.6, -4.4,
+                          -6.9, -9.5, -12., -14.6, -15.8]) * units.degC
+    lfc_pres, lfc_temp = lfc(levels, temperatures, dewpoints, which='most_cape')
+    el_pres, el_temp = el(levels, temperatures, dewpoints, which='most_cape')
+    assert_almost_equal(lfc_pres, 900.7395292 * units.hPa, 6)
+    assert_almost_equal(lfc_temp, 14.672512 * units.degC, 6)
+    assert_almost_equal(el_pres, 849.7942184 * units.hPa, 6)
+    assert_almost_equal(el_temp, 12.4233265 * units.degC, 6)
+
+
 def test_cape_cin_top_el_lfc(multiple_intersections):
     """Test using LFC/EL options for CAPE/CIN."""
     levels, temperatures, dewpoints = multiple_intersections

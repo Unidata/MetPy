@@ -509,8 +509,7 @@ def _wide_option(intersect_type, p_list, t_list, pressure, parcel_temperature_pr
         lfc_p_list, _ = find_intersections(pressure, parcel_temperature_profile,
                                            temperature, direction='increasing',
                                            log_x=True)
-    diff = []
-    [diff.append(lfc_p.m - el_p.m) for lfc_p, el_p in zip(lfc_p_list, el_p_list)]
+    diff = [lfc_p.m - el_p.m for lfc_p, el_p in zip(lfc_p_list, el_p_list)]
     return (p_list[np.where(diff == np.max(diff))][0],
             t_list[np.where(diff == np.max(diff))][0])
 
