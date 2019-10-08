@@ -362,8 +362,12 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
 
     # Conditional needed due to precision error with np.log in dewpoint.
     # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
-    if np.isclose(lcl_p, pressure):
-        lcl_p = pressure
+    comp = np.isclose(lcl_p, pressure)
+    if lcl_p.m.size == 1:
+        if comp:
+            lcl_p = pressure
+    else:
+        lcl_p[comp] = pressure[comp]
 
     return lcl_p, dewpoint(vapor_pressure(lcl_p, w)).to(temperature.units)
 
