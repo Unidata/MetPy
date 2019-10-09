@@ -1472,6 +1472,9 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     cin = (mpconsts.Rd
            * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
+    # Set CIN to 0 if it's returned as a positive value (#1190)
+    if cin > 0 * units('J/kg'):
+        cin = 0 * units('J/kg')
     return cape, cin
 
 
