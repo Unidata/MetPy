@@ -418,7 +418,7 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
 @exporter.export
 @preprocess_xarray
 @check_units('[length]')
-def get_layer_heights(heights, depth, *args, **kwargs):
+def get_layer_heights(heights, depth, *args, bottom=None, interpolate=True, with_agl=False):
     """Return an atmospheric layer from upper air data with the requested bottom and depth.
 
     This function will subset an upper air dataset to contain only the specified layer using
@@ -447,10 +447,6 @@ def get_layer_heights(heights, depth, *args, **kwargs):
         The height and data variables of the layer
 
     """
-    bottom = kwargs.pop('bottom', None)
-    interpolate = kwargs.pop('interpolate', True)
-    with_agl = kwargs.pop('with_agl', False)
-
     # Make sure pressure and datavars are the same length
     for datavar in args:
         if len(heights) != len(datavar):
@@ -510,7 +506,8 @@ def get_layer_heights(heights, depth, *args, **kwargs):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]')
-def get_layer(pressure, *args, **kwargs):
+def get_layer(pressure, *args, heights=None, bottom=None, depth=100 * units.hPa,
+              interpolate=True):
     r"""Return an atmospheric layer from upper air data with the requested bottom and depth.
 
     This function will subset an upper air dataset to contain only the specified layer. The
@@ -544,12 +541,6 @@ def get_layer(pressure, *args, **kwargs):
         The pressure and data variables of the layer
 
     """
-    # Pop off keyword arguments
-    heights = kwargs.pop('heights', None)
-    bottom = kwargs.pop('bottom', None)
-    depth = kwargs.pop('depth', 100 * units.hPa)
-    interpolate = kwargs.pop('interpolate', True)
-
     # If we get the depth kwarg, but it's None, set it to the default as well
     if depth is None:
         depth = 100 * units.hPa

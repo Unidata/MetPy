@@ -1586,7 +1586,9 @@ def most_unstable_parcel(pressure, temperature, dewpoint, heights=None,
 @exporter.export
 @preprocess_xarray
 @check_units('[temperature]', '[pressure]', '[temperature]')
-def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwargs):
+def isentropic_interpolation(theta_levels, pressure, temperature, *args, axis=0,
+                             temperature_out=False, max_iters=50, eps=1e-6,
+                             bottom_up_search=True, **kwargs):
     r"""Interpolate data in isobaric coordinates to isentropic coordinates.
 
     Parameters
@@ -1597,17 +1599,6 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
         One-dimensional array of pressure levels
     temperature : array
         Array of temperature
-    args : array, optional
-        Any additional variables will be interpolated to each isentropic level.
-
-    Returns
-    -------
-    list
-        List with pressure at each isentropic level, followed by each additional
-        argument interpolated to isentropic coordinates.
-
-    Other Parameters
-    ----------------
     axis : int, optional
         The axis corresponding to the vertical in the temperature array, defaults to 0.
     temperature_out : bool, optional
@@ -1620,6 +1611,14 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
     bottom_up_search : bool, optional
         Controls whether to search for theta levels bottom-up, or top-down. Defaults to
         True, which is bottom-up search.
+    args : array, optional
+        Any additional variables will be interpolated to each isentropic level.
+
+    Returns
+    -------
+    list
+        List with pressure at each isentropic level, followed by each additional
+        argument interpolated to isentropic coordinates.
 
     Notes
     -----
@@ -1648,17 +1647,11 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, **kwarg
         fp = exner * (ka * t - a)
         return iter_log_p - (f / fp)
 
-    # Change when Python 2.7 no longer supported
-    # Pull out keyword arguments
-    temperature_out = kwargs.get('tmpk_out')
-    if temperature_out is not None:
+    # Remove block when tmpk_out is removed in 1.0
+    if 'tmpk_out' in kwargs:
+        temperature_out = kwargs.get('tmpk_out')
         warnings.warn('The use of "tmpk_out" has been deprecated in favor of'
                       '"temperature_out",', metpyDeprecation)
-    temperature_out = kwargs.pop('temperature_out', temperature_out)
-    max_iters = kwargs.pop('max_iters', 50)
-    eps = kwargs.pop('eps', 1e-6)
-    axis = kwargs.pop('axis', 0)
-    bottom_up_search = kwargs.pop('bottom_up_search', True)
 
     # Get dimensions in temperature
     ndim = temperature.ndim
@@ -1895,7 +1888,7 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]')
-def mixed_layer(p, *args, **kwargs):
+def mixed_layer(p, *args, heights=None, bottom=None, depth=100 * units.hPa, interpolate=True):
     r"""Mix variable(s) over a layer, yielding a mass-weighted average.
 
     This function will integrate a data variable with respect to pressure and determine the
@@ -1916,7 +1909,7 @@ def mixed_layer(p, *args, **kwargs):
         The thickness of the layer as a pressure or height above the bottom of the layer
         (default 100 hPa)
     interpolate : bool, optional
-        Interpolate the top and bottom points if they are not in the given data
+        Interpolate the top and bottom points if they are not in the given data (default True)
 
     Returns
     -------
@@ -1924,12 +1917,6 @@ def mixed_layer(p, *args, **kwargs):
         The mixed value of the data variable.
 
     """
-    # Pull out keyword arguments, remove when we drop Python 2.7
-    heights = kwargs.pop('heights', None)
-    bottom = kwargs.pop('bottom', None)
-    depth = kwargs.pop('depth', 100 * units.hPa)
-    interpolate = kwargs.pop('interpolate', True)
-
     layer = get_layer(p, *args, heights=heights, bottom=bottom,
                       depth=depth, interpolate=interpolate)
     p_layer = layer[0]
@@ -2014,7 +2001,8 @@ def moist_static_energy(heights, temperature, specific_humidity):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]')
-def thickness_hydrostatic(pressure, temperature, **kwargs):
+def thickness_hydrostatic(pressure, temperature, mixing=None,
+                          molecular_weight_ratio=mpconsts.epsilon, bottom=None, depth=None):
     r"""Calculate the thickness of a layer via the hypsometric equation.
 
     This thickness calculation uses the pressure and temperature profiles (and optionally
@@ -2057,11 +2045,6 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
     thickness_hydrostatic_from_relative_humidity, pressure_to_height_std, virtual_temperature
 
     """
-    mixing = kwargs.pop('mixing', None)
-    molecular_weight_ratio = kwargs.pop('molecular_weight_ratio', mpconsts.epsilon)
-    bottom = kwargs.pop('bottom', None)
-    depth = kwargs.pop('depth', None)
-
     # Get the data for the layer, conditional upon bottom/depth being specified and mixing
     # ratio being given
     if bottom is None and depth is None:
@@ -2088,7 +2071,7 @@ def thickness_hydrostatic(pressure, temperature, **kwargs):
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]')
 def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative_humidity,
-                                                 **kwargs):
+                                                 bottom=None, depth=None):
     r"""Calculate the thickness of a layer given pressure, temperature and relative humidity.
 
     Similar to ``thickness_hydrostatic``, this thickness calculation uses the pressure,
@@ -2131,8 +2114,6 @@ def thickness_hydrostatic_from_relative_humidity(pressure, temperature, relative
     mixing_ratio_from_relative_humidity
 
     """
-    bottom = kwargs.pop('bottom', None)
-    depth = kwargs.pop('depth', None)
     mixing = mixing_ratio_from_relative_humidity(relative_humidity, temperature, pressure)
 
     return thickness_hydrostatic(pressure, temperature, mixing=mixing, bottom=bottom,

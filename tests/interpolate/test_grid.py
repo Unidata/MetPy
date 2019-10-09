@@ -305,7 +305,7 @@ def test_interpolate_to_isosurface_from_below():
                       [340., 360., 380., 400., 420.],
                       [350., 370., 390., 410., 430.]]])
 
-    dt_thta = interpolate_to_isosurface(pv, thta, 2, from_below=False)
+    dt_thta = interpolate_to_isosurface(pv, thta, 2, bottom_up_search=False)
 
     truth = np.array([[330., 350., 370., 385., 400.],
                       [340., 359., 374., 389., 404.],

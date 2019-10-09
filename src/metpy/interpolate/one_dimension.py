@@ -1,4 +1,4 @@
-# Copyright (c) 2018 MetPy Developers.
+# Copyright (c) 2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Interpolate data along a single axis."""
@@ -50,7 +50,7 @@ def interpolate_nans_1d(x, y, kind='linear'):
 
 @exporter.export
 @preprocess_xarray
-def interpolate_1d(x, xp, *args, **kwargs):
+def interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan, return_list_always=False):
     r"""Interpolates data with any shape over a specified axis.
 
     Interpolation over a specified axis for arrays of any shape.
@@ -96,11 +96,6 @@ def interpolate_1d(x, xp, *args, **kwargs):
     xp and args must be the same shape.
 
     """
-    # Pull out keyword args
-    fill_value = kwargs.pop('fill_value', np.nan)
-    axis = kwargs.pop('axis', 0)
-    return_list_always = kwargs.pop('return_list_always', False)
-
     # Handle units
     x, xp = _strip_matching_units(x, xp)
 
@@ -180,7 +175,7 @@ def interpolate_1d(x, xp, *args, **kwargs):
 
 @exporter.export
 @preprocess_xarray
-def log_interpolate_1d(x, xp, *args, **kwargs):
+def log_interpolate_1d(x, xp, *args, axis=0, fill_value=np.nan):
     r"""Interpolates data with logarithmic x-scale over a specified axis.
 
     Interpolation on a logarithmic x-scale for interpolation values in pressure coordintates.
@@ -222,10 +217,6 @@ def log_interpolate_1d(x, xp, *args, **kwargs):
     xp and args must be the same shape.
 
     """
-    # Pull out kwargs
-    fill_value = kwargs.pop('fill_value', np.nan)
-    axis = kwargs.pop('axis', 0)
-
     # Handle units
     x, xp = _strip_matching_units(x, xp)
 

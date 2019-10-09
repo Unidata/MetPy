@@ -909,9 +909,8 @@ class Hodograph(object):
         This has been deprecated in 0.11 in favor of `intervals`.
 
         """
-        bounds = kwargs.pop('bounds', None)
-        if bounds is not None:
-            intervals = bounds
+        if 'bounds' in kwargs:
+            intervals = kwargs.pop('bounds')
             warnings.warn('The use of "bounds" as a parameter has been deprecated in '
                           'favor of "intervals",', metpyDeprecation)
 

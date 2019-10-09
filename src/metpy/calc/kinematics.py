@@ -45,9 +45,8 @@ def _check_and_flip(arr):
 def ensure_yx_order(func):
     """Wrap a function to ensure all array arguments are y, x ordered, based on kwarg."""
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, dim_order=None, **kwargs):
         # Check what order we're given
-        dim_order = kwargs.pop('dim_order', None)
         x_first = _is_x_first_dim(dim_order)
 
         # If x is the first dimension, flip (transpose) every array within the function args.

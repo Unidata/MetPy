@@ -69,7 +69,7 @@ def precipitable_water(dewpt, pressure, bottom=None, top=None):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]')
-def mean_pressure_weighted(pressure, *args, **kwargs):
+def mean_pressure_weighted(pressure, *args, heights=None, bottom=None, depth=None):
     r"""Calculate pressure-weighted mean of an arbitrary variable through a layer.
 
     Layer top and bottom specified in height or pressure.
@@ -99,9 +99,6 @@ def mean_pressure_weighted(pressure, *args, **kwargs):
         v_mean: v-component of layer mean wind.
 
     """
-    heights = kwargs.pop('heights', None)
-    bottom = kwargs.pop('bottom', None)
-    depth = kwargs.pop('depth', None)
     ret = []  # Returned variable means in layer
     layer_arg = get_layer(pressure, *args, heights=heights,
                           bottom=bottom, depth=depth)
