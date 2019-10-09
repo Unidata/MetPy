@@ -37,8 +37,7 @@ env:
     # Shapely dependency needed to keep from using Shapely's manylinux wheels
     # which use a different geos that what we build cartopy with on Travis
     # Codecov only works with coverage < 4.4
-    # Docutils 0.15 breaks sphinx 1.8.5 on Python 2.7
-    - EXTRA_PACKAGES="shapely<1.5.17.post1 coverage<4.4 docutils<0.15"
+    - EXTRA_PACKAGES="shapely<1.5.17.post1 coverage<4.4 docutils"
     - EXTRA_INSTALLS="test"
     - MPLLOCALFREETYPE="1"
     - TEST_OUTPUT_CONTROL="-s"
