@@ -375,7 +375,10 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     r"""Calculate the level of free convection (LFC).
 
     This works by finding the first intersection of the ideal parcel path and
-    the measured parcel temperature.
+    the measured parcel temperature. If this intersection occurs below the LCL,
+    the LFC is determined to be the same as the LCL, based upon the conditions
+    set forth in [USAF1990]_, pg 4-14, where a parcel must be lifted dry adiabatically
+    to saturation before it can freely rise.
 
     Parameters
     ----------
