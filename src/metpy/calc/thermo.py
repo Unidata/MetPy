@@ -310,7 +310,8 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
     r"""Calculate the lifted condensation level (LCL) using from the starting point.
 
     The starting state for the parcel is defined by `temperature`, `dewpt`,
-    and `pressure`.
+    and `pressure`. If these are arrays, this function will return a LCL
+    for every index. This function does work with surface grids as a result.
 
     Parameters
     ----------
@@ -356,14 +357,12 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
         return (p0 * (td / t) ** (1. / mpconsts.kappa)).m
 
     w = mixing_ratio(saturation_vapor_pressure(dewpt), pressure)
-    fp = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
-                        xtol=eps, maxiter=max_iters)
-    lcl_p = fp * pressure.units
+    lcl_p = so.fixed_point(_lcl_iter, pressure.m, args=(pressure.m, w, temperature),
+                           xtol=eps, maxiter=max_iters)
 
-    # Conditional needed due to precision error with np.log in dewpoint.
+    # np.isclose needed if surface is LCL due to precision error with np.log in dewpoint.
     # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
-    if np.isclose(lcl_p, pressure):
-        lcl_p = pressure
+    lcl_p = np.where(np.isclose(lcl_p, pressure), pressure, lcl_p) * pressure.units
 
     return lcl_p, dewpoint(vapor_pressure(lcl_p, w)).to(temperature.units)
 

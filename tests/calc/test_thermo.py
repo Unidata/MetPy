@@ -1415,3 +1415,15 @@ def test_lcl_convergence_issue():
     dewpoint = np.array([14.4, 11.7, 8.2, 7.8, 7.6]) * units.degC
     lcl_pressure, _ = lcl(pressure[0], temperature[0], dewpoint[0])
     assert_almost_equal(lcl_pressure, 990 * units.hPa, 0)
+
+
+def test_lcl_grid_surface_LCLs():
+    """Test surface grid where some values have LCLs at the surface."""
+    pressure = np.array([1000, 990, 1010]) * units.hPa
+    temperature = np.array([15, 14, 13]) * units.degC
+    dewpoint = np.array([15, 10, 13]) * units.degC
+    lcl_pressure, lcl_temperature = lcl(pressure, temperature, dewpoint)
+    pres_truth = np.array([1000, 932.1515324, 1010]) * units.hPa
+    temp_truth = np.array([15, 9.10391763, 13]) * units.degC
+    assert_array_almost_equal(lcl_pressure, pres_truth, 7)
+    assert_array_almost_equal(lcl_temperature, temp_truth, 7)
