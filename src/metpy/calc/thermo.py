@@ -375,7 +375,10 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     r"""Calculate the level of free convection (LFC).
 
     This works by finding the first intersection of the ideal parcel path and
-    the measured parcel temperature.
+    the measured parcel temperature. If this intersection occurs below the LCL,
+    the LFC is determined to be the same as the LCL, based upon the conditions
+    set forth in [USAF1990]_, pg 4-14, where a parcel must be lifted dry adiabatically
+    to saturation before it can freely rise.
 
     Parameters
     ----------
@@ -419,7 +422,7 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     # The parcel profile and data may have the same first data point.
     # If that is the case, ignore that point to get the real first
     # intersection for the LFC calculation. Use logarithmic interpolation.
-    if np.isclose(parcel_temperature_profile[0].m, temperature[0].m):
+    if np.isclose(parcel_temperature_profile[0].to(temperature.units).m, temperature[0].m):
         x, y = find_intersections(pressure[1:], parcel_temperature_profile[1:],
                                   temperature[1:], direction='increasing', log_x=True)
     else:
@@ -1472,6 +1475,9 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     cin = (mpconsts.Rd
            * (np.trapz(y_clipped, np.log(x_clipped)) * units.degK)).to(units('J/kg'))
 
+    # Set CIN to 0 if it's returned as a positive value (#1190)
+    if cin > 0 * units('J/kg'):
+        cin = 0 * units('J/kg')
     return cape, cin
 
 
