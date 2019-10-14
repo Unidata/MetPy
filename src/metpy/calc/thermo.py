@@ -11,7 +11,7 @@ import numpy as np
 import scipy.integrate as si
 import scipy.optimize as so
 
-from .tools import (_greater_or_close, _less_or_close, find_bounding_indices,
+from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_bounding_indices,
                     find_intersections, first_derivative, get_layer)
 from .. import constants as mpconsts
 from ..cbook import broadcast_indices
@@ -410,6 +410,7 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     parcel_profile
 
     """
+    pressure, temperature, dewpt = _remove_nans(pressure, temperature, dewpt)
     # Default to surface parcel if no profile or starting pressure level is given
     if parcel_temperature_profile is None:
         new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpt)
@@ -517,6 +518,7 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     parcel_profile
 
     """
+    pressure, temperature, dewpt = _remove_nans(pressure, temperature, dewpt)
     # Default to surface parcel if no profile or starting pressure level is given
     if parcel_temperature_profile is None:
         new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpt)
@@ -1433,6 +1435,8 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
     lfc, el
 
     """
+    pressure, temperature, dewpt, parcel_profile = _remove_nans(pressure, temperature, dewpt,
+                                                                parcel_profile)
     # Calculate LFC limit of integration
     lfc_pressure, _ = lfc(pressure, temperature, dewpt,
                           parcel_temperature_profile=parcel_profile)
@@ -1763,6 +1767,7 @@ def surface_based_cape_cin(pressure, temperature, dewpoint):
     cape_cin, parcel_profile
 
     """
+    pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     p, t, td, profile = parcel_profile_with_lcl(pressure, temperature, dewpoint)
     return cape_cin(p, t, td, profile)
 
@@ -1800,6 +1805,7 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     cape_cin, most_unstable_parcel, parcel_profile
 
     """
+    pressure, temperature, dewpoint = _remove_nans(pressure, temperature, dewpoint)
     _, _, _, parcel_idx = most_unstable_parcel(pressure, temperature, dewpoint, **kwargs)
     p, t, td, mu_profile = parcel_profile_with_lcl(pressure[parcel_idx:],
                                                    temperature[parcel_idx:],

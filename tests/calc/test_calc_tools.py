@@ -1,4 +1,4 @@
-# Copyright (c) 2016,2017,2018 MetPy Developers.
+# Copyright (c) 2016,2017,2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `tools` module."""
@@ -19,7 +19,7 @@ from metpy.calc import (angle_to_direction, find_bounding_indices, find_intersec
                         reduce_point_density, resample_nn_1d, second_derivative)
 from metpy.calc.tools import (_delete_masked_points, _get_bound_pressure_height,
                               _greater_or_close, _less_or_close, _next_non_masked_element,
-                              BASE_DEGREE_MULTIPLIER, DIR_STRS, UND)
+                              _remove_nans, BASE_DEGREE_MULTIPLIER, DIR_STRS, UND)
 from metpy.deprecation import MetpyDeprecationWarning
 from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
                            check_and_silence_deprecation)
@@ -1190,3 +1190,14 @@ def test_gradient_xarray_pint_conversion(test_da_xy):
 
     assert_array_almost_equal(deriv_x, truth_x, 12)
     assert_array_almost_equal(deriv_y, truth_y, 12)
+
+
+def test_remove_nans():
+    """Test removal of NaNs."""
+    x = np.array([3, 2, np.nan, 5, 6, np.nan])
+    y = np.arange(0, len(x))
+    y_test, x_test = _remove_nans(y, x)
+    x_expected = np.array([3, 2, 5, 6])
+    y_expected = np.array([0, 1, 3, 4])
+    assert_array_almost_equal(x_expected, x_test, 0)
+    assert_almost_equal(y_expected, y_test, 0)
