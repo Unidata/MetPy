@@ -1,4 +1,4 @@
-# Copyright (c) 2015,2016,2017 MetPy Developers.
+# Copyright (c) 2015,2016,2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools to process GINI-formatted products."""
@@ -19,7 +19,10 @@ import numpy as np
 try:
     from xarray import Variable
     from xarray.backends.common import AbstractDataStore
-    from xarray.core.utils import FrozenOrderedDict
+    try:
+        from xarray.core.utils import FrozenDict
+    except ImportError:
+        from xarray.core.utils import FrozenOrderedDict as FrozenDict
 except ImportError:
     # This way GiniFile is still usable without xarray
     AbstractDataStore = object
@@ -403,7 +406,7 @@ class GiniFile(AbstractDataStore):
                             attrs=attrs)
         variables.append((name, data_var))
 
-        return FrozenOrderedDict(variables)
+        return FrozenDict(variables)
 
     def get_attrs(self):
         """Get the global attributes.
@@ -411,8 +414,8 @@ class GiniFile(AbstractDataStore):
         This is used by `xarray.open_dataset`.
 
         """
-        return FrozenOrderedDict(satellite=self.prod_desc.creating_entity,
-                                 sector=self.prod_desc.sector_id)
+        return FrozenDict(satellite=self.prod_desc.creating_entity,
+                          sector=self.prod_desc.sector_id)
 
     def get_dimensions(self):
         """Get the file's dimensions.
@@ -420,4 +423,4 @@ class GiniFile(AbstractDataStore):
         This is used by `xarray.open_dataset`.
 
         """
-        return FrozenOrderedDict(x=self.prod_desc.nx, y=self.prod_desc.ny)
+        return FrozenDict(x=self.prod_desc.nx, y=self.prod_desc.ny)
