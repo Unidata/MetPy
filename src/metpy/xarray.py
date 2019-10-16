@@ -428,11 +428,10 @@ class MetPyDatasetAccessor(object):
         from .plots.mapping import CFProjection
 
         if varname is None:
-            # If no varname is given, parse the entire dataset
-            return self._dataset.apply(lambda da: self.parse_cf(da.name,
-                                                                coordinates=coordinates),
-                                       keep_attrs=True)
-        elif iterable(varname) and not is_string_like(varname):
+            # If no varname is given, parse all variables in the dataset
+            varname = list(self._dataset.data_vars)
+
+        if iterable(varname) and not is_string_like(varname):
             # If non-string iterable is given, apply recursively across the varnames
             subset = xr.merge([self.parse_cf(single_varname, coordinates=coordinates)
                                for single_varname in varname])
