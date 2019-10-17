@@ -32,8 +32,8 @@ Moist Thermodynamics
       :toctree: ./
 
       dewpoint
+      dewpoint_from_relative_humidity
       dewpoint_from_specific_humidity
-      dewpoint_rh
       equivalent_potential_temperature
       mixing_ratio
       mixing_ratio_from_relative_humidity
@@ -196,6 +196,7 @@ Do not use these functions in new code, please see their documentation for their
    .. autosummary::
       :toctree: ./
 
+      dewpoint_rh
       get_wind_components
       get_wind_dir
       get_wind_speed

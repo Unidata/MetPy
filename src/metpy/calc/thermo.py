@@ -15,7 +15,7 @@ from .tools import (_greater_or_close, _less_or_close, _remove_nans, find_boundi
                     find_intersections, first_derivative, get_layer)
 from .. import constants as mpconsts
 from ..cbook import broadcast_indices
-from ..deprecation import metpyDeprecation
+from ..deprecation import deprecated, metpyDeprecation
 from ..interpolate.one_dimension import interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
@@ -741,7 +741,7 @@ def saturation_vapor_pressure(temperature):
 @exporter.export
 @preprocess_xarray
 @check_units('[temperature]', '[dimensionless]')
-def dewpoint_rh(temperature, rh):
+def dewpoint_from_relative_humidity(temperature, rh):
     r"""Calculate the ambient dewpoint given air temperature and relative humidity.
 
     Parameters
@@ -768,6 +768,22 @@ def dewpoint_rh(temperature, rh):
 
 @exporter.export
 @preprocess_xarray
+@deprecated('0.12', addendum=(' This function has been renamed '
+                              'dewpoint_from_relative_humidity.'),
+            pending=False)
+def dewpoint_rh(temperature, rh):
+    """Wrap dewpoint_from_relative_humidity for deprecated dewpoint_rh function."""
+    return dewpoint_from_relative_humidity(temperature, rh)
+
+
+dewpoint_rh.__doc__ = (dewpoint_from_relative_humidity.__doc__
+                       + '\n    .. deprecated:: 0.12.0\n        Function has been renamed to'
+                         ' `dewpoint_from_relative_humidity` and will be removed from MetPy '
+                         'in 1.0.0.')
+
+
+@exporter.export
+@preprocess_xarray
 @check_units('[pressure]')
 def dewpoint(e):
     r"""Calculate the ambient dewpoint given the vapor pressure.
@@ -784,7 +800,7 @@ def dewpoint(e):
 
     See Also
     --------
-    dewpoint_rh, saturation_vapor_pressure, vapor_pressure
+    dewpoint_from_relative_humidity, saturation_vapor_pressure, vapor_pressure
 
     Notes
     -----
@@ -2353,12 +2369,12 @@ def dewpoint_from_specific_humidity(specific_humidity, temperature, pressure):
 
     See Also
     --------
-    relative_humidity_from_mixing_ratio, dewpoint_rh
+    relative_humidity_from_mixing_ratio, dewpoint_from_relative_humidity
 
     """
-    return dewpoint_rh(temperature, relative_humidity_from_specific_humidity(specific_humidity,
-                                                                             temperature,
-                                                                             pressure))
+    return dewpoint_from_relative_humidity(temperature,
+                                           relative_humidity_from_specific_humidity(
+                                               specific_humidity, temperature, pressure))
 
 
 @exporter.export

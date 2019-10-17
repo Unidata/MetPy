@@ -9,8 +9,8 @@ import xarray as xr
 
 from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared,
                         brunt_vaisala_period, cape_cin, density, dewpoint,
-                        dewpoint_from_specific_humidity, dewpoint_rh,
-                        dry_lapse, dry_static_energy, el,
+                        dewpoint_from_relative_humidity, dewpoint_from_specific_humidity,
+                        dewpoint_rh, dry_lapse, dry_static_energy, el,
                         equivalent_potential_temperature,
                         exner_function, isentropic_interpolation, lcl, lfc, mixed_layer,
                         mixed_parcel, mixing_ratio, mixing_ratio_from_relative_humidity,
@@ -198,8 +198,9 @@ def test_sat_vapor_pressure_fahrenheit():
     assert_array_almost_equal(saturation_vapor_pressure(temp), real_es, 4)
 
 
-def test_basic_dewpoint_rh():
-    """Test dewpoint_rh function."""
+@check_and_silence_deprecation
+def test_deprecated_dewpoint_rh():
+    """Test deprecated dewpoint_rh function."""
     temp = np.array([30., 25., 10., 20., 25.]) * units.degC
     rh = np.array([30., 45., 55., 80., 85.]) / 100.
 
@@ -207,22 +208,31 @@ def test_basic_dewpoint_rh():
     assert_array_almost_equal(real_td, dewpoint_rh(temp, rh), 0)
 
 
-def test_scalar_dewpoint_rh():
-    """Test dewpoint_rh with scalar values."""
-    td = dewpoint_rh(10.6 * units.degC, 0.37)
+def test_basic_dewpoint_from_relative_humidity():
+    """Test dewpoint_from_relative_humidity function."""
+    temp = np.array([30., 25., 10., 20., 25.]) * units.degC
+    rh = np.array([30., 45., 55., 80., 85.]) / 100.
+
+    real_td = np.array([11, 12, 1, 16, 22]) * units.degC
+    assert_array_almost_equal(real_td, dewpoint_from_relative_humidity(temp, rh), 0)
+
+
+def test_scalar_dewpoint_from_relative_humidity():
+    """Test dewpoint_from_relative_humidity with scalar values."""
+    td = dewpoint_from_relative_humidity(10.6 * units.degC, 0.37)
     assert_almost_equal(td, 26. * units.degF, 0)
 
 
-def test_percent_dewpoint_rh():
-    """Test dewpoint_rh with rh in percent."""
-    td = dewpoint_rh(10.6 * units.degC, 37 * units.percent)
+def test_percent_dewpoint_from_relative_humidity():
+    """Test dewpoint_from_relative_humidity with rh in percent."""
+    td = dewpoint_from_relative_humidity(10.6 * units.degC, 37 * units.percent)
     assert_almost_equal(td, 26. * units.degF, 0)
 
 
-def test_warning_dewpoint_rh():
+def test_warning_dewpoint_from_relative_humidity():
     """Test that warning is raised for >120% RH."""
     with pytest.warns(UserWarning):
-        dewpoint_rh(10.6 * units.degC, 50)
+        dewpoint_from_relative_humidity(10.6 * units.degC, 50)
 
 
 def test_dewpoint():
