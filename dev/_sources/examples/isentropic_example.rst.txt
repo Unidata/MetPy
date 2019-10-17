@@ -145,7 +145,7 @@ and v wind components) will be linearly interpolated to isentropic space.
 
  .. code-block:: none
 
-    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/calc/thermo.py:1628: MetpyDeprecationWarning: The use of "tmpk_out" has been deprecated in favor of"temperature_out",
+    /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/calc/thermo.py:1643: MetpyDeprecationWarning: The use of "tmpk_out" has been deprecated in favor of"temperature_out",
       '"temperature_out",', metpyDeprecation)
     /home/travis/virtualenv/python3.7.1/lib/python3.7/site-packages/metpy/interpolate/one_dimension.py:154: UserWarning: Interpolation point out of data bounds encountered
       warnings.warn('Interpolation point out of data bounds encountered')
@@ -360,7 +360,7 @@ calculated with `mpcalc.montgomery_streamfunction`.
 
 .. rst-class:: sphx-glr-timing
 
-   **Total running time of the script:** ( 0 minutes  14.573 seconds)
+   **Total running time of the script:** ( 0 minutes  15.064 seconds)
 
 
 .. _sphx_glr_download_examples_isentropic_example.py:

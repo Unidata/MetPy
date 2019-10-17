@@ -8,7 +8,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>SkewT &mdash; MetPy 0.10.0</title>
+  <title>SkewT &mdash; MetPy 0.11.0</title>
   
 
   
@@ -43,7 +43,7 @@
         <link rel="index" title="Index"
               href="../../genindex.html"/>
         <link rel="search" title="Search" href="../../search.html"/>
-    <link rel="top" title="MetPy 0.10.0" href="../../index.html"/>
+    <link rel="top" title="MetPy 0.11.0" href="../../index.html"/>
         <link rel="up" title="plots" href="metpy.plots.html"/>
         <link rel="next" title="StationPlot" href="metpy.plots.StationPlot.html"/>
         <link rel="prev" title="Plots2D" href="metpy.plots.Plots2D.html"/> 
@@ -81,7 +81,7 @@
                 
                   <div class="version-dropdown">
                     <select class="version-list" id="version-list">
-                      <option value=''>0.10.0</option>
+                      <option value=''>0.11.0</option>
                       
                         
                           <option value="../latest">latest</option>
@@ -121,7 +121,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
@@ -264,7 +265,7 @@ plot functions (e.g. <em class="xref py py-obj">axvline</em>)</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fig</strong> (<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.1.1)"><em>matplotlib.figure.Figure</em></a><em>, </em><em>optional</em>) – Source figure to use for plotting. If none is given, a new
 <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.figure.Figure</span></code></a> instance will be created.</p></li>
-<li><p><strong>rotation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Controls the rotation of temperature relative to horizontal. Given
+<li><p><strong>rotation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Controls the rotation of temperature relative to horizontal. Given
 in degrees counterclockwise from x-axis. Defaults to 30 degrees.</p></li>
 <li><p><strong>subplot</strong> (tuple[int, int, int] or <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.gridspec.SubplotSpec.html#matplotlib.gridspec.SubplotSpec" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.gridspec.SubplotSpec</span></code></a> instance, optional) – Controls the size/position of the created subplot. This allows creating
 the skewT as part of a collection of subplots. If subplot is a tuple, it
@@ -272,9 +273,9 @@ should conform to the specification used for
 <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.add_subplot" title="(in Matplotlib v3.1.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.figure.Figure.add_subplot()</span></code></a>. The
 <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.gridspec.SubplotSpec.html#matplotlib.gridspec.SubplotSpec" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.gridspec.SubplotSpec</span></code></a>
 can be created by using <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.gridspec.GridSpec.html#matplotlib.gridspec.GridSpec" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.gridspec.GridSpec</span></code></a>.</p></li>
-<li><p><strong>rect</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – Rectangle (left, bottom, width, height) in which to place the axes. This
+<li><p><strong>rect</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – Rectangle (left, bottom, width, height) in which to place the axes. This
 allows the user to place the axes at an arbitrary point on the figure.</p></li>
-<li><p><strong>aspect</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, or </em><em>'auto'</em><em>, </em><em>optional</em>) – Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
+<li><p><strong>aspect</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, or </em><em>'auto'</em><em>, </em><em>optional</em>) – Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
 Defaults to 80.5. Passing the string <code class="docutils literal notranslate"><span class="pre">'auto'</span></code> tells matplotlib to handle
 the aspect ratio automatically (this is not recommended for SkewT).</p></li>
 </ul>
@@ -326,7 +327,7 @@ the aspect ratio automatically (this is not recommended for SkewT).</p></li>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>fig</strong> (<a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.1.1)"><em>matplotlib.figure.Figure</em></a><em>, </em><em>optional</em>) – Source figure to use for plotting. If none is given, a new
 <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.figure.Figure</span></code></a> instance will be created.</p></li>
-<li><p><strong>rotation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – Controls the rotation of temperature relative to horizontal. Given
+<li><p><strong>rotation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – Controls the rotation of temperature relative to horizontal. Given
 in degrees counterclockwise from x-axis. Defaults to 30 degrees.</p></li>
 <li><p><strong>subplot</strong> (tuple[int, int, int] or <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.gridspec.SubplotSpec.html#matplotlib.gridspec.SubplotSpec" title="(in Matplotlib v3.1.1)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">matplotlib.gridspec.SubplotSpec</span></code></a> instance, optional) – Controls the size/position of the created subplot. This allows creating
 the skewT as part of a collection of subplots. If subplot is a tuple, it
@@ -334,9 +335,9 @@ should conform to the specification used for
 <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.figure.Figure.html#matplotlib.figure.Figure.add_subplot" title="(in Matplotlib v3.1.1)"><code class="xref py py-meth docutils literal notranslate"><span class="pre">matplotlib.figure.Figure.add_subplot()</span></code></a>. The
 <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.gridspec.SubplotSpec.html#matplotlib.gridspec.SubplotSpec" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.gridspec.SubplotSpec</span></code></a>
 can be created by using <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.gridspec.GridSpec.html#matplotlib.gridspec.GridSpec" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.gridspec.GridSpec</span></code></a>.</p></li>
-<li><p><strong>rect</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – Rectangle (left, bottom, width, height) in which to place the axes. This
+<li><p><strong>rect</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a><em>[</em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>]</em><em>, </em><em>optional</em>) – Rectangle (left, bottom, width, height) in which to place the axes. This
 allows the user to place the axes at an arbitrary point on the figure.</p></li>
-<li><p><strong>aspect</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, or </em><em>'auto'</em><em>, </em><em>optional</em>) – Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
+<li><p><strong>aspect</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, or </em><em>'auto'</em><em>, </em><em>optional</em>) – Aspect ratio (i.e. ratio of y-scale to x-scale) to maintain in the plot.
 Defaults to 80.5. Passing the string <code class="docutils literal notranslate"><span class="pre">'auto'</span></code> tells matplotlib to handle
 the aspect ratio automatically (this is not recommended for SkewT).</p></li>
 </ul>
@@ -383,11 +384,11 @@ barbs in a vertical line, located as a function of pressure.</p>
 <li><p><strong>u</strong> (<em>array_like</em>) – U (East-West) component of wind</p></li>
 <li><p><strong>v</strong> (<em>array_like</em>) – V (North-South) component of wind</p></li>
 <li><p><strong>c</strong> – An optional array used to map colors to the barbs</p></li>
-<li><p><strong>xloc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Position for the barbs, in normalized axes coordinates, where 0.0
+<li><p><strong>xloc</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>optional</em>) – Position for the barbs, in normalized axes coordinates, where 0.0
 denotes far left and 1.0 denotes far right. Defaults to far right.</p></li>
-<li><p><strong>x_clip_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Space, in normalized axes coordinates, to leave before clipping
+<li><p><strong>x_clip_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>optional</em>) – Space, in normalized axes coordinates, to leave before clipping
 wind barbs in the x-direction. Defaults to 0.1.</p></li>
-<li><p><strong>y_clip_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Space, in normalized axes coordinates, to leave above/below plot
+<li><p><strong>y_clip_radius</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>optional</em>) – Space, in normalized axes coordinates, to leave above/below plot
 before clipping wind barbs in the y-direction. Defaults to 0.08.</p></li>
 <li><p><strong>plot_units</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pint.unit</span></code>) – Units to plot in (performing conversion if necessary). Defaults to given units.</p></li>
 <li><p><strong>kwargs</strong> – Other keyword arguments to pass to <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.barbs.html#matplotlib.pyplot.barbs" title="(in Matplotlib v3.1.1)"><code class="xref py py-func docutils literal notranslate"><span class="pre">barbs()</span></code></a></p></li>
@@ -620,8 +621,8 @@ buoyancy.</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, MetPy Developers.
-      Last updated on Sep 30, 2019 at 14:05:22.
+        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
+      Last updated on Oct 17, 2019 at 22:26:15.
 
     </p>
   </div>
@@ -658,7 +659,7 @@ buoyancy.</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.10.0.post299+ga31af23',
+            VERSION:'0.11.0.post28+g8c1ca0a',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',
