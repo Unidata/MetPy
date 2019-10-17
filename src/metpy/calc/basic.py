@@ -101,9 +101,9 @@ def wind_direction(u, v, convention='from'):
         raise KeyError('Invalid kwarg for "convention". Valid options are "from" or "to".')
 
     wdir[wdir <= 0] += 360. * units.deg
-    # Need to be able to handle array-like u and v (with or without units)
+    # avoid unintended modification of `pint.Quantity` by direct use of magnitude
+    calm_mask = (np.asarray(u.magnitude) == 0.) & (np.asarray(v.magnitude) == 0.)
     # np.any check required for legacy numpy which treats 0-d False boolean index as zero
-    calm_mask = (np.asarray(u) == 0.) & (np.asarray(v) == 0.)
     if np.any(calm_mask):
         wdir[calm_mask] = 0. * units.deg
     return wdir.reshape(origshape).to('degrees')
