@@ -4,5 +4,19 @@
 """Setup script for installing MetPy."""
 
 from setuptools import setup
+import sys
+
+if sys.version < (3, 4):
+    error = """
+    MetPy v0.12 and greater requires the Python 3.6 or above.
+    If you're using Python 2.7, please install MetPy v0.11.1,
+    which is the last release of MetPy that supports Python 2.7, 
+    but it is no longer maintained.
+    
+    Python {py} detected.
+    """.format(py='.'.join([str(v) for v in sys.version_info[:3]]))
+
+    print(error)
+    sys.exit(1)
 
 setup(use_scm_version={'version_scheme': 'post-release'})
