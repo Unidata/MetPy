@@ -45,7 +45,7 @@ Other items:
 * Each pull request should consist of a logical collection of changes. You can
   include multiple bug fixes in a single pull request, but they should be related.
   For unrelated changes, please submit multiple pull requests.
-* Do not commit changes to files that are irrelevant to your feature or bugfix
+* Do not commit changes to files that are irrelevant to your feature or bug fix
   (eg: .gitignore).
 * Be willing to accept criticism and work on improving your code; we don't want
   to break other users' code, so care must be taken not to introduce bugs.
@@ -263,8 +263,8 @@ couple of days. We may suggest some changes or improvements or alternatives.
 Some things that will increase the chance that your pull request is accepted quickly:
 
 * Write tests.
-* Follow [PEP8][https://pep8.org] for style. (The `flake8` utility can help with this.)
-* Write a [good commit message][https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html].
+* Follow [PEP8](https://pep8.org) for style. (The `flake8` utility can help with this.)
+* Write a [good commit message](https://tbaggery.com/2008/04/19/a-note-about-git-commit-messages.html).
 
 Pull requests will automatically have tests run by Travis. This includes
 running both the unit tests as well as the `flake8` code linter.
@@ -273,7 +273,7 @@ running both the unit tests as well as the `flake8` code linter.
 Once we're all happy with the pull request, it's time for it to get merged in. Only the
 maintainers can merge pull requests and you should never merge a pull request you have commits
 on as it circumvents the code review. If this is your first or second pull request, we'll
-likely help by rebasing and cleaning up the commit history for you. As your developement skills
+likely help by rebasing and cleaning up the commit history for you. As your development skills
 increase, we'll help you learn how to do this.
 
 
@@ -285,7 +285,7 @@ other ways, feel free to contact us:
 * [Unidata's Python support address](mailto:support-python@unidata.ucar.edu)
 * [python-users](https://www.unidata.ucar.edu/support/#mailinglists) mailing list
 
-## Futher Reading
+## Further Reading
 There are a ton of great resources out there on contributing to open source and on the
 importance of writing tested and maintainable software.
 * [GitHub's Contributing to Open Source Guide](https://guides.github.com/activities/contributing-to-open-source/)
