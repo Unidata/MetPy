@@ -19,7 +19,6 @@ import numpy.ma as ma
 from scipy.spatial import cKDTree
 import xarray as xr
 
-from . import height_to_pressure_std, pressure_to_height_std
 from ..cbook import broadcast_indices, result_type
 from ..deprecation import deprecated, metpyDeprecation
 from ..interpolate.one_dimension import interpolate_1d, interpolate_nans_1d, log_interpolate_1d
@@ -356,6 +355,8 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
         The bound pressure and height.
 
     """
+    # avoid circular import if basic.py ever imports something from tools.py
+    from .basic import height_to_pressure_std, pressure_to_height_std
     # Make sure pressure is monotonically decreasing
     sort_inds = np.argsort(pressure)[::-1]
     pressure = pressure[sort_inds]
