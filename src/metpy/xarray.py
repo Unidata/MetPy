@@ -88,7 +88,7 @@ log = logging.getLogger(__name__)
 
 
 @xr.register_dataarray_accessor('metpy')
-class MetPyDataArrayAccessor(object):
+class MetPyDataArrayAccessor:
     r"""Provide custom attributes and methods on xarray DataArrays for MetPy functionality.
 
     This accessor provides several convenient attributes and methods through the `.metpy`
@@ -353,7 +353,7 @@ class MetPyDataArrayAccessor(object):
             raise ValueError('Given axis is not valid. Must be an axis number, a dimension '
                              'coordinate name, or a standard axis type.')
 
-    class _LocIndexer(object):
+    class _LocIndexer:
         """Provide the unit-wrapped .loc indexer for data arrays."""
 
         def __init__(self, data_array):
@@ -387,7 +387,7 @@ class MetPyDataArrayAccessor(object):
 
 
 @xr.register_dataset_accessor('metpy')
-class MetPyDatasetAccessor(object):
+class MetPyDatasetAccessor:
     """Provide custom attributes and methods on XArray Datasets for MetPy functionality.
 
     This accessor provides parsing of CF metadata and unit-/coordinate-type-aware selection.
@@ -485,7 +485,7 @@ class MetPyDatasetAccessor(object):
                         new_data_array.metpy.unit_array = scaled_vals.to('meters')
                         var.coords[coord_name] = new_data_array
 
-    class _LocIndexer(object):
+    class _LocIndexer:
         """Provide the unit-wrapped .loc indexer for datasets."""
 
         def __init__(self, dataset):

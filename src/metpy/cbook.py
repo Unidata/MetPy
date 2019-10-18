@@ -39,7 +39,7 @@ def get_test_data(fname, as_file_obj=True):
     return path
 
 
-class Registry(object):
+class Registry:
     """Provide a generic function registry.
 
     This provides a class to instantiate, which then has a `register` method that can

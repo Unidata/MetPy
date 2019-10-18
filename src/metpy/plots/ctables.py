@@ -132,7 +132,7 @@ class ColortableRegistry(dict):
         if key == 'viridis':
             warnings.warn('Viridis has been deprecated in v0.11. Please use '
                           "matplotlib's 'viridis'.", metpyDeprecation)
-        return super(ColortableRegistry, self).__getitem__(key)
+        return super().__getitem__(key)
 
     def scan_resource(self, pkg, path):
         r"""Scan a resource directory for colortable files and add them to the registry.

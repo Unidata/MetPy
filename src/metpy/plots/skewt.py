@@ -47,7 +47,7 @@ class SkewTTransform(transforms.Affine2D):
         to register it as a child so that the transform is invalidated and regenerated if
         the bounding box changes.
         """
-        super(transforms.Affine2D, self).__init__()
+        super().__init__()
         self._bbox = bbox
         self.set_children(bbox)
         self.invalidate()
@@ -100,7 +100,7 @@ class SkewXTick(maxis.XTick):
             self.tick2line.set_visible(self.tick2line.get_visible() and self.upper_in_bounds)
             self.label2.set_visible(self.label2.get_visible() and self.upper_in_bounds)
             self.gridline.set_visible(self.gridline.get_visible() and self.grid_in_bounds)
-            super(SkewXTick, self).draw(renderer)
+            super().draw(renderer)
 
     @property
     def lower_in_bounds(self):
@@ -189,7 +189,7 @@ class SkewXAxes(Axes):
         """
         # This needs to be popped and set before moving on
         self.rot = kwargs.pop('rotation', 30)
-        super(Axes, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     def _init_axis(self):
         # Taken from Axes and modified to use our modified X-axis
@@ -216,7 +216,7 @@ class SkewXAxes(Axes):
 
         """
         # Get the standard transform setup from the Axes base class
-        super(Axes, self)._set_lim_and_transforms()
+        super()._set_lim_and_transforms()
 
         # This transformation handles the skewing
         skew_trans = SkewTTransform(self.bbox, self.rot)

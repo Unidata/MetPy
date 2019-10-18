@@ -46,7 +46,7 @@ class NamedStruct(Struct):
             elif not i[0]:  # Skip items with no name
                 conv_off += 1
         self._tuple = namedtuple(tuple_name, ' '.join(n for n in names if n))
-        super(NamedStruct, self).__init__(prefmt + ''.join(f for f in fmts if f))
+        super().__init__(prefmt + ''.join(f for f in fmts if f))
 
     def _create(self, items):
         if self.converters:
@@ -63,11 +63,11 @@ class NamedStruct(Struct):
 
     def unpack(self, s):
         """Parse bytes and return a namedtuple."""
-        return self._create(super(NamedStruct, self).unpack(s))
+        return self._create(super().unpack(s))
 
     def unpack_from(self, buff, offset=0):
         """Read bytes from a buffer and return as a namedtuple."""
-        return self._create(super(NamedStruct, self).unpack_from(buff, offset))
+        return self._create(super().unpack_from(buff, offset))
 
     def unpack_file(self, fobj):
         """Unpack the next bytes from a file object."""
@@ -86,18 +86,18 @@ class DictStruct(Struct):
         # Remove empty names
         self._names = [n for n in names if n]
 
-        super(DictStruct, self).__init__(prefmt + ''.join(f for f in formats if f))
+        super().__init__(prefmt + ''.join(f for f in formats if f))
 
     def _create(self, items):
         return dict(zip(self._names, items))
 
     def unpack(self, s):
         """Parse bytes and return a namedtuple."""
-        return self._create(super(DictStruct, self).unpack(s))
+        return self._create(super().unpack(s))
 
     def unpack_from(self, buff, offset=0):
         """Unpack the next bytes from a file object."""
-        return self._create(super(DictStruct, self).unpack_from(buff, offset))
+        return self._create(super().unpack_from(buff, offset))
 
 
 class Enum(object):

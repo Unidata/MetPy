@@ -1,4 +1,4 @@
-# Copyright (c) 2015,2017 MetPy Developers.
+# Copyright (c) 2015,2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Module to provide unit support.
@@ -321,14 +321,14 @@ except (AttributeError, RuntimeError, ImportError):  # Pint's not available, try
 
         def __init__(self, units):
             """Set the default label to the pretty-print of the unit."""
-            super(PintAxisInfo, self).__init__(label='{:P}'.format(units))
+            super().__init__(label='{:P}'.format(units))
 
     class PintConverter(munits.ConversionInterface):
         """Implement support for pint within matplotlib's unit conversion framework."""
 
         def __init__(self, registry):
             """Initialize converter for pint units."""
-            super(PintConverter, self).__init__()
+            super().__init__()
             self._reg = registry
 
         def convert(self, value, unit, axis):

@@ -1,4 +1,4 @@
-# Copyright (c) 2015 MetPy Developers.
+# Copyright (c) 2015,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Collection of tools for managing the package."""
@@ -10,7 +10,7 @@
 __all__ = ('Exporter',)
 
 
-class Exporter(object):
+class Exporter:
     """Manages exporting of symbols from the module.
 
     Grabs a reference to `globals()` for a module and provides a decorator to add

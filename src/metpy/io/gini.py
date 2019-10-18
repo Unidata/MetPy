@@ -375,7 +375,7 @@ class GiniFile(AbstractDataStore):
         This function will be called anytime variables or attributes
         are requested, so care should be taken to make sure its fast.
         """
-        return super(GiniFile, self).load()
+        return super().load()
 
     def get_variables(self):
         """Get all variables in the file.
