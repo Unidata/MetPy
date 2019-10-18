@@ -121,7 +121,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
@@ -244,12 +245,12 @@
 <code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">second_derivative</code><span class="sig-paren">(</span><em class="sig-param">f</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/tools.html#second_derivative"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.second_derivative" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the second derivative of a grid of values.</p>
 <p>Works for both regularly-spaced data and grids with varying spacing.</p>
-<p>Either <em class="xref py py-obj">x</em> or <em class="xref py py-obj">delta</em> must be specified, or <em class="xref py py-obj">f</em> must be given as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.13.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
-attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.13.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, and <em class="xref py py-obj">x</em> or
+<p>Either <em class="xref py py-obj">x</em> or <em class="xref py py-obj">delta</em> must be specified, or <em class="xref py py-obj">f</em> must be given as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a> with
+attached coordinate and projection information. If <em class="xref py py-obj">f</em> is an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>, and <em class="xref py py-obj">x</em> or
 <em class="xref py py-obj">delta</em> are given, <em class="xref py py-obj">f</em> will be converted to a <em class="xref py py-obj">pint.Quantity</em> and the derivative returned
 as a <em class="xref py py-obj">pint.Quantity</em>, otherwise, if neither <em class="xref py py-obj">x</em> nor <em class="xref py py-obj">delta</em> are given, the attached
 coordinate information belonging to <em class="xref py py-obj">axis</em> will be used and the derivative will be returned
-as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.13.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
+as an <a class="reference external" href="https://xarray.pydata.org/en/stable/generated/xarray.DataArray.html#xarray.DataArray" title="(in xarray v0.14.0)"><code class="xref py py-obj docutils literal notranslate"><span class="pre">xarray.DataArray</span></code></a>.</p>
 <p>This uses 3 points to calculate the derivative, using forward or backward at the edges of
 the grid as appropriate, and centered elsewhere. The irregular spacing is handled
 explicitly, using the formulation as specified by <a class="reference internal" href="../../references.html#bowen2005" id="id1"><span>[Bowen2005]</span></a>.</p>
@@ -257,7 +258,7 @@ explicitly, using the formulation as specified by <a class="reference internal" 
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>f</strong> (<em>array-like</em>) – Array of values of which to calculate the derivative</p></li>
-<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a><em>, </em><em>optional</em>) – The array axis along which to take the derivative. If <em class="xref py py-obj">f</em> is ndarray-like, must be an
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a><em>, </em><em>optional</em>) – The array axis along which to take the derivative. If <em class="xref py py-obj">f</em> is ndarray-like, must be an
 integer. If <em class="xref py py-obj">f</em> is a <em class="xref py py-obj">DataArray</em>, can be a string (referring to either the coordinate
 dimension name or the axis type) or integer (referring to axis number), unless using
 implicit conversion to <em class="xref py py-obj">pint.Quantity</em>, in which case it must be an integer. Defaults
@@ -301,8 +302,8 @@ of <em class="xref py py-obj">f</em> along <em class="xref py py-obj">axis</em>.
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, MetPy Developers.
-      Last updated on Sep 30, 2019 at 20:57:58.
+        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
+      Last updated on Oct 18, 2019 at 17:16:45.
 
     </p>
   </div>
@@ -339,7 +340,7 @@ of <em class="xref py py-obj">f</em> along <em class="xref py py-obj">axis</em>.
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0',
+            VERSION:'0.11.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

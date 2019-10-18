@@ -121,7 +121,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
@@ -251,7 +252,8 @@
 <code class="sig-prename descclassname">metpy.calc.</code><code class="sig-name descname">lcl</code><span class="sig-paren">(</span><em class="sig-param">pressure</em>, <em class="sig-param">temperature</em>, <em class="sig-param">dewpt</em>, <em class="sig-param">max_iters=50</em>, <em class="sig-param">eps=1e-05</em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/metpy/calc/thermo.html#lcl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#metpy.calc.lcl" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the lifted condensation level (LCL) using from the starting point.</p>
 <p>The starting state for the parcel is defined by <em class="xref py py-obj">temperature</em>, <em class="xref py py-obj">dewpt</em>,
-and <em class="xref py py-obj">pressure</em>.</p>
+and <em class="xref py py-obj">pressure</em>. If these are arrays, this function will return a LCL
+for every index. This function does work with surface grids as a result.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -324,8 +326,8 @@ LCL. The basic algorithm is:</p>
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, MetPy Developers.
-      Last updated on Sep 30, 2019 at 20:57:58.
+        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
+      Last updated on Oct 18, 2019 at 17:16:45.
 
     </p>
   </div>
@@ -362,7 +364,7 @@ LCL. The basic algorithm is:</p>
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0',
+            VERSION:'0.11.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

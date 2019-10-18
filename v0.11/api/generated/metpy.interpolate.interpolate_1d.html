@@ -121,7 +121,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../installguide.html">Installation Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../startingguide.html">Getting Started with MetPy</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../units.html">Unit Support</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/index.html">Reference/API Examples</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://unidata.github.io/python-gallery/examples/index.html">Topical Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../tutorials/index.html">Tutorials</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../index.html">Reference Guide</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="metpy.constants.html">constants</a></li>
@@ -248,10 +249,10 @@
 <li><p><strong>xp</strong> (<em>array-like</em>) – The x-coordinates of the data points.</p></li>
 <li><p><strong>args</strong> (<em>array-like</em>) – The data to be interpolated. Can be multiple arguments, all must be the same shape as
 xp.</p></li>
-<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a><em>, </em><em>optional</em>) – The axis to interpolate over. Defaults to 0.</p></li>
-<li><p><strong>fill_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em>, </em><em>optional</em>) – Specify handling of interpolation points out of data bounds. If None, will return
+<li><p><strong>axis</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a><em>, </em><em>optional</em>) – The axis to interpolate over. Defaults to 0.</p></li>
+<li><p><strong>fill_value</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a><em>, </em><em>optional</em>) – Specify handling of interpolation points out of data bounds. If None, will return
 ValueError if points are out of bounds. Defaults to nan.</p></li>
-<li><p><strong>return_list_always</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to always return a list of interpolated arrays, even when only a single
+<li><p><strong>return_list_always</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a><em>, </em><em>optional</em>) – Whether to always return a list of interpolated arrays, even when only a single
 array is passed to <em class="xref py py-obj">args</em>. Defaults to <code class="docutils literal notranslate"><span class="pre">False</span></code>.</p></li>
 </ul>
 </dd>
@@ -295,8 +296,8 @@ array is passed to <em class="xref py py-obj">args</em>. Defaults to <code class
 
   <div role="contentinfo">
     <p>
-        &copy; Copyright 2019, MetPy Developers.
-      Last updated on Sep 30, 2019 at 20:57:58.
+        &copy; Copyright 2019, MetPy Developers. Development supported by National Science Foundation grants AGS-1344155, OAC-1740315, and AGS-1901712..
+      Last updated on Oct 18, 2019 at 17:16:45.
 
     </p>
   </div>
@@ -333,7 +334,7 @@ array is passed to <em class="xref py py-obj">args</em>. Defaults to <code class
     <script type="text/javascript">
         var DOCUMENTATION_OPTIONS = {
             URL_ROOT:'../../',
-            VERSION:'0.11.0',
+            VERSION:'0.11.1',
             LANGUAGE:'None',
             COLLAPSE_INDEX:false,
             FILE_SUFFIX:'.html',

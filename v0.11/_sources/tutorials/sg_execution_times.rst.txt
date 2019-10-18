@@ -5,8 +5,8 @@
 
 Computation times
 =================
-**00:17.489** total execution time for **tutorials** files:
+**00:16.812** total execution time for **tutorials** files:
 
-- **00:15.557**: :ref:`sphx_glr_tutorials_xarray_tutorial.py` (``xarray_tutorial.py``)
-- **00:01.847**: :ref:`sphx_glr_tutorials_upperair_soundings.py` (``upperair_soundings.py``)
-- **00:00.085**: :ref:`sphx_glr_tutorials_unit_tutorial.py` (``unit_tutorial.py``)
+- **00:14.933**: :ref:`sphx_glr_tutorials_xarray_tutorial.py` (``xarray_tutorial.py``)
+- **00:01.803**: :ref:`sphx_glr_tutorials_upperair_soundings.py` (``upperair_soundings.py``)
+- **00:00.076**: :ref:`sphx_glr_tutorials_unit_tutorial.py` (``unit_tutorial.py``)
