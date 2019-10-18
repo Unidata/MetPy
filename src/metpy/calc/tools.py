@@ -12,7 +12,7 @@ from scipy.spatial import cKDTree
 import xarray as xr
 
 from ..cbook import broadcast_indices, result_type
-from ..interpolate.one_dimension import interpolate_1d, log_interpolate_1d
+from ..interpolate import interpolate_1d, log_interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, diff, units
 from ..xarray import check_axis, preprocess_xarray

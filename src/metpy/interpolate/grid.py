@@ -5,8 +5,6 @@
 
 import numpy as np
 
-# Change when Python 2.7 no longer supported
-import metpy.calc
 from .points import (interpolate_to_points, inverse_distance_to_points,
                      natural_neighbor_to_points)
 from ..package_tools import Exporter
@@ -343,9 +341,10 @@ def interpolate_to_isosurface(level_var, interp_var, level, bottom_up_search=Tru
     tropopause (e.g., 2 PVU surface)
 
     """
+    from ..calc import find_bounding_indices
     # Find index values above and below desired interpolated surface value
-    above, below, good = metpy.calc.find_bounding_indices(level_var, [level], axis=0,
-                                                          from_below=bottom_up_search)
+    above, below, good = find_bounding_indices(level_var, [level], axis=0,
+                                               from_below=bottom_up_search)
 
     # Linear interpolation of variable to interpolated surface value
     interp_level = (((level - level_var[above]) / (level_var[below] - level_var[above]))
