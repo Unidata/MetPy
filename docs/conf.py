@@ -92,7 +92,8 @@ nitpick_ignore = [('py:class', 'M'), ('py:class', 'N'), ('py:class', 'optional')
                   ('py:class', 'namedtuple'), ('py:class', 'list of tuples'),
                   ('py:class', 'Mapper'), ('py:class', 'All'), ('py:class', 'points'),
                   ('py:obj', '__all__'), ('py:class', 'sequence of ints'),
-                  ('py:obj', 'cartopy.crs')]
+                  ('py:obj', 'cartopy.crs'), ('py:class', 'iterable of str'),
+                  ('py:obj', 'metpy'), ('py:class', "'auto'")]
 
 # Tweak how docs are formatted
 napoleon_use_rtype = False

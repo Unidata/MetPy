@@ -1383,9 +1383,9 @@ def angle_to_direction(input_angle, full=False, level=3):
 
     Parameters
     ----------
-    input_angle : numeric or array-like numeric
+    input_angle : float or array-like
         Angles such as 0, 25, 45, 360, 410, etc.
-    full : boolean
+    full : bool
         True returns full text (South), False returns abbrieviated text (S)
     level : int
         Level of detail (3 = N/NNE/NE/ENE/E... 2 = N/NE/E/SE... 1 = N/E/S/W)
