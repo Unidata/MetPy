@@ -197,9 +197,3 @@ Do not use these functions in new code, please see their documentation for their
       :toctree: ./
 
       dewpoint_rh
-      get_wind_components
-      get_wind_dir
-      get_wind_speed
-      interp
-      interpolate_nans
-      log_interp

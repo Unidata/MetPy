@@ -1,4 +1,4 @@
-# Copyright (c) 2018 MetPy Developers.
+# Copyright (c) 2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools and calculations for interpolating specifically to a grid."""
@@ -11,7 +11,6 @@ import numpy as np
 import metpy.calc
 from .points import (interpolate_to_points, inverse_distance_to_points,
                      natural_neighbor_to_points)
-from ..deprecation import deprecated
 from ..package_tools import Exporter
 from ..pandas import preprocess_pandas
 
@@ -173,20 +172,6 @@ def natural_neighbor_to_grid(xp, yp, variable, grid_x, grid_y):
 
 
 @exporter.export
-@deprecated('0.9', addendum=' This function has been renamed natural_neighbor_to_grid.',
-            pending=False)
-def natural_neighbor(xp, yp, variable, grid_x, grid_y):
-    """Wrap natural_neighbor_to_grid for deprecated natural_neighbor function."""
-    return natural_neighbor_to_grid(xp, yp, variable, grid_x, grid_y)
-
-
-natural_neighbor.__doc__ = (natural_neighbor_to_grid.__doc__
-                            + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                            'to `natural_neighbor_to_grid` and will be removed from MetPy in'
-                            ' 0.12.0.')
-
-
-@exporter.export
 def inverse_distance_to_grid(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None,
                              min_neighbors=3, kind='cressman'):
     r"""Generate an inverse distance interpolation of the given points to a regular grid.
@@ -237,22 +222,6 @@ def inverse_distance_to_grid(xp, yp, variable, grid_x, grid_y, r, gamma=None, ka
     img = inverse_distance_to_points(points_obs, variable, points_grid, r, gamma=gamma,
                                      kappa=kappa, min_neighbors=min_neighbors, kind=kind)
     return img.reshape(grid_x.shape)
-
-
-@exporter.export
-@deprecated('0.9', addendum=' This function has been renamed inverse_distance_to_grid.',
-            pending=False)
-def inverse_distance(xp, yp, variable, grid_x, grid_y, r, gamma=None, kappa=None,
-                     min_neighbors=3, kind='cressman'):
-    """Wrap inverse_distance_to_grid for deprecated inverse_distance function."""
-    return inverse_distance_to_grid(xp, yp, variable, grid_x, grid_y, r, gamma=gamma,
-                                    kappa=kappa, min_neighbors=min_neighbors, kind=kind)
-
-
-inverse_distance.__doc__ = (inverse_distance_to_grid.__doc__
-                            + '\n    .. deprecated:: 0.9.0\n        Function has been renamed '
-                            'to `inverse_distance_to_grid` and will be removed from MetPy in'
-                            ' 0.12.0.')
 
 
 @exporter.export
@@ -398,23 +367,3 @@ def interpolate_to_isosurface(level_var, interp_var, level, **kwargs):
     interp_level[0][minvar] = interp_var[-1][minvar]
     interp_level[0][maxvar] = interp_var[0][maxvar]
     return interp_level.squeeze()
-
-
-@exporter.export
-@deprecated('0.9', addendum=' This function has been renamed interpolate_to_grid.',
-            pending=False)
-def interpolate(x, y, z, interp_type='linear', hres=50000,
-                minimum_neighbors=3, gamma=0.25, kappa_star=5.052,
-                search_radius=None, rbf_func='linear', rbf_smooth=0,
-                boundary_coords=None):
-    """Wrap interpolate_to_grid for deprecated interpolate function."""
-    return interpolate_to_grid(x, y, z, interp_type=interp_type, hres=hres,
-                               minimum_neighbors=minimum_neighbors, gamma=gamma,
-                               kappa_star=kappa_star, search_radius=search_radius,
-                               rbf_func=rbf_func, rbf_smooth=rbf_smooth,
-                               boundary_coords=boundary_coords)
-
-
-interpolate.__doc__ = (interpolate_to_grid.__doc__
-                       + '\n    .. deprecated:: 0.9.0\n        Function has been renamed to '
-                       '`interpolate_to_grid` and will be removed from MetPy in 0.12.0.')
