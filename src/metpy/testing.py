@@ -1,4 +1,4 @@
-# Copyright (c) 2015,2016,2018 MetPy Developers.
+# Copyright (c) 2015,2016,2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Collection of utilities for testing.
@@ -37,7 +37,7 @@ def get_upper_air_data(date, station):
         dict : upper air data
 
     """
-    sounding_key = '{0:%Y-%m-%dT%HZ}_{1:}'.format(date, station)
+    sounding_key = '{:%Y-%m-%dT%HZ}_{}'.format(date, station)
     sounding_files = {'2016-05-22T00Z_DDC': 'may22_sounding.txt',
                       '2013-01-20T12Z_OUN': 'jan20_sounding.txt',
                       '1999-05-04T00Z_OUN': 'may4_sounding.txt',

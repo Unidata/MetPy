@@ -1,4 +1,4 @@
-# Copyright (c) 2016 MetPy Developers.
+# Copyright (c) 2016,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
@@ -83,7 +83,7 @@ x2, y2 = obs_tree.data[indices[1]].T
 barnes_dist = dist_2(sim_gridx[1], sim_gridy[1], x2, y2)
 barnes_obs = zp[indices[1]]
 
-ave_spacing = np.mean((cdist(list(zip(xp, yp)), list(zip(xp, yp)))))
+ave_spacing = np.mean(cdist(list(zip(xp, yp)), list(zip(xp, yp))))
 kappa = calc_kappa(ave_spacing)
 
 barnes_val = barnes_point(barnes_dist, barnes_obs, kappa)

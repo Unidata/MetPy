@@ -295,7 +295,7 @@ def check_units(*units_by_pos, **units_by_name):
             # If there are any bad units, emit a proper error message making it clear
             # what went wrong.
             if bad:
-                msg = '`{0}` given arguments with incorrect units: {1}.'.format(
+                msg = '`{}` given arguments with incorrect units: {}.'.format(
                     func.__name__,
                     ', '.join('`{}` requires "{}" but given "{}"'.format(arg, req, given)
                               for arg, given, req in bad))

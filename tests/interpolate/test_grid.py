@@ -3,7 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `grid` module."""
 
-from __future__ import division
 
 import logging
 
@@ -194,38 +193,6 @@ boundary_types = [{'west': 80.0, 'south': 140.0, 'east': 980.0, 'north': 980.0},
                   None]
 
 
-@pytest.mark.parametrize('method', interp_methods)
-@pytest.mark.parametrize('boundary_coords', boundary_types)
-def test_interpolate_to_grid(method, test_coords, boundary_coords):
-    r"""Test main grid interpolation function."""
-    xp, yp = test_coords
-
-    xp *= 10
-    yp *= 10
-
-    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
-                  0.225, 3.364])
-
-    extra_kw = {}
-    if method == 'cressman':
-        extra_kw['search_radius'] = 200
-        extra_kw['minimum_neighbors'] = 1
-    elif method == 'barnes':
-        extra_kw['search_radius'] = 400
-        extra_kw['minimum_neighbors'] = 1
-        extra_kw['gamma'] = 1
-
-    if boundary_coords is not None:
-        extra_kw['boundary_coords'] = boundary_coords
-
-    _, _, img = interpolate_to_grid(xp, yp, z, hres=10, interp_type=method, **extra_kw)
-
-    with get_test_data('{0}_test.npz'.format(method)) as fobj:
-        truth = np.load(fobj)['img']
-
-    assert_array_almost_equal(truth, img)
-
-
 def test_interpolate_to_isosurface():
     r"""Test interpolation to level function."""
     pv = np.array([[[4.29013406, 4.61736108, 4.97453387, 5.36730237, 5.75500645],
@@ -269,6 +236,38 @@ def test_interpolate_to_isosurface():
                       [335.6583567, 336.3500714, 336.6844744, 336.3286052, 335.3874244]])
 
     assert_array_almost_equal(truth, dt_thta)
+
+
+@pytest.mark.parametrize('method', interp_methods)
+@pytest.mark.parametrize('boundary_coords', boundary_types)
+def test_interpolate_to_grid(method, test_coords, boundary_coords):
+    r"""Test main grid interpolation function."""
+    xp, yp = test_coords
+
+    xp *= 10
+    yp *= 10
+
+    z = np.array([0.064, 4.489, 6.241, 0.1, 2.704, 2.809, 9.604, 1.156,
+                  0.225, 3.364])
+
+    extra_kw = {}
+    if method == 'cressman':
+        extra_kw['search_radius'] = 200
+        extra_kw['minimum_neighbors'] = 1
+    elif method == 'barnes':
+        extra_kw['search_radius'] = 400
+        extra_kw['minimum_neighbors'] = 1
+        extra_kw['gamma'] = 1
+
+    if boundary_coords is not None:
+        extra_kw['boundary_coords'] = boundary_coords
+
+    _, _, img = interpolate_to_grid(xp, yp, z, hres=10, interp_type=method, **extra_kw)
+
+    with get_test_data('{0}_test.npz'.format(method)) as fobj:
+        truth = np.load(fobj)['img']
+
+    assert_array_almost_equal(truth, img)
 
 
 def test_interpolate_to_isosurface_from_below():
