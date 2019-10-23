@@ -46,6 +46,19 @@ def test_var(test_ds):
     return test_ds.metpy.parse_cf('Temperature')
 
 
+@pytest.fixture
+def test_var_multidim_full(test_ds):
+    """Provide a variable with x/y coords and multidimensional lat/lon auxiliary coords."""
+    return (test_ds[{'isobaric': [6, 12], 'y': [95, 96], 'x': [122, 123]}]
+            .squeeze().set_coords(['lat', 'lon'])['Temperature'])
+
+
+@pytest.fixture
+def test_var_multidim_no_xy(test_var_multidim_full):
+    """Provide a variable with multidimensional lat/lon coords but without x/y coords."""
+    return test_var_multidim_full.drop(['y', 'x'])
+
+
 def test_projection(test_var):
     """Test getting the proper projection out of the variable."""
     crs = test_var.metpy.crs
@@ -191,7 +204,8 @@ def test_coordinates_basic_by_property(test_var):
 
 def test_coordinates_specified_by_name_with_dataset(test_ds_generic):
     """Test that we can manually specify the coordinates by name."""
-    data = test_ds_generic.metpy.parse_cf(coordinates={'T': 'a', 'Z': 'b', 'Y': 'c', 'X': 'd'})
+    data = test_ds_generic.metpy.parse_cf(coordinates={'time': 'a', 'vertical': 'b', 'y': 'c',
+                                                       'x': 'd'})
     x, y, vertical, time = data['test'].metpy.coordinates('x', 'y', 'vertical', 'time')
 
     assert data['test']['d'].identical(x)
@@ -203,10 +217,10 @@ def test_coordinates_specified_by_name_with_dataset(test_ds_generic):
 def test_coordinates_specified_by_dataarray_with_dataset(test_ds_generic):
     """Test that we can manually specify the coordinates by DataArray."""
     data = test_ds_generic.metpy.parse_cf(coordinates={
-        'T': test_ds_generic['d'],
-        'Z': test_ds_generic['a'],
-        'Y': test_ds_generic['b'],
-        'X': test_ds_generic['c']
+        'time': test_ds_generic['d'],
+        'vertical': test_ds_generic['a'],
+        'y': test_ds_generic['b'],
+        'x': test_ds_generic['c']
     })
     x, y, vertical, time = data['test'].metpy.coordinates('x', 'y', 'vertical', 'time')
 
@@ -214,6 +228,13 @@ def test_coordinates_specified_by_dataarray_with_dataset(test_ds_generic):
     assert data['test']['b'].identical(y)
     assert data['test']['a'].identical(vertical)
     assert data['test']['d'].identical(time)
+
+
+@check_and_silence_deprecation
+def test_coordinates_specified_using_cf_axis(test_ds_generic):
+    """Test deprecated specification of coordinates using CF axis keys."""
+    data = test_ds_generic.metpy.parse_cf('test', coordinates={'Z': 'e'})
+    assert data['e'].identical(data.metpy.vertical)
 
 
 def test_bad_coordinate_type(test_var):
@@ -225,7 +246,7 @@ def test_bad_coordinate_type(test_var):
 
 def test_missing_coordinate_type(test_ds_generic):
     """Test that an AttributeError is raised when an axis/coordinate type is unavailable."""
-    data = test_ds_generic.metpy.parse_cf('test', coordinates={'Z': 'e'})
+    data = test_ds_generic.metpy.parse_cf('test', coordinates={'vertical': 'e'})
     with pytest.raises(AttributeError) as exc:
         data.metpy.time
     assert 'not available' in str(exc.value)
@@ -235,7 +256,7 @@ def test_assign_coordinates_not_overwrite(test_ds_generic):
     """Test that assign_coordinates does not overwrite past axis attributes."""
     data = test_ds_generic.copy()
     data['c'].attrs['axis'] = 'X'
-    data['test'].metpy.assign_coordinates({'Y': data['c']})
+    data['test'].metpy.assign_coordinates({'y': data['c']})
     assert data['c'].identical(data['test'].metpy.y)
     assert data['c'].attrs['axis'] == 'X'
 
@@ -316,17 +337,17 @@ criterion_matches = [
     ('standard_name', 'atmosphere_ln_pressure_coordinate', 'vertical'),
     ('standard_name', 'air_pressure', 'vertical'),
     ('standard_name', 'projection_y_coordinate', 'y'),
-    ('standard_name', 'latitude', 'lat'),
+    ('standard_name', 'latitude', 'latitude'),
     ('standard_name', 'projection_x_coordinate', 'x'),
-    ('standard_name', 'longitude', 'lon'),
+    ('standard_name', 'longitude', 'longitude'),
     ('_CoordinateAxisType', 'Time', 'time'),
     ('_CoordinateAxisType', 'Pressure', 'vertical'),
     ('_CoordinateAxisType', 'GeoZ', 'vertical'),
     ('_CoordinateAxisType', 'Height', 'vertical'),
     ('_CoordinateAxisType', 'GeoY', 'y'),
-    ('_CoordinateAxisType', 'Lat', 'lat'),
+    ('_CoordinateAxisType', 'Lat', 'latitude'),
     ('_CoordinateAxisType', 'GeoX', 'x'),
-    ('_CoordinateAxisType', 'Lon', 'lon'),
+    ('_CoordinateAxisType', 'Lon', 'longitude'),
     ('axis', 'T', 'time'),
     ('axis', 'Z', 'vertical'),
     ('axis', 'Y', 'y'),
@@ -347,18 +368,18 @@ unit_matches = [
     ('Pa', 'vertical'),
     ('hPa', 'vertical'),
     ('mbar', 'vertical'),
-    ('degreeN', 'lat'),
-    ('degreesN', 'lat'),
-    ('degree_north', 'lat'),
-    ('degree_N', 'lat'),
-    ('degrees_north', 'lat'),
-    ('degrees_N', 'lat'),
-    ('degreeE', 'lon'),
-    ('degrees_east', 'lon'),
-    ('degree_east', 'lon'),
-    ('degreesE', 'lon'),
-    ('degree_E', 'lon'),
-    ('degrees_E', 'lon')
+    ('degreeN', 'latitude'),
+    ('degreesN', 'latitude'),
+    ('degree_north', 'latitude'),
+    ('degree_N', 'latitude'),
+    ('degrees_north', 'latitude'),
+    ('degrees_N', 'latitude'),
+    ('degreeE', 'longitude'),
+    ('degrees_east', 'longitude'),
+    ('degree_east', 'longitude'),
+    ('degreesE', 'longitude'),
+    ('degree_E', 'longitude'),
+    ('degrees_E', 'longitude')
 ]
 
 
@@ -391,16 +412,16 @@ regex_matches = [
     ('isothermal', 'vertical'),
     ('y', 'y'),
     ('Y', 'y'),
-    ('lat', 'lat'),
-    ('latitude', 'lat'),
-    ('Latitude', 'lat'),
-    ('XLAT', 'lat'),
+    ('lat', 'latitude'),
+    ('latitude', 'latitude'),
+    ('Latitude', 'latitude'),
+    ('XLAT', 'latitude'),
     ('x', 'x'),
     ('X', 'x'),
-    ('lon', 'lon'),
-    ('longitude', 'lon'),
-    ('Longitude', 'lon'),
-    ('XLONG', 'lon')
+    ('lon', 'longitude'),
+    ('longitude', 'longitude'),
+    ('Longitude', 'longitude'),
+    ('XLONG', 'longitude')
 ]
 
 
@@ -464,7 +485,7 @@ def test_as_timestamp(test_var):
                          name='time',
                          coords=time.coords,
                          dims='time',
-                         attrs={'long_name': 'forecast time', '_metpy_axis': 'T',
+                         attrs={'long_name': 'forecast time', '_metpy_axis': 'time',
                                 'units': 'seconds'})
     assert truth.identical(time.metpy.as_timestamp())
 
@@ -495,7 +516,7 @@ def test_find_axis_name_dim_coord_name(test_var):
 def test_find_axis_name_bad_identifier(test_var):
     """Test getting axis name using the axis type identifier."""
     with pytest.raises(ValueError) as exc:
-        test_var.metpy.find_axis_name('latitude')
+        test_var.metpy.find_axis_name('ens')
     assert 'axis is not valid' in str(exc.value)
 
 
@@ -652,3 +673,43 @@ def test_check_no_quantification_of_xarray_data(test_ds_generic):
     var = test_ds_generic['e']
     var.metpy.unit_array = [1000, 925, 850, 700, 500] * units.hPa
     assert not isinstance(var.data, units.Quantity)
+
+
+def test_one_dimensional_lat_lon(test_ds_generic):
+    """Test that 1D lat/lon coords are recognized as both x/y and longitude/latitude."""
+    test_ds_generic['d'].attrs['units'] = 'degrees_north'
+    test_ds_generic['e'].attrs['units'] = 'degrees_east'
+    var = test_ds_generic.metpy.parse_cf('test')
+    assert var['d'].identical(var.metpy.y)
+    assert var['d'].identical(var.metpy.latitude)
+    assert var['e'].identical(var.metpy.x)
+    assert var['e'].identical(var.metpy.longitude)
+
+
+def test_auxilary_lat_lon_with_xy(test_var_multidim_full):
+    """Test that auxiliary lat/lon coord identification works with other x/y coords present."""
+    assert test_var_multidim_full['y'].identical(test_var_multidim_full.metpy.y)
+    assert test_var_multidim_full['lat'].identical(test_var_multidim_full.metpy.latitude)
+    assert test_var_multidim_full['x'].identical(test_var_multidim_full.metpy.x)
+    assert test_var_multidim_full['lon'].identical(test_var_multidim_full.metpy.longitude)
+
+
+@check_and_silence_deprecation
+def test_auxilary_lat_lon_without_xy(test_var_multidim_no_xy):
+    """Test that multidimensional lat/lon are recognized in absence of x/y coords.
+
+    TODO (v1.0): Remove check_and_silence_deprecation that is needed for now since these
+    lat/lon coords are also assigned to y/x.
+    """
+    assert test_var_multidim_no_xy['lat'].identical(test_var_multidim_no_xy.metpy.latitude)
+    assert test_var_multidim_no_xy['lon'].identical(test_var_multidim_no_xy.metpy.longitude)
+
+
+@check_and_silence_deprecation
+def test_auxilary_lat_lon_without_xy_as_xy(test_var_multidim_no_xy):
+    """Test the pre-v1.0 behavior of multidimensional lat/lon being acceptable as x/y coords.
+
+    TODO (v1.0): Replace with test that y and x coords are not available in this case.
+    """
+    assert test_var_multidim_no_xy['lat'].identical(test_var_multidim_no_xy.metpy.y)
+    assert test_var_multidim_no_xy['lon'].identical(test_var_multidim_no_xy.metpy.x)
