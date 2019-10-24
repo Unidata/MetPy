@@ -366,6 +366,38 @@ class SkewT:
         t, pressure = _delete_masked_points(t, pressure)
         return self.ax.plot(t, pressure, *args, **kwargs)
 
+    def _get_line_starting_temps(self, t0=None, spacing=10):
+        r"""Determine starting temperatures for adiabats etc.
+
+        Return starting teperatures for subroutine lines, based on xaxis
+
+        Parameters
+        ----------
+        t0 : array_like, optional
+            range of temperatures to be converted to match the xaxis
+        spacing : int or float, optional
+            Spacing between t0 values, default is 10
+
+        Returns
+        -------
+        units.Quantity
+        """
+        # set default temperatures
+        if t0 is None:
+            # minimum and maximum temperature
+            xmin, xmax = self.ax.get_xlim()
+            t0 = np.arange(xmin, xmax + 1, spacing) * self.ax.xaxis.units
+
+        # if temperature has no units, guess from the lower bound
+        if not hasattr(t0, 'units'):
+            if np.nanmin(t0) > 150:
+                t0 = t0 * units.degK
+            else:
+                t0 = t0 * units.degC
+
+        # return temperature in units matching axes
+        return t0.to(self.ax.xaxis.units)
+
     def plot_barbs(self, pressure, u, v, c=None, xloc=1.0, x_clip_radius=0.1,
                    y_clip_radius=0.08, **kwargs):
         r"""Plot wind barbs.
@@ -449,7 +481,7 @@ class SkewT:
         Parameters
         ----------
         t0 : array_like, optional
-            Starting temperature values in Kelvin. If none are given, they will be
+            Starting temperature values. If none are given, they will be
             generated using the current temperature range at the bottom of
             the plot.
         pressure : array_like, optional
@@ -475,18 +507,16 @@ class SkewT:
         if self.dry_adiabats:
             self.dry_adiabats.remove()
 
-        # Determine set of starting temps if necessary
-        if t0 is None:
-            xmin, xmax = self.ax.get_xlim()
-            t0 = units.Quantity(np.arange(xmin, xmax + 1, 10), 'degC')
+        # Get line start temperatures
+        t0 = self._get_line_starting_temps(t0)
 
         # Get pressure levels based on ylims if necessary
         if pressure is None:
-            pressure = units.Quantity(np.linspace(*self.ax.get_ylim()), 'mbar')
+            pressure = units.Quantity(np.linspace(*self.ax.get_ylim()), self.ax.yaxis.units)
 
         # Assemble into data for plotting
         t = dry_lapse(pressure, t0[:, np.newaxis],
-                      units.Quantity(1000., 'mbar')).to(units.degC)
+                      units.Quantity(1000., 'mbar')).to(t0.units)
         linedata = [np.vstack((ti.m, pressure.m)).T for ti in t]
 
         # Add to plot
@@ -508,7 +538,7 @@ class SkewT:
         Parameters
         ----------
         t0 : array_like, optional
-            Starting temperature values in Kelvin. If none are given, they will be
+            Starting temperature values. If none are given, they will be
             generated using the current temperature range at the bottom of
             the plot.
         pressure : array_like, optional
@@ -535,18 +565,15 @@ class SkewT:
             self.moist_adiabats.remove()
 
         # Determine set of starting temps if necessary
-        if t0 is None:
-            xmin, xmax = self.ax.get_xlim()
-            t0 = units.Quantity(np.concatenate((np.arange(xmin, 0, 10),
-                                                np.arange(0, xmax + 1, 5))), 'degC')
+        t0 = self._get_line_starting_temps(t0)
 
         # Get pressure levels based on ylims if necessary
         if pressure is None:
-            pressure = units.Quantity(np.linspace(*self.ax.get_ylim()), 'mbar')
+            pressure = units.Quantity(np.linspace(*self.ax.get_ylim()), self.ax.yaxis.units)
 
         # Assemble into data for plotting
         t = moist_lapse(pressure, t0[:, np.newaxis],
-                        units.Quantity(1000., 'mbar')).to(units.degC)
+                        units.Quantity(1000., 'mbar')).to(t0.units)
         linedata = [np.vstack((ti.m, pressure.m)).T for ti in t]
 
         # Add to plot
@@ -597,10 +624,14 @@ class SkewT:
 
         # Set pressure range if necessary
         if pressure is None:
-            pressure = units.Quantity(np.linspace(600, max(self.ax.get_ylim())), 'mbar')
+            # from highest pressure to 60% of highest pressure
+            pmax = max(self.ax.get_ylim())
+            pressure = units.Quantity(np.linspace(0.6 * pmax, pmax), self.ax.yaxis.units)
+
+        # Dewpoint contours calculated and converted to xaxis units
+        td = dewpoint(vapor_pressure(pressure, mixing_ratio)).to(self.ax.xaxis.units)
 
         # Assemble data for plotting
-        td = dewpoint(vapor_pressure(pressure, mixing_ratio))
         linedata = [np.vstack((t.m, pressure.m)).T for t in td]
 
         # Add to plot
