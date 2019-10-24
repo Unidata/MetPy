@@ -2,30 +2,22 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools to process GINI-formatted products."""
-from __future__ import absolute_import
 
 import contextlib
 from datetime import datetime
-try:
-    from enum import Enum
-except ImportError:
-    from enum34 import Enum
+from enum import Enum
 from io import BytesIO
 from itertools import repeat  # noqa: I202
 import logging
 import re
 
 import numpy as np
+from xarray import Variable
+from xarray.backends.common import AbstractDataStore
 try:
-    from xarray import Variable
-    from xarray.backends.common import AbstractDataStore
-    try:
-        from xarray.core.utils import FrozenDict
-    except ImportError:
-        from xarray.core.utils import FrozenOrderedDict as FrozenDict
+    from xarray.core.utils import FrozenDict
 except ImportError:
-    # This way GiniFile is still usable without xarray
-    AbstractDataStore = object
+    from xarray.core.utils import FrozenOrderedDict as FrozenDict
 
 from ._tools import Bits, IOBuffer, NamedStruct, open_as_needed, zlib_decompress_all_frames
 from ..package_tools import Exporter
@@ -36,7 +28,6 @@ log = logging.getLogger(__name__)
 
 def _make_datetime(s):
     r"""Convert 7 bytes from a GINI file to a `datetime` instance."""
-    s = bytearray(s)  # For Python 2
     year, month, day, hour, minute, second, cs = s
     if year < 70:
         year += 100
@@ -45,8 +36,6 @@ def _make_datetime(s):
 
 def _scaled_int(s):
     r"""Convert a 3 byte string to a signed integer value."""
-    s = bytearray(s)  # For Python 2
-
     # Get leftmost bit (sign) as 1 (if 0) or -1 (if 1)
     sign = 1 - ((s[0] & 0x80) >> 6)
 
@@ -379,7 +368,7 @@ class GiniFile(AbstractDataStore):
         This function will be called anytime variables or attributes
         are requested, so care should be taken to make sure its fast.
         """
-        return super(GiniFile, self).load()
+        return super().load()
 
     def get_variables(self):
         """Get all variables in the file.

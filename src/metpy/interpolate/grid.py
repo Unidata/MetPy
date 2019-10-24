@@ -3,12 +3,8 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Tools and calculations for interpolating specifically to a grid."""
 
-from __future__ import division
-
 import numpy as np
 
-# Change when Python 2.7 no longer supported
-import metpy.calc
 from .points import (interpolate_to_points, inverse_distance_to_points,
                      natural_neighbor_to_points)
 from ..package_tools import Exporter
@@ -311,7 +307,7 @@ def interpolate_to_grid(x, y, z, interp_type='linear', hres=50000,
 
 @exporter.export
 @preprocess_pandas
-def interpolate_to_isosurface(level_var, interp_var, level, **kwargs):
+def interpolate_to_isosurface(level_var, interp_var, level, bottom_up_search=True):
     r"""Linear interpolation of a variable to a given vertical level from given values.
 
     This function assumes that highest vertical level (lowest pressure) is zeroth index.
@@ -328,9 +324,6 @@ def interpolate_to_isosurface(level_var, interp_var, level, **kwargs):
         given level (e.g., potential temperature on isobaric levels)
     level: int or float
         Desired interpolated level (e.g., 2 PVU surface)
-
-    Other Parameters
-    ----------------
     bottom_up_search : bool, optional
         Controls whether to search for levels bottom-up, or top-down. Defaults to
         True, which is bottom-up search.
@@ -348,13 +341,10 @@ def interpolate_to_isosurface(level_var, interp_var, level, **kwargs):
     tropopause (e.g., 2 PVU surface)
 
     """
-    # Change when Python 2.7 no longer supported
-    # Pull out keyword arguments
-    bottom_up_search = kwargs.pop('bottom_up_search', True)
-
+    from ..calc import find_bounding_indices
     # Find index values above and below desired interpolated surface value
-    above, below, good = metpy.calc.find_bounding_indices(level_var, [level], axis=0,
-                                                          from_below=bottom_up_search)
+    above, below, good = find_bounding_indices(level_var, [level], axis=0,
+                                               from_below=bottom_up_search)
 
     # Linear interpolation of variable to interpolated surface value
     interp_level = (((level - level_var[above]) / (level_var[below] - level_var[above]))

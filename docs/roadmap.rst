@@ -158,5 +158,3 @@ Here are a few more items that did not fit above:
     it would not incur packaging challenges. Past experiments with Numba and MetPy have not
     been promising, though.
   - Make more calculations (e.g. CAPE) work on grids of data
-
-* Drop Python 2! For more info see :ref:`python27`.

@@ -1,9 +1,8 @@
-# Copyright (c) 2018 MetPy Developers.
+# Copyright (c) 2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `points` module."""
 
-from __future__ import division
 
 import logging
 
@@ -99,7 +98,7 @@ def test_barnes_point(test_data):
 
     truth = 4.08718241061
 
-    ave_spacing = np.mean((cdist(list(zip(xp, yp)), list(zip(xp, yp)))))
+    ave_spacing = np.mean(cdist(list(zip(xp, yp)), list(zip(xp, yp))))
 
     kappa = calc_kappa(ave_spacing)
 
@@ -188,7 +187,7 @@ def test_interpolate_to_points(method, test_data):
 
     img = interpolate_to_points(obs_points, z, test_points, interp_type=method, **extra_kw)
 
-    with get_test_data('{0}_test.npz'.format(method)) as fobj:
+    with get_test_data('{}_test.npz'.format(method)) as fobj:
         truth = np.load(fobj)['img'].reshape(-1)
 
     assert_array_almost_equal(truth, img)

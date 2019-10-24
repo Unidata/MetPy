@@ -339,7 +339,7 @@ def test_skewt_barb_unit_conversion_exception(u, v):
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_plot_layers():
     """Test hodograph colored height layers with interpolation."""
-    u = np.zeros((6)) * units.knots
+    u = np.zeros(6) * units.knots
     v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
     heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
     intervals = np.array([500, 1500, 2500, 3500, 4500]) * units.m
@@ -358,7 +358,7 @@ def test_hodograph_plot_layers():
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_plot_layers_different_units():
     """Test hodograph colored height layers with interpolation and different units."""
-    u = np.zeros((6)) * units.knots
+    u = np.zeros(6) * units.knots
     v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
     heights = np.array([0, 1, 2, 3, 4, 5]) * units.km
     intervals = np.array([500, 1500, 2500, 3500, 4500]) * units.m
@@ -376,7 +376,7 @@ def test_hodograph_plot_layers_different_units():
 @pytest.mark.mpl_image_compare(tolerance=0, remove_text=True)
 def test_hodograph_plot_layers_bound_units():
     """Test hodograph colored height layers with interpolation and different units."""
-    u = np.zeros((6)) * units.knots
+    u = np.zeros(6) * units.knots
     v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
     heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
     intervals = np.array([0.5, 1.5, 2.5, 3.5, 4.5]) * units.km
@@ -432,7 +432,7 @@ def test_united_hodograph_range():
 @check_and_silence_deprecation
 def test_plot_colormapped_bounds_deprecation():
     """Test deprecation of bounds kwarg in `plot_colormapped`."""
-    u = np.zeros((6)) * units.knots
+    u = np.zeros(6) * units.knots
     v = np.array([0, 10, 20, 30, 40, 50]) * units.knots
     heights = np.array([0, 1000, 2000, 3000, 4000, 5000]) * units.m
     intervals = np.array([500, 1500, 2500, 3500, 4500]) * units.m

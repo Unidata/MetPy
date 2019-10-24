@@ -2,24 +2,17 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
-from __future__ import division
-
 import functools
 from operator import itemgetter
 
 import numpy as np
-try:
-    from numpy.core.numeric import normalize_axis_index
-except ImportError:  # Only available in numpy >=1.13.0
-    def normalize_axis_index(a, n):
-        """No op version of :func:`numpy.core.numeric.normalize_axis_index`."""
-        return a
+from numpy.core.numeric import normalize_axis_index
 import numpy.ma as ma
 from scipy.spatial import cKDTree
 import xarray as xr
 
 from ..cbook import broadcast_indices, result_type
-from ..interpolate.one_dimension import interpolate_1d, log_interpolate_1d
+from ..interpolate import interpolate_1d, log_interpolate_1d
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, diff, units
 from ..xarray import check_axis, preprocess_xarray
@@ -425,7 +418,7 @@ def _get_bound_pressure_height(pressure, bound, heights=None, interpolate=True):
 @exporter.export
 @preprocess_xarray
 @check_units('[length]')
-def get_layer_heights(heights, depth, *args, **kwargs):
+def get_layer_heights(heights, depth, *args, bottom=None, interpolate=True, with_agl=False):
     """Return an atmospheric layer from upper air data with the requested bottom and depth.
 
     This function will subset an upper air dataset to contain only the specified layer using
@@ -454,10 +447,6 @@ def get_layer_heights(heights, depth, *args, **kwargs):
         The height and data variables of the layer
 
     """
-    bottom = kwargs.pop('bottom', None)
-    interpolate = kwargs.pop('interpolate', True)
-    with_agl = kwargs.pop('with_agl', False)
-
     # Make sure pressure and datavars are the same length
     for datavar in args:
         if len(heights) != len(datavar):
@@ -517,7 +506,8 @@ def get_layer_heights(heights, depth, *args, **kwargs):
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]')
-def get_layer(pressure, *args, **kwargs):
+def get_layer(pressure, *args, heights=None, bottom=None, depth=100 * units.hPa,
+              interpolate=True):
     r"""Return an atmospheric layer from upper air data with the requested bottom and depth.
 
     This function will subset an upper air dataset to contain only the specified layer. The
@@ -551,12 +541,6 @@ def get_layer(pressure, *args, **kwargs):
         The pressure and data variables of the layer
 
     """
-    # Pop off keyword arguments
-    heights = kwargs.pop('heights', None)
-    bottom = kwargs.pop('bottom', None)
-    depth = kwargs.pop('depth', 100 * units.hPa)
-    interpolate = kwargs.pop('interpolate', True)
-
     # If we get the depth kwarg, but it's None, set it to the default as well
     if depth is None:
         depth = 100 * units.hPa

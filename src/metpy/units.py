@@ -1,4 +1,4 @@
-# Copyright (c) 2015,2017 MetPy Developers.
+# Copyright (c) 2015,2017,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 r"""Module to provide unit support.
@@ -13,10 +13,8 @@ units : :class:`pint.UnitRegistry`
     import this registry and use it to grab units.
 
 """
-
-from __future__ import division
-
 import functools
+from inspect import signature
 import logging
 import warnings
 
@@ -276,48 +274,39 @@ def _check_argument_units(args, dimensionality):
 
 def check_units(*units_by_pos, **units_by_name):
     """Create a decorator to check units of function arguments."""
-    try:
-        from inspect import signature
+    def dec(func):
+        # Match the signature of the function to the arguments given to the decorator
+        sig = signature(func)
+        bound_units = sig.bind_partial(*units_by_pos, **units_by_name)
 
-        def dec(func):
-            # Match the signature of the function to the arguments given to the decorator
-            sig = signature(func)
-            bound_units = sig.bind_partial(*units_by_pos, **units_by_name)
+        # Convert our specified dimensionality (e.g. "[pressure]") to one used by
+        # pint directly (e.g. "[mass] / [length] / [time]**2). This is for both efficiency
+        # reasons and to ensure that problems with the decorator are caught at import,
+        # rather than runtime.
+        dims = {name: (orig, units.get_dimensionality(orig.replace('dimensionless', '')))
+                for name, orig in bound_units.arguments.items()}
 
-            # Convert our specified dimensionality (e.g. "[pressure]") to one used by
-            # pint directly (e.g. "[mass] / [length] / [time]**2). This is for both efficiency
-            # reasons and to ensure that problems with the decorator are caught at import,
-            # rather than runtime.
-            dims = {name: (orig, units.get_dimensionality(orig.replace('dimensionless', '')))
-                    for name, orig in bound_units.arguments.items()}
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            # Match all passed in value to their proper arguments so we can check units
+            bound_args = sig.bind(*args, **kwargs)
+            bad = list(_check_argument_units(bound_args.arguments, dims))
 
-            @functools.wraps(func)
-            def wrapper(*args, **kwargs):
-                # Match all passed in value to their proper arguments so we can check units
-                bound_args = sig.bind(*args, **kwargs)
-                bad = list(_check_argument_units(bound_args.arguments, dims))
+            # If there are any bad units, emit a proper error message making it clear
+            # what went wrong.
+            if bad:
+                msg = '`{}` given arguments with incorrect units: {}.'.format(
+                    func.__name__,
+                    ', '.join('`{}` requires "{}" but given "{}"'.format(arg, req, given)
+                              for arg, given, req in bad))
+                if 'none' in msg:
+                    msg += ('\nAny variable `x` can be assigned a unit as follows:\n'
+                            '    from metpy.units import units\n'
+                            '    x = x * units.meter / units.second')
+                raise ValueError(msg)
+            return func(*args, **kwargs)
 
-                # If there are any bad units, emit a proper error message making it clear
-                # what went wrong.
-                if bad:
-                    msg = '`{0}` given arguments with incorrect units: {1}.'.format(
-                        func.__name__,
-                        ', '.join('`{}` requires "{}" but given "{}"'.format(arg, req, given)
-                                  for arg, given, req in bad))
-                    if 'none' in msg:
-                        msg += ('\nAny variable `x` can be assigned a unit as follows:\n'
-                                '    from metpy.units import units\n'
-                                '    x = x * units.meter / units.second')
-                    raise ValueError(msg)
-                return func(*args, **kwargs)
-
-            return wrapper
-
-    # signature() only available on Python >= 3.3, so for 2.7 we just do nothing.
-    except ImportError:
-        def dec(func):
-            return func
-
+        return wrapper
     return dec
 
 
@@ -332,14 +321,14 @@ except (AttributeError, RuntimeError, ImportError):  # Pint's not available, try
 
         def __init__(self, units):
             """Set the default label to the pretty-print of the unit."""
-            super(PintAxisInfo, self).__init__(label='{:P}'.format(units))
+            super().__init__(label='{:P}'.format(units))
 
     class PintConverter(munits.ConversionInterface):
         """Implement support for pint within matplotlib's unit conversion framework."""
 
         def __init__(self, registry):
             """Initialize converter for pint units."""
-            super(PintConverter, self).__init__()
+            super().__init__()
             self._reg = registry
 
         def convert(self, value, unit, axis):

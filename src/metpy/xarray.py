@@ -15,8 +15,6 @@ Dataset.
 
 See Also: :doc:`xarray with MetPy Tutorial </tutorials/xarray_tutorial>`.
 """
-from __future__ import absolute_import
-
 import functools
 import logging
 import re
@@ -90,7 +88,7 @@ log = logging.getLogger(__name__)
 
 
 @xr.register_dataarray_accessor('metpy')
-class MetPyDataArrayAccessor(object):
+class MetPyDataArrayAccessor:
     r"""Provide custom attributes and methods on xarray DataArrays for MetPy functionality.
 
     This accessor provides several convenient attributes and methods through the `.metpy`
@@ -355,7 +353,7 @@ class MetPyDataArrayAccessor(object):
             raise ValueError('Given axis is not valid. Must be an axis number, a dimension '
                              'coordinate name, or a standard axis type.')
 
-    class _LocIndexer(object):
+    class _LocIndexer:
         """Provide the unit-wrapped .loc indexer for data arrays."""
 
         def __init__(self, data_array):
@@ -389,7 +387,7 @@ class MetPyDataArrayAccessor(object):
 
 
 @xr.register_dataset_accessor('metpy')
-class MetPyDatasetAccessor(object):
+class MetPyDatasetAccessor:
     """Provide custom attributes and methods on XArray Datasets for MetPy functionality.
 
     This accessor provides parsing of CF metadata and unit-/coordinate-type-aware selection.
@@ -424,14 +422,14 @@ class MetPyDatasetAccessor(object):
             Parsed DataArray (if varname is a string) or Dataset
 
         """
-        from .cbook import is_string_like, iterable
+        from .cbook import iterable
         from .plots.mapping import CFProjection
 
         if varname is None:
             # If no varname is given, parse all variables in the dataset
             varname = list(self._dataset.data_vars)
 
-        if iterable(varname) and not is_string_like(varname):
+        if iterable(varname) and not isinstance(varname, str):
             # If non-string iterable is given, apply recursively across the varnames
             subset = xr.merge([self.parse_cf(single_varname, coordinates=coordinates)
                                for single_varname in varname])
@@ -487,7 +485,7 @@ class MetPyDatasetAccessor(object):
                         new_data_array.metpy.unit_array = scaled_vals.to('meters')
                         var.coords[coord_name] = new_data_array
 
-    class _LocIndexer(object):
+    class _LocIndexer:
         """Provide the unit-wrapped .loc indexer for datasets."""
 
         def __init__(self, dataset):

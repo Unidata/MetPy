@@ -428,7 +428,7 @@ def test_storm_relative_helicity():
     hgt_int = np.arange(0, 2050, 50)
     hgt_int = hgt_int * units('meter')
     dir_int = np.arange(180, 272.25, 2.25)
-    spd_int = np.zeros((hgt_int.shape[0]))
+    spd_int = np.zeros(hgt_int.shape[0])
     spd_int[:] = 2.
     u_int, v_int = wind_components(spd_int * units('m/s'), dir_int * units.degree)
 

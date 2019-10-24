@@ -1,4 +1,4 @@
-# Copyright (c) 2008,2015,2018 MetPy Developers.
+# Copyright (c) 2008,2015,2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Collection of generally useful utility code from the cookbook."""
@@ -9,18 +9,6 @@ import numpy as np
 import pooch
 
 from . import __version__
-
-try:
-    string_type = basestring
-except NameError:
-    string_type = str
-
-
-# TODO: This can go away when we remove Python 2
-def is_string_like(s):
-    """Check if an object is a string."""
-    return isinstance(s, string_type)
-
 
 POOCH = pooch.create(
     path=pooch.os_cache('metpy'),
@@ -51,7 +39,7 @@ def get_test_data(fname, as_file_obj=True):
     return path
 
 
-class Registry(object):
+class Registry:
     """Provide a generic function registry.
 
     This provides a class to instantiate, which then has a `register` method that can
@@ -124,5 +112,4 @@ def result_type(value):
             raise TypeError('Cannot determine dtype for type {}'.format(type(value)))
 
 
-__all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'is_string_like', 'iterable',
-           'result_type')
+__all__ = ('Registry', 'broadcast_indices', 'get_test_data', 'iterable', 'result_type')

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 MetPy Developers.
+# Copyright (c) 2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Cartopy specific mapping utilities."""
@@ -13,7 +13,7 @@ class MetPyMapFeature(cfeature.NaturalEarthFeature):
 
     def __init__(self, name, scale, **kwargs):
         """Create USCountiesFeature instance."""
-        super(MetPyMapFeature, self).__init__('', name, scale, **kwargs)
+        super().__init__('', name, scale, **kwargs)
 
     def geometries(self):
         """Return an iterator of (shapely) geometries for this feature."""

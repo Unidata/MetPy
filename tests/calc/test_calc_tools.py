@@ -410,7 +410,7 @@ def test_get_layer_heights_agl_bottom_no_interp():
     heights_init = np.arange(300, 1200, 100) * units.m
     data = heights_init.m * 0.1 * units.degC
     heights, data = get_layer_heights(heights_init, 500 * units.m, data, with_agl=True,
-                                      interpolation=False, bottom=200 * units.m)
+                                      interpolate=False, bottom=200 * units.m)
     # Regression test for #789
     assert_array_equal(heights_init[0], 300 * units.m)
     heights_true = np.array([0.2, 0.3, 0.4, 0.5, 0.6, 0.7]) * units.km

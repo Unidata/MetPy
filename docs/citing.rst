@@ -18,7 +18,7 @@ Example BibTeX entry:
 
   @software{metpy,
     author = {May, Ryan M. and Arms, Sean C. and Marsh, Patrick and Bruning, Eric and Leeman, John R.
-              and Goebbert, Kevin and Thielen, Jonathan E. and Bruck, Zachary},
+              and Goebbert, Kevin and Thielen, Jonathan E. and Bruick, Zachary S.},
     organization = {Unidata},
     title = {MetPy: A {Python} Package for Meteorological Data},
     year = {2008 - |cite_year|},

@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-# -*- coding: utf-8 -*-
 #
 # This file is execfile()d with the current directory set to its
 # containing dir.
@@ -51,7 +50,7 @@ sphinx_gallery_conf = {
     },
     'examples_dirs': [os.path.join('..', 'examples'), os.path.join('..', 'tutorials')],
     'gallery_dirs': ['examples', 'tutorials'],
-    'filename_pattern': '\.py',
+    'filename_pattern': r'\.py',
     'backreferences_dir': os.path.join('api', 'generated'),
     'default_thumb_file': os.path.join('_static', 'metpy_150x150_white_bg.png'),
     'abort_on_example_error': True

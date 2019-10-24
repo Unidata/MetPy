@@ -2,8 +2,6 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of kinematic parameters (e.g. divergence or vorticity)."""
-from __future__ import division
-
 import functools
 import warnings
 
@@ -12,7 +10,7 @@ import numpy as np
 from . import coriolis_parameter
 from .tools import first_derivative, get_layer_heights, gradient
 from .. import constants as mpconsts
-from ..cbook import is_string_like, iterable
+from ..cbook import iterable
 from ..package_tools import Exporter
 from ..units import atleast_2d, check_units, concatenate, units
 from ..xarray import preprocess_xarray
@@ -38,7 +36,7 @@ def _check_and_flip(arr):
             return arr.T
         else:
             return arr
-    elif not is_string_like(arr) and iterable(arr):
+    elif not isinstance(arr, str) and iterable(arr):
         return tuple(_check_and_flip(a) for a in arr)
     else:
         return arr
@@ -47,9 +45,8 @@ def _check_and_flip(arr):
 def ensure_yx_order(func):
     """Wrap a function to ensure all array arguments are y, x ordered, based on kwarg."""
     @functools.wraps(func)
-    def wrapper(*args, **kwargs):
+    def wrapper(*args, dim_order=None, **kwargs):
         # Check what order we're given
-        dim_order = kwargs.pop('dim_order', None)
         x_first = _is_x_first_dim(dim_order)
 
         # If x is the first dimension, flip (transpose) every array within the function args.

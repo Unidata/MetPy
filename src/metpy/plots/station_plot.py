@@ -3,17 +3,13 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Create Station-model plots."""
 
-try:
-    from enum import Enum
-except ImportError:
-    from enum34 import Enum
+from enum import Enum
 
 import matplotlib
 import numpy as np
 
 from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
                          pressure_tendency, sky_cover, wx_symbol_font)
-from ..cbook import is_string_like
 from ..package_tools import Exporter
 from ..units import atleast_1d
 
@@ -335,7 +331,7 @@ class StationPlot(object):
 
     def _handle_location(self, location):
         """Process locations to get a consistent set of tuples for location."""
-        if is_string_like(location):
+        if isinstance(location, str):
             location = self.location_names[location]
         xoff, yoff = location
         return xoff * self.spacing, yoff * self.spacing

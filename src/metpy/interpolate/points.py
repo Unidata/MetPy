@@ -3,8 +3,6 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Interpolate data valid at one set of points to another in multiple dimensions."""
 
-from __future__ import division
-
 import logging
 
 import numpy as np

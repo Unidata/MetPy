@@ -31,10 +31,10 @@ release new features, and `y` when we make a release with only bug fixes.
 For additional MetPy examples not included in this repository, please see the [Unidata Python
 Gallery](https://unidata.github.io/python-gallery/).
 
-We support Python >= 3.6 and currently support Python 2.7.
+We support Python >= 3.6.
 
-NOTE: We are dropping support for Python 2.7 in Fall 2019. See
-[here](https://github.com/Unidata/MetPy/blob/master/docs/installguide.rst) for more
+0.12 is the first version to drop support for Python 2.7 in Fall 2019. See
+`here <https://github.com/Unidata/MetPy/blob/master/docs/installguide.rst>`_ for more
 information.
 
 Need Help?
@@ -61,9 +61,6 @@ Other required packages:
 - Pandas
 - Pint
 - Xarray
-
-Python 2.7 requires the enum34 package, which is a backport
-of the standard library enum module.
 
 There is also an optional dependency on the pyproj library for geographic
 projections (used with cross sections, grid spacing calculation, and the GiniFile interface).

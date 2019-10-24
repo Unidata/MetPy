@@ -1,9 +1,8 @@
-# Copyright (c) 2018 MetPy Developers.
+# Copyright (c) 2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the `tools` module."""
 
-from __future__ import division
 
 import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_almost_equal
@@ -30,8 +29,8 @@ def test_calc_kappa(test_coords):
     r"""Test calculate kappa parameter function."""
     x, y = test_coords
 
-    spacing = np.mean((cdist(list(zip(x, y)),
-                             list(zip(x, y)))))
+    spacing = np.mean(cdist(list(zip(x, y)),
+                            list(zip(x, y))))
 
     value = calc_kappa(spacing)
 
