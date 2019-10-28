@@ -1022,6 +1022,25 @@ def test_first_derivative_xarray_time_and_default_axis(test_da_xy):
     assert deriv.metpy.units == truth.metpy.units
 
 
+def test_first_derivative_xarray_time_subsecond_precision():
+    """Test time derivative with an xarray.DataArray where subsecond precision is needed."""
+    test_da = xr.DataArray([299.5, 300, 300.5],
+                           dims='time',
+                           coords={'time': np.array(['2019-01-01T00:00:00.0',
+                                                     '2019-01-01T00:00:00.1',
+                                                     '2019-01-01T00:00:00.2'],
+                                                    dtype='datetime64[ms]')},
+                           attrs={'units': 'kelvin'})
+
+    deriv = first_derivative(test_da)
+
+    truth = xr.full_like(test_da, 5.)
+    truth.attrs['units'] = 'kelvin / second'
+
+    xr.testing.assert_allclose(deriv, truth)
+    assert deriv.metpy.units == truth.metpy.units
+
+
 def test_second_derivative_xarray_lonlat(test_da_lonlat):
     """Test second derivative with an xarray.DataArray on a lonlat grid."""
     deriv = second_derivative(test_da_lonlat, axis='lat')

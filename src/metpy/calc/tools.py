@@ -850,8 +850,8 @@ def xarray_derivative_wrap(func):
             new_kwargs = {'axis': f.get_axis_num(axis)}
 
             if check_axis(f[axis], 'time'):
-                # Time coordinate, need to convert to seconds from datetimes
-                new_kwargs['x'] = f[axis].metpy.as_timestamp().metpy.unit_array
+                # Time coordinate, need to get time deltas
+                new_kwargs['delta'] = f[axis].metpy.time_deltas
             elif check_axis(f[axis], 'lon'):
                 # Longitude coordinate, need to get grid deltas
                 new_kwargs['delta'], _ = grid_deltas_from_dataarray(f)

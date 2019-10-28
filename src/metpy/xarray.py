@@ -20,9 +20,11 @@ import logging
 import re
 import warnings
 
+import numpy as np
 import xarray as xr
 
 from ._vendor.xarray import either_dict_or_kwargs, expanded_indexer, is_dict_like
+from .deprecation import metpyDeprecation
 from .units import DimensionalityError, UndefinedUnitError, units
 
 __all__ = []
@@ -317,16 +319,31 @@ class MetPyDataArrayAccessor:
         return True
 
     def as_timestamp(self):
-        """Return the data as unix timestamp (for easier time derivatives)."""
+        """Return the data as unix timestamp (for easier time derivatives).
+
+        Notes
+        -----
+        This function has been deprecated and will be removed in v1.0. For the purposes of
+        time derivatives, use ``time_deltas`` instead, which allows sub-second precision.
+
+        """
+        warnings.warn('This function has been deprecated and will be removed in v1.0. Use '
+                      'time_deltas instead.', metpyDeprecation)
         attrs = {key: self._data_array.attrs[key] for key in
                  {'standard_name', 'long_name', 'axis', '_metpy_axis'}
                  & set(self._data_array.attrs)}
         attrs['units'] = 'seconds'
-        return xr.DataArray(self._data_array.values.astype('datetime64[s]').astype('int'),
+        return xr.DataArray(self._data_array.values.astype('datetime64[s]').astype('int64'),
                             name=self._data_array.name,
                             coords=self._data_array.coords,
                             dims=self._data_array.dims,
                             attrs=attrs)
+
+    @property
+    def time_deltas(self):
+        """Return the time difference of the data in seconds (to microsecond precision)."""
+        return (np.diff(self._data_array.values).astype('timedelta64[us]').astype('int64')
+                / 1e6 * units.s)
 
     def find_axis_name(self, axis):
         """Return the name of the axis corresponding to the given identifier.

@@ -1,4 +1,4 @@
-# Copyright (c) 2018 MetPy Developers.
+# Copyright (c) 2018,2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Test the operation of MetPy's XArray accessors."""
@@ -11,7 +11,8 @@ import numpy as np
 import pytest
 import xarray as xr
 
-from metpy.testing import assert_almost_equal, assert_array_equal, get_test_data
+from metpy.testing import (assert_almost_equal, assert_array_almost_equal, assert_array_equal,
+                           check_and_silence_deprecation, get_test_data)
 from metpy.units import units
 from metpy.xarray import check_axis, check_matching_coordinates, preprocess_xarray
 
@@ -454,6 +455,7 @@ def test_check_matching_coordinates(test_ds_generic):
         add(test_ds_generic['test'], other)
 
 
+@check_and_silence_deprecation
 def test_as_timestamp(test_var):
     """Test the as_timestamp method for a time DataArray."""
     time = test_var.metpy.time
@@ -464,6 +466,14 @@ def test_as_timestamp(test_var):
                          attrs={'long_name': 'forecast time', '_metpy_axis': 'T',
                                 'units': 'seconds'})
     assert truth.identical(time.metpy.as_timestamp())
+
+
+def test_time_deltas():
+    """Test the time_deltas attribute."""
+    ds = xr.open_dataset(get_test_data('irma_gfs_example.nc', as_file_obj=False))
+    time = ds['time1']
+    truth = 3 * np.ones(8) * units.hr
+    assert_array_almost_equal(time.metpy.time_deltas, truth)
 
 
 def test_find_axis_name_integer(test_var):
