@@ -77,7 +77,7 @@ coordinate_criteria = {
     },
     'regular_expression': {
         'time': r'time[0-9]*',
-        'vertical': (r'(bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|'
+        'vertical': (r'(lv_|bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|'
                      r'isotherm)[a-z_]*[0-9]*'),
         'y': r'y',
         'lat': r'x?lat[a-z0-9]*',
@@ -191,7 +191,6 @@ class MetPyDataArrayAccessor:
         # Parse all the coordinates, attempting to identify x, y, vertical, time
         coord_lists = {'T': [], 'Z': [], 'Y': [], 'X': []}
         for coord_var in coords:
-
             # Identify the coordinate type using check_axis helper
             axes_to_check = {
                 'T': ('time',),
