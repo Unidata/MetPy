@@ -9,11 +9,13 @@ These include:
 * heat index
 * windchill
 """
+from itertools import product
 import warnings
 
 import numpy as np
 from scipy.ndimage import gaussian_filter
 
+from .tools import wrap_output_like
 from .. import constants as mpconsts
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, masked_array, units
@@ -685,8 +687,7 @@ def sigma_to_pressure(sigma, pressure_sfc, pressure_top):
 
 
 @exporter.export
-@preprocess_xarray
-@units.wraps('=A', ('=A', None))
+@wrap_output_like(argument='scalar_grid', match_unit=True)
 def smooth_gaussian(scalar_grid, n):
     """Filter with normal distribution of weights.
 
@@ -778,15 +779,180 @@ def smooth_gaussian(scalar_grid, n):
 
 
 @exporter.export
-@preprocess_xarray
-@units.wraps('=A', ('=A', None, None))
+@wrap_output_like(argument='scalar_grid', match_unit=True)
+def smooth_window(scalar_grid, window, passes=1, normalize_weights=True):
+    """Filter with an arbitrary window smoother.
+
+    Parameters
+    ----------
+    scalar_grid : array-like
+        N-dimensional scalar grid to be smoothed.
+
+    window : ndarray
+        The window to use in smoothing. Can have dimension less than or equal to N. If
+        dimension less than N, the scalar grid will be smoothed along its trailing dimensions.
+        Shape along each dimension must be odd.
+
+    passes : int
+        The number of times to apply the filter to the grid. Defaults to 1.
+
+    normalize_weights : bool
+        If true, divide the values in window by the sum of all values in the window to obtain
+        the normalized smoothing weights. If false, use supplied values directly as the
+        weights.
+
+    Returns
+    -------
+    array-like
+        The filtered scalar grid.
+
+    Notes
+    -----
+    This function can be applied multiple times to create a more smoothed field and will only
+    smooth the interior points, leaving the end points with their original values (this
+    function will leave an unsmoothed edge of size `(n - 1) / 2` for each `n` in the shape of
+    `window` around the data). If a masked value or NaN values exists in the array, it will
+    propagate to any point that uses that particular grid point in the smoothing calculation.
+    Applying the smoothing function multiple times will propogate NaNs further throughout the
+    domain.
+
+    See Also
+    --------
+    smooth_rectangular, smooth_circular, smooth_n_point, smooth_gaussian
+
+    """
+    def _pad(n):
+        # Return number of entries to pad given length along dimension.
+        return (n - 1) // 2
+
+    def _zero_to_none(x):
+        # Convert zero values to None, otherwise return what is given.
+        return x if x != 0 else None
+
+    def _offset(pad, k):
+        # Return padded slice offset by k entries
+        return slice(_zero_to_none(pad + k), _zero_to_none(-pad + k))
+
+    def _trailing_dims(indexer):
+        # Add ... to the front of an indexer, since we are working with trailing dimensions.
+        return (Ellipsis,) + tuple(indexer)
+
+    # Verify that shape in all dimensions is odd (need to have a neighboorhood around a
+    # central point)
+    if any((size % 2 == 0) for size in window.shape):
+        raise ValueError('The shape of the smoothing window must be odd in all dimensions.')
+
+    # Optionally normalize the supplied weighting window
+    if normalize_weights:
+        weights = window / np.sum(window)
+    else:
+        weights = window
+
+    # TODO: this is not lazy-loading/dask compatible, as it "densifies" the data
+    data = np.array(scalar_grid)
+    for _ in range(passes):
+        # Set values corresponding to smoothing weights by summing over each weight and
+        # applying offsets in needed dimensions
+        data[_trailing_dims(_offset(_pad(n), 0) for n in weights.shape)] = sum(
+            weights[index] * data[_trailing_dims(_offset(_pad(n), index[i] - _pad(n))
+                                                 for i, n in enumerate(weights.shape))]
+            for index in product(*(range(n) for n in weights.shape))
+        )
+
+    return data
+
+
+@exporter.export
+def smooth_rectangular(scalar_grid, size, passes=1):
+    """Filter with a rectangular window smoother.
+
+    Parameters
+    ----------
+    scalar_grid : array-like
+        N-dimensional scalar grid to be smoothed.
+
+    size : int or sequence of ints
+        Shape of rectangle along the trailing dimension(s) of the scalar grid.
+
+    passes : int
+        The number of times to apply the filter to the grid. Defaults to 1.
+
+    Returns
+    -------
+    array-like
+        The filtered scalar grid.
+
+    Notes
+    -----
+    This function can be applied multiple times to create a more smoothed field and will only
+    smooth the interior points, leaving the end points with their original values (this
+    function will leave an unsmoothed edge of size `(n - 1) / 2` for each `n` in `size` around
+    the data). If a masked value or NaN values exists in the array, it will propagate to any
+    point that uses that particular grid point in the smoothing calculation. Applying the
+    smoothing function multiple times will propogate NaNs further throughout the domain.
+
+    See Also
+    --------
+    smooth_window, smooth_circular, smooth_n_point, smooth_gaussian
+
+    """
+    return smooth_window(scalar_grid, np.ones(size), passes=passes)
+
+
+@exporter.export
+def smooth_circular(scalar_grid, radius, passes=1):
+    """Filter with a circular window smoother.
+
+    Parameters
+    ----------
+    scalar_grid : array-like
+        N-dimensional scalar grid to be smoothed. If more than two axes, smoothing is only
+        done along the last two.
+
+    radius : int
+        Radius of the circular smoothing window
+
+    passes : int
+        The number of times to apply the filter to the grid. Defaults to 1.
+
+    Returns
+    -------
+    array-like
+        The filtered scalar grid.
+
+    Notes
+    -----
+    This function can be applied multiple times to create a more smoothed field and will only
+    smooth the interior points, leaving the end points with their original values (this
+    function will leave an unsmoothed edge of size `radius` around the data). If a masked
+    value or NaN values exists in the array, it will propagate to any point that uses that
+    particular grid point in the smoothing calculation. Applying the smoothing function
+    multiple times will propogate NaNs further throughout the domain.
+
+    See Also
+    --------
+    smooth_window, smooth_rectangular, smooth_n_point, smooth_gaussian
+
+    """
+    # Generate the circle
+    size = 2 * radius + 1
+    x, y = np.mgrid[:size, :size]
+    distance = np.sqrt((x - radius) ** 2 + (y - radius) ** 2)
+    circle = distance <= radius
+
+    # Apply smoother
+    return smooth_window(scalar_grid, circle, passes=passes)
+
+
+@exporter.export
 def smooth_n_point(scalar_grid, n=5, passes=1):
-    """Filter with normal distribution of weights.
+    """Filter with an n-point smoother.
 
     Parameters
     ----------
     scalar_grid : array-like or `pint.Quantity`
-        Some 2D scalar grid to be smoothed.
+        N-dimensional scalar grid to be smoothed. If more than two axes, smoothing is only
+        done along the last two.
 
     n: int
         The number of points to use in smoothing, only valid inputs
@@ -798,41 +964,37 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
     Returns
     -------
     array-like or `pint.Quantity`
-        The filtered 2D scalar grid.
+        The filtered scalar grid.
 
     Notes
     -----
-    This function is a close replication of the GEMPAK function SM5S
-    and SM9S depending on the choice of the number of points to use
-    for smoothing. This function can be applied multiple times to
-    create a more smoothed field and will only smooth the interior
-    points, leaving the end points with their original values. If a
-    masked value or NaN values exists in the array, it will propagate
-    to any point that uses that particular grid point in the smoothing
-    calculation. Applying the smoothing function multiple times will
-    propagate NaNs further throughout the domain.
+    This function is a close replication of the GEMPAK function SM5S and SM9S depending on the
+    choice of the number of points to use for smoothing. This function can be applied multiple
+    times to create a more smoothed field and will only smooth the interior points, leaving
+    the end points with their original values (this function will leave an unsmoothed edge of
+    size 1 around the data). If a masked value or NaN values exists in the array, it will
+    propagate to any point that uses that particular grid point in the smoothing calculation.
+    Applying the smoothing function multiple times will propogate NaNs further throughout the
+    domain.
+
+    See Also
+    --------
+    smooth_window, smooth_rectangular, smooth_circular, smooth_gaussian
 
     """
     if n == 9:
-        p = 0.25
-        q = 0.125
-        r = 0.0625
+        weights = np.array([[0.0625, 0.125, 0.0625],
+                            [0.125, 0.25, 0.125],
+                            [0.0625, 0.125, 0.0625]])
     elif n == 5:
-        p = 0.5
-        q = 0.125
-        r = 0.0
+        weights = np.array([[0., 0.125, 0.],
+                            [0.125, 0.5, 0.125],
+                            [0., 0.125, 0.]])
     else:
         raise ValueError('The number of points to use in the smoothing '
                          'calculation must be either 5 or 9.')
 
-    smooth_grid = scalar_grid[:].copy()
-    for _i in range(passes):
-        smooth_grid[1:-1, 1:-1] = (p * smooth_grid[1:-1, 1:-1]
-                                   + q * (smooth_grid[2:, 1:-1] + smooth_grid[1:-1, 2:]
-                                          + smooth_grid[:-2, 1:-1] + smooth_grid[1:-1, :-2])
-                                   + r * (smooth_grid[2:, 2:] + smooth_grid[2:, :-2] +
-                                          + smooth_grid[:-2, 2:] + smooth_grid[:-2, :-2]))
-    return smooth_grid
+    return smooth_window(scalar_grid, window=weights, passes=passes, normalize_weights=False)
 
 
 @exporter.export

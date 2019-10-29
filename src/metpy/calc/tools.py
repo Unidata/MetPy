@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
 import functools
+from inspect import signature
 from operator import itemgetter
 import warnings
 
@@ -1474,3 +1475,108 @@ def _remove_nans(*variables):
     for v in variables:
         ret.append(v[~mask])
     return ret
+
+
+def wrap_output_like(**wrap_kwargs):
+    """Wrap the output from a function to be like some other data object type.
+
+    Wraps given data to match the units/coordinates/object type of another array. Currently
+    supports:
+
+    - As input (output from wrapped function):
+        - ``numpy.ndarray``
+        - ``pint.Quantity``
+        - ``xarray.DataArray``
+    - As matched output (final returned value):
+        - ``numpy.ndarray``
+        - ``pint.Quantity``
+        - ``xarray.DataArray``
+
+    This wrapping/conversion follows the following rules:
+
+    - If type of input and output match, do nothing
+    - If type of output is ndarray, use ``np.asarray`` with dtype
+    - If type of output is pint.Quantity and input is...
+        - ndarray, return Quantity
+        - DataArray, convert to Quantity using MetPy's accessor
+    - If type of output is DataArray, wrap input with DataArray matching dims/coords (but not
+        attrs) of other object
+        - If shapes do not match, this will error
+        - If input is a Quantity, use magnitude and add unit as attribute (rather than xarray
+            wrapping Quantity, at least for now)
+
+    The behavior of this decorator is flexible. Use the following keyword arguments to control
+    the mapping behavior:
+
+    - `argument`: specify the name of a single argument from the function signature from which
+        to take the other data object
+    - `other`: specify the other data object directly
+    - `match_unit`: if True and other data object has units, convert output to those units
+        (defaults to False)
+
+    Notes
+    -----
+    This can be extended in the future to support:
+
+    - ``units.wraps``-like behavior
+    - scalars vs. numpy scalars (Issue #1209)
+    - dask (and other duck array) compatibility
+    - dimensionality reduction (particularly with xarray)
+
+    """
+    def decorator(func):
+        @functools.wraps(func)
+        def wrapper(*args, **kwargs):
+            # Determine other
+            if 'other' in wrap_kwargs:
+                other = wrap_kwargs['other']
+            elif 'argument' in wrap_kwargs:
+                other = signature(func).bind(*args, **kwargs).arguments[wrap_kwargs['argument']]
+            else:
+                raise ValueError('Must specify keyword "other" or "argument".')
+
+            # Get result from wrapped function
+            result = func(*args, **kwargs)
+
+            # If not a handled type, warn and exit early
+            for arg in (result, other):
+                if not isinstance(arg, (np.ndarray, units.Quantity, xr.DataArray)):
+                    warnings.warn(f'Cannot wrap output based on type {type(result)}, so use '
+                                  'caution with this result.')
+                    return result
+
+            # Proceed with wrapping rules
+            if isinstance(result, type(other)):
+                return result
+            elif isinstance(other, np.ndarray):
+                return np.asarray(result, dtype=other.dtype)
+            elif isinstance(other, units.Quantity):
+                if wrap_kwargs.get('match_unit', False):
+                    if isinstance(result, np.ndarray):
+                        return units.Quantity(result, other.units)
+                    else:
+                        return result.metpy.unit_array.to(other.units)
+                else:
+                    if isinstance(result, np.ndarray):
+                        return units.Quantity(result)
+                    else:
+                        return result.metpy.unit_array
+            else:
+                if wrap_kwargs.get('match_unit', False) and hasattr(other.attrs, 'units'):
+                    if isinstance(result, units.Quantity):
+                        return xr.DataArray(result.m_as(other.attrs['units']), dims=other.dims,
+                                            coords=other.coords,
+                                            attrs={'units': other.attrs['units']})
+                    else:
+                        return xr.DataArray(result, dims=other.dims, coords=other.coords,
+                                            attrs={'units': other.attrs['units']})
+                else:
+                    if isinstance(result, units.Quantity):
+                        return xr.DataArray(result.magnitude, dims=other.dims,
+                                            coords=other.coords,
+                                            attrs={'units': str(result.units)})
+                    else:
+                        return xr.DataArray(result, dims=other.dims, coords=other.coords)
+
+        return wrapper
+    return decorator
