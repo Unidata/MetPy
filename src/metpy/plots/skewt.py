@@ -624,12 +624,13 @@ class SkewT:
 
         # Set pressure range if necessary
         if pressure is None:
-            # from highest pressure to 60% of highest pressure
+            # from the highest pressure to 600 hPa
             pmax = max(self.ax.get_ylim())
-            pressure = units.Quantity(np.linspace(0.6 * pmax, pmax), self.ax.yaxis.units)
+            pmin = units.Quantity(600, 'hPa').to(self.ax.yaxis.units)
+            pressure = units.Quantity(np.linspace(pmin, pmax), self.ax.yaxis.units)
 
-        # Dewpoint contours calculated and converted to xaxis units
-        td = dewpoint(vapor_pressure(pressure, mixing_ratio)).to(self.ax.xaxis.units)
+        # Dewpoint temperature profiles
+        td = dewpoint(vapor_pressure(pressure, mixing_ratio))
 
         # Assemble data for plotting
         linedata = [np.vstack((t.m, pressure.m)).T for t in td]
