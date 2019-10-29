@@ -118,6 +118,13 @@ before_install:
 install:
   - python -m pip install ".[$EXTRA_INSTALLS]" --upgrade --upgrade-strategy=eager --no-index $PRE -f file://$WHEELDIR $VERSIONS;
 
+before_script:
+  - if [[ $TASK == "coverage" ]]; then
+      curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter;
+      chmod +x ./cc-test-reporter;
+      ./cc-test-reporter before-build;
+    fi;
+
 script:
   - if [[ $TASK == "docs" ]]; then
       export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/staticdata;
@@ -142,11 +149,11 @@ script:
 
 after_script:
   - if [[ $TASK == "coverage" ]]; then
-      pip install codecov codacy-coverage codeclimate-test-reporter;
+      pip install codecov codacy-coverage;
       codecov -e TRAVIS_PYTHON_VERSION;
       coverage xml;
       python-codacy-coverage -r coverage.xml;
-      codeclimate-test-reporter;
+      ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT;
     fi
   - ls -lrt --full-time $WHEELDIR;
   - echo $(find $WHEELDIR -newer $WHEELDIR/download_marker -name *.whl | tr [:space:] :)
