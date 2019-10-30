@@ -384,6 +384,7 @@ regex_matches = [
     ('isobaric', 'vertical'),
     ('isobaric1', 'vertical'),
     ('isobaric42', 'vertical'),
+    ('lv_HTGL5', 'vertical'),
     ('PRES', 'vertical'),
     ('pressure', 'vertical'),
     ('pressure_difference_layer', 'vertical'),
