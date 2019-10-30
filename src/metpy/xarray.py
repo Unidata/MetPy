@@ -191,6 +191,7 @@ class MetPyDataArrayAccessor:
         # Parse all the coordinates, attempting to identify x, y, vertical, time
         coord_lists = {'T': [], 'Z': [], 'Y': [], 'X': []}
         for coord_var in coords:
+
             # Identify the coordinate type using check_axis helper
             axes_to_check = {
                 'T': ('time',),
