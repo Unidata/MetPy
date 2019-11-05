@@ -42,6 +42,12 @@ def precipitable_water(dewpt, pressure, bottom=None, top=None):
     `pint.Quantity`
         The precipitable water in the layer
 
+    Examples
+    --------
+    >>> pressure = np.array([1000, 950, 900]) * units.hPa
+    >>> dewpoint = np.array([20, 15, 10]) * units.degC
+    >>> pw = precipitable_water(dewpoint, pressure)
+
     """
     # Sort pressure and dewpoint to be in decreasing pressure order (increasing height)
     sort_inds = np.argsort(pressure)[::-1]
