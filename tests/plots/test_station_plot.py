@@ -249,13 +249,19 @@ def test_layout_str():
                            "W: (value, temp, ...), barb: (barb, ('u', 'v'), ...)}")
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.00145, remove_text=True)
-def test_barb_projection():
-    """Test that barbs are properly projected (#598)."""
-    # Test data of all southerly winds
+@pytest.fixture
+def wind_plot():
+    """Create southerly wind test data."""
     v = np.full((5, 5), 10, dtype=np.float64)
     u = np.zeros_like(v)
     x, y = np.meshgrid(np.linspace(-120, -60, 5), np.linspace(25, 50, 5))
+    return u, v, x, y
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.00145, remove_text=True)
+def test_barb_projection(wind_plot):
+    """Test that barbs are properly projected (#598)."""
+    u, v, x, y = wind_plot
 
     # Plot and check barbs (they should align with grid lines)
     fig = plt.figure()
@@ -267,12 +273,35 @@ def test_barb_projection():
     return fig
 
 
-def test_barb_projection_list():
-    """Test that barbs will be projected when lat/lon lists are provided."""
+@pytest.mark.mpl_image_compare(tolerance=0.00205, remove_text=True)
+def test_arrow_projection(wind_plot):
+    """Test that arrows are properly projected."""
+    u, v, x, y = wind_plot
+
+    # Plot and check barbs (they should align with grid lines)
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1, projection=ccrs.LambertConformal())
+    ax.gridlines(xlocs=[-135, -120, -105, -90, -75, -60, -45])
+    sp = StationPlot(ax, x, y, transform=ccrs.PlateCarree())
+    sp.plot_arrow(u, v)
+    sp.plot_arrow(u, v)  # plot_arrow used twice to hit removal if statement
+
+    return fig
+
+
+@pytest.fixture
+def wind_projection_list():
+    """Create wind lists for testing."""
     lat = [38.22, 38.18, 38.25]
     lon = [-85.76, -85.86, -85.77]
     u = [1.89778964, -3.83776523, 3.64147732] * units('m/s')
     v = [1.93480072, 1.31000184, 1.36075552] * units('m/s')
+    return lat, lon, u, v
+
+
+def test_barb_projection_list(wind_projection_list):
+    """Test that barbs will be projected when lat/lon lists are provided."""
+    lat, lon, u, v = wind_projection_list
 
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
@@ -281,18 +310,51 @@ def test_barb_projection_list():
     assert stnplot.barbs
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.0048, remove_text=True)
-def test_barb_unit_conversion():
-    """Test that barbs units can be converted at plot time (#737)."""
+def test_arrow_projection_list(wind_projection_list):
+    """Test that arrows will be projected when lat/lon lists are provided."""
+    lat, lon, u, v = wind_projection_list
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    stnplot = StationPlot(ax, lon, lat)
+    stnplot.plot_arrow(u, v)
+    assert stnplot.arrows
+
+
+@pytest.fixture
+def barbs_units():
+    """Create barbs with units for testing."""
     x_pos = np.array([0])
     y_pos = np.array([0])
     u_wind = np.array([3.63767155210412]) * units('m/s')
     v_wind = np.array([3.63767155210412]) * units('m/s')
+    return x_pos, y_pos, u_wind, v_wind
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.0048, remove_text=True)
+def test_barb_unit_conversion(barbs_units):
+    """Test that barbs units can be converted at plot time (#737)."""
+    x_pos, y_pos, u_wind, v_wind = barbs_units
 
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
     stnplot = StationPlot(ax, x_pos, y_pos)
     stnplot.plot_barb(u_wind, v_wind, plot_units='knots')
+    ax.set_xlim(-5, 5)
+    ax.set_ylim(-5, 5)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.0048, remove_text=True)
+def test_arrow_unit_conversion(barbs_units):
+    """Test that arrow units can be converted at plot time (#737)."""
+    x_pos, y_pos, u_wind, v_wind = barbs_units
+
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    stnplot = StationPlot(ax, x_pos, y_pos)
+    stnplot.plot_arrow(u_wind, v_wind, plot_units='knots')
     ax.set_xlim(-5, 5)
     ax.set_ylim(-5, 5)
 
