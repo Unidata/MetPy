@@ -12,7 +12,7 @@ MetPy
 [![PyPI Downloads](https://img.shields.io/pypi/dm/metpy.svg)](https://pypi.python.org/pypi/MetPy/)
 [![Conda Downloads](https://anaconda.org/conda-forge/metpy/badges/downloads.svg)](https://anaconda.org/conda-forge/metpy)
 
-[![Travis Build Status](https://travis-ci.org/Unidata/MetPy.svg?branch=master)](https://travis-ci.org/Unidata/MetPy)
+[![Travis Build Status](https://travis-ci.com/Unidata/MetPy.svg?branch=master)](https://travis-ci.com/Unidata/MetPy)
 [![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/dwaletlb23v2ae4e/branch/master?svg=true)](https://ci.appveyor.com/project/Unidata/metpy/branch/master)
 [![Code Coverage Status](https://codecov.io/github/Unidata/MetPy/coverage.svg?branch=master)](https://codecov.io/github/Unidata/MetPy?branch=master)
 
