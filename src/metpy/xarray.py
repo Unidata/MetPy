@@ -626,27 +626,27 @@ def _reassign_quantity_indexer(data, indexers):
         except AttributeError:
             return val
 
+    # Update indexers keys for axis type -> coord name replacement
+    indexers = {(key if not isinstance(data, xr.DataArray) or key in data.dims
+                 or key not in readable_to_cf_axes else
+                 next(data.metpy.coordinates(key)).name): indexers[key]
+                for key in indexers}
+
+    # Update indexers to handle quantities and slices of quantities
+    reassigned_indexers = {}
     for coord_name in indexers:
-        # Handle axis types for DataArrays
-        if (isinstance(data, xr.DataArray) and coord_name not in data.dims
-                and coord_name in readable_to_cf_axes):
-            axis = coord_name
-            coord_name = next(data.metpy.coordinates(axis)).name
-            indexers[coord_name] = indexers[axis]
-            del indexers[axis]
-
-        # Handle slices of quantities
+        coord_units = data[coord_name].metpy.units
         if isinstance(indexers[coord_name], slice):
-            start = _to_magnitude(indexers[coord_name].start, data[coord_name].metpy.units)
-            stop = _to_magnitude(indexers[coord_name].stop, data[coord_name].metpy.units)
-            step = _to_magnitude(indexers[coord_name].step, data[coord_name].metpy.units)
-            indexers[coord_name] = slice(start, stop, step)
+            # Handle slices of quantities
+            start = _to_magnitude(indexers[coord_name].start, coord_units)
+            stop = _to_magnitude(indexers[coord_name].stop, coord_units)
+            step = _to_magnitude(indexers[coord_name].step, coord_units)
+            reassigned_indexers[coord_name] = slice(start, stop, step)
+        else:
+            # Handle quantities
+            reassigned_indexers[coord_name] = _to_magnitude(indexers[coord_name], coord_units)
 
-        # Handle quantities
-        indexers[coord_name] = _to_magnitude(indexers[coord_name],
-                                             data[coord_name].metpy.units)
-
-    return indexers
+    return reassigned_indexers
 
 
 __all__ = ('MetPyDataArrayAccessor', 'MetPyDatasetAccessor')
