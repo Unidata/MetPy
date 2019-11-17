@@ -1,29 +1,13 @@
-#!/usr/bin/env python
-# coding: utf-8
-
-# In[ ]:
-
-
-get_ipython().run_line_magic('matplotlib', 'inline')
-
-
-# 
-# # MSLP and 1000-500 hPa Thickness with High and Low Symbols
-# 
-# 
+ # # MSLP and 1000-500 hPa Thickness with High and Low Symbols
+#
+#
 # Plot MSLP, calculate and plot 1000-500 hPa thickness, and plot H and L markers.
 # Beyond just plotting a few variables, in the example we use functionality
 # from the scipy module to find local maximum and minimimum values within the
 # MSLP field in order to plot symbols at those locations.
-# 
+#
 
 # Imports
-# 
-# 
-
-# In[ ]:
-
-
 from datetime import datetime
 
 import cartopy.crs as ccrs
@@ -35,80 +19,11 @@ import numpy as np
 from scipy.ndimage import gaussian_filter
 from siphon.ncss import NCSS
 
-# Optional HiLo import for plot_maxmin_points module
+# Function for finding and plotting max/min points
+# import HiLo module for plot_maxmin_points function
 from HiLo import plot_maxmin_points as plot_maxmin_points
 
-
-# Function for finding and plotting max/min points
-# 
-# 
-
-# In[ ]:
-
-
-def plot_maxmin_points(ax, lon, lat, data, extrema, nsize, symbol,color='k', outline_color='k',
-                       outline_width=2.5, press_spacing=0.66, plotValue=True, transform=None):
-
-    """
-    ax argument allows for sending current axis to the plot 
-    
-    Path effects on the symbols and pressure readings - outline them in black (default) with linewidth 
-    2.5 (default) to make them pop a bit more. The press_spacing (0.66 default) is based off latitude and helps 
-    serarate the pressure reading and the symbol with the outline effects making them overlap.
-    
-    
-    This function will find and plot relative maximum and minimum for a 2D grid. The function
-    can be used to plot an H for maximum values (e.g., High pressure) and an L for minimum
-    values (e.g., low pressue). It is best to used filetered data to obtain  a synoptic scale
-    max/min value. The symbol text can be set to a string value and optionally the color of the
-    symbol and any plotted value can be set with the parameter color
-    lon = plotting longitude values (2D)
-    lat = plotting latitude values (2D)
-    data = 2D data that you wish to plot the max/min symbol placement
-    extrema = Either a value of max for Maximum Values or min for Minimum Values
-    nsize = Size of the grid box to filter the max and min values to plot a reasonable number
-    symbol = String to be placed at location of max/min value
-    color = String matplotlib colorname to plot the symbol (and numerica value, if plotted)
-    plot_value = Boolean (True/False) of whether to plot the numeric value of max/min point
-    The max/min symbol will be plotted on the current axes within the bounding frame
-    (e.g., clip_on=True)
-    """
-    import numpy as np
-    from matplotlib import patheffects
-    from scipy.ndimage.filters import maximum_filter, minimum_filter
-    outline_effect = [patheffects.withStroke(linewidth=outline_width, foreground=outline_color)]
-
-    if (extrema == 'max'):
-        data_ext = maximum_filter(data, nsize, mode='nearest')
-    elif (extrema == 'min'):
-        data_ext = minimum_filter(data, nsize, mode='nearest')
-    else:
-        raise ValueError('Value for hilo must be either max or min')
-    
-    mxy, mxx = np.where(data_ext == data)
-    #print(mxy,mxx)
-    
-    for i in range(len(mxy)):
-        symb_text = ax.text(lon[mxy[i], mxx[i]], lat[mxy[i], mxx[i]], symbol, color=color, size=24,
-                    clip_on=True, horizontalalignment='center', verticalalignment='center',
-                    transform=transform)
-        symb_text.set_path_effects(outline_effect)
-        
-        press_text = ax.text(lon[mxy[i], mxx[i]], lat[mxy[i], mxx[i]]-float(press_spacing),
-                    str(np.int(data[mxy[i], mxx[i]])),
-                    color=color, size=12, clip_on=True, fontweight='bold',
-                    horizontalalignment='center', verticalalignment='top', transform=transform)
-        press_text.set_path_effects(outline_effect)
-            
-
-
 # Get NARR data
-# 
-# 
-
-# In[ ]:
-
-
 dattim = datetime(1999, 1, 3, 0)
 
 ncss = NCSS('https://www.ncei.noaa.gov/thredds/ncss/grid/narr-a-files/{0:%Y%m}/{0:%Y%m%d}/'
@@ -120,12 +35,6 @@ data = ncss.get_data(query)
 
 
 # Extract data into variables
-# 
-# 
-
-# In[ ]:
-
-
 # Grab pressure levels
 plev = list(data.variables['isobaric1'][:])
 
@@ -152,12 +61,6 @@ thickness_1000_500 = gaussian_filter(hght_500 - hght_1000, sigma=3.0)
 
 
 # Set map and data projections for use in mapping
-# 
-# 
-
-# In[ ]:
-
-
 # Set projection of map display
 mapproj = ccrs.LambertConformal(central_latitude=45., central_longitude=-100.)
 
@@ -173,12 +76,6 @@ states_provinces = cfeature.NaturalEarthFeature(
 
 
 # Create figure and plot data
-# 
-# 
-
-# In[ ]:
-
-
 fig = plt.figure(1, figsize=(17., 11.))
 ax = plt.subplot(111, projection=mapproj)
 
@@ -214,4 +111,3 @@ plt.title('MSLP (hPa) with Highs and Lows, 1000-500 hPa Thickness (m)', loc='lef
 plt.title('VALID: {}'.format(vtime[0]), loc='right')
 
 plt.show()
-
