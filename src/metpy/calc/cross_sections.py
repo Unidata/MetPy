@@ -33,7 +33,7 @@ def distances_from_cross_section(cross):
         A tuple of the x and y distances as DataArrays
 
     """
-    if check_axis(cross.metpy.x, 'lon') and check_axis(cross.metpy.y, 'lat'):
+    if check_axis(cross.metpy.x, 'longitude') and check_axis(cross.metpy.y, 'latitude'):
         # Use pyproj to obtain x and y distances
         from pyproj import Geod
 
@@ -79,7 +79,7 @@ def latitude_from_cross_section(cross):
 
     """
     y = cross.metpy.y
-    if check_axis(y, 'lat'):
+    if check_axis(y, 'latitude'):
         return y
     else:
         import cartopy.crs as ccrs

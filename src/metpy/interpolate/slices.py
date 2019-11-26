@@ -166,7 +166,7 @@ def cross_section(data, start, end, steps=100, interp_type='linear'):
         points_cross = geodesic(crs_data, start, end, steps)
 
         # Patch points_cross to match given longitude range, whether [0, 360) or (-180,  180]
-        if check_axis(x, 'lon') and (x > 180).any():
+        if check_axis(x, 'longitude') and (x > 180).any():
             points_cross[points_cross[:, 0] < 0, 0] += 360.
 
         # Return the interpolated data

@@ -28,8 +28,8 @@ from .deprecation import metpyDeprecation
 from .units import DimensionalityError, UndefinedUnitError, units
 
 __all__ = []
-readable_to_cf_axes = {'time': 'T', 'vertical': 'Z', 'y': 'Y', 'x': 'X'}
-cf_to_readable_axes = {readable_to_cf_axes[key]: key for key in readable_to_cf_axes}
+metpy_axes = ['time', 'vertical', 'y', 'latitude', 'x', 'longitude']
+cf_to_metpy_axes = {'T': 'time', 'Z': 'vertical', 'Y': 'y', 'X': 'x'}  # TODO: Remove in 1.0
 
 # Define the criteria for coordinate matches
 coordinate_criteria = {
@@ -43,19 +43,24 @@ coordinate_criteria = {
                      'height_above_geopotential_datum', 'height_above_reference_ellipsoid',
                      'height_above_mean_sea_level'},
         'y': 'projection_y_coordinate',
-        'lat': 'latitude',
+        'latitude': 'latitude',
         'x': 'projection_x_coordinate',
-        'lon': 'longitude'
+        'longitude': 'longitude'
     },
     '_CoordinateAxisType': {
         'time': 'Time',
         'vertical': {'GeoZ', 'Height', 'Pressure'},
         'y': 'GeoY',
-        'lat': 'Lat',
+        'latitude': 'Lat',
         'x': 'GeoX',
-        'lon': 'Lon'
+        'longitude': 'Lon'
     },
-    'axis': readable_to_cf_axes,
+    'axis': {
+        'time': 'T',
+        'vertical': 'Z',
+        'y': 'Y',
+        'x': 'X'
+    },
     'positive': {
         'vertical': {'up', 'down'}
     },
@@ -64,12 +69,12 @@ coordinate_criteria = {
             'match': 'dimensionality',
             'units': 'Pa'
         },
-        'lat': {
+        'latitude': {
             'match': 'name',
             'units': {'degree_north', 'degree_N', 'degreeN', 'degrees_north', 'degrees_N',
                       'degreesN'}
         },
-        'lon': {
+        'longitude': {
             'match': 'name',
             'units': {'degree_east', 'degree_E', 'degreeE', 'degrees_east', 'degrees_E',
                       'degreesE'}
@@ -80,9 +85,9 @@ coordinate_criteria = {
         'vertical': (r'(lv_|bottom_top|sigma|h(ei)?ght|altitude|depth|isobaric|pres|'
                      r'isotherm)[a-z_]*[0-9]*'),
         'y': r'y',
-        'lat': r'x?lat[a-z0-9]*',
+        'latitude': r'x?lat[a-z0-9]*',
         'x': r'x',
-        'lon': r'x?lon[a-z0-9]*'
+        'longitude': r'x?lon[a-z0-9]*'
     }
 }
 
@@ -107,7 +112,7 @@ class MetPyDataArrayAccessor:
         Coordinates:
           * lon      (lon) int64 -105 -104
         Attributes:
-            _metpy_axis:  X
+            _metpy_axis:  x,longitude
 
     """
 
@@ -162,24 +167,41 @@ class MetPyDataArrayAccessor:
             if coord_map[axis] is not None and not isinstance(coord_map[axis], xr.DataArray):
                 coord_map[axis] = self._data_array[coord_map[axis]]
 
+        # Adapt to old CF axis dict keys
+        # TODO: Remove in v1.0
+        if any(cf_axis in coord_map for cf_axis in cf_to_metpy_axes):
+            warnings.warn('The use of CF axes types in the coordinate mapping has been '
+                          'deprecated and will be removed in v1.0.', metpyDeprecation)
+            coord_map = {(cf_to_metpy_axes[axis]
+                          if axis in cf_to_metpy_axes else axis): coord
+                         for axis, coord in coord_map.items()}
+
+        return coord_map
+
     def assign_coordinates(self, coordinates):
-        """Assign the given coordinates to the given CF axis types.
+        """Assign the given coordinates to the given MetPy axis types.
 
         Parameters
         ----------
         coordinates : dict or None
-            Mapping from axis types ('T', 'Z', 'Y', 'X') to coordinates of this DataArray.
-            Coordinates can either be specified directly or by their name. If ``None``, clears
-            the `_metpy_axis` attribute on all coordinates, which will trigger reparsing of
-            all coordinates on next access.
+            Mapping from axis types ('time', 'vertical', 'y', 'latitude', 'x', 'longitude') to
+            coordinates of this DataArray. Coordinates can either be specified directly or by
+            their name. If ``None``, clears the `_metpy_axis` attribute on all coordinates,
+            which will trigger reparsing of all coordinates on next access.
+
+        Notes
+        -----
+        Prior to v0.12, ``coordinates`` was taken as a mapping from CF axis types
+        ('T', 'Z', 'Y', 'X') to coordinates. This behavior has been deprecated and will be
+        be removed in v1.0.
 
         """
         if coordinates:
             # Assign the _metpy_axis attributes according to supplied mapping
-            self._fixup_coordinate_map(coordinates)
+            coordinates = self._fixup_coordinate_map(coordinates)
             for axis in coordinates:
                 if coordinates[axis] is not None:
-                    coordinates[axis].attrs['_metpy_axis'] = axis
+                    _assign_axis(coordinates[axis].attrs, axis)
         else:
             # Clear _metpy_axis attribute on all coordinates
             for coord_var in self._data_array.coords.values():
@@ -188,42 +210,37 @@ class MetPyDataArrayAccessor:
     def _generate_coordinate_map(self):
         """Generate a coordinate map via CF conventions and other methods."""
         coords = self._data_array.coords.values()
-        # Parse all the coordinates, attempting to identify x, y, vertical, time
-        coord_lists = {'T': [], 'Z': [], 'Y': [], 'X': []}
+        # Parse all the coordinates, attempting to identify x, longitude, y, latitude,
+        # vertical, time
+        coord_lists = {'time': [], 'vertical': [], 'y': [], 'latitude': [], 'x': [],
+                       'longitude': []}
         for coord_var in coords:
-
             # Identify the coordinate type using check_axis helper
-            axes_to_check = {
-                'T': ('time',),
-                'Z': ('vertical',),
-                'Y': ('y', 'lat'),
-                'X': ('x', 'lon')
-            }
-            for axis_cf, axes_readable in axes_to_check.items():
-                if check_axis(coord_var, *axes_readable):
-                    coord_lists[axis_cf].append(coord_var)
+            for axis in coord_lists:
+                if check_axis(coord_var, axis):
+                    coord_lists[axis].append(coord_var)
 
-        # Resolve any coordinate conflicts
-        axis_conflicts = [axis for axis in coord_lists if len(coord_lists[axis]) > 1]
-        for axis in axis_conflicts:
-            self._resolve_axis_conflict(axis, coord_lists)
+        # Fill in x/y with longitude/latitude if x/y not otherwise present
+        for geometric, graticule in (('y', 'latitude'), ('x', 'longitude')):
+            if len(coord_lists[geometric]) == 0 and len(coord_lists[graticule]) > 0:
+                coord_lists[geometric] = coord_lists[graticule]
+
+        # Filter out multidimensional coordinates where not allowed
+        require_1d_coord = ['time', 'vertical']  # TODO: Add 'y', 'x' in v1.0
+        for axis in require_1d_coord:
+            coord_lists[axis] = [coord for coord in coord_lists[axis] if coord.ndim <= 1]
+
+        # Resolve any coordinate type duplication
+        axis_duplicates = [axis for axis in coord_lists if len(coord_lists[axis]) > 1]
+        for axis in axis_duplicates:
+            self._resolve_axis_duplicates(axis, coord_lists)
 
         # Collapse the coord_lists to a coord_map
         return {axis: (coord_lists[axis][0] if len(coord_lists[axis]) > 0 else None)
                 for axis in coord_lists}
 
-    def _resolve_axis_conflict(self, axis, coord_lists):
-        """Handle axis conflicts if they arise."""
-        if axis in ('Y', 'X'):
-            # Horizontal coordinate, can be projection x/y or lon/lat. So, check for
-            # existence of unique projection x/y (preferred over lon/lat) and use that if
-            # it exists uniquely
-            projection_coords = [coord_var for coord_var in coord_lists[axis] if
-                                 check_axis(coord_var, 'x', 'y')]
-            if len(projection_coords) == 1:
-                coord_lists[axis] = projection_coords
-                return
-
+    def _resolve_axis_duplicates(self, axis, coord_lists):
+        """Handle coordinate duplication for an axis type if it arises."""
         # If one and only one of the possible axes is a dimension, use it
         dimension_coords = [coord_var for coord_var in coord_lists[axis] if
                             coord_var.name in coord_var.dims]
@@ -232,32 +249,41 @@ class MetPyDataArrayAccessor:
             return
 
         # Ambiguous axis, raise warning and do not parse
-        warnings.warn('More than one ' + cf_to_readable_axes[axis] + ' coordinate present '
-                      + 'for variable "' + self._data_array.name + '".')
+        warnings.warn('More than one ' + axis + ' coordinate present for variable "'
+                      + self._data_array.name + '".')
         coord_lists[axis] = []
 
-    def _metpy_axis_search(self, cf_axis):
+    def _metpy_axis_search(self, metpy_axis):
         """Search for cached _metpy_axis attribute on the coordinates, otherwise parse."""
         # Search for coord with proper _metpy_axis
         coords = self._data_array.coords.values()
         for coord_var in coords:
-            if coord_var.attrs.get('_metpy_axis') == cf_axis:
+            if metpy_axis in coord_var.attrs.get('_metpy_axis', '').split(','):
                 return coord_var
 
         # Opportunistically parse all coordinates, and assign if not already assigned
         coord_map = self._generate_coordinate_map()
         for axis, coord_var in coord_map.items():
-            if coord_var is not None and not any(coord.attrs.get('_metpy_axis') == axis
-                                                 for coord in coords):
-                coord_var.attrs['_metpy_axis'] = axis
+            if (coord_var is not None
+                and not any(axis in coord.attrs.get('_metpy_axis', '').split(',')
+                            for coord in coords)):
+                # Warn if assigning multidimensional coord to x/y
+                # TODO: Remove in v1.0
+                if coord_var.ndim > 1 and axis in ('y', 'x'):
+                    warnings.warn(f'Multidimensional coordinate {coord_var.name} assigned for '
+                                  f'axis "{axis}". This behavior has been deprecated and will '
+                                  'be removed in v1.0 (only one-dimensional coordinates will '
+                                  f'be available for the "{axis}" axis).', metpyDeprecation)
+
+                _assign_axis(coord_var.attrs, axis)
 
         # Return parsed result (can be None if none found)
-        return coord_map[cf_axis]
+        return coord_map[metpy_axis]
 
     def _axis(self, axis):
         """Return the coordinate variable corresponding to the given individual axis type."""
-        if axis in readable_to_cf_axes:
-            coord_var = self._metpy_axis_search(readable_to_cf_axes[axis])
+        if axis in metpy_axes:
+            coord_var = self._metpy_axis_search(axis)
             if coord_var is not None:
                 return coord_var
             else:
@@ -272,7 +298,7 @@ class MetPyDataArrayAccessor:
         ----------
         args : str
             Strings describing the axes type(s) to obtain. Currently understood types are
-            'time', 'vertical', 'y', and 'x'.
+            'time', 'vertical', 'y', 'latitude', 'x', and 'longitude'.
 
         Notes
         -----
@@ -296,13 +322,39 @@ class MetPyDataArrayAccessor:
 
     @property
     def y(self):
-        """Return the y or latitude coordinate."""
+        """Return the y coordinate.
+
+        Notes
+        -----
+        Prior to version v0.12, this attribute allowed multidimensional coordinates (including
+        latitude when another y coordinate was not available). This behavior has been
+        deprecated and will be removed in v1.0.
+
+        """
         return self._axis('y')
 
     @property
+    def latitude(self):
+        """Return the latitude coordinate (if it exists)."""
+        return self._axis('latitude')
+
+    @property
     def x(self):
-        """Return the x or longitude coordinate."""
+        """Return the x coordinate.
+
+        Notes
+        -----
+        Prior to version v0.12, this attribute allowed multidimensional coordinates (including
+        longitude when another x coordinate was not available). This behavior has been
+        deprecated and will be removed in v1.0.
+
+        """
         return self._axis('x')
+
+    @property
+    def longitude(self):
+        """Return the longitude coordinate (if it exists)."""
+        return self._axis('longitude')
 
     def coordinates_identical(self, other):
         """Return whether or not the coordinates of other match this DataArray's."""
@@ -358,7 +410,7 @@ class MetPyDataArrayAccessor:
         if isinstance(axis, int):
             # If an integer, use the corresponding dimension
             return self._data_array.dims[axis]
-        elif axis not in self._data_array.dims and axis in readable_to_cf_axes:
+        elif axis not in self._data_array.dims and axis in metpy_axes:
             # If not a dimension name itself, but a valid axis type, get the name of the
             # coordinate corresponding to that axis type
             return self._axis(axis).name
@@ -469,17 +521,17 @@ class MetPyDatasetAccessor:
 
         # Trying to guess whether we should be adding a crs to this variable's coordinates
         # First make sure it's missing CRS but isn't lat/lon itself
-        if not check_axis(var, 'lat', 'lon') and 'crs' not in var.coords:
+        if not check_axis(var, 'latitude', 'longitude') and 'crs' not in var.coords:
             # Look for both lat/lon in the coordinates
             has_lat = has_lon = False
             for coord_var in var.coords.values():
-                has_lat = has_lat or check_axis(coord_var, 'lat')
-                has_lon = has_lon or check_axis(coord_var, 'lon')
+                has_lat = has_lat or check_axis(coord_var, 'latitude')
+                has_lon = has_lon or check_axis(coord_var, 'longitude')
 
             # If we found them, create a lat/lon projection as the crs coord
             if has_lat and has_lon:
                 var.coords['crs'] = CFProjection({'grid_mapping_name': 'latitude_longitude'})
-                log.warning('Found lat/lon values, assuming latitude_longitude '
+                log.warning('Found latitude/longitude values, assuming latitude_longitude '
                             'for projection grid_mapping variable')
 
         # Assign coordinates if the coordinates argument is given
@@ -491,7 +543,8 @@ class MetPyDatasetAccessor:
     def _fixup_coords(self, var):
         """Clean up the units on the coordinate variables."""
         for coord_name, data_array in var.coords.items():
-            if (check_axis(data_array, 'x', 'y') and not check_axis(data_array, 'lon', 'lat')):
+            if (check_axis(data_array, 'x', 'y')
+                    and not check_axis(data_array, 'longitude', 'latitude')):
                 try:
                     var.coords[coord_name].metpy.convert_units('meters')
                 except DimensionalityError:  # Radians!
@@ -524,6 +577,23 @@ class MetPyDatasetAccessor:
         return self._dataset.sel(indexers, method=method, tolerance=tolerance, drop=drop)
 
 
+def _assign_axis(attributes, axis):
+    """Assign the given axis to the _metpy_axis attribute."""
+    existing_axes = attributes.get('_metpy_axis', '').split(',')
+    if ((axis == 'y' and 'latitude' in existing_axes)
+            or (axis == 'latitude' and 'y' in existing_axes)):
+        # Special case for combined y/latitude handling
+        attributes['_metpy_axis'] = 'y,latitude'
+    elif ((axis == 'x' and 'longitude' in existing_axes)
+            or (axis == 'longitude' and 'x' in existing_axes)):
+        # Special case for combined x/longitude handling
+        attributes['_metpy_axis'] = 'x,longitude'
+    else:
+        # Simply add it/overwrite past value
+        attributes['_metpy_axis'] = axis
+    return attributes
+
+
 def check_axis(var, *axes):
     """Check if the criteria for any of the given axes are satisfied.
 
@@ -532,8 +602,8 @@ def check_axis(var, *axes):
     var : `xarray.DataArray`
         DataArray belonging to the coordinate to be checked
     axes : str
-        Axis type(s) to check for. Currently can check for 'time', 'vertical', 'y', 'lat', 'x',
-        and 'lon'.
+        Axis type(s) to check for. Currently can check for 'time', 'vertical', 'y', 'latitude',
+        'x', and 'longitude'.
 
     """
     for axis in axes:
@@ -628,7 +698,7 @@ def _reassign_quantity_indexer(data, indexers):
 
     # Update indexers keys for axis type -> coord name replacement
     indexers = {(key if not isinstance(data, xr.DataArray) or key in data.dims
-                 or key not in readable_to_cf_axes else
+                 or key not in metpy_axes else
                  next(data.metpy.coordinates(key)).name): indexers[key]
                 for key in indexers}
 

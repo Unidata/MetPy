@@ -94,17 +94,26 @@ data['temperature'].metpy.convert_units('degC')
 # coordinate type directly. There are two ways to do this:
 #
 # 1. Use the ``data_var.metpy.coordinates`` method
-# 2. Use the ``data_var.metpy.x``, ``data_var.metpy.y``, ``data_var.metpy.vertical``,
-#    ``data_var.metpy.time`` properties
+# 2. Use the ``data_var.metpy.x``, ``data_var.metpy.y``, ``data_var.metpy.longitude``,
+#    ``data_var.metpy.latitude``, ``data_var.metpy.vertical``,  ``data_var.metpy.time``
+#    properties
 #
 # The valid coordinate types are:
 #
 # - x
 # - y
+# - longitude
+# - latitude
 # - vertical
 # - time
 #
-# (Both approaches and all four types are shown below)
+# (Both approaches are shown below)
+#
+# The ``x``, ``y``, ``vertical``, and ``time`` coordinates cannot be multidimensional,
+# however, the ``longitude`` and ``latitude`` coordinates can (which is often the case for
+# gridded weather data in its native projection). Note that for gridded data on an
+# equirectangular projection, such as the GFS data in this example, ``x`` and ``longitude``
+# will be identical (as will ``y`` and ``latitude``).
 
 # Get multiple coordinates (for example, in just the x and y direction)
 x, y = data['temperature'].metpy.coordinates('x', 'y')
@@ -302,13 +311,13 @@ plt.show()
 #
 # Manually assign the coordinates using the ``assign_coordinates()`` method on your DataArray,
 # or by specifying the ``coordinates`` argument to the ``parse_cf()`` method on your Dataset,
-# to map the ``T`` (time), ``Z`` (vertical), ``Y``, and ``X`` axes (as applicable to your
-# data) to the corresponding coordinates.
+# to map the ``time``, ``vertical``, ``y``, ``latitude``, ``x``, and ``longitude`` axes (as
+# applicable to your data) to the corresponding coordinates.
 #
 # ::
 #
-#     data['Temperature'].assign_coordinates({'T': 'time', 'Z': 'isobaric',
-#                                             'Y': 'y', 'X': 'x'})
+#     data['Temperature'].assign_coordinates({'time': 'time', 'vertical': 'isobaric',
+#                                             'y': 'y', 'x': 'x'})
 #     x = data['Temperature'].metpy.x
 #
 # or
@@ -316,8 +325,8 @@ plt.show()
 # ::
 #
 #     temperature = data.metpy.parse_cf('Temperature',
-#                                       coordinates={'T': 'time', 'Z': 'isobaric',
-#                                                    'Y': 'y', 'X': 'x'})
+#                                       coordinates={'time': 'time', 'vertical': 'isobaric',
+#                                                    'y': 'y', 'x': 'x'})
 #     x = temperature.metpy.x
 #
 # **Axis Unavailable**
