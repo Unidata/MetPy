@@ -48,7 +48,7 @@ checked with ``doc8``. To see what the docs will look like, you also need to ins
 Other Tools
 -----------
 
-Continuous integration is performed by `Travis CI <http://www.travis-ci.org/Unidata/MetPy>`_
+Continuous integration is performed by `Travis CI <http://www.travis-ci.com/Unidata/MetPy>`_
 and `AppVeyor <https://ci.appveyor.com/project/Unidata/metpy/branch/master>`_.
 Travis runs the unit tests on Linux for all supported versions of Python, as well as runs
 against the minimum package versions. ``flake8`` (with the ``pep8-naming`` and
