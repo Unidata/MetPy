@@ -3,7 +3,7 @@
 #  SPDX-License-Identifier: BSD-3-Clause
 """Declarative plotting tools."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 
 try:
     import cartopy.crs as ccrs
@@ -16,6 +16,9 @@ from traitlets import (Any, Bool, Float, HasTraits, Instance, Int, List, observe
                        Unicode, Union)
 
 from . import ctables
+from . import wx_symbols
+from .station_plot import StationPlot
+from ..calc import reduce_point_density
 from ..package_tools import Exporter
 from ..units import units
 
@@ -1262,3 +1265,238 @@ class BarbPlot(PlotVector):
             u.values[wind_slice], v.values[wind_slice],
             color=self.color, pivot=self.pivot, length=self.barblength,
             transform=transform)
+
+
+@exporter.export
+class PlotObs(HasTraits):
+    """The highest level class related to plotting observed surface and upperair data.
+
+    This class collects all common methods no matter whether plotting a upper-level or
+    surface data using station plots.
+
+    List of Traits:
+      * level
+      * time
+      * fields
+      * locations (optional)
+      * time_range (optional)
+      * formatters (optional)
+      * colors (optional)
+      * symbol_mapper (optional)
+      * vector_field (optional)
+      * vector_field_color (optional)
+      * reduce_points (optional)
+    """
+
+    parent = Instance(Panel)
+    _need_redraw = Bool(default_value=True)
+
+    level = Union([Int(allow_none=True), Instance(units.Quantity)])
+    level.__doc__ = """The level of the field to be plotted.
+
+    This is a value with units to choose the desired plot level. For example, selecting the
+    850-hPa level, set this parameter to ``850 * units.hPa``. For surface data, parameter
+    must be set to `None`.
+    """
+
+    time = Instance(datetime, allow_none=True)
+    time.__doc__ = """Set the valid time to be plotted as a datetime object.
+
+    If a forecast hour is to be plotted the time should be set to the valid future time, which
+    can be done using the `~datetime.datetime` and `~datetime.timedelta` objects
+    from the Python standard library.
+    """
+
+    time_window = Instance(timedelta, default_value=timedelta(minutes=0), allow_none=True)
+    time_window.__doc__ = """Set a range to look for data to plot as a timedelta object.
+
+    If this parameter is set, it will subset the data provided to be within the time and plus
+    or minus the range value given. If there is more than one observation from a given station
+    then it will keep only the most recent one for plotting purposes. Default value is to have
+    no range. (optional)
+    """
+
+    fields = List(Unicode())
+    fields.__doc__ = """Name of the scalar or symbol fields to be plotted.
+
+    List of parameters to be plotted around station plot (e.g., temperature, dewpoint, skyc).
+    """
+
+    locations = List(default_value=['C'])
+    locations.__doc__ = """List of strings for scalar or symbol field plotting locations.
+
+    List of parameters locations for plotting parameters around the station plot (e.g.,
+    NW, NE, SW, SE, W, C). (optional)
+    """
+
+    formats = List(default_value=[None])
+    formats.__doc__ = """List of the scalar and symbol field data formats. (optional)
+
+    List of scalar parameters formmaters or mapping values (if symbol) for plotting text and/or
+    symbols around the station plot (e.g., for pressure variable
+    ```lambda v: format(10 * v, '.0f')[-3:]```).
+
+    For symbol mapping the following options are available to be put in as a string:
+    current_weather, sky_cover, low_clouds, mid_clouds, high_clouds, and pressure_tendency.
+    """
+
+    colors = List(Unicode(), default_value=['black'])
+    colors.__doc__ = """List of the scalar and symbol field colors.
+
+    List of strings that represent the colors to be used for the variable being plotted.
+    (optional)
+    """
+
+    vector_field = List(default_value=[None], allow_none=True)
+    vector_field.__doc__ = """List of the vector field to be plotted.
+
+    List of vector components to combined and plotted from the center of the station plot
+    (e.g., wind components). (optional)
+    """
+
+    vector_field_color = Unicode('black', allow_none=True)
+    vector_field_color.__doc__ = """String color name to plot the vector. (optional)"""
+
+    reduce_points = Float(default_value=0)
+    reduce_points.__doc__ = """Float to reduce number of points plotted. (optional)"""
+
+    def clear(self):
+        """Clear the plot.
+
+        Resets all internal state and sets need for redraw.
+
+        """
+        if getattr(self, 'handle', None) is not None:
+            self.handle.ax.cla()
+            self.handle = None
+            self._need_redraw = True
+
+    @observe('parent')
+    def _parent_changed(self, _):
+        """Handle setting the parent object for the plot."""
+        self.clear()
+
+    @observe('fields', 'level', 'time', 'vector_field', 'time_window')
+    def _update_data(self, _=None):
+        """Handle updating the internal cache of data.
+
+        Responds to changes in various subsetting parameters.
+
+        """
+        self._obsdata = None
+        self.clear()
+
+    # Can't be a Traitlet because notifications don't work with arrays for traits
+    # notification never happens
+    @property
+    def data(self):
+        """Pandas dataframe that contains the fields to be plotted."""
+        return self._data
+
+    @data.setter
+    def data(self, val):
+        self._data = val
+        self._update_data()
+
+    @property
+    def name(self):
+        """Generate a name for the plot."""
+        ret = ''
+        ret += ' and '.join(f for f in self.fields)
+        if self.level is not None:
+            ret += '@{:d}'.format(self.level)
+        return ret
+
+    @property
+    def obsdata(self):
+        """Return the internal cached data."""
+        time_vars = ['valid', 'time', 'valid_time']
+        stn_vars = ['station', 'stn']
+        if getattr(self, '_obsdata', None) is None:
+            for dim_name in list(self.data):
+                if dim_name in time_vars:
+                    dim_time = dim_name
+                elif dim_name in stn_vars:
+                    dim_stn = dim_name
+            if self.level is not None:
+                level_subset = self.data.pressure == self.level.m
+                self._obsdata = self.data[level_subset]
+            else:
+                if self.time_window is not None:
+                    time_slice = ((self.data[dim_time] >= (self.time - self.time_window))
+                                  & (self.data[dim_time] <= (self.time + self.time_window)))
+                    data = self.data[time_slice].groupby(dim_stn).tail(1)
+                else:
+                    data = self.data.groupby(dim_stn).tail(1)
+                self._obsdata = data
+        return self._obsdata
+
+    @property
+    def plotdata(self):
+        """Return the data for plotting.
+
+        The data arrays, x coordinates, and y coordinates.
+
+        """
+        plot_data = {}
+        for dim_name in list(self.obsdata):
+            if dim_name.find('lat') != -1:
+                lat = self.obsdata[dim_name]
+            elif dim_name.find('lon') != -1:
+                lon = self.obsdata[dim_name]
+            else:
+                plot_data[dim_name] = self.obsdata[dim_name]
+        return lon.values, lat.values, plot_data
+
+    def draw(self):
+        """Draw the plot."""
+        if self._need_redraw:
+            if getattr(self, 'handle', None) is None:
+                self._build()
+            self._need_redraw = False
+
+    @observe('colors', 'formats', 'locations', 'reduce_points', 'vector_field_color')
+    def _set_need_rebuild(self, _):
+        """Handle changes to attributes that need to regenerate everything."""
+        # Because matplotlib doesn't let you just change these properties, we need
+        # to trigger a clear and re-call of contour()
+        self.clear()
+
+    def _build(self):
+        """Build the plot by calling needed plotting methods as necessary."""
+        lon, lat, data = self.plotdata
+
+        # Use the cartopy map projection to transform station locations to the map and
+        # then refine the number of stations plotted by setting a 300km radius
+        if self.parent._proj_obj == ccrs.PlateCarree():
+            scale = 1.
+        else:
+            scale = 100000.
+        point_locs = self.parent._proj_obj.transform_points(ccrs.PlateCarree(), lon, lat)
+        subset = reduce_point_density(point_locs, self.reduce_points * scale)
+
+        self.handle = StationPlot(self.parent.ax, lon[subset], lat[subset], clip_on=True,
+                                  transform=ccrs.PlateCarree(), fontsize=10)
+
+        for i, ob_type in enumerate(self.fields):
+            if len(self.locations) > 1:
+                location = self.locations[i]
+            else:
+                location = self.locations[0]
+            if len(self.colors) > 1:
+                color = self.colors[i]
+            else:
+                color = self.colors[0]
+            if self.formats[i] is not None:
+                mapper = getattr(wx_symbols, str(self.formats[i]), None)
+                if mapper is not None:
+                    self.handle.plot_symbol(location, data[ob_type][subset],
+                                            mapper, color=color)
+                else:
+                    self.handle.plot_parameter(location, data[ob_type][subset],
+                                               color=color, formatter=self.formats[i])
+            else:
+                self.handle.plot_parameter(location, data[ob_type][subset], color=color)
+        if self.vector_field[0] is not None:
+            self.handle.plot_barb(data[self.vector_field[0]][subset],
+                                  data[self.vector_field[1]][subset])
