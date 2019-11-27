@@ -240,25 +240,23 @@ def circumcenter(pt0, pt1, pt2):
 def find_natural_neighbors(tri, grid_points):
     r"""Return the natural neighbor triangles for each given grid cell.
 
-    These are determined by the properties of the given delaunay triangulation.
+    These are determined by the properties of the given Delaunay triangulation.
     A triangle is a natural neighbor of a grid cell if that triangles circumcenter
     is within the circumradius of the grid cell center.
 
     Parameters
     ----------
-    tri: Object
+    tri: `scipy.spatial.Delaunay`
         A Delaunay Triangulation.
     grid_points: (X, Y) ndarray
         Locations of grids.
 
     Returns
     -------
-    members: dictionary
-        List of simplex codes for natural neighbor
-        triangles in 'tri' for each grid cell.
-    triangle_info: dictionary
-        Circumcenter and radius information for each
-        triangle in 'tri'.
+    members: dict
+        List of simplex codes for natural neighbor triangles in 'tri' for each grid cell.
+    triangle_info: dict
+        Circumcenter and radius information for each triangle in 'tri'.
 
     """
     tree = cKDTree(grid_points)
@@ -294,7 +292,7 @@ def find_nn_triangles_point(tri, cur_tri, point):
 
     Parameters
     ----------
-    tri: Object
+    tri: `scipy.spatial.Delaunay`
         A Delaunay Triangulation
     cur_tri: int
         Simplex code for Delaunay Triangulation lookup of
@@ -341,7 +339,7 @@ def find_local_boundary(tri, triangles):
 
     Parameters
     ----------
-    tri: Object
+    tri: `scipy.spatial.Delaunay`
         A Delaunay Triangulation
     triangles: (N, ) array
         List of natural neighbor triangles.

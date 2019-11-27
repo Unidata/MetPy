@@ -93,7 +93,7 @@ def natural_neighbor_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_
     grid_loc: (float, float)
         Coordinates of the grid point at which to calculate the
         interpolation.
-    tri: object
+    tri: `scipy.spatial.Delaunay`
         Delaunay triangulation of the observations.
     neighbors: (N, ) ndarray
         Simplex codes of the grid point's natural neighbors. The codes
