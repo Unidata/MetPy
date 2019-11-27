@@ -259,28 +259,27 @@ def find_natural_neighbors(tri, grid_points):
         Circumcenter and radius information for each triangle in 'tri'.
 
     """
+    # Used for fast identification of points with a radius of another point
     tree = cKDTree(grid_points)
 
+    # Mask for points that are outside the triangulation
     in_triangulation = tri.find_simplex(tree.data) >= 0
 
     triangle_info = {}
-
     members = {key: [] for key in range(len(tree.data))}
-
-    for i, simplices in enumerate(tri.simplices):
-
-        ps = tri.points[simplices]
-
-        cc = circumcenter(*ps)
-        r = circumcircle_radius(*ps)
-
+    for i, indices in enumerate(tri.simplices):
+        # Find the circumcircle (center and radius) for the triangle.
+        triangle = tri.points[indices]
+        cc = circumcenter(*triangle)
+        r = circumcircle_radius(*triangle)
         triangle_info[i] = {'cc': cc, 'r': r}
 
-        qualifiers = tree.query_ball_point(cc, r)
-
-        for qualifier in qualifiers:
-            if in_triangulation[qualifier]:
-                members[qualifier].append(i)
+        # Find all grid points within the circumcircle.
+        for point in tree.query_ball_point(cc, r):
+            # If this point is within the triangulation, add this triangle to its list of
+            # natural neighbors
+            if in_triangulation[point]:
+                members[point].append(i)
 
     return members, triangle_info
 
