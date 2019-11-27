@@ -1,5 +1,3 @@
-# After changing this file, check it on:
-#   http://lint.travis-ci.org/
 language: python
 sudo: required
 dist: xenial
@@ -21,6 +19,7 @@ git:
   depth: 150
 
 python:
+  - 3.8
   - 3.7
   - 3.6
 
@@ -53,22 +52,22 @@ matrix:
         - VERSIONS="numpy==1.13.0 matplotlib==2.1.0 scipy==1.0.0 pint==0.8 xarray==0.10.7 pandas==0.22.0"
         - TASK="coverage"
         - TEST_OUTPUT_CONTROL=""
-    - python: "3.7-dev"
+    - python: "3.8-dev"
       env: PRE="--pre"
-    - python: "3.7-dev"
+    - python: "3.8-dev"
       env: TASK="docs" PRE="--pre"
     - python: nightly
       env: PRE="--pre"
-    - python: "3.7-dev"
+    - python: "3.8-dev"
       env:
         - TASK="coverage"
         - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
-    - python: "3.7-dev"
+    - python: "3.8-dev"
       env:
         - TASK="docs"
         - VERSIONS="git+git://github.com/hgrecco/pint@master#egg=pint git+git://github.com/pydata/xarray@master#egg=xarray"
   allow_failures:
-    - python: "3.7-dev"
+    - python: "3.8-dev"
     - python: nightly
 
 before_install:

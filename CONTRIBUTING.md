@@ -155,11 +155,15 @@ Running the tests can be done by running ``pytest``
 Running the whole test suite isn't that slow, but can be a burden if you're working on just
 one module or a specific test. It is easy to run tests on a single directory:
 
-    pytest tests/calc
+```sh
+pytest tests/calc
+```
 
 A specific test can be run as:
 
-    pytest -k test_my_test_func_name
+```sh
+pytest -k test_my_test_func_name
+```
 
 ### Writing Tests
 Tests should ideally hit all of the lines of code added or changed. We have automated
@@ -170,24 +174,28 @@ Let's say we are adding a simple function to add two numbers and return the resu
 or as a string. (This would be a silly function, but go with us here for demonstration
 purposes.)
 
-    def add_as_float_or_string(a, b, as_string=False):
-        res = a + b
-        if as_string:
-           return string(res)
-        return res
+```python
+def add_as_float_or_string(a, b, as_string=False):
+    res = a + b
+    if as_string:
+       return string(res)
+    return res
+```
 
 I can see two easy tests here: one for the results as a float and one for the results as a
 string. If I had added this to the ``calc`` module, I'd add those two tests in
 ``tests/calc/test_calc.py``.
 
-    def test_add_as_float_or_string_defaults():
-        res = add_as_float_or_string(3, 4)
-        assert(res, 7)
+```python
+def test_add_as_float_or_string_defaults():
+    res = add_as_float_or_string(3, 4)
+    assert(res, 7)
 
 
-    def test_add_as_float_or_string_string_return():
-        res = add_as_float_or_string(3, 4, as_string=True)
-        assert(res, '7')
+def test_add_as_float_or_string_string_return():
+    res = add_as_float_or_string(3, 4, as_string=True)
+    assert(res, '7')
+```
 
 There are plenty of more advanced testing concepts, like dealing with floating point
 comparisons, parameterizing tests, testing that exceptions are raised, and more. Have a look
@@ -197,11 +205,15 @@ at the existing tests to get an idea of some of the common patterns.
 Some tests (for matplotlib plotting code) are done as an image comparison, using the
 pytest-mpl plugin. To run these tests, use:
 
-    pytest --mpl
+```sh
+pytest --mpl
+````
 
 When adding new image comparison tests, start by creating the baseline images for the tests:
 
-    pytest --mpl-generate-path=baseline
+```sh
+pytest --mpl-generate-path=baseline
+```
 
 That command runs the tests and saves the images in the ``baseline`` directory.
 For MetPy this is generally ``tests/plots/baseline/``. We recommend using the ``-k`` flag
@@ -216,7 +228,9 @@ supported by the pooch library. To add files to this, please ensure they are as 
 possible. Put the files in the `staticdata` directory. Then run this command in the metpy
 directory (that contains the `static-data-manifest.txt` file)to recreate the data registry:
 
-`python -c "import pooch; pooch.make_registry('staticdata', 'metpy/static-data-manifest.txt')"`
+```sh
+python -c "import pooch; pooch.make_registry('staticdata', 'metpy/static-data-manifest.txt')"
+```
 
 Make sure that no system files (like `.DS_Store`) are in the manifest and add it to your
 contribution.
