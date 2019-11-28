@@ -125,8 +125,8 @@ before_script:
     fi;
 
 script:
+  - export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/staticdata;
   - if [[ $TASK == "docs" ]]; then
-      export TEST_DATA_DIR=${TRAVIS_BUILD_DIR}/staticdata;
       pushd docs;
       make clean overridecheck html linkcheck O=-W;
       export DOC_BUILD_RESULT=$?;
