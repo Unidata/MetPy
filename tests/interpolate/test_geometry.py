@@ -170,12 +170,7 @@ def test_find_natural_neighbors():
                          (10.0, 10.0), (6.0, 14.0), (6.0, 14.0),
                          (10.0, 14.0), (10.0, 14.0)])
 
-    r_truth = np.empty((32,))
-    r_truth.fill(2.8284271247461916)
-
-    for key in tri_info:
-        assert_almost_equal(cc_truth[key], tri_info[key]['cc'])
-        assert_almost_equal(r_truth[key], tri_info[key]['r'])
+    assert_almost_equal(cc_truth, tri_info)
 
 
 def test_find_nn_triangles_point():

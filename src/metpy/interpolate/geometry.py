@@ -265,14 +265,14 @@ def find_natural_neighbors(tri, grid_points):
     # Mask for points that are outside the triangulation
     in_triangulation = tri.find_simplex(tree.data) >= 0
 
-    triangle_info = {}
+    triangle_info = []
     members = {key: [] for key in range(len(tree.data))}
     for i, indices in enumerate(tri.simplices):
         # Find the circumcircle (center and radius) for the triangle.
         triangle = tri.points[indices]
         cc = circumcenter(*triangle)
         r = circumcircle_radius(*triangle)
-        triangle_info[i] = {'cc': cc, 'r': r}
+        triangle_info.append(cc)
 
         # Find all grid points within the circumcircle.
         for point in tree.query_ball_point(cc, r):
@@ -345,7 +345,7 @@ def find_local_boundary(tri, triangles):
 
     Returns
     -------
-    edges: (2, N) ndarray
+    edges: list
         List of vertex codes that form outer edges of
         a group of natural neighbor triangles.
 

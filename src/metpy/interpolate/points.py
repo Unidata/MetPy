@@ -75,7 +75,7 @@ def barnes_point(sq_dist, values, kappa, gamma=None):
     return sum(v * (w / total_weights) for (w, v) in zip(weights, values))
 
 
-def natural_neighbor_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_info):
+def natural_neighbor_point(xp, yp, variable, grid_loc, tri, neighbors, circumcenters):
     r"""Generate a natural neighbor interpolation of the observations to the given point.
 
     This uses the Liang and Hale approach [Liang2010]_. The interpolation will fail if
@@ -98,10 +98,9 @@ def natural_neighbor_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_
     neighbors: (N, ) ndarray
         Simplex codes of the grid point's natural neighbors. The codes
         will correspond to codes in the triangulation.
-    triangle_info: dictionary
-        Pre-calculated triangle attributes for quick look ups. Requires
-        items 'cc' (circumcenters) and 'r' (radii) to be associated with
-        each simplex code key from the delaunay triangulation.
+    circumcenters: list
+        Pre-calculated triangle circumcenters for quick look ups. Requires
+        indices for the list to match the simplices from the Delaunay triangulation.
 
     Returns
     -------
@@ -133,7 +132,7 @@ def natural_neighbor_point(xp, yp, variable, grid_loc, tri, neighbors, triangle_
 
             for check_tri in neighbors:
                 if p2 in tri.simplices[check_tri]:
-                    polygon.append(triangle_info[check_tri]['cc'])
+                    polygon.append(circumcenters[check_tri])
 
             pts = [polygon[i] for i in ConvexHull(polygon).vertices]
             value = variable[(tri.points[p2][0] == xp) & (tri.points[p2][1] == yp)]
@@ -187,7 +186,7 @@ def natural_neighbor_to_points(points, values, xi):
     """
     tri = Delaunay(points)
 
-    members, triangle_info = geometry.find_natural_neighbors(tri, xi)
+    members, circumcenters = geometry.find_natural_neighbors(tri, xi)
 
     img = np.empty(shape=(xi.shape[0]), dtype=values.dtype)
     img.fill(np.nan)
@@ -198,7 +197,7 @@ def natural_neighbor_to_points(points, values, xi):
 
             points_transposed = np.array(points).transpose()
             img[ind] = natural_neighbor_point(points_transposed[0], points_transposed[1],
-                                              values, xi[grid], tri, neighbors, triangle_info)
+                                              values, xi[grid], tri, neighbors, circumcenters)
 
     return img
 
