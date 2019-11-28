@@ -281,7 +281,7 @@ def find_natural_neighbors(tri, grid_points):
             if in_triangulation[point]:
                 members[point].append(i)
 
-    return members, triangle_info
+    return members, np.array(triangle_info)
 
 
 def find_nn_triangles_point(tri, cur_tri, point):
