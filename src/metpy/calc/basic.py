@@ -94,7 +94,7 @@ def wind_direction(u, v, convention='from'):
     if convention == 'to':
         wdir -= 180 * units.deg
     elif convention not in ('to', 'from'):
-        raise KeyError('Invalid kwarg for "convention". Valid options are "from" or "to".')
+        raise ValueError('Invalid kwarg for "convention". Valid options are "from" or "to".')
 
     wdir[wdir <= 0] += 360. * units.deg
     # avoid unintended modification of `pint.Quantity` by direct use of magnitude

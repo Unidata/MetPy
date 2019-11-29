@@ -392,8 +392,11 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         The dewpoint of the parcel for which to calculate the LFC. Defaults to the surface
         dewpoint.
     which: str, optional
-        Pick which LFC to return. Options are 'top', 'bottom', and 'all'.
-        Default is the 'top' (lowest pressure) LFC.
+        Pick which LFC to return. Options are 'top', 'bottom', 'wide', 'most_cape', and 'all'.
+        'top' returns the lowest-pressure LFC, default.
+        'bottom' returns the highest-pressure LFC.
+        'wide' returns the LFC whose corresponding EL is farthest away.
+        'most_cape' returns the LFC that results in the most CAPE in the profile.
 
     Returns
     -------
@@ -411,7 +414,7 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
     # Default to surface parcel if no profile or starting pressure level is given
     if parcel_temperature_profile is None:
         new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpt)
-        pressure, temperature, _, parcel_temperature_profile = new_stuff
+        pressure, temperature, dewpt, parcel_temperature_profile = new_stuff
         parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
 
     if dewpt_start is None:
@@ -462,11 +465,14 @@ def lfc(pressure, temperature, dewpt, parcel_temperature_profile=None, dewpt_sta
         # Otherwise, find all LFCs that exist above the LCL
         # What is returned depends on which flag as described in the docstring
         else:
-            return _multiple_el_lfc_options(x, y, idx, which)
+            return _multiple_el_lfc_options(x, y, idx, which, pressure,
+                                            parcel_temperature_profile, temperature,
+                                            dewpt, intersect_type='LFC')
 
 
 def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_x,
-                             which):
+                             which, pressure, parcel_temperature_profile, temperature,
+                             dewpoint, intersect_type):
     """Choose which ELs and LFCs to return from a sounding."""
     p_list, t_list = intersect_pressures[valid_x], intersect_temperatures[valid_x]
     if which == 'all':
@@ -475,6 +481,61 @@ def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_
         x, y = p_list[0], t_list[0]
     elif which == 'top':
         x, y = p_list[-1], t_list[-1]
+    elif which == 'wide':
+        x, y = _wide_option(intersect_type, p_list, t_list, pressure,
+                            parcel_temperature_profile, temperature)
+    elif which == 'most_cape':
+        x, y = _most_cape_option(intersect_type, p_list, t_list, pressure, temperature,
+                                 dewpoint, parcel_temperature_profile)
+    else:
+        raise ValueError('Invalid option for "which". Valid options are "top", "bottom", '
+                         '"wide", "most_cape", and "all".')
+    return x, y
+
+
+def _wide_option(intersect_type, p_list, t_list, pressure, parcel_temperature_profile,
+                 temperature):
+    """Calculate the LFC or EL that produces the greatest distance between these points."""
+    # zip the LFC and EL lists together and find greatest difference
+    if intersect_type == 'LFC':
+        # Find EL intersection pressure values
+        lfc_p_list = p_list
+        el_p_list, _ = find_intersections(pressure[1:], parcel_temperature_profile[1:],
+                                          temperature[1:], direction='decreasing',
+                                          log_x=True)
+    else:  # intersect_type == 'EL'
+        el_p_list = p_list
+        # Find LFC intersection pressure values
+        lfc_p_list, _ = find_intersections(pressure, parcel_temperature_profile,
+                                           temperature, direction='increasing',
+                                           log_x=True)
+    diff = [lfc_p.m - el_p.m for lfc_p, el_p in zip(lfc_p_list, el_p_list)]
+    return (p_list[np.where(diff == np.max(diff))][0],
+            t_list[np.where(diff == np.max(diff))][0])
+
+
+def _most_cape_option(intersect_type, p_list, t_list, pressure, temperature, dewpoint,
+                      parcel_temperature_profile):
+    """Calculate the LFC or EL that produces the most CAPE in the profile."""
+    # Need to loop through all possible combinations of cape, find greatest cape profile
+    cape_list, pair_list = [], []
+    for which_lfc in ['top', 'bottom']:
+        for which_el in ['top', 'bottom']:
+            cape, _ = cape_cin(pressure, temperature, dewpoint, parcel_temperature_profile,
+                               which_lfc=which_lfc, which_el=which_el)
+            cape_list.append(cape.m)
+            pair_list.append([which_lfc, which_el])
+    (lfc_chosen, el_chosen) = pair_list[np.where(cape_list == np.max(cape_list))[0][0]]
+    if intersect_type == 'LFC':
+        if lfc_chosen == 'top':
+            x, y = p_list[-1], t_list[-1]
+        else:  # 'bottom' is returned
+            x, y = p_list[0], t_list[0]
+    else:  # EL is returned
+        if el_chosen == 'top':
+            x, y = p_list[-1], t_list[-1]
+        else:
+            x, y = p_list[0], t_list[0]
     return x, y
 
 
@@ -500,8 +561,11 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
         The parcel temperature profile from which to calculate the EL. Defaults to the
         surface parcel profile.
     which: str, optional
-        Pick which EL to return. Options are 'top', 'bottom', and 'all'.
-        Default is the 'top' (lowest pressure) EL.
+        Pick which LFC to return. Options are 'top', 'bottom', 'wide', 'most_cape', and 'all'.
+        'top' returns the lowest-pressure EL, default.
+        'bottom' returns the highest-pressure EL.
+        'wide' returns the EL whose corresponding LFC is farthest away.
+        'most_cape' returns the EL that results in the most CAPE in the profile.
 
     Returns
     -------
@@ -519,7 +583,7 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     # Default to surface parcel if no profile or starting pressure level is given
     if parcel_temperature_profile is None:
         new_stuff = parcel_profile_with_lcl(pressure, temperature, dewpt)
-        pressure, temperature, _, parcel_temperature_profile = new_stuff
+        pressure, temperature, dewpt, parcel_temperature_profile = new_stuff
         parcel_temperature_profile = parcel_temperature_profile.to(temperature.units)
 
     # If the top of the sounding parcel is warmer than the environment, there is no EL
@@ -533,7 +597,9 @@ def el(pressure, temperature, dewpt, parcel_temperature_profile=None, which='top
     lcl_p, _ = lcl(pressure[0], temperature[0], dewpt[0])
     idx = x < lcl_p
     if len(x) > 0 and x[-1] < lcl_p:
-        return _multiple_el_lfc_options(x, y, idx, which)
+        return _multiple_el_lfc_options(x, y, idx, which, pressure,
+                                        parcel_temperature_profile, temperature, dewpt,
+                                        intersect_type='EL')
     else:
         return np.nan * pressure.units, np.nan * temperature.units
 
@@ -1396,13 +1462,14 @@ def relative_humidity_from_specific_humidity(specific_humidity, temperature, pre
 @exporter.export
 @preprocess_xarray
 @check_units('[pressure]', '[temperature]', '[temperature]', '[temperature]')
-def cape_cin(pressure, temperature, dewpt, parcel_profile):
+def cape_cin(pressure, temperature, dewpt, parcel_profile, which_lfc='bottom',
+             which_el='top'):
     r"""Calculate CAPE and CIN.
 
     Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
     of a given upper air profile and parcel path. CIN is integrated between the surface and
-    LFC, CAPE is integrated between the LFC and EL (or top of sounding). Intersection points of
-    the measured temperature profile and parcel profile are linearly interpolated.
+    LFC, CAPE is integrated between the LFC and EL (or top of sounding). Intersection points
+    of the measured temperature profile and parcel profile are logarithmically interpolated.
 
     Parameters
     ----------
@@ -1415,6 +1482,12 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
         The atmospheric dewpoint corresponding to pressure.
     parcel_profile : `pint.Quantity`
         The temperature profile of the parcel.
+    which_lfc : str
+        Choose which LFC to integrate from. Valid options are 'top', 'bottom', 'wide',
+        and 'most_cape'. Default is 'bottom'.
+    which_el : str
+        Choose which EL to integrate to. Valid options are 'top', 'bottom', 'wide',
+        and 'most_cape'. Default is 'top'.
 
     Returns
     -------
@@ -1452,7 +1525,7 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
                                                                 parcel_profile)
     # Calculate LFC limit of integration
     lfc_pressure, _ = lfc(pressure, temperature, dewpt,
-                          parcel_temperature_profile=parcel_profile)
+                          parcel_temperature_profile=parcel_profile, which=which_lfc)
 
     # If there is no LFC, no need to proceed.
     if np.isnan(lfc_pressure):
@@ -1462,7 +1535,7 @@ def cape_cin(pressure, temperature, dewpt, parcel_profile):
 
     # Calculate the EL limit of integration
     el_pressure, _ = el(pressure, temperature, dewpt,
-                        parcel_temperature_profile=parcel_profile)
+                        parcel_temperature_profile=parcel_profile, which=which_el)
 
     # No EL and we use the top reading of the sounding.
     if np.isnan(el_pressure):
@@ -1749,7 +1822,7 @@ def surface_based_cape_cin(pressure, temperature, dewpoint):
     of a given upper air profile for a surface-based parcel. CIN is integrated
     between the surface and LFC, CAPE is integrated between the LFC and EL (or top of
     sounding). Intersection points of the measured temperature profile and parcel profile are
-    linearly interpolated.
+    logarithmically interpolated.
 
     Parameters
     ----------
@@ -1787,8 +1860,8 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
     Calculate the convective available potential energy (CAPE) and convective inhibition (CIN)
     of a given upper air profile and most unstable parcel path. CIN is integrated between the
     surface and LFC, CAPE is integrated between the LFC and EL (or top of sounding).
-    Intersection points of the measured temperature profile and parcel profile are linearly
-    interpolated.
+    Intersection points of the measured temperature profile and parcel profile are
+    logarithmically interpolated.
 
     Parameters
     ----------

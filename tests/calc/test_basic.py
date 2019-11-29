@@ -105,7 +105,7 @@ def test_oceanographic_direction():
 
 def test_invalid_direction_convention():
     """Test the error that is returned if the convention kwarg is not valid."""
-    with pytest.raises(KeyError):
+    with pytest.raises(ValueError):
         wind_direction(1 * units('m/s'), 5 * units('m/s'), convention='test')
 
 
