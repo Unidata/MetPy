@@ -1373,9 +1373,9 @@ def test_multiple_lfs_wide(multiple_intersections):
 def test_invalid_which(multiple_intersections):
     """Test error message for invalid which option for LFC and EL."""
     levels, temperatures, dewpoints = multiple_intersections
-    with pytest.raises(KeyError):
+    with pytest.raises(ValueError):
         lfc(levels, temperatures, dewpoints, which='test')
-    with pytest.raises(KeyError):
+    with pytest.raises(ValueError):
         el(levels, temperatures, dewpoints, which='test')
 
 

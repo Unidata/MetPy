@@ -488,8 +488,8 @@ def _multiple_el_lfc_options(intersect_pressures, intersect_temperatures, valid_
         x, y = _most_cape_option(intersect_type, p_list, t_list, pressure, temperature,
                                  dewpoint, parcel_temperature_profile)
     else:
-        raise KeyError('Invalid option for "which". Valid options are "top", "bottom", "wide"'
-                       ', "most_cape", and "all".')
+        raise ValueError('Invalid option for "which". Valid options are "top", "bottom", '
+                         '"wide", "most_cape", and "all".')
     return x, y
 
 
