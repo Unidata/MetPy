@@ -47,7 +47,8 @@ def test_skewt_api():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=.027, remove_text=True, style='default')
+@pytest.mark.mpl_image_compare(tolerance=.027 if matplotlib.__version__ < '3.2' else 34.4,
+                               remove_text=True, style='default')
 def test_skewt_api_units():
     """#Test the SkewT API when units are provided."""
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
@@ -81,8 +82,8 @@ def test_skewt_default_aspect_empty():
     return fig
 
 
-@pytest.mark.skipif(matplotlib.__version__ < '3',
-                    reason='Matplotlib 2 generates a different image size.')
+@pytest.mark.skipif(matplotlib.__version__ < '3' or matplotlib.__version__ >= '3.2',
+                    reason='Matplotlib versions generate different image sizes.')
 @pytest.mark.mpl_image_compare(tolerance=0., remove_text=False, style='default',
                                savefig_kwargs={'bbox_inches': 'tight'})
 def test_skewt_tight_bbox():

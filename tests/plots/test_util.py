@@ -17,7 +17,7 @@ from metpy.testing import set_agg_backend  # noqa: F401, I202
 MPL_VERSION = matplotlib.__version__[:3]
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.01, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=2.638, remove_text=True)
 def test_add_timestamp():
     """Test adding a timestamp to an axes object."""
     fig = plt.figure(figsize=(9, 9))
@@ -26,7 +26,7 @@ def test_add_timestamp():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.01, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=2.635, remove_text=True)
 def test_add_timestamp_custom_format():
     """Test adding a timestamp to an axes object with custom time formatting."""
     fig = plt.figure(figsize=(9, 9))
@@ -35,7 +35,7 @@ def test_add_timestamp_custom_format():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0.01, remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=5.389, remove_text=True)
 def test_add_timestamp_pretext():
     """Test adding a timestamp to an axes object with custom pre-text."""
     fig = plt.figure(figsize=(9, 9))
@@ -44,8 +44,7 @@ def test_add_timestamp_pretext():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance={'2.0': 0.21}.get(MPL_VERSION, 0.01),
-                               remove_text=True)
+@pytest.mark.mpl_image_compare(tolerance=0.844, remove_text=True)
 def test_add_timestamp_high_contrast():
     """Test adding a timestamp to an axes object."""
     fig = plt.figure(figsize=(9, 9))

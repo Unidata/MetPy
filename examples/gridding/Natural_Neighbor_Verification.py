@@ -90,14 +90,14 @@ ax.set_aspect('equal', 'datalim')
 ax.set_title('Triangulation of observations and test grid cell '
              'natural neighbor interpolation values')
 
-members, tri_info = geometry.find_natural_neighbors(tri, list(zip(sim_gridx, sim_gridy)))
+members, circumcenters = geometry.find_natural_neighbors(tri, list(zip(sim_gridx, sim_gridy)))
 
 val = natural_neighbor_point(xp, yp, zp, (sim_gridx[0], sim_gridy[0]), tri, members[0],
-                             tri_info)
+                             circumcenters)
 ax.annotate('grid 0: {:.3f}'.format(val), xy=(sim_gridx[0] + 2, sim_gridy[0]))
 
 val = natural_neighbor_point(xp, yp, zp, (sim_gridx[1], sim_gridy[1]), tri, members[1],
-                             tri_info)
+                             circumcenters)
 ax.annotate('grid 1: {:.3f}'.format(val), xy=(sim_gridx[1] + 2, sim_gridy[1]))
 
 
@@ -112,28 +112,24 @@ def draw_circle(ax, x, y, r, m, label):
     ax.plot(nx, ny, m, label=label)
 
 
-members, tri_info = geometry.find_natural_neighbors(tri, list(zip(sim_gridx, sim_gridy)))
-
 fig, ax = plt.subplots(1, 1, figsize=(15, 10))
 ax.ishold = lambda: True  # Work-around for Matplotlib 3.0.0 incompatibility
 delaunay_plot_2d(tri, ax=ax)
 ax.plot(sim_gridx, sim_gridy, 'ks', markersize=10)
 
-for i, info in tri_info.items():
-    x_t = info['cc'][0]
-    y_t = info['cc'][1]
-
+for i, (x_t, y_t) in enumerate(circumcenters):
+    r = geometry.circumcircle_radius(*tri.points[tri.simplices[i]])
     if i in members[1] and i in members[0]:
-        draw_circle(ax, x_t, y_t, info['r'], 'm-', str(i) + ': grid 1 & 2')
+        draw_circle(ax, x_t, y_t, r, 'm-', str(i) + ': grid 1 & 2')
         ax.annotate(str(i), xy=(x_t, y_t), fontsize=15)
     elif i in members[0]:
-        draw_circle(ax, x_t, y_t, info['r'], 'r-', str(i) + ': grid 0')
+        draw_circle(ax, x_t, y_t, r, 'r-', str(i) + ': grid 0')
         ax.annotate(str(i), xy=(x_t, y_t), fontsize=15)
     elif i in members[1]:
-        draw_circle(ax, x_t, y_t, info['r'], 'b-', str(i) + ': grid 1')
+        draw_circle(ax, x_t, y_t, r, 'b-', str(i) + ': grid 1')
         ax.annotate(str(i), xy=(x_t, y_t), fontsize=15)
     else:
-        draw_circle(ax, x_t, y_t, info['r'], 'k:', str(i) + ': no match')
+        draw_circle(ax, x_t, y_t, r, 'k:', str(i) + ': no match')
         ax.annotate(str(i), xy=(x_t, y_t), fontsize=9)
 
 ax.set_aspect('equal', 'datalim')
@@ -142,8 +138,8 @@ ax.legend()
 ###########################################
 # What?....the circle from triangle 8 looks pretty darn close. Why isn't
 # grid 0 included in that circle?
-x_t, y_t = tri_info[8]['cc']
-r = tri_info[8]['r']
+x_t, y_t = circumcenters[8]
+r = geometry.circumcircle_radius(*tri.points[tri.simplices[8]])
 
 print('Distance between grid0 and Triangle 8 circumcenter:',
       euclidean([x_t, y_t], [sim_gridx[0], sim_gridy[0]]))
@@ -152,8 +148,8 @@ print('Triangle 8 circumradius:', r)
 ###########################################
 # Lets do a manual check of the above interpolation value for grid 0 (southernmost grid)
 # Grab the circumcenters and radii for natural neighbors
-cc = np.array([tri_info[m]['cc'] for m in members[0]])
-r = np.array([tri_info[m]['r'] for m in members[0]])
+cc = np.array(circumcenters)
+r = np.array([geometry.circumcircle_radius(*tri.points[tri.simplices[m]]) for m in members[0]])
 
 print('circumcenters:\n', cc)
 print('radii\n', r)
@@ -248,7 +244,7 @@ print(contributions)
 # The sum of this array is the interpolation value!
 interpolation_value = np.sum(contributions)
 function_output = natural_neighbor_point(xp, yp, zp, (sim_gridx[0], sim_gridy[0]), tri,
-                                         members[0], tri_info)
+                                         members[0], circumcenters)
 
 print(interpolation_value, function_output)
 

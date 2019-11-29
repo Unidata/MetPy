@@ -240,51 +240,48 @@ def circumcenter(pt0, pt1, pt2):
 def find_natural_neighbors(tri, grid_points):
     r"""Return the natural neighbor triangles for each given grid cell.
 
-    These are determined by the properties of the given delaunay triangulation.
+    These are determined by the properties of the given Delaunay triangulation.
     A triangle is a natural neighbor of a grid cell if that triangles circumcenter
     is within the circumradius of the grid cell center.
 
     Parameters
     ----------
-    tri: Object
+    tri: `scipy.spatial.Delaunay`
         A Delaunay Triangulation.
     grid_points: (X, Y) ndarray
         Locations of grids.
 
     Returns
     -------
-    members: dictionary
-        List of simplex codes for natural neighbor
-        triangles in 'tri' for each grid cell.
-    triangle_info: dictionary
-        Circumcenter and radius information for each
-        triangle in 'tri'.
+    members: dict
+        List of simplex codes for natural neighbor triangles in 'tri' for each grid cell.
+    triangle_info: dict
+        Circumcenter and radius information for each triangle in 'tri'.
 
     """
+    # Used for fast identification of points with a radius of another point
     tree = cKDTree(grid_points)
 
+    # Mask for points that are outside the triangulation
     in_triangulation = tri.find_simplex(tree.data) >= 0
 
-    triangle_info = {}
-
+    triangle_info = []
     members = {key: [] for key in range(len(tree.data))}
+    for i, indices in enumerate(tri.simplices):
+        # Find the circumcircle (center and radius) for the triangle.
+        triangle = tri.points[indices]
+        cc = circumcenter(*triangle)
+        r = circumcircle_radius(*triangle)
+        triangle_info.append(cc)
 
-    for i, simplices in enumerate(tri.simplices):
+        # Find all grid points within the circumcircle.
+        for point in tree.query_ball_point(cc, r):
+            # If this point is within the triangulation, add this triangle to its list of
+            # natural neighbors
+            if in_triangulation[point]:
+                members[point].append(i)
 
-        ps = tri.points[simplices]
-
-        cc = circumcenter(*ps)
-        r = circumcircle_radius(*ps)
-
-        triangle_info[i] = {'cc': cc, 'r': r}
-
-        qualifiers = tree.query_ball_point(cc, r)
-
-        for qualifier in qualifiers:
-            if in_triangulation[qualifier]:
-                members[qualifier].append(i)
-
-    return members, triangle_info
+    return members, np.array(triangle_info)
 
 
 def find_nn_triangles_point(tri, cur_tri, point):
@@ -294,7 +291,7 @@ def find_nn_triangles_point(tri, cur_tri, point):
 
     Parameters
     ----------
-    tri: Object
+    tri: `scipy.spatial.Delaunay`
         A Delaunay Triangulation
     cur_tri: int
         Simplex code for Delaunay Triangulation lookup of
@@ -341,14 +338,14 @@ def find_local_boundary(tri, triangles):
 
     Parameters
     ----------
-    tri: Object
+    tri: `scipy.spatial.Delaunay`
         A Delaunay Triangulation
     triangles: (N, ) array
         List of natural neighbor triangles.
 
     Returns
     -------
-    edges: (2, N) ndarray
+    edges: list
         List of vertex codes that form outer edges of
         a group of natural neighbor triangles.
 

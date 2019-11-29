@@ -388,7 +388,7 @@ def test_declarative_barb_earth_relative():
     return pc.figure
 
 
-@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.174)
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.346)
 def test_declarative_barb_gfs():
     """Test making a contour plot."""
     data = xr.open_dataset(get_test_data('GFS_test.nc', as_file_obj=False))

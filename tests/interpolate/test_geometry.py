@@ -149,33 +149,24 @@ def test_find_natural_neighbors():
 
     neighbors, tri_info = find_natural_neighbors(tri, test_points)
 
-    neighbors_truth = [[0, 1],
-                       [24, 25],
-                       [16, 17, 30, 31],
-                       [18, 19, 20, 21, 22, 23, 26, 27],
-                       []]
+    # Need to check point indices rather than simplex indices
+    neighbors_truth = [[(1, 5, 0), (5, 1, 6)],
+                       [(11, 17, 16), (17, 11, 12)],
+                       [(23, 19, 24), (19, 23, 18), (23, 17, 18), (17, 23, 22)],
+                       [(7, 13, 12), (13, 7, 8), (9, 13, 8), (13, 9, 14),
+                        (13, 19, 18), (19, 13, 14), (17, 13, 18), (13, 17, 12)],
+                       np.zeros((0, 3), dtype=np.int32)]
+
+    centers_truth = [[(2.0, 2.0), (2.0, 2.0)],
+                     [(6.0, 10.0), (6.0, 10.0)],
+                     [(14.0, 14.0), (14.0, 14.0), (10.0, 14.0), (10.0, 14.0)],
+                     [(10.0, 6.0), (10.0, 6.0), (14.0, 6.0), (14.0, 6.0),
+                      (14.0, 10.0), (14.0, 10.0), (10.0, 10.0), (10.0, 10.0)],
+                     np.zeros((0, 2), dtype=np.int32)]
 
     for i, true_neighbor in enumerate(neighbors_truth):
-        assert_array_almost_equal(true_neighbor, neighbors[i])
-
-    cc_truth = np.array([(2.0, 2.0), (2.0, 2.0), (14.0, 2.0),
-                         (14.0, 2.0), (6.0, 2.0), (6.0, 2.0),
-                         (10.0, 2.0), (10.0, 2.0), (2.0, 14.0),
-                         (2.0, 14.0), (6.0, 6.0), (6.0, 6.0),
-                         (2.0, 6.0), (2.0, 6.0), (2.0, 10.0),
-                         (2.0, 10.0), (14.0, 14.0), (14.0, 14.0),
-                         (10.0, 6.0), (10.0, 6.0), (14.0, 6.0),
-                         (14.0, 6.0), (14.0, 10.0), (14.0, 10.0),
-                         (6.0, 10.0), (6.0, 10.0), (10.0, 10.0),
-                         (10.0, 10.0), (6.0, 14.0), (6.0, 14.0),
-                         (10.0, 14.0), (10.0, 14.0)])
-
-    r_truth = np.empty((32,))
-    r_truth.fill(2.8284271247461916)
-
-    for key in tri_info:
-        assert_almost_equal(cc_truth[key], tri_info[key]['cc'])
-        assert_almost_equal(r_truth[key], tri_info[key]['r'])
+        assert set(true_neighbor) == {tuple(v) for v in tri.simplices[neighbors[i]]}
+        assert set(centers_truth[i]) == {tuple(c) for c in tri_info[neighbors[i]]}
 
 
 def test_find_nn_triangles_point():
@@ -187,12 +178,11 @@ def test_find_nn_triangles_point():
     tri = Delaunay(pts)
 
     tri_match = tri.find_simplex([4.5, 4.5])
-
-    truth = [62, 63]
-
     nn = find_nn_triangles_point(tri, tri_match, [4.5, 4.5])
 
-    assert_array_almost_equal(truth, nn)
+    # Can't rely on simplex indices, so need to check point indices
+    truth = {(45, 55, 44), (55, 54, 44)}
+    assert {tuple(verts) for verts in tri.simplices[nn]} == truth
 
 
 def test_find_local_boundary():
@@ -209,9 +199,9 @@ def test_find_local_boundary():
 
     edges = find_local_boundary(tri, nn)
 
-    truth = [(45, 55), (44, 45), (55, 54), (54, 44)]
+    truth = {(45, 55), (44, 45), (55, 54), (54, 44)}
 
-    assert_array_almost_equal(truth, edges)
+    assert truth == set(edges)
 
 
 def test_area():
