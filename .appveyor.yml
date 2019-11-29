@@ -29,8 +29,6 @@ install:
     - cmd: sed -i -e s/python=3/python=%PYTHON_VERSION%/ environment.yml
     - cmd: conda env create -q -f environment.yml
     - cmd: activate devel
-    # Needed for codecov
-    - cmd: conda install -y coverage<4.4
     - cmd: pip install sphinx_rtd_theme==0.2.5b1.post1 -f https://unidata-python.s3.amazonaws.com/wheelhouse/index.html
     - cmd: python --version
     - cmd: conda list
