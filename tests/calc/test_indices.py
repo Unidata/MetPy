@@ -10,10 +10,12 @@ import numpy as np
 from metpy.calc import (bulk_shear, bunkers_storm_motion, critical_angle,
                         mean_pressure_weighted, precipitable_water,
                         significant_tornado, supercell_composite)
-from metpy.testing import assert_almost_equal, assert_array_equal, get_upper_air_data
+from metpy.testing import (assert_almost_equal, assert_array_equal, check_and_silence_warning,
+                           get_upper_air_data)
 from metpy.units import concatenate, units
 
 
+@check_and_silence_warning(FutureWarning)
 def test_precipitable_water():
     """Test precipitable water with observed sounding."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -23,6 +25,7 @@ def test_precipitable_water():
     assert_array_equal(pw, truth)
 
 
+@check_and_silence_warning(FutureWarning)
 def test_precipitable_water_no_bounds():
     """Test precipitable water with observed sounding and no bounds given."""
     data = get_upper_air_data(datetime(2016, 5, 22, 0), 'DDC')
@@ -34,6 +37,7 @@ def test_precipitable_water_no_bounds():
     assert_array_equal(pw, truth)
 
 
+@check_and_silence_warning(FutureWarning)
 def test_precipitable_water_bound_error():
     """Test with no top bound given and data that produced floating point issue #596."""
     pressure = np.array([993., 978., 960.5, 927.6, 925., 895.8, 892., 876., 45.9, 39.9, 36.,
@@ -45,6 +49,7 @@ def test_precipitable_water_bound_error():
     assert_almost_equal(pw, truth, 8)
 
 
+@check_and_silence_warning(FutureWarning)
 def test_precipitable_water_nans():
     """Test that PW returns appropriate number if NaNs are present."""
     pressure = np.array([1001, 1000, 997, 977.9, 977, 957, 937.8, 925, 906, 899.3, 887, 862.5,
