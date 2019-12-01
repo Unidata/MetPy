@@ -8,7 +8,7 @@ import warnings
 import numpy as np
 
 from . import coriolis_parameter
-from .tools import first_derivative, get_layer_heights, gradient
+from .tools import first_derivative, gradient
 from .. import constants as mpconsts
 from ..cbook import iterable
 from ..package_tools import Exporter
@@ -577,26 +577,13 @@ def storm_relative_helicity(u, v, heights, depth, bottom=0 * units.m,
         total storm-relative helicity
 
     """
-    _, u, v = get_layer_heights(heights, depth, u, v, with_agl=True, bottom=bottom)
-
-    storm_relative_u = u - storm_u
-    storm_relative_v = v - storm_v
-
-    int_layers = (storm_relative_u[1:] * storm_relative_v[:-1]
-                  - storm_relative_u[:-1] * storm_relative_v[1:])
-
-    # Need to manually check for masked value because sum() on masked array with non-default
-    # mask will return a masked value rather than 0. See numpy/numpy#11736
-    positive_srh = int_layers[int_layers.magnitude > 0.].sum()
-    if np.ma.is_masked(positive_srh):
-        positive_srh = 0.0 * units('meter**2 / second**2')
-    negative_srh = int_layers[int_layers.magnitude < 0.].sum()
-    if np.ma.is_masked(negative_srh):
-        negative_srh = 0.0 * units('meter**2 / second**2')
-
-    return (positive_srh.to('meter ** 2 / second ** 2'),
-            negative_srh.to('meter ** 2 / second ** 2'),
-            (positive_srh + negative_srh).to('meter ** 2 / second ** 2'))
+    warnings.warn('Input variables will be reordered in 1.0 to be (heights, u, v, depth, '
+                  'bottom, storm_u, storm_v). To update to new input format before 1.0 is '
+                  'released, use `from metpy.future import storm_relative_helicity`.',
+                  FutureWarning)
+    from ..future import storm_relative_helicity as _storm_relative_helicity
+    return _storm_relative_helicity(heights, u, v, depth,
+                                    bottom=bottom, storm_u=storm_u, storm_v=storm_v)
 
 
 @exporter.export

@@ -14,7 +14,7 @@ units : :class:`pint.UnitRegistry`
 
 """
 import functools
-from inspect import signature
+from inspect import Parameter, signature
 import logging
 import warnings
 
@@ -250,7 +250,7 @@ def masked_array(data, data_units=None, **kwargs):
     return units.Quantity(np.ma.masked_array(data, **kwargs), data_units)
 
 
-def _check_argument_units(args, dimensionality):
+def _check_argument_units(args, defaults, dimensionality):
     """Yield arguments with improper dimensionality."""
     for arg, val in args.items():
         # Get the needed dimensionality (for printing) as well as cached, parsed version
@@ -260,6 +260,11 @@ def _check_argument_units(args, dimensionality):
         except KeyError:
             # Argument did not have units specified in decorator
             continue
+
+        if arg in defaults:
+            check = val == defaults[arg]
+            if check:
+                continue
 
         # See if the value passed in is appropriate
         try:
@@ -286,11 +291,14 @@ def check_units(*units_by_pos, **units_by_name):
         dims = {name: (orig, units.get_dimensionality(orig.replace('dimensionless', '')))
                 for name, orig in bound_units.arguments.items()}
 
+        defaults = {name: sig.parameters[name].default for name in sig.parameters
+                    if sig.parameters[name].default is not Parameter.empty}
+
         @functools.wraps(func)
         def wrapper(*args, **kwargs):
             # Match all passed in value to their proper arguments so we can check units
             bound_args = sig.bind(*args, **kwargs)
-            bad = list(_check_argument_units(bound_args.arguments, dims))
+            bad = list(_check_argument_units(bound_args.arguments, defaults, dims))
 
             # If there are any bad units, emit a proper error message making it clear
             # what went wrong.

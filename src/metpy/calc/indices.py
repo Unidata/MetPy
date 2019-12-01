@@ -2,11 +2,11 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains calculation of various derived indices."""
+import warnings
+
 import numpy as np
 
-from .thermo import mixing_ratio, saturation_vapor_pressure
-from .tools import _remove_nans, get_layer
-from .. import constants as mpconsts
+from .tools import get_layer
 from ..package_tools import Exporter
 from ..units import atleast_1d, check_units, concatenate, units
 from ..xarray import preprocess_xarray
@@ -49,27 +49,11 @@ def precipitable_water(dewpt, pressure, bottom=None, top=None):
     >>> pw = precipitable_water(dewpoint, pressure)
 
     """
-    # Sort pressure and dewpoint to be in decreasing pressure order (increasing height)
-    sort_inds = np.argsort(pressure)[::-1]
-    pressure = pressure[sort_inds]
-    dewpt = dewpt[sort_inds]
-
-    pressure, dewpt = _remove_nans(pressure, dewpt)
-
-    if top is None:
-        top = np.nanmin(pressure.magnitude) * pressure.units
-
-    if bottom is None:
-        bottom = np.nanmax(pressure.magnitude) * pressure.units
-
-    pres_layer, dewpt_layer = get_layer(pressure, dewpt, bottom=bottom, depth=bottom - top)
-
-    w = mixing_ratio(saturation_vapor_pressure(dewpt_layer), pres_layer)
-
-    # Since pressure is in decreasing order, pw will be the opposite sign of that expected.
-    pw = -1. * (np.trapz(w.magnitude, pres_layer.magnitude) * (w.units * pres_layer.units)
-                / (mpconsts.g * mpconsts.rho_l))
-    return pw.to('millimeters')
+    warnings.warn('Input variables will be reordered in 1.0 to be (pressure, dewpt, bottom,'
+                  'top). To update to new input format before 1.0 is released, use'
+                  '`from metpy.future import precipitable_water`.', FutureWarning)
+    from ..future import precipitable_water as _precipitable_water
+    return _precipitable_water(pressure, dewpt, bottom=bottom, top=top)
 
 
 @exporter.export
