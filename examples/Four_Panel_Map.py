@@ -120,7 +120,7 @@ cb4.set_label('in.', size='x-large')
 fig.set_constrained_layout_pads(w_pad=0., h_pad=0.1, hspace=0., wspace=0.)
 
 # Set figure title
-fig.suptitle(ds['time'][0].dt.strftime('%d %B %Y %H:%MZ'), fontsize=24)
+fig.suptitle(ds['time'][0].dt.strftime('%d %B %Y %H:%MZ').values, fontsize=24)
 
 # Display the plot
 plt.show()
