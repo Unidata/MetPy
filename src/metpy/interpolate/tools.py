@@ -58,6 +58,36 @@ def remove_observations_below_value(x, y, z, val=0):
 
     return x_, y_, z_
 
+@exporter.export
+def remove_observations_above_value(x, y, z, val=0):
+    r"""Remove all x, y, and z where z is greater than val.
+
+    Will not destroy original values.
+
+    Parameters
+    ----------
+    x: array_like
+        x coordinate.
+    y: array_like
+        y coordinate.
+    z: array_like
+        Observation value.
+    val: float
+        Value at which to threshold z.
+
+    Returns
+    -------
+    x, y, z
+        List of coordinate observation pairs without
+        observation values greater than val.
+
+    """
+    x_ = x[z <= val]
+    y_ = y[z <= val]
+    z_ = z[z <= val]
+
+    return x_, y_, z_
+
 
 @exporter.export
 def remove_nan_observations(x, y, z):

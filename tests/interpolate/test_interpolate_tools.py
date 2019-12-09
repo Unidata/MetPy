@@ -12,6 +12,7 @@ from scipy.spatial.distance import cdist
 
 from metpy.interpolate import (interpolate_to_grid, remove_nan_observations,
                                remove_observations_below_value,
+                               remove_observations_above_value,
                                remove_repeat_coordinates)
 from metpy.interpolate.tools import barnes_weights, calc_kappa, cressman_weights
 
@@ -50,6 +51,23 @@ def test_remove_observations_below_value(test_coords):
     truthx = np.array([53, 98, 34, 15, 58])
     truthy = np.array([66, 14, 24, 60, 16])
     truthz = np.array([0, 2, 4, 6, 8])
+
+    assert_array_almost_equal(truthx, x_)
+    assert_array_almost_equal(truthy, y_)
+    assert_array_almost_equal(truthz, z_)
+    
+    
+def test_remove_observations_above_value(test_coords):
+    r"""Test threshold observations function."""
+    x, y = test_coords[0], test_coords[1]
+
+    z = np.array(list(range(-10, 10, 2)))
+
+    x_, y_, z_ = remove_observations_above_value(x, y, z, val=0)
+
+    truthx = np.array([ 8, 67, 79, 10, 52, 53])
+    truthy = np.array([24, 87, 48, 94, 98, 66])
+    truthz = np.array(list(range(-10, 2, 2)))
 
     assert_array_almost_equal(truthx, x_)
     assert_array_almost_equal(truthy, y_)
