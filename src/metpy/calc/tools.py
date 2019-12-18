@@ -740,6 +740,13 @@ def _less_or_close(a, value, **kwargs):
     return (a < value) | np.isclose(a, value, **kwargs)
 
 
+def _make_take(ndims, slice_dim):
+    """Generate a take function to index in a particular dimension."""
+    def take(indexer):
+        return tuple(indexer if slice_dim % ndims == i else slice(None) for i in range(ndims))
+    return take
+
+
 @exporter.export
 @preprocess_xarray
 def lat_lon_grid_deltas(longitude, latitude, **kwargs):
@@ -754,6 +761,10 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
         array of longitudes defining the grid
     latitude : array_like
         array of latitudes defining the grid
+    y_dim : int
+        axis number for the y dimesion, defaults to -2.
+    x_dim: int
+        axis number for the x dimension, defaults to -1.
     kwargs
         Other keyword arguments to pass to :class:`~pyproj.Geod`
 
@@ -766,7 +777,8 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
     Notes
     -----
     Accepts 1D, 2D, or higher arrays for latitude and longitude
-    Assumes [..., Y, X] for >=2 dimensional arrays
+    Assumes [..., Y, X] dimension order for input and output, unless keyword arguments `y_dim`
+    and `x_dim` are specified.
 
     """
     from pyproj import Geod
@@ -787,18 +799,26 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
         longitude = np.asarray(longitude)
         latitude = np.asarray(latitude)
 
+    # Determine dimension order for offset slicing
+    take_y = _make_take(latitude.ndim, kwargs.pop('y_dim', -2))
+    take_x = _make_take(latitude.ndim, kwargs.pop('x_dim', -1))
+
     geod_args = {'ellps': 'sphere'}
     if kwargs:
         geod_args = kwargs
 
     g = Geod(**geod_args)
 
-    forward_az, _, dy = g.inv(longitude[..., :-1, :], latitude[..., :-1, :],
-                              longitude[..., 1:, :], latitude[..., 1:, :])
+    forward_az, _, dy = g.inv(longitude[take_y(slice(None, -1))],
+                              latitude[take_y(slice(None, -1))],
+                              longitude[take_y(slice(1, None))],
+                              latitude[take_y(slice(1, None))])
     dy[(forward_az < -90.) | (forward_az > 90.)] *= -1
 
-    forward_az, _, dx = g.inv(longitude[..., :, :-1], latitude[..., :, :-1],
-                              longitude[..., :, 1:], latitude[..., :, 1:])
+    forward_az, _, dx = g.inv(longitude[take_x(slice(None, -1))],
+                              latitude[take_x(slice(None, -1))],
+                              longitude[take_x(slice(1, None))],
+                              latitude[take_x(slice(1, None))])
     dx[(forward_az < 0.) | (forward_az > 180.)] *= -1
 
     return dx * units.meter, dy * units.meter
@@ -829,7 +849,7 @@ def grid_deltas_from_dataarray(f):
 
     """
     if f.metpy.crs['grid_mapping_name'] == 'latitude_longitude':
-        dx, dy = lat_lon_grid_deltas(f.metpy.x, f.metpy.y,
+        dx, dy = lat_lon_grid_deltas(f.metpy.longitude, f.metpy.latitude,
                                      initstring=f.metpy.cartopy_crs.proj4_init)
         slc_x = slc_y = tuple([np.newaxis] * (f.ndim - 2) + [slice(None)] * 2)
     else:
