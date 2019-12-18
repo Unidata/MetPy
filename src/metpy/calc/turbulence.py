@@ -5,6 +5,7 @@ r"""Contains calculations related to turbulence and time series perturbations.""
 
 import numpy as np
 
+from .tools import make_take
 from ..package_tools import Exporter
 from ..xarray import preprocess_xarray
 
@@ -40,9 +41,7 @@ def get_perturbation(ts, axis=-1):
     .. math:: x(t)^{\prime} = x(t) - \overline{x(t)}
 
     """
-    slices = [slice(None)] * ts.ndim
-    slices[axis] = None
-    mean = ts.mean(axis=axis)[tuple(slices)]
+    mean = ts.mean(axis=axis)[make_take(ts.ndim, axis)(None)]
     return ts - mean
 
 

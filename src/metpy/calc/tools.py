@@ -655,7 +655,7 @@ def find_bounding_indices(arr, values, axis, from_below=True):
     good = np.empty(indices_shape, dtype=np.bool)
 
     # Used to put the output in the proper location
-    store_slice = [slice(None)] * arr.ndim
+    take = make_take(arr.ndim, axis)
 
     # Loop over all of the values and for each, see where the value would be found from a
     # linear search
@@ -685,9 +685,9 @@ def find_bounding_indices(arr, values, axis, from_below=True):
         index[~good_search] = 0
 
         # Put the results in the proper slice
-        store_slice[axis] = level_index
-        indices[tuple(store_slice)] = index
-        good[tuple(store_slice)] = good_search
+        store_slice = take(level_index)
+        indices[store_slice] = index
+        good[store_slice] = good_search
 
     # Create index values for broadcasting arrays
     above = broadcast_indices(arr, indices, arr.ndim, axis)
@@ -740,7 +740,7 @@ def _less_or_close(a, value, **kwargs):
     return (a < value) | np.isclose(a, value, **kwargs)
 
 
-def _make_take(ndims, slice_dim):
+def make_take(ndims, slice_dim):
     """Generate a take function to index in a particular dimension."""
     def take(indexer):
         return tuple(indexer if slice_dim % ndims == i else slice(None) for i in range(ndims))
@@ -800,8 +800,8 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
         latitude = np.asarray(latitude)
 
     # Determine dimension order for offset slicing
-    take_y = _make_take(latitude.ndim, kwargs.pop('y_dim', -2))
-    take_x = _make_take(latitude.ndim, kwargs.pop('x_dim', -1))
+    take_y = make_take(latitude.ndim, kwargs.pop('y_dim', -2))
+    take_x = make_take(latitude.ndim, kwargs.pop('x_dim', -1))
 
     geod_args = {'ellps': 'sphere'}
     if kwargs:
@@ -950,61 +950,46 @@ def first_derivative(f, **kwargs):
 
     """
     n, axis, delta = _process_deriv_args(f, kwargs)
-
-    # create slice objects --- initially all are [:, :, ..., :]
-    slice0 = [slice(None)] * n
-    slice1 = [slice(None)] * n
-    slice2 = [slice(None)] * n
-    delta_slice0 = [slice(None)] * n
-    delta_slice1 = [slice(None)] * n
+    take = make_take(n, axis)
 
     # First handle centered case
-    slice0[axis] = slice(None, -2)
-    slice1[axis] = slice(1, -1)
-    slice2[axis] = slice(2, None)
-    delta_slice0[axis] = slice(None, -1)
-    delta_slice1[axis] = slice(1, None)
+    slice0 = take(slice(None, -2))
+    slice1 = take(slice(1, -1))
+    slice2 = take(slice(2, None))
+    delta_slice0 = take(slice(None, -1))
+    delta_slice1 = take(slice(1, None))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    delta_diff = delta[tuple(delta_slice1)] - delta[tuple(delta_slice0)]
-    center = (- delta[tuple(delta_slice1)] / (combined_delta * delta[tuple(delta_slice0)])
-              * f[tuple(slice0)]
-              + delta_diff / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
-              * f[tuple(slice1)]
-              + delta[tuple(delta_slice0)] / (combined_delta * delta[tuple(delta_slice1)])
-              * f[tuple(slice2)])
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    delta_diff = delta[delta_slice1] - delta[delta_slice0]
+    center = (- delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0]
+              + delta_diff / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
+              + delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2])
 
     # Fill in "left" edge with forward difference
-    slice0[axis] = slice(None, 1)
-    slice1[axis] = slice(1, 2)
-    slice2[axis] = slice(2, 3)
-    delta_slice0[axis] = slice(None, 1)
-    delta_slice1[axis] = slice(1, 2)
+    slice0 = take(slice(None, 1))
+    slice1 = take(slice(1, 2))
+    slice2 = take(slice(2, 3))
+    delta_slice0 = take(slice(None, 1))
+    delta_slice1 = take(slice(1, 2))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    big_delta = combined_delta + delta[tuple(delta_slice0)]
-    left = (- big_delta / (combined_delta * delta[tuple(delta_slice0)])
-            * f[tuple(slice0)]
-            + combined_delta / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
-            * f[tuple(slice1)]
-            - delta[tuple(delta_slice0)] / (combined_delta * delta[tuple(delta_slice1)])
-            * f[tuple(slice2)])
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    big_delta = combined_delta + delta[delta_slice0]
+    left = (- big_delta / (combined_delta * delta[delta_slice0]) * f[slice0]
+            + combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
+            - delta[delta_slice0] / (combined_delta * delta[delta_slice1]) * f[slice2])
 
     # Now the "right" edge with backward difference
-    slice0[axis] = slice(-3, -2)
-    slice1[axis] = slice(-2, -1)
-    slice2[axis] = slice(-1, None)
-    delta_slice0[axis] = slice(-2, -1)
-    delta_slice1[axis] = slice(-1, None)
+    slice0 = take(slice(-3, -2))
+    slice1 = take(slice(-2, -1))
+    slice2 = take(slice(-1, None))
+    delta_slice0 = take(slice(-2, -1))
+    delta_slice1 = take(slice(-1, None))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    big_delta = combined_delta + delta[tuple(delta_slice1)]
-    right = (delta[tuple(delta_slice1)] / (combined_delta * delta[tuple(delta_slice0)])
-             * f[tuple(slice0)]
-             - combined_delta / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
-             * f[tuple(slice1)]
-             + big_delta / (combined_delta * delta[tuple(delta_slice1)])
-             * f[tuple(slice2)])
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    big_delta = combined_delta + delta[delta_slice1]
+    right = (delta[delta_slice1] / (combined_delta * delta[delta_slice0]) * f[slice0]
+             - combined_delta / (delta[delta_slice0] * delta[delta_slice1]) * f[slice1]
+             + big_delta / (combined_delta * delta[delta_slice1]) * f[slice2])
 
     return concatenate((left, center, right), axis=axis)
 
@@ -1054,50 +1039,43 @@ def second_derivative(f, **kwargs):
 
     """
     n, axis, delta = _process_deriv_args(f, kwargs)
-
-    # create slice objects --- initially all are [:, :, ..., :]
-    slice0 = [slice(None)] * n
-    slice1 = [slice(None)] * n
-    slice2 = [slice(None)] * n
-    delta_slice0 = [slice(None)] * n
-    delta_slice1 = [slice(None)] * n
+    take = make_take(n, axis)
 
     # First handle centered case
-    slice0[axis] = slice(None, -2)
-    slice1[axis] = slice(1, -1)
-    slice2[axis] = slice(2, None)
-    delta_slice0[axis] = slice(None, -1)
-    delta_slice1[axis] = slice(1, None)
+    slice0 = take(slice(None, -2))
+    slice1 = take(slice(1, -1))
+    slice2 = take(slice(2, None))
+    delta_slice0 = take(slice(None, -1))
+    delta_slice1 = take(slice(1, None))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    center = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)])
-                  - f[tuple(slice1)] / (delta[tuple(delta_slice0)]
-                                        * delta[tuple(delta_slice1)])
-                  + f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    center = 2 * (f[slice0] / (combined_delta * delta[delta_slice0])
+                  - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
+                  + f[slice2] / (combined_delta * delta[delta_slice1]))
 
     # Fill in "left" edge
-    slice0[axis] = slice(None, 1)
-    slice1[axis] = slice(1, 2)
-    slice2[axis] = slice(2, 3)
-    delta_slice0[axis] = slice(None, 1)
-    delta_slice1[axis] = slice(1, 2)
+    slice0 = take(slice(None, 1))
+    slice1 = take(slice(1, 2))
+    slice2 = take(slice(2, 3))
+    delta_slice0 = take(slice(None, 1))
+    delta_slice1 = take(slice(1, 2))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    left = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)])
-                - f[tuple(slice1)] / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
-                + f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    left = 2 * (f[slice0] / (combined_delta * delta[delta_slice0])
+                - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
+                + f[slice2] / (combined_delta * delta[delta_slice1]))
 
     # Now the "right" edge
-    slice0[axis] = slice(-3, -2)
-    slice1[axis] = slice(-2, -1)
-    slice2[axis] = slice(-1, None)
-    delta_slice0[axis] = slice(-2, -1)
-    delta_slice1[axis] = slice(-1, None)
+    slice0 = take(slice(-3, -2))
+    slice1 = take(slice(-2, -1))
+    slice2 = take(slice(-1, None))
+    delta_slice0 = take(slice(-2, -1))
+    delta_slice1 = take(slice(-1, None))
 
-    combined_delta = delta[tuple(delta_slice0)] + delta[tuple(delta_slice1)]
-    right = 2 * (f[tuple(slice0)] / (combined_delta * delta[tuple(delta_slice0)])
-                 - f[tuple(slice1)] / (delta[tuple(delta_slice0)] * delta[tuple(delta_slice1)])
-                 + f[tuple(slice2)] / (combined_delta * delta[tuple(delta_slice1)]))
+    combined_delta = delta[delta_slice0] + delta[delta_slice1]
+    right = 2 * (f[slice0] / (combined_delta * delta[delta_slice0])
+                 - f[slice1] / (delta[delta_slice0] * delta[delta_slice1])
+                 + f[slice2] / (combined_delta * delta[delta_slice1]))
 
     return concatenate((left, center, right), axis=axis)
 
