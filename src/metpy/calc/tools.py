@@ -3,6 +3,7 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Contains a collection of generally useful calculation tools."""
 import functools
+import warnings
 from operator import itemgetter
 
 import numpy as np
@@ -750,17 +751,16 @@ def make_take(ndims, slice_dim):
 @exporter.export
 @preprocess_xarray
 def lat_lon_grid_deltas(longitude, latitude, **kwargs):
-    r"""Calculate the delta between grid points that are in a latitude/longitude format.
-
-    Calculate the signed delta distance between grid points when the grid spacing is defined by
-    delta lat/lon rather than delta x/y
+    r"""Calculate the actual delta between grid points that are in latitude/longitude format.
 
     Parameters
     ----------
     longitude : array_like
-        array of longitudes defining the grid
+        array of longitudes defining the grid. If not a `pint.Quantity`, assumed to be in
+        degrees.
     latitude : array_like
-        array of latitudes defining the grid
+        array of latitudes defining the grid. If not a `pint.Quantity`, assumed to be in
+        degrees.
     y_dim : int
         axis number for the y dimesion, defaults to -2.
     x_dim: int
@@ -778,7 +778,7 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
     -----
     Accepts 1D, 2D, or higher arrays for latitude and longitude
     Assumes [..., Y, X] dimension order for input and output, unless keyword arguments `y_dim`
-    and `x_dim` are specified.
+    and `x_dim` are otherwise specified.
 
     """
     from pyproj import Geod
@@ -825,17 +825,22 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
 
 
 @exporter.export
-def grid_deltas_from_dataarray(f):
+def grid_deltas_from_dataarray(f, kind="default"):
     """Calculate the horizontal deltas between grid points of a DataArray.
 
     Calculate the signed delta distance between grid points of a DataArray in the horizontal
-    directions, whether the grid is lat/lon or x/y.
+    directions, using actual (real distance) or nominal (in projection space) deltas.
 
     Parameters
     ----------
     f : `xarray.DataArray`
-        Parsed DataArray on a latitude/longitude grid, in (..., lat, lon) or (..., y, x)
-        dimension order
+        Parsed DataArray (MetPy's crs coordinate must be available for kind="actual")
+    kind : str
+        Type of grid delta to calculate. "actual" returns true distances as calculated from
+        longitude and latitude via `lat_lon_grid_deltas`. "nominal" returns horizontal
+        differences in the data's coordinate space, either in degrees (for lat/lon CRS) or
+        meters (for y/x CRS). "default" behaves like "actual" for datasets with a lat/lon CRS
+        and like "nominal" for all others. Defaults to "default".
 
     Returns
     -------
@@ -848,17 +853,42 @@ def grid_deltas_from_dataarray(f):
     lat_lon_grid_deltas
 
     """
-    if f.metpy.crs['grid_mapping_name'] == 'latitude_longitude':
-        dx, dy = lat_lon_grid_deltas(f.metpy.longitude, f.metpy.latitude,
-                                     initstring=f.metpy.cartopy_crs.proj4_init)
-        slc_x = slc_y = tuple([np.newaxis] * (f.ndim - 2) + [slice(None)] * 2)
+    # Determine behavior
+    if kind == "default" and f.metpy.crs['grid_mapping_name'] == 'latitude_longitude':
+        kind = "actual"
+    elif kind == "default":
+        kind = "nominal"
+    elif kind not in ("actual", "nominal"):
+        raise ValueError("'kind' argument must be specified as 'default', 'actual', or "
+                         "'nominal'")
+
+    if kind == "actual":
+        # Get latitude/longitude coordinates and find dim order
+        latitude, longitude = xr.broadcast(*f.metpy.coordinates('latitude', 'longitude'))
+        try:
+            y_dim = latitude.metpy.find_axis_number('y')
+            x_dim = latitude.metpy.find_axis_number('x')
+        except AttributeError:
+            warnings.warn("y and x dimensions unable to be identified. Assuming [..., y, x] "
+                          "dimension order.")
+            y_dim, x_dim = -2, -1
+        # Obtain grid deltas as xarray Variables
+        dx, dy = (xr.Variable(dims=latitude.dims, data=deltas) for deltas in
+                  lat_lon_grid_deltas(longitude, latitude, y_dim=y_dim, x_dim=x_dim,
+                                      initstring=f.metpy.cartopy_crs.proj4_init))
     else:
-        dx = np.diff(f.metpy.x.metpy.unit_array.to('m').magnitude) * units('m')
-        dy = np.diff(f.metpy.y.metpy.unit_array.to('m').magnitude) * units('m')
-        slc = [np.newaxis] * (f.ndim - 2)
-        slc_x = tuple(slc + [np.newaxis, slice(None)])
-        slc_y = tuple(slc + [slice(None), np.newaxis])
-    return dx[slc_x], dy[slc_y]
+        # Obtain y/x coordinate difference as xarray Variable-wrapped Quantity
+        y, x = f.metpy.coordinates('y', 'x')
+        dx = x.diff(x.dims[0]).variable * units(x.attrs.get('units'))
+        dy = y.diff(y.dims[0]).variable * units(y.attrs.get('units'))
+
+    # Broadcast to input and convert to base units
+    dx = dx.set_dims(f.dims, shape=[dx.sizes[dim] if dim in dx.dims else 1
+                                    for dim in f.dims]).data.to_base_units()
+    dy = dy.set_dims(f.dims, shape=[dy.sizes[dim] if dim in dy.dims else 1
+                                    for dim in f.dims]).data.to_base_units()
+
+    return dx, dy
 
 
 def xarray_derivative_wrap(func):

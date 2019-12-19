@@ -91,6 +91,9 @@ coordinate_criteria = {
 
 log = logging.getLogger(__name__)
 
+_axis_identifier_error = ('Given axis is not valid. Must be an axis number, a dimension '
+                          'coordinate name, or a standard axis type.')
+
 
 @xr.register_dataarray_accessor('metpy')
 class MetPyDataArrayAccessor:
@@ -361,8 +364,47 @@ class MetPyDataArrayAccessor:
             return axis
         else:
             # Otherwise, not valid
-            raise ValueError('Given axis is not valid. Must be an axis number, a dimension '
-                             'coordinate name, or a standard axis type.')
+            raise ValueError(_axis_identifier_error)
+
+    def find_axis_number(self, axis):
+        """Return the dimension number of the axis corresponding to the given identifier.
+
+        Parameters
+        ----------
+        axis : str or int
+            Identifier for an axis. Can be the an axis number (integer), dimension coordinate
+            name (string) or a standard axis type (string).
+
+        """
+        if isinstance(axis, int):
+            # If an integer, use it directly
+            return axis
+        elif axis in self._data_array.dims:
+            # Simply index into dims
+            return self._data_array.dims.index(axis)
+        elif axis in metpy_axes:
+            # If not a dimension name itself, but a valid axis type, first determine if this
+            # standard axis type is present as a dimension coordinate
+            try:
+                name = self._axis(axis).name
+                return self._data_array.dims.index(name)
+            except AttributeError as exc:
+                # If x or y requested, but x or y not available, attempt to interpret dim
+                # names using regular expressions from coordinate parsing to allow for
+                # multidimensional lat/lon without y/x dimension coordinates
+                if axis in ('y', 'x'):
+                    for i, dim in enumerate(self._data_array.dims):
+                        if re.match(coordinate_criteria['regular_expression'][axis],
+                                    dim.lower()):
+                            return i
+                raise exc
+            except ValueError:
+                # Intercept ValueError when axis type found but not dimension coordinate
+                raise AttributeError(f'Requested {axis} dimension coordinate but {axis} '
+                                     f'coordinate {name} is not a dimension')
+        else:
+            # Otherwise, not valid
+            raise ValueError(_axis_identifier_error)
 
     class _LocIndexer:
         """Provide the unit-wrapped .loc indexer for data arrays."""
