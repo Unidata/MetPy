@@ -1745,7 +1745,7 @@ def isentropic_interpolation(theta_levels, pressure, temperature, *args, axis=0,
     levs = pres[sorter]
     tmpk = temperature[sorter]
 
-    theta_levels = np.asanyarray(theta_levels.to('kelvin')).reshape(-1)
+    theta_levels = np.asarray(theta_levels.m_as('kelvin')).reshape(-1)
     isentlevels = theta_levels[np.argsort(theta_levels)]
 
     # Make the desired isentropic levels the same shape as temperature
