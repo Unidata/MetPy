@@ -777,6 +777,14 @@ def lat_lon_grid_deltas(longitude, latitude, **kwargs):
     if latitude.ndim < 2:
         longitude, latitude = np.meshgrid(longitude, latitude)
 
+    # pyproj requires ndarrays, not Quantities
+    try:
+        longitude = longitude.m_as('degrees')
+        latitude = latitude.m_as('degrees')
+    except AttributeError:
+        longitude = np.asarray(longitude)
+        latitude = np.asarray(latitude)
+
     geod_args = {'ellps': 'sphere'}
     if kwargs:
         geod_args = kwargs

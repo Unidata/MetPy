@@ -359,7 +359,7 @@ def lcl(pressure, temperature, dewpt, max_iters=50, eps=1e-5):
 
     # np.isclose needed if surface is LCL due to precision error with np.log in dewpoint.
     # Causes issues with parcel_profile_with_lcl if removed. Issue #1187
-    lcl_p = np.where(np.isclose(lcl_p, pressure), pressure, lcl_p) * pressure.units
+    lcl_p = np.where(np.isclose(lcl_p, pressure.m), pressure.m, lcl_p) * pressure.units
 
     return lcl_p, dewpoint(vapor_pressure(lcl_p, w)).to(temperature.units)
 
