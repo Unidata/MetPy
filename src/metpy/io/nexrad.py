@@ -581,9 +581,10 @@ class Level2File(object):
         msg_start = self._buffer.set_mark()
         data_hdr = self._buffer.read_struct(self.msg31_data_hdr_fmt)
 
-        # Read all the data block pointers separately. This simplifies just
-        # iterating over them
-        ptrs = self._buffer.read_binary(6, '>L')
+        # Read all the data block pointers separately. This makes it easy to loop and to
+        # handle the arbitrary numbers. We subtract 3 for the VOL, ELV, and RAD blocks that
+        # are required to be present (and can't be read like the data)
+        ptrs = self._buffer.read_binary(data_hdr.num_data_blks - 3, '>L')
 
         if data_hdr.compression:
             log.warning('Compressed message 31 not supported!')
