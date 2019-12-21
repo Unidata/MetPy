@@ -451,8 +451,9 @@ class Level2File(object):
             for e in range(num_el):
                 seg_num = data[offset]
                 offset += 1
-                assert seg_num == (e + 1), ('Message 13 segments out of sync --'
-                                            ' read {} but on {}'.format(seg_num, e + 1))
+                if seg_num != (e + 1):
+                    log.warning('Message 13 segments out of sync -- read {} but on {}'.format(
+                        seg_num, e + 1))
 
                 az_data = []
                 for _ in range(360):
@@ -584,7 +585,8 @@ class Level2File(object):
         # iterating over them
         ptrs = self._buffer.read_binary(6, '>L')
 
-        assert data_hdr.compression == 0, 'Compressed message 31 not supported!'
+        if data_hdr.compression:
+            log.warning('Compressed message 31 not supported!')
 
         self._buffer.jump_to(msg_start, data_hdr.vol_const_ptr)
         vol_consts = self._buffer.read_struct(self.msg31_vol_const_fmt)
