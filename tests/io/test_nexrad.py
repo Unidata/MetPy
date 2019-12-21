@@ -27,7 +27,8 @@ level2_files = [('KTLX20130520_201643_V06.gz', datetime(2013, 5, 20, 20, 16, 46)
                 ('KTLX19990503_235621.gz', datetime(1999, 5, 3, 23, 56, 21), 16),
                 ('Level2_KFTG_20150430_1419.ar2v', datetime(2015, 4, 30, 14, 19, 11), 12),
                 ('KTLX20150530_000802_V06.bz2', datetime(2015, 5, 30, 0, 8, 3), 14),
-                ('KICX_20170712_1458', datetime(2017, 7, 12, 14, 58, 5), 14)]
+                ('KICX_20170712_1458', datetime(2017, 7, 12, 14, 58, 5), 14),
+                ('TDAL20191021021543V08.raw.gz', datetime(2019, 10, 21, 2, 15, 43), 10)]
 
 
 # ids here fixes how things are presented in pycharm

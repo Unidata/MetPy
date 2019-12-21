@@ -369,12 +369,13 @@ class Level2File(object):
         (None, '2x'), ('alarms', '28s', Array('>14H'))], '>', 'Msg2Fmt')
 
     def _decode_msg2(self, msg_hdr):
+        msg_start = self._buffer.set_mark()
         self.rda_status.append(self._buffer.read_struct(self.msg2_fmt))
 
         # RDA Build 18.0 expanded the size, but only with spares for now
-        extra_size = 40 if self.rda_status[-1].rda_build >= '18.0' else 0
-
-        self._check_size(msg_hdr, self.msg2_fmt.size + extra_size)
+        if msg_hdr.size_hw * 2 - self.msg2_fmt.size:
+            log.info('Padding detected in message 2. Length encoded as %d but offset when '
+                     'done is %d', 2 * msg_hdr.size_hw, self._buffer.offset_from(msg_start))
 
     def _decode_msg3(self, msg_hdr):
         from ._nexrad_msgs.msg3 import descriptions, fields
@@ -607,8 +608,11 @@ class Level2File(object):
 
         if data_hdr.num_data_blks != block_count:
             log.warning('Incorrect number of blocks detected -- Got %d'
-                        'instead of %d', block_count, data_hdr.num_data_blks)
-        assert data_hdr.rad_length == self._buffer.offset_from(msg_start)
+                        ' instead of %d', block_count, data_hdr.num_data_blks)
+
+        if data_hdr.rad_length != self._buffer.offset_from(msg_start):
+            log.info('Padding detected in message. Length encoded as %d but offset when '
+                     'done is %d', data_hdr.rad_length, self._buffer.offset_from(msg_start))
 
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer
