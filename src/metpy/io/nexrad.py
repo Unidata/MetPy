@@ -595,11 +595,15 @@ class Level2File(object):
         el_consts = self._buffer.read_struct(self.msg31_el_const_fmt)
 
         self._buffer.jump_to(msg_start, data_hdr.rad_const_ptr)
-        # Major version jumped with Build 14.0
-        if vol_consts.major < 2:
-            rad_consts = self._buffer.read_struct(self.rad_const_fmt_v1)
-        else:
+
+        # Look ahead to figure out how big the block is
+        jmp = self._buffer.set_mark()
+        size = self._buffer.read_binary(3, '>H')[-1]
+        self._buffer.jump_to(jmp)
+        if size == self.rad_const_fmt_v2.size:
             rad_consts = self._buffer.read_struct(self.rad_const_fmt_v2)
+        else:
+            rad_consts = self._buffer.read_struct(self.rad_const_fmt_v1)
 
         data = {}
         block_count = 3

@@ -54,6 +54,15 @@ def test_doubled_file():
     assert len(f.sweeps) == 12
 
 
+@pytest.mark.parametrize('fname, has_v2', [('KTLX20130520_201643_V06.gz', False),
+                                           ('Level2_KFTG_20150430_1419.ar2v', True),
+                                           ('TDAL20191021021543V08.raw.gz', False)])
+def test_conditional_radconst(fname, has_v2):
+    """Test whether we're using the right volume constants."""
+    f = Level2File(get_test_data(fname, as_file_obj=False))
+    assert hasattr(f.sweeps[0][0][3], 'calib_dbz0_v') == has_v2
+
+
 #
 # NIDS/Level 3 Tests
 #
