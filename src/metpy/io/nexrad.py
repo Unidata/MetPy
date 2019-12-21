@@ -219,7 +219,7 @@ class Level2File(object):
 
             # Read the message header
             msg_hdr = self._buffer.read_struct(self.msg_hdr_fmt)
-            log.debug('Got message: %s', str(msg_hdr))
+            log.debug('Got message: %s (at offset %d)', str(msg_hdr), self._buffer._offset)
 
             # The AR2_BLOCKSIZE accounts for the CTM header before the
             # data, as well as the Frame Check Sequence (4 bytes) after
@@ -340,7 +340,7 @@ class Level2File(object):
                                               'Generator On',
                                               'Transfer Switch Manual',
                                               'Commanded Switchover')),
-        ('avg_tx_pwr', 'H'), ('ref_calib_cor', 'h'),
+        ('avg_tx_pwr', 'H'), ('ref_calib_cor', 'h', scaler(0.01)),
         ('data_transmission_enabled', 'H', BitField('None', 'None',
                                                     'Reflectivity', 'Velocity', 'Width')),
         ('vcp_num', 'h'), ('rda_control_auth', 'H', BitField('No Action',
@@ -362,18 +362,29 @@ class Level2File(object):
         ('spot_blanking', 'H', BitField('Enabled', 'Disabled')),
         ('bypass_map_gen_date', 'H'), ('bypass_map_gen_time', 'H'),
         ('clutter_filter_map_gen_date', 'H'), ('clutter_filter_map_gen_time', 'H'),
-        (None, '2x'),
+        ('refv_calib_cor', 'h', scaler(0.01)),
         ('transition_pwr_src_state', 'H', BitField('Off', 'OK')),
         ('RMS_control_status', 'H', BitField('RMS in control', 'RDA in control')),
         # See Table IV-A for definition of alarms
         (None, '2x'), ('alarms', '28s', Array('>14H'))], '>', 'Msg2Fmt')
 
+    msg2_additional_fmt = NamedStruct([
+        ('sig_proc_options', 'H', BitField('CMD RhoHV Test')),
+        (None, '36x'), ('status_version', 'H')], '>', 'Msg2AdditionalFmt')
+
     def _decode_msg2(self, msg_hdr):
         msg_start = self._buffer.set_mark()
         self.rda_status.append(self._buffer.read_struct(self.msg2_fmt))
 
-        # RDA Build 18.0 expanded the size, but only with spares for now
-        if msg_hdr.size_hw * 2 - self.msg2_fmt.size:
+        remaining = (msg_hdr.size_hw * 2 - self.msg_hdr_fmt.size
+                     - self._buffer.offset_from(msg_start))
+
+        # RDA Build 18.0 expanded the size
+        if remaining >= self.msg2_additional_fmt.size:
+            self.rda_status.append(self._buffer.read_struct(self.msg2_additional_fmt))
+            remaining -= self.msg2_additional_fmt.size
+
+        if remaining:
             log.info('Padding detected in message 2. Length encoded as %d but offset when '
                      'done is %d', 2 * msg_hdr.size_hw, self._buffer.offset_from(msg_start))
 
