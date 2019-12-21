@@ -1549,7 +1549,6 @@ class Level3File(object):
         self._process_end_bytes()
 
         # Set up places to store data and metadata
-#        self.data = []
         self.metadata = {}
 
         # Handle free text message products that are pure text
