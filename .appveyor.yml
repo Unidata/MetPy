@@ -21,7 +21,7 @@ install:
             { $env:CONDA_PATH="$($env:CONDA_PATH)37" }
     - ps: if($env:PLATFORM -eq 'x64')
             { $env:CONDA_PATH="$($env:CONDA_PATH)-x64" }
-    - ps: $env:path="$($env:CONDA_PATH);$($env:CONDA_PATH)\Scripts;$($env:CONDA_PATH)\Library\bin;C:\cygwin\bin;$($env:PATH)"
+    - ps: $env:path="$($env:CONDA_PATH);$($env:CONDA_PATH)\Scripts;$($env:CONDA_PATH)\Library\bin;$($env:PATH)"
     - cmd: conda config --set always_yes yes --set changeps1 no
     - cmd: conda update -q conda
     # Useful for debugging any issues with conda
