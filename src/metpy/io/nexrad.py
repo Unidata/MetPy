@@ -219,7 +219,7 @@ class Level2File(object):
 
             # Read the message header
             msg_hdr = self._buffer.read_struct(self.msg_hdr_fmt)
-            log.debug('Got message: %s', str(msg_hdr))
+            log.debug('Got message: %s (at offset %d)', str(msg_hdr), self._buffer._offset)
 
             # The AR2_BLOCKSIZE accounts for the CTM header before the
             # data, as well as the Frame Check Sequence (4 bytes) after
@@ -340,7 +340,7 @@ class Level2File(object):
                                               'Generator On',
                                               'Transfer Switch Manual',
                                               'Commanded Switchover')),
-        ('avg_tx_pwr', 'H'), ('ref_calib_cor', 'h'),
+        ('avg_tx_pwr', 'H'), ('ref_calib_cor', 'h', scaler(0.01)),
         ('data_transmission_enabled', 'H', BitField('None', 'None',
                                                     'Reflectivity', 'Velocity', 'Width')),
         ('vcp_num', 'h'), ('rda_control_auth', 'H', BitField('No Action',
@@ -362,19 +362,31 @@ class Level2File(object):
         ('spot_blanking', 'H', BitField('Enabled', 'Disabled')),
         ('bypass_map_gen_date', 'H'), ('bypass_map_gen_time', 'H'),
         ('clutter_filter_map_gen_date', 'H'), ('clutter_filter_map_gen_time', 'H'),
-        (None, '2x'),
+        ('refv_calib_cor', 'h', scaler(0.01)),
         ('transition_pwr_src_state', 'H', BitField('Off', 'OK')),
         ('RMS_control_status', 'H', BitField('RMS in control', 'RDA in control')),
         # See Table IV-A for definition of alarms
         (None, '2x'), ('alarms', '28s', Array('>14H'))], '>', 'Msg2Fmt')
 
+    msg2_additional_fmt = NamedStruct([
+        ('sig_proc_options', 'H', BitField('CMD RhoHV Test')),
+        (None, '36x'), ('status_version', 'H')], '>', 'Msg2AdditionalFmt')
+
     def _decode_msg2(self, msg_hdr):
+        msg_start = self._buffer.set_mark()
         self.rda_status.append(self._buffer.read_struct(self.msg2_fmt))
 
-        # RDA Build 18.0 expanded the size, but only with spares for now
-        extra_size = 40 if self.rda_status[-1].rda_build >= '18.0' else 0
+        remaining = (msg_hdr.size_hw * 2 - self.msg_hdr_fmt.size
+                     - self._buffer.offset_from(msg_start))
 
-        self._check_size(msg_hdr, self.msg2_fmt.size + extra_size)
+        # RDA Build 18.0 expanded the size
+        if remaining >= self.msg2_additional_fmt.size:
+            self.rda_status.append(self._buffer.read_struct(self.msg2_additional_fmt))
+            remaining -= self.msg2_additional_fmt.size
+
+        if remaining:
+            log.info('Padding detected in message 2. Length encoded as %d but offset when '
+                     'done is %d', 2 * msg_hdr.size_hw, self._buffer.offset_from(msg_start))
 
     def _decode_msg3(self, msg_hdr):
         from ._nexrad_msgs.msg3 import descriptions, fields
@@ -439,8 +451,9 @@ class Level2File(object):
             for e in range(num_el):
                 seg_num = data[offset]
                 offset += 1
-                assert seg_num == (e + 1), ('Message 13 segments out of sync --'
-                                            ' read {} but on {}'.format(seg_num, e + 1))
+                if seg_num != (e + 1):
+                    log.warning('Message 13 segments out of sync -- read {} but on {}'.format(
+                        seg_num, e + 1))
 
                 az_data = []
                 for _ in range(360):
@@ -568,11 +581,13 @@ class Level2File(object):
         msg_start = self._buffer.set_mark()
         data_hdr = self._buffer.read_struct(self.msg31_data_hdr_fmt)
 
-        # Read all the data block pointers separately. This simplifies just
-        # iterating over them
-        ptrs = self._buffer.read_binary(6, '>L')
+        # Read all the data block pointers separately. This makes it easy to loop and to
+        # handle the arbitrary numbers. We subtract 3 for the VOL, ELV, and RAD blocks that
+        # are required to be present (and can't be read like the data)
+        ptrs = self._buffer.read_binary(data_hdr.num_data_blks - 3, '>L')
 
-        assert data_hdr.compression == 0, 'Compressed message 31 not supported!'
+        if data_hdr.compression:
+            log.warning('Compressed message 31 not supported!')
 
         self._buffer.jump_to(msg_start, data_hdr.vol_const_ptr)
         vol_consts = self._buffer.read_struct(self.msg31_vol_const_fmt)
@@ -581,11 +596,15 @@ class Level2File(object):
         el_consts = self._buffer.read_struct(self.msg31_el_const_fmt)
 
         self._buffer.jump_to(msg_start, data_hdr.rad_const_ptr)
-        # Major version jumped with Build 14.0
-        if vol_consts.major < 2:
-            rad_consts = self._buffer.read_struct(self.rad_const_fmt_v1)
-        else:
+
+        # Look ahead to figure out how big the block is
+        jmp = self._buffer.set_mark()
+        size = self._buffer.read_binary(3, '>H')[-1]
+        self._buffer.jump_to(jmp)
+        if size == self.rad_const_fmt_v2.size:
             rad_consts = self._buffer.read_struct(self.rad_const_fmt_v2)
+        else:
+            rad_consts = self._buffer.read_struct(self.rad_const_fmt_v1)
 
         data = {}
         block_count = 3
@@ -607,8 +626,11 @@ class Level2File(object):
 
         if data_hdr.num_data_blks != block_count:
             log.warning('Incorrect number of blocks detected -- Got %d'
-                        'instead of %d', block_count, data_hdr.num_data_blks)
-        assert data_hdr.rad_length == self._buffer.offset_from(msg_start)
+                        ' instead of %d', block_count, data_hdr.num_data_blks)
+
+        if data_hdr.rad_length != self._buffer.offset_from(msg_start):
+            log.info('Padding detected in message. Length encoded as %d but offset when '
+                     'done is %d', data_hdr.rad_length, self._buffer.offset_from(msg_start))
 
     def _buffer_segment(self, msg_hdr):
         # Add to the buffer
@@ -1549,7 +1571,6 @@ class Level3File(object):
         self._process_end_bytes()
 
         # Set up places to store data and metadata
-#        self.data = []
         self.metadata = {}
 
         # Handle free text message products that are pure text

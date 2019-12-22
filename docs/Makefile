@@ -4,7 +4,6 @@
 # You can set these variables from the command line.
 SPHINXOPTS    =
 SPHINXBUILD   = sphinx-build
-SPHINXAUTOGEN = sphinx-autogen
 SPHINXPROJ    = MetPy
 SOURCEDIR     = .
 BUILDDIR      = build
@@ -28,6 +27,4 @@ overridecheck:
 # Manual autogen needed so we can specify the -i option so that imported names
 # are included in generation
 %: Makefile
-	echo Running sphinx-autogen
-	@$(SPHINXAUTOGEN) -i -t $(SOURCEDIR)/_templates -o $(SOURCEDIR)/api/generated $(SOURCEDIR)/api/*.rst
 	@$(SPHINXBUILD) -M $@ "$(SOURCEDIR)" "$(BUILDDIR)" $(SPHINXOPTS) $(O)
