@@ -3,13 +3,14 @@
 #  SPDX-License-Identifier: BSD-3-Clause
 """Test the simplified plotting interface."""
 
-from datetime import datetime
+from datetime import datetime, timedelta
 from io import BytesIO
 import warnings
 
 import cartopy.crs as ccrs
 import cartopy.feature as cfeature
 import matplotlib
+import pandas as pd
 import pytest
 from traitlets import TraitError
 import xarray as xr
@@ -17,7 +18,7 @@ import xarray as xr
 from metpy.cbook import get_test_data
 from metpy.io import GiniFile
 from metpy.plots import (BarbPlot, ContourPlot, FilledContourPlot, ImagePlot, MapPanel,
-                         PanelContainer)
+                         PanelContainer, PlotObs)
 # Fixtures to make sure we have the right backend
 from metpy.testing import set_agg_backend  # noqa: F401, I202
 from metpy.units import units
@@ -412,6 +413,147 @@ def test_declarative_barb_gfs():
     pc.draw()
 
     barb.level = 700 * units.hPa
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
+def test_declarative_sfc_obs():
+    """Test making a surface observation plot."""
+    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
+                       infer_datetime_format=True, parse_dates=['valid'])
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(1993, 3, 12, 12)
+    obs.time_window = timedelta(minutes=15)
+    obs.level = None
+    obs.fields = ['tmpf']
+    obs.color = ['black']
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.projection = ccrs.PlateCarree()
+    panel.area = 'in'
+    panel.layers = ['states']
+    panel.plots = [obs]
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (10, 10)
+    pc.panels = [panel]
+
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
+def test_declarative_sfc_obs_changes():
+    """Test making a surface observation plot."""
+    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
+                       infer_datetime_format=True, parse_dates=['valid'])
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(1993, 3, 12, 12)
+    obs.level = None
+    obs.fields = ['tmpf']
+    obs.colors = ['black']
+    obs.time_window = timedelta(minutes=15)
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.projection = ccrs.PlateCarree()
+    panel.area = 'in'
+    panel.layers = ['states']
+    panel.plots = [obs]
+    panel.title = f'Surface Observations for {obs.time}'
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (10, 10)
+    pc.panels = [panel]
+
+    pc.draw()
+
+    obs.fields = ['dwpf']
+    obs.colors = ['green']
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.022)
+def test_declarative_sfc_obs_full():
+    """Test making a full surface observation plot."""
+    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
+                       infer_datetime_format=True, parse_dates=['valid'])
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(1993, 3, 12, 13)
+    obs.time_window = timedelta(minutes=15)
+    obs.level = None
+    obs.fields = ['tmpf', 'dwpf', 'emsl', 'cloud_cover', 'wxsym']
+    obs.locations = ['NW', 'SW', 'NE', 'C', 'W']
+    obs.colors = ['red', 'green', 'black', 'black', 'blue']
+    obs.formats = [None, None, lambda v: format(10 * v, '.0f')[-3:], 'sky_cover',
+                   'current_weather']
+    obs.vector_field = ('uwind', 'vwind')
+    obs.reduce_points = 1
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.area = (-124, -72, 20, 53)
+    panel.area = 'il'
+    panel.projection = ccrs.PlateCarree()
+    panel.layers = ['coastline', 'borders', 'states']
+    panel.plots = [obs]
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (10, 10)
+    pc.panels = [panel]
+
+    pc.draw()
+
+    return pc.figure
+
+
+@pytest.mark.mpl_image_compare(remove_text=True, tolerance=0.08)
+def test_declarative_upa_obs():
+    """Test making a full upperair observation plot."""
+    data = pd.read_csv(get_test_data('UPA_obs.csv', as_file_obj=False))
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(1993, 3, 14, 0)
+    obs.level = 500 * units.hPa
+    obs.fields = ['temperature', 'dewpoint', 'height']
+    obs.locations = ['NW', 'SW', 'NE']
+    obs.formats = [None, None, lambda v: format(v, '.0f')[:3]]
+    obs.vector_field = ('u_wind', 'v_wind')
+    obs.reduce_points = 0
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.area = (-124, -72, 20, 53)
+    panel.projection = 'lcc'
+    panel.layers = ['coastline', 'borders', 'states', 'land']
+    panel.plots = [obs]
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (15, 10)
+    pc.panels = [panel]
+
+    pc.draw()
+
+    obs.level = 300 * units.hPa
 
     return pc.figure
 
