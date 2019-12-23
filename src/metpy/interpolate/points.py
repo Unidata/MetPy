@@ -45,9 +45,18 @@ def cressman_point(sq_dist, values, radius):
 
 
 def barnes_point(sq_dist, values, kappa, gamma=None):
-    r"""Generate a single pass barnes interpolation value for a point.
+    r"""Generate a single pass Barnes interpolation value for a point.
 
-    The calculated value is based on the given distances, kappa and gamma values.
+    The calculated value is based on the given distances, kappa and gamma values. This
+    is calculated as an inverse distance-weighted average of the points in the neighborhood,
+    with weights given as:
+
+    .. math:: w = e ^ \frac{-r^2}{\kappa}
+
+    * :math:`\kappa` is a scaling parameter
+    * :math:`r` is the distance to a point.
+
+    For more information see [Barnes1964]_ or [Koch1983]_.
 
     Parameters
     ----------
