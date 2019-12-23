@@ -1871,6 +1871,8 @@ def most_unstable_cape_cin(pressure, temperature, dewpoint, **kwargs):
         Temperature profile
     dewpoint : `pint.Quantity`
         Dew point profile
+    kwargs
+        Additional keyword arguments to pass to `most_unstable_parcel`
 
     Returns
     -------
@@ -1913,6 +1915,8 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
         Temperature profile
     dewpoint : `pint.Quantity`
         Dewpoint profile
+    kwargs
+        Additional keyword arguments to pass to `mixed_parcel`
 
     Returns
     -------
