@@ -1930,11 +1930,8 @@ def mixed_layer_cape_cin(pressure, temperature, dewpoint, **kwargs):
     cape_cin, mixed_parcel, parcel_profile
     """
     depth = kwargs.get('depth', 100 * units.hPa)
-    _, parcel_temp, parcel_dewpoint = mixed_parcel(pressure, temperature,
-                                                   dewpoint, **kwargs)
-
-    # Find the mean pressure value in the layer
-    parcel_pressure = mixed_layer(pressure, pressure, **kwargs)[0]
+    parcel_pressure, parcel_temp, parcel_dewpoint = mixed_parcel(pressure, temperature,
+                                                                 dewpoint, **kwargs)
 
     # Remove values below top of mixed layer and add in the mixed layer values
     pressure_prof = pressure[pressure < (pressure[0] - depth)]
