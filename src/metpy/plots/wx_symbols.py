@@ -47,24 +47,18 @@ def wx_code_to_numeric(codes):
             if wxcode[0].startswith(('-', '+')):
                 options = [slice(None, 7), slice(None, 5), slice(1, 5), slice(None, 3),
                            slice(1, 3)]
-                for opt in options:
-                    try:
-                        wx_sym_list.append(wx_code_map[wxcode[opt]])
-                        break
-                    except KeyError:
-                        pass
-                else:
-                    wx_sym_list.append(0)
             else:
                 options = [slice(None, 6), slice(None, 4), slice(None, 2)]
-                for opt in options:
-                    try:
-                        wx_sym_list.append(wx_code_map[wxcode[opt]])
-                        break
-                    except KeyError:
-                        pass
-                else:
-                    wx_sym_list.append(0)
+
+            for opt in options:
+                try:
+                    wx_sym_list.append(wx_code_map[wxcode[opt]])
+                    break
+                except KeyError:
+                    pass
+            else:
+                wx_sym_list.append(0)
+
     return np.array(wx_sym_list)
 
 
