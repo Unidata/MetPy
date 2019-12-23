@@ -8,7 +8,6 @@ import logging
 import numpy as np
 from scipy.interpolate import griddata, Rbf
 from scipy.spatial import cKDTree, ConvexHull, Delaunay, qhull
-from scipy.spatial.distance import cdist
 
 from . import geometry, tools
 from ..package_tools import Exporter
@@ -344,10 +343,9 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
     # If this is Barnes/Cressman, determine search_radios and hand it along to
     # `inverse_distance`
     elif interp_type in ['cressman', 'barnes']:
-        ave_spacing = cdist(points, points).mean()
-
+        ave_spacing = tools.average_spacing(points)
         if search_radius is None:
-            search_radius = ave_spacing
+            search_radius = 5 * ave_spacing
 
         if interp_type == 'cressman':
             return inverse_distance_to_points(points, values, xi, search_radius,

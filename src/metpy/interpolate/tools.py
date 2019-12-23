@@ -4,6 +4,7 @@
 """Assorted tools in support of interpolation functionality."""
 
 import numpy as np
+from scipy.spatial.distance import cdist
 
 from ..package_tools import Exporter
 
@@ -26,6 +27,25 @@ def calc_kappa(spacing, kappa_star=5.052):
 
     """
     return kappa_star * (2.0 * spacing / np.pi)**2
+
+
+def average_spacing(points):
+    """Calculate the average spacing to the nearest other point.
+
+    Parameters
+    ----------
+    points : (M, N) array_like
+         M points in N dimensional space
+
+    Returns
+    -------
+        The average distance to the nearest neighbor across all points
+
+    """
+    dist_matrix = cdist(points, points)
+    diag = np.arange(len(dist_matrix))
+    dist_matrix[diag, diag] = np.nan
+    return np.nanmin(dist_matrix, axis=0).mean()
 
 
 @exporter.export
