@@ -568,7 +568,7 @@ class PanelContainer(HasTraits):
     def show(self):
         """Show the constructed graphic on the screen."""
         self.draw()
-        self.figure.show()
+        plt.show()
 
 
 @exporter.export

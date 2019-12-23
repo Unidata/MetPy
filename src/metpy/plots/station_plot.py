@@ -5,7 +5,6 @@
 
 from enum import Enum
 
-import matplotlib
 import numpy as np
 
 from .wx_symbols import (current_weather, high_clouds, low_clouds, mid_clouds,
@@ -276,20 +275,7 @@ class StationPlot(object):
         if self.barbs:
             self.barbs.remove()
 
-        # Handle transforming our center points. CartoPy doesn't like 1D barbs
-        # TODO: This can be removed for cartopy > 0.14.3
-        if hasattr(self.ax, 'projection') and 'transform' in kwargs:
-            trans = kwargs['transform']
-            try:
-                kwargs['transform'] = trans._as_mpl_transform(self.ax)
-            except AttributeError:
-                pass
-            u, v = self.ax.projection.transform_vectors(trans, self.x, self.y, u, v)
-
-            # Since we've re-implemented CartoPy's barbs, we need to skip calling it here
-            self.barbs = matplotlib.axes.Axes.barbs(self.ax, self.x, self.y, u, v, **defaults)
-        else:
-            self.barbs = self.ax.barbs(self.x, self.y, u, v, **defaults)
+        self.barbs = self.ax.barbs(self.x, self.y, u, v, **defaults)
 
     def plot_arrow(self, u, v, **kwargs):
         r"""At the center of the station model plot wind arrows.
@@ -328,21 +314,7 @@ class StationPlot(object):
         if self.arrows:
             self.arrows.remove()
 
-        # Handle transforming our center points. CartoPy doesn't like 1D arrows
-        # TODO: This can be removed for cartopy > 0.14.3
-        if hasattr(self.ax, 'projection') and 'transform' in kwargs:
-            trans = kwargs['transform']
-            try:
-                kwargs['transform'] = trans._as_mpl_transform(self.ax)
-            except AttributeError:
-                pass
-            u, v = self.ax.projection.transform_vectors(trans, self.x, self.y, u, v)
-
-            # Since we've re-implemented CartoPy's arrows, we need to skip calling it here
-            self.arrows = matplotlib.axes.Axes.quiver(self.ax, self.x, self.y, u, v,
-                                                      **defaults)
-        else:
-            self.arrows = self.ax.quiver(self.x, self.y, u, v, **defaults)
+        self.arrows = self.ax.quiver(self.x, self.y, u, v, **defaults)
 
     @staticmethod
     def _plotting_units(u, v, plotting_units):
