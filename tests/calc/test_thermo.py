@@ -13,7 +13,8 @@ from metpy.calc import (brunt_vaisala_frequency, brunt_vaisala_frequency_squared
                         dewpoint_rh, dry_lapse, dry_static_energy, el,
                         equivalent_potential_temperature,
                         exner_function, isentropic_interpolation, lcl, lfc, mixed_layer,
-                        mixed_parcel, mixing_ratio, mixing_ratio_from_relative_humidity,
+                        mixed_layer_cape_cin, mixed_parcel, mixing_ratio,
+                        mixing_ratio_from_relative_humidity,
                         mixing_ratio_from_specific_humidity, moist_lapse,
                         moist_static_energy, most_unstable_cape_cin, most_unstable_parcel,
                         parcel_profile, parcel_profile_with_lcl, potential_temperature,
@@ -1104,6 +1105,14 @@ def test_mixed_parcel():
     assert_almost_equal(parcel_pressure, 959. * units.hPa, 6)
     assert_almost_equal(parcel_temperature, 28.7363771 * units.degC, 6)
     assert_almost_equal(parcel_dewpoint, 7.1534658 * units.degC, 6)
+
+
+def test_mixed_layer_cape_cin(multiple_intersections):
+    """Test the calculation of mixed layer cape/cin."""
+    pressure, temperature, dewpoint = multiple_intersections
+    mlcape, mlcin = mixed_layer_cape_cin(pressure, temperature, dewpoint)
+    assert_almost_equal(mlcape, 991.4484 * units('joule / kilogram'), 2)
+    assert_almost_equal(mlcin, -20.6552 * units('joule / kilogram'), 2)
 
 
 def test_mixed_layer():
