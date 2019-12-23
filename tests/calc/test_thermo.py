@@ -1366,8 +1366,8 @@ def test_multiple_lfs_wide(multiple_intersections):
     """Test 'wide' LFC for sounding with multiple LFCs."""
     levels, temperatures, dewpoints = multiple_intersections
     lfc_pressure_wide, lfc_temp_wide = lfc(levels, temperatures, dewpoints, which='wide')
-    assert_almost_equal(lfc_pressure_wide, 705.4346277 * units.hPa, 6)
-    assert_almost_equal(lfc_temp_wide, 4.8922235 * units.degC, 6)
+    assert_almost_equal(lfc_pressure_wide, 705.4346277 * units.hPa, 3)
+    assert_almost_equal(lfc_temp_wide, 4.8922235 * units.degC, 3)
 
 
 def test_invalid_which(multiple_intersections):
@@ -1402,24 +1402,24 @@ def test_multiple_el_wide(multiple_intersections):
     """Test 'wide' EL for sounding with multiple ELs."""
     levels, temperatures, dewpoints = multiple_intersections
     el_pressure_wide, el_temp_wide = el(levels, temperatures, dewpoints, which='wide')
-    assert_almost_equal(el_pressure_wide, 228.0575059 * units.hPa, 6)
-    assert_almost_equal(el_temp_wide, -56.8123126 * units.degC, 6)
+    assert_almost_equal(el_pressure_wide, 228.0575059 * units.hPa, 3)
+    assert_almost_equal(el_temp_wide, -56.8123126 * units.degC, 3)
 
 
 def test_muliple_el_most_cape(multiple_intersections):
     """Test 'most_cape' EL for sounding with multiple ELs."""
     levels, temperatures, dewpoints = multiple_intersections
     el_pressure_wide, el_temp_wide = el(levels, temperatures, dewpoints, which='most_cape')
-    assert_almost_equal(el_pressure_wide, 228.0575059 * units.hPa, 6)
-    assert_almost_equal(el_temp_wide, -56.8123126 * units.degC, 6)
+    assert_almost_equal(el_pressure_wide, 228.0575059 * units.hPa, 3)
+    assert_almost_equal(el_temp_wide, -56.8123126 * units.degC, 3)
 
 
 def test_muliple_lfc_most_cape(multiple_intersections):
     """Test 'most_cape' LFC for sounding with multiple LFCs."""
     levels, temperatures, dewpoints = multiple_intersections
     lfc_pressure_wide, lfc_temp_wide = lfc(levels, temperatures, dewpoints, which='most_cape')
-    assert_almost_equal(lfc_pressure_wide, 705.4346277 * units.hPa, 6)
-    assert_almost_equal(lfc_temp_wide, 4.8922235 * units.degC, 6)
+    assert_almost_equal(lfc_pressure_wide, 705.4346277 * units.hPa, 3)
+    assert_almost_equal(lfc_temp_wide, 4.8922235 * units.degC, 3)
 
 
 def test_el_lfc_most_cape_bottom():
@@ -1432,10 +1432,10 @@ def test_el_lfc_most_cape_bottom():
                           -6.9, -9.5, -12., -14.6, -15.8]) * units.degC
     lfc_pres, lfc_temp = lfc(levels, temperatures, dewpoints, which='most_cape')
     el_pres, el_temp = el(levels, temperatures, dewpoints, which='most_cape')
-    assert_almost_equal(lfc_pres, 900.7395292 * units.hPa, 6)
-    assert_almost_equal(lfc_temp, 14.672512 * units.degC, 6)
-    assert_almost_equal(el_pres, 849.7942184 * units.hPa, 6)
-    assert_almost_equal(el_temp, 12.4233265 * units.degC, 6)
+    assert_almost_equal(lfc_pres, 900.7395292 * units.hPa, 3)
+    assert_almost_equal(lfc_temp, 14.672512 * units.degC, 3)
+    assert_almost_equal(el_pres, 849.7942184 * units.hPa, 3)
+    assert_almost_equal(el_temp, 12.4233265 * units.degC, 3)
 
 
 def test_cape_cin_top_el_lfc(multiple_intersections):
@@ -1573,5 +1573,5 @@ def test_lcl_grid_surface_LCLs():
     lcl_pressure, lcl_temperature = lcl(pressure, temperature, dewpoint)
     pres_truth = np.array([1000, 932.1515324, 1010]) * units.hPa
     temp_truth = np.array([15, 9.10391763, 13]) * units.degC
-    assert_array_almost_equal(lcl_pressure, pres_truth, 7)
-    assert_array_almost_equal(lcl_temperature, temp_truth, 7)
+    assert_array_almost_equal(lcl_pressure, pres_truth, 4)
+    assert_array_almost_equal(lcl_temperature, temp_truth, 4)
