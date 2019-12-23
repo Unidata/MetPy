@@ -2000,8 +2000,7 @@ def mixed_parcel(p, temperature, dewpt, parcel_start_pressure=None,
                                                 interpolate=interpolate)
 
     # Convert back to temperature
-    mean_temperature = (mean_theta / potential_temperature(parcel_start_pressure,
-                                                           1 * units.kelvin)) * units.kelvin
+    mean_temperature = mean_theta * exner_function(parcel_start_pressure)
 
     # Convert back to dewpoint
     mean_vapor_pressure = vapor_pressure(parcel_start_pressure, mean_mixing_ratio)
