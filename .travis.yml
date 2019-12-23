@@ -4,7 +4,8 @@ dist: xenial
 
 addons:
   artifacts:
-    target_paths: /
+    target_paths: /wheelhouse
+    working_dir: $WHEELDIR
     paths:
       - $(find $WHEELDIR -newer $WHEELDIR/download_marker -name *.whl | tr [:space:] :)
   apt:
