@@ -165,10 +165,9 @@ def test_windchill_invalid():
 
     wc = windchill(temp, speed)
     # We don't care about the masked values
-    truth = np.array([2.6230789, np.nan, np.nan, np.nan, np.nan, np.nan]) * units.degF
-    mask = np.array([False, True, True, True, True, True])
+    truth = np.ma.array([2.6230789, np.nan, np.nan, np.nan, np.nan, np.nan],
+                        mask=[False, True, True, True, True, True]) * units.degF
     assert_array_almost_equal(truth, wc)
-    assert_array_equal(wc.mask, mask)
 
 
 def test_windchill_undefined_flag():
@@ -249,7 +248,7 @@ def test_heat_index_vs_nws():
     temp = units.Quantity(np.array([86, 111, 40, 96]), units.degF)
     rh = np.ma.array([45, 27, 99, 60]) * units.percent
     hi = heat_index(temp, rh)
-    truth = units.Quantity(np.ma.array([87, 121, 40, 116]), units.degF)
+    truth = np.ma.array([87, 121, 40, 116], mask=[False, False, True, False]) * units.degF
     assert_array_almost_equal(hi, truth, 0)
 
 
@@ -413,8 +412,9 @@ def test_apparent_temperature():
                              [10, 10, 10]]) * units.percent
     wind = np.array([[5, 3, 3],
                      [10, 1, 10]]) * units.mph
-    truth = np.array([[99.6777178, 86.3357671, 70],
-                      [8.8140662, 20, 60]]) * units.degF
+    truth = np.ma.array([[99.6777178, 86.3357671, 70],
+                         [8.8140662, 20, 60]],
+                        mask=[[False, False, True], [False, True, True]]) * units.degF
     res = apparent_temperature(temperature, rel_humidity, wind)
     assert_array_almost_equal(res, truth, 6)
 
