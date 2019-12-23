@@ -607,6 +607,40 @@ def test_smooth_n_pt_wrong_number():
         smooth_n_point(hght, 7)
 
 
+def test_smooth_n_pt_temperature():
+    """Test the smooth_n_pt function with temperature units."""
+    t = np.array([[2.73, 3.43, 6.53, 7.13, 4.83],
+                  [3.73, 4.93, 6.13, 6.63, 8.23],
+                  [3.03, 4.83, 6.03, 7.23, 7.63],
+                  [3.33, 4.63, 7.23, 6.73, 6.23],
+                  [3.93, 3.03, 7.43, 9.23, 9.23]]) * units.degC
+
+    smooth_t = smooth_n_point(t, 9, 1)
+    smooth_t_true = np.array([[2.73, 3.43, 6.53, 7.13, 4.83],
+                              [3.73, 4.6425, 5.96125, 6.81124, 8.23],
+                              [3.03, 4.81125, 6.1175, 6.92375, 7.63],
+                              [3.33, 4.73625, 6.43, 7.3175, 6.23],
+                              [3.93, 3.03, 7.43, 9.23, 9.23]]) * units.degC
+    assert_array_almost_equal(smooth_t, smooth_t_true, 4)
+
+
+def test_smooth_gaussian_temperature():
+    """Test the smooth_gaussian function with temperature units."""
+    t = np.array([[2.73, 3.43, 6.53, 7.13, 4.83],
+                  [3.73, 4.93, 6.13, 6.63, 8.23],
+                  [3.03, 4.83, 6.03, 7.23, 7.63],
+                  [3.33, 4.63, 7.23, 6.73, 6.23],
+                  [3.93, 3.03, 7.43, 9.23, 9.23]]) * units.degC
+
+    smooth_t = smooth_gaussian(t, 3)
+    smooth_t_true = np.array([[2.8892, 3.7657, 6.2805, 6.8532, 5.3174],
+                              [3.6852, 4.799, 6.0844, 6.7816, 7.7617],
+                              [3.2762, 4.787, 6.117, 7.0792, 7.5181],
+                              [3.4618, 4.6384, 6.886, 6.982, 6.6653],
+                              [3.8115, 3.626, 7.1705, 8.8528, 8.9605]]) * units.degC
+    assert_array_almost_equal(smooth_t, smooth_t_true, 4)
+
+
 def test_altimeter_to_station_pressure_inhg():
     """Test the altimeter to station pressure function with inches of mercury."""
     altim = 29.8 * units.inHg
