@@ -165,10 +165,9 @@ def test_windchill_invalid():
 
     wc = windchill(temp, speed)
     # We don't care about the masked values
-    truth = np.array([2.6230789, np.nan, np.nan, np.nan, np.nan, np.nan]) * units.degF
-    mask = np.array([False, True, True, True, True, True])
+    truth = np.ma.array([2.6230789, np.nan, np.nan, np.nan, np.nan, np.nan],
+                        mask=[False, True, True, True, True, True]) * units.degF
     assert_array_almost_equal(truth, wc)
-    assert_array_equal(wc.mask, mask)
 
 
 def test_windchill_undefined_flag():
@@ -249,7 +248,7 @@ def test_heat_index_vs_nws():
     temp = units.Quantity(np.array([86, 111, 40, 96]), units.degF)
     rh = np.ma.array([45, 27, 99, 60]) * units.percent
     hi = heat_index(temp, rh)
-    truth = units.Quantity(np.ma.array([87, 121, 40, 116]), units.degF)
+    truth = np.ma.array([87, 121, 40, 116], mask=[False, False, True, False]) * units.degF
     assert_array_almost_equal(hi, truth, 0)
 
 
@@ -413,8 +412,9 @@ def test_apparent_temperature():
                              [10, 10, 10]]) * units.percent
     wind = np.array([[5, 3, 3],
                      [10, 1, 10]]) * units.mph
-    truth = np.array([[99.6777178, 86.3357671, 70],
-                      [8.8140662, 20, 60]]) * units.degF
+    truth = np.ma.array([[99.6777178, 86.3357671, 70],
+                         [8.8140662, 20, 60]],
+                        mask=[[False, False, True], [False, True, True]]) * units.degF
     res = apparent_temperature(temperature, rel_humidity, wind)
     assert_array_almost_equal(res, truth, 6)
 
@@ -589,22 +589,56 @@ def test_smooth_n_pt_9_repeat():
                     [5816., 5784., 5744., 5716., 5684.]])
     shght = smooth_n_point(hght, 9, 2)
     s_true = np.array([[5640., 5640., 5640., 5640., 5640.],
-                      [5684., 5675.4375, 5666.9375, 5658.8125, 5651.],
-                      [5728., 5710.875, 5693.875, 5677.625, 5662.],
-                      [5772., 5746.375, 5720.625, 5696.375, 5673.],
-                      [5816., 5784., 5744., 5716., 5684.]])
+                       [5684., 5675.4375, 5666.9375, 5658.8125, 5651.],
+                       [5728., 5710.875, 5693.875, 5677.625, 5662.],
+                       [5772., 5746.375, 5720.625, 5696.375, 5673.],
+                       [5816., 5784., 5744., 5716., 5684.]])
     assert_array_almost_equal(shght, s_true)
 
 
 def test_smooth_n_pt_wrong_number():
     """Test the smooth_n_pt function using wrong number of points."""
     hght = np.array([[5640., 5640., 5640., 5640., 5640.],
-                    [5684., 5676., 5666., 5659., 5651.],
-                    [5728., 5712., 5692., 5678., 5662.],
-                    [5772., 5748., 5718., 5697., 5673.],
-                    [5816., 5784., 5744., 5716., 5684.]])
+                     [5684., 5676., 5666., 5659., 5651.],
+                     [5728., 5712., 5692., 5678., 5662.],
+                     [5772., 5748., 5718., 5697., 5673.],
+                     [5816., 5784., 5744., 5716., 5684.]])
     with pytest.raises(ValueError):
         smooth_n_point(hght, 7)
+
+
+def test_smooth_n_pt_temperature():
+    """Test the smooth_n_pt function with temperature units."""
+    t = np.array([[2.73, 3.43, 6.53, 7.13, 4.83],
+                  [3.73, 4.93, 6.13, 6.63, 8.23],
+                  [3.03, 4.83, 6.03, 7.23, 7.63],
+                  [3.33, 4.63, 7.23, 6.73, 6.23],
+                  [3.93, 3.03, 7.43, 9.23, 9.23]]) * units.degC
+
+    smooth_t = smooth_n_point(t, 9, 1)
+    smooth_t_true = np.array([[2.73, 3.43, 6.53, 7.13, 4.83],
+                              [3.73, 4.6425, 5.96125, 6.81124, 8.23],
+                              [3.03, 4.81125, 6.1175, 6.92375, 7.63],
+                              [3.33, 4.73625, 6.43, 7.3175, 6.23],
+                              [3.93, 3.03, 7.43, 9.23, 9.23]]) * units.degC
+    assert_array_almost_equal(smooth_t, smooth_t_true, 4)
+
+
+def test_smooth_gaussian_temperature():
+    """Test the smooth_gaussian function with temperature units."""
+    t = np.array([[2.73, 3.43, 6.53, 7.13, 4.83],
+                  [3.73, 4.93, 6.13, 6.63, 8.23],
+                  [3.03, 4.83, 6.03, 7.23, 7.63],
+                  [3.33, 4.63, 7.23, 6.73, 6.23],
+                  [3.93, 3.03, 7.43, 9.23, 9.23]]) * units.degC
+
+    smooth_t = smooth_gaussian(t, 3)
+    smooth_t_true = np.array([[2.8892, 3.7657, 6.2805, 6.8532, 5.3174],
+                              [3.6852, 4.799, 6.0844, 6.7816, 7.7617],
+                              [3.2762, 4.787, 6.117, 7.0792, 7.5181],
+                              [3.4618, 4.6384, 6.886, 6.982, 6.6653],
+                              [3.8115, 3.626, 7.1705, 8.8528, 8.9605]]) * units.degC
+    assert_array_almost_equal(smooth_t, smooth_t_true, 4)
 
 
 def test_altimeter_to_station_pressure_inhg():

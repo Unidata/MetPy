@@ -656,6 +656,7 @@ def sigma_to_pressure(sigma, psfc, ptop):
 
 @exporter.export
 @preprocess_xarray
+@units.wraps('=A', ('=A',))
 def smooth_gaussian(scalar_grid, n):
     """Filter with normal distribution of weights.
 
@@ -742,15 +743,13 @@ def smooth_gaussian(scalar_grid, n):
     # Assume the last two axes represent the horizontal directions
     sgma_seq = [sgma if i > nax - 3 else 0 for i in range(nax)]
 
-    # Compute smoothed field and reattach units
-    res = gaussian_filter(scalar_grid, sgma_seq, truncate=2 * np.sqrt(2))
-    if hasattr(scalar_grid, 'units'):
-        res = res * scalar_grid.units
-    return res
+    # Compute smoothed field
+    return gaussian_filter(scalar_grid, sgma_seq, truncate=2 * np.sqrt(2))
 
 
 @exporter.export
 @preprocess_xarray
+@units.wraps('=A', ('=A',))
 def smooth_n_point(scalar_grid, n=5, passes=1):
     """Filter with normal distribution of weights.
 
@@ -764,8 +763,7 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
         are 5 and 9. Defaults to 5.
 
     passes : int
-        The number of times to apply the filter to the grid. Defaults
-        to 1.
+        The number of times to apply the filter to the grid. Defaults to 1.
 
     Returns
     -------
@@ -782,7 +780,7 @@ def smooth_n_point(scalar_grid, n=5, passes=1):
     masked value or NaN values exists in the array, it will propagate
     to any point that uses that particular grid point in the smoothing
     calculation. Applying the smoothing function multiple times will
-    propogate NaNs further throughout the domain.
+    propagate NaNs further throughout the domain.
 
     """
     if n == 9:

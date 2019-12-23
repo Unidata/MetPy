@@ -131,6 +131,17 @@ def check_and_drop_units(actual, desired):
     return actual, desired
 
 
+def check_mask(actual, desired):
+    """Check that two arrays have the same mask.
+
+    This handles the fact that `~numpy.testing.assert_array_equal` ignores masked values
+    in either of the arrays. This ensures that the masks are identical.
+    """
+    actual_mask = getattr(actual, 'mask', np.full(np.asarray(actual).shape, False))
+    desired_mask = getattr(desired, 'mask', np.full(np.asarray(desired).shape, False))
+    np.testing.assert_array_equal(actual_mask, desired_mask)
+
+
 def assert_nan(value, units):
     """Check for nan with proper units."""
     value, _ = check_and_drop_units(value, np.nan * units)
@@ -152,6 +163,7 @@ def assert_array_almost_equal(actual, desired, decimal=7):
     Wrapper around :func:`numpy.testing.assert_array_almost_equal`
     """
     actual, desired = check_and_drop_units(actual, desired)
+    check_mask(actual, desired)
     numpy.testing.assert_array_almost_equal(actual, desired, decimal)
 
 
@@ -161,6 +173,7 @@ def assert_array_equal(actual, desired):
     Wrapper around :func:`numpy.testing.assert_array_equal`
     """
     actual, desired = check_and_drop_units(actual, desired)
+    check_mask(actual, desired)
     numpy.testing.assert_array_equal(actual, desired)
 
 
