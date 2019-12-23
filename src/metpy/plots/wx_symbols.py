@@ -7,6 +7,7 @@ See WMO manual 485 Vol 1 for more info on the symbols.
 """
 
 import matplotlib.font_manager as fm
+import numpy as np
 from pkg_resources import resource_filename
 
 from ..package_tools import Exporter
@@ -16,6 +17,49 @@ exporter = Exporter(globals())
 # Create a matplotlib font object pointing to our weather symbol font
 wx_symbol_font = fm.FontProperties(fname=resource_filename('metpy.plots',
                                                            'fonts/wx_symbols.ttf'))
+
+
+@exporter.export
+def wx_code_to_numeric(codes):
+    """Determine the numeric weather symbol value from METAR code text.
+
+    A robust method to identifies the numeric value for plotting the correct symbol from a
+    decoded METAR current weather group. The METAR codes should be strings with no missing
+    values or NaN strings (empty strings are okay).
+
+    For example, if from a Pandas Dataframe sfc_df.wxcodes.fillna('')
+
+    Parameters
+    ----------
+    codes : Array like containing string values of METAR weather codes
+
+    Returns
+    -------
+    array of numeric codes of current weather symbols from the wx_code_map for use in
+    plotting.
+    """
+    wx_sym_list = []
+    for s in codes:
+        wxcode = s.split()[0] if ' ' in s else s
+        try:
+            wx_sym_list.append(wx_code_map[wxcode])
+        except KeyError:
+            if wxcode[0].startswith(('-', '+')):
+                options = [slice(None, 7), slice(None, 5), slice(1, 5), slice(None, 3),
+                           slice(1, 3)]
+            else:
+                options = [slice(None, 6), slice(None, 4), slice(None, 2)]
+
+            for opt in options:
+                try:
+                    wx_sym_list.append(wx_code_map[wxcode[opt]])
+                    break
+                except KeyError:
+                    pass
+            else:
+                wx_sym_list.append(0)
+
+    return np.array(wx_sym_list)
 
 
 class CodePointMapping(object):
