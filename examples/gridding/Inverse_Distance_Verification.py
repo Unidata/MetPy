@@ -28,11 +28,10 @@ Algorithmically:
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.spatial import cKDTree
-from scipy.spatial.distance import cdist
 
 from metpy.interpolate.geometry import dist_2
 from metpy.interpolate.points import barnes_point, cressman_point
-from metpy.interpolate.tools import calc_kappa
+from metpy.interpolate.tools import average_spacing, calc_kappa
 
 
 def draw_circle(ax, x, y, r, m, label):
@@ -83,8 +82,7 @@ x2, y2 = obs_tree.data[indices[1]].T
 barnes_dist = dist_2(sim_gridx[1], sim_gridy[1], x2, y2)
 barnes_obs = zp[indices[1]]
 
-ave_spacing = np.mean(cdist(list(zip(xp, yp)), list(zip(xp, yp))))
-kappa = calc_kappa(ave_spacing)
+kappa = calc_kappa(average_spacing(list(zip(xp, yp))))
 
 barnes_val = barnes_point(barnes_dist, barnes_obs, kappa)
 

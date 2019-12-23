@@ -11,7 +11,6 @@ from numpy.testing import assert_almost_equal, assert_array_almost_equal
 import pytest
 import scipy
 from scipy.spatial import cKDTree, Delaunay
-from scipy.spatial.distance import cdist
 
 from metpy.cbook import get_test_data
 from metpy.interpolate import (interpolate_to_points, inverse_distance_to_points,
@@ -19,7 +18,6 @@ from metpy.interpolate import (interpolate_to_points, inverse_distance_to_points
 from metpy.interpolate.geometry import dist_2, find_natural_neighbors
 from metpy.interpolate.points import (barnes_point, cressman_point,
                                       natural_neighbor_point)
-from metpy.interpolate.tools import calc_kappa
 
 logging.getLogger('metpy.interpolate.points').setLevel(logging.ERROR)
 
@@ -96,15 +94,7 @@ def test_barnes_point(test_data):
     dists = dist_2(60, 60, xp[indices], yp[indices])
     values = z[indices]
 
-    truth = 4.08718241061
-
-    ave_spacing = np.mean(cdist(list(zip(xp, yp)), list(zip(xp, yp))))
-
-    kappa = calc_kappa(ave_spacing)
-
-    value = barnes_point(dists, values, kappa)
-
-    assert_almost_equal(truth, value)
+    assert_almost_equal(barnes_point(dists, values, 5762.7), 4.0871824)
 
 
 def test_natural_neighbor_to_points(test_data, test_points):
