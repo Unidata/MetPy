@@ -1,8 +1,8 @@
-# Copyright (c) 2008,2015,2016,2017,2018,2019 MetPy Developers.
+# Copyright (c) 2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Parse metars to dataframes or named tuples."""
-# Import the neccessary libraries
+"""Parse METARs to dataframes or named tuples."""
+# Import the necessary libraries
 from collections import namedtuple
 from datetime import datetime
 import warnings
@@ -109,7 +109,7 @@ def parse_metar_to_pandas(metar_text, year=datetime.now().year, month=datetime.n
     and altimeter value, float
 
     Notes
-    ------
+    -----
     Utilized the canopy library to compile a Python parser, following WMO Handbook
 
     """
@@ -215,7 +215,7 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
     and altimeter value, float
 
     Notes
-    ------
+    -----
     Utilized the canopy library to compile a Python parser, following WMO Handbook
 
     """
@@ -315,8 +315,6 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
             skyc1 = skyc[0][0:3]
             if '/' in skyc1:
                 skyc1 = np.nan
-            else:
-                pass
         except (IndexError, ValueError, TypeError):
             skyc1 = np.nan
         try:
@@ -331,8 +329,6 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
             skyc2 = skyc[1][0:3]
             if '/' in skyc2:
                 skyc2 = np.nan
-            else:
-                pass
         except (IndexError, ValueError, TypeError):
             skyc2 = np.nan
         try:
@@ -347,8 +343,6 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
             skyc3 = skyc[2][0:3]
             if '/' in skyc3:
                 skyc3 = np.nan
-            else:
-                pass
         except (IndexError, ValueError):
             skyc3 = np.nan
         try:
@@ -363,8 +357,6 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
             skyc4 = skyc[3][0:3]
             if '/' in skyc4:
                 skyc4 = np.nan
-            else:
-                pass
         except (IndexError, ValueError, TypeError):
             skyc4 = np.nan
         try:
@@ -467,7 +459,7 @@ def text_file_parse(input_file, year=datetime.now().year, month=datetime.now().m
     and altimeter value, float
 
     Notes
-    ------
+    -----
     Utilized the canopy library to compile a Python parser, following WMO Handbook
 
     """
