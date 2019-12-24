@@ -64,22 +64,31 @@ col_units = {'station_id': None,
 
 @exporter.export
 def parse_metar_to_dataframe(metar_text, year=datetime.now().year, month=datetime.now().month):
-    """Convert a metar from text to a Pandas DataFrame.
+    """Parse a single METAR report into a Pandas DataFrame.
 
-    Takes in a metar string, in a text form, and creates a pandas
-    dataframe including the essential information (not including the remarks)
+    Takes a METAR string in a text form, and creates a `pandas.DataFrame` including the
+    essential information (not including the remarks)
 
     The parser follows the WMO format, allowing for missing data and assigning
     nan values where necessary. The WMO code is also provided for current weather,
     which can be utilized when plotting.
 
-    Input:
-    metar_text = string with the METAR data
-    year = integer, year in which observation was taken, default is the current year
-    month = integer, month in which observation was taken, default is the current month
+    Parameters
+    ----------
+    metar_text : str
+        The METAR report
+    year : int, optional
+        Year in which observation was taken, defaults to the current year
+    month : int, optional
+        Month in which observation was taken, defaults to the current month
 
-    Output:
-    Pandas Dataframe with the following columns:
+    Returns
+    -------
+    `pandas.DataFrame`
+
+    Notes
+    -----
+    The output has the following columns:
     'station_id': Station Identifier (ex. KLOT)
     'latitude': Latitude of the observation, measured in degrees
     'longitude': Longitude of the observation, measured in degrees
@@ -107,10 +116,6 @@ def parse_metar_to_dataframe(metar_text, year=datetime.now().year, month=datetim
     'current_wx3_symbol': Current weather symbol (3 of 3), integer
     'sea_level_pressure': Sea level pressure, derived from temperature, elevation
     and altimeter value, float
-
-    Notes
-    -----
-    Utilized the canopy library to compile a Python parser, following WMO Handbook
 
     """
     # Use the named tuple parsing function to separate metar
@@ -177,14 +182,22 @@ def parse_metar_to_dataframe(metar_text, year=datetime.now().year, month=datetim
 
 def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now().year,
                                month=datetime.now().month):
-    """Take metar in text form and station dictionary, and output Pandas dataframe.
+    """Parse a METAR report in text form into a list of named tuples.
 
-    Input:
-    metar_text = string with the METAR data
-    station_metadata = Dictionary with station identifiers and station metadata
+    Parameters
+    ----------
+    metar_text : str
+        The METAR report
+    station_metadata : dict
+        Mapping of station identifiers to station metadata
 
-    Output:
-    Pandas Dataframe with the following columns:
+    Returns
+    -------
+    `pandas.DataFrame`
+
+    Notes
+    -----
+    Returned data has named tuples with the following attributes:
     'station_id': Station Identifier (ex. KLOT)
     'latitude': Latitude of the observation, measured in degrees
     'longitude': Longitude of the observation, measured in degrees
@@ -212,10 +225,6 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
     'current_wx3_symbol': Current weather symbol (3 of 3), integer
     'sea_level_pressure': Sea level pressure, derived from temperature, elevation
     and altimeter value, float
-
-    Notes
-    -----
-    Utilized the canopy library to compile a Python parser, following WMO Handbook
 
     """
     # Decode the data using the parser (built using Canopy) the parser utilizes a grammar
