@@ -185,7 +185,7 @@ def test_skewt_shade_cape_cin(test_profile):
         skew.plot(p, t, 'r')
         skew.plot(p, tp, 'k')
         skew.shade_cape(p, t, tp)
-        skew.shade_cin(p, t, td, tp)
+        skew.shade_cin(p, t, tp, td)
         skew.ax.set_xlim(-50, 50)
         skew.ax.set_ylim(1000, 100)
 
@@ -195,7 +195,7 @@ def test_skewt_shade_cape_cin(test_profile):
 @pytest.mark.mpl_image_compare(tolerance=0.033, remove_text=True, style='default')
 def test_skewt_shade_cape_cin_no_limit(test_profile):
     """Test shading CIN without limits."""
-    p, t, td, tp = test_profile
+    p, t, _, tp = test_profile
 
     with matplotlib.rc_context({'axes.autolimit_mode': 'data'}):
         fig = plt.figure(figsize=(9, 9))
@@ -203,7 +203,7 @@ def test_skewt_shade_cape_cin_no_limit(test_profile):
         skew.plot(p, t, 'r')
         skew.plot(p, tp, 'k')
         skew.shade_cape(p, t, tp)
-        skew.shade_cin(p, t, td, tp, limit_shading=False)
+        skew.shade_cin(p, t, tp)
         skew.ax.set_xlim(-50, 50)
         skew.ax.set_ylim(1000, 100)
 

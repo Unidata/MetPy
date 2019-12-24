@@ -698,12 +698,12 @@ class SkewT(object):
         """
         return self.shade_area(p, t_parcel, t, which='positive', **kwargs)
 
-    def shade_cin(self, p, t, dewpoint, t_parcel, limit_shading=True, **kwargs):
+    def shade_cin(self, p, t, t_parcel, dewpoint=None, **kwargs):
         r"""Shade areas of Convective INhibition (CIN).
 
         Shades areas where the parcel is cooler than the environment (areas of negative
-        buoyancy. Has option to not shade negative area below the lifting condensation level
-        or above the equilibrium level, which defaults to True.
+        buoyancy. If `dewpoint` is passed in, negative area below the lifting condensation
+        level or above the equilibrium level is not shaded.
 
         Parameters
         ----------
@@ -713,6 +713,8 @@ class SkewT(object):
             Temperature values
         t_parcel : array_like
             Parcel path temperature values
+        dewpoint : array_like
+            Dew point values, optional
         kwargs
             Other keyword arguments to pass to :class:`matplotlib.collections.PolyCollection`
 
@@ -726,7 +728,7 @@ class SkewT(object):
         :func:`matplotlib.axes.Axes.fill_betweenx`
 
         """
-        if limit_shading:
+        if dewpoint is not None:
             lcl_p, _ = lcl(p[0], t[0], dewpoint[0])
             el_p, _ = el(p, t, dewpoint, t_parcel)
             idx = np.logical_and(p > el_p, p < lcl_p)
