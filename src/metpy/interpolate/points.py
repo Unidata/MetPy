@@ -8,7 +8,6 @@ import logging
 import numpy as np
 from scipy.interpolate import griddata, Rbf
 from scipy.spatial import cKDTree, ConvexHull, Delaunay, qhull
-from scipy.spatial.distance import cdist
 
 from . import geometry, tools
 from ..package_tools import Exporter
@@ -46,9 +45,18 @@ def cressman_point(sq_dist, values, radius):
 
 
 def barnes_point(sq_dist, values, kappa, gamma=None):
-    r"""Generate a single pass barnes interpolation value for a point.
+    r"""Generate a single pass Barnes interpolation value for a point.
 
-    The calculated value is based on the given distances, kappa and gamma values.
+    The calculated value is based on the given distances, kappa and gamma values. This
+    is calculated as an inverse distance-weighted average of the points in the neighborhood,
+    with weights given as:
+
+    .. math:: w = e ^ \frac{-r^2}{\kappa}
+
+    * :math:`\kappa` is a scaling parameter
+    * :math:`r` is the distance to a point.
+
+    For more information see [Barnes1964]_ or [Koch1983]_.
 
     Parameters
     ----------
@@ -344,10 +352,9 @@ def interpolate_to_points(points, values, xi, interp_type='linear', minimum_neig
     # If this is Barnes/Cressman, determine search_radios and hand it along to
     # `inverse_distance`
     elif interp_type in ['cressman', 'barnes']:
-        ave_spacing = cdist(points, points).mean()
-
+        ave_spacing = tools.average_spacing(points)
         if search_radius is None:
-            search_radius = ave_spacing
+            search_radius = 5 * ave_spacing
 
         if interp_type == 'cressman':
             return inverse_distance_to_points(points, values, xi, search_radius,

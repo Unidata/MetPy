@@ -8,7 +8,6 @@ import numpy as np
 from numpy.testing import assert_almost_equal, assert_array_almost_equal
 import pandas as pd
 import pytest
-from scipy.spatial.distance import cdist
 
 from metpy.interpolate import (interpolate_to_grid, remove_nan_observations,
                                remove_observations_below_value,
@@ -27,16 +26,7 @@ def test_coords():
 
 def test_calc_kappa(test_coords):
     r"""Test calculate kappa parameter function."""
-    x, y = test_coords
-
-    spacing = np.mean(cdist(list(zip(x, y)),
-                            list(zip(x, y))))
-
-    value = calc_kappa(spacing)
-
-    truth = 5762.6872048
-
-    assert_almost_equal(truth, value, decimal=6)
+    assert_almost_equal(calc_kappa(53.05187), 5762.687, decimal=3)
 
 
 def test_remove_observations_below_value(test_coords):
