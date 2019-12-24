@@ -13,7 +13,7 @@ import zlib
 log = logging.getLogger(__name__)
 
 
-def open_as_needed(filename):
+def open_as_needed(filename, mode='rb'):
     """Return a file-object given either a filename or an object.
 
     Handles opening with the right class based on the file extension.
@@ -23,11 +23,11 @@ def open_as_needed(filename):
         return filename
 
     if filename.endswith('.bz2'):
-        return bz2.BZ2File(filename, 'rb')
+        return bz2.BZ2File(filename, mode)
     elif filename.endswith('.gz'):
-        return gzip.GzipFile(filename, 'rb')
+        return gzip.GzipFile(filename, mode)
     else:
-        return open(filename, 'rb')
+        return open(filename, mode)
 
 
 class NamedStruct(Struct):

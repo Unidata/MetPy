@@ -108,11 +108,20 @@ def test_named_tuple_test1():
     assert df.dew_point_temperature.values == 13
 
 
-def test_file_test(input_file=None):
+def test_parse_file():
     """Test the parser on an entire file."""
-    if input_file is None:
-        input_file = get_test_data('metar_20190701_1200.txt', as_file_obj=False)
+    input_file = get_test_data('metar_20190701_1200.txt', as_file_obj=False)
     df = parse_metar_file(input_file)
     test = df[df.station_id == 'KVPZ']
     assert test.air_temperature.values == 23
     assert test.air_pressure_at_sea_level.values == 1016.76
+
+
+def test_parse_file_object():
+    """Test the parser reading from a file-like object."""
+    input_file = get_test_data('metar_20190701_1200.txt', mode='rt')
+    df = parse_metar_file(input_file)
+    test = df[df.station_id == 'KOKC']
+    assert test.air_temperature.values == 21
+    assert test.dew_point_temperature.values == 21
+    assert test.altimeter.values == 30.03

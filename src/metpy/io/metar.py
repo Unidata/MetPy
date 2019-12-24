@@ -10,6 +10,7 @@ import warnings
 import numpy as np
 import pandas as pd
 
+from ._tools import open_as_needed
 from .metar_parser import parse, ParseError
 from .station_data import station_info
 from ..calc import altimeter_to_sea_level_pressure, wind_components
@@ -428,16 +429,26 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
 
 
 @exporter.export
-def parse_metar_file(input_file, year=datetime.now().year, month=datetime.now().month):
-    """Parse a text file containing multiple METARs.
+def parse_metar_file(filename, year=datetime.now().year, month=datetime.now().month):
+    """Parse a text file containing multiple METAR reports and/or text products.
 
-    Input:
-    file = text file containing data, make sure it is not in an encoded format
-    year = year = integer, year in which observation was taken, default is the current year
-    month = integer, month in which observation was taken, default is the current month
+    Parameters
+    ----------
+    filename : str or file-like object
+        If str, the name of the file to be opened. If `filename` is a file-like object,
+        this will be read from directly.
+    year : int, optional
+        Year in which observation was taken, defaults to the current year
+    month : int, optional
+        Month in which observation was taken, defaults to the current month
 
-    Output:
-    Pandas Dataframe with the following columns:
+    Returns
+    -------
+    `pandas.DataFrame`
+
+    Notes
+    -----
+    The returned `pandas.DataFrame` has the following columns:
     'station_id': Station Identifier (ex. KLOT)
     'latitude': Latitude of the observation, measured in degrees
     'longitude': Longitude of the observation, measured in degrees
@@ -466,10 +477,6 @@ def parse_metar_file(input_file, year=datetime.now().year, month=datetime.now().
     'sea_level_pressure': Sea level pressure, derived from temperature, elevation
     and altimeter value, float
 
-    Notes
-    -----
-    Utilized the canopy library to compile a Python parser, following WMO Handbook
-
     """
     # Function to merge METARs
     def merge(x, key='     '):
@@ -485,7 +492,7 @@ def parse_metar_file(input_file, year=datetime.now().year, month=datetime.now().
             yield ' '.join(tmp)
 
     # Open the file
-    myfile = open(input_file)
+    myfile = open_as_needed(filename, 'rt')
 
     # Clean up the file and take out the next line (\n)
     value = myfile.read().rstrip()
