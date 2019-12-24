@@ -167,7 +167,7 @@ class Level2File(object):
         filename : str or file-like object
             If str, the name of the file to be opened. Gzip-ed files are
             recognized with the extension '.gz', as are bzip2-ed files with
-            the extension `.bz2` If `fname` is a file-like object,
+            the extension `.bz2` If `filename` is a file-like object,
             this will be read from directly.
 
         """
