@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 
 from .metar_parser import parse, ParseError
-from .surface_station_data import station_dict
+from .station_data import station_info
 from ..calc import altimeter_to_sea_level_pressure, wind_components
 from ..package_tools import Exporter
 from ..plots.wx_symbols import wx_code_map
@@ -115,7 +115,7 @@ def parse_metar_to_pandas(metar_text, year=datetime.now().year, month=datetime.n
     """
     # Use the named tuple parsing function to seperate metar
     # Utilizes the station dictionary which contains elevation, latitude, and longitude
-    metar_vars = parse_metar_to_named_tuple(metar_text, station_dict(), year, month)
+    metar_vars = parse_metar_to_named_tuple(metar_text, station_info, year, month)
 
     # Use a pandas dataframe to store the data
     df = pd.DataFrame({'station_id': metar_vars.station_id,
@@ -497,7 +497,7 @@ def text_file_parse(input_file, year=datetime.now().year, month=datetime.now().m
             continue
 
     # Create a dictionary with all the station name, locations, and elevations
-    master = station_dict()
+    master = station_info
 
     # Setup lists to append the data to
     station_id = []

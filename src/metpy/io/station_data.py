@@ -1,24 +1,18 @@
 # Copyright (c) 2019 MetPy Developers.
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
-"""Pull out station metadata for metars."""
-from collections import defaultdict, namedtuple
-import logging
+"""Pull out station metadata."""
+from collections import namedtuple
 
 import pandas as pd
 
-from metpy.cbook import get_test_data
-from metpy.units import units
+from ..cbook import get_test_data
+from ..package_tools import Exporter
+from ..units import units
 
-log = logging.getLogger('stations')
-log.addHandler(logging.StreamHandler())  # Python 2.7 needs a handler set
-log.setLevel(logging.WARNING)
-
-
+exporter = Exporter(globals())
 Station = namedtuple('Station', ['id', 'synop_id', 'name', 'state', 'country',
-                                 'longitude', 'latitude', 'altitude'])
-
-station_map = {}
+                                 'longitude', 'latitude', 'altitude', 'source'])
 
 
 def to_dec_deg(dms):
@@ -33,7 +27,10 @@ def to_dec_deg(dms):
 
 
 def _read_station_table(input_file=None):
-    """Read in the station table."""
+    """Read in the GEMPAK station table.
+
+    Yields tuple of station ID and `Station` for each entry.
+    """
     if input_file is None:
         input_file = get_test_data('sfstns.tbl', as_file_obj=False)
     with open(input_file, 'rt') as station_file:
@@ -46,15 +43,16 @@ def _read_station_table(input_file=None):
             lat = int(line[55:61].strip()) / 100.
             lon = int(line[61:68].strip()) / 100.
             alt = int(line[68:74].strip())
-            station_map[stid] = Station(stid, synop_id=synop_id, name=name.title(),
-                                        latitude=lat,
-                                        longitude=lon, altitude=alt,
-                                        country=country, state=state)
-    return station_map
+            yield stid, Station(stid, synop_id=synop_id, name=name.title(), latitude=lat,
+                                longitude=lon, altitude=alt, country=country, state=state,
+                                source=input_file)
 
 
 def _read_master_text_file(input_file=None):
-    """Read in the master text file."""
+    """Read in the master text file.
+
+    Yields tuple of station ID and `Station` for each entry.
+    """
     if input_file is None:
         input_file = get_test_data('master.txt', as_file_obj=False)
     with open(input_file, 'rt') as station_file:
@@ -74,15 +72,16 @@ def _read_master_text_file(input_file=None):
                 else:
                     country = state
                     state = '--'
-            station_map[stid] = Station(stid, synop_id=synop_id, name=name.title(),
-                                        latitude=lat,
-                                        longitude=lon, altitude=alt,
-                                        country=country, state=state)
-    return station_map
+            yield stid, Station(stid, synop_id=synop_id, name=name.title(), latitude=lat,
+                                longitude=lon, altitude=alt, country=country, state=state,
+                                source=input_file)
 
 
 def _read_station_text_file(input_file=None):
-    """Read the station text file."""
+    """Read the station text file.
+
+    Yields tuple of station ID and `Station` for each entry.
+    """
     if input_file is None:
         input_file = get_test_data('stations.txt', as_file_obj=False)
     with open(input_file, 'rt') as station_file:
@@ -100,59 +99,42 @@ def _read_station_text_file(input_file=None):
             lon = to_dec_deg(line[47:55].strip())
             alt = int(line[55:60].strip())
             country = line[81:83].strip()
-            station_map[stid] = Station(stid, synop_id=synop_id, name=name.title(),
-                                        latitude=lat,
-                                        longitude=lon, altitude=alt,
-                                        country=country, state=state)
-    return station_map
+            yield stid, Station(stid, synop_id=synop_id, name=name.title(), latitude=lat,
+                                longitude=lon, altitude=alt, country=country, state=state,
+                                source=input_file)
 
 
 def _read_airports_file(input_file=None):
     """Read the airports file."""
     if input_file is None:
         input_file = get_test_data('airport-codes.csv', as_file_obj=False)
-    df = pd.read_csv(get_test_data('airport-codes.csv', as_file_obj=False))
+    df = pd.read_csv(input_file)
     station_map = pd.DataFrame({'id': df.ident.values, 'synop_id': 99999,
                                 'latitude': df.latitude_deg.values,
                                 'longitude': df.longitude_deg.values,
-                                'altitude': ((df.elevation_ft.values * units.ft) * units.m).m,
+                                'altitude': ((df.elevation_ft.values * units.ft).to('m')).m,
                                 'country': df.iso_region.str.split('-', n=1,
-                                                                   expand=True)[1].values
+                                                                   expand=True)[1].values,
+                                'source': input_file
                                 }).to_dict()
     return station_map
 
 
 class StationLookup:
-    """Utilize all the different tables puts dictionaries together."""
+    """Look up station information from multiple sources."""
 
     def __init__(self):
         """Initialize different files."""
-        self.sources = []
-        self.sources.append(('gempak', _read_station_table()))
-        self.sources.append(('master', _read_master_text_file()))
-        self.sources.append(('stations', _read_station_text_file()))
-        self.sources.append(('airport', _read_airports_file()))
-        self.sites = defaultdict(set)
+        self._sources = [dict(_read_station_table()), dict(_read_master_text_file()),
+                         dict(_read_station_text_file()), dict(_read_airports_file())]
 
-    def call(self, stid):
-        """Call different tables and files."""
-        for name, table in self.sources:
+    def __getitem__(self, stid):
+        """Lookup station information from the ID."""
+        for table in self._sources:
             if stid in table:
-                self.sites[name].add(stid)
                 return table[stid]
-        self.sites['missing'].add(stid)
-        log.warning('Missing station: %s', stid)
-        raise KeyError('')
-
-    def string(self):
-        """Join strings."""
-        return '\n'.join('{0}: ({1}) {2}'.format(s, len(v), ' '.join(str(i) for i in v))
-                         for s, v in self.sites.items())
+        raise KeyError('No station information for {}'.format(stid))
 
 
-def station_dict():
-    """Assemble a master dictionary from StationLookup Function."""
-    master = StationLookup().sources[0][1]
-    for station in StationLookup().sources:
-        master.update(**station[1])
-    return master
+with exporter:
+    station_info = StationLookup()
