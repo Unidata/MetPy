@@ -28,13 +28,13 @@ if os.path.exists(dev_data_path):
 POOCH.load_registry(os.path.join(os.path.dirname(__file__), 'static-data-manifest.txt'))
 
 
-def get_test_data(fname, as_file_obj=True):
+def get_test_data(fname, as_file_obj=True, mode='rb'):
     """Access a file from MetPy's collection of test data."""
     path = POOCH.fetch(fname)
     # If we want a file object, open it, trying to guess whether this should be binary mode
     # or not
     if as_file_obj:
-        return open(path, 'rb')
+        return open(path, mode)
 
     return path
 

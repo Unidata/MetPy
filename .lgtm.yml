@@ -1,4 +1,6 @@
 path_classifiers:
+    generated:
+        - src/metpy/io/metar_parser.py
     library:
         - src/metpy/deprecation.py
     test:

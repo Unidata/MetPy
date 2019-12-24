@@ -35,4 +35,6 @@ plugins:
 
 exclude_patterns:
 - "src/metpy/io/_nexrad_msgs/msg*.py"
+- "src/metpy/io/metar_parse.peg"
+- "src/metpy/io/metar_parser.py"
 - "docs/**/*"
