@@ -25,10 +25,10 @@ from metpy.plots import add_metpy_logo, current_weather, sky_cover, StationPlot
 # ---------
 #
 # First read in the data. We use the metar reader because it simplifies a lot of tasks,
-# like dealing with seperating text and assembling a pandas dataframe
+# like dealing with separating text and assembling a pandas dataframe
 # https://thredds-test.unidata.ucar.edu/thredds/catalog/noaaport/text/metar/catalog.html
 
-data = metar.text_file_parse(get_test_data('metar_20190701_1200.txt', as_file_obj=False))
+data = metar.parse_metar_file(get_test_data('metar_20190701_1200.txt', as_file_obj=False))
 
 # Drop rows with missing winds
 data = data.dropna(how='any', subset=['wind_direction', 'wind_speed'])
@@ -41,7 +41,7 @@ data = data.dropna(how='any', subset=['wind_direction', 'wind_speed'])
 proj = ccrs.LambertConformal(central_longitude=-95, central_latitude=35,
                              standard_parallels=[35])
 
-# Use the cartopy map projection to transform station locations to the map and
+# Use the Cartopy map projection to transform station locations to the map and
 # then refine the number of stations plotted by setting a 300km radius
 point_locs = proj.transform_points(ccrs.PlateCarree(), data['longitude'].values,
                                    data['latitude'].values)
