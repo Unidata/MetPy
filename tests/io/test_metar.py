@@ -33,12 +33,13 @@ def test_broken_clouds():
 
 def test_few_clouds_():
     """Test for skycover when there are few clouds."""
-    df = parse_metar_to_dataframe('METAR KMKE 261155Z AUTO /////KT 10SM FEW100 05/00 A3001 '
+    df = parse_metar_to_dataframe('METAR KMKE 266155Z AUTO /////KT 10SM FEW100 05/00 A3001 '
                                   'RMK AO2=')
     assert df.low_cloud_type.values == 'FEW'
     assert df.cloud_coverage.values == 2
     assert_almost_equal(df.wind_direction.values, np.nan)
     assert_almost_equal(df.wind_speed.values, np.nan)
+    assert_almost_equal(df.date_time.values, np.nan)
 
 
 def test_all_weather_given():
