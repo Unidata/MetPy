@@ -558,6 +558,68 @@ def test_declarative_upa_obs():
     return pc.figure
 
 
+def test_attribute_error_time():
+    """Make sure we get a useful error when the time variable is not found."""
+    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
+                       infer_datetime_format=True, parse_dates=['valid'])
+    data.rename(columns={'valid': 'vtime'}, inplace=True)
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(1993, 3, 12, 12)
+    obs.level = None
+    obs.fields = ['tmpf']
+    obs.time_window = timedelta(minutes=15)
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.projection = ccrs.PlateCarree()
+    panel.area = 'in'
+    panel.layers = ['states']
+    panel.plots = [obs]
+    panel.title = f'Surface Observations for {obs.time}'
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (10, 10)
+    pc.panels = [panel]
+
+    with pytest.raises(AttributeError):
+        pc.draw()
+
+
+def test_attribute_error_station():
+    """Make sure we get a useful error when the station variable is not found."""
+    data = pd.read_csv(get_test_data('SFC_obs.csv', as_file_obj=False),
+                       infer_datetime_format=True, parse_dates=['valid'])
+    data.rename(columns={'station': 'location'}, inplace=True)
+
+    obs = PlotObs()
+    obs.data = data
+    obs.time = datetime(1993, 3, 12, 12)
+    obs.level = None
+    obs.fields = ['tmpf']
+    obs.time_window = timedelta(minutes=15)
+
+    # Panel for plot with Map features
+    panel = MapPanel()
+    panel.layout = (1, 1, 1)
+    panel.projection = ccrs.PlateCarree()
+    panel.area = 'in'
+    panel.layers = ['states']
+    panel.plots = [obs]
+    panel.title = f'Surface Observations for {obs.time}'
+
+    # Bringing it all together
+    pc = PanelContainer()
+    pc.size = (10, 10)
+    pc.panels = [panel]
+
+    with pytest.raises(AttributeError):
+        pc.draw()
+
+
 def test_save():
     """Test that our saving function works."""
     pc = PanelContainer()
