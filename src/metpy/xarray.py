@@ -348,7 +348,7 @@ class MetPyDataArrayAccessor:
         Parameters
         ----------
         axis : str or int
-            Identifier for an axis. Can be the an axis number (integer), dimension coordinate
+            Identifier for an axis. Can be an axis number (integer), dimension coordinate
             name (string) or a standard axis type (string).
 
         """
@@ -372,7 +372,7 @@ class MetPyDataArrayAccessor:
         Parameters
         ----------
         axis : str or int
-            Identifier for an axis. Can be the an axis number (integer), dimension coordinate
+            Identifier for an axis. Can be an axis number (integer), dimension coordinate
             name (string) or a standard axis type (string).
 
         """

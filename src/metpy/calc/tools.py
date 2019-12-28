@@ -962,7 +962,8 @@ def first_derivative(f, **kwargs):
         integer. If `f` is a `DataArray`, can be a string (referring to either the coordinate
         dimension name or the axis type) or integer (referring to axis number), unless using
         implicit conversion to `pint.Quantity`, in which case it must be an integer. Defaults
-        to 0.
+        to 0. For reference, the current standard axis types are 'time', 'vertical', 'y', and
+        'x'.
     x : array-like, optional
         The coordinate values corresponding to the grid points in `f`.
     delta : array-like, optional
@@ -1051,7 +1052,8 @@ def second_derivative(f, **kwargs):
         integer. If `f` is a `DataArray`, can be a string (referring to either the coordinate
         dimension name or the axis type) or integer (referring to axis number), unless using
         implicit conversion to `pint.Quantity`, in which case it must be an integer. Defaults
-        to 0.
+        to 0. For reference, the current standard axis types are 'time', 'vertical', 'y', and
+        'x'.
     x : array-like, optional
         The coordinate values corresponding to the grid points in `f`.
     delta : array-like, optional
@@ -1139,7 +1141,9 @@ def gradient(f, **kwargs):
         `pint.Quantity` is not used) or integers that specify the array axes along which to
         take the derivatives. Defaults to all axes of `f`. If given, and used with
         `coordinates` or `deltas`, its length must be less than or equal to that of the
-        `coordinates` or `deltas` given.
+        `coordinates` or `deltas` given. In general, each axis can be an axis number
+        (integer), dimension coordinate name (string) or a standard axis type (string). The
+        current standard axis types are 'time', 'vertical', 'y', and 'x'.
 
     Returns
     -------
@@ -1188,7 +1192,9 @@ def laplacian(f, **kwargs):
         `pint.Quantity` is not used) or integers that specify the array axes along which to
         take the derivatives. Defaults to all axes of `f`. If given, and used with
         `coordinates` or `deltas`, its length must be less than or equal to that of the
-        `coordinates` or `deltas` given.
+        `coordinates` or `deltas` given. In general, each axis can be an axis number
+        (integer), dimension coordinate name (string) or a standard axis type (string). The
+        current standard axis types are 'time', 'vertical', 'y', and 'x'.
 
     Returns
     -------
