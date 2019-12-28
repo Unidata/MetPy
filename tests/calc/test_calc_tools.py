@@ -998,8 +998,8 @@ def test_grid_deltas_from_dataarray_actual_xy(test_da_xy):
     lon = lonlat[..., 0]
     lat = lonlat[..., 1]
     test_da_xy = test_da_xy.assign_coords(
-        {'longitude': xr.DataArray(lon, dims=('y', 'x'), attrs={'units': 'degrees_east'}),
-         'latitude': xr.DataArray(lat, dims=('y', 'x'), attrs={'units': 'degrees_north'})})
+        longitude=xr.DataArray(lon, dims=('y', 'x'), attrs={'units': 'degrees_east'}),
+        latitude=xr.DataArray(lat, dims=('y', 'x'), attrs={'units': 'degrees_north'}))
 
     # Actually test calculation
     dx, dy = grid_deltas_from_dataarray(test_da_xy, kind='actual')
@@ -1039,7 +1039,7 @@ def test_grid_deltas_from_dataarray_lonlat_assumed_order():
         attrs={'units': 'K'}).to_dataset().metpy.parse_cf('temperature')
 
     # Run and check for warning
-    with pytest.warns(UserWarning, match=r"y and x dimensions unable to be identified.*"):
+    with pytest.warns(UserWarning, match=r'y and x dimensions unable to be identified.*'):
         dx, dy = grid_deltas_from_dataarray(test_da)
 
     # Check results

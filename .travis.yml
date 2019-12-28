@@ -49,7 +49,7 @@ matrix:
   include:
     - python: 3.6
       env:
-        - VERSIONS="numpy==1.13.0 matplotlib==2.1.0 scipy==1.0.0 pint==0.8 xarray==0.13.0 pandas==0.22.0"
+        - VERSIONS="numpy==1.13.0 matplotlib==2.1.0 scipy==1.0.0 pint==0.8 xarray==0.10.7 pandas==0.22.0"
         - TASK="coverage"
         - TEST_OUTPUT_CONTROL=""
     - python: "3.8-dev"
