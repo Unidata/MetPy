@@ -493,6 +493,28 @@ def test_find_axis_name_bad_identifier(test_var):
     assert 'axis is not valid' in str(exc.value)
 
 
+def test_find_axis_number_integer(test_var):
+    """Test getting axis number using the axis number identifier."""
+    assert test_var.metpy.find_axis_number(2) == 2
+
+
+def test_find_axis_number_axis_type(test_var):
+    """Test getting axis number using the axis type identifier."""
+    assert test_var.metpy.find_axis_number('vertical') == 1
+
+
+def test_find_axis_number_dim_coord_number(test_var):
+    """Test getting axis number using the dimension coordinate name identifier."""
+    assert test_var.metpy.find_axis_number('isobaric') == 1
+
+
+def test_find_axis_number_bad_identifier(test_var):
+    """Test getting axis number using the axis type identifier."""
+    with pytest.raises(ValueError) as exc:
+        test_var.metpy.find_axis_number('ens')
+    assert 'axis is not valid' in str(exc.value)
+
+
 def test_cf_parse_with_grid_mapping(test_var):
     """Test cf_parse dont delete grid_mapping attribute."""
     assert test_var.grid_mapping == 'Lambert_Conformal'
