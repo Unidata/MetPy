@@ -2410,7 +2410,7 @@ def wet_bulb_temperature(pressure, temperature, dewpoint):
         lcl_pressure, lcl_temperature = lcl(press, temp, dewp)
         moist_adiabat_temperatures = moist_lapse(concatenate([lcl_pressure, press]),
                                                  lcl_temperature)
-        ret[...] = moist_adiabat_temperatures[-1]
+        ret[...] = moist_adiabat_temperatures[-1].magnitude
 
     # If we started with a scalar, return a scalar
     if it.operands[3].size == 1:

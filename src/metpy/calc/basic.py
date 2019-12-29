@@ -685,7 +685,7 @@ def sigma_to_pressure(sigma, psfc, ptop):
 
 @exporter.export
 @preprocess_xarray
-@units.wraps('=A', ('=A',))
+@units.wraps('=A', ('=A', None))
 def smooth_gaussian(scalar_grid, n):
     """Filter with normal distribution of weights.
 
@@ -778,7 +778,7 @@ def smooth_gaussian(scalar_grid, n):
 
 @exporter.export
 @preprocess_xarray
-@units.wraps('=A', ('=A',))
+@units.wraps('=A', ('=A', None, None))
 def smooth_n_point(scalar_grid, n=5, passes=1):
     """Filter with normal distribution of weights.
 

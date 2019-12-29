@@ -3,16 +3,21 @@
 # SPDX-License-Identifier: BSD-3-Clause
 """Configure pytest for metpy."""
 
+import os
+
 import matplotlib
 import matplotlib.pyplot
 import numpy
 import pandas
-import pint
 import pytest
 import scipy
 import xarray
 
 import metpy.calc
+
+# Need to disable fallback before importing pint
+os.environ['PINT_ARRAY_PROTOCOL_FALLBACK'] = '0'
+import pint  # noqa: I100, E402
 
 
 def pytest_report_header(config, startdir):

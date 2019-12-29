@@ -4,6 +4,7 @@
 """Tools for reading, calculating, and plotting with weather data."""
 
 # What do we want to pull into the top-level namespace?
+import os
 import sys
 import warnings
 
@@ -28,6 +29,7 @@ if sys.version_info < (3,):
 
 # Must occur before below imports
 warnings.filterwarnings('ignore', 'numpy.dtype size changed')
+os.environ['PINT_ARRAY_PROTOCOL_FALLBACK'] = '0'
 
 from ._version import get_version  # noqa: E402
 from .xarray import *  # noqa: F401, F403
