@@ -254,7 +254,7 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
         hour = int(day_time_utc[2:4])
         minute = int(day_time_utc[4:7])
         date_time = datetime(year, month, day, hour, minute)
-    except AttributeError:
+    except (AttributeError, ValueError):
         date_time = np.nan
 
     # Set the wind values
