@@ -1280,9 +1280,8 @@ class PlotObs(HasTraits):
       * fields
       * locations (optional)
       * time_range (optional)
-      * formatters (optional)
+      * formats (optional)
       * colors (optional)
-      * symbol_mapper (optional)
       * vector_field (optional)
       * vector_field_color (optional)
       * reduce_points (optional)
