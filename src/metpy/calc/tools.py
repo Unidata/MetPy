@@ -92,7 +92,7 @@ def nearest_intersection_idx(a, b):
 
 @exporter.export
 @preprocess_xarray
-@units.wraps(('=A', '=B'), ('=A', '=B', '=B'))
+@units.wraps(('=A', '=B'), ('=A', '=B', '=B', None, None))
 def find_intersections(x, a, b, direction='all', log_x=False):
     """Calculate the best estimate of intersection.
 
