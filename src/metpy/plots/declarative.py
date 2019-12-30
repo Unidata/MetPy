@@ -1410,14 +1410,21 @@ class PlotObs(HasTraits):
     @property
     def obsdata(self):
         """Return the internal cached data."""
-        time_vars = ['valid', 'time', 'valid_time']
-        stn_vars = ['station', 'stn']
+        time_vars = ['valid', 'time', 'valid_time', 'date_time', 'date']
+        stn_vars = ['station', 'stn', 'station_id', 'stid']
         if getattr(self, '_obsdata', None) is None:
-            for dim_name in list(self.data):
-                if dim_name in time_vars:
-                    dim_time = dim_name
-                elif dim_name in stn_vars:
-                    dim_stn = dim_name
+            dim_times = [time_var for time_var in time_vars if time_var in list(self.data)]
+            dim_stns = [stn_var for stn_var in stn_vars if stn_var in list(self.data)]
+            if not dim_times:
+                raise AttributeError('Time variable not found. Valid variable names are:'
+                                     f'{time_vars}')
+            else:
+                dim_time = dim_times[0]
+            if not dim_stns:
+                raise AttributeError('Station variable not found. Valid variable names are: '
+                                     f'{stn_vars}')
+            else:
+                dim_stn = dim_stns[0]
             if self.level is not None:
                 level_subset = self.data.pressure == self.level.m
                 self._obsdata = self.data[level_subset]
@@ -1467,7 +1474,7 @@ class PlotObs(HasTraits):
         lon, lat, data = self.plotdata
 
         # Use the cartopy map projection to transform station locations to the map and
-        # then refine the number of stations plotted by setting a 300km radius
+        # then refine the number of stations plotted by setting a radius
         if self.parent._proj_obj == ccrs.PlateCarree():
             scale = 1.
         else:
