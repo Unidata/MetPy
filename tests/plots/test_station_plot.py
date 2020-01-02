@@ -83,7 +83,28 @@ def test_station_plot_replace():
     return fig
 
 
-@pytest.mark.mpl_image_compare(tolerance=0, savefig_kwargs={'dpi': 300},
+@pytest.mark.mpl_image_compare(tolerance=0.25, savefig_kwargs={'dpi': 300}, remove_text=True)
+def test_station_plot_locations():
+    """Test that locations are properly replaced."""
+    fig = plt.figure(figsize=(3, 3))
+
+    locations = ['C', 'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW', 'N2', 'NNE', 'ENE', 'E2',
+                 'ESE', 'SSE', 'S2', 'SSW', 'WSW', 'W2', 'WNW', 'NNW']
+    x_pos = np.array([0])
+    y_pos = np.array([0])
+
+    # Make the plot
+    sp = StationPlot(fig.add_subplot(1, 1, 1), x_pos, y_pos, fontsize=8, spacing=24)
+    for loc in locations:
+        sp.plot_text(loc, [loc])
+
+    sp.ax.set_xlim(-2, 2)
+    sp.ax.set_ylim(-2, 2)
+
+    return fig
+
+
+@pytest.mark.mpl_image_compare(tolerance=0.00413, savefig_kwargs={'dpi': 300},
                                remove_text=True)
 def test_stationlayout_api():
     """Test the StationPlot API."""
