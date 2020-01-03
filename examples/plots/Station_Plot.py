@@ -106,6 +106,6 @@ stationplot.plot_barb(data['eastward_wind'].values, data['northward_wind'].value
 
 # Also plot the actual text of the station id. Instead of cardinal directions,
 # plot further out by specifying a location of 2 increments in x and 0 in y.
-stationplot.plot_text((2, 0), data['station_id'].values)
+stationplot.plot_text((2, 0), data['station'].values)
 
 plt.show()

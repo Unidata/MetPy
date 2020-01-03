@@ -24,8 +24,8 @@ exporter = Exporter(globals())
 warnings.filterwarnings('ignore', "Pandas doesn't allow columns to be created", UserWarning)
 
 # Configure the named tuple used for storing METAR data
-Metar = namedtuple('metar', ['station_id', 'latitude', 'longitude', 'elevation',
-                             'date_time', 'wind_direction', 'wind_speed', 'current_wx1',
+Metar = namedtuple('metar', ['station', 'latitude', 'longitude', 'elevation',
+                             'time', 'wind_direction', 'wind_speed', 'current_wx1',
                              'current_wx2', 'current_wx3', 'skyc1', 'skylev1', 'skyc2',
                              'skylev2', 'skyc3', 'skylev3', 'skyc4', 'skylev4',
                              'cloudcover', 'temperature', 'dewpoint', 'altimeter',
@@ -33,11 +33,11 @@ Metar = namedtuple('metar', ['station_id', 'latitude', 'longitude', 'elevation',
                              'current_wx3_symbol'])
 
 # Create a dictionary for attaching units to the different variables
-col_units = {'station_id': None,
+col_units = {'station': None,
              'latitude': 'degrees',
              'longitude': 'degrees',
              'elevation': 'meters',
-             'date_time': None,
+             'time': None,
              'wind_direction': 'degrees',
              'wind_speed': 'kts',
              'eastward_wind': 'kts',
@@ -90,11 +90,11 @@ def parse_metar_to_dataframe(metar_text, year=datetime.now().year, month=datetim
     Notes
     -----
     The output has the following columns:
-    'station_id': Station Identifier (ex. KLOT)
+    'station': Station Identifier (ex. KLOT)
     'latitude': Latitude of the observation, measured in degrees
     'longitude': Longitude of the observation, measured in degrees
     'elevation': Elevation of the observation above sea level, measured in meters
-    'date_time': Date and time of the observation, datetime object
+    'time': Date and time of the observation, datetime object
     'wind_direction': Direction the wind is coming from, measured in degrees
     'wind_spd': Wind speed, measured in knots
     'current_wx1': Current weather (1 of 3)
@@ -124,11 +124,11 @@ def parse_metar_to_dataframe(metar_text, year=datetime.now().year, month=datetim
     metar_vars = parse_metar_to_named_tuple(metar_text, station_info, year, month)
 
     # Use a pandas dataframe to store the data
-    df = pd.DataFrame({'station_id': metar_vars.station_id,
+    df = pd.DataFrame({'station': metar_vars.station,
                        'latitude': metar_vars.latitude,
                        'longitude': metar_vars.longitude,
                        'elevation': metar_vars.elevation,
-                       'date_time': metar_vars.date_time,
+                       'time': metar_vars.time,
                        'wind_direction': metar_vars.wind_direction,
                        'wind_speed': metar_vars.wind_speed,
                        'current_wx1': metar_vars.current_wx1,
@@ -149,7 +149,7 @@ def parse_metar_to_dataframe(metar_text, year=datetime.now().year, month=datetim
                        'present_weather': metar_vars.current_wx1_symbol,
                        'past_weather': metar_vars.current_wx2_symbol,
                        'past_weather2': metar_vars.current_wx3_symbol},
-                      index=[metar_vars.station_id])
+                      index=[metar_vars.station])
 
     # Convert to sea level pressure using calculation in metpy.calc
     try:
@@ -199,11 +199,11 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
     Notes
     -----
     Returned data has named tuples with the following attributes:
-    'station_id': Station Identifier (ex. KLOT)
+    'station': Station Identifier (ex. KLOT)
     'latitude': Latitude of the observation, measured in degrees
     'longitude': Longitude of the observation, measured in degrees
     'elevation': Elevation of the observation above sea level, measured in meters
-    'date_time': Date and time of the observation, datetime object
+    'time': Date and time of the observation, datetime object
     'wind_direction': Direction the wind is coming from, measured in degrees
     'wind_spd': Wind speed, measured in knots
     'current_wx1': Current weather (1 of 3)
@@ -235,7 +235,7 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
     tree = parse(metar_text)
 
     # Station ID which is used to find the latitude, longitude, and elevation
-    station_id = tree.siteid.text.strip()
+    station = tree.siteid.text.strip()
 
     # Extract the latitude and longitude values from 'master' dictionary
     try:
@@ -253,9 +253,9 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
         day = int(day_time_utc[0:2])
         hour = int(day_time_utc[2:4])
         minute = int(day_time_utc[4:7])
-        date_time = datetime(year, month, day, hour, minute)
+        time = datetime(year, month, day, hour, minute)
     except (AttributeError, ValueError):
-        date_time = np.nan
+        time = np.nan
 
     # Set the wind values
     try:
@@ -422,7 +422,7 @@ def parse_metar_to_named_tuple(metar_text, station_metadata, year=datetime.now()
             altim = (int(tree.altim.text.strip()[1:5]) * units.hPa).to('inHg').magnitude
 
     # Returns a named tuple with all the relevant variables
-    return Metar(station_id, lat, lon, elev, date_time, wind_dir, wind_spd,
+    return Metar(station, lat, lon, elev, time, wind_dir, wind_spd,
                  current_wx1, current_wx2, current_wx3, skyc1, skylev1, skyc2,
                  skylev2, skyc3, skylev3, skyc4, skylev4, cloudcover, temp, dewp,
                  altim, current_wx1_symbol, current_wx2_symbol, current_wx3_symbol)
@@ -449,11 +449,11 @@ def parse_metar_file(filename, year=datetime.now().year, month=datetime.now().mo
     Notes
     -----
     The returned `pandas.DataFrame` has the following columns:
-    'station_id': Station Identifier (ex. KLOT)
+    'station': Station Identifier (ex. KLOT)
     'latitude': Latitude of the observation, measured in degrees
     'longitude': Longitude of the observation, measured in degrees
     'elevation': Elevation of the observation above sea level, measured in meters
-    'date_time': Date and time of the observation, datetime object
+    'time': Date and time of the observation, datetime object
     'wind_direction': Direction the wind is coming from, measured in degrees
     'wind_spd': Wind speed, measured in knots
     'current_wx1': Current weather (1 of 3)
@@ -515,11 +515,11 @@ def parse_metar_file(filename, year=datetime.now().year, month=datetime.now().mo
     master = station_info
 
     # Setup lists to append the data to
-    station_id = []
+    station = []
     lat = []
     lon = []
     elev = []
-    date_time = []
+    time = []
     wind_dir = []
     wind_spd = []
     current_wx1 = []
@@ -548,11 +548,11 @@ def parse_metar_file(filename, year=datetime.now().year, month=datetime.now().mo
             metar = parse_metar_to_named_tuple(metar, master, year=year, month=month)
 
             # Append the different variables to their respective lists
-            station_id.append(metar.station_id)
+            station.append(metar.station)
             lat.append(metar.latitude)
             lon.append(metar.longitude)
             elev.append(metar.elevation)
-            date_time.append(metar.date_time)
+            time.append(metar.time)
             wind_dir.append(metar.wind_direction)
             wind_spd.append(metar.wind_speed)
             current_wx1.append(metar.current_wx1)
@@ -577,11 +577,11 @@ def parse_metar_file(filename, year=datetime.now().year, month=datetime.now().mo
         except ParseError:
             continue
 
-    df = pd.DataFrame({'station_id': station_id,
+    df = pd.DataFrame({'station': station,
                        'latitude': lat,
                        'longitude': lon,
                        'elevation': elev,
-                       'date_time': date_time,
+                       'time': time,
                        'wind_direction': wind_dir,
                        'wind_speed': wind_spd,
                        'current_wx1': current_wx1,
@@ -602,7 +602,7 @@ def parse_metar_file(filename, year=datetime.now().year, month=datetime.now().mo
                        'present_weather': current_wx1_symbol,
                        'past_weather': current_wx2_symbol,
                        'past_weather2': current_wx3_symbol},
-                      index=station_id)
+                      index=station)
 
     # Calculate sea-level pressure from function in metpy.calc
     df['air_pressure_at_sea_level'] = altimeter_to_sea_level_pressure(
@@ -617,7 +617,7 @@ def parse_metar_file(filename, year=datetime.now().year, month=datetime.now().mo
                                                                 * units.degree)
 
     # Drop duplicate values
-    df = df.drop_duplicates(subset=['date_time', 'latitude', 'longitude'], keep='last')
+    df = df.drop_duplicates(subset=['time', 'latitude', 'longitude'], keep='last')
 
     # Round altimeter and sea-level pressure values
     df['altimeter'] = df.altimeter.round(2)
