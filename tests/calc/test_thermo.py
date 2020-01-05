@@ -845,7 +845,8 @@ def test_isentropic_pressure_masked_column():
     tmp[0, :] = 296.
     tmp[1, :] = 292.
     tmp[:, :, -1] = np.ma.masked
-    isentprs = isentropic_interpolation([296.] * units.kelvin, lev, tmp * units.kelvin)
+    tmp = units.Quantity(tmp, units.kelvin)
+    isentprs = isentropic_interpolation([296.] * units.kelvin, lev, tmp)
     trueprs = np.ones((1, 5, 5)) * (1000. * units.hPa)
     trueprs[:, :, -1] = np.nan
     assert isentprs[0].shape == (1, 5, 5)

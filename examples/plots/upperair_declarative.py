@@ -2,12 +2,12 @@
 # Distributed under the terms of the BSD 3-Clause License.
 # SPDX-License-Identifier: BSD-3-Clause
 """
-=========================================
-Surface Analysis using Declarative Syntax
-=========================================
+===========================================
+Upper Air Analysis using Declarative Syntax
+===========================================
 
 The MetPy declarative syntax allows for a simplified interface to creating common
-meteorological analyses including surface observation plots.
+meteorological analyses including upper air observation plots.
 """
 
 ########################################
@@ -25,7 +25,7 @@ from metpy.units import units
 #
 # In this example, data is originally from the Iowa State Upper-air archive
 # (https://mesonet.agron.iastate.edu/archive/raob/) available through a Siphon method.
-# The data are pre-processed to attach latitude/lognitude locations for each RAOB site.
+# The data are pre-processed to attach latitude/longitude locations for each RAOB site.
 
 data = pd.read_csv(get_test_data('UPA_obs.csv', as_file_obj=False))
 
