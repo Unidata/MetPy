@@ -176,8 +176,8 @@ def test_interpolate_end_point():
 
 def test_interpolate_masked_units():
     """Test interpolating with masked arrays with units."""
-    x = np.ma.array([1., 2., 3., 4.]) * units.m
-    y = np.ma.array([50., 60., 70., 80.]) * units.degC
+    x = units.Quantity(np.ma.array([1., 2., 3., 4.]), units.m)
+    y = units.Quantity(np.ma.array([50., 60., 70., 80.]), units.degC)
     x_interp = np.array([250., 350.]) * units.cm
     y_interp_truth = np.array([65., 75.]) * units.degC
     y_interp = interpolate_1d(x_interp, x, y)
