@@ -482,9 +482,11 @@ def get_layer_heights(heights, depth, *args, bottom=None, interpolate=True, with
     if interpolate:
         # If we don't have the bottom or top requested, append them
         if top not in heights_interp:
-            heights_interp = np.sort(np.append(heights_interp.m, top.m)) * heights.units
+            heights_interp = units.Quantity(np.sort(np.append(heights_interp.m, top.m)),
+                                            heights.units)
         if bottom not in heights_interp:
-            heights_interp = np.sort(np.append(heights_interp.m, bottom.m)) * heights.units
+            heights_interp = units.Quantity(np.sort(np.append(heights_interp.m, bottom.m)),
+                                            heights.units)
 
     ret.append(heights_interp)
 

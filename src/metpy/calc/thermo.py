@@ -706,8 +706,8 @@ def _parcel_profile_helper(pressure, temperature, dewpt):
 
     # If the pressure profile doesn't make it to the lcl, we can stop here
     if _greater_or_close(np.nanmin(pressure.m), press_lcl.m):
-        return (press_lower[:-1], press_lcl, np.array([]) * press_lower.units,
-                temp_lower[:-1], temp_lcl, np.array([]) * temp_lower.units)
+        return (press_lower[:-1], press_lcl, units.Quantity(np.array([]), press_lower.units),
+                temp_lower[:-1], temp_lcl, units.Quantity(np.array([]), temp_lower.units))
 
     # Find moist pseudo-adiabatic profile starting at the LCL
     press_upper = concatenate((press_lcl, pressure[pressure < press_lcl]))
